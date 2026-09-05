@@ -53,9 +53,32 @@ build a ZIP without NSIS or installer testing.
 `.github/workflows/windows-build.yml` checks pull requests and produces packages
 on `main`, manual dispatch, or reusable-workflow calls. The reusable workflow
 accepts a required `version` string and uploads both files in the
-`LightTable-windows-x64` artifact for the unified release workflow. Code signing
-is not currently configured for Windows artifacts; runtime and installer smoke
-tests do not establish Windows GUI or RAW-rendering proof.
+`LightTable-windows-x64` artifact for the unified release workflow. `source_ref`
+selects the exact release commit. `require_signing` defaults to `false` for CI;
+the public release workflow sets it to `true` and passes signing secrets to the
+reusable workflow. Runtime and installer smoke tests do not establish Windows
+GUI or RAW-rendering proof.
+
+For Authenticode signing, configure repository secrets
+`WINDOWS_CERTIFICATE_BASE64` (a base64-encoded PFX containing a valid code-signing
+certificate and private key) and `WINDOWS_CERTIFICATE_PASSWORD`. The installed
+Windows SDK must provide `signtool.exe`. A reusable-workflow caller must pass
+these secrets explicitly or use `secrets: inherit`.
+
+`build-release.ps1 -RequireSigning` checks the signing configuration before any
+downloads or compilation and refuses missing or partial credentials. Without
+credentials, ordinary CI builds remain unsigned. With credentials, the build
+signs the desktop executable, both render-engine executables, and the final
+NSIS installer; verification precedes smoke testing and final archiving. The
+temporary PFX is deleted in a `finally` block and no certificate is installed
+in the Windows certificate store. `build-manifest.json` records whether the
+package was signed.
+
+The signing helper uses SHA-256 file and RFC 3161 timestamp digests with the
+DigiCert timestamp service, then requires `signtool verify /pa /all /tw` to
+pass. The flags follow [Microsoft's SignTool documentation](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool).
+Configuring this workflow does not itself obtain a certificate or prove a
+successful signed release.
 
 Windows support is an additional host around the shared render core, not a
 replacement for the macOS implementation.
