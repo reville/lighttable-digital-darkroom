@@ -57,15 +57,16 @@ seconds, use `scripts/update-personal-app.sh`. It reuses the verified packaged
 runtime and preserves the previous app as a rollback copy.
 
 To make a reproducible Windows package on a Windows x64 build host with Rust,
-Git, `uv`, and optionally `makensis` installed:
+Git, `uv`, and NSIS (`makensis`) installed:
 
 ```powershell
 .\scripts\windows\build-release.ps1 -Version 0.1.0
 ```
 
 The script verifies pinned downloads, compiles both GPU renderers and the
-desktop shell, runs a packaged-runtime smoke test, and writes a portable ZIP
-plus an installer (when `makensis` is available) under `dist/`.
+desktop shell, tests the packaged runtime and install/uninstall cycle, and writes
+a portable ZIP plus an installer under `dist/`. Pass `-PortableOnly` explicitly
+to build only the ZIP without NSIS.
 See [WINDOWS.md](WINDOWS.md) for the platform boundary, future native-viewport
 path, and release proof gates.
 

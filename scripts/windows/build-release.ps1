@@ -2,11 +2,16 @@ param(
     [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$')]
     [string]$Version = "0.1.0",
     [string]$OutputDirectory = "dist",
-    [switch]$PortableOnly
+    [switch]$PortableOnly,
+    [switch]$RequireSigning
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+# Public releases must fail before downloads or compilation when signing is
+# unavailable. CI builds can run without a certificate unless explicitly gated.
+$SigningEnabled = & (Join-Path $PSScriptRoot "sign-release.ps1") -CheckOnly -RequireSigning:$RequireSigning
 
 $PythonVersion = "3.13.12"
 $PythonArchiveSha256 = "76f238f606250c87c6beac75dccd35ee99070a13490555936abb6cb64ecce3d0"
@@ -187,6 +192,14 @@ try {
         (Join-Path $Project "windows-shell\target\$Target\release\lighttable-desktop-shell.exe") `
         (Join-Path $Payload "LightTable.exe")
 
+    if ($SigningEnabled) {
+        & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files @(
+            (Join-Path $Payload "LightTable.exe"),
+            (Join-Path $Engine "lighttable-engine.exe"),
+            (Join-Path $Engine "spektrafilm-rs.exe")
+        )
+    }
+
     & $PythonExe -B `
         (Join-Path $Project "scripts\windows\runtime-smoke.py") `
         $Resources `
@@ -200,11 +213,8 @@ try {
         source_revision = $SourceRevision.Trim()
         architecture = "x64"
         python_version = $PythonVersion
+        authenticode_signed = [bool]$SigningEnabled
     } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Payload "build-manifest.json")
-
-    $Zip = Join-Path $Output "LightTable-$Version-windows-x64.zip"
-    if (Test-Path $Zip) { Remove-Item -Force $Zip }
-    Compress-Archive -Path $Payload -DestinationPath $Zip -CompressionLevel Optimal
 
     if (-not $PortableOnly) {
         $Installer = Join-Path $Output "LightTable-$Version-windows-x64-setup.exe"
@@ -219,8 +229,16 @@ try {
             "/DUNINSTALL_MANIFEST=$UninstallManifest" `
             (Join-Path $Project "scripts\windows\installer.nsi")
         if ($LASTEXITCODE -ne 0) { throw "The Windows installer failed to build" }
+        if ($SigningEnabled) {
+            & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files $Installer
+        }
         & (Join-Path $Project "scripts\windows\installer-smoke.ps1") -Installer $Installer -Version $Version
     }
+
+    # Archive only after every required signature and installer check passes.
+    $Zip = Join-Path $Output "LightTable-$Version-windows-x64.zip"
+    if (Test-Path $Zip) { Remove-Item -Force $Zip }
+    Compress-Archive -Path $Payload -DestinationPath $Zip -CompressionLevel Optimal
 
     Write-Host "Built Windows artifacts in $Output"
 } finally {

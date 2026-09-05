@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import tempfile
 import unittest
 
@@ -70,6 +73,71 @@ class WindowsUninstallManifestTests(unittest.TestCase):
                 self.skipTest("Creating symlinks requires Windows developer mode")
             with self.assertRaises(ValueError):
                 manifest.make_manifest(payload)
+
+
+class WindowsSigningContractTests(unittest.TestCase):
+    def test_reusable_workflow_preserves_source_identity_and_passes_signing_requirement(self):
+        workflow = (ROOT / ".github/workflows/windows-build.yml").read_text()
+        reusable = workflow.split("  workflow_call:\n", 1)[1].split("\npermissions:", 1)[0]
+        self.assertIn("      source_ref:", reusable)
+        self.assertIn("      require_signing:", reusable)
+        self.assertIn("        default: false\n        type: boolean", reusable)
+        self.assertEqual(workflow.count("ref: ${{ inputs.source_ref || github.sha }}"), 2)
+        self.assertIn("WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}", workflow)
+        self.assertIn("WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}", workflow)
+        self.assertIn("-RequireSigning:($env:REQUIRE_SIGNING -eq 'true')", workflow)
+        self.assertLess(workflow.index("name: Validate Windows signing configuration"),
+                        workflow.index("name: Install pinned build tools"))
+
+    def test_payload_and_installer_are_signed_before_archiving(self):
+        build = (ROOT / "scripts/windows/build-release.ps1").read_text()
+        self.assertLess(build.index("-CheckOnly -RequireSigning:$RequireSigning"),
+                        build.index("foreach ($Tool"))
+        payload_signing = build.index('-RequireSigning -Files @(')
+        installer_signing = build.index('-RequireSigning -Files $Installer')
+        self.assertLess(payload_signing, build.index('& $MakeNsis.Source'))
+        self.assertLess(installer_signing, build.index('"scripts\\windows\\installer-smoke.ps1"'))
+        self.assertLess(installer_signing, build.index("Compress-Archive"))
+        self.assertIn('authenticode_signed = [bool]$SigningEnabled', build)
+
+
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WindowsSigningGateTests(unittest.TestCase):
+    def invoke(self, script, *arguments, certificate=None, password=None):
+        environment = {key: value for key, value in os.environ.items()
+                       if key not in ("WINDOWS_CERTIFICATE_BASE64", "WINDOWS_CERTIFICATE_PASSWORD")}
+        if certificate is not None:
+            environment["WINDOWS_CERTIFICATE_BASE64"] = certificate
+        if password is not None:
+            environment["WINDOWS_CERTIFICATE_PASSWORD"] = password
+        return subprocess.run(
+            [shutil.which("pwsh") or shutil.which("powershell"), "-NoLogo", "-NoProfile",
+             "-NonInteractive", "-File", str(ROOT / "scripts/windows" / script), *arguments],
+            capture_output=True, text=True, env=environment, timeout=30,
+        )
+
+    def test_optional_signing_without_credentials_needs_no_windows_sdk(self):
+        result = self.invoke("sign-release.ps1", "-CheckOnly")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("False", result.stdout)
+
+    def test_required_signing_without_credentials_fails_before_a_build_starts(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "not-created"
+            result = self.invoke("build-release.ps1", "-RequireSigning", "-OutputDirectory", str(output))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("Windows signing requires both", result.stderr)
+            self.assertFalse(output.exists())
+
+    def test_partial_configuration_never_silently_produces_an_unsigned_build(self):
+        for configuration in ({"certificate": "synthetic-test-certificate"},
+                              {"password": "synthetic-test-password"}):
+            with self.subTest(configuration=next(iter(configuration))):
+                result = self.invoke("sign-release.ps1", "-CheckOnly", **configuration)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Windows signing requires both", result.stderr)
+                for value in configuration.values():
+                    self.assertNotIn(value, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":
