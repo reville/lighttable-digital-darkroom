@@ -1,0 +1,78 @@
+/* Culling Grid keeps each complete photograph and its marking information in
+   a predictable cell. Photo Grid retains its original masonry presentation. */
+.grid.square-grid {
+  gap:12px;
+  align-items:start;
+}
+
+.square-grid .cell {
+  background:var(--inset);
+  contain-intrinsic-size:auto 236px;
+}
+
+.square-grid .cell img {
+  width:100%;
+  height:auto;
+  aspect-ratio:1;
+  object-fit:contain;
+  padding:8px;
+  background:var(--inset);
+  opacity:1;
+}
+
+.square-grid .cell .meta {
+  height:44px;
+  display:grid;
+  grid-template-columns:16px minmax(0,1fr);
+  grid-template-rows:18px 16px;
+  column-gap:5px;
+  row-gap:0;
+  padding:4px 10px 6px;
+  border-top:1px solid var(--line-soft);
+  color:var(--ink-2);
+}
+
+.square-grid .cell .nm {
+  grid-column:1 / -1;
+  grid-row:1;
+  min-width:0;
+  font-size:11px;
+  line-height:18px;
+}
+
+.square-grid .cell .dot {
+  grid-column:1;
+  grid-row:2;
+  width:16px;
+  height:16px;
+  border-radius:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  line-height:16px;
+}
+
+.square-grid .cell .dot::before { content:'−'; }
+.square-grid .cell.approved .dot { color:var(--ok); }
+.square-grid .cell.approved .dot::before { content:'⚑'; }
+.square-grid .cell.skipped .dot { color:var(--skip); }
+.square-grid .cell.skipped .dot::before { content:'×'; }
+
+.square-grid .cell .stars {
+  grid-column:2;
+  grid-row:2;
+  justify-self:start;
+  padding-right:14px;
+  font-size:12px;
+  line-height:16px;
+  letter-spacing:1px;
+}
+
+/* Keep colour labels away from the selection checkmark and stack badge. */
+.square-grid .cell .label-dot {
+  top:auto;
+  left:auto;
+  right:10px;
+  bottom:10px;
+  margin:0;
+}

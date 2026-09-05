@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LightTable — Loupe View</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/web/style.css">
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #0c0c0e; color: #eee;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    user-select: none;
+  }
+  .loupe-container {
+    position: relative; width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    background: #000;
+  }
+  .loupe-hud {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    background: rgba(18, 18, 22, 0.85); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px;
+    padding: 6px 16px; display: flex; align-items: center; gap: 16px;
+    font-size: 13px; z-index: 100; transition: opacity 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+  .loupe-hud.idle { opacity: 0; }
+  .loupe-hud.idle:hover { opacity: 1; }
+  .loupe-info { font-weight: 500; letter-spacing: 0.2px; }
+  .loupe-meta { color: #888; font-size: 12px; }
+  .loupe-zoom-controls { display: flex; gap: 4px; }
+  .loupe-btn {
+    background: transparent; border: 1px solid transparent; color: #ccc;
+    font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .loupe-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .loupe-btn.active {
+    background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.25);
+    color: #fff; font-weight: 600;
+  }
+  .loupe-status {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px;
+    color: #2ecc71;
+  }
+  .loupe-status::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: #2ecc71;
+    box-shadow: 0 0 8px #2ecc71;
+  }
+  .loupe-viewport {
+    width: 100%; height: 100%; position: relative;
+    overflow: hidden; cursor: grab; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .loupe-viewport.dragging { cursor: grabbing; }
+  .loupe-stage {
+    position: absolute; top: 0; left: 0; transform-origin: 0 0;
+    will-change: transform; transition: none;
+  }
+  .loupe-image {
+    display: block; max-width: none; max-height: none;
+    pointer-events: none; -webkit-user-drag: none;
+  }
+  .loupe-empty {
+    color: #666; font-size: 15px; text-align: center;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="loupe-container" id="container">
+  <header class="loupe-hud" id="hud">
+    <span class="loupe-status">Live 1:1 Loupe</span>
+    <span class="loupe-info" id="photoName">—</span>
+    <span class="loupe-meta" id="photoMeta"></span>
+    <div class="loupe-zoom-controls">
+      <button class="loupe-btn" id="btnFit">Fit</button>
+      <button class="loupe-btn active" id="btn100">100%</button>
+      <button class="loupe-btn" id="btn200">200%</button>
+    </div>
+    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;cursor:pointer">
+      <input type="checkbox" id="lockFocusCheck" checked>
+      <span>Lock Focus Point</span>
+    </label>
+  </header>
+  <div class="loupe-viewport" id="viewport">
+    <div class="loupe-empty" id="emptyState">
+      <strong>Secondary Loupe Display</strong>
+      <span>Select a photo in LightTable to view at 100% 1:1 detail.</span>
+    </div>
+    <div class="loupe-stage" id="stage" hidden>
+      <img class="loupe-image" id="loupeImg" alt="Loupe view">
+    </div>
+  </div>
+</div>
+<script type="module" src="/web/loupe.js"></script>
+</body>
+</html>

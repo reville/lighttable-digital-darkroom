@@ -1,0 +1,73 @@
+<!doctype html><meta charset="utf-8"><body style="background:#111;color:#eee;font:12px monospace">
+<pre id="out">running…</pre>
+<script type="module">
+import { GradeRenderer } from '/web/gl.js';
+// Deterministic 64x64 test image, identical to the numpy side.
+// Curves shared with the numpy side: an S-curve and a straight inversion.
+const SCURVE = [], INVERT = [];
+for (let i = 0; i < 256; i++) {
+  const x = i / 255;
+  SCURVE.push(Math.max(0, Math.min(1, x * x * (3 - 2 * x))));
+  INVERT.push(1 - x);
+}
+const glcv = document.createElement('canvas');
+const r = new GradeRenderer(glcv);
+const img = new Image();
+img.onload = () => {
+  r.setImage(img);
+  const atlas = document.createElement('canvas');
+  atlas.width = 64; atlas.height = 64 * 4;
+  const atlasContext = atlas.getContext('2d');
+  const atlasPixels = atlasContext.createImageData(atlas.width, atlas.height);
+  for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) {
+    atlasPixels.data[(y * 64 + x) * 4] = 255;
+    atlasPixels.data[((y + 64 * 3) * 64 + x) * 4] = x >= 32 ? 255 : 0;
+  }
+  atlasContext.putImageData(atlasPixels, 0, 0);
+  const rangeMask = [{enabled:true,opacity:0.85,lumaLow:0.1,lumaHigh:0.95,
+    colorHue:28,colorRange:38,colorAmount:0.7,
+    grade:{exposure:0.3,texture:-0.2,clarity:0.15}}];
+  const tileMasks = Array(13).fill(null);
+  tileMasks[0] = {enabled:true,opacity:0.65,lumaLow:0,lumaHigh:1,
+    grade:{exposure:-0.2}};
+  tileMasks[12] = {enabled:true,opacity:0.9,lumaLow:0,lumaHigh:1,
+    grade:{contrast:0.35,saturation:0.2}};
+  const cases = {
+    identity: {}, exposure: {exposure:1.0}, contrast_p: {contrast:0.6},
+    contrast_n: {contrast:-0.6}, highlights: {highlights:0.7},
+    shadows: {shadows:0.7}, whites: {whites:0.5}, blacks: {blacks:0.5},
+    temp: {temp:0.6}, tint: {tint:0.6}, vibrance: {vibrance:0.8},
+    saturation: {saturation:0.8}, texture: {texture:0.65},
+    clarity: {clarity:0.65}, dehaze: {dehaze:0.6},
+    effects_combo: {texture:0.4,clarity:-0.3,dehaze:0.25},
+    sharpen: {sharpness:0.65,sharpenRadius:1.4,sharpenDetail:0.6,sharpenMasking:0.3},
+    lumaNoise: {luminanceNoise:0.65}, colorNoise: {colorNoise:0.7},
+    detail_combo: {sharpness:0.45,sharpenRadius:0.8,sharpenDetail:0.5,
+      luminanceNoise:0.3,colorNoise:0.4},
+    caRed: {chromaticAberrationRedCyan:0.8},
+    caBlue: {chromaticAberrationBlueYellow:-0.8},
+    vignette: {vignette:0.6},
+    curveS: {curveL: SCURVE}, curveInv: {curveL: INVERT},
+    curveRch: {curveR: SCURVE},
+    hslRedSat: {hsl:{red:{h:0,s:0.8,l:0}}},
+    hslBlueHue: {hsl:{blue:{h:0.5,s:0,l:0}}},
+    hslMulti: {hsl:{red:{h:0.2,s:0.5,l:0.3}, green:{h:-0.3,s:-0.4,l:0}}},
+    pointUniformity: {pointColor:[{hue:32,range:45,hueShift:5,
+      saturation:0.1,luminance:0.05,refSaturation:0.62,refLuminance:0.7,
+      uniformHue:0.5,uniformSaturation:0.4,uniformLuminance:0.3}]},
+    maskColorRange: {grade:{},localEdits:rangeMask,maskCanvas:atlas},
+    maskTiles0And3: {grade:{},localEdits:tileMasks,maskCanvas:atlas},
+  };
+  const res = {};
+  for (const [k, value] of Object.entries(cases)) {
+    const spec = value.localEdits ? value : {grade:value};
+    r.draw(spec.grade || {}, spec.localEdits || [], spec.maskCanvas ?? null);
+    const s = r.sample();
+    let sr=0, sg=0, sb=0, n=0;
+    for (let i = 0; i < s.px.length; i += 4) { sr+=s.px[i]; sg+=s.px[i+1]; sb+=s.px[i+2]; n++; }
+    res[k] = [ (sr/n/255).toFixed(4), (sg/n/255).toFixed(4), (sb/n/255).toFixed(4) ];
+  }
+  document.getElementById('out').textContent = JSON.stringify(res, null, 1);
+};
+img.src = '/web/paritysrc.png';
+</script></body>

@@ -1,0 +1,611 @@
+"""Platform image services with the existing macOS path kept as the fast path."""
+
+from __future__ import annotations
+
+import ctypes
+import io
+import os
+import shutil
+import subprocess
+import sys
+from functools import lru_cache
+from pathlib import Path
+
+import numpy as np
+from PIL import Image, ImageCms, ImageOps
+
+
+PROFILE_FILENAMES = {
+    "srgb": "sRGB-v4.icc",
+    "display_p3": "DisplayP3-v4.icc",
+    "prophoto": "ProPhoto-v4.icc",
+}
+
+MACOS_PROFILE_PATHS = {
+    "srgb": Path("/System/Library/ColorSync/Profiles/sRGB Profile.icc"),
+    "display_p3": Path("/System/Library/ColorSync/Profiles/Display P3.icc"),
+    "prophoto": Path("/System/Library/ColorSync/Profiles/ROMM RGB.icc"),
+}
+
+EXIF_FIELDS = {
+    # `Make` matters beyond the info panel: it is half of the per-camera
+    # defaults key and half of the lensfun camera match. It was declared in a
+    # second, unused list in server.py while this one omitted it, so every
+    # camera resolved with an empty make.
+    "Make": ("Exif.Image.Make",),
+    "Model": ("Exif.Image.Model",),
+    "BodySerialNumber": ("Exif.Photo.BodySerialNumber",
+                         "Exif.Image.CameraSerialNumber"),
+    "LensModel": ("Exif.Photo.LensModel",),
+    "LensID": ("Exif.Photo.LensModel",),
+    "FocalLength": ("Exif.Photo.FocalLength",),
+    "FNumber": ("Exif.Photo.FNumber",),
+    "ExposureTime": ("Exif.Photo.ExposureTime",),
+    "ISO": ("Exif.Photo.PhotographicSensitivity", "Exif.Photo.ISOSpeedRatings"),
+    "DateTimeOriginal": ("Exif.Photo.DateTimeOriginal",),
+    "ImageWidth": ("Exif.Photo.PixelXDimension", "Exif.Image.ImageWidth"),
+    "ImageHeight": ("Exif.Photo.PixelYDimension", "Exif.Image.ImageLength"),
+    "FocusDistance": ("Exif.Photo.SubjectDistance",),
+}
+
+
+def profile_path(app_root: Path, output_space: str) -> Path:
+    """Return the native profile on macOS and the bundled profile elsewhere."""
+    output_space = output_space if output_space in PROFILE_FILENAMES else "srgb"
+    bundled = Path(app_root) / "color-profiles" / PROFILE_FILENAMES[output_space]
+    if sys.platform == "darwin":
+        native = MACOS_PROFILE_PATHS[output_space]
+        if native.is_file():
+            return native
+    return bundled
+
+
+def _use_macos_tools(force_portable: bool) -> bool:
+    return (
+        not force_portable
+        and sys.platform == "darwin"
+        and shutil.which("sips") is not None
+    )
+
+
+@lru_cache(maxsize=1)
+def _imageio_frameworks():
+    """Load the small CoreFoundation/ImageIO ABI used for thumbnails."""
+    if sys.platform != "darwin":
+        raise RuntimeError("ImageIO is only available on macOS")
+    core = ctypes.CDLL(
+        "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")
+    imageio = ctypes.CDLL(
+        "/System/Library/Frameworks/ImageIO.framework/ImageIO")
+    core.CFURLCreateFromFileSystemRepresentation.argtypes = [
+        ctypes.c_void_p, ctypes.c_char_p, ctypes.c_long, ctypes.c_bool]
+    core.CFURLCreateFromFileSystemRepresentation.restype = ctypes.c_void_p
+    core.CFNumberCreate.argtypes = [
+        ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p]
+    core.CFNumberCreate.restype = ctypes.c_void_p
+    core.CFStringCreateWithCString.argtypes = [
+        ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint32]
+    core.CFStringCreateWithCString.restype = ctypes.c_void_p
+    core.CFDictionaryCreate.argtypes = [
+        ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p),
+        ctypes.POINTER(ctypes.c_void_p), ctypes.c_long,
+        ctypes.c_void_p, ctypes.c_void_p]
+    core.CFDictionaryCreate.restype = ctypes.c_void_p
+    core.CFRelease.argtypes = [ctypes.c_void_p]
+    imageio.CGImageSourceCreateWithURL.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p]
+    imageio.CGImageSourceCreateWithURL.restype = ctypes.c_void_p
+    imageio.CGImageSourceCreateThumbnailAtIndex.argtypes = [
+        ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
+    imageio.CGImageSourceCreateThumbnailAtIndex.restype = ctypes.c_void_p
+    imageio.CGImageDestinationCreateWithURL.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_void_p]
+    imageio.CGImageDestinationCreateWithURL.restype = ctypes.c_void_p
+    imageio.CGImageDestinationAddImage.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+    imageio.CGImageDestinationFinalize.argtypes = [ctypes.c_void_p]
+    imageio.CGImageDestinationFinalize.restype = ctypes.c_bool
+    return core, imageio
+
+
+def _cf_symbol(library, name: str) -> int:
+    return int(ctypes.c_void_p.in_dll(library, name).value or 0)
+
+
+def _build_thumbnail_imageio(source: Path, destination: Path,
+                             max_pixel: int = 240,
+                             quality: float = 0.8) -> None:
+    """Decode an oriented thumbnail in-process through macOS ImageIO.
+
+    ``CGImageSourceCreateThumbnailAtIndex`` asks ImageIO for the bounded draft
+    directly, allowing it to use an embedded preview or a hardware decoder
+    without inflating the full source into Python memory.
+    """
+    core, imageio = _imageio_frameworks()
+    owned: list[int] = []
+
+    def own(value, label: str) -> int:
+        pointer = int(value or 0)
+        if not pointer:
+            raise RuntimeError(f"ImageIO could not create {label}")
+        owned.append(pointer)
+        return pointer
+
+    def file_url(path: Path) -> int:
+        encoded = os.fsencode(path)
+        return own(core.CFURLCreateFromFileSystemRepresentation(
+            None, encoded, len(encoded), False), "file URL")
+
+    try:
+        source_ref = own(imageio.CGImageSourceCreateWithURL(
+            file_url(source), None), "image source")
+        maximum = ctypes.c_int32(max(1, int(max_pixel)))
+        maximum_ref = own(core.CFNumberCreate(
+            None, 3, ctypes.byref(maximum)), "thumbnail size")
+        keys = (ctypes.c_void_p * 3)(
+            _cf_symbol(imageio,
+                       "kCGImageSourceCreateThumbnailFromImageIfAbsent"),
+            _cf_symbol(imageio, "kCGImageSourceCreateThumbnailWithTransform"),
+            _cf_symbol(imageio, "kCGImageSourceThumbnailMaxPixelSize"),
+        )
+        true_ref = _cf_symbol(core, "kCFBooleanTrue")
+        values = (ctypes.c_void_p * 3)(true_ref, true_ref, maximum_ref)
+        options = own(core.CFDictionaryCreate(
+            None, keys, values, 3, None, None), "thumbnail options")
+        thumbnail = own(imageio.CGImageSourceCreateThumbnailAtIndex(
+            source_ref, 0, options), "thumbnail")
+        jpeg_type = own(core.CFStringCreateWithCString(
+            None, b"public.jpeg", 0x08000100), "JPEG type")
+        output = own(imageio.CGImageDestinationCreateWithURL(
+            file_url(destination), jpeg_type, 1, None), "image destination")
+        compression = ctypes.c_float(max(0.0, min(1.0, float(quality))))
+        compression_ref = own(core.CFNumberCreate(
+            None, 5, ctypes.byref(compression)), "JPEG quality")
+        property_keys = (ctypes.c_void_p * 1)(
+            _cf_symbol(imageio,
+                       "kCGImageDestinationLossyCompressionQuality"))
+        property_values = (ctypes.c_void_p * 1)(compression_ref)
+        properties = own(core.CFDictionaryCreate(
+            None, property_keys, property_values, 1, None, None),
+            "JPEG properties")
+        imageio.CGImageDestinationAddImage(output, thumbnail, properties)
+        if not imageio.CGImageDestinationFinalize(output):
+            raise RuntimeError("ImageIO could not finalize the thumbnail")
+    finally:
+        for pointer in reversed(owned):
+            core.CFRelease(pointer)
+
+
+def embed_jpeg_icc(destination: Path | str, profile: bytes) -> None:
+    """Insert an ICC profile into an already-encoded JPEG without re-encoding.
+
+    The resident Rust exporter owns JPEG compression. ICC APP2 segments are a
+    container operation, so adding them here keeps its pixels byte-for-byte
+    intact while preserving the color-management contract of Python exports.
+    """
+    path = Path(destination)
+    payload = path.read_bytes()
+    if not payload.startswith(b"\xff\xd8"):
+        raise ValueError("ICC profile target is not a JPEG")
+    if not profile:
+        return
+    identifier = b"ICC_PROFILE\x00"
+    maximum_chunk = 65533 - len(identifier) - 2
+    chunks = [profile[offset:offset + maximum_chunk]
+              for offset in range(0, len(profile), maximum_chunk)]
+    if len(chunks) > 255:
+        raise ValueError("ICC profile needs more than 255 JPEG segments")
+    segments = []
+    for sequence, chunk in enumerate(chunks, 1):
+        body = identifier + bytes((sequence, len(chunks))) + chunk
+        segments.append(b"\xff\xe2" + (len(body) + 2).to_bytes(2, "big") + body)
+    path.write_bytes(payload[:2] + b"".join(segments) + payload[2:])
+
+
+def _exiv2_value(data, *keys: str) -> str:
+    import exiv2
+
+    for key in keys:
+        item = data.findKey(exiv2.ExifKey(key))
+        if item != data.end():
+            return item.toString()
+    return ""
+
+
+def orientation_degrees(source: Path, *, force_portable: bool = False) -> int:
+    """Return the clockwise EXIF orientation rotation for one image."""
+    source = Path(source)
+    orientation = 1
+    if _use_macos_tools(force_portable) and shutil.which("exiftool"):
+        try:
+            result = subprocess.run(
+                ["exiftool", "-n", "-s3", "-Orientation", str(source)],
+                capture_output=True,
+                text=True,
+                timeout=15,
+                check=False,
+            )
+            orientation = int((result.stdout or "1").strip() or 1)
+        except (OSError, subprocess.SubprocessError, ValueError):
+            orientation = 1
+    else:
+        try:
+            import exiv2
+
+            image = exiv2.ImageFactory.open(str(source))
+            image.readMetadata()
+            raw = _exiv2_value(image.exifData(), "Exif.Image.Orientation")
+            orientation = int(raw or 1)
+        except Exception:  # noqa: BLE001 - malformed metadata is non-fatal
+            orientation = 1
+    return {3: 180, 6: 90, 8: 270}.get(orientation, 0)
+
+
+def metadata(source: Path, *, force_portable: bool = False) -> dict[str, str]:
+    """Read the small metadata subset displayed by the editor."""
+    source = Path(source)
+    if _use_macos_tools(force_portable) and shutil.which("exiftool"):
+        fields = list(EXIF_FIELDS) + ["FileSize"]
+        try:
+            result = subprocess.run(
+                ["exiftool", "-S", *[f"-{field}" for field in fields], str(source)],
+                capture_output=True,
+                text=True,
+                timeout=20,
+                check=False,
+            )
+            output = {}
+            for line in result.stdout.splitlines():
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    output[key.strip()] = value.strip()
+            return output
+        except (OSError, subprocess.SubprocessError):
+            return {}
+
+    output: dict[str, str] = {}
+    try:
+        import exiv2
+
+        image = exiv2.ImageFactory.open(str(source))
+        image.readMetadata()
+        data = image.exifData()
+        output.update({
+            field: value
+            for field, keys in EXIF_FIELDS.items()
+            if (value := _exiv2_value(data, *keys))
+        })
+    except Exception:  # noqa: BLE001 - metadata must not block browsing
+        pass
+    try:
+        with Image.open(source) as image:
+            exif = image.getexif()
+            pillow_fields = {
+                "Model": 272,
+                "ExposureTime": 33434,
+                "FNumber": 33437,
+                "ISO": 34855,
+                "DateTimeOriginal": 36867,
+                "FocalLength": 37386,
+                "LensModel": 42036,
+                "ImageWidth": 40962,
+                "ImageHeight": 40963,
+            }
+            for field, tag in pillow_fields.items():
+                if field not in output and exif.get(tag) is not None:
+                    output[field] = str(exif[tag])
+    except Exception:  # noqa: BLE001 - broad-format metadata may be exiv2-only
+        pass
+    try:
+        output["FileSize"] = f"{source.stat().st_size} bytes"
+    except OSError:
+        pass
+    return output
+
+
+def _open_portable(source: Path) -> tuple[Image.Image, bytes | None]:
+    """Open through Pillow first, then the existing broad-format runtime."""
+    try:
+        image = Image.open(source)
+        image.load()
+        embedded = image.info.get("icc_profile")
+        return ImageOps.exif_transpose(image).convert("RGB"), embedded
+    except Exception as pillow_error:  # noqa: BLE001 - try the broad decoder
+        try:
+            import OpenImageIO as oiio
+
+            buffer = oiio.ImageBuf(str(source))
+            spec = buffer.spec()
+            if spec.width <= 0 or spec.height <= 0:
+                raise ValueError(buffer.geterror() or "image decoder returned no pixels")
+            pixels = np.asarray(buffer.get_pixels(oiio.UINT8))
+            if pixels.ndim != 3 or pixels.shape[2] < 3:
+                raise ValueError("image decoder did not return RGB pixels")
+            embedded = bytes(spec.get_bytes_attribute("ICCProfile")) or None
+            return Image.fromarray(pixels[..., :3], "RGB"), embedded
+        except Exception as broad_error:  # noqa: BLE001
+            raise RuntimeError(
+                f"could not decode {source.name}: {broad_error}"
+            ) from pillow_error
+
+
+def _convert_profile(
+    image: Image.Image,
+    embedded_profile: bytes | None,
+    app_root: Path,
+    output_space: str,
+) -> tuple[Image.Image, bytes | None]:
+    target_path = profile_path(app_root, output_space)
+    try:
+        target_bytes = target_path.read_bytes()
+    except OSError:
+        return image, None
+
+    source_bytes = embedded_profile
+    if not source_bytes:
+        try:
+            source_bytes = profile_path(app_root, "srgb").read_bytes()
+        except OSError:
+            source_bytes = None
+    if not source_bytes:
+        return image, target_bytes
+
+    converted = ImageCms.profileToProfile(
+        image,
+        ImageCms.ImageCmsProfile(io.BytesIO(source_bytes)),
+        ImageCms.ImageCmsProfile(io.BytesIO(target_bytes)),
+        outputMode="RGB",
+        renderingIntent=ImageCms.Intent.PERCEPTUAL,
+    )
+    return converted, target_bytes
+
+
+def convert_processed_to_tiff(
+    source: Path,
+    destination: Path,
+    *,
+    app_root: Path,
+    output_space: str,
+    force_portable: bool = False,
+) -> None:
+    """Convert a processed input while retaining the current native Mac path."""
+    source = Path(source)
+    destination = Path(destination)
+    target = profile_path(app_root, output_space)
+    if _use_macos_tools(force_portable):
+        command = ["sips", "-s", "format", "tiff"]
+        if target.is_file():
+            command += ["--matchTo", str(target)]
+        command += [str(source), "--out", str(destination)]
+        subprocess.run(command, check=True, capture_output=True)
+        rotation = orientation_degrees(source)
+        if rotation:
+            subprocess.run(
+                ["sips", "-r", str(rotation), str(destination)],
+                check=True,
+                capture_output=True,
+            )
+        return
+
+    image, embedded = _open_portable(source)
+    image, profile = _convert_profile(image, embedded, app_root, output_space)
+    options = {"icc_profile": profile} if profile else {}
+    image.save(destination, "TIFF", compression="tiff_lzw", **options)
+
+
+def build_thumbnail(
+    source: Path,
+    destination: Path,
+    *,
+    force_portable: bool = False,
+) -> None:
+    """Build a small oriented JPEG thumbnail."""
+    source = Path(source)
+    destination = Path(destination)
+    if sys.platform == "darwin" and not force_portable:
+        try:
+            _build_thumbnail_imageio(source, destination)
+            return
+        except (OSError, RuntimeError, ValueError):
+            # Corrupt or unusually encoded files still get the portable and
+            # command-line compatibility paths below.
+            pass
+
+    # Pillow's JPEG draft mode decodes close to thumbnail resolution on other
+    # platforms and provides the first macOS fallback for malformed metadata.
+    if source.suffix.lower() not in {".heic", ".hif"}:
+        try:
+            with Image.open(source) as opened:
+                if source.suffix.lower() in {".jpg", ".jpeg"}:
+                    opened.draft("RGB", (240, 240))
+                image = ImageOps.exif_transpose(opened).convert("RGB")
+                image.thumbnail((240, 240), Image.Resampling.LANCZOS)
+                image.save(destination, "JPEG", quality=80, subsampling=1)
+                return
+        except (OSError, ValueError):
+            pass
+    if _use_macos_tools(force_portable):
+        subprocess.run(
+            [
+                "sips", "-s", "format", "jpeg", "-s", "formatOptions", "80",
+                "-Z", "240", str(source), "--out", str(destination),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        rotation = orientation_degrees(source)
+        if rotation:
+            subprocess.run(
+                ["sips", "-r", str(rotation), str(destination)],
+                check=True,
+                capture_output=True,
+            )
+        return
+
+    image, _ = _open_portable(source)
+    image = ImageOps.exif_transpose(image)
+    image.thumbnail((240, 240), Image.Resampling.LANCZOS)
+    image.save(destination, "JPEG", quality=80, subsampling=1)
+
+
+METADATA_POLICIES = ("none", "copyright", "all", "all-except-location")
+
+SOFTWARE_TAG = "LightTable"
+
+LIGHTROOM_NAMESPACE = "http://ns.adobe.com/lightroom/1.0/"
+
+# Tags that describe how the destination file is laid out on disk. Copying
+# these from the source would mislabel or corrupt the export -- the ICC profile
+# of a TIFF lives in Exif.Image.InterColorProfile, so it is on this list too.
+_EXIF_STRUCTURE_KEYS = frozenset({
+    "Exif.Image.NewSubfileType", "Exif.Image.SubfileType",
+    "Exif.Image.ImageWidth", "Exif.Image.ImageLength",
+    "Exif.Image.BitsPerSample", "Exif.Image.Compression",
+    "Exif.Image.PhotometricInterpretation", "Exif.Image.FillOrder",
+    "Exif.Image.StripOffsets", "Exif.Image.SamplesPerPixel",
+    "Exif.Image.RowsPerStrip", "Exif.Image.StripByteCounts",
+    "Exif.Image.PlanarConfiguration", "Exif.Image.Predictor",
+    "Exif.Image.SampleFormat", "Exif.Image.YCbCrSubSampling",
+    "Exif.Image.TileWidth", "Exif.Image.TileLength",
+    "Exif.Image.TileOffsets", "Exif.Image.TileByteCounts",
+    "Exif.Image.JPEGInterchangeFormat",
+    "Exif.Image.JPEGInterchangeFormatLength",
+    "Exif.Image.InterColorProfile", "Exif.Image.SubIFDs",
+    "Exif.Image.ExifTag", "Exif.Image.GPSTag",
+    "Exif.Photo.InteroperabilityTag",
+})
+
+_EXIF_STRUCTURE_PREFIXES = (
+    "Exif.Thumbnail.", "Exif.Image2.", "Exif.Image3.", "Exif.SubImage",
+)
+
+_GPS_KEYS = ("Exif.Image.GPSTag",)
+
+_GPS_PREFIX = "Exif.GPSInfo."
+
+
+def _erase_gps(exif) -> None:
+    import exiv2
+
+    doomed = [datum.key() for datum in exif
+              if datum.key().startswith(_GPS_PREFIX)
+              or datum.key() in _GPS_KEYS]
+    for key in doomed:
+        position = exif.findKey(exiv2.ExifKey(key))
+        if position != exif.end():
+            exif.erase(position)
+
+
+def _copy_source_exif(exif, source_exif, *, keep_location: bool) -> None:
+    for datum in source_exif:
+        key = datum.key()
+        if (key in _EXIF_STRUCTURE_KEYS
+                or key.startswith(_EXIF_STRUCTURE_PREFIXES)):
+            continue
+        if not keep_location and key.startswith(_GPS_PREFIX):
+            continue
+        try:
+            exif[key] = datum.value()
+        except Exception:  # noqa: BLE001 - one odd tag must not stop the copy
+            continue
+
+
+def _xmp_text(xmp, key: str, value) -> None:
+    text = " ".join(str(value or "").split()).strip()
+    if text:
+        xmp[key] = text
+
+
+def _xmp_bag(xmp, key: str, values) -> None:
+    import exiv2
+
+    if isinstance(values, str):
+        values = [values]
+    items = [" ".join(str(item).split()).strip()
+             for item in (values or []) if str(item or "").strip()]
+    if not items:
+        return
+    array = exiv2.XmpArrayValue(exiv2.TypeId.xmpBag)
+    for item in items:
+        array.read(item)
+    xmp[key] = array
+
+
+def _write_catalog_fields(xmp, fields: dict, *, rights_only: bool) -> None:
+    import exiv2
+
+    _xmp_text(xmp, "Xmp.dc.rights", fields.get("copyright"))
+    _xmp_text(xmp, "Xmp.dc.creator", fields.get("creator"))
+    if rights_only:
+        return
+    try:
+        exiv2.XmpProperties.registerNs(LIGHTROOM_NAMESPACE, "lr")
+    except Exception:  # noqa: BLE001 - already registered on a second export
+        pass
+    _xmp_text(xmp, "Xmp.dc.title", fields.get("title"))
+    _xmp_text(xmp, "Xmp.dc.description", fields.get("caption"))
+    _xmp_bag(xmp, "Xmp.dc.subject", fields.get("keywords"))
+    _xmp_bag(xmp, "Xmp.lr.hierarchicalSubject", fields.get("keywordPaths"))
+    _xmp_text(xmp, "Xmp.xmp.Label", fields.get("label"))
+    try:
+        rating = int(fields["rating"])
+    except (KeyError, TypeError, ValueError):
+        return
+    xmp["Xmp.xmp.Rating"] = str(max(0, min(5, rating)))
+
+
+def write_metadata(dst: Path | str, source: Path | str | None = None,
+                   policy: str = "all-except-location",
+                   fields: dict | None = None) -> bool:
+    """Embed EXIF and XMP into an already-written export, honouring ``policy``.
+
+    ``none`` writes nothing. ``copyright`` writes only ``dc:rights`` and
+    ``dc:creator``. ``all`` copies the source EXIF, and ``all-except-location``
+    is ``all`` with every ``Exif.GPSInfo.*`` key dropped. Every policy but
+    ``none`` also stamps orientation 1 (export pixels are already oriented),
+    the real pixel dimensions, and ``Software``. The ICC profile written by
+    ``color_pipeline.save_export_image()`` survives untouched because exiv2
+    edits the existing container rather than re-encoding it. Returns True when
+    it wrote; a metadata failure logs and returns False so the pixels survive.
+    """
+    policy = str(policy or "").lower()
+    if policy not in METADATA_POLICIES:
+        policy = "all-except-location"
+    if policy == "none":
+        return False
+    destination = Path(dst)
+    fields = fields if isinstance(fields, dict) else {}
+    reader = None
+    try:
+        import exiv2
+
+        image = exiv2.ImageFactory.open(str(destination))
+        image.readMetadata()
+        exif = image.exifData()
+        if policy in ("all", "all-except-location"):
+            origin = Path(source) if source else None
+            if origin is not None and origin.is_file():
+                # Keep the reader alive until the write lands.
+                reader = exiv2.ImageFactory.open(str(origin))
+                reader.readMetadata()
+                _copy_source_exif(exif, reader.exifData(),
+                                  keep_location=policy == "all")
+        if policy != "all":
+            _erase_gps(exif)
+        exif["Exif.Image.Orientation"] = 1
+        exif["Exif.Image.Software"] = SOFTWARE_TAG
+        width, height = int(image.pixelWidth()), int(image.pixelHeight())
+        if width > 0 and height > 0:
+            exif["Exif.Photo.PixelXDimension"] = width
+            exif["Exif.Photo.PixelYDimension"] = height
+        xmp = image.xmpData()
+        _write_catalog_fields(xmp, fields, rights_only=policy == "copyright")
+        image.setExifData(exif)
+        image.setXmpData(xmp)
+        image.writeMetadata()
+        return True
+    except Exception as error:  # noqa: BLE001 - pixels outrank metadata
+        print(f"write_metadata: {destination.name}: {error}", file=sys.stderr)
+        return False
+    finally:
+        del reader

@@ -1,0 +1,9 @@
+{
+  "raw": [
+    "3fr", "arq", "arw", "cap", "cr2", "cr3", "crw", "dcr", "dng",
+    "erf", "fff", "iiq", "kdc", "mef", "mos", "mrw", "nef", "nrw",
+    "orf", "pef", "raf", "raw", "rw2", "rwl", "sr2", "srf", "srw"
+  ],
+  "processed": ["heic", "hif", "jpeg", "jpg", "png", "tif", "tiff"],
+  "video": ["avi", "m4v", "mov", "mp4"]
+}

@@ -1,0 +1,195 @@
+{
+  "samples": [
+    {
+      "mode": "square",
+      "nodes": 30,
+      "scrollTop": 0,
+      "scrollHeight": 148885,
+      "first": "0000.jpg",
+      "last": "0029.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 40,
+      "scrollTop": 29595,
+      "scrollHeight": 148885,
+      "first": "0585.jpg",
+      "last": "0624.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 40,
+      "scrollTop": 73989,
+      "scrollHeight": 148885,
+      "first": "1480.jpg",
+      "last": "1519.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 45,
+      "scrollTop": 133179,
+      "scrollHeight": 148885,
+      "first": "2670.jpg",
+      "last": "2714.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 30,
+      "scrollTop": 147977,
+      "scrollHeight": 148885,
+      "first": "2970.jpg",
+      "last": "2999.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 40,
+      "scrollTop": 73989,
+      "scrollHeight": 148885,
+      "first": "1480.jpg",
+      "last": "1519.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "square",
+      "nodes": 30,
+      "scrollTop": 0,
+      "scrollHeight": 148885,
+      "first": "0000.jpg",
+      "last": "0029.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 39,
+      "scrollTop": 0,
+      "scrollHeight": 129688,
+      "first": "0000.jpg",
+      "last": "0038.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 55,
+      "scrollTop": 25762,
+      "scrollHeight": 129581,
+      "first": "0583.jpg",
+      "last": "0638.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 58,
+      "scrollTop": 64266,
+      "scrollHeight": 129405,
+      "first": "1474.jpg",
+      "last": "1532.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 56,
+      "scrollTop": 115582,
+      "scrollHeight": 129327,
+      "first": "2662.jpg",
+      "last": "2717.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 35,
+      "scrollTop": 128367,
+      "scrollHeight": 129281,
+      "first": "2962.jpg",
+      "last": "2999.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 57,
+      "scrollTop": 64158,
+      "scrollHeight": 129252,
+      "first": "1473.jpg",
+      "last": "1529.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    },
+    {
+      "mode": "photo",
+      "nodes": 39,
+      "scrollTop": 0,
+      "scrollHeight": 129252,
+      "first": "0000.jpg",
+      "last": "0038.jpg",
+      "overlaps": 0,
+      "wrongAspect": 0
+    }
+  ],
+  "errors": [],
+  "anchorDelta": 0.5,
+  "auto": {
+    "value": "auto",
+    "last": {
+      "image": "0000.jpg",
+      "width": 1800,
+      "requestedWidth": 1800,
+      "phase": "settled",
+      "cached": true,
+      "refining": false,
+      "engine": "source",
+      "backend": null,
+      "queueMs": 2.300000011920929,
+      "requestMs": 523.3999999761581,
+      "serverMs": null,
+      "residentMs": null,
+      "gpuMs": null,
+      "imageDecodeMs": 37.80000001192093,
+      "textureUploadMs": 9.400000035762787,
+      "paintAfterUploadMs": 5.5,
+      "presentation": "webgl",
+      "nativeFetchMs": null,
+      "nativeGpuMs": null,
+      "nativeTotalMs": null,
+      "totalMs": 578.9000000357628
+    }
+  },
+  "manual": {
+    "image": "0000.jpg",
+    "width": 1100,
+    "requestedWidth": 1100,
+    "phase": "settled",
+    "cached": true,
+    "refining": false,
+    "engine": "source",
+    "backend": null,
+    "queueMs": 1.699999988079071,
+    "requestMs": 2.600000023841858,
+    "serverMs": null,
+    "residentMs": null,
+    "gpuMs": null,
+    "imageDecodeMs": 1,
+    "textureUploadMs": 3.399999976158142,
+    "paintAfterUploadMs": 17.69999998807907,
+    "presentation": "webgl",
+    "nativeFetchMs": null,
+    "nativeGpuMs": null,
+    "nativeTotalMs": null,
+    "totalMs": 26.5
+  }
+}

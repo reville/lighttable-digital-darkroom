@@ -1,0 +1,16 @@
+# Third-party components
+
+LightTable is distributed under GPL-3.0-only. Existing third-party copyright,
+license, and attribution notices remain in their source files and license texts.
+
+- The Python film pipeline is based on [agx-emulsion / spektrafilm](https://github.com/andreavolpato/agx-emulsion), pinned to `3bb2c2d2801ff68b92019cf1dbcbb133d60832bc`, GPLv3.
+- The standalone Rust film engine is based on [spektrafilm-rs](https://github.com/turbasvin/spektrafilm-rs), pinned to `9dd59b0380194b93686aaa230a8bb9680aa270a4`, GPLv3. The adapted resident-engine source and license are included under `rust-engine/vendor/spektrafilm`.
+- [Sparkle](https://github.com/sparkle-project/Sparkle), version 2.9.6, supplies macOS updates. Its framework retains its license notices.
+- SCUNet network code is Apache-2.0 and the selected Kai Zhang denoising weights carry the recorded MIT license. `scripts/fetch-models.py` records the sources and hashes; release bundles include the model license texts and conversion provenance.
+- Python dependencies and native components retain their individual distribution metadata. Their pinned versions are recorded in `requirements-runtime.lock`, `packaging/runtime-windows.lock`, and Cargo lockfiles.
+- Small real-photo test fixtures retain their individual CC0 source records in `tests/fixtures/photos/provenance.json`. They are excluded from installed app payloads.
+
+Build scripts fetch pinned upstream sources rather than copying development
+checkouts. The corresponding source revisions and this repository's build
+instructions are part of the release record. Camera/profile data and fetched
+color profiles retain their upstream notices.

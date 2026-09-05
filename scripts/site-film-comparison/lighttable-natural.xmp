@@ -1,0 +1,38 @@
+<?xpacket begin=""?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description
+      xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+      crs:Name="LightTable Natural"
+      crs:PresetType="Normal"
+      crs:ProcessVersion="15.4"
+      crs:SupportsColor="True"
+      crs:SupportsMonochrome="False"
+      crs:Exposure2012="0.00"
+      crs:Contrast2012="15"
+      crs:Highlights2012="-28"
+      crs:Shadows2012="22"
+      crs:Whites2012="8"
+      crs:Blacks2012="-12"
+      crs:Texture="10"
+      crs:Clarity2012="6"
+      crs:Dehaze="2"
+      crs:Vibrance="14"
+      crs:Saturation="-2"
+      crs:Sharpness="45"
+      crs:SharpenRadius="1.0"
+      crs:SharpenDetail="25"
+      crs:SharpenEdgeMasking="20">
+      <crs:ToneCurvePV2012>
+        <rdf:Seq>
+          <rdf:li>0, 4</rdf:li>
+          <rdf:li>48, 42</rdf:li>
+          <rdf:li>128, 132</rdf:li>
+          <rdf:li>208, 218</rdf:li>
+          <rdf:li>255, 252</rdf:li>
+        </rdf:Seq>
+      </crs:ToneCurvePV2012>
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>

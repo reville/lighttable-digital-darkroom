@@ -1,0 +1,226 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Existing release tag version, such as 0.1.0"
+        required: true
+        type: string
+      platforms:
+        description: "Platforms to publish"
+        type: choice
+        options: [both, macos, windows]
+        default: both
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.version || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      source_ref: ${{ steps.version.outputs.source_ref }}
+      macos: ${{ steps.version.outputs.macos }}
+      windows: ${{ steps.version.outputs.windows }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: version
+        name: Validate the immutable release tag
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          PLATFORMS: ${{ inputs.platforms || 'both' }}
+        run: |
+          version="${REQUESTED_VERSION:-${GITHUB_REF_NAME#v}}"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo 'Use a stable version such as 0.1.0'; exit 1; }
+          source_ref="$(git rev-parse --verify "refs/tags/v$version^{commit}")"
+          echo "source_ref=$source_ref" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          if [[ "$PLATFORMS" != windows ]]; then echo 'macos=true' >> "$GITHUB_OUTPUT"; fi
+          if [[ "$PLATFORMS" != macos ]]; then echo 'windows=true' >> "$GITHUB_OUTPUT"; fi
+
+  macos:
+    needs: prepare
+    if: needs.prepare.outputs.macos == 'true'
+    runs-on: macos-15
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+      - name: Check release credentials and architecture
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          [[ "$(uname -m)" == arm64 ]] || { echo 'An Apple silicon runner is required'; exit 1; }
+          for name in APPLE_CERTIFICATE_BASE64 APPLE_CERTIFICATE_PASSWORD APPLE_KEYCHAIN_PASSWORD APPLE_SIGNING_IDENTITY APPLE_ID APPLE_TEAM_ID APPLE_APP_SPECIFIC_PASSWORD SPARKLE_PRIVATE_KEY; do
+            [[ -n "${!name}" ]] || { echo "Missing repository secret: $name"; exit 1; }
+          done
+          [[ "$APPLE_SIGNING_IDENTITY" == 'Developer ID Application:'* ]] || { echo 'A Developer ID Application certificate is required'; exit 1; }
+      - name: Import the release certificate
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        run: |
+          certificate="$RUNNER_TEMP/lighttable-signing.p12"
+          keychain="$RUNNER_TEMP/lighttable-signing.keychain-db"
+          umask 077
+          printf '%s' "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$certificate"
+          security create-keychain -p "$APPLE_KEYCHAIN_PASSWORD" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$APPLE_KEYCHAIN_PASSWORD" "$keychain"
+          security import "$certificate" -P "$APPLE_CERTIFICATE_PASSWORD" -t cert -f pkcs12 -k "$keychain" -T /usr/bin/codesign
+          security list-keychains -d user -s "$keychain"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_KEYCHAIN_PASSWORD" "$keychain"
+          rm -f "$certificate"
+      - name: Install build tools and convert the pinned denoising model
+        run: |
+          brew install uv
+          uv venv --python 3.11 .build/model-conversion
+          uv pip install --python .build/model-conversion/bin/python -r scripts/models/requirements-convert.txt
+          .build/model-conversion/bin/python scripts/fetch-models.py
+          .build/model-conversion/bin/python scripts/convert-models.py
+      - name: Build the signed application
+        env:
+          LIGHTTABLE_VERSION: ${{ needs.prepare.outputs.version }}
+          LIGHTTABLE_BUILD_NUMBER: ${{ github.run_number }}
+          LIGHTTABLE_SIGN_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+        run: scripts/build-release.sh
+      - name: Verify bundled CLI and real-photo journey
+        run: |
+          (cd "$RUNNER_TEMP" && "$GITHUB_WORKSPACE/dist/LightTable.app/Contents/MacOS/lighttable-cli" --help)
+          python3 scripts/native-app-smoke.py --app dist/LightTable.app --layer package
+      - name: Notarize and staple the application
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: scripts/notarize-app.sh dist/LightTable.app
+      - name: Package and verify the update
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          scripts/package-release.sh dist/LightTable.app "$VERSION"
+          tools="$(scripts/fetch-update-tools.sh)"
+          printf '%s' "$SPARKLE_PRIVATE_KEY" | "$tools/bin/sign_update" --verify --ed-key-file - dist/appcast/appcast.xml
+          codesign --verify --deep --strict dist/LightTable.app
+          xcrun stapler validate dist/LightTable.app
+          spctl --assess --type execute dist/LightTable.app
+          dmg="dist/LightTable-$VERSION-macos-arm64.dmg"
+          codesign --force --timestamp --sign "$APPLE_SIGNING_IDENTITY" "$dmg"
+          xcrun notarytool submit "$dmg" --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_SPECIFIC_PASSWORD" --wait
+          xcrun stapler staple "$dmg"
+          xcrun stapler validate "$dmg"
+          cp "dist/appcast/LightTable-$VERSION-macos-arm64.zip" dist/
+          cp dist/appcast/appcast.xml dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-macos-arm64
+          path: |
+            dist/LightTable-*-macos-arm64.dmg
+            dist/LightTable-*-macos-arm64.zip
+            dist/appcast.xml
+      - name: Remove the temporary signing keychain
+        if: always()
+        run: |
+          keychain="$RUNNER_TEMP/lighttable-signing.keychain-db"
+          if [[ -f "$keychain" ]]; then security delete-keychain "$keychain"; fi
+
+  windows:
+    needs: prepare
+    if: needs.prepare.outputs.windows == 'true'
+    uses: ./.github/workflows/windows-build.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+      source_ref: ${{ needs.prepare.outputs.source_ref }}
+    secrets: inherit
+
+  publish:
+    needs: [prepare, macos, windows]
+    if: >-
+      always() && needs.prepare.result == 'success' &&
+      (needs.macos.result == 'success' || needs.macos.result == 'skipped') &&
+      (needs.windows.result == 'success' || needs.windows.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ needs.prepare.outputs.version }}
+      TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: LightTable-*
+          merge-multiple: true
+          path: dist
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Generate checksums and installer definitions
+        run: |
+          python3 scripts/generate-installers.py --version "$VERSION" --artifacts-dir dist --output-dir dist/installers --license GPL-3.0-only --license-url "https://github.com/$GITHUB_REPOSITORY/blob/$TAG/LICENSE"
+          cp dist/installers/SHA256SUMS dist/SHA256SUMS
+          tar -czf "dist/LightTable-$VERSION-installers.tar.gz" -C dist/installers .
+          node packaging/npm/scripts/prepare-release.mjs "$VERSION" dist
+          (cd packaging/npm && npm pack --pack-destination ../../dist)
+          (cd dist && sha256sum "LightTable-$VERSION-installers.tar.gz" "lighttable-$VERSION.tgz") >> dist/SHA256SUMS
+      - name: Publish immutable release assets
+        run: |
+          draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null || true)"
+          if [[ "$draft" == false ]]; then
+            echo 'This release is already public. Use a new version; do not replace published artifacts.' >&2
+            exit 1
+          fi
+          if [[ "$draft" != true ]]; then
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "LightTable $VERSION" --generate-notes --draft
+          fi
+          assets=(dist/LightTable-* dist/SHA256SUMS dist/lighttable-*.tgz)
+          if [[ -f dist/appcast.xml ]]; then assets+=(dist/appcast.xml); fi
+          gh release upload "$TAG" "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          # A Windows-only release must not replace the latest Mac updater feed.
+          if [[ -f dist/appcast.xml ]]; then
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+          else
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest=false
+          fi
+
+  npm:
+    needs: [prepare, publish]
+    if: needs.publish.result == 'success' && vars.NPM_PUBLISH_ENABLED == 'true'
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/npm-publish.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+    secrets: inherit

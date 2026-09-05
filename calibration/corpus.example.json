@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "pairs": [
+    {
+      "id": "portra400-daylight-normal-35mm-001",
+      "digitalRaw": "raw/scene-001.dng",
+      "filmReference": "reference/scene-001-portra400-neutral-scan.tif",
+      "stock": "kodak_portra_400",
+      "process": "normal",
+      "filmFormat": "35mm",
+      "illuminant": "D55 measured",
+      "exposureBracketEv": 0,
+      "lab": "record lab and chemistry",
+      "scanner": "record scanner, illuminant, software, and all settings",
+      "profileRevision": "record profile SHA-256",
+      "notes": "Color target, neutral ramp, skin, foliage, saturated objects, bright edge"
+    }
+  ]
+}

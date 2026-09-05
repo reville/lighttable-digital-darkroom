@@ -1,0 +1,482 @@
+{
+  "measurement": "Input to GPU-completion acknowledgment; drawable callbacks unavailable. Not physical display latency.",
+  "inputCadence": "One input per requestAnimationFrame, approximately 60 Hz on this host.",
+  "machine": {
+    "machine": "arm64",
+    "release": "25.6.0",
+    "system": "Darwin"
+  },
+  "plain": {
+    "metric": "input-to-gpu-completion-acknowledgement; drawable presentation recorded when available",
+    "scenarios": [
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 33,
+        "medianMs": 17.999999999999773,
+        "p95Ms": 20,
+        "p99Ms": 26.999999999999773,
+        "presented": 120,
+        "scenario": "exposure"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 22.00000000000091,
+        "medianMs": 19,
+        "p95Ms": 21,
+        "p99Ms": 21.999999999999545,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 21.00000000000091,
+        "medianMs": 19,
+        "p95Ms": 21,
+        "p99Ms": 21.00000000000091,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve-and-mask"
+      }
+    ],
+    "schema": 1
+  },
+  "corrected": {
+    "metric": "input-to-gpu-completion-acknowledgement; drawable presentation recorded when available",
+    "scenarios": [
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 21,
+        "medianMs": 18,
+        "p95Ms": 19.00000000000091,
+        "p99Ms": 20,
+        "presented": 120,
+        "scenario": "exposure-with-17-heals"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 22,
+        "medianMs": 19,
+        "p95Ms": 21,
+        "p99Ms": 21.00000000000182,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve-with-17-heals"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 46.00000000000182,
+        "medianMs": 19,
+        "p95Ms": 22,
+        "p99Ms": 42,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve-and-mask-with-17-heals"
+      }
+    ],
+    "schema": 1
+  },
+  "duringExport": {
+    "metric": "input-to-gpu-completion-acknowledgement; drawable presentation recorded when available",
+    "scenarios": [
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 21,
+        "medianMs": 18,
+        "p95Ms": 20,
+        "p99Ms": 20.00000000000182,
+        "presented": 120,
+        "scenario": "exposure-during-export"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 35,
+        "medianMs": 19,
+        "p95Ms": 22,
+        "p99Ms": 32.99999999999636,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve-during-export"
+      },
+      {
+        "coalescedInputs": 0,
+        "inputs": 120,
+        "maxMs": 22.000000000003638,
+        "medianMs": 19,
+        "p95Ms": 21,
+        "p99Ms": 21.000000000003638,
+        "presented": 120,
+        "scenario": "exposure-with-detail-and-curve-and-mask-during-export"
+      }
+    ],
+    "schema": 1
+  },
+  "journey": {
+    "correctedPresentation": "native-metal",
+    "export": {
+      "done": 1,
+      "total": 1
+    },
+    "finalState": {
+      "activeTool": null,
+      "allowAutomation": true,
+      "compare": {
+        "active": false,
+        "position": 0.5
+      },
+      "current": "people-contact-sheet.jpg",
+      "filter": {
+        "kind": "all",
+        "label": "all",
+        "query": "",
+        "rating": "0",
+        "status": "all"
+      },
+      "pane": "editPane",
+      "render": {
+        "backend": "native-metal",
+        "name": "people-contact-sheet.jpg",
+        "state": "ready"
+      },
+      "selection": [],
+      "sort": "name",
+      "viewMode": "detail",
+      "visibleCount": 2,
+      "zoom": 1,
+      "zoomMode": "fit"
+    },
+    "layer": "pr",
+    "navigatedImage": "people-contact-sheet.jpg",
+    "returnPresentation": "native-metal",
+    "samplingPickers": {
+      "maskColor": true,
+      "pointColor": true
+    },
+    "schema": 2,
+    "startImage": "contact-sheet.jpg",
+    "steps": [
+      {
+        "durationMs": 18,
+        "image": "people-contact-sheet.jpg",
+        "name": "navigate-photo",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 1.4410417061299086,
+          "nativeTotalMs": 1.8650416750460863,
+          "paintAfterUploadMs": 1.4410417061299086,
+          "presentation": "native-metal",
+          "presentationCacheHit": true,
+          "queueMs": 2,
+          "requestMs": 0,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 10
+        }
+      },
+      {
+        "durationMs": 31,
+        "image": "contact-sheet.jpg",
+        "name": "rapid-navigation",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 5.16812497517094,
+          "nativeFetchMs": 1.8497916753403842,
+          "nativeGpuMs": 1.109083357732743,
+          "nativeTotalMs": 8.500583353452384,
+          "paintAfterUploadMs": 1.109083357732743,
+          "presentation": "native-metal",
+          "presentationCacheHit": false,
+          "queueMs": 3,
+          "requestMs": 9,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": false,
+          "textureUploadMs": 0,
+          "totalMs": 22
+        }
+      },
+      {
+        "durationMs": 65.00000000000091,
+        "image": "contact-sheet.jpg",
+        "name": "lens-profile-metal",
+        "render": {
+          "backend": null,
+          "cached": false,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0.0033333199098706245,
+          "nativeFetchMs": 3.9211249677464366,
+          "nativeGpuMs": 1.2305416748858988,
+          "nativeTotalMs": 5.947833298705518,
+          "paintAfterUploadMs": 1.2305416748858988,
+          "presentation": "native-metal",
+          "presentationCacheHit": false,
+          "queueMs": 3,
+          "requestMs": 55,
+          "residentMs": null,
+          "serverMs": 0,
+          "serverQueueMs": 0,
+          "textureCacheHit": false,
+          "textureUploadMs": 0.6317083607427776,
+          "totalMs": 65.00000000000091
+        }
+      },
+      {
+        "durationMs": 2.9999999999990905,
+        "image": "contact-sheet.jpg",
+        "name": "return-to-metal",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 1.026500016450882,
+          "nativeTotalMs": 1.1475000064820051,
+          "paintAfterUploadMs": 1.026500016450882,
+          "presentation": "native-metal",
+          "presentationCacheHit": true,
+          "queueMs": 0.9999999999990905,
+          "requestMs": 0,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 1.9999999999990905
+        }
+      },
+      {
+        "durationMs": 42,
+        "image": "contact-sheet.jpg",
+        "name": "seventeen-heals-metal",
+        "render": {
+          "backend": null,
+          "cached": false,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0.00300002284348011,
+          "nativeFetchMs": 2.5609583826735616,
+          "nativeGpuMs": 1.2152083218097687,
+          "nativeTotalMs": 4.692958376836032,
+          "paintAfterUploadMs": 1.2152083218097687,
+          "presentation": "native-metal",
+          "presentationCacheHit": false,
+          "queueMs": 0,
+          "requestMs": 36,
+          "residentMs": null,
+          "serverMs": 0,
+          "serverQueueMs": 0,
+          "textureCacheHit": false,
+          "textureUploadMs": 0.7406666991300881,
+          "totalMs": 41
+        }
+      },
+      {
+        "durationMs": 4.999999999998181,
+        "image": "contact-sheet.jpg",
+        "name": "clear-heals-metal",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 1.869833329692483,
+          "nativeTotalMs": 2.0780000486411154,
+          "paintAfterUploadMs": 1.869833329692483,
+          "presentation": "native-metal",
+          "presentationCacheHit": true,
+          "queueMs": 0.999999999998181,
+          "requestMs": 0,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 4.999999999998181
+        }
+      },
+      {
+        "durationMs": 12,
+        "image": "people-contact-sheet.jpg",
+        "name": "post-fallback-navigation",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 1.402916677761823,
+          "nativeTotalMs": 2.4256249889731407,
+          "paintAfterUploadMs": 1.402916677761823,
+          "presentation": "native-metal",
+          "presentationCacheHit": true,
+          "queueMs": 1,
+          "requestMs": 0,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 6
+        }
+      },
+      {
+        "durationMs": 59,
+        "name": "sampling-pickers"
+      },
+      {
+        "durationMs": 191,
+        "image": "people-contact-sheet.jpg",
+        "name": "film-off",
+        "render": {
+          "backend": "wgpu (GPU)",
+          "cached": false,
+          "engine": "rs",
+          "gpuMs": 52.118459,
+          "imageDecodeMs": 0.003541703335940838,
+          "nativeFetchMs": 5.308999971020967,
+          "nativeGpuMs": 0.8582500158809125,
+          "nativeTotalMs": 6.903083354700357,
+          "paintAfterUploadMs": 0.8582500158809125,
+          "presentation": "native-metal",
+          "presentationCacheHit": false,
+          "queueMs": 12.999999999998181,
+          "requestMs": 168,
+          "residentMs": 137.28475,
+          "serverMs": 151,
+          "serverQueueMs": 0.315,
+          "textureCacheHit": false,
+          "textureUploadMs": 0.5206249770708382,
+          "totalMs": 189.99999999999818
+        }
+      },
+      {
+        "durationMs": 3,
+        "image": "people-contact-sheet.jpg",
+        "name": "film-on",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 0.5163333262316883,
+          "nativeTotalMs": 0.6405833410099149,
+          "paintAfterUploadMs": 0.5163333262316883,
+          "presentation": "native-metal",
+          "presentationCacheHit": true,
+          "queueMs": 0,
+          "requestMs": 0,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 2
+        }
+      },
+      {
+        "durationMs": 66,
+        "image": "people-contact-sheet.jpg",
+        "name": "slider-adjustment",
+        "render": {
+          "backend": null,
+          "cached": true,
+          "engine": "source",
+          "gpuMs": null,
+          "imageDecodeMs": 0,
+          "nativeFetchMs": 0,
+          "nativeGpuMs": 1.0905416565947235,
+          "nativeTotalMs": 1.2252916349098086,
+          "paintAfterUploadMs": 1.0905416565947235,
+          "presentation": "native-metal",
+          "presentationCacheHit": false,
+          "queueMs": 58.00000000000182,
+          "requestMs": 3.999999999998181,
+          "residentMs": null,
+          "serverMs": null,
+          "serverQueueMs": 0,
+          "textureCacheHit": true,
+          "textureUploadMs": 0,
+          "totalMs": 64
+        }
+      },
+      {
+        "durationMs": 26.00000000000182,
+        "name": "compare-on"
+      },
+      {
+        "durationMs": 30.99999999999818,
+        "name": "compare-off"
+      },
+      {
+        "durationMs": 67,
+        "name": "zoom-actual"
+      },
+      {
+        "durationMs": 33,
+        "name": "zoom-fit"
+      },
+      {
+        "durationMs": 6158,
+        "name": "export-photo"
+      },
+      {
+        "durationMs": 24,
+        "name": "visibility-controls-on"
+      }
+    ],
+    "visibilityControls": {
+      "activeTool": null,
+      "allowAutomation": true,
+      "clipping": true,
+      "compare": {
+        "active": false,
+        "position": 0.5
+      },
+      "current": "people-contact-sheet.jpg",
+      "filter": {
+        "kind": "all",
+        "label": "all",
+        "query": "",
+        "rating": "0",
+        "status": "all"
+      },
+      "pane": "editPane",
+      "render": {
+        "backend": "native-metal",
+        "name": "people-contact-sheet.jpg",
+        "state": "ready"
+      },
+      "selection": [],
+      "sort": "name",
+      "viewMode": "detail",
+      "visibleCount": 2,
+      "webglFallback": false,
+      "whiteBalance": true,
+      "zoom": 1,
+      "zoomMode": "fit"
+    }
+  }
+}
