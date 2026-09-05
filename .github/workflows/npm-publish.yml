@@ -1,0 +1,54 @@
+name: Publish npm installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Existing public desktop release version
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+    secrets:
+      NPM_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || vars.NPM_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - name: Download and validate the prepared public package
+        run: |
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          work="$RUNNER_TEMP/npm-release"
+          mkdir -p "$work"
+          gh release download "v$VERSION" --repo "$GITHUB_REPOSITORY" --pattern "lighttable-$VERSION.tgz" --pattern SHA256SUMS --dir "$work"
+          cd "$work"
+          awk -v file="lighttable-$VERSION.tgz" '$2 == file {print; found=1} END {if (!found) exit 1}' SHA256SUMS > npm.sha256
+          sha256sum --check npm.sha256
+          tar -xzf "lighttable-$VERSION.tgz"
+          node package/scripts/check-release.mjs
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish "$RUNNER_TEMP/npm-release/lighttable-$VERSION.tgz" --access public --provenance

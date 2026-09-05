@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from lighttable_cli.manifest import INTERNAL_ROUTES, ROUTE_COVERAGE, TOOLS
+
+
+lines = [
+    "# LightTable command line", "",
+    "`lighttable` is a standard-library client for the local app server. Its",
+    "stdout is data, progress is written to stderr, and all agent-originated",
+    "state changes are strict, attributed, visible in the window, and undoable.",
+    "", "## Start", "", "```sh",
+    "scripts/install-cli.sh",
+    "lighttable status --json",
+    "lighttable --profile review photos list --limit 5 --jsonl",
+    "```", "",
+    "A running window is discovered from its protected instance file. Use",
+    "`--port` or `--catalog` if several instances exist. Supplying the",
+    "`--profile review` option may start an isolated headless server for that command.",
+    "", "## Common recipes", "", "```sh",
+    "lighttable photos list --where status=pending --jsonl",
+    "lighttable rate 5 @current",
+    "lighttable flag reject --where 'rating>=1' --where status=pending",
+    "lighttable edit set @selection --grade exposure=0.25 --curve 'L=0,0;0.5,0.4;1,1' --label 'Lift exposure'",
+    "lighttable render @current -o /tmp/after.png --width 1400",
+    "lighttable analyze @current --region 0.2,0.1,0.4,0.3 --json",
+    "lighttable export run @selection --destination ~/Pictures/Exports",
+    "lighttable ui command nextPhoto",
+    "```", "", "## Route coverage", "",
+    "| Command family | API routes |", "| --- | --- |",
+]
+for command, routes in ROUTE_COVERAGE.items():
+    lines.append(f"| `{command}` | " + ", ".join(f"`{route}`" for route in routes) + " |")
+lines += ["", "Internal browser/native routes are declared rather than hidden:", ""]
+for route, reason in INTERNAL_ROUTES.items():
+    lines.append(f"- `{route}` — {reason}.")
+lines += ["", "## MCP tools", ""]
+for tool in TOOLS:
+    lines.append(f"- `{tool['name']}` — {tool['summary']}.")
+lines += ["", "Run `lighttable mcp` as a stdio MCP server. It supports `initialize`,",
+          "`tools/list`, `tools/call`, `resources/list`, and `resources/read`.",
+          "Resources expose this schema, the agent guide, and current window state.",
+          "", "## Safety", "",
+          "Mutating requests require the token held in the discovered instance file.",
+          "The CLI never prints it. Cross-origin requests and incorrect Host headers",
+          "are rejected. Destructive generic route calls require `--yes`; photo trash",
+          "remains a recoverable native-host operation.", ""]
+
+target = ROOT / "CLI.md"
+content = "\n".join(lines)
+if "--check" in sys.argv:
+    if not target.exists() or target.read_text(encoding="utf-8") != content:
+        print("CLI.md is stale; run scripts/gen-cli-docs.py", file=sys.stderr)
+        raise SystemExit(1)
+else:
+    target.write_text(content, encoding="utf-8")

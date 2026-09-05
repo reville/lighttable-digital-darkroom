@@ -1,0 +1,32 @@
+[
+  {
+    "file": "field.jpg",
+    "sha256": "876ff6c2a3338dd19ddadafde642fe72feec4766dc812b2ad6d8b9465294dc6b",
+    "original": "02-nikon-d850-green-field.NEF",
+    "original_sha256": "31b7fe298a5c91694c6ca8b3284a0a016e572a02c3964b502d4732e8e9283da8",
+    "source_url": "https://raw.pixls.us/getfile.php/1835/nice/Nikon%20-%20D850%20-%2012bit%2012bit%20compressed%20%28Lossless%29%20%283%3A2%29.NEF",
+    "license": "Creative Commons Zero 1.0 - Public Domain",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "extraction": "Unmodified embedded camera JPEG preview"
+  },
+  {
+    "file": "still-life.jpg",
+    "sha256": "ae778522be870827599b09e14e8393a012052d963a91b514b011b5fde89b00d5",
+    "original": "06-nikon-z6-still-life-toys.NEF",
+    "original_sha256": "f0ab08da469ee205f2bc08efd9005778c64cdcb064893cee03768e32e5da1a36",
+    "source_url": "https://raw.pixls.us/getfile.php/3587/nice/Nikon%20-%20Z%206%20-%2012bit%2012bit%20compressed%20%283%3A2%29.NEF",
+    "license": "Creative Commons Zero 1.0 - Public Domain",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "extraction": "Unmodified embedded camera JPEG preview"
+  },
+  {
+    "file": "portrait.jpg",
+    "sha256": "3508f782dd0d1b87160edc5114cfd9d53f3495415acb46d7400fc74a6db66611",
+    "original": "31-nikon-d7100-woman-natural-light-portrait.NEF",
+    "original_sha256": "c00ff1aa7737d6fc2ec8af2e8decc4598d31b85089d5739ad286786ea6fbbec3",
+    "source_url": "https://www.oneraw.co.uk/01/",
+    "license": "Creative Commons Zero 1.0 - Public Domain",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "extraction": "Unmodified embedded camera JPEG preview"
+  }
+]

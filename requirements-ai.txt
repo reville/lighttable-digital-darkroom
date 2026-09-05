@@ -1,0 +1,3 @@
+# Optional richer image descriptions on macOS 27+. The Vision index does not
+# require this package and remains fully functional without it.
+apple-fm-sdk>=0.2.1,<0.3

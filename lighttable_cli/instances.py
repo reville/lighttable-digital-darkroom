@@ -1,0 +1,97 @@
+"""Discover and safely clean LightTable instance registrations."""
+from __future__ import annotations
+
+import json
+import os
+from dataclasses import dataclass
+from pathlib import Path
+
+
+def default_instance_directory() -> Path:
+    configured = os.environ.get("LIGHTTABLE_INSTANCE_DIR")
+    if configured:
+        return Path(configured).expanduser()
+    if os.name == "nt":
+        root = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
+        return root / "LightTable" / "instances"
+    return Path.home() / "Library/Application Support/LightTable/instances"
+
+
+def process_is_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+    except PermissionError:
+        # EPERM means the process exists but this caller may not signal it.
+        return True
+    except (OSError, ValueError):
+        return False
+    return True
+
+
+@dataclass(frozen=True)
+class Instance:
+    url: str
+    port: int
+    pid: int
+    token: str
+    catalog: str | None
+    folder: str
+    headless: bool
+    path: Path
+
+    @classmethod
+    def from_record(cls, record: dict, path: Path) -> "Instance":
+        host = str(record.get("host") or "127.0.0.1")
+        port = int(record["port"])
+        return cls(
+            url=f"http://{host}:{port}", port=port, pid=int(record["pid"]),
+            token=str(record.get("token") or ""),
+            catalog=str(record["catalog"]) if record.get("catalog") else None,
+            folder=str(record.get("folder") or ""),
+            headless=bool(record.get("headless")), path=path,
+        )
+
+
+def discover(directory: Path | None = None, *, clean_stale: bool = True) -> list[Instance]:
+    root = directory or default_instance_directory()
+    if not root.is_dir():
+        return []
+    found = []
+    for path in sorted(root.glob("*.json")):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+            instance = Instance.from_record(record, path)
+        except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError):
+            if clean_stale:
+                try:
+                    path.unlink()
+                except OSError:
+                    pass
+            continue
+        if not process_is_alive(instance.pid):
+            if clean_stale:
+                try:
+                    path.unlink()
+                except OSError:
+                    pass
+            continue
+        found.append(instance)
+    return found
+
+
+def select(instances: list[Instance], *, port: int | None = None,
+           catalog: str | None = None) -> Instance | None:
+    choices = instances
+    if port is not None:
+        choices = [item for item in choices if item.port == port]
+    if catalog:
+        wanted = str(Path(catalog).expanduser().resolve())
+        choices = [item for item in choices
+                   if item.catalog and str(Path(item.catalog).resolve()) == wanted]
+    if len(choices) == 1:
+        return choices[0]
+    if not choices:
+        return None
+    raise RuntimeError("several LightTable instances are running; use --port or --catalog")

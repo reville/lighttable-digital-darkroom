@@ -1,0 +1,23 @@
+[package]
+name = "lighttable-engine"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "GPL-3.0"
+
+[dependencies]
+anyhow = "1"
+image = { version = "0.25", default-features = false, features = ["tiff", "png", "jpeg"] }
+libc = "0.2"
+rayon = "1.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+spektrafilm-core = { path = "vendor/spektrafilm/crates/spektrafilm-core" }
+spektrafilm-gpu = { path = "vendor/spektrafilm/crates/spektrafilm-gpu" }
+spektrafilm-math = { path = "vendor/spektrafilm/crates/spektrafilm-math" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+opt-level = 3
+strip = true

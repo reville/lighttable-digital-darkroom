@@ -1,0 +1,135 @@
+name: Windows build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version (leave blank for a CI build)
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      source_ref:
+        description: Exact source commit selected by the release workflow
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quick-check:
+    if: github.event_name == 'pull_request'
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.sha }}
+
+      - name: Install the pinned Rust toolchain
+        shell: pwsh
+        run: |
+          rustup toolchain install 1.88.0 --profile minimal --target x86_64-pc-windows-msvc
+          rustup default 1.88.0
+
+      - name: Restore Rust build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            rust-engine/target
+            windows-shell/target
+          key: windows-cargo-check-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock') }}
+          restore-keys: |
+            windows-cargo-check-v1-
+            windows-cargo-
+
+      - name: Validate packaging script syntax
+        shell: pwsh
+        run: |
+          foreach ($Script in Get-ChildItem ./scripts/windows -Filter *.ps1) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              $Script.FullName, [ref]$tokens, [ref]$errors
+            )
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_.Message }
+              exit 1
+            }
+          }
+          python -m unittest discover -s tests -p test_windows_packaging.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Check Windows Rust targets
+        shell: pwsh
+        run: |
+          $Target = "x86_64-pc-windows-msvc"
+          cargo check --locked --target $Target --manifest-path rust-engine/Cargo.toml
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo check --locked --target $Target --manifest-path windows-shell/Cargo.toml
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  package:
+    if: github.event_name != 'pull_request'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}\.build\uv-cache
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.sha }}
+
+      - name: Restore build caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            rust-engine/target
+            windows-shell/target
+            .build/uv-cache
+          key: windows-cargo-package-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock', 'packaging/runtime-windows.lock', 'scripts/windows/build-release.ps1') }}
+          restore-keys: |
+            windows-cargo-package-v1-
+            windows-cargo-
+
+      - name: Install pinned build tools
+        shell: pwsh
+        run: |
+          # The pinned export engine's locked RAW dependencies require 1.88.
+          rustup toolchain install 1.88.0 --profile minimal --target x86_64-pc-windows-msvc
+          rustup default 1.88.0
+          python -m pip install uv==0.11.28
+          choco install nsis --no-progress -y
+
+      - name: Build and smoke-test package
+        shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+        run: |
+          python -m unittest discover -s tests -p test_windows_packaging.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION
+
+      - name: Upload portable build and installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-windows-x64
+          path: |
+            dist/LightTable-*-windows-x64.zip
+            dist/LightTable-*-windows-x64-setup.exe
+          if-no-files-found: error

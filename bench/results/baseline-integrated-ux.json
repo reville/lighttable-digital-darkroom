@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "label": "baseline-integrated-ux",
+  "app_root": "/private/tmp/lighttable-ux-baseline-wt",
+  "git_revision": "5e60af3283677e231bfa813c027948274e601582",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "python": "3.13.12",
+  "photo_folder": "/path/to/lighttable/raw-test",
+  "image": "18-IDG_20250706_203649_381.DNG",
+  "image_count": 14,
+  "engine": "rs",
+  "preview_width": 1100,
+  "startup_ms": 1167.31,
+  "api_images": {
+    "count": 7,
+    "min_ms": 0.89,
+    "median_ms": 1.01,
+    "mean_ms": 1.17,
+    "p90_ms": 1.28,
+    "p95_ms": 1.96,
+    "max_ms": 1.96,
+    "samples_ms": [
+      1.96,
+      1.1,
+      1.28,
+      1.0,
+      0.9,
+      0.89,
+      1.01
+    ]
+  },
+  "thumbnail": {
+    "count": 3,
+    "min_ms": 0.36,
+    "median_ms": 0.49,
+    "mean_ms": 155.42,
+    "p90_ms": 465.41,
+    "p95_ms": 465.41,
+    "max_ms": 465.41,
+    "samples_ms": [
+      465.41,
+      0.49,
+      0.36
+    ]
+  },
+  "original": {
+    "count": 3,
+    "min_ms": 0.39,
+    "median_ms": 0.44,
+    "mean_ms": 7.47,
+    "p90_ms": 21.58,
+    "p95_ms": 21.58,
+    "max_ms": 21.58,
+    "samples_ms": [
+      21.58,
+      0.44,
+      0.39
+    ]
+  },
+  "first_render_http_ms": 3025.03,
+  "first_render_engine_ms": 3006,
+  "first_render_cached": false,
+  "cached_render_http_ms": 2.01,
+  "distinct_render_http": {
+    "count": 6,
+    "min_ms": 118.38,
+    "median_ms": 127.92,
+    "mean_ms": 128.46,
+    "p90_ms": 132.22,
+    "p95_ms": 139.82,
+    "max_ms": 139.82,
+    "samples_ms": [
+      129.18,
+      132.22,
+      139.82,
+      118.38,
+      126.66,
+      124.48
+    ]
+  },
+  "distinct_render_engine": {
+    "count": 6,
+    "min_ms": 102.0,
+    "median_ms": 111.0,
+    "mean_ms": 111.83,
+    "p90_ms": 116.0,
+    "p95_ms": 123.0,
+    "max_ms": 123.0,
+    "samples_ms": [
+      112.0,
+      116.0,
+      123.0,
+      102.0,
+      110.0,
+      108.0
+    ]
+  },
+  "burst": {
+    "wall_ms": 769.77,
+    "requests": {
+      "count": 6,
+      "min_ms": 124.02,
+      "median_ms": 438.2,
+      "mean_ms": 441.98,
+      "p90_ms": 637.16,
+      "p95_ms": 768.46,
+      "max_ms": 768.46,
+      "samples_ms": [
+        124.02,
+        245.83,
+        372.0,
+        504.41,
+        637.16,
+        768.46
+      ]
+    },
+    "errors": []
+  },
+  "export": {
+    "elapsed_ms": 26854.36,
+    "returncode": 0,
+    "output_bytes": 3568546,
+    "stdout_tail": "OK /var/folders/wd/b_0mg6y51q92t24gs9pgykfm0000gn/T/lighttable-export-bench-um_ygs90/benchmark-export.jpg 3024x4032 25.5s",
+    "stderr_tail": "",
+    "preview_width": 1100,
+    "source_tiff_bytes": 73156880
+  },
+  "cache_bytes": 87790750
+}
