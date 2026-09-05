@@ -7912,6 +7912,7 @@ function finishSpeedKey(key) {
 }());
 
 document.addEventListener('keydown', (e) => {
+  if (e.defaultPrevented || document.querySelector('.modal-backdrop.on')) return;
   const tag = e.target.tagName;
   if (tag === 'INPUT' && ['range', 'number'].includes(e.target.type) &&
       PHOTO_TOOL_PANES.includes(S.activePane) && e.target.closest('.panel-pane.on') &&
@@ -9071,6 +9072,9 @@ async function selectPhotoFromPointer(image, event) {
       for (const item of list.slice(first, last + 1)) S.msel.add(item.name);
     }
   } else if (additive) {
+    // A plain click represents one selection through cur(), until a modifier
+    // click expands it into the explicit selection set.
+    if (!S.msel.size && visible().includes(cur())) S.msel.add(cur().name);
     S.msel.has(image.name) ? S.msel.delete(image.name) : S.msel.add(image.name);
     selectionAnchorName = image.name;
   } else {

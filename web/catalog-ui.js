@@ -567,50 +567,94 @@ export function createCatalogUI(ctx) {
   function bindRename() {
     const dialog = el('renameDialog');
     if (!dialog) return null;
+    let names = [];
+    let returnFocus = null;
+    let previewSequence = 0;
+    const apply = el('renameApply');
     const show = (visible) => {
       dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
       dialog.classList.toggle('on', visible);
+      if (visible) {
+        returnFocus = document.activeElement;
+        el('renameTemplate').focus();
+        el('renameTemplate').select();
+      } else {
+        previewSequence++;
+        returnFocus?.focus?.({ preventScroll: true });
+        returnFocus = null;
+      }
     };
 
     async function preview() {
-      const names = ctx.selection();
-      if (!names.length) return;
-      const result = await post('/api/photos/rename', {
-        names,
-        template: el('renameTemplate').value,
-        custom: el('renameCustom').value,
-        start: Number(el('renameStart').value) || 1,
-        preview: true,
-      });
-      el('renamePreview').innerHTML = (result.preview || [])
-        .map((row) => `<span>${row.from} → <strong>${row.to}</strong></span>`)
-        .join('') + (result.total > 3
-          ? `<span class="muted">…and ${result.total - 3} more</span>` : '');
+      const request = ++previewSequence;
+      apply.disabled = true;
+      try {
+        const result = await post('/api/photos/rename', {
+          names,
+          template: el('renameTemplate').value,
+          custom: el('renameCustom').value,
+          start: Number(el('renameStart').value) || 1,
+          preview: true,
+        });
+        if (request !== previewSequence) return;
+        el('renamePreview').innerHTML = (result.preview || [])
+          .map((row) => `<span>${row.from} → <strong>${row.to}</strong></span>`)
+          .join('') + (result.total > 3
+            ? `<span class="muted">…and ${result.total - 3} more</span>` : '');
+        apply.disabled = Boolean(result.error);
+      } catch (error) {
+        if (request === previewSequence) toast('Could not preview the rename');
+      }
     }
 
+    dialog.addEventListener('keydown', (event) => {
+      event.stopPropagation();
+      if (event.key === 'Escape') {
+        event.preventDefault(); show(false); return;
+      }
+      if (event.key !== 'Tab') return;
+      const controls = [...dialog.querySelectorAll(
+        'button:not([disabled]), input:not([disabled])'
+      )].filter((element) => !element.hidden && element.offsetParent !== null);
+      if (!controls.length) return;
+      const first = controls[0], last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    });
     ['renameTemplate', 'renameCustom', 'renameStart'].forEach((id) => {
       const input = el(id);
       if (input) input.addEventListener('input', preview);
     });
     const cancel = el('renameCancel');
     if (cancel) cancel.addEventListener('click', () => show(false));
-    const apply = el('renameApply');
     if (apply) {
       apply.addEventListener('click', async () => {
-        const names = ctx.selection();
-        const result = await post('/api/photos/rename', {
-          names,
-          template: el('renameTemplate').value,
-          custom: el('renameCustom').value,
-          start: Number(el('renameStart').value) || 1,
-        });
-        show(false);
-        toast(result.ok ? `Renamed ${result.renamed} photos`
-          : `Rename stopped: ${result.error}`);
-        if (ctx.onLibraryChanged) ctx.onLibraryChanged();
+        apply.disabled = true;
+        try {
+          const result = await post('/api/photos/rename', {
+            names,
+            template: el('renameTemplate').value,
+            custom: el('renameCustom').value,
+            start: Number(el('renameStart').value) || 1,
+          });
+          show(false);
+          toast(result.ok ? `Renamed ${result.renamed} photos`
+            : `Rename stopped: ${result.error}`);
+          if (ctx.onLibraryChanged) ctx.onLibraryChanged();
+        } catch (error) {
+          toast('Could not rename photos');
+          apply.disabled = false;
+        }
       });
     }
-    return { open() { show(true); preview(); } };
+    return { open() {
+      names = [...ctx.selection()];
+      if (!names.length) { toast('Select photos first'); return; }
+      show(true); preview();
+    } };
   }
 
   bindSources();
