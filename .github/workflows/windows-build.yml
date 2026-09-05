@@ -10,6 +10,11 @@ on:
         description: Package version (leave blank for a CI build)
         required: false
         type: string
+      require_signing:
+        description: Require valid Authenticode signatures for release artifacts
+        required: false
+        default: false
+        type: boolean
   workflow_call:
     inputs:
       version:
@@ -19,6 +24,16 @@ on:
         description: Exact source commit selected by the release workflow
         required: false
         type: string
+      require_signing:
+        description: Require valid Authenticode signatures for release artifacts
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      WINDOWS_CERTIFICATE_BASE64:
+        required: false
+      WINDOWS_CERTIFICATE_PASSWORD:
+        required: false
 
 permissions:
   contents: read
@@ -93,6 +108,15 @@ jobs:
         with:
           ref: ${{ inputs.source_ref || github.sha }}
 
+      - name: Validate Windows signing configuration
+        shell: pwsh
+        env:
+          REQUIRE_SIGNING: ${{ inputs.require_signing && 'true' || 'false' }}
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          ./scripts/windows/sign-release.ps1 -CheckOnly -RequireSigning:($env:REQUIRE_SIGNING -eq 'true') | Out-Null
+
       - name: Restore build caches
         uses: actions/cache@v4
         with:
@@ -120,10 +144,13 @@ jobs:
         shell: pwsh
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+          REQUIRE_SIGNING: ${{ inputs.require_signing && 'true' || 'false' }}
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: |
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION
+          ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
       - name: Upload portable build and installer
         uses: actions/upload-artifact@v4

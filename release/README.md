@@ -75,6 +75,16 @@ The canonical updater URL is
 It becomes live after the first Mac release. The private signing key must match
 the public key embedded in `app/Info.plist`.
 
+## Windows release signing
+
+Ordinary CI builds remain unsigned so runtime and installation checks can run
+without release credentials. Public release builds set `require_signing: true`
+and fail before building if signing is not configured. Set repository secrets
+`WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD` for the authorized
+Authenticode certificate export. The Windows SDK SignTool signs and timestamps
+the app and engine executables before packaging, then signs the final installer.
+The npm installer independently rejects an invalid or unsigned Windows installer.
+
 ## CLI and package definitions
 
 A Mac release contains `Contents/MacOS/lighttable-cli`. Its launcher resolves
