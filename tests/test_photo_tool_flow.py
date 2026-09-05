@@ -139,7 +139,7 @@ class PhotoToolFlowTests(unittest.TestCase):
         cls.script += '\n' + section("for (const id of ['healRadius', 'healFeather', 'healOpacity'])", "for (const id of ['lensProfileEnabled'")
         cls.script += '\n' + section("$('lensReset').onclick", 'function overlayPoint(')
         cls.script += '\n' + section("$('editOverlay').addEventListener('pointerdown'", "$('editOverlay').addEventListener('pointermove'")
-        cls.script += '\n' + section("document.addEventListener('keydown', (e) => {\n  const tag = e.target.tagName;", "document.addEventListener('keyup', (e) => {")
+        cls.script += '\n' + section("document.addEventListener('keydown', (e) => {", "document.addEventListener('keyup', (e) => {")
 
     def run_js(self, body):
         result = subprocess.run(['node', '--input-type=module', '-e', self.script + '\n' + body],

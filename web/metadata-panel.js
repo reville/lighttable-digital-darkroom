@@ -28,6 +28,31 @@ export function createMetadataPanel(ctx) {
   let currentName = null;
   let saveTimer = null;
   let loading = false;
+  let pendingSave = null;
+  let saveChain = Promise.resolve();
+  let refreshSequence = 0;
+
+  function setLoading(value) {
+    loading = value;
+    for (const id of [...Object.keys(FIELDS), ...Object.keys(GPS_FIELDS)]) {
+      if (el(id)) el(id).disabled = value || !currentName;
+    }
+  }
+
+  function flushSave() {
+    clearTimeout(saveTimer);
+    const snapshot = pendingSave;
+    pendingSave = null;
+    if (snapshot) {
+      // Preserve request order even when an earlier metadata write is slow.
+      saveChain = saveChain.then(() => post('/api/metadata', snapshot))
+        .then((result) => {
+          if (result?.error) throw new Error(result.error);
+        })
+        .catch(() => toast('Could not save photo metadata'));
+    }
+    return saveChain;
+  }
 
   function collect() {
     const fields = {};
@@ -46,25 +71,29 @@ export function createMetadataPanel(ctx) {
 
   function queueSave() {
     if (loading || !currentName) return;
+    // A later navigation must not change either the destination or the values.
+    pendingSave = { name: currentName, fields: collect() };
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
-      post('/api/metadata', { name: currentName, fields: collect() })
-        .catch(() => {});
-    }, 500);
+    saveTimer = setTimeout(flushSave, 500);
   }
 
   let loadedName = null;
 
   async function refresh(name, force = false) {
-    currentName = name || null;
+    const saving = flushSave();
+    const request = ++refreshSequence;
+    const targetName = name || null;
+    currentName = targetName;
     const isVisible = Boolean(el('infoPane')?.classList.contains('on'));
-    if (!isVisible && !force) {
+    if ((!isVisible || currentName === loadedName) && !force) {
+      setLoading(false);
       return;
     }
-    if (currentName === loadedName && !force) return;
-    loading = true;
+    setLoading(true);
     try {
-      if (!currentName) {
+      await saving;
+      if (request !== refreshSequence) return;
+      if (!targetName) {
         loadedName = null;
         Object.keys(FIELDS).forEach((id) => { if (el(id)) el(id).value = ''; });
         Object.keys(GPS_FIELDS).forEach((id) => {
@@ -73,8 +102,9 @@ export function createMetadataPanel(ctx) {
         return;
       }
       const response = await get(
-        `/api/metadata?name=${encodeURIComponent(currentName)}`);
-      loadedName = currentName;
+        `/api/metadata?name=${encodeURIComponent(targetName)}`);
+      if (request !== refreshSequence) return;
+      loadedName = targetName;
       const iptc = (response && response.iptc) || {};
       Object.entries(FIELDS).forEach(([id, key]) => {
         if (el(id)) el(id).value = iptc[key] || '';
@@ -85,7 +115,7 @@ export function createMetadataPanel(ctx) {
     } catch (error) {
       /* A photo outside the catalog simply has no metadata row yet. */
     } finally {
-      loading = false;
+      if (request === refreshSequence) setLoading(false);
     }
   }
 
