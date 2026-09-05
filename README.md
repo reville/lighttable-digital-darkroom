@@ -5,6 +5,13 @@ A local photo browser and editor built around the
 pipeline. Film simulation is the *base render*; ordinary editing controls
 grade on top of it in real time.
 
+## Maintainers wanted
+
+We're looking for Windows, macOS, and Linux maintainers, including a maintainer
+focused specifically on Omarchy. If you'd like to help,
+[open an issue](https://github.com/reville/lighttable-digital-darkroom/issues/new)
+and tell us which platform you'd like to maintain.
+
 ## Installation
 
 Public source lives at [reville/lighttable-digital-darkroom](https://github.com/reville/lighttable-digital-darkroom).
