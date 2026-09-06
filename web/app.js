@@ -7274,7 +7274,8 @@ async function pasteSettingsTo(targets) {
   showTransferDialog('Pasting edit settings');
   $('transferCancel').focus();
   let completed = 0;
-  for (const [index, image] of items.entries()) {
+  for (const [index, target] of items.entries()) {
+    let image = target;
     if (transferCancelled) break;
     $('transferStatus').textContent = `Photo ${index + 1} of ${items.length} · ${displayName(image)}`;
     try {
@@ -7282,15 +7283,42 @@ async function pasteSettingsTo(targets) {
       // merging so unchecked settings can never be replaced with defaults.
       await prefetchState(image);
       if (!isStateLoaded(image)) throw new Error("Existing settings could not be loaded; this photo was left unchanged");
-      const pending = editSaveQueue.getPending(image.name)?.state || {};
-      const currentEdits = {...image, ...pending};
-      const destination = { ...currentEdits, params: normalizeFilmParams(currentEdits.params),
-        grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) }, optics: normalizeOptics(currentEdits.optics) };
-      const patch = transferPatch(clipboard, destination, clipboard.choices);
-      if (patch.masks) patch.masks = await regenerateTransferMasks(patch.masks,
-        kind => api('/api/mask/semantic', { name: image.name, kind, params: patch.params || destination.params }),
-        { samePhoto: image.name === clipboard.sourceName &&
-          (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
+      const readDestination = () => {
+        image = S.images.find(item => item.name === target.name);
+        if (!image) throw new Error('This photo is no longer in the library; settings were not pasted');
+        if (!isStateLoaded(image)) throw new Error('The latest existing settings are not loaded. Try pasting again; this photo was left unchanged');
+        const pending = editSaveQueue.getPending(image.name)?.state || {};
+        const currentEdits = {...image, ...pending};
+        return { ...currentEdits, params: normalizeFilmParams(currentEdits.params),
+          grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) }, optics: normalizeOptics(currentEdits.optics) };
+      };
+      const destination = readDestination();
+      let patch = transferPatch(clipboard, destination, clipboard.choices);
+      if (patch.masks) {
+        // A generated bitmap is tied to the effective target pixels/geometry.
+        // Sort object keys so an equivalent externally supplied recipe is not
+        // mistaken for a change just because its JSON member order differs.
+        const maskInput = (state, changes) => JSON.stringify({
+          source: image.recoverySourceKey || image.fileKey || null,
+          params: changes.params || state.params,
+          optics: changes.optics || state.optics,
+          crop: Object.hasOwn(changes, 'crop') ? changes.crop : state.crop || null,
+        }, (_key, value) => value && typeof value === 'object' && !Array.isArray(value)
+          ? Object.fromEntries(Object.keys(value).sort().map(key => [key, value[key]])) : value);
+        const generatedFor = maskInput(destination, patch);
+        const masks = await regenerateTransferMasks(patch.masks,
+          kind => api('/api/mask/semantic', { name: image.name, kind, params: patch.params || destination.params }),
+          { samePhoto: image.name === clipboard.sourceName &&
+            (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
+        // Detection can take seconds. Merge selected groups again so current
+        // unselected settings survive changes made during that asynchronous work.
+        const latest = readDestination();
+        const refreshed = transferPatch(clipboard, latest, clipboard.choices);
+        if (generatedFor !== maskInput(latest, refreshed)) {
+          throw new Error('The photo or its geometry changed while masks were prepared. Try pasting again; this photo was left unchanged');
+        }
+        patch = {...refreshed, masks};
+      }
       if (transferCancelled) break;
       const { cropChoices, ...entry } = patch;
       if (image === cur() && S.editingName === image.name) pushUndo();
