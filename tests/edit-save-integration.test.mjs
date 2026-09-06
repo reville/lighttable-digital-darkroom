@@ -21,7 +21,7 @@ const deferred = () => {
 
 // Execute the real save/navigation/undo functions with rendering and transport
 // boundaries stubbed. No application logic is copied into the test harness.
-function harness({manual = false} = {}) {
+function harness({manual = false, client = 'test-window'} = {}) {
   const nodes = new Map(), timers = new Map(), requests = [], stateReads = [], history = [], toasts = [];
   const historyFlushes = [];
   let nextTimer = 0;
@@ -47,7 +47,7 @@ function harness({manual = false} = {}) {
     transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
     window: {addEventListener: noop, confirm: () => true},
-    CLIENT_ID: 'test-window',
+    CLIENT_ID: client,
     SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
     cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
@@ -112,7 +112,7 @@ function harness({manual = false} = {}) {
       'pushUndoState', 'pushUndo', 'restore', 'undo', 'redo', 'isStateLoaded',
       'normalizeLibraryImage', 'prefetchState',
       'showCurrentImage', 'go', 'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
-      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'applyServerStateEvent'].map(appFunction),
+      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',
   ].join('\n');
@@ -483,4 +483,52 @@ test('an external patch on an idle photo is displayed without echoing another st
   assert.equal(app.S.images[0].grade.exposure, 6);
   assert.equal(app.requests.length, 0);
   assert.equal(app.queue.getStatus().state, 'saved');
+});
+
+test('two peer windows converge after concurrent saves without echoing repair writes', async () => {
+  const a = harness({manual: true, client: 'window-a'});
+  const b = harness({manual: true, client: 'window-b'});
+  a.S.grade.exposure = 2;
+  b.S.grade.exposure = 3;
+  const saves = [a.saveState(true), b.saveState(true)];
+  await settle();
+  // The server accepts A then B, publishing each event before its HTTP ack.
+  for (const source of [a, b]) {
+    const event = {client: source.context.CLIENT_ID, origin: 'window',
+      names: ['A.raw'], patch: plain(source.requests[0].state)};
+    await a.applyServerStateEvent(event);
+    await b.applyServerStateEvent(event);
+  }
+  for (const app of [a, b]) app.requests[0].resolve({ok: true});
+  await Promise.all(saves);
+  await settle();
+  for (const app of [a, b]) {
+    assert.equal(app.stateReads.length, 1);
+    app.stateReads[0].resolve(plain(b.requests[0].state));
+  }
+  await settle();
+  for (const app of [a, b]) {
+    assert.equal(app.requests.length, 1, 'no reciprocal repair POSTs');
+    assert.equal(app.S.grade.exposure, 3, 'both display the last accepted recipe');
+    assert.deepEqual(plain(app.queue.getStatus().pendingNames), []);
+  }
+});
+
+test('peer reconciliation cannot overwrite controls edited while its read was pending', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  const saved = app.saveState(true);
+  await settle();
+  await app.applyServerStateEvent({client: 'peer', origin: 'window', names: ['A.raw'], patch: {grade: {exposure: 2}}});
+  app.requests[0].resolve({ok: true});
+  await saved;
+  await settle();
+  app.S.grade.exposure = 4;
+  const newer = app.saveState(true);
+  await settle();
+  app.requests[1].resolve({ok: true});
+  await newer;
+  app.stateReads[0].resolve({grade: {exposure: 2}});
+  await settle();
+  assert.equal(app.S.grade.exposure, 4);
 });

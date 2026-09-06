@@ -187,6 +187,7 @@ class GenerationTests(unittest.TestCase):
                 mock.patch.object(server, "is_raw", return_value=False),
                 mock.patch.object(server, "render_key", return_value="a" * 32),
                 mock.patch.object(server, "src_path"),
+                mock.patch.object(server, "guard_local_photo"),
             ):
                 response = server.render_preview(
                     "frame.jpg", {}, 1100, priority="prefetch")
@@ -337,6 +338,7 @@ class ResponsivePreviewTests(unittest.TestCase):
             mock.patch.object(server, "neutral_preview_path", return_value=missing),
             mock.patch.object(server, "orig_jpeg", return_value=b"preview") as original,
             mock.patch.object(server, "file_key", return_value="source-key"),
+            mock.patch.object(server, "guard_local_photo"),
         ):
             response = server.render_preview(
                 "frame.dng", {"profile_enabled": False}, 1100)
@@ -350,6 +352,7 @@ class ResponsivePreviewTests(unittest.TestCase):
         with (
             mock.patch.object(server, "neutral_preview_path", return_value=ready),
             mock.patch.object(server, "file_key", return_value="source-key"),
+            mock.patch.object(server, "guard_local_photo"),
         ):
             response = server.render_preview(
                 "frame.dng", {"profile_enabled": False}, 1100)
@@ -363,6 +366,7 @@ class ResponsivePreviewTests(unittest.TestCase):
             mock.patch.object(server, "orig_jpeg",
                               return_value=encoded.getvalue()),
             mock.patch.object(server, "file_key", return_value="source-key"),
+            mock.patch.object(server, "guard_local_photo"),
         ):
             response = server.render_preview(
                 "frame.jpg", {"profile_enabled": False}, 1100, native=True)
@@ -763,7 +767,8 @@ class UxInteractionContractTests(unittest.TestCase):
             self.javascript.index("const editSaveQueue = createEditSaveQueue({"):
             self.javascript.index("async function flushEditSaves()")
         ]
-        self.assertIn("const result = await api('/api/state', payload.state);", sender)
+        self.assertIn("const result = await api('/api/state', {...payload.state,", sender)
+        self.assertIn("expectedRecoverySourceKey: payload.expectedRecoverySourceKey", sender)
         self.assertIn("if (!result?.ok || result.error) throw", sender)
         self.assertIn("invalidateEditedThumbnail(image)", sender)
         self.assertLess(sender.index("if (!result?.ok || result.error) throw"),

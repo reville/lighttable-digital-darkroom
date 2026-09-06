@@ -1,6 +1,6 @@
 # Community feedback follow-up
 
-This work uses RapidRAW discussions, issues, and pull requests as evidence of real photo workflows. A complaint about another application is a lead to investigate, not proof of the same defect in LightTable. Closed threads, proposed fixes, and merged code are separate from verified product behavior.
+This work uses public photo-editor discussions, issues, and pull requests as evidence of real photo workflows. A complaint about another application is a lead to investigate, not proof of the same defect in LightTable. Closed threads, proposed fixes, and merged code are separate from verified product behavior.
 
 ## Editing and organization delivered in this follow-up
 
