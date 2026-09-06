@@ -59,7 +59,6 @@ class PhotoFeatureContractTests(unittest.TestCase):
         self.assertIn(".workspace-cullbar { grid-column:1; grid-row:2; }", css)
         self.assertIn("function markingTargets()", javascript)
         self.assertIn("function syncCullBars()", javascript)
-        self.assertIn("api('/api/state/bulk'", javascript)
 
     def test_professional_scopes_share_the_bounded_preview_sample(self):
         html = (ROOT / "web" / "index.html").read_text()

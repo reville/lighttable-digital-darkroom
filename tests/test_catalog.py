@@ -417,6 +417,21 @@ class QueryTests(unittest.TestCase):
         self.assertEqual(
             self.cat.query({"filter": {"status": "approved"}})["total"], 1)
 
+    def test_a_bare_end_date_includes_that_whole_day(self):
+        with self.cat.write() as conn:
+            conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",
+                         ("2024-03-09T18:30:00", "f0.jpg"))
+            conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",
+                         ("2024-03-10T00:00:01", "f1.jpg"))
+        result = self.cat.query({"filter": {"dateFrom": "2024-03-09",
+                                            "dateTo": "2024-03-09"}})
+        self.assertEqual([item["relpath"] for item in result["items"]],
+                         ["f0.jpg"])
+        # A bound with a time of day still compares exactly.
+        precise = self.cat.query({"filter": {"dateFrom": "2024-03-09",
+                                             "dateTo": "2024-03-09T12:00:00"}})
+        self.assertEqual(precise["total"], 0)
+
     def test_paging_reports_total_beyond_the_page(self):
         page = self.cat.query({"limit": 3})
         self.assertEqual(page["total"], 7)

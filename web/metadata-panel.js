@@ -23,6 +23,12 @@ const FIELDS = {
 
 const GPS_FIELDS = { iptcLat: 'gps_lat', iptcLon: 'gps_lon' };
 
+// Keyword names are typed by people or imported from sidecars written by
+// other software, so they are text, never markup.
+const escapeHTML = (value) => String(value ?? '')
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+
 export function createMetadataPanel(ctx) {
   const { el, post, get, toast } = ctx;
   let currentName = null;
@@ -138,10 +144,10 @@ export function createMetadataPanel(ctx) {
         const depth = (keyword.path.match(/ > /g) || []).length;
         return `<button class="keyword-node" type="button"
                   data-path="${encodeURIComponent(keyword.path)}"
-                  data-id="${keyword.id}"
+                  data-id="${escapeHTML(keyword.id)}"
                   style="--depth:${depth}">
-                  <span>${keyword.name}</span>
-                  <span class="keyword-count">${keyword.count || 0}</span>
+                  <span>${escapeHTML(keyword.name)}</span>
+                  <span class="keyword-count">${Number(keyword.count) || 0}</span>
                 </button>`;
       }).join('');
     } catch (error) {
