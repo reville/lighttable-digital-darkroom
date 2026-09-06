@@ -4109,6 +4109,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
 
     items = []
     recipe = export_workflow.clean_recipe(opts)
+    color_pipeline.required_icc_bytes(recipe["outputSpace"])
     destination = export_workflow.resolve_destination(
         FOLDER, recipe["destination"])
     default_params, default_grade = effective_new_photo_defaults()
