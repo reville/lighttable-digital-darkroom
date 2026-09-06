@@ -214,7 +214,8 @@ Cloud placeholders and lens matching: LightTable catalogs macOS dataless photos 
 `cloud-only` without reading their content. Existing metadata, edits and identities
 survive eviction. Download the file in Finder using Download Now or Keep Downloaded,
 then rescan the source; it becomes available even if its size and timestamp did not
-change. Other providers that do not expose macOS's dataless flag may still block on
+change. Import previews count and explain skipped cloud-only photos; watched
+folders wait for a download and two stable polls before importing. Other providers that do not expose macOS's dataless flag may still block on
 filesystem I/O; this check is not a general network timeout or download manager.
 
 Lens correction requires one compatible automatic match. Missing or ambiguous

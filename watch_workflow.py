@@ -17,6 +17,7 @@ import catalog as catalog_module
 import catalog_scan
 import ingest_workflow
 import media_formats
+import media_availability
 
 
 POLL_SECONDS = 2.0
@@ -173,6 +174,9 @@ class WatchService:
             stat = path.stat()
         except OSError:
             return False
+        if media_availability.from_stat(stat) != "local":
+            self._candidates.pop(key, None)
+            raise OSError(media_availability.CLOUD_MESSAGE)
         signature = (int(stat.st_size), int(stat.st_mtime_ns))
         previous, stable = self._candidates.get(key, (None, 0))
         stable = stable + 1 if previous == signature else 1

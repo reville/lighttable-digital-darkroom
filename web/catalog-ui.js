@@ -358,7 +358,9 @@ export function createCatalogUI(ctx) {
             `${ingestPlan.total} photos to copy`
             + (ingestPlan.duplicates
               ? `, ${ingestPlan.duplicates} already in the catalog` : '')
-            + `, ${(ingestPlan.bytes / 1e9).toFixed(2)} GB`;
+            + `, ${(ingestPlan.bytes / 1e9).toFixed(2)} GB`
+            + ((ingestPlan.skipped || []).some((item) => item.reason === 'cloud-only')
+              ? `. ${(ingestPlan.skipped || []).filter((item) => item.reason === 'cloud-only').length} cloud-only photos skipped; download them in Finder and scan again.` : '');
           el('ingestStart2').disabled = !ingestPlan.total;
           const first = (ingestPlan.items || [])[0];
           el('ingestExample').textContent = first

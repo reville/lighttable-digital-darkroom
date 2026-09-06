@@ -115,6 +115,59 @@ class StorageReadinessTests(TestCase):
 
 
 class CloudReadEntryTests(TestCase):
+    def test_import_scan_reports_skipped_placeholder_and_no_copy_touches_existing_destination(self):
+        import ingest_workflow as ingest
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source' / 'photo.jpg'
+            source.parent.mkdir()
+            source.write_bytes(b'original bytes')
+            destination = root / 'destination.jpg'
+            destination.write_bytes(b'previous completed output')
+            with mock.patch.object(media_availability, 'from_stat', return_value='cloud-only'), \
+                 mock.patch.object(Path, 'open', side_effect=AssertionError('must not read content')):
+                items = ingest.scan_source(source.parent)
+                self.assertEqual(items[0]['availability'], 'cloud-only')
+                plan = ingest.build_plan(items, {'destination': str(root / 'exports')})
+                self.assertEqual(plan['total'], 0)
+                self.assertEqual(plan['skipped'][0]['reason'], 'cloud-only')
+                for run in (lambda: ingest.header_hash(source), lambda: ingest._file_hash(source),
+                            lambda: ingest._capture_and_camera(source)):
+                    with self.assertRaisesRegex(OSError, 'Download Now'):
+                        run()
+                result = ingest.copy_item({'source': str(source), 'destination': str(destination)})
+                self.assertFalse(result['ok'])
+                self.assertIn('Download Now', result['error'])
+            self.assertEqual(destination.read_bytes(), b'previous completed output')
+            self.assertEqual(source.read_bytes(), b'original bytes')
+
+    def test_watched_cloud_arrival_waits_for_download_then_two_stable_polls(self):
+        import watch_workflow
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            photos = root / 'photos'
+            photos.mkdir()
+            Image.new('RGB', (12, 8), 'navy').save(photos / 'download.jpg')
+            cat = catalog.Catalog(root / 'catalog.sqlite3')
+            cat.add_source(photos)
+            watch = {'id': 'cloud', 'name': 'Cloud', 'path': str(photos), 'enabled': True, 'mode': 'catalog'}
+            service = watch_workflow.WatchService(cat, lambda: [watch])
+            try:
+                with mock.patch.object(media_availability, 'from_stat', return_value='cloud-only'), \
+                     mock.patch.object(watch_workflow.ingest_workflow, 'header_hash', side_effect=AssertionError('must not fingerprint')):
+                    service.poll_once()
+                    service.poll_once()
+                    self.assertEqual(cat.query({'limit': 10})['total'], 0)
+                    self.assertIn('Download Now', service.status[0]['error'])
+                service.poll_once()
+                self.assertEqual(cat.query({'limit': 10})['total'], 0)
+                service.poll_once()
+                self.assertEqual(cat.query({'limit': 10})['total'], 1)
+                self.assertEqual(service.status[0]['error'], '')
+            finally:
+                cat.close()
+
     def test_render_thumbnail_and_metadata_stop_before_decode(self):
         import server
         with tempfile.TemporaryDirectory() as directory:
