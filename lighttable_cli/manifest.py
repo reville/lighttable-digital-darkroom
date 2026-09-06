@@ -211,6 +211,14 @@ def schema(options: dict | None = None) -> dict:
             "routes": {"type": "object", "default": ROUTE_COVERAGE},
         },
         "$defs": {
+            "photoAvailability": {"enum": ["local", "cloud-only", "unavailable"],
+                                  "description": "Stat-only macOS cloud-placeholder availability; cloud-only originals must be downloaded in Finder then rescanned."},
+            "lensProfileOverride": {"type": ["object", "null"], "default": None,
+                "description": "Explicit bundled lens profile identity; null restores automatic matching. Incompatible identities do not fall back to another lens.",
+                "required": ["cameraMaker", "cameraModel", "lensMaker", "lensModel"],
+                "additionalProperties": False,
+                "properties": {key: {"type": "string", "minLength": 1, "maxLength": 256}
+                               for key in ("cameraMaker", "cameraModel", "lensMaker", "lensModel")}},
             "exportRecipe": {
                 "type": "object",
                 "properties": {
@@ -246,7 +254,7 @@ def schema(options: dict | None = None) -> dict:
                     "crop": {"type": ["object", "null"]},
                     "masks": {"type": "array"},
                     "heals": {"type": "array"},
-                    "optics": {"type": "object"},
+                    "optics": {"type": "object", "properties": {"profileOverride": {"$ref": "#/$defs/lensProfileOverride"}}},
                     "keywords": {"type": "array", "items": {"type": "string"}},
                     "versions": {"type": "array"},
                 },

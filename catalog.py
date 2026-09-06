@@ -42,7 +42,7 @@ from typing import Any, Iterable, Sequence
 
 import durable_io
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 
 class CatalogVersionError(RuntimeError):
@@ -115,6 +115,7 @@ CREATE TABLE IF NOT EXISTS files (
     height       INTEGER,
     orientation  INTEGER,
     metadata_version INTEGER NOT NULL DEFAULT 0,
+    availability TEXT NOT NULL DEFAULT 'local',
     missing      INTEGER NOT NULL DEFAULT 0,
     added_at     REAL NOT NULL,
     UNIQUE (source_id, relpath)
@@ -122,6 +123,12 @@ CREATE TABLE IF NOT EXISTS files (
 CREATE INDEX IF NOT EXISTS files_hash ON files(header_hash);
 CREATE INDEX IF NOT EXISTS files_folder ON files(folder_id);
 CREATE INDEX IF NOT EXISTS files_capture ON files(capture_time);
+
+CREATE TABLE IF NOT EXISTS capture_overrides (
+    file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,
+    capture_time TEXT NOT NULL,
+    updated_at REAL NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS images (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -359,7 +366,7 @@ BACKUP_GLOB = "LightTable-catalog-*.zip"
 # Tables in dependency order, so a salvage can insert parents before children
 # and a repair can delete orphans after their parents are known to be gone.
 _SALVAGE_TABLES = (
-    "sources", "folders", "files", "images", "image_state", "keywords",
+    "sources", "folders", "files", "capture_overrides", "images", "image_state", "keywords",
     "image_keywords", "iptc", "collections", "collection_images", "stacks",
     "stack_images", "versions", "history", "rename_log", "watch_ledger",
 )
@@ -371,6 +378,8 @@ _ORPHAN_QUERIES = {
                " WHERE p.id IS NULL",
     "files": "FROM files t LEFT JOIN sources p ON p.id=t.source_id"
              " WHERE p.id IS NULL",
+    "capture_overrides": "FROM capture_overrides t LEFT JOIN files p ON p.id=t.file_id"
+                         " WHERE p.id IS NULL",
     "images": "FROM images t LEFT JOIN files p ON p.id=t.file_id"
               " WHERE p.id IS NULL",
     "image_state": "FROM image_state t LEFT JOIN images p ON p.id=t.image_id"
@@ -706,7 +715,9 @@ def salvage(damaged: Path | str, target: Path | str) -> dict:
                     shared = [column[0] for column in cursor.description
                               if column[0] in target_columns]
                 except sqlite3.Error as error:
-                    errors[table] = str(error)
+                    # Older catalogs legitimately predate this additive table.
+                    if table != "capture_overrides" or not version or int(version[0]) >= 5:
+                        errors[table] = str(error)
                     counts[table] = 0
                     continue
                 if not shared:
@@ -910,6 +921,15 @@ class Catalog:
                         "ALTER TABLE files ADD COLUMN metadata_version "
                         "INTEGER NOT NULL DEFAULT 0"
                     )
+            if from_version < 5:
+                conn.execute("CREATE TABLE IF NOT EXISTS capture_overrides ("
+                             "file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,"
+                             "capture_time TEXT NOT NULL, updated_at REAL NOT NULL)")
+                file_columns = {row[1] for row in conn.execute(
+                    "PRAGMA table_info(files)").fetchall()}
+                if "availability" not in file_columns:
+                    conn.execute("ALTER TABLE files ADD COLUMN availability "
+                                 "TEXT NOT NULL DEFAULT 'local'")
             conn.execute(
                 "UPDATE meta SET value=? WHERE key='schema_version'",
                 (str(SCHEMA_VERSION),),
@@ -1186,7 +1206,8 @@ class Catalog:
             record.get("header_hash"), record.get("capture_time"),
             record.get("camera_make"), record.get("camera_model"),
             record.get("lens"), record.get("width"), record.get("height"),
-            record.get("orientation"), record.get("metadata_version", 0), 0,
+            record.get("orientation"), record.get("metadata_version", 0),
+            record.get("availability", "local"), 0,
         )
         if existing:
             file_id = int(existing["id"])
@@ -1194,15 +1215,15 @@ class Catalog:
                 "UPDATE files SET folder_id=?, filename=?, ext=?, kind=?,"
                 " size=?, mtime_ns=?, mtime_iso=?, header_hash=?,"
                 " capture_time=?, camera_make=?, camera_model=?, lens=?,"
-                " width=?, height=?, orientation=?, metadata_version=?, missing=?"
+                " width=?, height=?, orientation=?, metadata_version=?, availability=?, missing=?"
                 " WHERE id=?", (*values, file_id))
         else:
             cur = conn.execute(
                 "INSERT INTO files(source_id, folder_id, filename, ext, kind,"
                 " size, mtime_ns, mtime_iso, header_hash, capture_time,"
                 " camera_make, camera_model, lens, width, height, orientation,"
-                " metadata_version, missing, relpath, added_at)"
-                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " metadata_version, availability, missing, relpath, added_at)"
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (source_id, *values, relpath, _now()))
             file_id = int(cur.lastrowid)
         self._ensure_image(conn, file_id, record["filename"])
@@ -1917,7 +1938,7 @@ class Catalog:
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
             " f.mtime_ns, f.capture_time, f.mtime_iso, f.header_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
-            " f.orientation, f.source_id, src.path AS source_path,"
+            " f.orientation, f.availability, f.source_id, src.path AS source_path,"
             " COALESCE(s.status,'pending') AS status,"
             " COALESCE(s.rating,0) AS rating,"
             " COALESCE(s.label,'none') AS label,"
@@ -2437,6 +2458,7 @@ def _item(row: sqlite3.Row) -> dict:
         "fileKey": _text_or(row["header_hash"]),
         "recoverySourceKey": source_revision(_text_or(row["header_hash"]),
             _int_or(row["size"], 0, minimum=0), mtime_ns),
+        "availability": _text_or(row["availability"], "local"),
         "width": width,
         "height": height,
         "camera": " ".join(filter(None, (camera_make, camera_model))),

@@ -52,6 +52,7 @@ import catalog as catalog_module  # noqa: E402
 import catalog_scan  # noqa: E402
 import watch_workflow  # noqa: E402
 import media_formats  # noqa: E402
+import media_availability  # noqa: E402
 import durable_io  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
@@ -343,13 +344,21 @@ def open_catalog() -> "catalog_module.Catalog | None":
 
 
 def guard_photo(name: str) -> None:
-    """Refuse to process a photo that has been set aside after crashes."""
+    """Refuse photos set aside after repeated crashes."""
     source = library_workflow.source_name(name)
     if PHOTO_QUARANTINE.is_quarantined(source):
         raise APIError(
             423, "this photo was set aside after it crashed LightTable "
                  "repeatedly; release it from Library Health to try again",
             "quarantined", details={"name": source})
+
+
+def guard_local_photo(name: str) -> None:
+    availability = media_availability.availability(src_path(name))
+    if availability != "local":
+        raise APIError(409, media_availability.CLOUD_MESSAGE if availability == "cloud-only"
+                       else "This photo is unavailable. Reconnect its source and rescan.",
+                       availability, details={"name": name, "availability": availability})
 
 
 def request_restart(reason: str = "recovery") -> None:
@@ -1676,6 +1685,7 @@ _HEADER_HASH_CACHE: dict[tuple[str, int, int], str] = {}
 def content_hash(path: Path) -> str:
     """Cached content identity for a file, keyed by its stat signature."""
     stat = path.stat()
+    media_availability.require_local(path, stat=stat)
     key = (str(path), stat.st_size, stat.st_mtime_ns)
     cached = _HEADER_HASH_CACHE.get(key)
     if cached is None:
@@ -2114,6 +2124,7 @@ def schedule_neutral_refinement(name: str, width: int,
 
 def thumb_jpeg(name: str) -> bytes:
     """Small strip thumbnail straight from the source; never decodes full TIFF."""
+    guard_local_photo(name)
     p = CACHE / "thumb" / f"{file_key(name)}.jpg"
     if p.exists():
         return p.read_bytes()
@@ -2295,6 +2306,7 @@ def exif_for(name: str) -> dict:
     """Camera metadata for the info panel. Cached; exiftool costs ~50 ms."""
     if name in _EXIF_CACHE:
         return _EXIF_CACHE[name]
+    guard_local_photo(name)
     out = platform_image.metadata(src_path(name))
     _EXIF_CACHE[name] = out
     return out
@@ -2603,6 +2615,7 @@ def rot90k(deg: float) -> int:
 
 def orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
     guard_photo(name)
+    guard_local_photo(name)
     with SESSION.inflight("decode", library_workflow.source_name(name)):
         return _orig_jpeg(name, width, rotate)
 
@@ -3102,6 +3115,7 @@ def render_preview(name: str, params: dict, width: int,
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
     guard_photo(name)
+    guard_local_photo(name)
     with SESSION.inflight("render", library_workflow.source_name(name)):
         previous_priority = getattr(RENDER_CONTEXT, "priority", "export")
         previous_cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
@@ -3299,7 +3313,7 @@ def _native_corrected_preview(result: dict, name: str, width: int,
                               params: dict, optics, heals) -> dict:
     cleaned_optics = edits.clean_optics(optics)
     cleaned_heals = edits.clean_heals(heals)
-    profile = edits.lens_profile_for(exif_for(name))
+    profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
     token = json.dumps([
         "native-base-edits-v1", file_key(name), result.get("key"),
         result.get("img"), (result.get("native") or {}).get("url"),
@@ -3358,7 +3372,7 @@ def apply_preview_edits(result: dict, name: str, width: int,
         return result
     cleaned_optics = edits.clean_optics(optics)
     cleaned_heals = edits.clean_heals(heals)
-    profile = edits.lens_profile_for(exif_for(name))
+    profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
     rotate = fp.clean_params(params).get("rotate", 0)
     token = json.dumps([
         EDIT_PREVIEW_CACHE_VERSION, file_key(name), result.get("img"),
@@ -3714,7 +3728,8 @@ def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
         "metadata": "all", "metadataFields": export_metadata_fields(name),
         "copyMetadataFrom": True, "engine": "rs",
         "bitDepth": 8 if int(bit_depth) == 8 else 16,
-        "lensProfile": edits.lens_profile_for(exif_for(name)),
+        "lensProfile": edits.lens_profile_for(exif_for(name),
+            edits.clean_optics(entry.get("optics")).get("profileOverride")),
     }
 
 
@@ -4030,6 +4045,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
     try:
         check()
         guard_photo(name)
+        guard_local_photo(name)
         started = time.perf_counter()
         job = dict(job)
         job["warnings"] = list(job.get("warnings") or [])
@@ -4041,7 +4057,8 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
         metadata = exif_for(name)
-        job["lensProfile"] = edits.lens_profile_for(metadata)
+        job["lensProfile"] = edits.lens_profile_for(metadata,
+            edits.clean_optics(job.get("optics")).get("profileOverride"))
         job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
         check()
@@ -4984,7 +5001,8 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
     image = np.asarray(base, dtype=np.float32) / 255.0
     image = edits.apply_base(
         image, state.get("optics"), state.get("heals"),
-        edits.lens_profile_for(exif_for(name)))
+        edits.lens_profile_for(exif_for(name),
+            edits.clean_optics(state.get("optics")).get("profileOverride")))
     cleaned_grade = grade.clean(state.get("grade") or {})
     if not grade.is_identity(cleaned_grade):
         image = grade.apply(image, cleaned_grade)
@@ -5489,8 +5507,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/exif":
                 self._json(exif_for(q["name"]))
             elif u.path == "/api/lens-profile":
-                profile = edits.lens_profile_for(exif_for(q["name"]))
-                self._json({"found": bool(profile), "profile": profile})
+                self._json(edits.lens_match_for(exif_for(q["name"])))
             elif u.path == "/api/raw-default":
                 if not is_raw(q["name"]):
                     self._json({"settings": None, "label": "Processed image",
@@ -5670,7 +5687,8 @@ class Handler(BaseHTTPRequestHandler):
                         native=True)
                     if not result.get("cancelled"):
                         result = dict(result, lens_profile=edits.lens_profile_for(
-                            exif_for(b["name"])))
+                            exif_for(b["name"]),
+                            edits.clean_optics(b.get("optics")).get("profileOverride")))
                     self._json(result)
                 else:
                     self._json(apply_preview_edits(
@@ -7240,7 +7258,10 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 folder="" if parent == "." else parent,
                 displayName=(copy["displayName"] if copy
                              else Path(source).name),
-                fileKey=(revision := file_key(name)), recoverySourceKey=revision,
+                availability=(availability := media_availability.availability(src_path(name))),
+                fileKey=(revision := file_key(name) if availability == "local" else ""),
+                recoverySourceKey=revision,
+
                 mtime=snapshot["mtimes"].get(source, 0.0),
                 width=entry.get("width"),
                 height=entry.get("height"),
@@ -7274,6 +7295,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "displayName": item["displayName"],
             "fileKey": item["fileKey"],
             "recoverySourceKey": item.get("recoverySourceKey"),
+            "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
             "status": item["status"],

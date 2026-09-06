@@ -1887,6 +1887,22 @@ function syncHealPanel() {
 function syncOpticsPanel() {
   S.optics = normalizeOptics(S.optics);
   syncCropPanel();
+  const match = _lensProfileCache.get(cur()?.name);
+  const override = S.optics.profileOverride;
+  const overrideKey = override ? JSON.stringify(override) : '';
+  if (match) {
+    S.lensProfile = override ? (match.candidates || []).find((profile) =>
+      ['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].every((key) => profile[key] === override[key])) || null : match.profile;
+    const select = $('lensProfileOverride');
+    select.replaceChildren(new Option('Automatic from photo metadata', ''));
+    for (const candidate of match.candidates || []) {
+      const identity = Object.fromEntries(['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].map((key) => [key, candidate[key]]));
+      select.add(new Option(`${candidate.lensMaker} ${candidate.lensModel}`, JSON.stringify(identity)));
+    }
+    if (override && !S.lensProfile) select.add(new Option('Saved profile unavailable', overrideKey));
+    select.value = overrideKey;
+    select.disabled = !(match.candidates || []).length && !override;
+  }
   const profile = S.lensProfile;
   $('lensProfileCard').classList.toggle('matched', !!profile);
   $('lensProfileCard').classList.toggle('unavailable', !profile);
@@ -1895,7 +1911,10 @@ function syncOpticsPanel() {
     : 'No exact lens profile found';
   $('lensProfileDetail').textContent = profile
     ? `${profile.cameraMaker || ''} ${profile.cameraModel || ''} · ${profile.focal || '—'} mm${profile.aliasedCamera ? ' · compatible camera profile' : ''}`.trim()
-    : 'Manual distortion and perspective controls remain available.';
+    : (match?.reason || 'Manual distortion and perspective controls remain available.');
+  $('lensProfileReason').textContent = override
+    ? (profile ? 'Profile selected manually. Verify the correction against the original.' : 'Saved profile is unavailable for this photo; choose another profile.')
+    : (match?.reason || '');
   $('lensProfileEnabled').checked = !!S.optics.profileEnabled;
   $('lensProfileEnabled').disabled = !profile;
   $('lensProfileDistortion').checked = !!S.optics.profileDistortion;
@@ -2300,6 +2319,14 @@ for (const id of ['healRadius', 'healFeather', 'healOpacity']) {
   $(id).addEventListener('change', () => { if (selectedHeal()) saveState(); });
 }
 
+$('lensProfileOverride').onchange = () => {
+  if (!cur()) return;
+  pushUndo();
+  S.optics.profileOverride = $('lensProfileOverride').value ? JSON.parse($('lensProfileOverride').value) : null;
+  syncOpticsPanel();
+  S.optics.profileEnabled = !!S.lensProfile;
+  syncOpticsPanel(); saveState(); refreshBaseEdits();
+};
 for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette']) {
   $(id).onchange = () => {
     pushUndo();
@@ -2328,7 +2355,7 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
 $('lensReset').onclick = (event) => {
   event.stopPropagation();
   pushUndo();
-  for (const key of ['profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
+  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
     S.optics[key] = OPTICS_DEFAULTS[key];
   }
   delete S.grade.chromaticAberrationRedCyan;
@@ -4159,6 +4186,7 @@ function listKey(list) {
 }
 
 function thumbnailURL(im) {
+  if (im.availability === 'cloud-only') return 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160"><rect width="240" height="160" fill="#262626"/><text x="120" y="85" text-anchor="middle" fill="#aaa" font-size="18">Cloud only</text></svg>');
   return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
 }
 
@@ -4239,6 +4267,7 @@ function pumpEditedThumbnailQueue() {
 }
 
 function queueEditedThumbnail(im, attempt = 0) {
+  if (im?.availability === 'cloud-only') return;
   if (!im || im.kind === 'video' || window.__LIGHTTABLE_BENCHMARK__) return;
   const visible = !_editedThumbnailObserver || im === cur() ||
     [...document.querySelectorAll('img[data-thumbnail-name]')].some(
@@ -4514,7 +4543,8 @@ function syncGridCell(element, im) {
     ? `${im.width} / ${im.height}` : 'auto');
   syncThumbnailImage(element, im);
   const name = element.querySelector('.nm');
-  const nextName = displayName(im);
+  const nextName = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only' : '');
+  element.title = im.availability === 'cloud-only' ? 'Download this photo in Finder, then rescan the source.' : displayName(im);
   if (name.textContent !== nextName) name.textContent = nextName;
   recordGridThumbnailGeometry(element);
 }
@@ -5738,7 +5768,7 @@ function showCurrentImage(im) {
   browserOriginalTextureURL = null;
   S.gl?.clearOriginalImage();
   $('orig').removeAttribute('src');
-  $('currentName').textContent = displayName(im);
+  $('currentName').textContent = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only — download in Finder and rescan' : '');
   syncPairControls();
   $('editFilename').textContent = displayName(im);
   $('filmFilename').textContent = displayName(im);
@@ -5892,7 +5922,7 @@ const _lensProfileCache = new Map();
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
-      S.lensProfile = _lensProfileCache.get(name);
+      S.lensProfile = _lensProfileCache.get(name).profile;
       syncOpticsPanel();
     }
     return;
@@ -5900,7 +5930,7 @@ async function loadLensProfile(name) {
   try {
     const result = await fetch(`/api/lens-profile?name=${encodeURIComponent(name)}`).then((response) => response.json());
     const profile = result.found ? result.profile : null;
-    _lensProfileCache.set(name, profile);
+    _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
       syncOpticsPanel();

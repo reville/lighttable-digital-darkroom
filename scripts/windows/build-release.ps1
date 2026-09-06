@@ -97,6 +97,8 @@ try {
         "jobs.py",
         "validation.py",
         "media_formats.py",
+        "media_availability.py",
+        "capture_time.py",
         "film_pipeline.py",
         "grade.py",
         "edits.py",
