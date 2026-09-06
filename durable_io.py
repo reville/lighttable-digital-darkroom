@@ -222,3 +222,30 @@ def move_file_no_replace(source: Path | str, destination: Path | str) -> Path:
         raise
     _flush_directory(source.parent)
     return destination
+
+
+def publish_cache(staged: Path | str, destination: Path | str) -> Path:
+    """Atomically publish disposable, validated cache data without fsync.
+
+    Only reproducible cache entries may use this path. Catalog state, originals,
+    user exports and sidecars must continue using the durable publishers.
+    """
+    destination = Path(destination)
+    os.replace(staged, destination)
+    return destination
+
+
+def cache_write_bytes(path: Path | str, payload: bytes) -> Path:
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    staged = temporary_path(path, "cache")
+    try:
+        staged.write_bytes(payload)
+        return publish_cache(staged, path)
+    finally:
+        staged.unlink(missing_ok=True)
+
+
+def cache_write_json(path: Path | str, value: Any, *,
+                     indent: int | None = None) -> Path:
+    return cache_write_bytes(path, json.dumps(value, indent=indent).encode("utf-8"))

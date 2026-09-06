@@ -814,6 +814,14 @@ impl WgpuBackend {
     /// and unsharp as a single command buffer with ping-pong image storage.
     /// Only one upload at the start and one readback at the end.
     pub fn run_film_chain(&self, p: &crate::FilmChainParams<'_>) -> ImageBuf {
+        match self.run_film_chain_output(p, None) {
+            crate::FilmChainOutput::Rgb(image) => image,
+            crate::FilmChainOutput::Native(_) => unreachable!("RGB output requested"),
+        }
+    }
+
+    fn run_film_chain_output(&self, p: &crate::FilmChainParams<'_>,
+        native_rotation: Option<crate::NativeOutputSpec>) -> crate::FilmChainOutput {
         use wgpu::util::DeviceExt;
         let t_start = std::time::Instant::now();
         // Pull all references into locals so the existing body below
@@ -1405,7 +1413,7 @@ impl WgpuBackend {
         // Readback buffer (for the final image only) — only needed when we
         // can't map buf_b directly. Skipping it on the mappable path also
         // avoids allocating a second full-image buffer per frame.
-        let readback = (!mappable).then(|| {
+        let readback = (!mappable && native_rotation.is_none()).then(|| {
             self.device.create_buffer(&wgpu::BufferDescriptor {
                 label: Some("readback"),
                 size: img_bytes as u64,
@@ -1715,6 +1723,11 @@ impl WgpuBackend {
         // display-ready pixels without a CPU full-frame post pass.
         post_scan_state.encode_passes(&mut encoder, n_pixels);
 
+        let native_pack = native_rotation.map(|rotation| {
+            self.encode_native_pack(&mut encoder, &buf_b, image.width, image.height,
+                rotation, mappable)
+        });
+
         // Zero-copy path: when buf_b is mappable, skip the blit and map it
         // directly below. Otherwise stage it into the MAP_READ readback buffer.
         if let Some(rb) = readback.as_ref() {
@@ -1727,7 +1740,8 @@ impl WgpuBackend {
 
         // Single sync point at the end. Map buf_b directly on the zero-copy
         // path, or the staging buffer otherwise.
-        let map_target = readback.as_ref().unwrap_or(&buf_b);
+        let map_target = native_pack.as_ref().map(|pack| &pack.0)
+            .or(readback.as_ref()).unwrap_or(&buf_b);
         let slice = map_target.slice(..);
         let (tx, rx) = std::sync::mpsc::channel();
         slice.map_async(wgpu::MapMode::Read, move |r| {
@@ -1737,6 +1751,18 @@ impl WgpuBackend {
         rx.recv().unwrap().unwrap();
         let gpu_wait_ms = t_start.elapsed().as_secs_f32() * 1000.0 - cpu_setup_ms;
         let data = slice.get_mapped_range();
+        if let Some((_, width, height, row_bytes)) = native_pack.as_ref() {
+            let pixel_bytes = row_bytes * *height as usize;
+            let pixels = data[..pixel_bytes].to_vec();
+            let partials: &[f32] = bytemuck::cast_slice(&data[pixel_bytes..]);
+            let mean = partials.iter().map(|&value| f64::from(value)).sum::<f64>()
+                / (*width as f64 * *height as f64 * 3.0);
+            drop(data);
+            map_target.unmap();
+            return crate::FilmChainOutput::Native(crate::NativePackedSurface {
+                width: *width, height: *height, row_bytes: *row_bytes, pixels, mean,
+            });
+        }
         let out_f32: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
         drop(data);
         map_target.unmap();
@@ -1751,7 +1777,65 @@ impl WgpuBackend {
             ),
             "film chain timings"
         );
-        out
+        crate::FilmChainOutput::Rgb(out)
+    }
+
+    fn encode_native_pack(&self, encoder: &mut wgpu::CommandEncoder,
+        rgb: &wgpu::Buffer, width: u32, height: u32, output: crate::NativeOutputSpec, mappable: bool,
+    ) -> (wgpu::Buffer, u32, u32, usize) {
+        use wgpu::util::DeviceExt;
+        let rotation = u32::from(output.quarters_ccw % 4);
+        let [crop_x, crop_y, crop_width, crop_height] = output.crop.unwrap_or([0, 0, width, height]);
+        assert!(crop_width > 0 && crop_height > 0 && crop_x + crop_width <= width
+            && crop_y + crop_height <= height, "native output crop exceeds input");
+        let (out_width, out_height) = if rotation % 2 == 0 { (crop_width, crop_height) } else { (crop_height, crop_width) };
+        let row_bytes = (out_width as usize * 4 + 255) & !255;
+        let groups = (width * height).div_ceil(256);
+        let size = (row_bytes * out_height as usize + groups as usize * 4) as u64;
+        let dispatch_height = groups.div_ceil(self.device.limits().max_compute_workgroups_per_dimension);
+        let dispatch_width = groups.div_ceil(dispatch_height);
+        let values = [width, height, (row_bytes / 4) as u32, rotation, crop_x, crop_y, crop_width, crop_height,
+            dispatch_width, 0, 0, 0];
+        let params = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("native_pack_params"), contents: bytemuck::cast_slice(&values),
+            usage: wgpu::BufferUsages::UNIFORM,
+        });
+        let output = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("native_pack_rgba"), size,
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC
+                | if mappable { wgpu::BufferUsages::MAP_READ } else { wgpu::BufferUsages::empty() },
+            mapped_at_creation: false,
+        });
+        let pipeline = self.cached_pipeline(
+            include_str!("../../spektrafilm-shaders/wgsl/native_pack.wgsl"),
+            &[wgpu::BufferBindingType::Uniform, wgpu::BufferBindingType::Storage { read_only: true },
+                wgpu::BufferBindingType::Storage { read_only: false }]);
+        let group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("native_pack"), layout: &pipeline.layout,
+            entries: &[
+                wgpu::BindGroupEntry { binding: 0, resource: params.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 1, resource: rgb.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 2, resource: output.as_entire_binding() },
+            ],
+        });
+        {
+            let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                label: Some("native_pack"), timestamp_writes: None,
+            });
+            pass.set_pipeline(&pipeline.pipeline);
+            pass.set_bind_group(0, &group, &[]);
+            pass.dispatch_workgroups(dispatch_width, groups.div_ceil(dispatch_width), 1);
+        }
+        let mapped = if mappable { output } else {
+            let staging = self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("native_pack_readback"), size,
+                usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+                mapped_at_creation: false,
+            });
+            encoder.copy_buffer_to_buffer(&output, 0, &staging, 0, size);
+            staging
+        };
+        (mapped, out_width, out_height, row_bytes)
     }
 
     /// Get-or-compile a pipeline by shader source + binding layout. Cached by
@@ -2203,6 +2287,14 @@ impl ComputeBackend for WgpuBackend {
 
     fn try_run_film_chain(&self, params: &crate::FilmChainParams<'_>) -> Option<ImageBuf> {
         Some(self.run_film_chain(params))
+    }
+
+    fn try_run_film_chain_native(&self, params: &crate::FilmChainParams<'_>,
+        output: crate::NativeOutputSpec) -> Option<crate::NativePackedSurface> {
+        match self.run_film_chain_output(params, Some(output)) {
+            crate::FilmChainOutput::Native(surface) => Some(surface),
+            crate::FilmChainOutput::Rgb(_) => None,
+        }
     }
 
     fn resident_chain_applies_post_scan(&self) -> bool {
@@ -4645,6 +4737,7 @@ fn build_glare_state(
         base_seed: u32,
         mu: f32,
         sigma: f32,
+        pixel_geometry: [u32; 4],
     }
     let gen_params = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
         label: Some("glare_gen_params"),
@@ -4653,6 +4746,7 @@ fn build_glare_state(
             base_seed: gp.base_seed,
             mu: gp.mu,
             sigma: gp.sigma,
+            pixel_geometry: [width, gp.full_width, gp.pixel_origin[0], gp.pixel_origin[1]],
         }),
         usage: wgpu::BufferUsages::UNIFORM,
     });
@@ -5062,8 +5156,10 @@ fn build_grain_state(
         density_max: [f32; 4],
         n_particles_per_pixel: [f32; 4],
         grain_uniformity: [f32; 4],
+        pixel_geometry: [u32; 4],
     }
     let params = GrainParams {
+        pixel_geometry: [width, gp.full_width, gp.pixel_origin[0], gp.pixel_origin[1]],
         n_pixels: n_pixels as u32,
         base_seed: gp.base_seed,
         n_sub_layers: gp.n_sub_layers.max(1),
@@ -5283,4 +5379,42 @@ fn is_uniform(xs: &[f64]) -> bool {
         }
     }
     true
+}
+
+
+#[cfg(all(test, feature = "wgpu-backend"))]
+mod native_pack_tests {
+    use super::*;
+    use wgpu::util::DeviceExt;
+
+    #[test]
+    #[ignore = "requires a real GPU and a 17MP buffer; run explicitly outside the sandbox"]
+    fn native_pack_crosses_one_dimensional_dispatch_limit() {
+        let backend = WgpuBackend::new().expect("real WGPU device required");
+        // 65,568 workgroups: just beyond Metal's 65,535-per-axis limit.
+        let (width, height) = (8192_u32, 2049_u32);
+        let count = width as usize * height as usize;
+        let samples = vec![0.5_f32; count * 3];
+        let rgb = backend.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("large_native_pack_test"), contents: bytemuck::cast_slice(&samples),
+            usage: wgpu::BufferUsages::STORAGE,
+        });
+        let mut encoder = backend.device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
+        let mappable = backend.device.features().contains(wgpu::Features::MAPPABLE_PRIMARY_BUFFERS);
+        let (packed, out_width, out_height, row) = backend.encode_native_pack(&mut encoder, &rgb,
+            width, height, crate::NativeOutputSpec::default(), mappable);
+        assert_eq!((out_width, out_height, row), (width, height, width as usize * 4));
+        backend.queue.submit(Some(encoder.finish()));
+        let (tx, rx) = std::sync::mpsc::channel();
+        packed.slice(..).map_async(wgpu::MapMode::Read, move |result| { tx.send(result).unwrap(); });
+        backend.device.poll(wgpu::Maintain::Wait);
+        rx.recv().unwrap().unwrap();
+        let data = packed.slice(..).get_mapped_range();
+        let words: &[u32] = bytemuck::cast_slice(&data[..count * 4]);
+        assert!(words.iter().all(|&pixel| pixel == 0xff808080), "native pack lost or repeated pixels beyond first dispatch row");
+        let partials: &[f32] = bytemuck::cast_slice(&data[count * 4..]);
+        assert_eq!(partials.iter().map(|&n| n as f64).sum::<f64>() / (count as f64 * 3.0), 0.5);
+        drop(data);
+        packed.unmap();
+    }
 }

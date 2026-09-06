@@ -23,6 +23,7 @@ struct Params {
     density_max: vec4<f32>,            // .xyz used (already includes density_min)
     n_particles_per_pixel: vec4<f32>,  // .xyz used (already divided by n_sub_layers)
     grain_uniformity: vec4<f32>,       // .xyz used
+    pixel_geometry: vec4<u32>, // local width, full width, origin x/y
 }
 
 @group(0) @binding(0) var<uniform> params: Params;
@@ -67,6 +68,8 @@ fn standard_normal(state: ptr<function, u32>) -> f32 {
 fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     let idx = gid.x;
     if idx >= params.n_pixels { return; }
+    let geom = params.pixel_geometry;
+    let absolute_index = (geom.w + idx / geom.x) * geom.y + geom.z + idx % geom.x;
     let base = idx * 3u;
 
     let n_sl_f = f32(params.n_sub_layers);
@@ -98,7 +101,7 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
                 seed_ch = 0u;
             }
             let layer_seed = seed_ch + u32(sl) * 10u + params.base_seed;
-            var rng = splitmix32(layer_seed) ^ splitmix32(idx);
+            var rng = splitmix32(layer_seed) ^ splitmix32(absolute_index);
 
             // Poisson(λ) via normal approximation: N(λ, √λ).
             let z1 = standard_normal(&rng);

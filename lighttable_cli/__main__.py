@@ -102,6 +102,55 @@ def merge_mapping(base: dict, patch: dict) -> dict:
     return result
 
 
+# The window's lens defaults. A preset carrying exactly these values has no
+# lens edit to apply, so they are not layered onto a photo.
+OPTICS_DEFAULTS = {
+    "profileEnabled": False, "profileOverride": None,
+    "profileDistortion": True, "profileVignette": True,
+    "flipHorizontal": False, "flipVertical": False, "distortion": 0.0,
+    "vignette": 0.0, "vertical": 0.0, "horizontal": 0.0, "rotate": 0.0,
+    "scale": 1.0,
+}
+PRESET_LAYERED = ("masks", "heals")
+
+
+def preset_state(preset: dict) -> dict:
+    """The groups a preset carries, following the window's layering rules.
+
+    A saved preset stores every group, so a grade-only preset still holds an
+    empty film recipe, empty mask and heal lists, and default lens values.
+    Sending those would reset the photo's own film, local corrections, and
+    geometry; only the groups the preset actually contains are applied.
+    """
+    entry: dict = {}
+    grade = preset.get("grade") if isinstance(preset.get("grade"), dict) else {}
+    included = preset.get("includedGrade")
+    if not isinstance(included, list):
+        included = list(grade)
+    chosen = {key: grade[key] for key in included if key in grade}
+    if chosen:
+        entry["grade"] = chosen
+    params = preset.get("params")
+    if preset.get("includeFilm", True) and isinstance(params, dict) and params:
+        entry["params"] = params
+    for key in PRESET_LAYERED:
+        if isinstance(preset.get(key), list) and preset[key]:
+            entry[key] = preset[key]
+    optics = preset.get("optics") if isinstance(preset.get("optics"), dict) else {}
+    changed = {key: value for key, value in optics.items()
+               if key not in OPTICS_DEFAULTS or value != OPTICS_DEFAULTS[key]}
+    if changed:
+        entry["optics"] = changed
+    return entry
+
+
+def fresh_identities(items: list, group: str) -> list:
+    """Copy layered masks or heals with identities that cannot collide."""
+    prefix = group[:-1]
+    return [{**item, "id": f"{prefix}-{uuid.uuid4().hex}"}
+            if isinstance(item, dict) else item for item in items]
+
+
 def add_selector_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("refs", nargs="*", help="qualified names, paths, #ids, @current, or @selection")
     parser.add_argument("--where", action="append", default=[], metavar="FIELD=VALUE")
@@ -184,7 +233,8 @@ def build_parser() -> argparse.ArgumentParser:
     edit.add_argument("--include", default="film,grade,crop,masks,heals,optics")
     edit.add_argument("--preset", help="apply a named preset")
     edit.add_argument("--layer", action="store_true",
-                      help="merge a tool preset over existing settings")
+                      help="accepted for compatibility; presets always layer"
+                           " over existing settings")
     edit.add_argument("--group", choices=["film", "grade", "crop", "masks", "heals", "optics", "all"], default="all")
     edit.add_argument("--history-label", "--label", default="Command-line edit")
 
@@ -424,8 +474,13 @@ def state_update(client: Client, names: list[str], entry: dict, args,
 
 
 def state_merge_update(client: Client, names: list[str], entry: dict, args,
-                       history_label: str) -> dict:
-    """Apply a patch without replacing each photo's unsupplied nested fields."""
+                       history_label: str, *,
+                       append: tuple[str, ...] = ()) -> dict:
+    """Apply a patch without replacing each photo's unsupplied nested fields.
+
+    Groups named in ``append`` are lists layered after the photo's own items
+    with fresh identities, the way the window applies a preset's masks.
+    """
     results = []
     for name in names:
         current = client.get(query("/api/state", name=name))
@@ -433,6 +488,9 @@ def state_merge_update(client: Client, names: list[str], entry: dict, args,
         for key, incoming in entry.items():
             if key in {"grade", "params", "optics"} and isinstance(incoming, dict):
                 merged[key] = merge_mapping(current.get(key) or {}, incoming)
+            elif key in append and isinstance(incoming, list):
+                merged[key] = [*(current.get(key) or []),
+                               *fresh_identities(incoming, key)]
             else:
                 merged[key] = incoming
         results.append(client.post("/api/state", {
@@ -598,12 +656,7 @@ def dispatch(client: Client, args):
                            if item.get("name") == args.preset), None)
             if preset is None:
                 raise ValueError("preset not found")
-            preset_entry = {key: preset[key] for key in
-                            ("params", "grade", "masks", "heals", "optics")
-                            if key in preset}
-            if not preset.get("includeFilm", True):
-                preset_entry.pop("params", None)
-            entry = merge_mapping(entry, preset_entry)
+            entry = merge_mapping(entry, preset_state(preset))
         grade_patch = assignments(args.grade)
         grade_patch.update(curve_assignments(args.curve))
         if args.hsl:
@@ -625,7 +678,8 @@ def dispatch(client: Client, args):
             entry = merge_mapping(entry, patch)
         if not entry: raise ValueError("no edit fields were supplied")
         return state_merge_update(client, names, entry, args,
-                                  args.history_label)
+                                  args.history_label,
+                                  append=PRESET_LAYERED if args.preset else ())
     if command in {"render", "analyze", "compare"}:
         names = resolve_reference(client, args.ref)
         if not names: raise ValueError("photo was not found")
@@ -728,8 +782,8 @@ def dispatch(client: Client, args):
             return client.post("/api/presets", {"action": "save", "name": args.name, **state})
         if not preset: raise ValueError("preset not found")
         names = selected_names(client, args)
-        entry = {key: preset[key] for key in ("params", "grade", "masks", "heals", "optics") if key in preset}
-        return state_update(client, names, entry, args, f"Preset {args.name}")
+        return state_merge_update(client, names, preset_state(preset), args,
+                                  f"Preset {args.name}", append=PRESET_LAYERED)
     if command == "versions":
         names = resolve_reference(client, args.ref)
         if not names: raise ValueError("photo was not found")
@@ -908,8 +962,9 @@ def dispatch_domain(client: Client, args):
 
     if args.command == "merge":
         if action == "status": return client.get("/api/merge/status")
+        supplied = body.pop("names", [])
         return client.post("/api/merge", {"mode": action,
-            "names": names or body.pop("names", []), **body})
+            "names": names or supplied, **body})
 
     if args.command == "denoise":
         if action == "status": return client.get("/api/denoise/status")

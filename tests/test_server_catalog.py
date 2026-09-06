@@ -877,7 +877,8 @@ class PayloadAndCacheTests(CatalogServerTestCase):
         (cache / "tiff").mkdir(parents=True)
         target = cache / "tiff" / (
             f"v{server.INPUT_CACHE_VERSION}_key_romm.tif")
-        target.write_bytes(b"previous complete cache")
+        Image.new("RGB", (8, 6), (120, 90, 60)).save(target, "TIFF")
+        previous = target.read_bytes()
         os.utime(target, (1, 1))
 
         def fail_after_partial(_source, output, **_kwargs):
@@ -893,7 +894,7 @@ class PayloadAndCacheTests(CatalogServerTestCase):
             with self.assertRaises(OSError):
                 server.tiff_for(self.qualified("a.jpg"))
 
-        self.assertEqual(target.read_bytes(), b"previous complete cache")
+        self.assertEqual(target.read_bytes(), previous)
         self.assertEqual(list((cache / "tiff").glob(".*.decode.*")), [])
 
 

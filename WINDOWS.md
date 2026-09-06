@@ -27,6 +27,10 @@ registry key is `LightTable`, publisher is `Nicholas Reville`, and the
 `QuietUninstallString` supports `/S` for WinGet and other package managers.
 Uninstall removes shipped files, shortcuts, and the CLI's PATH entry. Catalogs,
 preferences, caches, photos, and unrelated files in the install directory remain.
+Nothing LightTable writes at runtime lands in the install directory: the
+catalog, preferences, desktop settings, server log, render caches, compiled
+Python bytecode, compiled numba kernels, and the WebView2 profile all live
+under `%LOCALAPPDATA%\LightTable`.
 
 For the portable ZIP, extract its `LightTable` folder, open `LightTable.exe`, or
 run `LightTable\lighttable.cmd --help`. A package manager can shim
@@ -99,12 +103,51 @@ replacement for the macOS implementation.
 This separation is intentional: platform work should not add a conditional to
 the measured render loop unless the operating system genuinely requires one.
 
+## Runtime layout
+
+The embedded Python runtime ships a `python313._pth` file, and CPython treats
+that file as a request for isolated mode: `PYTHONPATH`, `PYTHONUNBUFFERED`,
+`PYTHONPYCACHEPREFIX`, and every other `PYTHON*` variable are ignored. The
+desktop shell and `lighttable.cmd` therefore pass what matters as interpreter
+options: `-u` keeps `server.log` current, and `-X pycache_prefix` caches
+bytecode under `%LOCALAPPDATA%\LightTable\python-bytecode` so the second
+launch skips recompiling the application and its scientific dependencies.
+`NUMBA_CACHE_DIR` (honoured, because it is not a `PYTHON*` variable) keeps
+compiled kernels under `%LOCALAPPDATA%\LightTable\compiled-runtime`, and the
+WebView2 profile lives under `%LOCALAPPDATA%\LightTable\WebView2` rather than
+beside the executable. The install directory stays read-only in practice.
+
+The shell opens its window immediately with a dark loading page and starts the
+render server on a background thread, so the first frame no longer waits for
+Python imports and catalog opening. Choosing another folder stops the running
+server before starting its replacement, because one catalog holds one process
+lease; a choice made while a start is in flight waits its turn, and a folder
+whose server cannot start returns to the previous one with a toast. The window
+remembers its size and maximized state, fits the current display, and uses the
+dark title bar and WebView2 colour scheme.
+
+Every helper the server starts (the resident engine, the one-shot exporter, the
+export worker, git) runs with `CREATE_NO_WINDOW`; under a console-less parent a
+console-subsystem child would otherwise open a visible command window. The
+OpenMP, numba, and BLAS pools use half the logical processors, between four and
+eight, instead of the fixed four the macOS host uses.
+
 ## Performance path
 
 The resident renderer remains a separate long-lived process on both platforms,
 so GPU device creation, pipeline compilation, profile loading, and decoded
 inputs stay warm. Adding Windows therefore does not force the Mac through a
 portable renderer or a cross-platform desktop framework.
+
+Decoded RGB16 pixels reach the resident engine through memory on Windows as
+they do on macOS. `multiprocessing.shared_memory` creates a named file mapping,
+the engine opens it with `OpenFileMappingW`, maps exactly the protocol length,
+and copies the pixels into its resident input cache before replying; the Python
+side releases the mapping afterwards. A full-resolution RAW export therefore no
+longer writes and re-reads a six-byte-per-pixel TIFF, and first previews at a
+new size skip the disk as well. The TIFF route remains the fallback, and an
+engine that reports the exchange unavailable is remembered so later renders go
+straight to TIFF.
 
 If future measurement shows that webview texture upload and paint dominate at
 large preview sizes, each native host can add a child WGPU viewport while
@@ -121,3 +164,7 @@ require another application rewrite or a forked Windows pipeline.
    packaged runtime.
 4. Open the installed app on Windows and verify a RAW preview, a processed-file
    preview, folder operations, preset save, and an RGB16 TIFF export.
+5. Confirm a RAW export reports `input_transport: shared-memory-rgb16`, that a
+   second launch starts faster than the first, that no command window appears
+   while rendering, and that switching folders shows the loading page rather
+   than a frozen window.

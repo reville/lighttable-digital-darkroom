@@ -1,0 +1,56 @@
+.help-backdrop { z-index:110; }
+.help-panel { width:min(960px,calc(100vw - 40px)); height:min(760px,calc(100vh - 64px)); display:flex; flex-direction:column; padding:0; overflow:hidden; background:var(--panel); }
+.help-header { display:flex; align-items:center; gap:16px; padding:18px 22px; border-bottom:1px solid var(--line); flex-shrink:0; }
+.help-heading { margin-right:auto; }
+.help-heading h1 { font-size:15px; font-weight:600; margin:0 0 4px; }
+.help-heading p { margin:0; color:var(--muted); font-size:11px; }
+.help-layout { display:grid; grid-template-columns:300px minmax(0,1fr); flex:1; min-height:0; }
+.help-browser { display:flex; flex-direction:column; min-height:0; padding:18px 12px 0; border-right:1px solid var(--line); background:var(--inset); }
+.help-search-label { display:block; margin:0 4px 8px; font-size:11px; color:var(--ink-2); }
+.help-search-box { display:flex; align-items:center; border:1px solid var(--line-strong); border-radius:var(--radius); background:var(--field); margin:0 4px 12px; }
+.help-search-box:focus-within { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+.help-search-box input { flex:1; min-width:0; height:36px; border:0; background:transparent; box-shadow:none; outline:0; font-size:12px; padding:8px 10px; }
+.help-search-box input::-webkit-search-cancel-button { -webkit-appearance:none; }
+.help-search-box button { flex-shrink:0; margin-right:3px; }
+.help-filter { display:flex; align-items:center; gap:10px; margin:0 4px 10px; }
+.help-filter select { width:auto; flex:1; min-width:0; }
+.help-filter .dd { flex:1; min-width:0; }
+.help-filter output { color:var(--muted); font-size:10px; white-space:nowrap; }
+.help-results { overflow-y:auto; min-height:0; padding:0 4px 16px; }
+.help-result { display:block; width:100%; text-align:left; height:auto; white-space:normal; padding:13px 12px; border:1px solid transparent; background:transparent; border-radius:var(--radius); box-shadow:none; margin-bottom:3px; }
+.help-result:hover { background:var(--hover); }
+.help-result[aria-current="true"] { background:var(--accent-soft); border-color:var(--line-strong); }
+.help-result span { display:block; }
+.help-result-category { color:var(--muted); font-size:10px; margin-bottom:5px; }
+.help-result-title { color:var(--ink); font-size:12px; font-weight:600; line-height:1.45; }
+.help-result-summary { color:var(--muted); font-size:11px; font-weight:400; line-height:1.5; margin-top:5px; display:-webkit-box !important; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.help-reader { min-width:0; min-height:0; display:flex; flex-direction:column; }
+.help-article { overflow-y:auto; padding:28px 34px 36px; color:var(--ink-2); font-size:13px; line-height:1.7; flex:1; }
+.help-article h2 { color:var(--ink); font-size:22px; line-height:1.25; font-weight:600; letter-spacing:-.4px; margin:8px 0 12px; outline:none; }
+.help-article h3 { color:var(--ink); font-size:13px; font-weight:600; margin:25px 0 8px; }
+.help-article p { margin:0 0 12px; }
+.help-article .help-eyebrow { font-size:11px; color:var(--muted); margin:0; }
+.help-article .help-summary { font-size:13px; color:var(--muted); margin-bottom:24px; }
+.help-article ol { padding-left:22px; margin:8px 0 18px; }
+.help-article li { padding-left:5px; margin-bottom:10px; }
+.help-article li::marker { color:var(--muted); font-size:11px; }
+.help-article .help-tip { border-left:2px solid var(--line-strong); padding:4px 0 4px 14px; color:var(--muted); font-size:12px; margin:18px 0; }
+.help-related { border-top:1px solid var(--line); margin-top:30px; }
+.help-related button { display:block; height:auto; white-space:normal; padding:6px 0; text-align:left; color:var(--accent); }
+.help-empty-title { font-weight:600; margin-top:18px; }
+.help-empty { color:var(--muted); line-height:1.6; font-size:12px; }
+.help-back { display:none; }
+.help-panel :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.help-search-box input:focus-visible { outline:none; }
+@media (max-width:700px) {
+  .help-panel { width:calc(100vw - 20px); height:calc(100vh - 24px); }
+  .help-header { padding:14px; gap:8px; }
+  .help-heading p { display:none; }
+  .help-layout { grid-template-columns:1fr; }
+  .help-browser { border-right:0; }
+  .help-reader { display:none; }
+  .help-reading .help-browser { display:none; }
+  .help-reading .help-reader { display:flex; }
+  .help-reading .help-back { display:block; align-self:flex-start; margin:10px 18px 0; }
+  .help-article { padding:20px 22px; }
+}

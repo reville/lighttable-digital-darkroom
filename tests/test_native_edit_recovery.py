@@ -18,7 +18,7 @@ class NativeEditRecoveryTests(unittest.TestCase):
         cls.build = tempfile.TemporaryDirectory(prefix="lighttable-native-recovery-test-")
         directory = Path(cls.build.name)
         source = (ROOT / "app/main.swift").read_text()
-        store = source.split("// MARK: - Durable edit recovery", 1)[1].split("// MARK: - App", 1)[0]
+        store = source.split("// MARK: - Durable edit recovery", 1)[1].split("// MARK:", 1)[0]
         main = directory / "main.swift"
         main.write_text("import Foundation\nimport Darwin\n" + store + '''
 let root = URL(fileURLWithPath: CommandLine.arguments[1], isDirectory: true)

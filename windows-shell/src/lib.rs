@@ -14,11 +14,22 @@ pub struct FolderSource {
     pub favorite: bool,
 }
 
+/// Logical window geometry remembered between launches.
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
+pub struct WindowState {
+    pub width: f64,
+    pub height: f64,
+    #[serde(default)]
+    pub maximized: bool,
+}
+
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Settings {
     pub active: Option<PathBuf>,
     #[serde(default)]
     pub sources: Vec<FolderSource>,
+    #[serde(default)]
+    pub window: Option<WindowState>,
 }
 
 impl Settings {
@@ -113,6 +124,30 @@ pub fn normalise(path: PathBuf) -> PathBuf {
     path.canonicalize().unwrap_or(path)
 }
 
+/// Threads for the server's OpenMP, numba, and BLAS pools.
+///
+/// The macOS host fixes these at four. Windows desktops commonly expose eight
+/// to sixteen logical processors, so RAW decoding and export workers may take
+/// up to half of them while the webview, the resident GPU engine, and the
+/// server's own threads keep the rest. Small machines keep the proven four.
+pub fn worker_threads(logical_processors: usize) -> usize {
+    (logical_processors / 2).clamp(4, 8)
+}
+
+/// Fit a requested logical window size inside the monitor's work area.
+///
+/// A remembered or default size larger than the current display would open
+/// with its frame off screen. The margin keeps the title bar and taskbar
+/// reachable; the minimum still wins on displays smaller than the UI.
+pub fn fit_window(requested: (f64, f64), minimum: (f64, f64), available: (f64, f64)) -> (f64, f64) {
+    // Monitor size, not work area: leave room for the frame and a taskbar.
+    const MARGIN: (f64, f64) = (24.0, 72.0);
+    (
+        requested.0.min(available.0 - MARGIN.0).max(minimum.0),
+        requested.1.min(available.1 - MARGIN.1).max(minimum.1),
+    )
+}
+
 pub fn source_folders(files: Vec<PathBuf>) -> Vec<PathBuf> {
     let mut seen = HashSet::new();
     files
@@ -198,6 +233,48 @@ mod tests {
             validate_windows_folder_name("Scans  2026").unwrap(),
             "Scans 2026"
         );
+    }
+
+    #[test]
+    fn worker_threads_scale_with_the_machine_but_stay_bounded() {
+        assert_eq!(worker_threads(1), 4);
+        assert_eq!(worker_threads(4), 4);
+        assert_eq!(worker_threads(8), 4);
+        assert_eq!(worker_threads(12), 6);
+        assert_eq!(worker_threads(16), 8);
+        assert_eq!(worker_threads(64), 8);
+    }
+
+    #[test]
+    fn window_size_fits_the_work_area_and_respects_the_minimum() {
+        let minimum = (1100.0, 700.0);
+        assert_eq!(
+            fit_window((1500.0, 950.0), minimum, (2560.0, 1400.0)),
+            (1500.0, 950.0)
+        );
+        assert_eq!(
+            fit_window((1500.0, 950.0), minimum, (1280.0, 800.0)),
+            (1256.0, 728.0)
+        );
+        assert_eq!(
+            fit_window((1500.0, 950.0), minimum, (1024.0, 600.0)),
+            (1100.0, 700.0)
+        );
+    }
+
+    #[test]
+    fn window_state_round_trips_and_is_optional_for_older_settings() {
+        let legacy: Settings = serde_json::from_str(r#"{"active":null,"sources":[]}"#).unwrap();
+        assert_eq!(legacy.window, None);
+        let mut settings = Settings::default();
+        settings.window = Some(WindowState {
+            width: 1440.0,
+            height: 900.0,
+            maximized: true,
+        });
+        let encoded = serde_json::to_string(&settings).unwrap();
+        let decoded: Settings = serde_json::from_str(&encoded).unwrap();
+        assert_eq!(decoded.window, settings.window);
     }
 
     #[test]

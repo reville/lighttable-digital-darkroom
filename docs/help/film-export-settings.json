@@ -1,0 +1,421 @@
+[
+  {
+    "id": "film-getting-started",
+    "title": "Choose and preview a film stock",
+    "category": "Film",
+    "summary": "Turn on the physical film workflow and compare stocks using your own photo.",
+    "keywords": ["film", "stock", "simulation", "negative", "slide", "browse", "preview", "preset", "film off"],
+    "sections": [
+      {"title": "Start with a stock", "paragraphs": ["Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off."], "steps": ["Open a still photo and select Film in the tool rail.", "Turn the Film profile switch on.", "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.", "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it."]},
+      {"title": "What the previews include", "paragraphs": ["Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.", "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file."], "tips": ["If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."]}
+    ],
+    "related": ["film-exposure-and-processing", "film-negative-paper-and-slides", "film-grain-and-format"],
+    "sources": [
+      {"path": "web/film-browser.js", "anchor": "Previews use this photo’s edits. Choose a stock to apply it."},
+      {"path": "web/film-browser.js", "anchor": "button.onclick = () => { close(); apply(stock.id, snapshot.name); };"},
+      {"path": "web/index.html", "anchor": "Film processing is bypassed. Edit adjustments remain active."},
+      {"path": "web/app.js", "anchor": "option.disabled = profile.rustOnly && !S.rustAvailable;"},
+      {"path": "web/index.html", "anchor": "Include Film profile and physical settings"}
+    ]
+  },
+  {
+    "id": "film-exposure-and-processing",
+    "title": "Set film exposure and development",
+    "category": "Film",
+    "summary": "Understand Camera EV, capture white balance, metering, and development controls.",
+    "keywords": ["exposure", "camera ev", "meter", "white balance", "temperature", "tint", "development", "contrast", "authentic", "creative"],
+    "sections": [
+      {"title": "Capture controls and finishing controls", "paragraphs": ["Camera EV and Capture white balance act before film exposure. Exposure and Temp/Tint in the Edit panel are finishing adjustments later in the workflow.", "Capture white balance requires a RAW original. For a JPEG, HEIF, TIFF, or another processed file, use Edit Temp/Tint."], "steps": ["Turn on Film, choose a stock, and adjust Camera EV.", "Keep Meter scene automatically enabled for automatic scene metering, or turn it off to set the capture exposure yourself.", "Expand Capture & processing to choose As shot, Daylight, Tungsten, or Custom capture white balance for a RAW photo.", "For Custom, adjust Temperature and Capture tint."]},
+      {"title": "Development and linked defaults", "paragraphs": ["Development appears only when the chosen film profile supplies development times. Print development depends on the selected paper and is hidden for slide film. Development contrast is a separate film control.", "Authentic uses linked physical defaults, including the stock’s recommended paper when paper is unlocked. Creative preserves paper overrides when compatible. Changing stocks can still select that stock’s default development time and exposure; compare the result after changing a stock."]}
+    ],
+    "related": ["film-getting-started", "film-negative-paper-and-slides", "film-reference-match"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Camera EV and capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls."},
+      {"path": "web/index.html", "anchor": "Capture white balance requires a RAW original. Use Edit Temp/Tint for a processed file."},
+      {"path": "web/app.js", "anchor": "field.hidden = times.length === 0;"},
+      {"path": "web/film-browser.js", "anchor": "next.development_time = film?.defaultDevelopmentTime || 0;"},
+      {"path": "web/film-browser.js", "anchor": "if (Number.isFinite(film?.defaultExposureEv)) next.exposure_ev = film.defaultExposureEv;"},
+      {"path": "web/index.html", "anchor": "Meter scene automatically"}
+    ]
+  },
+  {
+    "id": "film-negative-paper-and-slides",
+    "title": "Work with negative film, paper, and slides",
+    "category": "Film",
+    "summary": "Choose a print process for negatives and understand why print controls disappear for slide film.",
+    "keywords": ["negative", "positive", "reversal", "slide", "transparency", "paper", "print", "output", "lock paper", "filtration", "preflash"],
+    "sections": [
+      {"title": "Negative film and paper", "paragraphs": ["Negative stocks use a film-to-print process. Paper choices are restricted to profiles compatible with the selected film’s color or monochrome channel model.", "Use Print exposure to adjust the print stage. In Capture & processing, choose Paper and enable Lock paper when stock changes if you want to keep a compatible paper while trying other stocks. An incompatible paper still has to be replaced."], "steps": ["Choose a negative stock in Film.", "Choose an Output recipe: Clean scan, Neutral print scan, or Soft optical print.", "Expand Capture & processing to choose Paper and any available Print development time.", "Expand Physical film stages for Print glare, Print preflash, Yellow filter, and Magenta filter."]},
+      {"title": "Slide film is scanned directly", "paragraphs": ["Positive or reversal stocks use a direct transparency scan with no negative-to-paper stage. Paper, print exposure, print development, and other print-only controls are hidden for these stocks.", "Output recipes are modeled starting points for scan softness, sharpening, and print effects where applicable. They are not measured emulations of particular commercial scanners."]}
+    ],
+    "related": ["film-exposure-and-processing", "film-halation-diffusion-scan"],
+    "sources": [
+      {"path": "film_pipeline.py", "anchor": "# Reversal film has no negative-to-paper stage and is scanned directly."},
+      {"path": "film_pipeline.py", "anchor": "Return print-stage profiles with the film's channel model."},
+      {"path": "web/film-browser.js", "anchor": "if (next.workflow_mode === 'authentic' && !next.paper_locked && film?.targetPrint) next.paper = film.targetPrint;"},
+      {"path": "web/app.js", "anchor": "$('paperField').hidden = positive;"},
+      {"path": "film_pipeline.py", "anchor": "# Coherent output-chain starting points. These are modeled recipes, not claims"},
+      {"path": "web/index.html", "anchor": "Lock paper when stock changes"}
+    ]
+  },
+  {
+    "id": "film-grain-and-format",
+    "title": "Adjust film grain and format",
+    "category": "Film",
+    "summary": "Control grain relative to the stock and choose the simulated film size.",
+    "keywords": ["grain", "size", "texture", "35mm", "medium format", "645", "6x6", "6x7", "4x5", "particle", "noise"],
+    "sections": [
+      {"title": "Set the format and grain", "paragraphs": ["Film format sets the physical long edge used by the simulation. The choices are 35 mm, 645, 6 × 6, 6 × 7, and 4 × 5; this setting is separate from cropping the photo.", "Grain size multiplies the chosen stock’s baseline particle area. The readout shows the resulting area in µm², so the same multiplier can show a different area after you change stocks."], "steps": ["In Film profile, choose Film format.", "Expand Physical film stages.", "Enable Grain size and adjust its slider, or clear its checkbox to disable grain.", "Inspect the image at 1:1 and wait for preview detail to finish before judging texture."]},
+      {"title": "What the number represents", "paragraphs": ["The per-stock grain baselines are derived from film speed as visual starting points. They are not laboratory granularity measurements for each emulsion.", "The Grain size setting belongs to the film simulation. Detail sharpening and noise reduction in Edit are separate adjustments."]}
+    ],
+    "related": ["film-getting-started", "performance-previews"],
+    "sources": [
+      {"path": "film_pipeline.py", "anchor": "# The simulation uses the physical long edge to derive micrometres per pixel."},
+      {"path": "film_pipeline.py", "anchor": "# field, so these are explicit speed-derived baselines rather than claims of"},
+      {"path": "film_pipeline.py", "anchor": "Resolve the stock baseline multiplied by the user's grain amount."},
+      {"path": "web/index.html", "anchor": "Judge sharpening and noise reduction at 1:1."},
+      {"path": "web/index.html", "anchor": "id=\"grain_on\" checked"}
+    ]
+  },
+  {
+    "id": "film-halation-diffusion-scan",
+    "title": "Adjust halation, diffusion, and scan character",
+    "category": "Film",
+    "summary": "Refine the film’s physical effects and the selected output recipe.",
+    "keywords": ["halation", "glow", "bloom", "diffusion", "couplers", "glare", "scan", "sharpness", "softness", "scanner", "preflash"],
+    "sections": [
+      {"title": "Physical film stages", "paragraphs": ["Open Film → Physical film stages while Film is enabled. Couplers, Halation, Grain size, and Print glare each have an enable checkbox and an amount control. Turning off a stage disables its amount slider.", "Capture diffusion changes the modeled camera stage. Print glare and Print preflash belong to the print stage and are unavailable for direct slide scans."], "steps": ["Choose the stock and Output recipe before refining the stage controls.", "Change one stage at a time and compare the result.", "Use each stage’s checkbox to compare its contribution without replacing the selected stock."]},
+      {"title": "Scan controls", "paragraphs": ["Scan softness adds lens blur to the selected output recipe. Scan sharpness scales that recipe’s sharpening; Scan sharpening enables or disables it.", "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail."]}
+    ],
+    "related": ["film-negative-paper-and-slides", "film-grain-and-format", "performance-previews"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist."},
+      {"path": "film_pipeline.py", "anchor": "\"lens_blur\": recipe[\"scanner_lens_blur\"] + p[\"scan_softness\"],"},
+      {"path": "web/app.js", "anchor": "$('halation_amount').disabled = !profileEnabled || !S.params.halation_on;"},
+      {"path": "web/app.js", "anchor": "$('scan_sharpness').disabled = !profileEnabled || !S.params.scan_sharpen;"},
+      {"path": "film_pipeline.py", "anchor": "\"active\": p[\"camera_diffusion_strength\"] > 0,"}
+    ]
+  },
+  {
+    "id": "film-reference-match",
+    "title": "Compare with a reference image",
+    "category": "Film",
+    "summary": "Align a scan or other reference, measure the difference, and apply a starting match.",
+    "keywords": ["reference", "match", "scan", "calibration", "overlay", "split", "opacity", "measure", "color match"],
+    "sections": [
+      {"title": "Load and align", "paragraphs": ["Reference Match is in the Film panel. Use a reference with corresponding image content so alignment and comparison are meaningful."], "steps": ["Expand Reference Match and choose a Reference image.", "Choose Overlay or Split, then set Opacity / split.", "Use Scale, Horizontal, and Vertical to align the reference with your photo.", "Click Measure to inspect the comparison, or Starting match to apply an initial adjustment."]},
+      {"title": "What Starting match changes", "paragraphs": ["Starting match turns off automatic scene metering and adjusts Camera EV. For RAW photos it also sets custom capture white balance; for processed photos it adjusts yellow and magenta print filtration.", "This is a starting adjustment based on measured image statistics, not a guarantee of an exact film or color match. Review the image after applying it and use Undo if needed. Clear removes the reference overlay."], "tips": ["The Calibration target button downloads an image you can use in a reference workflow."]}
+    ],
+    "related": ["film-exposure-and-processing", "film-negative-paper-and-slides"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Load a scan, align it, then measure."},
+      {"path": "web/index.html", "anchor": "Starting match adjusts physical capture exposure and capture WB for RAW, or print filtration for processed files."},
+      {"path": "web/app.js", "anchor": "$('startReferenceMatch').onclick = () => {"},
+      {"path": "web/app.js", "anchor": "S.params.auto_exposure = false;"},
+      {"path": "web/index.html", "anchor": "download=\"lighttable-calibration-target.png\""}
+    ]
+  },
+  {
+    "id": "export-photos",
+    "title": "Export selected photos",
+    "category": "Export",
+    "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
+    "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress"],
+    "sections": [
+      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
+      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."]}
+    ],
+    "related": ["export-format-color-space", "export-filenames-and-folders", "export-metadata-sidecars"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "aria-label=\"Export photos\""},
+      {"path": "server.py", "anchor": "def export_candidates() -> list[tuple[str, dict, str]]:"},
+      {"path": "server.py", "anchor": "for n, e, export_base_name in export_candidates():"},
+      {"path": "web/app.js", "anchor": "if (meta && e.shiftKey && e.key.toLowerCase() === 'e')"},
+      {"path": "web/app.js", "anchor": "$('exportDetails').onclick = () => {"},
+      {"path": "server.py", "anchor": "Photo exported, but its recipe sidecar could not be saved:"}
+    ]
+  },
+  {
+    "id": "export-format-color-space",
+    "title": "Choose export size, format, and color space",
+    "category": "Export",
+    "summary": "Use export presets and understand bit depth, resizing, and the current color-gamut limits.",
+    "keywords": ["jpeg", "jpg", "png", "heif", "heic", "tiff", "16 bit", "srgb", "p3", "prophoto", "icc", "quality", "full size", "resolution", "preset"],
+    "sections": [
+      {"title": "Formats and presets", "paragraphs": ["The export dialog offers JPEG, HEIF, PNG, and 16-bit TIFF. HEIF is an 8-bit output option on macOS. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."], "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]},
+      {"title": "Color space limits", "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]}
+    ],
+    "related": ["export-photos", "soft-proof", "external-editor"],
+    "sources": [
+      {"path": "web/app.js", "anchor": "const EXPORT_MODAL_PRESETS = {"},
+      {"path": "web/index.html", "anchor": "TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile."},
+      {"path": "web/index.html", "anchor": "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors."},
+      {"path": "export_workflow.py", "anchor": "if long_edge and max(width, height) > int(long_edge):"},
+      {"path": "web/app.js", "anchor": "$('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';"}
+    ]
+  },
+  {
+    "id": "export-filenames-and-folders",
+    "title": "Set export folders and filenames",
+    "category": "Export",
+    "summary": "Choose a destination layout and decide what happens when a filename already exists.",
+    "keywords": ["destination", "folder", "path", "filename", "rename", "overwrite", "skip", "collision", "hierarchy", "sequence", "template"],
+    "sections": [
+      {"title": "Destination layout", "paragraphs": ["One destination folder sends exports to the chosen folder. Subfolder beside each original uses a relative subfolder name for each source photo. Keep source folder hierarchy preserves source-folder organization beneath the export destination."], "steps": ["Open Export and choose Destination layout.", "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.", "Expand Advanced and edit Filename template.", "Check the filename and destination shown in Output preview before exporting."]},
+      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
+    ],
+    "related": ["export-photos", "export-metadata-sidecars"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Keep source folder hierarchy"},
+      {"path": "web/app.js", "anchor": "'Subfolder name, e.g. film-exports'"},
+      {"path": "web/index.html", "anchor": "Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}."},
+      {"path": "export_workflow.py", "anchor": "def collision_path(path: Path, policy: str,"},
+      {"path": "export_workflow.py", "anchor": "candidate = path.with_name(f\"{path.stem}-{index}{path.suffix}\")"}
+    ]
+  },
+  {
+    "id": "export-metadata-sidecars",
+    "title": "Control export metadata, sidecars, and timestamps",
+    "category": "Export",
+    "summary": "Choose metadata privacy, optional recipe files, and capture-time handling.",
+    "keywords": ["metadata", "privacy", "gps", "location", "copyright", "sidecar", "recipe", "timestamp", "date", "timezone", "capture time"],
+    "sections": [
+      {"title": "Metadata and recipe files", "paragraphs": ["Export → Advanced offers All except location, All metadata, Copyright only, and No metadata. The initial metadata choice is All except location.", "Recipe sidecar controls whether LightTable writes a recipe beside the rendered export. This is separate from the portable edits and XMP sidecar preferences for originals in Settings → Files & Metadata."], "steps": ["Expand Advanced in Export.", "Choose the Metadata policy appropriate for the files you will share.", "Choose whether to write a Recipe sidecar beside each exported photo."]},
+      {"title": "File timestamps", "paragraphs": ["File timestamp can use the time of export or the original capture time. If capture timezone is missing, the default is to keep export time and report a warning. You can instead choose to interpret it in this computer’s local timezone.", "Missing or invalid capture time can also leave the export timestamp unchanged. Check Export details for the reported warning. A file’s filesystem timestamp is separate from the metadata policy selected above."]}
+    ],
+    "related": ["export-photos", "export-filenames-and-folders", "settings-and-defaults"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<span>Metadata</span><select id=\"modalExMetadata\">"},
+      {"path": "web/index.html", "anchor": "<span>Recipe sidecar</span><select id=\"modalExSidecar\">"},
+      {"path": "web/index.html", "anchor": "<span>File timestamp</span><select id=\"modalExPreserveCaptureTime\">"},
+      {"path": "export_workflow.py", "anchor": "Capture timezone is missing; kept the export file timestamp."},
+      {"path": "export_workflow.py", "anchor": "Capture time or timezone is invalid; kept the export file timestamp."},
+      {"path": "web/index.html", "anchor": "Keep portable LightTable edits beside originals"}
+    ]
+  },
+  {
+    "id": "soft-proof",
+    "title": "Preview an output with soft proofing",
+    "category": "Export",
+    "summary": "View a display or modeled paper preview without making it part of the exported photo.",
+    "keywords": ["soft proof", "proofing", "gamut", "paper", "ink", "matte", "gloss", "print", "p3", "srgb"],
+    "sections": [
+      {"title": "Turn on soft proof", "paragraphs": ["Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing."], "steps": ["Open View options (•••) below the viewer.", "Enable Preview output profile.", "Choose sRGB display, Display P3 display, Matte paper, or Gloss paper.", "For paper targets, choose whether to Simulate paper and ink. Toggle Show out-of-gamut warning as needed.", "Use the Soft Proof on button in the viewer toolbar to turn the preview off."]},
+      {"title": "Interpret the preview", "paragraphs": ["Matte and Gloss in this interface are modeled paper previews; they are not a selection of your printer’s measured ICC profile. Treat the preview as guidance when comparing contrast and color.", "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export."]}
+    ],
+    "related": ["export-format-color-space", "export-photos"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<strong>Soft proof</strong><div id=\"viewProofControls\"></div>"},
+      {"path": "web/index.html", "anchor": "<select id=\"softProofProfile\">"},
+      {"path": "soft_proof.py", "anchor": "\"matte\": (0.68, 0.032, 0.90),"},
+      {"path": "web/app.js", "anchor": "$('softProofPaper').disabled = !S.softProof.enabled || !printTarget;"},
+      {"path": "web/app.js", "anchor": "function exportModalOptions() {"}
+    ]
+  },
+  {
+    "id": "external-editor",
+    "title": "Edit a photo in another application",
+    "category": "Export",
+    "summary": "Send an adjusted TIFF to another editor and set the format and stacking defaults.",
+    "keywords": ["external", "editor", "photoshop", "affinity", "edit in", "tiff", "round trip", "derivative", "stack"],
+    "sections": [
+      {"title": "Open an external editor", "paragraphs": ["Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog."], "steps": ["Select a photo and press Command/Ctrl+E to open Edit in another app.", "Choose Application.", "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.", "Choose whether to Stack rendered file with original.", "Click Edit and wait for rendering to finish before working in the other app."]},
+      {"title": "RAW files and defaults", "paragraphs": ["RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.", "Set the default application, color space, bit depth, and stacking behavior in Settings → External Editing. Adjusted TIFFs can use 16 or 8 bits and ProPhoto RGB, Display P3, or sRGB."]}
+    ],
+    "related": ["export-format-color-space", "settings-and-defaults"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<strong id=\"externalEditTitle\">Edit in another app</strong>"},
+      {"path": "web/index.html", "anchor": "The adjusted TIFF is written beside its original."},
+      {"path": "web/app.js", "anchor": "$('externalEditMode').querySelector('[value=\"original\"]').disabled = hasRaw;"},
+      {"path": "web/app.js", "anchor": "if (meta && !e.shiftKey && e.key.toLowerCase() === 'e')"},
+      {"path": "web/index.html", "anchor": "Defaults for rendered files sent to another pixel editor."}
+    ]
+  },
+  {
+    "id": "settings-and-defaults",
+    "title": "Change preferences and new-photo defaults",
+    "category": "Settings",
+    "summary": "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.",
+    "keywords": ["settings", "preferences", "defaults", "camera", "raw", "serial", "iso", "font", "background", "lights out", "notifications", "xmp", "portable"],
+    "sections": [
+      {"title": "Interface and behavior", "paragraphs": ["Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata."]},
+      {"title": "Defaults for unedited photos", "paragraphs": ["Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."], "steps": ["Open Settings → Develop Defaults.", "Choose the starting Film, workflow, profile, and preset settings.", "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.", "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.", "Use Reset in the Current camera area to remove that camera default."]}
+    ],
+    "related": ["keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Changes save automatically."},
+      {"path": "web/index.html", "anchor": "Applied only to photos that do not already have saved edits."},
+      {"path": "web/index.html", "anchor": "Tune the editing canvas without changing exported pixels."},
+      {"path": "web/index.html", "anchor": "Complete edits travel in .lighttable-state.json when you copy the folder."},
+      {"path": "web/index.html", "anchor": "Match camera defaults by"},
+      {"path": "web/settings.js", "anchor": "byId('settingsSaveCameraDefault').disabled = !raw;"}
+    ]
+  },
+  {
+    "id": "keyboard-midi",
+    "title": "Use keyboard shortcuts and MIDI controls",
+    "category": "Settings",
+    "summary": "Find shortcuts, choose a keyboard scheme, and map a hardware controller where Web MIDI is available.",
+    "keywords": ["keyboard", "shortcut", "hotkey", "midi", "knob", "fader", "controller", "speed keys", "automation", "classic", "lighttable"],
+    "sections": [
+      {"title": "Keyboard preferences", "paragraphs": ["Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. The desktop Help menu also has Keyboard Shortcuts.", "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."], "tips": ["Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts."]},
+      {"title": "MIDI mapping", "paragraphs": ["MIDI support depends on the Web MIDI API in the current runtime. The status can show Unavailable, Off, No devices, or a connected device count. Unavailable means this runtime cannot use the MIDI controls."], "steps": ["Connect a MIDI controller that sends Control Change messages.", "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.", "Click the adjustment slider you want to map, then turn a knob or move a fader.", "Check the mapping message, then use the hardware control to adjust the slider.", "Use Reset MIDI to restore the default mappings."]}
+    ],
+    "related": ["settings-and-defaults", "export-photos", "external-editor"],
+    "sources": [
+      {"path": "web/app.js", "anchor": "toast('Shortcut scheme applies after a reload');"},
+      {"path": "web/index.html", "anchor": "Hold a mapped key and scroll or use arrow keys."},
+      {"path": "web/index.html", "anchor": "Let approved local tools control this window with visible history and Undo."},
+      {"path": "web/midi.js", "anchor": "pill.title = 'Web MIDI API not supported in this browser';"},
+      {"path": "web/midi.js", "anchor": "if (status !== 0xb0) return;"},
+      {"path": "web/midi.js", "anchor": "showMidiHud(`Turn any knob to map → ${target.label || target.control}`);"},
+      {"path": "app/main.swift", "anchor": "addEditorItem(helpMenu, title: \"Keyboard Shortcuts\","}
+    ]
+  },
+  {
+    "id": "photo-index",
+    "title": "Enable private photo-content search",
+    "category": "Settings",
+    "summary": "Build an on-device index of objects, scenes, visible text, and faces.",
+    "keywords": ["ai", "search", "index", "contents", "objects", "scenes", "ocr", "text", "faces", "privacy", "local", "description"],
+    "sections": [
+      {"title": "Build the index", "paragraphs": ["The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."], "steps": ["Open Settings → Photo Index.", "Check the On-device capabilities status and turn on Photo contents index.", "Wait for indexing progress to complete. Photos can gain results as they are indexed.", "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.", "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."]},
+      {"title": "Pause, rebuild, or delete", "paragraphs": ["Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.", "Delete index removes generated index data after confirmation. Originals and saved edits are unchanged. If Apple Vision says Build required, the current installation lacks the required local analyzer. Foundation Models may be unavailable while basic Vision indexing remains usable."]}
+    ],
+    "related": ["assisted-culling", "settings-and-defaults"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Analysis stays on this Mac and never modifies photo folders."},
+      {"path": "web/app.js", "anchor": "'Objects, scenes, visible text, and faces';"},
+      {"path": "web/app.js", "anchor": "'Search photos, contents, text, and faces'"},
+      {"path": "web/app.js", "anchor": "indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted."},
+      {"path": "web/app.js", "anchor": "Delete the generated local photo index? Your originals and edits will not be changed."},
+      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"}
+    ]
+  },
+  {
+    "id": "assisted-culling",
+    "title": "Review assisted culling suggestions",
+    "category": "Settings",
+    "summary": "Review local analysis signals and apply pick or reject flags only when you choose.",
+    "keywords": ["cull", "culling", "ai", "selects", "rejects", "sharpness", "eyes", "misfire", "documents", "review", "flags"],
+    "sections": [
+      {"title": "Review signals", "paragraphs": ["Assisted culling uses the private Photo Index. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."], "steps": ["Enable Photo Index in Settings and wait for photos to be scored.", "Expand Assisted culling in the library sidebar.", "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.", "Use Selects, Rejects, or All to review the matching photos.", "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."]},
+      {"title": "Applying flags", "paragraphs": ["The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.", "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."]}
+    ],
+    "related": ["photo-index", "settings-and-defaults"],
+    "sources": [
+      {"path": "web/app.js", "anchor": "Nothing is flagged until you ask for it."},
+      {"path": "web/local-ai.js", "anchor": "True when any of the chosen criteria answered yes for this photo."},
+      {"path": "web/index.html", "anchor": "<summary>Assisted culling</summary>"},
+      {"path": "web/app.js", "anchor": "Existing flags on those photos are replaced."},
+      {"path": "web/app.js", "anchor": "const targets = linkedMetadataTargets(cullResults(group));"},
+      {"path": "web/app.js", "anchor": "for (const image of targets) enqueuePhotoPatch(image, { status });"}
+    ]
+  },
+  {
+    "id": "performance-previews",
+    "title": "Improve preview speed and check image detail",
+    "category": "Troubleshooting",
+    "summary": "Choose preview resolution, wait for real detail, and manage generated caches.",
+    "keywords": ["performance", "slow", "blurry", "pixelated", "preview", "resolution", "100%", "1:1", "gpu", "rust", "python", "cache", "purge"],
+    "sections": [
+      {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. The viewer may show Loading 100% detail…, Refining RAW detail…, or Updating preview detail… while it works. Wait for 100% detail ready when assessing fine detail.", "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit."], "steps": ["Open Settings → Performance.", "Use Auto · fit display for preview resolution, or choose a smaller fixed resolution to reduce preview work.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
+      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files."]}
+    ],
+    "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
+    "sources": [
+      {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return '100% detail ready';"},
+      {"path": "web/preview-detail.js", "anchor": "if (refining) return 'Refining RAW detail…';"},
+      {"path": "web/view-performance.js", "anchor": "if (actualSize) return Math.max(64, Math.min(8000, source || 1100));"},
+      {"path": "web/index.html", "anchor": "Auto · fit display"},
+      {"path": "web/settings.js", "anchor": "Purge generated previews and render caches? Originals and edits are not affected."},
+      {"path": "web/app.js", "anchor": "pythonOption.disabled = rustOnly;"}
+    ]
+  },
+  {
+    "id": "catalog-health-recovery",
+    "title": "Back up the catalog and troubleshoot recovery",
+    "category": "Troubleshooting",
+    "summary": "Use verified catalog backups, Library Health, and desktop diagnostics when something goes wrong.",
+    "keywords": [
+      "catalog",
+      "backup",
+      "restore",
+      "recovery",
+      "damaged",
+      "corrupt",
+      "crash",
+      "missing",
+      "safe mode",
+      "diagnostics",
+      "log",
+      "repair"
+    ],
+    "sections": [
+      {
+        "title": "Back up and inspect",
+        "paragraphs": [
+          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+        ],
+        "steps": [
+          "Choose an Automatic backup interval and Backup location.",
+          "Click Back up now and check for a Verified backup result.",
+          "Open Library Health… to check catalog structure, missing files, and recovery information.",
+          "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits."
+        ]
+      },
+      {
+        "title": "Understand recovery choices",
+        "paragraphs": [
+          "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+          "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
+        ]
+      },
+      {
+        "title": "Desktop diagnostics",
+        "paragraphs": [
+          "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
+          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."
+        ]
+      }
+    ],
+    "related": [
+      "settings-and-defaults",
+      "performance-previews"
+    ],
+    "sources": [
+      {
+        "path": "web/index.html",
+        "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."
+      },
+      {
+        "path": "web/settings.js",
+        "anchor": "? `Verified backup: ${result.archive}`"
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Missing files: ${verify.missingFiles} (kept with their edits)"
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Edits made after that backup are not in it."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "The current catalog is backed up first, then replaced by this one."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "backup; rows on damaged pages are lost."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Safe Mode: scanning, watched folders, local AI, and engine warm-up "
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+      }
+    ]
+  }
+]

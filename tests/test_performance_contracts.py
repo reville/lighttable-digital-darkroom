@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import time
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -179,10 +180,10 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue(stale)
         self.assertFalse(current)
 
-    def test_prefetch_does_not_wait_for_the_render_lock(self):
+    def test_prefetch_does_not_wait_for_the_background_render_lock(self):
         lock = mock.Mock()
         lock.acquire.return_value = False
-        with mock.patch.object(server, "RENDER_LOCK", lock):
+        with mock.patch.object(server, "BACKGROUND_RENDER_LOCK", lock):
             with (
                 mock.patch.object(server, "is_raw", return_value=False),
                 mock.patch.object(server, "render_key", return_value="a" * 32),
@@ -1155,6 +1156,92 @@ class PlatformProcessTests(unittest.TestCase):
                 with self.subTest(name=name), self.assertRaises(ValueError):
                     server.clean_folder_name(name)
             self.assertEqual(server.clean_folder_name("Scans 2026"), "Scans 2026")
+
+    def test_windows_helper_processes_never_open_console_windows(self):
+        """The shell starts the server without a console, so every console
+        child (resident engine, one-shot exporter, render worker, git) would
+        otherwise pop a command window on the desktop."""
+        with mock.patch.object(server, "IS_WINDOWS", True):
+            self.assertEqual(server.subprocess_flags(),
+                             {"creationflags": 0x08000000})
+        with mock.patch.object(server, "IS_WINDOWS", False):
+            self.assertEqual(server.subprocess_flags(), {})
+        source = (ROOT / "server.py").read_text()
+        self.assertIn("stderr=subprocess.DEVNULL, text=True, bufsize=1,\n"
+                      "            **subprocess_flags())", source)
+        with mock.patch.object(server, "IS_WINDOWS", True), \
+                mock.patch.object(server.subprocess, "run") as run, \
+                mock.patch.object(server.subprocess, "Popen") as popen:
+            server._run_export_process(["renderer"], {}, None)
+            self.assertEqual(run.call_args.kwargs["creationflags"], 0x08000000)
+            process = popen.return_value.__enter__.return_value
+            process.communicate.return_value = ("", "")
+            process.returncode = 0
+            server._run_export_process(["renderer"], {}, mock.Mock())
+            self.assertEqual(popen.call_args.kwargs["creationflags"], 0x08000000)
+        self.assertIn("**_creation_flags()",
+                      (ROOT / "render_cli.py").read_text())
+
+    def test_shared_input_is_offered_on_windows_until_the_engine_refuses_it(self):
+        server._SHARED_INPUT_DISABLED.clear()
+        try:
+            with mock.patch.object(server.os, "name", "nt"):
+                self.assertTrue(server.shared_input_supported())
+            server.note_shared_input_failure(PermissionError("denied"))
+            self.assertTrue(server.shared_input_supported())
+            server.note_shared_input_failure(RuntimeError(
+                "shared RAW input is unavailable on this platform"))
+            self.assertFalse(server.shared_input_supported())
+        finally:
+            server._SHARED_INPUT_DISABLED.clear()
+
+    def test_full_render_latches_to_tiff_after_the_engine_refuses_shared_input(self):
+        calls = []
+
+        @contextmanager
+        def shared(*_args, **_kwargs):
+            calls.append("shared")
+            yield {"input_shm": "wnsm_test", "input_shm_len": 64,
+                   "input_cache_key": "source"}
+
+        def render(request):
+            if "input_shm" in request:
+                raise RuntimeError(
+                    "shared RAW input is unavailable on this platform")
+            return {"width": 2, "height": 1}
+
+        engine = mock.Mock()
+        engine.render.side_effect = render
+        engine.probe_input.return_value = False
+        server._SHARED_INPUT_DISABLED.clear()
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                source = Path(directory) / "input.tif"
+                source.write_bytes(b"cached input")
+                with mock.patch.object(server, "is_raw", return_value=True), \
+                        mock.patch.object(server, "raw_shared_input", shared), \
+                        mock.patch.object(server, "BACKGROUND_ENGINE", engine), \
+                        mock.patch.object(server, "file_key", return_value="source"), \
+                        mock.patch.object(server, "tiff_for",
+                                          return_value=source):
+                    first = server._resident_render_full("frame.dng", {}, {})
+                    second = server._resident_render_full("frame.dng", {}, {})
+            self.assertEqual(first["input_transport"], "tiff-fallback")
+            self.assertEqual(second["input_transport"], "tiff")
+            self.assertEqual(calls, ["shared"])
+        finally:
+            server._SHARED_INPUT_DISABLED.clear()
+
+    def test_provenance_skips_git_outside_a_checkout(self):
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(server.subprocess, "run") as run:
+            self.assertIsNone(server._git_revision(Path(directory)))
+            run.assert_not_called()
+        completed = mock.Mock(stdout="abc123\n")
+        with mock.patch.object(server.subprocess, "run",
+                               return_value=completed) as run:
+            self.assertEqual(server._git_revision(ROOT), "abc123")
+            run.assert_called_once()
 
 
 class EngineSelectionContractTests(unittest.TestCase):

@@ -101,6 +101,54 @@ class WindowsSigningContractTests(unittest.TestCase):
         self.assertIn('authenticode_signed = [bool]$SigningEnabled', build)
 
 
+class WindowsRuntimeLaunchContractTests(unittest.TestCase):
+    """The embedded runtime's ``python313._pth`` implies isolated mode, so the
+    interpreter ignores every ``PYTHON*`` variable. Settings that matter must
+    travel as interpreter options, and nothing may write into the install tree
+    because the uninstaller removes only the files it shipped."""
+
+    def test_desktop_shell_launches_python_with_explicit_options(self):
+        shell = (ROOT / "windows-shell/src/main.rs").read_text()
+        self.assertIn('.arg("-u")', shell)
+        self.assertIn('.arg(format!("pycache_prefix={}", bytecode.display()))', shell)
+        self.assertNotIn("PYTHONDONTWRITEBYTECODE", shell)
+        self.assertIn('command.env("NUMBA_CACHE_DIR", paths.cache.join("compiled-runtime"))', shell)
+        self.assertIn('WebContext::new(Some(paths.support.join("WebView2")))', shell)
+        self.assertIn(".with_theme(Some(Theme::Dark))", shell)
+        self.assertIn(".with_background_color(BACKGROUND)", shell)
+
+    def test_desktop_shell_starts_servers_off_the_ui_thread_after_stopping_the_last(self):
+        shell = (ROOT / "windows-shell/src/main.rs").read_text()
+        begin = shell.index("fn begin_server(")
+        self.assertLess(shell.index("previous.stop();", begin),
+                        shell.index("ServerController::start(&paths, &folder)", begin))
+        self.assertIn("thread::spawn(move || {", shell[begin:])
+        self.assertIn("load_html(LOADING_PAGE)", shell[begin:])
+        self.assertIn("if generation != self.launch_generation {", shell)
+        self.assertIn("self.queued = Some(folder);", shell)
+
+    def test_explorer_and_default_application_launches_do_not_flash_consoles(self):
+        shell = (ROOT / "windows-shell/src/main.rs").read_text()
+        self.assertIn('.raw_arg(format!("/select,\\"{}\\"", path.display()))', shell)
+        self.assertNotIn('Command::new("explorer.exe")\n        .arg(format!("/select,{}"', shell)
+        self.assertIn('.args(["/C", "start", "", path])\n            .creation_flags(CREATE_NO_WINDOW)', shell)
+
+    def test_cli_wrapper_caches_bytecode_outside_the_installation(self):
+        wrapper = (ROOT / "scripts/windows/lighttable.cmd").read_text()
+        self.assertIn('-X "pycache_prefix=%LIGHTTABLE_BYTECODE%"', wrapper)
+        self.assertNotIn(" -B ", wrapper)
+        self.assertIn(r"%LOCALAPPDATA%\LightTable\python-bytecode", wrapper)
+
+    def test_resident_engine_reads_windows_named_file_mappings(self):
+        engine = (ROOT / "rust-engine/src/main.rs").read_text()
+        self.assertIn("#[cfg(windows)]\nfn load_shared_input", engine)
+        for symbol in ("OpenFileMappingW", "MapViewOfFile", "UnmapViewOfFile",
+                       "VirtualQuery", "CloseHandle"):
+            self.assertIn(symbol, engine)
+        self.assertIn("#[cfg(not(any(unix, windows)))]\nfn load_shared_input", engine)
+        self.assertIn("#[cfg(all(test, windows))]\nmod windows_shared_input_tests", engine)
+
+
 @unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
 class WindowsSigningGateTests(unittest.TestCase):
     def invoke(self, script, *arguments, certificate=None, password=None):
