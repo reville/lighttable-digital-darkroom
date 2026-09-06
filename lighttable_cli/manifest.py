@@ -48,7 +48,7 @@ ROUTE_COVERAGE = {
     "collections / stacks / virtual-copy": [
         "/api/catalog/collections", "/api/library"],
     "keywords": ["/api/catalog/keywords", "/api/state"],
-    "metadata": ["/api/metadata", "/api/metadata/bulk", "/api/exif"],
+    "metadata / api post": ["/api/metadata", "/api/metadata/bulk", "/api/metadata/capture-time", "/api/exif"],
     "history": ["/api/history", "/api/history/state", "/api/history/clear"],
     "versions": ["/api/state"],
     "film / schema": ["/api/options"],

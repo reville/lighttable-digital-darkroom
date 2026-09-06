@@ -51,7 +51,7 @@ function harness({manual = false} = {}) {
     SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
     cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
-    PRESET_BROWSER: null, METADATA: null,
+    PRESET_BROWSER: null, METADATA: null, CAPTURE_TIME: null,
     HISTORY: {
       record: (name, label, state) => history.push(plain({name, label, state})),
       refresh: noop,

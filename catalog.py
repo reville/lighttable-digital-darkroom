@@ -57,7 +57,7 @@ RELINK_CANDIDATE_LIMIT = 24
 
 # Filters accept these sort fields; anything else falls back to capture time.
 SORT_FIELDS = {
-    "capture": "COALESCE(f.capture_time, f.mtime_iso)",
+    "capture": "julianday(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso))",
     "name": "f.filename COLLATE NOCASE",
     "rating": "s.rating",
     "status": "s.status",
@@ -1552,6 +1552,9 @@ class Catalog:
             out[key] = _json_or(raw)
         out["keywords"] = self.keywords_for(image_id)
         out["versions"] = self.versions_for(image_id)
+        capture = self.capture_details(image_id)
+        if capture and capture["override"] is not None:
+            out["captureTimeOverride"] = capture["override"]
         return out
 
     def save_state(self, image_id: int, entry: dict) -> None:
@@ -1597,6 +1600,12 @@ class Catalog:
             " WHERE image_id=?", (*values, image_id))
         if "keywords" in entry:
             self._set_keywords(conn, image_id, entry["keywords"] or [])
+        if "captureTimeOverride" in entry:
+            import capture_time
+            value = capture_time.normalized_timestamp(entry["captureTimeOverride"])
+            row = conn.execute("SELECT file_id FROM images WHERE id=?", (image_id,)).fetchone()
+            if row:
+                self._write_capture_override(conn, row["file_id"], value)
         self._reindex(conn, image_id)
 
 
@@ -1719,6 +1728,79 @@ class Catalog:
                 self._reindex(conn, int(image["image_id"]))
                 conn.execute("UPDATE image_state SET updated_at=? WHERE image_id=?",
                              (_now(), int(image["image_id"])))
+
+    # ------------------------------------------------------- capture clock
+
+    def capture_details(self, image_id: int) -> dict | None:
+        row = self.connection.execute(
+            "SELECT f.id AS fileId, f.capture_time AS original, ct.capture_time AS override"
+            " FROM images i JOIN files f ON f.id=i.file_id"
+            " LEFT JOIN capture_overrides ct ON ct.file_id=f.id WHERE i.id=?",
+            (image_id,)).fetchone()
+        return dict(row) if row else None
+
+    def set_capture_override(self, image_id: int, value: str | None) -> None:
+        """Import a portable override without making a user history step."""
+        import capture_time
+        value = capture_time.normalized_timestamp(value)
+        info = self.capture_details(image_id)
+        if not info:
+            raise ValueError("unknown photo")
+        with self.write() as conn:
+            self._write_capture_override(conn, info["fileId"], value)
+
+    def _write_capture_override(self, conn, file_id: int, value: str | None) -> None:
+        if value is None:
+            conn.execute("DELETE FROM capture_overrides WHERE file_id=?", (file_id,))
+        else:
+            conn.execute("INSERT INTO capture_overrides(file_id,capture_time,updated_at) VALUES(?,?,?)"
+                         " ON CONFLICT(file_id) DO UPDATE SET capture_time=excluded.capture_time,"
+                         " updated_at=excluded.updated_at", (file_id, value, _now()))
+        conn.execute("UPDATE image_state SET updated_at=? WHERE image_id IN"
+                     " (SELECT id FROM images WHERE file_id=?)", (_now(), file_id))
+
+    def apply_capture_changes(self, changes: list[dict], *, label="Capture time corrected") -> list[str]:
+        """Compare-and-set one reviewed batch with reversible history atomically."""
+        import capture_time
+        import zlib
+        if not changes or len(changes) > capture_time.MAX_BATCH * 2:
+            raise ValueError("No capture-time changes, or selection is too large")
+        normalized, seen = [], set()
+        for item in changes:
+            file_id = int(item["fileId"])
+            if file_id in seen:
+                raise ValueError("Duplicate photo in capture-time batch")
+            seen.add(file_id)
+            normalized.append({**item, "after": capture_time.normalized_timestamp(item["after"])})
+        affected = []
+        with self.write() as conn:
+            for item in normalized:
+                row = conn.execute(
+                    "SELECT f.capture_time, ct.capture_time AS override FROM files f"
+                    " LEFT JOIN capture_overrides ct ON ct.file_id=f.id WHERE f.id=?",
+                    (item["fileId"],)).fetchone()
+                if (not row or row["override"] != item["beforeOverride"]
+                        or row["capture_time"] != item["original"]):
+                    raise ValueError("Capture time changed since preview. Preview again before applying.")
+            for item in normalized:
+                members = conn.execute(
+                    "SELECT i.id, i.copy_ident, f.relpath, f.source_id FROM images i"
+                    " JOIN files f ON f.id=i.file_id WHERE f.id=?", (item["fileId"],)).fetchall()
+                for member in members:
+                    for step_label, value in (("Before capture time correction", item["beforeOverride"]),
+                                              (label, item["after"])):
+                        blob = zlib.compress(json.dumps({"captureTimeOnly": True,
+                            "captureTimeOverride": value}).encode(), 6)
+                        seq = conn.execute("SELECT COALESCE(MAX(seq),0)+1 FROM history WHERE image_id=?",
+                                           (member["id"],)).fetchone()[0]
+                        conn.execute("INSERT INTO history(image_id,seq,created,label,origin,state_blob)"
+                                     " VALUES(?,?,?,?,?,?)", (member["id"], seq, _now(), step_label,
+                                                               "capture-time", blob))
+                        conn.execute("DELETE FROM history WHERE image_id=? AND seq<=?",
+                                     (member["id"], seq - 200))
+                    affected.append(qualified_name(member["source_id"], member["relpath"], member["copy_ident"]))
+                self._write_capture_override(conn, item["fileId"], item["after"])
+        return affected
 
     # ---------------------------------------------------------------- IPTC
 
@@ -1894,7 +1976,7 @@ class Catalog:
             ])
         date_from, date_to = flt.get("dateFrom"), flt.get("dateTo")
         if date_from:
-            where.append("COALESCE(f.capture_time, f.mtime_iso) >= ?")
+            where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) >= ?")
             params.append(str(date_from))
         if date_to:
             bound = str(date_to)
@@ -1903,9 +1985,9 @@ class Catalog:
                 # of day, so comparing the full text excluded everything shot
                 # after midnight on the last day.
                 where.append(
-                    "substr(COALESCE(f.capture_time, f.mtime_iso), 1, 10) <= ?")
+                    "substr(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso), 1, 10) <= ?")
             else:
-                where.append("COALESCE(f.capture_time, f.mtime_iso) <= ?")
+                where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) <= ?")
             params.append(bound)
         query_text = " ".join(str(flt.get("query", "")).split())
         if query_text:
@@ -1933,6 +2015,7 @@ class Catalog:
                 " JOIN files f ON f.id=i.file_id"
                 " JOIN sources src ON src.id=f.source_id"
                 " LEFT JOIN image_state s ON s.image_id=i.id"
+                " LEFT JOIN capture_overrides ct ON ct.file_id=f.id"
                 f" WHERE {clause}")
         total = self.connection.execute(
             f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
@@ -1945,7 +2028,8 @@ class Catalog:
         rows = self.connection.execute(
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
-            " f.mtime_ns, f.capture_time, f.mtime_iso, f.header_hash,"
+            " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
+            " f.mtime_iso, f.header_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
             " f.orientation, f.availability, f.source_id, src.path AS source_path,"
             " COALESCE(s.status,'pending') AS status,"

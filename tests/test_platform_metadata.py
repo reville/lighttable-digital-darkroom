@@ -64,8 +64,9 @@ class WriteMetadataTests(unittest.TestCase):
         exif["Exif.Image.Model"] = "X-T5"
         exif["Exif.Image.Orientation"] = 6
         exif["Exif.Photo.DateTimeOriginal"] = "2026:01:02 03:04:05"
+        exif["Exif.Photo.DateTimeDigitized"] = "2026:02:03 04:05:06"
         exif["Exif.Photo.OffsetTimeOriginal"] = "+02:00"
-        exif["Exif.Photo.OffsetTimeDigitized"] = "+02:00"
+        exif["Exif.Photo.OffsetTimeDigitized"] = "+01:00"
         exif["Exif.Photo.SubSecTimeOriginal"] = "125"
         exif["Exif.Photo.ISOSpeedRatings"] = 400
         exif["Exif.GPSInfo.GPSLatitudeRef"] = "N"
@@ -96,7 +97,7 @@ class WriteMetadataTests(unittest.TestCase):
                 self.assertEqual(exif["Exif.Photo.DateTimeOriginal"],
                                  "2026:01:02 03:04:05")
                 self.assertEqual(exif["Exif.Photo.OffsetTimeOriginal"], "+02:00")
-                self.assertEqual(exif["Exif.Photo.OffsetTimeDigitized"], "+02:00")
+                self.assertEqual(exif["Exif.Photo.OffsetTimeDigitized"], "+01:00")
                 self.assertEqual(exif["Exif.Photo.SubSecTimeOriginal"], "125")
                 self.assertEqual(exif["Exif.Image.Software"], "LightTable")
                 self.assertEqual(exif["Exif.Image.Orientation"], "1")
@@ -114,6 +115,34 @@ class WriteMetadataTests(unittest.TestCase):
                                  "Places|Coast|Harbour")
                 self.assertEqual(xmp["Xmp.xmp.Rating"], "4")
                 self.assertEqual(xmp["Xmp.xmp.Label"], "Green")
+
+    def test_capture_clock_override_is_embedded_in_jpeg_and_tiff_with_zone(self):
+        source_bytes = self.source.read_bytes()
+        for fmt, suffix in (("jpeg", "jpg"), ("tif", "tif")):
+            destination = self._export(f"corrected.{suffix}", fmt, "srgb")
+            self.assertTrue(platform_image.write_metadata(destination, self.source, "all-except-location",
+                {"captureTime": "2026-01-03T04:05:06+05:30"}))
+            exif, xmp, _ = _read(destination)
+            self.assertEqual(exif["Exif.Photo.DateTimeOriginal"], "2026:01:03 04:05:06")
+            self.assertEqual(exif["Exif.Photo.OffsetTimeOriginal"], "+05:30")
+            self.assertEqual(exif["Exif.Photo.DateTimeDigitized"], "2026:02:03 04:05:06")
+            self.assertEqual(exif["Exif.Photo.OffsetTimeDigitized"], "+01:00")
+            self.assertEqual(xmp["Xmp.exif.DateTimeOriginal"], "2026-01-03T04:05:06+05:30")
+            self.assertEqual(self.source.read_bytes(), source_bytes)
+        rights = self._export("clock-private.jpg", "jpeg", "srgb")
+        self.assertTrue(platform_image.write_metadata(rights, self.source, "copyright",
+            {"captureTime": "2026-01-03T04:05:06+05:30", "copyright": "Example"}))
+        exif, xmp, _ = _read(rights)
+        self.assertNotIn("Exif.Photo.DateTimeOriginal", exif)
+        self.assertNotIn("Xmp.exif.DateTimeOriginal", xmp)
+
+    def test_capture_clock_removing_zone_clears_original_offset_only(self):
+        destination = self._export("no-zone.jpg", "jpeg", "srgb")
+        self.assertTrue(platform_image.write_metadata(destination, self.source, "all",
+            {"captureTime": "2026-01-03T04:05:06"}))
+        exif, _, _ = _read(destination)
+        self.assertNotIn("Exif.Photo.OffsetTimeOriginal", exif)
+        self.assertEqual(exif["Exif.Photo.OffsetTimeDigitized"], "+01:00")
 
     def test_icc_profile_survives_the_rewrite(self):
         cases = (("keep.jpg", "jpeg", "display_p3"),
