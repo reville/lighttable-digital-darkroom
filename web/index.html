@@ -685,9 +685,9 @@
             <label class="field"><span>Assign time zone</span><input id="captureTimeZone" type="text" placeholder="Keep existing; or -04:00, +05:30" maxlength="6"></label>
             <p class="hint">Assigning a zone does not also shift the clock. Use “remove” to clear an incorrect offset.</p>
             <label class="check-row"><input id="captureIncludePairs" type="checkbox"><span>Include RAW + JPEG companions</span></label>
-            <div class="btnrow stack-gap"><button id="captureTimePreview">Preview selection</button><button id="captureTimeReset" class="quiet">Restore camera times…</button></div>
+            <div class="btnrow stack-gap capture-time-actions"><button id="captureTimePreview">Preview selection</button><button id="captureTimeReset" class="quiet">Restore camera times…</button></div>
             <div id="captureTimeStatus" class="capture-time-status" role="status" aria-live="polite">Select photos, choose a correction, then preview.</div>
-            <div class="btnrow stack-gap"><button id="captureTimeApply" class="accent-btn" disabled>Apply previewed changes</button><button id="captureTimeUndo" disabled>Undo last correction</button></div>
+            <div class="btnrow stack-gap capture-time-actions"><button id="captureTimeApply" class="accent-btn" disabled>Apply previewed changes</button><button id="captureTimeUndo" disabled>Undo last correction</button></div>
           </div></details>
           <details class="info-section"><summary>Description</summary><div class="info-section-body">
             <label class="field"><span>Title</span><input id="iptcTitle" type="text" maxlength="200"></label>

@@ -32,7 +32,7 @@ export function installCaptureTime(ctx) {
       if (result?.error || !result?.ok) throw Error(result?.error || 'Preview failed');
       proposal = result;
       status(`${result.count} capture${result.count===1?'':'s'} will change. Originals stay unchanged.\n`
-        + result.changes.slice(0,20).map(item=>`${item.name.split('/').pop()}: ${item.before || 'Unknown'} → ${item.after || item.original || 'Original camera time'}`).join('\n')
+        + result.changes.slice(0,20).map(item=>`${item.name.split('/').pop()}: ${item.before || 'Unknown'} → ${item.after || item.original || 'Original camera time'}${item.warning ? '\n' + item.warning : ''}`).join('\n')
         + (result.count>20 ? `\n… and ${result.count-20} more.` : '')
         + (result.skipped.length ? `\nSkipped ${result.skipped.length}: ${result.skipped.slice(0,5).map(item=>`${item.name.split('/').pop()} — ${item.reason}`).join('; ')}` : ''));
       el('captureTimeApply').disabled = !result.count;

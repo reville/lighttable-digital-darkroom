@@ -1950,3 +1950,6 @@ body { display:flex; flex-direction:column; }
 
 .capture-time-status { white-space:pre-wrap; overflow-wrap:anywhere; max-height:220px;
   overflow:auto; font-size:11px; line-height:1.5; color:var(--ink-2); margin:10px 0; }
+
+.capture-time-actions { flex-direction:column; }
+.capture-time-actions button { white-space:normal; height:auto; min-height:30px; }

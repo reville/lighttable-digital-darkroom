@@ -80,6 +80,7 @@ def preview(cat, names, resolve_id, metadata, *, shift_seconds=0, time_zone='', 
             continue
         seen.add(info['fileId'])
         try:
+            warning = None
             if reset:
                 after = None
                 before = info['override'] or info['original']
@@ -87,6 +88,8 @@ def preview(cat, names, resolve_id, metadata, *, shift_seconds=0, time_zone='', 
                     continue
             else:
                 camera = metadata(name) if info['override'] is None else {}
+                if info['override'] is None and not camera.get('DateTimeOriginal') and info['original']:
+                    warning = 'Camera capture time is missing; using the catalog date, which may be the image modification date. Confirm it before applying.'
                 before = info['override'] or camera.get('DateTimeOriginal') or info['original']
                 stamp = parse_timestamp(before)
                 if not info['override'] and stamp.tzinfo is None and camera.get('OffsetTimeOriginal'):
@@ -97,7 +100,7 @@ def preview(cat, names, resolve_id, metadata, *, shift_seconds=0, time_zone='', 
                     continue
             changes.append({'name': name, 'fileId': info['fileId'], 'before': before,
                             'after': after, 'beforeOverride': info['override'],
-                            'original': info['original']})
+                            'original': info['original'], **({'warning': warning} if warning else {})})
         except ValueError as error:
             skipped.append({'name': name, 'reason': str(error)})
     return {'ok': True, 'changes': changes, 'skipped': skipped,

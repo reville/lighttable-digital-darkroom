@@ -10238,11 +10238,14 @@ async function reconcilePeerSave(image) {
     // forever. Finish our write, then read the authoritative saved recipe.
     await editSaveQueue.flush(image.name);
     const before = JSON.stringify(image);
+    const editing = cur() === image && S.editingName === image.name;
+    const editorBefore = editing ? snapshot() : null;
     const response = await fetch(`/api/state?name=${encodeURIComponent(image.name)}`);
     const state = await response.json();
     if (!state || state.error) throw new Error(state?.error || 'Could not refresh shared edits');
     if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
-        || before !== JSON.stringify(image)) return;
+        || before !== JSON.stringify(image)
+        || (editing && (cur() !== image || S.editingName !== image.name || editorBefore !== snapshot()))) return;
     await applyServerStateEvent({names: [image.name], patch: state, origin: 'window', reconciled: true});
   } catch { /* A failed local save stays pending for the explicit Retry action. */ }
 }

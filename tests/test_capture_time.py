@@ -58,6 +58,13 @@ class CaptureWorkflowTests(CatalogServerTestCase):
     def apply(self, plan):
         return server.capture_time_action({'action':'apply','changes':plan['changes']})
 
+    def test_catalog_date_fallback_discloses_missing_camera_capture_time(self):
+        with mock.patch.object(server, 'exif_for', return_value={}):
+            plan = self.plan()
+        self.assertEqual(plan['count'], 2)
+        self.assertIn('image modification date', plan['changes'][0]['warning'])
+        self.assertFalse(self.catalog.capture_details(server.catalog_image_id(self.names[0]))['override'])
+
     def test_preview_is_read_only_then_apply_preserves_intervals_and_files(self):
         originals={name:(server.src_path(name).read_bytes(),server.src_path(name).stat().st_mtime_ns) for name in self.names}
         plan=self.plan(timeZone='+05:30')
