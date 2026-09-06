@@ -2927,8 +2927,10 @@ async function runNativeProductJourney(width, layer) {
 async function runEditRecoveryJourney() {
   const name = cur().name;
   const original = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
-  const pending = {state: {name, grade: {...GRADE_DEFAULTS,
-    ...(original.grade || {}), exposure: 0.321}}};
+  const originalGrade = {...GRADE_DEFAULTS, ...(original.grade || {})};
+  // Change only the tested edit. A state response also contains read-only
+  // provenance and unset film parameters that the server normalizes on write.
+  const pending = {state: {name, grade: {...originalGrade, exposure: 0.321}}};
   const originalFetch = window.fetch;
   let failedClose = false;
   try {
@@ -2958,7 +2960,7 @@ async function runEditRecoveryJourney() {
   if ((await editRecovery.list()).some(record => record.name === name)) {
     throw new Error('Acknowledged recovery was not removed');
   }
-  editSaveQueue.enqueue(name, {state: {name, grade: original.grade || GRADE_DEFAULTS}});
+  editSaveQueue.enqueue(name, {state: {name, grade: originalGrade}});
   if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
   window.lightTableCancelClose();
   return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
