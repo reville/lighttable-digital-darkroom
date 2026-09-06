@@ -3313,7 +3313,7 @@ def apply_preview_edits(result: dict, name: str, width: int,
 
 # --------------------------------------------------------------- export ----
 
-EXPORT = {"total": 0, "done": 0, "errors": [], "running": False, "log": []}
+EXPORT = {"total": 0, "done": 0, "errors": [], "warnings": [], "running": False, "log": []}
 EXPORT_LOCK = threading.Lock()
 EXPORT_PATH_LOCK = threading.Lock()
 EXPORT_RESERVED_PATHS: set[Path] = set()
@@ -3350,10 +3350,10 @@ def sync_job_status(status: dict, *, progress_key: str = "done",
     errors = list(status.get("errors") or [])
     if status.get("error"):
         errors.append(str(status["error"]))
-    if status.get("cancelled") or status.get("cancel_requested"):
-        state = "cancelled"
-    elif status.get("running") or status.get("active"):
+    if status.get("running") or status.get("active"):
         state = "running"
+    elif status.get("cancelled") or status.get("cancel_requested"):
+        state = "cancelled"
     elif errors:
         state = "failed"
     else:
@@ -3498,6 +3498,8 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
             metrics["input_transport"] = "shared-memory-rgb16"
             metrics["input_exchange_bytes"] = int(shared["input_shm_len"])
             return metrics
+        except RenderCancelled:
+            raise
         except Exception as shared_error:  # noqa: BLE001
             # A platform may expose POSIX shared memory yet cap a segment below
             # a large sensor frame. Retain the proven TIFF route rather than
@@ -3545,6 +3547,8 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             embed_export_metadata(dst, job)
             return dict(metrics, width=int(metrics["width"]),
                         height=int(metrics["height"]), direct_export=True)
+        except RenderCancelled:
+            raise
         except Exception as error:  # noqa: BLE001
             # A direct-path defect must never cost the user an export. Remove
             # its staged bytes and run the established high-precision path.
@@ -3555,6 +3559,9 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     film_png = CACHE / "export-film" / f"{cache_key}.tif"
     metrics = {"cached": True, "total_ms": 0.0}
     with EXPORT_FILM_LOCK:
+        cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
+        if cancelled and cancelled():
+            raise RenderCancelled("export cancelled before rendering")
         if not film_png.exists():
             staged = durable_io.temporary_path(film_png, "film")
             try:
@@ -3572,6 +3579,8 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             finally:
                 staged.unlink(missing_ok=True)
             prune_cache(film_png.parent, "*.tif", _EXPORT_FILM_CACHE_MAX_BYTES)
+    if cancelled and cancelled():
+        raise RenderCancelled("export cancelled before encoding")
     width, height = finish_export(film_png, dst, job)
     return dict(metrics, width=width, height=height,
                 direct_export=False, direct_fallback=direct_error)
@@ -3743,19 +3752,165 @@ def benchmark_export(name: str, job: dict) -> dict:
     return result
 
 
-def export_one(name: str, job: dict) -> None:
-    guard_photo(name)
-    with SESSION.inflight("export", library_workflow.source_name(name)):
-        _export_one(name, job)
+class ExportCancelled(Exception):
+    pass
 
 
-def _export_one(name: str, job: dict) -> None:
+def export_would_replace_original(destination: Path, source_name: str) -> bool:
+    path = destination.resolve()
+    source = src_path(source_name).resolve()
+    if path == source:
+        return True
+    # A RAW export next to its capture must not overwrite the camera JPEG.
+    if path.exists() and path.parent == source.parent and path.stem.casefold() == source.stem.casefold():
+        return True
+    cat = catalog_handle()
+    if path.exists() and cat is not None:
+        for row in cat.sources():
+            try:
+                relative = path.relative_to(Path(row["path"]).resolve()).as_posix()
+            except ValueError:
+                continue
+            if cat.image_id_for(int(row["id"]), relative) is not None:
+                return True
+    return False
+
+
+class ExportBatch:
+    """Keep only two workers active; this batch owns its status until cleanup."""
+    def __init__(self, items, destination):
+        self.items = iter(items)
+        self.lock = threading.RLock()
+        self.cancelled = threading.Event()
+        self.active = 0
+        self.remaining = len(items)
+        self.status = dict(total=len(items), done=0, completed=0, skipped=0,
+                           cancelledCount=0, errors=[], warnings=[], running=bool(items),
+                           cancel_requested=False, log=[], destination=str(destination))
+
+    def publish_status(self):
+        with EXPORT_LOCK:
+            if EXPORT.get("jobId") == self.status.get("jobId"):
+                EXPORT.clear()
+                EXPORT.update(self.status)
+                sync_job_status(dict(self.status))
+
+    def cancel(self):
+        with self.lock:
+            self.cancelled.set()
+            self.status["cancel_requested"] = True
+            self.status["cancelledCount"] += self.remaining
+            self.status["done"] += self.remaining
+            self.remaining = 0
+            self.publish_status()
+        return False
+
+    def check(self):
+        if self.cancelled.is_set():
+            raise ExportCancelled()
+
+    def dispatch(self):
+        with self.lock:
+            if self.cancelled.is_set() or not self.remaining:
+                return
+            name, job = next(self.items)
+            self.remaining -= 1
+            self.active += 1
+            try:
+                EXPORT_POOL.submit(export_one, name, job, self)
+            except Exception as error:
+                self.finish(name, {"error": str(error)})
+
+    def finish(self, name, outcome):
+        with self.lock:
+            self.active -= 1
+            self.status["done"] += 1
+            for key in ("completed", "skipped", "cancelledCount"):
+                self.status[key] += int(outcome.get(key, 0))
+            if outcome.get("error"):
+                self.status["errors"].append(f"{name}: {outcome['error']}")
+            if outcome.get("log"):
+                self.status["log"].append(outcome["log"])
+                self.status["log"] = self.status["log"][-200:]
+            if outcome.get("warnings"):
+                self.status["warnings"].append({
+                    "name": name, "path": outcome.get("path"),
+                    "warnings": outcome["warnings"]})
+            self.dispatch()
+            if not self.remaining and not self.active:
+                self.status["running"] = False
+                self.status["cancelled"] = self.cancelled.is_set()
+            self.publish_status()
+
+
+def _run_export_process(command, env, batch):
+    if batch is None:
+        return subprocess.run(command, capture_output=True, text=True, env=env, timeout=1800)
+    batch.check()
+    with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          text=True, env=env) as process:
+        try:
+            for _ in range(12000):
+                batch.check()
+                try:
+                    stdout, stderr = process.communicate(timeout=0.15)
+                    return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
+                except subprocess.TimeoutExpired:
+                    pass
+            raise TimeoutError("Export renderer exceeded 30 minutes")
+        except BaseException:
+            if process.poll() is None:
+                process.terminate()
+            try:
+                process.communicate(timeout=2)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.communicate()
+            raise
+
+
+def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
+    previous = getattr(RENDER_CONTEXT, "cancelled", None)
+    if batch:
+        RENDER_CONTEXT.cancelled = batch.cancelled.is_set
+    try:
+        with SESSION.inflight("export", library_workflow.source_name(name)):
+            outcome = _export_one(name, job, batch)
+    except Exception as error:
+        outcome = {"error": str(error)}
+    finally:
+        RENDER_CONTEXT.cancelled = previous
+    if batch:
+        batch.finish(name, outcome)
+    else:
+        # Preserve the direct worker entry point used by integrations.
+        with EXPORT_LOCK:
+            if outcome.get("error"):
+                EXPORT["errors"].append(f"{name}: {outcome['error']}")
+            if outcome.get("log"):
+                EXPORT["log"].append(outcome["log"])
+            EXPORT["done"] += 1
+            if EXPORT["done"] >= EXPORT["total"]:
+                EXPORT["running"] = False
+            sync_job_status(dict(EXPORT))
+
+
+def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
     dst: Path | None = None
     staged: Path | None = None
+    staged_sidecar: Path | None = None
+    outcome = {}
+    check = batch.check if batch else lambda: None
     try:
+        check()
+        guard_photo(name)
         started = time.perf_counter()
         job = dict(job)
+        job["warnings"] = list(job.get("warnings") or [])
         out_dir = Path(job["destination"])
+        if "destinationMode" in job and out_dir.resolve() != out_dir:
+            raise ValueError("The export destination changed after planning; preview it again")
+        out_dir = out_dir.resolve()
         out_dir.mkdir(parents=True, exist_ok=True)
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
@@ -3763,6 +3918,7 @@ def _export_one(name: str, job: dict) -> None:
         job["lensProfile"] = edits.lens_profile_for(metadata)
         job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
+        check()
         with EXPORT_PATH_LOCK:
             dst = export_workflow.collision_path(
                 requested, job.get("collision", "rename"),
@@ -3772,10 +3928,12 @@ def _export_one(name: str, job: dict) -> None:
             if dst is not None:
                 EXPORT_RESERVED_PATHS.add(dst)
         if dst is None:
-            with EXPORT_LOCK:
-                EXPORT["log"].append(f"{name} skipped (file already exists)")
-            return
+            outcome = {"skipped": 1, "log": f"{name} skipped (file already exists)"}
+            return outcome
+        if export_would_replace_original(dst, name):
+            raise ValueError("An export cannot replace a cataloged original or its capture companion")
         staged = durable_io.temporary_path(dst, "export")
+        check()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
             metrics = export_with_resident_engine(name, staged, job)
             detail = (f"{metrics.get('backend', 'cache')} "
@@ -3802,21 +3960,30 @@ def _export_one(name: str, job: dict) -> None:
             render_source = tiff_for(name, job["params"]) if cp["profile_enabled"] \
                 else neutral_tiff_for(name, job["params"])
             try:
-                r = subprocess.run(
+                check()
+                r = _run_export_process(
                     [sys.executable, str(APP / "render_cli.py"),
-                     str(render_source), str(staged), str(jfile)],
-                    capture_output=True, text=True, env=env, timeout=1800)
+                     str(render_source), str(staged), str(jfile)], env, batch)
             finally:
                 jfile.unlink(missing_ok=True)
             if r.returncode != 0:
                 raise RuntimeError(r.stderr.strip()[-300:])
+            stdout = getattr(r, "stdout", "")
+            if isinstance(stdout, str):
+                for line in reversed(stdout.splitlines()):
+                    try:
+                        payload = json.loads(line)
+                        job["warnings"].extend(payload.get("warnings") or [])
+                        break
+                    except (ValueError, AttributeError):
+                        continue
             detail = "Python fallback"
-        if job.get("collision", "rename") == "overwrite":
-            durable_io.publish_file(staged, dst)
-        else:
-            durable_io.publish_file_no_replace(staged, dst)
-            staged.unlink(missing_ok=True)
-        staged = None
+        check()
+        if job.get("preserveCaptureTime"):
+            warning = export_workflow.apply_capture_timestamp(
+                staged, metadata, job.get("captureTimePolicy", "require-offset"))
+            if warning:
+                job["warnings"].append(warning)
         # A client delivery should not carry a machine-readable recipe next to
         # it, so the sidecar is a recipe choice rather than a fixed behaviour.
         if job.get("sidecar", True):
@@ -3834,33 +4001,55 @@ def _export_one(name: str, job: dict) -> None:
                 "outputSpace": job.get("outputSpace", "srgb"),
                 "provenance": job.get("provenance") or renderer_provenance(),
             }
+            staged_sidecar = durable_io.temporary_path(sidecar, "export-sidecar")
+            durable_io.atomic_write_json(staged_sidecar, sidecar_payload, indent=2)
+        # Cancellation and publication share a short critical section. Once
+        # publication starts, this complete output survives later cancellation.
+        publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
+        with publish_lock:
+            check()
+            if dst.parent.resolve() != out_dir:
+                raise ValueError("The export destination moved while rendering; nothing was published")
+            if export_would_replace_original(dst, name):
+                raise ValueError("The destination is an original photo; export was not published")
             if job.get("collision", "rename") == "overwrite":
-                durable_io.atomic_write_json(
-                    sidecar, sidecar_payload, indent=2)
+                durable_io.publish_file(staged, dst)
             else:
-                durable_io.atomic_create_json(
-                    sidecar, sidecar_payload, indent=2)
-        with EXPORT_LOCK:
-            elapsed = time.perf_counter() - started
-            EXPORT["log"].append(
-                f"{name} -> {dst.name} ({elapsed:.1f}s, {detail})")
-    except Exception as e:  # noqa: BLE001
-        with EXPORT_LOCK:
-            EXPORT["errors"].append(f"{name}: {e}")
+                durable_io.publish_file_no_replace(staged, dst)
+                staged.unlink(missing_ok=True)
+            staged = None
+            if staged_sidecar is not None:
+                try:
+                    if job.get("collision", "rename") == "overwrite":
+                        durable_io.publish_file(staged_sidecar, sidecar)
+                    else:
+                        durable_io.publish_file_no_replace(staged_sidecar, sidecar)
+                except OSError as error:
+                    job["warnings"].append(f"Photo exported, but its recipe sidecar could not be saved: {error}")
+        elapsed = time.perf_counter() - started
+        outcome = {"completed": 1, "path": str(dst), "warnings": list(dict.fromkeys(job["warnings"])),
+                   "log": f"{name} -> {dst.name} ({elapsed:.1f}s, {detail})"}
+    except (ExportCancelled, RenderCancelled):
+        outcome = {"cancelledCount": 1}
+    except Exception as error:
+        outcome = {"error": str(error)}
     finally:
-        if staged is not None:
-            staged.unlink(missing_ok=True)
+        for temporary in (staged, staged_sidecar):
+            if temporary is not None:
+                try:
+                    temporary.unlink(missing_ok=True)
+                except OSError as error:
+                    outcome["error"] = f"Could not remove incomplete export {temporary}: {error}"
         if dst is not None:
             with EXPORT_PATH_LOCK:
                 EXPORT_RESERVED_PATHS.discard(dst)
-        with EXPORT_LOCK:
-            EXPORT["done"] += 1
-            if EXPORT["done"] >= EXPORT["total"]:
-                EXPORT["running"] = False
-            sync_job_status(dict(EXPORT))
         cat = catalog_handle()
         if cat is not None:
-            cat.close()
+            try:
+                cat.close()
+            except Exception as error:
+                outcome["error"] = f"Could not close export catalog connection: {error}"
+    return outcome
 
 
 def export_candidates() -> list[tuple[str, dict, str]]:
@@ -3919,9 +4108,9 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
         target_names = {str(x) for x in (opts.get("selected") or [])}
 
     items = []
-    destination = export_workflow.resolve_destination(
-        FOLDER, opts.get("destination", EXPORT_DIR_NAME))
     recipe = export_workflow.clean_recipe(opts)
+    destination = export_workflow.resolve_destination(
+        FOLDER, recipe["destination"])
     default_params, default_grade = effective_new_photo_defaults()
     for n, e, export_base_name in export_candidates():
         if target_names is not None:
@@ -3933,6 +4122,12 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             continue
         elif which == "all" and e["status"] == "skipped":
             continue
+        item_destination = destination
+        if recipe["destinationMode"] != "fixed":
+            source, source_id, _, _ = resolve_name(n)
+            root = source_root(source_id) if source_id is not None else FOLDER
+            item_destination = export_workflow.photo_destination(
+                recipe, library_root=FOLDER, source=source, source_root=root)
         items.append((n, {
             "params": e["params"] or default_params,
             "grade": e["grade"] or default_grade,
@@ -3946,7 +4141,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "engine": opts.get("engine", "rs"),
             "outputSpace": color_pipeline.normalise_output_space(
                 recipe["outputSpace"]),
-            "destination": str(destination),
+            "destination": str(item_destination),
+            "destinationMode": recipe["destinationMode"],
+            "preserveCaptureTime": recipe["preserveCaptureTime"],
+            "captureTimePolicy": recipe["captureTimePolicy"],
             "filenameTemplate": recipe["filenameTemplate"],
             "collision": recipe["collision"],
             "rating": e["rating"],
@@ -3958,6 +4156,22 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "watermark": recipe.get("watermark"),
             "sourceName": n,
         }))
+    if target_names is None and opts.get("pairView") in ("raw", "jpeg"):
+        groups = {}
+        for name, _job in items:
+            path, source_id, _, copy_ident = resolve_name(name)
+            if copy_ident or (not is_raw(name) and path.suffix.lower() not in (".jpg", ".jpeg")):
+                continue
+            key = (source_id, str(path.parent), path.stem.casefold())
+            groups.setdefault(key, []).append((name, is_raw(name)))
+        hidden = set()
+        for group in groups.values():
+            if len(group) == 2 and sum(raw for _, raw in group) == 1:
+                hidden.update(name for name, raw in group
+                              if raw != (opts["pairView"] == "raw"))
+        items = [item for item in items if item[0] not in hidden]
+        for index, (_, job) in enumerate(items):
+            job["sequence"] = index + 1
     if opts.get("names"):
         order = {str(name): i for i, name in enumerate(opts["names"])}
         items.sort(key=lambda item: order.get(item[0], 999999))
@@ -3975,8 +4189,8 @@ def export_requested_path(name: str, job: dict, metadata: dict) -> Path:
                  "heif": "heic", "heic": "heic"}.get(
                      job.get("format", "jpeg"), "jpg")
     context = {
-        "filename": str(job.get("exportBaseName") or
-                        Path(library_workflow.source_name(name)).with_suffix("")),
+        "filename": Path(str(job.get("exportBaseName") or
+                        Path(library_workflow.source_name(name)).with_suffix(""))).name,
         "stock": stock, "rating": job.get("rating", 0),
         "date": str(metadata.get("DateTimeOriginal", "")).split(" ", 1)[0],
         "sequence": job.get("sequence", 1),
@@ -4016,6 +4230,8 @@ def preview_export(opts: dict) -> dict:
         "total": len(items), "destination": str(destination),
         "collision": export_workflow.clean_recipe(opts)["collision"],
         "sample": None,
+        "samples": [],
+        "destinationMode": opts.get("destinationMode", "fixed"),
         "note": "Example for the first photo. Names may change if destination files change before export.",
     }
     if not items:
@@ -4041,26 +4257,40 @@ def preview_export(opts: dict) -> dict:
     except Exception:  # Header support can differ from the full decoder.
         sample["dimensionsNote"] = "Dimensions will be available after rendering."
     result["sample"] = sample
+    result["samples"].append(sample)
+    # Include examples from distinct destinations, so multi-source behavior is
+    # reviewable before an export creates any directories.
+    shown = {job["destination"]}
+    for other_name, other_job in items[1:]:
+        if other_job["destination"] in shown:
+            continue
+        other_path = export_requested_path(other_name, other_job, exif_for(other_name))
+        result["samples"].append({"name": other_name, "path": str(other_path),
+                                  "filename": other_path.name})
+        shown.add(other_job["destination"])
+        if len(shown) == 3:
+            break
+    result["destinationCount"] = len({job["destination"] for _, job in items})
     return result
 
 
 def start_export(opts: dict) -> dict:
     """Queue the same authoritative selection used by the export preview."""
     items, destination = prepare_export(opts)
-    SESSION_EXPORT_DESTINATIONS.add(destination)
+    SESSION_EXPORT_DESTINATIONS.update(Path(job["destination"]) for _, job in items)
+    batch = ExportBatch(items, destination)
     with EXPORT_LOCK:
         if EXPORT["running"]:
-            return {"error": "export already running",
-                    "jobId": EXPORT.get("jobId")}
+            return {"error": "export already running", "jobId": EXPORT.get("jobId")}
         record = JOBS.create("export", total=len(items),
                              state="running" if items else "done",
-                             result={"destination": str(destination)})
-        EXPORT.update(total=len(items), done=0, errors=[],
-                      running=bool(items), log=[], jobId=record["id"])
-    for name, job in items:
-        EXPORT_POOL.submit(export_one, name, job)
-    return {"queued": len(items), "destination": str(destination),
-            "jobId": record["id"]}
+                             result={"destination": str(destination)}, cancel=batch.cancel)
+        batch.status["jobId"] = record["id"]
+        EXPORT.clear()
+        EXPORT.update(batch.status)
+    batch.dispatch()
+    batch.dispatch()
+    return {"queued": len(items), "destination": str(destination), "jobId": record["id"]}
 
 
 def _merge_source_path(name: str, st: dict) -> Path:

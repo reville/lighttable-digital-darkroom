@@ -80,6 +80,8 @@ class ExportWorkflowTests(unittest.TestCase):
         self.assertFalse(recipe["watermark"]["enabled"])
 
     def test_unknown_metadata_policy_falls_back(self):
+        self.assertEqual(export_workflow.clean_recipe({"metadata": False})["metadata"], "none")
+        self.assertEqual(export_workflow.clean_recipe({"metadata": True})["metadata"], "all")
         self.assertEqual(
             export_workflow.clean_recipe({"metadata": "everything"})["metadata"],
             "all-except-location")

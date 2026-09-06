@@ -63,7 +63,7 @@
     <button class="quiet icon-btn" id="redoBtn" title="Redo (Ctrl/⌘Shift+Z)" aria-label="Redo" disabled hidden>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5 4 4-4 4M15.5 9H8a4 4 0 0 0-4 4"/></svg>
     </button>
-    <span id="estat"></span>
+    <span id="estat" role="status" aria-live="polite"></span><button class="quiet compact" id="exportCancel" hidden>Cancel export</button><button class="quiet compact" id="exportDetails" hidden>Export details</button>
     <span id="editSaveStatus" role="status" aria-live="polite"></span><button class="quiet compact" id="retryEditSave" hidden>Retry save</button>
     <button class="accent-btn icon-btn topbar-export-btn" id="exportBtn" title="Export photos" aria-label="Export photos">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V2M6 6l4-4 4 4M4 10v6h12v-6"/></svg>
@@ -708,12 +708,15 @@
           <div class="row"><span class="name">Quality</span><input type="range" id="exQuality" min="60" max="100" step="1" value="92"><span class="val" id="exQualityV">92</span></div>
           <label class="field-label" for="exSize">Dimensions</label><select id="exSize"><option value="">Full size</option><option value="4000">Long edge · 4000 px</option><option value="2560">Long edge · 2560 px</option><option value="2048">Long edge · 2048 px</option><option value="1600">Long edge · 1600 px</option></select>
           <label class="field-label" for="exColorSpace">Colour space</label><select id="exColorSpace"><option value="srgb">sRGB · web/default</option><option value="display_p3">Display P3</option><option value="prophoto">ProPhoto RGB · archive</option></select>
-          <label class="field-label" for="exDestination">Destination</label>
+          <label class="field full-width"><span>Destination layout</span><select id="exDestinationMode"><option value="fixed">One destination folder</option><option value="original-folder-relative">Subfolder beside each original</option><option value="preserve-source-hierarchy">Keep source folder hierarchy</option></select></label><label class="field-label" for="exDestination">Destination</label>
           <div class="path-field"><input id="exDestination" value="film-exports" spellcheck="false"><button class="quiet compact" id="exChooseDestination">Choose…</button></div>
           <label class="field-label" for="exFilenameTemplate">Filename template</label><input id="exFilenameTemplate" value="{filename}_{stock}" spellcheck="false">
           <p class="hint">Tokens: {filename}, {stock}, {rating}, {date}, {sequence}</p>
           <label class="field-label" for="exCollision">Existing files</label><select id="exCollision"><option value="rename">Keep both · add a number</option><option value="skip">Skip existing</option><option value="overwrite">Overwrite</option></select>
-          <p class="hint">TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile.</p>
+          <label class="field full-width"><span>Metadata</span><select id="exMetadata"><option value="all-except-location">All except location</option><option value="all">All metadata</option><option value="copyright">Copyright only</option><option value="none">No metadata</option></select></label>
+ <label class="field full-width"><span>Recipe sidecar</span><select id="exSidecar"><option value="true">Write beside exported photo</option><option value="false">Do not write</option></select></label>
+ <label class="field full-width"><span>File timestamp</span><select id="exPreserveCaptureTime"><option value="false">Time of export</option><option value="true">Original capture time</option></select></label>
+ <label class="field full-width"><span>If capture timezone is missing</span><select id="exCaptureTimePolicy"><option value="require-offset">Keep export time and report a warning</option><option value="local">Use this computer’s local timezone</option></select></label><p class="hint">TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile.</p>
           <button class="accent-btn full export-run" id="exportBtn2">Export photos</button>
           <div class="subheading">Rendering</div>
           <label class="field-label" for="engine">Film engine</label><select id="engine"><option value="rs">Rust / GPU (fast)</option><option value="py">Python (reference)</option></select>
@@ -1118,7 +1121,7 @@
         </select>
       </label>
 
-      <label class="field full-width">
+      <label class="field full-width"><span>Destination layout</span><select id="modalExDestinationMode"><option value="fixed">One destination folder</option><option value="original-folder-relative">Subfolder beside each original</option><option value="preserve-source-hierarchy">Keep source folder hierarchy</option></select></label><label class="field full-width">
         <span>Destination folder</span>
         <div class="path-field">
           <input id="modalExDestination" value="film-exports" spellcheck="false">
@@ -1147,7 +1150,10 @@
           <option value="overwrite">Overwrite</option>
         </select>
       </label>
-      <p class="hint">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
+      <label class="field full-width"><span>Metadata</span><select id="modalExMetadata"><option value="all-except-location">All except location</option><option value="all">All metadata</option><option value="copyright">Copyright only</option><option value="none">No metadata</option></select></label>
+ <label class="field full-width"><span>Recipe sidecar</span><select id="modalExSidecar"><option value="true">Write beside exported photo</option><option value="false">Do not write</option></select></label>
+ <label class="field full-width"><span>File timestamp</span><select id="modalExPreserveCaptureTime"><option value="false">Time of export</option><option value="true">Original capture time</option></select></label>
+ <label class="field full-width"><span>If capture timezone is missing</span><select id="modalExCaptureTimePolicy"><option value="require-offset">Keep export time and report a warning</option><option value="local">Use this computer’s local timezone</option></select></label><p class="hint">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
       </div></details>
     </div>
 
@@ -1157,6 +1163,7 @@
     </div>
   </div>
 </div>
+<div class="modal-backdrop" id="exportResultDialog" aria-hidden="true"><div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="exportResultTitle"><strong id="exportResultTitle">Export details</strong><pre id="exportResultText" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:60vh;overflow:auto"></pre><div class="modal-actions"><button id="exportResultClose">Done</button></div></div></div>
 <div class="context-menu" id="folderMenu" role="menu" aria-hidden="true"></div>
 <div class="modal-backdrop" id="healthDialog" aria-hidden="true">
   <div class="modal modal-wide health-modal" role="dialog" aria-labelledby="healthTitle">

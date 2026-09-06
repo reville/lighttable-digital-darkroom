@@ -29,6 +29,26 @@ lighttable export run @selection --destination ~/Pictures/Exports
 lighttable ui command nextPhoto
 ```
 
+## Export delivery
+
+`--destination-mode fixed` writes into one destination folder (the default).
+`original-folder-relative` treats `--destination` as a subfolder beside each
+original. `preserve-source-hierarchy` retains folders beneath stable source
+namespaces, so two sources named Photos cannot collide. Single and batch
+exports follow the same rules; `/api/export/preview` returns sample paths.
+
+`--preserve-capture-time` sets file times from EXIF capture time. An embedded
+timezone offset wins. Without one, the default preserves export time and
+reports a warning; `--capture-time-policy local` explicitly uses this
+computer's timezone at the capture date, including daylight saving time.
+`--metadata` selects all, all-except-location, copyright, or none;
+`--no-sidecar` omits the delivery recipe sidecar.
+
+Use `--no-wait` to get a job ID, then `lighttable jobs cancel ID` to stop it.
+Cancellation stops queueing and waits for active work to clean up. Completed
+outputs survive. The job becomes terminal only after cleanup; its result
+records completed, skipped, cancelledCount and per-file warnings.
+
 ## Route coverage
 
 | Command family | API routes |
