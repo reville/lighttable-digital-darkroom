@@ -708,20 +708,15 @@ process.stdout.write(JSON.stringify({
 
     def test_native_traffic_lights_match_the_unified_header_geometry(self):
         shell = (ROOT / "app" / "main.swift").read_text()
-        self.assertIn("static let trafficLightClearance: CGFloat = 78", shell)
-        self.assertNotIn("trafficLightLeadingInset", shell)
-        self.assertNotIn("trafficLightSpacing", shell)
-        self.assertIn(
-            "let nativeHorizontalOrigins = buttons.map { $0.frame.origin.x }",
-            shell,
-        )
-        self.assertIn(
-            "for (button, nativeX) in zip(buttons, nativeHorizontalOrigins)",
-            shell,
-        )
-        self.assertIn("button.controlSize = .regular", shell)
-        self.assertIn("let centerFromTop = WindowChrome.topBarHeight / 2", shell)
-        self.assertIn("layoutTrafficLights()", shell)
+        self.assertIn('reference.toolbarStyle = .unified', shell)
+        self.assertIn('reference.standardWindowButton($0)?.frame', shell)
+        self.assertIn('return ceil(last.maxX + first.minX)', shell)
+        self.assertIn('zip(buttons, WindowChrome.nativeTrafficLightFrames)', shell)
+        self.assertNotIn('button.sizeToFit()', shell)
+        self.assertIn('let centerFromTop = WindowChrome.topBarHeight / 2', shell)
+        self.assertIn('func windowDidUpdate', shell)
+        self.assertIn('guard !window.styleMask.contains(.fullScreen)', shell)
+        self.assertIn('layoutTrafficLights()', shell)
 
     def test_native_menu_bar_uses_editor_commands_and_state(self):
         shell = (ROOT / "app" / "main.swift").read_text()
