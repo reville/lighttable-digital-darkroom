@@ -50,6 +50,9 @@ test('unrecoverable object intent, painted AI refinements and detector errors re
   await assert.rejects(regenerateTransferMasks([{type:'object'}],async()=>assert.fail()),/new object selection/);
   await assert.rejects(regenerateTransferMasks([{components:[{type:'subject'},{type:'brush',strokes:[]}]}],async()=>assert.fail()),/painted refinements/);
   await assert.rejects(regenerateTransferMasks([{type:'subject'}],async()=>({error:'Model unavailable'})),/Model unavailable/);
+  for (const key of ['addStrokes','subtractStrokes','intersectStrokes']) {
+    await assert.rejects(regenerateTransferMasks([{type:'subject',[key]:[{points:[[.3,.4]]}]}],async()=>assert.fail()),/painted refinements/);
+  }
   const masks=[{type:'brush',strokes:[{points:[[.3,.4]]}]}];
   assert.deepEqual(await regenerateTransferMasks(masks,async()=>assert.fail()),masks);
   assert.deepEqual(await regenerateTransferMasks([{type:'object'}],async()=>assert.fail(),{samePhoto:true}),[{type:'object'}]);

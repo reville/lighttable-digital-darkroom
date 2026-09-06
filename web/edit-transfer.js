@@ -73,7 +73,8 @@ export async function regenerateTransferMasks(masks, generate, { samePhoto = fal
   for (const mask of result) {
     const components = mask.components?.length ? mask.components : [mask];
     const smart = components.some(component => !MANUAL_MASKS.has(component.type));
-    if (smart && components.some(component => component.type === 'brush')) {
+    if (smart && (components.some(component => component.type === 'brush') ||
+        ['addStrokes', 'subtractStrokes', 'intersectStrokes'].some(key => mask[key]?.length))) {
       throw new Error(`“${mask.name || 'Mask'}” has painted refinements. Recreate it on this photo or exclude masks.`);
     }
     for (const component of components) {
