@@ -1,5 +1,7 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
 
+use lighttable_desktop_shell::CloseAttempts;
+
 use std::{
     env,
     fs::{self, File},
@@ -183,6 +185,7 @@ struct AppState {
     journal: std::sync::mpsc::Sender<Value>,
     close_deadline: Option<Instant>,
     close_approved: bool,
+    close_attempts: CloseAttempts,
 }
 
 impl AppState {
@@ -195,10 +198,14 @@ impl AppState {
 
     fn finish_close(&mut self, saved: bool) {
         self.close_deadline = None;
+        self.close_attempts.cancel();
         self.close_approved = saved || MessageDialog::new()
             .set_level(MessageLevel::Warning).set_title("Edits have not been saved")
             .set_description("Quit anyway? Keep the window open to retry saving. Available local recovery will be offered next time this catalog opens.")
             .set_buttons(MessageButtons::YesNo).show() == rfd::MessageDialogResult::Yes;
+        if !self.close_approved {
+            let _ = self.send_event(json!({"type": "closeCancelled"}));
+        }
     }
 
     fn send_sources(&self) -> Result<()> {
@@ -247,7 +254,9 @@ impl AppState {
                     .context("edit recovery worker stopped")?;
             }
             "closeReady" => {
-                if self.close_deadline.is_some() {
+                if self.close_deadline.is_some()
+                    && self.close_attempts.accepts(message["attempt"].as_u64())
+                {
                     self.finish_close(message["ok"].as_bool() == Some(true));
                 }
             }
@@ -723,6 +732,7 @@ fn run() -> Result<()> {
         journal: journal_tx,
         close_deadline: None,
         close_approved: false,
+        close_attempts: CloseAttempts::default(),
     };
 
     event_loop.run(move |event, _, control_flow| {
@@ -748,7 +758,9 @@ fn run() -> Result<()> {
             } => {
                 if app.close_deadline.is_none() {
                     app.close_deadline = Some(Instant::now() + Duration::from_secs(12));
-                    let _ = app.webview.evaluate_script("Promise.resolve(window.lightTablePrepareToClose?.() ?? true).then(ok => window.lightTableNativeBridge.postMessage({action:'closeReady',ok})).catch(() => window.lightTableNativeBridge.postMessage({action:'closeReady',ok:false}))");
+                    let attempt = app.close_attempts.begin();
+                    let script = "Promise.resolve(window.lightTablePrepareToClose?.() ?? true).then(ok => window.lightTableNativeBridge.postMessage({action:'closeReady',attempt:__ATTEMPT__,ok})).catch(() => window.lightTableNativeBridge.postMessage({action:'closeReady',attempt:__ATTEMPT__,ok:false}))".replace("__ATTEMPT__", &attempt.to_string());
+                    let _ = app.webview.evaluate_script(&script);
                 }
             }
             Event::MainEventsCleared => {

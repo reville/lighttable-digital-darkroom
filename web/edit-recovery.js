@@ -70,3 +70,10 @@ export function recoveryPayloadMatches(payload, saved) {
   return Object.entries(payload?.state || {}).every(([key, value]) =>
     key === 'name' || equal(value, saved?.[key]));
 }
+
+// The photo and its persistent history have independent acknowledgements.
+export function recoveryAcknowledged(payload, saved) {
+  if (!recoveryPayloadMatches(payload, saved)) return false;
+  return !payload.history || saved._recoveryHistoryAvailable === false
+    || recoveryPayloadMatches({state: payload.history.state}, saved._recoveryHistory);
+}
