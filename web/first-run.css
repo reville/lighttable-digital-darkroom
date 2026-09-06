@@ -1,0 +1,53 @@
+/* A calm introduction, using the same surfaces and accent as the editor. */
+.setup-backdrop { z-index:1200; padding:24px; background:rgba(12,12,12,.88); backdrop-filter:blur(12px); }
+.setup-window { width:600px; max-width:100%; max-height:calc(100dvh - 48px); overflow:auto; border:1px solid var(--line-strong); border-radius:16px; background:#222; box-shadow:0 24px 90px #0006; padding:38px 40px 22px; color:var(--ink); font:14px/1.55 var(--ui); }
+.setup-backdrop.on .setup-window { animation:setup-enter .22s ease-out; }
+.setup-brand { display:flex; align-items:center; gap:11px; font-size:18px; font-weight:600; letter-spacing:-.4px; margin-bottom:30px; }
+.setup-mark { width:30px; height:30px; color:var(--accent); }
+.setup-window h1,.setup-window h2 { margin:0 0 9px; font-size:28px; line-height:1.2; letter-spacing:-.8px; font-weight:600; color:#f3f3f3; outline:none; }
+.setup-window h2 { font-size:26px; }
+.setup-intro { color:#adadad; margin:0 0 26px; font-size:14px; line-height:1.6; }
+.setup-options { display:flex; flex-direction:column; border-top:1px solid var(--line); margin:0 0 22px; }
+.setup-option { border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; box-shadow:none; color:var(--ink); height:auto; min-height:90px; padding:20px 10px; display:flex; align-items:center; gap:18px; text-align:left; width:100%; transition:background .15s, padding .15s; }
+.setup-option:hover { background:#2b2b2b; padding-left:16px; }
+.setup-option-icon { width:38px; height:38px; flex-shrink:0; color:#c5c5c5; display:grid; place-items:center; }
+.setup-option-icon svg { width:29px; height:29px; }
+.setup-option-icon.setup-lr { font-size:23px; font-weight:500; letter-spacing:-1px; }
+.setup-option strong { font:500 15px/1.4 var(--ui); display:block; margin-bottom:4px; }
+.setup-option small { display:block; color:#a5a5a5; font:12px/1.5 var(--ui); }
+.setup-arrow { margin-left:auto; color:#818181; font-size:21px; font-weight:300; transition:transform .15s, color .15s; }
+.setup-option:hover .setup-arrow { transform:translateX(3px); color:var(--accent); }
+.setup-window button:focus-visible,.setup-window input:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.setup-caption { font-size:12px; color:var(--muted); margin:0; }
+.setup-footer { display:flex; justify-content:space-between; align-items:center; min-height:40px; margin-top:20px; border-top:1px solid var(--line); padding-top:16px; }
+.setup-footer button { border:0; background:transparent; box-shadow:none; color:#bdbdbd; font-size:12px; padding:5px 0; height:auto; }
+.setup-footer button:hover { color:white; }
+.setup-footer #setupLater { margin-left:auto; }
+.setup-detail { min-height:305px; }
+.setup-detail p { color:#b4b4b4; }
+.setup-facts { padding-left:18px; margin:20px 0 26px; color:#b4b4b4; font-size:13px; }
+.setup-facts li { padding-left:3px; margin:10px 0; }
+.setup-detail .accent-btn { height:auto; min-height:36px; padding:8px 17px; font-size:13px; border-radius:6px; }
+.setup-detail .quiet { margin-left:10px; min-height:36px; font-size:12px; }
+.setup-detail .field { margin:20px 0; }
+.setup-detail .field input { width:100%; height:36px; }
+.setup-availability { font-size:12px; color:var(--muted); }
+.setup-error { color:#edb59e; font-size:12px; line-height:1.6; margin:16px 0 0; }
+.setup-error:empty { display:none; }
+.setup-progress { width:100%; height:5px; accent-color:var(--accent); margin:20px 0 10px; }
+.setup-result-icon { width:40px; height:40px; color:var(--accent); margin-bottom:20px; }
+.setup-backdrop [data-setup-page]:not([hidden]) { animation:setup-page .16s ease-out; }
+@keyframes setup-enter { from { opacity:0; transform:translateY(8px) scale(.99); } to { opacity:1; transform:none; } }
+@keyframes setup-page { from { opacity:.3; transform:translateY(4px); } to { opacity:1; transform:none; } }
+@media (max-width:620px), (max-height:650px) {
+  .setup-backdrop { padding:16px; }
+  .setup-window { padding:24px; max-height:calc(100dvh - 32px); }
+  .setup-brand { margin-bottom:22px; }
+  .setup-window h1 { font-size:25px; }
+  .setup-option { min-height:82px; padding:16px 4px; gap:12px; }
+  .setup-option small { font-size:11px; }
+  .setup-detail { min-height:0; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .setup-backdrop *, .setup-backdrop.on .setup-window { animation:none !important; transition:none !important; }
+}

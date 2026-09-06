@@ -13,10 +13,10 @@ rather than by parser. Three rules shape everything in this module:
   still import what it can. Every table and column goes through `_has()`
   first, so drift becomes a recorded warning and a skipped category instead of
   a traceback halfway through a long job.
-* **Nothing is created on the user's behalf.** The importer matches files a
-  scan has already added to the catalog. A root folder that lies outside every
-  registered source is counted and reported so the caller can offer to add it;
-  this module never adds a source itself, and never writes beside the photos.
+* **Sources are opt-in.** By default the importer matches files already in
+  LightTable. With explicit add_sources it registers only referenced originals
+  through the normal scanner, adding their containing folders as needed. It
+  never scans an entire drive root or writes beside the photos.
 
 What is skipped is named rather than approximated, in the voice
 `preset_io` uses for preset conversion: the `.lrcat-data` folder holding AI
@@ -286,11 +286,15 @@ def _root_rows(conn: sqlite3.Connection, root_map=None) -> list[dict]:
             ' ORDER BY "absolutePath"').fetchall():
         original = _norm(row["absolutePath"])
         mapped = _remap(original, root_map)
+        available = bool(mapped) and Path(mapped).is_dir()
+        if available:
+            # Catalog sources use canonical paths (e.g. /private/tmp on Mac).
+            mapped = _norm(str(Path(mapped).resolve()))
         out.append({
             "id": int(row["id_local"]),
             "path": mapped,
             "originalPath": original,
-            "exists": bool(mapped) and Path(mapped).is_dir(),
+            "exists": available,
             "files": counts.get(row["id_local"], 0),
         })
     return out
@@ -1270,12 +1274,55 @@ def _import_stacks(conn, cat, targets, result, progress) -> None:
 
 # ------------------------------------------------------------------- the job
 
+def _register_catalog_originals(cat, files, result, progress, cancel) -> None:
+    """Index only catalog-referenced originals, never recurse a Lightroom root.
+
+    Lightroom roots may be entire volumes. Registering individual files avoids
+    indexing unrelated folders just because they share that volume.
+    """
+    import catalog_scan
+
+    sources = [Path(source["path"]).resolve() for source in cat.sources()]
+    added_sources: set[int] = set()
+    unavailable = 0
+    for done, record in enumerate(files.values(), 1):
+        if cancel():
+            result["cancelled"] = True
+            break
+        if record["imageId"] is not None:
+            continue
+        path = Path(record["path"])
+        if not path.is_absolute() or path.suffix.lower() not in catalog_scan.ALL_EXTS:
+            continue
+        try:
+            if not path.is_file():
+                continue
+            path = path.resolve()
+            if not any(path.is_relative_to(source) for source in sources):
+                source_id = cat.add_source(path.parent)
+                added_sources.add(source_id)
+                sources.append(path.parent)
+            catalog_scan.register_file(cat, path)
+        except (OSError, ValueError):
+            unavailable += 1
+        if done % 25 == 0:
+            _report(progress, "indexing originals", done, len(files))
+    for source_id in added_sources:
+        # Preserve pre-existing LightTable folder edits before applying the
+        # user's chosen Lightroom conflict policy.
+        catalog_scan.import_state_file(cat, source_id)
+    if unavailable:
+        _warn(result, f"{unavailable} originals could not be read")
+    _report(progress, "indexing originals", len(files), len(files))
+
+
 def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
                    options: dict | None = None,
                    progress: Callable[[dict], None] | None = None,
                    root_map: dict | None = None,
                    should_cancel: Callable[[], bool] | None = None,
-                   report_photo: Callable[[dict], None] | None = None) -> dict:
+                   report_photo: Callable[[dict], None] | None = None,
+                   add_sources: bool = False) -> dict:
     """Import one Lightroom catalog into `cat`, reporting what did not fit.
 
     `options` selects the categories: `metadata`, `keywords`, `collections`,
@@ -1289,6 +1336,8 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
     turns the Film pipeline off wherever develop settings are imported, the
     same default an imported preset gets.
 
+    `add_sources` indexes referenced originals and adds their folders before
+    importing edits; omitted, this only matches photos already in LightTable.
     `root_map` re-points roots that have moved, as `{old path: new path}`.
     `progress` receives `{"stage", "done", "total"}`, and `should_cancel` is
     consulted between photographs so a long import can be stopped.
@@ -1314,7 +1363,15 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
             _warn(result, f"masks and AI data live in {data.name} and are "
                           "skipped, as they are for presets")
         _report(progress, "opening", 0, 1)
+        if add_sources:
+            candidates = _match_files(conn, cat, root_map,
+                                      {"warnings": [], "skipped": {}}, progress)
+            _register_catalog_originals(cat, candidates, result, progress, cancel)
         files = _match_files(conn, cat, root_map, result, progress)
+        used_sources = {record["sourceId"] for record in files.values()
+                        if record["imageId"] is not None}
+        result["sourceFolders"] = [source["path"] for source in cat.sources()
+                                   if source["id"] in used_sources]
         keywords = _keyword_paths(conn, result) if opts["keywords"] else {}
         targets = _import_images(conn, cat, opts, files, keywords, result,
                                  progress, cancel)

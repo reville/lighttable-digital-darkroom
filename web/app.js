@@ -32,6 +32,7 @@ import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
+import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
   initMidi, setMidiLearnTarget, toggleMidiLearn, resetMidiMappings,
@@ -45,6 +46,7 @@ let SURVEY = null;
 let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
+let FIRST_RUN = null;
 let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
@@ -6962,6 +6964,7 @@ async function initializeEditRecovery(data) {
 
 /* ------------------------------------------------------------------ boot */
 fetch('/api/images').then((r) => r.json()).then(async (d) => {
+  FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;
   S.catalogEnabled = !!d.catalog?.enabled;
   S.catalogTotal = Number.isFinite(+d.total) ? +d.total : 0;
@@ -10082,6 +10085,7 @@ async function savePrefs() {
 });
 fetch('/api/prefs').then((r) => r.json()).then((p) => {
   p = p && typeof p === 'object' ? p : {};
+  FIRST_RUN?.setPrefs(p);
   const migrated = {};
   if (!Object.prototype.hasOwnProperty.call(p, 'keyScheme') &&
       localStorage.getItem('lt.keyScheme')) {
@@ -10303,6 +10307,8 @@ CATALOG_UI = createCatalogUI({
   get: getJSON,
   toast,
   sendNative,
+  onCatalogImportCompleted: (result) => FIRST_RUN?.catalogCompleted(result),
+  onCatalogImportClosed: () => FIRST_RUN?.catalogClosed(),
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onLibraryChanged: () => { reloadLibrary(); },
   onWatchArrival: async (status) => {
@@ -10555,6 +10561,7 @@ if ($('enhanceRun')) {
 /* ------------------------------------------------------- native messages */
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
+  FIRST_RUN?.nativeEvent(message);
   if (message && message.type === 'openLibraryHealth') {
     RECOVERY?.open();
     return;
@@ -10897,4 +10904,14 @@ installSettings({
       .map((image) => image.name);
   },
   toast,
+});
+
+FIRST_RUN = installFirstRunSetup({
+  el: $, post: api, sendNative, nativeBridge, reloadLibrary,
+  onComplete: () => {
+    S.includeSubfolders = true;
+    $('includeSubfolders').checked = true;
+    refreshFilteredView();
+  },
+  openCatalog: () => $('importCatalogBtn').click(),
 });

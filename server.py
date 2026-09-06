@@ -7524,6 +7524,7 @@ def start_catalog_import(body: dict) -> dict:
                 operation = catalog_import.preview_import if body.get("previewOnly") else catalog_import.import_catalog
                 result = operation(cat, path, options=body.get("options") or {},
                     progress=progress, root_map=body.get("rootMap") or None,
+                    **({"add_sources": body.get("addSources") is True} if not body.get("previewOnly") else {}),
                     report_photo=lambda row: output.write(json.dumps(row) + "\n"))
                 output.flush()
                 os.fsync(output.fileno())
