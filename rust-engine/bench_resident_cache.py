@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare uncached and cached resident film outputs and print-exposure timings.
+"""Compare uncached and cached resident film outputs and downstream-slider timings.
 
 Uses only Python's standard library. Build release first; provide the installed
 engine/data directory. Every output is a float32 TIFF and must match byte for byte.
@@ -56,9 +56,9 @@ def invoke(proc, request):
     return result
 
 
-def run(binary, data, directory, enabled, requests, input_cache_bytes):
+def run(binary, data, directory, enabled, requests, input_cache_bytes, fresh_pipeline=False):
     env = dict(os.environ, LIGHTTABLE_RESIDENT_STAGE_CACHE=str(int(enabled)),
-               LIGHTTABLE_RESIDENT_PIPELINE_CACHE_ENTRIES='1',
+               LIGHTTABLE_RESIDENT_PIPELINE_CACHE_ENTRIES='0' if fresh_pipeline else '1',
                LIGHTTABLE_RESIDENT_INPUT_CACHE_BYTES=str(input_cache_bytes))
     results = []
     with (directory / f'engine-{enabled}.log').open('w') as log:
@@ -90,6 +90,7 @@ def main():
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--width', type=int, default=1100)
     parser.add_argument('--input-cache-bytes', type=int, default=256 * 1024 * 1024)
+    parser.add_argument('--fresh-pipeline-check', action='store_true', help='also compare against independently rebuilt spectral pipelines')
     parser.add_argument('--budget-check', action='store_true', help='four-case large-image cache bypass check')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
@@ -109,6 +110,30 @@ def main():
             params = copy.deepcopy(base)
             params['enlarger'] = {'print_exposure': 0.65 + index * 0.075}
             add('print_drag', params)
+        downstream_labels = []
+        for label, group, field, value in [
+            ('yellow_filter', 'enlarger', 'y_filter_shift', 3.0),
+            ('magenta_filter', 'enlarger', 'm_filter_shift', -3.0),
+            ('preflash', 'enlarger', 'preflash_exposure', 0.05),
+            ('preflash_yellow', 'enlarger', 'preflash_y_filter_shift', 7.0),
+            ('illuminant', 'enlarger', 'illuminant', 'D50'),
+            ('paper_gamma', 'print_render', 'density_curve_gamma', 1.1),
+            ('paper_glare', 'print_render', 'glare', {'active': True, 'percent': 3.0, 'roughness': 0.0}),
+            ('scanner_blur', 'scanner', 'lens_blur', 1.2),
+            ('scanner_sharpen', 'scanner', 'unsharp_mask', [1.2, 0.8]),
+            ('print_reference', 'scanner', 'white_correction', True),
+            ('output_space', 'io', 'output_color_space', 'ProPhoto RGB'),
+            ('output_encoding', 'io', 'output_cctf_encoding', False),
+        ]:
+            params = copy.deepcopy(base)
+            params.setdefault(group, {})[field] = value
+            label = 'downstream_' + label
+            add(label, params)
+            downstream_labels.append(label)
+        add('paper_switch', base, paper='fujifilm_crystal_archive_typeii')
+        downstream_labels.append('paper_switch')
+        add('paper_return', base)
+        downstream_labels.append('paper_return')
         for label, group, field, value in [
             ('camera_ev', 'camera', 'exposure_compensation_ev', 0.3),
             ('meter_method', 'camera', 'auto_exposure_method', 'average'),
@@ -131,14 +156,25 @@ def main():
         add('other_stock', base, a, 'kodak_gold_200')
         add('rebuilt_pipeline', base, a)
         add('slide_scan', base, a, 'kodak_ektachrome_100', scan=True)
+        scan_params = copy.deepcopy(base)
+        scan_params['scanner'] = {'lens_blur': 1.2}
+        add('slide_scanner_blur', scan_params, a, 'kodak_ektachrome_100', scan=True)
+        scan_params['scanner']['white_correction'] = True
+        add('slide_reference', scan_params, a, 'kodak_ektachrome_100', scan=True)
         add('return_from_scan', base, a)
         if args.budget_check:
-            requests = [requests[0], requests[1], requests[-6], requests[-5]]
+            requests = [next(r for r in requests if r[0] == label) for label in
+                        ('warmup', 'print_drag', 'different_dimensions', 'return_dimensions')]
         baseline = run((args.baseline_binary or args.binary).resolve(), args.data.resolve(), directory, False, requests, args.input_cache_bytes)
         cached = run(args.binary.resolve(), args.data.resolve(), directory, True, requests, args.input_cache_bytes)
         assert 0.001 < cached[0]['mean'] < 0.999, 'fixture must produce nonblank pixels'
         assert len({r['sha256'] for r in cached if r['case'] == 'print_drag'}) == sum(r['case'] == 'print_drag' for r in cached), 'print exposure must alter output'
         mismatches = [a['case'] for a, b in zip(baseline, cached) if a['sha256'] != b['sha256']]
+        if args.fresh_pipeline_check:
+            fresh = run(args.binary.resolve(), args.data.resolve(), directory, False,
+                        requests, args.input_cache_bytes, fresh_pipeline=True)
+            mismatches.extend('fresh:' + a['case'] for a, b in zip(fresh, cached)
+                              if a['sha256'] != b['sha256'])
         if 'wgpu' in cached[0]['backend'].lower():
             expected_checkpoint = args.width * (args.width * 2 // 3) * 12 <= 96 * 1024 * 1024
             assert all(r['film_stage_cache_hit'] == expected_checkpoint for r in cached if r['case'] == 'print_drag')
@@ -149,9 +185,14 @@ def main():
                 assert all(r['resident_cache_bytes'] <= 32 * 1024 * 1024 and not r['gpu_buffers_reused']
                            for r in cached if r['width'] == args.width)
             assert all(not r['film_stage_cache_hit'] for r in cached if r['case'] in
-                       ('camera_ev', 'different_input', 'different_dimensions', 'rebuilt_pipeline', 'slide_scan'))
+                       ('camera_ev', 'different_input', 'different_dimensions', 'rebuilt_pipeline', 'slide_scan', 'slide_reference'))
+            unexpected_misses = [r['case'] for r in cached if
+                (r['case'] in downstream_labels or r['case'] == 'slide_scanner_blur')
+                and (r['film_stage_cache_hit'] != expected_checkpoint or not r['pipeline_cache_hit'])]
+            assert not unexpected_misses, unexpected_misses
         summary = {'width': args.width, 'cases': len(requests), 'backend': cached[0]['backend'],
-                   'bit_identical': not mismatches, 'mismatches': mismatches}
+                   'bit_identical': not mismatches, 'mismatches': mismatches,
+                   'fresh_pipeline_checked': args.fresh_pipeline_check}
         for metric in ('render_ms', 'total_ms'):
             before = [r[metric] for r in baseline if r['case'] == 'print_drag']
             after = [r[metric] for r in cached if r['case'] == 'print_drag']

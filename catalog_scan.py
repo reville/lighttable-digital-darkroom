@@ -243,6 +243,7 @@ def read_metadata(path: Path) -> dict:
 
 def scan_source(cat: catalog_module.Catalog, source_id: int, *,
                 progress: Callable[[dict], None] | None = None,
+                on_local_file: Callable[[int, str], object] | None = None,
                 read_metadata_for_new: bool = True,
                 limit: int = 500000) -> dict:
     """Bring one source's rows in step with the filesystem.
@@ -335,6 +336,18 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
                     cat.upsert_file(conn, source_id, record)
                     if not was_missing:
                         updated += 1
+
+        # Notify only after the rows commit, so a thumbnail worker can resolve
+        # qualified names immediately. The callback only queues bounded work;
+        # source decoding never runs inside the catalog write transaction.
+        if on_local_file:
+            for record in records:
+                if record.get("availability", "local") == "local" \
+                        and record.get("kind") != "video":
+                    try:
+                        on_local_file(source_id, record["relpath"])
+                    except Exception:
+                        pass  # disposable warm-up cannot invalidate a scan
 
     scan_errors: list[str] = []
 
@@ -661,9 +674,11 @@ class ScanService:
     """
 
     def __init__(self, cat: catalog_module.Catalog,
-                 render_busy: Callable[[], bool] | None = None):
+                 render_busy: Callable[[], bool] | None = None,
+                 on_local_file: Callable[[int, str], object] | None = None):
         self.catalog = cat
         self._render_busy = render_busy or (lambda: False)
+        self._on_local_file = on_local_file
         self._thread: threading.Thread | None = None
         self._queue: list[int] = []
         self._adopt: set[int] = set()
@@ -711,7 +726,8 @@ class ScanService:
                     break
                 time.sleep(0.2)
             try:
-                result = scan_source(self.catalog, source_id)
+                result = scan_source(self.catalog, source_id,
+                                     on_local_file=self._on_local_file)
                 with self._lock:
                     adopt = source_id in self._adopt
                     self._adopt.discard(source_id)

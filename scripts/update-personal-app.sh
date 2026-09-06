@@ -129,6 +129,13 @@ if [[ "$ACTUAL_PYTHON_VERSION" != "$PYTHON_VERSION" ]]; then
   exit 1
 fi
 
+# The version pin alone cannot distinguish the stock single-threaded wheel
+# from our bundled OpenMP build. Upgrade old base apps with a full release.
+if ! PYTHONDONTWRITEBYTECODE=1 "$BASE_PYTHON" "$ROOT/scripts/verify-rawpy-openmp.py"; then
+  echo "The bundled RAW runtime changed; run scripts/build-release.sh before the quick updater" >&2
+  exit 1
+fi
+
 TEMP_CHECK="$(mktemp -d "${TMPDIR:-/tmp}/lighttable-personal-check.XXXXXX")"
 cleanup_check() {
   /bin/rm -rf "$TEMP_CHECK"
@@ -143,7 +150,7 @@ PYTHONDONTWRITEBYTECODE=1 "$BASE_PYTHON" -c \
   'import importlib.metadata as m
 for d in sorted(m.distributions(), key=lambda item: item.metadata["Name"].lower()):
     name = d.metadata["Name"].lower().replace("_", "-")
-    if name != "pip":
+    if name not in ("pip", "rawpy-openmp"):
         print(f"{name}=={d.version}")' \
   | LC_ALL=C /usr/bin/sort > "$TEMP_CHECK/actual-packages.txt"
 if ! /usr/bin/diff -u "$TEMP_CHECK/expected-packages.txt" \

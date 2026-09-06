@@ -114,6 +114,8 @@ try {
         "soft_proof.py",
         "catalog.py",
         "catalog_scan.py",
+        "thumbnail_warmup.py",
+        "raw_decode_runtime.py",
         "catalog_import.py",
         "xmp_sidecar.py",
         "durable_io.py",

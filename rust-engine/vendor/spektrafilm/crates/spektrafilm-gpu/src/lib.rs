@@ -134,6 +134,10 @@ pub trait ComputeBackend: Send + Sync {
         None
     }
 
+    /// Display-only resident output, packed and rotated before GPU readback.
+    fn try_run_film_chain_native(&self, _params: &FilmChainParams<'_>,
+        _output: NativeOutputSpec) -> Option<NativePackedSurface> { None }
+
     /// True when `try_run_film_chain` returns the same post-scan output that
     /// `Pipeline::apply_post_scan` would produce (final clamp and optional
     /// sRGB encoding). Backends default to returning linear RGB and letting
@@ -153,6 +157,27 @@ pub trait ComputeBackend: Send + Sync {
     fn resident_cache_status(&self) -> (bool, bool, usize) { (false, false, 0) }
 
     fn name(&self) -> &str;
+}
+
+#[derive(Debug, Clone, Copy, Default)]
+pub struct NativeOutputSpec {
+    pub quarters_ccw: u8,
+    /// Rectangle within the resident input, cropped before rotation.
+    pub crop: Option<[u32; 4]>,
+}
+
+/// Display-referred RGBA with Metal-compatible 256-byte row alignment.
+pub struct NativePackedSurface {
+    pub width: u32,
+    pub height: u32,
+    pub row_bytes: usize,
+    pub pixels: Vec<u8>,
+    pub mean: f64,
+}
+
+pub enum FilmChainOutput {
+    Rgb(ImageBuf),
+    Native(NativePackedSurface),
 }
 
 /// All inputs to the GPU-resident film chain. Bundled into a struct so the
@@ -319,6 +344,9 @@ pub struct GrainGpuParams {
     pub grain_uniformity: [f32; 3],
     pub n_sub_layers: u32,
     pub base_seed: u32,
+    /// Absolute source coordinates keep noise unchanged while panning.
+    pub pixel_origin: [u32; 2],
+    pub full_width: u32,
     pub grain_blur: f32,
     /// One shared noise field across all channels (B&W single emulsion)
     /// instead of independent per-channel RNG streams.
@@ -367,6 +395,9 @@ pub struct GlareGpuParams {
     pub sigma: f32,
     pub blur_px: f32,
     pub base_seed: u32,
+    /// Absolute source coordinates keep noise unchanged while panning.
+    pub pixel_origin: [u32; 2],
+    pub full_width: u32,
     /// `(XYZ→RGB) * illuminant_xyz`, pre-divided by 100. The shader
     /// just multiplies the lognormal scalar by this per-channel offset.
     pub rgb_offset: [f32; 3],

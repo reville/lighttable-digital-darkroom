@@ -391,7 +391,7 @@ final class ServerController {
             env["NUMBA_CACHE_DIR"] = cacheDirectory
                 .appendingPathComponent("compiled-runtime").path
         }
-        env["OMP_NUM_THREADS"] = "4"
+        env["OMP_NUM_THREADS"] = env["OMP_NUM_THREADS"] ?? "8"
         env["NUMBA_NUM_THREADS"] = "4"
         env["OPENBLAS_NUM_THREADS"] = "4"
         env["PYTHONUNBUFFERED"] = "1"

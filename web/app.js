@@ -478,6 +478,7 @@ window.lightTableNativeEvent = (event) => {
       presentedAt,
       presentation: 'native-metal',
       nativeFetchMs: +timings.fetchMs || 0,
+      nativeSharedMemory: Boolean(timings.sharedMemory),
       nativeGpuMs: +timings.gpuMs || 0,
       nativeTotalMs: +timings.totalMs || 0,
       textureCacheHit: Boolean(timings.textureCacheHit),
@@ -884,6 +885,7 @@ function applyViewNow() {
   cmp.classList.toggle('is-zoomed', isZoomed);
 
   scheduleNativeViewportLayout();
+  scheduleViewportRegionRender();
 }
 const viewFrameScheduler = createFrameScheduler(() => applyViewNow());
 function applyView() {
@@ -975,6 +977,58 @@ function sourceLongEdge(image = cur()) {
 function displaySourcePixelWidth() {
   const width = +cropSourceSize().width;
   return width > 0 ? width : (+$('cv')?.width || 0);
+}
+
+function viewportRegionEnabled() {
+  return nativePreviewActive() && $('engine').value === 'rs' &&
+    S.zoomMode === '100' && S.params.profile_enabled !== false &&
+    S.presentedPhotoName === cur()?.name && !S.crop && !S.cropSession &&
+    !S.compareActive && !S.holdBefore && !S.wbPick && !S.pointColorPick && !S.maskColorPick &&
+    !S.reference?.active && !(S.heals || []).length && !(S.masks || []).length &&
+    !Object.keys(OPTICS_DEFAULTS).some((key) =>
+      (S.optics?.[key] ?? OPTICS_DEFAULTS[key]) !== OPTICS_DEFAULTS[key]);
+}
+
+function viewportPixelWindow(canvas, clip, width, height, margin = 96) {
+  if (!(canvas.width > 0 && canvas.height > 0 && width > 0 && height > 0)) return null;
+  const left = Math.max(canvas.left, clip.left), top = Math.max(canvas.top, clip.top);
+  const right = Math.min(canvas.right, clip.right), bottom = Math.min(canvas.bottom, clip.bottom);
+  if (right <= left || bottom <= top) return null;
+  const x = Math.max(0, Math.floor(((left - canvas.left) / canvas.width * width - margin) / 64) * 64);
+  const y = Math.max(0, Math.floor(((top - canvas.top) / canvas.height * height - margin) / 64) * 64);
+  const endX = Math.min(width, Math.ceil(((right - canvas.left) / canvas.width * width + margin) / 64) * 64);
+  const endY = Math.min(height, Math.ceil(((bottom - canvas.top) / canvas.height * height + margin) / 64) * 64);
+  return { x, y, width: endX - x, height: endY - y };
+}
+
+function viewportSourceGeometryKey() {
+  return JSON.stringify([cur()?.name, cur()?.fileKey || cur()?.mtime || null,
+    Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2]);
+}
+
+function requestedViewportRegion() {
+  if (!viewportRegionEnabled()) return null;
+  const decoded = S.viewportSourceGeometry?.key === viewportSourceGeometryKey()
+    ? S.viewportSourceGeometry : null;
+  let width = decoded?.width || +cur()?.width || 0;
+  let height = decoded?.height || +cur()?.height || 0;
+  if (!(width > 0 && height > 0)) return null;
+  if (!decoded && Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) [width, height] = [height, width];
+  return viewportPixelWindow($('cv').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), width, height);
+}
+
+let viewportRegionTimer = null;
+let lastViewportRenderKey = null;
+function scheduleViewportRegionRender() {
+  const region = requestedViewportRegion();
+  if (!region && !S.nativeViewport) return;
+  const key = JSON.stringify([cur()?.name, region]);
+  if (key === lastViewportRenderKey) return;
+  clearTimeout(viewportRegionTimer);
+  viewportRegionTimer = setTimeout(() => {
+    doRender(performance.now(), { width: requestedPreviewWidth(), phase: 'settled' });
+  }, 45);
 }
 
 function requestedPreviewWidth() {
@@ -1655,6 +1709,7 @@ function nativeGradePayload(grade) {
 }
 
 function drawGradeNow(forceWebGL = false, refreshScope = true) {
+  scheduleViewportRegionRender();
   if (S.renderState === 'pending' && S.presentedPhotoName && S.presentedPhotoName !== cur()?.name) return;
   const activeGrade = S.holdBefore ? GRADE_DEFAULTS : S.grade;
   syncPreviewBackend();
@@ -2638,7 +2693,16 @@ let settleRenderTimer = null;
 let lastInteractiveRenderAt = -Infinity;
 let lastContinuousInputAt = -Infinity;
 const INTERACTIVE_PREVIEW_WIDTH = 1100;
-const INTERACTIVE_RENDER_INTERVAL_MS = 60;
+// Learn from real server round trips, excluding presentation-cache hits and
+// settled/refinement renders. One-frame minimum lets fast film parameters keep
+// pace with the display; slower ones naturally stop flooding the render queue.
+function adaptiveInteractiveInterval(previous, roundTripMs) {
+  if (!Number.isFinite(roundTripMs) || roundTripMs <= 0) return previous;
+  const sample = Math.max(1000 / 60, Math.min(250, roundTripMs));
+  return previous == null ? sample : previous * 0.7 + sample * 0.3;
+}
+let interactiveRenderIntervalMs = null;
+let interactiveRenderPhoto = null;
 const FULL_RESOLUTION_SETTLE_MS = 160;
 function markContinuousInput() {
   lastContinuousInputAt = performance.now();
@@ -2785,12 +2849,33 @@ const JOURNEY_RENDER_FIELDS = [
   'residentMs', 'gpuMs', 'imageDecodeMs', 'textureUploadMs',
   'paintAfterUploadMs', 'presentation', 'nativeFetchMs', 'nativeGpuMs',
   'nativeTotalMs', 'totalMs', 'textureCacheHit', 'presentationCacheHit', 'serverQueueMs',
+  'generation', 'viewport', 'nativeSharedMemory',
 ];
 
 function compactJourneyRender(render) {
   return Object.fromEntries(JOURNEY_RENDER_FIELDS
     .filter((key) => render?.[key] !== undefined)
     .map((key) => [key, render[key]]));
+}
+
+function waitForNativeViewportFrame(imageName, region, afterGeneration, previousRegion = null) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      window.removeEventListener('lighttable-rendered', onRender);
+      reject(new Error(`Timed out waiting for native ${region ? 'viewport' : 'full-frame'} presentation`));
+    }, 180000);
+    const onRender = ({ detail }) => {
+      if (detail.image !== imageName || detail.generation <= afterGeneration ||
+          detail.generation !== S.seq || detail.presentation !== 'native-metal' || detail.refining ||
+          Boolean(detail.viewport) !== region) return;
+      if (previousRegion && detail.viewport.x === previousRegion.x &&
+          detail.viewport.y === previousRegion.y) return;
+      clearTimeout(timer);
+      window.removeEventListener('lighttable-rendered', onRender);
+      resolve(detail);
+    };
+    window.addEventListener('lighttable-rendered', onRender);
+  });
 }
 
 async function waitForJourneyFrame() {
@@ -2842,7 +2927,7 @@ async function runNativeProductJourney(width, layer) {
 async function runEditRecoveryJourney() {
   const name = cur().name;
   const original = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
-  const pending = {state: {name, ...original, grade: {...GRADE_DEFAULTS,
+  const pending = {state: {name, grade: {...GRADE_DEFAULTS,
     ...(original.grade || {}), exposure: 0.321}}};
   const originalFetch = window.fetch;
   let failedClose = false;
@@ -2873,7 +2958,7 @@ async function runEditRecoveryJourney() {
   if ((await editRecovery.list()).some(record => record.name === name)) {
     throw new Error('Acknowledged recovery was not removed');
   }
-  editSaveQueue.enqueue(name, {state: {name, ...original}});
+  editSaveQueue.enqueue(name, {state: {name, grade: original.grade || GRADE_DEFAULTS}});
   if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
   window.lightTableCancelClose();
   return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
@@ -2977,10 +3062,15 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     return { pointColor, maskColor };
   });
 
-  await renderStep('film-off', next.name, 'native-metal', () =>
-    executeUICommand('filmToggle'));
-  await renderStep('film-on', next.name, 'native-metal', () =>
-    executeUICommand('filmToggle'));
+  await renderStep('film-off', next.name, 'native-metal', () => {
+    if (S.params.profile_enabled !== false) return executeUICommand('filmToggle');
+    renderFilm(0);
+  });
+  await renderStep('film-on', next.name, 'native-metal', () => {
+    if (S.params.profile_enabled === false) return executeUICommand('filmToggle');
+    renderFilm(0);
+  });
+  if (S.params.profile_enabled === false) throw new Error('Film did not activate before slider/viewport proof');
   await renderStep('slider-adjustment', next.name, 'native-metal', () =>
     executeUICommand('slider', { key: 'print_exposure', value: 0.05 }));
 
@@ -2998,25 +3088,52 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     if (state.compare.active) throw new Error('Compare did not turn off');
     return state;
   });
-  await record('zoom-actual', async () => {
+  const actualRender = await record('zoom-actual', async () => {
     await executeUICommand('zoomIn');
     await waitForJourneyFrame();
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq);
     for (let attempt = 0; attempt < 3; attempt++) {
       const state = await executeUICommand('zoomActual');
       if (state.zoomMode === '100') {
-        await waitForJourneyFrame();
-        return uiStateReport();
+        const result = await presented;
+        if (result.viewport.width * result.viewport.height >=
+            result.viewport.fullWidth * result.viewport.fullHeight) {
+          throw new Error('Actual-size proof rendered the entire source');
+        }
+        return result;
       }
       await waitForJourneyFrame();
     }
     throw new Error('Actual-size zoom did not activate');
   });
+  await record('viewport-pan', async () => {
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq, actualRender.viewport);
+    const wrap = $('zoomwrap'), bounds = wrap.getBoundingClientRect();
+    const origin = { clientX: bounds.left + bounds.width / 2, clientY: bounds.top + bounds.height / 2 };
+    wrap.dispatchEvent(new PointerEvent('pointerdown', { ...origin, button: 0, pointerId: 997, bubbles: true }));
+    wrap.dispatchEvent(new PointerEvent('pointermove', { clientX: origin.clientX + 320,
+      clientY: origin.clientY + 160, button: 0, pointerId: 997, bubbles: true }));
+    wrap.dispatchEvent(new PointerEvent('pointerup', { clientX: origin.clientX + 320,
+      clientY: origin.clientY + 160, button: 0, pointerId: 997, bubbles: true }));
+    return presented;
+  });
+  await record('viewport-film-slider', async () => {
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq);
+    const previous = +S.params.print_exposure;
+    await executeUICommand('slider', { key: 'print_exposure', value: previous === 1.37 ? 1.73 : 1.37 });
+    const result = await presented;
+    if (+S.params.print_exposure === previous || result.presentationCacheHit) {
+      throw new Error('Viewport film slider did not produce a distinct film render');
+    }
+    if (result.engine !== 'rs') throw new Error('Viewport film slider did not use the resident film engine');
+    return result;
+  });
   await record('zoom-fit', async () => {
+    const presented = waitForNativeViewportFrame(next.name, false, S.seq);
     await executeUICommand('zoomFit');
-    await waitForJourneyFrame();
-    const state = uiStateReport();
-    if (state.zoomMode !== 'fit') throw new Error('Fit zoom did not activate');
-    return state;
+    const result = await presented;
+    if (S.zoomMode !== 'fit' || S.nativeViewport) throw new Error('Fit zoom did not restore a full-frame surface');
+    return result;
   });
 
   const destination = window.__LIGHTTABLE_NATIVE_JOURNEY_EXPORT_DIR__;
@@ -3146,7 +3263,8 @@ async function runNativeRawJourney(width, layer) {
 function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
   clearTimeout(renderTimer);
   const requestedWidth = requestedPreviewWidth();
-  const width = Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
+  const width = viewportRegionEnabled() ? requestedWidth
+    : Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
   renderTimer = setTimeout(() => {
     lastInteractiveRenderAt = performance.now();
     doRender(scheduledAt, {
@@ -3167,7 +3285,7 @@ function renderPhysicalPreview() {
   markContinuousInput();
   const scheduledAt = performance.now();
   const delay = Math.max(0,
-    INTERACTIVE_RENDER_INTERVAL_MS - (scheduledAt - lastInteractiveRenderAt));
+    (interactiveRenderIntervalMs ?? 1000 / 60) - (scheduledAt - lastInteractiveRenderAt));
   scheduleProgressiveRender(scheduledAt, delay);
 }
 
@@ -3189,7 +3307,14 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       requestedWidth, phase,
     });
   }
+  if (interactiveRenderPhoto !== im.name) {
+    interactiveRenderPhoto = im.name;
+    interactiveRenderIntervalMs = null;
+  }
   const requestStartedAt = performance.now();
+  const viewport = w === requestedWidth ? requestedViewportRegion() : null;
+  const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
+    requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
   spin(true);
@@ -3199,13 +3324,21 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       client: CLIENT_ID, generation: my, priority: 'interactive',
       native: nativePreviewActive(),
+      ...(viewport ? { viewport } : {}),
     };
+    clearTimeout(viewportRegionTimer);
+    lastViewportRenderKey = JSON.stringify([im.name, viewport]);
     const presentationKey = renderRequestKey(im, request);
     const remembered = options.skipPresentationCache ? null : presentationCache.get(presentationKey);
     const m = remembered ? { ...remembered, cached: true }
       : await api('/api/render', request);
     presentationCache.set(presentationKey, m);
     const responseAt = performance.now();
+    if (measureInteractiveRoundTrip && !remembered && !m.cached && !m.error &&
+        !m.cancelled && interactiveRenderPhoto === im.name) {
+      interactiveRenderIntervalMs = adaptiveInteractiveInterval(
+        interactiveRenderIntervalMs, responseAt - requestStartedAt);
+    }
     if (window.__LIGHTTABLE_NATIVE_BENCHMARK_ITERATIONS__) {
       postNative('nativeBenchmarkProgress', {
         stage: 'render-response', generation: my, currentGeneration: S.seq,
@@ -3223,7 +3356,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       return;
     }
-    S.matchFactor = m.match || 1;
+    if (Number.isFinite(m.match) && m.match > 0) S.matchFactor = m.match;
     if (Object.prototype.hasOwnProperty.call(m, 'lens_profile')) {
       S.lensProfile = m.lens_profile;
       syncOpticsPanel();
@@ -3270,6 +3403,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     };
     const timing = {
       image: im.name,
+      generation: my,
       width: w,
       requestedWidth,
       phase,
@@ -3277,6 +3411,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       refining: Boolean(m.refining),
       engine: m.engine,
       backend: m.backend || null,
+      viewport: m.native?.viewport || null,
+      nativeSharedMemory: imageTiming.nativeSharedMemory || false,
       queueMs: requestStartedAt - scheduledAt,
       requestMs: responseAt - requestStartedAt,
       serverMs: !m.cached && Number.isFinite(+m.ms) ? +m.ms : null,
@@ -3488,11 +3624,16 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
     failed: true, error: 'Native preview data is missing',
   });
 
-  if (surface.width > 0 && surface.height > 0 && !preserveCanvasSize) {
-    if ($('cv').width !== surface.width || $('cv').height !== surface.height) {
+  S.nativeViewport = surface.viewport || null;
+  if (surface.viewport) S.viewportSourceGeometry = { key: viewportSourceGeometryKey(),
+    width: surface.viewport.fullWidth, height: surface.viewport.fullHeight };
+  const canvasWidth = surface.viewport?.fullWidth || surface.width;
+  const canvasHeight = surface.viewport?.fullHeight || surface.height;
+  if (canvasWidth > 0 && canvasHeight > 0 && !preserveCanvasSize) {
+    if ($('cv').width !== canvasWidth || $('cv').height !== canvasHeight) {
       S.maskTextureDirty = true;
-      $('cv').width = surface.width;
-      $('cv').height = surface.height;
+      $('cv').width = canvasWidth;
+      $('cv').height = canvasHeight;
     }
     applyCropVisual();
     if (S.maskTextureDirty) drawGrade();
@@ -3501,7 +3642,7 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
 
   // Histogram, WB sampling, and reference matching retain a 256px WebGL
   // helper, generated only after interaction settles.
-  scheduleNativeHelper(render.helper, generation);
+  if (!surface.viewport) scheduleNativeHelper(render.helper, generation);
 
   return new Promise((resolve) => {
     nativePreviewPending.set(generation, { resolve });

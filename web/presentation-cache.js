@@ -12,6 +12,7 @@ export function renderRequestKey(image, request) {
     source: [image.name, image.fileKey, image.mtime],
     w: request.w, engine: request.engine, native: request.native,
     params: request.params, optics: request.optics, heals: request.heals,
+    viewport: request.viewport || null,
   }));
 }
 

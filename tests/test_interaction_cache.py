@@ -23,7 +23,9 @@ const req = {w:1100,engine:'rs',native:true,params:{b:2,a:1},optics:{},heals:[]}
 const key = renderRequestKey(im,req);
 const same = renderRequestKey(im,{...req,params:{a:1,b:2},generation:99});
 const changed = [ {...req,w:2200}, {...req,params:{a:2,b:2}},
- {...req,optics:{distortion:0.2}}, {...req,heals:[{id:'spot'}]}]
+ {...req,optics:{distortion:0.2}}, {...req,heals:[{id:'spot'}]},
+ {...req,viewport:{x:0,y:0,width:200,height:100}},
+ {...req,viewport:{x:100,y:0,width:200,height:100}}]
  .map(r=>renderRequestKey(im,r)!==key);
 changed.push(renderRequestKey({...im,fileKey:'v2'},req)!==key);
 const c=createPresentationCache(2); c.set('a',{key:'A'}); c.set('b',{key:'B'});
