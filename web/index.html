@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/web/style.css">
 <link rel="stylesheet" href="/web/grid-layout.css">
 <link rel="stylesheet" href="/web/preset-browser.css">
+<link rel="stylesheet" href="/web/help.css">
 </head>
 <body>
 
@@ -65,6 +66,9 @@
     </button>
     <span id="estat" role="status" aria-live="polite"></span><button class="quiet compact" id="exportCancel" hidden>Cancel export</button><button class="quiet compact" id="exportDetails" hidden>Export details</button>
     <span id="editSaveStatus" role="status" aria-live="polite"></span><button class="quiet compact" id="retryEditSave" hidden>Retry save</button>
+    <button class="quiet icon-btn" id="helpBtn" title="Help (F1 or ?)" aria-label="Help" aria-haspopup="dialog" aria-controls="helpDialog" aria-expanded="false">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M8 7a2 2 0 0 1 4 .5c0 1.5-2 1.5-2 3M10 13.5v.2"/></svg>
+    </button>
     <button class="accent-btn icon-btn topbar-export-btn" id="exportBtn" title="Export photos" aria-label="Export photos">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V2M6 6l4-4 4 4M4 10v6h12v-6"/></svg>
     </button>
@@ -1224,6 +1228,25 @@
 
 <div class="health-overlay" id="healthOverlay" hidden><div class="b"></div><span id="healthOverlayText"></span></div>
 <div class="toast" id="toast"></div>
+<div class="modal-backdrop help-backdrop" id="helpDialog" aria-hidden="true">
+  <div class="modal help-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <header class="help-header">
+      <div class="help-heading"><h1 id="helpTitle">LightTable Help</h1><p>Guides for your photographs, from first edit to export.</p></div>
+      <button class="quiet compact" id="helpShortcuts">Keyboard shortcuts</button>
+      <button class="quiet icon-btn" id="helpClose" aria-label="Close help" title="Close help (Escape)">×</button>
+    </header>
+    <div class="help-layout">
+      <aside class="help-browser" aria-label="Find help">
+        <label class="help-search-label" for="helpSearch">Search help</label>
+        <div class="help-search-box"><input id="helpSearch" type="search" placeholder="Try crop, masks, or export…" autocomplete="off" spellcheck="false" aria-controls="helpResults"><button class="quiet icon-btn" id="helpClear" aria-label="Clear help search" hidden>×</button></div>
+        <div class="help-filter no-dd"><select id="helpCategory" aria-label="Help topic"><option value="">All topics</option></select><output id="helpResultCount" role="status" aria-live="polite"></output></div>
+        <nav class="help-results" id="helpResults" aria-label="Help articles"></nav>
+      </aside>
+      <div class="help-reader"><button class="quiet help-back" id="helpBack">← Back to articles</button><article class="help-article" id="helpArticle" aria-label="Help article" tabindex="0"></article></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="/web/help-panel.js"></script>
 <script type="module" src="/web/dropdown.js"></script>
 <script type="module" src="/web/app.js"></script>
 <script type="module" src="/web/slider-ux.js"></script>

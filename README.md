@@ -12,6 +12,11 @@ Rust and GPU-driven render core, and physical film simulation built on
 [Get started](#get-started) ·
 [Contribute](#contributing)
 
+For searchable guides inside the app, click **Help** in the top bar or press
+**F1** or **?**. Help is bundled for offline use and linked from inspector
+sections. Contributors can follow [Maintaining in-app help](docs/help/README.md)
+to keep articles and their implementation evidence current.
+
 [![LightTable's native macOS Film workspace, showing film stock and physical print controls](https://lighttable.app/screenshots/film-controls.webp)](https://lighttable.app/screenshots.html)
 
 ## Maintainers wanted
