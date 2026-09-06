@@ -323,7 +323,7 @@ console.log(JSON.stringify({pane:S.activePane,cropping:S.cropping,crop:S.crop,
         self.assertEqual(result['rotate'], 0)
         self.assertEqual(result['optics'], {'rotate': 0, 'vertical': 0, 'horizontal': 0, 'scale': 1,
                                              'flipHorizontal': False, 'flipVertical': False,
-                                             'distortion': 0.25, 'profileEnabled': True,
+                                             'distortion': 0.25, 'profileOverride': None, 'profileEnabled': True,
                                              'profileDistortion': True, 'profileVignette': True,
                                              'vignette': 0})
         self.assertEqual((result['ratio'], result['locked']), ('free', False))
@@ -349,7 +349,7 @@ console.log(JSON.stringify({pane:S.activePane,crop:S.crop,rotate:S.params.rotate
         self.assertEqual(result['optics'], {
             'rotate': 4, 'vertical': 5, 'horizontal': 6, 'scale': 1.1,
             'flipHorizontal': True, 'flipVertical': True,
-            'distortion': 0, 'vignette': 0, 'profileEnabled': False,
+            'distortion': 0, 'vignette': 0, 'profileOverride': None, 'profileEnabled': False,
             'profileDistortion': True, 'profileVignette': True,
         })
         self.assertEqual(result['grade'], {'exposure': 0.8, 'contrast': 0.2})
@@ -389,9 +389,10 @@ console.log(JSON.stringify({original,swapped,locked,
         self.assertTrue(result['invalidUnchanged'])
         self.assertEqual(len(result['notices']), 1)
 
-    def test_portrait_canvas_uses_rendered_orientation_for_original_and_square(self):
+    def test_portrait_source_ignores_stale_canvas_for_original_and_square(self):
         result = self.run_js("""
-$('cv').width=800; $('cv').height=1200;
+photo.width=800; photo.height=1200;
+$('cv').width=1200; $('cv').height=800;
 clickPane('cropPane'); setCropRatio('original');
 const original={ratio:cropOutputRatio(),crop:{...S.crop}};
 setCropRatio('1');
@@ -401,6 +402,17 @@ console.log(JSON.stringify({original,square:{...S.crop},size:cropSourceSize()}))
         self.assertEqual(result['original']['crop'], {'x': 0, 'y': 0, 'w': 1, 'h': 1})
         self.assertAlmostEqual((2 / 3) * result['square']['w'] / result['square']['h'], 1)
         self.assertEqual(result['size'], {'width': 800, 'height': 1200})
+
+    def test_requested_rotation_sets_crop_geometry_before_the_canvas_updates(self):
+        result = self.run_js("""
+photo.width=800; photo.height=1200; S.params.rotate=90;
+$('cv').width=800; $('cv').height=1200;
+clickPane('cropPane'); setCropRatio('original');
+console.log(JSON.stringify({ratio:cropOutputRatio(),crop:S.crop,size:cropSourceSize()}));
+""")
+        self.assertAlmostEqual(result['ratio'], 1.5)
+        self.assertEqual(result['crop'], {'x': 0, 'y': 0, 'w': 1, 'h': 1})
+        self.assertEqual(result['size'], {'width': 1200, 'height': 800})
 
     def test_brush_defaults_are_editable_before_first_correction_and_used_on_photo(self):
         result = self.run_js("""
