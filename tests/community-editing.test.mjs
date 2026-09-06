@@ -85,6 +85,7 @@ test('preferred view retains filtered-only companions and honors explicit editor
 // Exercise the actual paste orchestrator: a state-load failure and an AI error
 // must leave each target untouched, while subsequent safe targets still save.
 const app=readFileSync(new URL('../web/app.js',import.meta.url),'utf8');
+const enqueueSource=app.match(/^function enqueuePhotoPatch\([^]*?^}/m)[0];
 const pasteSource=app.slice(app.indexOf('async function pasteSettingsTo('),app.indexOf("$('pasteBtn').onclick =",app.indexOf('async function pasteSettingsTo(')));
 function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choices:only('tone')}, failLoad=false, semanticError=false, saveError=false}={}) {
   const calls=[], notices=[], nodes=new Map();
@@ -94,11 +95,11 @@ function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choi
     saveState:async()=>true,prefetchState:async image=>{image.stateLoaded=!failLoad;},isStateLoaded:image=>image.stateLoaded,
     normalizeFilmParams:p=>({...p}),normalizeOptics:p=>({...p}),GRADE_DEFAULTS:{},
     api:async(path,body)=>{calls.push({path,body}); if(path==='/api/state' && saveError) throw Error('Disk full'); return path.includes('semantic') ? semanticError?{error:'No model'}:{bitmap:{data:body.name}} : {ok:true};},
-    HISTORY:{record(){}},cur:()=>null,displayName:i=>i.name,showTransferDialog(){},closeTransferDialog(){},
+    HISTORY:{record(){}},photoUndo:{clear(){}},cur:()=>null,displayName:i=>i.name,showTransferDialog(){},closeTransferDialog(){},
     invalidateEditedThumbnail(){},refreshLists(){},confirmTransfer(){},toast:t=>notices.push(t),
   };
   context.editSaveQueue = createEditSaveQueue({send: async(name,payload)=>{const result=await context.api('/api/state',payload.state); if(!result.ok)throw Error('Save failed');},setTimeout:()=>0,clearTimeout(){}});
-  vm.createContext(context); vm.runInContext(pasteSource+'\nthis.run = pasteSettingsTo;',context);
+  vm.createContext(context); vm.runInContext(enqueueSource+'\n'+pasteSource+'\nthis.run = pasteSettingsTo;',context);
   return {run:()=>context.run(images),calls,nodes,notices,queue:context.editSaveQueue};
 }
 test('paste refuses unloaded edited destinations before writing',async()=>{
@@ -123,9 +124,9 @@ test('AI failure prevents saving any part of a target paste',async()=>{
 });
 
 test('paste save failure retains the entire target edit in the queue for retry', async()=>{
-  const target={name:'target.raw',fileKey:'identity',...structuredClone(destination)};
+  const target={name:'target.raw',recoverySourceKey:'identity',...structuredClone(destination)};
   const h=pasteHarness([target],{saveError:true}); await h.run();
-  assert.equal(target.grade.exposure,-1);
+  assert.equal(target.grade.exposure,2, 'failed saves retain the visible pending edit');
   const retained=h.queue.getPending(target.name);
   assert.equal(retained.state.grade.exposure,2); assert.equal(retained.state.grade.temp,-.2);
   assert.equal(retained.sourceKey,'identity'); assert.equal(retained.history.label,'Paste selected settings');

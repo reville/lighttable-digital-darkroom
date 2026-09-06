@@ -3955,8 +3955,16 @@ const editSaveQueue = createEditSaveQueue({
       if (await HISTORY?.flush(name) === false) throw new Error('Could not save edit history');
     }
   },
-  onStatus: renderEditSaveStatus,
+  onStatus: () => updateEditSaveStatus(),
+
 });
+let historySaveStatus = { pendingNames: [], failedNames: [], error: null };
+function updateEditSaveStatus() {
+  const status = editSaveQueue.getStatus();
+  const state = status.state === 'error' || historySaveStatus.error ? 'error'
+    : status.state === 'saving' || historySaveStatus.pendingNames.length ? 'saving' : 'saved';
+  renderEditSaveStatus({...status, state});
+}
 
 async function flushEditSaves() {
   try {
@@ -3965,6 +3973,7 @@ async function flushEditSaves() {
     return true;
   }
   catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
+
 }
 
 const closeBarrier = createCloseBarrier({
@@ -3980,10 +3989,14 @@ $('retryEditSave').onclick = async () => {
       try { await editRecovery.list(); editRecoveryReady = true; }
       catch (error) { updateEditRecoveryHealth(error); }
     }
+    if (await (HISTORY?.retry ? HISTORY.retry() : HISTORY?.flush()) === false) {
+      throw new Error('Could not save photo history');
+    }
     await editSaveQueue.retry();
     toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
   }
   catch { toast('Still unable to save. Your changes are kept in this window.'); }
+
 };
 window.addEventListener('beforeunload', (event) => {
   if (!editSaveQueue.getStatus().pendingNames.length && !HISTORY?.hasPending) return;
@@ -4758,9 +4771,11 @@ function renderCollections() {
     const row = document.createElement('div');
     row.className = 'collection-row' +
       (collection.id === S.activeCollection ? ' on' : '');
-    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${collectionImages(collection).length}</b></button><button class="collection-delete" type="button" title="Delete collection" aria-label="Delete ${collection.name}">×</button>`;
+    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${collectionImages(collection).length}</b></button><button class="collection-delete" type="button" title="Delete collection">×</button>`;
     row.querySelector('span').textContent =
       `${collection.type === 'smart' ? '✦ ' : ''}${collection.name}`;
+    row.querySelector('.collection-delete').setAttribute(
+      'aria-label', `Delete ${collection.name}`);
     row.querySelector('.collection-main').onclick = () => {
       S.activeCollection = S.activeCollection === collection.id ? '' : collection.id;
       refreshFilteredView(); savePrefs();
@@ -5980,7 +5995,7 @@ function persistMark(targets, entry) {
   for (const image of targets) {
     const pending = editSaveQueue.getPending(image.name);
     if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(entry));
-    editSaveQueue.enqueue(image.name, { ...pending,
+    editSaveQueue.enqueue(image.name, { sourceKey: image.recoverySourceKey || null, ...pending,
       state: { ...pending?.state, name: image.name, ...entry } }, { immediate: true });
   }
   void flushEditSaves();
@@ -6104,6 +6119,28 @@ function advanceAfterMark(im) {
   }
 }
 
+// Every local state mutation joins the same per-photo chain. A partial patch
+// must retain any full recipe still waiting to save, including after a failure.
+function enqueuePhotoPatch(im, patch, { historyLabel } = {}) {
+  const pending = editSaveQueue.getPending(im.name);
+  const state = { ...pending?.state, ...cloneValue(patch), name: im.name };
+  Object.assign(im, cloneValue(patch));
+  if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(patch));
+  const history = pending?.history ? {
+    label: historyLabel || pending.history.label,
+    state: { ...pending.history.state },
+  } : historyLabel ? { label: historyLabel, state: {
+    params: im.params, grade: im.grade, crop: im.crop || null,
+    masks: im.masks || [], heals: im.heals || [], optics: im.optics,
+  } } : null;
+  if (history) {
+    for (const key of ['params', 'grade', 'crop', 'masks', 'heals', 'optics']) {
+      if (Object.prototype.hasOwnProperty.call(patch, key)) history.state[key] = cloneValue(patch[key]);
+    }
+  }
+  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate: true });
+}
+
 /* saveState() always writes the photo the editor has open; marking from the
  * survey needs to write a different one. */
 function saveStateFor(im, immediate = false) {
@@ -6221,14 +6258,8 @@ async function applyCullFlags(group, status) {
   if (!window.confirm(
     `${verb} ${targets.length} photo${targets.length === 1 ? '' : 's'} `
     + `matching ${criteria}? Existing flags on those photos are replaced.`)) return;
-  if (!await saveState(true)) return;
-  const result = await api('/api/state/bulk', {
-    names: targets.map((image) => image.name),
-    entry: { status },
-    historyLabel: `Assisted culling: ${criteria}`,
-  });
-  if (!result?.ok || result.error) return toast(result?.error || 'Flags could not be saved');
-  for (const image of targets) image.status = status;
+  for (const image of targets) enqueuePhotoPatch(image, { status });
+  if (!await flushEditSaves()) return;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   refreshLists();
@@ -7231,7 +7262,9 @@ $('transferCopy').onclick = async () => {
 async function pasteSettingsTo(targets) {
   if (!S.clipboard || transferRunning) return toast('Copy settings first');
   const items = [...new Set(targets)].filter(Boolean);
-  if (!items.length || !await saveState(true)) return;
+  if (!items.length) return;
+  // Capture pending controls before opening the blocking transfer dialog.
+  saveState();
   const clipboard = cloneValue(S.clipboard), failures = [];
   transferRunning = true; transferCancelled = false;
   $('transferGroups').hidden = true; $('transferCopy').hidden = true; $('transferCancel').textContent = 'Stop';
@@ -7246,9 +7279,10 @@ async function pasteSettingsTo(targets) {
       // merging so unchecked settings can never be replaced with defaults.
       await prefetchState(image);
       if (!isStateLoaded(image)) throw new Error("Existing settings could not be loaded; this photo was left unchanged");
-      await editSaveQueue.flush(image.name);
-      const destination = { ...image, params: normalizeFilmParams(image.params),
-        grade: { ...GRADE_DEFAULTS, ...(image.grade || {}) }, optics: normalizeOptics(image.optics) };
+      const pending = editSaveQueue.getPending(image.name)?.state || {};
+      const currentEdits = {...image, ...pending};
+      const destination = { ...currentEdits, params: normalizeFilmParams(currentEdits.params),
+        grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) }, optics: normalizeOptics(currentEdits.optics) };
       const patch = transferPatch(clipboard, destination, clipboard.choices);
       if (patch.masks) patch.masks = await regenerateTransferMasks(patch.masks,
         kind => api('/api/mask/semantic', { name: image.name, kind, params: patch.params || destination.params }),
@@ -7256,24 +7290,19 @@ async function pasteSettingsTo(targets) {
           (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
       if (transferCancelled) break;
       const { cropChoices, ...entry } = patch;
-      const merged = { ...destination, ...patch };
-      editSaveQueue.enqueue(image.name, {
-        state: { name: image.name, ...entry }, sourceKey: image.recoverySourceKey || null,
-        history: { label: 'Paste selected settings', state: {
-          params: merged.params, grade: merged.grade, crop: merged.crop || null,
-          masks: merged.masks || [], heals: merged.heals || [], optics: merged.optics,
-        } },
-      }, { immediate: true });
-      await editSaveQueue.flush(image.name);
       if (image === cur() && S.editingName === image.name) pushUndo();
-      Object.assign(image, cloneValue(patch));
+      enqueuePhotoPatch(image, entry, {historyLabel: 'Paste selected settings'});
+      image.cropChoices = cropChoices ?? image.cropChoices;
       image.stateLoaded = true;
-      if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(patch));
+      if (image !== cur()) photoUndo.clear(image.name);
       invalidateEditedThumbnail(image);
+      // Apply once before waiting: an external update arriving during the save
+      // must never be overwritten by completion of this older operation.
       if (image === cur() && S.editingName === image.name) {
         restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
         _lastHistorySnapshot = editHistorySnapshot();
       }
+      await editSaveQueue.flush(image.name);
       completed++;
     } catch (error) { failures.push(`${displayName(image)}: ${error.message || 'Could not paste'}`); }
   }
@@ -7284,6 +7313,7 @@ async function pasteSettingsTo(targets) {
     + (failures.length ? `\n${failures.join('\n')}` : '');
   $('transferCancel').focus();
   if (!failures.length && !transferCancelled) { closeTransferDialog(); toast(`Pasted to ${completed} photo${completed === 1 ? '' : 's'}`); }
+
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
 $('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
@@ -9762,6 +9792,7 @@ HISTORY = createHistoryPanel({
   post: api,
   get: getJSON,
   toast,
+  onStatus(status) { historySaveStatus = status; updateEditSaveStatus(); },
   enabled: () => S.catalogEnabled,
   onRestore: (state) => {
     pushUndo();
@@ -9889,31 +9920,21 @@ async function trashRejected() {
 /* ------------------------------------------------------- survey controls */
 if ($('surveyClose')) $('surveyClose').onclick = () => SURVEY.close();
 if ($('surveySwap')) $('surveySwap').onclick = () => SURVEY.swap();
-if ($('surveyKeep')) {
-  $('surveyKeep').onclick = async () => {
-    const keeper = SURVEY.active;
-    if (!keeper) return;
-    const kept = linkedMetadataTargets(S.images.filter(image => image.name === keeper));
-    const keepNames = new Set(kept.map(image => image.name));
-    const others = linkedMetadataTargets(S.images.filter(image =>
-      SURVEY.names.includes(image.name) && !keepNames.has(image.name)))
-      .filter(image => !keepNames.has(image.name));
-    if (!await saveState(true)) return;
-    const picked = await api('/api/state', { name: keeper, status: 'approved' });
-    if (!picked?.ok || picked.error) return toast(picked?.error || 'Select could not be saved');
-    for (const image of kept) image.status = 'approved';
-    if (others.length) {
-      const rejected = await api('/api/state/bulk',
-        { names: others.map(image => image.name), entry: { status: 'skipped' } });
-      if (!rejected?.ok || rejected.error) {
-        refreshLists(); return toast(rejected?.error || 'Select saved; the remaining flags could not be saved');
-      }
-      for (const image of others) image.status = 'skipped';
-    }
-    refreshLists();
-    toast('Marked the select and rejected the rest');
-  };
+async function keepSurveySelection() {
+  const keeper = SURVEY.active;
+  if (!keeper) return;
+  const kept = linkedMetadataTargets(S.images.filter(image => image.name === keeper));
+  const keepNames = new Set(kept.map(image => image.name));
+  const others = linkedMetadataTargets(S.images.filter(image =>
+    SURVEY.names.includes(image.name) && !keepNames.has(image.name)))
+    .filter(image => !keepNames.has(image.name));
+  for (const image of kept) enqueuePhotoPatch(image, {status: 'approved'});
+  for (const image of others) enqueuePhotoPatch(image, {status: 'skipped'});
+  refreshLists();
+  if (!await flushEditSaves()) return;
+  toast('Marked the select and rejected the rest');
 }
+if ($('surveyKeep')) $('surveyKeep').onclick = keepSurveySelection;
 
 /* --------------------------------------------------- lens: auto-straighten */
 if ($('autoLevel')) {
@@ -10168,30 +10189,44 @@ async function applyServerStateEvent(event) {
   if (event.client === CLIENT_ID) return;
   const names = Array.isArray(event.names) ? event.names : [];
   const current = cur();
-  for (const name of names) { if (name !== current?.name) photoUndo.clear(name); }
-  if (!current || !names.includes(current.name)) {
-    await reloadLibrary();
+  const patchFor = name => event.patches?.[name] || event.patch;
+  const patch = current ? patchFor(current.name) : event.patch;
+  const hasPatches = names.some(name => patchFor(name) && typeof patchFor(name) === 'object');
+  if (!hasPatches) {
+    // IPTC updates do not change the edit recipe. A GET here can read an older
+    // window save and wrongly restore it over newer local editor controls.
+    if (current && names.includes(current.name)) METADATA?.refresh(current.name);
     return;
   }
-  const before = snapshot();
-  const state = await getJSON(`/api/state?name=${encodeURIComponent(current.name)}`);
-  if (!state || state.error || cur()?.name !== current.name) return;
-  pushUndoState(before);
-  Object.assign(current, normalizeLibraryImage({ ...current, ...state }, true));
-  restore(JSON.stringify({
-    params: state.params, grade: state.grade || { ...GRADE_DEFAULTS },
-    crop: state.crop || null, masks: state.masks || [], heals: state.heals || [],
-    optics: state.optics || { ...OPTICS_DEFAULTS },
-  }), null, false);
-  _lastHistorySnapshot = editHistorySnapshot();
-  invalidateEditedThumbnail(current);
+  const currentChanged = current && names.includes(current.name) && S.editingName === current.name;
+  const before = currentChanged ? snapshot() : null;
+  for (const image of S.images) {
+    if (!names.includes(image.name)) continue;
+    const patch = patchFor(image.name);
+    if (!patch || typeof patch !== 'object' || Array.isArray(patch)) continue;
+    if (image !== current) photoUndo.clear(image.name);
+    // The event carries the accepted patch, even if an older browser request
+    // subsequently overwrites it on disk. Repair after that in-flight request,
+    // while keeping unrelated local fields and explicit retry after a failure.
+    if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, patch);
+    else {
+      Object.assign(image, cloneValue(patch));
+      if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(patch));
+    }
+    invalidateEditedThumbnail(image);
+  }
+  if (currentChanged) {
+    pushUndoState(before);
+    restore(JSON.stringify({ ...JSON.parse(before), ...patch }), null, false);
+    _lastHistorySnapshot = editHistorySnapshot();
+    HISTORY?.refresh(current.name, true);
+    const label = event.origin && event.origin !== 'window'
+      ? `Updated by ${event.origin}` : 'Photo updated externally';
+    toast(label, { label: 'Undo', run: undo });
+  }
   refreshLists();
   renderKeywords();
   renderVersions();
-  HISTORY?.refresh(current.name, true);
-  const label = event.origin && event.origin !== 'window'
-    ? `Updated by ${event.origin}` : 'Photo updated externally';
-  toast(label, { label: 'Undo', run: undo });
 }
 
 async function executeUICommand(command, args = {}, event = {}) {
