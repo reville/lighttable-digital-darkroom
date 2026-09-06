@@ -243,9 +243,14 @@ pub fn edit_recovery(root: &Path, body: &serde_json::Value) -> Result<serde_json
         for entry in fs::read_dir(directory)? {
             let path = entry?.path();
             if path.extension().and_then(|v| v.to_str()) == Some("json") {
-                records.push(serde_json::from_slice::<serde_json::Value>(&fs::read(
-                    path,
-                )?)?);
+                let record = (|| -> Result<serde_json::Value> {
+                    Ok(serde_json::from_slice(&fs::read(&path)?)?)
+                })();
+                records.push(match record {
+                    Ok(value) => value,
+                    Err(error) => serde_json::json!({"journalError": error.to_string(),
+                        "recordKey": path.file_name().unwrap_or_default().to_string_lossy()}),
+                });
             }
         }
         return Ok(serde_json::Value::Array(records));
@@ -336,7 +341,9 @@ mod recovery_tests {
             .join("a".repeat(64))
             .join(format!("{}.json", "b".repeat(64)));
         fs::write(&path, "{damaged").unwrap();
-        assert!(edit_recovery(&directory, &request("list", "")).is_err());
+        assert!(
+            edit_recovery(&directory, &request("list", "")).unwrap()[0]["journalError"].is_string()
+        );
         assert!(edit_recovery(&directory, &request("put", "two")).is_err());
         assert_eq!(fs::read_to_string(&path).unwrap(), "{damaged");
         fs::remove_dir_all(directory).unwrap();

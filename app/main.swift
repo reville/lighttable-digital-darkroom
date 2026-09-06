@@ -539,7 +539,10 @@ final class EditRecoveryStore {
             guard fm.fileExists(atPath: directory.path) else { return [[String: Any]]() }
             return try fm.contentsOfDirectory(at: directory,
                 includingPropertiesForKeys: nil).filter { $0.pathExtension == "json" }
-                .map { try JSONSerialization.jsonObject(with: Data(contentsOf: $0)) }
+                .map { url -> Any in
+                    do { return try JSONSerialization.jsonObject(with: Data(contentsOf: url)) }
+                    catch { return ["journalError": error.localizedDescription, "recordKey": url.lastPathComponent] }
+                }
         }
         let key = try identifier(body["key"])
         let destination = directory.appendingPathComponent(key + ".json")

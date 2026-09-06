@@ -70,7 +70,7 @@ do {
         self.request("put", value=self.record("one", 1))
         path = Path(self.directory.name) / self.scope / (self.key + ".json")
         path.write_text("{damaged")
-        self.assertEqual(self.request("list")[0], 1)
+        self.assertIn("journalError", self.request("list")[1]["result"][0])
         self.assertEqual(self.request("put", value=self.record("two", 2))[0], 1)
         self.assertEqual(path.read_text(), "{damaged")
 
