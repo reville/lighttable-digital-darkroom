@@ -17,7 +17,6 @@ export function createCatalogUI(ctx) {
   let catalog = null;
   let ingestPlan = null;
   let ingestPoll = null;
-  let importPoll = null;
   let watchPoll = null;
   let watches = [];
   const watchSeen = new Map();
@@ -201,106 +200,115 @@ export function createCatalogUI(ctx) {
   /* ------------------------------------------------------ catalog import */
 
   function bindCatalogImport() {
-    const open = el('importCatalogBtn');
-    const dialog = el('importDialog');
-    const pathInput = el('importPath');
-    const summary = el('importSummary');
-    const options = el('importOptions');
-    const run = el('importRun');
+    const open = el('importCatalogBtn'), dialog = el('importDialog');
+    const pathInput = el('importPath'), summary = el('importSummary');
+    const options = el('importOptions'), run = el('importRun');
+    const preview = el('importPreview'), trial = el('importTrial');
     if (!open || !dialog) return;
-
-    const show = (visible) => {
-      dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    let inspected = '', previewed = '', busy = false, inspection = 0;
+    const requestBody = () => ({path: pathInput.value.trim(), options: {
+      metadata: el('impMetadata').checked, keywords: el('impKeywords').checked,
+      collections: el('impCollections').checked, stacks: el('impStacks').checked,
+      develop: el('impDevelop').checked, history: el('impHistory').checked,
+      conflict: el('impConflict').value, referenceRoot: el('impReferenceRoot').value.trim(),
+    }});
+    function controls() {
+      const ready = inspected && inspected === pathInput.value.trim();
+      preview.disabled = trial.disabled = busy || !ready;
+      run.disabled = busy || !ready || previewed !== JSON.stringify(requestBody());
+      pathInput.disabled = busy;
+      el('importChoose').disabled = busy;
+      options.querySelectorAll('input, select').forEach(control => { control.disabled = busy; });
+    }
+    const show = visible => {
+      dialog.setAttribute('aria-hidden', String(!visible));
       dialog.classList.toggle('on', visible);
     };
-
-    open.addEventListener('click', () => { show(true); });
-    const cancel = el('importCancel');
-    if (cancel) cancel.addEventListener('click', () => show(false));
-
-    const choose = el('importChoose');
-    if (choose) {
-      choose.addEventListener('click', () => {
-        if (!sendNative('chooseCatalogFile', {})) {
-          toast('Choosing a file needs the desktop app; paste a path instead');
-        }
-      });
-    }
-
+    open.addEventListener('click', () => show(true));
+    el('importCancel').addEventListener('click', () => show(false));
+    dialog.addEventListener('keydown', event => {
+      event.stopPropagation();
+      if (event.key === 'Escape') { event.preventDefault(); show(false); }
+    });
+    el('importChoose')?.addEventListener('click', () => {
+      if (!sendNative('chooseCatalogFile', {})) toast('Paste the catalog file path to continue');
+    });
     async function inspect() {
-      const path = pathInput.value.trim();
+      const path = pathInput.value.trim(), ticket = ++inspection;
+      inspected = previewed = '';
+      controls();
+      el('importCoverage').hidden = true;
       if (!path) return;
-      summary.textContent = 'Reading…';
+      summary.textContent = 'Reading catalog…';
       try {
-        const result = await post('/api/import/catalog',
-                                  { path, inspectOnly: true });
-        if (result.error) { summary.textContent = result.error; return; }
-        const missing = (result.roots || []).filter((r) => !r.exists);
-        summary.innerHTML = `<strong>${result.images || 0} photos</strong>`
-          + ` · ${result.keywords || 0} keywords`
-          + ` · ${result.collections || 0} collections`
-          + ` · ${result.stacks || 0} stacks<br>`
-          + `${(result.roots || []).length} folder root(s)`
-          + (missing.length
-            ? `, <em>${missing.length} not found on this machine</em>` : '')
-          + ((result.warnings || []).length
-            ? `<br>Notes: ${result.warnings.join('; ')}` : '');
+        const result = await post('/api/import/catalog', {path, inspectOnly: true});
+        if (ticket !== inspection || path !== pathInput.value.trim()) return;
+        if (result.error) throw new Error(result.error);
+        summary.textContent = `${result.images || 0} photos · ${result.collections || 0} collections. `
+          + (result.warnings || []).join('; ');
+        inspected = path;
         options.hidden = false;
-        run.disabled = false;
-      } catch (error) {
-        summary.textContent = 'That file could not be read as a catalog.';
-      }
+      } catch (error) { if (ticket === inspection) summary.textContent = error.message; }
+      controls();
     }
-
-    if (pathInput) pathInput.addEventListener('change', inspect);
-
-    if (run) {
-      run.addEventListener('click', async () => {
-        run.disabled = true;
-        const body = {
-          path: pathInput.value.trim(),
-          options: {
-            metadata: el('impMetadata').checked,
-            keywords: el('impKeywords').checked,
-            collections: el('impCollections').checked,
-            stacks: el('impStacks').checked,
-            develop: el('impDevelop').checked,
-            history: el('impHistory').checked,
-            conflict: el('impConflict').value,
-          },
-        };
-        await post('/api/import/catalog', body);
-        summary.textContent = 'Importing…';
-        clearInterval(importPoll);
-        importPoll = setInterval(async () => {
-          const status = await get('/api/import/status');
-          if (status.running) {
-            summary.textContent = `${status.stage || 'Working'}… `
-              + `${status.done || 0}/${status.total || 0}`;
+    pathInput.addEventListener('change', inspect);
+    options.addEventListener('change', controls);
+    function showReport(result) {
+      const prefix = result.previewOnly ? 'Compatibility preview' : result.trial ? 'Trial variants created' : 'Import complete';
+      summary.textContent = `${prefix}: ${result.matched || 0} matched, ${result.unmatched || 0} not found. `
+        + `${result.collections || 0} collections; ${result.history || 0} history steps. `
+        + (result.warnings || []).join('; ')
+        + (result.beforeBackup ? ` Backup before import: ${result.beforeBackup}` : '');
+      el('importCoverage').hidden = false;
+      el('importCoverageRows').replaceChildren(...(result.photos || []).map(photo => {
+        const row = document.createElement('p');
+        row.textContent = `${photo.sourcePath || photo.sourceId} → ${photo.targetName || 'No match'} · ${photo.outcome}. `
+          + `Mapped: ${(photo.mapped || []).join(', ') || 'none'}. `
+          + (photo.skipped?.length ? `Skipped: ${photo.skipped.join(', ')}. ` : '')
+          + (photo.reference ? `Reference: ${photo.reference.path || photo.reference.note}. ` : '')
+          + (photo.appearance || '');
+        return row;
+      }));
+      const link = el('importReportDownload');
+      link.hidden = !result.reportId;
+      if (result.reportId) link.href = `/api/import/report?id=${encodeURIComponent(result.reportId)}`;
+    }
+    async function begin(mode) {
+      if (busy) return;
+      const body = requestBody(), signature = JSON.stringify(body);
+      if (mode === 'import' && signature !== previewed) return;
+      body.previewOnly = mode === 'preview';
+      body.options.trial = mode === 'trial';
+      busy = true; controls(); summary.textContent = 'Preparing…';
+      try {
+        const started = await post('/api/import/catalog', body);
+        if (started.error || !started.jobId) throw new Error(started.error || 'Could not start import');
+        for (let attempt = 0; attempt < 7200; attempt++) {
+          const record = await get(`/api/jobs/${started.jobId}`);
+          if (record.error) throw new Error(record.error);
+          if (record.state === 'failed') throw new Error(record.errors?.join('; ') || 'Import failed');
+          if (record.state === 'done') {
+            const result = record.result || {};
+            if (mode === 'preview') previewed = signature;
+            showReport(result);
+            if (mode !== 'preview') {
+              await refresh();
+              if (ctx.onLibraryChanged) ctx.onLibraryChanged();
+            }
             return;
           }
-          clearInterval(importPoll);
-          run.disabled = false;
-          if (status.error) {
-            summary.textContent = `Import failed: ${status.error}`;
-            return;
-          }
-          const result = status.result || {};
-          summary.innerHTML = `<strong>Imported ${result.images || 0} photos.`
-            + `</strong><br>${result.matched || 0} matched on disk, `
-            + `${result.unmatched || 0} not found.<br>`
-            + `${result.keywords || 0} keywords, `
-            + `${result.collections || 0} collections, `
-            + `${result.stacks || 0} stacks, ${result.history || 0} history steps.`
-            + ((result.warnings || []).length
-              ? `<br>Skipped: ${result.warnings.join('; ')}` : '');
-          await refresh();
-          if (ctx.onLibraryChanged) ctx.onLibraryChanged();
-        }, 700);
-      });
+          const status = record.result || {};
+          summary.textContent = `${status.stage || 'Working'}… ${status.done || 0}/${status.total || 0}`;
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        throw new Error('The import is still running. Check its job status before starting another import.');
+      } catch (error) { summary.textContent = error.message; }
+      finally { busy = false; controls(); }
     }
-
-    return { setPath(path) { pathInput.value = path; inspect(); show(true); } };
+    preview.onclick = () => begin('preview');
+    trial.onclick = () => begin('trial');
+    run.onclick = () => begin('import');
+    return {setPath(path) { if (busy) return; pathInput.value = path; inspect(); show(true); }};
   }
 
   /* -------------------------------------------------------------- ingest */
@@ -601,10 +609,19 @@ export function createCatalogUI(ctx) {
           preview: true,
         });
         if (request !== previewSequence) return;
-        el('renamePreview').innerHTML = (result.preview || [])
-          .map((row) => `<span>${row.from} → <strong>${row.to}</strong></span>`)
-          .join('') + (result.total > 3
-            ? `<span class="muted">…and ${result.total - 3} more</span>` : '');
+        const rows = (result.preview || []).map(row => {
+          const line = document.createElement('span');
+          line.textContent = `${row.sourcePath || row.from} → ${row.destinationPath || row.to}`;
+          for (const companion of row.companions || []) {
+            const detail = document.createElement('small');
+            detail.textContent = `${companion.source} → ${companion.target || companion.action}${companion.sharedWith?.length ? " (shared metadata retained)" : ""}`;
+            detail.style.display = 'block'; line.append(detail);
+          }
+          return line;
+        });
+        const policy = document.createElement('span');
+        policy.textContent = result.error || result.collisionPolicy || '';
+        el('renamePreview').replaceChildren(policy, ...rows);
         apply.disabled = Boolean(result.error);
       } catch (error) {
         if (request === previewSequence) toast('Could not preview the rename');

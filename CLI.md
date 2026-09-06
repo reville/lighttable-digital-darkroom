@@ -80,16 +80,16 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
-| `import` | `/api/import/catalog`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
+| `import` | `/api/import/catalog`, `/api/import/report`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
 | `ingest` | `/api/ingest`, `/api/ingest/scan`, `/api/ingest/status`, `/api/ingest/sources`, `/api/ingest/cancel` |
 | `watch` | `/api/watch`, `/api/watch/status` |
 | `merge` | `/api/merge`, `/api/merge/status` |
 | `denoise / enhance` | `/api/denoise`, `/api/denoise/status`, `/api/denoise/cancel`, `/api/enhance`, `/api/enhance/capabilities` |
 | `external-edit` | `/api/edit-external`, `/api/edit-external/status` |
 | `files` | `/api/photos/move`, `/api/photos/rename`, `/api/photos/trash`, `/api/photos/reveal`, `/api/catalog/duplicates` |
-| `catalog` | `/api/catalog`, `/api/catalog/backup`, `/api/catalog/folders`, `/api/catalog/scan` |
+| `catalog` | `/api/storage`, `/api/catalog`, `/api/catalog/backup`, `/api/catalog/folders`, `/api/catalog/scan` |
 | `doctor / recovery` | `/api/recovery`, `/api/recovery/log` |
-| `cache / masks` | `/api/cache/status`, `/api/cache/purge`, `/api/cache/pregenerate`, `/api/cache/pregenerate/status`, `/api/cache/pregenerate/cancel`, `/api/batch/semantic-masks`, `/api/batch/semantic-masks/status`, `/api/batch/semantic-masks/cancel`, `/api/mask/semantic` |
+| `cache / masks` | `/api/cache/status`, `/api/cache/purge`, `/api/cache/pregenerate`, `/api/cache/pregenerate/status`, `/api/cache/pregenerate/cancel`, `/api/batch/semantic-masks`, `/api/batch/semantic-masks/status`, `/api/batch/semantic-masks/cancel`, `/api/batch/semantic-masks/undo`, `/api/mask/semantic` |
 | `ai-index` | `/api/ai-index`, `/api/ai-index/status`, `/api/ai-index/results` |
 | `soft-proof` | `/api/soft-proof`, `/api/soft-proof/profiles` |
 | `prefs` | `/api/prefs` |

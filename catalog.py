@@ -35,6 +35,7 @@ import re
 import shutil
 import sqlite3
 import threading
+import tempfile
 import time
 import zipfile
 from datetime import datetime, timezone
@@ -471,6 +472,17 @@ def _rebuild_search_index(conn: sqlite3.Connection) -> int:
     return count
 
 
+BACKUP_SCOPE = {
+    "included": ["Catalog organization", "Photo edits and stored masks", "Edit history and variants", "Source locations"],
+    "excluded": ["Original photo files", "External presets and profiles", "Application preferences", "Rebuildable previews and caches"],
+}
+
+
+def _file_digest(path: Path) -> str:
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
 def _extract_archive(archive: Path, staged: Path) -> bool:
     """Extract the single catalog member of a backup zip to ``staged``.
 
@@ -491,9 +503,29 @@ def _extract_archive(archive: Path, staged: Path) -> bool:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
                 writer.flush()
                 os.fsync(writer.fileno())
+            if "manifest.json" in bundle.namelist():
+                if bundle.getinfo("manifest.json").file_size > 1024 * 1024:
+                    return False
+                manifest = json.loads(bundle.read("manifest.json"))
+                if (manifest.get("format") != "lighttable-catalog-backup"
+                        or manifest.get("version") != 1
+                        or manifest.get("catalog", {}).get("sha256") != _file_digest(staged)):
+                    return False
         return True
-    except (OSError, ValueError, zipfile.BadZipFile):
+    except (OSError, ValueError, TypeError, AttributeError, zipfile.BadZipFile):
         return False
+
+
+def verify_backup(archive: Path | str, *, strict=True) -> dict:
+    """Read back and reopen a backup in a fresh temporary directory, without caches."""
+    archive = Path(archive)
+    with tempfile.TemporaryDirectory(prefix="lighttable-verify-backup-") as folder:
+        staged = Path(folder) / "library.sqlite3"
+        if not _extract_archive(archive, staged) or not _catalog_file_ok(staged, strict=strict):
+            raise ValueError("The backup failed archive, checksum, or catalog verification")
+        summary = catalog_summary(staged)
+    return {"archive": str(archive), "verifiedAt": _now(), "summary": summary,
+            "scope": BACKUP_SCOPE}
 
 
 def _install_verified(path: Path, staged: Path, *, label: str = "") -> Path:
@@ -1567,6 +1599,61 @@ class Catalog:
             for image_id, entry in entries.items():
                 self._save_state(conn, image_id, entry)
 
+    def mutate_masks(self, image_id: int, mutation, *, label: str,
+                     batch_id: str = "", name: str = "") -> dict:
+        """Merge background mask work into the latest state in one transaction.
+
+        The callback runs after acquiring the writer, never around inference.
+        A batch stores only its new mask IDs for a selective, durable Undo.
+        """
+        with self.write() as conn:
+            if not conn.execute("SELECT id FROM images WHERE id=?", (image_id,)).fetchone():
+                raise ValueError("The photo is no longer in this catalog")
+            before = self.state_for(image_id)
+            masks = mutation(before)
+            if masks == (before.get("masks") or []):
+                return before
+            self._add_history(conn, image_id, "Before " + label, before, origin="batch-masks")
+            self._save_state(conn, image_id, {"masks": masks})
+            after = dict(before, masks=masks)
+            self._add_history(conn, image_id, label, after, origin="batch-masks")
+            if batch_id:
+                # One small row per photo avoids rewriting a growing batch
+                # manifest after every detection in a large catalog.
+                key = f"mask-batch:{batch_id}:{image_id}"
+                old_ids = {mask.get("id") for mask in before.get("masks") or []}
+                record = {"created": _now(), "imageId": image_id,
+                    "ids": [mask["id"] for mask in masks if mask["id"] not in old_ids]}
+                conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                             (key, json.dumps(record)))
+            return after
+
+    def undo_mask_batch(self, batch_id: str) -> list[dict]:
+        """Remove this batch's generated masks, preserving subsequent manual edits."""
+        pattern = "mask-batch:" + batch_id + ":%"
+        with self.write() as conn:
+            rows = conn.execute("SELECT value FROM meta WHERE key LIKE ?", (pattern,)).fetchall()
+            if not rows:
+                raise ValueError("There are no saved masks to undo for this batch")
+            changes = []
+            for row in rows:
+                item = json.loads(row[0])
+                image_id = item["imageId"]
+                image = self.image_row(image_id)
+                if not image:
+                    continue
+                before = self.state_for(image_id)
+                removed = set(item["ids"])
+                masks = [mask for mask in before.get("masks") or [] if mask.get("id") not in removed]
+                if masks != (before.get("masks") or []):
+                    self._save_state(conn, image_id, {"masks": masks})
+                    self._add_history(conn, image_id, "Undo generated masks", dict(before, masks=masks),
+                                      origin="batch-masks")
+                    changes.append({"name": qualified_name(image["source_id"], image["relpath"], image["copy_ident"]),
+                                    "masks": masks, "removed": item["ids"]})
+            conn.execute("DELETE FROM meta WHERE key LIKE ?", (pattern,))
+            return changes
+
     def _save_state(self, conn, image_id: int, entry: dict) -> None:
         conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
                      " updated_at) VALUES(?,?)", (image_id, _now()))
@@ -2267,23 +2354,24 @@ class Catalog:
         Snapshots are compressed because a step holds the whole edit record,
         including mask geometry, and a long session produces hundreds.
         """
-        import zlib
-
-        blob = zlib.compress(
-            json.dumps(state, separators=(",", ":")).encode("utf-8"), 6)
         with self.write() as conn:
-            seq = conn.execute(
-                "SELECT COALESCE(MAX(seq), 0) + 1 AS n FROM history"
-                " WHERE image_id=?", (image_id,)).fetchone()["n"]
-            conn.execute(
-                "INSERT INTO history(image_id, seq, created, label, origin,"
-                " state_blob) VALUES(?,?,?,?,?,?)",
-                (image_id, seq, _now(), str(label)[:80], str(origin)[:20],
-                 blob))
-            conn.execute(
-                "DELETE FROM history WHERE image_id=? AND seq <= ?",
-                (image_id, seq - cap))
-            return int(seq)
+            return self._add_history(conn, image_id, label, state, origin=origin, cap=cap)
+
+    def _add_history(self, conn, image_id, label, state, *, origin="edit", cap=200):
+        import zlib
+        blob = zlib.compress(json.dumps(state, separators=(",", ":")).encode("utf-8"), 6)
+        seq = conn.execute(
+            "SELECT COALESCE(MAX(seq), 0) + 1 AS n FROM history"
+            " WHERE image_id=?", (image_id,)).fetchone()["n"]
+        conn.execute(
+            "INSERT INTO history(image_id, seq, created, label, origin,"
+            " state_blob) VALUES(?,?,?,?,?,?)",
+            (image_id, seq, _now(), str(label)[:80], str(origin)[:20],
+             blob))
+        conn.execute(
+            "DELETE FROM history WHERE image_id=? AND seq <= ?",
+            (image_id, seq - cap))
+        return int(seq)
 
     def history_for(self, image_id: int, *, limit: int = 200) -> list[dict]:
         rows = self.connection.execute(
@@ -2346,6 +2434,12 @@ class Catalog:
                 raise RuntimeError("catalog backup failed its integrity check")
             with zipfile.ZipFile(partial, "w", zipfile.ZIP_DEFLATED) as bundle:
                 bundle.write(staged, "library.sqlite3")
+                bundle.writestr("manifest.json", json.dumps({
+                    "format": "lighttable-catalog-backup", "version": 1,
+                    "created": _now(), "scope": BACKUP_SCOPE,
+                    "catalog": {"file": "library.sqlite3", "sha256": _file_digest(staged),
+                                "bytes": staged.stat().st_size, "summary": catalog_summary(staged)},
+                }, indent=2))
             with zipfile.ZipFile(partial, "r") as bundle:
                 if bundle.testzip() is not None:
                     raise RuntimeError("catalog backup archive failed verification")
@@ -2353,6 +2447,19 @@ class Catalog:
             while True:
                 try:
                     durable_io.publish_file_no_replace(partial, archive)
+                    try:
+                        verification = verify_backup(archive, strict=strict)
+                    except Exception:
+                        # Keep recovery evidence but exclude a failed readback
+                        # from the list of usable backup archives.
+                        try:
+                            archive.rename(archive.with_suffix('.zip.unverified'))
+                        except OSError:
+                            pass
+                        raise
+                    with self.write() as conn:
+                        conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                                     ("lastVerifiedBackup", json.dumps(verification)))
                     return archive
                 except FileExistsError:
                     archive = target_dir / f"{base.stem}-{suffix}.zip"

@@ -160,6 +160,25 @@ def _clean_mask_component(raw, index: int,
     return component
 
 
+def require_saved_mask_assets(values) -> None:
+    """Delivery must never silently drop an accepted AI selection or refinement."""
+    for mask in values if isinstance(values, list) else []:
+        if not isinstance(mask, dict) or mask.get("enabled") is False:
+            continue
+        components = mask.get("components")
+        components = components if isinstance(components, list) else [mask]
+        for component in components:
+            if not isinstance(component, dict):
+                continue
+            kind = component.get("type")
+            if kind in {"subject", "sky", "object", "depth", "person", "face-skin",
+                        "eyes", "eyebrows", "lips", "teeth", "hair"}:
+                if _clean_bitmap(component.get("bitmap")) is None:
+                    label = str(mask.get("name") or mask.get("id") or kind)[:100]
+                    raise ValueError(f"Saved AI data for '{label}' is missing or damaged. "
+                                     "Restore it from History or regenerate and review the mask before exporting.")
+
+
 def clean_masks(values) -> list[dict]:
     result = []
     point_budget = [MAX_TOTAL_MASK_POINTS]

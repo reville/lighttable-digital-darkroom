@@ -274,10 +274,8 @@ final class ServerController {
         let fm = FileManager.default
         guard let attributes = try? fm.attributesOfItem(atPath: logURL.path),
               let size = attributes[.size] as? Int, size > 0 else { return }
-        let base = logURL.deletingPathExtension()
-        let ext = logURL.pathExtension
         func generation(_ index: Int) -> URL {
-            base.appendingPathExtension("\(index)").appendingPathExtension(ext)
+            logURL.appendingPathExtension("\(index)")
         }
         try? fm.removeItem(at: generation(3))
         for index in stride(from: 2, through: 1, by: -1) {
@@ -380,6 +378,7 @@ final class ServerController {
         env["NUMBA_NUM_THREADS"] = "4"
         env["OPENBLAS_NUM_THREADS"] = "4"
         env["PYTHONUNBUFFERED"] = "1"
+        env["LIGHTTABLE_LOG_FILE"] = logURL.path
         p.environment = env
         p.standardOutput = log
         p.standardError = log
