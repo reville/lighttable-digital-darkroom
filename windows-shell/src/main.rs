@@ -1014,7 +1014,9 @@ fn run() -> Result<()> {
             _ => {}
         }
         if app.close_approved {
-            app.server.stop();
+            if let Some(mut server) = app.server.take() {
+                server.stop();
+            }
             *control_flow = ControlFlow::Exit;
         } else if let Some(deadline) = app.close_deadline {
             *control_flow = ControlFlow::WaitUntil(deadline);
