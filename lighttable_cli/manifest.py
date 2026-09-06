@@ -211,6 +211,19 @@ def schema(options: dict | None = None) -> dict:
             "routes": {"type": "object", "default": ROUTE_COVERAGE},
         },
         "$defs": {
+            "exportRecipe": {
+                "type": "object",
+                "properties": {
+                    "destination": {"type": "string", "default": "film-exports"},
+                    "destinationMode": {"enum": ["fixed", "original-folder-relative", "preserve-source-hierarchy"], "default": "fixed"},
+                    "preserveCaptureTime": {"type": "boolean", "default": False},
+                    "captureTimePolicy": {"enum": ["require-offset", "local"], "default": "require-offset"},
+                    "metadata": {"enum": ["all", "all-except-location", "copyright", "none"]},
+                    "sidecar": {"type": "boolean"},
+                    "filenameTemplate": {"type": "string"},
+                    "collision": {"enum": ["rename", "skip", "overwrite"]},
+                },
+            },
             "stateUpdate": {
                 "type": "object", "required": ["name"],
                 "additionalProperties": False,

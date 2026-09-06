@@ -70,6 +70,14 @@ before film; processing stays floating point until the final encoder. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,
 Display P3, or ProPhoto RGB.
 
+Export recipes can use one destination, a subfolder beside each original, or
+the original folder hierarchy beneath a destination. The dialog previews paths
+across source folders before starting. Optional capture-time file timestamps
+use the embedded timezone; missing timezones are reported unless you explicitly
+choose this computer's local timezone. Metadata and recipe-sidecar policies are
+saved with the recipe. Cancel stops queued work, waits for active cleanup, and
+retains completed files. Export details list skipped files, errors and warnings.
+
 ### Local by design
 
 Photos, the SQLite catalog, edit history, and render caches stay on your machine.

@@ -53,6 +53,8 @@ class JobRegistry:
             if ident not in self._records:
                 raise KeyError(f"unknown job: {ident}")
             record = self._records[ident]
+            if record["state"] in TERMINAL_STATES:
+                return copy.deepcopy(record)
             if "state" in changes and changes["state"] not in STATES:
                 raise ValueError(f"unknown job state: {changes['state']}")
             if changes.get("state") == "running" and not record["started"]:
@@ -104,7 +106,10 @@ class JobRegistry:
                 return copy.deepcopy(record)
             if cancel is None:
                 raise RuntimeError("job is not cancellable")
-        cancel()
+        # A cooperative worker returns False and owns the terminal transition
+        # after its active work and staging files have finished cleaning up.
+        if cancel() is False:
+            return self.update(ident, cancelRequested=True)
         return self.update(ident, state="cancelled")
 
     def _emit(self, record: dict) -> None:

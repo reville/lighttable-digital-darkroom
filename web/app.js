@@ -7041,8 +7041,63 @@ $('redoBtn').onclick = redo;
 
 let exportTimer = null;
 let EXPORT_RECIPES = [];
+let EXPORT_RECIPE_EXTRAS = {};
+let activeExportJobId = null;
+let latestExportStatus = null;
+const EXPORT_EXTRA_FIELDS = ['DestinationMode', 'Metadata', 'Sidecar', 'PreserveCaptureTime', 'CaptureTimePolicy'];
+function exportExtraOptions(prefix) {
+  return {
+    ...EXPORT_RECIPE_EXTRAS,
+    pairView: pairViewPreference(APP_PREFS),
+    destinationMode: $(prefix + 'DestinationMode').value,
+    metadata: $(prefix + 'Metadata').value,
+    sidecar: $(prefix + 'Sidecar').value === 'true',
+    preserveCaptureTime: $(prefix + 'PreserveCaptureTime').value === 'true',
+    captureTimePolicy: $(prefix + 'CaptureTimePolicy').value,
+  };
+}
+function syncExportDestination(prefix) {
+  const relative = $(prefix + 'DestinationMode').value === 'original-folder-relative';
+  $(prefix + 'ChooseDestination').disabled = relative;
+  $(prefix + 'Destination').placeholder = relative ? 'Subfolder name, e.g. film-exports' : 'Choose a destination folder';
+  if (relative && /^(?:[/\\]|[a-zA-Z]:)/.test($(prefix + 'Destination').value)) {
+    $(prefix + 'Destination').value = 'film-exports';
+  }
+}
+$('exportCancel').onclick = async () => {
+  if (!activeExportJobId) return;
+  $('exportCancel').disabled = true;
+  const result = await api(`/api/jobs/${activeExportJobId}/cancel`, {});
+  if (result.error) { $('exportCancel').disabled = false; toast(result.error); }
+  else $('estat').textContent = 'Stopping export…';
+};
+$('exportDetails').onclick = () => {
+  const status = latestExportStatus || {};
+  const lines = [`${status.completed || 0} exported · ${status.skipped || 0} skipped · ${status.cancelledCount || 0} cancelled`];
+  for (const error of status.errors || []) lines.push(`Error: ${error}`);
+  for (const item of status.warnings || []) {
+    lines.push(`${item.name}${item.path ? ' → ' + item.path : ''}`);
+    lines.push(...item.warnings.map((warning) => `  ${warning}`));
+  }
+  $('exportResultText').textContent = lines.join('\n');
+  $('exportResultDialog').classList.add('on');
+  $('exportResultDialog').setAttribute('aria-hidden', 'false');
+  $('exportResultClose').focus();
+};
+function closeExportResult() {
+  $('exportResultDialog').classList.remove('on');
+  $('exportResultDialog').setAttribute('aria-hidden', 'true');
+  $('exportDetails').focus();
+}
+$('exportResultClose').onclick = closeExportResult;
+$('exportResultDialog').addEventListener('keydown', (event) => {
+  event.stopPropagation();
+  if (event.key === 'Escape') closeExportResult();
+  if (event.key === 'Tab') { event.preventDefault(); $('exportResultClose').focus(); }
+});
 function currentExportRecipe(name = 'Export recipe') {
   return {
+    ...exportExtraOptions('ex'),
     name, format: $('exFormat').value, quality: +$('exQuality').value,
     longEdge: $('exSize').value ? +$('exSize').value : null,
     outputSpace: $('exColorSpace').value,
@@ -7065,6 +7120,13 @@ function renderExportRecipes(selected = '') {
 }
 function applyExportRecipe(recipe) {
   if (!recipe) return;
+  const { id: _id, name: _name, builtin: _builtin, ...settings } = recipe;
+  EXPORT_RECIPE_EXTRAS = settings;
+  for (const key of EXPORT_EXTRA_FIELDS) {
+    const field = key[0].toLowerCase() + key.slice(1);
+    const defaults = { destinationMode: 'fixed', metadata: 'all-except-location', sidecar: true, preserveCaptureTime: false, captureTimePolicy: 'require-offset' };
+    $('ex' + key).value = String(recipe[field] ?? defaults[field]);
+  }
   $('exFormat').value = recipe.format;
   $('exQuality').value = recipe.quality;
   $('exQualityV').textContent = recipe.quality;
@@ -7073,6 +7135,7 @@ function applyExportRecipe(recipe) {
   $('exDestination').value = recipe.destination;
   $('exFilenameTemplate').value = recipe.filenameTemplate;
   $('exCollision').value = recipe.collision;
+  syncExportDestination('ex');
 }
 async function loadExportRecipes() {
   EXPORT_RECIPES = await fetch('/api/export-recipes').then((response) => response.json()).catch(() => []);
@@ -7116,6 +7179,7 @@ async function runExport(customOpts = {}) {
     : (which === 'selected' ? targets.map((im) => im.name) : undefined);
 
   const payload = {
+    ...exportExtraOptions('ex'), ...customOpts,
     which,
     format: customOpts.format || $('exFormat').value,
     quality: customOpts.quality !== undefined ? customOpts.quality : +$('exQuality').value,
@@ -7128,9 +7192,7 @@ async function runExport(customOpts = {}) {
     collision: customOpts.collision || $('exCollision').value,
     engine: $('engine').value,
   };
-  if (names && names.length) {
-    payload.names = names;
-  }
+  if (names !== undefined) payload.names = names;
 
   const r = await api('/api/export', payload);
   if (r.error) return toast(r.error);
@@ -7138,28 +7200,46 @@ async function runExport(customOpts = {}) {
   const destinationLabel = (r.destination || '').split('/').filter(Boolean).at(-1) || 'destination';
   toast(`Exporting ${r.queued === 1 ? '1 photo' : `${r.queued} photos`} to ${destinationLabel}…`);
   clearInterval(exportTimer);
+  const ident = r.jobId;
+  activeExportJobId = ident;
+  $('exportCancel').hidden = false;
+  $('exportCancel').disabled = false;
+  $('exportDetails').hidden = true;
   let exportPolls = 0;
+  let polling = false;
   exportTimer = setInterval(async () => {
-    exportPolls += 1;
-    if (exportPolls > 1800) {
+    if (polling) return;
+    if (++exportPolls > 7200) {
       clearInterval(exportTimer);
-      $('estat').textContent += ' · still running';
+      $('estat').textContent = 'Export status unavailable; check Jobs.';
       return;
     }
-    const st = await fetch('/api/export/status').then((x) => x.json());
-    $('estat').textContent = `${st.done}/${st.total}` +
-      (st.errors.length ? ` · ${st.errors.length} err` : '');
-    if (!st.running && st.total > 0 && st.done >= st.total) {
-      clearInterval(exportTimer);
-      $('estat').textContent += ' · done';
-      toast(st.errors.length
-        ? `Done with ${st.errors.length} error(s)`
-        : `Exported ${st.total === 1 ? '1 photo' : `${st.total} photos`} to ${destinationLabel}`);
-      notifyCompletion('Export complete', st.errors.length
-        ? `${st.total - st.errors.length} of ${st.total} photos exported.`
-        : `${st.total === 1 ? '1 photo' : `${st.total} photos`} exported to ${destinationLabel}.`);
-    }
-  }, 1200);
+    polling = true;
+    try {
+      const record = await fetch(`/api/jobs/${ident}`).then((response) => response.json());
+      if (activeExportJobId !== ident) return;
+      const st = record.result || {};
+      latestExportStatus = st;
+      $('estat').textContent = st.cancel_requested ? 'Stopping export…' : `${record.progress}/${record.total}`;
+      $('exportDetails').hidden = !(st.errors?.length || st.warnings?.length);
+      if (['done', 'failed', 'cancelled'].includes(record.state)) {
+        clearInterval(exportTimer);
+        activeExportJobId = null;
+        $('exportCancel').hidden = true;
+        const warnings = st.warnings?.length || 0;
+        const errors = record.errors?.length || 0;
+        latestExportStatus = { ...st, errors: record.errors || [] };
+        $('exportDetails').hidden = false;
+        $('estat').textContent = `${st.completed || 0} exported` +
+          (record.state === 'cancelled' ? ' · cancelled' : ' · done') +
+          (warnings ? ` · ${warnings} warning(s)` : '') + (errors ? ` · ${errors} error(s)` : '');
+        toast($('estat').textContent);
+        notifyCompletion(record.state === 'cancelled' ? 'Export cancelled' : 'Export complete', $('estat').textContent);
+      }
+    } catch (_error) {
+      if (activeExportJobId === ident) $('estat').textContent = 'Reconnecting to export…';
+    } finally { polling = false; }
+  }, 600);
   return r;
 }
 
@@ -7190,6 +7270,7 @@ let exportPreviewController = null;
 function exportModalOptions() {
   const which = $('modalExWhich').value;
   return {
+    ...exportExtraOptions('modalEx'),
     which,
     ...(which === 'selected' ? { names: transferTargets().map((im) => im.name) } : {}),
     format: $('modalExFormat').value,
@@ -7228,10 +7309,11 @@ function scheduleExportPreview() {
       $('exportPreviewDimensions').textContent = sample?.dimensionsExact
         ? `${sample.width.toLocaleString()} × ${sample.height.toLocaleString()} px`
         : (sample?.dimensionsNote || '');
-      $('exportPreviewDestination').textContent = result.destination;
+      $('exportPreviewDestination').textContent = (result.samples || [sample]).filter(Boolean).map((item) => item.path).join('\n');
       $('exportPreviewNote').textContent = sample?.skipped
         ? 'This file already exists and will be skipped.'
         : (result.total > 1 ? `${result.total} photos · first output shown. ` : '') +
+          (result.destinationCount > 1 ? `${result.destinationCount} destination folders. ` : '') +
           'Names reflect existing files and may change before export.';
     } catch (error) {
       if (request !== exportPreviewGeneration || error.name === 'AbortError') return;
@@ -7325,6 +7407,8 @@ function openExportModal() {
   if ($('exDestination')?.value) $('modalExDestination').value = $('exDestination').value;
   if ($('exFilenameTemplate')?.value) $('modalExFilenameTemplate').value = $('exFilenameTemplate').value;
   if ($('exCollision')?.value) $('modalExCollision').value = $('exCollision').value;
+  for (const key of EXPORT_EXTRA_FIELDS) $('modalEx' + key).value = $('ex' + key).value;
+  syncExportDestination('modalEx');
 
   const thumbEl = $('exportTargetThumb');
   if (thumbEl) {
@@ -7418,11 +7502,18 @@ document.querySelectorAll('.export-preset-pill').forEach((pill) => {
 });
 
 ['modalExFormat', 'modalExSize', 'modalExQuality', 'modalExColorSpace',
-  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision'].forEach((id) => {
+  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision',
+  ...EXPORT_EXTRA_FIELDS.map((key) => 'modalEx' + key)].forEach((id) => {
   $(id).addEventListener('input', scheduleExportPreview);
   $(id).addEventListener('change', scheduleExportPreview);
 });
 
+for (const prefix of ['ex', 'modalEx']) {
+  $(prefix + 'DestinationMode').addEventListener('change', () => {
+    syncExportDestination(prefix);
+    if (prefix === 'modalEx') scheduleExportPreview();
+  });
+}
 $('modalExWhich').onchange = updateExportModalScope;
 $('modalExChooseDestination').onclick = () => postNative('chooseExportFolder');
 
@@ -7442,9 +7533,11 @@ $('exportModalRun').onclick = async () => {
   $('exDestination').value = $('modalExDestination').value.trim() || 'film-exports';
   $('exFilenameTemplate').value = $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}';
   $('exCollision').value = $('modalExCollision').value;
+  for (const key of EXPORT_EXTRA_FIELDS) $('ex' + key).value = $('modalEx' + key).value;
   savePrefs();
   closeExportModal();
   await runExport({
+    ...exportExtraOptions('modalEx'),
     which,
     names,
     format: $('modalExFormat').value,
@@ -9226,6 +9319,8 @@ async function savePrefs() {
     exDestination: $('exDestination').value,
     exFilenameTemplate: $('exFilenameTemplate').value,
     exCollision: $('exCollision').value,
+    exRecipeExtras: EXPORT_RECIPE_EXTRAS,
+    ...Object.fromEntries(EXPORT_EXTRA_FIELDS.map((key) => ['ex' + key, $('ex' + key).value])),
     filmstripHeight: currentFilmstripHeight(),
     softProof: S.softProof,
     presetFavorites: APP_PREFS.presetFavorites || [],
@@ -9256,6 +9351,10 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   }
   Object.assign(p, migrated);
   Object.assign(APP_PREFS, p);
+  if (p.exRecipeExtras && typeof p.exRecipeExtras === 'object') {
+    const { id: _id, name: _name, builtin: _builtin, ...settings } = p.exRecipeExtras;
+    EXPORT_RECIPE_EXTRAS = settings;
+  }
   KEY_SCHEME_NAME = p.keyScheme === 'classic' ? 'classic' : 'lighttable';
   KEYS = KEY_SCHEMES[KEY_SCHEME_NAME];
   if (Object.keys(migrated).length) {

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import re
+import hashlib
+import os
+from datetime import datetime
 from pathlib import Path
 
 
@@ -38,6 +41,8 @@ BUILTIN_RECIPES = [
 TOKENS = {"filename", "stock", "rating", "date", "sequence"}
 
 METADATA_POLICIES = ("none", "copyright", "all", "all-except-location")
+DESTINATION_MODES = ("fixed", "original-folder-relative", "preserve-source-hierarchy")
+CAPTURE_TIME_POLICIES = ("require-offset", "local")
 
 WATERMARK_KINDS = ("text", "image")
 
@@ -124,9 +129,16 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
     template = str(raw.get("filenameTemplate", "{filename}_{stock}"))[:160]
     if not template.strip():
         template = "{filename}_{stock}"
-    metadata = str(raw.get("metadata", "all-except-location")).lower()
+    metadata_value = raw.get("metadata", "all-except-location")
+    metadata = ("all" if metadata_value else "none") if isinstance(metadata_value, bool) else str(metadata_value).lower()
     if metadata not in METADATA_POLICIES:
         metadata = "all-except-location"
+    destination_mode = str(raw.get("destinationMode", "fixed"))
+    if destination_mode not in DESTINATION_MODES:
+        raise ValueError("unknown export destination mode")
+    timestamp_policy = str(raw.get("captureTimePolicy", "require-offset"))
+    if timestamp_policy not in CAPTURE_TIME_POLICIES:
+        raise ValueError("unknown capture-time timezone policy")
     return {
         "id": _text(raw.get("id"), "recipe", 100),
         "name": _text(raw.get("name"), "Export recipe", 80),
@@ -134,6 +146,9 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
         "format": format_name, "quality": quality, "longEdge": long_edge,
         "outputSpace": output_space,
         "destination": str(raw.get("destination", "film-exports"))[:500],
+        "destinationMode": destination_mode,
+        "preserveCaptureTime": _flag(raw.get("preserveCaptureTime"), False),
+        "captureTimePolicy": timestamp_policy,
         "filenameTemplate": template, "collision": collision,
         "metadata": metadata,
         "sidecar": _flag(raw.get("sidecar"), True),
@@ -168,6 +183,65 @@ def resolve_destination(library_root: Path, value: str | None) -> Path:
     if destination == Path(destination.anchor):
         raise ValueError("choose a specific export folder")
     return destination
+
+
+def photo_destination(recipe: dict, *, library_root: Path,
+                      source: Path, source_root: Path) -> Path:
+    """Resolve one photo with the same rules for a single or mixed-source batch."""
+    mode = recipe.get("destinationMode", "fixed")
+    if mode == "fixed":
+        return resolve_destination(library_root, recipe.get("destination"))
+    source, root = source.resolve(), source_root.resolve()
+    relative = source.relative_to(root)
+    if mode == "original-folder-relative":
+        value = str(recipe.get("destination") or "film-exports")
+        part = Path(value)
+        if not part.parts or part.is_absolute() or ".." in part.parts or "\\" in value or ":" in value:
+            raise ValueError("Use a relative subfolder without '..' for original-folder exports")
+        destination = (source.parent / part).resolve()
+        if destination != source.parent and source.parent not in destination.parents:
+            raise ValueError("The export subfolder must stay inside the original folder")
+        return destination
+    base = resolve_destination(library_root, recipe.get("destination"))
+    # A stable root suffix prevents identically named sources from merging.
+    namespace = _safe_piece(root.name, "source") + "-" + hashlib.sha256(
+        str(root).encode("utf-8")).hexdigest()[:8]
+    destination = (base / namespace / relative.parent).resolve()
+    if base not in destination.parents:
+        raise ValueError("The export hierarchy must stay inside its destination")
+    return destination
+
+
+def capture_timestamp(metadata: dict, policy: str = "require-offset") -> tuple[float | None, str | None]:
+    """EXIF time is wall time: use its offset, or an explicit local-time opt-in."""
+    raw = str(metadata.get("DateTimeOriginal") or "").strip()
+    if not raw:
+        return None, "Capture time is missing; kept the export file timestamp."
+    raw = re.sub(r"^(\d{4}):(\d{2}):(\d{2})", r"\1-\2-\3", raw)
+    offset = str(metadata.get("OffsetTimeOriginal") or "").strip()
+    try:
+        value = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if value.tzinfo is None and offset:
+            value = datetime.fromisoformat(raw + offset)
+        if value.tzinfo is None and policy != "local":
+            return None, "Capture timezone is missing; kept the export file timestamp."
+        if value.tzinfo is None:
+            # datetime.timestamp applies the system timezone at the capture date,
+            # including its historical DST offset, not today's UTC offset.
+            return value.timestamp(), "Capture timezone is missing; used this computer's local timezone."
+        return value.timestamp(), None
+    except (ValueError, OverflowError, OSError):
+        return None, "Capture time or timezone is invalid; kept the export file timestamp."
+
+
+def apply_capture_timestamp(path: Path, metadata: dict, policy: str) -> str | None:
+    timestamp, warning = capture_timestamp(metadata, policy)
+    if timestamp is not None:
+        try:
+            os.utime(path, (timestamp, timestamp))
+        except (OSError, OverflowError, ValueError):
+            return "The filesystem could not preserve capture time; kept its export timestamp."
+    return warning
 
 
 def _safe_piece(value, default="untitled") -> str:

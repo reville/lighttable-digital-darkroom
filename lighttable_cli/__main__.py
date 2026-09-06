@@ -258,6 +258,11 @@ def build_parser() -> argparse.ArgumentParser:
     run_export = export.add_parser("run"); add_selector_arguments(run_export)
     run_export.add_argument("--which", choices=["approved", "rated", "all"], default="approved")
     run_export.add_argument("--destination", default="film-exports")
+    run_export.add_argument("--destination-mode", choices=["fixed", "original-folder-relative", "preserve-source-hierarchy"], default="fixed")
+    run_export.add_argument("--preserve-capture-time", action="store_true")
+    run_export.add_argument("--capture-time-policy", choices=["require-offset", "local"], default="require-offset")
+    run_export.add_argument("--metadata", choices=["all", "all-except-location", "copyright", "none"], default="all-except-location")
+    run_export.add_argument("--no-sidecar", action="store_true")
     run_export.add_argument(
         "--format", choices=["jpeg", "heif", "png", "tif"], default="jpeg")
     run_export.add_argument("--quality", type=int, default=92)
@@ -762,7 +767,10 @@ def dispatch(client: Client, args):
             names_from=args.names_from, limit=args.limit, sort=args.sort)
         body = {"which": args.which, "destination": args.destination,
                 "format": args.format, "quality": args.quality,
-                "longEdge": args.long_edge}
+                "longEdge": args.long_edge, "destinationMode": args.destination_mode,
+                "preserveCaptureTime": args.preserve_capture_time,
+                "captureTimePolicy": args.capture_time_policy,
+                "metadata": args.metadata, "sidecar": not args.no_sidecar}
         if names: body["names"] = names
         result = client.post("/api/export", body)
         if not args.no_wait and result.get("queued"): result["status"] = wait_export(client, args.timeout)
