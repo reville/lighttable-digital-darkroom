@@ -827,6 +827,8 @@ function syncGrade() {
 
 /* ------------------------------------------------------------------ view */
 function clampPan() {
+  // The crop view places the photo wherever the centred frame needs it.
+  if (S.cropping || S.cropTransition) return;
   if (S.zoom <= 1 && S.zoomMode === 'fit') { S.panX = 0; S.panY = 0; return; }
   const w = $('zoomwrap').getBoundingClientRect();
   const r = $('cmp').getBoundingClientRect();
@@ -839,8 +841,16 @@ function applyViewNow() {
   clampPan();
   syncPreviewDetailStatus();
   const cmp = $('cmp');
-  cmp.style.transform =
-    `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  const fit = cropViewState().fit;
+  if ((S.cropping || S.cropTransition) && fit) {
+    // Cropping zooms the frame itself; only the pan is a transform.
+    cmp.style.width = `${fit.width * S.zoom}px`;
+    cmp.style.height = `${fit.height * S.zoom}px`;
+    cmp.style.transform = `translate(${S.panX}px,${S.panY}px)`;
+  } else {
+    cmp.style.transform =
+      `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  }
 
   const cv = $('cv');
   const naturalW = displaySourcePixelWidth();
@@ -920,6 +930,11 @@ function zoomCentre(f) {
   zoomAt(f, w.left + w.width / 2, w.top + w.height / 2);
 }
 function zoomReset() {
+  if (S.cropping && !S.cropTransition) {
+    // Fit means the cropping view itself while the crop tool is open.
+    const target = cropViewTarget(S.crop);
+    if (target) { applyCropView(target, { immediate: true }); return; }
+  }
   S.zoomMode = 'fit';
   S.zoom = 1;
   S.panX = 0;
@@ -974,7 +989,10 @@ function requestedPreviewWidth() {
     const viewport = $('zoomwrap');
     return automaticPreviewWidth({ sourceWidth: +source.width, sourceHeight: +source.height,
       viewportWidth: viewport.clientWidth, viewportHeight: viewport.clientHeight,
-      deviceScale: window.devicePixelRatio || 1, zoom: S.zoom, crop: previewCrop(),
+      deviceScale: window.devicePixelRatio || 1,
+      // The cropping view's zoom is presentation only; re-rendering for it
+      // would swap textures under a drag.
+      zoom: S.cropping || S.cropTransition ? 1 : S.zoom, crop: previewCrop(),
       actualSize: S.zoomMode === '100' });
   }
   const selected = +$('pw').value || INTERACTIVE_PREVIEW_WIDTH;
@@ -3216,27 +3234,40 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     const nextGeometryKey = previewGeometryKey(im.name, S.params.rotate);
     const preservePresentationGeometry = shouldPreservePresentationGeometry(
       phase, S.presentedGeometryKey, nextGeometryKey);
-    const imageTiming = await setBaseImage(m, my, {
-      preserveCanvasSize: preservePresentationGeometry,
-    });
-    if (my !== S.seq) return;
-    if (imageTiming.failed && remembered) {
-      presentationCache.delete(presentationKey);
-      return doRender(scheduledAt, { ...options, skipPresentationCache: true });
+    // A draft (embedded-camera) render only stands in while nothing accurate
+    // is on screen. When this photo is already presented accurately, keep
+    // those pixels and let the refinement replace them: swapping in a draft
+    // flashes a different rendering on every zoom, crop, or panel change.
+    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
+      S.presentedPhotoName === im.name;
+    let imageTiming = null;
+    if (!keepAccuratePixels) {
+      imageTiming = await setBaseImage(m, my, {
+        preserveCanvasSize: preservePresentationGeometry,
+      });
+      if (my !== S.seq) return;
+      if (imageTiming.failed && remembered) {
+        presentationCache.delete(presentationKey);
+        return doRender(scheduledAt, { ...options, skipPresentationCache: true });
+      }
+      if (imageTiming.failed) {
+        $('rstat').textContent = imageTiming.error || 'preview unavailable';
+        $('rstat').className = '';
+        setRenderPresentation('error', im.name, 'Could not display this photo');
+        return;
+      }
+      S.baseEditsBaked = Boolean(m.baseEditsBaked);
+      S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+        delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
+          +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
+      setRenderPresentation('ready', im.name);
+      drawGrade();
     }
-    if (imageTiming.failed) {
-      $('rstat').textContent = imageTiming.error || 'preview unavailable';
-      $('rstat').className = '';
-      setRenderPresentation('error', im.name, 'Could not display this photo');
-      return;
-    }
-    S.baseEditsBaked = Boolean(m.baseEditsBaked);
-    S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
-      delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
-        +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
-    setRenderPresentation('ready', im.name);
-    drawGrade();
-    const paintedAt = imageTiming.presentedAt || await afterVisiblePaint();
+    const paintedAt = keepAccuratePixels ? performance.now()
+      : (imageTiming.presentedAt || await afterVisiblePaint());
+    imageTiming ||= {
+      decodeMs: 0, uploadMs: 0, uploadedAt: paintedAt, presentation: 'draft-skipped',
+    };
     const timing = {
       image: im.name,
       width: w,
@@ -5512,7 +5543,7 @@ function clampCrop(crop) {
 }
 
 function previewCrop() {
-  return S.crop && !S.cropping ? clampCrop(S.crop) : null;
+  return S.crop && !S.cropping && !S.cropTransition ? clampCrop(S.crop) : null;
 }
 
 function cropViewportSize(availableWidth, availableHeight, sourceWidth, sourceHeight, crop) {
@@ -5541,6 +5572,9 @@ function syncCropPresentationNow() {
   cmp.classList.toggle('preview-framed', framed);
   cmp.classList.toggle('crop-framed', S.cropping || !!crop);
   cmp.classList.toggle('crop-committed', !!crop);
+  // While cropping the frame is the whole photo under a zoom/pan transform, so
+  // its handles may reach past the frame edge and the workspace does the clipping.
+  cmp.classList.toggle('is-cropping', S.cropping || !!S.cropTransition);
   if (!framed) {
     cmp.style.removeProperty('width');
     cmp.style.removeProperty('height');
@@ -5557,8 +5591,12 @@ function syncCropPresentationNow() {
   const viewport = cropViewportSize(
     wrap.width, wrap.height, source.width, source.height, frameCrop);
   if (viewport) {
-    cmp.style.width = `${viewport.width}px`;
-    cmp.style.height = `${viewport.height}px`;
+    // The cropping view zooms by resizing this frame rather than transforming
+    // it, so the crop chrome keeps its screen size at any zoom.
+    const scale = S.cropping || S.cropTransition ? (S.zoom || 1) : 1;
+    cropViewState().fit = { width: viewport.width, height: viewport.height };
+    cmp.style.width = `${viewport.width * scale}px`;
+    cmp.style.height = `${viewport.height * scale}px`;
   }
   cmp.style.setProperty('--crop-source-left', `${-frameCrop.x / frameCrop.w * 100}%`);
   cmp.style.setProperty('--crop-source-top', `${-frameCrop.y / frameCrop.h * 100}%`);
@@ -5641,6 +5679,9 @@ function applyCropVisualNow() {
   r.style.top = (selection.y * 100) + '%';
   r.style.width = (selection.w * 100) + '%';
   r.style.height = (selection.h * 100) + '%';
+  // Keep the photo gliding under the frame: a move drag pans it 1:1, a drawn
+  // frame settles into view once the pointer lifts, everything else eases.
+  syncCropView({ immediate: cropInteractionKind === 'move', defer: cropInteractionKind === 'draw' });
   syncCropPanel();
 }
 const cropFrameScheduler = createFrameScheduler(() => applyCropVisualNow());
@@ -5651,16 +5692,220 @@ function setCropMode(on) {
   const next = Boolean(on);
   const changed = S.cropping !== next;
   S.cropping = next;
-  $('cropLayer').classList.toggle('on', next);
+  // Leaving glides the frame out to its committed framing before the source
+  // frame is swapped, so the transition is marked before the presentation sync.
+  if (changed && !next) cropViewTransition(false);
+  $('cropLayer').classList.toggle('on', next || S.cropTransition === 'exit');
   syncCropPresentationNow();
+  if (changed && next) cropViewTransition(true);
   applyCropVisual();
   // Crop editing needs the whole source; the committed result should fit the
   // crop itself. Resetting on either transition makes both states predictable.
-  if (changed) zoomReset();
-  else applyView();
+  if (changed && !next && !S.cropTransition) zoomReset();
+  else if (!changed) applyView();
   if (next) requestAnimationFrame(() => $('cropRect').focus({ preventScroll: true }));
   renderCompare();
   syncCompareControl();
+}
+
+/* ------------------------------------------------ crop view (Lightroom feel) */
+// While cropping, the crop frame stays centred in the workspace and the photo
+// zooms and pans underneath it. The on-screen frame is the geometric mean of
+// the crop's fitted size and the workspace (zoom bias 0.5), so a dragged handle
+// stays under the pointer while the rest of the frame glides toward the centre
+// and the photo swells to follow. Dragging inside moves the photo under the
+// frame. Entering and leaving ease between the committed framing and this view.
+let cropInteractionKind = null;
+let cropPointerRefresh = null;
+function cropViewState() {
+  return (cropViewState.value ||= {
+    bias: 0.5, dimAlpha: 0.62, tau: 90, transitionTau: 70, pad: 14,
+    target: null, dimTarget: null, dim: null, photo: null, fit: null,
+    running: false, lastAt: 0, onSettle: null,
+  });
+}
+function cropViewPrefersImmediate() {
+  return typeof matchMedia === 'function' &&
+    matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+function cropViewWrapKey() {
+  const rect = $('zoomwrap')?.getBoundingClientRect?.();
+  return rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}` : '';
+}
+function cropViewFrame() {
+  const rect = $('zoomwrap')?.getBoundingClientRect?.();
+  const fit = cropViewState().fit;
+  const width = fit?.width || 0;
+  const height = fit?.height || 0;
+  if (!rect || !(rect.width > 0) || !(rect.height > 0) || !(width > 0) || !(height > 0)) return null;
+  return { wrapWidth: rect.width, wrapHeight: rect.height, width, height };
+}
+function cropFitScale(crop, frame) {
+  // How much the crop could grow, relative to the whole photo's fit, before it
+  // would leave the workspace. The whole photo is 1 by construction.
+  const full = Math.min(frame.wrapWidth / frame.width, frame.wrapHeight / frame.height);
+  const part = Math.min(frame.wrapWidth / (frame.width * crop.w),
+    frame.wrapHeight / (frame.height * crop.h));
+  return Math.max(1, part / full);
+}
+function cropViewTarget(crop, bias = cropViewState().bias) {
+  const frame = cropViewFrame();
+  if (!frame) return null;
+  const c = clampCrop(crop || { x: 0, y: 0, w: 1, h: 1 });
+  if (!(c.w > 0) || !(c.h > 0)) return null;
+  // The cropping view keeps a small margin so handles on the photo's edge
+  // stay inside the workspace; the committed framing (bias 1) uses none.
+  const pad = bias < 1 ? cropViewState().pad : 0;
+  const base = Math.min(1, (frame.wrapWidth - 2 * pad) / frame.width,
+    (frame.wrapHeight - 2 * pad) / frame.height);
+  const zoom = Math.pow(cropFitScale(c, frame), bias) * base;
+  return {
+    zoom,
+    panX: -frame.width * (c.x + c.w / 2 - 0.5) * zoom,
+    panY: -frame.height * (c.y + c.h / 2 - 0.5) * zoom,
+  };
+}
+function cropViewBackgroundRGB() {
+  let value = '';
+  if (typeof getComputedStyle === 'function' && typeof document !== 'undefined') {
+    value = getComputedStyle(document.documentElement).getPropertyValue('--viewer-bg').trim();
+  }
+  const hex = /^#([0-9a-f]{6})$/i.exec(value)?.[1] || '121212';
+  return [0, 2, 4].map((offset) => parseInt(hex.slice(offset, offset + 2), 16));
+}
+function cropViewDimStyle(mix, alpha) {
+  const layer = $('cropLayer');
+  if (!layer?.style?.setProperty) return;
+  const rgb = cropViewBackgroundRGB().map((channel) => Math.round(channel * mix));
+  layer.style.setProperty('--crop-dim-rgb', rgb.join(' '));
+  layer.style.setProperty('--crop-dim-alpha', alpha.toFixed(3));
+}
+function snapCropView() {
+  const state = cropViewState();
+  const target = state.target;
+  state.running = false;
+  if (!target) return;
+  S.zoom = target.zoom; S.panX = target.panX; S.panY = target.panY;
+  if (state.dimTarget) {
+    state.dim = { ...state.dimTarget };
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+  }
+  applyViewNow();
+  const settle = state.onSettle;
+  state.onSettle = null;
+  if (settle) settle();
+}
+function stepCropView(now) {
+  const state = cropViewState();
+  const target = state.target;
+  if (!state.running || !target) { state.running = false; return; }
+  if (!S.cropping && S.cropTransition !== 'exit') { state.running = false; return; }
+  const dt = state.lastAt ? Math.min(64, now - state.lastAt) : 16;
+  state.lastAt = now;
+  const k = 1 - Math.exp(-dt / state.tau);
+  S.zoom += (target.zoom - S.zoom) * k;
+  S.panX += (target.panX - S.panX) * k;
+  S.panY += (target.panY - S.panY) * k;
+  let dimDone = true;
+  if (state.dimTarget) {
+    state.dim ||= { ...state.dimTarget };
+    state.dim.alpha += (state.dimTarget.alpha - state.dim.alpha) * k;
+    state.dim.mix += (state.dimTarget.mix - state.dim.mix) * k;
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+    dimDone = Math.abs(state.dimTarget.alpha - state.dim.alpha) < 0.01 &&
+      Math.abs(state.dimTarget.mix - state.dim.mix) < 0.01;
+  }
+  const settled = dimDone && Math.abs(target.zoom - S.zoom) < 0.002 * target.zoom &&
+    Math.abs(target.panX - S.panX) < 0.5 && Math.abs(target.panY - S.panY) < 0.5;
+  if (settled) { snapCropView(); return; }
+  applyViewNow();
+  // A held handle stays under the pointer while the photo glides beneath it.
+  if (cropInteractionKind === 'resize' && cropPointerRefresh) cropPointerRefresh();
+  requestAnimationFrame(stepCropView);
+}
+function applyCropView(target, options = {}) {
+  const { immediate = false, dim = null, onSettle, tau = null, essential = false } = options;
+  const state = cropViewState();
+  if (!target) return;
+  state.target = target;
+  state.tau = tau || 90;
+  if (dim) state.dimTarget = dim;
+  // A re-target (a drag step, a workspace resize) keeps any pending completion.
+  if (onSettle !== undefined) state.onSettle = onSettle;
+  S.zoomMode = 'crop';
+  S.targetPixelScale = null;
+  // Reduced motion skips the decorative enter/leave glides; the short easing
+  // that follows a handle drag is direct-manipulation feedback and stays.
+  if (immediate || (!essential && cropViewPrefersImmediate())) { snapCropView(); return; }
+  if (state.running) return;
+  state.running = true;
+  state.lastAt = 0;
+  requestAnimationFrame(stepCropView);
+}
+function syncCropView({ immediate = false, defer = false } = {}) {
+  if (!S.cropping || S.cropTransition) return;
+  const state = cropViewState();
+  const photo = cur()?.name || null;
+  const changedPhoto = state.photo !== photo;
+  state.photo = photo;
+  if (defer) return;
+  const target = cropViewTarget(S.crop);
+  if (!target) return;
+  applyCropView(target, {
+    immediate: immediate || changedPhoto,
+    dim: { mix: 0, alpha: state.dimAlpha },
+    essential: true,
+  });
+}
+function finishCropViewExit() {
+  if (S.cropTransition !== 'exit') return;
+  S.cropTransition = null;
+  $('cropLayer').classList.remove('exiting');
+  if (!S.cropping) $('cropLayer').classList.remove('on');
+  syncCropPresentationNow();
+  applyCropVisual();
+  if (!S.cropping) zoomReset();
+}
+function cropViewTransition(entering) {
+  const state = cropViewState();
+  const layer = $('cropLayer');
+  state.onSettle = null;
+  state.running = false;
+  state.wrapKey = cropViewWrapKey();
+  layer.classList.remove('exiting');
+  if (entering) {
+    S.cropTransition = null;
+    state.photo = cur()?.name || null;
+    state.target = null;
+    const committed = S.crop ? clampCrop(S.crop) : null;
+    const start = committed ? cropViewTarget(committed, 1) : null;
+    S.zoomMode = 'crop';
+    S.targetPixelScale = null;
+    if (start) {
+      // Start exactly where the committed crop was framed; the crop visual
+      // then eases the photo out to the cropping view.
+      S.zoom = start.zoom; S.panX = start.panX; S.panY = start.panY;
+      state.dim = { mix: 1, alpha: 1 };
+    } else {
+      S.zoom = 1; S.panX = 0; S.panY = 0;
+      state.dim = { mix: 0, alpha: state.dimAlpha };
+    }
+    state.dimTarget = { ...state.dim };
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+    // Paint the starting view in this frame; the crop visual eases from here.
+    applyViewNow();
+    return;
+  }
+  const target = S.crop ? cropViewTarget(clampCrop(S.crop), 1) : null;
+  if (!target || cropViewPrefersImmediate()) {
+    S.cropTransition = null;
+    return;
+  }
+  S.cropTransition = 'exit';
+  layer.classList.add('exiting');
+  applyCropView(target, {
+    dim: { mix: 1, alpha: 1 }, onSettle: finishCropViewExit, tau: state.transitionTau,
+  });
 }
 
 function restoreCropChoices(choices) {
@@ -8230,8 +8475,9 @@ function finishSpeedKey(key) {
   const layer = $('cropLayer');
   let interaction = null;
 
-  const pointInLayer = (event, rect = interaction?.rect ||
-      layer.getBoundingClientRect()) => {
+  // The frame moves and grows under the pointer while cropping, so map through
+  // its live rectangle rather than the one captured on pointer down.
+  const pointInLayer = (event, rect = layer.getBoundingClientRect()) => {
     return {
       x: clamp((event.clientX - rect.left) / rect.width, 0, 1),
       y: clamp((event.clientY - rect.top) / rect.height, 0, 1),
@@ -8323,7 +8569,7 @@ function finishSpeedKey(key) {
   };
 
   layer.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || S.cropTransition) return;
     const rect = layer.getBoundingClientRect();
     const point = pointInLayer(e, rect);
     const handle = e.target.closest('[data-crop-handle]')?.dataset.cropHandle;
@@ -8342,27 +8588,33 @@ function finishSpeedKey(key) {
       rect,
     };
     if (handle) layer.dataset.activeCropHandle = handle;
+    cropInteractionKind = interaction.action;
     layer.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
   layer.addEventListener('pointermove', (e) => {
     if (!interaction) return;
-    const point = pointInLayer(e);
+    const layerRect = layer.getBoundingClientRect();
+    const point = pointInLayer(e, layerRect);
     if (Math.hypot(point.x - interaction.startPoint.x, point.y - interaction.startPoint.y) < 0.001) return;
     captureUndoOnce();
+    interaction.lastEvent = { clientX: e.clientX, clientY: e.clientY };
     const ratio = cropLayerRatio();
     if (interaction.action === 'move') {
+      // The frame stays put and the photo follows the pointer underneath it,
+      // so the crop travels the opposite way through the photo. The photo pans
+      // as the pointer moves, so measure against the rectangle from pointer down.
       const start = interaction.startCrop;
+      const moved = pointInLayer(e, interaction.rect);
       S.crop = {
-        x: clamp(start.x + point.x - interaction.startPoint.x, 0, 1 - start.w),
-        y: clamp(start.y + point.y - interaction.startPoint.y, 0, 1 - start.h),
+        x: clamp(start.x - (moved.x - interaction.startPoint.x), 0, 1 - start.w),
+        y: clamp(start.y - (moved.y - interaction.startPoint.y), 0, 1 - start.h),
         w: start.w,
         h: start.h,
       };
     } else if (interaction.action === 'resize') {
       S.crop = resizeCrop(
-        interaction.startCrop, interaction.handle, point, ratio,
-        interaction.rect);
+        interaction.startCrop, interaction.handle, point, ratio, layerRect);
     } else if (ratio) {
       S.crop = ratioBox(interaction.startPoint, point, ratio);
     } else {
@@ -8377,11 +8629,22 @@ function finishSpeedKey(key) {
     applyCropVisual();
     e.preventDefault();
   });
+  cropPointerRefresh = () => {
+    if (!interaction || interaction.action !== 'resize' || !interaction.lastEvent) return;
+    const layerRect = layer.getBoundingClientRect();
+    const point = pointInLayer(interaction.lastEvent, layerRect);
+    S.crop = resizeCrop(
+      interaction.startCrop, interaction.handle, point, cropLayerRatio(), layerRect);
+    applyCropVisualNow();
+  };
   const finishCropInteraction = () => {
     if (!interaction) return;
     const changed = interaction.historyCaptured;
+    const drawn = interaction.action === 'draw';
     interaction = null;
+    cropInteractionKind = null;
     delete layer.dataset.activeCropHandle;
+    if (drawn) syncCropView();
     if (changed) saveState();
   };
   layer.addEventListener('pointerup', finishCropInteraction);
@@ -9765,6 +10028,22 @@ function onViewportResize() {
   const baseW = S.zoom > 0 ? r.width / S.zoom : r.width;
   if (baseW <= 0) {
     scheduleNativeViewportLayout();
+    return;
+  }
+  if (S.cropping || S.cropTransition) {
+    // The observer also fires for the frame's own animated resizes; only a
+    // workspace change re-targets the cropping view.
+    const state = cropViewState();
+    const wrapKey = cropViewWrapKey();
+    if (wrapKey === state.wrapKey) {
+      scheduleNativeViewportLayout();
+      return;
+    }
+    state.wrapKey = wrapKey;
+    const target = cropViewTarget(S.crop, S.cropTransition ? 1 : state.bias);
+    if (target) applyCropView(target);
+    else applyViewNow();
+    scheduleAutomaticPreview();
     return;
   }
   if (S.zoomMode === '100') {

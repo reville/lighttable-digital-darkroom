@@ -25,7 +25,7 @@ const pushUndo = () => counts.undo++;
 const saveState = () => counts.save++;
 const renderFilm = () => counts.render++;
 const refreshBaseEdits = () => counts.refresh++;
-const syncCropPresentationNow = noop, zoomReset = noop, applyView = noop;
+const syncCropPresentationNow = noop, zoomReset = noop, applyView = noop, applyViewNow = noop;
 const syncOpticsPanel = noop, syncMaskPanel = noop, syncControls = noop;
 const syncGrade = noop, drawGrade = noop, syncCurveFromGrade = noop, syncHsl = noop;
 const renderKeywords = noop, renderVersions = noop, refreshLists = noop, updateUndoRedoButtons = noop;
@@ -130,6 +130,10 @@ class PhotoToolFlowTests(unittest.TestCase):
         functions = [function(name) for name in (
             'snapshot', 'restore', 'filmRenderFingerprint', 'baseEditsFingerprint',
             'exitPhotoTool', 'selectPhotoTool', 'switchPane', 'setCropMode',
+            'cropViewState', 'cropViewPrefersImmediate', 'cropViewFrame', 'cropFitScale',
+            'cropViewTarget', 'cropViewBackgroundRGB', 'cropViewDimStyle', 'snapCropView',
+            'stepCropView', 'applyCropView', 'syncCropView', 'finishCropViewExit',
+            'cropViewTransition', 'cropViewWrapKey',
             'cropSourceSize', 'cropImageAspect', 'cropOutputRatio', 'cropLayerRatio',
             'clampCrop', 'previewCrop', 'previewSourceX', 'cropForRatio', 'syncCropPanel',
             'restoreCropChoices', 'rememberCropChoices', 'applyCropRatioChoice', 'setCropRatio',

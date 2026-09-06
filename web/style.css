@@ -646,7 +646,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 @keyframes spin { to { transform:rotate(360deg); } }
 #cropLayer { position:absolute; inset:0; z-index:4; display:none; cursor:crosshair; touch-action:none; }
 #cropLayer.on { display:block; }
-.crop-dimmer { position:absolute; background:rgba(0,0,0,.62); pointer-events:none; }
+.crop-dimmer { position:absolute; background:rgb(var(--crop-dim-rgb,0 0 0) / var(--crop-dim-alpha,.62)); pointer-events:none; }
 .crop-dimmer-top { inset:0 0 auto; height:var(--crop-y,0%); }
 .crop-dimmer-bottom { inset:calc(var(--crop-y,0%) + var(--crop-h,100%)) 0 0; }
 .crop-dimmer-left { left:0; top:var(--crop-y,0%); width:var(--crop-x,0%); height:var(--crop-h,100%); }
@@ -703,6 +703,11 @@ input[type=checkbox]:disabled { opacity:.4; }
 #cropLayer[data-active-crop-handle="ne"],
 #cropLayer[data-active-crop-handle="sw"] { cursor:nesw-resize; }
 #cropLayer[data-active-crop-handle] * { cursor:inherit !important; }
+/* Lightroom-style cropping: the frame is the whole photo, sized by the
+   cropping zoom and panned under a centred crop, and the workspace clips it. */
+.cmp.is-cropping { flex:0 0 auto; overflow:visible; max-width:none; max-height:none; }
+#cropLayer.exiting { pointer-events:none; }
+#cropLayer.exiting #cropRect { opacity:0; transition:opacity .12s ease; }
 .under { min-height:44px; flex:0 0 44px; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; padding:6px 12px; border-top:1px solid var(--line-soft); background:var(--inset); min-width:0; overflow:hidden; }
 .under-group { display:flex; align-items:center; gap:4px; min-width:0; }
 .centre-tools { justify-content:center; }

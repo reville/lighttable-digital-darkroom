@@ -136,6 +136,18 @@ WINDOWS_RESERVED_NAMES = {
 }
 
 
+def subprocess_flags() -> dict:
+    """Keyword arguments that keep helper processes off the desktop on Windows.
+
+    The desktop shell starts the server without a console. A console-subsystem
+    child such as the resident engine, the one-shot exporter, or a render
+    worker would otherwise open a visible command window for its lifetime.
+    """
+    if not IS_WINDOWS:
+        return {}
+    return {"creationflags": getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)}
+
+
 def is_raw(name: str) -> bool:
     return Path(library_workflow.source_name(name)).suffix.lower() in RAW_EXTS
 
@@ -1976,6 +1988,25 @@ INPUT_CACHE_VERSION = 4  # learned denoise joins capture-stage RAW development
 RAW_PREVIEW_CACHE_VERSION = 4  # width-aware half-size accurate demosaic
 RAW_SHARED_MAGIC = b"LTRI"
 RAW_SHARED_HEADER = struct.Struct("<4sIII")
+_SHARED_INPUT_UNAVAILABLE = "shared RAW input is unavailable"
+_SHARED_INPUT_DISABLED = threading.Event()
+
+
+def shared_input_supported() -> bool:
+    """Whether decoded pixels can reach the resident engine through memory.
+
+    POSIX shared memory and Windows named file mappings are both read by the
+    bundled engine. An engine built without that reader reports the exchange
+    as unavailable; remember the answer so later renders go straight to the
+    TIFF route instead of restarting the engine on every request.
+    """
+    return os.name in ("posix", "nt") and not _SHARED_INPUT_DISABLED.is_set()
+
+
+def note_shared_input_failure(error: BaseException) -> None:
+    """Latch off the memory exchange when the engine itself cannot read it."""
+    if _SHARED_INPUT_UNAVAILABLE in str(error):
+        _SHARED_INPUT_DISABLED.set()
 
 
 @contextmanager
@@ -2012,11 +2043,12 @@ def raw_shared_input(name: str, params: dict | None = None, *,
                      denoise_status=None, denoise_cancel=None):
     """Expose one decoded RAW to the resident renderer without a TIFF hop.
 
-    ``multiprocessing.shared_memory`` maps the same anonymous POSIX object into
-    Python and Rust.  The renderer copies the pixels into its resident input
-    cache before replying, so the segment can be unlinked immediately after
-    the request.  This keeps the large full-resolution exchange in memory and
-    leaves ``tiff_for`` as the portable/failure fallback.
+    ``multiprocessing.shared_memory`` maps the same anonymous POSIX object, or
+    on Windows the same named file mapping, into Python and Rust.  The renderer
+    copies the pixels into its resident input cache before replying, so the
+    segment can be released immediately after the request.  This keeps the
+    large full-resolution exchange in memory and leaves ``tiff_for`` as the
+    failure fallback.
     """
     rgb = np.ascontiguousarray(color_pipeline.decode_raw(
         src_path(name), params, learned_denoise_status=denoise_status,
@@ -2812,11 +2844,25 @@ def _digest_file(path: Path | None) -> str | None:
     return digest.hexdigest()
 
 
+def _inside_git_checkout(path: Path) -> bool:
+    try:
+        resolved = path.resolve()
+    except OSError:
+        return False
+    return any((candidate / ".git").exists()
+               for candidate in (resolved, *resolved.parents))
+
+
 def _git_revision(path: Path) -> str | None:
+    # An installed bundle sits in no repository. Two guaranteed-miss git
+    # launches at import time were a visible startup cost on Windows.
+    if not _inside_git_checkout(path):
+        return None
     try:
         return subprocess.run(
             ["git", "-C", str(path), "rev-parse", "HEAD"],
             check=True, capture_output=True, text=True, timeout=5,
+            **subprocess_flags(),
         ).stdout.strip()
     except (OSError, subprocess.SubprocessError):
         return None
@@ -2883,7 +2929,8 @@ class RustEngineClient:
             return self.process
         self.process = subprocess.Popen(
             [str(self.binary)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL, text=True, bufsize=1)
+            stderr=subprocess.DEVNULL, text=True, bufsize=1,
+            **subprocess_flags())
         if IS_WINDOWS:
             assert self.process.stdout
             self.reader = PipeLineReader(self.process.stdout)
@@ -3020,7 +3067,7 @@ def render_rust(name: str, params: dict, width: int,
             request["input"] = str(src_tif)
             return RUST_ENGINE.render(request)
 
-        if os.name == "posix":
+        if shared_input_supported():
             try:
                 arr = linear_for(name, width, params)
                 rgb16 = np.ascontiguousarray((np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16))
@@ -3030,7 +3077,8 @@ def render_rust(name: str, params: dict, width: int,
                     return RUST_ENGINE.render(request)
             except RenderCancelled:
                 raise
-            except Exception:
+            except Exception as shared_error:  # noqa: BLE001
+                note_shared_input_failure(shared_error)
                 for key in ("input_shm", "input_shm_len", "input_cache_key"):
                     request.pop(key, None)
 
@@ -3061,7 +3109,8 @@ def render_rust(name: str, params: dict, width: int,
         cmd += ["--paper", cp["paper"]]
     else:
         cmd += ["--scan-film"]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
+                       **subprocess_flags())
     if r.returncode != 0 or not out_png.exists():
         raise RuntimeError((r.stderr or r.stdout).strip()[-400:])
     img = np.asarray(Image.open(out_png).convert("RGB"))
@@ -3730,7 +3779,7 @@ def rust_direct_export_supported(job: dict) -> bool:
 def _resident_render_full(name: str, params: dict, request: dict) -> dict:
     """Render a full-resolution source using shared RAW pixels when possible."""
     request = dict(request)
-    if is_raw(name) and os.name == "posix":
+    if is_raw(name) and shared_input_supported():
         try:
             with raw_shared_input(name, params) as shared:
                 request.update(shared)
@@ -3741,9 +3790,10 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
         except RenderCancelled:
             raise
         except Exception as shared_error:  # noqa: BLE001
-            # A platform may expose POSIX shared memory yet cap a segment below
-            # a large sensor frame. Retain the proven TIFF route rather than
+            # A platform may expose shared memory yet cap a segment below a
+            # large sensor frame. Retain the proven TIFF route rather than
             # making export brittle.
+            note_shared_input_failure(shared_error)
             for key in ("input_shm", "input_shm_len", "input_cache_key"):
                 request.pop(key, None)
             source = tiff_for(name, params)
@@ -3864,7 +3914,7 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
                  str(staged), str(job_file)],
                 capture_output=True, text=True,
                 env=dict(os.environ, OMP_NUM_THREADS="4", NUMBA_NUM_THREADS="4"),
-                timeout=1800, check=False)
+                timeout=1800, check=False, **subprocess_flags())
             if completed.returncode:
                 raise RuntimeError((completed.stderr or completed.stdout)[-300:])
             for line in reversed((completed.stdout or "").splitlines()):
@@ -4100,10 +4150,11 @@ class ExportBatch:
 
 def _run_export_process(command, env, batch):
     if batch is None:
-        return subprocess.run(command, capture_output=True, text=True, env=env, timeout=1800)
+        return subprocess.run(command, capture_output=True, text=True, env=env, timeout=1800,
+                              **subprocess_flags())
     batch.check()
     with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                          text=True, env=env) as process:
+                          text=True, env=env, **subprocess_flags()) as process:
         try:
             for _ in range(12000):
                 batch.check()
