@@ -960,7 +960,7 @@ fn run() -> Result<()> {
         server: None,
         paths,
         settings,
-        folder: normalise(folder),
+        folder: folder.clone(),
         journal: journal_tx,
         close_deadline: None,
         close_approved: false,
