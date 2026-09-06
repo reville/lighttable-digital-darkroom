@@ -506,7 +506,127 @@ fn load_shared_input(name: &str, length: usize) -> Result<ImageBuf> {
     result
 }
 
-#[cfg(not(unix))]
+#[cfg(windows)]
+fn load_shared_input(name: &str, length: usize) -> Result<ImageBuf> {
+    use std::os::windows::ffi::OsStrExt;
+
+    if !(RAW_SHARED_HEADER_BYTES..=2 * 1024 * 1024 * 1024).contains(&length) {
+        bail!("invalid shared RAW length {length}");
+    }
+    // Python's multiprocessing.shared_memory names Windows segments
+    // `wnsm_<hex>`; anything outside that alphabet is not a segment the
+    // server created for this request.
+    if name.is_empty()
+        || name.len() > 128
+        || !name
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || byte == b'_' || byte == b'-')
+    {
+        bail!("invalid shared-memory name");
+    }
+    let wide: Vec<u16> = std::ffi::OsStr::new(name)
+        .encode_wide()
+        .chain(std::iter::once(0))
+        .collect();
+    // The Python owner keeps its own mapping handle open until this
+    // synchronous request returns, so the pagefile-backed object outlives
+    // the copy below even though Windows has no unlink step.
+    let mapping = unsafe {
+        windows_shared::OpenFileMappingW(windows_shared::FILE_MAP_READ, 0, wide.as_ptr())
+    };
+    if mapping.is_null() {
+        return Err(io::Error::last_os_error())
+            .with_context(|| format!("opening shared RAW {name}"));
+    }
+    // Asking for exactly the protocol length makes the view fail rather
+    // than silently shorten when the object is smaller than advertised.
+    let address = unsafe {
+        windows_shared::MapViewOfFile(mapping, windows_shared::FILE_MAP_READ, 0, 0, length)
+    };
+    let map_error = io::Error::last_os_error();
+    unsafe {
+        windows_shared::CloseHandle(mapping);
+    }
+    if address.is_null() {
+        return Err(map_error).with_context(|| format!("mapping shared RAW {name}"));
+    }
+    let result = windows_shared::view_length(address).and_then(|available| {
+        if available < length {
+            bail!("shared RAW is truncated: request {length}, view {available}");
+        }
+        let bytes = unsafe { std::slice::from_raw_parts(address.cast::<u8>(), length) };
+        parse_shared_input(bytes)
+    });
+    unsafe {
+        windows_shared::UnmapViewOfFile(address);
+    }
+    result
+}
+
+/// The handful of kernel32 entry points needed to read a named file mapping.
+/// Declared by hand so the engine gains no Windows-only crate dependency.
+#[cfg(windows)]
+mod windows_shared {
+    use std::ffi::c_void;
+
+    use anyhow::{Context, Result};
+
+    pub const FILE_MAP_READ: u32 = 0x0004;
+
+    /// `MEMORY_BASIC_INFORMATION` from the Windows SDK, including the
+    /// `PartitionId` field that pads `RegionSize` to pointer alignment.
+    #[repr(C)]
+    pub struct MemoryBasicInformation {
+        pub base_address: *mut c_void,
+        pub allocation_base: *mut c_void,
+        pub allocation_protect: u32,
+        pub partition_id: u16,
+        pub region_size: usize,
+        pub state: u32,
+        pub protect: u32,
+        pub kind: u32,
+    }
+
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        pub fn OpenFileMappingW(desired_access: u32, inherit_handle: i32, name: *const u16)
+        -> *mut c_void;
+        pub fn MapViewOfFile(
+            mapping: *mut c_void,
+            desired_access: u32,
+            offset_high: u32,
+            offset_low: u32,
+            bytes: usize,
+        ) -> *mut c_void;
+        pub fn UnmapViewOfFile(address: *const c_void) -> i32;
+        pub fn CloseHandle(handle: *mut c_void) -> i32;
+        pub fn VirtualQuery(
+            address: *const c_void,
+            buffer: *mut MemoryBasicInformation,
+            length: usize,
+        ) -> usize;
+    }
+
+    /// Bytes readable from `address` to the end of its mapped region.
+    pub fn view_length(address: *const c_void) -> Result<usize> {
+        let mut information = std::mem::MaybeUninit::<MemoryBasicInformation>::uninit();
+        let written = unsafe {
+            VirtualQuery(
+                address,
+                information.as_mut_ptr(),
+                std::mem::size_of::<MemoryBasicInformation>(),
+            )
+        };
+        if written == 0 {
+            return Err(std::io::Error::last_os_error()).context("sizing shared RAW view");
+        }
+        let information = unsafe { information.assume_init() };
+        let offset = address as usize - information.base_address as usize;
+        Ok(information.region_size.saturating_sub(offset))
+    }
+}
+
+#[cfg(not(any(unix, windows)))]
 fn load_shared_input(_name: &str, _length: usize) -> Result<ImageBuf> {
     bail!("shared RAW input is unavailable on this platform")
 }
@@ -883,6 +1003,122 @@ mod tests {
         assert_eq!(u32::from_le_bytes(bytes[8..12].try_into().unwrap()), 1);
         assert_eq!(u32::from_le_bytes(bytes[12..16].try_into().unwrap()), 8);
         assert_eq!(&bytes[16..], &[0, 128, 255, 255, 255, 64, 0, 255]);
+    }
+}
+
+#[cfg(all(test, windows))]
+mod windows_shared_input_tests {
+    use super::*;
+    use std::os::windows::ffi::OsStrExt;
+
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        fn CreateFileMappingW(
+            file: *mut std::ffi::c_void,
+            attributes: *mut std::ffi::c_void,
+            protect: u32,
+            maximum_size_high: u32,
+            maximum_size_low: u32,
+            name: *const u16,
+        ) -> *mut std::ffi::c_void;
+    }
+
+    const PAGE_READWRITE: u32 = 0x04;
+    const FILE_MAP_WRITE: u32 = 0x0002;
+
+    struct Segment {
+        name: String,
+        mapping: *mut std::ffi::c_void,
+        view: *mut std::ffi::c_void,
+        length: usize,
+    }
+
+    impl Segment {
+        /// Mirror `multiprocessing.shared_memory.SharedMemory(create=True)`:
+        /// a pagefile-backed mapping whose handle stays open for the test.
+        fn create(length: usize) -> Self {
+            let name = format!("wnsm_lighttable_test_{}_{length}", std::process::id());
+            let wide: Vec<u16> = std::ffi::OsStr::new(&name)
+                .encode_wide()
+                .chain(std::iter::once(0))
+                .collect();
+            let mapping = unsafe {
+                CreateFileMappingW(
+                    usize::MAX as *mut std::ffi::c_void,
+                    std::ptr::null_mut(),
+                    PAGE_READWRITE,
+                    0,
+                    length as u32,
+                    wide.as_ptr(),
+                )
+            };
+            assert!(!mapping.is_null(), "{}", io::Error::last_os_error());
+            let view = unsafe { windows_shared::MapViewOfFile(mapping, FILE_MAP_WRITE, 0, 0, 0) };
+            assert!(!view.is_null(), "{}", io::Error::last_os_error());
+            Self {
+                name,
+                mapping,
+                view,
+                length,
+            }
+        }
+
+        fn write(&self, bytes: &[u8]) {
+            assert!(bytes.len() <= self.length);
+            unsafe {
+                std::ptr::copy_nonoverlapping(bytes.as_ptr(), self.view.cast::<u8>(), bytes.len());
+            }
+        }
+    }
+
+    impl Drop for Segment {
+        fn drop(&mut self) {
+            unsafe {
+                windows_shared::UnmapViewOfFile(self.view);
+                windows_shared::CloseHandle(self.mapping);
+            }
+        }
+    }
+
+    fn packed_rgb16(width: u32, height: u32, samples: &[u16]) -> Vec<u8> {
+        let mut bytes = Vec::new();
+        bytes.extend_from_slice(RAW_SHARED_MAGIC);
+        bytes.extend_from_slice(&width.to_le_bytes());
+        bytes.extend_from_slice(&height.to_le_bytes());
+        bytes.extend_from_slice(&(width * 6).to_le_bytes());
+        for sample in samples {
+            bytes.extend_from_slice(&sample.to_le_bytes());
+        }
+        bytes
+    }
+
+    #[test]
+    fn named_file_mapping_delivers_packed_rgb16_pixels() {
+        let payload = packed_rgb16(2, 1, &[0, 32768, 65535, 7, 8, 9]);
+        let segment = Segment::create(payload.len());
+        segment.write(&payload);
+        let image = load_shared_input(&segment.name, payload.len()).unwrap();
+        assert_eq!((image.width, image.height), (2, 1));
+        let values: Vec<f32> = image
+            .data
+            .iter()
+            .map(|&value| precision::to_f32(value))
+            .collect();
+        assert_eq!(values[0], 0.0);
+        assert!((values[1] - 32768.0 / 65535.0).abs() < 1e-6);
+        assert_eq!(values[2], 1.0);
+    }
+
+    #[test]
+    fn short_or_missing_mappings_are_refused_instead_of_read_past() {
+        let payload = packed_rgb16(2, 1, &[1, 2, 3, 4, 5, 6]);
+        let segment = Segment::create(payload.len());
+        segment.write(&payload);
+        // A request one page beyond the object must fail to map, never
+        // return a view that reads unmapped memory.
+        assert!(load_shared_input(&segment.name, payload.len() + 4096).is_err());
+        assert!(load_shared_input("wnsm_lighttable_missing", payload.len()).is_err());
+        assert!(load_shared_input("bad name", payload.len()).is_err());
     }
 }
 
