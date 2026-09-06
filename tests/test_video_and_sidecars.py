@@ -199,12 +199,13 @@ class SidecarWritingTests(unittest.TestCase):
             source = Path(directory) / "frame.CR2"
             source.write_bytes(b"raw")
             existing = Path(str(source) + ".xmp")
-            existing.write_text("<x/>")
+            original = xmp_sidecar.build_sidecar({"rating": 2})
+            existing.write_text(original)
             self.assertTrue(xmp_sidecar.write_sidecar(source, self.RECORD))
             self.assertFalse(source.with_suffix(".xmp").exists())
             self.assertIn("xmp:Rating", existing.read_text())
             self.assertEqual(
-                durable_io.backup_path(existing).read_text(), "<x/>",
+                durable_io.backup_path(existing).read_text(), original,
                 "the pre-LightTable sidecar must remain recoverable",
             )
 
@@ -213,14 +214,15 @@ class SidecarWritingTests(unittest.TestCase):
             source = Path(directory) / "frame.RAF"
             source.write_bytes(b"raw")
             target = source.with_suffix(".xmp")
-            target.write_text("external original")
+            original = xmp_sidecar.build_sidecar({"rating": 2})
+            target.write_text(original)
 
             self.assertTrue(xmp_sidecar.write_sidecar(source, self.RECORD))
             newer = dict(self.RECORD, rating=1)
             self.assertTrue(xmp_sidecar.write_sidecar(source, newer))
 
             self.assertEqual(durable_io.backup_path(target).read_text(),
-                             "external original")
+                             original)
             self.assertEqual(xmp_sidecar.parse(target.read_text())["rating"], 1)
 
     def test_write_sidecar_on_a_read_only_folder_reports_false(self):

@@ -43,10 +43,15 @@ class Instance:
 
     @classmethod
     def from_record(cls, record: dict, path: Path) -> "Instance":
+        if not isinstance(record, dict):
+            raise ValueError("instance registration must be an object")
         host = str(record.get("host") or "127.0.0.1")
         port = int(record["port"])
+        pid = int(record["pid"])
+        if not 1 <= port <= 65535 or path.name != f"{port}.json" or pid <= 0:
+            raise ValueError("invalid instance registration identity")
         return cls(
-            url=f"http://{host}:{port}", port=port, pid=int(record["pid"]),
+            url=f"http://{host}:{port}", port=port, pid=pid,
             token=str(record.get("token") or ""),
             catalog=str(record["catalog"]) if record.get("catalog") else None,
             folder=str(record.get("folder") or ""),
@@ -60,6 +65,13 @@ def discover(directory: Path | None = None, *, clean_stale: bool = True) -> list
         return []
     found = []
     for path in sorted(root.glob("*.json")):
+        # The server writes <port>.json. Native startup reports share this
+        # directory and may also contain a live pid and port; they are neither
+        # registrations nor ours to remove, even when malformed or stale.
+        stem = path.stem
+        if (not stem.isascii() or not stem.isdecimal()
+                or not 1 <= int(stem) <= 65535 or stem != str(int(stem))):
+            continue
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
             instance = Instance.from_record(record, path)

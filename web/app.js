@@ -2,9 +2,16 @@ import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
+import { createCloseBarrier } from '/web/close-barrier.js';
+import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
+import { previewDetailLabel } from '/web/preview-detail.js';
+import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
+import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
+  cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
+import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import {
   LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
   MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics,
@@ -34,6 +41,7 @@ let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
 let RECOVERY = null;
+let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
 let EXTERNAL_EDITORS = [];
@@ -365,6 +373,11 @@ function performNativeMenuCommand(command) {
 }
 
 window.lightTableNativeEvent = (event) => {
+  if (event?.type === 'closeCancelled') { window.lightTableCancelClose?.(); return; }
+  if (event?.type === 'editJournalReply') {
+    window.dispatchEvent(new CustomEvent('lighttable-edit-journal', {detail: event}));
+    return;
+  }
   if (event?.type === 'error') return toast(event.message || 'Folder action failed');
   if (event?.type === 'menuCommand') {
     performNativeMenuCommand(event.command || '');
@@ -811,6 +824,7 @@ function clampPan() {
 }
 function applyViewNow() {
   clampPan();
+  syncPreviewDetailStatus();
   const cmp = $('cmp');
   cmp.style.transform =
     `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
@@ -1875,6 +1889,22 @@ function syncHealPanel() {
 function syncOpticsPanel() {
   S.optics = normalizeOptics(S.optics);
   syncCropPanel();
+  const match = _lensProfileCache.get(cur()?.name);
+  const override = S.optics.profileOverride;
+  const overrideKey = override ? JSON.stringify(override) : '';
+  if (match) {
+    S.lensProfile = override ? (match.candidates || []).find((profile) =>
+      ['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].every((key) => profile[key] === override[key])) || null : match.profile;
+    const select = $('lensProfileOverride');
+    select.replaceChildren(new Option('Automatic from photo metadata', ''));
+    for (const candidate of match.candidates || []) {
+      const identity = Object.fromEntries(['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].map((key) => [key, candidate[key]]));
+      select.add(new Option(`${candidate.lensMaker} ${candidate.lensModel}`, JSON.stringify(identity)));
+    }
+    if (override && !S.lensProfile) select.add(new Option('Saved profile unavailable', overrideKey));
+    select.value = overrideKey;
+    select.disabled = !(match.candidates || []).length && !override;
+  }
   const profile = S.lensProfile;
   $('lensProfileCard').classList.toggle('matched', !!profile);
   $('lensProfileCard').classList.toggle('unavailable', !profile);
@@ -1883,7 +1913,10 @@ function syncOpticsPanel() {
     : 'No exact lens profile found';
   $('lensProfileDetail').textContent = profile
     ? `${profile.cameraMaker || ''} ${profile.cameraModel || ''} · ${profile.focal || '—'} mm${profile.aliasedCamera ? ' · compatible camera profile' : ''}`.trim()
-    : 'Manual distortion and perspective controls remain available.';
+    : (match?.reason || 'Manual distortion and perspective controls remain available.');
+  $('lensProfileReason').textContent = override
+    ? (profile ? 'Profile selected manually. Verify the correction against the original.' : 'Saved profile is unavailable for this photo; choose another profile.')
+    : (match?.reason || '');
   $('lensProfileEnabled').checked = !!S.optics.profileEnabled;
   $('lensProfileEnabled').disabled = !profile;
   $('lensProfileDistortion').checked = !!S.optics.profileDistortion;
@@ -2288,6 +2321,14 @@ for (const id of ['healRadius', 'healFeather', 'healOpacity']) {
   $(id).addEventListener('change', () => { if (selectedHeal()) saveState(); });
 }
 
+$('lensProfileOverride').onchange = () => {
+  if (!cur()) return;
+  pushUndo();
+  S.optics.profileOverride = $('lensProfileOverride').value ? JSON.parse($('lensProfileOverride').value) : null;
+  syncOpticsPanel();
+  S.optics.profileEnabled = !!S.lensProfile;
+  syncOpticsPanel(); saveState(); refreshBaseEdits();
+};
 for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette']) {
   $(id).onchange = () => {
     pushUndo();
@@ -2316,7 +2357,7 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
 $('lensReset').onclick = (event) => {
   event.stopPropagation();
   pushUndo();
-  for (const key of ['profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
+  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
     S.optics[key] = OPTICS_DEFAULTS[key];
   }
   delete S.grade.chromaticAberrationRedCyan;
@@ -2527,10 +2568,19 @@ function shouldPreservePresentationGeometry(phase, previousKey, nextKey) {
   return phase === 'interactive' && !!previousKey && previousKey === nextKey;
 }
 
+function syncPreviewDetailStatus() {
+  const image = cur(), detail = S.previewDetail?.name === image?.name ? S.previewDetail : {};
+  const label = previewDetailLabel({ ...detail, state: S.renderState,
+    source: Math.max(+image?.width || 0, +image?.height || 0), actual: S.zoomMode === '100' });
+  $('previewDetailStatus').textContent = image ? label : '';
+  $('previewDetailStatus').hidden = !image || !label;
+  $('zoom1').title = label || 'View actual pixels (100%) to assess sharpness and noise';
+}
 function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
   S.renderState = state;
   S.renderName = name || null;
+  syncPreviewDetailStatus();
   if (state === 'ready') {
     S.hasPresentedImage = true;
     S.presentedPhotoName = name;
@@ -2756,6 +2806,49 @@ async function runNativeProductJourney(width, layer) {
   return runNativeSmokeJourney(width, layer);
 }
 
+// Exercise the real native journal and save queue with an injected transport
+// failure. Fixtures and native journal storage belong to the isolated journey.
+async function runEditRecoveryJourney() {
+  const name = cur().name;
+  const original = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
+  const pending = {state: {name, ...original, grade: {...GRADE_DEFAULTS,
+    ...(original.grade || {}), exposure: 0.321}}};
+  const originalFetch = window.fetch;
+  let failedClose = false;
+  try {
+    window.fetch = (input, options) => {
+      if (String(input).startsWith('/api/state') && options?.method === 'POST') {
+        return Promise.reject(new Error('Journey: render server interrupted'));
+      }
+      return originalFetch(input, options);
+    };
+    editSaveQueue.enqueue(name, pending, {immediate: true});
+    failedClose = !(await window.lightTablePrepareToClose());
+    if (!failedClose || editSaveQueue.getStatus().state !== 'error') {
+      throw new Error('A failed edit save did not block close');
+    }
+    const data = await getJSON('/api/images');
+    const reopened = createEditRecovery({scope: data.catalog?.path || `folder:${data.folder}`,
+      nativeRequest: nativeJournalRequest});
+    const records = await reopened.list();
+    const recovered = records.find(record => record.name === name);
+    if (!recovered || !recoveryPayloadMatches(pending, recovered.payload.state)) {
+      throw new Error('Native recovery did not retain the failed edit');
+    }
+  } finally { window.fetch = originalFetch; }
+  await editSaveQueue.retry(name);
+  const saved = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
+  if (!recoveryPayloadMatches(pending, saved)) throw new Error('Recovered edit did not reach the catalog');
+  if ((await editRecovery.list()).some(record => record.name === name)) {
+    throw new Error('Acknowledged recovery was not removed');
+  }
+  editSaveQueue.enqueue(name, {state: {name, ...original}});
+  if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
+  window.lightTableCancelClose();
+  return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
+    retrySaved: true, finalCloseFlushed: true};
+}
+
 async function runNativeSmokeJourney(width, layer = 'pr') {
   const startImage = cur()?.name || null;
   const next = visible().find((image) => image.name !== startImage);
@@ -2783,6 +2876,8 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     await action();
     return settled;
   });
+
+  const editRecoveryProof = await record('edit-recovery', runEditRecoveryJourney);
 
   await renderStep('navigate-photo', next.name, 'native-metal', () =>
     executeUICommand('goto', { name: next.name }));
@@ -2939,6 +3034,7 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     correctedInteractions,
     exportInteractions,
     visibilityControls,
+    editRecovery: editRecoveryProof,
     steps,
     export: {
       total: exportStatus.total,
@@ -3122,6 +3218,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     S.baseEditsBaked = Boolean(m.baseEditsBaked);
+    S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+      delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
+        +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
     setRenderPresentation('ready', im.name);
     drawGrade();
     const paintedAt = imageTiming.presentedAt || await afterVisiblePaint();
@@ -3799,44 +3898,107 @@ function editHistorySnapshot() {
     masks: serializableMasks(), heals: S.heals, optics: S.optics });
 }
 
+let editRecovery = null;
+let editRecoveryReady = false;
+let editRecoveryIssue = null;
+const journalRequests = new Map();
+window.addEventListener('lighttable-edit-journal', ({detail}) => {
+  const request = journalRequests.get(detail.id);
+  if (!request) return;
+  journalRequests.delete(detail.id); clearTimeout(request.timer);
+  if (detail.error) request.reject(new Error(detail.error));
+  else request.resolve(detail.result);
+});
+function nativeJournalRequest(body) {
+  return new Promise((resolve, reject) => {
+    const id = crypto.randomUUID();
+    const timer = setTimeout(() => {
+      journalRequests.delete(id); reject(new Error('Edit recovery did not respond'));
+    }, 10000);
+    journalRequests.set(id, {resolve, reject, timer});
+    if (!sendNative('editJournal', {...body, id})) {
+      journalRequests.delete(id); clearTimeout(timer);
+      reject(new Error('Desktop edit recovery is unavailable'));
+    }
+  });
+}
+function renderEditSaveStatus(status) {
+    const recoveryError = editRecoveryIssue || status.recoveryError;
+    const label = $('editSaveStatus');
+    label.textContent = status.state === 'error' ? 'Edits not saved'
+      : status.state === 'saving' ? 'Saving…'
+      : recoveryError ? 'Saved · recovery needs attention' : 'Saved';
+    label.dataset.state = status.state;
+    label.title = status.state === 'error'
+      ? 'Retry to save your changes. Local recovery is retained when available.'
+      : recoveryError ? recoveryError.message : '';
+    $('retryEditSave').hidden = status.state !== 'error' && !recoveryError;
+}
+function updateEditRecoveryHealth(error) {
+  editRecoveryIssue = error;
+  renderEditSaveStatus(editSaveQueue.getStatus());
+}
 const editSaveQueue = createEditSaveQueue({
+  journal: {
+    put(name, token, payload) {
+      if (!editRecoveryReady) throw new Error('Edit recovery is not ready');
+      return editRecovery.put(name, token, payload);
+    },
+    remove(name, token) { return editRecovery?.remove(name, token); },
+  },
   async send(name, payload) {
-    const result = await api('/api/state', payload.state);
+    const result = await api('/api/state', {...payload.state, ...(payload.expectedRecoverySourceKey
+      ? {expectedRecoverySourceKey: payload.expectedRecoverySourceKey} : {})});
     if (!result?.ok || result.error) throw new Error(result?.error || 'Could not save edits');
     const image = S.images.find((item) => item.name === name);
     if (image) invalidateEditedThumbnail(image);
-    if (payload.history) HISTORY?.record(name, payload.history.label, payload.history.state);
+    if (payload.history) {
+      HISTORY?.record(name, payload.history.label, payload.history.state);
+      if (await HISTORY?.flush(name) === false) throw new Error('Could not save edit history');
+    }
   },
   onStatus: () => updateEditSaveStatus(),
+
 });
 let historySaveStatus = { pendingNames: [], failedNames: [], error: null };
 function updateEditSaveStatus() {
   const status = editSaveQueue.getStatus();
   const state = status.state === 'error' || historySaveStatus.error ? 'error'
     : status.state === 'saving' || historySaveStatus.pendingNames.length ? 'saving' : 'saved';
-  const label = $('editSaveStatus');
-  label.textContent = state === 'error' ? 'Edits not saved' : state === 'saving' ? 'Saving…' : 'Saved';
-  label.dataset.state = state;
-  label.title = state === 'error' ? 'Keep this window open and retry to save your changes.' : '';
-  $('retryEditSave').hidden = state !== 'error';
+  renderEditSaveStatus({...status, state});
 }
 
 async function flushEditSaves() {
   try {
     await editSaveQueue.flush();
-    if (await HISTORY?.flush() === false) throw new Error('Could not save photo history');
+    if (await HISTORY?.flush() === false) throw new Error('Could not save edit history');
     return true;
-  } catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
+  }
+  catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
+
 }
+
+const closeBarrier = createCloseBarrier({
+  capture: () => saveState(), flush: flushEditSaves,
+  setBlocked: blocked => { document.body.inert = blocked; },
+});
+window.lightTablePrepareToClose = () => closeBarrier.prepare();
+window.lightTableCancelClose = () => closeBarrier.cancel();
 
 $('retryEditSave').onclick = async () => {
   try {
-    await editSaveQueue.retry();
+    if (!editRecoveryReady && editRecovery) {
+      try { await editRecovery.list(); editRecoveryReady = true; }
+      catch (error) { updateEditRecoveryHealth(error); }
+    }
     if (await (HISTORY?.retry ? HISTORY.retry() : HISTORY?.flush()) === false) {
       throw new Error('Could not save photo history');
     }
-    toast('Edits saved');
-  } catch { toast('Still unable to save. Your changes are kept in this window.'); }
+    await editSaveQueue.retry();
+    toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
+  }
+  catch { toast('Still unable to save. Your changes are kept in this window.'); }
+
 };
 window.addEventListener('beforeunload', (event) => {
   if (!editSaveQueue.getStatus().pendingNames.length && !HISTORY?.hasPending) return;
@@ -3862,7 +4024,7 @@ function saveState(immediate = false) {
     label: cleanLabel(im.label), ...edits,
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
-  editSaveQueue.enqueue(im.name, { state, history }, { immediate });
+  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
 
@@ -3901,11 +4063,44 @@ function invalidateVisibleCache() {
   _cachedVisibleList = null;
 }
 
-function rawJPEGPairKey(image) {
-  const name = String(image?.sourceName || image?.name || '');
-  return name.replace(/\.(?:jpe?g|cr2|cr3|nef|nrw|arw|srf|sr2|raf|rw2|orf|dng|pef|3fr|erf|kdc|mos|mrw|rwl|srw|x3f)$/i, '')
-    .toLocaleLowerCase();
+const pairOverrides = new Map();
+let pairIndexImages = null, pairIndexLength = -1, pairIndex = new Map();
+function photoPairs() {
+  if (pairIndexImages !== S.images || pairIndexLength !== S.images.length) {
+    pairIndex = indexPairs(S.images); pairIndexImages = S.images; pairIndexLength = S.images.length;
+  }
+  return pairIndex;
 }
+function linkedMetadataTargets(targets) {
+  return pairedTargets(targets, photoPairs(), APP_PREFS.pairRawJPEG !== false && APP_PREFS.linkPairedMetadata === true);
+}
+function syncPairControls() {
+  const image = cur(), members = APP_PREFS.pairRawJPEG === false ? [] : photoPairs().get(image?.name) || [];
+  const companion = members.find(member => member.raw !== image?.raw);
+  const button = $('switchPair');
+  button.hidden = !companion;
+  if (companion) {
+    button.textContent = image.raw ? 'RAW → JPEG' : 'JPEG → RAW';
+    button.title = `Open ${displayName(companion)}. Each file keeps its own edits.`;
+  }
+  $('pairedMetadataNote').hidden = !companion;
+  $('pairedMetadataNote').textContent = APP_PREFS.linkPairedMetadata === true
+    ? 'RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.'
+    : 'RAW + JPEG · Ratings and edits stay separate. Link metadata in Settings → Library.';
+}
+$('switchPair').onclick = async () => {
+  const image = cur();
+  const companion = photoPairs().get(image?.name)?.find(member => member.raw !== image.raw);
+  if (!companion) return;
+  pairOverrides.set(pairKey(companion), companion.name);
+  invalidateVisibleCache();
+  // The requested member is explicit. A RAW-only/JPEG-only filter should not
+  // immediately navigate away from it; keep other library filters intact.
+  if (['raw', 'processed'].includes($('kindFilter').value)) $('kindFilter').value = 'all';
+  if (S.msel.delete(image.name)) S.msel.add(companion.name);
+  await go(S.images.indexOf(companion));
+  refreshLists(); savePrefs();
+};
 
 function visible() {
   const f = $('filter')?.value || 'all';
@@ -3915,7 +4110,7 @@ function visible() {
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
-  const pairMode = APP_PREFS.pairRawJPEG !== false && APP_PREFS.hidePairedJPEG === true;
+  const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
   const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
@@ -3935,13 +4130,6 @@ function visible() {
       if (f === 'pending') return !im.status || im.status === 'pending';
       return im.status === f;
     });
-  if (pairMode) {
-    const rawKeys = new Set(S.images.filter((image) => image.raw && !image.virtual)
-      .map(rawJPEGPairKey));
-    list = list.filter((image) => image.raw || image.virtual ||
-      !/\.jpe?g$/i.test(String(image.sourceName || image.name || '')) ||
-      !rawKeys.has(rawJPEGPairKey(image)));
-  }
   list = list.filter((im) => (labelFilter === 'all'
       || (labelFilter === 'any' ? cleanLabel(im.label) !== 'none'
           : cleanLabel(im.label) === labelFilter)));
@@ -3957,6 +4145,7 @@ function visible() {
       (kind === 'virtual' && im.virtual));
     return matchesKind && photoMatchesQuery(im, search);
   });
+  list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
     if (!stack.collapsed) continue;
     const visibleMembers = stack.members.filter((name) => list.some((im) => im.name === name));
@@ -3977,7 +4166,7 @@ function visible() {
     list = [...list].sort((a, b) => String(a.status || '').localeCompare(String(b.status || '')));
   } else if (s === 'date' || s === 'capture') {
     list = [...list].sort((a, b) =>
-      String(a.date || a.mtime || '').localeCompare(String(b.date || b.mtime || '')));
+      captureSortValue(a) - captureSortValue(b));
   } else if (s === 'label') {
     list = [...list].sort((a, b) =>
       LABELS.indexOf(cleanLabel(a.label)) - LABELS.indexOf(cleanLabel(b.label)));
@@ -4026,6 +4215,7 @@ function listKey(list) {
 }
 
 function thumbnailURL(im) {
+  if (im.availability === 'cloud-only') return 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160"><rect width="240" height="160" fill="#262626"/><text x="120" y="85" text-anchor="middle" fill="#aaa" font-size="18">Cloud only</text></svg>');
   return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
 }
 
@@ -4106,6 +4296,7 @@ function pumpEditedThumbnailQueue() {
 }
 
 function queueEditedThumbnail(im, attempt = 0) {
+  if (im?.availability === 'cloud-only') return;
   if (!im || im.kind === 'video' || window.__LIGHTTABLE_BENCHMARK__) return;
   const visible = !_editedThumbnailObserver || im === cur() ||
     [...document.querySelectorAll('img[data-thumbnail-name]')].some(
@@ -4232,7 +4423,7 @@ function createStripItem(im) {
   const element = document.createElement('div');
   element.innerHTML = `<img loading="lazy" decoding="async">
     <span class="dot"></span>
-    <span class="label-dot" hidden></span>`;
+    <span class="label-dot" hidden></span><span class="pair-badge" hidden></span>`;
   element.onclick = (event) => {
     const image = imageForLibraryElement(element);
     if (image) selectPhotoFromPointer(image, event);
@@ -4241,8 +4432,15 @@ function createStripItem(im) {
   return element;
 }
 
+function syncPairBadge(element, im) {
+  const badge = element.querySelector('.pair-badge');
+  badge.hidden = APP_PREFS.pairRawJPEG === false || !photoPairs().has(im.name);
+  badge.textContent = im.raw ? 'RAW + J' : 'J + RAW';
+  badge.title = 'RAW + JPEG capture. Switch file in the top bar; edits stay separate.';
+}
 function syncStripItem(element, im) {
   element.dataset.name = im.name;
+  syncPairBadge(element, im);
   syncThumbnailImage(element, im);
 }
 
@@ -4319,7 +4517,7 @@ function createGridCell(im) {
   d.innerHTML = `<img loading="lazy" decoding="async">
     <span class="idx"></span>
     <span class="label-dot" hidden></span>
-    <button class="stack-badge" type="button" hidden></button>
+    <button class="stack-badge" type="button" hidden></button><span class="pair-badge" hidden></span>
     <div class="meta"><span class="dot"></span>
     <span class="nm"></span>
     <span class="stars"></span></div>`;
@@ -4368,12 +4566,14 @@ function createGridCell(im) {
 
 function syncGridCell(element, im) {
   element.dataset.name = im.name;
+  syncPairBadge(element, im);
   element.draggable = !im.virtual;
   element.style.setProperty('--photo-aspect-ratio', im.width && im.height
     ? `${im.width} / ${im.height}` : 'auto');
   syncThumbnailImage(element, im);
   const name = element.querySelector('.nm');
-  const nextName = displayName(im);
+  const nextName = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only' : '');
+  element.title = im.availability === 'cloud-only' ? 'Download this photo in Finder, then rescan the source.' : displayName(im);
   if (name.textContent !== nextName) name.textContent = nextName;
   recordGridThumbnailGeometry(element);
 }
@@ -5195,6 +5395,7 @@ function setViewMode(mode, persist = true) {
     doRender();
   }
   syncCullBars();
+  syncPairControls();
   scheduleNativeViewportLayout();
   scheduleNativeMenuState();
   if (persist) savePrefs();
@@ -5204,6 +5405,23 @@ const paneScrollPositions = new Map();
 const PHOTO_TOOL_PANES = ['cropPane', 'maskPane', 'healPane'];
 let lastAdjustmentPane = 'editPane';
 let compareReturnPane = null;
+let cropSession = null;
+function beginCropSession() {
+  if (cur() && (!cropSession || cropSession.name !== cur().name)) {
+    cropSession = { name: cur().name, entry: cropGeometry(JSON.parse(snapshot())) };
+  }
+}
+function cancelCropSession() {
+  const session = cropSession; cropSession = null;
+  if (session?.name === cur()?.name && S.editingName === session.name) {
+    const current = JSON.parse(snapshot());
+    const restored = restoreCropGeometry(current, session.entry);
+    if (JSON.stringify(cropGeometry(current)) !== JSON.stringify(session.entry)) {
+      pushUndo(); restore(JSON.stringify(restored));
+    }
+  }
+  exitPhotoTool();
+}
 function exitPhotoTool() {
   if (S.compareActive) { setCompareActive(false); return; }
   switchPane(lastAdjustmentPane);
@@ -5230,6 +5448,7 @@ function switchPane(id, { fromCompare = false } = {}) {
   PRESET_BROWSER?.setActive(id === 'presetsPane');
   const panel = $('panel');
   const previousPane = S.activePane;
+  if (previousPane === 'cropPane' && id !== 'cropPane' && !fromCompare) cropSession = null;
   if (previousPane && previousPane !== id) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
@@ -5242,7 +5461,7 @@ function switchPane(id, { fromCompare = false } = {}) {
     button.setAttribute('aria-pressed', String(selected));
     if (selected) activeButton = button;
   });
-  if (id === 'cropPane') setCropMode(true);
+  if (id === 'cropPane') { beginCropSession(); setCropMode(true); }
   else if (S.cropping) setCropMode(false);
   S.editGesture = null;
   $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane'));
@@ -5270,20 +5489,20 @@ function switchPane(id, { fromCompare = false } = {}) {
 /* ---------------------------------------------------------------- crop */
 function cropSourceSize() {
   const im = cur();
-  let width = +(im?.width || $('cv').width || 0);
-  let height = +(im?.height || $('cv').height || 0);
-  const canvasWidth = +$('cv').width || 0;
-  const canvasHeight = +$('cv').height || 0;
-  if (canvasWidth > 0 && canvasHeight > 0 && (width > height) !== (canvasWidth > canvasHeight)) {
-    [width, height] = [height, width];
+  let width = +(im?.width || 0);
+  let height = +(im?.height || 0);
+  if (width > 0 && height > 0) {
+    // Catalog dimensions already include EXIF orientation. Apply the requested
+    // rotation now: the canvas may still show the previous render or photo.
+    if (Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) {
+      [width, height] = [height, width];
+    }
+    return { width, height };
   }
-  return { width, height };
+  return { width: +$('cv').width || 0, height: +$('cv').height || 0 };
 }
 
 function cropImageAspect() {
-  const canvasWidth = +$('cv').width || 0;
-  const canvasHeight = +$('cv').height || 0;
-  if (canvasWidth > 0 && canvasHeight > 0) return canvasWidth / canvasHeight;
   const { width, height } = cropSourceSize();
   return width > 0 && height > 0 ? width / height : 1;
 }
@@ -5571,14 +5790,17 @@ function showCurrentImage(im) {
   updateUndoRedoButtons();
   syncControls(); syncGrade(); syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
   $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane');
-  applyView(); setCropMode(S.activePane === 'cropPane');
+  applyView();
+  if (S.activePane === 'cropPane') beginCropSession();
+  setCropMode(S.activePane === 'cropPane');
   setCompareActive(false);
   S.originalImageName = null;
   browserOriginal = null;
   browserOriginalTextureURL = null;
   S.gl?.clearOriginalImage();
   $('orig').removeAttribute('src');
-  $('currentName').textContent = displayName(im);
+  $('currentName').textContent = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only — download in Finder and rescan' : '');
+  syncPairControls();
   $('editFilename').textContent = displayName(im);
   $('filmFilename').textContent = displayName(im);
   $('rawCameraDefaultStatus').textContent = isRawInput()
@@ -5634,6 +5856,7 @@ loupeChannel.onmessage = (event) => {
 
 async function go(i) {
   if (i < 0 || i >= S.images.length) return;
+  cropSession = null;
   if (cur()) {
     const outgoing = cur().name;
     void editSaveQueue.flush(outgoing).then(() => HISTORY?.flush(outgoing)).catch(() => {});
@@ -5643,6 +5866,7 @@ async function go(i) {
   $('panel').inert = true;
   $('cmp').inert = true;
   const im = cur();
+  CAPTURE_TIME?.selectionChanged();
   const generation = ++navigationGeneration;
   ++S.seq;
   if (NATIVE_PREVIEW) {
@@ -5730,7 +5954,7 @@ const _lensProfileCache = new Map();
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
-      S.lensProfile = _lensProfileCache.get(name);
+      S.lensProfile = _lensProfileCache.get(name).profile;
       syncOpticsPanel();
     }
     return;
@@ -5738,7 +5962,7 @@ async function loadLensProfile(name) {
   try {
     const result = await fetch(`/api/lens-profile?name=${encodeURIComponent(name)}`).then((response) => response.json());
     const profile = result.found ? result.profile : null;
-    _lensProfileCache.set(name, profile);
+    _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
       syncOpticsPanel();
@@ -5771,7 +5995,13 @@ function commonMarkValue(targets, field, fallback) {
 }
 
 function persistMark(targets, entry) {
-  for (const image of targets) saveStateFor(image, true);
+  for (const image of targets) {
+    const pending = editSaveQueue.getPending(image.name);
+    if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(entry));
+    editSaveQueue.enqueue(image.name, { sourceKey: image.recoverySourceKey || null, ...pending,
+      state: { ...pending?.state, name: image.name, ...entry } }, { immediate: true });
+  }
+  void flushEditSaves();
 }
 
 function syncCullBars() {
@@ -5796,6 +6026,8 @@ function syncCullBars() {
       detail = index >= 0 ? `${index + 1} of ${ordered.length}` : 'Current photo';
     }
   }
+  const linkedCount = linkedMetadataTargets(targets).length;
+  if (linkedCount > targets.length) detail += ` · ${linkedCount - targets.length} paired file${linkedCount - targets.length === 1 ? '' : 's'} linked`;
   document.querySelectorAll('[data-cull-context-title]').forEach((element) => {
     element.textContent = title;
   });
@@ -5830,10 +6062,11 @@ function setStatus(st) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = st !== 'pending' && targets.every((image) => image.status === st)
     ? 'pending' : st;
-  for (const image of targets) image.status = next;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.status = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
-  persistMark(targets, { status: next });
+  persistMark(linked, { status: next });
   /* Unflagging is a correction, not a decision, so it does not advance. */
   if (targets.length === 1 && next !== 'pending' && APP_PREFS.autoAdvance !== false) {
     advanceAfterMark(targets[0]);
@@ -5846,10 +6079,11 @@ function setStatus(st) {
 function setRating(r, advance = false) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;
-  for (const image of targets) image.rating = next;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.rating = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
-  persistMark(targets, { rating: next });
+  persistMark(linked, { rating: next });
   if (targets.length === 1 && (advance || APP_PREFS.autoAdvance !== false)) {
     advanceAfterMark(targets[0]);
   } else if (SURVEY && SURVEY.isOpen) {
@@ -5860,14 +6094,14 @@ function setRating(r, advance = false) {
 }
 
 function setLabel(label) {
-  const im = surveyTarget() || cur(); if (!im) return;
-  const next = cleanLabel(label);
-  im.label = cleanLabel(im.label) === next ? 'none' : next;
-  S.libraryRevision = (S.libraryRevision || 0) + 1;
-  invalidateVisibleCache();
-  saveStateFor(im, true);
-  if (SURVEY && SURVEY.isOpen) refreshLists();
-  else refreshFilteredView();
+  const targets = markingTargets(); if (!targets.length) return;
+  const labelValue = cleanLabel(label);
+  const next = targets.every(image => cleanLabel(image.label) === labelValue) ? 'none' : labelValue;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.label = next;
+  S.libraryRevision = (S.libraryRevision || 0) + 1; invalidateVisibleCache();
+  persistMark(linked, { label: next });
+  if (SURVEY && SURVEY.isOpen) refreshLists(); else refreshFilteredView();
 }
 
 /* When survey is open the marking keys act on its active cell, not on the
@@ -5898,13 +6132,16 @@ function enqueuePhotoPatch(im, patch, { historyLabel } = {}) {
   const history = pending?.history ? {
     label: historyLabel || pending.history.label,
     state: { ...pending.history.state },
-  } : null;
+  } : historyLabel ? { label: historyLabel, state: {
+    params: im.params, grade: im.grade, crop: im.crop || null,
+    masks: im.masks || [], heals: im.heals || [], optics: im.optics,
+  } } : null;
   if (history) {
     for (const key of ['params', 'grade', 'crop', 'masks', 'heals', 'optics']) {
       if (Object.prototype.hasOwnProperty.call(patch, key)) history.state[key] = cloneValue(patch[key]);
     }
   }
-  editSaveQueue.enqueue(im.name, { state, history }, { immediate: true });
+  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate: true });
 }
 
 /* saveState() always writes the photo the editor has open; marking from the
@@ -5915,7 +6152,7 @@ function saveStateFor(im, immediate = false) {
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, {
     status: im.status, rating: im.rating, label: cleanLabel(im.label) });
   editSaveQueue.enqueue(im.name, {
-    ...pending,
+    ...pending, sourceKey: im.recoverySourceKey || null,
     state: { ...pending?.state, name: im.name, status: im.status,
       rating: im.rating, label: cleanLabel(im.label) },
   }, { immediate });
@@ -6017,7 +6254,7 @@ function setCullReview(review) {
 }
 
 async function applyCullFlags(group, status) {
-  const targets = cullResults(group);
+  const targets = linkedMetadataTargets(cullResults(group));
   if (!targets.length) return;
   const criteria = chosenCull(group).map((name) => CULL_LABELS[name]).join(', ');
   const verb = status === 'approved' ? 'Pick' : 'Reject';
@@ -6253,6 +6490,79 @@ async function watchCatalogScan() {
   }
 }
 
+async function chooseEditRecovery(records) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'modal'; dialog.id = 'editRecoveryDialog';
+  dialog.setAttribute('aria-labelledby', 'editRecoveryTitle');
+  dialog.style.color = 'var(--ink)';
+  const title = document.createElement('strong'); title.id = 'editRecoveryTitle';
+  title.textContent = 'Recover unsaved edits?';
+  const description = document.createElement('p');
+  description.textContent = `Local recovery found changes for ${records.length} photo${records.length === 1 ? '' : 's'}. Restoring replaces their saved edits with these recovered changes.`;
+  const list = document.createElement('p');
+  list.textContent = records.slice(0, 3).map(item => item.name).join(' · ')
+    + (records.length > 3 ? ' …' : '');
+  const actions = document.createElement('div'); actions.className = 'modal-actions';
+  const discard = document.createElement('button'); discard.textContent = 'Keep saved edits';
+  const restore = document.createElement('button'); restore.className = 'accent-btn';
+  restore.textContent = 'Restore edits';
+  actions.append(discard, restore); dialog.append(title, description, list, actions);
+  document.body.append(dialog);
+  return new Promise(resolve => {
+    const finish = value => { dialog.close(); dialog.remove(); resolve(value); };
+    discard.onclick = () => finish(false); restore.onclick = () => finish(true);
+    // Escape leaves recovery undecided; never silently discard drafts.
+    dialog.addEventListener('cancel', event => event.preventDefault());
+    dialog.addEventListener('keydown', event => event.stopPropagation());
+    dialog.showModal(); restore.focus();
+  });
+}
+async function initializeEditRecovery(data) {
+  const scope = data.catalog?.path || `folder:${data.folder}`;
+  let storage = null;
+  try { storage = window.localStorage; } catch (_) { /* surfaced by the journal */ }
+  editRecovery = createEditRecovery({scope,
+    nativeRequest: nativeBridge() ? nativeJournalRequest : null, storage,
+    onWarning: updateEditRecoveryHealth});
+  let records;
+  try { records = await editRecovery.list(); editRecoveryReady = true; }
+  catch (error) {
+    updateEditRecoveryHealth(error);
+    toast(`Local edit recovery is unavailable: ${error.message}. Keep this window open if saving fails.`);
+    return;
+  }
+  const outstanding = [];
+  for (const record of records) {
+    // An acknowledged save whose cleanup was interrupted needs no replay.
+    const saved = await getJSON(`/api/state?name=${encodeURIComponent(record.name)}&recovery=1`).catch(() => null);
+    if (!saved || saved.error || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey)) {
+      toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
+      continue;
+    }
+    if (saved && !saved.error && recoveryAcknowledged(record.payload, saved)) {
+      await editRecovery.remove(record.name, record.token).catch(error =>
+        toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
+    } else outstanding.push(record);
+  }
+  if (!outstanding.length) return;
+  if (await chooseEditRecovery(outstanding)) {
+    for (const record of outstanding) {
+      editSaveQueue.enqueue(record.name, {...record.payload,
+        expectedRecoverySourceKey: record.payload.sourceKey,
+        history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
+      {immediate: true});
+      const image = S.images.find(item => item.name === record.name);
+      if (image) Object.assign(image, normalizeLibraryImage({
+        ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
+      }, true));
+    }
+    await flushEditSaves();
+  } else {
+    for (const record of outstanding) await editRecovery.remove(record.name, record.token)
+      .catch(error => toast(`Saved edits kept; recovery cleanup needs attention: ${error.message}`));
+  }
+}
+
 /* ------------------------------------------------------------------ boot */
 fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.rootFolder = d.folder;
@@ -6302,6 +6612,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.library = d.library || { collections: [], stacks: [], virtualCopies: [] };
   S.images = d.images.map((im) => normalizeLibraryImage(
     im, !S.catalogEnabled));
+  await initializeEditRecovery(d);
   syncAI(d.aiIndex || S.ai);
   if (S.ai.enabled && !S.ai.scanComplete) scheduleAIStatusPoll(true);
   // A finished index still has to be read once on load. In catalog mode the
@@ -6712,6 +7023,8 @@ $('zoomOut').onclick = () => {
 };
 $('zoomFit').onclick = zoomReset;
 document.querySelectorAll('[data-exit-tool]').forEach((button) => { button.onclick = exitPhotoTool; });
+$('cropDone').onclick = exitPhotoTool;
+$('cropCancel').onclick = cancelCropSession;
 $('cropReset').onclick = () => {
   if ($('cropReset').disabled) return;
   switchPane('cropPane');
@@ -6890,7 +7203,7 @@ function updateTransferActions() {
   $('addToCollection').disabled = !collection || collection.type !== 'regular' ||
     !targets.length;
   $('copyBtn').title = cur()
-    ? `Copy film and edit settings (${primaryKey}+Shift+C) — crop is excluded`
+    ? `Choose edit settings to copy (${primaryKey}+Shift+C)`
     : 'Select a photo to copy its settings';
   $('pasteBtn').title = !S.clipboard
     ? 'Copy settings first'
@@ -6899,49 +7212,139 @@ function updateTransferActions() {
       : `Paste edit settings (${primaryKey}+Shift+V)`;
   scheduleNativeMenuState();
 }
+let transferReturnFocus = null, transferSource = null, transferRunning = false, transferCancelled = false;
+function closeTransferDialog() {
+  if (transferRunning) { transferCancelled = true; $('transferStatus').textContent = 'Stopping after the current photo…'; return; }
+  $('transferDialog').classList.remove('on'); $('transferDialog').setAttribute('aria-hidden', 'true');
+  transferReturnFocus?.focus?.({ preventScroll: true });
+}
+function showTransferDialog(title) {
+  transferReturnFocus = document.activeElement;
+  $('transferTitle').textContent = title;
+  $('transferDialog').classList.add('on'); $('transferDialog').setAttribute('aria-hidden', 'false');
+}
+$('transferCancel').onclick = closeTransferDialog;
+$('transferDialog').addEventListener('keydown', event => {
+  if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeTransferDialog(); }
+  if (event.key === 'Tab') {
+    const focusable = [...$('transferDialog').querySelectorAll('button:not(:disabled), input:not(:disabled)')]
+      .filter(element => !element.hidden && !element.closest('[hidden]'));
+    const index = focusable.indexOf(document.activeElement);
+    if (focusable.length && ((event.shiftKey && index <= 0) || (!event.shiftKey && index === focusable.length - 1))) {
+      event.preventDefault(); focusable[event.shiftKey ? focusable.length - 1 : 0].focus();
+    }
+  }
+});
 $('copyBtn').onclick = () => {
+  if (!cur() || S.editingName !== cur().name || transferRunning) return;
   readControls();
-  S.clipboard = {
-    params: cloneValue(S.params), grade: cloneValue(S.grade),
-    masks: cloneValue(serializableMasks()), heals: cloneValue(S.heals), optics: cloneValue(S.optics),
-  };
-  updateTransferActions();
-  confirmTransfer('copyBtn');
-  toast('Settings copied');
+  transferSource = { ...JSON.parse(snapshot()), sourceName: cur().name };
+  const selected = transferChoices(APP_PREFS.copySettings);
+  const host = $('transferGroups'); host.replaceChildren(); host.hidden = false;
+  for (const [id, title, description] of TRANSFER_GROUPS) {
+    const label = document.createElement('label'); label.className = 'transfer-choice';
+    const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.dataset.transferGroup = id; checkbox.checked = selected[id];
+    const text = document.createElement('span'), strong = document.createElement('strong'), small = document.createElement('small');
+    strong.textContent = title; small.textContent = description; text.append(strong, small); label.append(checkbox, text); host.append(label);
+    checkbox.onchange = () => { $('transferCopy').disabled = !host.querySelector('input:checked'); };
+  }
+  $('transferCopy').hidden = false; $('transferCopy').disabled = !Object.values(selected).some(Boolean);
+  $('transferCancel').textContent = 'Cancel';
+  $('transferStatus').textContent = 'Only selected settings replace the destination. AI masks are detected again; object selections and painted AI refinements require manual review.';
+  showTransferDialog('Copy edit settings');
+  requestAnimationFrame(() => host.querySelector('input')?.focus());
+};
+$('transferCopy').onclick = async () => {
+  const choices = Object.fromEntries([...$('transferGroups').querySelectorAll('input')].map(input => [input.dataset.transferGroup, input.checked]));
+  S.clipboard = { ...cloneValue(transferSource), choices };
+  APP_PREFS.copySettings = choices;
+  const saved = await api('/api/prefs', { copySettings: choices }).catch(() => null);
+  updateTransferActions(); closeTransferDialog(); confirmTransfer('copyBtn');
+  toast(saved?.error || !saved ? 'Settings copied; choices could not be remembered' : 'Settings copied');
 };
 async function pasteSettingsTo(targets) {
-  if (!S.clipboard) return toast('Nothing copied');
+  if (!S.clipboard || transferRunning) return toast('Copy settings first');
   const items = [...new Set(targets)].filter(Boolean);
   if (!items.length) return;
-  const current = cur();
-  const currentIncluded = items.includes(current) && S.editingName === current.name;
-  const settings = {
-    params: cloneValue(S.clipboard.params), grade: cloneValue(S.clipboard.grade),
-    masks: normalizeMasks(cloneValue(S.clipboard.masks)),
-    heals: normalizeHeals(cloneValue(S.clipboard.heals)),
-    optics: normalizeOptics(cloneValue(S.clipboard.optics)),
-  };
-  // Apply before yielding so later input starts from the pasted state. Waiting
-  // for a bulk POST here used to let an older queued recipe overwrite the paste.
-  if (currentIncluded) pushUndo();
-  for (const image of items) {
-    enqueuePhotoPatch(image, settings, { historyLabel: 'Paste settings' });
-    if (image !== current) photoUndo.clear(image.name);
-    invalidateEditedThumbnail(image);
+  // Capture pending controls before opening the blocking transfer dialog.
+  saveState();
+  const clipboard = cloneValue(S.clipboard), failures = [];
+  transferRunning = true; transferCancelled = false;
+  $('transferGroups').hidden = true; $('transferCopy').hidden = true; $('transferCancel').textContent = 'Stop';
+  showTransferDialog('Pasting edit settings');
+  $('transferCancel').focus();
+  let completed = 0;
+  for (const [index, target] of items.entries()) {
+    let image = target;
+    if (transferCancelled) break;
+    $('transferStatus').textContent = `Photo ${index + 1} of ${items.length} · ${displayName(image)}`;
+    try {
+      // A lean catalog row is not a destination edit state. Load it before
+      // merging so unchecked settings can never be replaced with defaults.
+      await prefetchState(image);
+      if (!isStateLoaded(image)) throw new Error("Existing settings could not be loaded; this photo was left unchanged");
+      const readDestination = () => {
+        image = S.images.find(item => item.name === target.name);
+        if (!image) throw new Error('This photo is no longer in the library; settings were not pasted');
+        if (!isStateLoaded(image)) throw new Error('The latest existing settings are not loaded. Try pasting again; this photo was left unchanged');
+        const pending = editSaveQueue.getPending(image.name)?.state || {};
+        const currentEdits = {...image, ...pending};
+        return { ...currentEdits, params: normalizeFilmParams(currentEdits.params),
+          grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) }, optics: normalizeOptics(currentEdits.optics) };
+      };
+      const destination = readDestination();
+      let patch = transferPatch(clipboard, destination, clipboard.choices);
+      if (patch.masks) {
+        // A generated bitmap is tied to the effective target pixels/geometry.
+        // Sort object keys so an equivalent externally supplied recipe is not
+        // mistaken for a change just because its JSON member order differs.
+        const maskInput = (state, changes) => JSON.stringify({
+          source: image.recoverySourceKey || image.fileKey || null,
+          params: changes.params || state.params,
+          optics: changes.optics || state.optics,
+          crop: Object.hasOwn(changes, 'crop') ? changes.crop : state.crop || null,
+        }, (_key, value) => value && typeof value === 'object' && !Array.isArray(value)
+          ? Object.fromEntries(Object.keys(value).sort().map(key => [key, value[key]])) : value);
+        const generatedFor = maskInput(destination, patch);
+        const masks = await regenerateTransferMasks(patch.masks,
+          kind => api('/api/mask/semantic', { name: image.name, kind, params: patch.params || destination.params }),
+          { samePhoto: image.name === clipboard.sourceName &&
+            (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
+        // Detection can take seconds. Merge selected groups again so current
+        // unselected settings survive changes made during that asynchronous work.
+        const latest = readDestination();
+        const refreshed = transferPatch(clipboard, latest, clipboard.choices);
+        if (generatedFor !== maskInput(latest, refreshed)) {
+          throw new Error('The photo or its geometry changed while masks were prepared. Try pasting again; this photo was left unchanged');
+        }
+        patch = {...refreshed, masks};
+      }
+      if (transferCancelled) break;
+      const { cropChoices, ...entry } = patch;
+      if (image === cur() && S.editingName === image.name) pushUndo();
+      enqueuePhotoPatch(image, entry, {historyLabel: 'Paste selected settings'});
+      image.cropChoices = cropChoices ?? image.cropChoices;
+      image.stateLoaded = true;
+      if (image !== cur()) photoUndo.clear(image.name);
+      invalidateEditedThumbnail(image);
+      // Apply once before waiting: an external update arriving during the save
+      // must never be overwritten by completion of this older operation.
+      if (image === cur() && S.editingName === image.name) {
+        restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
+        _lastHistorySnapshot = editHistorySnapshot();
+      }
+      await editSaveQueue.flush(image.name);
+      completed++;
+    } catch (error) { failures.push(`${displayName(image)}: ${error.message || 'Could not paste'}`); }
   }
-  if (currentIncluded) {
-    S.params = cloneValue(current.params);
-    S.grade = cloneValue(current.grade);
-    S.masks = normalizeMasks(current.masks); S.heals = normalizeHeals(current.heals);
-    S.optics = normalizeOptics(current.optics); S.maskTextureDirty = true;
-    S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
-    syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
-    syncMaskPanel(); syncHealPanel(); syncOpticsPanel(); drawGrade(); renderFilm(0);
-  }
-  refreshLists();
-  if (!await flushEditSaves()) return;
-  confirmTransfer('pasteBtn');
-  toast(items.length === 1 ? 'Settings pasted' : `Pasted to ${items.length} photos`);
+  transferRunning = false;
+  refreshLists(); confirmTransfer('pasteBtn');
+  $('transferCancel').textContent = 'Done';
+  $('transferStatus').textContent = `Pasted to ${completed} of ${items.length} photos${transferCancelled ? ' · stopped' : ''}.`
+    + (failures.length ? `\n${failures.join('\n')}` : '');
+  $('transferCancel').focus();
+  if (!failures.length && !transferCancelled) { closeTransferDialog(); toast(`Pasted to ${completed} photo${completed === 1 ? '' : 's'}`); }
+
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
 $('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
@@ -6950,8 +7353,63 @@ $('redoBtn').onclick = redo;
 
 let exportTimer = null;
 let EXPORT_RECIPES = [];
+let EXPORT_RECIPE_EXTRAS = {};
+let activeExportJobId = null;
+let latestExportStatus = null;
+const EXPORT_EXTRA_FIELDS = ['DestinationMode', 'Metadata', 'Sidecar', 'PreserveCaptureTime', 'CaptureTimePolicy'];
+function exportExtraOptions(prefix) {
+  return {
+    ...EXPORT_RECIPE_EXTRAS,
+    pairView: pairViewPreference(APP_PREFS),
+    destinationMode: $(prefix + 'DestinationMode').value,
+    metadata: $(prefix + 'Metadata').value,
+    sidecar: $(prefix + 'Sidecar').value === 'true',
+    preserveCaptureTime: $(prefix + 'PreserveCaptureTime').value === 'true',
+    captureTimePolicy: $(prefix + 'CaptureTimePolicy').value,
+  };
+}
+function syncExportDestination(prefix) {
+  const relative = $(prefix + 'DestinationMode').value === 'original-folder-relative';
+  $(prefix + 'ChooseDestination').disabled = relative;
+  $(prefix + 'Destination').placeholder = relative ? 'Subfolder name, e.g. film-exports' : 'Choose a destination folder';
+  if (relative && /^(?:[/\\]|[a-zA-Z]:)/.test($(prefix + 'Destination').value)) {
+    $(prefix + 'Destination').value = 'film-exports';
+  }
+}
+$('exportCancel').onclick = async () => {
+  if (!activeExportJobId) return;
+  $('exportCancel').disabled = true;
+  const result = await api(`/api/jobs/${activeExportJobId}/cancel`, {});
+  if (result.error) { $('exportCancel').disabled = false; toast(result.error); }
+  else $('estat').textContent = 'Stopping export…';
+};
+$('exportDetails').onclick = () => {
+  const status = latestExportStatus || {};
+  const lines = [`${status.completed || 0} exported · ${status.skipped || 0} skipped · ${status.cancelledCount || 0} cancelled`];
+  for (const error of status.errors || []) lines.push(`Error: ${error}`);
+  for (const item of status.warnings || []) {
+    lines.push(`${item.name}${item.path ? ' → ' + item.path : ''}`);
+    lines.push(...item.warnings.map((warning) => `  ${warning}`));
+  }
+  $('exportResultText').textContent = lines.join('\n');
+  $('exportResultDialog').classList.add('on');
+  $('exportResultDialog').setAttribute('aria-hidden', 'false');
+  $('exportResultClose').focus();
+};
+function closeExportResult() {
+  $('exportResultDialog').classList.remove('on');
+  $('exportResultDialog').setAttribute('aria-hidden', 'true');
+  $('exportDetails').focus();
+}
+$('exportResultClose').onclick = closeExportResult;
+$('exportResultDialog').addEventListener('keydown', (event) => {
+  event.stopPropagation();
+  if (event.key === 'Escape') closeExportResult();
+  if (event.key === 'Tab') { event.preventDefault(); $('exportResultClose').focus(); }
+});
 function currentExportRecipe(name = 'Export recipe') {
   return {
+    ...exportExtraOptions('ex'),
     name, format: $('exFormat').value, quality: +$('exQuality').value,
     longEdge: $('exSize').value ? +$('exSize').value : null,
     outputSpace: $('exColorSpace').value,
@@ -6974,6 +7432,13 @@ function renderExportRecipes(selected = '') {
 }
 function applyExportRecipe(recipe) {
   if (!recipe) return;
+  const { id: _id, name: _name, builtin: _builtin, ...settings } = recipe;
+  EXPORT_RECIPE_EXTRAS = settings;
+  for (const key of EXPORT_EXTRA_FIELDS) {
+    const field = key[0].toLowerCase() + key.slice(1);
+    const defaults = { destinationMode: 'fixed', metadata: 'all-except-location', sidecar: true, preserveCaptureTime: false, captureTimePolicy: 'require-offset' };
+    $('ex' + key).value = String(recipe[field] ?? defaults[field]);
+  }
   $('exFormat').value = recipe.format;
   $('exQuality').value = recipe.quality;
   $('exQualityV').textContent = recipe.quality;
@@ -6982,6 +7447,7 @@ function applyExportRecipe(recipe) {
   $('exDestination').value = recipe.destination;
   $('exFilenameTemplate').value = recipe.filenameTemplate;
   $('exCollision').value = recipe.collision;
+  syncExportDestination('ex');
 }
 async function loadExportRecipes() {
   EXPORT_RECIPES = await fetch('/api/export-recipes').then((response) => response.json()).catch(() => []);
@@ -7025,6 +7491,7 @@ async function runExport(customOpts = {}) {
     : (which === 'selected' ? targets.map((im) => im.name) : undefined);
 
   const payload = {
+    ...exportExtraOptions('ex'), ...customOpts,
     which,
     format: customOpts.format || $('exFormat').value,
     quality: customOpts.quality !== undefined ? customOpts.quality : +$('exQuality').value,
@@ -7037,9 +7504,7 @@ async function runExport(customOpts = {}) {
     collision: customOpts.collision || $('exCollision').value,
     engine: $('engine').value,
   };
-  if (names && names.length) {
-    payload.names = names;
-  }
+  if (names !== undefined) payload.names = names;
 
   const r = await api('/api/export', payload);
   if (r.error) return toast(r.error);
@@ -7047,28 +7512,46 @@ async function runExport(customOpts = {}) {
   const destinationLabel = (r.destination || '').split('/').filter(Boolean).at(-1) || 'destination';
   toast(`Exporting ${r.queued === 1 ? '1 photo' : `${r.queued} photos`} to ${destinationLabel}…`);
   clearInterval(exportTimer);
+  const ident = r.jobId;
+  activeExportJobId = ident;
+  $('exportCancel').hidden = false;
+  $('exportCancel').disabled = false;
+  $('exportDetails').hidden = true;
   let exportPolls = 0;
+  let polling = false;
   exportTimer = setInterval(async () => {
-    exportPolls += 1;
-    if (exportPolls > 1800) {
+    if (polling) return;
+    if (++exportPolls > 7200) {
       clearInterval(exportTimer);
-      $('estat').textContent += ' · still running';
+      $('estat').textContent = 'Export status unavailable; check Jobs.';
       return;
     }
-    const st = await fetch('/api/export/status').then((x) => x.json());
-    $('estat').textContent = `${st.done}/${st.total}` +
-      (st.errors.length ? ` · ${st.errors.length} err` : '');
-    if (!st.running && st.total > 0 && st.done >= st.total) {
-      clearInterval(exportTimer);
-      $('estat').textContent += ' · done';
-      toast(st.errors.length
-        ? `Done with ${st.errors.length} error(s)`
-        : `Exported ${st.total === 1 ? '1 photo' : `${st.total} photos`} to ${destinationLabel}`);
-      notifyCompletion('Export complete', st.errors.length
-        ? `${st.total - st.errors.length} of ${st.total} photos exported.`
-        : `${st.total === 1 ? '1 photo' : `${st.total} photos`} exported to ${destinationLabel}.`);
-    }
-  }, 1200);
+    polling = true;
+    try {
+      const record = await fetch(`/api/jobs/${ident}`).then((response) => response.json());
+      if (activeExportJobId !== ident) return;
+      const st = record.result || {};
+      latestExportStatus = st;
+      $('estat').textContent = st.cancel_requested ? 'Stopping export…' : `${record.progress}/${record.total}`;
+      $('exportDetails').hidden = !(st.errors?.length || st.warnings?.length);
+      if (['done', 'failed', 'cancelled'].includes(record.state)) {
+        clearInterval(exportTimer);
+        activeExportJobId = null;
+        $('exportCancel').hidden = true;
+        const warnings = st.warnings?.length || 0;
+        const errors = record.errors?.length || 0;
+        latestExportStatus = { ...st, errors: record.errors || [] };
+        $('exportDetails').hidden = false;
+        $('estat').textContent = `${st.completed || 0} exported` +
+          (record.state === 'cancelled' ? ' · cancelled' : ' · done') +
+          (warnings ? ` · ${warnings} warning(s)` : '') + (errors ? ` · ${errors} error(s)` : '');
+        toast($('estat').textContent);
+        notifyCompletion(record.state === 'cancelled' ? 'Export cancelled' : 'Export complete', $('estat').textContent);
+      }
+    } catch (_error) {
+      if (activeExportJobId === ident) $('estat').textContent = 'Reconnecting to export…';
+    } finally { polling = false; }
+  }, 600);
   return r;
 }
 
@@ -7099,6 +7582,7 @@ let exportPreviewController = null;
 function exportModalOptions() {
   const which = $('modalExWhich').value;
   return {
+    ...exportExtraOptions('modalEx'),
     which,
     ...(which === 'selected' ? { names: transferTargets().map((im) => im.name) } : {}),
     format: $('modalExFormat').value,
@@ -7137,10 +7621,11 @@ function scheduleExportPreview() {
       $('exportPreviewDimensions').textContent = sample?.dimensionsExact
         ? `${sample.width.toLocaleString()} × ${sample.height.toLocaleString()} px`
         : (sample?.dimensionsNote || '');
-      $('exportPreviewDestination').textContent = result.destination;
+      $('exportPreviewDestination').textContent = (result.samples || [sample]).filter(Boolean).map((item) => item.path).join('\n');
       $('exportPreviewNote').textContent = sample?.skipped
         ? 'This file already exists and will be skipped.'
         : (result.total > 1 ? `${result.total} photos · first output shown. ` : '') +
+          (result.destinationCount > 1 ? `${result.destinationCount} destination folders. ` : '') +
           'Names reflect existing files and may change before export.';
     } catch (error) {
       if (request !== exportPreviewGeneration || error.name === 'AbortError') return;
@@ -7234,6 +7719,8 @@ function openExportModal() {
   if ($('exDestination')?.value) $('modalExDestination').value = $('exDestination').value;
   if ($('exFilenameTemplate')?.value) $('modalExFilenameTemplate').value = $('exFilenameTemplate').value;
   if ($('exCollision')?.value) $('modalExCollision').value = $('exCollision').value;
+  for (const key of EXPORT_EXTRA_FIELDS) $('modalEx' + key).value = $('ex' + key).value;
+  syncExportDestination('modalEx');
 
   const thumbEl = $('exportTargetThumb');
   if (thumbEl) {
@@ -7327,11 +7814,18 @@ document.querySelectorAll('.export-preset-pill').forEach((pill) => {
 });
 
 ['modalExFormat', 'modalExSize', 'modalExQuality', 'modalExColorSpace',
-  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision'].forEach((id) => {
+  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision',
+  ...EXPORT_EXTRA_FIELDS.map((key) => 'modalEx' + key)].forEach((id) => {
   $(id).addEventListener('input', scheduleExportPreview);
   $(id).addEventListener('change', scheduleExportPreview);
 });
 
+for (const prefix of ['ex', 'modalEx']) {
+  $(prefix + 'DestinationMode').addEventListener('change', () => {
+    syncExportDestination(prefix);
+    if (prefix === 'modalEx') scheduleExportPreview();
+  });
+}
 $('modalExWhich').onchange = updateExportModalScope;
 $('modalExChooseDestination').onclick = () => postNative('chooseExportFolder');
 
@@ -7351,9 +7845,11 @@ $('exportModalRun').onclick = async () => {
   $('exDestination').value = $('modalExDestination').value.trim() || 'film-exports';
   $('exFilenameTemplate').value = $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}';
   $('exCollision').value = $('modalExCollision').value;
+  for (const key of EXPORT_EXTRA_FIELDS) $('ex' + key).value = $('modalEx' + key).value;
   savePrefs();
   closeExportModal();
   await runExport({
+    ...exportExtraOptions('modalEx'),
     which,
     names,
     format: $('modalExFormat').value,
@@ -7465,7 +7961,11 @@ $('externalEditRun').onclick = async () => {
     if (!status.running) {
       clearInterval(externalEditTimer); externalEditTimer = null;
       $('externalEditRun').disabled = false;
-      if (status.paths?.length) openPaths(status.paths, status.names || []);
+      if (status.paths?.length) {
+        await openPaths(status.paths, status.names || []);
+        const warnings = status.warnings || [];
+        if (warnings.length) toast(`TIFF created with warnings: ${warnings[0].name}: ${warnings[0].warnings.join(' ')}`);
+      }
       else $('externalEditStatus').textContent = status.errors?.[0] || 'No TIFF was created.';
     }
   }, 900);
@@ -7943,7 +8443,10 @@ document.addEventListener('keydown', (e) => {
   if (tag === 'INPUT' && ['range', 'number'].includes(e.target.type) &&
       PHOTO_TOOL_PANES.includes(S.activePane) && e.target.closest('.panel-pane.on') &&
       ['Enter', 'Escape'].includes(e.key)) {
-    e.preventDefault(); e.target.blur(); exitPhotoTool(); return;
+    e.preventDefault(); e.target.blur();
+    if (e.key === 'Escape' && S.activePane === 'cropPane') cancelCropSession();
+    else exitPhotoTool();
+    return;
   }
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
   if (cur() && S.editingName !== cur().name && !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
@@ -8015,7 +8518,8 @@ document.addEventListener('keydown', (e) => {
   if ((S.compareActive || PHOTO_TOOL_PANES.includes(S.activePane)) &&
       (e.key === 'Enter' || e.key === 'Escape')) {
     e.preventDefault();
-    exitPhotoTool();
+    if (e.key === 'Escape' && S.activePane === 'cropPane' && !S.compareActive) cancelCropSession();
+    else exitPhotoTool();
     return;
   }
   if (S.cropping && S.crop && e.key.startsWith('Arrow')) {
@@ -8190,7 +8694,8 @@ function renderKeywords() {
     remove.setAttribute('aria-label', `Remove ${keyword}`);
     remove.textContent = '×';
     remove.onclick = () => {
-      im.keywords = im.keywords.filter((k) => k !== keyword);
+      im.keywords = (im.keywords || []).filter(k => k !== keyword);
+      for (const image of linkedMetadataTargets([im])) image.keywords = [...im.keywords];
       saveState(true); renderKeywords();
       _stripKey = _gridKey = ''; refreshLists();
     };
@@ -8217,6 +8722,9 @@ function addKeyword() {
   }
   if (changed) {
     im.keywords.sort((a, b) => a.localeCompare(b));
+    for (const image of linkedMetadataTargets([im])) {
+      if (image !== im) image.keywords = [...im.keywords];
+    }
     saveState(true);
   }
   $('keywordInput').value = '';
@@ -9059,6 +9567,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
     c.classList.toggle('sel', c.dataset.name === currentName);
@@ -9135,6 +9644,8 @@ async function savePrefs() {
     exDestination: $('exDestination').value,
     exFilenameTemplate: $('exFilenameTemplate').value,
     exCollision: $('exCollision').value,
+    exRecipeExtras: EXPORT_RECIPE_EXTRAS,
+    ...Object.fromEntries(EXPORT_EXTRA_FIELDS.map((key) => ['ex' + key, $('ex' + key).value])),
     filmstripHeight: currentFilmstripHeight(),
     softProof: S.softProof,
     presetFavorites: APP_PREFS.presetFavorites || [],
@@ -9165,6 +9676,10 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   }
   Object.assign(p, migrated);
   Object.assign(APP_PREFS, p);
+  if (p.exRecipeExtras && typeof p.exRecipeExtras === 'object') {
+    const { id: _id, name: _name, builtin: _builtin, ...settings } = p.exRecipeExtras;
+    EXPORT_RECIPE_EXTRAS = settings;
+  }
   KEY_SCHEME_NAME = p.keyScheme === 'classic' ? 'classic' : 'lighttable';
   KEYS = KEY_SCHEMES[KEY_SCHEME_NAME];
   if (Object.keys(migrated).length) {
@@ -9311,12 +9826,25 @@ HISTORY = createHistoryPanel({
   toast,
   onStatus(status) { historySaveStatus = status; updateEditSaveStatus(); },
   enabled: () => S.catalogEnabled,
+  onRestoreCaptureTime: async (name, historyId) => {
+    if (!await saveState(true)) return;
+    const result = await api('/api/metadata/capture-time', {action:'restore-history',name,historyId});
+    if (!result?.ok || result.error) throw Error(result?.error || 'Could not restore capture time');
+    _exifCache.clear(); await reloadLibrary();
+    toast('Capture time restored; photo edits are unchanged');
+  },
   onRestore: (state) => {
     pushUndo();
     restore(JSON.stringify(state));
     saveState(true);
     toast('Restored that step');
   },
+});
+
+CAPTURE_TIME = installCaptureTime({ el: $, post: api, toast,
+  selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
+  flush: () => saveState(true),
+  changed: async () => { _exifCache.clear(); await reloadLibrary(); HISTORY?.refresh(cur()?.name, true); },
 });
 
 METADATA = createMetadataPanel({
@@ -9424,7 +9952,7 @@ async function trashRejected() {
   if (!rejected.length) { toast('No rejected photos in this view'); return; }
   if (!window.confirm(
     `Move ${rejected.length} rejected photo${rejected.length === 1 ? '' : 's'} `
-    + 'to the Trash? Sidecars go with them.')) return;
+    + 'to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.')) return;
   const result = await api('/api/photos/trash',
                            { names: rejected.map((image) => image.name) });
   if (!sendNative('trashFiles', { paths: result.paths })) {
@@ -9440,11 +9968,13 @@ if ($('surveySwap')) $('surveySwap').onclick = () => SURVEY.swap();
 async function keepSurveySelection() {
   const keeper = SURVEY.active;
   if (!keeper) return;
-  const names = new Set(SURVEY.names);
-  for (const image of S.images) {
-    if (image.name === keeper) enqueuePhotoPatch(image, { status: 'approved' });
-    else if (names.has(image.name)) enqueuePhotoPatch(image, { status: 'skipped' });
-  }
+  const kept = linkedMetadataTargets(S.images.filter(image => image.name === keeper));
+  const keepNames = new Set(kept.map(image => image.name));
+  const others = linkedMetadataTargets(S.images.filter(image =>
+    SURVEY.names.includes(image.name) && !keepNames.has(image.name)))
+    .filter(image => !keepNames.has(image.name));
+  for (const image of kept) enqueuePhotoPatch(image, {status: 'approved'});
+  for (const image of others) enqueuePhotoPatch(image, {status: 'skipped'});
   refreshLists();
   if (!await flushEditSaves()) return;
   toast('Marked the select and rejected the rest');
@@ -9456,10 +9986,12 @@ if ($('autoLevel')) {
   const runGeometry = async (mode) => {
     const im = cur();
     if (!im) return;
+    const session = cropSession;
     $('autoLevelNote').textContent = 'Looking for lines…';
     try {
       const result = await api('/api/geometry/auto',
                                { name: im.name, mode, rotate: S.params?.rotate || 0 });
+      if (cur()?.name !== im.name || cropSession !== session) return;
       if (result.error) { $('autoLevelNote').textContent = result.error; return; }
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
@@ -9698,21 +10230,55 @@ function uiStateReport() {
   };
 }
 
+async function reconcilePeerSave(image) {
+  const generation = image.peerSyncGeneration = (image.peerSyncGeneration || 0) + 1;
+  try {
+    // Peer windows each have their own ordered queue. Echoing their accepted
+    // edits back as new writes can make the two queues repair one another
+    // forever. Finish our write, then read the authoritative saved recipe.
+    await editSaveQueue.flush(image.name);
+    const before = JSON.stringify(image);
+    const editing = cur() === image && S.editingName === image.name;
+    const editorBefore = editing ? snapshot() : null;
+    const response = await fetch(`/api/state?name=${encodeURIComponent(image.name)}`);
+    const state = await response.json();
+    if (!state || state.error) throw new Error(state?.error || 'Could not refresh shared edits');
+    if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
+        || before !== JSON.stringify(image)
+        || (editing && (cur() !== image || S.editingName !== image.name || editorBefore !== snapshot()))) return;
+    await applyServerStateEvent({names: [image.name], patch: state, origin: 'window', reconciled: true});
+  } catch { /* A failed local save stays pending for the explicit Retry action. */ }
+}
+
 async function applyServerStateEvent(event) {
   if (event.client === CLIENT_ID) return;
   const names = Array.isArray(event.names) ? event.names : [];
   const current = cur();
-  const patch = event.patch;
-  if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
+  const patchFor = name => event.patches?.[name] || event.patch;
+  const patch = current ? patchFor(current.name) : event.patch;
+  const hasPatches = names.some(name => patchFor(name) && typeof patchFor(name) === 'object');
+  if (!hasPatches) {
     // IPTC updates do not change the edit recipe. A GET here can read an older
     // window save and wrongly restore it over newer local editor controls.
     if (current && names.includes(current.name)) METADATA?.refresh(current.name);
     return;
   }
-  const currentChanged = current && names.includes(current.name) && S.editingName === current.name;
+  const deferredNames = new Set();
+  if (!event.reconciled && event.origin?.startsWith('window')) {
+    for (const image of S.images) {
+      if (names.includes(image.name) && editSaveQueue.getPending(image.name)) {
+        deferredNames.add(image.name);
+        void reconcilePeerSave(image);
+      }
+    }
+  }
+  const currentChanged = current && names.includes(current.name)
+    && !deferredNames.has(current.name) && S.editingName === current.name;
   const before = currentChanged ? snapshot() : null;
   for (const image of S.images) {
-    if (!names.includes(image.name)) continue;
+    if (!names.includes(image.name) || deferredNames.has(image.name)) continue;
+    const patch = patchFor(image.name);
+    if (!patch || typeof patch !== 'object' || Array.isArray(patch)) continue;
     if (image !== current) photoUndo.clear(image.name);
     // The event carries the accepted patch, even if an older browser request
     // subsequently overwrites it on disk. Repair after that in-flight request,
@@ -9842,6 +10408,7 @@ installSettings({
     syncCullBars();
   },
   refreshPreferences() {
+    pairOverrides.clear(); syncPairControls(); syncCullBars();
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
     refreshLists();

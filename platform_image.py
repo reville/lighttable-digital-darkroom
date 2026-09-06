@@ -14,6 +14,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageCms, ImageOps
 
+import durable_io
+
 
 PROFILE_FILENAMES = {
     "srgb": "sRGB-v4.icc",
@@ -43,6 +45,7 @@ EXIF_FIELDS = {
     "ExposureTime": ("Exif.Photo.ExposureTime",),
     "ISO": ("Exif.Photo.PhotographicSensitivity", "Exif.Photo.ISOSpeedRatings"),
     "DateTimeOriginal": ("Exif.Photo.DateTimeOriginal",),
+    "OffsetTimeOriginal": ("Exif.Photo.OffsetTimeOriginal",),
     "ImageWidth": ("Exif.Photo.PixelXDimension", "Exif.Image.ImageWidth"),
     "ImageHeight": ("Exif.Photo.PixelYDimension", "Exif.Image.ImageLength"),
     "FocusDistance": ("Exif.Photo.SubjectDistance",),
@@ -496,7 +499,8 @@ def _erase_gps(exif) -> None:
             exif.erase(position)
 
 
-def _copy_source_exif(exif, source_exif, *, keep_location: bool) -> None:
+def _copy_source_exif(exif, source_exif, *, keep_location: bool,
+                      warnings: list[str] | None = None) -> None:
     for datum in source_exif:
         key = datum.key()
         if (key in _EXIF_STRUCTURE_KEYS
@@ -506,8 +510,9 @@ def _copy_source_exif(exif, source_exif, *, keep_location: bool) -> None:
             continue
         try:
             exif[key] = datum.value()
-        except Exception:  # noqa: BLE001 - one odd tag must not stop the copy
-            continue
+        except Exception:  # noqa: BLE001 - retain pixels and name the skipped tag
+            if warnings is not None:
+                warnings.append(f"Metadata tag {key} could not be copied.")
 
 
 def _xmp_text(xmp, key: str, value) -> None:
@@ -556,7 +561,8 @@ def _write_catalog_fields(xmp, fields: dict, *, rights_only: bool) -> None:
 
 def write_metadata(dst: Path | str, source: Path | str | None = None,
                    policy: str = "all-except-location",
-                   fields: dict | None = None) -> bool:
+                   fields: dict | None = None,
+                   warnings: list[str] | None = None) -> bool:
     """Embed EXIF and XMP into an already-written export, honouring ``policy``.
 
     ``none`` writes nothing. ``copyright`` writes only ``dc:rights`` and
@@ -576,10 +582,13 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
     destination = Path(dst)
     fields = fields if isinstance(fields, dict) else {}
     reader = None
+    staged = None
     try:
         import exiv2
 
-        image = exiv2.ImageFactory.open(str(destination))
+        staged = durable_io.temporary_path(destination, "metadata")
+        shutil.copyfile(destination, staged)
+        image = exiv2.ImageFactory.open(str(staged))
         image.readMetadata()
         exif = image.exifData()
         if policy in ("all", "all-except-location"):
@@ -589,7 +598,9 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
                 reader = exiv2.ImageFactory.open(str(origin))
                 reader.readMetadata()
                 _copy_source_exif(exif, reader.exifData(),
-                                  keep_location=policy == "all")
+                                  keep_location=policy == "all", warnings=warnings)
+            elif source and warnings is not None:
+                warnings.append("Source camera metadata could not be read; the original is unavailable.")
         if policy != "all":
             _erase_gps(exif)
         exif["Exif.Image.Orientation"] = 1
@@ -600,12 +611,34 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
             exif["Exif.Photo.PixelYDimension"] = height
         xmp = image.xmpData()
         _write_catalog_fields(xmp, fields, rights_only=policy == "copyright")
+        if fields.get("captureTime") and policy in ("all", "all-except-location"):
+            import capture_time
+            corrected = capture_time.exif_fields(fields["captureTime"])
+            exif["Exif.Photo.DateTimeOriginal"] = corrected["DateTimeOriginal"]
+            # Digitization may have happened later (for example, a scanned print).
+            # A capture-clock correction must preserve that separate timestamp.
+            if corrected["OffsetTimeOriginal"]:
+                exif["Exif.Photo.OffsetTimeOriginal"] = corrected["OffsetTimeOriginal"]
+            else:
+                position = exif.findKey(exiv2.ExifKey("Exif.Photo.OffsetTimeOriginal"))
+                if position != exif.end():
+                    exif.erase(position)
+            _xmp_text(xmp, "Xmp.exif.DateTimeOriginal", fields["captureTime"])
+            _xmp_text(xmp, "Xmp.photoshop.DateCreated", fields["captureTime"])
         image.setExifData(exif)
         image.setXmpData(xmp)
         image.writeMetadata()
+        # A failing metadata writer must not damage the successfully encoded
+        # pixels. Publish only after the complete container write succeeds.
+        del image
+        durable_io.publish_file(staged, destination)
         return True
     except Exception as error:  # noqa: BLE001 - pixels outrank metadata
         print(f"write_metadata: {destination.name}: {error}", file=sys.stderr)
+        if warnings is not None:
+            warnings.append(f"Requested metadata could not be saved: {error}")
         return False
     finally:
         del reader
+        if staged is not None:
+            staged.unlink(missing_ok=True)

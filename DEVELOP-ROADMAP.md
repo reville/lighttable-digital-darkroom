@@ -34,3 +34,29 @@ are portable: the conversion report names unsupported operations as skipped.
 The follow-ons above, together with the central catalog, catalog and sidecar
 import, card ingest, and metadata work, are planned in
 [WORKFLOW-ROADMAP.md](WORKFLOW-ROADMAP.md).
+
+## Wide-gamut export boundary
+
+Develop exports without global color adjustments, enabled masks, healing,
+optics adjustments, or watermarks preserve source colors when exporting to
+Display P3 or ProPhoto RGB. RAW files use the same tone curve and brightness
+normalization as the sRGB preview, then convert the unclipped rendering to
+the delivery color space. Processed photos use their embedded source profile.
+Rotation in 90-degree steps, crop, and output resizing remain available.
+The output carries the selected ICC profile; missing required profiles stop
+the export with an error.
+
+The preview remains sRGB. Colors inside sRGB keep the same appearance; wider
+source colors can appear richer in a color-managed viewer on a capable display.
+Film rendering and Develop images with color or local adjustments still use
+the existing bounded sRGB rendering, then convert to the selected output
+profile. These exports report that limitation as a per-file warning.
+
+**Full wide-gamut grading is not implemented.** The CPU grade, local edits,
+watermarks, WebGL shader, and native preview currently share an sRGB contract.
+Changing only their input primaries or removing clamps would make preview and
+export disagree. Before enabling wide-gamut grading, all those paths need an
+explicit shared working-space contract, matched transfer functions and gamut
+mapping, and preview/export tests for saturated RAW colors, neutral ramps,
+global and local edits, soft proofing, and calibrated output profiles. Existing
+sRGB edits must retain their appearance or receive an explicit migration.

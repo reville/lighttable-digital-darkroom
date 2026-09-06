@@ -515,6 +515,76 @@ final class ServerController {
     }
 }
 
+// MARK: - Durable edit recovery
+
+// Only hashed identifiers become path components. The browser never supplies
+// a file path, and acknowledged revisions cannot remove a newer draft.
+final class EditRecoveryStore {
+    let root: URL
+    init(root: URL) { self.root = root }
+    private func identifier(_ value: Any?) throws -> String {
+        guard let text = value as? String, text.count == 64,
+              text.allSatisfy({ "0123456789abcdef".contains($0) }) else {
+            throw NSError(domain: "EditRecovery", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey: "Invalid recovery identifier"])
+        }
+        return text
+    }
+    func perform(_ body: [String: Any]) throws -> Any {
+        let scope = try identifier(body["scope"])
+        let directory = root.appendingPathComponent(scope, isDirectory: true)
+        let fm = FileManager.default
+        let operation = body["operation"] as? String ?? ""
+        if operation == "list" {
+            guard fm.fileExists(atPath: directory.path) else { return [[String: Any]]() }
+            return try fm.contentsOfDirectory(at: directory,
+                includingPropertiesForKeys: nil).filter { $0.pathExtension == "json" }
+                .map { url -> Any in
+                    do { return try JSONSerialization.jsonObject(with: Data(contentsOf: url)) }
+                    catch { return ["journalError": error.localizedDescription, "recordKey": url.lastPathComponent] }
+                }
+        }
+        let key = try identifier(body["key"])
+        let destination = directory.appendingPathComponent(key + ".json")
+        if operation == "remove" {
+            guard fm.fileExists(atPath: destination.path) else { return true }
+            let previous = try JSONSerialization.jsonObject(with: Data(contentsOf: destination)) as? [String: Any]
+            if let token = body["token"] as? String, previous?["token"] as? String == token {
+                try fm.removeItem(at: destination)
+                try sync(directory)
+            }
+            return true
+        }
+        guard operation == "put", let record = body["value"] as? [String: Any],
+              record["token"] is String, record["name"] is String,
+              record["payload"] is [String: Any] else {
+            throw NSError(domain: "EditRecovery", code: 2,
+                          userInfo: [NSLocalizedDescriptionKey: "Invalid recovery record"])
+        }
+        let bytes = try JSONSerialization.data(withJSONObject: record, options: [.sortedKeys])
+        guard bytes.count <= 64 * 1024 * 1024 else {
+            throw NSError(domain: "EditRecovery", code: 3,
+                          userInfo: [NSLocalizedDescriptionKey: "Edit recovery record exceeds 64 MB"])
+        }
+        try fm.createDirectory(at: directory, withIntermediateDirectories: true)
+        // Leave damaged bytes intact for manual recovery rather than silently
+        // replacing the only copy during a later edit.
+        if fm.fileExists(atPath: destination.path) {
+            _ = try JSONSerialization.jsonObject(with: Data(contentsOf: destination))
+        }
+        try bytes.write(to: destination, options: [.atomic])
+        try sync(destination)
+        try sync(directory)
+        return true
+    }
+    private func sync(_ url: URL) throws {
+        let descriptor = open(url.path, O_RDONLY)
+        guard descriptor >= 0 else { throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno)) }
+        defer { close(descriptor) }
+        guard fsync(descriptor) == 0 else { throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno)) }
+    }
+}
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
@@ -525,6 +595,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private let updaterController = SPUStandardUpdaterController(
         startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 #endif
+    private let editRecoveryQueue = DispatchQueue(label: "lighttable.edit-recovery", qos: .userInitiated)
+    private var closePending = false
+    private var closeApproved = false
     var window: NSWindow!
     var webView: WKWebView!
     private var secondaryLoupeWindow: NSWindow?
@@ -579,6 +652,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     func applicationWillTerminate(_ note: Notification) { server.stop() }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if closeApproved || webView == nil { return .terminateNow }
+        prepareToClose { approved in sender.reply(toApplicationShouldTerminate: approved) }
+        return .terminateLater
+    }
+
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if sender !== window || closeApproved { return true }
+        prepareToClose { [weak self] approved in
+            if approved { self?.window.performClose(nil) }
+        }
+        return false
+    }
+
+    private func prepareToClose(completion: @escaping (Bool) -> Void) {
+        guard !closePending else { completion(false); return }
+        closePending = true
+        window.contentView?.isHidden = false
+        var finished = false
+        let finish: (Bool) -> Void = { [weak self] saved in
+            guard let self, !finished else { return }
+            finished = true
+            self.closePending = false
+            if saved {
+                self.closeApproved = true
+                completion(true)
+                return
+            }
+            let alert = NSAlert()
+            alert.messageText = "Some edits have not been saved"
+            alert.informativeText = "Keep this window open and retry saving. If you quit, LightTable will offer any available local recovery the next time this catalog opens."
+            alert.addButton(withTitle: "Keep Open")
+            alert.addButton(withTitle: "Quit Anyway")
+            let approved = alert.runModal() == .alertSecondButtonReturn
+            self.closeApproved = approved
+            if !approved { self.sendEvent(["type": "closeCancelled"]) }
+            completion(approved)
+        }
+        webView.callAsyncJavaScript(
+            "return window.lightTablePrepareToClose ? await window.lightTablePrepareToClose() : true",
+            arguments: [:], in: nil, in: .page) { result in
+                if case .success(let value) = result { finish(value as? Bool == true) }
+                else { finish(false) }
+            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 12) { finish(false) }
+    }
 
     func applicationShouldTerminateAfterLastWindowClosed(
         _ app: NSApplication) -> Bool { true }
@@ -1323,6 +1443,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
               let body = message.body as? [String: Any],
               let action = body["action"] as? String else { return }
         switch action {
+        case "editJournal":
+            guard message.frameInfo.isMainFrame,
+                  message.frameInfo.request.url?.host == "127.0.0.1",
+                  message.frameInfo.request.url?.port == Int(server.port),
+                  let id = body["id"] as? String else { return }
+            let directory = server.catalogDirectory.appendingPathComponent("Recovery/EditDrafts", isDirectory: true)
+            editRecoveryQueue.async { [weak self] in
+                var result: [String: Any] = ["type": "editJournalReply", "id": id]
+                do { result["result"] = try EditRecoveryStore(root: directory).perform(body) }
+                catch { result["error"] = error.localizedDescription }
+                let reply = result
+                DispatchQueue.main.async { self?.sendEvent(reply) }
+            }
         case "openSecondaryLoupe":
             openSecondaryLoupe()
         case "requestSources":

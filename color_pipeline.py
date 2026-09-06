@@ -1,6 +1,7 @@
 """Colour-managed image helpers shared by preview input and export.
 
 The film simulation and interactive grade produce display-referred sRGB.
+Unadjusted Develop exports can retain wider source colors until final encode.
 Exports stay floating point until the final encoder, then receive the ICC
 profile that describes the selected output colour space.
 """
@@ -30,6 +31,11 @@ COLOUR_SPACE_NAMES = {
     "display_p3": "Display P3",
     "prophoto": "ProPhoto RGB",
 }
+
+SRGB_LIMITED_EXPORT_WARNING = (
+    "This export uses sRGB-limited colors: film rendering and adjusted "
+    "Develop images do not yet retain colors outside sRGB. "
+    "The requested output profile is embedded.")
 
 RAW_WB_MODES = {"as_shot", "daylight", "tungsten", "custom"}
 RAW_PROFILES = {"camera", "detail", "smooth"}
@@ -364,7 +370,16 @@ def decode_raw(path: Path | str, params: dict | None = None,
 def linear_prophoto_to_display_srgb(
         image: np.ndarray, params: dict | None = None,
         *, develop_profile: str | None = None) -> np.ndarray:
-    """Convert scene-linear ProPhoto to a neutral, encoded sRGB rendering.
+    """Render the existing bounded sRGB Develop preview, unchanged."""
+    return linear_prophoto_to_display(
+        image, params, develop_profile=develop_profile, output_space="srgb")
+
+
+def linear_prophoto_to_display(
+        image: np.ndarray, params: dict | None = None,
+        *, develop_profile: str | None = None,
+        output_space: str = "srgb") -> np.ndarray:
+    """Convert scene-linear ProPhoto to an encoded Develop rendering.
 
     ``params`` is the same cleaned parameter dict the decode already takes;
     only its ``developProfile`` is read here. ``develop_profile`` names the
@@ -377,7 +392,8 @@ def linear_prophoto_to_display_srgb(
     profile's tone curve belongs and matches how the wide-gamut working space
     keeps per-channel curves from shifting hue. ``linear`` skips it entirely
     and is byte-for-byte the render this function produced before the profile
-    existed.
+    existed. A wider output retains the same extended sRGB tone rendering,
+    converting to the requested gamut before its first gamut clip.
     """
     import colour
 
@@ -405,7 +421,10 @@ def linear_prophoto_to_display_srgb(
     white = float(np.percentile(np.maximum(encoded, 0.0), 99.5))
     if np.isfinite(white) and white > 0:
         encoded = encoded * min(4.0, 0.96 / white)
-    return np.clip(encoded, 0.0, 1.0).astype(np.float32)
+    # Keep the same tone/exposure rendering as the sRGB preview. Convert its
+    # extended (unclipped) code values before bounding to the delivered gamut;
+    # clipping here first would irreversibly discard RAW colors outside sRGB.
+    return convert_output_space(encoded, output_space)
 
 
 def decode_raw_display(path: Path | str, params: dict | None = None,
@@ -534,21 +553,41 @@ def resize_float(image: np.ndarray, long_edge: int | None) -> np.ndarray:
     return resize_float_to_size(image, (width, height))
 
 
-def convert_output_space(image_srgb: np.ndarray, output_space: str) -> np.ndarray:
-    """Convert encoded sRGB to an encoded export colour space."""
+def convert_output_space(image_srgb: np.ndarray, output_space: str, *,
+                         input_space: str = "srgb") -> np.ndarray:
+    """Convert encoded RGB, clipping only in the destination colour space."""
     output_space = normalise_output_space(output_space)
-    if output_space == "srgb":
+    input_space = normalise_output_space(input_space)
+    if output_space == input_space:
         return np.clip(image_srgb, 0.0, 1.0).astype(np.float32)
     import colour
 
     converted = colour.RGB_to_RGB(
         np.asarray(image_srgb, dtype=np.float64),
-        COLOUR_SPACE_NAMES["srgb"],
+        COLOUR_SPACE_NAMES[input_space],
         COLOUR_SPACE_NAMES[output_space],
         apply_cctf_decoding=True,
         apply_cctf_encoding=True,
     )
     return np.clip(converted, 0.0, 1.0).astype(np.float32)
+
+
+def wide_develop_edits_supported(job: dict) -> bool:
+    """Whether only gamut-independent Develop operations were requested.
+
+    The current grade, local edit and watermark implementations are defined
+    in bounded sRGB. Feeding P3/ProPhoto values to them would silently change
+    the previewed look. Rotation, crop and resize operate on the selected
+    encoded output and are safe on this path.
+    """
+    import edits
+    import export_workflow
+    import grade
+
+    return (grade.is_identity(job.get("grade") or {})
+            and edits.base_edits_are_identity(job.get("optics"), job.get("heals"))
+            and not any(mask["enabled"] for mask in edits.clean_masks(job.get("masks")))
+            and not export_workflow.clean_watermark(job.get("watermark"))["enabled"])
 
 
 def icc_bytes(output_space: str) -> bytes | None:
@@ -560,18 +599,34 @@ def icc_bytes(output_space: str) -> bytes | None:
         return None
 
 
+def required_icc_bytes(output_space: str) -> bytes:
+    profile = icc_bytes(output_space)
+    if not profile:
+        raise RuntimeError(
+            f"The {normalise_output_space(output_space)} output color profile is missing. "
+            "Repair the installation before exporting.")
+    return profile
+
+
 def save_export_image(image_srgb: np.ndarray, destination: Path | str,
                       *, fmt: str, quality: int = 92,
                       output_space: str = "srgb",
+                      input_space: str = "srgb",
                       bit_depth: int = 16,
                       metadata_source: Path | str | None = None,
                       metadata_policy: str = "none",
-                      metadata_fields: dict | None = None) -> tuple[int, int]:
-    """Encode a colour-managed export, retaining 16 bits for TIFF."""
+                      metadata_fields: dict | None = None,
+                      warnings: list[str] | None = None) -> tuple[int, int]:
+    """Encode tagged RGB, retaining 16 bits for TIFF.
+
+    ``input_space`` describes the supplied pixels; it is sRGB for film and
+    adjusted renders, or the selected space for unadjusted Develop exports.
+    """
     destination = Path(destination)
     output_space = normalise_output_space(output_space)
-    converted = convert_output_space(as_float_rgb(image_srgb), output_space)
-    profile = icc_bytes(output_space)
+    converted = convert_output_space(as_float_rgb(image_srgb), output_space,
+                                     input_space=input_space)
+    profile = required_icc_bytes(output_space)
     height, width = converted.shape[:2]
     if fmt in ("tif", "tiff"):
         depth = 8 if int(bit_depth) == 8 else 16
@@ -607,9 +662,12 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
             # Put the requested EXIF/XMP on the lossless staging TIFF instead;
             # CGImageDestinationAddImageFromSource carries it into the HEIF.
             if str(metadata_policy).lower() != "none":
-                platform_image.write_metadata(
+                before = len(warnings) if warnings is not None else 0
+                succeeded = platform_image.write_metadata(
                     temporary, metadata_source, metadata_policy,
-                    metadata_fields or {})
+                    metadata_fields or {}, warnings=warnings)
+                if not succeeded and warnings is not None and len(warnings) == before:
+                    warnings.append("Requested metadata could not be saved.")
             completed = subprocess.run(
                 [str(helper), "--encode-heif", str(temporary),
                  str(destination), str(int(quality))],

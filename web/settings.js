@@ -2,7 +2,7 @@ import { api } from '/web/api.js';
 import { sendNative } from '/web/native-bridge.js';
 
 const byId = (id) => document.getElementById(id);
-const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525']);
+const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525', '#777777', '#ffffff']);
 
 function bytesLabel(value) {
   const bytes = Math.max(0, Number(value) || 0);
@@ -18,6 +18,24 @@ export function installSettings(context) {
   let currentPrefs = {};
 
   const pref = (key, fallback) => currentPrefs[key] ?? fallback;
+  const showSidecarStatus = (status) => {
+    const label = byId('sidecarWriteStatus');
+    label.textContent = status.error ? status.error
+      : status.failed ? `${status.failed} sidecar${status.failed === 1 ? '' : 's'} need retry. `
+        + 'Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.'
+      : status.pending ? `${status.pending} sidecar${status.pending === 1 ? '' : 's'} waiting to be written.`
+      : Number.isFinite(status.written) ? `Wrote ${status.written} sidecar${status.written === 1 ? '' : 's'}.`
+      : 'Sidecars are up to date.';
+    label.title = (status.errors || []).map((item) => `${item.name}: ${item.error}`).join('\n');
+  };
+  const refreshSidecarStatus = async () => {
+    try {
+      const response = await fetch('/api/sidecars/status');
+      if (!response.ok) throw new Error('Could not read sidecar sync status.');
+      showSidecarStatus(await response.json());
+    } catch (error) { showSidecarStatus({ error: error.message }); }
+  };
+  window.addEventListener('lighttable-sidecars', (event) => showSidecarStatus(event.detail));
   const setStatus = (text) => { byId('settingsSaveStatus').textContent = text; };
   const savePatch = async (patch, message = 'Saved') => {
     currentPrefs = { ...currentPrefs, ...patch };
@@ -81,6 +99,11 @@ export function installSettings(context) {
       byId('backupDirectory').placeholder = catalog.backupPath;
     }
     byId('settingsBackupNow').disabled = !catalog?.enabled;
+    byId('catalogMirror').disabled = !catalog?.enabled || catalog?.mirrorAllowed === false;
+    byId('catalogMirror').checked = catalog?.mirrorEnabled === true;
+    byId('catalogMirrorNote').textContent = catalog?.mirrorAllowed === false
+      ? 'Disabled for this app session by its launch configuration.'
+      : 'Save complete LightTable edits in .lighttable-state.json beside each photo folder. Copy that file with the originals to another computer. Existing files remain when turned off.';
   }
 
   async function populate() {
@@ -110,9 +133,12 @@ export function installSettings(context) {
     byId('newPhotoPreset').value = defaults.preset || '';
     byId('rawDefaultMatch').value = pref('rawDefaultMatch', 'model');
     byId('writeSidecars').checked = pref('writeSidecars', false);
+    byId('catalogMirror').checked = pref('catalogMirror', true);
     byId('pairRawJPEG').checked = pref('pairRawJPEG', true);
-    byId('hidePairedJPEG').checked = pref('hidePairedJPEG', false);
-    byId('hidePairedJPEG').disabled = !byId('pairRawJPEG').checked;
+    byId('pairView').value = pref('pairView', pref('hidePairedJPEG', false) ? 'raw' : 'both');
+    byId('pairView').disabled = !byId('pairRawJPEG').checked;
+    byId('linkPairedMetadata').checked = pref('linkPairedMetadata', false);
+    byId('linkPairedMetadata').disabled = !byId('pairRawJPEG').checked;
     byId('keywordAutocomplete').checked = pref('keywordAutocomplete', true);
     byId('keywordSeparators').value = pref('keywordSeparators', 'comma');
     byId('settingsExternalEditSpace').value = pref('externalEditorSpace', 'prophoto');
@@ -143,6 +169,7 @@ export function installSettings(context) {
     byId('settingsResetCameraDefault').disabled = !raw?.settings;
     applyAppearance();
     refreshLocations();
+    refreshSidecarStatus();
   }
 
   async function open(tab = 'general') {
@@ -178,15 +205,24 @@ export function installSettings(context) {
   const checkboxPrefs = {
     autoAdvance: 'autoAdvance', completionNotifications: 'completionNotifications',
     automaticUpdateChecks: 'automaticUpdateChecks', lightsOutEnabled: 'lightsOutEnabled',
-    loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars',
-    pairRawJPEG: 'pairRawJPEG', hidePairedJPEG: 'hidePairedJPEG',
+    loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars', catalogMirror: 'catalogMirror',
+    pairRawJPEG: 'pairRawJPEG', linkPairedMetadata: 'linkPairedMetadata',
     keywordAutocomplete: 'keywordAutocomplete', settingsExternalEditStack: 'externalEditStack',
   };
   Object.entries(checkboxPrefs).forEach(([id, key]) => {
     byId(id).addEventListener('change', async (event) => {
-      if (id === 'pairRawJPEG') byId('hidePairedJPEG').disabled = !event.target.checked;
+      if (id === 'pairRawJPEG') {
+        byId('pairView').disabled = !event.target.checked;
+        byId('linkPairedMetadata').disabled = !event.target.checked;
+      }
       await savePatch({ [key]: event.target.checked });
-      if (['pairRawJPEG', 'hidePairedJPEG'].includes(id)) context.refreshPreferences();
+      if (id === 'writeSidecars') {
+        if (event.target.checked) {
+          showSidecarStatus(await api('/api/sidecars/write', { names: [] }));
+        } else await refreshSidecarStatus();
+      }
+      if (['pairRawJPEG', 'linkPairedMetadata'].includes(id)) context.refreshPreferences();
+
       if (id === 'automaticUpdateChecks') {
         sendNative('automaticUpdateChecks', { enabled: event.target.checked });
       }
@@ -196,7 +232,7 @@ export function installSettings(context) {
     });
   });
   const selectPrefs = {
-    viewerBackground: 'viewerBackground', cropGuide: 'cropGuide',
+    viewerBackground: 'viewerBackground', cropGuide: 'cropGuide', pairView: 'pairView',
     rawDefaultMatch: 'rawDefaultMatch', keywordSeparators: 'keywordSeparators',
     settingsExternalEditSpace: 'externalEditorSpace',
     settingsExternalEditBitDepth: 'externalEditBitDepth', backupFrequency: 'backupFrequency',
@@ -204,6 +240,7 @@ export function installSettings(context) {
   Object.entries(selectPrefs).forEach(([id, key]) => {
     byId(id).addEventListener('change', async (event) => {
       await savePatch({ [key]: event.target.value });
+      if (id === 'pairView') context.refreshPreferences();
       if (id === 'rawDefaultMatch') await context.reloadCurrentRawDefault();
     });
   });
@@ -242,10 +279,10 @@ export function installSettings(context) {
   });
   byId('writeSidecarsNow').onclick = async () => {
     byId('writeSidecarsNow').disabled = true;
-    const result = await api('/api/sidecars/write', { names: context.imageNames() });
-    byId('sidecarWriteStatus').textContent = result.error
-      ? result.error : `Wrote ${result.written || 0} sidecar${result.written === 1 ? '' : 's'}.`;
-    byId('writeSidecarsNow').disabled = false;
+    try {
+      showSidecarStatus(await api('/api/sidecars/write', { names: context.imageNames() }));
+    } catch (error) { showSidecarStatus({ error: error.message }); }
+    finally { byId('writeSidecarsNow').disabled = false; }
   };
   byId('purgeCache').onclick = async () => {
     if (!window.confirm('Purge generated previews and render caches? Originals and edits are not affected.')) return;

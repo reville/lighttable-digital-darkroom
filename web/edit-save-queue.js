@@ -28,6 +28,7 @@ export function createEditSaveQueue({
   delay = 400,
   maxConcurrent = 4,
   onStatus = () => {},
+  journal = null,
   setTimeout: schedule = globalThis.setTimeout.bind(globalThis),
   clearTimeout: unschedule = globalThis.clearTimeout.bind(globalThis),
 }) {
@@ -36,7 +37,11 @@ export function createEditSaveQueue({
     throw new RangeError('maxConcurrent must be a positive integer');
   }
   const entries = new Map(), ready = new Set();
-  let runningCount = 0;
+  let runningCount = 0;  let tokenCounter = 0;
+  const tokenPrefix = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`;
+  let journalError = null;
+  const cleanupPending = new Map();
+
 
   function getStatus() {
     const active = [...entries.values()];
@@ -47,6 +52,7 @@ export function createEditSaveQueue({
       pendingNames: active.map(entry => entry.name),
       savingNames: active.filter(entry => entry.running).map(entry => entry.name),
       errors,
+      recoveryError: journalError,
     };
   }
 
@@ -85,7 +91,16 @@ export function createEditSaveQueue({
     notify();
     // Own both outcomes here so debounce/immediate saves cannot leave an
     // unhandled rejection when their caller has no reason to await a write.
-    Promise.resolve().then(() => send(entry.name, job.payload)).then(() => {
+    Promise.resolve(job.persisted).catch(error => { journalError = error; notify(); })
+      .then(() => send(entry.name, job.payload)).then(async () => {
+      if (journal) {
+        try {
+          await journal.remove(entry.name, job.token);
+          if (cleanupPending.get(entry.name) === job.token) cleanupPending.delete(entry.name);
+          if (!cleanupPending.size) journalError = null;
+        }
+        catch (error) { cleanupPending.set(entry.name, job.token); journalError = error; }
+      }
       entry.running = null;
       runningCount--;
       const waiting = [];
@@ -116,13 +131,23 @@ export function createEditSaveQueue({
 
   function enqueue(name, payload, {immediate = false} = {}) {
     if (typeof name !== 'string' || !name) throw new TypeError('A photo name is required');
-    const snapshot = freezePayload(copyPayload(payload));
     let entry = entries.get(name);
+    const previous = entry && (entry.queued || entry.running)?.payload;
+    // A rejected recovery must not turn into an unchecked write when the user
+    // makes another adjustment before resolving its source-identity conflict.
+    const guarded = previous?.expectedRecoverySourceKey && !payload.expectedRecoverySourceKey
+      ? {...payload, expectedRecoverySourceKey: previous.expectedRecoverySourceKey,
+          sourceKey: previous.sourceKey} : payload;
+    const snapshot = freezePayload(copyPayload(guarded));
     if (!entry) {
       entry = {name, revision: 0, queued: null, running: null, timer: null, error: null, waiters: []};
       entries.set(name, entry);
     }
-    entry.queued = {revision: ++entry.revision, payload: snapshot};
+    const token = `${tokenPrefix}:${++tokenCounter}`;
+    const persisted = journal ? Promise.resolve().then(() => journal.put(name, token, snapshot)) : null;
+    // Attach a rejection handler now; debounce can outlive a failed disk write.
+    persisted?.catch(error => { journalError = error; notify(); });
+    entry.queued = {revision: ++entry.revision, payload: snapshot, token, persisted};
     clearTimer(entry);
     // A flush waiting for a transport slot must not be postponed by later
     // input. A normal edit still gets its full debounce while slots are busy.
@@ -162,8 +187,22 @@ export function createEditSaveQueue({
     return getStatus();
   }
 
-  function retry(name) {
+  async function retry(name) {
+    if (journal) {
+      for (const [photo, token] of cleanupPending) {
+        if (name !== undefined && name !== photo) continue;
+        await journal.remove(photo, token); cleanupPending.delete(photo);
+      }
+      if (!cleanupPending.size) journalError = null;
+    }
     selectedEntries(name).forEach(entry => { entry.error = null; });
+    if (journal) selectedEntries(name).forEach(entry => {
+      if (entry.queued) {
+        const job = entry.queued;
+        job.persisted = Promise.resolve().then(() => journal.put(entry.name, job.token, job.payload));
+        job.persisted.catch(error => { journalError = error; notify(); });
+      }
+    });
     return flush(name);
   }
 

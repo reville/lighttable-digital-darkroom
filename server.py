@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import atexit
 import copy
+import capture_time as capture_clock
 import faulthandler
 import hashlib
 import io
@@ -52,6 +53,7 @@ import catalog as catalog_module  # noqa: E402
 import catalog_scan  # noqa: E402
 import watch_workflow  # noqa: E402
 import media_formats  # noqa: E402
+import media_availability  # noqa: E402
 import durable_io  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
@@ -343,13 +345,21 @@ def open_catalog() -> "catalog_module.Catalog | None":
 
 
 def guard_photo(name: str) -> None:
-    """Refuse to process a photo that has been set aside after crashes."""
+    """Refuse photos set aside after repeated crashes."""
     source = library_workflow.source_name(name)
     if PHOTO_QUARANTINE.is_quarantined(source):
         raise APIError(
             423, "this photo was set aside after it crashed LightTable "
                  "repeatedly; release it from Library Health to try again",
             "quarantined", details={"name": source})
+
+
+def guard_local_photo(name: str) -> None:
+    availability = media_availability.availability(src_path(name))
+    if availability != "local":
+        raise APIError(409, media_availability.CLOUD_MESSAGE if availability == "cloud-only"
+                       else "This photo is unavailable. Reconnect its source and rescan.",
+                       availability, details={"name": name, "availability": availability})
 
 
 def request_restart(reason: str = "recovery") -> None:
@@ -794,18 +804,23 @@ def save_image_states(entries: dict[str, dict]) -> None:
     """Merge one or more image edits and persist one atomic state snapshot."""
     cat = catalog_handle()
     if cat is not None:
+        updates, versions, names = {}, {}, []
         for name, entry in entries.items():
             image_id = catalog_image_id(name)
             if image_id is None:
                 continue
             payload = dict(entry)
-            versions = payload.pop("versions", None)
-            cat.save_state(image_id, payload)
-            if versions is not None:
-                cat.save_versions(image_id, versions)
+            version = payload.pop("versions", None)
+            updates[image_id] = payload
+            if version is not None:
+                versions[image_id] = version
+            names.append(name)
+        cat.save_states(updates)
+        for image_id, version in versions.items():
+            cat.save_versions(image_id, version)
+        for name in names:
             queue_sidecar(name)
-        if CATALOG_MIRROR:
-            _queue_mirror()
+        _queue_mirror()
         return
     with STATE_LOCK:
         st = load_state()
@@ -814,10 +829,64 @@ def save_image_states(entries: dict[str, dict]) -> None:
         write_state(st)
 
 
+def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
+    """Opt-in metadata coupling at the API boundary; never expand pixel edits.
+
+    Exports and Trash deliberately do not call this. Existing divergent pairs
+    are not modified just by enabling the preference.
+    """
+    prefs = load_preferences()
+    if prefs.get("pairRawJPEG", True) is False or prefs.get("linkPairedMetadata") is not True:
+        return entries
+    cat = catalog_handle()
+    expanded = {name: dict(entry) for name, entry in entries.items()}
+    keys = {"status", "rating", "label", "keywords"}
+    for name, entry in entries.items():
+        metadata = {key: value for key, value in entry.items() if key in keys}
+        if not metadata:
+            continue
+        if cat is not None:
+            image_id = catalog_image_id(name)
+            companions = cat.paired_image_names(image_id) if image_id is not None else []
+            previous = cat.mark_metadata_for(image_id) if image_id is not None else {}
+        else:
+            source, _, _, virtual = resolve_name(name)
+            if virtual or (not is_raw(name) and source.suffix.casefold() not in {".jpg", ".jpeg"}):
+                continue
+            members = [candidate for candidate in source.parent.iterdir()
+                       if candidate.is_file() and candidate.stem.casefold() == source.stem.casefold()
+                       and (candidate.suffix.casefold() in RAW_EXTS or
+                            candidate.suffix.casefold() in {".jpg", ".jpeg"})]
+            companions = []
+            if len(members) == 2 and sum(candidate.suffix.casefold() in RAW_EXTS for candidate in members) == 1:
+                companions = [candidate.relative_to(FOLDER.resolve()).as_posix()
+                              for candidate in members if candidate != source]
+            previous = load_state().get("images", {}).get(name, {})
+        # UI edit snapshots contain unchanged marks. Couple only actual mark
+        # changes in those snapshots; a pixel adjustment must not synchronize
+        # divergent legacy metadata merely because linking was just enabled.
+        # Explicit metadata-only API/CLI actions still set the pair directly.
+        if set(entry) & {"params", "grade", "crop", "masks", "heals", "optics"}:
+            defaults = {"status": "pending", "rating": 0, "label": "none", "keywords": []}
+            metadata = {key: value for key, value in metadata.items()
+                        if value != previous.get(key, defaults[key])}
+        for companion in companions:
+            target = expanded.setdefault(companion, {})
+            for key, value in metadata.items():
+                if key in target and target[key] != value:
+                    raise ValueError("Paired RAW and JPEG received conflicting metadata; choose one capture decision")
+                target[key] = copy.deepcopy(value)
+    return expanded
+
+
 _MIRROR_TIMER: threading.Timer | None = None
 
 
-def _queue_mirror(delay: float = 5.0) -> None:
+def catalog_mirror_enabled() -> bool:
+    return CATALOG_MIRROR and load_preferences().get("catalogMirror", True) is not False
+
+
+def _queue_mirror(delay: float = 5.0, retries: int = 2) -> None:
     """Rewrite the per-folder state file a few seconds after the last edit.
 
     The mirror exists so a folder can still carry its own edits to another
@@ -832,61 +901,117 @@ def _queue_mirror(delay: float = 5.0) -> None:
         if _MIRROR_TIMER is not None:
             _MIRROR_TIMER.cancel()
 
+        prefs = load_preferences()
+        if not catalog_mirror_enabled() and not prefs.get("writeSidecars"):
+            _MIRROR_TIMER = None
+            return
+
         def run() -> None:
-            for source in cat.sources():
-                if source["available"]:
-                    catalog_scan.mirror_state_file(cat, source["id"])
-            if load_json_file(PREFS_FILE, {}).get("writeSidecars"):
-                write_pending_sidecars()
+            try:
+                if cat is not catalog_handle():
+                    return
+                if catalog_mirror_enabled():
+                    for source in cat.sources():
+                        if source["available"]:
+                            catalog_scan.mirror_state_file(cat, source["id"])
+                if load_preferences().get("writeSidecars"):
+                    write_pending_sidecars()
+                    if retries and sidecar_sync_status()["pending"]:
+                        _queue_mirror(delay=30.0, retries=retries - 1)
+            finally:
+                cat.close()
+
 
         _MIRROR_TIMER = threading.Timer(delay, run)
         _MIRROR_TIMER.daemon = True
         _MIRROR_TIMER.start()
 
 
-_SIDECAR_PENDING: set[tuple[str, str]] = set()
+_SIDECAR_PREFIX = "sidecar.pending:"
+_SIDECAR_WRITE_LOCK = threading.Lock()
 
 
 def queue_sidecar(name: str) -> None:
-    """Note that one photo's sidecar is out of date."""
+    """Persist the outbox entry by image ID, so renames and restarts are safe."""
+    if library_workflow.is_virtual(name):
+        return  # A virtual edit must never replace its original's XMP.
     cat = catalog_handle()
     if cat is None:
         return
-    with STATE_LOCK:
-        _SIDECAR_PENDING.add((str(cat.path.resolve()), name))
+    image_id = catalog_image_id(name)
+    if image_id is None:
+        return
+    with cat.write() as conn:
+        conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES(?, ?)",
+                     (_SIDECAR_PREFIX + str(image_id), json.dumps({
+                         "revision": time.time_ns(), "error": ""})))
+
+
+def _pending_sidecars(cat) -> list:
+    return cat.connection.execute(
+        "SELECT key, value FROM meta WHERE key >= ? AND key < ? ORDER BY key",
+        (_SIDECAR_PREFIX, _SIDECAR_PREFIX + "\uffff")).fetchall()
+
+
+def sidecar_sync_status() -> dict:
+    cat = catalog_handle()
+    if cat is None:
+        return {"pending": 0, "failed": 0, "errors": []}
+    rows = _pending_sidecars(cat)
+    errors = []
+    for row in rows:
+        record = json.loads(row["value"])
+        if record.get("error"):
+            image = cat.image_row(int(row["key"][len(_SIDECAR_PREFIX):]))
+            errors.append({"name": image["relpath"] if image else "Missing photo",
+                           "error": record["error"]})
+    return {"pending": len(rows), "failed": len(errors), "errors": errors[:100]}
 
 
 def write_pending_sidecars() -> int:
-    """Write `photo.xmp` beside the originals whose state changed.
-
-    Off by default. Turning it on makes ratings, labels, keywords, rights, and
-    an approximate grade travel with the folder, which is what someone moving
-    between machines or handing files to another editor needs. It is
-    best-effort: a read-only volume simply writes nothing.
-    """
+    """Flush the durable outbox; failed or newer edits remain ready to retry."""
     import xmp_sidecar
 
     cat = catalog_handle()
     if cat is None:
         return 0
-    catalog_path = str(cat.path.resolve())
-    with STATE_LOCK:
-        pending = {(path, name) for path, name in _SIDECAR_PENDING
-                   if path == catalog_path}
-        names = [name for _, name in pending]
-        _SIDECAR_PENDING.difference_update(pending)
+    if not _SIDECAR_WRITE_LOCK.acquire(blocking=False):
+        return 0
     written = 0
-    for name in names:
-        try:
-            path = src_path(name)
-        except ValueError:
-            continue
-        image_id = catalog_image_id(name)
-        if image_id is None:
-            continue
-        record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
-        if xmp_sidecar.write_sidecar(path, record):
-            written += 1
+    try:
+        for pending in _pending_sidecars(cat):
+            errors = []
+            try:
+                image_id = int(pending["key"][len(_SIDECAR_PREFIX):])
+                image = cat.image_row(image_id)
+                if image is None or image["virtual"]:
+                    # Catalog removal means the user no longer requests sync.
+                    succeeded = True
+                else:
+                    name = catalog_module.qualified_name(
+                        image["source_id"], image["relpath"])
+                    path = src_path(name)
+                    if not path.is_file():
+                        raise OSError("Original is unavailable. Reconnect its folder and retry.")
+                    record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
+                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors)
+                    if succeeded:
+                        written += 1
+            except Exception as error:  # retain the outbox entry for retry
+                succeeded = False
+                errors.append(str(error))
+            with cat.write() as conn:
+                if succeeded:
+                    conn.execute("DELETE FROM meta WHERE key=? AND value=?",
+                                 (pending["key"], pending["value"]))
+                else:
+                    updated = dict(json.loads(pending["value"]),
+                                   error="; ".join(errors) or "XMP could not be written.")
+                    conn.execute("UPDATE meta SET value=? WHERE key=? AND value=?",
+                                 (json.dumps(updated), pending["key"], pending["value"]))
+        EVENTS.publish("sidecars", sidecar_sync_status())
+    finally:
+        _SIDECAR_WRITE_LOCK.release()
     return written
 
 
@@ -913,6 +1038,21 @@ def catalog_entry_for(name: str) -> dict:
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
     }
+
+
+def recovery_state_for(name: str) -> dict:
+    state = dict(catalog_entry_for(name))
+    try:
+        state["_recoverySourceKey"] = file_key(name)
+    except (ValueError, OSError):
+        state["_recoverySourceKey"] = None
+    cat = catalog_handle()
+    state["_recoveryHistoryAvailable"] = cat is not None
+    if cat is not None:
+        image_id = catalog_image_id(name)
+        steps = cat.history_for(image_id, limit=1) if image_id is not None else []
+        state["_recoveryHistory"] = cat.history_state(steps[0]["id"]) if steps else None
+    return state
 
 
 LABEL_VALUES = ("none", "red", "yellow", "green", "blue", "purple")
@@ -1065,8 +1205,7 @@ def update_catalog_library(body: dict) -> dict:
         result["ok"] = True
     else:
         raise ValueError("unknown library action")
-    if CATALOG_MIRROR:
-        _queue_mirror()
+    _queue_mirror()
     result["library"] = current_library_state()
     return result
 
@@ -1547,6 +1686,7 @@ _HEADER_HASH_CACHE: dict[tuple[str, int, int], str] = {}
 def content_hash(path: Path) -> str:
     """Cached content identity for a file, keyed by its stat signature."""
     stat = path.stat()
+    media_availability.require_local(path, stat=stat)
     key = (str(path), stat.st_size, stat.st_mtime_ns)
     cached = _HEADER_HASH_CACHE.get(key)
     if cached is None:
@@ -1567,8 +1707,7 @@ def file_key(name: str) -> str:
     """
     src = src_path(name)
     stat = src.stat()
-    identity = f"{content_hash(src)}\0{stat.st_size}\0{stat.st_mtime_ns}"
-    return hashlib.md5(identity.encode()).hexdigest()
+    return catalog_module.source_revision(content_hash(src), stat.st_size, stat.st_mtime_ns)
 
 
 _TIFF_CACHE_MAX_BYTES = int(os.environ.get(
@@ -1854,12 +1993,16 @@ def tiff_for(name: str, params: dict | None = None, *,
 
 
 def neutral_tiff_for(name: str, params: dict | None = None, *,
-                     denoise_status=None, denoise_cancel=None) -> Path:
+                     denoise_status=None, denoise_cancel=None,
+                     output_space: str = "srgb") -> Path:
     """Full-resolution, display-referred source for profile-off exports."""
     src = src_path(name)
     raw_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    output_space = color_pipeline.normalise_output_space(output_space)
+    # Keep preview cache identity stable, and isolate color-preserving exports.
+    color_key = "" if output_space == "srgb" else f"_gamut-v1-{output_space}"
     t = CACHE / "neutral" / (
-        f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{raw_key}.tif")
+        f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{raw_key}{color_key}.tif")
     with TIFF_BUILD_LOCK:
         if not t.exists() or t.stat().st_mtime < src.stat().st_mtime:
             temporary = durable_io.temporary_path(t, "decode")
@@ -1872,13 +2015,13 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                     linear = tf.imread(tiff_for(
                         name, params, denoise_status=denoise_status,
                         denoise_cancel=denoise_cancel))
-                    display = color_pipeline.linear_prophoto_to_display_srgb(
-                        linear, params)
+                    display = color_pipeline.linear_prophoto_to_display(
+                        linear, params, output_space=output_space)
                     tf.imwrite(temporary,
                                (display * 65535.0 + 0.5).astype(np.uint16))
                 else:
                     platform_image.convert_processed_to_tiff(
-                        src, temporary, app_root=APP, output_space="srgb")
+                        src, temporary, app_root=APP, output_space=output_space)
                 durable_io.publish_file(temporary, t)
             finally:
                 temporary.unlink(missing_ok=True)
@@ -1982,6 +2125,7 @@ def schedule_neutral_refinement(name: str, width: int,
 
 def thumb_jpeg(name: str) -> bytes:
     """Small strip thumbnail straight from the source; never decodes full TIFF."""
+    guard_local_photo(name)
     p = CACHE / "thumb" / f"{file_key(name)}.jpg"
     if p.exists():
         return p.read_bytes()
@@ -2161,11 +2305,56 @@ def video_thumbnail(name: str) -> bytes:
 _EXIF_CACHE: dict[str, dict] = {}
 def exif_for(name: str) -> dict:
     """Camera metadata for the info panel. Cached; exiftool costs ~50 ms."""
-    if name in _EXIF_CACHE:
-        return _EXIF_CACHE[name]
-    out = platform_image.metadata(src_path(name))
-    _EXIF_CACHE[name] = out
+    guard_local_photo(name)
+    if name not in _EXIF_CACHE:
+        _EXIF_CACHE[name] = platform_image.metadata(src_path(name))
+    out = dict(_EXIF_CACHE[name])
+    cat = catalog_handle()
+    image_id = catalog_image_id(name) if cat is not None else None
+    info = cat.capture_details(image_id) if image_id is not None else None
+    if info and info["override"]:
+        out.update(capture_clock.exif_fields(info["override"]))
+        out["CaptureTimeCorrection"] = "Catalog override · original unchanged"
     return out
+
+
+def capture_time_action(body: dict) -> dict:
+    cat = require_catalog()
+    action = str(body.get("action", "preview"))
+    if action == "preview":
+        return capture_clock.preview(cat, body.get("names"), catalog_image_id, exif_for,
+            shift_seconds=body.get("shiftSeconds", 0), time_zone=body.get("timeZone", ""),
+            include_pairs=body.get("includePairs") is True, reset=body.get("reset") is True)
+    if action == "restore-history":
+        name = str(body.get("name", ""))
+        image_id = catalog_image_id(name)
+        history_id = int(body.get("historyId", 0))
+        row = cat.connection.execute("SELECT image_id,origin FROM history WHERE id=?", (history_id,)).fetchone()
+        state = cat.history_state(history_id)
+        if (not row or row["image_id"] != image_id or row["origin"] != "capture-time"
+                or not state or state.get("captureTimeOnly") is not True):
+            raise ValueError("That capture-time history step does not belong to this photo")
+        info = cat.capture_details(image_id)
+        changes = [{"name": name, "fileId": info["fileId"], "original": info["original"],
+                    "beforeOverride": info["override"], "after": state.get("captureTimeOverride")}]
+    elif action == "apply":
+        changes = body.get("changes")
+        if not isinstance(changes, list) or not changes or len(changes) > capture_clock.MAX_BATCH * 2:
+            raise ValueError("Preview a bounded selection before applying")
+        for change in changes:
+            image_id = catalog_image_id(str(change.get("name", "")))
+            info = cat.capture_details(image_id) if image_id is not None else None
+            if not info or info["fileId"] != change.get("fileId"):
+                raise ValueError("Photo identity changed since preview")
+    else:
+        raise ValueError("Unknown capture-time action")
+    names = cat.apply_capture_changes(changes,
+        label="Capture time restored" if action == "restore-history" else "Capture time corrected")
+    for name in names:
+        queue_sidecar(name)
+    _queue_mirror()
+    EVENTS.publish("library", {"reason": "capture-time", "names": names})
+    return {"ok": True, "count": len(changes), "names": names}
 
 
 def parse_camera_ev(metadata: dict) -> float | None:
@@ -2471,6 +2660,7 @@ def rot90k(deg: float) -> int:
 
 def orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
     guard_photo(name)
+    guard_local_photo(name)
     with SESSION.inflight("decode", library_workflow.source_name(name)):
         return _orig_jpeg(name, width, rotate)
 
@@ -2970,6 +3160,7 @@ def render_preview(name: str, params: dict, width: int,
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
     guard_photo(name)
+    guard_local_photo(name)
     with SESSION.inflight("render", library_workflow.source_name(name)):
         previous_priority = getattr(RENDER_CONTEXT, "priority", "export")
         previous_cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
@@ -3167,7 +3358,7 @@ def _native_corrected_preview(result: dict, name: str, width: int,
                               params: dict, optics, heals) -> dict:
     cleaned_optics = edits.clean_optics(optics)
     cleaned_heals = edits.clean_heals(heals)
-    profile = edits.lens_profile_for(exif_for(name))
+    profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
     token = json.dumps([
         "native-base-edits-v1", file_key(name), result.get("key"),
         result.get("img"), (result.get("native") or {}).get("url"),
@@ -3226,7 +3417,7 @@ def apply_preview_edits(result: dict, name: str, width: int,
         return result
     cleaned_optics = edits.clean_optics(optics)
     cleaned_heals = edits.clean_heals(heals)
-    profile = edits.lens_profile_for(exif_for(name))
+    profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
     rotate = fp.clean_params(params).get("rotate", 0)
     token = json.dumps([
         EDIT_PREVIEW_CACHE_VERSION, file_key(name), result.get("img"),
@@ -3265,7 +3456,7 @@ def apply_preview_edits(result: dict, name: str, width: int,
 
 # --------------------------------------------------------------- export ----
 
-EXPORT = {"total": 0, "done": 0, "errors": [], "running": False, "log": []}
+EXPORT = {"total": 0, "done": 0, "errors": [], "warnings": [], "running": False, "log": []}
 EXPORT_LOCK = threading.Lock()
 EXPORT_PATH_LOCK = threading.Lock()
 EXPORT_RESERVED_PATHS: set[Path] = set()
@@ -3283,7 +3474,7 @@ DENOISE = {"running": False, "name": "", "progress": 0, "total": 0,
 DENOISE_LOCK = threading.Lock()
 DENOISE_POOL = ThreadPoolExecutor(max_workers=1)
 EXTERNAL_EDIT = {"running": False, "total": 0, "done": 0,
-                 "paths": [], "names": [], "errors": []}
+                 "paths": [], "names": [], "errors": [], "warnings": []}
 EXTERNAL_EDIT_LOCK = threading.Lock()
 EXTERNAL_EDIT_POOL = ThreadPoolExecutor(max_workers=1)
 
@@ -3302,10 +3493,10 @@ def sync_job_status(status: dict, *, progress_key: str = "done",
     errors = list(status.get("errors") or [])
     if status.get("error"):
         errors.append(str(status["error"]))
-    if status.get("cancelled") or status.get("cancel_requested"):
-        state = "cancelled"
-    elif status.get("running") or status.get("active"):
+    if status.get("running") or status.get("active"):
         state = "running"
+    elif status.get("cancelled") or status.get("cancel_requested"):
+        state = "cancelled"
     elif errors:
         state = "failed"
     else:
@@ -3329,7 +3520,38 @@ def _export_metadata_payload(job: dict) -> tuple[str, Path | None, dict]:
         source = src_path(job["sourceName"]) if job.get("sourceName") else None
     except (ValueError, KeyError):
         source = None
+        if policy in ("all", "all-except-location"):
+            job.setdefault("warnings", []).append(
+                "Source camera metadata could not be located.")
     return policy, source, job.get("metadataFields") or {}
+
+
+def export_input_color_space(job: dict) -> str:
+    """Record the source encoding and visibly report remaining gamut limits."""
+    cp = fp.clean_params(job.get("params") or {})
+    output_space = color_pipeline.normalise_output_space(job.get("outputSpace"))
+    wide = (not cp["profile_enabled"] and output_space != "srgb"
+            and color_pipeline.wide_develop_edits_supported(job))
+    job["inputColorSpace"] = output_space if wide else "srgb"
+    if output_space != "srgb" and not wide:
+        warning = color_pipeline.SRGB_LIMITED_EXPORT_WARNING
+        warnings = job.setdefault("warnings", [])
+        if warning not in warnings:
+            warnings.append(warning)
+    return job["inputColorSpace"]
+
+
+def export_render_source(name: str, job: dict) -> Path:
+    """Choose a render source and record the color encoding passed to the CLI."""
+    color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
+    input_space = export_input_color_space(job)
+    if fp.clean_params(job.get("params") or {})["profile_enabled"]:
+        return tiff_for(name, job["params"])
+    # Neutral TIFFs already contain the Develop transfer function, regardless
+    # of whether the original capture was RAW.
+    job["params"] = fp.clean_params(dict(job.get("params") or {}, linear_input=False))
+    return neutral_tiff_for(name, job["params"],
+                            output_space=input_space)
 
 
 def finish_export(film_png: Path, dst: Path, job: dict) -> tuple[int, int]:
@@ -3364,7 +3586,8 @@ def finish_export(film_png: Path, dst: Path, job: dict) -> tuple[int, int]:
         bit_depth=int(job.get("bitDepth", 16)),
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=policy if is_heif else "none",
-        metadata_fields=metadata_fields if is_heif else None)
+        metadata_fields=metadata_fields if is_heif else None,
+        warnings=job.setdefault("warnings", []))
     if not is_heif:
         embed_export_metadata(dst, job)
     return size
@@ -3393,6 +3616,8 @@ def export_metadata_fields(name: str) -> dict:
         fields["rating"] = int(state["rating"])
     if state.get("label") and state["label"] != "none":
         fields["label"] = state["label"]
+    if state.get("captureTimeOverride"):
+        fields["captureTime"] = state["captureTimeOverride"]
     return fields
 
 
@@ -3406,7 +3631,13 @@ def embed_export_metadata(dst: Path, job: dict) -> bool:
     policy, source, fields = _export_metadata_payload(job)
     if policy == "none":
         return False
-    return platform_image.write_metadata(dst, source, policy, fields)
+    warnings = job.setdefault("warnings", [])
+    before = len(warnings)
+    succeeded = platform_image.write_metadata(
+        dst, source, policy, fields, warnings=warnings)
+    if not succeeded and len(warnings) == before:
+        warnings.append("Requested metadata could not be saved.")
+    return succeeded
 
 
 def rust_direct_export_supported(job: dict) -> bool:
@@ -3440,6 +3671,8 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
             metrics["input_transport"] = "shared-memory-rgb16"
             metrics["input_exchange_bytes"] = int(shared["input_shm_len"])
             return metrics
+        except RenderCancelled:
+            raise
         except Exception as shared_error:  # noqa: BLE001
             # A platform may expose POSIX shared memory yet cap a segment below
             # a large sensor frame. Retain the proven TIFF route rather than
@@ -3462,6 +3695,9 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
 
 
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
+    # Check before a renderer spends work or creates any untagged output.
+    profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
+    export_input_color_space(job)
     params = fp.clean_params(dict(job["params"], linear_input=is_raw(name)))
     cp = fp.clean_params(params)
     direct_error = None
@@ -3481,12 +3717,12 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
         }
         try:
             metrics = _resident_render_full(name, params, request)
-            profile = color_pipeline.icc_bytes("srgb")
-            if profile:
-                platform_image.embed_jpeg_icc(dst, profile)
+            platform_image.embed_jpeg_icc(dst, profile)
             embed_export_metadata(dst, job)
             return dict(metrics, width=int(metrics["width"]),
                         height=int(metrics["height"]), direct_export=True)
+        except RenderCancelled:
+            raise
         except Exception as error:  # noqa: BLE001
             # A direct-path defect must never cost the user an export. Remove
             # its staged bytes and run the established high-precision path.
@@ -3497,6 +3733,9 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     film_png = CACHE / "export-film" / f"{cache_key}.tif"
     metrics = {"cached": True, "total_ms": 0.0}
     with EXPORT_FILM_LOCK:
+        cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
+        if cancelled and cancelled():
+            raise RenderCancelled("export cancelled before rendering")
         if not film_png.exists():
             staged = durable_io.temporary_path(film_png, "film")
             try:
@@ -3514,6 +3753,8 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             finally:
                 staged.unlink(missing_ok=True)
             prune_cache(film_png.parent, "*.tif", _EXPORT_FILM_CACHE_MAX_BYTES)
+    if cancelled and cancelled():
+        raise RenderCancelled("export cancelled before encoding")
     width, height = finish_export(film_png, dst, job)
     return dict(metrics, width=width, height=height,
                 direct_export=False, direct_fallback=direct_error)
@@ -3534,7 +3775,8 @@ def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
         "metadata": "all", "metadataFields": export_metadata_fields(name),
         "copyMetadataFrom": True, "engine": "rs",
         "bitDepth": 8 if int(bit_depth) == 8 else 16,
-        "lensProfile": edits.lens_profile_for(exif_for(name)),
+        "lensProfile": edits.lens_profile_for(exif_for(name),
+            edits.clean_optics(entry.get("optics")).get("profileOverride")),
     }
 
 
@@ -3548,9 +3790,8 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
         else:
             job_file = durable_io.temporary_path(
                 CACHE / "external-edit-job.json", "job")
+            source = export_render_source(name, job)
             durable_io.atomic_write_text(job_file, json.dumps(job))
-            source = (tiff_for(name, job["params"]) if cp["profile_enabled"]
-                      else neutral_tiff_for(name, job["params"]))
             completed = subprocess.run(
                 [sys.executable, str(APP / "render_cli.py"), str(source),
                  str(staged), str(job_file)],
@@ -3559,6 +3800,17 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
                 timeout=1800, check=False)
             if completed.returncode:
                 raise RuntimeError((completed.stderr or completed.stdout)[-300:])
+            for line in reversed((completed.stdout or "").splitlines()):
+                try:
+                    result = json.loads(line)
+                except (ValueError, TypeError):
+                    continue
+                if isinstance(result, dict) and result.get("ok"):
+                    warnings = job.setdefault("warnings", [])
+                    for warning in result.get("warnings") or []:
+                        if str(warning) not in warnings:
+                            warnings.append(str(warning))
+                    break
         durable_io.publish_file_no_replace(staged, destination)
         staged.unlink(missing_ok=True)
     finally:
@@ -3583,9 +3835,8 @@ def _run_external_edits(names: list[str], output_space: str,
                     parent / f"{source.stem}-Edit.tif", "rename")
                 if destination is None:
                     raise FileExistsError("Could not choose an edit filename")
-                _render_external_job(name, destination,
-                                     _external_job(name, output_space,
-                                                   bit_depth))
+                job = _external_job(name, output_space, bit_depth)
+                _render_external_job(name, destination, job)
                 derivative_name = destination.name
                 if cat is not None:
                     original_id = catalog_image_id(name)
@@ -3606,6 +3857,10 @@ def _run_external_edits(names: list[str], output_space: str,
                 with EXTERNAL_EDIT_LOCK:
                     EXTERNAL_EDIT["paths"].append(str(destination))
                     EXTERNAL_EDIT["names"].append(derivative_name)
+                    if job.get("warnings"):
+                        EXTERNAL_EDIT["warnings"].append({
+                            "name": name, "path": str(destination),
+                            "warnings": list(job["warnings"])})
                 if WATCH_SERVICE is not None:
                     WATCH_SERVICE.add_session_path(destination)
             except Exception as error:
@@ -3652,7 +3907,7 @@ def start_external_edit(body: dict) -> dict:
         if EXTERNAL_EDIT["running"]:
             return {"ok": False, "error": "An external edit is already rendering"}
         EXTERNAL_EDIT.update(running=True, total=len(names), done=0,
-                             paths=[], names=[], errors=[])
+                             paths=[], names=[], errors=[], warnings=[])
         EXTERNAL_EDIT["jobId"] = JOBS.create(
             "external-edit", total=len(names), state="running")["id"]
     EXTERNAL_EDIT_POOL.submit(
@@ -3685,26 +3940,175 @@ def benchmark_export(name: str, job: dict) -> dict:
     return result
 
 
-def export_one(name: str, job: dict) -> None:
-    guard_photo(name)
-    with SESSION.inflight("export", library_workflow.source_name(name)):
-        _export_one(name, job)
+class ExportCancelled(Exception):
+    pass
 
 
-def _export_one(name: str, job: dict) -> None:
+def export_would_replace_original(destination: Path, source_name: str) -> bool:
+    path = destination.resolve()
+    source = src_path(source_name).resolve()
+    if path == source:
+        return True
+    # A RAW export next to its capture must not overwrite the camera JPEG.
+    if path.exists() and path.parent == source.parent and path.stem.casefold() == source.stem.casefold():
+        return True
+    cat = catalog_handle()
+    if path.exists() and cat is not None:
+        for row in cat.sources():
+            try:
+                relative = path.relative_to(Path(row["path"]).resolve()).as_posix()
+            except ValueError:
+                continue
+            if cat.image_id_for(int(row["id"]), relative) is not None:
+                return True
+    return False
+
+
+class ExportBatch:
+    """Keep only two workers active; this batch owns its status until cleanup."""
+    def __init__(self, items, destination):
+        self.items = iter(items)
+        self.lock = threading.RLock()
+        self.cancelled = threading.Event()
+        self.active = 0
+        self.remaining = len(items)
+        self.status = dict(total=len(items), done=0, completed=0, skipped=0,
+                           cancelledCount=0, errors=[], warnings=[], running=bool(items),
+                           cancel_requested=False, log=[], destination=str(destination))
+
+    def publish_status(self):
+        with EXPORT_LOCK:
+            if EXPORT.get("jobId") == self.status.get("jobId"):
+                EXPORT.clear()
+                EXPORT.update(self.status)
+                sync_job_status(dict(self.status))
+
+    def cancel(self):
+        with self.lock:
+            self.cancelled.set()
+            self.status["cancel_requested"] = True
+            self.status["cancelledCount"] += self.remaining
+            self.status["done"] += self.remaining
+            self.remaining = 0
+            self.publish_status()
+        return False
+
+    def check(self):
+        if self.cancelled.is_set():
+            raise ExportCancelled()
+
+    def dispatch(self):
+        with self.lock:
+            if self.cancelled.is_set() or not self.remaining:
+                return
+            name, job = next(self.items)
+            self.remaining -= 1
+            self.active += 1
+            try:
+                EXPORT_POOL.submit(export_one, name, job, self)
+            except Exception as error:
+                self.finish(name, {"error": str(error)})
+
+    def finish(self, name, outcome):
+        with self.lock:
+            self.active -= 1
+            self.status["done"] += 1
+            for key in ("completed", "skipped", "cancelledCount"):
+                self.status[key] += int(outcome.get(key, 0))
+            if outcome.get("error"):
+                self.status["errors"].append(f"{name}: {outcome['error']}")
+            if outcome.get("log"):
+                self.status["log"].append(outcome["log"])
+                self.status["log"] = self.status["log"][-200:]
+            if outcome.get("warnings"):
+                self.status["warnings"].append({
+                    "name": name, "path": outcome.get("path"),
+                    "warnings": outcome["warnings"]})
+            self.dispatch()
+            if not self.remaining and not self.active:
+                self.status["running"] = False
+                self.status["cancelled"] = self.cancelled.is_set()
+            self.publish_status()
+
+
+def _run_export_process(command, env, batch):
+    if batch is None:
+        return subprocess.run(command, capture_output=True, text=True, env=env, timeout=1800)
+    batch.check()
+    with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          text=True, env=env) as process:
+        try:
+            for _ in range(12000):
+                batch.check()
+                try:
+                    stdout, stderr = process.communicate(timeout=0.15)
+                    return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
+                except subprocess.TimeoutExpired:
+                    pass
+            raise TimeoutError("Export renderer exceeded 30 minutes")
+        except BaseException:
+            if process.poll() is None:
+                process.terminate()
+            try:
+                process.communicate(timeout=2)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.communicate()
+            raise
+
+
+def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
+    previous = getattr(RENDER_CONTEXT, "cancelled", None)
+    if batch:
+        RENDER_CONTEXT.cancelled = batch.cancelled.is_set
+    try:
+        with SESSION.inflight("export", library_workflow.source_name(name)):
+            outcome = _export_one(name, job, batch)
+    except Exception as error:
+        outcome = {"error": str(error)}
+    finally:
+        RENDER_CONTEXT.cancelled = previous
+    if batch:
+        batch.finish(name, outcome)
+    else:
+        # Preserve the direct worker entry point used by integrations.
+        with EXPORT_LOCK:
+            if outcome.get("error"):
+                EXPORT["errors"].append(f"{name}: {outcome['error']}")
+            if outcome.get("log"):
+                EXPORT["log"].append(outcome["log"])
+            EXPORT["done"] += 1
+            if EXPORT["done"] >= EXPORT["total"]:
+                EXPORT["running"] = False
+            sync_job_status(dict(EXPORT))
+
+
+def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
     dst: Path | None = None
     staged: Path | None = None
+    staged_sidecar: Path | None = None
+    outcome = {}
+    check = batch.check if batch else lambda: None
     try:
+        check()
+        guard_photo(name)
+        guard_local_photo(name)
         started = time.perf_counter()
         job = dict(job)
+        job["warnings"] = list(job.get("warnings") or [])
         out_dir = Path(job["destination"])
+        if "destinationMode" in job and out_dir.resolve() != out_dir:
+            raise ValueError("The export destination changed after planning; preview it again")
+        out_dir = out_dir.resolve()
         out_dir.mkdir(parents=True, exist_ok=True)
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
         metadata = exif_for(name)
-        job["lensProfile"] = edits.lens_profile_for(metadata)
+        job["lensProfile"] = edits.lens_profile_for(metadata,
+            edits.clean_optics(job.get("optics")).get("profileOverride"))
         job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
+        check()
         with EXPORT_PATH_LOCK:
             dst = export_workflow.collision_path(
                 requested, job.get("collision", "rename"),
@@ -3714,10 +4118,12 @@ def _export_one(name: str, job: dict) -> None:
             if dst is not None:
                 EXPORT_RESERVED_PATHS.add(dst)
         if dst is None:
-            with EXPORT_LOCK:
-                EXPORT["log"].append(f"{name} skipped (file already exists)")
-            return
+            outcome = {"skipped": 1, "log": f"{name} skipped (file already exists)"}
+            return outcome
+        if export_would_replace_original(dst, name):
+            raise ValueError("An export cannot replace a cataloged original or its capture companion")
         staged = durable_io.temporary_path(dst, "export")
+        check()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
             metrics = export_with_resident_engine(name, staged, job)
             detail = (f"{metrics.get('backend', 'cache')} "
@@ -3739,26 +4145,34 @@ def _export_one(name: str, job: dict) -> None:
             _, metadata_source, _ = _export_metadata_payload(job)
             if metadata_source is not None:
                 job["metadataSource"] = str(metadata_source)
+            render_source = export_render_source(name, job)
             durable_io.atomic_write_text(jfile, json.dumps(job))
             env = dict(os.environ, OMP_NUM_THREADS="4", NUMBA_NUM_THREADS="4")
-            render_source = tiff_for(name, job["params"]) if cp["profile_enabled"] \
-                else neutral_tiff_for(name, job["params"])
             try:
-                r = subprocess.run(
+                check()
+                r = _run_export_process(
                     [sys.executable, str(APP / "render_cli.py"),
-                     str(render_source), str(staged), str(jfile)],
-                    capture_output=True, text=True, env=env, timeout=1800)
+                     str(render_source), str(staged), str(jfile)], env, batch)
             finally:
                 jfile.unlink(missing_ok=True)
             if r.returncode != 0:
                 raise RuntimeError(r.stderr.strip()[-300:])
+            stdout = getattr(r, "stdout", "")
+            if isinstance(stdout, str):
+                for line in reversed(stdout.splitlines()):
+                    try:
+                        payload = json.loads(line)
+                        job["warnings"].extend(payload.get("warnings") or [])
+                        break
+                    except (ValueError, AttributeError):
+                        continue
             detail = "Python fallback"
-        if job.get("collision", "rename") == "overwrite":
-            durable_io.publish_file(staged, dst)
-        else:
-            durable_io.publish_file_no_replace(staged, dst)
-            staged.unlink(missing_ok=True)
-        staged = None
+        check()
+        if job.get("preserveCaptureTime"):
+            warning = export_workflow.apply_capture_timestamp(
+                staged, metadata, job.get("captureTimePolicy", "require-offset"))
+            if warning:
+                job["warnings"].append(warning)
         # A client delivery should not carry a machine-readable recipe next to
         # it, so the sidecar is a recipe choice rather than a fixed behaviour.
         if job.get("sidecar", True):
@@ -3776,33 +4190,55 @@ def _export_one(name: str, job: dict) -> None:
                 "outputSpace": job.get("outputSpace", "srgb"),
                 "provenance": job.get("provenance") or renderer_provenance(),
             }
+            staged_sidecar = durable_io.temporary_path(sidecar, "export-sidecar")
+            durable_io.atomic_write_json(staged_sidecar, sidecar_payload, indent=2)
+        # Cancellation and publication share a short critical section. Once
+        # publication starts, this complete output survives later cancellation.
+        publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
+        with publish_lock:
+            check()
+            if dst.parent.resolve() != out_dir:
+                raise ValueError("The export destination moved while rendering; nothing was published")
+            if export_would_replace_original(dst, name):
+                raise ValueError("The destination is an original photo; export was not published")
             if job.get("collision", "rename") == "overwrite":
-                durable_io.atomic_write_json(
-                    sidecar, sidecar_payload, indent=2)
+                durable_io.publish_file(staged, dst)
             else:
-                durable_io.atomic_create_json(
-                    sidecar, sidecar_payload, indent=2)
-        with EXPORT_LOCK:
-            elapsed = time.perf_counter() - started
-            EXPORT["log"].append(
-                f"{name} -> {dst.name} ({elapsed:.1f}s, {detail})")
-    except Exception as e:  # noqa: BLE001
-        with EXPORT_LOCK:
-            EXPORT["errors"].append(f"{name}: {e}")
+                durable_io.publish_file_no_replace(staged, dst)
+                staged.unlink(missing_ok=True)
+            staged = None
+            if staged_sidecar is not None:
+                try:
+                    if job.get("collision", "rename") == "overwrite":
+                        durable_io.publish_file(staged_sidecar, sidecar)
+                    else:
+                        durable_io.publish_file_no_replace(staged_sidecar, sidecar)
+                except OSError as error:
+                    job["warnings"].append(f"Photo exported, but its recipe sidecar could not be saved: {error}")
+        elapsed = time.perf_counter() - started
+        outcome = {"completed": 1, "path": str(dst), "warnings": list(dict.fromkeys(job["warnings"])),
+                   "log": f"{name} -> {dst.name} ({elapsed:.1f}s, {detail})"}
+    except (ExportCancelled, RenderCancelled):
+        outcome = {"cancelledCount": 1}
+    except Exception as error:
+        outcome = {"error": str(error)}
     finally:
-        if staged is not None:
-            staged.unlink(missing_ok=True)
+        for temporary in (staged, staged_sidecar):
+            if temporary is not None:
+                try:
+                    temporary.unlink(missing_ok=True)
+                except OSError as error:
+                    outcome["error"] = f"Could not remove incomplete export {temporary}: {error}"
         if dst is not None:
             with EXPORT_PATH_LOCK:
                 EXPORT_RESERVED_PATHS.discard(dst)
-        with EXPORT_LOCK:
-            EXPORT["done"] += 1
-            if EXPORT["done"] >= EXPORT["total"]:
-                EXPORT["running"] = False
-            sync_job_status(dict(EXPORT))
         cat = catalog_handle()
         if cat is not None:
-            cat.close()
+            try:
+                cat.close()
+            except Exception as error:
+                outcome["error"] = f"Could not close export catalog connection: {error}"
+    return outcome
 
 
 def export_candidates() -> list[tuple[str, dict, str]]:
@@ -3861,9 +4297,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
         target_names = {str(x) for x in (opts.get("selected") or [])}
 
     items = []
-    destination = export_workflow.resolve_destination(
-        FOLDER, opts.get("destination", EXPORT_DIR_NAME))
     recipe = export_workflow.clean_recipe(opts)
+    color_pipeline.required_icc_bytes(recipe["outputSpace"])
+    destination = export_workflow.resolve_destination(
+        FOLDER, recipe["destination"])
     default_params, default_grade = effective_new_photo_defaults()
     for n, e, export_base_name in export_candidates():
         if target_names is not None:
@@ -3875,6 +4312,12 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             continue
         elif which == "all" and e["status"] == "skipped":
             continue
+        item_destination = destination
+        if recipe["destinationMode"] != "fixed":
+            source, source_id, _, _ = resolve_name(n)
+            root = source_root(source_id) if source_id is not None else FOLDER
+            item_destination = export_workflow.photo_destination(
+                recipe, library_root=FOLDER, source=source, source_root=root)
         items.append((n, {
             "params": e["params"] or default_params,
             "grade": e["grade"] or default_grade,
@@ -3888,7 +4331,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "engine": opts.get("engine", "rs"),
             "outputSpace": color_pipeline.normalise_output_space(
                 recipe["outputSpace"]),
-            "destination": str(destination),
+            "destination": str(item_destination),
+            "destinationMode": recipe["destinationMode"],
+            "preserveCaptureTime": recipe["preserveCaptureTime"],
+            "captureTimePolicy": recipe["captureTimePolicy"],
             "filenameTemplate": recipe["filenameTemplate"],
             "collision": recipe["collision"],
             "rating": e["rating"],
@@ -3900,6 +4346,22 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "watermark": recipe.get("watermark"),
             "sourceName": n,
         }))
+    if target_names is None and opts.get("pairView") in ("raw", "jpeg"):
+        groups = {}
+        for name, _job in items:
+            path, source_id, _, copy_ident = resolve_name(name)
+            if copy_ident or (not is_raw(name) and path.suffix.lower() not in (".jpg", ".jpeg")):
+                continue
+            key = (source_id, str(path.parent), path.stem.casefold())
+            groups.setdefault(key, []).append((name, is_raw(name)))
+        hidden = set()
+        for group in groups.values():
+            if len(group) == 2 and sum(raw for _, raw in group) == 1:
+                hidden.update(name for name, raw in group
+                              if raw != (opts["pairView"] == "raw"))
+        items = [item for item in items if item[0] not in hidden]
+        for index, (_, job) in enumerate(items):
+            job["sequence"] = index + 1
     if opts.get("names"):
         order = {str(name): i for i, name in enumerate(opts["names"])}
         items.sort(key=lambda item: order.get(item[0], 999999))
@@ -3917,8 +4379,8 @@ def export_requested_path(name: str, job: dict, metadata: dict) -> Path:
                  "heif": "heic", "heic": "heic"}.get(
                      job.get("format", "jpeg"), "jpg")
     context = {
-        "filename": str(job.get("exportBaseName") or
-                        Path(library_workflow.source_name(name)).with_suffix("")),
+        "filename": Path(str(job.get("exportBaseName") or
+                        Path(library_workflow.source_name(name)).with_suffix(""))).name,
         "stock": stock, "rating": job.get("rating", 0),
         "date": str(metadata.get("DateTimeOriginal", "")).split(" ", 1)[0],
         "sequence": job.get("sequence", 1),
@@ -3958,6 +4420,8 @@ def preview_export(opts: dict) -> dict:
         "total": len(items), "destination": str(destination),
         "collision": export_workflow.clean_recipe(opts)["collision"],
         "sample": None,
+        "samples": [],
+        "destinationMode": opts.get("destinationMode", "fixed"),
         "note": "Example for the first photo. Names may change if destination files change before export.",
     }
     if not items:
@@ -3983,26 +4447,40 @@ def preview_export(opts: dict) -> dict:
     except Exception:  # Header support can differ from the full decoder.
         sample["dimensionsNote"] = "Dimensions will be available after rendering."
     result["sample"] = sample
+    result["samples"].append(sample)
+    # Include examples from distinct destinations, so multi-source behavior is
+    # reviewable before an export creates any directories.
+    shown = {job["destination"]}
+    for other_name, other_job in items[1:]:
+        if other_job["destination"] in shown:
+            continue
+        other_path = export_requested_path(other_name, other_job, exif_for(other_name))
+        result["samples"].append({"name": other_name, "path": str(other_path),
+                                  "filename": other_path.name})
+        shown.add(other_job["destination"])
+        if len(shown) == 3:
+            break
+    result["destinationCount"] = len({job["destination"] for _, job in items})
     return result
 
 
 def start_export(opts: dict) -> dict:
     """Queue the same authoritative selection used by the export preview."""
     items, destination = prepare_export(opts)
-    SESSION_EXPORT_DESTINATIONS.add(destination)
+    SESSION_EXPORT_DESTINATIONS.update(Path(job["destination"]) for _, job in items)
+    batch = ExportBatch(items, destination)
     with EXPORT_LOCK:
         if EXPORT["running"]:
-            return {"error": "export already running",
-                    "jobId": EXPORT.get("jobId")}
+            return {"error": "export already running", "jobId": EXPORT.get("jobId")}
         record = JOBS.create("export", total=len(items),
                              state="running" if items else "done",
-                             result={"destination": str(destination)})
-        EXPORT.update(total=len(items), done=0, errors=[],
-                      running=bool(items), log=[], jobId=record["id"])
-    for name, job in items:
-        EXPORT_POOL.submit(export_one, name, job)
-    return {"queued": len(items), "destination": str(destination),
-            "jobId": record["id"]}
+                             result={"destination": str(destination)}, cancel=batch.cancel)
+        batch.status["jobId"] = record["id"]
+        EXPORT.clear()
+        EXPORT.update(batch.status)
+    batch.dispatch()
+    batch.dispatch()
+    return {"queued": len(items), "destination": str(destination), "jobId": record["id"]}
 
 
 def _merge_source_path(name: str, st: dict) -> Path:
@@ -4570,7 +5048,8 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
     image = np.asarray(base, dtype=np.float32) / 255.0
     image = edits.apply_base(
         image, state.get("optics"), state.get("heals"),
-        edits.lens_profile_for(exif_for(name)))
+        edits.lens_profile_for(exif_for(name),
+            edits.clean_optics(state.get("optics")).get("profileOverride")))
     cleaned_grade = grade.clean(state.get("grade") or {})
     if not grade.is_identity(cleaned_grade):
         image = grade.apply(image, cleaned_grade)
@@ -4964,6 +5443,7 @@ class Handler(BaseHTTPRequestHandler):
                     "folder": str(FOLDER),
                     "folders": snapshot["folders"],
                     "catalog": {
+                        "path": str(cat.path.resolve()) if cat else None,
                         "enabled": cat is not None,
                         "primarySource": PRIMARY_SOURCE_ID,
                         "sources": cat.sources() if cat else [],
@@ -5074,8 +5554,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/exif":
                 self._json(exif_for(q["name"]))
             elif u.path == "/api/lens-profile":
-                profile = edits.lens_profile_for(exif_for(q["name"]))
-                self._json({"found": bool(profile), "profile": profile})
+                self._json(edits.lens_match_for(exif_for(q["name"])))
             elif u.path == "/api/raw-default":
                 if not is_raw(q["name"]):
                     self._json({"settings": None, "label": "Processed image",
@@ -5094,6 +5573,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(load_json_file(PREFS_FILE, {}))
             elif u.path == "/api/cache/status":
                 self._json(cache_status())
+            elif u.path == "/api/sidecars/status":
+                self._json(sidecar_sync_status())
             elif u.path == "/api/soft-proof/profiles":
                 import soft_proof
                 self._json({"profiles": soft_proof.list_system_icc_profiles()})
@@ -5142,6 +5623,8 @@ class Handler(BaseHTTPRequestHandler):
                 cat = catalog_handle()
                 self._json({
                     "enabled": cat is not None,
+                    "mirrorEnabled": catalog_mirror_enabled(),
+                    "mirrorAllowed": CATALOG_MIRROR,
                     "path": str(cat.path.resolve()) if cat else None,
                     "backupPath": str(configured_backup_directory(cat).resolve())
                     if cat else None,
@@ -5172,7 +5655,8 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 self._json({"groups": cat.duplicates()})
             elif u.path == "/api/state":
-                self._json(catalog_entry_for(q["name"]))
+                self._json(recovery_state_for(q["name"]) if q.get("recovery") == "1"
+                           else catalog_entry_for(q["name"]))
             elif u.path == "/api/metadata":
                 cat = require_catalog()
                 image_id = catalog_image_id(q["name"])
@@ -5250,7 +5734,8 @@ class Handler(BaseHTTPRequestHandler):
                         native=True)
                     if not result.get("cancelled"):
                         result = dict(result, lens_profile=edits.lens_profile_for(
-                            exif_for(b["name"])))
+                            exif_for(b["name"]),
+                            edits.clean_optics(b.get("optics")).get("profileOverride")))
                     self._json(result)
                 else:
                     self._json(apply_preview_edits(
@@ -5294,11 +5779,15 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(benchmark_export(b["name"], b["job"]))
             elif u.path == "/api/state":
                 b = self._body()
+                expected_revision = b.pop("expectedRecoverySourceKey", None)
+                if expected_revision is not None and expected_revision != file_key(b["name"]):
+                    raise ValueError("The original changed since these edits were recovered; the draft was kept")
                 strict = str(self.headers.get("X-LightTable-Strict", "")) == "1"
                 entry, warnings = cleaned_state_request(b, strict=strict)
                 if "params" in entry:
                     entry["provenance"] = renderer_provenance()
-                save_image_state(b["name"], entry)
+                updates = expand_paired_metadata({b["name"]: entry})
+                save_image_states(updates)
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
@@ -5308,15 +5797,14 @@ class Handler(BaseHTTPRequestHandler):
                             image_id, str(b.get("historyLabel") or "External edit"),
                             catalog_entry_for(b["name"]), origin=origin)
                 EVENTS.publish("state", {
-                    "names": [b["name"]], "fields": sorted(entry),
-                    # Carry the accepted update: a queued window save can
-                    # land before another client reacts to this event.
-                    "patch": copy.deepcopy(entry),
+                    "names": list(updates), "fields": sorted(entry),
+                    "patches": copy.deepcopy(updates),
+                    **({"patch": copy.deepcopy(entry)} if len(updates) == 1 else {}),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True}
+                response = {"ok": True, "names": list(updates)}
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
@@ -5331,6 +5819,7 @@ class Handler(BaseHTTPRequestHandler):
                 updates = {}
                 for name in b.get("names", []):
                     updates[str(name)] = dict(cleaned)
+                updates = expand_paired_metadata(updates)
                 if updates:
                     save_image_states(updates)
                 origin = str(b.get("origin", ""))[:80]
@@ -5554,11 +6043,14 @@ class Handler(BaseHTTPRequestHandler):
                     current = load_json_file(PREFS_FILE, {})
                     if not isinstance(current, dict):
                         current = {}
-                    current.update(self._body())
+                    patch = self._body()
+                    current.update(patch)
                     # An unreadable live file is about to be replaced; keep
                     # its bytes rather than letting the rewrite erase them.
                     recovery.preserve_damaged_json(PREFS_FILE)
                     durable_io.atomic_write_json(PREFS_FILE, current)
+                if {"catalogMirror", "writeSidecars"} & set(patch):
+                    _queue_mirror(0)
                 self._json({"ok": True})
             elif u.path == "/api/recovery":
                 self._json(recovery_action(self._body()))
@@ -5671,6 +6163,8 @@ class Handler(BaseHTTPRequestHandler):
                                           "fields": ["metadata"],
                                           "origin": "metadata"})
                 self._json({"ok": True, "iptc": cat.iptc_for(image_id)})
+            elif u.path == "/api/metadata/capture-time":
+                self._json(capture_time_action(self._body()))
             elif u.path == "/api/metadata/bulk":
                 body = self._body()
                 cat = require_catalog()
@@ -5726,7 +6220,9 @@ class Handler(BaseHTTPRequestHandler):
                 body = self._body()
                 for name in body.get("names", [])[:20000]:
                     queue_sidecar(str(name))
-                self._json({"ok": True, "written": write_pending_sidecars()})
+                written = write_pending_sidecars()
+                status = sidecar_sync_status()
+                self._json({"ok": not status["failed"], "written": written, **status})
             elif u.path == "/api/photos/rename":
                 result = rename_photos(self._body())
                 EVENTS.publish("library", {"reason": "rename"})
@@ -5932,6 +6428,8 @@ def main() -> None:
     print(f"LightTable: {n} images in {FOLDER}")
     print(f"UI: http://127.0.0.1:{PORT}")
     STARTUP.ready(PORT)
+    if cat is not None and not SAFE_MODE and load_json_file(PREFS_FILE, {}).get("writeSidecars"):
+        _queue_mirror()
     threading.Thread(
         target=maintenance_loop, args=(cat,), daemon=True,
         name="lighttable-maintenance",
@@ -6265,8 +6763,7 @@ def catalog_collections_action(body: dict) -> dict:
         members = [int(i) for i in body.get("imageIds", [])]
         if members and action == "create":
             cat.set_collection_members(collection_id, members)
-        if CATALOG_MIRROR:
-            _queue_mirror()
+        _queue_mirror()
         return {"ok": True, "id": collection_id,
                 "collections": cat.collections(),
                 "library": current_library_state()}
@@ -6280,7 +6777,7 @@ def catalog_collections_action(body: dict) -> dict:
                                    [int(i) for i in body.get("imageIds", [])])
     elif action != "list":
         raise ValueError(f"unknown collection action: {action}")
-    if action != "list" and CATALOG_MIRROR:
+    if action != "list":
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
             "library": current_library_state()}
@@ -6331,6 +6828,11 @@ def import_sidecars(body: dict) -> dict:
                          or current.get("crop"))
         entry: dict = {}
         if want_metadata:
+            if parsed.get("captureTime") and not (current.get("captureTimeOverride") and conflict == "skip-existing"):
+                try:
+                    entry["captureTimeOverride"] = capture_clock.normalized_timestamp(parsed["captureTime"])
+                except ValueError:
+                    report["ignored"]["invalid capture time"] = report["ignored"].get("invalid capture time", 0) + 1
             if parsed.get("rating") is not None:
                 entry["rating"] = max(0, min(5, int(parsed["rating"])))
             if parsed.get("label"):
@@ -6819,7 +7321,10 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 folder="" if parent == "." else parent,
                 displayName=(copy["displayName"] if copy
                              else Path(source).name),
-                fileKey=file_key(name),
+                availability=(availability := media_availability.availability(src_path(name))),
+                fileKey=(revision := file_key(name) if availability == "local" else ""),
+                recoverySourceKey=revision,
+
                 mtime=snapshot["mtimes"].get(source, 0.0),
                 width=entry.get("width"),
                 height=entry.get("height"),
@@ -6852,6 +7357,8 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "folder": item["folder"],
             "displayName": item["displayName"],
             "fileKey": item["fileKey"],
+            "recoverySourceKey": item.get("recoverySourceKey"),
+            "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
             "status": item["status"],
