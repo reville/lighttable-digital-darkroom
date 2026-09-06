@@ -7829,7 +7829,11 @@ $('externalEditRun').onclick = async () => {
     if (!status.running) {
       clearInterval(externalEditTimer); externalEditTimer = null;
       $('externalEditRun').disabled = false;
-      if (status.paths?.length) openPaths(status.paths, status.names || []);
+      if (status.paths?.length) {
+        await openPaths(status.paths, status.names || []);
+        const warnings = status.warnings || [];
+        if (warnings.length) toast(`TIFF created with warnings: ${warnings[0].name}: ${warnings[0].warnings.join(' ')}`);
+      }
       else $('externalEditStatus').textContent = status.errors?.[0] || 'No TIFF was created.';
     }
   }, 900);
