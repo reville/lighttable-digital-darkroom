@@ -335,6 +335,53 @@ class RenameTests(CatalogServerTestCase):
         self.assertEqual(moved["total"], 1)
         self.assertEqual(moved["items"][0]["rating"], 3)
 
+    def test_camera_and_date_tokens_describe_each_photo(self):
+        """Every photo is described itself, not the first one in its folder."""
+        import ingest_workflow
+
+        def describe(path):
+            path = Path(path)
+            return {"name": path.name, "camera": f"Cam {path.stem.upper()}",
+                    "captureTime": "2024-03-09T10:11:12", "mtime": 0.0}
+
+        names = [self.qualified("a.jpg"), self.qualified("sub/b.jpg")]
+        with mock.patch.object(ingest_workflow, "describe_file",
+                               side_effect=describe):
+            result = server.rename_photos({
+                "names": names,
+                "template": "{camera}_{yyyy}{mm}{dd}_{sequence}"})
+        self.assertEqual(result["renamed"], 2)
+        self.assertTrue((self.root / "Cam A_20240309_0001.jpg").is_file())
+        self.assertTrue(
+            (self.root / "sub" / "Cam B_20240309_0002.jpg").is_file())
+
+    def test_a_template_without_values_keeps_the_original_name(self):
+        """Empty tokens must never rename a photo to a hidden ".jpg"."""
+        result = server.rename_photos(
+            {"names": [self.qualified("a.jpg")], "template": "{camera}"})
+        self.assertEqual(result["renamed"], 0)
+        self.assertTrue((self.root / "a.jpg").is_file())
+        self.assertEqual([p.name for p in self.root.iterdir()
+                          if p.name.startswith(".")], [])
+
+    def test_a_folder_separator_in_the_template_is_refused(self):
+        with self.assertRaisesRegex(ValueError, "cannot create folders"):
+            server.rename_photos({"names": [self.qualified("a.jpg")],
+                                  "template": "{yyyy}/{filename}"})
+        self.assertTrue((self.root / "a.jpg").is_file())
+
+    def test_a_virtual_copy_and_its_original_rename_the_file_once(self):
+        original = self.qualified("a.jpg")
+        created = server.update_library(
+            {"action": "create_virtual", "name": original})
+        result = server.rename_photos(
+            {"names": [original, created["copy"]["name"]],
+             "template": "Trip_{sequence}"})
+        self.assertTrue(result["ok"], result)
+        self.assertEqual(result["renamed"], 1)
+        self.assertTrue((self.root / "Trip_0001.jpg").is_file())
+        self.assertFalse((self.root / "Trip_0002.jpg").exists())
+
     def test_rename_carries_the_sidecar(self):
         (self.root / "a.xmp").write_text("<x/>")
         server.rename_photos({"names": [self.qualified("a.jpg")],

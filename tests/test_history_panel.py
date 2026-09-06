@@ -33,7 +33,7 @@ const nodes = Object.fromEntries(['historyList', 'historyClear', 'historyPane'].
   classList: {contains: () => false},
   addEventListener(type, callback) { this.handlers[type] = callback; },
 }]));
-const posts = [], notices = [], restored = [];
+const posts = [], notices = [], restored = [], statuses = [];
 let get = async () => ({steps: []});
 let post = async (path, body) => { posts.push({path, body}); return {ok: true}; };
 let enabled = true;
@@ -41,6 +41,7 @@ const h = createHistoryPanel({
   el: id => nodes[id], post: (...args) => post(...args), get: (...args) => get(...args),
   toast: message => notices.push(message), enabled: () => enabled,
   onRestore: state => restored.push(state),
+  onStatus: status => statuses.push(status),
 });
 """
 
@@ -49,7 +50,7 @@ const h = createHistoryPanel({
 class HistoryPanelTests(unittest.TestCase):
     def run_js(self, body):
         result = subprocess.run(['node', '--input-type=module', '-e', HARNESS + body],
-                                cwd=ROOT, text=True, capture_output=True, check=True)
+                                cwd=ROOT, text=True, capture_output=True, check=True, timeout=30)
         return json.loads(result.stdout)
 
     def test_final_slider_snapshot_flushes_without_another_interaction(self):
@@ -109,22 +110,115 @@ console.log(JSON.stringify(posts.map(p => p.body.state.masks[0].points)));
 """)
         self.assertEqual(result, [[1], [3]])
 
-    def test_failed_write_is_visible_and_does_not_block_later_steps(self):
+    def test_failed_write_survives_its_window_and_retries_before_later_steps(self):
         result = self.run_js("""
+let online = false;
+const persisted = [];
 post = async (path, body) => {
   posts.push({path, body});
-  if (body.state.value === 1) throw new Error('offline');
-  if (body.state.value === 2) return {error: 'disk full'};
+  if (body.name === 'a' && !online) throw new Error('offline');
+  persisted.push(body.name + body.state.value);
   return {ok: true};
 };
 h.record('a', 'Light', {value: 1});
 h.record('a', 'Crop', {value: 2});
 h.record('a', 'Remove', {value: 3});
-await h.flush();
-console.log(JSON.stringify({sent: posts.map(p => p.body.state.value), notices}));
+h.record('b', 'Light', {value: 1});
+await settle(); await advance(2000);
+const first = {pending: h.hasPending, persisted: [...persisted], status: statuses.at(-1)};
+const failedFlush = await h.flush();
+const stillPending = h.hasPending;
+online = true;
+const retry = await h.retry();
+console.log(JSON.stringify({first, failedFlush, stillPending, retry, persisted,
+  sent: posts.map(p => p.body.name + p.body.state.value), notices,
+  finished: h.hasPending, status: statuses.at(-1)}));
 """)
-        self.assertEqual(result['sent'], [1, 2, 3])
+        self.assertEqual(result['first'], {
+            'pending': True, 'persisted': ['b1'],
+            'status': {'pendingNames': ['a'], 'failedNames': ['a'],
+                       'error': 'Could not save photo history'},
+        })
+        self.assertFalse(result['failedFlush'])
+        self.assertTrue(result['stillPending'])
+        self.assertTrue(result['retry'])
+        self.assertEqual(result['persisted'], ['b1', 'a1', 'a2', 'a3'])
+        self.assertEqual(result['sent'], ['a1', 'b1', 'a1', 'a1', 'a2', 'a3'])
         self.assertEqual(result['notices'], ['Could not save photo history'] * 2)
+        self.assertFalse(result['finished'])
+        self.assertEqual(result['status'], {'pendingNames': [], 'failedNames': [], 'error': None})
+
+    def test_flush_reports_a_failure_that_occurs_during_the_flush(self):
+        result = self.run_js("""
+const first = deferred();
+post = async (path, body) => { posts.push({path, body}); return first.promise; };
+h.record('a', 'Light', {value: 1});
+h.record('a', 'Light', {value: 2});
+const flushing = h.flush();
+first.resolve({ok: false, error: 'disk full'});
+const saved = await flushing;
+console.log(JSON.stringify({saved, pending: h.hasPending,
+  sent: posts.map(p => p.body.state.value), notices}));
+""")
+        self.assertEqual(result, {
+            'saved': False, 'pending': True, 'sent': [1],
+            'notices': ['Could not save photo history'],
+        })
+
+    def test_failed_clear_retries_before_subsequent_edits(self):
+        result = self.run_js("""
+let online = false;
+post = async (path, body) => {
+  posts.push({path, body});
+  if (path.endsWith('/clear') && !online) return {error: 'disk full'};
+  return {ok: true};
+};
+await h.refresh('a');
+h.record('a', 'Light', {value: 1});
+const clearing = nodes.historyClear.handlers.click();
+h.record('a', 'Light', {value: 2});
+await clearing; await settle();
+const before = {actions: posts.map(p => p.body.state?.value ?? 'clear'),
+  pending: h.hasPending, status: statuses.at(-1)};
+online = true;
+const saved = await h.retry();
+console.log(JSON.stringify({before, saved, pending: h.hasPending,
+  actions: posts.map(p => p.body.state?.value ?? 'clear'), notices}));
+""")
+        self.assertEqual(result['before'], {
+            'actions': [1, 'clear'], 'pending': True,
+            'status': {'pendingNames': ['a'], 'failedNames': ['a'],
+                       'error': 'Could not clear photo history'},
+        })
+        self.assertTrue(result['saved'])
+        self.assertFalse(result['pending'])
+        self.assertEqual(result['actions'], [1, 'clear', 'clear', 2])
+        self.assertEqual(result['notices'], ['Could not clear photo history'])
+
+    def test_scoped_retry_keeps_other_photos_pending(self):
+        result = self.run_js("""
+let online = false;
+post = async (path, body) => {
+  posts.push({path, body});
+  if (!online) return {error: 'offline'};
+  return {ok: true};
+};
+h.record('a', 'Light', {value: 1}); h.record('b', 'Light', {value: 1});
+await settle(); online = true;
+const savedA = await h.retry('a');
+const middle = {pending: h.hasPending, status: statuses.at(-1)};
+const savedB = await h.flush('b');
+console.log(JSON.stringify({savedA, middle, savedB, pending: h.hasPending,
+  names: posts.map(p => p.body.name)}));
+""")
+        self.assertTrue(result['savedA'])
+        self.assertEqual(result['middle'], {
+            'pending': True, 'status': {'pendingNames': ['b'], 'failedNames': ['b'],
+                                     'error': 'Could not save photo history'},
+        })
+        self.assertTrue(result['savedB'])
+        self.assertFalse(result['pending'])
+        self.assertEqual(result['names'], ['a', 'b', 'a', 'b'])
 
     def test_late_history_results_do_not_replace_selected_photo(self):
         result = self.run_js("""
