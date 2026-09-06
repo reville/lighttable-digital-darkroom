@@ -5309,6 +5309,9 @@ class Handler(BaseHTTPRequestHandler):
                             catalog_entry_for(b["name"]), origin=origin)
                 EVENTS.publish("state", {
                     "names": [b["name"]], "fields": sorted(entry),
+                    # Carry the accepted update: a queued window save can
+                    # land before another client reacts to this event.
+                    "patch": copy.deepcopy(entry),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
@@ -5343,6 +5346,7 @@ class Handler(BaseHTTPRequestHandler):
                                     catalog_entry_for(name), origin=origin)
                 EVENTS.publish("state", {
                     "names": list(updates), "fields": sorted(cleaned),
+                    "patch": copy.deepcopy(cleaned),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
@@ -6507,25 +6511,31 @@ def rename_photos(body: dict) -> dict:
     except (TypeError, ValueError):
         start = 1
     batch = hashlib.sha256(str(time.time_ns()).encode()).hexdigest()[:16]
+    custom = str(body.get("custom", ""))
     planned: list[tuple[Path, Path, int, str]] = []
     taken: set[Path] = set()
-    for offset, name in enumerate(names):
+    described: set[Path] = set()
+    for name in names:
         path, source_id, relpath, _ = resolve_name(name)
-        context = {
-            "filename": path.stem,
-            # Zero-padded so a renamed set sorts the way an ingested one does.
-            "sequence": f"{start + offset:0{ingest_workflow.SEQUENCE_DIGITS}d}",
-            "custom": str(body.get("custom", "")),
-            "camera": "", "captureTime": "",
-        }
-        item = next((i for i in ingest_workflow.scan_source(path.parent,
-                                                            limit=1)
-                     if i["path"] == str(path)), None)
-        if item:
-            context["camera"] = item.get("camera", "")
-            context["captureTime"] = item.get("captureTime", "")
+        if path in described:
+            continue  # a virtual copy shares its original's file
+        described.add(path)
+        # Describe this photo itself. Scanning its folder with a limit of one
+        # described only the first photo there, so {camera} and the date
+        # tokens were empty for every other frame in the selection.
+        try:
+            item = ingest_workflow.describe_file(path)
+        except (OSError, ValueError):
+            item = {"name": path.name}
+        # Zero-padded so a renamed set sorts the way an ingested one does.
+        context = ingest_workflow.template_context(
+            item, start + len(planned), custom)
         stem = ingest_workflow.render_path(template, context)
-        target = path.with_name(f"{stem}{path.suffix}")
+        if "/" in stem:
+            raise ValueError("a rename template cannot create folders")
+        # A template whose tokens are all empty must keep the current name:
+        # ".jpg" would be a hidden file the library never shows again.
+        target = path.with_name(f"{stem or path.stem}{path.suffix}")
         suffix = 2
         while (target in taken or target.exists()) and target != path:
             target = path.with_name(f"{stem}-{suffix}{path.suffix}")
