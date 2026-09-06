@@ -4964,6 +4964,7 @@ class Handler(BaseHTTPRequestHandler):
                     "folder": str(FOLDER),
                     "folders": snapshot["folders"],
                     "catalog": {
+                        "path": str(cat.path.resolve()) if cat else None,
                         "enabled": cat is not None,
                         "primarySource": PRIMARY_SOURCE_ID,
                         "sources": cat.sources() if cat else [],
@@ -5172,7 +5173,13 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 self._json({"groups": cat.duplicates()})
             elif u.path == "/api/state":
-                self._json(catalog_entry_for(q["name"]))
+                state = catalog_entry_for(q["name"])
+                if q.get("recovery") == "1":
+                    try:
+                        state["_recoverySourceKey"] = file_key(q["name"])
+                    except (ValueError, OSError):
+                        state["_recoverySourceKey"] = None
+                self._json(state)
             elif u.path == "/api/metadata":
                 cat = require_catalog()
                 image_id = catalog_image_id(q["name"])
