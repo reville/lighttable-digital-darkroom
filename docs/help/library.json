@@ -15,6 +15,18 @@
     ],
     "sections": [
       {
+        "title": "Choose a starting point",
+        "paragraphs": [
+          "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.",
+          "Apple Photos whole-library import requires the macOS app and permission to read Photos. It copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. Your Photos library stays unchanged. iCloud originals download during import, so allow time and disk space. Albums, videos, and Photos edits are not transferred.",
+          "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals."
+        ],
+        "steps": [
+          "Choose a folder to browse originals in place, or select one of the migration options.",
+          "Review the import result, then continue into the library."
+        ]
+      },
+      {
         "title": "Open a local folder",
         "paragraphs": [
           "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
@@ -52,6 +64,18 @@
       {
         "path": "web/index.html",
         "anchor": "<button id=\"catalogRescan\" role=\"menuitem\">Rescan folders</button>"
+      },
+      {
+        "path": "web/first-run.js",
+        "anchor": "export function shouldShowSetup("
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren’t transferred."
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "private final class PhotosLibraryImporter {"
       }
     ]
   },
@@ -303,7 +327,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "if (S.viewMode !== 'detail') {"
+        "anchor": "function setViewMode(mode, persist = true) {"
       },
       {
         "path": "web/app.js",
@@ -1088,15 +1112,15 @@
       {
         "title": "Prepare and inspect",
         "paragraphs": [
-          "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog. It matches photos already added to LightTable; it does not automatically add missing source folders or copy original photos."
+          "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog. Add the photo folders used by this catalog lets the import register referenced originals and their containing folders. It leaves originals in place. Clear that option to match only photos already in LightTable.",
+          "Preview compatibility reports matches in the current library without changing it. Photos not yet added may show as unmatched in the preview; importing with Add the photo folders enabled registers available originals before matching again."
         ],
         "steps": [
-          "Add the folders containing the Lightroom originals to LightTable and let them scan.",
-          "Open Local ••• → Import catalog….",
-          "Choose the .lrcat file, or enter its path, then review the photo counts, folder roots, and warnings.",
-          "Choose which categories to import: metadata, keywords, collections, stacks, approximate develop settings, and optional edit history.",
-          "For photos with existing edits, choose Keep mine or Replace with imported.",
-          "Click Import and review the final matched, not found, and skipped counts."
+          "Open Local ••• → Import catalog…, or choose the Lightroom Classic catalog option in setup.",
+          "Choose the .lrcat file and review its counts and warnings.",
+          "Choose the categories to import, the policy for existing edits, and whether to add the referenced photo folders.",
+          "Click Preview compatibility and review mapped and skipped settings. Try 20 variants creates separate trial edits before a larger import.",
+          "Click Import after reviewing compatibility, then read the report and matched, not found, and skipped counts. LightTable creates a catalog backup before a trial or import."
         ]
       },
       {
@@ -1115,7 +1139,7 @@
     "sources": [
       {
         "path": "catalog_import.py",
-        "anchor": "The importer matches files a\n  scan has already added to the catalog."
+        "anchor": "def _register_catalog_originals("
       },
       {
         "path": "catalog_import.py",
@@ -1136,6 +1160,18 @@
       {
         "path": "web/catalog-ui.js",
         "anchor": "apply: { metadata: true, develop: false, crop: false },"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Add the photo folders used by this catalog"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "preview.onclick = () => begin('preview');"
+      },
+      {
+        "path": "server.py",
+        "anchor": "label=\"before-import\""
       }
     ]
   }
