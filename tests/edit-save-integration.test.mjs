@@ -532,3 +532,85 @@ test('peer reconciliation cannot overwrite controls edited while its read was pe
   await settle();
   assert.equal(app.S.grade.exposure, 4);
 });
+
+function toneAndMasksClipboard() {
+  return {...clipboard(4), sourceName: 'A.raw', masks: [{type: 'subject'}], choices: {
+    film: false, raw: false, tone: true, color: false, detail: false,
+    optics: false, crop: false, masks: true, heals: false,
+  }};
+}
+
+test('selective paste preserves unchecked color changed while AI detection is pending', async () => {
+  const app = harness();
+  app.S.images[1].grade = {exposure: 1, temp: 0};
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  let detecting = false;
+  app.context.api = (path, body) => {
+    if (path !== '/api/mask/semantic') return originalApi(path, body);
+    detecting = true; return detection.promise;
+  };
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  assert.equal(detecting, true);
+  await app.applyServerStateEvent({client: 'cli', names: ['B.raw'],
+    patch: {grade: {exposure: 1, temp: 20}}});
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  const delivered = app.requests.find(request => request.state.name === 'B.raw');
+  assert.equal(delivered.state.grade.exposure, 4);
+  assert.equal(delivered.state.grade.temp, 20);
+  assert.equal(app.S.images[1].grade.temp, 20);
+  assert.equal(app.history.find(step => step.name === 'B.raw').state.grade.temp, 20);
+});
+
+test('selective paste refuses AI masks when effective target geometry changes during detection', async () => {
+  const app = harness();
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  await app.applyServerStateEvent({client: 'cli', names: ['B.raw'],
+    patch: {params: {profile_enabled: false, rotate: 90}}});
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.equal(app.S.images[1].params.rotate, 90);
+  assert.equal(app.S.images[1].grade.exposure, 1);
+  assert.equal(app.S.images[1].masks.length, 0);
+  assert.match(app.nodes.get('transferStatus').textContent, /geometry changed/);
+});
+
+test('selective paste refuses AI masks if the source identity changes during detection', async () => {
+  const app = harness();
+  app.S.images[1].recoverySourceKey = 'original';
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  app.S.images[1] = {...app.S.images[1], recoverySourceKey: 'replacement'};
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.equal(app.S.images[1].grade.exposure, 1);
+  assert.match(app.nodes.get('transferStatus').textContent, /photo or its geometry changed/);
+});
+
+test('selective paste never replaces unchecked edits with defaults after a library row reload', async () => {
+  const app = harness();
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  app.S.images[1] = {name: 'B.raw', stateLoaded: false, hasEdits: true};
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.match(app.nodes.get('transferStatus').textContent, /latest existing settings are not loaded/);
+});
