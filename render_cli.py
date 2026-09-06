@@ -68,6 +68,8 @@ def main():
     fmt = job.get("format", "jpeg")
     quality = int(job.get("quality", 92))
     long_edge = job.get("longEdge")
+    warnings = job.setdefault("warnings", [])
+    color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
 
     t0 = time.time()
     cp = fp.clean_params(params)
@@ -114,12 +116,18 @@ def main():
         output_space=str(job.get("outputSpace", "srgb")),
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=metadata_policy if is_heif else "none",
-        metadata_fields=(job.get("metadataFields") or {}) if is_heif else None)
+        metadata_fields=(job.get("metadataFields") or {}) if is_heif else None,
+        warnings=warnings)
     if metadata_policy != "none" and not is_heif:
-        platform_image.write_metadata(
+        before = len(warnings)
+        succeeded = platform_image.write_metadata(
             dst, metadata_source, metadata_policy,
-            job.get("metadataFields") or {})
-    print(f"OK {dst} {width}x{height} {time.time()-t0:.1f}s")
+            job.get("metadataFields") or {}, warnings=warnings)
+        if not succeeded and len(warnings) == before:
+            warnings.append("Requested metadata could not be saved.")
+    print(json.dumps({"ok": True, "path": str(dst), "width": width,
+                      "height": height, "seconds": time.time() - t0,
+                      "warnings": warnings}))
 
 
 if __name__ == "__main__":

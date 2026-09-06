@@ -804,7 +804,7 @@ def save_image_states(entries: dict[str, dict]) -> None:
             if versions is not None:
                 cat.save_versions(image_id, versions)
             queue_sidecar(name)
-        if CATALOG_MIRROR:
+        if CATALOG_MIRROR or load_json_file(PREFS_FILE, {}).get("writeSidecars"):
             _queue_mirror()
         return
     with STATE_LOCK:
@@ -817,7 +817,7 @@ def save_image_states(entries: dict[str, dict]) -> None:
 _MIRROR_TIMER: threading.Timer | None = None
 
 
-def _queue_mirror(delay: float = 5.0) -> None:
+def _queue_mirror(delay: float = 5.0, retries: int = 2) -> None:
     """Rewrite the per-folder state file a few seconds after the last edit.
 
     The mirror exists so a folder can still carry its own edits to another
@@ -833,60 +833,108 @@ def _queue_mirror(delay: float = 5.0) -> None:
             _MIRROR_TIMER.cancel()
 
         def run() -> None:
-            for source in cat.sources():
-                if source["available"]:
-                    catalog_scan.mirror_state_file(cat, source["id"])
-            if load_json_file(PREFS_FILE, {}).get("writeSidecars"):
-                write_pending_sidecars()
+            try:
+                if CATALOG_MIRROR:
+                    for source in cat.sources():
+                        if source["available"]:
+                            catalog_scan.mirror_state_file(cat, source["id"])
+                if load_json_file(PREFS_FILE, {}).get("writeSidecars"):
+                    write_pending_sidecars()
+                    if retries and sidecar_sync_status()["pending"]:
+                        _queue_mirror(delay=30.0, retries=retries - 1)
+            finally:
+                cat.close()
 
         _MIRROR_TIMER = threading.Timer(delay, run)
         _MIRROR_TIMER.daemon = True
         _MIRROR_TIMER.start()
 
 
-_SIDECAR_PENDING: set[tuple[str, str]] = set()
+_SIDECAR_PREFIX = "sidecar.pending:"
+_SIDECAR_WRITE_LOCK = threading.Lock()
 
 
 def queue_sidecar(name: str) -> None:
-    """Note that one photo's sidecar is out of date."""
+    """Persist the outbox entry by image ID, so renames and restarts are safe."""
+    if library_workflow.is_virtual(name):
+        return  # A virtual edit must never replace its original's XMP.
     cat = catalog_handle()
     if cat is None:
         return
-    with STATE_LOCK:
-        _SIDECAR_PENDING.add((str(cat.path.resolve()), name))
+    image_id = catalog_image_id(name)
+    if image_id is None:
+        return
+    with cat.write() as conn:
+        conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES(?, ?)",
+                     (_SIDECAR_PREFIX + str(image_id), json.dumps({
+                         "revision": time.time_ns(), "error": ""})))
+
+
+def _pending_sidecars(cat) -> list:
+    return cat.connection.execute(
+        "SELECT key, value FROM meta WHERE key >= ? AND key < ? ORDER BY key",
+        (_SIDECAR_PREFIX, _SIDECAR_PREFIX + "\uffff")).fetchall()
+
+
+def sidecar_sync_status() -> dict:
+    cat = catalog_handle()
+    if cat is None:
+        return {"pending": 0, "failed": 0, "errors": []}
+    rows = _pending_sidecars(cat)
+    errors = []
+    for row in rows:
+        record = json.loads(row["value"])
+        if record.get("error"):
+            image = cat.image_row(int(row["key"][len(_SIDECAR_PREFIX):]))
+            errors.append({"name": image["relpath"] if image else "Missing photo",
+                           "error": record["error"]})
+    return {"pending": len(rows), "failed": len(errors), "errors": errors[:100]}
 
 
 def write_pending_sidecars() -> int:
-    """Write `photo.xmp` beside the originals whose state changed.
-
-    Off by default. Turning it on makes ratings, labels, keywords, rights, and
-    an approximate grade travel with the folder, which is what someone moving
-    between machines or handing files to another editor needs. It is
-    best-effort: a read-only volume simply writes nothing.
-    """
+    """Flush the durable outbox; failed or newer edits remain ready to retry."""
     import xmp_sidecar
 
     cat = catalog_handle()
     if cat is None:
         return 0
-    catalog_path = str(cat.path.resolve())
-    with STATE_LOCK:
-        pending = {(path, name) for path, name in _SIDECAR_PENDING
-                   if path == catalog_path}
-        names = [name for _, name in pending]
-        _SIDECAR_PENDING.difference_update(pending)
+    if not _SIDECAR_WRITE_LOCK.acquire(blocking=False):
+        return 0
     written = 0
-    for name in names:
-        try:
-            path = src_path(name)
-        except ValueError:
-            continue
-        image_id = catalog_image_id(name)
-        if image_id is None:
-            continue
-        record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
-        if xmp_sidecar.write_sidecar(path, record):
-            written += 1
+    try:
+        for pending in _pending_sidecars(cat):
+            errors = []
+            try:
+                image_id = int(pending["key"][len(_SIDECAR_PREFIX):])
+                image = cat.image_row(image_id)
+                if image is None or image["virtual"]:
+                    # Catalog removal means the user no longer requests sync.
+                    succeeded = True
+                else:
+                    name = catalog_module.qualified_name(
+                        image["source_id"], image["relpath"])
+                    path = src_path(name)
+                    if not path.is_file():
+                        raise OSError("Original is unavailable. Reconnect its folder and retry.")
+                    record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
+                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors)
+                    if succeeded:
+                        written += 1
+            except Exception as error:  # retain the outbox entry for retry
+                succeeded = False
+                errors.append(str(error))
+            with cat.write() as conn:
+                if succeeded:
+                    conn.execute("DELETE FROM meta WHERE key=? AND value=?",
+                                 (pending["key"], pending["value"]))
+                else:
+                    updated = dict(json.loads(pending["value"]),
+                                   error="; ".join(errors) or "XMP could not be written.")
+                    conn.execute("UPDATE meta SET value=? WHERE key=? AND value=?",
+                                 (json.dumps(updated), pending["key"], pending["value"]))
+        EVENTS.publish("sidecars", sidecar_sync_status())
+    finally:
+        _SIDECAR_WRITE_LOCK.release()
     return written
 
 
@@ -3329,6 +3377,9 @@ def _export_metadata_payload(job: dict) -> tuple[str, Path | None, dict]:
         source = src_path(job["sourceName"]) if job.get("sourceName") else None
     except (ValueError, KeyError):
         source = None
+        if policy in ("all", "all-except-location"):
+            job.setdefault("warnings", []).append(
+                "Source camera metadata could not be located.")
     return policy, source, job.get("metadataFields") or {}
 
 
@@ -3364,7 +3415,8 @@ def finish_export(film_png: Path, dst: Path, job: dict) -> tuple[int, int]:
         bit_depth=int(job.get("bitDepth", 16)),
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=policy if is_heif else "none",
-        metadata_fields=metadata_fields if is_heif else None)
+        metadata_fields=metadata_fields if is_heif else None,
+        warnings=job.setdefault("warnings", []))
     if not is_heif:
         embed_export_metadata(dst, job)
     return size
@@ -3406,7 +3458,13 @@ def embed_export_metadata(dst: Path, job: dict) -> bool:
     policy, source, fields = _export_metadata_payload(job)
     if policy == "none":
         return False
-    return platform_image.write_metadata(dst, source, policy, fields)
+    warnings = job.setdefault("warnings", [])
+    before = len(warnings)
+    succeeded = platform_image.write_metadata(
+        dst, source, policy, fields, warnings=warnings)
+    if not succeeded and len(warnings) == before:
+        warnings.append("Requested metadata could not be saved.")
+    return succeeded
 
 
 def rust_direct_export_supported(job: dict) -> bool:
@@ -3462,6 +3520,8 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
 
 
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
+    # Check before a renderer spends work or creates any untagged output.
+    profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
     params = fp.clean_params(dict(job["params"], linear_input=is_raw(name)))
     cp = fp.clean_params(params)
     direct_error = None
@@ -3481,9 +3541,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
         }
         try:
             metrics = _resident_render_full(name, params, request)
-            profile = color_pipeline.icc_bytes("srgb")
-            if profile:
-                platform_image.embed_jpeg_icc(dst, profile)
+            platform_image.embed_jpeg_icc(dst, profile)
             embed_export_metadata(dst, job)
             return dict(metrics, width=int(metrics["width"]),
                         height=int(metrics["height"]), direct_export=True)
@@ -5095,6 +5153,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(load_json_file(PREFS_FILE, {}))
             elif u.path == "/api/cache/status":
                 self._json(cache_status())
+            elif u.path == "/api/sidecars/status":
+                self._json(sidecar_sync_status())
             elif u.path == "/api/soft-proof/profiles":
                 import soft_proof
                 self._json({"profiles": soft_proof.list_system_icc_profiles()})
@@ -5729,7 +5789,9 @@ class Handler(BaseHTTPRequestHandler):
                 body = self._body()
                 for name in body.get("names", [])[:20000]:
                     queue_sidecar(str(name))
-                self._json({"ok": True, "written": write_pending_sidecars()})
+                written = write_pending_sidecars()
+                status = sidecar_sync_status()
+                self._json({"ok": not status["failed"], "written": written, **status})
             elif u.path == "/api/photos/rename":
                 result = rename_photos(self._body())
                 EVENTS.publish("library", {"reason": "rename"})
@@ -5935,6 +5997,8 @@ def main() -> None:
     print(f"LightTable: {n} images in {FOLDER}")
     print(f"UI: http://127.0.0.1:{PORT}")
     STARTUP.ready(PORT)
+    if cat is not None and not SAFE_MODE and load_json_file(PREFS_FILE, {}).get("writeSidecars"):
+        _queue_mirror()
     threading.Thread(
         target=maintenance_loop, args=(cat,), daemon=True,
         name="lighttable-maintenance",

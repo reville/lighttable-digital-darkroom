@@ -9,11 +9,13 @@ export function connectServerEvents(client, handlers = {}) {
   source.onopen = () => window.dispatchEvent(new CustomEvent(
     'lighttable-server-connection', { detail: { state: 'open' } }));
   const eventTypes = ['ready', 'state', 'library', 'job', 'ui.command',
-    'ui.state', 'resync'];
+    'ui.state', 'resync', 'sidecars'];
   eventTypes.forEach((type) => {
     source.addEventListener(type, (event) => {
       let record = {};
       try { record = JSON.parse(event.data || '{}'); } catch { return; }
+      if (type === 'sidecars') window.dispatchEvent(new CustomEvent(
+        'lighttable-sidecars', { detail: record }));
       if (handlers[type]) handlers[type](record);
     });
   });
