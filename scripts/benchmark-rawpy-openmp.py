@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify RAW output identity across processes with 1 and 8 OpenMP threads.
+"""Verify RAW output identity across fresh processes and OpenMP thread counts.
 
 Pass real X-Trans and Bayer files. An optional stock-wheel interpreter adds
 baseline identity/timing. Each decode gets a fresh process, so OpenMP reads
@@ -33,9 +33,21 @@ with ExitStack() as stack:
     else:
         raw, decoder = stack.enter_context(raw_decode_runtime.open_raw(sys.argv[1]))
     opened = time.perf_counter()
-    rgb = raw.postprocess(use_camera_wb=True, gamma=(1,1), no_auto_bright=True,
+    options = dict(use_camera_wb=True, gamma=(1,1), no_auto_bright=True,
         output_bps=16, output_color=decoder.ColorSpace.ProPhoto,
         highlight_mode=decoder.HighlightMode.ReconstructDefault)
+    variant = sys.argv[4]
+    if variant == 'onepass':
+        options['demosaic_algorithm'] = decoder.DemosaicAlgorithm.PPG
+    elif variant == 'smooth':
+        options.update(demosaic_algorithm=decoder.DemosaicAlgorithm.AHD,
+                       median_filter_passes=1)
+    elif variant == 'daylight':
+        options.update(use_camera_wb=False, user_wb=list(raw.daylight_whitebalance),
+                       highlight_mode=decoder.HighlightMode.Blend)
+    elif variant == 'half':
+        options['half_size'] = True
+    rgb = raw.postprocess(**options)
 done = time.perf_counter()
 print(json.dumps({'openmp':decoder.flags['OPENMP'], 'available':available,
     'decoder':decoder.__name__, 'shape':rgb.shape,
@@ -50,31 +62,39 @@ def main():
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--baseline-python")
     parser.add_argument("--repeats", type=int, default=2)
+    parser.add_argument("--threads", type=int, nargs="+", default=[1, 8])
+    parser.add_argument("--variants", nargs="+", default=["standard"],
+                        choices=["standard", "onepass", "smooth", "daylight", "half"])
     args = parser.parse_args()
     if not 1 <= args.repeats <= 10:
         parser.error("--repeats must be 1 to 10")
+    if any(t < 1 or t > 32 for t in args.threads):
+        parser.error("--threads must be 1 to 32")
     rows = []
     for source in args.sources:
-        row = {"file": source.name, "runs": []}
-        configurations = [("openmp", args.python, t) for t in (1, 8)]
-        if args.baseline_python:
-            configurations.insert(0, ("stock", args.baseline_python, 1))
-        for label, python, threads in configurations:
-            for _ in range(args.repeats):
-                env = dict(os.environ, OMP_NUM_THREADS=str(threads), OMP_DYNAMIC="FALSE")
-                # Explicit interpreters must not inherit a site-packages overlay.
-                env.pop("PYTHONPATH", None)
-                result = subprocess.run([python, "-c", DECODE, str(source.resolve()),
-                                         label, str(Path(__file__).resolve().parents[1])],
-                                        env=env, check=True, text=True,
-                                        capture_output=True, timeout=180)
-                run = json.loads(result.stdout)
-                if label == "openmp" and not run["available"]:
-                    raise SystemExit("Candidate rawpy does not support OpenMP")
-                row["runs"].append(dict(run, runtime=label, threads=threads))
-        row["byteIdentical"] = len({(tuple(r["shape"]), r["sha256"])
-                                      for r in row["runs"]}) == 1
-        rows.append(row)
+        for variant in args.variants:
+            row = {"file": source.name, "variant": variant, "runs": []}
+            configurations = [("openmp", args.python, t) for t in args.threads]
+            if args.baseline_python:
+                configurations.insert(0, ("stock", args.baseline_python, 1))
+            for label, python, threads in configurations:
+                for _ in range(args.repeats):
+                    env = dict(os.environ, OMP_NUM_THREADS=str(threads), OMP_DYNAMIC="FALSE")
+                    # Explicit interpreters must not inherit a site-packages overlay.
+                    env.pop("PYTHONPATH", None)
+                    result = subprocess.run([python, "-c", DECODE, str(source.resolve()),
+                                             label, str(Path(__file__).resolve().parents[1]), variant],
+                                            env=env, check=True, text=True,
+                                            capture_output=True, timeout=180)
+                    run = json.loads(result.stdout)
+                    if label == "openmp" and not run["openmp"]:
+                        raise SystemExit("Candidate routed to stock; acceleration was not tested")
+                    row["runs"].append(dict(run, runtime=label, threads=threads))
+            row["byteIdentical"] = len({(tuple(r["shape"]), r["sha256"])
+                                          for r in row["runs"]}) == 1
+            rows.append(row)
+            print(f"{source.name} ({variant}): "
+                  f"{'identical' if row['byteIdentical'] else 'MISMATCH'}", file=sys.stderr, flush=True)
     print(json.dumps(rows, indent=2), flush=True)
     if not all(row["byteIdentical"] for row in rows):
         raise SystemExit("RAW output changed across thread counts or runtimes")
