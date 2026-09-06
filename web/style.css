@@ -232,7 +232,7 @@ input[type=checkbox]:disabled { opacity:.4; }
   user-select:none;
 }
 /* A desktop host may reserve native window-control space over this surface. */
-.native-shell .topbar { padding-left:var(--native-window-controls-w,78px); }
+.native-shell .topbar { padding-left:var(--native-window-controls-w,98px); }
 .brand-group, .search-group, .top-actions { display:flex; align-items:center; gap:8px; min-width:0; }
 .search-group { gap:12px; }
 .brand {

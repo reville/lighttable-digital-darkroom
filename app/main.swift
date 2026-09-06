@@ -15,7 +15,24 @@ import Sparkle
 
 private enum WindowChrome {
     static let topBarHeight: CGFloat = 48
-    static let trafficLightClearance: CGFloat = 78
+    // A plain titled window uses a tight inset intended for a short title bar.
+    // Take the system metrics from a unified toolbar for our full-height header.
+    static let nativeTrafficLightFrames: [NSRect] = {
+        let reference = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable],
+            backing: .buffered, defer: false)
+        reference.toolbar = NSToolbar(identifier: "LightTableChromeMetrics")
+        reference.toolbarStyle = .unified
+        reference.contentView?.superview?.layoutSubtreeIfNeeded()
+        return [NSWindow.ButtonType.closeButton, .miniaturizeButton, .zoomButton]
+            .compactMap { reference.standardWindowButton($0)?.frame }
+    }()
+    static var trafficLightClearance: CGFloat {
+        guard let first = nativeTrafficLightFrames.first,
+              let last = nativeTrafficLightFrames.last else { return 98 }
+        return ceil(last.maxX + first.minX)
+    }
     static let fallbackBottomDragStripHeight: CGFloat = 8
     static let controlSafetyInset: CGFloat = 2
 }
@@ -841,22 +858,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
               let titlebarView = buttons.first?.superview,
               buttons.allSatisfy({ $0.superview === titlebarView }) else { return }
 
-        // AppKit owns the horizontal metrics; retain them across size normalization.
-        let nativeHorizontalOrigins = buttons.map { $0.frame.origin.x }
-        for button in buttons {
-            button.controlSize = .regular
-            button.sizeToFit()
-        }
-
+        guard !window.styleMask.contains(.fullScreen) else { return }
         let centerFromTop = WindowChrome.topBarHeight / 2
-        for (button, nativeX) in zip(buttons, nativeHorizontalOrigins) {
-            var frame = button.frame
-            frame.origin.x = nativeX
-            frame.origin.y = titlebarView.isFlipped
-                ? centerFromTop - frame.height / 2
-                : titlebarView.bounds.maxY - centerFromTop - frame.height / 2
-            button.frame = frame
+        let center = titlebarView.convert(
+            NSPoint(x: 0, y: window.frame.height - centerFromTop), from: nil)
+        for (button, nativeFrame) in zip(buttons, WindowChrome.nativeTrafficLightFrames) {
+            var frame = nativeFrame
+            frame.origin.y = center.y - frame.height / 2
+            if button.frame != frame { button.frame = frame }
         }
+    }
+
+    func windowDidUpdate(_ notification: Notification) {
+        guard notification.object as? NSWindow === window else { return }
+        // AppKit can restore its title-bar frames after resize/key-window layout.
+        layoutTrafficLights()
     }
 
     func windowDidResize(_ notification: Notification) {
