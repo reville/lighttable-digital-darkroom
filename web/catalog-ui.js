@@ -205,7 +205,7 @@ export function createCatalogUI(ctx) {
     const options = el('importOptions'), run = el('importRun');
     const preview = el('importPreview'), trial = el('importTrial');
     if (!open || !dialog) return;
-    let inspected = '', previewed = '', busy = false, inspection = 0;
+    let inspected = '', previewed = '', busy = false, inspection = 0, inspectTimer = null;
     const requestBody = () => ({path: pathInput.value.trim(),
       addSources: el('impAddSources').checked, options: {
       metadata: el('impMetadata').checked, keywords: el('impKeywords').checked,
@@ -274,6 +274,8 @@ export function createCatalogUI(ctx) {
     }
 
     async function inspect() {
+      clearTimeout(inspectTimer);
+      if (busy) return;
       const path = pathInput.value.trim(), ticket = ++inspection;
       inspected = previewed = '';
       controls();
@@ -292,7 +294,11 @@ export function createCatalogUI(ctx) {
       controls();
     }
     pathInput.addEventListener('change', inspect);
-    pathInput.addEventListener('input', () => { ++inspection; inspected = previewed = ''; options.hidden = true; controls(); });
+    pathInput.addEventListener('input', () => {
+      ++inspection; inspected = previewed = ''; options.hidden = true; controls();
+      clearTimeout(inspectTimer);
+      inspectTimer = setTimeout(inspect, 300);
+    });
     options.addEventListener('change', controls);
     function showReport(result) {
       const prefix = result.previewOnly ? 'Compatibility preview' : result.trial ? 'Trial variants created' : 'Import complete';
