@@ -61,6 +61,7 @@ def main():
     src, dst, job_file = sys.argv[1], sys.argv[2], sys.argv[3]
     with open(job_file) as f:
         job = json.load(f)
+    edits_mod.require_saved_mask_assets(job.get("masks"))
     params = job.get("params", {})
     g = job.get("grade") or {}
     crop = job.get("crop")

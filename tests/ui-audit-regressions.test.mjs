@@ -93,7 +93,7 @@ function selectionHarness() {
   const state = { images, idx: 0, msel: new Set() };
   const start = source('app.js').indexOf('async function selectPhotoFromPointer(');
   const implementation = source('app.js').slice(start).split('\n/* -------------------------------------------------------------- prefs */')[0];
-  const context = vm.createContext({
+  const context = vm.createContext({ SELECTION_REQUEST: null,
     S: state, selectionAnchorName: null, cur: () => images[state.idx],
     visible: () => images, paintSelectionState() {},
     go: async (index) => { state.idx = index; },
@@ -125,13 +125,13 @@ test('plain clicks reset and Shift-click still selects the visible range', async
 
 function renameHarness() {
   const elements = new Map();
-  const document = { activeElement: { focus() {} } };
+  const document = { activeElement: { focus() {} }, createElement() { return {style: {}, append() {}}; } };
   const writes = [];
   let selection = ['A'];
   for (const id of ['renameDialog', 'renameTemplate', 'renameCustom', 'renameStart',
     'renamePreview', 'renameCancel', 'renameApply']) {
     elements.set(id, { value: id === 'renameTemplate' ? '{filename}' : '', disabled: false,
-      offsetParent: {}, classList: { toggle() {} }, setAttribute() {},
+      replaceChildren() {}, offsetParent: {}, classList: { toggle() {} }, setAttribute() {},
       focus() { document.activeElement = this; }, select() {},
       querySelectorAll() { return ['renameTemplate', 'renameCustom', 'renameStart', 'renameCancel', 'renameApply'].map((key) => elements.get(key)).filter((e) => !e.disabled); },
       addEventListener(type, fn) { this[type] = fn; } });

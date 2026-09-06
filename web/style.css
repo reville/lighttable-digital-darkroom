@@ -1953,3 +1953,23 @@ body { display:flex; flex-direction:column; }
 
 .capture-time-actions { flex-direction:column; }
 .capture-time-actions button { white-space:normal; height:auto; min-height:30px; }
+
+/* Visible operation scope and background outcomes share the workspace rail. */
+.workflow-activity { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 14px; border-top:1px solid var(--line); color:var(--ink); font-size:11px; }
+.workflow-activity > span { flex:1; }
+.workflow-activity pre { white-space:pre-wrap; max-height:140px; overflow:auto; font:inherit; }
+.workspace-rail { grid-column:1; grid-row:2; min-width:0; }
+.detail-selection-context { padding:5px 12px; border-top:1px solid var(--line); background:var(--inset); }
+.app.grid-mode .detail-selection-context { display:none; }
+
+.storage-breakdown { display:grid; grid-template-columns:1fr auto; gap:8px 18px; margin:16px 0; font-size:11px; }
+.storage-breakdown dt { color:var(--muted); }
+.storage-breakdown dd { margin:0; font-variant-numeric:tabular-nums; }
+
+.import-coverage { max-height:220px; overflow:auto; font-size:11px; overflow-wrap:anywhere; }
+.import-coverage p { border-bottom:1px solid var(--line); padding:8px 0; }
+
+#importDialog > .modal { max-height:calc(100vh - 40px); overflow:auto; }
+#importDialog .modal-actions { position:sticky; bottom:-20px; background:var(--chrome); padding:12px 0; flex-wrap:wrap; }
+#importDialog .import-options .field { display:flex; align-items:stretch; flex-direction:column; }
+.rename-preview { max-height:40vh; overflow:auto; overflow-wrap:anywhere; }

@@ -27,6 +27,7 @@ smart-collection rule the catalog cannot express.
 from __future__ import annotations
 
 import contextlib
+import uuid
 import json
 import re
 import shutil
@@ -64,6 +65,8 @@ DEFAULT_OPTIONS: dict[str, Any] = {
     # imported preset does, because they were authored against Adobe's
     # rendering and not against a film stock.
     "filmOff": True,
+    "trial": False,
+    "referenceRoot": "",
 }
 
 CONFLICT_POLICIES = ("skip", "overwrite", "merge")
@@ -136,6 +139,13 @@ def _norm(path_text) -> str:
     while len(text) > 1 and text.endswith("/"):
         text = text[:-1]
     return text
+
+
+def _local_identity_path(value) -> str:
+    text = _norm(value)
+    path = Path(text)
+    # Resolve local aliases without interpreting a foreign platform's drive.
+    return _norm(path.resolve()) if path.is_absolute() else text
 
 
 def _remap(path: str, root_map) -> str:
@@ -506,24 +516,25 @@ def _options(options) -> dict:
     given = dict(options or {})
     out = dict(DEFAULT_OPTIONS)
     for key in ("metadata", "keywords", "collections", "stacks", "develop",
-                "history", "filmOff"):
+                "history", "filmOff", "trial"):
         if key in given:
             out[key] = bool(given[key])
     conflict = str(given.get("conflict", out["conflict"]))
     out["conflict"] = conflict if conflict in CONFLICT_POLICIES else "skip"
+    out["referenceRoot"] = str(given.get("referenceRoot", "")).strip()
     return out
 
 
-def _catalog_index(cat) -> dict[tuple[int, str], tuple[int, str]]:
-    """`(source id, folded relpath)` to `(image id, relpath as recorded)`."""
-    index: dict[tuple[int, str], tuple[int, str]] = {}
+def _catalog_index(cat) -> dict[tuple[int, str], list[tuple[int, str]]]:
+    """Preserve every candidate when distinct paths collide after case-folding."""
+    index: dict[tuple[int, str], list[tuple[int, str]]] = {}
     for row in cat.connection.execute(
             "SELECT i.id AS image_id, f.source_id, f.relpath FROM images i"
             " JOIN files f ON f.id=i.file_id"
             " WHERE i.copy_ident IS NULL").fetchall():
         relpath = row["relpath"]
-        index[(int(row["source_id"]), relpath.casefold())] = (
-            int(row["image_id"]), relpath)
+        index.setdefault((int(row["source_id"]), relpath.casefold()), []).append((
+            int(row["image_id"]), relpath))
     return index
 
 
@@ -562,7 +573,7 @@ def _match_files(conn, cat, root_map, result, progress) -> dict[int, dict]:
                                     _norm(row["pathFromRoot"]).strip("/"))
 
     sources = sorted(
-        ((_norm(source["path"]).casefold(), _norm(source["path"]),
+        ((_local_identity_path(source["path"]).casefold(), _local_identity_path(source["path"]),
           int(source["id"])) for source in cat.sources()),
         key=lambda item: len(item[0]), reverse=True)
     index = _catalog_index(cat)
@@ -597,11 +608,16 @@ def _match_files(conn, cat, root_map, result, progress) -> dict[int, dict]:
                                               filename) if part)
         entry = {"path": absolute, "root": root["id"], "sourceId": None,
                  "relpath": "", "imageId": None}
-        lowered = absolute.casefold()
+        match_path = "/".join(part for part in (_local_identity_path(root["path"]), folder[1], filename) if part)
+        lowered = match_path.casefold()
         for folded_source, source_path, source_id in sources:
             if lowered.startswith(folded_source + "/"):
-                relpath = absolute[len(source_path) + 1:]
-                found = index.get((source_id, relpath.casefold()))
+                relpath = match_path[len(source_path) + 1:]
+                candidates = index.get((source_id, relpath.casefold()), [])
+                exact = [candidate for candidate in candidates if candidate[1] == relpath]
+                found = exact[0] if len(exact) == 1 else candidates[0] if len(candidates) == 1 else None
+                if len(candidates) > 1 and not exact:
+                    entry["matchWarning"] = "Ambiguous case-insensitive path; no photo was chosen"
                 entry["sourceId"] = source_id
                 entry["relpath"] = found[1] if found else relpath
                 entry["imageId"] = found[0] if found else None
@@ -617,7 +633,7 @@ def _match_files(conn, cat, root_map, result, progress) -> dict[int, dict]:
     for root in roots:
         tally = tallies.get(root["id"], {"matched": 0, "unmatched": 0})
         root.update(tally)
-        folded_root = root["path"].casefold()
+        folded_root = _local_identity_path(root["path"]).casefold()
         root["sourceId"] = next(
             (source_id for folded, _path, source_id in sources
              if folded_root == folded or folded_root.startswith(folded + "/")),
@@ -784,6 +800,39 @@ def _iptc_from_xmp(blob) -> dict:
     return fields
 
 
+def _photo_report(result, row):
+    if len(result["photos"]) < 100:
+        result["photos"].append(row)
+    result["reportedPhotos"] += 1
+    if result.get("_report_photo"):
+        result["_report_photo"](row)
+
+
+def _rendered_reference(cat, record, root):
+    if not root or not record.get("relpath"):
+        return None
+    base = Path(root).expanduser().resolve()
+    relative = Path(record["relpath"])
+    candidates = [base / relative.with_suffix(ext) for ext in (".tif", ".tiff", ".jpg", ".jpeg")]
+    matches = [path for path in candidates if path.is_file() and base in path.resolve().parents
+               and path.resolve() != Path(record["path"]).resolve()]
+    if len(matches) != 1:
+        return {"note": "Multiple rendered references match; choose one explicitly"} if matches else None
+    path = matches[0].resolve()
+    reference = {"path": str(path), "note": "Add this reference folder to the library to group its photos"}
+    for source in cat.sources():
+        try:
+            relpath = path.relative_to(Path(source["path"]).resolve()).as_posix()
+        except ValueError:
+            continue
+        image_id = cat.image_id_for(source["id"], relpath)
+        if image_id is not None:
+            reference = {"path": str(path), "imageId": image_id,
+                         "name": catalog_module.qualified_name(source["id"], relpath)}
+            break
+    return reference
+
+
 def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
                    cancel) -> dict[Any, int]:
     """Ratings, flags, labels, keywords, metadata, and edits, photo by photo.
@@ -810,6 +859,11 @@ def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
     rows = conn.execute(f'SELECT {columns} FROM "Adobe_images"{order}'
                         ).fetchall()
     result["images"] = len(rows)
+    if opts["trial"]:
+        rows = rows[:20]
+        result["trial"] = True
+        result["trialPhotos"] = len(rows)
+    trial_key = uuid.uuid4().hex[:12]
 
     iptc_rows: dict[Any, dict] = {}
     if opts["metadata"] and _has(conn, "AgLibraryIPTC", "image"):
@@ -886,19 +940,29 @@ def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
             break
         lr_id = row["id_local"]
         record = files.get(row["rootFile"])
+        coverage = {"sourceId": lr_id, "sourcePath": record["path"] if record else "",
+                    "targetName": None, "outcome": "unmatched", "mapped": [], "skipped": []}
+        if record and record.get("matchWarning"):
+            coverage["skipped"].append(record["matchWarning"])
         if record is None or record["imageId"] is None:
             result["unmatched"] += 1
+            _photo_report(result, coverage)
             _skip(result, "files outside every source"
                   if record is None or record["sourceId"] is None
                   else "files not yet scanned")
             continue
 
         master = row["masterImage"] if "masterImage" in present else None
-        if master:
+        if opts["trial"]:
+            ident = f"trial-{trial_key}-{lr_id}"
+            image_id = cat.add_virtual_copy(record["imageId"], ident, f"Import trial {lr_id}")
+        elif master:
             parent = targets.get(master)
             if parent is None:
                 result["unmatched"] += 1
                 _skip(result, "virtual copies without a master")
+                coverage["skipped"].append("Virtual copy has no matched master")
+                _photo_report(result, coverage)
                 continue
             ident = f"lr-{lr_id}"
             display = str(row["copyName"] or "").strip() \
@@ -912,9 +976,14 @@ def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
             image_id = record["imageId"]
         targets[lr_id] = image_id
         result["matched"] += 1
+        target = cat.image_row(image_id)
+        coverage["targetName"] = catalog_module.qualified_name(record["sourceId"], record["relpath"], target["copy_ident"])
+        coverage["outcome"] = "trial variant" if opts["trial"] else "imported"
 
         if image_id in edited and conflict == "skip":
             _skip(result, "images already edited")
+            coverage["outcome"] = "kept existing edits"
+            _photo_report(result, coverage)
             if done % 50 == 0:
                 _report(progress, "images", done, total)
             continue
@@ -964,14 +1033,29 @@ def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
                         entry["params"] = dict(
                             params_by_image.get(image_id) or {},
                             profile_enabled=False)
+                    coverage["skipped"].extend(patch["ignored"])
                     for name in patch["ignored"]:
                         _skip(result, name)
                     if has_cropped_size and patch["crop"] is None \
                             and not patch["cropKeys"] \
                             and settings["croppedWidth"]:
                         _skip(result, "crop rectangle")
+        coverage["mapped"] = sorted(entry)
+        coverage["appearance"] = "Approximate conversion; compare with an exported reference"
         if entry:
             cat.save_state(image_id, entry)
+        reference = _rendered_reference(cat, record, opts.get("referenceRoot"))
+        if reference:
+            coverage["reference"] = reference
+            if reference.get("imageId") and reference["imageId"] != image_id:
+                occupied = cat.connection.execute("SELECT image_id FROM stack_images WHERE image_id IN (?,?)",
+                                                  (image_id, reference["imageId"])).fetchall()
+                if not occupied:
+                    cat.add_stack("Original and rendered reference", [image_id, reference["imageId"]])
+                    coverage["reference"]["grouped"] = True
+                else:
+                    coverage["reference"]["note"] = "Existing stacks were preserved"
+        _photo_report(result, coverage)
 
         if opts["metadata"]:
             fields = {}
@@ -985,7 +1069,7 @@ def _import_images(conn, cat, opts, files, keyword_paths, result, progress,
                 fields["gps_lat"], fields["gps_lon"] = coordinates
             if fields:
                 cat.save_iptc(image_id, fields)
-            if "captureTime" in present:
+            if "captureTime" in present and not opts["trial"]:
                 stamp = _capture_time(row["captureTime"])
                 if stamp:
                     capture_updates.append((stamp, image_id))
@@ -1190,7 +1274,8 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
                    options: dict | None = None,
                    progress: Callable[[dict], None] | None = None,
                    root_map: dict | None = None,
-                   should_cancel: Callable[[], bool] | None = None) -> dict:
+                   should_cancel: Callable[[], bool] | None = None,
+                   report_photo: Callable[[dict], None] | None = None) -> dict:
     """Import one Lightroom catalog into `cat`, reporting what did not fit.
 
     `options` selects the categories: `metadata`, `keywords`, `collections`,
@@ -1218,7 +1303,7 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
         "images": 0, "matched": 0, "unmatched": 0, "keywords": 0,
         "collections": 0, "stacks": 0, "history": 0,
         "skipped": {}, "warnings": [], "roots": [], "cancelled": False,
-        "options": opts,
+        "options": opts, "photos": [], "reportedPhotos": 0, "_report_photo": report_photo,
     }
     cancel = should_cancel if callable(should_cancel) else (lambda: False)
     with _open_readonly(path) as (conn, warnings):
@@ -1233,9 +1318,32 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
         keywords = _keyword_paths(conn, result) if opts["keywords"] else {}
         targets = _import_images(conn, cat, opts, files, keywords, result,
                                  progress, cancel)
-        if opts["collections"] and not result["cancelled"]:
+        if opts["trial"] and targets:
+            collection = cat.add_collection("Catalog import trial")
+            cat.add_to_collection(collection, list(targets.values()))
+            result["trialCollectionId"] = collection
+        if opts["collections"] and not opts["trial"] and not result["cancelled"]:
             _import_collections(conn, cat, targets, result, progress)
-        if opts["stacks"] and not result["cancelled"]:
+        if opts["stacks"] and not opts["trial"] and not result["cancelled"]:
             _import_stacks(conn, cat, targets, result, progress)
+    result.pop("_report_photo", None)
     _report(progress, "done", 1, 1)
     return result
+
+
+def preview_import(cat, path, **kwargs):
+    """Compute real import coverage against a disposable, consistent catalog copy."""
+    with tempfile.TemporaryDirectory(prefix="lighttable-import-preview-") as folder:
+        target = Path(folder) / "library.sqlite3"
+        destination = sqlite3.connect(target)
+        try:
+            cat.connection.backup(destination)
+        finally:
+            destination.close()
+        preview = catalog_module.Catalog(target)
+        try:
+            result = import_catalog(preview, path, **kwargs)
+            result["previewOnly"] = True
+            return result
+        finally:
+            preview.close()

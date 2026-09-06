@@ -26,12 +26,16 @@ import subprocess
 import sys
 import threading
 import time
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, quote, urlparse
+
+if __name__ == "__main__":
+    import bounded_logging
+    bounded_logging.from_environment()
 
 import numpy as np
 from PIL import Image, ImageStat
@@ -1521,8 +1525,45 @@ def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
             write_state(st)
 
 
-def _photo_move_plan(source: Path, target: Path) -> dict:
-    """Preflight one original and the two recognized XMP naming forms."""
+def index_photo_companions(folder: Path) -> dict:
+    """One directory read per operation, even for thousands of selected files."""
+    metadata, photos = {}, {}
+    for path in folder.iterdir():
+        if path.suffix.lower() in EXTS:
+            photos.setdefault(path.stem.casefold(), []).append(path)
+        elif path.is_file():
+            parts = path.name.split('.')
+            for count in range(1, len(parts)):
+                metadata.setdefault('.'.join(parts[:count]).casefold(), []).append(path)
+    return {"metadata": metadata, "photos": photos}
+
+
+def photo_companion_inventory(source: Path, target: Path, index=None) -> list[dict]:
+    """List adjacent metadata without guessing that unknown files are disposable."""
+    index = index if index is not None else index_photo_companions(source.parent)
+    metadata = index["metadata"]
+    candidates = set(metadata.get(source.name.casefold(), []) + metadata.get(source.stem.casefold(), []))
+    items = []
+    for path in sorted(candidates):
+        folded = path.name.casefold()
+        if folded == (source.stem + ".xmp").casefold():
+            destination = target.with_name(target.stem + path.suffix)
+        elif folded in {(source.name + suffix).casefold() for suffix in (".xmp", ".lighttable.json")}:
+            destination = target.with_name(target.name + path.name[len(source.name):])
+        elif folded.startswith(source.name.casefold() + ".") or folded.startswith(source.stem.casefold() + "."):
+            items.append({"source": str(path), "target": None, "action": "Leave in place (unrecognized companion)"})
+            continue
+        else:
+            continue
+        paired = [str(photo) for photo in index["photos"].get(source.stem.casefold(), [])
+                  if photo != source] if folded == (source.stem + ".xmp").casefold() else []
+        items.append({"source": str(path), "target": str(destination), "sharedWith": paired,
+                      "action": "Carry metadata; retain beside paired captures" if paired else "Move with photo"})
+    return items
+
+
+def _photo_move_plan(source: Path, target: Path, *, index=None) -> dict:
+    """Preflight originals and recognized metadata, including uppercase XMP."""
     source, target = Path(source), Path(target)
     if source == target:
         return {"source": source, "target": target, "sidecars": []}
@@ -1530,18 +1571,16 @@ def _photo_move_plan(source: Path, target: Path) -> dict:
         raise ValueError(f"source photo is missing: {source.name}")
     if target.exists():
         raise ValueError(f"{target.name} already exists in that folder")
-    pairs = []
-    for sidecar, sidecar_target in (
-        (source.with_suffix(".xmp"), target.with_suffix(".xmp")),
-        (Path(str(source) + ".xmp"), Path(str(target) + ".xmp")),
-    ):
-        if not sidecar.is_file() or (sidecar, sidecar_target) in pairs:
+    pairs, shared = [], {}
+    for item in photo_companion_inventory(source, target, index):
+        if item["target"] is None:
             continue
+        sidecar, sidecar_target = Path(item["source"]), Path(item["target"])
         if sidecar_target.exists():
-            raise ValueError(
-                f"{sidecar_target.name} already exists; no files were moved")
+            raise ValueError(f"{sidecar_target.name} already exists; no files were moved")
         pairs.append((sidecar, sidecar_target))
-    return {"source": source, "target": target, "sidecars": pairs}
+        shared[str(sidecar)] = item.get("sharedWith") or []
+    return {"source": source, "target": target, "sidecars": pairs, "shared": shared}
 
 
 def _stage_photo_move(plan: dict) -> None:
@@ -1585,6 +1624,8 @@ def _finish_photo_moves(plans: list[dict]) -> list[str]:
     warnings = []
     for plan in plans:
         for sidecar, _ in plan["sidecars"]:
+            if any(Path(path).exists() for path in plan.get("shared", {}).get(str(sidecar), [])):
+                continue
             try:
                 sidecar.unlink(missing_ok=True)
             except OSError as error:
@@ -1640,7 +1681,8 @@ def move_images(names: list[str], destination: str) -> list[str]:
     targets = [dest / src.name for src in sources]
     if len({str(path) for path in targets}) != len(targets):
         raise ValueError("the selection contains duplicate file names")
-    plans = [_photo_move_plan(source, target)
+    indexes = {folder: index_photo_companions(folder) for folder in {source.parent for source in sources}}
+    plans = [_photo_move_plan(source, target, index=indexes[source.parent])
              for source, target in zip(sources, targets)]
     staged = []
     try:
@@ -1761,6 +1803,31 @@ def scaled_cache_limit(base_limit: int) -> int:
         return max(1, base_limit)
     ratio = configured_cache_budget_bytes() / max(1, _BASE_CACHE_BUDGET_BYTES)
     return max(32 * 1024 * 1024, int(base_limit * ratio))
+
+
+def storage_status() -> dict:
+    cat = catalog_handle()
+    def size(path):
+        try:
+            return Path(path).stat().st_size
+        except OSError:
+            return 0
+    result = {"catalog": None, "backupScope": catalog_module.BACKUP_SCOPE,
+              "presetsBytes": size(PRESETS_FILE), "preferencesBytes": size(PREFS_FILE),
+              "logBudgetBytes": 32 * 1024 * 1024,
+              "cache": cache_status()}
+    if cat is not None:
+        conn = cat.connection
+        original_bytes = conn.execute("SELECT COALESCE(SUM(size),0) FROM files").fetchone()[0]
+        masks = conn.execute("SELECT COALESCE(SUM(LENGTH(CAST(masks_json AS BLOB))),0) FROM image_state").fetchone()[0]
+        history = conn.execute("SELECT COALESCE(SUM(LENGTH(state_blob)),0) FROM history").fetchone()[0]
+        saved = conn.execute("SELECT value FROM meta WHERE key='lastVerifiedBackup'").fetchone()
+        archives = catalog_module.list_backups(configured_backup_directory(cat), summarize=0)
+        result["catalog"] = {"bytes": size(cat.path), "walBytes": size(str(cat.path) + "-wal"),
+            "originalsBytes": original_bytes, "maskPayloadBytes": masks, "historyPayloadBytes": history,
+            "backupBytes": sum(item["size"] for item in archives), "backups": len(archives),
+            "lastVerifiedBackup": json.loads(saved[0]) if saved else None}
+    return result
 
 
 def cache_status() -> dict:
@@ -4093,6 +4160,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         check()
         guard_photo(name)
         guard_local_photo(name)
+        edits.require_saved_mask_assets(job.get("masks"))
         started = time.perf_counter()
         job = dict(job)
         job["warnings"] = list(job.get("warnings") or [])
@@ -4249,7 +4317,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
         copies = {item["name"]: item
                   for item in library_state(st)["virtualCopies"]}
         return [
-            (name, entry_for(st, name),
+            (name, {**entry_for(st, name), "masks": st["images"].get(name, {}).get("masks", [])},
              copies[name]["displayName"] if name in copies else
              str(Path(library_workflow.source_name(name)).with_suffix("")))
             for name in library_item_names(st) if not is_video(name)
@@ -4272,7 +4340,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
                 "params": item.get("params"),
                 "grade": item.get("grade"),
                 "crop": item.get("crop"),
-                "masks": edits.clean_masks(item.get("masks")),
+                "masks": item.get("masks") or [],
                 "heals": edits.clean_heals(item.get("heals")),
                 "optics": edits.clean_optics(item.get("optics")),
                 "keywords": clean_keywords(item.get("keywords", [])),
@@ -4312,6 +4380,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             continue
         elif which == "all" and e["status"] == "skipped":
             continue
+        try:
+            edits.require_saved_mask_assets(e.get("masks"))
+        except ValueError as error:
+            raise ValueError(f"{n}: {error}") from error
         item_destination = destination
         if recipe["destinationMode"] != "fixed":
             source, source_id, _, _ = resolve_name(n)
@@ -4717,121 +4789,215 @@ class PreviewPregenQueue:
         }
 
 
+def publish_mask_change(name: str, masks: list[dict], *, added=None, removed=None) -> None:
+    queue_sidecar(name)
+    _queue_mirror()
+    EVENTS.publish("state", {"names": [name], "fields": ["masks"],
+        "patch": {"masks": masks}, "origin": "batch-masks",
+        "maskDelta": {"added": added or [], "removed": removed or []}})
+
+
+def append_generated_masks(name: str, generated: list[dict], *, source_key: str,
+                           rotate: int, batch_id: str) -> list[dict]:
+    def merge(current):
+        if file_key(name) != source_key:
+            raise ValueError("The original changed during detection; retry this photo")
+        if rot90k((current.get("params") or {}).get("rotate", 0)) != rotate:
+            raise ValueError("The photo was rotated during detection; retry this photo")
+        existing = current.get("masks") or []
+        if len(existing) + len(generated) > edits.MAX_MASKS:
+            raise ValueError(f"A photo supports {edits.MAX_MASKS} masks; existing masks were preserved")
+        # Validate only additions. Re-cleaning an existing document here could
+        # silently discard older or more complex accepted mask data.
+        additions = edits.clean_masks(generated)
+        if len(additions) != len(generated):
+            raise ValueError("Detection produced an invalid mask; existing masks were preserved")
+        return [*existing, *additions]
+
+    cat = catalog_handle()
+    if cat is not None:
+        image_id = catalog_image_id(name)
+        if image_id is None:
+            raise ValueError("The photo is no longer in this catalog")
+        state = cat.mutate_masks(image_id, merge, label="Generate masks",
+                                 batch_id=batch_id, name=name)
+        masks = state["masks"]
+    else:
+        with STATE_LOCK:
+            state = load_state()
+            entry = state["images"].setdefault(name, {})
+            masks = merge(entry)
+            entry["masks"] = masks
+            records = state.setdefault("maskBatches", {})
+            records.setdefault(batch_id, {})[name] = [mask["id"] for mask in generated]
+            write_state(state)
+    publish_mask_change(name, masks, added=generated)
+    return masks
+
+
+def undo_mask_batch(body: dict) -> dict:
+    batch_id = str(body.get("jobId", ""))
+    if not re.fullmatch(r"[a-f0-9]{32}", batch_id):
+        raise ValueError("Choose a completed mask batch to undo")
+    record = JOBS.get(batch_id)
+    if record and record["state"] not in {"done", "failed", "cancelled"}:
+        raise ValueError("Cancel the batch and wait for detection to stop before undoing it")
+    cat = catalog_handle()
+    if cat is not None:
+        changes = cat.undo_mask_batch(batch_id)
+    else:
+        with STATE_LOCK:
+            state = load_state()
+            affected = state.get("maskBatches", {}).pop(batch_id, None)
+            if affected is None:
+                raise ValueError("There are no saved masks to undo for this batch")
+            changes = []
+            for name, ids in affected.items():
+                entry = state["images"].get(name)
+                if entry is None:
+                    continue
+                entry["masks"] = [m for m in entry.get("masks") or [] if m.get("id") not in ids]
+                changes.append({"name": name, "masks": entry["masks"], "removed": ids})
+            write_state(state)
+    with BATCH_MASK_QUEUE.lock:
+        if BATCH_MASK_QUEUE.job_id == batch_id:
+            BATCH_MASK_QUEUE.undone = True
+    for change in changes:
+        publish_mask_change(change["name"], change["masks"], removed=change["removed"])
+    return {"ok": True, "count": len(changes), "jobId": batch_id}
+
+
 class BatchSemanticMaskQueue:
-    """Background queue for batch AI subject/sky/object semantic masking."""
+    """One bounded, cancellable batch; inference never owns the catalog writer."""
 
     def __init__(self):
-        self.lock = threading.Lock()
-        self.queue: list[tuple[str, list[str]]] = []
-        self.active: bool = False
-        self.cancel_requested: bool = False
-        self.total: int = 0
-        self.completed: int = 0
-        self.failed: int = 0
-        self.current: str = ""
-        self.thread: threading.Thread | None = None
-        self.job_id: str | None = None
+        self.lock = threading.RLock()
+        self.queue = deque()
+        self.active = self.cancel_requested = False
+        self.total = self.completed = self.failed = self.masked = 0
+        self.current = ""
+        self.thread = None
+        self.job_id = None
+        self.results = []
+        self.undone = False
 
     def start(self, names: list[str], categories: list[str]) -> int:
-        cats = [str(c) for c in categories if c]
-        if not cats:
-            cats = ["subject"]
+        import semantic_masks
+        names = list(dict.fromkeys(str(n) for n in names if n))
+        cats = list(dict.fromkeys(str(c) for c in categories if c)) or ["subject"]
+        if not names or len(names) > 5000:
+            raise ValueError("Select between 1 and 5,000 photos for a mask batch")
+        if any(c not in {"subject", "sky", "depth", *semantic_masks.PERSON_PARTS} for c in cats):
+            raise ValueError("Choose subject, sky, depth, or a person part for batch detection")
         with self.lock:
+            if self.active:
+                raise ValueError("A mask batch is already running; finish or cancel it first")
+            self.queue = deque((n, tuple(cats)) for n in names)
             self.cancel_requested = False
-            self.queue = [(str(n), cats) for n in names]
-            self.total = len(self.queue)
-            self.completed = 0
-            self.failed = 0
+            self.total = len(names)
+            self.completed = self.failed = self.masked = 0
             self.current = ""
-            self.job_id = JOBS.create(
-                "masks.semantic", total=self.total,
-                state="running" if self.total else "done",
-                cancel=self.cancel)["id"]
-            if not self.active and self.queue:
-                self.active = True
-                self.thread = threading.Thread(
-                    target=self._worker, daemon=True,
-                    name="lighttable-batch-semantic-masks",
-                )
-                self.thread.start()
+            self.results = []
+            self.undone = False
+            self.active = True
+            job_id = JOBS.create("masks.semantic", total=self.total,
+                                 state="running", cancel=lambda: self.cancel(job_id))["id"]
+            self.job_id = job_id
+            self.thread = threading.Thread(target=self._worker, args=(job_id,),
+                daemon=True, name="lighttable-batch-semantic-masks")
+            self.thread.start()
             return self.total
 
-    def cancel(self) -> None:
+    def cancel(self, job_id=None):
         with self.lock:
+            if job_id and self.job_id != job_id:
+                return False
             self.cancel_requested = True
             self.queue.clear()
-            self.active = False
-            self.current = ""
+            # Keep ownership until the active detector exits. A replacement
+            # batch cannot reset cancellation under an older worker.
+            if not self.thread or not self.thread.is_alive():
+                self.active = False
+            self._sync()
+            return False
 
     def status(self) -> dict:
         with self.lock:
-            return {
-                "active": self.active,
-                "total": self.total,
-                "completed": self.completed,
-                "failed": self.failed,
-                "current": self.current,
-                "jobId": self.job_id,
-            }
+            return copy.deepcopy(self.status_unlocked())
 
-    def _worker(self) -> None:
-        while True:
-            item = None
+    def _sync(self):
+        sync_job_status(self.status_unlocked(), progress_key="processed")
+
+    def _worker(self, job_id=None) -> None:
+        job_id = job_id or self.job_id
+        cat = catalog_handle()
+        try:
+            while True:
+                with self.lock:
+                    if job_id != self.job_id or self.cancel_requested or not self.queue:
+                        break
+                    name, categories = self.queue.popleft()
+                    self.current = name
+                generated, errors = [], []
+                try:
+                    guard_local_photo(name)
+                    source_key = file_key(name)
+                    entry = catalog_entry_for(name)
+                    rotation = (entry.get("params") or {}).get("rotate", 0)
+                    for category in categories:
+                        with self.lock:
+                            if self.cancel_requested:
+                                break
+                        # Yield admission to foreground work, but never hold
+                        # its renderer lock throughout a slow optional model.
+                        if not RENDER_LOCK.acquire(priority="background", cancelled=lambda: self.cancel_requested):
+                            break
+                        RENDER_LOCK.release()
+                        try:
+                            payload = semantic_mask_payload(name, category, rotate=rotation)
+                            ident = f"ai-{job_id}-{category}"
+                            generated.append({"id": ident, "name": category.replace("_", " ").title(),
+                                "type": category, "bitmap": payload["bitmap"],
+                                "components": [{"id": ident + "-c1", "type": category,
+                                                "combine": "add", "bitmap": payload["bitmap"]}],
+                                "enabled": True, "opacity": 1.0})
+                        except Exception as error:
+                            errors.append({"category": category, "error": str(error)[:500]})
+                    with self.lock:
+                        if self.cancel_requested or job_id != self.job_id:
+                            break
+                        if generated:
+                            append_generated_masks(name, generated, source_key=source_key,
+                                rotate=rot90k(rotation), batch_id=job_id)
+                            self.masked += 1
+                except Exception as error:
+                    errors.append({"category": "save", "error": str(error)[:500]})
+                with self.lock:
+                    if errors:
+                        self.failed += 1
+                    else:
+                        self.completed += 1
+                    self.results.append({"name": name, "errors": errors,
+                        "status": "failed" if errors else "done"})
+                    self._sync()
+        finally:
+            if cat is not None:
+                cat.close()
             with self.lock:
-                if self.cancel_requested or not self.queue:
+                if job_id == self.job_id:
                     self.active = False
                     self.current = ""
-                    sync_job_status(self.status_unlocked(),
-                                    progress_key="completed")
-                    return
-                item = self.queue.pop(0)
-                self.current = item[0]
-
-            name, categories = item
-            try:
-                entry = catalog_entry_for(name)
-                existing_masks = list(entry.get("masks") or [])
-                updated = False
-                for cat in categories:
-                    try:
-                        payload = semantic_mask_payload(name, cat)
-                        mask_id = f"ai-{cat}-{int(time.time() * 1000)}"
-                        mask_entry = {
-                            "id": mask_id,
-                            "name": cat.replace("_", " ").title(),
-                            "type": cat,
-                            "bitmap": payload["bitmap"],
-                            "components": [{
-                                "id": f"{mask_id}-c1",
-                                "type": cat,
-                                "combine": "add",
-                                "bitmap": payload["bitmap"],
-                            }],
-                            "enabled": True,
-                            "opacity": 1.0,
-                        }
-                        existing_masks.append(mask_entry)
-                        updated = True
-                    except Exception:
-                        pass
-                if updated:
-                    save_image_state(name, {"masks": edits.clean_masks(existing_masks)})
-                with self.lock:
-                    self.completed += 1
-                    sync_job_status(self.status_unlocked(),
-                                    progress_key="completed")
-            except Exception:
-                with self.lock:
-                    self.failed += 1
+                    self._sync()
 
     def status_unlocked(self) -> dict:
-        return {
-            "active": self.active, "total": self.total,
-            "completed": self.completed, "failed": self.failed,
-            "current": self.current, "cancel_requested": self.cancel_requested,
-            "jobId": self.job_id,
-            "errors": ([f"{self.failed} masks failed"] if self.failed else []),
-        }
+        recent = self.results[-200:]
+        errors = [f"{r['name']}: {e['error']}" for r in recent for e in r["errors"]]
+        return {"active": self.active, "total": self.total,
+            "completed": self.completed, "failed": self.failed, "masked": self.masked,
+            "processed": self.completed + self.failed, "current": self.current,
+            "cancel_requested": self.cancel_requested, "jobId": self.job_id, "undone": self.undone,
+            "errors": errors[-200:], "results": recent,
+            "omittedResults": max(0, len(self.results) - len(recent))}
 
 
 PREGEN_QUEUE = PreviewPregenQueue()
@@ -5619,6 +5785,8 @@ class Handler(BaseHTTPRequestHandler):
                             if WATCH_SERVICE else []})
             elif u.path == "/api/library":
                 self._json(library_state())
+            elif u.path == "/api/storage":
+                self._json(storage_status())
             elif u.path == "/api/catalog":
                 cat = catalog_handle()
                 self._json({
@@ -5685,6 +5853,15 @@ class Handler(BaseHTTPRequestHandler):
                     self._json(dict(INGEST))
             elif u.path == "/api/ingest/sources":
                 self._json({"sources": INGEST_VOLUMES})
+            elif u.path == "/api/import/report":
+                ident = q.get("id", "")
+                if not re.fullmatch(r"[a-f0-9]{32}", ident):
+                    raise ValueError("Choose a completed import report")
+                report = PREFS_FILE.parent / "ImportReports" / f"{ident}.jsonl"
+                if not report.is_file():
+                    raise ValueError("That import report is not available")
+                self._send(200, report.read_bytes(), "application/x-ndjson",
+                    headers={"Content-Disposition": 'attachment; filename="LightTable-import-report.jsonl"'})
             elif u.path == "/api/import/status":
                 with IMPORT_LOCK:
                     sync_job_status(dict(IMPORT_JOB))
@@ -5992,8 +6169,11 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({"ok": True, "queued": queued,
                             "jobId": BATCH_MASK_QUEUE.job_id})
             elif u.path == "/api/batch/semantic-masks/cancel":
-                BATCH_MASK_QUEUE.cancel()
+                body = self._body()
+                BATCH_MASK_QUEUE.cancel(body.get("jobId"))
                 self._json({"ok": True})
+            elif u.path == "/api/batch/semantic-masks/undo":
+                self._json(undo_mask_batch(self._body()))
             elif u.path == "/api/presets":
                 b = self._body()
                 items = load_presets()
@@ -6151,7 +6331,7 @@ class Handler(BaseHTTPRequestHandler):
                 directory = configured_backup_directory(cat)
                 archive = cat.backup(directory)
                 cat.prune_backups(directory)
-                self._json({"ok": True, "archive": str(archive)})
+                self._json({"ok": True, "archive": str(archive), "scope": catalog_module.BACKUP_SCOPE})
             elif u.path == "/api/metadata":
                 body = self._body()
                 cat = require_catalog()
@@ -6894,19 +7074,36 @@ def start_catalog_import(body: dict) -> dict:
             IMPORT_JOB.update(update)
             sync_job_status(dict(IMPORT_JOB))
 
+    job_id = IMPORT_JOB["jobId"]
     def run() -> None:
+        report_dir = PREFS_FILE.parent / "ImportReports"
+        report = report_dir / f"{job_id}.jsonl"
+        partial = durable_io.temporary_path(report, "report")
         try:
-            result = catalog_import.import_catalog(
-                cat, path, options=body.get("options") or {},
-                progress=progress, root_map=body.get("rootMap") or None)
+            report_dir.mkdir(parents=True, exist_ok=True)
+            before = None if body.get("previewOnly") else str(cat.backup(
+                configured_backup_directory(cat), label="before-import"))
+            with partial.open("w", encoding="utf-8") as output:
+                output.write(json.dumps({"type": "header", "catalog": str(path),
+                    "previewOnly": bool(body.get("previewOnly")), "beforeBackup": before}) + "\n")
+                operation = catalog_import.preview_import if body.get("previewOnly") else catalog_import.import_catalog
+                result = operation(cat, path, options=body.get("options") or {},
+                    progress=progress, root_map=body.get("rootMap") or None,
+                    report_photo=lambda row: output.write(json.dumps(row) + "\n"))
+                output.flush()
+                os.fsync(output.fileno())
+            durable_io.publish_file(partial, report)
+            result.update(reportId=job_id, beforeBackup=before)
             with IMPORT_LOCK:
                 IMPORT_JOB.update(running=False, stage="done", result=result)
                 sync_job_status(dict(IMPORT_JOB), result=result)
-        except Exception as error:  # noqa: BLE001
+        except Exception as error:
             with IMPORT_LOCK:
-                IMPORT_JOB.update(running=False, stage="failed",
-                                  error=str(error))
+                IMPORT_JOB.update(running=False, stage="failed", error=str(error))
                 sync_job_status(dict(IMPORT_JOB))
+        finally:
+            partial.unlink(missing_ok=True)
+            cat.close()
 
     threading.Thread(target=run, name="lighttable-catalog-import",
                      daemon=True).start()
@@ -7045,10 +7242,21 @@ def rename_photos(body: dict) -> dict:
         taken.add(target)
         planned.append((path, target, source_id, relpath))
 
+    indexes = {folder: index_photo_companions(folder) for folder in {path.parent for path, _, _, _ in planned}}
     if body.get("preview"):
-        return {"preview": [{"from": str(a.name), "to": str(b.name)}
-                            for a, b, _, _ in planned[:20]],
-                "total": len(planned)}
+        preview = []
+        errors = []
+        for source, target, _, _ in planned:
+            try:
+                _photo_move_plan(source, target, index=indexes[source.parent])
+            except ValueError as error:
+                errors.append(str(error))
+            preview.append({"from": source.name, "to": target.name,
+                "sourcePath": str(source), "destinationPath": str(target),
+                "companions": photo_companion_inventory(source, target, indexes[source.parent])})
+        return {"preview": preview, "total": len(planned),
+                "collisionPolicy": "Existing photo names receive a numeric suffix; metadata conflicts stop the operation",
+                **({"error": "; ".join(dict.fromkeys(errors))} if errors else {})}
 
     changes = []
     plans = []
@@ -7061,7 +7269,7 @@ def rename_photos(body: dict) -> dict:
                 raise RuntimeError("the catalog source is unavailable")
             new_relpath = (relpath.rsplit("/", 1)[0] + "/" + target.name
                            if "/" in relpath else target.name)
-            plans.append(_photo_move_plan(path, target))
+            plans.append(_photo_move_plan(path, target, index=indexes[path.parent]))
             changes.append((actual_source, relpath, actual_source, new_relpath))
     except (OSError, RuntimeError, ValueError) as error:
         return {"ok": False, "renamed": 0, "error": str(error)}

@@ -4,7 +4,7 @@ use lighttable_desktop_shell::CloseAttempts;
 
 use std::{
     env,
-    fs::{self, File},
+    fs,
     io::{Read, Write},
     net::{TcpListener, TcpStream},
     path::{Path, PathBuf},
@@ -114,7 +114,7 @@ impl ServerController {
         fs::create_dir_all(&paths.support)?;
         fs::create_dir_all(&paths.cache)?;
         let port = choose_port()?;
-        let log = File::create(&paths.log)?;
+        let log = std::fs::OpenOptions::new().create(true).append(true).open(&paths.log)?;
         let mut command = Command::new(&paths.python);
         command
             .arg(paths.project.join("server.py"))
@@ -135,6 +135,7 @@ impl ServerController {
             .env("NUMBA_NUM_THREADS", "4")
             .env("OPENBLAS_NUM_THREADS", "4")
             .env("PYTHONUNBUFFERED", "1")
+            .env("LIGHTTABLE_LOG_FILE", &paths.log)
             .stdout(Stdio::from(log.try_clone()?))
             .stderr(Stdio::from(log));
 
