@@ -1958,12 +1958,16 @@ def tiff_for(name: str, params: dict | None = None, *,
 
 
 def neutral_tiff_for(name: str, params: dict | None = None, *,
-                     denoise_status=None, denoise_cancel=None) -> Path:
+                     denoise_status=None, denoise_cancel=None,
+                     output_space: str = "srgb") -> Path:
     """Full-resolution, display-referred source for profile-off exports."""
     src = src_path(name)
     raw_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    output_space = color_pipeline.normalise_output_space(output_space)
+    # Keep preview cache identity stable, and isolate color-preserving exports.
+    color_key = "" if output_space == "srgb" else f"_gamut-v1-{output_space}"
     t = CACHE / "neutral" / (
-        f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{raw_key}.tif")
+        f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{raw_key}{color_key}.tif")
     with TIFF_BUILD_LOCK:
         if not t.exists() or t.stat().st_mtime < src.stat().st_mtime:
             temporary = durable_io.temporary_path(t, "decode")
@@ -1976,13 +1980,13 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                     linear = tf.imread(tiff_for(
                         name, params, denoise_status=denoise_status,
                         denoise_cancel=denoise_cancel))
-                    display = color_pipeline.linear_prophoto_to_display_srgb(
-                        linear, params)
+                    display = color_pipeline.linear_prophoto_to_display(
+                        linear, params, output_space=output_space)
                     tf.imwrite(temporary,
                                (display * 65535.0 + 0.5).astype(np.uint16))
                 else:
                     platform_image.convert_processed_to_tiff(
-                        src, temporary, app_root=APP, output_space="srgb")
+                        src, temporary, app_root=APP, output_space=output_space)
                 durable_io.publish_file(temporary, t)
             finally:
                 temporary.unlink(missing_ok=True)
@@ -3387,7 +3391,7 @@ DENOISE = {"running": False, "name": "", "progress": 0, "total": 0,
 DENOISE_LOCK = threading.Lock()
 DENOISE_POOL = ThreadPoolExecutor(max_workers=1)
 EXTERNAL_EDIT = {"running": False, "total": 0, "done": 0,
-                 "paths": [], "names": [], "errors": []}
+                 "paths": [], "names": [], "errors": [], "warnings": []}
 EXTERNAL_EDIT_LOCK = threading.Lock()
 EXTERNAL_EDIT_POOL = ThreadPoolExecutor(max_workers=1)
 
@@ -3437,6 +3441,34 @@ def _export_metadata_payload(job: dict) -> tuple[str, Path | None, dict]:
             job.setdefault("warnings", []).append(
                 "Source camera metadata could not be located.")
     return policy, source, job.get("metadataFields") or {}
+
+
+def export_input_color_space(job: dict) -> str:
+    """Record the source encoding and visibly report remaining gamut limits."""
+    cp = fp.clean_params(job.get("params") or {})
+    output_space = color_pipeline.normalise_output_space(job.get("outputSpace"))
+    wide = (not cp["profile_enabled"] and output_space != "srgb"
+            and color_pipeline.wide_develop_edits_supported(job))
+    job["inputColorSpace"] = output_space if wide else "srgb"
+    if output_space != "srgb" and not wide:
+        warning = color_pipeline.SRGB_LIMITED_EXPORT_WARNING
+        warnings = job.setdefault("warnings", [])
+        if warning not in warnings:
+            warnings.append(warning)
+    return job["inputColorSpace"]
+
+
+def export_render_source(name: str, job: dict) -> Path:
+    """Choose a render source and record the color encoding passed to the CLI."""
+    color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
+    input_space = export_input_color_space(job)
+    if fp.clean_params(job.get("params") or {})["profile_enabled"]:
+        return tiff_for(name, job["params"])
+    # Neutral TIFFs already contain the Develop transfer function, regardless
+    # of whether the original capture was RAW.
+    job["params"] = fp.clean_params(dict(job.get("params") or {}, linear_input=False))
+    return neutral_tiff_for(name, job["params"],
+                            output_space=input_space)
 
 
 def finish_export(film_png: Path, dst: Path, job: dict) -> tuple[int, int]:
@@ -3580,6 +3612,7 @@ def _resident_render_full(name: str, params: dict, request: dict) -> dict:
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     # Check before a renderer spends work or creates any untagged output.
     profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
+    export_input_color_space(job)
     params = fp.clean_params(dict(job["params"], linear_input=is_raw(name)))
     cp = fp.clean_params(params)
     direct_error = None
@@ -3671,9 +3704,8 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
         else:
             job_file = durable_io.temporary_path(
                 CACHE / "external-edit-job.json", "job")
+            source = export_render_source(name, job)
             durable_io.atomic_write_text(job_file, json.dumps(job))
-            source = (tiff_for(name, job["params"]) if cp["profile_enabled"]
-                      else neutral_tiff_for(name, job["params"]))
             completed = subprocess.run(
                 [sys.executable, str(APP / "render_cli.py"), str(source),
                  str(staged), str(job_file)],
@@ -3682,6 +3714,17 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
                 timeout=1800, check=False)
             if completed.returncode:
                 raise RuntimeError((completed.stderr or completed.stdout)[-300:])
+            for line in reversed((completed.stdout or "").splitlines()):
+                try:
+                    result = json.loads(line)
+                except (ValueError, TypeError):
+                    continue
+                if isinstance(result, dict) and result.get("ok"):
+                    warnings = job.setdefault("warnings", [])
+                    for warning in result.get("warnings") or []:
+                        if str(warning) not in warnings:
+                            warnings.append(str(warning))
+                    break
         durable_io.publish_file_no_replace(staged, destination)
         staged.unlink(missing_ok=True)
     finally:
@@ -3706,9 +3749,8 @@ def _run_external_edits(names: list[str], output_space: str,
                     parent / f"{source.stem}-Edit.tif", "rename")
                 if destination is None:
                     raise FileExistsError("Could not choose an edit filename")
-                _render_external_job(name, destination,
-                                     _external_job(name, output_space,
-                                                   bit_depth))
+                job = _external_job(name, output_space, bit_depth)
+                _render_external_job(name, destination, job)
                 derivative_name = destination.name
                 if cat is not None:
                     original_id = catalog_image_id(name)
@@ -3729,6 +3771,10 @@ def _run_external_edits(names: list[str], output_space: str,
                 with EXTERNAL_EDIT_LOCK:
                     EXTERNAL_EDIT["paths"].append(str(destination))
                     EXTERNAL_EDIT["names"].append(derivative_name)
+                    if job.get("warnings"):
+                        EXTERNAL_EDIT["warnings"].append({
+                            "name": name, "path": str(destination),
+                            "warnings": list(job["warnings"])})
                 if WATCH_SERVICE is not None:
                     WATCH_SERVICE.add_session_path(destination)
             except Exception as error:
@@ -3775,7 +3821,7 @@ def start_external_edit(body: dict) -> dict:
         if EXTERNAL_EDIT["running"]:
             return {"ok": False, "error": "An external edit is already rendering"}
         EXTERNAL_EDIT.update(running=True, total=len(names), done=0,
-                             paths=[], names=[], errors=[])
+                             paths=[], names=[], errors=[], warnings=[])
         EXTERNAL_EDIT["jobId"] = JOBS.create(
             "external-edit", total=len(names), state="running")["id"]
     EXTERNAL_EDIT_POOL.submit(
@@ -4011,10 +4057,9 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             _, metadata_source, _ = _export_metadata_payload(job)
             if metadata_source is not None:
                 job["metadataSource"] = str(metadata_source)
+            render_source = export_render_source(name, job)
             durable_io.atomic_write_text(jfile, json.dumps(job))
             env = dict(os.environ, OMP_NUM_THREADS="4", NUMBA_NUM_THREADS="4")
-            render_source = tiff_for(name, job["params"]) if cp["profile_enabled"] \
-                else neutral_tiff_for(name, job["params"])
             try:
                 check()
                 r = _run_export_process(

@@ -73,6 +73,14 @@ def main():
 
     t0 = time.time()
     cp = fp.clean_params(params)
+    input_space = color_pipeline.normalise_output_space(job.get("inputColorSpace"))
+    if input_space != "srgb" and (cp["profile_enabled"] or cp["linear_input"]
+                                  or not color_pipeline.wide_develop_edits_supported(job)):
+        raise ValueError("Wide-gamut input cannot be used with sRGB color adjustments")
+    if (input_space == "srgb"
+            and color_pipeline.normalise_output_space(job.get("outputSpace")) != "srgb"
+            and color_pipeline.SRGB_LIMITED_EXPORT_WARNING not in warnings):
+        warnings.append(color_pipeline.SRGB_LIMITED_EXPORT_WARNING)
     use_rust = (job.get("engine") == "rs"
                 or fp.profile_requires_rust(cp["stock"]))
     if cp["profile_enabled"] and use_rust:
@@ -114,6 +122,8 @@ def main():
     width, height = color_pipeline.save_export_image(
         out, dst, fmt=fmt, quality=quality,
         output_space=str(job.get("outputSpace", "srgb")),
+        input_space=input_space,
+        bit_depth=int(job.get("bitDepth", 16)),
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=metadata_policy if is_heif else "none",
         metadata_fields=(job.get("metadataFields") or {}) if is_heif else None,
