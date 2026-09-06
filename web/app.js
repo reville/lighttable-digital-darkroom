@@ -3294,7 +3294,9 @@ function renderPhysicalPreview() {
 async function doRender(scheduledAt = performance.now(), options = {}) {
   clearTimeout(prefetchTimer);
   clearTimeout(refineTimer);
-  clearTimeout(nativeHelperTimer);
+  // A pending helper is left alone. Its own generation guard drops a
+  // superseded fetch, while the early return below happens before the
+  // generation is bumped, so cancelling here stranded the sampling surface.
   const im = cur();
   if (!im) return;
   readControls();
@@ -3643,8 +3645,9 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   scheduleNativeViewportLayout();
 
   // Histogram, WB sampling, and reference matching retain a 256px WebGL
-  // helper, generated only after interaction settles.
-  if (!surface.viewport) scheduleNativeHelper(render.helper, generation);
+  // helper, generated only after interaction settles. A response without a
+  // helper still presents a JPEG surface, which seeds sampling just as well.
+  if (!surface.viewport) scheduleNativeHelper(render.helper || render.img, generation);
 
   return new Promise((resolve) => {
     nativePreviewPending.set(generation, { resolve });
