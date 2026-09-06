@@ -2,6 +2,7 @@ import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
+import { createEditRecovery, recoveryPayloadMatches } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
@@ -365,6 +366,10 @@ function performNativeMenuCommand(command) {
 }
 
 window.lightTableNativeEvent = (event) => {
+  if (event?.type === 'editJournalReply') {
+    window.dispatchEvent(new CustomEvent('lighttable-edit-journal', {detail: event}));
+    return;
+  }
   if (event?.type === 'error') return toast(event.message || 'Folder action failed');
   if (event?.type === 'menuCommand') {
     performNativeMenuCommand(event.command || '');
@@ -3799,29 +3804,72 @@ function editHistorySnapshot() {
     masks: serializableMasks(), heals: S.heals, optics: S.optics });
 }
 
+let editRecovery = null;
+let editRecoveryReady = false;
+const journalRequests = new Map();
+window.addEventListener('lighttable-edit-journal', ({detail}) => {
+  const request = journalRequests.get(detail.id);
+  if (!request) return;
+  journalRequests.delete(detail.id); clearTimeout(request.timer);
+  if (detail.error) request.reject(new Error(detail.error));
+  else request.resolve(detail.result);
+});
+function nativeJournalRequest(body) {
+  return new Promise((resolve, reject) => {
+    const id = crypto.randomUUID();
+    const timer = setTimeout(() => {
+      journalRequests.delete(id); reject(new Error('Edit recovery did not respond'));
+    }, 10000);
+    journalRequests.set(id, {resolve, reject, timer});
+    if (!sendNative('editJournal', {...body, id})) {
+      journalRequests.delete(id); clearTimeout(timer);
+      reject(new Error('Desktop edit recovery is unavailable'));
+    }
+  });
+}
 const editSaveQueue = createEditSaveQueue({
+  journal: {
+    put(name, token, payload) {
+      if (!editRecoveryReady) throw new Error('Edit recovery is not ready');
+      return editRecovery.put(name, token, payload);
+    },
+    remove(name, token) { return editRecovery?.remove(name, token); },
+  },
   async send(name, payload) {
     const result = await api('/api/state', payload.state);
     if (!result?.ok || result.error) throw new Error(result?.error || 'Could not save edits');
     const image = S.images.find((item) => item.name === name);
     if (image) invalidateEditedThumbnail(image);
-    if (payload.history) HISTORY?.record(name, payload.history.label, payload.history.state);
+    if (payload.history) {
+      HISTORY?.record(name, payload.history.label, payload.history.state);
+      if (await HISTORY?.flush(name) === false) throw new Error('Could not save edit history');
+    }
   },
   onStatus(status) {
     const label = $('editSaveStatus');
     label.textContent = status.state === 'error' ? 'Edits not saved'
-      : status.state === 'saving' ? 'Saving…' : 'Saved';
+      : status.state === 'saving' ? 'Saving…'
+      : status.recoveryError ? 'Saved · recovery needs attention' : 'Saved';
     label.dataset.state = status.state;
     label.title = status.state === 'error'
-      ? 'Keep this window open and retry to save your changes.' : '';
-    $('retryEditSave').hidden = status.state !== 'error';
+      ? 'Retry to save your changes. Local recovery is retained when available.'
+      : status.recoveryError ? status.recoveryError.message : '';
+    $('retryEditSave').hidden = status.state !== 'error' && !status.recoveryError;
   },
 });
 
 async function flushEditSaves() {
-  try { await editSaveQueue.flush(); await HISTORY?.flush(); return true; }
+  try {
+    await editSaveQueue.flush();
+    if (await HISTORY?.flush() === false) throw new Error('Could not save edit history');
+    return true;
+  }
   catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
 }
+
+window.lightTablePrepareToClose = async () => {
+  return await flushEditSaves();
+};
 
 $('retryEditSave').onclick = async () => {
   try { await editSaveQueue.retry(); toast('Edits saved'); }
@@ -3851,7 +3899,7 @@ function saveState(immediate = false) {
     label: cleanLabel(im.label), ...edits,
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
-  editSaveQueue.enqueue(im.name, { state, history }, { immediate });
+  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.fileKey || null }, { immediate });
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
 
@@ -5883,7 +5931,7 @@ function saveStateFor(im, immediate = false) {
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, {
     status: im.status, rating: im.rating, label: cleanLabel(im.label) });
   editSaveQueue.enqueue(im.name, {
-    ...pending,
+    ...pending, sourceKey: im.fileKey || null,
     state: { ...pending?.state, name: im.name, status: im.status,
       rating: im.rating, label: cleanLabel(im.label) },
   }, { immediate });
@@ -6225,6 +6273,74 @@ async function watchCatalogScan() {
   }
 }
 
+async function chooseEditRecovery(records) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'modal'; dialog.id = 'editRecoveryDialog';
+  dialog.setAttribute('aria-labelledby', 'editRecoveryTitle');
+  dialog.style.color = 'var(--ink)';
+  const title = document.createElement('strong'); title.id = 'editRecoveryTitle';
+  title.textContent = 'Recover unsaved edits?';
+  const description = document.createElement('p');
+  description.textContent = `Local recovery found changes for ${records.length} photo${records.length === 1 ? '' : 's'}. Restoring replaces their saved edits with these recovered changes.`;
+  const list = document.createElement('p');
+  list.textContent = records.slice(0, 3).map(item => item.name).join(' · ')
+    + (records.length > 3 ? ' …' : '');
+  const actions = document.createElement('div'); actions.className = 'modal-actions';
+  const discard = document.createElement('button'); discard.textContent = 'Keep saved edits';
+  const restore = document.createElement('button'); restore.className = 'accent-btn';
+  restore.textContent = 'Restore edits';
+  actions.append(discard, restore); dialog.append(title, description, list, actions);
+  document.body.append(dialog);
+  return new Promise(resolve => {
+    const finish = value => { dialog.close(); dialog.remove(); resolve(value); };
+    discard.onclick = () => finish(false); restore.onclick = () => finish(true);
+    // Escape leaves recovery undecided; never silently discard drafts.
+    dialog.addEventListener('cancel', event => event.preventDefault());
+    dialog.addEventListener('keydown', event => event.stopPropagation());
+    dialog.showModal(); restore.focus();
+  });
+}
+async function initializeEditRecovery(data) {
+  const scope = data.catalog?.path || `folder:${data.folder}`;
+  let storage = null;
+  try { storage = window.localStorage; } catch (_) { /* surfaced by the journal */ }
+  editRecovery = createEditRecovery({scope,
+    nativeRequest: nativeBridge() ? nativeJournalRequest : null, storage});
+  let records;
+  try { records = await editRecovery.list(); editRecoveryReady = true; }
+  catch (error) {
+    toast(`Local edit recovery is unavailable: ${error.message}. Keep this window open if saving fails.`);
+    return;
+  }
+  const outstanding = [];
+  for (const record of records) {
+    // An acknowledged save whose cleanup was interrupted needs no replay.
+    const saved = await getJSON(`/api/state?name=${encodeURIComponent(record.name)}&recovery=1`).catch(() => null);
+    if (!saved || saved.error || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey)) {
+      toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
+      continue;
+    }
+    if (saved && !saved.error && recoveryPayloadMatches(record.payload, saved)) {
+      await editRecovery.remove(record.name, record.token).catch(error =>
+        toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
+    } else outstanding.push(record);
+  }
+  if (!outstanding.length) return;
+  if (await chooseEditRecovery(outstanding)) {
+    for (const record of outstanding) {
+      editSaveQueue.enqueue(record.name, {...record.payload,
+        history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
+      {immediate: true});
+    }
+    await flushEditSaves();
+    // Reload saved records before showing the first photo. Failed saves remain
+    // in the per-photo queue, which already overlays navigation state.
+    for (const image of S.images) { image.stateLoaded = false; image.hasEdits = true; }
+  } else {
+    for (const record of outstanding) await editRecovery.remove(record.name, record.token);
+  }
+}
+
 /* ------------------------------------------------------------------ boot */
 fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.rootFolder = d.folder;
@@ -6274,6 +6390,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.library = d.library || { collections: [], stacks: [], virtualCopies: [] };
   S.images = d.images.map((im) => normalizeLibraryImage(
     im, !S.catalogEnabled));
+  await initializeEditRecovery(d);
   syncAI(d.aiIndex || S.ai);
   if (S.ai.enabled && !S.ai.scanComplete) scheduleAIStatusPoll(true);
   // A finished index still has to be read once on load. In catalog mode the

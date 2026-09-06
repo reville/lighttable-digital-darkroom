@@ -106,7 +106,7 @@ function harness({manual = false} = {}) {
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, queue: editSaveQueue, photoUndo};',
   ].join('\n');
-  vm.runInNewContext(code, context, {filename: 'actual-app-save-functions.js'});
+  vm.runInNewContext(code + '\neditRecoveryReady = true; editRecovery = {put: async () => true, remove: async () => true};', context, {filename: 'actual-app-save-functions.js'});
   context.app.showCurrentImage(S.images[0]);
   return {...context.app, context, S, requests, stateReads, history, historyFlushes, nodes, timers, toasts};
 }
