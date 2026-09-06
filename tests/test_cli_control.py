@@ -22,7 +22,7 @@ from lighttable_cli.__main__ import (
     normalize_global_arguments,
     state_merge_update,
 )
-from lighttable_cli.instances import discover
+from lighttable_cli.instances import discover, select
 from lighttable_cli.manifest import INTERNAL_ROUTES, ROUTE_COVERAGE, schema
 from validation import ValidationError, clean_state_patch
 
@@ -137,12 +137,65 @@ class InstanceTests(unittest.TestCase):
     def test_discovery_removes_invalid_and_dead_records(self):
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
-            (root / "bad.json").write_text("not json", encoding="utf-8")
-            (root / "dead.json").write_text(json.dumps({
+            (root / "8321.json").write_text("not json", encoding="utf-8")
+            (root / "9.json").write_text(json.dumps({
                 "port": 9, "pid": 99999999, "token": "x"}), encoding="utf-8")
             with mock.patch("lighttable_cli.instances.process_is_alive",
                             return_value=False):
                 self.assertEqual(discover(root), [])
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_startup_reports_are_not_instances_or_stale_cleanup_targets(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            registration = root / "8947.json"
+            registration.write_text(json.dumps({
+                "port": 8947, "pid": 1234, "token": "synthetic-token"}))
+            reports = {
+                "startup-1234.json": json.dumps({"port": 8947, "pid": 1234,
+                                                  "phase": "ready"}),
+                "startup-5678.json": "{incomplete startup report",
+                "diagnostic.json": json.dumps({"port": 8947, "pid": 1234}),
+            }
+            for name, value in reports.items():
+                (root / name).write_text(value)
+            with mock.patch("lighttable_cli.instances.process_is_alive",
+                            return_value=True) as alive:
+                instances = discover(root)
+                self.assertEqual(len(instances), 1)
+                self.assertEqual(select(instances, port=8947).path, registration)
+                alive.assert_called_once_with(1234)
+            for name, value in reports.items():
+                self.assertEqual((root / name).read_text(), value)
+
+    def test_explicit_port_selects_live_instance_and_keeps_compatible_records(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            for port, token in ((8321, None), (8947, "synthetic-token")):
+                record = {"port": str(port), "pid": 1234}
+                if token is not None:
+                    record["token"] = token
+                (root / f"{port}.json").write_text(json.dumps(record))
+            (root / "startup-1234.json").write_text(json.dumps({
+                "port": 8947, "pid": 1234}))
+            with mock.patch("lighttable_cli.instances.process_is_alive", return_value=True):
+                instances = discover(root)
+            with self.assertRaisesRegex(RuntimeError, "several"):
+                select(instances)
+            self.assertEqual(select(instances, port=8947).token, "synthetic-token")
+            self.assertEqual(select(instances, port=8321).token, "")
+            self.assertIsNone(select(instances, port=9000))
+
+    def test_invalid_registration_schema_or_port_does_not_create_duplicates(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "8321.json").write_text("[]")
+            (root / "8947.json").write_text(json.dumps({"port": 8321, "pid": 1234}))
+            with mock.patch("lighttable_cli.instances.process_is_alive") as alive:
+                self.assertEqual(discover(root, clean_stale=False), [])
+                self.assertEqual(len(list(root.iterdir())), 2)
+                self.assertEqual(discover(root), [])
+                alive.assert_not_called()
             self.assertEqual(list(root.iterdir()), [])
 
 
