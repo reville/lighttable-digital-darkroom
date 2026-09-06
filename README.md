@@ -70,6 +70,14 @@ before film; processing stays floating point until the final encoder. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,
 Display P3, or ProPhoto RGB.
 
+Export recipes can use one destination, a subfolder beside each original, or
+the original folder hierarchy beneath a destination. The dialog previews paths
+across source folders before starting. Optional capture-time file timestamps
+use the embedded timezone; missing timezones are reported unless you explicitly
+choose this computer's local timezone. Metadata and recipe-sidecar policies are
+saved with the recipe. Cancel stops queued work, waits for active cleanup, and
+retains completed files. Export details list skipped files, errors and warnings.
+
 ### Local by design
 
 Photos, the SQLite catalog, edit history, and render caches stay on your machine.
@@ -200,3 +208,27 @@ and the [spektrafilm-rs](https://github.com/turbasvin/spektrafilm-rs) Rust port.
 See [third-party notices](THIRD_PARTY_NOTICES.md) for pinned upstream revisions,
 component licenses, and test-image attribution. The
 [website source](https://github.com/reville/lighttable-site) is maintained separately.
+
+
+Cloud placeholders and lens matching: LightTable catalogs macOS dataless photos as
+`cloud-only` without reading their content. Existing metadata, edits and identities
+survive eviction. Download the file in Finder using Download Now or Keep Downloaded,
+then rescan the source; it becomes available even if its size and timestamp did not
+change. Import previews count and explain skipped cloud-only photos; watched
+folders wait for a download and two stable polls before importing. Other providers that do not expose macOS's dataless flag may still block on
+filesystem I/O; this check is not a general network timeout or download manager.
+
+Lens correction requires one compatible automatic match. Missing or ambiguous
+metadata leaves automatic correction off and explains the reason. The Lens profile
+selector offers compatible bundled profiles and stores the explicit choice with the
+photo's optics, so preview and export use the same choice. A saved profile that is
+no longer compatible stays unavailable rather than silently choosing another lens.
+
+Run `.venv/bin/python bench/storage_readiness.py --output /tmp/storage.json` for a
+reproducible 10,000-record cold/mixed catalog benchmark. It uses distinct synthetic
+file headers, 20% injected cloud flags and a configurable delay per fingerprint and
+metadata operation. Results include first-page latency, concurrent query median/p95,
+scan time and content-read counts, followed by a warm scan and hydration rescan.
+This measures the actual scanner and SQLite query path with simulated slow reads;
+it does not establish physical HDD, network-drive, 8 GB RAM, cloud-provider, RAW
+render or UI performance. “Cold” means an empty catalog, not a flushed OS disk cache.

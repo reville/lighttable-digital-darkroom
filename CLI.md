@@ -29,6 +29,38 @@ lighttable export run @selection --destination ~/Pictures/Exports
 lighttable ui command nextPhoto
 ```
 
+## Export delivery
+
+`--destination-mode fixed` writes into one destination folder (the default).
+`original-folder-relative` treats `--destination` as a subfolder beside each
+original. `preserve-source-hierarchy` retains folders beneath stable source
+namespaces, so two sources named Photos cannot collide. Single and batch
+exports follow the same rules; `/api/export/preview` returns sample paths.
+
+`--preserve-capture-time` sets file times from EXIF capture time. An embedded
+timezone offset wins. Without one, the default preserves export time and
+reports a warning; `--capture-time-policy local` explicitly uses this
+computer's timezone at the capture date, including daylight saving time.
+`--metadata` selects all, all-except-location, copyright, or none;
+`--no-sidecar` omits the delivery recipe sidecar.
+
+Use `--no-wait` to get a job ID, then `lighttable jobs cancel ID` to stop it.
+Cancellation stops queueing and waits for active work to clean up. Completed
+outputs survive. The job becomes terminal only after cleanup; its result
+records completed, skipped, cancelledCount and per-file warnings.
+
+## Photo availability and lens profiles
+
+Catalog photos expose `availability`: local or cloud-only. Cloud-only means
+macOS reports a dataless placeholder; download it in Finder, then rescan.
+Content hashing, metadata extraction and rendering refuse placeholders.
+
+`/api/lens-profile?name=...` returns found, profile, reason and candidates.
+Set `optics.profileOverride` to null for automatic selection or an object
+with cameraMaker, cameraModel, lensMaker and lensModel from a candidate.
+The choice is validated against the camera and recorded focal length.
+Ambiguous automatic matches and unavailable overrides stay uncorrected.
+
 ## Route coverage
 
 | Command family | API routes |
@@ -40,7 +72,7 @@ lighttable ui command nextPhoto
 | `sources / folders` | `/api/catalog/sources`, `/api/catalog/scan`, `/api/catalog/folders`, `/api/folders` |
 | `collections / stacks / virtual-copy` | `/api/catalog/collections`, `/api/library` |
 | `keywords` | `/api/catalog/keywords`, `/api/state` |
-| `metadata` | `/api/metadata`, `/api/metadata/bulk`, `/api/exif` |
+| `metadata / api post` | `/api/metadata`, `/api/metadata/bulk`, `/api/metadata/capture-time`, `/api/exif` |
 | `history` | `/api/history`, `/api/history/state`, `/api/history/clear` |
 | `versions` | `/api/state` |
 | `film / schema` | `/api/options` |
@@ -48,7 +80,7 @@ lighttable ui command nextPhoto
 | `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
-| `import` | `/api/import/catalog`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write` |
+| `import` | `/api/import/catalog`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
 | `ingest` | `/api/ingest`, `/api/ingest/scan`, `/api/ingest/status`, `/api/ingest/sources`, `/api/ingest/cancel` |
 | `watch` | `/api/watch`, `/api/watch/status` |
 | `merge` | `/api/merge`, `/api/merge/status` |

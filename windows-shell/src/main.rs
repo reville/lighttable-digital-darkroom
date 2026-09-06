@@ -1,5 +1,7 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
 
+use lighttable_desktop_shell::CloseAttempts;
+
 use std::{
     env,
     fs::{self, File},
@@ -13,7 +15,7 @@ use std::{
 
 use anyhow::{Context, Result, anyhow, bail};
 use directories::{BaseDirs, UserDirs};
-use lighttable_desktop_shell::{Settings, normalise, rename_root, source_folders};
+use lighttable_desktop_shell::{Settings, edit_recovery, normalise, rename_root, source_folders};
 use rfd::{FileDialog, MessageButtons, MessageDialog, MessageLevel};
 use serde_json::{Value, json};
 use tao::{
@@ -52,6 +54,7 @@ document.documentElement.style.setProperty('--native-window-controls-w', '0px');
 #[derive(Debug)]
 enum UserEvent {
     NativeMessage(String),
+    EditJournalReply(Value),
     PageLoaded,
 }
 
@@ -179,6 +182,10 @@ struct AppState {
     paths: RuntimePaths,
     settings: Settings,
     folder: PathBuf,
+    journal: std::sync::mpsc::Sender<Value>,
+    close_deadline: Option<Instant>,
+    close_approved: bool,
+    close_attempts: CloseAttempts,
 }
 
 impl AppState {
@@ -187,6 +194,18 @@ impl AppState {
         self.webview
             .evaluate_script(&format!("window.lightTableNativeEvent?.({encoded})"))?;
         Ok(())
+    }
+
+    fn finish_close(&mut self, saved: bool) {
+        self.close_deadline = None;
+        self.close_attempts.cancel();
+        self.close_approved = saved || MessageDialog::new()
+            .set_level(MessageLevel::Warning).set_title("Edits have not been saved")
+            .set_description("Quit anyway? Keep the window open to retry saving. Available local recovery will be offered next time this catalog opens.")
+            .set_buttons(MessageButtons::YesNo).show() == rfd::MessageDialogResult::Yes;
+        if !self.close_approved {
+            let _ = self.send_event(json!({"type": "closeCancelled"}));
+        }
     }
 
     fn send_sources(&self) -> Result<()> {
@@ -229,6 +248,18 @@ impl AppState {
             .and_then(Value::as_str)
             .unwrap_or_default();
         match action {
+            "editJournal" => {
+                self.journal
+                    .send(message.clone())
+                    .context("edit recovery worker stopped")?;
+            }
+            "closeReady" => {
+                if self.close_deadline.is_some()
+                    && self.close_attempts.accepts(message["attempt"].as_u64())
+                {
+                    self.finish_close(message["ok"].as_bool() == Some(true));
+                }
+            }
             "requestSources" => self.send_sources()?,
             "addPhotos" => {
                 let extensions = photo_extensions();
@@ -291,8 +322,11 @@ impl AppState {
                     .add_filter("Applications", &["exe"])
                     .pick_file()
                 {
-                    let name = application.file_stem().unwrap_or_default()
-                        .to_string_lossy().to_string();
+                    let name = application
+                        .file_stem()
+                        .unwrap_or_default()
+                        .to_string_lossy()
+                        .to_string();
                     self.send_event(json!({
                         "type": "editorChosen", "name": name,
                         "path": application.to_string_lossy(),
@@ -300,17 +334,25 @@ impl AppState {
                 }
             }
             "openWith" => {
-                let paths: Vec<String> = message.get("paths")
+                let paths: Vec<String> = message
+                    .get("paths")
                     .and_then(Value::as_array)
-                    .map(|values| values.iter().filter_map(|value|
-                        value.as_str().map(str::to_owned)).collect())
+                    .map(|values| {
+                        values
+                            .iter()
+                            .filter_map(|value| value.as_str().map(str::to_owned))
+                            .collect()
+                    })
                     .unwrap_or_default();
-                let application = message.get("app").and_then(Value::as_str)
+                let application = message
+                    .get("app")
+                    .and_then(Value::as_str)
                     .unwrap_or_default();
                 if application.is_empty() {
                     for path in paths {
                         Command::new("cmd.exe")
-                            .args(["/C", "start", "", &path]).spawn()?;
+                            .args(["/C", "start", "", &path])
+                            .spawn()?;
                     }
                 } else if !paths.is_empty() {
                     Command::new(application).args(paths).spawn()?;
@@ -656,6 +698,30 @@ fn run() -> Result<()> {
         })
         .build(&window)?;
 
+    let (journal_tx, journal_rx) = std::sync::mpsc::channel::<Value>();
+    let journal_proxy = proxy.clone();
+    let catalog_directory = env::var_os("LIGHTTABLE_CATALOG_FILE")
+        .map(PathBuf::from)
+        .and_then(|path| path.parent().map(Path::to_path_buf))
+        .unwrap_or_else(|| paths.support.join("Catalog"));
+    thread::spawn(move || {
+        for body in journal_rx {
+            let mut reply = json!({"type": "editJournalReply", "id": body["id"]});
+            match edit_recovery(
+                &catalog_directory.join("Recovery").join("EditDrafts"),
+                &body,
+            ) {
+                Ok(value) => reply["result"] = value,
+                Err(error) => reply["error"] = Value::String(format!("{error:#}")),
+            }
+            if journal_proxy
+                .send_event(UserEvent::EditJournalReply(reply))
+                .is_err()
+            {
+                break;
+            }
+        }
+    });
     let mut app = AppState {
         window,
         webview,
@@ -663,10 +729,14 @@ fn run() -> Result<()> {
         paths,
         settings,
         folder: normalise(folder),
+        journal: journal_tx,
+        close_deadline: None,
+        close_approved: false,
+        close_attempts: CloseAttempts::default(),
     };
 
     event_loop.run(move |event, _, control_flow| {
-        *control_flow = ControlFlow::Wait;
+        *control_flow = app.close_deadline.map(ControlFlow::WaitUntil).unwrap_or(ControlFlow::Wait);
         match event {
             Event::UserEvent(UserEvent::NativeMessage(message)) => {
                 if let Err(error) = app.handle_command(&message) {
@@ -676,6 +746,9 @@ fn run() -> Result<()> {
                     }));
                 }
             }
+            Event::UserEvent(UserEvent::EditJournalReply(reply)) => {
+                let _ = app.send_event(reply);
+            }
             Event::UserEvent(UserEvent::PageLoaded) => {
                 let _ = app.send_sources();
             }
@@ -683,10 +756,25 @@ fn run() -> Result<()> {
                 event: WindowEvent::CloseRequested,
                 ..
             } => {
-                app.server.stop();
-                *control_flow = ControlFlow::Exit;
+                if app.close_deadline.is_none() {
+                    app.close_deadline = Some(Instant::now() + Duration::from_secs(12));
+                    let attempt = app.close_attempts.begin();
+                    let script = "Promise.resolve(window.lightTablePrepareToClose?.() ?? true).then(ok => window.lightTableNativeBridge.postMessage({action:'closeReady',attempt:__ATTEMPT__,ok})).catch(() => window.lightTableNativeBridge.postMessage({action:'closeReady',attempt:__ATTEMPT__,ok:false}))".replace("__ATTEMPT__", &attempt.to_string());
+                    let _ = app.webview.evaluate_script(&script);
+                }
+            }
+            Event::MainEventsCleared => {
+                if app.close_deadline.is_some_and(|limit| Instant::now() >= limit) {
+                    app.finish_close(false);
+                }
             }
             _ => {}
+        }
+        if app.close_approved {
+            app.server.stop();
+            *control_flow = ControlFlow::Exit;
+        } else if let Some(deadline) = app.close_deadline {
+            *control_flow = ControlFlow::WaitUntil(deadline);
         }
     });
 }

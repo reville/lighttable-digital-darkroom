@@ -21,14 +21,14 @@ const deferred = () => {
 
 // Execute the real save/navigation/undo functions with rendering and transport
 // boundaries stubbed. No application logic is copied into the test harness.
-function harness({manual = false} = {}) {
+function harness({manual = false, client = 'test-window'} = {}) {
   const nodes = new Map(), timers = new Map(), requests = [], stateReads = [], history = [], toasts = [];
   const historyFlushes = [];
   let nextTimer = 0;
   const noop = () => {};
   const node = id => {
     if (!nodes.has(id)) nodes.set(id, {
-      dataset: {}, style: {}, width: 0, height: 0,
+      dataset: {}, style: {}, width: 0, height: 0, focus: noop,
       classList: {remove: noop, toggle: noop, contains: () => false},
       removeAttribute: noop, setAttribute: noop,
     });
@@ -44,13 +44,14 @@ function harness({manual = false} = {}) {
   };
   const context = {
     console, structuredClone, Promise, AggregateError, S,
+    transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
     window: {addEventListener: noop, confirm: () => true},
-    CLIENT_ID: 'test-window',
+    CLIENT_ID: client,
     SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
     cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
-    PRESET_BROWSER: null, METADATA: null,
+    PRESET_BROWSER: null, METADATA: null, CAPTURE_TIME: null,
     HISTORY: {
       record: (name, label, state) => history.push(plain({name, label, state})),
       refresh: noop,
@@ -90,28 +91,32 @@ function harness({manual = false} = {}) {
     'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
     'setCompareActive', 'updateLoupeInfoOverlay', 'syncAIPhoto', 'loadLensProfile',
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
-    'setEditorLoading', 'invalidateVisibleCache', 'syncCullPanel', 'confirmTransfer',
+    'setEditorLoading', 'syncPairControls', 'beginCropSession', 'syncPreviewDetailStatus',
+    'invalidateVisibleCache', 'syncCullPanel', 'confirmTransfer', 'showTransferDialog', 'closeTransferDialog',
   ]) context[name] = noop;
   const stateStart = appSource.indexOf("let _lastHistorySnapshot = '';");
   const stateEnd = appSource.indexOf('function photoMatchesQuery(', stateStart);
   assert.ok(stateStart >= 0 && stateEnd > stateStart);
   const code = [
     read('edit-save-queue.js').replace('export function ', 'function '),
+    read('edit-transfer.js').replaceAll('export ', ''),
+    read('close-barrier.js').replace('export function ', 'function '),
     read('photo-undo.js').replace('export function ', 'function '),
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
-    'let navigationGeneration = 0, lastNavigationDirection = 1;',
+    'let navigationGeneration = 0, lastNavigationDirection = 1, cropSession = null;',
     "let _stripKey = '', _gridKey = '';",
+
     'let renderTimer, refineTimer, settleRenderTimer, browserOriginal, browserOriginalTextureURL;',
     ...['snapshot', 'filmRenderFingerprint', 'baseEditsFingerprint', 'updateUndoRedoButtons',
       'pushUndoState', 'pushUndo', 'restore', 'undo', 'redo', 'isStateLoaded',
       'normalizeLibraryImage', 'prefetchState',
       'showCurrentImage', 'go', 'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
-      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'applyServerStateEvent'].map(appFunction),
+      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',
   ].join('\n');
-  vm.runInNewContext(code, context, {filename: 'actual-app-save-functions.js'});
+  vm.runInNewContext(code + '\neditRecoveryReady = true; editRecovery = {put: async () => true, remove: async () => true};', context, {filename: 'actual-app-save-functions.js'});
   context.app.showCurrentImage(S.images[0]);
   return {...context.app, context, S, requests, stateReads, history, historyFlushes, nodes, timers, toasts};
 }
@@ -163,7 +168,7 @@ test('marking an outgoing photo serializes with its pending full edit and preser
   const outgoing = app.S.images[0];
   outgoing.rating = 5;
   outgoing.status = 'approved';
-  app.persistMark([outgoing], {rating: 5});
+  app.persistMark([outgoing], {rating: 5, status: 'approved'});
   await settle();
   assert.equal(app.requests.length, 1, 'mark must wait for the earlier A save');
   app.requests[0].resolve({ok: true});
@@ -175,6 +180,17 @@ test('marking an outgoing photo serializes with its pending full edit and preser
   app.requests[1].resolve({ok: true});
   assert.equal(await app.flushEditSaves(), true);
   assert.ok(app.history.every(item => item.name === 'A.raw' && item.state.grade.exposure === 2.25));
+});
+
+test('a mark-only recovery draft retains the identity of its original', async () => {
+  const app = harness({manual: true});
+  const image = app.S.images[1];
+  image.recoverySourceKey = 'original-content-revision';
+  app.persistMark([image], {rating: 5});
+  assert.equal(app.queue.getPending(image.name).sourceKey, image.recoverySourceKey);
+  await settle();
+  app.requests[0].resolve({ok: true});
+  await app.flushEditSaves();
 });
 
 test('returning to a photo uses retained edits when a save has failed, then Retry saves the newest edit', async () => {
@@ -198,7 +214,7 @@ test('returning to a photo uses retained edits when a save has failed, then Retr
   await settle();
   assert.equal(app.requests[1].state.name, 'A.raw');
   assert.equal(app.requests[1].state.grade.exposure, 4);
-  app.requests[1].resolve({ok: true});
+  for (const request of app.requests.slice(1)) request.resolve({ok: true});
   await retry;
   assert.equal(app.nodes.get('editSaveStatus').textContent, 'Saved');
   assert.equal(app.nodes.get('retryEditSave').hidden, true);
@@ -278,6 +294,17 @@ test('marks on the already displayed photo survive a concurrent state reload aft
 });
 
 
+test('a rating action does not write unrelated divergent pair metadata', async () => {
+  const app = harness();
+  const companion = app.S.images[1];
+  companion.rating = 4;
+  companion.status = 'skipped';
+  companion.label = 'blue';
+  app.persistMark([companion], {rating: 4});
+  await app.flushEditSaves();
+  assert.deepEqual(app.requests[0].state, {name: 'B.raw', rating: 4});
+});
+
 function clipboard(exposure) {
   return {params: {profile_enabled: false}, grade: {exposure}, masks: [], heals: [], optics: {}};
 }
@@ -289,8 +316,8 @@ test('paste joins a pending full save and later slider input cannot be reverted 
   app.saveState();
   app.S.clipboard = clipboard(4);
   const paste = app.pasteSettingsTo([app.S.images[0]]);
-  assert.equal(app.S.grade.exposure, 4, 'paste is visible before its transport settles');
   await settle();
+  assert.equal(app.S.grade.exposure, 4, 'paste is visible before its transport settles');
   assert.equal(app.requests.length, 1);
   assert.equal(app.requests[0].path, '/api/state');
   assert.equal(app.requests[0].state.grade.exposure, 4);
@@ -325,7 +352,7 @@ test('paste supersedes a failed noncurrent recipe and retry keeps its crop and n
   const retry = app.nodes.get('retryEditSave').onclick();
   await settle();
   assert.equal(app.requests[1].state.grade.exposure, 4);
-  app.requests[1].resolve({ok: true});
+  for (const request of app.requests.slice(1)) request.resolve({ok: true});
   await retry;
 });
 
@@ -419,17 +446,21 @@ test('metadata-only external events leave edit controls and queued recipes intac
   await app.flushEditSaves();
 });
 
-test('paste during a photo load survives a stale state response after its write completes', async () => {
+test('selective paste waits for destination loading and preserves unchecked edits', async () => {
   const app = harness();
   app.S.images[1].stateLoaded = false;
   const navigation = app.go(1);
   app.S.clipboard = clipboard(4);
-  await app.pasteSettingsTo([app.S.images[1]]);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  assert.equal(app.requests.length, 0, 'do not overwrite unknown unchecked edits');
+  app.stateReads[0].resolve({grade: {exposure: -3}, crop: {x: .1, y: .2, w: .8, h: .7}});
+  await navigation;
+  await paste;
   assert.equal(app.requests[0].state.grade.exposure, 4);
   assert.equal(app.queue.getStatus().state, 'saved');
-  app.stateReads[0].resolve({grade: {exposure: -3}});
-  await navigation;
   assert.equal(app.S.grade.exposure, 4);
+  assert.deepEqual(plain(app.S.crop), {x: .1, y: .2, w: .8, h: .7});
 });
 
 test('a failed history flush prevents save success and Retry waits for history', async () => {
@@ -452,4 +483,149 @@ test('an external patch on an idle photo is displayed without echoing another st
   assert.equal(app.S.images[0].grade.exposure, 6);
   assert.equal(app.requests.length, 0);
   assert.equal(app.queue.getStatus().state, 'saved');
+});
+
+test('two peer windows converge after concurrent saves without echoing repair writes', async () => {
+  const a = harness({manual: true, client: 'window-a'});
+  const b = harness({manual: true, client: 'window-b'});
+  a.S.grade.exposure = 2;
+  b.S.grade.exposure = 3;
+  const saves = [a.saveState(true), b.saveState(true)];
+  await settle();
+  // The server accepts A then B, publishing each event before its HTTP ack.
+  for (const source of [a, b]) {
+    const event = {client: source.context.CLIENT_ID, origin: 'window',
+      names: ['A.raw'], patch: plain(source.requests[0].state)};
+    await a.applyServerStateEvent(event);
+    await b.applyServerStateEvent(event);
+  }
+  for (const app of [a, b]) app.requests[0].resolve({ok: true});
+  await Promise.all(saves);
+  await settle();
+  for (const app of [a, b]) {
+    assert.equal(app.stateReads.length, 1);
+    app.stateReads[0].resolve(plain(b.requests[0].state));
+  }
+  await settle();
+  for (const app of [a, b]) {
+    assert.equal(app.requests.length, 1, 'no reciprocal repair POSTs');
+    assert.equal(app.S.grade.exposure, 3, 'both display the last accepted recipe');
+    assert.deepEqual(plain(app.queue.getStatus().pendingNames), []);
+  }
+});
+
+test('peer reconciliation cannot overwrite controls edited while its read was pending', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  const saved = app.saveState(true);
+  await settle();
+  await app.applyServerStateEvent({client: 'peer', origin: 'window', names: ['A.raw'], patch: {grade: {exposure: 2}}});
+  app.requests[0].resolve({ok: true});
+  await saved;
+  await settle();
+  app.S.grade.exposure = 4;
+  const newer = app.saveState(true);
+  await settle();
+  app.requests[1].resolve({ok: true});
+  await newer;
+  app.stateReads[0].resolve({grade: {exposure: 2}});
+  await settle();
+  assert.equal(app.S.grade.exposure, 4);
+});
+
+function toneAndMasksClipboard() {
+  return {...clipboard(4), sourceName: 'A.raw', masks: [{type: 'subject'}], choices: {
+    film: false, raw: false, tone: true, color: false, detail: false,
+    optics: false, crop: false, masks: true, heals: false,
+  }};
+}
+
+test('selective paste preserves unchecked color changed while AI detection is pending', async () => {
+  const app = harness();
+  app.S.images[1].grade = {exposure: 1, temp: 0};
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  let detecting = false;
+  app.context.api = (path, body) => {
+    if (path !== '/api/mask/semantic') return originalApi(path, body);
+    detecting = true; return detection.promise;
+  };
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  assert.equal(detecting, true);
+  await app.applyServerStateEvent({client: 'cli', names: ['B.raw'],
+    patch: {grade: {exposure: 1, temp: 20}}});
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  const delivered = app.requests.find(request => request.state.name === 'B.raw');
+  assert.equal(delivered.state.grade.exposure, 4);
+  assert.equal(delivered.state.grade.temp, 20);
+  assert.equal(app.S.images[1].grade.temp, 20);
+  assert.equal(app.history.find(step => step.name === 'B.raw').state.grade.temp, 20);
+});
+
+test('selective paste refuses AI masks when effective target geometry changes during detection', async () => {
+  const app = harness();
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  await app.applyServerStateEvent({client: 'cli', names: ['B.raw'],
+    patch: {params: {profile_enabled: false, rotate: 90}}});
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.equal(app.S.images[1].params.rotate, 90);
+  assert.equal(app.S.images[1].grade.exposure, 1);
+  assert.equal(app.S.images[1].masks.length, 0);
+  assert.match(app.nodes.get('transferStatus').textContent, /geometry changed/);
+});
+
+test('selective paste refuses AI masks if the source identity changes during detection', async () => {
+  const app = harness();
+  app.S.images[1].recoverySourceKey = 'original';
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  app.S.images[1] = {...app.S.images[1], recoverySourceKey: 'replacement'};
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.equal(app.S.images[1].grade.exposure, 1);
+  assert.match(app.nodes.get('transferStatus').textContent, /photo or its geometry changed/);
+});
+
+test('selective paste never replaces unchecked edits with defaults after a library row reload', async () => {
+  const app = harness();
+  app.S.clipboard = toneAndMasksClipboard();
+  const detection = deferred(), originalApi = app.context.api;
+  app.context.api = (path, body) => path === '/api/mask/semantic'
+    ? detection.promise : originalApi(path, body);
+  const paste = app.pasteSettingsTo([app.S.images[1]]);
+  await settle();
+  app.S.images[1] = {name: 'B.raw', stateLoaded: false, hasEdits: true};
+  detection.resolve({bitmap: {width: 1, height: 1, data: 'AA=='}, provider: 'fixture'});
+  await paste;
+  assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
+  assert.match(app.nodes.get('transferStatus').textContent, /latest existing settings are not loaded/);
+});
+
+test('peer reconciliation cannot interrupt a slider gesture before its change event saves', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  const saved = app.saveState(true);
+  await settle();
+  await app.applyServerStateEvent({client: 'peer', origin: 'window', names: ['A.raw'], patch: {grade: {exposure: 2}}});
+  app.requests[0].resolve({ok: true});
+  await saved;
+  await settle();
+  app.S.grade.exposure = 4; // input event, before pointer-up/change enqueues it
+  app.stateReads[0].resolve({grade: {exposure: 2}});
+  await settle();
+  assert.equal(app.S.grade.exposure, 4);
 });

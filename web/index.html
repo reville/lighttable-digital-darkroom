@@ -32,7 +32,7 @@
   </div>
 
   <div class="top-actions">
-    <span class="counts" id="counts"></span>
+    <span class="counts" id="counts"></span><button class="quiet compact" id="switchPair" hidden></button>
     <div class="view-switch" role="group" aria-label="Photo view">
       <button class="quiet icon-btn" data-view="photo" title="Photo Grid (G)" aria-label="Photo Grid">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 3h6v5h-6zM9.5 3h8v5h-8zM2.5 9h9v8h-9zM12.5 9h5v8h-5z"/></svg>
@@ -63,7 +63,7 @@
     <button class="quiet icon-btn" id="redoBtn" title="Redo (Ctrl/⌘Shift+Z)" aria-label="Redo" disabled hidden>
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5 4 4-4 4M15.5 9H8a4 4 0 0 0-4 4"/></svg>
     </button>
-    <span id="estat"></span>
+    <span id="estat" role="status" aria-live="polite"></span><button class="quiet compact" id="exportCancel" hidden>Cancel export</button><button class="quiet compact" id="exportDetails" hidden>Export details</button>
     <span id="editSaveStatus" role="status" aria-live="polite"></span><button class="quiet compact" id="retryEditSave" hidden>Retry save</button>
     <button class="accent-btn icon-btn topbar-export-btn" id="exportBtn" title="Export photos" aria-label="Export photos">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V2M6 6l4-4 4 4M4 10v6h12v-6"/></svg>
@@ -162,6 +162,7 @@
     <div class="editor" id="editor">
       <div class="stage">
         <div class="zoomwrap" id="zoomwrap">
+          <span class="preview-detail-status" id="previewDetailStatus" role="status" aria-live="polite" hidden></span>
           <div class="cmp" id="cmp" style="--pos:0%; --clip:100%">
             <canvas id="cv"></canvas>
             <img id="orig" alt="Original photograph">
@@ -364,6 +365,9 @@
           <summary><span>Lens corrections</span><button class="quiet compact section-reset-button" id="lensReset" type="button">Reset</button></summary>
           <div class="secbody">
             <div class="lens-profile-card" id="lensProfileCard"><span class="status-dot"></span><div><strong id="lensProfileName">Checking photo metadata…</strong><span id="lensProfileDetail">Automatic correction uses the bundled camera and lens database.</span></div></div>
+            <label class="field-label" for="lensProfileOverride">Lens profile</label>
+            <select id="lensProfileOverride"><option value="">Automatic from photo metadata</option></select>
+            <p class="hint" id="lensProfileReason"></p>
             <label class="check-row"><input type="checkbox" id="lensProfileEnabled"><span>Use matched lens profile</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileDistortion" checked><span>Correct distortion</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileVignette" checked><span>Correct lens shading</span></label>
@@ -594,7 +598,7 @@
       <section class="panel-pane" id="cropPane">
         <div class="panel-title"><div><strong>Crop &amp; Rotate</strong><span>Refine the frame</span></div><button class="quiet compact" id="cropReset" title="Reset crop, rotation, flips, and perspective" disabled>Reset</button></div>
         <div class="pane-content">
-          <button class="quiet compact tool-back" type="button" data-exit-tool>Back to Edit</button>
+          <div class="btnrow crop-session-actions"><button id="cropCancel" type="button">Cancel</button><button id="cropDone" type="button" class="accent-btn">Done</button></div>
           <label class="field-label" for="cropRatio">Aspect ratio</label>
           <div class="crop-aspect-controls">
             <select id="cropRatio"><option value="free">Free</option><option value="original">Original</option><option value="1">1:1</option><option value="1.25">5:4</option><option value="1.333333">4:3</option><option value="1.5">3:2</option><option value="1.777778">16:9</option><option value="custom">Custom…</option></select>
@@ -617,7 +621,7 @@
             <div class="row"><span class="name">Horizontal</span><input type="range" data-optics="horizontal" min="-1" max="1" step="0.01"><span class="val" data-opticsv="horizontal">0.00</span></div>
             <div class="row"><span class="name">Scale</span><input type="range" data-optics="scale" min="1" max="1.6" step="0.005" value="1"><span class="val" data-opticsv="scale">1.00</span></div>
           </div></details>
-          <p class="hint crop-hint">Drag outside the frame to draw a new crop. Drag inside to reposition it, or use the handles to resize. Arrow keys nudge the selection; hold Shift for larger steps.</p>
+          <p class="hint crop-hint">Drag outside the frame to draw a new crop. Drag inside to reposition it, or use the handles to resize. Arrow keys nudge the selection; hold Shift for larger steps. Enter accepts; Escape restores the frame from when you opened Crop.</p>
         </div>
       </section>
 
@@ -664,7 +668,7 @@
       <section id="catalogSupport" hidden><span id="catalogSummary">—</span><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div><div class="source-list watch-list" id="watchList"></div></section>
 
       <section class="panel-pane" id="infoPane">
-        <div class="panel-title"><div><strong>Info</strong><span>Photo details and metadata</span></div></div>
+        <div class="panel-title"><div><strong>Info</strong><span>Photo details and metadata</span></div></div><p class="hint pair-note" id="pairedMetadataNote" hidden></p>
         <div class="pane-content">
           <div class="subheading">Rating</div><div class="stars-edit" id="stars"></div>
           <div class="btnrow stack-gap"><button id="approveBtn">Pick</button><button id="skipBtn">Reject</button><button id="unflagBtn">Unflag</button></div>
@@ -675,6 +679,16 @@
           <div class="keyword-entry"><input id="keywordInput" type="text" maxlength="400" list="keywordSuggestions" placeholder="Add keywords"><datalist id="keywordSuggestions"></datalist><button id="keywordAdd">Add</button></div>
           <div class="keyword-list" id="keywordList"></div>
           <details class="info-section" open><summary>Camera</summary><div class="info-section-body"><div id="exif" class="exif">—</div></div></details>
+          <details class="info-section"><summary>Correct capture time</summary><div class="info-section-body">
+            <p class="hint">Shift the camera clock across the selection while preserving the time between photos. These catalog corrections affect capture-date sorting and exported metadata; original files and filesystem dates stay unchanged.</p>
+            <label class="field"><span>Shift clock by hours</span><input id="captureShiftHours" type="number" step="any" value="0" placeholder="For example, -1 or 5.5"></label>
+            <label class="field"><span>Assign time zone</span><input id="captureTimeZone" type="text" placeholder="Keep existing; or -04:00, +05:30" maxlength="6"></label>
+            <p class="hint">Assigning a zone does not also shift the clock. Use “remove” to clear an incorrect offset.</p>
+            <label class="check-row"><input id="captureIncludePairs" type="checkbox"><span>Include RAW + JPEG companions</span></label>
+            <div class="btnrow stack-gap capture-time-actions"><button id="captureTimePreview">Preview selection</button><button id="captureTimeReset" class="quiet">Restore camera times…</button></div>
+            <div id="captureTimeStatus" class="capture-time-status" role="status" aria-live="polite">Select photos, choose a correction, then preview.</div>
+            <div class="btnrow stack-gap capture-time-actions"><button id="captureTimeApply" class="accent-btn" disabled>Apply previewed changes</button><button id="captureTimeUndo" disabled>Undo last correction</button></div>
+          </div></details>
           <details class="info-section"><summary>Description</summary><div class="info-section-body">
             <label class="field"><span>Title</span><input id="iptcTitle" type="text" maxlength="200"></label>
             <label class="field"><span>Caption</span><textarea id="iptcCaption" rows="2" maxlength="600"></textarea></label>
@@ -708,12 +722,15 @@
           <div class="row"><span class="name">Quality</span><input type="range" id="exQuality" min="60" max="100" step="1" value="92"><span class="val" id="exQualityV">92</span></div>
           <label class="field-label" for="exSize">Dimensions</label><select id="exSize"><option value="">Full size</option><option value="4000">Long edge · 4000 px</option><option value="2560">Long edge · 2560 px</option><option value="2048">Long edge · 2048 px</option><option value="1600">Long edge · 1600 px</option></select>
           <label class="field-label" for="exColorSpace">Colour space</label><select id="exColorSpace"><option value="srgb">sRGB · web/default</option><option value="display_p3">Display P3</option><option value="prophoto">ProPhoto RGB · archive</option></select>
-          <label class="field-label" for="exDestination">Destination</label>
+          <label class="field full-width"><span>Destination layout</span><select id="exDestinationMode"><option value="fixed">One destination folder</option><option value="original-folder-relative">Subfolder beside each original</option><option value="preserve-source-hierarchy">Keep source folder hierarchy</option></select></label><label class="field-label" for="exDestination">Destination</label>
           <div class="path-field"><input id="exDestination" value="film-exports" spellcheck="false"><button class="quiet compact" id="exChooseDestination">Choose…</button></div>
           <label class="field-label" for="exFilenameTemplate">Filename template</label><input id="exFilenameTemplate" value="{filename}_{stock}" spellcheck="false">
           <p class="hint">Tokens: {filename}, {stock}, {rating}, {date}, {sequence}</p>
           <label class="field-label" for="exCollision">Existing files</label><select id="exCollision"><option value="rename">Keep both · add a number</option><option value="skip">Skip existing</option><option value="overwrite">Overwrite</option></select>
-          <p class="hint">TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile.</p>
+          <label class="field full-width"><span>Metadata</span><select id="exMetadata"><option value="all-except-location">All except location</option><option value="all">All metadata</option><option value="copyright">Copyright only</option><option value="none">No metadata</option></select></label>
+ <label class="field full-width"><span>Recipe sidecar</span><select id="exSidecar"><option value="true">Write beside exported photo</option><option value="false">Do not write</option></select></label>
+ <label class="field full-width"><span>File timestamp</span><select id="exPreserveCaptureTime"><option value="false">Time of export</option><option value="true">Original capture time</option></select></label>
+ <label class="field full-width"><span>If capture timezone is missing</span><select id="exCaptureTimePolicy"><option value="require-offset">Keep export time and report a warning</option><option value="local">Use this computer’s local timezone</option></select></label><p class="hint">TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile.</p>
           <button class="accent-btn full export-run" id="exportBtn2">Export photos</button>
           <div class="subheading">Rendering</div>
           <label class="field-label" for="engine">Film engine</label><select id="engine"><option value="rs">Rust / GPU (fast)</option><option value="py">Python (reference)</option></select>
@@ -908,6 +925,15 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="transferDialog" aria-hidden="true">
+  <div class="modal transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+    <strong id="transferTitle">Copy edit settings</strong>
+    <div id="transferGroups" class="transfer-groups"></div>
+    <p id="transferStatus" class="hint transfer-status" role="status" aria-live="polite"></p>
+    <div class="modal-actions"><button id="transferCancel">Cancel</button><button id="transferCopy" class="accent-btn">Copy settings</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="nameDialog" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="nameDialogTitle">
     <strong id="nameDialogTitle">Name</strong>
@@ -959,7 +985,7 @@
         <section class="settings-pane" data-settings-pane="interface" role="tabpanel">
           <h2>Interface</h2><p class="settings-intro">Tune the editing canvas without changing exported pixels.</p>
           <div class="settings-group settings-fields">
-            <label class="field"><span>Viewer background</span><select id="viewerBackground"><option value="#0f0f0f">Black</option><option value="#121212">Charcoal</option><option value="#252525">Medium gray</option></select></label>
+            <label class="field"><span>Viewer background</span><select id="viewerBackground"><option value="#0f0f0f">Black</option><option value="#121212">Charcoal</option><option value="#252525">Dark gray</option><option value="#777777">Neutral gray</option><option value="#ffffff">White</option></select></label>
             <label class="field"><span>Font scale</span><div class="settings-range"><input type="range" id="uiFontScale" min="85" max="125" step="5" value="100"><output id="uiFontScaleV">100%</output></div></label>
             <label class="settings-choice"><span><strong>Lights Out</strong><small>Dim chrome and panels around the current photo. Press L to toggle.</small></span><input type="checkbox" id="lightsOutEnabled"></label>
             <label class="field"><span>Lights Out dim level</span><div class="settings-range"><input type="range" id="lightsOutDim" min="25" max="85" step="5" value="60"><output id="lightsOutDimV">60%</output></div></label>
@@ -981,10 +1007,11 @@
         <section class="settings-pane" data-settings-pane="files" role="tabpanel">
           <h2>Files &amp; Metadata</h2><p class="settings-intro">Portable edits, RAW companion files, and keyword entry.</p>
           <div class="settings-group">
+            <label class="settings-choice"><span><strong>Keep portable LightTable edits beside originals</strong><small id="catalogMirrorNote">Complete edits travel in .lighttable-state.json when you copy the folder.</small></span><input type="checkbox" id="catalogMirror" checked></label>
             <label class="settings-choice"><span><strong>Automatically write XMP sidecars</strong><small>Keep ratings, labels, keywords, rights, and compatible edits beside originals.</small></span><input type="checkbox" id="writeSidecars"></label>
-            <div class="settings-action-row"><span id="sidecarWriteStatus">Pending edits are written after the catalog settles.</span><button id="writeSidecarsNow">Write now</button></div>
-            <label class="settings-choice"><span><strong>Pair RAW and JPEG captures</strong><small>Recognize same-folder files with the same base name as one capture.</small></span><input type="checkbox" id="pairRawJPEG" checked></label>
-            <label class="settings-choice nested-setting"><span><strong>Hide the paired JPEG</strong><small>The JPEG remains cataloged and is never deleted.</small></span><input type="checkbox" id="hidePairedJPEG"></label>
+            <div class="settings-action-row"><span id="sidecarWriteStatus" role="status" aria-live="polite">Pending edits are written after the catalog settles.</span><button id="writeSidecarsNow">Write now</button></div>
+            <label class="settings-choice"><span><strong>Pair RAW and JPEG captures</strong><small>Recognize same-folder RAW and JPEG files as one capture, with separate edits.</small></span><input type="checkbox" id="pairRawJPEG" checked></label>
+            <label class="field nested-setting"><span>Show paired captures</span><select id="pairView"><option value="both">Both files</option><option value="raw">Prefer RAW</option><option value="jpeg">Prefer JPEG</option></select></label><label class="settings-choice nested-setting"><span><strong>Link pair metadata</strong><small>New ratings, flags, labels and keywords apply to both files. Exports and Trash use only the files you choose.</small></span><input type="checkbox" id="linkPairedMetadata"></label>
             <label class="settings-choice"><span><strong>Keyword autocomplete</strong><small>Suggest terms already used in this catalog.</small></span><input type="checkbox" id="keywordAutocomplete" checked></label>
             <label class="field settings-inline-field"><span>Keyword separators</span><select id="keywordSeparators"><option value="comma">Comma</option><option value="comma-semicolon">Comma or semicolon</option></select></label>
           </div>
@@ -1116,9 +1143,10 @@
           <option value="display_p3">Display P3</option>
           <option value="prophoto">ProPhoto RGB · archive</option>
         </select>
+        <p class="hint">Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors.</p>
       </label>
 
-      <label class="field full-width">
+      <label class="field full-width"><span>Destination layout</span><select id="modalExDestinationMode"><option value="fixed">One destination folder</option><option value="original-folder-relative">Subfolder beside each original</option><option value="preserve-source-hierarchy">Keep source folder hierarchy</option></select></label><label class="field full-width">
         <span>Destination folder</span>
         <div class="path-field">
           <input id="modalExDestination" value="film-exports" spellcheck="false">
@@ -1147,7 +1175,10 @@
           <option value="overwrite">Overwrite</option>
         </select>
       </label>
-      <p class="hint">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
+      <label class="field full-width"><span>Metadata</span><select id="modalExMetadata"><option value="all-except-location">All except location</option><option value="all">All metadata</option><option value="copyright">Copyright only</option><option value="none">No metadata</option></select></label>
+ <label class="field full-width"><span>Recipe sidecar</span><select id="modalExSidecar"><option value="true">Write beside exported photo</option><option value="false">Do not write</option></select></label>
+ <label class="field full-width"><span>File timestamp</span><select id="modalExPreserveCaptureTime"><option value="false">Time of export</option><option value="true">Original capture time</option></select></label>
+ <label class="field full-width"><span>If capture timezone is missing</span><select id="modalExCaptureTimePolicy"><option value="require-offset">Keep export time and report a warning</option><option value="local">Use this computer’s local timezone</option></select></label><p class="hint">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
       </div></details>
     </div>
 
@@ -1157,6 +1188,7 @@
     </div>
   </div>
 </div>
+<div class="modal-backdrop" id="exportResultDialog" aria-hidden="true"><div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="exportResultTitle"><strong id="exportResultTitle">Export details</strong><pre id="exportResultText" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:60vh;overflow:auto"></pre><div class="modal-actions"><button id="exportResultClose">Done</button></div></div></div>
 <div class="context-menu" id="folderMenu" role="menu" aria-hidden="true"></div>
 <div class="modal-backdrop" id="healthDialog" aria-hidden="true">
   <div class="modal modal-wide health-modal" role="dialog" aria-labelledby="healthTitle">

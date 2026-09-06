@@ -31,6 +31,7 @@ LOCAL_GRADE_KEYS = (
 )
 OPTICS_DEFAULTS = {
     "profileEnabled": False,
+    "profileOverride": None,
     "profileDistortion": True,
     "profileVignette": True,
     "flipHorizontal": False,
@@ -248,6 +249,11 @@ def clean_optics(value) -> dict:
         result[key] = bool(raw.get(key, OPTICS_DEFAULTS[key]))
     for key in ("distortion", "vignette", "vertical", "horizontal"):
         result[key] = _clamp(raw.get(key), -1.0, 1.0, OPTICS_DEFAULTS[key])
+    override = raw.get("profileOverride")
+    if isinstance(override, dict):
+        keys = ("cameraMaker", "cameraModel", "lensMaker", "lensModel")
+        if all(isinstance(override.get(key), str) and 0 < len(override[key]) <= 256 for key in keys):
+            result["profileOverride"] = {key: override[key] for key in keys}
     result["rotate"] = _clamp(raw.get("rotate"), -15.0, 15.0, 0.0)
     result["scale"] = _clamp(raw.get("scale"), 1.0, 1.6, 1.0)
     return result
@@ -510,66 +516,86 @@ def _compatible_camera_alias(database, maker: str, model: str):
     return ranked[0][2]
 
 
-def lens_profile_for(metadata: dict | None) -> dict | None:
-    """Return an exact, focal-compatible bundled profile match."""
+def lens_match_for(metadata: dict | None, override=None) -> dict:
+    """Explain automatic matching and offer explicit compatible profile choices."""
     metadata = metadata or {}
-    maker = str(metadata.get("Make", ""))
-    model = str(metadata.get("Model", ""))
+    maker, model = str(metadata.get("Make", "")), str(metadata.get("Model", ""))
+    result = {"found": False, "profile": None, "reason": "Camera model is missing from the photo metadata.", "candidates": []}
     if not model:
-        return None
+        return result
     try:
         database = _lens_database()
-        cameras = database.find_cameras(
-            maker=maker or None, model=model, loose_search=False)
+        cameras = database.find_cameras(maker=maker or None, model=model, loose_search=False)
+        aliased = False
+        if not cameras:
+            compatible = _compatible_camera_alias(database, maker, model)
+            cameras = [compatible] if compatible else []
+            aliased = bool(compatible)
+        if len(cameras) != 1:
+            result["reason"] = "Camera profile is missing or ambiguous in the bundled lens database."
+            return result
+        camera = cameras[0]
+        focal = _metadata_number(metadata.get("FocalLength"), 0.0)
+        aperture = _metadata_number(metadata.get("FNumber"), 5.6)
+        distance = _metadata_number(metadata.get("FocusDistance"), 1000.0)
+
+        def compatible(lens):
+            return not focal or lens.min_focal - 0.2 <= focal <= lens.max_focal + 0.2
+
+        def spec(lens):
+            return {"cameraMaker": camera.maker, "cameraModel": camera.model,
+                    "lensMaker": lens.maker, "lensModel": lens.model,
+                    "cropFactor": round(float(camera.crop_factor), 5),
+                    "focal": round(focal or float(lens.min_focal), 4),
+                    "aperture": round(aperture, 4), "distance": round(max(distance, 0.01), 4),
+                    "hasDistortion": bool(lens.calib_distortion),
+                    "hasVignette": bool(lens.calib_vignetting),
+                    "hasTca": bool(lens.calib_tca), "aliasedCamera": aliased}
+
+        candidates = [lens for lens in database.find_lenses(camera, lens=None, loose_search=False) if compatible(lens)]
+        # A stable identity makes duplicate database records one choice.
+        candidates = list({(lens.maker, lens.model): lens for lens in candidates}.values())
+        candidates.sort(key=lambda lens: (lens.maker, lens.model))
+        result["candidates"] = [spec(lens) for lens in candidates]
+        if override:
+            selected = [lens for lens in candidates if all(
+                spec(lens)[key] == override.get(key)
+                for key in ("cameraMaker", "cameraModel", "lensMaker", "lensModel"))]
+            if len(selected) != 1:
+                result["reason"] = "The selected profile is unavailable or incompatible with this camera and focal length. Choose another profile."
+                return result
+            lenses = selected
+            reason = "Profile selected manually. Verify the correction against the original."
+        else:
+            lens_name = metadata.get("LensModel") or metadata.get("LensID")
+            if lens_name:
+                lenses = database.find_lenses(camera, lens=str(lens_name), loose_search=False)
+                reason = "Exact camera and lens metadata match."
+                if not lenses:
+                    lenses = [lens for lens in database.find_lenses(camera, lens=str(lens_name), loose_search=True)
+                              if lens.score >= 40]
+                    reason = "One compatible lens name match. Verify the correction against the original."
+                lenses = [lens for lens in lenses if compatible(lens)]
+                lenses = list({(lens.maker, lens.model): lens for lens in lenses}.values())
+            else:
+                lenses = candidates if focal > 0 else []
+                reason = "Only one camera-compatible profile matches the recorded focal length."
+            if len(lenses) != 1:
+                result["reason"] = ("Multiple lens profiles fit this photo; automatic correction is off. Select the lens used below."
+                                    if len(lenses) > 1 else "No unambiguous camera, lens and focal-length match. Select a compatible profile or use manual controls.")
+                return result
+        profile = spec(lenses[0])
+        profile["manualOverride"] = bool(override)
+        profile["matchReason"] = reason
+        result.update(found=True, profile=profile, reason=reason)
+        return result
     except Exception:
-        return None
-    aliased = False
-    if not cameras:
-        compatible = _compatible_camera_alias(database, maker, model)
-        cameras = [compatible] if compatible else []
-        aliased = bool(compatible)
-    if not cameras:
-        return None
-    camera = cameras[0]
-    focal = _metadata_number(metadata.get("FocalLength"), 0.0)
-    aperture = _metadata_number(metadata.get("FNumber"), 5.6)
-    distance = _metadata_number(metadata.get("FocusDistance"), 1000.0)
-    lens_name = metadata.get("LensModel") or metadata.get("LensID")
-    lenses = []
-    if lens_name:
-        lenses = database.find_lenses(camera, lens=str(lens_name), loose_search=False)
-        if not lenses:
-            loose = database.find_lenses(camera, lens=str(lens_name), loose_search=True)
-            # A loose name alone is insufficient: require a substantial match.
-            lenses = [lens for lens in loose if lens.score >= 40]
-    else:
-        candidates = database.find_lenses(camera, lens=None, loose_search=False)
-        focal_matches = [lens for lens in candidates
-                         if not focal or lens.min_focal - 0.2 <= focal <= lens.max_focal + 0.2]
-        # Only infer a fixed-lens camera when focal length identifies one small set.
-        if len(focal_matches) <= 3:
-            lenses = focal_matches
-    if not lenses:
-        return None
-    compatible = [lens for lens in lenses
-                  if not focal or lens.min_focal - 0.2 <= focal <= lens.max_focal + 0.2]
-    if compatible:
-        lenses = compatible
-    lens = sorted(lenses, key=lambda item: item.score, reverse=True)[0]
-    return {
-        "cameraMaker": camera.maker,
-        "cameraModel": camera.model,
-        "lensMaker": lens.maker,
-        "lensModel": lens.model,
-        "cropFactor": round(float(camera.crop_factor), 5),
-        "focal": round(focal or float(lens.min_focal), 4),
-        "aperture": round(aperture, 4),
-        "distance": round(max(distance, 0.01), 4),
-        "hasDistortion": bool(lens.calib_distortion),
-        "hasVignette": bool(lens.calib_vignetting),
-        "hasTca": bool(lens.calib_tca),
-        "aliasedCamera": aliased,
-    }
+        result["reason"] = "The bundled lens database could not be read. Manual controls remain available."
+        return result
+
+
+def lens_profile_for(metadata: dict | None, override=None) -> dict | None:
+    return lens_match_for(metadata, override)["profile"]
 
 
 def _resolve_lens_profile(spec):

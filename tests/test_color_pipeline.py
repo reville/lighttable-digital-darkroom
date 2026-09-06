@@ -78,7 +78,7 @@ class ExportPrecisionTests(unittest.TestCase):
             staged = write.call_args.args[0]
             self.assertEqual(Path(staged).suffix, ".tif")
             write.assert_called_once_with(
-                staged, "capture.dng", "copyright", {"creator": "Nicholas"})
+                staged, "capture.dng", "copyright", {"creator": "Nicholas"}, warnings=None)
             self.assertEqual(Path(run.call_args.args[0][2]), staged)
 
     def test_output_space_conversion_preserves_neutral(self):

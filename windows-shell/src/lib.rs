@@ -215,3 +215,185 @@ mod tests {
         fs::remove_dir_all(directory).unwrap();
     }
 }
+
+/// Durable drafts live beside the catalog, independently of its Python writer.
+/// Path components are SHA-256 identifiers supplied by the scoped UI adapter.
+pub fn edit_recovery(root: &Path, body: &serde_json::Value) -> Result<serde_json::Value> {
+    use std::io::Write;
+    let id = |field: &str| -> Result<&str> {
+        let value = body[field]
+            .as_str()
+            .context("missing recovery identifier")?;
+        if value.len() != 64
+            || !value
+                .bytes()
+                .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+        {
+            bail!("invalid recovery identifier")
+        }
+        Ok(value)
+    };
+    let directory = root.join(id("scope")?);
+    let operation = body["operation"].as_str().unwrap_or_default();
+    if operation == "list" {
+        if !directory.exists() {
+            return Ok(serde_json::json!([]));
+        }
+        let mut records = Vec::new();
+        for entry in fs::read_dir(directory)? {
+            let path = entry?.path();
+            if path.extension().and_then(|v| v.to_str()) == Some("json") {
+                let record = (|| -> Result<serde_json::Value> {
+                    Ok(serde_json::from_slice(&fs::read(&path)?)?)
+                })();
+                records.push(match record {
+                    Ok(value) => value,
+                    Err(error) => serde_json::json!({"journalError": error.to_string(),
+                        "recordKey": path.file_name().unwrap_or_default().to_string_lossy()}),
+                });
+            }
+        }
+        return Ok(serde_json::Value::Array(records));
+    }
+    let path = directory.join(format!("{}.json", id("key")?));
+    if operation == "remove" {
+        if path.exists() {
+            let previous: serde_json::Value = serde_json::from_slice(&fs::read(&path)?)?;
+            if body["token"].is_string() && previous["token"] == body["token"] {
+                fs::remove_file(&path)?;
+                #[cfg(not(target_os = "windows"))]
+                fs::File::open(&directory)?.sync_all()?;
+            }
+        }
+        return Ok(serde_json::json!(true));
+    }
+    let record = &body["value"];
+    if operation != "put"
+        || !record["token"].is_string()
+        || !record["name"].is_string()
+        || !record["payload"].is_object()
+    {
+        bail!("invalid recovery record")
+    }
+    let bytes = serde_json::to_vec(record)?;
+    if bytes.len() > 64 * 1024 * 1024 {
+        bail!("edit recovery record exceeds 64 MB")
+    }
+    fs::create_dir_all(&directory)?;
+    if path.exists() {
+        // A damaged draft needs attention, never silently overwrite its bytes.
+        serde_json::from_slice::<serde_json::Value>(&fs::read(&path)?)?;
+    }
+    let temporary = path.with_extension("pending");
+    let result = (|| -> Result<()> {
+        let mut file = fs::File::create(&temporary)?;
+        file.write_all(&bytes)?;
+        file.sync_all()?;
+        drop(file);
+        fs::rename(&temporary, &path)?;
+        #[cfg(not(target_os = "windows"))]
+        fs::File::open(&directory)?.sync_all()?;
+        Ok(())
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(temporary);
+    }
+    result?;
+    Ok(serde_json::json!(true))
+}
+
+#[cfg(test)]
+mod recovery_tests {
+    use super::*;
+    use serde_json::json;
+    fn root(suffix: &str) -> PathBuf {
+        std::env::temp_dir().join(format!(
+            "lighttable-recovery-{}-{suffix}",
+            std::process::id()
+        ))
+    }
+    fn request(operation: &str, token: &str) -> serde_json::Value {
+        json!({"operation": operation, "scope": "a".repeat(64), "key": "b".repeat(64),
+               "token": token, "value": {"token": token, "name": "a.RAW", "payload": {
+                   "state": {"grade": {"exposure": 2}, "masks": [{"data": [1, 2]}]}}}})
+    }
+    #[test]
+    fn reopened_journal_keeps_new_revision_after_old_ack() {
+        let directory = root("revisions");
+        edit_recovery(&directory, &request("put", "one")).unwrap();
+        edit_recovery(&directory, &request("put", "two")).unwrap();
+        edit_recovery(&directory, &request("remove", "one")).unwrap();
+        let records = edit_recovery(&directory, &request("list", "")).unwrap();
+        assert_eq!(records.as_array().unwrap().len(), 1);
+        assert_eq!(records[0]["token"], "two");
+        edit_recovery(&directory, &request("remove", "two")).unwrap();
+        assert_eq!(
+            edit_recovery(&directory, &request("list", "")).unwrap(),
+            json!([])
+        );
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn malformed_draft_is_not_overwritten_or_discarded() {
+        let directory = root("corrupt");
+        edit_recovery(&directory, &request("put", "one")).unwrap();
+        let path = directory
+            .join("a".repeat(64))
+            .join(format!("{}.json", "b".repeat(64)));
+        fs::write(&path, "{damaged").unwrap();
+        assert!(
+            edit_recovery(&directory, &request("list", "")).unwrap()[0]["journalError"].is_string()
+        );
+        assert!(edit_recovery(&directory, &request("put", "two")).is_err());
+        assert_eq!(fs::read_to_string(&path).unwrap(), "{damaged");
+        fs::remove_dir_all(directory).unwrap();
+    }
+    #[test]
+    fn invalid_path_and_failed_writes_are_not_acknowledged() {
+        let directory = root("failed");
+        let mut packet = request("put", "one");
+        packet["scope"] = json!("../escape");
+        assert!(edit_recovery(&directory, &packet).is_err());
+        fs::create_dir_all(&directory).unwrap();
+        fs::write(directory.join("a".repeat(64)), "blocking file").unwrap();
+        assert!(edit_recovery(&directory, &request("put", "one")).is_err());
+        fs::remove_dir_all(directory).unwrap();
+    }
+}
+
+/// Correlate native close replies across timeout, keep-open, and retry.
+#[derive(Default)]
+pub struct CloseAttempts {
+    generation: u64,
+    active: Option<u64>,
+}
+impl CloseAttempts {
+    pub fn begin(&mut self) -> u64 {
+        self.generation += 1;
+        self.active = Some(self.generation);
+        self.generation
+    }
+    pub fn accepts(&self, reply: Option<u64>) -> bool {
+        self.active.is_some() && self.active == reply
+    }
+    pub fn cancel(&mut self) {
+        self.active = None;
+    }
+}
+#[cfg(test)]
+mod close_tests {
+    use super::CloseAttempts;
+    #[test]
+    fn timed_out_reply_cannot_close_a_newer_edit_session() {
+        let mut attempts = CloseAttempts::default();
+        let first = attempts.begin();
+        attempts.cancel();
+        assert!(!attempts.accepts(Some(first)));
+        let second = attempts.begin();
+        assert!(!attempts.accepts(Some(first)));
+        assert!(!attempts.accepts(None));
+        assert!(attempts.accepts(Some(second)));
+        attempts.cancel();
+        assert!(!attempts.accepts(Some(second)));
+    }
+}

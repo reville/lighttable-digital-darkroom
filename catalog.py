@@ -28,6 +28,7 @@ every connection is per-thread and every write goes through a short transaction.
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import os
 import re
@@ -42,7 +43,7 @@ from typing import Any, Iterable, Sequence
 
 import durable_io
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 
 class CatalogVersionError(RuntimeError):
@@ -56,7 +57,7 @@ RELINK_CANDIDATE_LIMIT = 24
 
 # Filters accept these sort fields; anything else falls back to capture time.
 SORT_FIELDS = {
-    "capture": "COALESCE(f.capture_time, f.mtime_iso)",
+    "capture": "julianday(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso))",
     "name": "f.filename COLLATE NOCASE",
     "rating": "s.rating",
     "status": "s.status",
@@ -115,6 +116,7 @@ CREATE TABLE IF NOT EXISTS files (
     height       INTEGER,
     orientation  INTEGER,
     metadata_version INTEGER NOT NULL DEFAULT 0,
+    availability TEXT NOT NULL DEFAULT 'local',
     missing      INTEGER NOT NULL DEFAULT 0,
     added_at     REAL NOT NULL,
     UNIQUE (source_id, relpath)
@@ -122,6 +124,12 @@ CREATE TABLE IF NOT EXISTS files (
 CREATE INDEX IF NOT EXISTS files_hash ON files(header_hash);
 CREATE INDEX IF NOT EXISTS files_folder ON files(folder_id);
 CREATE INDEX IF NOT EXISTS files_capture ON files(capture_time);
+
+CREATE TABLE IF NOT EXISTS capture_overrides (
+    file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,
+    capture_time TEXT NOT NULL,
+    updated_at REAL NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS images (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -359,7 +367,7 @@ BACKUP_GLOB = "LightTable-catalog-*.zip"
 # Tables in dependency order, so a salvage can insert parents before children
 # and a repair can delete orphans after their parents are known to be gone.
 _SALVAGE_TABLES = (
-    "sources", "folders", "files", "images", "image_state", "keywords",
+    "sources", "folders", "files", "capture_overrides", "images", "image_state", "keywords",
     "image_keywords", "iptc", "collections", "collection_images", "stacks",
     "stack_images", "versions", "history", "rename_log", "watch_ledger",
 )
@@ -371,6 +379,8 @@ _ORPHAN_QUERIES = {
                " WHERE p.id IS NULL",
     "files": "FROM files t LEFT JOIN sources p ON p.id=t.source_id"
              " WHERE p.id IS NULL",
+    "capture_overrides": "FROM capture_overrides t LEFT JOIN files p ON p.id=t.file_id"
+                         " WHERE p.id IS NULL",
     "images": "FROM images t LEFT JOIN files p ON p.id=t.file_id"
               " WHERE p.id IS NULL",
     "image_state": "FROM image_state t LEFT JOIN images p ON p.id=t.image_id"
@@ -706,7 +716,9 @@ def salvage(damaged: Path | str, target: Path | str) -> dict:
                     shared = [column[0] for column in cursor.description
                               if column[0] in target_columns]
                 except sqlite3.Error as error:
-                    errors[table] = str(error)
+                    # Older catalogs legitimately predate this additive table.
+                    if table != "capture_overrides" or not version or int(version[0]) >= 5:
+                        errors[table] = str(error)
                     counts[table] = 0
                     continue
                 if not shared:
@@ -910,6 +922,15 @@ class Catalog:
                         "ALTER TABLE files ADD COLUMN metadata_version "
                         "INTEGER NOT NULL DEFAULT 0"
                     )
+            if from_version < 5:
+                conn.execute("CREATE TABLE IF NOT EXISTS capture_overrides ("
+                             "file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,"
+                             "capture_time TEXT NOT NULL, updated_at REAL NOT NULL)")
+                file_columns = {row[1] for row in conn.execute(
+                    "PRAGMA table_info(files)").fetchall()}
+                if "availability" not in file_columns:
+                    conn.execute("ALTER TABLE files ADD COLUMN availability "
+                                 "TEXT NOT NULL DEFAULT 'local'")
             conn.execute(
                 "UPDATE meta SET value=? WHERE key='schema_version'",
                 (str(SCHEMA_VERSION),),
@@ -1186,7 +1207,8 @@ class Catalog:
             record.get("header_hash"), record.get("capture_time"),
             record.get("camera_make"), record.get("camera_model"),
             record.get("lens"), record.get("width"), record.get("height"),
-            record.get("orientation"), record.get("metadata_version", 0), 0,
+            record.get("orientation"), record.get("metadata_version", 0),
+            record.get("availability", "local"), 0,
         )
         if existing:
             file_id = int(existing["id"])
@@ -1194,15 +1216,15 @@ class Catalog:
                 "UPDATE files SET folder_id=?, filename=?, ext=?, kind=?,"
                 " size=?, mtime_ns=?, mtime_iso=?, header_hash=?,"
                 " capture_time=?, camera_make=?, camera_model=?, lens=?,"
-                " width=?, height=?, orientation=?, metadata_version=?, missing=?"
+                " width=?, height=?, orientation=?, metadata_version=?, availability=?, missing=?"
                 " WHERE id=?", (*values, file_id))
         else:
             cur = conn.execute(
                 "INSERT INTO files(source_id, folder_id, filename, ext, kind,"
                 " size, mtime_ns, mtime_iso, header_hash, capture_time,"
                 " camera_make, camera_model, lens, width, height, orientation,"
-                " metadata_version, missing, relpath, added_at)"
-                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " metadata_version, availability, missing, relpath, added_at)"
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (source_id, *values, relpath, _now()))
             file_id = int(cur.lastrowid)
         self._ensure_image(conn, file_id, record["filename"])
@@ -1530,44 +1552,103 @@ class Catalog:
             out[key] = _json_or(raw)
         out["keywords"] = self.keywords_for(image_id)
         out["versions"] = self.versions_for(image_id)
+        capture = self.capture_details(image_id)
+        if capture and capture["override"] is not None:
+            out["captureTimeOverride"] = capture["override"]
         return out
 
     def save_state(self, image_id: int, entry: dict) -> None:
         """Persist one image's editing state. Keys absent are left alone."""
+        self.save_states({image_id: entry})
+
+    def save_states(self, entries: dict[int, dict]) -> None:
+        """Persist a batch, including paired metadata, in one transaction."""
         with self.write() as conn:
-            conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
-                         " updated_at) VALUES(?,?)", (image_id, _now()))
-            assignments, values = [], []
-            simple = {"status": "status", "rating": "rating", "label": "label"}
-            for key, column in simple.items():
-                if key in entry:
-                    assignments.append(f"{column}=?")
-                    value = entry[key]
-                    if key == "status":
-                        value = _enum_or(value, STATUS_VALUES, "pending")
-                    elif key == "rating":
-                        value = _int_or(value, 0, minimum=0, maximum=5)
-                    elif key == "label":
-                        value = _enum_or(value, LABEL_VALUES, "none")
-                    values.append(value)
-            blobs = {"params": "params_json", "grade": "grade_json",
-                     "crop": "crop_json", "masks": "masks_json",
-                     "heals": "heals_json", "optics": "optics_json",
-                     "provenance": "provenance_json"}
-            for key, column in blobs.items():
-                if key in entry:
-                    assignments.append(f"{column}=?")
-                    value = entry[key]
-                    values.append(None if value is None
-                                  else json.dumps(value, separators=(",", ":")))
-            assignments.append("updated_at=?")
-            values.append(_now())
-            conn.execute(
-                f"UPDATE image_state SET {', '.join(assignments)}"
-                " WHERE image_id=?", (*values, image_id))
-            if "keywords" in entry:
-                self._set_keywords(conn, image_id, entry["keywords"] or [])
-            self._reindex(conn, image_id)
+            for image_id, entry in entries.items():
+                self._save_state(conn, image_id, entry)
+
+    def _save_state(self, conn, image_id: int, entry: dict) -> None:
+        conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
+                     " updated_at) VALUES(?,?)", (image_id, _now()))
+        assignments, values = [], []
+        simple = {"status": "status", "rating": "rating", "label": "label"}
+        for key, column in simple.items():
+            if key in entry:
+                assignments.append(f"{column}=?")
+                value = entry[key]
+                if key == "status":
+                    value = _enum_or(value, STATUS_VALUES, "pending")
+                elif key == "rating":
+                    value = _int_or(value, 0, minimum=0, maximum=5)
+                elif key == "label":
+                    value = _enum_or(value, LABEL_VALUES, "none")
+                values.append(value)
+        blobs = {"params": "params_json", "grade": "grade_json",
+                 "crop": "crop_json", "masks": "masks_json",
+                 "heals": "heals_json", "optics": "optics_json",
+                 "provenance": "provenance_json"}
+        for key, column in blobs.items():
+            if key in entry:
+                assignments.append(f"{column}=?")
+                value = entry[key]
+                values.append(None if value is None
+                              else json.dumps(value, separators=(",", ":")))
+        assignments.append("updated_at=?")
+        values.append(_now())
+        conn.execute(
+            f"UPDATE image_state SET {', '.join(assignments)}"
+            " WHERE image_id=?", (*values, image_id))
+        if "keywords" in entry:
+            self._set_keywords(conn, image_id, entry["keywords"] or [])
+        if "captureTimeOverride" in entry:
+            import capture_time
+            value = capture_time.normalized_timestamp(entry["captureTimeOverride"])
+            row = conn.execute("SELECT file_id FROM images WHERE id=?", (image_id,)).fetchone()
+            if row:
+                self._write_capture_override(conn, row["file_id"], value)
+        self._reindex(conn, image_id)
+
+
+    def paired_image_names(self, image_id: int) -> list[str]:
+        """Physical RAW/JPEG companions in exactly the same catalog folder.
+
+        Query the catalog, not the loaded UI page. Virtual copies, missing
+        originals, retired sources and other folders never join a capture.
+        """
+        row = self.connection.execute(
+            "SELECT i.virtual, f.*, s.active FROM images i"
+            " JOIN files f ON f.id=i.file_id JOIN sources s ON s.id=f.source_id"
+            " WHERE i.id=?", (image_id,)).fetchone()
+        if not row or row["virtual"] or row["missing"] or not row["active"]:
+            return []
+        raw = row["kind"] == "raw"
+        if not raw and Path(row["filename"]).suffix.casefold() not in {".jpg", ".jpeg"}:
+            return []
+        stem = Path(row["filename"]).stem.casefold()
+        candidates = self.connection.execute(
+            "SELECT i.id, f.relpath, f.filename, f.kind FROM files f"
+            " JOIN images i ON i.file_id=f.id"
+            " WHERE f.source_id=? AND f.folder_id IS ?"
+            " AND f.missing=0 AND i.virtual=0 AND i.copy_ident IS NULL",
+            (row["source_id"], row["folder_id"])).fetchall()
+        members = [candidate for candidate in candidates
+                   if Path(candidate["relpath"]).parent == Path(row["relpath"]).parent
+                   and Path(candidate["filename"]).stem.casefold() == stem
+                   and (candidate["kind"] == "raw" or
+                        Path(candidate["filename"]).suffix.casefold() in {".jpg", ".jpeg"})]
+        # Multiple RAW variants or .jpg + .jpeg are ambiguous: keep independent.
+        if len(members) != 2 or sum(member["kind"] == "raw" for member in members) != 1:
+            return []
+        return [qualified_name(row["source_id"], member["relpath"])
+                for member in members if member["id"] != image_id]
+
+    def mark_metadata_for(self, image_id: int) -> dict:
+        """Read small mark fields without decoding image-sized mask state."""
+        row = self.connection.execute(
+            "SELECT status, rating, label FROM image_state WHERE image_id=?",
+            (image_id,)).fetchone()
+        return {**(dict(row) if row else {"status": "pending", "rating": 0, "label": "none"}),
+                "keywords": self.keywords_for(image_id)}
 
     # ------------------------------------------------------------ keywords
 
@@ -1647,6 +1728,79 @@ class Catalog:
                 self._reindex(conn, int(image["image_id"]))
                 conn.execute("UPDATE image_state SET updated_at=? WHERE image_id=?",
                              (_now(), int(image["image_id"])))
+
+    # ------------------------------------------------------- capture clock
+
+    def capture_details(self, image_id: int) -> dict | None:
+        row = self.connection.execute(
+            "SELECT f.id AS fileId, f.capture_time AS original, ct.capture_time AS override"
+            " FROM images i JOIN files f ON f.id=i.file_id"
+            " LEFT JOIN capture_overrides ct ON ct.file_id=f.id WHERE i.id=?",
+            (image_id,)).fetchone()
+        return dict(row) if row else None
+
+    def set_capture_override(self, image_id: int, value: str | None) -> None:
+        """Import a portable override without making a user history step."""
+        import capture_time
+        value = capture_time.normalized_timestamp(value)
+        info = self.capture_details(image_id)
+        if not info:
+            raise ValueError("unknown photo")
+        with self.write() as conn:
+            self._write_capture_override(conn, info["fileId"], value)
+
+    def _write_capture_override(self, conn, file_id: int, value: str | None) -> None:
+        if value is None:
+            conn.execute("DELETE FROM capture_overrides WHERE file_id=?", (file_id,))
+        else:
+            conn.execute("INSERT INTO capture_overrides(file_id,capture_time,updated_at) VALUES(?,?,?)"
+                         " ON CONFLICT(file_id) DO UPDATE SET capture_time=excluded.capture_time,"
+                         " updated_at=excluded.updated_at", (file_id, value, _now()))
+        conn.execute("UPDATE image_state SET updated_at=? WHERE image_id IN"
+                     " (SELECT id FROM images WHERE file_id=?)", (_now(), file_id))
+
+    def apply_capture_changes(self, changes: list[dict], *, label="Capture time corrected") -> list[str]:
+        """Compare-and-set one reviewed batch with reversible history atomically."""
+        import capture_time
+        import zlib
+        if not changes or len(changes) > capture_time.MAX_BATCH * 2:
+            raise ValueError("No capture-time changes, or selection is too large")
+        normalized, seen = [], set()
+        for item in changes:
+            file_id = int(item["fileId"])
+            if file_id in seen:
+                raise ValueError("Duplicate photo in capture-time batch")
+            seen.add(file_id)
+            normalized.append({**item, "after": capture_time.normalized_timestamp(item["after"])})
+        affected = []
+        with self.write() as conn:
+            for item in normalized:
+                row = conn.execute(
+                    "SELECT f.capture_time, ct.capture_time AS override FROM files f"
+                    " LEFT JOIN capture_overrides ct ON ct.file_id=f.id WHERE f.id=?",
+                    (item["fileId"],)).fetchone()
+                if (not row or row["override"] != item["beforeOverride"]
+                        or row["capture_time"] != item["original"]):
+                    raise ValueError("Capture time changed since preview. Preview again before applying.")
+            for item in normalized:
+                members = conn.execute(
+                    "SELECT i.id, i.copy_ident, f.relpath, f.source_id FROM images i"
+                    " JOIN files f ON f.id=i.file_id WHERE f.id=?", (item["fileId"],)).fetchall()
+                for member in members:
+                    for step_label, value in (("Before capture time correction", item["beforeOverride"]),
+                                              (label, item["after"])):
+                        blob = zlib.compress(json.dumps({"captureTimeOnly": True,
+                            "captureTimeOverride": value}).encode(), 6)
+                        seq = conn.execute("SELECT COALESCE(MAX(seq),0)+1 FROM history WHERE image_id=?",
+                                           (member["id"],)).fetchone()[0]
+                        conn.execute("INSERT INTO history(image_id,seq,created,label,origin,state_blob)"
+                                     " VALUES(?,?,?,?,?,?)", (member["id"], seq, _now(), step_label,
+                                                               "capture-time", blob))
+                        conn.execute("DELETE FROM history WHERE image_id=? AND seq<=?",
+                                     (member["id"], seq - 200))
+                    affected.append(qualified_name(member["source_id"], member["relpath"], member["copy_ident"]))
+                self._write_capture_override(conn, item["fileId"], item["after"])
+        return affected
 
     # ---------------------------------------------------------------- IPTC
 
@@ -1822,7 +1976,7 @@ class Catalog:
             ])
         date_from, date_to = flt.get("dateFrom"), flt.get("dateTo")
         if date_from:
-            where.append("COALESCE(f.capture_time, f.mtime_iso) >= ?")
+            where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) >= ?")
             params.append(str(date_from))
         if date_to:
             bound = str(date_to)
@@ -1831,9 +1985,9 @@ class Catalog:
                 # of day, so comparing the full text excluded everything shot
                 # after midnight on the last day.
                 where.append(
-                    "substr(COALESCE(f.capture_time, f.mtime_iso), 1, 10) <= ?")
+                    "substr(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso), 1, 10) <= ?")
             else:
-                where.append("COALESCE(f.capture_time, f.mtime_iso) <= ?")
+                where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) <= ?")
             params.append(bound)
         query_text = " ".join(str(flt.get("query", "")).split())
         if query_text:
@@ -1861,6 +2015,7 @@ class Catalog:
                 " JOIN files f ON f.id=i.file_id"
                 " JOIN sources src ON src.id=f.source_id"
                 " LEFT JOIN image_state s ON s.image_id=i.id"
+                " LEFT JOIN capture_overrides ct ON ct.file_id=f.id"
                 f" WHERE {clause}")
         total = self.connection.execute(
             f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
@@ -1873,9 +2028,10 @@ class Catalog:
         rows = self.connection.execute(
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
-            " f.mtime_ns, f.capture_time, f.mtime_iso, f.header_hash,"
+            " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
+            " f.mtime_iso, f.header_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
-            " f.orientation, f.source_id, src.path AS source_path,"
+            " f.orientation, f.availability, f.source_id, src.path AS source_path,"
             " COALESCE(s.status,'pending') AS status,"
             " COALESCE(s.rating,0) AS rating,"
             " COALESCE(s.label,'none') AS label,"
@@ -2354,6 +2510,12 @@ def _fts_query(text: str) -> str:
     return " AND ".join(terms) if terms else '""'
 
 
+def source_revision(header_hash: str, size: int, mtime_ns: int) -> str:
+    """The same revision for scanned rows and a freshly inspected source."""
+    identity = f"{header_hash}\0{size}\0{mtime_ns}"
+    return hashlib.md5(identity.encode()).hexdigest()
+
+
 def _item(row: sqlite3.Row) -> dict:
     """The lean per-image record the grid needs; edits are fetched on open."""
     source_id = _int_or(row["source_id"], 0, minimum=0)
@@ -2387,6 +2549,9 @@ def _item(row: sqlite3.Row) -> dict:
             row["capture_time"] or row["mtime_iso"], None),
         "mtime": mtime_ns / 1e9,
         "fileKey": _text_or(row["header_hash"]),
+        "recoverySourceKey": source_revision(_text_or(row["header_hash"]),
+            _int_or(row["size"], 0, minimum=0), mtime_ns),
+        "availability": _text_or(row["availability"], "local"),
         "width": width,
         "height": height,
         "camera": " ".join(filter(None, (camera_make, camera_model))),

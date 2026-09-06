@@ -11,6 +11,7 @@ from pathlib import Path
 import durable_io
 
 import media_formats
+import media_availability
 
 
 # The same set server.py browses (its `EXTS`: processed plus every RAW format
@@ -96,6 +97,7 @@ def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
     hashes matching the ones already written.
     """
     path = Path(path)
+    media_availability.require_local(path)
     digest = hashlib.blake2b(digest_size=16)
     digest.update(f"{path.stat().st_size}\n".encode("ascii"))
     with path.open("rb") as handle:
@@ -105,6 +107,7 @@ def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
 
 def _file_hash(path: Path) -> str:
     """Full-content BLAKE2b-128, used when a copy is verified in "hash" mode."""
+    media_availability.require_local(path)
     digest = hashlib.blake2b(digest_size=16)
     with Path(path).open("rb") as handle:
         for block in iter(lambda: handle.read(COPY_CHUNK), b""):
@@ -132,6 +135,7 @@ def _capture_and_camera(path: Path) -> tuple[str, str]:
     RAW files. Anything unreadable comes back empty and the caller falls back to
     the file's modification time.
     """
+    media_availability.require_local(path)
     try:
         import exiv2
 
@@ -175,8 +179,14 @@ def _walk_photos(start: Path):
 
 def _describe(path: Path) -> dict:
     stat = path.stat()
-    capture, camera = _capture_and_camera(path)
+    availability = media_availability.from_stat(stat)
     fallback = _format_moment(datetime.fromtimestamp(stat.st_mtime))
+    if availability != "local":
+        return {"path": str(path), "name": path.name, "ext": path.suffix.lower(),
+                "size": int(stat.st_size), "mtime": float(stat.st_mtime),
+                "captureTime": fallback, "camera": "", "hash": "",
+                "availability": availability}
+    capture, camera = _capture_and_camera(path)
     return {
         "path": str(path), "name": path.name, "ext": path.suffix.lower(),
         "size": int(stat.st_size), "mtime": float(stat.st_mtime),
@@ -360,6 +370,11 @@ def build_plan(items, request, *, existing_hashes=None) -> dict:
     sequence = request["startNumber"]
     duplicates = 0
     for item in chosen:
+        if item.get("availability", "local") != "local":
+            skipped.append({"source": str(item.get("path", "")),
+                            "name": str(item.get("name", "")), "hash": "",
+                            "reason": item["availability"], "message": media_availability.CLOUD_MESSAGE})
+            continue
         digest = str(item.get("hash") or "")
         duplicate = bool(digest) and digest.casefold() in known
         if duplicate:
@@ -400,6 +415,7 @@ def build_plan(items, request, *, existing_hashes=None) -> dict:
 
 def _copy_bytes(source: Path, temporary: Path) -> int:
     """Stream one file to a temporary beside its destination and flush it to disk."""
+    media_availability.require_local(source)
     total = 0
     with open(source, "rb") as reader, open(temporary, "wb") as writer:
         for block in iter(lambda: reader.read(COPY_CHUNK), b""):
@@ -436,6 +452,12 @@ def _copy_verified(source: Path, destination: Path, mode: str) -> str | None:
     clobber each other. A destination that already matches its source is left
     alone, which is what makes a rerun resume. Nothing is written to the source.
     """
+    try:
+        media_availability.require_local(source)
+        if destination.exists():
+            media_availability.require_local(destination)
+    except OSError as error:
+        return f"{source.name}: {_reason(error)}"
     temporary = durable_io.temporary_path(destination, "ingest")
     # Even "none" compares size here, so a rerun cannot adopt a stray file.
     if destination.exists():

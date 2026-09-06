@@ -68,9 +68,19 @@ def main():
     fmt = job.get("format", "jpeg")
     quality = int(job.get("quality", 92))
     long_edge = job.get("longEdge")
+    warnings = job.setdefault("warnings", [])
+    color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
 
     t0 = time.time()
     cp = fp.clean_params(params)
+    input_space = color_pipeline.normalise_output_space(job.get("inputColorSpace"))
+    if input_space != "srgb" and (cp["profile_enabled"] or cp["linear_input"]
+                                  or not color_pipeline.wide_develop_edits_supported(job)):
+        raise ValueError("Wide-gamut input cannot be used with sRGB color adjustments")
+    if (input_space == "srgb"
+            and color_pipeline.normalise_output_space(job.get("outputSpace")) != "srgb"
+            and color_pipeline.SRGB_LIMITED_EXPORT_WARNING not in warnings):
+        warnings.append(color_pipeline.SRGB_LIMITED_EXPORT_WARNING)
     use_rust = (job.get("engine") == "rs"
                 or fp.profile_requires_rust(cp["stock"]))
     if cp["profile_enabled"] and use_rust:
@@ -112,14 +122,22 @@ def main():
     width, height = color_pipeline.save_export_image(
         out, dst, fmt=fmt, quality=quality,
         output_space=str(job.get("outputSpace", "srgb")),
+        input_space=input_space,
+        bit_depth=int(job.get("bitDepth", 16)),
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=metadata_policy if is_heif else "none",
-        metadata_fields=(job.get("metadataFields") or {}) if is_heif else None)
+        metadata_fields=(job.get("metadataFields") or {}) if is_heif else None,
+        warnings=warnings)
     if metadata_policy != "none" and not is_heif:
-        platform_image.write_metadata(
+        before = len(warnings)
+        succeeded = platform_image.write_metadata(
             dst, metadata_source, metadata_policy,
-            job.get("metadataFields") or {})
-    print(f"OK {dst} {width}x{height} {time.time()-t0:.1f}s")
+            job.get("metadataFields") or {}, warnings=warnings)
+        if not succeeded and len(warnings) == before:
+            warnings.append("Requested metadata could not be saved.")
+    print(json.dumps({"ok": True, "path": str(dst), "width": width,
+                      "height": height, "seconds": time.time() - t0,
+                      "warnings": warnings}))
 
 
 if __name__ == "__main__":
