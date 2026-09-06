@@ -1779,8 +1779,6 @@ _BASE_CACHE_BUDGET_BYTES = sum((
     _NATIVE_SURFACE_CACHE_MAX_BYTES, _RENDER_CACHE_MAX_BYTES,
     _ORIGINAL_CACHE_MAX_BYTES, _THUMB_CACHE_MAX_BYTES,
 ))
-NATIVE_BROWSER_HELPER_MAX_WIDTH = int(os.environ.get(
-    "LIGHTTABLE_NATIVE_HELPER_WIDTH", "1100"))
 NATIVE_BROWSER_HELPER_OUTPUT_WIDTH = int(os.environ.get(
     "LIGHTTABLE_NATIVE_HELPER_OUTPUT_WIDTH", "256"))
 
@@ -3201,10 +3199,13 @@ def preview_response(meta: dict, key: str, jpg: Path, native: Path,
     if jpg.exists():
         response["img"] = f"/api/render/image?key={key}"
     if native.exists():
-        surface = native_surface_payload(key, native)
-        response["native"] = surface
-        if surface["width"] <= NATIVE_BROWSER_HELPER_MAX_WIDTH:
-            response["helper"] = f"/api/render/helper?key={key}"
+        response["native"] = native_surface_payload(key, native)
+        # Every native surface advertises a sampling helper. The endpoint
+        # downscales to NATIVE_BROWSER_HELPER_OUTPUT_WIDTH, so a wide settled
+        # render costs no more than an interactive one. Gating on the source
+        # width left the settled render with no sampling pixels at all, which
+        # blanked the scopes, Auto tone, and the white balance/point samplers.
+        response["helper"] = f"/api/render/helper?key={key}"
     return response
 
 
