@@ -31,7 +31,7 @@ async function start({catalog = true, savedExposure = 0, history = null, restore
     keywords: [], stateLoaded: !catalog, hasEdits: false}]};
   const context = {window: {localStorage: {}}, nativeBridge: () => null,
     nativeJournalRequest: () => {}, createEditRecovery: () => journal,
-    editRecovery: null, editRecoveryReady: false, recoveryAcknowledged, S,
+    editRecovery: null, editRecoveryReady: false, updateEditRecoveryHealth: () => {}, recoveryAcknowledged, S,
     getJSON: async () => plain(saved), toast: message => toasts.push(message),
     chooseEditRecovery: async items => {prompts.push(items); if (replaceDuringPrompt) saved._recoverySourceKey = 'replacement'; return restore;},
     editSaveQueue: queue, normalizeLibraryImage: value => value,

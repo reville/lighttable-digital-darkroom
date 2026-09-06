@@ -7,7 +7,7 @@ export async function recoveryKey(value) {
   return [...new Uint8Array(hash)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
-export function createEditRecovery({scope, nativeRequest, storage, hash = recoveryKey}) {
+export function createEditRecovery({scope, nativeRequest, storage, hash = recoveryKey, onWarning = () => {}}) {
   const scopeKey = hash(scope);
   const prefix = 'lighttable-edit-recovery-v1:';
   let chain = Promise.resolve();
@@ -26,7 +26,10 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
       const records = [];
       for (let i = 0; i < storage.length; i++) {
         const item = storage.key(i);
-        if (item?.startsWith(base)) records.push(JSON.parse(storage.getItem(item)));
+        if (item?.startsWith(base)) {
+          try { records.push(JSON.parse(storage.getItem(item))); }
+          catch (error) { records.push({journalError: error.message, recordKey: item}); }
+        }
       }
       return records;
     }
@@ -46,6 +49,8 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
     async list() {
       const records = await request('list');
       if (!Array.isArray(records)) throw new Error('Invalid edit recovery journal');
+      const damaged = records.filter(record => record?.journalError);
+      onWarning(damaged.length ? new Error(`${damaged.length} damaged recovery draft${damaged.length === 1 ? '' : 's'} kept for repair; other drafts remain available.`) : null);
       return records.filter(record => record?.scope === scope && typeof record.name === 'string'
         && typeof record.token === 'string' && record.payload?.state?.name === record.name);
     },

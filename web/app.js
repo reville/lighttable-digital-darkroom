@@ -3898,6 +3898,7 @@ function editHistorySnapshot() {
 
 let editRecovery = null;
 let editRecoveryReady = false;
+let editRecoveryIssue = null;
 const journalRequests = new Map();
 window.addEventListener('lighttable-edit-journal', ({detail}) => {
   const request = journalRequests.get(detail.id);
@@ -3919,6 +3920,22 @@ function nativeJournalRequest(body) {
     }
   });
 }
+function renderEditSaveStatus(status) {
+    const recoveryError = editRecoveryIssue || status.recoveryError;
+    const label = $('editSaveStatus');
+    label.textContent = status.state === 'error' ? 'Edits not saved'
+      : status.state === 'saving' ? 'Saving…'
+      : recoveryError ? 'Saved · recovery needs attention' : 'Saved';
+    label.dataset.state = status.state;
+    label.title = status.state === 'error'
+      ? 'Retry to save your changes. Local recovery is retained when available.'
+      : recoveryError ? recoveryError.message : '';
+    $('retryEditSave').hidden = status.state !== 'error' && !recoveryError;
+}
+function updateEditRecoveryHealth(error) {
+  editRecoveryIssue = error;
+  renderEditSaveStatus(editSaveQueue.getStatus());
+}
 const editSaveQueue = createEditSaveQueue({
   journal: {
     put(name, token, payload) {
@@ -3938,17 +3955,7 @@ const editSaveQueue = createEditSaveQueue({
       if (await HISTORY?.flush(name) === false) throw new Error('Could not save edit history');
     }
   },
-  onStatus(status) {
-    const label = $('editSaveStatus');
-    label.textContent = status.state === 'error' ? 'Edits not saved'
-      : status.state === 'saving' ? 'Saving…'
-      : status.recoveryError ? 'Saved · recovery needs attention' : 'Saved';
-    label.dataset.state = status.state;
-    label.title = status.state === 'error'
-      ? 'Retry to save your changes. Local recovery is retained when available.'
-      : status.recoveryError ? status.recoveryError.message : '';
-    $('retryEditSave').hidden = status.state !== 'error' && !status.recoveryError;
-  },
+  onStatus: renderEditSaveStatus,
 });
 
 async function flushEditSaves() {
@@ -3968,7 +3975,14 @@ window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
 
 $('retryEditSave').onclick = async () => {
-  try { await editSaveQueue.retry(); toast('Edits saved'); }
+  try {
+    if (!editRecoveryReady && editRecovery) {
+      try { await editRecovery.list(); editRecoveryReady = true; }
+      catch (error) { updateEditRecoveryHealth(error); }
+    }
+    await editSaveQueue.retry();
+    toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
+  }
   catch { toast('Still unable to save. Your changes are kept in this window.'); }
 };
 window.addEventListener('beforeunload', (event) => {
@@ -6474,10 +6488,12 @@ async function initializeEditRecovery(data) {
   let storage = null;
   try { storage = window.localStorage; } catch (_) { /* surfaced by the journal */ }
   editRecovery = createEditRecovery({scope,
-    nativeRequest: nativeBridge() ? nativeJournalRequest : null, storage});
+    nativeRequest: nativeBridge() ? nativeJournalRequest : null, storage,
+    onWarning: updateEditRecoveryHealth});
   let records;
   try { records = await editRecovery.list(); editRecoveryReady = true; }
   catch (error) {
+    updateEditRecoveryHealth(error);
     toast(`Local edit recovery is unavailable: ${error.message}. Keep this window open if saving fails.`);
     return;
   }

@@ -80,12 +80,18 @@ test('cleanup failure keeps the durable record, and explicit retry clears it', a
   fail = false; await queue.retry(); assert.equal((await journal.list()).length, 0);
 });
 
-test('corrupt browser journals fail visibly and are never silently discarded', async () => {
+test('corrupt browser journals stay intact without hiding other valid drafts', async () => {
   const storage = memoryStorage();
   const journal = createEditRecovery({scope: '/catalog', storage});
   await journal.put('a.RAW', 'one', payload());
   const key = storage.key(0); storage.setItem(key, '{broken');
-  await assert.rejects(journal.list(), SyntaxError);
+  await journal.put('b.RAW', 'two', {state: {name: 'b.RAW', grade: {exposure: 2}}});
+  let warning;
+  const reopened = createEditRecovery({scope: '/catalog', storage, onWarning: value => {warning = value;}});
+  const recovered = await reopened.list();
+  assert.equal(recovered.length, 1); assert.equal(recovered[0].name, 'b.RAW');
+  assert.match(warning.message, /1 damaged/);
+  await assert.rejects(journal.put('a.RAW', 'three', payload()), SyntaxError);
   assert.equal(storage.getItem(key), '{broken');
 });
 
