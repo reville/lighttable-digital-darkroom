@@ -45,7 +45,10 @@ function harness({manual = false} = {}) {
   const context = {
     console, structuredClone, Promise, AggregateError, S,
     $: node, cur: () => S.images[S.idx],
-    window: {addEventListener: noop},
+    window: {addEventListener: noop, confirm: () => true},
+    CLIENT_ID: 'test-window',
+    SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
+    cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
     PRESET_BROWSER: null, METADATA: null,
     HISTORY: {
@@ -87,7 +90,7 @@ function harness({manual = false} = {}) {
     'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
     'setCompareActive', 'updateLoupeInfoOverlay', 'syncAIPhoto', 'loadLensProfile',
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
-    'setEditorLoading',
+    'setEditorLoading', 'invalidateVisibleCache', 'syncCullPanel', 'confirmTransfer',
   ]) context[name] = noop;
   const stateStart = appSource.indexOf("let _lastHistorySnapshot = '';");
   const stateEnd = appSource.indexOf('function photoMatchesQuery(', stateStart);
@@ -98,13 +101,15 @@ function harness({manual = false} = {}) {
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
     'let navigationGeneration = 0, lastNavigationDirection = 1;',
+    "let _stripKey = '', _gridKey = '';",
     'let renderTimer, refineTimer, settleRenderTimer, browserOriginal, browserOriginalTextureURL;',
     ...['snapshot', 'filmRenderFingerprint', 'baseEditsFingerprint', 'updateUndoRedoButtons',
       'pushUndoState', 'pushUndo', 'restore', 'undo', 'redo', 'isStateLoaded',
       'normalizeLibraryImage', 'prefetchState',
-      'showCurrentImage', 'go', 'persistMark', 'saveStateFor'].map(appFunction),
+      'showCurrentImage', 'go', 'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
+      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
-    'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, queue: editSaveQueue, photoUndo};',
+    'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',
   ].join('\n');
   vm.runInNewContext(code, context, {filename: 'actual-app-save-functions.js'});
   context.app.showCurrentImage(S.images[0]);
@@ -270,4 +275,181 @@ test('marks on the already displayed photo survive a concurrent state reload aft
   assert.equal(current.rating, 4);
   assert.equal(current.status, 'approved');
   assert.equal(app.S.grade.exposure, 0);
+});
+
+
+function clipboard(exposure) {
+  return {params: {profile_enabled: false}, grade: {exposure}, masks: [], heals: [], optics: {}};
+}
+
+test('paste joins a pending full save and later slider input cannot be reverted by its completion', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  app.S.crop = {x: .1, y: .2, w: .7, h: .6};
+  app.saveState();
+  app.S.clipboard = clipboard(4);
+  const paste = app.pasteSettingsTo([app.S.images[0]]);
+  assert.equal(app.S.grade.exposure, 4, 'paste is visible before its transport settles');
+  await settle();
+  assert.equal(app.requests.length, 1);
+  assert.equal(app.requests[0].path, '/api/state');
+  assert.equal(app.requests[0].state.grade.exposure, 4);
+  assert.deepEqual(app.requests[0].state.crop, {x: .1, y: .2, w: .7, h: .6});
+  app.S.grade.exposure = 5;
+  app.saveState();
+  app.requests[0].resolve({ok: true});
+  await paste;
+  assert.equal(app.S.grade.exposure, 5, 'paste completion must not reapply stale controls');
+  const saved = app.flushEditSaves();
+  await settle();
+  assert.equal(app.requests[1].state.grade.exposure, 5);
+  app.requests[1].resolve({ok: true});
+  assert.equal(await saved, true);
+});
+
+test('paste supersedes a failed noncurrent recipe and retry keeps its crop and new adjustments', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  app.S.crop = {x: .1};
+  const failed = app.saveState(true);
+  await settle();
+  app.requests[0].resolve({error: 'Disk full'});
+  assert.equal(await failed, false);
+  await app.go(1);
+  app.S.clipboard = clipboard(4);
+  await app.pasteSettingsTo([app.S.images[0]]);
+  assert.equal(app.requests.length, 1, 'failed state waits for explicit retry');
+  assert.equal(app.queue.getPending('A.raw').state.grade.exposure, 4);
+  assert.deepEqual(plain(app.queue.getPending('A.raw').state.crop), {x: .1});
+  assert.ok(!app.toasts.includes('Settings pasted'));
+  const retry = app.nodes.get('retryEditSave').onclick();
+  await settle();
+  assert.equal(app.requests[1].state.grade.exposure, 4);
+  app.requests[1].resolve({ok: true});
+  await retry;
+});
+
+test('assisted culling serializes new flags with pending full recipes', async () => {
+  const app = harness();
+  app.S.grade.exposure = 2;
+  app.saveState();
+  await app.applyCullFlags([], 'approved');
+  assert.ok(app.requests.every(request => request.path === '/api/state'));
+  assert.deepEqual(app.requests.map(request => [request.state.name, request.state.status]), [
+    ['A.raw', 'approved'], ['B.raw', 'approved'],
+  ]);
+  assert.equal(app.requests[0].state.grade.exposure, 2);
+  assert.equal(app.queue.getStatus().state, 'saved');
+});
+
+test('survey keep waits behind an outgoing full save and preserves its reject flag', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 2;
+  app.saveState();
+  await app.go(1);
+  await settle();
+  const keep = app.keepSurveySelection();
+  await settle();
+  assert.deepEqual(app.requests.map(request => request.state.name), ['A.raw', 'B.raw']);
+  assert.equal(app.requests[1].state.status, 'approved');
+  app.requests[1].resolve({ok: true});
+  app.requests[0].resolve({ok: true});
+  await settle();
+  assert.equal(app.requests[2].state.name, 'A.raw');
+  assert.equal(app.requests[2].state.status, 'skipped');
+  assert.equal(app.requests[2].state.grade.exposure, 2);
+  app.requests[2].resolve({ok: true});
+  await keep;
+});
+
+test('accepted external patch repairs an older in-flight save without replacing unrelated edits', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 2;
+  app.S.crop = {x: .15};
+  const oldSave = app.saveState(true);
+  await settle();
+  await app.applyServerStateEvent({client: 'cli', names: ['A.raw'], origin: 'cli', patch: {grade: {exposure: 8}}});
+  assert.equal(app.S.grade.exposure, 8);
+  assert.equal(app.stateReads.length, 0, 'accepted fields must not depend on a stale GET');
+  assert.equal(app.requests.length, 1, 'repair is serialized behind the older request');
+  app.requests[0].resolve({ok: true});
+  await settle();
+  assert.equal(app.requests[1].state.grade.exposure, 8);
+  assert.deepEqual(app.requests[1].state.crop, {x: .15});
+  app.requests[1].resolve({ok: true});
+  await oldSave;
+  assert.equal(await app.flushEditSaves(), true);
+  app.undo();
+  assert.equal(app.S.grade.exposure, 2, 'the external patch remains undoable');
+  const undoSave = app.flushEditSaves();
+  await settle();
+  app.requests[2].resolve({ok: true});
+  await undoSave;
+});
+
+test('accepted external patch updates a failed outgoing recipe before explicit retry', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 2;
+  const oldSave = app.saveState(true);
+  await settle();
+  app.requests[0].resolve({error: 'Offline'});
+  await oldSave;
+  await app.go(1);
+  await app.applyServerStateEvent({client: 'cli', names: ['A.raw'], patch: {grade: {exposure: 9}, rating: 5}});
+  assert.equal(app.requests.length, 1);
+  assert.equal(app.queue.getPending('A.raw').state.grade.exposure, 9);
+  await app.go(0);
+  assert.equal(app.S.grade.exposure, 9);
+  assert.equal(app.S.images[0].rating, 5);
+  const retry = app.nodes.get('retryEditSave').onclick();
+  await settle();
+  assert.equal(app.requests[1].state.grade.exposure, 9);
+  app.requests[1].resolve({ok: true});
+  await retry;
+});
+
+test('metadata-only external events leave edit controls and queued recipes intact', async () => {
+  const app = harness();
+  app.S.grade.exposure = 2;
+  app.saveState();
+  await app.applyServerStateEvent({names: ['A.raw'], fields: ['metadata'], origin: 'metadata'});
+  assert.equal(app.S.grade.exposure, 2);
+  assert.equal(app.queue.getPending('A.raw').state.grade.exposure, 2);
+  assert.equal(app.stateReads.length, 0);
+  await app.flushEditSaves();
+});
+
+test('paste during a photo load survives a stale state response after its write completes', async () => {
+  const app = harness();
+  app.S.images[1].stateLoaded = false;
+  const navigation = app.go(1);
+  app.S.clipboard = clipboard(4);
+  await app.pasteSettingsTo([app.S.images[1]]);
+  assert.equal(app.requests[0].state.grade.exposure, 4);
+  assert.equal(app.queue.getStatus().state, 'saved');
+  app.stateReads[0].resolve({grade: {exposure: -3}});
+  await navigation;
+  assert.equal(app.S.grade.exposure, 4);
+});
+
+test('a failed history flush prevents save success and Retry waits for history', async () => {
+  const app = harness();
+  app.context.HISTORY.flush = async () => false;
+  assert.equal(await app.saveState(true), false);
+  let retried = false;
+  app.context.HISTORY.retry = async () => { retried = true; return false; };
+  await app.nodes.get('retryEditSave').onclick();
+  assert.equal(retried, true);
+  assert.ok(!app.toasts.includes('Edits saved'));
+  assert.match(app.toasts.at(-1), /Still unable to save/);
+});
+
+
+test('an external patch on an idle photo is displayed without echoing another state write', async () => {
+  const app = harness();
+  await app.applyServerStateEvent({client: 'other-window', names: ['A.raw'], patch: {grade: {exposure: 6}}});
+  assert.equal(app.S.grade.exposure, 6);
+  assert.equal(app.S.images[0].grade.exposure, 6);
+  assert.equal(app.requests.length, 0);
+  assert.equal(app.queue.getStatus().state, 'saved');
 });

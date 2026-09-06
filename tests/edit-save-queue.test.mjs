@@ -12,10 +12,11 @@ const deferred = () => {
   return {promise, resolve, reject};
 };
 
-function harness() {
+function harness(options = {}) {
   let clock = 0, nextId = 0;
   const timers = new Map(), requests = [], statuses = [];
   const queue = createEditSaveQueue({
+    ...options,
     send(name, payload) {
       const result = deferred();
       requests.push({name, payload, ...result});
@@ -210,4 +211,93 @@ test('synchronous send failures are retained and unrelated photos still save', a
   await queue.retry();
   assert.deepEqual(writes.map(write => write.name), ['B', 'A']);
   assert.equal(queue.getStatus().state, 'saved');
+});
+
+
+test('bulk writes use at most four shared transport slots and every photo makes progress', async () => {
+  const {queue, requests} = harness();
+  for (let i = 0; i < 17; i++) queue.enqueue(`photo-${i}`, {exposure: i}, {immediate: true});
+  const done = queue.flush();
+  await settle();
+  assert.equal(requests.length, 4);
+  let peak = queue.getStatus().savingNames.length;
+  for (let i = 0; i < 17; i++) {
+    assert.ok(requests[i], `photo ${i} must acquire a released slot`);
+    requests[i].resolve();
+    await settle();
+    peak = Math.max(peak, queue.getStatus().savingNames.length);
+    assert.ok(queue.getStatus().savingNames.length <= 4);
+  }
+  await done;
+  assert.equal(peak, 4);
+  assert.deepEqual(requests.map(request => request.name), Array.from({length: 17}, (_, i) => `photo-${i}`));
+  assert.equal(queue.getStatus().state, 'saved');
+});
+
+test('a failed transport frees its slot and retry joins the pool without overtaking waiting photos', async () => {
+  const {queue, requests} = harness({maxConcurrent: 2});
+  for (const name of ['A', 'B', 'C', 'D']) queue.enqueue(name, {exposure: 1}, {immediate: true});
+  const failed = assert.rejects(queue.flush(), /Could not save edits for A/);
+  await settle();
+  requests[0].reject(new Error('Offline'));
+  await settle();
+  assert.deepEqual(requests.map(request => request.name), ['A', 'B', 'C']);
+  queue.enqueue('A', {exposure: 2});
+  const retry = queue.retry('A');
+  await settle();
+  assert.equal(requests.length, 3, 'retry must respect the occupied transport slots');
+  requests[1].resolve();
+  await settle();
+  assert.equal(requests[3].name, 'D', 'previously waiting photo is not starved by retry');
+  requests[2].resolve();
+  await settle();
+  assert.equal(requests[4].name, 'A');
+  assert.equal(requests[4].payload.exposure, 2);
+  assert.equal(queue.getStatus().savingNames.length, 2);
+  requests[3].resolve();
+  requests[4].resolve();
+  await Promise.all([failed, retry]);
+  assert.equal(queue.getStatus().state, 'saved');
+});
+
+test('new debounced input removes an unflushed photo from the waiting transport pool', async () => {
+  const {queue, requests, advance} = harness({maxConcurrent: 1});
+  queue.enqueue('A', {exposure: 1}, {immediate: true});
+  queue.enqueue('B', {exposure: 2}, {immediate: true});
+  queue.enqueue('B', {exposure: 3});
+  await settle();
+  requests[0].resolve();
+  await settle();
+  assert.equal(requests.length, 1, 'B retains its new debounce after A releases a slot');
+  await advance(400);
+  assert.equal(requests[1].payload.exposure, 3);
+  requests[1].resolve();
+  await queue.flush();
+});
+
+test('later input cannot delay a flush already waiting for a transport slot', async () => {
+  const {queue, requests, timers} = harness({maxConcurrent: 1});
+  queue.enqueue('A', {exposure: 1}, {immediate: true});
+  queue.enqueue('B', {exposure: 2});
+  const flush = queue.flush('B');
+  queue.enqueue('C', {exposure: 4}, {immediate: true});
+  queue.enqueue('B', {exposure: 3});
+  await settle();
+  assert.equal(timers.size, 0);
+  requests[0].resolve();
+  await settle();
+  assert.equal(requests[1].name, 'B');
+  assert.equal(requests[1].payload.exposure, 3);
+  requests[1].resolve();
+  await flush;
+  await settle();
+  assert.equal(requests[2].name, 'C');
+  requests[2].resolve();
+  await queue.flush();
+});
+
+test('transport concurrency must be a positive integer', () => {
+  for (const maxConcurrent of [0, -1, 1.5, Infinity, NaN]) {
+    assert.throws(() => createEditSaveQueue({send() {}, maxConcurrent}), RangeError);
+  }
 });

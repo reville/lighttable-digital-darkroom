@@ -159,7 +159,7 @@ class TemplateTests(unittest.TestCase):
         item = {"name": "IMG_0007.CR2", "camera": "Canon EOS R5",
                 "captureTime": "2026-07-04T08:09:10"}
         item.update(overrides)
-        return ingest._template_context(item, 7, "beach")
+        return ingest.template_context(item, 7, "beach")
 
     def test_folder_and_filename_tokens_render(self):
         context = self._context()

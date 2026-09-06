@@ -30,6 +30,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import shutil
 import sqlite3
 import threading
@@ -1824,8 +1825,16 @@ class Catalog:
             where.append("COALESCE(f.capture_time, f.mtime_iso) >= ?")
             params.append(str(date_from))
         if date_to:
-            where.append("COALESCE(f.capture_time, f.mtime_iso) <= ?")
-            params.append(str(date_to))
+            bound = str(date_to)
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", bound):
+                # A bare date bound is inclusive: capture times carry a time
+                # of day, so comparing the full text excluded everything shot
+                # after midnight on the last day.
+                where.append(
+                    "substr(COALESCE(f.capture_time, f.mtime_iso), 1, 10) <= ?")
+            else:
+                where.append("COALESCE(f.capture_time, f.mtime_iso) <= ?")
+            params.append(bound)
         query_text = " ".join(str(flt.get("query", "")).split())
         if query_text:
             where.append(

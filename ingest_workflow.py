@@ -278,7 +278,8 @@ def render_path(template: str, context: dict) -> str:
     return "/".join(segments)
 
 
-def _template_context(item: dict, sequence: int, custom: str) -> dict:
+def template_context(item: dict, sequence: int, custom: str) -> dict:
+    """Token values for one described photo: name, camera, sequence, dates."""
     moment = _parse_moment(item.get("captureTime"))
     if moment is None:
         try:
@@ -368,7 +369,7 @@ def build_plan(items, request, *, existing_hashes=None) -> dict:
                                 "name": str(item.get("name", "")),
                                 "hash": digest, "reason": "duplicate"})
                 continue
-        context = _template_context(item, sequence, request["custom"])
+        context = template_context(item, sequence, request["custom"])
         folder = render_path(request["folderTemplate"], context)
         name = str(item.get("name", ""))
         stem = render_path(request["filenameTemplate"], context) \
