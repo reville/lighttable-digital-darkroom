@@ -64,6 +64,9 @@ class WriteMetadataTests(unittest.TestCase):
         exif["Exif.Image.Model"] = "X-T5"
         exif["Exif.Image.Orientation"] = 6
         exif["Exif.Photo.DateTimeOriginal"] = "2026:01:02 03:04:05"
+        exif["Exif.Photo.OffsetTimeOriginal"] = "+02:00"
+        exif["Exif.Photo.OffsetTimeDigitized"] = "+02:00"
+        exif["Exif.Photo.SubSecTimeOriginal"] = "125"
         exif["Exif.Photo.ISOSpeedRatings"] = 400
         exif["Exif.GPSInfo.GPSLatitudeRef"] = "N"
         exif["Exif.GPSInfo.GPSLatitude"] = "41/1 23/1 12/1"
@@ -92,6 +95,9 @@ class WriteMetadataTests(unittest.TestCase):
                 self.assertEqual(exif["Exif.Image.Make"], "Fujifilm")
                 self.assertEqual(exif["Exif.Photo.DateTimeOriginal"],
                                  "2026:01:02 03:04:05")
+                self.assertEqual(exif["Exif.Photo.OffsetTimeOriginal"], "+02:00")
+                self.assertEqual(exif["Exif.Photo.OffsetTimeDigitized"], "+02:00")
+                self.assertEqual(exif["Exif.Photo.SubSecTimeOriginal"], "125")
                 self.assertEqual(exif["Exif.Image.Software"], "LightTable")
                 self.assertEqual(exif["Exif.Image.Orientation"], "1")
                 self.assertEqual(exif["Exif.Photo.PixelXDimension"], "60")

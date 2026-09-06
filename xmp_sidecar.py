@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import re
 import xml.etree.ElementTree as ET
+from xml.dom import minidom, Node
 from pathlib import Path
 
 import durable_io
@@ -124,6 +125,10 @@ def _collect(root) -> tuple[dict, dict, dict]:
 
     holders = [element for element in root.iter()
                if _split(element.tag) == (RDF_NS, "Description")]
+    primary = [element for element in holders
+               if not element.get(f"{{{RDF_NS}}}about")]
+    if primary:
+        holders = primary
     if not holders:
         # Fragments and hand-written XMP sometimes omit rdf:Description; fall
         # back to treating every element as a possible property holder.
@@ -563,7 +568,7 @@ def build_sidecar(record: dict) -> str:
     attributes: list[str] = []
     elements: list[str] = []
 
-    rating = record.get("rating")
+    rating = -1 if record.get("status") == "skipped" else record.get("rating")
     if rating:
         attributes.append(f'   xmp:Rating="{int(rating)}"')
     label = record.get("label")
@@ -634,7 +639,79 @@ def build_sidecar(record: dict) -> str:
         elements="\n".join(elements) if elements else "")
 
 
-def write_sidecar(source: Path, record: dict) -> bool:
+def merge_sidecar(existing: str, record: dict) -> str:
+    """Update our properties, retaining the rest of an editor's RDF document.
+
+    Work with namespace-aware DOM nodes so foreign prefixes, declarations,
+    structured masks, qualifiers and unrelated RDF subjects survive intact.
+    Refuse malformed files instead of replacing work we cannot understand.
+    """
+    if len(existing.encode("utf-8")) > MAX_XMP_BYTES:
+        raise ValueError("existing XMP is too large to update safely")
+    if re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", existing, re.I):
+        raise ValueError("XMP declarations cannot be updated safely")
+    document = minidom.parseString(existing)
+    generated = minidom.parseString(build_sidecar(record))
+    rdf_nodes = document.getElementsByTagNameNS(RDF_NS, "RDF")
+    if not rdf_nodes:
+        raise ValueError("existing XMP has no RDF metadata document")
+    rdf = rdf_nodes[0]
+    holders = [node for node in rdf.childNodes
+               if node.nodeType == Node.ELEMENT_NODE
+               and node.namespaceURI == RDF_NS
+               and node.localName == "Description"
+               and not node.getAttributeNS(RDF_NS, "about")]
+    fresh = generated.getElementsByTagNameNS(RDF_NS, "Description")[0]
+    if not holders:
+        holder = document.createElementNS(RDF_NS, "rdf:Description")
+        holder.setAttribute("xmlns:rdf", RDF_NS)
+        holder.setAttributeNS(RDF_NS, "rdf:about", "")
+        rdf.appendChild(holder)
+        holders.append(holder)
+    owned = {(NAMESPACES["xmp"], "CreatorTool")}
+    for key, properties in {
+        "rating": [("xmp", "Rating")], "status": [("xmp", "Rating")],
+        "label": [("xmp", "Label")],
+        "keywords": [("dc", "subject"), ("lr", "hierarchicalSubject")],
+        "grade": [("crs", name) for name, _ in _CRS_EXPORT.values()],
+        "crop": [("crs", name) for name in
+                 ("HasCrop", "CropLeft", "CropTop", "CropRight", "CropBottom")],
+        "iptc": [("dc", name) for name in
+                 ("title", "description", "rights", "creator")]
+                + [("photoshop", name) for name in
+                   ("Headline", "Credit", "City", "State", "Country")],
+    }.items():
+        if key in record:
+            owned.update((NAMESPACES[prefix], name) for prefix, name in properties)
+    native_uri = "https://lighttable.photo/ns/1.0/"
+    if any(key in record for key in
+           ("params", "grade", "crop", "masks", "heals", "optics", "status")):
+        owned.update((native_uri, name) for name in ("edit", "note"))
+    for holder in holders:
+        for attribute in list(holder.attributes.values()):
+            if (attribute.namespaceURI, attribute.localName) in owned:
+                holder.removeAttributeNode(attribute)
+        for child in list(holder.childNodes):
+            if (child.namespaceURI, child.localName) in owned:
+                holder.removeChild(child)
+        has_properties = any(
+            attribute.namespaceURI != "http://www.w3.org/2000/xmlns/"
+            and (attribute.namespaceURI, attribute.localName) != (RDF_NS, "about")
+            for attribute in holder.attributes.values())
+        has_content = any(node.nodeType not in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE)
+                          or bool(node.data.strip()) for node in holder.childNodes)
+        if not has_properties and not has_content:
+            rdf.removeChild(holder)
+    # Give the generated properties a separate scope. A foreign writer may
+    # bind the same prefix to another URI; never change its namespace binding.
+    update = document.importNode(fresh, deep=True)
+    update.setAttribute("xmlns:rdf", RDF_NS)
+    rdf.insertBefore(update, rdf.firstChild)
+    return document.toxml()
+
+
+def write_sidecar(source: Path, record: dict,
+                  errors: list[str] | None = None) -> bool:
     """Write `photo.xmp` beside an original. Best effort, never raises.
 
     A read-only volume or a permission error returns False rather than
@@ -647,7 +724,11 @@ def write_sidecar(source: Path, record: dict) -> bool:
     if existing is not None:
         target = existing
     try:
-        document = build_sidecar(record)
+        original = target.read_bytes() if target.exists() else None
+        document = (merge_sidecar(original.decode("utf-8"), record)
+                    if original is not None else build_sidecar(record))
+        if ((target.read_bytes() if target.exists() else None) != original):
+            raise OSError("Another application changed the XMP file. Retry to merge its latest changes.")
         # Retain the first pre-LightTable sidecar. Other editors may carry
         # settings we cannot round-trip, and an opt-in mirror must never make
         # those bytes unrecoverable.
@@ -656,5 +737,7 @@ def write_sidecar(source: Path, record: dict) -> bool:
             keep_backup=True, backup_once=True,
         )
         return True
-    except OSError:
+    except Exception as error:  # an unreadable foreign document must survive
+        if errors is not None:
+            errors.append(str(error))
         return False

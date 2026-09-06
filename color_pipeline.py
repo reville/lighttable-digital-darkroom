@@ -560,18 +560,28 @@ def icc_bytes(output_space: str) -> bytes | None:
         return None
 
 
+def required_icc_bytes(output_space: str) -> bytes:
+    profile = icc_bytes(output_space)
+    if not profile:
+        raise RuntimeError(
+            f"The {normalise_output_space(output_space)} output color profile is missing. "
+            "Repair the installation before exporting.")
+    return profile
+
+
 def save_export_image(image_srgb: np.ndarray, destination: Path | str,
                       *, fmt: str, quality: int = 92,
                       output_space: str = "srgb",
                       bit_depth: int = 16,
                       metadata_source: Path | str | None = None,
                       metadata_policy: str = "none",
-                      metadata_fields: dict | None = None) -> tuple[int, int]:
+                      metadata_fields: dict | None = None,
+                      warnings: list[str] | None = None) -> tuple[int, int]:
     """Encode a colour-managed export, retaining 16 bits for TIFF."""
     destination = Path(destination)
     output_space = normalise_output_space(output_space)
     converted = convert_output_space(as_float_rgb(image_srgb), output_space)
-    profile = icc_bytes(output_space)
+    profile = required_icc_bytes(output_space)
     height, width = converted.shape[:2]
     if fmt in ("tif", "tiff"):
         depth = 8 if int(bit_depth) == 8 else 16
@@ -607,9 +617,12 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
             # Put the requested EXIF/XMP on the lossless staging TIFF instead;
             # CGImageDestinationAddImageFromSource carries it into the HEIF.
             if str(metadata_policy).lower() != "none":
-                platform_image.write_metadata(
+                before = len(warnings) if warnings is not None else 0
+                succeeded = platform_image.write_metadata(
                     temporary, metadata_source, metadata_policy,
-                    metadata_fields or {})
+                    metadata_fields or {}, warnings=warnings)
+                if not succeeded and warnings is not None and len(warnings) == before:
+                    warnings.append("Requested metadata could not be saved.")
             completed = subprocess.run(
                 [str(helper), "--encode-heif", str(temporary),
                  str(destination), str(int(quality))],
