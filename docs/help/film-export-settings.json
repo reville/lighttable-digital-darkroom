@@ -337,22 +337,85 @@
     "title": "Back up the catalog and troubleshoot recovery",
     "category": "Troubleshooting",
     "summary": "Use verified catalog backups, Library Health, and desktop diagnostics when something goes wrong.",
-    "keywords": ["catalog", "backup", "restore", "recovery", "damaged", "corrupt", "crash", "missing", "safe mode", "diagnostics", "log", "repair"],
-    "sections": [
-      {"title": "Back up and inspect", "paragraphs": ["Settings → Catalog shows the catalog location and backup preferences. These backups cover the catalog database; keep a separate backup of your original photo files."], "steps": ["Choose an Automatic backup interval and Backup location.", "Click Back up now and check for a Verified backup result.", "Open Library Health… to check catalog structure, missing files, and recovery information.", "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits."]},
-      {"title": "Understand recovery choices", "paragraphs": ["Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.", "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."]},
-      {"title": "Desktop diagnostics", "paragraphs": ["On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.", "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."]}
+    "keywords": [
+      "catalog",
+      "backup",
+      "restore",
+      "recovery",
+      "damaged",
+      "corrupt",
+      "crash",
+      "missing",
+      "safe mode",
+      "diagnostics",
+      "log",
+      "repair"
     ],
-    "related": ["settings-and-defaults", "performance-previews"],
+    "sections": [
+      {
+        "title": "Back up and inspect",
+        "paragraphs": [
+          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+        ],
+        "steps": [
+          "Choose an Automatic backup interval and Backup location.",
+          "Click Back up now and check for a Verified backup result.",
+          "Open Library Health… to check catalog structure, missing files, and recovery information.",
+          "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits."
+        ]
+      },
+      {
+        "title": "Understand recovery choices",
+        "paragraphs": [
+          "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+          "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
+        ]
+      },
+      {
+        "title": "Desktop diagnostics",
+        "paragraphs": [
+          "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
+          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."
+        ]
+      }
+    ],
+    "related": [
+      "settings-and-defaults",
+      "performance-previews"
+    ],
     "sources": [
-      {"path": "web/index.html", "anchor": "Verified backups of the current catalog database."},
-      {"path": "web/settings.js", "anchor": "? `Verified backup: ${result.archive}`"},
-      {"path": "web/recovery.js", "anchor": "Missing files: ${verify.missingFiles} (kept with their edits)"},
-      {"path": "web/recovery.js", "anchor": "Edits made after that backup are not in it."},
-      {"path": "web/recovery.js", "anchor": "The current catalog is backed up first, then replaced by this one."},
-      {"path": "web/recovery.js", "anchor": "backup; rows on damaged pages are lost."},
-      {"path": "web/recovery.js", "anchor": "Safe Mode: scanning, watched folders, local AI, and engine warm-up "},
-      {"path": "app/main.swift", "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","}
+      {
+        "path": "web/index.html",
+        "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."
+      },
+      {
+        "path": "web/settings.js",
+        "anchor": "? `Verified backup: ${result.archive}`"
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Missing files: ${verify.missingFiles} (kept with their edits)"
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Edits made after that backup are not in it."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "The current catalog is backed up first, then replaced by this one."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "backup; rows on damaged pages are lost."
+      },
+      {
+        "path": "web/recovery.js",
+        "anchor": "Safe Mode: scanning, watched folders, local AI, and engine warm-up "
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+      }
     ]
   }
 ]

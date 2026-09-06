@@ -1169,7 +1169,16 @@ class PlatformProcessTests(unittest.TestCase):
         source = (ROOT / "server.py").read_text()
         self.assertIn("stderr=subprocess.DEVNULL, text=True, bufsize=1,\n"
                       "            **subprocess_flags())", source)
-        self.assertEqual(source.count("**subprocess_flags()"), 5)
+        with mock.patch.object(server, "IS_WINDOWS", True), \
+                mock.patch.object(server.subprocess, "run") as run, \
+                mock.patch.object(server.subprocess, "Popen") as popen:
+            server._run_export_process(["renderer"], {}, None)
+            self.assertEqual(run.call_args.kwargs["creationflags"], 0x08000000)
+            process = popen.return_value.__enter__.return_value
+            process.communicate.return_value = ("", "")
+            process.returncode = 0
+            server._run_export_process(["renderer"], {}, mock.Mock())
+            self.assertEqual(popen.call_args.kwargs["creationflags"], 0x08000000)
         self.assertIn("**_creation_flags()",
                       (ROOT / "render_cli.py").read_text())
 
@@ -1203,6 +1212,7 @@ class PlatformProcessTests(unittest.TestCase):
 
         engine = mock.Mock()
         engine.render.side_effect = render
+        engine.probe_input.return_value = False
         server._SHARED_INPUT_DISABLED.clear()
         try:
             with tempfile.TemporaryDirectory() as directory:
@@ -1210,7 +1220,8 @@ class PlatformProcessTests(unittest.TestCase):
                 source.write_bytes(b"cached input")
                 with mock.patch.object(server, "is_raw", return_value=True), \
                         mock.patch.object(server, "raw_shared_input", shared), \
-                        mock.patch.object(server, "RUST_ENGINE", engine), \
+                        mock.patch.object(server, "BACKGROUND_ENGINE", engine), \
+                        mock.patch.object(server, "file_key", return_value="source"), \
                         mock.patch.object(server, "tiff_for",
                                           return_value=source):
                     first = server._resident_render_full("frame.dng", {}, {})

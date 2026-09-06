@@ -294,28 +294,78 @@
     "title": "Crop, straighten, rotate, and correct perspective",
     "category": "Editing",
     "summary": "Set a frame and aspect ratio, adjust orientation and perspective, then accept or cancel the crop session.",
-    "keywords": ["crop", "aspect ratio", "straighten", "rotate", "flip", "perspective", "geometry", "upright", "level", "portrait", "landscape", "resize"],
+    "keywords": [
+      "crop",
+      "aspect ratio",
+      "straighten",
+      "rotate",
+      "flip",
+      "perspective",
+      "geometry",
+      "upright",
+      "level",
+      "portrait",
+      "landscape",
+      "resize"
+    ],
     "sections": [
       {
         "title": "Set the frame",
-        "paragraphs": ["Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained."],
-        "steps": ["Choose an aspect ratio. Use Custom to enter your own width-to-height proportion, and the swap button to change orientation.", "Drag a handle to resize the crop or drag inside the frame to move it. Drag outside the existing frame to draw a new crop.", "Use arrow keys to nudge the selection; hold Shift for larger steps.", "Click Done or press Enter to accept. Click Cancel or press Escape to restore the frame from when you opened Crop."],
-        "tips": ["The ratio Lock control lets you keep the current aspect ratio while resizing."]
+        "paragraphs": [
+          "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained."
+        ],
+        "steps": [
+          "Choose an aspect ratio. Use Custom to enter your own width-to-height proportion, and the swap button to change orientation.",
+          "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.",
+          "Use arrow keys to nudge the selection; hold Shift for larger steps.",
+          "Click Done or press Enter to accept. Click Cancel or press Escape to restore the frame from when you opened Crop."
+        ],
+        "tips": [
+          "The ratio Lock control lets you keep the current aspect ratio while resizing."
+        ]
       },
       {
         "title": "Refine geometry",
-        "paragraphs": ["Crop & Rotate also contains Straighten, 90-degree rotation, horizontal and vertical flips, and Perspective controls."],
-        "steps": ["Try Auto level for a tilted horizon, then refine Straighten if needed.", "Use Rotate left, Rotate right, or the flip buttons for orientation changes.", "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.", "Inspect the edges and final framing, then click Done."],
-        "tips": ["Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.", "Crop’s Reset resets the crop, rotation, flips, and perspective together."]
+        "paragraphs": [
+          "Crop & Rotate also contains Straighten, 90-degree rotation, horizontal and vertical flips, and Perspective controls."
+        ],
+        "steps": [
+          "Try Auto level for a tilted horizon, then refine Straighten if needed.",
+          "Use Rotate left, Rotate right, or the flip buttons for orientation changes.",
+          "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.",
+          "Inspect the edges and final framing, then click Done."
+        ],
+        "tips": [
+          "Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.",
+          "Crop’s Reset resets the crop, rotation, flips, and perspective together."
+        ]
       }
     ],
-    "related": ["editing-lens-corrections", "editing-history-snapshots"],
+    "related": [
+      "editing-lens-corrections",
+      "editing-history-snapshots"
+    ],
     "sources": [
-      {"path": "web/index.html", "anchor": "Reset crop, rotation, flips, and perspective"},
-      {"path": "web/index.html", "anchor": "Drag outside the frame to draw a new crop."},
-      {"path": "web/index.html", "anchor": "Enter accepts; Escape restores the frame from when you opened Crop."},
-      {"path": "web/index.html", "anchor": "Levels the frame from the lines it can find."},
-      {"path": "web/index.html", "anchor": "<button class=\"quiet full\" id=\"autoUpright\">Auto upright</button>"}
+      {
+        "path": "web/index.html",
+        "anchor": "Reset crop, rotation, flips, and perspective"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Drag the handles to resize; the photo zooms to keep the frame centred."
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Enter accepts; Escape restores the frame from when you opened Crop."
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Levels the frame from the lines it can find."
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<button class=\"quiet full\" id=\"autoUpright\">Auto upright</button>"
+      }
     ]
   },
   {

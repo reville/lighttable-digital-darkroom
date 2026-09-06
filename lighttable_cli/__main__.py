@@ -105,7 +105,8 @@ def merge_mapping(base: dict, patch: dict) -> dict:
 # The window's lens defaults. A preset carrying exactly these values has no
 # lens edit to apply, so they are not layered onto a photo.
 OPTICS_DEFAULTS = {
-    "profileEnabled": False, "profileDistortion": True, "profileVignette": True,
+    "profileEnabled": False, "profileOverride": None,
+    "profileDistortion": True, "profileVignette": True,
     "flipHorizontal": False, "flipVertical": False, "distortion": 0.0,
     "vignette": 0.0, "vertical": 0.0, "horizontal": 0.0, "rotate": 0.0,
     "scale": 1.0,
