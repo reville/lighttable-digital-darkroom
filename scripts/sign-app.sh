@@ -39,6 +39,11 @@ sign_path() {
 # Wheels and the film engines contain nested Mach-O code. Sign every leaf
 # before sealing the framework and application bundles around them.
 while IFS= read -r -d '' CANDIDATE; do
+  # Signing the main executable seals its containing app as well. Defer it
+  # until the CLI and the rest of the nested code have their own signatures.
+  if [[ "$CANDIDATE" == "$APP/Contents/MacOS/LightTable" ]]; then
+    continue
+  fi
   if /usr/bin/file -b "$CANDIDATE" | /usr/bin/grep -q 'Mach-O'; then
     sign_path "$CANDIDATE"
   fi
