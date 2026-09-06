@@ -516,6 +516,8 @@ input[type=checkbox]:disabled { opacity:.4; }
 .ai-cull-disclosure { max-height:260px; overflow-y:auto; }
 .ai-cull-disclosure .cull-group { margin-top:8px; }
 .ai-cull-disclosure .cull-group-title { margin-bottom:2px; color:var(--muted-2); font-size:10px; font-weight:600; text-transform:uppercase; }
+.ai-cull-disclosure .btnrow { flex-direction:column; }
+.ai-cull-disclosure .btnrow button { white-space:normal; overflow-wrap:anywhere; }
 #gridSize { width:100%; }
 
 /* Grid */
