@@ -5489,20 +5489,20 @@ function switchPane(id, { fromCompare = false } = {}) {
 /* ---------------------------------------------------------------- crop */
 function cropSourceSize() {
   const im = cur();
-  let width = +(im?.width || $('cv').width || 0);
-  let height = +(im?.height || $('cv').height || 0);
-  const canvasWidth = +$('cv').width || 0;
-  const canvasHeight = +$('cv').height || 0;
-  if (canvasWidth > 0 && canvasHeight > 0 && (width > height) !== (canvasWidth > canvasHeight)) {
-    [width, height] = [height, width];
+  let width = +(im?.width || 0);
+  let height = +(im?.height || 0);
+  if (width > 0 && height > 0) {
+    // Catalog dimensions already include EXIF orientation. Apply the requested
+    // rotation now: the canvas may still show the previous render or photo.
+    if (Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) {
+      [width, height] = [height, width];
+    }
+    return { width, height };
   }
-  return { width, height };
+  return { width: +$('cv').width || 0, height: +$('cv').height || 0 };
 }
 
 function cropImageAspect() {
-  const canvasWidth = +$('cv').width || 0;
-  const canvasHeight = +$('cv').height || 0;
-  if (canvasWidth > 0 && canvasHeight > 0) return canvasWidth / canvasHeight;
   const { width, height } = cropSourceSize();
   return width > 0 && height > 0 ? width / height : 1;
 }
