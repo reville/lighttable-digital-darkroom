@@ -45,6 +45,8 @@ REQUIRED_PR_STEPS = {
     "compare-on",
     "compare-off",
     "zoom-actual",
+    "viewport-pan",
+    "viewport-film-slider",
     "zoom-fit",
     "export-photo",
     "visibility-controls-on",

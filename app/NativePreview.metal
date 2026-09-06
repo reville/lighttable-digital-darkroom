@@ -15,6 +15,7 @@ struct GradeUniforms {
     float4 detail1;     // luminance noise, color noise, red/cyan CA, blue/yellow CA
     float4 curveOn;
     float4 viewport;    // UV scale x/y, offset x/y
+    float4 sourceRegion; // tile span and origin in full-frame UV
     float4 compare;     // original-image wipe position, 0 disables
     float4 reference0;  // active, split mode, amount, scale
     float4 reference1;  // x/y offset, reserved
@@ -87,16 +88,25 @@ vertex VertexOut nativePreviewVertex(uint vertexID [[vertex_id]]) {
 
 constant float3 LUMA = float3(0.2126, 0.7152, 0.0722);
 
-float3 sampleSource(texture2d<float> image, sampler linearSampler,
-                    float2 coordinate, float2 texel,
-                    float redCyan, float blueYellow) {
+float3 sampleFrame(texture2d<float> image, texture2d<float> fallback,
+                   sampler linearSampler, float2 coordinate, float4 region) {
     coordinate = clamp(coordinate, 0.0, 1.0);
-    float3 base = image.sample(linearSampler, coordinate).rgb;
+    float2 tile = (coordinate - region.zw) / region.xy;
+    if (any(tile < 0.0) || any(tile > 1.0)) {
+        return fallback.sample(linearSampler, coordinate).rgb;
+    }
+    return image.sample(linearSampler, tile).rgb;
+}
+
+float3 sampleSource(texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
+                    float2 coordinate, float2 texel,
+                    float redCyan, float blueYellow, float4 region) {
+    float3 base = sampleFrame(image, fallback, linearSampler, coordinate, region);
     float2 radial = coordinate - 0.5;
-    float red = image.sample(linearSampler, clamp(
-        coordinate + radial * texel * redCyan * 6.0, 0.0, 1.0)).r;
-    float blue = image.sample(linearSampler, clamp(
-        coordinate + radial * texel * blueYellow * 6.0, 0.0, 1.0)).b;
+    float red = sampleFrame(image, fallback, linearSampler,
+        coordinate + radial * texel * redCyan * 6.0, region).r;
+    float blue = sampleFrame(image, fallback, linearSampler,
+        coordinate + radial * texel * blueYellow * 6.0, region).b;
     return float3(red, base.g, blue);
 }
 
@@ -120,16 +130,16 @@ float2 manualSourceCoordinate(float2 uv, constant GradeUniforms &grade,
     return projected * factor * halfSize / dimensions + 0.5;
 }
 
-float3 sampleEditedSource(texture2d<float> image, sampler linearSampler,
+float3 sampleEditedSource(texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
                           float2 outputCoordinate, constant GradeUniforms &grade,
                           float2 texel, float redCyan, float blueYellow) {
     float radiusSquared = 0.0;
-    float2 dimensions = float2(image.get_width(), image.get_height());
+    float2 dimensions = float2(image.get_width(), image.get_height()) / grade.sourceRegion.xy;
     float2 coordinate = manualSourceCoordinate(
         outputCoordinate, grade, dimensions, radiusSquared);
     if (any(coordinate < 0.0) || any(coordinate > 1.0)) return 0.0;
     float3 color = sampleSource(
-        image, linearSampler, coordinate, texel, redCyan, blueYellow);
+        image, fallback, linearSampler, coordinate, texel, redCyan, blueYellow, grade.sourceRegion);
     if (grade.optics1.y != 0.0) {
         float radial = clamp(radiusSquared / 2.0, 0.0, 1.5);
         color *= 1.0 + grade.optics1.y * 0.8 * radial;
@@ -138,11 +148,11 @@ float3 sampleEditedSource(texture2d<float> image, sampler linearSampler,
 }
 
 float3 applyHeals(float3 color, float2 uv,
-                  texture2d<float> image, sampler linearSampler,
+                  texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
                   constant GradeUniforms &grade,
                   constant HealUniform *heals,
                   float2 texel, float redCyan, float blueYellow) {
-    float2 dimensions = float2(image.get_width(), image.get_height());
+    float2 dimensions = float2(image.get_width(), image.get_height()) / grade.sourceRegion.xy;
     float minimum = max(min(dimensions.x, dimensions.y), 1.0);
     uint count = min(uint(max(grade.optics1.z, 0.0)), 16u);
     for (uint index = 0; index < count; index++) {
@@ -159,17 +169,17 @@ float3 applyHeals(float3 color, float2 uv,
         if (spot.settings.w < 1.5) {
             float2 ring = radius * minimum / dimensions * 1.25;
             replacement = (
-                sampleEditedSource(image, linearSampler, target + float2(ring.x, 0.0),
+                sampleEditedSource(image, fallback, linearSampler, target + float2(ring.x, 0.0),
                     grade, texel, redCyan, blueYellow)
-                + sampleEditedSource(image, linearSampler, target - float2(ring.x, 0.0),
+                + sampleEditedSource(image, fallback, linearSampler, target - float2(ring.x, 0.0),
                     grade, texel, redCyan, blueYellow)
-                + sampleEditedSource(image, linearSampler, target + float2(0.0, ring.y),
+                + sampleEditedSource(image, fallback, linearSampler, target + float2(0.0, ring.y),
                     grade, texel, redCyan, blueYellow)
-                + sampleEditedSource(image, linearSampler, target - float2(0.0, ring.y),
+                + sampleEditedSource(image, fallback, linearSampler, target - float2(0.0, ring.y),
                     grade, texel, redCyan, blueYellow)) * 0.25;
         } else {
             replacement = sampleEditedSource(
-                image, linearSampler, uv + source - target,
+                image, fallback, linearSampler, uv + source - target,
                 grade, texel, redCyan, blueYellow);
         }
         color = mix(color, replacement, clamp(weight, 0.0, 1.0));
@@ -324,18 +334,18 @@ float3 applySoftProof(float3 color, float4 proof, float2 position) {
 }
 
 float3 localGrade(float3 color, float4 tone, float4 localColorValue,
-                  float4 detail, float2 uv, texture2d<float> image,
+                  float4 detail, float2 uv, texture2d<float> image, texture2d<float> fallback,
                   sampler linearSampler, constant GradeUniforms &grade,
                   float2 texel) {
     if (detail.x != 0.0 || detail.y != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, grade.detail1.z, grade.detail1.w)) / 5.0;
         float3 localDetail = color - blur;
         color = clamp(color + localDetail * detail.x * 1.1, 0.0, 1.0);
@@ -380,7 +390,7 @@ float3 localGrade(float3 color, float4 tone, float4 localColorValue,
 }
 
 float3 applyLocal(float3 color, float geometric, constant LocalUniform &local,
-                  float2 uv, texture2d<float> image, sampler linearSampler,
+                  float2 uv, texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
                   constant GradeUniforms &grade, float2 texel) {
     float4 tone = local.tone;
     float4 localColorValue = local.color;
@@ -403,7 +413,7 @@ float3 applyLocal(float3 color, float geometric, constant LocalUniform &local,
     float weight = clamp(geometric * localColorValue.w * lower * upper
                          * colorWeight, 0.0, 1.0);
     return mix(color, localGrade(color, tone, localColorValue, local.detail,
-        uv, image, linearSampler, grade, texel), weight);
+        uv, image, fallback, linearSampler, grade, texel), weight);
 }
 
 fragment float4 nativePreviewFragment(
@@ -413,6 +423,7 @@ fragment float4 nativePreviewFragment(
     texture2d<float> original [[texture(2)]],
     texture2d<float> masks [[texture(3)]],
     texture2d<float> reference [[texture(4)]],
+    texture2d<float> fallback [[texture(5)]],
     sampler linearSampler [[sampler(0)]],
     constant GradeUniforms &grade [[buffer(0)]],
     constant HealUniform *heals [[buffer(1)]],
@@ -446,20 +457,20 @@ fragment float4 nativePreviewFragment(
     float redCyan = grade.detail1.z;
     float blueYellow = grade.detail1.w;
     float3 color = sampleEditedSource(
-        image, linearSampler, uv, grade, texel, redCyan, blueYellow);
+        image, fallback, linearSampler, uv, grade, texel, redCyan, blueYellow);
     color = applyHeals(
-        color, uv, image, linearSampler, grade, heals,
+        color, uv, image, fallback, linearSampler, grade, heals,
         texel, redCyan, blueYellow);
 
     if (luminanceNoise != 0.0 || colorNoise != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float luminance = dot(color, LUMA);
         float blurLuminance = dot(blur, LUMA);
@@ -478,13 +489,13 @@ fragment float4 nativePreviewFragment(
 
     if (texture != 0.0 || clarity != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         color = clamp(color + detail * texture * 1.1, 0.0, 1.0);
@@ -495,13 +506,13 @@ fragment float4 nativePreviewFragment(
     if (sharpness != 0.0) {
         float2 radius = texel * sharpenRadius;
         float3 blur = (color
-            + sampleEditedSource(image, linearSampler, uv + float2(radius.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(radius.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(radius.x, 0.0),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(radius.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv + float2(0.0, radius.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, radius.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, linearSampler, uv - float2(0.0, radius.y),
+            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, radius.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         float luminanceDetail = dot(detail, LUMA);
@@ -658,13 +669,13 @@ fragment float4 nativePreviewFragment(
         float4 maskValues = masks.sample(linearSampler, clamp(maskUv, 0.0, 1.0));
         int base = tile * 4;
         color = applyLocal(color, maskValues.r, locals[base], uv,
-            image, linearSampler, grade, texel);
+            image, fallback, linearSampler, grade, texel);
         color = applyLocal(color, maskValues.g, locals[base + 1], uv,
-            image, linearSampler, grade, texel);
+            image, fallback, linearSampler, grade, texel);
         color = applyLocal(color, maskValues.b, locals[base + 2], uv,
-            image, linearSampler, grade, texel);
+            image, fallback, linearSampler, grade, texel);
         color = applyLocal(color, maskValues.a, locals[base + 3], uv,
-            image, linearSampler, grade, texel);
+            image, fallback, linearSampler, grade, texel);
     }
     color = applySoftProof(color, grade.softProof, input.position.xy);
     if (grade.reference0.x > 0.5) {

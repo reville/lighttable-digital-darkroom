@@ -17,6 +17,8 @@ use spektrafilm_gpu::ComputeBackend;
 use spektrafilm_math::{image::ImageBuf, precision};
 
 mod export;
+mod region;
+mod native_surface;
 
 #[derive(Debug, Deserialize)]
 struct Request {
@@ -29,6 +31,9 @@ struct Request {
     input_cache_key: Option<String>,
     output: Option<PathBuf>,
     native_output: Option<PathBuf>,
+    #[serde(default)]
+    native_shared: bool,
+    viewport: Option<region::Rect>,
     data_dir: Option<PathBuf>,
     film: Option<String>,
     paper: Option<String>,
@@ -66,8 +71,14 @@ struct Response {
     backend: String,
     width: Option<u32>,
     height: Option<u32>,
+    full_width: Option<u32>,
+    full_height: Option<u32>,
     mean: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    native_shared: Option<native_surface::SharedSurface>,
     input_cache_hit: bool,
+    viewport_accelerated: bool,
+    native_gpu_packed: bool,
     film_stage_cache_hit: bool,
     gpu_buffers_reused: bool,
     resident_cache_bytes: usize,
@@ -88,8 +99,13 @@ impl Response {
             backend: backend.to_owned(),
             width: None,
             height: None,
+            full_width: None,
+            full_height: None,
             mean: None,
+            native_shared: None,
             input_cache_hit: false,
+            viewport_accelerated: false,
+            native_gpu_packed: false,
             film_stage_cache_hit: false,
             gpu_buffers_reused: false,
             resident_cache_bytes: 0,
@@ -127,6 +143,7 @@ struct Engine {
     inputs: VecDeque<CachedInput>,
     input_cache_max_bytes: usize,
     pipelines: VecDeque<(String, Pipeline, u64)>,
+    print_profiles: VecDeque<(String, profile::Profile)>,
     pipeline_cache_max_entries: usize,
     next_input_generation: u64,
     next_pipeline_generation: u64,
@@ -147,6 +164,7 @@ impl Engine {
                 .and_then(|value| value.parse().ok())
                 .unwrap_or(256 * 1024 * 1024),
             pipelines: VecDeque::new(),
+            print_profiles: VecDeque::new(),
             pipeline_cache_max_entries: std::env::var("LIGHTTABLE_RESIDENT_PIPELINE_CACHE_ENTRIES")
                 .ok()
                 .and_then(|value| value.parse().ok())
@@ -156,16 +174,34 @@ impl Engine {
 
     fn handle(&mut self, request: Request) -> Result<Response> {
         let started = Instant::now();
-        if request.command == "ping" {
+        if request.command == "ping" || request.command == "probe_input" {
+            let cached_input = if request.command == "probe_input" {
+                let key = request.input_cache_key.as_ref().context("missing input_cache_key")?;
+                self.inputs.iter().position(|cached| {
+                    cached.identity == InputIdentity::Shared(key.clone())
+                }).map(|position| {
+                    let cached = self.inputs.remove(position).expect("cached input position");
+                    let dimensions = (cached.image.width, cached.image.height);
+                    self.inputs.push_back(cached);
+                    dimensions
+                })
+            } else {
+                None
+            };
             return Ok(Response {
                 id: request.id,
                 ok: true,
                 backend: self.backend.name().to_owned(),
-                width: None,
-                height: None,
+                width: cached_input.map(|size| size.0),
+                height: cached_input.map(|size| size.1),
+                full_width: None,
+                full_height: None,
                 mean: None,
-                input_cache_hit: false,
-                film_stage_cache_hit: false,
+            native_shared: None,
+                input_cache_hit: cached_input.is_some(),
+                viewport_accelerated: false,
+            native_gpu_packed: false,
+            film_stage_cache_hit: false,
                 gpu_buffers_reused: false,
                 resident_cache_bytes: 0,
                 pipeline_cache_hit: false,
@@ -246,7 +282,7 @@ impl Engine {
         let key = format!(
             "{}:{}",
             profile_root.display(),
-            pipeline_cache_key(film_name, print_name, &params)
+            pipeline_cache_key(film_name, &params)
         );
         let active_input = self.inputs.back_mut().expect("active cached input");
         let reuse_film_stages = self.reuse_film_stages && self.backend.is_gpu();
@@ -282,6 +318,20 @@ impl Engine {
             None
         };
         let pipeline_started = Instant::now();
+        let print_key = format!("{}:{print_name}", profile_root.display());
+        let print_profile = if let Some(position) = self.print_profiles.iter()
+            .position(|(key, _)| key == &print_key) {
+            let cached = self.print_profiles.remove(position).expect("cached print position");
+            let print = cached.1.clone();
+            self.print_profiles.push_back(cached);
+            print
+        } else {
+            let print = profile::load_profile_by_name(data_dir, print_name)
+                .map_err(|error| anyhow!("print profile '{print_name}': {error}"))?;
+            self.print_profiles.push_back((print_key, print.clone()));
+            while self.print_profiles.len() > 16 { self.print_profiles.pop_front(); }
+            print
+        };
         let cached_position = self
             .pipelines
             .iter()
@@ -292,21 +342,19 @@ impl Engine {
                 .pipelines
                 .remove(position)
                 .expect("cached pipeline position");
-            let active = cached.1.clone().with_params(params);
+            let active = cached.1.clone().with_print_params(print_profile, params);
             let generation = cached.2;
             self.pipelines.push_back(cached);
             (active, generation)
         } else {
             let film = profile::load_profile_by_name(data_dir, film_name)
                 .map_err(|error| anyhow!("film profile '{film_name}': {error}"))?;
-            let print = profile::load_profile_by_name(data_dir, print_name)
-                .map_err(|error| anyhow!("print profile '{print_name}': {error}"))?;
-            let built = Pipeline::new_with_spectral(film, print, params, data_dir)
+            let built = Pipeline::new_with_spectral(film, print_profile, params, data_dir)
                 .map_err(|error| anyhow!("pipeline build: {error}"))?;
             self.next_pipeline_generation += 1;
             self.pipelines
                 .push_back((key, built.clone(), self.next_pipeline_generation));
-            while self.pipelines.len() > self.pipeline_cache_max_entries.max(1) {
+            while self.pipelines.len() > self.pipeline_cache_max_entries {
                 self.pipelines.pop_front();
             }
             (built, self.next_pipeline_generation)
@@ -314,16 +362,53 @@ impl Engine {
         let film_key = film_key.map(|key| format!("{pipeline_generation}:{key}"));
         let pipeline_ms = millis(pipeline_started.elapsed());
 
+        if request.viewport.is_some() && (request.grade.is_some() || request.masks.is_some()
+            || request.crop.is_some() || request.long_edge.is_some()) {
+            bail!("viewport rendering requires an unbaked native preview");
+        }
+        let plan = request.viewport.map(|viewport| region::plan(viewport, image.width, image.height,
+            request.rotate_quarters_ccw, &pipeline.params,
+            self.backend.name().to_lowercase().contains("wgpu"))).transpose()?;
+        let accelerated = plan.as_ref().is_some_and(|plan| plan.accelerated);
+        // Meter the original before the spatial crop, even with checkpoint reuse disabled.
+        let metered_ev = if accelerated && metered_ev.is_none() && pipeline.params.camera.auto_exposure {
+            let matrix = spektrafilm_core::stages::filming::input_colorspace_to_xyz(
+                &pipeline.params.io.input_color_space);
+            Some(spektrafilm_core::stages::filming::measure_autoexposure_ev(&image, &matrix,
+                &pipeline.params.camera.auto_exposure_method))
+        } else { metered_ev };
+        let region_image = plan.as_ref().filter(|plan| plan.accelerated)
+            .map(|plan| region::crop_image(&image, plan.render));
+        let render_image = region_image.as_ref().unwrap_or(image.as_ref());
+        let pipeline = if let Some(plan) = plan.as_ref().filter(|plan| plan.accelerated) {
+            pipeline.with_image_region(plan.render.x, plan.render.y, image.width, image.height)
+        } else { pipeline };
+        let film_key = film_key.map(|key| if let Some(plan) = plan.as_ref() {
+            format!("{key}:region:{:?}", plan.render.array())
+        } else { key });
         let render_started = Instant::now();
-        let resident_rendered = pipeline.process_resident_cached(
-            image.as_ref(),
-            self.backend.as_ref(),
-            film_key.as_deref(),
-            metered_ev,
-        );
-        let used_resident = resident_rendered.is_some();
-        let rendered = resident_rendered
-            .unwrap_or_else(|| pipeline.process((*image).clone(), self.backend.as_ref()));
+        let native_only = native_output.is_some() && output.is_none()
+            && request.grade.is_none() && request.masks.is_none()
+            && request.crop.is_none() && request.long_edge.is_none();
+        let packed = if native_only {
+            pipeline.process_resident_native(render_image, self.backend.as_ref(),
+                film_key.as_deref(), metered_ev,
+                spektrafilm_gpu::NativeOutputSpec {
+                    quarters_ccw: request.rotate_quarters_ccw, crop: plan.as_ref().map(|plan| plan.trim.array()),
+                })
+        } else { None };
+        let resident_rendered = if packed.is_none() {
+            pipeline.process_resident_cached(render_image, self.backend.as_ref(),
+                film_key.as_deref(), metered_ev)
+        } else { None };
+        if accelerated && packed.is_none() && resident_rendered.is_none() {
+            bail!("GPU viewport path unavailable; retry a full-frame render");
+        }
+        let used_resident = packed.is_some() || resident_rendered.is_some();
+        let rendered = if packed.is_none() {
+            Some(resident_rendered.unwrap_or_else(||
+                pipeline.process((*image).clone(), self.backend.as_ref())))
+        } else { None };
         let mut cache_status = self.backend.resident_cache_status();
         if !used_resident {
             cache_status.0 = false;
@@ -332,8 +417,13 @@ impl Engine {
         let render_ms = millis(render_started.elapsed());
 
         let encode_started = Instant::now();
-        let (mut width, mut height, mut samples) =
-            rotate_samples(&rendered, request.rotate_quarters_ccw);
+        let (mut width, mut height, mut samples) = if let Some(packed) = packed.as_ref() {
+            (packed.width, packed.height, Vec::new())
+        } else {
+            let rendered = rendered.as_ref().expect("RGB render");
+            let trimmed = plan.as_ref().map(|plan| region::crop_image(rendered, plan.trim));
+            rotate_samples(trimmed.as_ref().unwrap_or(rendered), request.rotate_quarters_ccw)
+        };
         if request.grade.is_some()
             || request.masks.is_some()
             || request.crop.is_some()
@@ -352,11 +442,9 @@ impl Engine {
             height = processed.height;
             samples = processed.samples;
         }
-        let mean = samples
-            .par_iter()
-            .map(|&value| f64::from(value))
-            .sum::<f64>()
-            / samples.len() as f64;
+        let mean = packed.as_ref().map_or_else(|| samples.par_iter()
+            .map(|&value| f64::from(value)).sum::<f64>() / samples.len() as f64,
+            |packed| packed.mean);
         if let Some(output) = output {
             save_output(
                 output,
@@ -367,8 +455,28 @@ impl Engine {
                 request.bit_depth,
             )?;
         }
-        if let Some(native_output) = native_output {
-            save_native_surface(native_output, width, height, &samples)?;
+        let native_shared = if request.native_shared && native_output.is_some() {
+            let publish = if let Some(packed) = packed.as_ref() {
+                native_surface::publish_packed(width, height, packed.row_bytes, &packed.pixels)
+            } else {
+                native_surface::publish_rgb(width, height, &samples)
+            };
+            match publish {
+                Ok(surface) => Some(surface),
+                Err(error) => {
+                    eprintln!("native shared transport unavailable: {error:#}");
+                    None
+                }
+            }
+        } else { None };
+        if native_shared.is_none() {
+            if let Some(native_output) = native_output {
+                if let Some(packed) = packed.as_ref() {
+                    save_packed_native_surface(native_output, packed)?;
+                } else {
+                    save_native_surface(native_output, width, height, &samples)?;
+                }
+            }
         }
         let encode_ms = millis(encode_started.elapsed());
 
@@ -378,8 +486,13 @@ impl Engine {
             backend: self.backend.name().to_owned(),
             width: Some(width),
             height: Some(height),
+            full_width: request.viewport.map(|_| if request.rotate_quarters_ccw % 2 == 0 { image.width } else { image.height }),
+            full_height: request.viewport.map(|_| if request.rotate_quarters_ccw % 2 == 0 { image.height } else { image.width }),
             mean: Some(mean),
+            native_shared,
             input_cache_hit,
+            viewport_accelerated: accelerated,
+            native_gpu_packed: packed.is_some(),
             film_stage_cache_hit: cache_status.0,
             gpu_buffers_reused: cache_status.1,
             resident_cache_bytes: cache_status.2,
@@ -646,59 +759,42 @@ fn load_tiff(path: &Path) -> Result<ImageBuf> {
     Ok(ImageBuf::from_data(width, height, data))
 }
 
-/// Conservative dependency key: normalize only print exposure, whose first use
-/// is after the developed-film checkpoint. Everything else invalidates reuse.
-/// Input generations never alias, including after byte-budget eviction/reload.
+/// Key the developed-film checkpoint on physical filming dependencies only.
+/// Scanner reference settings are downstream here; Pipeline appends the actual
+/// filming exposure correction for positive scans before handing the GPU its key.
+/// Input and spectral pipeline generations prevent aliasing after cache eviction.
 fn film_stage_key(input_generation: u64, pipeline_key: &str, params: &RuntimeParams) -> String {
     let mut dependencies = params.clone();
-    if !dependencies.io.scan_film {
-        dependencies.enlarger.print_exposure = 1.0;
-    }
+    let defaults = RuntimeParams::default();
+    dependencies.enlarger = defaults.enlarger;
+    dependencies.print_render = defaults.print_render;
+    dependencies.film_render.glare = defaults.film_render.glare;
+    dependencies.scanner = defaults.scanner;
+    dependencies.io.scan_film = defaults.io.scan_film;
+    dependencies.io.output_color_space = defaults.io.output_color_space;
+    dependencies.io.output_cctf_encoding = defaults.io.output_cctf_encoding;
+    dependencies.io.output_gamut_compress = defaults.io.output_gamut_compress;
+    dependencies.settings.neutral_print_filters_from_database = defaults.settings.neutral_print_filters_from_database;
+    dependencies.settings.use_enlarger_lut = defaults.settings.use_enlarger_lut;
+    dependencies.settings.use_scanner_lut = defaults.settings.use_scanner_lut;
     serde_json::to_string(&(input_generation, pipeline_key, dependencies))
         .expect("finite runtime parameters")
 }
 
-fn pipeline_cache_key(film: &str, print: &str, params: &RuntimeParams) -> String {
+/// Only dependencies baked into the expensive film spectral calibration.
+/// Print profiles, enlarger calibration and output conversion are refreshed
+/// separately, without rebuilding or copying the shared film TC LUT.
+fn pipeline_cache_key(film: &str, params: &RuntimeParams) -> String {
     serde_json::json!({
         "film": film,
-        "print": print,
         "film_dev": params.film_render.development_time,
-        "print_dev": params.print_render.development_time,
-        "scan_film": params.io.scan_film,
-        "input_color_space": params.io.input_color_space,
-        "input_cctf_decoding": params.io.input_cctf_decoding,
         "input_gamut": params.io.input_gamut_compress,
-        "output_color_space": params.io.output_color_space,
-        "output_gamut": params.io.output_gamut_compress,
-        "settings": {
-            "rgb_to_raw_method": params.settings.rgb_to_raw_method,
-            "apply_hanatos2025_adaptation_window": params.settings.apply_hanatos2025_adaptation_window,
-            "apply_hanatos2025_adaptation_surface": params.settings.apply_hanatos2025_adaptation_surface,
-            "spectral_gaussian_blur": params.settings.spectral_gaussian_blur,
-            "lut_resolution": params.settings.lut_resolution,
-            "neutral_print_filters_from_database": params.settings.neutral_print_filters_from_database,
-            "use_cat16": params.settings.use_cat16,
-        },
-        "enlarger": {
-            "illuminant": params.enlarger.illuminant,
-            "c_filter_neutral": params.enlarger.c_filter_neutral,
-            "m_filter_neutral": params.enlarger.m_filter_neutral,
-            "y_filter_neutral": params.enlarger.y_filter_neutral,
-            "m_filter_shift": params.enlarger.m_filter_shift,
-            "y_filter_shift": params.enlarger.y_filter_shift,
-            "preflash_exposure": params.enlarger.preflash_exposure,
-            "preflash_m_filter_shift": params.enlarger.preflash_m_filter_shift,
-            "preflash_y_filter_shift": params.enlarger.preflash_y_filter_shift,
-            "normalize_print_exposure": params.enlarger.normalize_print_exposure,
-            "print_exposure_compensation": params.enlarger.print_exposure_compensation,
-        },
-        "exposure_compensation_ev": if params.enlarger.print_exposure_compensation {
-            params.camera.exposure_compensation_ev
-        } else {
-            0.0
-        },
-    })
-    .to_string()
+        "rgb_to_raw_method": params.settings.rgb_to_raw_method,
+        "apply_hanatos2025_adaptation_window": params.settings.apply_hanatos2025_adaptation_window,
+        "apply_hanatos2025_adaptation_surface": params.settings.apply_hanatos2025_adaptation_surface,
+        "spectral_gaussian_blur": params.settings.spectral_gaussian_blur,
+        "lut_resolution": params.settings.lut_resolution,
+    }).to_string()
 }
 
 fn rotate_samples(image: &ImageBuf, quarters_ccw: u8) -> (u32, u32, Vec<f32>) {
@@ -850,6 +946,20 @@ fn quantize_u8(samples: &[f32]) -> Vec<u8> {
 /// followed by tightly packed RGBA pixels. The native AppKit shell uploads
 /// this directly into a Metal texture, avoiding JPEG encoding/decoding and a
 /// second high-resolution WebGL texture upload.
+fn save_packed_native_surface(path: &Path, packed: &spektrafilm_gpu::NativePackedSurface) -> Result<()> {
+    if let Some(parent) = path.parent() { fs::create_dir_all(parent)?; }
+    let mut writer = BufWriter::new(fs::File::create(path)?);
+    writer.write_all(b"FLRA")?;
+    writer.write_all(&packed.width.to_le_bytes())?;
+    writer.write_all(&packed.height.to_le_bytes())?;
+    writer.write_all(&(packed.width * 4).to_le_bytes())?;
+    for row in packed.pixels.chunks(packed.row_bytes) {
+        writer.write_all(&row[..packed.width as usize * 4])?;
+    }
+    writer.flush()?;
+    Ok(())
+}
+
 fn save_native_surface(path: &Path, width: u32, height: u32, samples: &[f32]) -> Result<()> {
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)?;
@@ -1126,29 +1236,85 @@ mod windows_shared_input_tests {
 mod resident_cache_tests {
     use super::*;
 
+    fn changed(group: &str, patch: serde_json::Value) -> RuntimeParams {
+        let mut value = serde_json::to_value(RuntimeParams::default()).unwrap();
+        for (field, replacement) in patch.as_object().unwrap() {
+            value[group][field] = replacement.clone();
+        }
+        serde_json::from_value(value).unwrap()
+    }
+
     #[test]
-    fn only_print_exposure_can_reuse_film_density() {
-        let mut params = RuntimeParams::default();
-        let key = film_stage_key(1, "profile-a", &params);
-        params.enlarger.print_exposure = 1.4;
-        assert_eq!(key, film_stage_key(1, "profile-a", &params));
-        params.camera.exposure_compensation_ev = 0.2;
-        assert_ne!(key, film_stage_key(1, "profile-a", &params));
-        params = RuntimeParams::default();
-        params.film_render.development_time = Some(1.1);
-        assert_ne!(key, film_stage_key(1, "profile-a", &params));
-        assert_ne!(
-            key,
-            film_stage_key(2, "profile-a", &RuntimeParams::default())
-        );
-        assert_ne!(
-            key,
-            film_stage_key(1, "profile-b", &RuntimeParams::default())
-        );
-        params = RuntimeParams::default();
-        params.io.scan_film = true;
-        let scan_key = film_stage_key(1, "profile-a", &params);
-        params.enlarger.print_exposure = 1.4;
-        assert_ne!(scan_key, film_stage_key(1, "profile-a", &params));
+    fn downstream_changes_reuse_film_and_spectral_calibration() {
+        let base = RuntimeParams::default();
+        let key = film_stage_key(1, "profile-a", &base);
+        let pipeline = pipeline_cache_key("film-a", &base);
+        for (group, patch) in [
+            ("enlarger", serde_json::json!({"print_exposure":1.4,"y_filter_shift":3.0,"m_filter_shift":-4.0,"preflash_exposure":0.1,"illuminant":"D50","normalize_print_exposure":false})),
+            ("print_render", serde_json::json!({"density_curve_gamma":1.2,"development_time":1.3,"glare":{"active":true,"percent":4.0}})),
+            ("scanner", serde_json::json!({"lens_blur":2.0,"unsharp_mask":[1.0,1.2],"white_correction":true,"black_level":0.02})),
+            ("io", serde_json::json!({"output_color_space":"ProPhoto RGB","output_cctf_encoding":false,"output_gamut_compress":{"algorithm":"off"}})),
+            ("film_render", serde_json::json!({"glare":{"active":true,"percent":4.0}})),
+            ("settings", serde_json::json!({"neutral_print_filters_from_database":false,"use_enlarger_lut":true,"use_scanner_lut":true})),
+        ] {
+            let params = changed(group, patch);
+            assert_eq!(key, film_stage_key(1,"profile-a",&params), "{group}");
+            assert_eq!(pipeline, pipeline_cache_key("film-a",&params), "{group}");
+        }
+    }
+
+    #[test]
+    fn upstream_changes_and_generations_invalidate_film() {
+        let base = RuntimeParams::default();
+        let key = film_stage_key(1, "profile-a", &base);
+        for (group, patch) in [
+            ("camera", serde_json::json!({"exposure_compensation_ev":0.2})),
+            ("camera", serde_json::json!({"lens_blur_um":2.0})),
+            ("film_render", serde_json::json!({"development_time":1.1})),
+            ("film_render", serde_json::json!({"grain":{"active":false}})),
+            ("io", serde_json::json!({"input_color_space":"sRGB"})),
+        ] {
+            assert_ne!(key, film_stage_key(1,"profile-a",&changed(group,patch)), "{group}");
+        }
+        assert_ne!(key, film_stage_key(2,"profile-a",&base));
+        assert_ne!(key, film_stage_key(1,"profile-b",&base));
+        let mut scan = base.clone();
+        scan.io.scan_film = true;
+        let scan_key = film_stage_key(1,"profile-a",&scan);
+        scan.scanner.lens_blur = 2.0;
+        assert_eq!(scan_key, film_stage_key(1,"profile-a",&scan));
+        scan.scanner.white_correction = true;
+        assert_eq!(scan_key, film_stage_key(1,"profile-a",&scan));
+    }
+
+    #[test]
+    fn input_probe_reports_miss_hit_and_refreshes_lru_without_loading() {
+        let mut engine = Engine {
+            backend: Box::new(spektrafilm_gpu::cpu_backend::CpuBackend),
+            inputs: VecDeque::new(), input_cache_max_bytes: 1024,
+            pipelines: VecDeque::new(), print_profiles: VecDeque::new(),
+            pipeline_cache_max_entries: 4, next_input_generation: 0,
+            next_pipeline_generation: 0, reuse_film_stages: true,
+        };
+        let request = || serde_json::from_value(serde_json::json!({
+            "id":1,"command":"probe_input","input_cache_key":"input-a"
+        })).unwrap();
+        let missing = engine.handle(request()).unwrap();
+        assert!(missing.ok);
+        assert!(!missing.input_cache_hit);
+        assert_eq!(missing.width, None);
+        for key in ["input-a", "input-b"] {
+            engine.inputs.push_back(CachedInput {
+                identity: InputIdentity::Shared(key.into()),
+                image: Arc::new(ImageBuf::from_data(2,1,vec![precision::from_f32(0.5);6])),
+                bytes: 24, generation: 1, metering: VecDeque::new(),
+            });
+        }
+        let found = engine.handle(request()).unwrap();
+        assert!(found.input_cache_hit);
+        assert_eq!((found.width, found.height), (Some(2),Some(1)));
+        assert_eq!(engine.inputs.back().unwrap().identity, InputIdentity::Shared("input-a".into()));
+        engine.inputs.clear();
+        assert!(!engine.handle(request()).unwrap().input_cache_hit);
     }
 }

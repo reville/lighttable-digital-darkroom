@@ -180,10 +180,10 @@ class GenerationTests(unittest.TestCase):
         self.assertTrue(stale)
         self.assertFalse(current)
 
-    def test_prefetch_does_not_wait_for_the_render_lock(self):
+    def test_prefetch_does_not_wait_for_the_background_render_lock(self):
         lock = mock.Mock()
         lock.acquire.return_value = False
-        with mock.patch.object(server, "RENDER_LOCK", lock):
+        with mock.patch.object(server, "BACKGROUND_RENDER_LOCK", lock):
             with (
                 mock.patch.object(server, "is_raw", return_value=False),
                 mock.patch.object(server, "render_key", return_value="a" * 32),

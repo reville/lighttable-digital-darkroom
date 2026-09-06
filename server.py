@@ -59,6 +59,7 @@ import watch_workflow  # noqa: E402
 import media_formats  # noqa: E402
 import media_availability  # noqa: E402
 import durable_io  # noqa: E402
+import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
@@ -356,7 +357,8 @@ def open_catalog() -> "catalog_module.Catalog | None":
             return None
     if FOLDER.is_dir():
         PRIMARY_SOURCE_ID = CATALOG.add_source(FOLDER)
-    SCANNER = catalog_scan.ScanService(CATALOG, render_busy=RENDER_LOCK.locked)
+    SCANNER = catalog_scan.ScanService(CATALOG, render_busy=RENDER_LOCK.locked,
+                                       on_local_file=THUMB_WARMUP.enqueue)
     return CATALOG
 
 
@@ -1985,7 +1987,7 @@ def orientation_deg(src: Path) -> int:
 
 
 INPUT_CACHE_VERSION = 4  # learned denoise joins capture-stage RAW development
-RAW_PREVIEW_CACHE_VERSION = 4  # width-aware half-size accurate demosaic
+RAW_PREVIEW_CACHE_VERSION = 5  # width-aware half-size accurate demosaic
 RAW_SHARED_MAGIC = b"LTRI"
 RAW_SHARED_HEADER = struct.Struct("<4sIII")
 _SHARED_INPUT_UNAVAILABLE = "shared RAW input is unavailable"
@@ -2040,7 +2042,8 @@ def array_shared_input(rgb: np.ndarray, cache_key: str):
 
 @contextmanager
 def raw_shared_input(name: str, params: dict | None = None, *,
-                     denoise_status=None, denoise_cancel=None):
+                     denoise_status=None, denoise_cancel=None,
+                     include_dimensions: bool = False):
     """Expose one decoded RAW to the resident renderer without a TIFF hop.
 
     ``multiprocessing.shared_memory`` maps the same anonymous POSIX object, or
@@ -2057,7 +2060,28 @@ def raw_shared_input(name: str, params: dict | None = None, *,
         f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
         f"{color_pipeline.raw_decode_fingerprint(params)}")
     with array_shared_input(rgb, cache_key) as shared:
-        yield shared
+        yield (dict(shared, input_width=int(rgb.shape[1]), input_height=int(rgb.shape[0]))
+               if include_dimensions else shared)
+
+
+def valid_tiff_cache(path: Path) -> bool:
+    """Reject incomplete disposable TIFFs before treating existence as a hit."""
+    if not path.exists():
+        return False
+    try:
+        import tifffile as tf
+        size = path.stat().st_size
+        with tf.TiffFile(path) as image:
+            if not image.pages:
+                raise ValueError("empty TIFF")
+            for page in image.pages:
+                if not page.dataoffsets or any(offset < 0 or count <= 0 or offset + count > size
+                       for offset, count in zip(page.dataoffsets, page.databytecounts)):
+                    raise ValueError("truncated TIFF")
+        return True
+    except (OSError, ValueError, IndexError):
+        path.unlink(missing_ok=True)
+        return False
 
 
 def tiff_for(name: str, params: dict | None = None, *,
@@ -2067,7 +2091,7 @@ def tiff_for(name: str, params: dict | None = None, *,
     wb_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
     t = CACHE / "tiff" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{wb_key}.tif"
     with TIFF_BUILD_LOCK:
-        if not t.exists() or t.stat().st_mtime < src.stat().st_mtime:
+        if not valid_tiff_cache(t) or t.stat().st_mtime < src.stat().st_mtime:
             temporary = durable_io.temporary_path(t, "decode")
             try:
                 if is_raw(name):
@@ -2082,7 +2106,7 @@ def tiff_for(name: str, params: dict | None = None, *,
                 else:
                     platform_image.convert_processed_to_tiff(
                         src, temporary, app_root=APP, output_space="prophoto")
-                durable_io.publish_file(temporary, t)
+                durable_io.publish_cache(temporary, t)
             finally:
                 temporary.unlink(missing_ok=True)
             prune_cache(CACHE / "tiff", "*.tif", _TIFF_CACHE_MAX_BYTES)
@@ -2103,7 +2127,7 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
     t = CACHE / "neutral" / (
         f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{raw_key}{color_key}.tif")
     with TIFF_BUILD_LOCK:
-        if not t.exists() or t.stat().st_mtime < src.stat().st_mtime:
+        if not valid_tiff_cache(t) or t.stat().st_mtime < src.stat().st_mtime:
             temporary = durable_io.temporary_path(t, "decode")
             try:
                 if is_raw(name):
@@ -2121,7 +2145,7 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                 else:
                     platform_image.convert_processed_to_tiff(
                         src, temporary, app_root=APP, output_space=output_space)
-                durable_io.publish_file(temporary, t)
+                durable_io.publish_cache(temporary, t)
             finally:
                 temporary.unlink(missing_ok=True)
             prune_cache(CACHE / "neutral", "*.tif", _NEUTRAL_CACHE_MAX_BYTES)
@@ -2130,7 +2154,7 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
     return t
 
 
-NEUTRAL_PREVIEW_CACHE_VERSION = 2
+NEUTRAL_PREVIEW_CACHE_VERSION = 3
 
 
 def neutral_preview_path(name: str, width: int, rotate: float = 0,
@@ -2158,12 +2182,13 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
                 src_path(name), params, max_width=width)
             image = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
     else:
-        image = color_pipeline.load_float_rgb(neutral_tiff_for(name, params))
+        image = platform_image.processed_preview(
+            src_path(name), width, app_root=APP, output_space="srgb")
     image = color_pipeline.resize_float_width(image, width)
     k = rot90k(rotate)
     if k:
         image = np.ascontiguousarray(np.rot90(image, k))
-    durable_io.atomic_write_bytes(
+    durable_io.cache_write_bytes(
         output, jpeg_bytes((image * 255.0 + 0.5).astype(np.uint8)))
     prune_cache_throttled(CACHE / "neutral", "preview-*.jpg",
                           _NEUTRAL_PREVIEW_CACHE_MAX_BYTES)
@@ -2222,16 +2247,54 @@ def schedule_neutral_refinement(name: str, width: int,
     return created
 
 
+def valid_jpeg_cache(path: Path) -> bool:
+    if not path.exists():
+        return False
+    try:
+        with path.open("rb") as handle:
+            if handle.read(2) != b"\xff\xd8":
+                raise ValueError("invalid JPEG header")
+            handle.seek(-2, os.SEEK_END)
+            if handle.read(2) != b"\xff\xd9":
+                raise ValueError("truncated JPEG")
+        with Image.open(path) as image:
+            image.verify()
+        return True
+    except (OSError, ValueError):
+        path.unlink(missing_ok=True)
+        return False
+
+
 def thumb_jpeg(name: str) -> bytes:
     """Small strip thumbnail straight from the source; never decodes full TIFF."""
     guard_local_photo(name)
     p = CACHE / "thumb" / f"{file_key(name)}.jpg"
-    if p.exists():
+    if valid_jpeg_cache(p):
         return p.read_bytes()
     with THUMB_SEM:
-        if p.exists():          # another request may have just built it
+        if valid_jpeg_cache(p):          # another request may have just built it
             return p.read_bytes()
         return _build_thumb(name, p)
+
+
+def _warm_thumbnail(name: str):
+    if not THUMB_SEM.acquire(blocking=False):
+        return
+    try:
+        guard_local_photo(name)
+        path = CACHE / "thumb" / f"{file_key(name)}.jpg"
+        if not path.exists():
+            _build_thumb(name, path)
+    finally:
+        THUMB_SEM.release()
+        cat = catalog_handle()
+        if cat is not None:
+            cat.close()
+
+
+THUMB_WARMUP = thumbnail_warmup.ThumbnailWarmup(
+    _warm_thumbnail, busy=lambda: RENDER_LOCK.locked())
+atexit.register(THUMB_WARMUP.cancel)
 
 
 def _build_thumb(name: str, p: Path) -> bytes:
@@ -2254,7 +2317,7 @@ def _build_thumb(name: str, p: Path) -> bytes:
                 im.save(temporary, "JPEG", quality=80)
         else:
             platform_image.build_thumbnail(src_path(name), temporary)
-        durable_io.publish_file(temporary, p)
+        durable_io.publish_cache(temporary, p)
     finally:
         temporary.unlink(missing_ok=True)
     prune_cache_throttled(p.parent, "*.jpg", _THUMB_CACHE_MAX_BYTES)
@@ -2415,6 +2478,19 @@ def exif_for(name: str) -> dict:
         out.update(capture_clock.exif_fields(info["override"]))
         out["CaptureTimeCorrection"] = "Catalog override · original unchanged"
     return out
+
+
+def preview_lens_metadata(name: str, optics=None) -> dict:
+    if edits.clean_optics(optics)["profileEnabled"]:
+        return exif_for(name)
+    cat = catalog_handle()
+    image_id = catalog_image_id(name) if cat is not None else None
+    row = cat.image_row(image_id) if image_id is not None else None
+    if row is not None:
+        return {"Make": row.get("camera_make") or "",
+                "Model": row.get("camera_model") or "",
+                "LensModel": row.get("lens") or ""}
+    return exif_for(name)
 
 
 def capture_time_action(body: dict) -> dict:
@@ -2635,7 +2711,7 @@ def build_raw_preview(name: str, width: int, quality: str,
                       params: dict | None = None) -> Path:
     import tifffile as tf
     output = raw_preview_path(name, width, quality, params)
-    if output.exists():
+    if valid_tiff_cache(output):
         return output
     rgb = (color_pipeline.decode_raw_draft(src_path(name), params, width)
            if quality == "fast" else
@@ -2647,7 +2723,7 @@ def build_raw_preview(name: str, width: int, quality: str,
     temporary = durable_io.temporary_path(output, "decode")
     try:
         tf.imwrite(temporary, rgb)
-        durable_io.publish_file(temporary, output)
+        durable_io.publish_cache(temporary, output)
     finally:
         temporary.unlink(missing_ok=True)
     prune_cache(output.parent, "*.tif", _RUST_INPUT_CACHE_MAX_BYTES)
@@ -2660,7 +2736,7 @@ def schedule_raw_refinement(name: str, width: int,
     wb_key = color_pipeline.raw_decode_fingerprint(params)
     key = (file_key(name), wb_key, width, client, generation)
     full = raw_preview_path(name, width, "full", params)
-    if full.exists() or render_is_stale(client, generation):
+    if valid_tiff_cache(full) or render_is_stale(client, generation):
         return False
     created = False
     with RAW_REFINE_LOCK:
@@ -2685,7 +2761,7 @@ def schedule_raw_refinement(name: str, width: int,
 def selected_preview_tiff(name: str, width: int,
                           params: dict | None = None) -> Path:
     full = raw_preview_path(name, width, "full", params)
-    if full.exists():
+    if valid_tiff_cache(full):
         return full
     return build_raw_preview(name, width, "fast", params)
 
@@ -2693,7 +2769,7 @@ def selected_preview_tiff(name: str, width: int,
 def preview_variant(name: str, width: int, params: dict | None = None) -> str:
     if not is_raw(name):
         return "standard"
-    return "full" if raw_preview_path(name, width, "full", params).exists() else "fast"
+    return "full" if valid_tiff_cache(raw_preview_path(name, width, "full", params)) else "fast"
 
 
 def linear_for(name: str, width: int, params: dict | None = None) -> np.ndarray:
@@ -2708,7 +2784,8 @@ def linear_for(name: str, width: int, params: dict | None = None) -> np.ndarray:
         preview = selected_preview_tiff(name, width, params)
         arr = fp.load_linear(str(preview))
     else:
-        arr = fp.load_linear(str(tiff_for(name, params)), max_width=width)
+        arr = platform_image.processed_preview(
+            src_path(name), width, app_root=APP, output_space="prophoto")
     with STATE_LOCK:
         _LINEAR_CACHE[key] = arr
         while (len(_LINEAR_CACHE) > 1 and
@@ -2734,7 +2811,7 @@ def raw_display(name: str) -> Path:
     decode; this is only what the eye is asked to compare against.
     """
     p = CACHE / "orig" / f"v2_{file_key(name)}_display.jpg"
-    if not p.exists():
+    if not valid_jpeg_cache(p):
         try:
             rgb = color_pipeline.raw_embedded_preview(src_path(name), 1600)
         except Exception:  # noqa: BLE001 - some RAW formats omit a preview
@@ -2747,7 +2824,7 @@ def raw_display(name: str) -> Path:
         im.thumbnail((1600, 1600), Image.LANCZOS)
         buffer = io.BytesIO()
         im.save(buffer, "JPEG", quality=88, subsampling=1)
-        durable_io.atomic_write_bytes(p, buffer.getvalue())
+        durable_io.cache_write_bytes(p, buffer.getvalue())
         prune_cache_throttled(p.parent, "*.jpg", _ORIGINAL_CACHE_MAX_BYTES)
     return p
 
@@ -2768,14 +2845,14 @@ def _orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
     k = rot90k(rotate)
     if k:
         rotated = CACHE / "orig" / f"{file_key(name)}_{width}_{k}.jpg"
-        if not rotated.exists():
+        if not valid_jpeg_cache(rotated):
             base = Image.open(io.BytesIO(_orig_jpeg(name, width, 0))).convert("RGB")
             arr = np.rot90(np.asarray(base), k)
-            durable_io.atomic_write_bytes(
+            durable_io.cache_write_bytes(
                 rotated, jpeg_bytes(np.ascontiguousarray(arr)))
         return rotated.read_bytes()
     p = CACHE / "orig" / f"{file_key(name)}_{width}.jpg"
-    if not p.exists():
+    if not valid_jpeg_cache(p):
         if is_raw(name):
             im = Image.open(raw_display(name))
             im.load()
@@ -2784,10 +2861,10 @@ def _orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
                                Image.LANCZOS)
             buffer = io.BytesIO()
             im.save(buffer, "JPEG", quality=88, subsampling=1)
-            durable_io.atomic_write_bytes(p, buffer.getvalue())
+            durable_io.cache_write_bytes(p, buffer.getvalue())
         else:
             arr = linear_for(name, width)
-            durable_io.atomic_write_bytes(
+            durable_io.cache_write_bytes(
                 p, jpeg_bytes((arr * 255 + 0.5).astype(np.uint8)))
         prune_cache_throttled(p.parent, "*.jpg", _ORIGINAL_CACHE_MAX_BYTES)
     return p.read_bytes()
@@ -2802,8 +2879,12 @@ def orig_mean_display(name: str, width: int,
             _ORIG_MEAN_CACHE.move_to_end(key)
             return _ORIG_MEAN_CACHE[key]
     if is_raw(name):
-        im = Image.open(io.BytesIO(orig_jpeg(name, width, 0))).convert("RGB")
-        mean = float(sum(ImageStat.Stat(im).mean) / (3.0 * 255.0))
+        try:
+            pixels = color_pipeline.raw_embedded_preview(src_path(name), width)
+            mean = float(pixels.mean()) / 255.0
+        except Exception:  # RAW without embedded preview retains neutral fallback
+            im = Image.open(io.BytesIO(orig_jpeg(name, width, 0))).convert("RGB")
+            mean = float(sum(ImageStat.Stat(im).mean) / (3.0 * 255.0))
     else:
         source = linear if linear is not None else linear_for(name, width)
         mean = float(source.mean())
@@ -2826,7 +2907,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 7  # sixteen-mask atlas, range masks, and uniformity
+RENDER_CACHE_VERSION = 8  # sixteen-mask atlas, range masks, and uniformity
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 1
 EDITED_THUMB_RENDER_EDGE = 512
@@ -2915,11 +2996,11 @@ class PipeLineReader:
 class RustEngineClient:
     """Long-lived JSON-lines client that keeps the GPU and shader caches warm."""
 
-    def __init__(self, binary: Path | None):
+    def __init__(self, binary: Path | None, *, lock=None):
         self.binary = binary
         self.process: subprocess.Popen | None = None
         self.reader: PipeLineReader | None = None
-        self.lock = RENDER_LOCK
+        self.lock = lock if lock is not None else RENDER_LOCK
         self.request_id = 0
 
     def _start(self) -> subprocess.Popen:
@@ -2969,7 +3050,8 @@ class RustEngineClient:
                     raise RenderCancelled("render superseded before engine dispatch")
                 process = self._start()
                 self.request_id += 1
-                payload = dict(request, id=self.request_id, command="render")
+                payload = dict(request, id=self.request_id)
+                payload.setdefault("command", "render")
                 try:
                     assert process.stdin and process.stdout
                     process.stdin.write(json.dumps(payload, separators=(",", ":"))
@@ -2995,31 +3077,63 @@ class RustEngineClient:
     def close_unlocked(self) -> None:
         if self.process and self.process.poll() is None:
             self.process.kill()
+            self.process.wait(timeout=2)
         self.process = None
         self.reader = None
 
+    def probe_input(self, key: str) -> bool:
+        return bool(self.render({"command": "probe_input", "input_cache_key": key})
+                    .get("input_cache_hit"))
+
     def warm(self) -> None:
-        """Initialize the GPU off the request path; failures retain normal fallback."""
+        """Compile the real GPU pipelines and spectral LUT before first open."""
         if not self.binary:
             return
-        with self.lock:
+        previous = getattr(RENDER_CONTEXT, "priority", "export")
+        RENDER_CONTEXT.priority = "background"
+        try:
+            import tifffile as tf
+            root = CACHE / "rust"
+            root.mkdir(parents=True, exist_ok=True)
+            source = durable_io.temporary_path(root / "warm.tif", "warm")
+            output = durable_io.temporary_path(root / "warm.rgba", "warm")
             try:
-                process = self._start()
-                self.request_id += 1
-                assert process.stdin and process.stdout
-                process.stdin.write(json.dumps({
-                    "id": self.request_id, "command": "ping",
-                }) + "\n")
-                process.stdin.flush()
-                if not self._readline(process, 30):
-                    self.close_unlocked()
-            except (BrokenPipeError, OSError, ValueError,
-                    TimeoutError, RuntimeError):
-                self.close_unlocked()
+                tf.imwrite(source, np.full((32, 32, 3), 18000, dtype=np.uint16))
+                pairs = [dict(fp.DEFAULT_PARAMS)]
+                remembered = load_json_file(CACHE / "last-film-pair.json", {})
+                if isinstance(remembered, dict) and remembered.get("stock") and remembered.get("paper"):
+                    pairs.append(fp.clean_params(remembered))
+                seen = set()
+                for cp in pairs:
+                    pair = (cp["stock"], cp["paper"])
+                    if pair in seen:
+                        continue
+                    seen.add(pair)
+                    self.render({"input": str(source), "native_output": str(output),
+                                 "data_dir": str(RUST_DATA), "film": pair[0],
+                                 "paper": pair[1], "scan_film": pair[0] in fp.POSITIVE_STOCKS,
+                                 "params": fp.rust_params_json(cp)})
+            finally:
+                source.unlink(missing_ok=True)
+                output.unlink(missing_ok=True)
+        except Exception:  # Startup must retain normal render fallback.
+            self.close()
+        finally:
+            RENDER_CONTEXT.priority = previous
 
 
 RUST_ENGINE = RustEngineClient(RUST_WORKER_BIN)
 atexit.register(RUST_ENGINE.close)
+BACKGROUND_RENDER_LOCK = PriorityGate(reentrant=True)
+BACKGROUND_ENGINE = RustEngineClient(RUST_WORKER_BIN, lock=BACKGROUND_RENDER_LOCK)
+atexit.register(BACKGROUND_ENGINE.close)
+_LAST_WARM_PAIR = None
+
+
+def preview_engine():
+    priority = getattr(RENDER_CONTEXT, "priority", "interactive")
+    return BACKGROUND_ENGINE if priority in ("prefetch", "background", "export") else RUST_ENGINE
+
 
 
 def render_key(name: str, params: dict, width: int, engine: str = "py") -> str:
@@ -3043,9 +3157,17 @@ def render_key(name: str, params: dict, width: int, engine: str = "py") -> str:
 
 def render_rust(name: str, params: dict, width: int,
                 output: Path | None,
-                native_output: Path | None = None) -> dict:
+                native_output: Path | None = None,
+                viewport: dict | None = None) -> dict:
     """Render JPEG and/or a native RGBA surface in one resident pass."""
+    global _LAST_WARM_PAIR
     cp = fp.clean_params(params)
+    pair = (cp["stock"], cp["paper"])
+    if pair != _LAST_WARM_PAIR and getattr(RENDER_CONTEXT, "priority", "interactive") == "interactive":
+        durable_io.cache_write_json(CACHE / "last-film-pair.json", {"stock": pair[0], "paper": pair[1]})
+        _LAST_WARM_PAIR = pair
+    if viewport is not None:
+        return render_viewport_rust(name, params, output, native_output, viewport)
     src_tif = selected_preview_tiff(name, width, params) if is_raw(name) else \
         CACHE / "rust" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_romm_{width}.tif"
     src_tif.parent.mkdir(parents=True, exist_ok=True)
@@ -3062,10 +3184,11 @@ def render_rust(name: str, params: dict, width: int,
             request["output"] = str(output)
         if native_output is not None:
             request["native_output"] = str(native_output)
+            request["native_shared"] = sys.platform == "darwin"
 
-        if src_tif.exists():
+        if valid_tiff_cache(src_tif):
             request["input"] = str(src_tif)
-            return RUST_ENGINE.render(request)
+            return preview_engine().render(request)
 
         if shared_input_supported():
             try:
@@ -3074,7 +3197,7 @@ def render_rust(name: str, params: dict, width: int,
                 cache_key = f"prev-v{INPUT_CACHE_VERSION}:{file_key(name)}:{width}:{preview_variant(name, width, params)}"
                 with array_shared_input(rgb16, cache_key) as shared:
                     request.update(shared)
-                    return RUST_ENGINE.render(request)
+                    return preview_engine().render(request)
             except RenderCancelled:
                 raise
             except Exception as shared_error:  # noqa: BLE001
@@ -3091,13 +3214,13 @@ def render_rust(name: str, params: dict, width: int,
                 staged_tiff,
                 (np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16),
             )
-            durable_io.publish_file(staged_tiff, src_tif)
+            durable_io.publish_cache(staged_tiff, src_tif)
         finally:
             staged_tiff.unlink(missing_ok=True)
         prune_cache(src_tif.parent, "*.tif", _RUST_INPUT_CACHE_MAX_BYTES)
 
         request["input"] = str(src_tif)
-        return RUST_ENGINE.render(request)
+        return preview_engine().render(request)
 
     pjson = CACHE / "rust" / f"p_{render_key(name, params, width, 'rs')}.json"
     durable_io.atomic_write_text(pjson, json.dumps(fp.rust_params_json(params)))
@@ -3118,7 +3241,7 @@ def render_rust(name: str, params: dict, width: int,
     if k:
         img = np.ascontiguousarray(np.rot90(img, k))
     if output is not None:
-        durable_io.atomic_write_bytes(output, jpeg_bytes(img))
+        durable_io.cache_write_bytes(output, jpeg_bytes(img))
     if native_output is not None:
         write_native_surface(native_output, img)
     out_png.unlink(missing_ok=True)
@@ -3129,8 +3252,165 @@ def render_rust(name: str, params: dict, width: int,
             "input_cache_hit": False, "pipeline_cache_hit": False}
 
 
+def clean_viewport(value) -> dict | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {"x", "y", "width", "height"}:
+        raise ValueError("viewport requires x, y, width and height")
+    if any(type(value[key]) is not int for key in value):
+        raise ValueError("viewport coordinates must be integer pixels")
+    if (value["x"] < 0 or value["y"] < 0 or value["width"] < 1 or value["height"] < 1
+            or value["width"] * value["height"] > 32_000_000
+            or max(value.values()) > 100_000):
+        raise ValueError("viewport is outside the supported pixel bounds")
+    return dict(value)
+
+
+def clamp_decoded_viewport(viewport: dict, width: int, height: int,
+                           quarters_ccw: int) -> dict:
+    """Clip display-axis pixels to the decoded frame, without rescaling them.
+
+    RAW catalog dimensions can describe a different active sensor area. Keep
+    the original pixel origin wherever it is valid, trimming just the edges.
+    """
+    if width < 1 or height < 1:
+        raise ValueError("decoded viewport source has no pixels")
+    if quarters_ccw % 2:
+        width, height = height, width
+    x = min(viewport["x"], width - 1)
+    y = min(viewport["y"], height - 1)
+    return {"x": x, "y": y,
+            "width": max(1, min(width, viewport["x"] + viewport["width"]) - x),
+            "height": max(1, min(height, viewport["y"] + viewport["height"]) - y)}
+
+
+def render_viewport_rust(name: str, params: dict, output: Path | None,
+                         native_output: Path | None, viewport: dict) -> dict:
+    cp = fp.clean_params(params)
+    engine = preview_engine()
+    request = {"data_dir": str(RUST_DATA), "film": cp["stock"], "paper": cp["paper"],
+               "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
+               "params": fp.rust_params_json(params), "quality": 88,
+               "rotate_quarters_ccw": rot90k(cp["rotate"]), "viewport": viewport}
+    if output is not None:
+        request["output"] = str(output)
+    if native_output is not None:
+        request.update(native_output=str(native_output), native_shared=sys.platform == "darwin")
+    def dispatch(source: dict, width: int, height: int) -> dict:
+        actual = clamp_decoded_viewport(viewport, width, height,
+                                        request["rotate_quarters_ccw"])
+        result = engine.render(dict(request, **source, viewport=actual))
+        return dict(result, viewport=actual)
+
+    if is_raw(name) and os.name == "posix":
+        key = (f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
+               f"{color_pipeline.raw_decode_fingerprint(params)}")
+        probe = engine.render({"command": "probe_input", "input_cache_key": key})
+        if probe.get("input_cache_hit"):
+            try:
+                return dispatch({"input_cache_key": key}, int(probe["width"]), int(probe["height"]))
+            except RenderCancelled:
+                raise
+            except RuntimeError:
+                pass  # A restarted worker no longer owns the input.
+        try:
+            with raw_shared_input(name, params, include_dimensions=True) as shared:
+                source = {key: shared[key] for key in
+                          ("input_shm", "input_shm_len", "input_cache_key")}
+                return dispatch(source, shared["input_width"], shared["input_height"])
+        except RenderCancelled:
+            raise
+        except (OSError, MemoryError):
+            pass  # Portable TIFF fallback for constrained shared memory.
+    path = tiff_for(name, params)
+    import tifffile as tf
+    with tf.TiffFile(path) as source:
+        width, height = source.pages[0].imagewidth, source.pages[0].imagelength
+    return dispatch({"input": str(path)}, width, height)
+
+
 NATIVE_SURFACE_MAGIC = b"FLRA"
 NATIVE_SURFACE_HEADER = struct.Struct("<4sIII")
+
+
+# Immutable surfaces remain alive through native presentation. Eviction leaves
+# the ordinary disk cache available to stale native descriptors and web helpers.
+_NATIVE_SHARED = OrderedDict()
+_NATIVE_SHARED_LOCK = threading.RLock()
+_NATIVE_SHARED_MAX_BYTES = 128 * 1024 * 1024
+
+
+def _unlink_native_shared(descriptor):
+    import ctypes
+    libc = ctypes.CDLL(None, use_errno=True)
+    libc.shm_unlink.argtypes = [ctypes.c_char_p]
+    libc.shm_unlink(descriptor["name"].encode("ascii"))
+
+
+def _shared_pixels(descriptor):
+    import ctypes
+    import mmap
+    libc = ctypes.CDLL(None, use_errno=True)
+    libc.shm_open.argtypes = [ctypes.c_char_p, ctypes.c_int, ctypes.c_uint]
+    libc.shm_open.restype = ctypes.c_int
+    fd = libc.shm_open(descriptor["name"].encode("ascii"), os.O_RDONLY, 0)
+    if fd < 0:
+        raise OSError(ctypes.get_errno(), "native surface unavailable")
+    try:
+        length = int(descriptor["length"])
+        if os.fstat(fd).st_size < length:
+            raise ValueError("truncated shared surface")
+        with mmap.mmap(fd, length, access=mmap.ACCESS_READ) as mapping:
+            width, height = int(descriptor["width"]), int(descriptor["height"])
+            return np.ndarray((height, width, 4), dtype=np.uint8, buffer=mapping,
+                              offset=int(descriptor.get("offset", 0)),
+                              strides=(int(descriptor["rowBytes"]), 4, 1)).copy()
+    finally:
+        os.close(fd)
+
+
+def materialize_native_surface(path: Path):
+    with _NATIVE_SHARED_LOCK:
+        descriptor = _NATIVE_SHARED.get(str(path))
+        if descriptor and not path.exists():
+            write_native_surface(path, _shared_pixels(descriptor))
+
+
+def retain_native_shared(path: Path, descriptor: dict):
+    name = str(descriptor.get("name", ""))
+    width, height = int(descriptor.get("width", 0)), int(descriptor.get("height", 0))
+    row = int(descriptor.get("rowBytes", 0))
+    length = int(descriptor.get("length", 0))
+    if (not re.fullmatch(r"/lt-[0-9a-f-]+", name) or width <= 0 or height <= 0
+            or row < width * 4 or length < row * height or length > 512 * 1024 * 1024):
+        raise ValueError("invalid resident shared surface")
+    with _NATIVE_SHARED_LOCK:
+        old = _NATIVE_SHARED.pop(str(path), None)
+        if old and old["name"] != name:
+            _unlink_native_shared(old)
+        _NATIVE_SHARED[str(path)] = dict(descriptor)
+        while len(_NATIVE_SHARED) > 1 and sum(d["length"] for d in _NATIVE_SHARED.values()) > _NATIVE_SHARED_MAX_BYTES:
+            oldest, victim = next(iter(_NATIVE_SHARED.items()))
+            try:
+                materialize_native_surface(Path(oldest))
+            finally:
+                _NATIVE_SHARED.pop(oldest)
+                _unlink_native_shared(victim)
+
+
+def close_native_shared():
+    with _NATIVE_SHARED_LOCK:
+        for descriptor in _NATIVE_SHARED.values():
+            _unlink_native_shared(descriptor)
+        _NATIVE_SHARED.clear()
+
+
+atexit.register(close_native_shared)
+
+
+def native_surface_exists(path: Path) -> bool:
+    with _NATIVE_SHARED_LOCK:
+        return str(path) in _NATIVE_SHARED or path.exists()
 
 
 def write_native_surface(path: Path, rgb: np.ndarray) -> dict:
@@ -3151,9 +3431,7 @@ def write_native_surface(path: Path, rgb: np.ndarray) -> dict:
             handle.write(NATIVE_SURFACE_HEADER.pack(
                 NATIVE_SURFACE_MAGIC, width, height, row_bytes))
             handle.write(rgba.tobytes(order="C"))
-            handle.flush()
-            os.fsync(handle.fileno())
-        durable_io.publish_file(temporary, path)
+        durable_io.publish_cache(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
     return {"width": width, "height": height, "rowBytes": row_bytes}
@@ -3161,6 +3439,12 @@ def write_native_surface(path: Path, rgb: np.ndarray) -> dict:
 
 def read_native_surface(path: Path) -> tuple[np.ndarray, dict]:
     """Read a native surface for cache conversion and contract tests."""
+    with _NATIVE_SHARED_LOCK:
+        descriptor = _NATIVE_SHARED.get(str(path))
+        if descriptor:
+            pixels = _shared_pixels(descriptor)
+            return pixels, {"width": descriptor["width"], "height": descriptor["height"],
+                            "rowBytes": descriptor["width"] * 4}
     with path.open("rb") as handle:
         header = handle.read(NATIVE_SURFACE_HEADER.size)
         magic, width, height, row_bytes = NATIVE_SURFACE_HEADER.unpack(header)
@@ -3175,6 +3459,14 @@ def read_native_surface(path: Path) -> tuple[np.ndarray, dict]:
 
 
 def native_surface_payload(key: str, path: Path) -> dict:
+    with _NATIVE_SHARED_LOCK:
+        descriptor = _NATIVE_SHARED.get(str(path))
+        if descriptor:
+            _NATIVE_SHARED.move_to_end(str(path))
+            return {"url": f"/api/render/native?key={key}", "format": "rgba8",
+                    "width": descriptor["width"], "height": descriptor["height"],
+                    "rowBytes": descriptor["width"] * 4, "headerBytes": NATIVE_SURFACE_HEADER.size,
+                    "sharedMemory": dict(descriptor)}
     with path.open("rb") as handle:
         magic, width, height, row_bytes = NATIVE_SURFACE_HEADER.unpack(
             handle.read(NATIVE_SURFACE_HEADER.size))
@@ -3193,7 +3485,7 @@ def native_surface_payload(key: str, path: Path) -> dict:
 
 
 def ensure_native_surface(path: Path, jpg: Path) -> None:
-    if path.exists() or not jpg.exists():
+    if native_surface_exists(path) or not jpg.exists():
         return
     with Image.open(jpg) as image:
         write_native_surface(path, np.asarray(image.convert("RGB")))
@@ -3201,7 +3493,7 @@ def ensure_native_surface(path: Path, jpg: Path) -> None:
 
 def ensure_jpeg_surface(jpg: Path, native: Path,
                         max_width: int | None = None) -> None:
-    if jpg.exists() or not native.exists():
+    if jpg.exists() or not native_surface_exists(native):
         return
     rgba, _ = read_native_surface(native)
     image = Image.fromarray(np.asarray(rgba[..., :3]), "RGB")
@@ -3210,7 +3502,7 @@ def ensure_jpeg_surface(jpg: Path, native: Path,
         image = image.resize((max_width, height), Image.Resampling.LANCZOS,
                              reducing_gap=3.0)
     jpg.parent.mkdir(parents=True, exist_ok=True)
-    durable_io.atomic_write_bytes(jpg, jpeg_bytes(np.asarray(image)))
+    durable_io.cache_write_bytes(jpg, jpeg_bytes(np.asarray(image)))
 
 
 def _render_bundle_metadata(meta: Path, jpg: Path, native: Path) -> dict | None:
@@ -3230,7 +3522,7 @@ def _render_bundle_metadata(meta: Path, jpg: Path, native: Path) -> dict | None:
     except (OSError, UnicodeDecodeError, ValueError):
         meta.unlink(missing_ok=True)
         return None
-    if native.exists():
+    if native_surface_exists(native):
         try:
             native_surface_payload("", native)
         except (OSError, ValueError, struct.error):
@@ -3249,10 +3541,12 @@ def preview_response(meta: dict, key: str, jpg: Path, native: Path,
     response.setdefault("queue_ms", 0.0)
     if jpg.exists():
         response["img"] = f"/api/render/image?key={key}"
-    if native.exists():
+    if native_surface_exists(native):
         surface = native_surface_payload(key, native)
+        if meta.get("viewport"):
+            surface["viewport"] = meta["viewport"]
         response["native"] = surface
-        if surface["width"] <= NATIVE_BROWSER_HELPER_MAX_WIDTH:
+        if not meta.get("viewport") and surface["width"] <= NATIVE_BROWSER_HELPER_MAX_WIDTH:
             response["helper"] = f"/api/render/helper?key={key}"
     return response
 
@@ -3272,7 +3566,8 @@ def render_preview(name: str, params: dict, width: int,
                    engine: str = "py", client: str = "",
                    generation: int | None = None,
                    native: bool = False,
-                   priority: str = "interactive") -> dict:
+                   priority: str = "interactive", viewport: dict | None = None) -> dict:
+    viewport = clean_viewport(viewport)
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
     guard_photo(name)
@@ -3284,7 +3579,7 @@ def render_preview(name: str, params: dict, width: int,
         RENDER_CONTEXT.cancelled = lambda: render_is_stale(client, generation)
         try:
             return _render_preview(name, params, width, engine, client,
-                                   generation, native, priority)
+                                   generation, native, priority, viewport)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -3296,7 +3591,7 @@ def _render_preview(name: str, params: dict, width: int,
                     engine: str = "py", client: str = "",
                     generation: int | None = None,
                     native: bool = False,
-                    priority: str = "interactive") -> dict:
+                    priority: str = "interactive", viewport: dict | None = None) -> dict:
     params = dict(params)
     params["linear_input"] = is_raw(name)
     cp = fp.clean_params(params)
@@ -3336,12 +3631,16 @@ def _render_preview(name: str, params: dict, width: int,
         engine = "rs"
     elif engine == "rs" and not RUST_AVAILABLE:
         engine = "py"
-    variant = preview_variant(name, width, params)
+    if viewport is not None and (engine != "rs" or not native):
+        raise ValueError("viewport rendering requires the resident native preview")
+    variant = "full" if viewport else preview_variant(name, width, params)
 
     def response_refining() -> bool:
         return bool(is_raw(name) and variant == "fast")
 
     key = render_key(name, params, width, engine)
+    if viewport is not None:
+        key = hashlib.md5(json.dumps([key, "viewport-v1", viewport], sort_keys=True).encode()).hexdigest()
     jpg = CACHE / "render" / f"{key}.jpg"
     native_surface = CACHE / "render" / f"{key}.rgba"
     meta = CACHE / "render" / f"{key}.json"
@@ -3361,7 +3660,7 @@ def _render_preview(name: str, params: dict, width: int,
                 ensure_jpeg_surface(jpg, native_surface)
             except (OSError, ValueError, struct.error):
                 native_surface.unlink(missing_ok=True)
-    if cached_meta is not None and (not native or native_surface.exists()) and (
+    if cached_meta is not None and (not native or native_surface_exists(native_surface)) and (
             not need_jpg or jpg.exists()):
         return preview_response(
             cached_meta, key, jpg, native_surface, cached=True,
@@ -3371,7 +3670,8 @@ def _render_preview(name: str, params: dict, width: int,
             if generation < LATEST_GENERATION.get(client, generation):
                 return {"cancelled": True}
     queued_at = time.perf_counter()
-    acquired = RENDER_LOCK.acquire(
+    gate = BACKGROUND_RENDER_LOCK if priority in ("prefetch", "background", "export") else RENDER_LOCK
+    acquired = gate.acquire(
         blocking=priority != "prefetch", priority=priority,
         cancelled=lambda: render_is_stale(client, generation))
     if not acquired:
@@ -3395,7 +3695,7 @@ def _render_preview(name: str, params: dict, width: int,
                 except (OSError, ValueError, struct.error):
                     native_surface.unlink(missing_ok=True)
         if cached_meta is not None and (
-                not native or native_surface.exists()) and (
+                not native or native_surface_exists(native_surface)) and (
                 not need_jpg or jpg.exists()):      # raced with prefetch
             return dict(preview_response(
                 cached_meta, key, jpg, native_surface, cached=True,
@@ -3407,7 +3707,9 @@ def _render_preview(name: str, params: dict, width: int,
             rust_metrics = render_rust(
                 name, params, width,
                 jpg if need_jpg else None,
-                native_surface if native else None)
+                native_surface if native else None, viewport)
+            if native and rust_metrics.get("native_shared"):
+                retain_native_shared(native_surface, rust_metrics["native_shared"])
             film_mean = float(rust_metrics["mean"])
         else:
             arr = linear_for(name, width, params)
@@ -3419,25 +3721,32 @@ def _render_preview(name: str, params: dict, width: int,
                 out = np.ascontiguousarray(np.rot90(out, k))
             film_mean = float(out.mean()) / 255.0
             if need_jpg:
-                durable_io.atomic_write_bytes(jpg, jpeg_bytes(out))
+                durable_io.cache_write_bytes(jpg, jpeg_bytes(out))
             if native:
                 write_native_surface(native_surface, out)
-        orig_mean = orig_mean_display(name, width, arr)
-        match = max(0.3, min(2.5, orig_mean / max(film_mean, 1e-6)))
-        m = {"ms": ms, "match": round(match, 3), "engine": engine}
+        m = {"ms": ms, "engine": engine}
+        if viewport is None:
+            orig_mean = orig_mean_display(name, width, arr)
+            match = max(0.3, min(2.5, orig_mean / max(film_mean, 1e-6)))
+            m["match"] = round(match, 3)
+        else:
+            m["viewport"] = dict(rust_metrics.get("viewport", viewport),
+                                 fullWidth=rust_metrics["full_width"],
+                                 fullHeight=rust_metrics["full_height"])
+            m["viewport_accelerated"] = bool(rust_metrics.get("viewport_accelerated"))
         if rust_metrics:
             m["backend"] = rust_metrics.get("backend")
             m["gpu_ms"] = rust_metrics.get("render_ms")
             m["resident_ms"] = rust_metrics.get("total_ms")
             m["input_cache_hit"] = rust_metrics.get("input_cache_hit")
             m["pipeline_cache_hit"] = rust_metrics.get("pipeline_cache_hit")
-        durable_io.atomic_write_json(meta, m, indent=None, keep_backup=False)
+        durable_io.cache_write_json(meta, m)
         prune_render_cache_throttled(meta.parent, _RENDER_CACHE_MAX_BYTES)
         return dict(preview_response(
             m, key, jpg, native_surface, cached=False,
             refining=response_refining()), queue_ms=round(queue_ms, 3))
     finally:
-        RENDER_LOCK.release()
+        gate.release()
 
 
 def _preview_source_bytes(result: dict, name: str, width: int,
@@ -3776,39 +4085,81 @@ def rust_direct_export_supported(job: dict) -> bool:
     return True
 
 
+@contextmanager
+def export_phase(job: dict, phase: str):
+    started = time.perf_counter()
+    try:
+        yield
+    finally:
+        timings = job.setdefault("phase_ms", {})
+        timings[phase] = round(timings.get(phase, 0.0) +
+                               (time.perf_counter() - started) * 1000, 3)
+
+
 def _resident_render_full(name: str, params: dict, request: dict) -> dict:
-    """Render a full-resolution source using shared RAW pixels when possible."""
+    # Serialize only the background process. Probe + decode + render must be
+    # one admission so parallel recipes do not decode the same RAW twice.
+    with BACKGROUND_RENDER_LOCK:
+        return _resident_render_full_locked(name, params, request)
+
+
+def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict:
     request = dict(request)
+    phases = {}
+    started = time.perf_counter()
     if is_raw(name) and shared_input_supported():
         try:
-            with raw_shared_input(name, params) as shared:
-                request.update(shared)
-                metrics = RUST_ENGINE.render(request)
-            metrics["input_transport"] = "shared-memory-rgb16"
-            metrics["input_exchange_bytes"] = int(shared["input_shm_len"])
-            return metrics
+            key = (f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
+                   f"{color_pipeline.raw_decode_fingerprint(params)}")
+            probe_start = time.perf_counter()
+            hit = BACKGROUND_ENGINE.probe_input(key)
+            phases["input_probe"] = (time.perf_counter() - probe_start) * 1000
+            if hit:
+                # A restarted/evicted engine can miss between probe and render;
+                # only that path falls through to a fresh decode.
+                try:
+                    render_start = time.perf_counter()
+                    metrics = BACKGROUND_ENGINE.render(dict(request, input_cache_key=key))
+                    phases["engine"] = (time.perf_counter() - render_start) * 1000
+                    return dict(metrics, input_transport="resident-cache",
+                                input_exchange_bytes=0, phase_ms=phases)
+                except RenderCancelled:
+                    raise
+                except Exception:
+                    pass
         except RenderCancelled:
             raise
-        except Exception as shared_error:  # noqa: BLE001
-            # A platform may expose shared memory yet cap a segment below a
-            # large sensor frame. Retain the proven TIFF route rather than
-            # making export brittle.
+        except Exception:
+            pass  # Old worker or missing input: normal shared/TIFF fallback.
+        try:
+            decode_start = time.perf_counter()
+            with raw_shared_input(name, params) as shared:
+                phases["decode_exchange"] = (time.perf_counter() - decode_start) * 1000
+                request.update(shared)
+                render_start = time.perf_counter()
+                metrics = BACKGROUND_ENGINE.render(request)
+                phases["engine"] = (time.perf_counter() - render_start) * 1000
+            return dict(metrics, input_transport="shared-memory-rgb16",
+                        input_exchange_bytes=int(shared["input_shm_len"]), phase_ms=phases)
+        except RenderCancelled:
+            raise
+        except Exception as shared_error:
             note_shared_input_failure(shared_error)
             for key in ("input_shm", "input_shm_len", "input_cache_key"):
                 request.pop(key, None)
-            source = tiff_for(name, params)
-            request["input"] = str(source)
-            metrics = RUST_ENGINE.render(request)
-            metrics["input_transport"] = "tiff-fallback"
-            metrics["input_exchange_bytes"] = source.stat().st_size
-            metrics["input_fallback"] = type(shared_error).__name__
-            return metrics
+            fallback = type(shared_error).__name__
+    else:
+        fallback = None
+    decode_start = time.perf_counter()
     source = tiff_for(name, params)
+    phases["decode_exchange"] = phases.get("decode_exchange", 0) + (time.perf_counter() - decode_start) * 1000
     request["input"] = str(source)
-    metrics = RUST_ENGINE.render(request)
-    metrics["input_transport"] = "tiff"
-    metrics["input_exchange_bytes"] = source.stat().st_size
-    return metrics
+    render_start = time.perf_counter()
+    metrics = BACKGROUND_ENGINE.render(request)
+    phases["engine"] = (time.perf_counter() - render_start) * 1000
+    return dict(metrics, input_transport="tiff-fallback" if fallback else "tiff",
+                input_exchange_bytes=source.stat().st_size, input_fallback=fallback,
+                phase_ms=phases)
 
 
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
@@ -3834,10 +4185,14 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
         }
         try:
             metrics = _resident_render_full(name, params, request)
-            platform_image.embed_jpeg_icc(dst, profile)
-            embed_export_metadata(dst, job)
+            job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
+            with export_phase(job, "icc"):
+                platform_image.embed_jpeg_icc(dst, profile)
+            with export_phase(job, "metadata"):
+                embed_export_metadata(dst, job)
             return dict(metrics, width=int(metrics["width"]),
-                        height=int(metrics["height"]), direct_export=True)
+                        height=int(metrics["height"]), direct_export=True,
+                        phase_ms=dict(job.get("phase_ms", {})))
         except RenderCancelled:
             raise
         except Exception as error:  # noqa: BLE001
@@ -3866,14 +4221,16 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
                     "bit_depth": 32,
                 }
                 metrics = _resident_render_full(name, params, request)
-                durable_io.publish_file(staged, film_png)
+                durable_io.publish_cache(staged, film_png)
             finally:
                 staged.unlink(missing_ok=True)
             prune_cache(film_png.parent, "*.tif", _EXPORT_FILM_CACHE_MAX_BYTES)
     if cancelled and cancelled():
         raise RenderCancelled("export cancelled before encoding")
-    width, height = finish_export(film_png, dst, job)
-    return dict(metrics, width=width, height=height,
+    job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
+    with export_phase(job, "finish"):
+        width, height = finish_export(film_png, dst, job)
+    return dict(metrics, width=width, height=height, phase_ms=dict(job.get("phase_ms", {})),
                 direct_export=False, direct_fallback=direct_error)
 
 
@@ -4036,6 +4393,7 @@ def start_external_edit(body: dict) -> dict:
 def benchmark_export(name: str, job: dict) -> dict:
     """Exercise the same resident export path without writing into the photo folder."""
     started = time.perf_counter()
+    job = dict(job, phase_ms={})
     dst = CACHE / "benchmark-export.jpg"
     metrics = export_with_resident_engine(name, dst, job)
     result = {
@@ -4047,6 +4405,7 @@ def benchmark_export(name: str, job: dict) -> dict:
                               else 0),
         "input_exchange_bytes": metrics.get("input_exchange_bytes", 0),
         "input_transport": metrics.get("input_transport"),
+        "phase_ms": metrics.get("phase_ms", {}),
         "backend": metrics.get("backend"),
         "gpu_ms": metrics.get("render_ms"),
         "resident_ms": metrics.get("total_ms"),
@@ -4137,6 +4496,10 @@ class ExportBatch:
             if outcome.get("log"):
                 self.status["log"].append(outcome["log"])
                 self.status["log"] = self.status["log"][-200:]
+            if outcome.get("phase_ms"):
+                timings = self.status.setdefault("timings", [])
+                timings.append({"name": name, "phase_ms": outcome["phase_ms"]})
+                self.status["timings"] = timings[-200:]
             if outcome.get("warnings"):
                 self.status["warnings"].append({
                     "name": name, "path": outcome.get("path"),
@@ -4195,6 +4558,10 @@ def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
                 EXPORT["errors"].append(f"{name}: {outcome['error']}")
             if outcome.get("log"):
                 EXPORT["log"].append(outcome["log"])
+            if outcome.get("phase_ms"):
+                timings = EXPORT.setdefault("timings", [])
+                timings.append({"name": name, "phase_ms": outcome["phase_ms"]})
+                EXPORT["timings"] = timings[-200:]
             EXPORT["done"] += 1
             if EXPORT["done"] >= EXPORT["total"]:
                 EXPORT["running"] = False
@@ -4214,6 +4581,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         edits.require_saved_mask_assets(job.get("masks"))
         started = time.perf_counter()
         job = dict(job)
+        job["phase_ms"] = {}
         job["warnings"] = list(job.get("warnings") or [])
         out_dir = Path(job["destination"])
         if "destinationMode" in job and out_dir.resolve() != out_dir:
@@ -4222,11 +4590,13 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         out_dir.mkdir(parents=True, exist_ok=True)
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
+        metadata_started = time.perf_counter()
         metadata = exif_for(name)
         job["lensProfile"] = edits.lens_profile_for(metadata,
             edits.clean_optics(job.get("optics")).get("profileOverride"))
         job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
+        job["phase_ms"]["prepare_metadata"] = (time.perf_counter() - metadata_started) * 1000
         check()
         with EXPORT_PATH_LOCK:
             dst = export_workflow.collision_path(
@@ -4264,14 +4634,16 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             _, metadata_source, _ = _export_metadata_payload(job)
             if metadata_source is not None:
                 job["metadataSource"] = str(metadata_source)
-            render_source = export_render_source(name, job)
+            with export_phase(job, "decode_exchange"):
+                render_source = export_render_source(name, job)
             durable_io.atomic_write_text(jfile, json.dumps(job))
             env = dict(os.environ, OMP_NUM_THREADS="4", NUMBA_NUM_THREADS="4")
             try:
                 check()
-                r = _run_export_process(
-                    [sys.executable, str(APP / "render_cli.py"),
-                     str(render_source), str(staged), str(jfile)], env, batch)
+                with export_phase(job, "render_encode_metadata"):
+                    r = _run_export_process(
+                        [sys.executable, str(APP / "render_cli.py"),
+                         str(render_source), str(staged), str(jfile)], env, batch)
             finally:
                 jfile.unlink(missing_ok=True)
             if r.returncode != 0:
@@ -4314,7 +4686,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         # Cancellation and publication share a short critical section. Once
         # publication starts, this complete output survives later cancellation.
         publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
-        with publish_lock:
+        with export_phase(job, "publish"), publish_lock:
             check()
             if dst.parent.resolve() != out_dir:
                 raise ValueError("The export destination moved while rendering; nothing was published")
@@ -4335,7 +4707,8 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
                 except OSError as error:
                     job["warnings"].append(f"Photo exported, but its recipe sidecar could not be saved: {error}")
         elapsed = time.perf_counter() - started
-        outcome = {"completed": 1, "path": str(dst), "warnings": list(dict.fromkeys(job["warnings"])),
+        job["phase_ms"]["total"] = round(elapsed * 1000, 3)
+        outcome = {"completed": 1, "path": str(dst), "phase_ms": job["phase_ms"], "warnings": list(dict.fromkeys(job["warnings"])),
                    "log": f"{name} -> {dst.name} ({elapsed:.1f}s, {detail})"}
     except (ExportCancelled, RenderCancelled):
         outcome = {"cancelledCount": 1}
@@ -5398,6 +5771,9 @@ READ_ONLY_POST_PATHS = {
 
 
 class Handler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+    timeout = 30
+
     def log_message(self, *a):  # quiet
         pass
 
@@ -5414,6 +5790,8 @@ class Handler(BaseHTTPRequestHandler):
               cache_control: str = "no-store", *,
               headers: dict[str, str] | None = None) -> None:
         self._response_status = code
+        if code >= 400:
+            self.close_connection = True
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
@@ -5426,6 +5804,8 @@ class Handler(BaseHTTPRequestHandler):
     def _send_file(self, code: int, path: Path, ctype: str,
                    cache_control: str = "no-store") -> None:
         self._response_status = code
+        if code >= 400:
+            self.close_connection = True
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(path.stat().st_size))
@@ -5585,7 +5965,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream")
         self.send_header("Cache-Control", "no-store")
-        self.send_header("Connection", "keep-alive")
+        self.send_header("Connection", "close")
+        self.close_connection = True
         self.end_headers()
         try:
             self.wfile.write(encode_sse({
@@ -5745,6 +6126,7 @@ class Handler(BaseHTTPRequestHandler):
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
                     raise ValueError("bad render key")
                 surface = CACHE / "render" / f"{key}.rgba"
+                materialize_native_surface(surface)
                 if not surface.exists():
                     self._json({"error": "native render not found"}, 404)
                 else:
@@ -5949,12 +6331,14 @@ class Handler(BaseHTTPRequestHandler):
                     with GENERATION_LOCK:
                         LATEST_GENERATION[client] = max(
                             generation, LATEST_GENERATION.get(client, generation))
+                if b.get("viewport") and not edits.base_edits_are_identity(b.get("optics"), b.get("heals")):
+                    raise ValueError("viewport rendering requires unwarped source geometry")
                 result = render_preview(
                     b["name"], b.get("params", {}), int(b.get("w", 1100)),
                     b.get("engine", "py"), client,
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
-                    str(b.get("priority", "interactive")))
+                    str(b.get("priority", "interactive")), b.get("viewport"))
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),
@@ -5962,7 +6346,7 @@ class Handler(BaseHTTPRequestHandler):
                         native=True)
                     if not result.get("cancelled"):
                         result = dict(result, lens_profile=edits.lens_profile_for(
-                            exif_for(b["name"]),
+                            preview_lens_metadata(b["name"], b.get("optics")),
                             edits.clean_optics(b.get("optics")).get("profileOverride")))
                     self._json(result)
                 else:
@@ -6962,7 +7346,7 @@ def catalog_sources_action(body: dict) -> dict:
         if body.get("importState", True):
             # A folder that was edited before the catalog existed carries its
             # own state file; fold it in on first sight so nothing is lost.
-            catalog_scan.scan_source(cat, source_id)
+            catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
             imported = catalog_scan.import_state_file(cat, source_id)
         elif SCANNER is not None:
             SCANNER.request(source_id)
@@ -7228,7 +7612,7 @@ def start_ingest(body: dict) -> dict:
             if cat is not None and destinations:
                 root = Path(request["destination"])
                 source_id = cat.add_source(root)
-                catalog_scan.scan_source(cat, source_id)
+                catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
         except Exception as error:  # noqa: BLE001
             with INGEST_LOCK:
                 INGEST["errors"].append({"error": str(error)})
@@ -7405,7 +7789,7 @@ def start_enhance(body: dict) -> dict:
         source, destination, mode, request=body.get("request"))
     cat = catalog_handle()
     if result.get("ok") and cat is not None and PRIMARY_SOURCE_ID is not None:
-        catalog_scan.scan_source(cat, PRIMARY_SOURCE_ID)
+        catalog_scan.scan_source(cat, PRIMARY_SOURCE_ID, on_local_file=THUMB_WARMUP.enqueue)
     return result
 
 

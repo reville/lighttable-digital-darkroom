@@ -1,5 +1,11 @@
 import AppKit
 import MetalKit
+import Darwin
+
+// Darwin imports shm_open as unavailable because its mode argument is variadic.
+// Opening an existing server-owned segment needs only the two fixed arguments.
+@_silgen_name("shm_open")
+private func openNativeSharedMemory(_ name: UnsafePointer<CChar>, _ flags: Int32) -> Int32
 
 struct NativeSurfaceDescription {
     let url: URL
@@ -8,17 +14,92 @@ struct NativeSurfaceDescription {
     let height: Int
     let rowBytes: Int
     let headerBytes: Int
+    let sharedMemory: SharedNativeSurface?
+    let imageRegion: SIMD4<Float>
 
     init?(payload: [String: Any], baseURL: URL) {
         guard let rawURL = payload["url"] as? String,
               let url = URL(string: rawURL, relativeTo: baseURL)?.absoluteURL
         else { return nil }
         self.url = url
+        if let region = payload["viewport"] as? [String: Any] {
+            guard let x = region["x"] as? Int, let y = region["y"] as? Int,
+                  let w = region["width"] as? Int, let h = region["height"] as? Int,
+                  let fullW = region["fullWidth"] as? Int, let fullH = region["fullHeight"] as? Int,
+                  x >= 0, y >= 0, w > 0, h > 0, fullW > 0, fullH > 0,
+                  x <= fullW - w, y <= fullH - h else { return nil }
+            imageRegion = SIMD4<Float>(Float(w) / Float(fullW), Float(h) / Float(fullH),
+                Float(x) / Float(fullW), Float(y) / Float(fullH))
+        } else {
+            imageRegion = SIMD4<Float>(1, 1, 0, 0)
+        }
         format = payload["format"] as? String ?? "image"
         width = payload["width"] as? Int ?? 0
         height = payload["height"] as? Int ?? 0
         rowBytes = payload["rowBytes"] as? Int ?? 0
         headerBytes = payload["headerBytes"] as? Int ?? 0
+        sharedMemory = ["localhost", "127.0.0.1", "::1"].contains(url.host ?? "")
+            ? (payload["sharedMemory"] as? [String: Any]).flatMap(SharedNativeSurface.init)
+            : nil
+    }
+}
+
+/// Immutable, per-render POSIX shared memory. The server owns the name and
+/// unlinks it on cache eviction; an already mapped texture remains valid.
+struct SharedNativeSurface {
+    let name: String
+    let length: Int
+    let rowBytes: Int
+
+    init?(payload: [String: Any]) {
+        guard let name = payload["name"] as? String,
+              name.hasPrefix("/lt-"), name.utf8.count < 32,
+              !name.dropFirst().contains("/"),
+              let length = payload["length"] as? Int,
+              let rowBytes = payload["rowBytes"] as? Int,
+              (payload["offset"] as? Int ?? 0) == 0,
+              length > 0, length <= 256 * 1024 * 1024,
+              rowBytes > 0, rowBytes % 256 == 0,
+              length % Int(getpagesize()) == 0 else { return nil }
+        self.name = name
+        self.length = length
+        self.rowBytes = rowBytes
+    }
+
+    func texture(device: MTLDevice, width: Int, height: Int) throws -> MTLTexture {
+        guard let layout = PackedRGBA8Layout(width: width, height: height),
+              rowBytes >= layout.rowBytes,
+              height <= length / rowBytes,
+              rowBytes % device.minimumLinearTextureAlignment(for: .rgba8Unorm) == 0
+        else { throw NativePreviewError.invalidDimensions }
+        let fd = name.withCString { openNativeSharedMemory($0, O_RDWR) }
+        guard fd >= 0 else { throw NativePreviewError.missingData }
+        defer { close(fd) }
+        var info = stat()
+        guard fstat(fd, &info) == 0, info.st_size >= length else {
+            throw NativePreviewError.invalidDimensions
+        }
+        let mapping = mmap(nil, length, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)
+        guard let mapping, mapping != MAP_FAILED else {
+            throw NativePreviewError.missingData
+        }
+        guard let buffer = device.makeBuffer(bytesNoCopy: mapping, length: length,
+            options: .storageModeShared, deallocator: { pointer, size in
+                munmap(pointer, size)
+            }) else {
+            munmap(mapping, length)
+            throw NativePreviewError.textureAllocation
+        }
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .rgba8Unorm, width: width, height: height, mipmapped: false)
+        descriptor.usage = .shaderRead
+        descriptor.storageMode = .shared
+        guard let texture = buffer.makeTexture(descriptor: descriptor,
+            offset: 0, bytesPerRow: rowBytes) else {
+            throw NativePreviewError.textureAllocation
+        }
+        // The texture retains its backing buffer, whose deallocator owns mmap.
+        return texture
     }
 }
 
@@ -29,6 +110,7 @@ struct NativePreviewTimings {
     let gpuMs: Double
     let totalMs: Double
     var textureCacheHit: Bool = false
+    var sharedMemory: Bool = false
 
     var payload: [String: Any] {
         [
@@ -38,6 +120,7 @@ struct NativePreviewTimings {
             "gpuMs": gpuMs,
             "totalMs": totalMs,
             "textureCacheHit": textureCacheHit,
+            "sharedMemory": sharedMemory,
         ]
     }
 }
@@ -104,6 +187,7 @@ private struct GradeUniforms {
     var detail1 = SIMD4<Float>(repeating: 0)
     var curveOn = SIMD4<Float>(repeating: 0)
     var viewport = SIMD4<Float>(1, 1, 0, 0)
+    var sourceRegion = SIMD4<Float>(1, 1, 0, 0)
     var compare = SIMD4<Float>(repeating: 0)
     var reference0 = SIMD4<Float>(0, 0, 0.5, 1)
     var reference1 = SIMD4<Float>(repeating: 0)
@@ -244,6 +328,8 @@ final class NativePreviewRenderer {
     private let sampler: MTLSamplerState
     private let textureLoader: MTKTextureLoader
     private var imageTexture: MTLTexture?
+    private var fullFrameTexture: MTLTexture?
+    private var imageRegion = SIMD4<Float>(1, 1, 0, 0)
     private let textureCache = ByteBudgetCache<MTLTexture>(budget: 256 * 1024 * 1024)
     private var preloadTasks: [URL: URLSessionDataTask] = [:]
     private var preloadEpoch = 0
@@ -270,6 +356,7 @@ final class NativePreviewRenderer {
     func beginNavigation(generation: Int) {
         requestedGeneration = generation
         awaitingPhoto = true
+        fullFrameTexture = nil
         pendingInteraction = nil
         loadTask?.cancel()
         originalLoadTask?.cancel()
@@ -575,7 +662,8 @@ final class NativePreviewRenderer {
 
     private func cacheTexture(_ texture: MTLTexture, surface: NativeSurfaceDescription) {
         guard let layout = PackedRGBA8Layout(width: texture.width, height: texture.height) else { return }
-        textureCache.insert(texture, key: cacheKey(surface), cost: layout.byteCount)
+        textureCache.insert(texture, key: cacheKey(surface),
+            cost: texture.buffer?.length ?? layout.byteCount)
     }
 
     func cancelPreloads(epoch: Int? = nil) {
@@ -638,7 +726,7 @@ final class NativePreviewRenderer {
             awaitingPhoto = false
             prepare?()
             updateGrade(grade, renderNow: false)
-            imageTexture = cached
+            setImageTexture(cached, surface: surface)
             render { gpuMs in
                 guard let gpuMs else {
                     completion(.failure(NativePreviewError.drawableUnavailable)); return
@@ -650,75 +738,116 @@ final class NativePreviewRenderer {
             }
             return
         }
-        var request = URLRequest(url: surface.url)
-        request.cachePolicy = .returnCacheDataElseLoad
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let self else { return }
-            if let error {
-                if (error as NSError).code != NSURLErrorCancelled {
+        let fetchHTTP = { [weak self] in
+            guard let self, generation == self.requestedGeneration else { return }
+            var request = URLRequest(url: surface.url)
+            request.cachePolicy = .returnCacheDataElseLoad
+            let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
+                guard let self else { return }
+                if let error {
+                    if (error as NSError).code != NSURLErrorCancelled {
+                        DispatchQueue.main.async { completion(.failure(error)) }
+                    }
+                    return
+                }
+                guard let data else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NativePreviewError.missingData))
+                    }
+                    return
+                }
+                let fetched = ProcessInfo.processInfo.systemUptime
+                do {
+                    let decodedStarted = ProcessInfo.processInfo.systemUptime
+                    let texture: MTLTexture
+                    let decodedAt: Double
+                    let uploadedAt: Double
+                    if surface.format == "rgba8" {
+                        let validated = try self.validateRawSurface(data, expected: surface)
+                        decodedAt = ProcessInfo.processInfo.systemUptime
+                        texture = try self.uploadRawSurface(
+                            data, offset: validated.headerBytes,
+                            width: validated.width, height: validated.height,
+                            rowBytes: validated.rowBytes)
+                        uploadedAt = ProcessInfo.processInfo.systemUptime
+                    } else {
+                        texture = try self.textureLoader.newTexture(
+                            data: data,
+                            options: [
+                                .SRGB: false,
+                                .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
+                                .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
+                            ])
+                        decodedAt = ProcessInfo.processInfo.systemUptime
+                        uploadedAt = decodedAt
+                    }
+                    DispatchQueue.main.async {
+                        guard generation == self.requestedGeneration else { return }
+                        self.awaitingPhoto = false
+                        prepare?()
+                        self.updateGrade(grade, renderNow: false)
+                        self.cacheTexture(texture, surface: surface)
+                        self.setImageTexture(texture, surface: surface)
+                        self.render { gpuMs in
+                            guard let gpuMs else {
+                                completion(.failure(
+                                    NativePreviewError.drawableUnavailable))
+                                return
+                            }
+                            let finished = ProcessInfo.processInfo.systemUptime
+                            completion(.success(NativePreviewTimings(
+                                fetchMs: (fetched - started) * 1000,
+                                decodeMs: (decodedAt - decodedStarted) * 1000,
+                                uploadMs: (uploadedAt - decodedAt) * 1000,
+                                gpuMs: gpuMs,
+                                totalMs: (finished - started) * 1000)))
+                        }
+                    }
+                } catch {
                     DispatchQueue.main.async { completion(.failure(error)) }
                 }
-                return
             }
-            guard let data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NativePreviewError.missingData))
+            self.loadTask = task
+            task.resume()
+        }
+        if let shared = surface.sharedMemory, surface.format == "rgba8" {
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self else { return }
+                guard let texture = try? shared.texture(device: self.device,
+                    width: surface.width, height: surface.height) else {
+                    DispatchQueue.main.async(execute: fetchHTTP)
+                    return
                 }
-                return
-            }
-            let fetched = ProcessInfo.processInfo.systemUptime
-            do {
-                let decodedStarted = ProcessInfo.processInfo.systemUptime
-                let texture: MTLTexture
-                let decodedAt: Double
-                let uploadedAt: Double
-                if surface.format == "rgba8" {
-                    let validated = try self.validateRawSurface(data, expected: surface)
-                    decodedAt = ProcessInfo.processInfo.systemUptime
-                    texture = try self.uploadRawSurface(
-                        data, offset: validated.headerBytes,
-                        width: validated.width, height: validated.height,
-                        rowBytes: validated.rowBytes)
-                    uploadedAt = ProcessInfo.processInfo.systemUptime
-                } else {
-                    texture = try self.textureLoader.newTexture(
-                        data: data,
-                        options: [
-                            .SRGB: false,
-                            .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
-                            .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
-                        ])
-                    decodedAt = ProcessInfo.processInfo.systemUptime
-                    uploadedAt = decodedAt
-                }
+                let mappedAt = ProcessInfo.processInfo.systemUptime
                 DispatchQueue.main.async {
                     guard generation == self.requestedGeneration else { return }
                     self.awaitingPhoto = false
                     prepare?()
                     self.updateGrade(grade, renderNow: false)
                     self.cacheTexture(texture, surface: surface)
-                    self.imageTexture = texture
+                    self.setImageTexture(texture, surface: surface)
                     self.render { gpuMs in
                         guard let gpuMs else {
-                            completion(.failure(
-                                NativePreviewError.drawableUnavailable))
+                            completion(.failure(NativePreviewError.drawableUnavailable))
                             return
                         }
-                        let finished = ProcessInfo.processInfo.systemUptime
                         completion(.success(NativePreviewTimings(
-                            fetchMs: (fetched - started) * 1000,
-                            decodeMs: (decodedAt - decodedStarted) * 1000,
-                            uploadMs: (uploadedAt - decodedAt) * 1000,
-                            gpuMs: gpuMs,
-                            totalMs: (finished - started) * 1000)))
+                            fetchMs: (mappedAt - started) * 1000,
+                            decodeMs: 0, uploadMs: 0, gpuMs: gpuMs,
+                            totalMs: (ProcessInfo.processInfo.systemUptime - started) * 1000,
+                            sharedMemory: true)))
                     }
                 }
-            } catch {
-                DispatchQueue.main.async { completion(.failure(error)) }
             }
+        } else {
+            fetchHTTP()
         }
-        loadTask = task
-        task.resume()
+    }
+
+    private func setImageTexture(_ texture: MTLTexture, surface: NativeSurfaceDescription) {
+        imageTexture = texture
+        imageRegion = surface.imageRegion
+        if imageRegion == SIMD4<Float>(1, 1, 0, 0) { fullFrameTexture = texture }
     }
 
     private func validateRawSurface(
@@ -823,7 +952,7 @@ final class NativePreviewRenderer {
         let height = max(1, imageTexture?.height ?? 1)
         output.tone3 = SIMD4<Float>(
             value("dehaze"), value("vignette"),
-            1 / Float(width), 1 / Float(height))
+            imageRegion.x / Float(width), imageRegion.y / Float(height))
         output.detail0 = SIMD4<Float>(
             value("sharpness"), value("sharpenRadius", 1),
             value("sharpenDetail", 0.25), value("sharpenMasking"))
@@ -837,6 +966,7 @@ final class NativePreviewRenderer {
             grade["curveG"] == nil ? 0 : 1,
             grade["curveB"] == nil ? 0 : 1)
         output.viewport = viewport
+        output.sourceRegion = imageRegion
         output.compare = SIMD4<Float>(
             originalTexture == nil ? 0 : comparePosition, 0, 0, 0)
         let referenceActive = reference["active"] as? Bool ?? false
@@ -1074,6 +1204,7 @@ final class NativePreviewRenderer {
         encoder.setFragmentTexture(originalTexture ?? imageTexture, index: 2)
         encoder.setFragmentTexture(maskTexture, index: 3)
         encoder.setFragmentTexture(referenceTexture ?? imageTexture, index: 4)
+        encoder.setFragmentTexture(fullFrameTexture ?? imageTexture, index: 5)
         encoder.setFragmentSamplerState(sampler, index: 0)
         encoder.setFragmentBytes(
             &uniforms, length: MemoryLayout<GradeUniforms>.stride, index: 0)

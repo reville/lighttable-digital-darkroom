@@ -193,6 +193,15 @@ fi
 uv pip sync --no-config --compile-bytecode --system --break-system-packages \
   --python "$APP/Contents/Resources/Python/bin/python3.13" \
   "$ROOT/requirements-runtime.lock"
+RAWPY_WHEELS="$BUILD_ROOT/rawpy-openmp"
+"$ROOT/scripts/build-rawpy-openmp.sh" \
+  "$APP/Contents/Resources/Python/bin/python3.13" "$RAWPY_WHEELS"
+uv pip install --no-config --system --break-system-packages --no-deps --reinstall \
+  --python "$APP/Contents/Resources/Python/bin/python3.13" \
+  "$RAWPY_WHEELS"/rawpy_openmp-0.26.1-*.whl
+"$APP/Contents/Resources/Python/bin/python3.13" \
+  "$ROOT/scripts/verify-rawpy-openmp.py"
+/usr/bin/ditto "$RAWPY_WHEELS/licenses" "$PAYLOAD/licenses/rawpy-openmp"
 "$APP/Contents/Resources/Python/bin/python3.13" \
   "$ROOT/scripts/relocate-python-runtime.py" \
   "$APP/Contents/Resources/Python"

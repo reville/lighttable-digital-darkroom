@@ -13,6 +13,7 @@ struct Params {
     base_seed: u32,
     mu: f32,
     sigma: f32,
+    pixel_geometry: vec4<u32>, // local width, full width, origin x/y
 }
 
 @group(0) @binding(0) var<uniform> params: Params;
@@ -39,7 +40,9 @@ fn splitmix32(x: u32) -> u32 {
 fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     let idx = gid.x;
     if idx >= params.n_pixels { return; }
-    var rng = splitmix32(params.base_seed) ^ splitmix32(idx);
+    let geom = params.pixel_geometry;
+    let absolute_index = (geom.w + idx / geom.x) * geom.y + geom.z + idx % geom.x;
+    var rng = splitmix32(params.base_seed) ^ splitmix32(absolute_index);
     rng = pcg(rng);
     let u1 = unit_f32(rng);
     rng = pcg(rng);
