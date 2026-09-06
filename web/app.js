@@ -2761,6 +2761,48 @@ async function runNativeProductJourney(width, layer) {
   return runNativeSmokeJourney(width, layer);
 }
 
+// Exercise the real native journal and save queue with an injected transport
+// failure. Fixtures and native journal storage belong to the isolated journey.
+async function runEditRecoveryJourney() {
+  const name = cur().name;
+  const original = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
+  const pending = {state: {name, ...original, grade: {...GRADE_DEFAULTS,
+    ...(original.grade || {}), exposure: 0.321}}};
+  const originalFetch = window.fetch;
+  let failedClose = false;
+  try {
+    window.fetch = (input, options) => {
+      if (String(input).startsWith('/api/state') && options?.method === 'POST') {
+        return Promise.reject(new Error('Journey: render server interrupted'));
+      }
+      return originalFetch(input, options);
+    };
+    editSaveQueue.enqueue(name, pending, {immediate: true});
+    failedClose = !(await window.lightTablePrepareToClose());
+    if (!failedClose || editSaveQueue.getStatus().state !== 'error') {
+      throw new Error('A failed edit save did not block close');
+    }
+    const data = await getJSON('/api/images');
+    const reopened = createEditRecovery({scope: data.catalog?.path || `folder:${data.folder}`,
+      nativeRequest: nativeJournalRequest});
+    const records = await reopened.list();
+    const recovered = records.find(record => record.name === name);
+    if (!recovered || !recoveryPayloadMatches(pending, recovered.payload.state)) {
+      throw new Error('Native recovery did not retain the failed edit');
+    }
+  } finally { window.fetch = originalFetch; }
+  await editSaveQueue.retry(name);
+  const saved = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
+  if (!recoveryPayloadMatches(pending, saved)) throw new Error('Recovered edit did not reach the catalog');
+  if ((await editRecovery.list()).some(record => record.name === name)) {
+    throw new Error('Acknowledged recovery was not removed');
+  }
+  editSaveQueue.enqueue(name, {state: {name, ...original}});
+  if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
+  return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
+    retrySaved: true, finalCloseFlushed: true};
+}
+
 async function runNativeSmokeJourney(width, layer = 'pr') {
   const startImage = cur()?.name || null;
   const next = visible().find((image) => image.name !== startImage);
@@ -2788,6 +2830,8 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     await action();
     return settled;
   });
+
+  const editRecoveryProof = await record('edit-recovery', runEditRecoveryJourney);
 
   await renderStep('navigate-photo', next.name, 'native-metal', () =>
     executeUICommand('goto', { name: next.name }));
@@ -2944,6 +2988,7 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     correctedInteractions,
     exportInteractions,
     visibilityControls,
+    editRecovery: editRecoveryProof,
     steps,
     export: {
       total: exportStatus.total,
@@ -3868,6 +3913,8 @@ async function flushEditSaves() {
 }
 
 window.lightTablePrepareToClose = async () => {
+  // Capture a control gesture even if its final change event has not fired.
+  await saveState();
   return await flushEditSaves();
 };
 

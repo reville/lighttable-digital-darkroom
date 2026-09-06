@@ -32,6 +32,7 @@ CURATED_RAW_NAMES = (
     "14-panasonic-fz28-spring-backyard.RW2",
 )
 REQUIRED_PR_STEPS = {
+    "edit-recovery",
     "navigate-photo",
     "rapid-navigation",
     "lens-profile-metal",
@@ -262,6 +263,7 @@ def smoke_environment(
         {
             "LIGHTTABLE_DIR": str(photos),
             "LIGHTTABLE_CATALOG": "0",
+            "LIGHTTABLE_CATALOG_FILE": str(temporary / "catalog/library.sqlite3"),
             "LIGHTTABLE_CACHE_DIR": str(temporary / "cache"),
             "LIGHTTABLE_PREFS_FILE": str(temporary / "prefs.json"),
             "LIGHTTABLE_PRESETS_FILE": str(temporary / "presets.json"),

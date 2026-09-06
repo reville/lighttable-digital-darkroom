@@ -31,7 +31,11 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
       return records;
     }
     const path = base + key;
-    if (operation === 'put') storage.setItem(path, JSON.stringify(value));
+    if (operation === 'put') {
+      const previous = storage.getItem(path);
+      if (previous) JSON.parse(previous);
+      storage.setItem(path, JSON.stringify(value));
+    }
     if (operation === 'remove') {
       const previous = storage.getItem(path);
       if (previous && JSON.parse(previous).token === token) storage.removeItem(path);
