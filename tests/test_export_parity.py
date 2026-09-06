@@ -53,7 +53,7 @@ class ExportParityTests(unittest.TestCase):
             seen.append(dict(request)) or {"width": 2, "height": 1})
         with mock.patch.object(server, "is_raw", return_value=True), \
                 mock.patch.object(server, "raw_shared_input", shared), \
-                mock.patch.object(server, "RUST_ENGINE", engine), \
+                mock.patch.object(server, "BACKGROUND_ENGINE", engine), \
                 mock.patch.object(server, "tiff_for") as tiff:
             metrics = server._resident_render_full("frame.dng", {}, {})
         tiff.assert_not_called()
@@ -70,7 +70,7 @@ class ExportParityTests(unittest.TestCase):
             with mock.patch.object(server, "is_raw", return_value=True), \
                     mock.patch.object(server, "raw_shared_input",
                                       side_effect=PermissionError("denied")), \
-                    mock.patch.object(server, "RUST_ENGINE", engine), \
+                    mock.patch.object(server, "BACKGROUND_ENGINE", engine), \
                     mock.patch.object(server, "tiff_for",
                                       return_value=source):
                 metrics = server._resident_render_full("frame.dng", {}, {})

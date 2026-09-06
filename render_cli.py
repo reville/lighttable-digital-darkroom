@@ -24,6 +24,13 @@ import platform_image
 APP = Path(__file__).resolve().parent
 
 
+def _creation_flags() -> dict:
+    """Keep the console-subsystem engine hidden under a console-less parent."""
+    if os.name != "nt":
+        return {}
+    return {"creationflags": getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)}
+
+
 def render_rust(src: str, params: dict) -> np.ndarray:
     """Run the Rust engine for full-resolution export."""
     cp = fp.clean_params(params)
@@ -50,7 +57,7 @@ def render_rust(src: str, params: dict) -> np.ndarray:
         else:
             command += ["--paper", cp["paper"]]
         result = subprocess.run(command, capture_output=True, text=True,
-                                timeout=1800)
+                                timeout=1800, **_creation_flags())
         if result.returncode != 0 or not output_path.is_file():
             detail = (result.stderr or result.stdout).strip()[-500:]
             raise RuntimeError(f"Rust film render failed: {detail}")

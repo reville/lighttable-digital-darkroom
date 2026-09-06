@@ -12,6 +12,8 @@ import os
 import subprocess
 import sys
 import tempfile
+import threading
+from collections import OrderedDict
 from pathlib import Path
 
 import numpy as np
@@ -19,6 +21,9 @@ import tifffile
 from PIL import Image, ImageOps
 
 import platform_image
+
+# Leave CPU capacity for the second renderer and the UI during RAW decode.
+os.environ.setdefault("OMP_NUM_THREADS", "8")
 
 
 ICC_PROFILES = {
@@ -320,25 +325,25 @@ def decode_raw(path: Path | str, params: dict | None = None,
     source residuals then restores low-frequency scene colour without
     restoring high-frequency sensor noise.
     """
-    import rawpy
+    import raw_decode_runtime
 
     params = params or {}
     mode = str(params.get("wb_mode", "as_shot"))
     if mode not in RAW_WB_MODES:
         mode = "as_shot"
-    with rawpy.imread(str(path)) as raw:
+    with raw_decode_runtime.open_raw(path) as (raw, decoder):
         sensor_width = int(getattr(raw.sizes, "width", 0) or 0)
         preview_half_size = bool(
             max_width and sensor_width and int(max_width) * 2 <= sensor_width)
-        kwargs = raw_postprocess_options(
-            params, half_size=half_size or preview_half_size)
+        kwargs = raw_decode_runtime.native_options(raw_postprocess_options(
+            params, half_size=half_size or preview_half_size), decoder)
         if mode == "as_shot":
             kwargs["use_camera_wb"] = True
         else:
             kwargs["user_wb"] = list(raw.daylight_whitebalance)
         try:
             rgb = raw.postprocess(**kwargs)
-        except rawpy.LibRawError:
+        except decoder.LibRawError:
             # Some non-Bayer sensors do not support DCB or FBDD. Preserve the
             # selected colour/recovery settings and fall back to the camera's
             # supported demosaic rather than making the photo unreadable.
@@ -435,23 +440,53 @@ def decode_raw_display(path: Path | str, params: dict | None = None,
     return (display * 65535.0 + 0.5).astype(np.uint16)
 
 
+_EMBEDDED_PREVIEWS: OrderedDict[tuple, np.ndarray] = OrderedDict()
+_EMBEDDED_PREVIEW_LOCK = threading.Lock()
+_EMBEDDED_PREVIEW_BYTES = 32 * 1024 * 1024
+
+
 def raw_embedded_preview(path: Path | str, max_width: int) -> np.ndarray:
-    """Extract the camera JPEG/bitmap preview without demosaicing the RAW."""
+    """Decode a bounded camera preview once for film input and Before/Match."""
     import rawpy
 
-    with rawpy.imread(str(path)) as raw:
-        thumb = raw.extract_thumb()
-    if thumb.format == rawpy.ThumbFormat.JPEG:
-        image = ImageOps.exif_transpose(
-            Image.open(io.BytesIO(thumb.data))).convert("RGB")
-    else:
-        image = Image.fromarray(thumb.data, "RGB")
-    if image.width > max_width:
-        image = image.resize(
-            (max_width, max(1, round(image.height * max_width / image.width))),
-            Image.Resampling.LANCZOS,
-        )
-    return np.asarray(image, dtype=np.uint8)
+    path = Path(path)
+    max_width = max(1, int(max_width))
+    # Before uses up to 1600px. Share that draft with smaller interactive inputs
+    # instead of reopening the RAW (and JPEG) for the Match factor.
+    decode_width = max(1600, max_width)
+    stat = path.stat()
+    key = (str(path.resolve()), stat.st_size, stat.st_mtime_ns, decode_width)
+    with _EMBEDDED_PREVIEW_LOCK:
+        pixels = _EMBEDDED_PREVIEWS.get(key)
+        if pixels is None:
+            with rawpy.imread(str(path)) as raw:
+                thumb = raw.extract_thumb()
+            if thumb.format == rawpy.ThumbFormat.JPEG:
+                with Image.open(io.BytesIO(thumb.data)) as opened:
+                    orientation = opened.getexif().get(274, 1)
+                    oriented_width = opened.height if orientation in (5, 6, 7, 8) else opened.width
+                    ratio = min(1.0, decode_width / max(1, oriented_width))
+                    opened.draft("RGB", (max(1, round(opened.width * ratio)),
+                                         max(1, round(opened.height * ratio))))
+                    image = ImageOps.exif_transpose(opened).convert("RGB")
+            else:
+                image = Image.fromarray(thumb.data, "RGB")
+            if image.width > decode_width:
+                image = image.resize((decode_width, max(1, round(
+                    image.height * decode_width / image.width))), Image.Resampling.LANCZOS)
+            pixels = np.array(image, dtype=np.uint8)
+            pixels.flags.writeable = False
+            if pixels.nbytes <= _EMBEDDED_PREVIEW_BYTES:
+                _EMBEDDED_PREVIEWS[key] = pixels
+                while sum(value.nbytes for value in _EMBEDDED_PREVIEWS.values()) > _EMBEDDED_PREVIEW_BYTES:
+                    _EMBEDDED_PREVIEWS.popitem(last=False)
+        else:
+            _EMBEDDED_PREVIEWS.move_to_end(key)
+    if pixels.shape[1] > max_width:
+        image = Image.fromarray(pixels).resize((max_width, max(1, round(
+            pixels.shape[0] * max_width / pixels.shape[1]))), Image.Resampling.LANCZOS)
+        return np.asarray(image, dtype=np.uint8)
+    return pixels
 
 
 def raw_embedded_thumbnail(path: Path | str, destination: Path,

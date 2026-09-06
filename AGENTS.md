@@ -14,6 +14,10 @@ is the catalog's only writer and owns its render caches and resident GPU engine.
   results from a successful state write.
 - External edits are attributed in History, refresh in the open window, and
   provide Undo. Respect the window's automation preference.
+- When changing user-facing behavior, run `python3 scripts/help_content.py status`
+  and review affected articles in `docs/help/`. Keep help, source evidence, and
+  the bundled content in the same change. Follow `docs/help/README.md`; never
+  automatically acknowledge reviews to silence a failing help check.
 - Plan destructive work first. Generic destructive route calls require `--yes`,
   and originals may only move through the recoverable trash workflow.
 

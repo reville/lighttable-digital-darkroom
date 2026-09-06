@@ -21,6 +21,7 @@ pillow==12.3.0
 pyfftw==0.15.1
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
+# macOS additionally installs rawpy_openmp; stock rawpy handles X-Trans.
 rawpy==0.26.1
 scikit-image==0.26.0
 scipy==1.18.1

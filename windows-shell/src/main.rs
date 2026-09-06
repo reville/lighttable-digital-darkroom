@@ -15,16 +15,20 @@ use std::{
 
 use anyhow::{Context, Result, anyhow, bail};
 use directories::{BaseDirs, UserDirs};
-use lighttable_desktop_shell::{Settings, edit_recovery, normalise, rename_root, source_folders};
+use lighttable_desktop_shell::{
+    Settings, WindowState, edit_recovery, fit_window, normalise, rename_root, source_folders, worker_threads,
+};
 use rfd::{FileDialog, MessageButtons, MessageDialog, MessageLevel};
 use serde_json::{Value, json};
 use tao::{
     dpi::LogicalSize,
     event::{Event, WindowEvent},
-    event_loop::{ControlFlow, EventLoopBuilder},
-    window::{Window, WindowBuilder},
+    event_loop::{ControlFlow, EventLoopBuilder, EventLoopProxy},
+    window::{Theme, Window, WindowBuilder},
 };
-use wry::{PageLoadEvent, WebView, WebViewBuilder};
+#[cfg(target_os = "windows")]
+use wry::{Theme as WebViewTheme, WebViewBuilderExtWindows};
+use wry::{PageLoadEvent, WebContext, WebView, WebViewBuilder};
 
 fn photo_extensions() -> Vec<String> {
     let groups: Value = serde_json::from_str(include_str!("../../media-formats.json"))
@@ -51,13 +55,43 @@ document.documentElement.classList.add('native-shell', 'windows-shell');
 document.documentElement.style.setProperty('--native-window-controls-w', '0px');
 "#;
 
-#[derive(Debug)]
+/// `--bg` from `web/style.css`. The window and the webview paint it before
+/// the UI arrives, so a launch or a folder switch never flashes white.
+const BACKGROUND: (u8, u8, u8, u8) = (0x12, 0x12, 0x12, 0xff);
+
+/// Shown while the render server starts. The window opens immediately and
+/// stays responsive; the real UI replaces this page once the server answers.
+const LOADING_PAGE: &str = r#"<!doctype html>
+<html><head><meta charset="utf-8"><title>LightTable</title><style>
+html, body { margin: 0; height: 100%; background: #121212; color: #cfcfcf;
+  font: 13px system-ui, "Segoe UI", sans-serif; }
+main { height: 100%; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 14px; }
+.spin { width: 22px; height: 22px; border: 2px solid #353535; border-top-color: #f0f0f0;
+  border-radius: 50%; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style></head>
+<body><main><div class="spin"></div><div>Starting LightTable…</div></main></body></html>
+"#;
+
+const DEFAULT_WINDOW: (f64, f64) = (1500.0, 950.0);
+const MINIMUM_WINDOW: (f64, f64) = (1100.0, 700.0);
+const SERVER_READY_TIMEOUT: Duration = Duration::from_secs(45);
+#[cfg(target_os = "windows")]
+const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+
 enum UserEvent {
     NativeMessage(String),
     EditJournalReply(Value),
     PageLoaded,
+    ServerReady {
+        generation: u64,
+        folder: PathBuf,
+        result: Result<ServerController>,
+    },
 }
 
+#[derive(Clone)]
 struct RuntimePaths {
     project: PathBuf,
     python: PathBuf,
@@ -115,8 +149,23 @@ impl ServerController {
         fs::create_dir_all(&paths.cache)?;
         let port = choose_port()?;
         let log = std::fs::OpenOptions::new().create(true).append(true).open(&paths.log)?;
+        let bytecode = paths.cache.join("python-bytecode");
+        let threads = worker_threads(
+            thread::available_parallelism()
+                .map(usize::from)
+                .unwrap_or(4),
+        )
+        .to_string();
         let mut command = Command::new(&paths.python);
         command
+            // The embedded runtime's `python313._pth` puts the interpreter in
+            // isolated mode, which ignores every PYTHON* environment variable.
+            // Unbuffered logging and the bytecode cache location therefore
+            // travel as interpreter options; the variables below still serve
+            // a development virtual environment.
+            .arg("-u")
+            .arg("-X")
+            .arg(format!("pycache_prefix={}", bytecode.display()))
             .arg(paths.project.join("server.py"))
             .current_dir(&paths.project)
             .env("LIGHTTABLE_DIR", folder)
@@ -129,15 +178,21 @@ impl ServerController {
                 "LIGHTTABLE_PRESETS_FILE",
                 paths.support.join("presets.json"),
             )
-            .env("PYTHONDONTWRITEBYTECODE", "1")
-            .env("PYTHONPYCACHEPREFIX", paths.cache.join("python-bytecode"))
-            .env("OMP_NUM_THREADS", "4")
-            .env("NUMBA_NUM_THREADS", "4")
-            .env("OPENBLAS_NUM_THREADS", "4")
+            .env("LIGHTTABLE_SERVER_LOG", &paths.log)
+            .env("PYTHONPYCACHEPREFIX", &bytecode)
+            .env("OMP_NUM_THREADS", &threads)
+            .env("NUMBA_NUM_THREADS", &threads)
+            .env("OPENBLAS_NUM_THREADS", &threads)
             .env("PYTHONUNBUFFERED", "1")
             .env("LIGHTTABLE_LOG_FILE", &paths.log)
             .stdout(Stdio::from(log.try_clone()?))
             .stderr(Stdio::from(log));
+        if env::var_os("NUMBA_CACHE_DIR").is_none() {
+            // Compiled kernels otherwise land beside the shipped sources,
+            // which the uninstaller never removes and a read-only install
+            // cannot accept at all.
+            command.env("NUMBA_CACHE_DIR", paths.cache.join("compiled-runtime"));
+        }
 
         let mut python_paths = vec![paths.project.join("vendor").join("spektrafilm").join("src")];
         if let Some(existing) = env::var_os("PYTHONPATH") {
@@ -148,14 +203,14 @@ impl ServerController {
         #[cfg(target_os = "windows")]
         {
             use std::os::windows::process::CommandExt;
-            command.creation_flags(0x0800_0000);
+            command.creation_flags(CREATE_NO_WINDOW);
         }
 
         let child = command
             .spawn()
             .context("could not start the render server")?;
         let mut controller = Self { child, port };
-        if let Err(error) = wait_until_ready(port, Duration::from_secs(45)) {
+        if let Err(error) = wait_until_ready(port, SERVER_READY_TIMEOUT) {
             controller.stop();
             return Err(error);
         }
@@ -179,7 +234,8 @@ impl Drop for ServerController {
 struct AppState {
     window: Window,
     webview: WebView,
-    server: ServerController,
+    _web_context: WebContext,
+    server: Option<ServerController>,
     paths: RuntimePaths,
     settings: Settings,
     folder: PathBuf,
@@ -187,6 +243,16 @@ struct AppState {
     close_deadline: Option<Instant>,
     close_approved: bool,
     close_attempts: CloseAttempts,
+    proxy: EventLoopProxy<UserEvent>,
+    /// Identifies the server start whose result is still wanted.
+    launch_generation: u64,
+    /// A start is in flight; further folder choices wait in `queued`.
+    pending: bool,
+    queued: Option<PathBuf>,
+    /// Where to return if the folder being opened cannot start a server.
+    fallback: Option<PathBuf>,
+    /// Shown as a toast once the next page finishes loading.
+    pending_error: Option<String>,
 }
 
 impl AppState {
@@ -217,6 +283,13 @@ impl AppState {
         self.settings.save(&self.paths.settings)
     }
 
+    fn set_title(&self, folder: &Path) {
+        self.window.set_title(&format!(
+            "LightTable — {}",
+            folder.file_name().unwrap_or_default().to_string_lossy()
+        ));
+    }
+
     fn launch(&mut self, folder: PathBuf) -> Result<()> {
         let folder = normalise(folder);
         if !folder.is_dir() {
@@ -226,20 +299,127 @@ impl AppState {
             .add_source(folder.clone(), self.settings.sources.is_empty());
         self.settings.active = Some(folder.clone());
         self.settings.save(&self.paths.settings)?;
-        let server = ServerController::start(&self.paths, &folder)?;
-        self.server.stop();
-        self.server = server;
-        self.folder = folder;
-        self.window.set_title(&format!(
-            "LightTable — {}",
-            self.folder
-                .file_name()
-                .unwrap_or_default()
-                .to_string_lossy()
-        ));
-        self.webview
-            .load_url(&format!("http://127.0.0.1:{}/", self.server.port))?;
+        if self.pending {
+            // One server start at a time: the catalog lease belongs to the
+            // process being started, so the newest choice waits its turn.
+            self.queued = Some(folder);
+            return Ok(());
+        }
+        let fallback = self.server.as_ref().map(|_| self.folder.clone());
+        self.begin_server(folder, fallback);
         Ok(())
+    }
+
+    /// Stop the running server and start one for `folder` off the UI thread.
+    ///
+    /// One catalog holds one process lease, so the previous server must be
+    /// gone before its replacement opens the same library. The loading page
+    /// covers the gap while the window keeps painting, moving, and closing.
+    fn begin_server(&mut self, folder: PathBuf, fallback: Option<PathBuf>) {
+        if let Some(mut previous) = self.server.take() {
+            previous.stop();
+        }
+        self.folder = folder.clone();
+        self.fallback = fallback;
+        self.set_title(&folder);
+        let _ = self.webview.load_html(LOADING_PAGE);
+        self.launch_generation += 1;
+        self.pending = true;
+        let generation = self.launch_generation;
+        let paths = self.paths.clone();
+        let proxy = self.proxy.clone();
+        thread::spawn(move || {
+            let result = ServerController::start(&paths, &folder);
+            let _ = proxy.send_event(UserEvent::ServerReady {
+                generation,
+                folder,
+                result,
+            });
+        });
+    }
+
+    fn server_ready(&mut self, generation: u64, folder: PathBuf, result: Result<ServerController>) {
+        if generation != self.launch_generation {
+            // A newer start superseded this one; its server must not linger.
+            if let Ok(mut stale) = result {
+                stale.stop();
+            }
+            return;
+        }
+        self.pending = false;
+        if let Some(next) = self.queued.take() {
+            if let Ok(mut superseded) = result {
+                superseded.stop();
+            }
+            let fallback = self.fallback.take().or(Some(folder));
+            self.begin_server(next, fallback);
+            return;
+        }
+        match result {
+            Ok(server) => {
+                let url = format!("http://127.0.0.1:{}/", server.port);
+                self.server = Some(server);
+                self.fallback = None;
+                if let Err(error) = self.webview.load_url(&url) {
+                    show_fatal(&format!("{error:#}"));
+                    std::process::exit(1);
+                }
+            }
+            Err(error) => {
+                let message = format!("{error:#}");
+                match self
+                    .fallback
+                    .take()
+                    .filter(|previous| previous != &folder && previous.is_dir())
+                {
+                    Some(previous) => {
+                        // Return to the folder that was open, and say why.
+                        self.pending_error = Some(format!(
+                            "Could not open {}: {message}",
+                            folder.file_name().unwrap_or_default().to_string_lossy()
+                        ));
+                        self.settings.active = Some(previous.clone());
+                        let _ = self.save_settings();
+                        self.begin_server(previous, None);
+                    }
+                    None => {
+                        show_fatal(&message);
+                        std::process::exit(1);
+                    }
+                }
+            }
+        }
+    }
+
+    fn page_loaded(&mut self) {
+        let _ = self.send_sources();
+        if let Some(message) = self.pending_error.take() {
+            let _ = self.send_event(json!({"type": "error", "message": message}));
+        }
+    }
+
+    /// Remember the logical window size for the next launch. A maximized
+    /// window keeps the last restored size so un-maximizing later is sane.
+    fn remember_window(&mut self) {
+        let maximized = self.window.is_maximized();
+        let (width, height) = if maximized {
+            self.settings
+                .window
+                .map(|state| (state.width, state.height))
+                .unwrap_or(DEFAULT_WINDOW)
+        } else {
+            let size = self
+                .window
+                .inner_size()
+                .to_logical::<f64>(self.window.scale_factor());
+            (size.width, size.height)
+        };
+        self.settings.window = Some(WindowState {
+            width,
+            height,
+            maximized,
+        });
+        let _ = self.save_settings();
     }
 
     fn handle_command(&mut self, raw: &str) -> Result<()> {
@@ -351,9 +531,7 @@ impl AppState {
                     .unwrap_or_default();
                 if application.is_empty() {
                     for path in paths {
-                        Command::new("cmd.exe")
-                            .args(["/C", "start", "", &path])
-                            .spawn()?;
+                        open_with_default_application(&path)?;
                     }
                 } else if !paths.is_empty() {
                     Command::new(application).args(paths).spawn()?;
@@ -585,18 +763,46 @@ fn recycle(_path: &Path) -> Result<()> {
     Err(anyhow!("the Recycle Bin is only available on Windows"))
 }
 
+/// Open a file with the application registered for it.
+fn open_with_default_application(path: &str) -> Result<()> {
+    #[cfg(target_os = "windows")]
+    {
+        use std::os::windows::process::CommandExt;
+        // `cmd.exe` is a console program; without this flag a command window
+        // would flash on every double-click from a shell that has no console.
+        Command::new("cmd.exe")
+            .args(["/C", "start", "", path])
+            .creation_flags(CREATE_NO_WINDOW)
+            .spawn()?;
+    }
+    #[cfg(target_os = "macos")]
+    Command::new("open").arg(path).spawn()?;
+    #[cfg(not(any(target_os = "windows", target_os = "macos")))]
+    Command::new("xdg-open").arg(path).spawn()?;
+    Ok(())
+}
+
 fn reveal(path: &Path) -> Result<()> {
     #[cfg(target_os = "windows")]
-    let status = Command::new("explorer.exe")
-        .arg(format!("/select,{}", path.display()))
-        .status()?;
+    {
+        use std::os::windows::process::CommandExt;
+        // Explorer reports a nonzero exit status even after it has selected
+        // the item, so only a failure to launch it is an error here.
+        Command::new("explorer.exe")
+            .raw_arg(format!("/select,\"{}\"", path.display()))
+            .spawn()
+            .context("File Explorer could not be started")?;
+        return Ok(());
+    }
     #[cfg(target_os = "macos")]
     let status = Command::new("open").arg("-R").arg(path).status()?;
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     let status = Command::new("xdg-open").arg(path).status()?;
+    #[cfg(not(target_os = "windows"))]
     if !status.success() {
         bail!("the file browser could not open that location")
     }
+    #[cfg(not(target_os = "windows"))]
     Ok(())
 }
 
@@ -667,26 +873,48 @@ fn run() -> Result<()> {
                 .pick_folder()
         })
         .context("no photo folder was chosen")?;
+    let folder = normalise(folder);
     settings.add_source(folder.clone(), settings.sources.is_empty());
     settings.active = Some(folder.clone());
     settings.save(&paths.settings)?;
-    let server = ServerController::start(&paths, &folder)?;
 
     let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
     let proxy = event_loop.create_proxy();
+    let available = event_loop
+        .primary_monitor()
+        .map(|monitor| {
+            let size = monitor.size().to_logical::<f64>(monitor.scale_factor());
+            (size.width, size.height)
+        })
+        .unwrap_or(DEFAULT_WINDOW);
+    let remembered = settings.window;
+    let (width, height) = fit_window(
+        remembered
+            .map(|state| (state.width, state.height))
+            .unwrap_or(DEFAULT_WINDOW),
+        MINIMUM_WINDOW,
+        available,
+    );
     let window = WindowBuilder::new()
         .with_title(format!(
             "LightTable — {}",
             folder.file_name().unwrap_or_default().to_string_lossy()
         ))
-        .with_inner_size(LogicalSize::new(1500.0, 950.0))
-        .with_min_inner_size(LogicalSize::new(1100.0, 700.0))
+        .with_inner_size(LogicalSize::new(width, height))
+        .with_min_inner_size(LogicalSize::new(MINIMUM_WINDOW.0, MINIMUM_WINDOW.1))
+        .with_maximized(remembered.is_some_and(|state| state.maximized))
+        .with_theme(Some(Theme::Dark))
+        .with_background_color(BACKGROUND)
         .build(&event_loop)?;
 
+    // WebView2 otherwise keeps its profile beside the executable, which the
+    // uninstaller never removes and a read-only location cannot hold.
+    let mut web_context = WebContext::new(Some(paths.support.join("WebView2")));
     let command_proxy = proxy.clone();
     let load_proxy = proxy.clone();
-    let webview = WebViewBuilder::new()
-        .with_url(format!("http://127.0.0.1:{}/", server.port))
+    let builder = WebViewBuilder::new_with_web_context(&mut web_context)
+        .with_html(LOADING_PAGE)
+        .with_background_color(BACKGROUND)
         .with_initialization_script(BRIDGE_SCRIPT)
         .with_clipboard(true)
         .with_ipc_handler(move |request| {
@@ -696,8 +924,10 @@ fn run() -> Result<()> {
             if matches!(event, PageLoadEvent::Finished) {
                 let _ = load_proxy.send_event(UserEvent::PageLoaded);
             }
-        })
-        .build(&window)?;
+        });
+    #[cfg(target_os = "windows")]
+    let builder = builder.with_theme(WebViewTheme::Dark);
+    let webview = builder.build(&window)?;
 
     let (journal_tx, journal_rx) = std::sync::mpsc::channel::<Value>();
     let journal_proxy = proxy.clone();
@@ -726,15 +956,23 @@ fn run() -> Result<()> {
     let mut app = AppState {
         window,
         webview,
-        server,
+        _web_context: web_context,
+        server: None,
         paths,
         settings,
-        folder: normalise(folder),
+        folder: folder.clone(),
         journal: journal_tx,
         close_deadline: None,
         close_approved: false,
         close_attempts: CloseAttempts::default(),
+        proxy,
+        launch_generation: 0,
+        pending: false,
+        queued: None,
+        fallback: None,
+        pending_error: None,
     };
+    app.begin_server(folder, None);
 
     event_loop.run(move |event, _, control_flow| {
         *control_flow = app.close_deadline.map(ControlFlow::WaitUntil).unwrap_or(ControlFlow::Wait);
@@ -750,13 +988,17 @@ fn run() -> Result<()> {
             Event::UserEvent(UserEvent::EditJournalReply(reply)) => {
                 let _ = app.send_event(reply);
             }
-            Event::UserEvent(UserEvent::PageLoaded) => {
-                let _ = app.send_sources();
-            }
+            Event::UserEvent(UserEvent::PageLoaded) => app.page_loaded(),
+            Event::UserEvent(UserEvent::ServerReady {
+                generation,
+                folder,
+                result,
+            }) => app.server_ready(generation, folder, result),
             Event::WindowEvent {
                 event: WindowEvent::CloseRequested,
                 ..
             } => {
+                app.remember_window();
                 if app.close_deadline.is_none() {
                     app.close_deadline = Some(Instant::now() + Duration::from_secs(12));
                     let attempt = app.close_attempts.begin();
@@ -772,7 +1014,9 @@ fn run() -> Result<()> {
             _ => {}
         }
         if app.close_approved {
-            app.server.stop();
+            if let Some(mut server) = app.server.take() {
+                server.stop();
+            }
             *control_flow = ControlFlow::Exit;
         } else if let Some(deadline) = app.close_deadline {
             *control_flow = ControlFlow::WaitUntil(deadline);

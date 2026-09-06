@@ -205,8 +205,9 @@ export function createCatalogUI(ctx) {
     const options = el('importOptions'), run = el('importRun');
     const preview = el('importPreview'), trial = el('importTrial');
     if (!open || !dialog) return;
-    let inspected = '', previewed = '', busy = false, inspection = 0;
-    const requestBody = () => ({path: pathInput.value.trim(), options: {
+    let inspected = '', previewed = '', busy = false, inspection = 0, inspectTimer = null;
+    const requestBody = () => ({path: pathInput.value.trim(),
+      addSources: el('impAddSources').checked, options: {
       metadata: el('impMetadata').checked, keywords: el('impKeywords').checked,
       collections: el('impCollections').checked, stacks: el('impStacks').checked,
       develop: el('impDevelop').checked, history: el('impHistory').checked,
@@ -220,20 +221,61 @@ export function createCatalogUI(ctx) {
       el('importChoose').disabled = busy;
       options.querySelectorAll('input, select').forEach(control => { control.disabled = busy; });
     }
-    const show = visible => {
-      dialog.setAttribute('aria-hidden', String(!visible));
+
+    const background = new Map();
+    let returnFocus = null;
+    const show = (visible) => {
+      const wasVisible = dialog.classList.contains('on');
+      dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
       dialog.classList.toggle('on', visible);
+      if (visible && !wasVisible) {
+        returnFocus = document.activeElement;
+        for (const node of document.body.children) {
+          if (node === dialog || node.tagName === 'SCRIPT') continue;
+          background.set(node, node.inert);
+          node.inert = true;
+        }
+        pathInput.focus();
+      } else if (!visible && wasVisible) {
+        for (const [node, inert] of background) node.inert = inert;
+        background.clear();
+        returnFocus?.focus?.();
+        ctx.onCatalogImportClosed?.();
+      }
     };
-    open.addEventListener('click', () => show(true));
-    el('importCancel').addEventListener('click', () => show(false));
-    dialog.addEventListener('keydown', event => {
+    dialog.addEventListener('keydown', (event) => {
+      if (!dialog.classList.contains('on')) return;
       event.stopPropagation();
-      if (event.key === 'Escape') { event.preventDefault(); show(false); }
+      if (event.key === 'Escape') {
+        event.preventDefault(); show(false);
+      } else if (event.key === 'Tab') {
+        const targets = [...dialog.querySelectorAll('button, input, select')]
+          .filter((node) => !node.disabled && node.getClientRects().length);
+        const index = targets.indexOf(document.activeElement);
+        if (event.shiftKey && index <= 0) {
+          event.preventDefault(); targets.at(-1)?.focus();
+        } else if (!event.shiftKey && (index < 0 || index === targets.length - 1)) {
+          event.preventDefault(); targets[0]?.focus();
+        }
+      }
     });
-    el('importChoose')?.addEventListener('click', () => {
-      if (!sendNative('chooseCatalogFile', {})) toast('Paste the catalog file path to continue');
-    });
+
+    open.addEventListener('click', () => { show(true); });
+    const cancel = el('importCancel');
+    if (cancel) cancel.addEventListener('click', () => show(false));
+
+    const choose = el('importChoose');
+    if (choose) {
+      choose.addEventListener('click', () => {
+        if (!sendNative('chooseCatalogFile', {})) {
+          toast('Choosing a file needs the desktop app; paste a path instead');
+        }
+      });
+    }
+
     async function inspect() {
+      clearTimeout(inspectTimer);
+      if (busy) return;
       const path = pathInput.value.trim(), ticket = ++inspection;
       inspected = previewed = '';
       controls();
@@ -252,6 +294,11 @@ export function createCatalogUI(ctx) {
       controls();
     }
     pathInput.addEventListener('change', inspect);
+    pathInput.addEventListener('input', () => {
+      ++inspection; inspected = previewed = ''; options.hidden = true; controls();
+      clearTimeout(inspectTimer);
+      inspectTimer = setTimeout(inspect, 300);
+    });
     options.addEventListener('change', controls);
     function showReport(result) {
       const prefix = result.previewOnly ? 'Compatibility preview' : result.trial ? 'Trial variants created' : 'Import complete';
@@ -292,6 +339,7 @@ export function createCatalogUI(ctx) {
             if (mode === 'preview') previewed = signature;
             showReport(result);
             if (mode !== 'preview') {
+              ctx.onCatalogImportCompleted?.(result);
               await refresh();
               if (ctx.onLibraryChanged) ctx.onLibraryChanged();
             }

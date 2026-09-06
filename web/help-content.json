@@ -1,0 +1,2588 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Add photos and start browsing",
+      "category": "Getting started",
+      "summary": "Open photos or folders in place, then choose a folder and start reviewing.",
+      "keywords": [
+        "start",
+        "open",
+        "browse",
+        "add folder",
+        "originals",
+        "import",
+        "new library"
+      ],
+      "sections": [
+        {
+          "title": "Choose a starting point",
+          "paragraphs": [
+            "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.",
+            "Apple Photos whole-library import requires the macOS app and permission to read Photos. It copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. Your Photos library stays unchanged. iCloud originals download during import, so allow time and disk space. Albums, videos, and Photos edits are not transferred.",
+            "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals."
+          ],
+          "steps": [
+            "Choose a folder to browse originals in place, or select one of the migration options.",
+            "Review the import result, then continue into the library."
+          ]
+        },
+        {
+          "title": "Open a local folder",
+          "paragraphs": [
+            "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+          ],
+          "steps": [
+            "Click Add Photos at the upper left and choose one or more photos or folders.",
+            "Choose the folder under Local in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
+            "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active."
+          ],
+          "tips": [
+            "If the sidebar is hidden, use Show or hide library at the upper left."
+          ]
+        },
+        {
+          "title": "Bring new files into an existing folder",
+          "paragraphs": [
+            "Use the Local ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ]
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Bring a Lightroom Classic catalog into LightTable",
+      "category": "Getting started",
+      "summary": "Import supported metadata and approximate edits, then review the conversion report.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrate",
+        "migration",
+        "catalog import",
+        "lrcat",
+        "sidecars",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Prepare and inspect",
+          "paragraphs": [
+            "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog. Add the photo folders used by this catalog lets the import register referenced originals and their containing folders. It leaves originals in place. Clear that option to match only photos already in LightTable.",
+            "Preview compatibility reports matches in the current library without changing it. Photos not yet added may show as unmatched in the preview; importing with Add the photo folders enabled registers available originals before matching again."
+          ],
+          "steps": [
+            "Open Local ••• → Import catalog…, or choose the Lightroom Classic catalog option in setup.",
+            "Choose the .lrcat file and review its counts and warnings.",
+            "Choose the categories to import, the policy for existing edits, and whether to add the referenced photo folders.",
+            "Click Preview compatibility and review mapped and skipped settings. Try 20 variants creates separate trial edits before a larger import.",
+            "Click Import after reviewing compatibility, then read the report and matched, not found, and skipped counts. LightTable creates a catalog backup before a trial or import."
+          ]
+        },
+        {
+          "title": "Review translated edits",
+          "paragraphs": [
+            "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
+            "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords"
+      ]
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "Choose LightTable or Classic shortcuts",
+      "category": "Getting started",
+      "summary": "Choose the keyboard layout that fits your editing habits.",
+      "keywords": [
+        "keyboard",
+        "shortcuts",
+        "classic",
+        "Lightroom",
+        "crop key",
+        "detail key",
+        "before after"
+      ],
+      "sections": [
+        {
+          "title": "Choose a scheme",
+          "paragraphs": [
+            "Open Settings → Shortcuts & Hardware and choose Shortcut scheme. LightTable and Classic share most culling shortcuts, but differ for Detail, Crop, and before/after Compare."
+          ],
+          "steps": [
+            "Choose LightTable for D = Detail, C = Crop, and backslash (\\) = before/after Compare.",
+            "Choose Classic for E = Detail, R = Crop, and C = before/after Compare."
+          ],
+          "tips": [
+            "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0–5 for stars.",
+            "Hold B to show the original while inspecting an edit. Slash (/) focuses photo search.",
+            "Photo shortcuts are ignored while typing in text, number, or selection fields. Leave the field before using a photo command."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ]
+    },
+    {
+      "id": "import-from-card",
+      "title": "Import photos from a card",
+      "category": "Getting started",
+      "summary": "Copy selected photos into dated folders, with verification and an optional second copy.",
+      "keywords": [
+        "ingest",
+        "memory card",
+        "camera card",
+        "copy",
+        "backup",
+        "duplicates",
+        "import photos"
+      ],
+      "sections": [
+        {
+          "title": "Plan the copy",
+          "paragraphs": [
+            "Import from card copies files into the destination you choose. The card originals stay in place."
+          ],
+          "steps": [
+            "Open Local ••• → Import from card….",
+            "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
+            "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
+            "Click Scan. Review the destination preview and the checked files, then click Import.",
+            "Wait for the copied count and check whether any files failed."
+          ],
+          "tips": [
+            "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
+            "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
+            "If files are reported as cloud-only, download them locally and scan again."
+          ]
+        },
+        {
+          "title": "Refresh the plan when settings change",
+          "paragraphs": [
+            "Scan again after changing the destination or naming templates so you can review the updated paths before importing."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ]
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Switch views and select photos",
+      "category": "Getting started",
+      "summary": "Use the grids to choose a set and Detail to inspect an individual photo.",
+      "keywords": [
+        "grid",
+        "detail",
+        "filmstrip",
+        "select multiple",
+        "shift click",
+        "command click",
+        "control click",
+        "navigation",
+        "zoom"
+      ],
+      "sections": [
+        {
+          "title": "Move between views",
+          "paragraphs": [
+            "Photo Grid presents photos as a visual overview. Culling Grid adds room for selection and rating information. Detail opens the active photo for close inspection."
+          ],
+          "steps": [
+            "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
+            "In a grid, use the Size slider to change thumbnail size.",
+            "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus."
+          ]
+        },
+        {
+          "title": "Build a selection",
+          "paragraphs": [
+            "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
+            "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ]
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Add keywords, captions, and rights information",
+      "category": "Library",
+      "summary": "Make photos easier to find and prepare descriptive metadata for export.",
+      "keywords": [
+        "metadata",
+        "IPTC",
+        "EXIF",
+        "keywords",
+        "caption",
+        "title",
+        "copyright",
+        "creator",
+        "location",
+        "GPS"
+      ],
+      "sections": [
+        {
+          "title": "Add searchable keywords",
+          "paragraphs": [
+            "Open Info on the active photo. Enter keywords in Add keywords and click Add or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
+            "Use a hierarchical path such as Places > Boston to keep related terms together. The Keyword tree lists catalog terms; click a term to search, or double-click it to rename that catalog keyword."
+          ],
+          "tips": [
+            "The keyword entry acts on the active photo, rather than every selected grid photo. Link pair metadata can also update its RAW or JPEG companion."
+          ]
+        },
+        {
+          "title": "Describe the photo",
+          "paragraphs": [
+            "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type.",
+            "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time"
+      ]
+    },
+    {
+      "id": "browse-folders",
+      "title": "Browse folders and save favorites",
+      "category": "Library",
+      "summary": "Choose the folder scope, include subfolders, and keep frequent folders close at hand.",
+      "keywords": [
+        "favorites",
+        "local",
+        "folders",
+        "sidebar",
+        "missing photos",
+        "rescan",
+        "synchronize"
+      ],
+      "sections": [
+        {
+          "title": "Choose what is in view",
+          "paragraphs": [
+            "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply."
+          ],
+          "steps": [
+            "Click a folder under Local.",
+            "Turn Include subfolders on to include child folders, or off to view only that folder.",
+            "Click the star beside a folder, or open its ••• menu and choose Add as Favorite.",
+            "Use Local → Favorites to return to your saved folders."
+          ]
+        },
+        {
+          "title": "Folder actions",
+          "paragraphs": [
+            "A folder’s ••• menu includes Show in Finder on Mac or Show in File Explorer on Windows. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
+            "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ]
+    },
+    {
+      "id": "survey-photos",
+      "title": "Compare several photos in Survey",
+      "category": "Library",
+      "summary": "Review a group together, mark the active frame, and narrow a set of candidates.",
+      "keywords": [
+        "survey",
+        "compare photos",
+        "compare frames",
+        "burst",
+        "side by side",
+        "keeper",
+        "make select"
+      ],
+      "sections": [
+        {
+          "title": "Review a group",
+          "paragraphs": [
+            "Survey displays original previews for choosing between photos. It shows up to 16 selected photos. If there is no explicit selection, it uses up to six nearby photos in the current view."
+          ],
+          "steps": [
+            "Select candidates in a grid and press N, or open Info → Survey selection.",
+            "Click a photo to make that survey cell active. Use left and right arrows to move between cells.",
+            "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.",
+            "Click × on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
+            "Click Close or press Escape to leave Survey."
+          ]
+        },
+        {
+          "title": "Choose one keeper",
+          "paragraphs": [
+            "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
+            "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ]
+    },
+    {
+      "id": "capture-time",
+      "title": "Correct a camera clock or time zone",
+      "category": "Library",
+      "summary": "Preview a shared clock correction while preserving the intervals between photos.",
+      "keywords": [
+        "capture time",
+        "date",
+        "camera clock",
+        "time zone",
+        "timezone",
+        "daylight saving",
+        "sort date",
+        "timestamp"
+      ],
+      "sections": [
+        {
+          "title": "Preview the correction",
+          "paragraphs": [
+            "Capture-time corrections change catalog dates used for capture-date sorting and exported metadata. Original image files and filesystem dates stay unchanged."
+          ],
+          "steps": [
+            "Select the affected photos and open Info → Correct capture time.",
+            "Enter Shift clock by hours, such as -1 or 5.5.",
+            "Optionally enter Assign time zone as an offset such as -04:00 or +05:30. Leave it blank to keep the existing zone, or enter remove to clear it.",
+            "Choose whether to Include RAW + JPEG companions.",
+            "Click Preview selection and review the before-and-after times and any skipped photos.",
+            "Click Apply previewed changes. If you change the selection or correction controls, preview again first."
+          ]
+        },
+        {
+          "title": "Restore a correction",
+          "paragraphs": [
+            "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
+            "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ]
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Find photos with search, filters, and sorting",
+      "category": "Library",
+      "summary": "Narrow the current folder or collection by text, flags, stars, colour, and file kind.",
+      "keywords": [
+        "find",
+        "search",
+        "keywords",
+        "rating filter",
+        "sort",
+        "capture date",
+        "no results",
+        "unrated"
+      ],
+      "sections": [
+        {
+          "title": "Search the current view",
+          "paragraphs": [
+            "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters."
+          ],
+          "steps": [
+            "Click Search photos and keywords, or press / when you are not typing in a field.",
+            "Type a word or phrase from the filename or keywords.",
+            "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.",
+            "Expand Filter for workflow state, minimum rating, colour label, and file kind.",
+            "Choose File name, Rating, Flag, Capture date, or Colour label in Sort."
+          ]
+        },
+        {
+          "title": "When a photo seems missing",
+          "paragraphs": [
+            "Clear the search text and reset Filter choices, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.",
+            "Capture date sorts from earlier to later; Rating sorts higher ratings first."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "Group photos into collections",
+      "category": "Library",
+      "summary": "Create named groups without moving the original files.",
+      "keywords": [
+        "collection",
+        "album",
+        "organize",
+        "group",
+        "selected",
+        "delete collection"
+      ],
+      "sections": [
+        {
+          "title": "Create and add photos",
+          "paragraphs": [
+            "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+          ],
+          "steps": [
+            "Select the photos you want to group.",
+            "Click Create collection or the + beside Collections, enter a name, and save. The current selection is included.",
+            "Click a collection to view it. Clicking the active collection again leaves it.",
+            "With a regular collection active, choose photos to add and click Add selected to collection."
+          ]
+        },
+        {
+          "title": "Delete a collection",
+          "paragraphs": [
+            "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ]
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Move rejected photos to the Trash",
+      "category": "Library",
+      "summary": "Review the current view carefully before moving rejected originals and sidecars.",
+      "keywords": [
+        "delete",
+        "trash",
+        "rejected",
+        "restore",
+        "recover",
+        "remove originals",
+        "recycle bin"
+      ],
+      "sections": [
+        {
+          "title": "Review and move rejected files",
+          "paragraphs": [
+            "Rejecting a photo only changes its flag. Move Rejected Photos to Trash is a separate desktop action that affects rejected photos in the current view, not just the active photo."
+          ],
+          "steps": [
+            "Choose the folder or collection and filters that define the photos you want to review.",
+            "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
+            "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.",
+            "Read the photo count in the confirmation and confirm only when it matches your intended set."
+          ],
+          "tips": [
+            "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.",
+            "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original."
+          ]
+        },
+        {
+          "title": "Recover a mistaken removal on Mac",
+          "paragraphs": [
+            "Use Finder’s Trash to put the original and its sidecars back in their previous folder, then rescan the folder in LightTable. The app does not have an in-app Trash browser."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ]
+    },
+    {
+      "id": "colour-labels",
+      "title": "Organize a workflow with colour labels",
+      "category": "Library",
+      "summary": "Use five colours independently of picks and star ratings.",
+      "keywords": [
+        "color",
+        "colour",
+        "labels",
+        "red",
+        "yellow",
+        "green",
+        "blue",
+        "purple",
+        "workflow"
+      ],
+      "sections": [
+        {
+          "title": "Apply and filter a label",
+          "paragraphs": [
+            "Colour labels are yours to assign meaning to—for example, red for retouching or green for delivery. They do not change star ratings or pick/reject status."
+          ],
+          "steps": [
+            "Select a photo, or a set in a grid, and open Info.",
+            "Under Colour label, choose Red, Yellow, Green, Blue, or Purple. Choose No label to clear it.",
+            "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.",
+            "Expand Filter in the library sidebar and use Colour label to find a particular colour, any colour, or unlabelled photos."
+          ],
+          "tips": [
+            "Applying the same label again clears it. Colour-label actions do not auto-advance."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ]
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Pick, reject, and rate photos",
+      "category": "Library",
+      "summary": "Mark keepers and rejects, give star ratings, and control automatic advance.",
+      "keywords": [
+        "cull",
+        "pick",
+        "reject",
+        "flag",
+        "unflag",
+        "stars",
+        "rating",
+        "auto advance",
+        "keeper"
+      ],
+      "sections": [
+        {
+          "title": "Mark the active photo or grid selection",
+          "paragraphs": [
+            "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it."
+          ],
+          "steps": [
+            "Use Pick, Reject, and Unflag in the marking toolbar or Info. The P, X, and U keys perform the same actions.",
+            "Click a star or press 1–5 to rate. Press 0 to clear the rating.",
+            "To clear an existing pick, reject, or rating, apply that same mark again.",
+            "Use the sidebar’s Picked, Rejected, and Rated views to review your decisions."
+          ]
+        },
+        {
+          "title": "Control what happens next",
+          "paragraphs": [
+            "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.",
+            "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ]
+    },
+    {
+      "id": "rename-photos",
+      "title": "Rename photos with a preview",
+      "category": "Library",
+      "summary": "Apply a consistent filename template to selected originals and their sidecars.",
+      "keywords": [
+        "rename",
+        "filename",
+        "sequence",
+        "batch",
+        "custom text",
+        "date tokens",
+        "sidecars"
+      ],
+      "sections": [
+        {
+          "title": "Preview and apply",
+          "paragraphs": [
+            "Rename changes filenames on disk and keeps the catalog records with the files. It also handles adjacent XMP sidecars. This is different from naming a virtual copy."
+          ],
+          "steps": [
+            "Select the photos to rename.",
+            "Open Info → Rename… (or Photo → Rename… in the Mac menu).",
+            "Enter a Template such as {custom}_{sequence}. Set Custom text and Start at as needed.",
+            "Review the before-and-after filenames in the preview.",
+            "Click Rename to apply."
+          ],
+          "tips": [
+            "Available tokens include {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min}, and {ss}. Sequence numbers use four digits.",
+            "The original extension is retained. A naming collision receives a numeric suffix. Rename templates cannot create folders.",
+            "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ]
+    },
+    {
+      "id": "smart-collections",
+      "title": "Save a search as a smart collection",
+      "category": "Library",
+      "summary": "Keep a named group that updates from supported rules as photo metadata changes.",
+      "keywords": [
+        "smart collection",
+        "saved search",
+        "dynamic",
+        "filter rules",
+        "automatically",
+        "minimum rating"
+      ],
+      "sections": [
+        {
+          "title": "Save supported rules",
+          "paragraphs": [
+            "A smart collection finds photos that match its saved rules. Supported rules are pick/reject/unflag status, minimum star rating, file kind, and search text."
+          ],
+          "steps": [
+            "Set the search text, desired flag group, minimum rating, and file kind in the library.",
+            "Click the ✦ beside Collections, labelled Save filters as smart collection.",
+            "Name the collection and save.",
+            "Click its name to view matching photos. Changing a photo’s relevant metadata changes whether it matches."
+          ]
+        },
+        {
+          "title": "Know what is saved",
+          "paragraphs": [
+            "Colour-label filters, the selected folder, and Include subfolders are not saved in the smart collection rules. Edited and Unrated only are not supported smart-collection rules. Use supported flag and minimum-rating choices when creating one.",
+            "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and sidebar filters can still narrow the collection view."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ]
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Try virtual copies and group photos in stacks",
+      "category": "Library",
+      "summary": "Keep alternate edits of one original and collapse related photos in the grid.",
+      "keywords": [
+        "virtual copy",
+        "version",
+        "alternate edit",
+        "stack",
+        "unstack",
+        "duplicate",
+        "copy"
+      ],
+      "sections": [
+        {
+          "title": "Create an alternate edit",
+          "paragraphs": [
+            "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk."
+          ],
+          "steps": [
+            "Make the source photo active.",
+            "Open the Photo actions ••• menu beside Sort and Size, then choose Create virtual copy.",
+            "Name the copy and save. The new copy becomes active.",
+            "Edit the copy. Use Filter → Workflow state → Virtual copies to find copies later."
+          ],
+          "tips": [
+            "Delete virtual copy in Photo actions removes the active virtual copy. For a real second file on disk, export a rendered image."
+          ]
+        },
+        {
+          "title": "Collapse a group",
+          "paragraphs": [
+            "Select at least two photos, then choose Photo actions ••• → Stack selected photos and enter a name. The stack’s grid badge shows the member count; click it to expand or collapse. Unstack selected photos removes the grouping."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ]
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "Work with RAW and JPEG pairs",
+      "category": "Library",
+      "summary": "Choose which companion to show and whether new metadata changes affect both.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "pair",
+        "companion",
+        "linked metadata",
+        "hidden jpeg"
+      ],
+      "sections": [
+        {
+          "title": "Choose the visible companion",
+          "paragraphs": [
+            "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent."
+          ],
+          "steps": [
+            "Open Settings → Files & Metadata and turn on Pair RAW and JPEG captures.",
+            "Set Show paired captures to Both files, Prefer RAW, or Prefer JPEG.",
+            "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion."
+          ]
+        },
+        {
+          "title": "Link new metadata changes",
+          "paragraphs": [
+            "Turn on Link pair metadata to link new ratings, flags, labels, and keyword changes. It does not combine the photo edits.",
+            "Exports and Trash use the files you choose or include in the current view. They do not automatically include a hidden companion. Choose Both files and review the selection when you need both originals. Capture-time correction has its own Include RAW + JPEG companions checkbox."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ]
+    },
+    {
+      "id": "editing-effects",
+      "title": "Adjust Texture, Clarity, Dehaze, and Vignette",
+      "category": "Editing",
+      "summary": "Refine surface detail, local contrast, haze, and edge brightness from the Effects section.",
+      "keywords": [
+        "effects",
+        "texture",
+        "clarity",
+        "dehaze",
+        "haze",
+        "vignette",
+        "soften",
+        "detail",
+        "local contrast",
+        "dark edges",
+        "bright edges"
+      ],
+      "sections": [
+        {
+          "title": "Refine detail and contrast",
+          "paragraphs": [
+            "Expand Effects in Edit. Texture changes fine local detail, while Clarity applies local contrast with greater emphasis on midtones. Positive values strengthen these effects; negative values soften them."
+          ],
+          "steps": [
+            "Adjust Texture while looking at a textured part of the photo, such as fabric, foliage, or skin.",
+            "Adjust Clarity while checking contrast around the subject and edges.",
+            "Inspect at 1:1 and then return to Fit to judge the overall result."
+          ],
+          "tips": [
+            "For a localized treatment, use a mask’s Texture and Clarity controls."
+          ]
+        },
+        {
+          "title": "Change haze and edge brightness",
+          "paragraphs": [
+            "Dehaze changes the image’s haze-like tonal and color treatment. Vignette changes edge brightness: positive values darken the edges and negative values brighten them."
+          ],
+          "steps": [
+            "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.",
+            "Set Vignette for the edge treatment you want and inspect the corners.",
+            "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together."
+          ],
+          "tips": [
+            "Effects’ Vignette is a creative edge treatment. Use Lens corrections when you want to correct lens shading."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ]
+    },
+    {
+      "id": "editing-tone",
+      "title": "Adjust exposure, contrast, and tonal range",
+      "category": "Editing",
+      "summary": "Use Light controls and the histogram to set brightness and contrast, then check the result against the original.",
+      "keywords": [
+        "exposure",
+        "brightness",
+        "light",
+        "tone",
+        "contrast",
+        "highlights",
+        "shadows",
+        "whites",
+        "blacks",
+        "auto",
+        "histogram",
+        "clipping",
+        "before"
+      ],
+      "sections": [
+        {
+          "title": "Start with Light",
+          "paragraphs": [
+            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation."
+          ],
+          "steps": [
+            "Set Exposure for the main subject.",
+            "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.",
+            "Use the Clipping warning button beside the histogram to inspect clipping.",
+            "Compare your result with the original using the before control, or hold B while the photo is active."
+          ],
+          "tips": [
+            "Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment."
+          ]
+        },
+        {
+          "title": "Use Auto as a starting point",
+          "paragraphs": [
+            "Auto in the Light heading analyzes the available image preview and sets Exposure, Blacks, and Whites. It does not set every editing control."
+          ],
+          "steps": [
+            "Wait until the photo preview appears, then click Auto.",
+            "Review the result and refine the sliders for the photograph."
+          ],
+          "tips": [
+            "If Auto says it is waiting for the image preview, let the preview load and try again.",
+            "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Apply lens and chromatic-aberration corrections",
+      "category": "Editing",
+      "summary": "Use a matched or manually selected lens profile, or make manual corrections when an exact profile is unavailable.",
+      "keywords": [
+        "lens",
+        "profile",
+        "distortion",
+        "vignette",
+        "shading",
+        "chromatic aberration",
+        "fringing",
+        "red cyan",
+        "blue yellow",
+        "optics"
+      ],
+      "sections": [
+        {
+          "title": "Choose and verify a correction",
+          "paragraphs": [
+            "Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available."
+          ],
+          "steps": [
+            "Read the profile name and match explanation.",
+            "Enable Use matched lens profile when a profile is available, then choose Correct distortion and Correct lens shading as needed.",
+            "If necessary, choose a different entry in Lens profile and compare the correction against the original.",
+            "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration."
+          ],
+          "tips": [
+            "No exact lens profile found leaves manual distortion and perspective controls available.",
+            "Profile distortion and shading checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.",
+            "A manually selected profile needs visual checking; the selection does not establish that it is an exact match.",
+            "Lens and fringe corrections remain non-destructive through export."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ]
+    },
+    {
+      "id": "editing-presets",
+      "title": "Apply, save, and import editing presets",
+      "category": "Editing",
+      "summary": "Reuse editing recipes and inspect conversion coverage when importing Lightroom, Camera Raw, or Capture One presets.",
+      "keywords": [
+        "preset",
+        "presets",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "import preset",
+        "save look",
+        "replace adjustments"
+      ],
+      "sections": [
+        {
+          "title": "Apply an existing recipe",
+          "paragraphs": [
+            "Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."
+          ],
+          "steps": [
+            "Choose a preset and review its summary, especially if it came from another editor.",
+            "Use Apply mapped adjustments to apply the settings the preset supplies.",
+            "Use Replace adjustment settings only when you want to reset adjustments, masks, Remove corrections, and geometry before applying the preset.",
+            "Inspect the photo and use Undo if you want to restore the previous edit."
+          ],
+          "tips": [
+            "Replace keeps your crop. It keeps Film unless the preset includes Film settings or you enable Turn Film off for the actions below.",
+            "Presets from other editors are converted approximately because their processing differs. Read skipped settings and conversion notes; matching controls do not promise identical pixels."
+          ]
+        },
+        {
+          "title": "Save or import a preset",
+          "paragraphs": [
+            "Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."
+          ],
+          "steps": [
+            "To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….",
+            "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
+            "Review the import result and the new preset’s conversion coverage before applying it.",
+            "To share a selected preset, choose an Export format and click Export…."
+          ],
+          "tips": [
+            "LightTable export is lossless for its preset format. Lightroom XMP and Capture One style exports are approximate.",
+            "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee that every setting inside can be converted."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "editing-curves"
+      ]
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Change individual colors with Color Mixer and Point Color",
+      "category": "Editing",
+      "summary": "Adjust a broad color band or sample a specific hue and refine its range, brightness, and uniformity.",
+      "keywords": [
+        "hsl",
+        "color mixer",
+        "colour mixer",
+        "point color",
+        "sample",
+        "hue",
+        "uniformity",
+        "luminance",
+        "saturation",
+        "range"
+      ],
+      "sections": [
+        {
+          "title": "Adjust a color band",
+          "paragraphs": [
+            "Color Mixer sits inside Edit → Color. It changes colors within the selected band throughout the photo."
+          ],
+          "steps": [
+            "Choose one of the colored band buttons in Color Mixer.",
+            "Adjust Hue to shift that band, Saturation to change its color intensity, and Luminance to change its brightness.",
+            "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments."
+          ]
+        },
+        {
+          "title": "Sample a particular color",
+          "paragraphs": [
+            "Point Color gives a sampled hue its own controls. It affects matching colors throughout the photo; use a local mask when you also need to restrict the area."
+          ],
+          "steps": [
+            "Click Sample color under Point Color, then click a colorful patch in the photo.",
+            "Adjust Range to narrow or widen the hues affected, then refine Hue shift, Saturation, and Luminance.",
+            "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.",
+            "Choose a saved point in the selector to edit it, or use Delete point to remove it."
+          ],
+          "tips": [
+            "Neutral gray patches cannot provide a useful hue sample; choose a more colorful area when prompted.",
+            "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.",
+            "Point Color’s Reset clears the sampled points without requiring a full Color reset."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ]
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Color grade shadows, midtones, and highlights",
+      "category": "Editing",
+      "summary": "Give tonal regions different color treatments and control how those treatments blend.",
+      "keywords": [
+        "color grading",
+        "colour grading",
+        "split toning",
+        "shadows",
+        "midtones",
+        "highlights",
+        "global grade",
+        "blending",
+        "balance"
+      ],
+      "sections": [
+        {
+          "title": "Build a grade",
+          "paragraphs": [
+            "Color Grading in Edit provides separate Shadows, Midtones, and Highlights selections, plus a global grade. Each has Hue, Saturation, and Luminance controls."
+          ],
+          "steps": [
+            "Expand Color Grading and select Shadows, Midtones, or Highlights.",
+            "Choose a Hue, then increase Saturation to make the color treatment visible. Adjust Luminance for that tonal region if needed.",
+            "Repeat for the other regions, or click Edit global grade to change the global treatment.",
+            "Refine Blending and Balance, comparing the photo as you adjust them.",
+            "Use Color Grading’s Reset to clear the grade."
+          ],
+          "tips": [
+            "Changing Hue with Saturation at zero does not add visible color. Start with a modest saturation value.",
+            "Use Color Mixer or Point Color when you want to target an existing hue, and a mask when you want to target a location in the photo."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ]
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Copy edits to selected photos and match exposure",
+      "category": "Editing",
+      "summary": "Choose which settings to transfer, review mask-specific limits, or match a group to an active exposure reference.",
+      "keywords": [
+        "copy settings",
+        "paste settings",
+        "batch edit",
+        "sync",
+        "auto sync",
+        "synchronize",
+        "multiple photos",
+        "match total exposure",
+        "selection",
+        "clipboard"
+      ],
+      "sections": [
+        {
+          "title": "Transfer selected settings",
+          "paragraphs": [
+            "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."
+          ],
+          "steps": [
+            "Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Windows.",
+            "Check the groups you want to transfer, then click Copy settings.",
+            "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.",
+            "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."
+          ],
+          "tips": [
+            "Crop and geometry, Local masks, and Healing are separate choices and are not included by default.",
+            "Healing copies spot positions and should only be transferred between photos with matching framing."
+          ]
+        },
+        {
+          "title": "Review transferred masks",
+          "paragraphs": [
+            "Selected Local masks replace destination masks. Smart selections are detected again for each different photo. Manual mask shapes are copied, so their placement still needs checking."
+          ],
+          "tips": [
+            "Object selections need a new object choice on the destination. Smart masks with painted refinements also need manual recreation; these cause the destination paste to be refused rather than silently copying a source-specific selection.",
+            "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.",
+            "Inspect the completion report for failed photos. A batch can finish with some photos changed and others left unchanged."
+          ]
+        },
+        {
+          "title": "Match total exposure",
+          "paragraphs": [
+            "Match total exposure uses the active photo as its reference. When capture exposure metadata is available, it compares that information; otherwise it falls back to average image brightness. Review the result when scenes or lighting differ."
+          ],
+          "steps": [
+            "Select at least two photos and make the intended reference photo active.",
+            "Let the reference edits finish saving.",
+            "Choose Match total exposure in Photo actions, or Library → Match Total Exposure in the Mac menu.",
+            "Inspect each result. The operation updates the relevant exposure control and limits the resulting adjustment to the supported range."
+          ],
+          "tips": [
+            "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ]
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Crop, straighten, rotate, and correct perspective",
+      "category": "Editing",
+      "summary": "Set a frame and aspect ratio, adjust orientation and perspective, then accept or cancel the crop session.",
+      "keywords": [
+        "crop",
+        "aspect ratio",
+        "straighten",
+        "rotate",
+        "flip",
+        "perspective",
+        "geometry",
+        "upright",
+        "level",
+        "portrait",
+        "landscape",
+        "resize"
+      ],
+      "sections": [
+        {
+          "title": "Set the frame",
+          "paragraphs": [
+            "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained."
+          ],
+          "steps": [
+            "Choose an aspect ratio. Use Custom to enter your own width-to-height proportion, and the swap button to change orientation.",
+            "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.",
+            "Use arrow keys to nudge the selection; hold Shift for larger steps.",
+            "Click Done or press Enter to accept. Click Cancel or press Escape to restore the frame from when you opened Crop."
+          ],
+          "tips": [
+            "The ratio Lock control lets you keep the current aspect ratio while resizing."
+          ]
+        },
+        {
+          "title": "Refine geometry",
+          "paragraphs": [
+            "Crop & Rotate also contains Straighten, 90-degree rotation, horizontal and vertical flips, and Perspective controls."
+          ],
+          "steps": [
+            "Try Auto level for a tilted horizon, then refine Straighten if needed.",
+            "Use Rotate left, Rotate right, or the flip buttons for orientation changes.",
+            "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.",
+            "Inspect the edges and final framing, then click Done."
+          ],
+          "tips": [
+            "Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.",
+            "Crop’s Reset resets the crop, rotation, flips, and perspective together."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Make local adjustments with Brush, Linear, and Radial masks",
+      "category": "Editing",
+      "summary": "Paint or draw a mask, inspect its overlay, and adjust only the selected area.",
+      "keywords": [
+        "mask",
+        "masking",
+        "local adjustment",
+        "brush",
+        "linear gradient",
+        "radial gradient",
+        "feather",
+        "flow",
+        "overlay",
+        "dodge",
+        "burn"
+      ],
+      "sections": [
+        {
+          "title": "Create a manual mask",
+          "paragraphs": [
+            "Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments."
+          ],
+          "steps": [
+            "Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.",
+            "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.",
+            "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.",
+            "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.",
+            "Rename the mask using its ••• button so its purpose is easy to recognize later."
+          ],
+          "tips": [
+            "Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.",
+            "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.",
+            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "Merge HDR brackets, panoramas, and focus stacks",
+      "category": "Editing",
+      "summary": "Combine a sequence of distinct originals into a new 16-bit TIFF, then edit the merged result.",
+      "keywords": [
+        "photo merge",
+        "merge",
+        "hdr",
+        "high dynamic range",
+        "exposure fusion",
+        "bracket",
+        "panorama",
+        "pano",
+        "stitch",
+        "focus stack",
+        "focus stacking",
+        "tiff",
+        "alignment"
+      ],
+      "sections": [
+        {
+          "title": "Start a merge in the Mac app",
+          "paragraphs": [
+            "Photo Merge uses a neutral render of each original and creates a new 16-bit TIFF in LightTable Merges. Apply your final look, crop, and local adjustments to the merged result. The source originals remain available."
+          ],
+          "steps": [
+            "Select at least two distinct originals in the library. Multiple virtual copies of one original count as one source.",
+            "Choose Photo → Photo Merge… in the Mac menu.",
+            "Choose HDR · exposure fusion, Panorama · feature aligned, or Focus stack · sharpness fused.",
+            "Optionally enter a Result name, then click Merge.",
+            "Watch the preparation, alignment, blending, and saving progress. When the app reports completion and refreshes the library, open the TIFF in LightTable Merges and inspect it."
+          ],
+          "tips": [
+            "Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.",
+            "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.",
+            "If a merge reports an error, read the specific message and correct the input selection before trying again."
+          ]
+        },
+        {
+          "title": "Choose suitable inputs",
+          "paragraphs": [
+            "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.",
+            "Panorama accepts 2–20 overlapping frames. Select neighboring frames in sequence so adjacent inputs share visual detail. The app aligns features and blends overlaps; featureless areas or insufficient overlap can prevent a reliable stitch. Panorama canvases are limited to 120 megapixels.",
+            "Focus stack accepts 2–60 focus-bracketed photos with matching dimensions. Use a tripod or focus-rail sequence with shared framing. The app aligns the frames, combines sharp regions, and crops to their common aligned area."
+          ],
+          "steps": [
+            "For HDR, inspect highlights, shadows, and anything that moved between exposures.",
+            "For Panorama, inspect seams and the outer boundary, then crop the result as needed.",
+            "For Focus stack, inspect transitions between sharp regions, foreground edges, and the final crop at 1:1."
+          ],
+          "tips": [
+            "HDR here is exposure fusion into a rendered TIFF. It does not produce a scene-linear RAW or DNG master.",
+            "An alignment failure can mean the frames lack enough overlap or a common area. Try a more consistent sequence rather than adding unrelated frames."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ]
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Refine masks with painting, ranges, and combined selections",
+      "category": "Editing",
+      "summary": "Add, subtract, or intersect areas, then limit an adjustment by luminance or sampled color.",
+      "keywords": [
+        "mask refinement",
+        "add",
+        "subtract",
+        "intersect",
+        "component",
+        "luminance range",
+        "color range",
+        "colour range",
+        "sample colour",
+        "opacity",
+        "amount",
+        "invert"
+      ],
+      "sections": [
+        {
+          "title": "Refine by painting",
+          "paragraphs": [
+            "Select the mask in the mask list before refining it. Add expands the selection; Subtract removes painted areas; Intersect keeps only the painted area of the existing selection."
+          ],
+          "steps": [
+            "Choose Add, Subtract, or Intersect beneath Selected Mask.",
+            "Set Size, Feather, and Flow, then paint while watching the overlay.",
+            "While using Add, hold Option on Mac to subtract temporarily.",
+            "Turn the overlay off and inspect the adjustment. Use Undo for a refinement you want to reverse."
+          ]
+        },
+        {
+          "title": "Combine a smart selection",
+          "paragraphs": [
+            "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask."
+          ],
+          "steps": [
+            "Select an existing mask, then expand Create New Mask.",
+            "Choose Add to selected mask, Subtract from selected mask, or Intersect with selected mask in Smart selection action.",
+            "Choose the smart tool, such as Subject or Sky, and inspect the combined result."
+          ],
+          "tips": [
+            "Set Smart selection action back to Create new mask when you want the next smart selection to have independent adjustments.",
+            "A mask has a component limit; the panel reports when another smart component cannot be added."
+          ]
+        },
+        {
+          "title": "Limit by brightness or color",
+          "paragraphs": [
+            "Range narrows a selected mask further. Luminance Low and High restrict brightness values. Colour range targets a hue, and Amount controls the whole mask’s strength."
+          ],
+          "steps": [
+            "Expand Range for the selected mask and adjust Luminance Low and Luminance High while checking the overlay.",
+            "Enable Colour range, then click Sample colour and sample a colorful point, or hold Shift and drag over an area to average it.",
+            "Refine Hue, Range, and Colour amount, then use Amount for the overall adjustment strength."
+          ],
+          "tips": [
+            "A nearly neutral area does not provide a useful hue sample. Choose a more colorful area when prompted."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ]
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Remove spots and refine Heal or Clone corrections",
+      "category": "Editing",
+      "summary": "Paint over distractions, inspect spot visibility, and move the source or target of a correction.",
+      "keywords": [
+        "remove",
+        "heal",
+        "healing",
+        "clone",
+        "retouch",
+        "dust",
+        "spot removal",
+        "visualize spots",
+        "source",
+        "target",
+        "distraction"
+      ],
+      "sections": [
+        {
+          "title": "Create a correction",
+          "paragraphs": [
+            "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable."
+          ],
+          "steps": [
+            "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.",
+            "Click a spot or drag over a distraction in the photo.",
+            "For small dust spots, enable Visualize Spots and adjust Threshold to make edges easier to inspect.",
+            "Turn Visualize Spots off and inspect the corrected photograph."
+          ],
+          "tips": [
+            "Selecting a correction and choosing a different mode changes that correction’s mode."
+          ]
+        },
+        {
+          "title": "Refine an existing correction",
+          "paragraphs": [
+            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."
+          ],
+          "steps": [
+            "Drag the target circle to reposition the correction, or choose Move Target and click its new position.",
+            "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.",
+            "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.",
+            "Toggle Enable this correction to compare, or use Delete correction to remove it."
+          ],
+          "tips": [
+            "Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.",
+            "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ]
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Save edits and recover unsaved changes",
+      "category": "Editing",
+      "summary": "Edits save automatically. Check the save status, retry a failed save, or choose which edits to recover after reopening.",
+      "keywords": [
+        "save",
+        "autosave",
+        "unsaved",
+        "recovery",
+        "crash",
+        "original",
+        "non-destructive",
+        "retry",
+        "saving"
+      ],
+      "sections": [
+        {
+          "title": "Check that your work is saved",
+          "paragraphs": [
+            "Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."
+          ],
+          "steps": [
+            "Make your adjustment, then check the save status in the app.",
+            "Wait for Saving… to change to Saved. Saving also includes pending edit-history writes.",
+            "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing."
+          ],
+          "tips": [
+            "Saved · recovery needs attention means the save completed but the local recovery system reported a problem. Use the available retry control and read the status message."
+          ]
+        },
+        {
+          "title": "Choose recovered or saved edits",
+          "paragraphs": [
+            "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts."
+          ],
+          "steps": [
+            "Read the affected photo names and choose Restore edits or Keep saved edits.",
+            "If you restore, wait for saving to complete before closing the app."
+          ],
+          "tips": [
+            "Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.",
+            "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Select Subject, Sky, Object, Depth, or People",
+      "category": "Editing",
+      "summary": "Create local selections on the device, inspect their accuracy, and refine the result before applying adjustments.",
+      "keywords": [
+        "ai mask",
+        "subject",
+        "sky",
+        "object",
+        "depth",
+        "people",
+        "person",
+        "face",
+        "skin",
+        "hair",
+        "eyes",
+        "teeth",
+        "portrait",
+        "select background"
+      ],
+      "sections": [
+        {
+          "title": "Create a smart selection",
+          "paragraphs": [
+            "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform."
+          ],
+          "steps": [
+            "Open Mask and expand Create New Mask.",
+            "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.",
+            "Choose Depth to make a selection from relative distance, then open Range and adjust Far limit and Near limit. Depth runs from far to near.",
+            "Inspect Show Overlay and refine missed or extra areas before adjusting Light or Color."
+          ],
+          "tips": [
+            "Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.",
+            "Depth uses embedded capture depth when available, otherwise a local estimate. Estimated depth is relative and can be inaccurate.",
+            "Use Invert if you want to adjust the area outside the resulting selection."
+          ]
+        },
+        {
+          "title": "Select people or facial regions",
+          "paragraphs": [
+            "People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. People masks require the Vision helper on macOS 14 or later. Face skin and hair are estimated, and no identity is inferred."
+          ],
+          "steps": [
+            "Choose People, then the part you want to adjust.",
+            "Inspect the overlay and use painted refinements around boundaries as needed.",
+            "For Soften skin, review the automatically applied Texture and Clarity reduction, then adjust it to suit the portrait."
+          ],
+          "tips": [
+            "Read any availability or detection error in the mask panel. A tool appearing in the menu does not guarantee that the required helper or a usable selection is available."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ]
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Set white balance and overall color",
+      "category": "Editing",
+      "summary": "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.",
+      "keywords": [
+        "white balance",
+        "wb",
+        "temperature",
+        "temp",
+        "tint",
+        "neutral",
+        "eyedropper",
+        "color cast",
+        "vibrance",
+        "saturation"
+      ],
+      "sections": [
+        {
+          "title": "Neutralize a color cast",
+          "paragraphs": [
+            "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls."
+          ],
+          "steps": [
+            "Open Edit and expand Color.",
+            "Click the white-balance eyedropper beside Temp, then click an area in the photo that should be neutral gray.",
+            "Refine Temp and Tint by eye if the sampled result is too warm, cool, green, or magenta.",
+            "Adjust Vibrance and Saturation to control the overall intensity of color."
+          ],
+          "tips": [
+            "Choose a visible neutral patch. A nearly black sample produces Too dark to sample; an unavailable preview produces a waiting message.",
+            "Click the eyedropper again to leave sampling mode without choosing a point.",
+            "Color’s Reset also resets its associated color adjustments, including Color Mixer, Point Color, and Color Grading. Use a tool’s own Reset for a narrower change."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ]
+    },
+    {
+      "id": "editing-curves",
+      "title": "Shape contrast and color with curves",
+      "category": "Editing",
+      "summary": "Add and move curve points for the combined RGB channel or individual red, green, and blue channels.",
+      "keywords": [
+        "curve",
+        "curves",
+        "tone curve",
+        "rgb",
+        "red",
+        "green",
+        "blue",
+        "contrast",
+        "control point",
+        "s curve"
+      ],
+      "sections": [
+        {
+          "title": "Edit a curve",
+          "paragraphs": [
+            "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels."
+          ],
+          "steps": [
+            "Open Edit and expand Curve.",
+            "Choose RGB, R, G, or B.",
+            "Click the graph to add a point, then drag it to shape the curve. Drag an existing handle to move it.",
+            "Double-click an interior point to remove it. The two endpoint handles remain.",
+            "Use Curve’s Reset to reset the curves, or Undo to reverse the latest change."
+          ],
+          "tips": [
+            "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.",
+            "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ]
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Sharpen, reduce noise, and use Enhance",
+      "category": "Editing",
+      "summary": "Inspect detail at 1:1, apply ordinary detail controls, or run local learned denoise when available.",
+      "keywords": [
+        "detail",
+        "sharpening",
+        "noise",
+        "denoise",
+        "noise reduction",
+        "enhance",
+        "super resolution",
+        "upscale",
+        "texture",
+        "clarity",
+        "dehaze",
+        "vignette",
+        "sensor"
+      ],
+      "sections": [
+        {
+          "title": "Judge detail at 1:1",
+          "paragraphs": [
+            "The Detail section includes Sharpening, Radius, Detail, Masking, Luminance NR, and Color NR. Effects contains Texture, Clarity, Dehaze, and Vignette."
+          ],
+          "steps": [
+            "Open a photo and use Space to switch between Fit and 1:1.",
+            "Expand Detail in Edit. Adjust noise reduction and sharpening while looking at both textured and smooth areas.",
+            "Use Effects for texture, local contrast, haze, or edge shading, then check the whole photo at Fit.",
+            "Use the relevant section’s Reset if you want to start that group again."
+          ],
+          "tips": [
+            "Detail controls work in both Film and Develop modes. Avoid judging sharpening from a small Fit preview alone."
+          ]
+        },
+        {
+          "title": "Run learned denoise on a RAW photo",
+          "paragraphs": [
+            "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live."
+          ],
+          "steps": [
+            "Select a RAW photo and expand Detail.",
+            "Check that Apply denoise is available, choose Strength, and click Apply denoise.",
+            "Watch the progress message. Use Cancel if you need to stop the job.",
+            "Inspect the completed preview at 1:1."
+          ],
+          "tips": [
+            "Availability depends on the local model, helper, and supported platform. Development builds may lack the model, and the app reports this instead of pretending denoise succeeded."
+          ]
+        },
+        {
+          "title": "Create an enhanced derivative in the Mac app",
+          "paragraphs": [
+            "Photo → Enhance Photo… offers Denoise and Super resolution and writes a new 16-bit master when the selected operation succeeds. The original remains untouched."
+          ],
+          "steps": [
+            "Select the photo, choose Photo → Enhance Photo…, and read the availability message.",
+            "Choose the enhancement and click Enhance if available.",
+            "After completion, find the new result in the refreshed library and inspect it."
+          ],
+          "tips": [
+            "Super resolution has no bundled model and requires a compatible local model. A listed option alone does not mean that operation is available.",
+            "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Undo edits, restore History, and save snapshots",
+      "category": "Editing",
+      "summary": "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.",
+      "keywords": [
+        "undo",
+        "redo",
+        "history",
+        "snapshot",
+        "version",
+        "restore",
+        "revert",
+        "reset"
+      ],
+      "sections": [
+        {
+          "title": "Undo or restore an earlier step",
+          "paragraphs": [
+            "Undo and redo follow each photo during the current session. In catalog libraries, History persists after quitting. Nearby adjustments can be combined into a history step, so the list is not a record of every slider position."
+          ],
+          "steps": [
+            "Use Command-Z on Mac or Ctrl-Z on Windows to undo. Add Shift to redo.",
+            "Open History in the editing toolbar to see the current photo’s stored steps, newest first.",
+            "Click a step to restore its settings. Restoring a step is itself an undoable edit."
+          ],
+          "tips": [
+            "Persistent History requires a catalog library. Folder-only use still supports session Undo and Redo.",
+            "Clear removes the photo’s stored history steps; it is not an adjustment-reset command."
+          ]
+        },
+        {
+          "title": "Keep a named look",
+          "paragraphs": [
+            "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo."
+          ],
+          "steps": [
+            "Open History, expand Snapshots, and click Create snapshot.",
+            "Enter a useful name, such as Soft portrait or Before retouching.",
+            "Click the snapshot’s name to apply it later. Use Undo if you want to return to the state you just replaced."
+          ],
+          "tips": [
+            "The photo keeps up to 50 snapshots; creating another beyond that limit drops the oldest snapshot from the list.",
+            "The × beside a snapshot deletes that named snapshot, not the original photo."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ]
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Adjust film grain and format",
+      "category": "Film",
+      "summary": "Control grain relative to the stock and choose the simulated film size.",
+      "keywords": [
+        "grain",
+        "size",
+        "texture",
+        "35mm",
+        "medium format",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "particle",
+        "noise"
+      ],
+      "sections": [
+        {
+          "title": "Set the format and grain",
+          "paragraphs": [
+            "Film format sets the physical long edge used by the simulation. The choices are 35 mm, 645, 6 × 6, 6 × 7, and 4 × 5; this setting is separate from cropping the photo.",
+            "Grain size multiplies the chosen stock’s baseline particle area. The readout shows the resulting area in µm², so the same multiplier can show a different area after you change stocks."
+          ],
+          "steps": [
+            "In Film profile, choose Film format.",
+            "Expand Physical film stages.",
+            "Enable Grain size and adjust its slider, or clear its checkbox to disable grain.",
+            "Inspect the image at 1:1 and wait for preview detail to finish before judging texture."
+          ]
+        },
+        {
+          "title": "What the number represents",
+          "paragraphs": [
+            "The per-stock grain baselines are derived from film speed as visual starting points. They are not laboratory granularity measurements for each emulsion.",
+            "The Grain size setting belongs to the film simulation. Detail sharpening and noise reduction in Edit are separate adjustments."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ]
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Adjust halation, diffusion, and scan character",
+      "category": "Film",
+      "summary": "Refine the film’s physical effects and the selected output recipe.",
+      "keywords": [
+        "halation",
+        "glow",
+        "bloom",
+        "diffusion",
+        "couplers",
+        "glare",
+        "scan",
+        "sharpness",
+        "softness",
+        "scanner",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Physical film stages",
+          "paragraphs": [
+            "Open Film → Physical film stages while Film is enabled. Couplers, Halation, Grain size, and Print glare each have an enable checkbox and an amount control. Turning off a stage disables its amount slider.",
+            "Capture diffusion changes the modeled camera stage. Print glare and Print preflash belong to the print stage and are unavailable for direct slide scans."
+          ],
+          "steps": [
+            "Choose the stock and Output recipe before refining the stage controls.",
+            "Change one stage at a time and compare the result.",
+            "Use each stage’s checkbox to compare its contribution without replacing the selected stock."
+          ]
+        },
+        {
+          "title": "Scan controls",
+          "paragraphs": [
+            "Scan softness adds lens blur to the selected output recipe. Scan sharpness scales that recipe’s sharpening; Scan sharpening enables or disables it.",
+            "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ]
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Choose and preview a film stock",
+      "category": "Film",
+      "summary": "Turn on the physical film workflow and compare stocks using your own photo.",
+      "keywords": [
+        "film",
+        "stock",
+        "simulation",
+        "negative",
+        "slide",
+        "browse",
+        "preview",
+        "preset",
+        "film off"
+      ],
+      "sections": [
+        {
+          "title": "Start with a stock",
+          "paragraphs": [
+            "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off."
+          ],
+          "steps": [
+            "Open a still photo and select Film in the tool rail.",
+            "Turn the Film profile switch on.",
+            "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.",
+            "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it."
+          ]
+        },
+        {
+          "title": "What the previews include",
+          "paragraphs": [
+            "Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.",
+            "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file."
+          ],
+          "tips": [
+            "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ]
+    },
+    {
+      "id": "film-reference-match",
+      "title": "Compare with a reference image",
+      "category": "Film",
+      "summary": "Align a scan or other reference, measure the difference, and apply a starting match.",
+      "keywords": [
+        "reference",
+        "match",
+        "scan",
+        "calibration",
+        "overlay",
+        "split",
+        "opacity",
+        "measure",
+        "color match"
+      ],
+      "sections": [
+        {
+          "title": "Load and align",
+          "paragraphs": [
+            "Reference Match is in the Film panel. Use a reference with corresponding image content so alignment and comparison are meaningful."
+          ],
+          "steps": [
+            "Expand Reference Match and choose a Reference image.",
+            "Choose Overlay or Split, then set Opacity / split.",
+            "Use Scale, Horizontal, and Vertical to align the reference with your photo.",
+            "Click Measure to inspect the comparison, or Starting match to apply an initial adjustment."
+          ]
+        },
+        {
+          "title": "What Starting match changes",
+          "paragraphs": [
+            "Starting match turns off automatic scene metering and adjusts Camera EV. For RAW photos it also sets custom capture white balance; for processed photos it adjusts yellow and magenta print filtration.",
+            "This is a starting adjustment based on measured image statistics, not a guarantee of an exact film or color match. Review the image after applying it and use Undo if needed. Clear removes the reference overlay."
+          ],
+          "tips": [
+            "The Calibration target button downloads an image you can use in a reference workflow."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ]
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Set film exposure and development",
+      "category": "Film",
+      "summary": "Understand Camera EV, capture white balance, metering, and development controls.",
+      "keywords": [
+        "exposure",
+        "camera ev",
+        "meter",
+        "white balance",
+        "temperature",
+        "tint",
+        "development",
+        "contrast",
+        "authentic",
+        "creative"
+      ],
+      "sections": [
+        {
+          "title": "Capture controls and finishing controls",
+          "paragraphs": [
+            "Camera EV and Capture white balance act before film exposure. Exposure and Temp/Tint in the Edit panel are finishing adjustments later in the workflow.",
+            "Capture white balance requires a RAW original. For a JPEG, HEIF, TIFF, or another processed file, use Edit Temp/Tint."
+          ],
+          "steps": [
+            "Turn on Film, choose a stock, and adjust Camera EV.",
+            "Keep Meter scene automatically enabled for automatic scene metering, or turn it off to set the capture exposure yourself.",
+            "Expand Capture & processing to choose As shot, Daylight, Tungsten, or Custom capture white balance for a RAW photo.",
+            "For Custom, adjust Temperature and Capture tint."
+          ]
+        },
+        {
+          "title": "Development and linked defaults",
+          "paragraphs": [
+            "Development appears only when the chosen film profile supplies development times. Print development depends on the selected paper and is hidden for slide film. Development contrast is a separate film control.",
+            "Authentic uses linked physical defaults, including the stock’s recommended paper when paper is unlocked. Creative preserves paper overrides when compatible. Changing stocks can still select that stock’s default development time and exposure; compare the result after changing a stock."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ]
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Work with negative film, paper, and slides",
+      "category": "Film",
+      "summary": "Choose a print process for negatives and understand why print controls disappear for slide film.",
+      "keywords": [
+        "negative",
+        "positive",
+        "reversal",
+        "slide",
+        "transparency",
+        "paper",
+        "print",
+        "output",
+        "lock paper",
+        "filtration",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Negative film and paper",
+          "paragraphs": [
+            "Negative stocks use a film-to-print process. Paper choices are restricted to profiles compatible with the selected film’s color or monochrome channel model.",
+            "Use Print exposure to adjust the print stage. In Capture & processing, choose Paper and enable Lock paper when stock changes if you want to keep a compatible paper while trying other stocks. An incompatible paper still has to be replaced."
+          ],
+          "steps": [
+            "Choose a negative stock in Film.",
+            "Choose an Output recipe: Clean scan, Neutral print scan, or Soft optical print.",
+            "Expand Capture & processing to choose Paper and any available Print development time.",
+            "Expand Physical film stages for Print glare, Print preflash, Yellow filter, and Magenta filter."
+          ]
+        },
+        {
+          "title": "Slide film is scanned directly",
+          "paragraphs": [
+            "Positive or reversal stocks use a direct transparency scan with no negative-to-paper stage. Paper, print exposure, print development, and other print-only controls are hidden for these stocks.",
+            "Output recipes are modeled starting points for scan softness, sharpening, and print effects where applicable. They are not measured emulations of particular commercial scanners."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ]
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Choose export size, format, and color space",
+      "category": "Export",
+      "summary": "Use export presets and understand bit depth, resizing, and the current color-gamut limits.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bit",
+        "srgb",
+        "p3",
+        "prophoto",
+        "icc",
+        "quality",
+        "full size",
+        "resolution",
+        "preset"
+      ],
+      "sections": [
+        {
+          "title": "Formats and presets",
+          "paragraphs": [
+            "The export dialog offers JPEG, HEIF, PNG, and 16-bit TIFF. HEIF is an 8-bit output option on macOS. The quality slider applies to JPEG and HEIF.",
+            "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."
+          ],
+          "steps": [
+            "Open Export and choose a preset across the top.",
+            "Set Dimensions to Full size or a long-edge limit.",
+            "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."
+          ]
+        },
+        {
+          "title": "Color space limits",
+          "paragraphs": [
+            "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.",
+            "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ]
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Control export metadata, sidecars, and timestamps",
+      "category": "Export",
+      "summary": "Choose metadata privacy, optional recipe files, and capture-time handling.",
+      "keywords": [
+        "metadata",
+        "privacy",
+        "gps",
+        "location",
+        "copyright",
+        "sidecar",
+        "recipe",
+        "timestamp",
+        "date",
+        "timezone",
+        "capture time"
+      ],
+      "sections": [
+        {
+          "title": "Metadata and recipe files",
+          "paragraphs": [
+            "Export → Advanced offers All except location, All metadata, Copyright only, and No metadata. The initial metadata choice is All except location.",
+            "Recipe sidecar controls whether LightTable writes a recipe beside the rendered export. This is separate from the portable edits and XMP sidecar preferences for originals in Settings → Files & Metadata."
+          ],
+          "steps": [
+            "Expand Advanced in Export.",
+            "Choose the Metadata policy appropriate for the files you will share.",
+            "Choose whether to write a Recipe sidecar beside each exported photo."
+          ]
+        },
+        {
+          "title": "File timestamps",
+          "paragraphs": [
+            "File timestamp can use the time of export or the original capture time. If capture timezone is missing, the default is to keep export time and report a warning. You can instead choose to interpret it in this computer’s local timezone.",
+            "Missing or invalid capture time can also leave the export timestamp unchanged. Check Export details for the reported warning. A file’s filesystem timestamp is separate from the metadata policy selected above."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ]
+    },
+    {
+      "id": "external-editor",
+      "title": "Edit a photo in another application",
+      "category": "Export",
+      "summary": "Send an adjusted TIFF to another editor and set the format and stacking defaults.",
+      "keywords": [
+        "external",
+        "editor",
+        "photoshop",
+        "affinity",
+        "edit in",
+        "tiff",
+        "round trip",
+        "derivative",
+        "stack"
+      ],
+      "sections": [
+        {
+          "title": "Open an external editor",
+          "paragraphs": [
+            "Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog."
+          ],
+          "steps": [
+            "Select a photo and press Command/Ctrl+E to open Edit in another app.",
+            "Choose Application.",
+            "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.",
+            "Choose whether to Stack rendered file with original.",
+            "Click Edit and wait for rendering to finish before working in the other app."
+          ]
+        },
+        {
+          "title": "RAW files and defaults",
+          "paragraphs": [
+            "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.",
+            "Set the default application, color space, bit depth, and stacking behavior in Settings → External Editing. Adjusted TIFFs can use 16 or 8 bits and ProPhoto RGB, Display P3, or sRGB."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ]
+    },
+    {
+      "id": "export-photos",
+      "title": "Export selected photos",
+      "category": "Export",
+      "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
+      "keywords": [
+        "export",
+        "save",
+        "jpeg",
+        "jpg",
+        "download",
+        "selection",
+        "picked",
+        "rated",
+        "batch",
+        "cancel",
+        "progress"
+      ],
+      "sections": [
+        {
+          "title": "Make an export",
+          "paragraphs": [
+            "Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."
+          ],
+          "steps": [
+            "Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.",
+            "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.",
+            "Choose an export preset or set file type, dimensions, quality, and color space.",
+            "Set the destination and inspect Output preview for the filename, dimensions, and path.",
+            "Click Export and follow the progress in the top bar."
+          ]
+        },
+        {
+          "title": "Check the scope and result",
+          "paragraphs": [
+            "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.",
+            "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ]
+    },
+    {
+      "id": "soft-proof",
+      "title": "Preview an output with soft proofing",
+      "category": "Export",
+      "summary": "View a display or modeled paper preview without making it part of the exported photo.",
+      "keywords": [
+        "soft proof",
+        "proofing",
+        "gamut",
+        "paper",
+        "ink",
+        "matte",
+        "gloss",
+        "print",
+        "p3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Turn on soft proof",
+          "paragraphs": [
+            "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing."
+          ],
+          "steps": [
+            "Open View options (•••) below the viewer.",
+            "Enable Preview output profile.",
+            "Choose sRGB display, Display P3 display, Matte paper, or Gloss paper.",
+            "For paper targets, choose whether to Simulate paper and ink. Toggle Show out-of-gamut warning as needed.",
+            "Use the Soft Proof on button in the viewer toolbar to turn the preview off."
+          ]
+        },
+        {
+          "title": "Interpret the preview",
+          "paragraphs": [
+            "Matte and Gloss in this interface are modeled paper previews; they are not a selection of your printer’s measured ICC profile. Treat the preview as guidance when comparing contrast and color.",
+            "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ]
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Set export folders and filenames",
+      "category": "Export",
+      "summary": "Choose a destination layout and decide what happens when a filename already exists.",
+      "keywords": [
+        "destination",
+        "folder",
+        "path",
+        "filename",
+        "rename",
+        "overwrite",
+        "skip",
+        "collision",
+        "hierarchy",
+        "sequence",
+        "template"
+      ],
+      "sections": [
+        {
+          "title": "Destination layout",
+          "paragraphs": [
+            "One destination folder sends exports to the chosen folder. Subfolder beside each original uses a relative subfolder name for each source photo. Keep source folder hierarchy preserves source-folder organization beneath the export destination."
+          ],
+          "steps": [
+            "Open Export and choose Destination layout.",
+            "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.",
+            "Expand Advanced and edit Filename template.",
+            "Check the filename and destination shown in Output preview before exporting."
+          ]
+        },
+        {
+          "title": "Names and existing files",
+          "paragraphs": [
+            "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.",
+            "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ]
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Change preferences and new-photo defaults",
+      "category": "Settings",
+      "summary": "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.",
+      "keywords": [
+        "settings",
+        "preferences",
+        "defaults",
+        "camera",
+        "raw",
+        "serial",
+        "iso",
+        "font",
+        "background",
+        "lights out",
+        "notifications",
+        "xmp",
+        "portable"
+      ],
+      "sections": [
+        {
+          "title": "Interface and behavior",
+          "paragraphs": [
+            "Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.",
+            "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
+            "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata."
+          ]
+        },
+        {
+          "title": "Defaults for unedited photos",
+          "paragraphs": [
+            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."
+          ],
+          "steps": [
+            "Open Settings → Develop Defaults.",
+            "Choose the starting Film, workflow, profile, and preset settings.",
+            "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.",
+            "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.",
+            "Use Reset in the Current camera area to remove that camera default."
+          ]
+        }
+      ],
+      "related": [
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery"
+      ]
+    },
+    {
+      "id": "photo-index",
+      "title": "Enable private photo-content search",
+      "category": "Settings",
+      "summary": "Build an on-device index of objects, scenes, visible text, and faces.",
+      "keywords": [
+        "ai",
+        "search",
+        "index",
+        "contents",
+        "objects",
+        "scenes",
+        "ocr",
+        "text",
+        "faces",
+        "privacy",
+        "local",
+        "description"
+      ],
+      "sections": [
+        {
+          "title": "Build the index",
+          "paragraphs": [
+            "The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."
+          ],
+          "steps": [
+            "Open Settings → Photo Index.",
+            "Check the On-device capabilities status and turn on Photo contents index.",
+            "Wait for indexing progress to complete. Photos can gain results as they are indexed.",
+            "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.",
+            "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."
+          ]
+        },
+        {
+          "title": "Pause, rebuild, or delete",
+          "paragraphs": [
+            "Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.",
+            "Delete index removes generated index data after confirmation. Originals and saved edits are unchanged. If Apple Vision says Build required, the current installation lacks the required local analyzer. Foundation Models may be unavailable while basic Vision indexing remains usable."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ]
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Review assisted culling suggestions",
+      "category": "Settings",
+      "summary": "Review local analysis signals and apply pick or reject flags only when you choose.",
+      "keywords": [
+        "cull",
+        "culling",
+        "ai",
+        "selects",
+        "rejects",
+        "sharpness",
+        "eyes",
+        "misfire",
+        "documents",
+        "review",
+        "flags"
+      ],
+      "sections": [
+        {
+          "title": "Review signals",
+          "paragraphs": [
+            "Assisted culling uses the private Photo Index. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."
+          ],
+          "steps": [
+            "Enable Photo Index in Settings and wait for photos to be scored.",
+            "Expand Assisted culling in the library sidebar.",
+            "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.",
+            "Use Selects, Rejects, or All to review the matching photos.",
+            "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."
+          ]
+        },
+        {
+          "title": "Applying flags",
+          "paragraphs": [
+            "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.",
+            "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ]
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Use keyboard shortcuts and MIDI controls",
+      "category": "Settings",
+      "summary": "Find shortcuts, choose a keyboard scheme, and map a hardware controller where Web MIDI is available.",
+      "keywords": [
+        "keyboard",
+        "shortcut",
+        "hotkey",
+        "midi",
+        "knob",
+        "fader",
+        "controller",
+        "speed keys",
+        "automation",
+        "classic",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Keyboard preferences",
+          "paragraphs": [
+            "Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. The desktop Help menu also has Keyboard Shortcuts.",
+            "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts."
+          ]
+        },
+        {
+          "title": "MIDI mapping",
+          "paragraphs": [
+            "MIDI support depends on the Web MIDI API in the current runtime. The status can show Unavailable, Off, No devices, or a connected device count. Unavailable means this runtime cannot use the MIDI controls."
+          ],
+          "steps": [
+            "Connect a MIDI controller that sends Control Change messages.",
+            "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.",
+            "Click the adjustment slider you want to map, then turn a knob or move a fader.",
+            "Check the mapping message, then use the hardware control to adjust the slider.",
+            "Use Reset MIDI to restore the default mappings."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ]
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Back up the catalog and troubleshoot recovery",
+      "category": "Troubleshooting",
+      "summary": "Use verified catalog backups, Library Health, and desktop diagnostics when something goes wrong.",
+      "keywords": [
+        "catalog",
+        "backup",
+        "restore",
+        "recovery",
+        "damaged",
+        "corrupt",
+        "crash",
+        "missing",
+        "safe mode",
+        "diagnostics",
+        "log",
+        "repair"
+      ],
+      "sections": [
+        {
+          "title": "Back up and inspect",
+          "paragraphs": [
+            "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+          ],
+          "steps": [
+            "Choose an Automatic backup interval and Backup location.",
+            "Click Back up now and check for a Verified backup result.",
+            "Open Library Health… to check catalog structure, missing files, and recovery information.",
+            "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits."
+          ]
+        },
+        {
+          "title": "Understand recovery choices",
+          "paragraphs": [
+            "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+            "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
+          ]
+        },
+        {
+          "title": "Desktop diagnostics",
+          "paragraphs": [
+            "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
+            "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ]
+    },
+    {
+      "id": "performance-previews",
+      "title": "Improve preview speed and check image detail",
+      "category": "Troubleshooting",
+      "summary": "Choose preview resolution, wait for real detail, and manage generated caches.",
+      "keywords": [
+        "performance",
+        "slow",
+        "blurry",
+        "pixelated",
+        "preview",
+        "resolution",
+        "100%",
+        "1:1",
+        "gpu",
+        "rust",
+        "python",
+        "cache",
+        "purge"
+      ],
+      "sections": [
+        {
+          "title": "Check what has finished rendering",
+          "paragraphs": [
+            "A 100% zoom setting does not guarantee that full image detail has arrived. The viewer may show Loading 100% detail…, Refining RAW detail…, or Updating preview detail… while it works. Wait for 100% detail ready when assessing fine detail.",
+            "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit."
+          ],
+          "steps": [
+            "Open Settings → Performance.",
+            "Use Auto · fit display for preview resolution, or choose a smaller fixed resolution to reduce preview work.",
+            "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.",
+            "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."
+          ]
+        },
+        {
+          "title": "Manage cache storage",
+          "paragraphs": [
+            "Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.",
+            "Preview resolution is separate from the Dimensions setting used for exported files."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ]
+    }
+  ]
+}

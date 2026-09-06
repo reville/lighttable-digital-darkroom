@@ -5,6 +5,8 @@
 
 import AppKit
 import Darwin
+import CryptoKit
+import Photos
 import PhotosUI
 import UniformTypeIdentifiers
 import UserNotifications
@@ -391,7 +393,7 @@ final class ServerController {
             env["NUMBA_CACHE_DIR"] = cacheDirectory
                 .appendingPathComponent("compiled-runtime").path
         }
-        env["OMP_NUM_THREADS"] = "4"
+        env["OMP_NUM_THREADS"] = env["OMP_NUM_THREADS"] ?? "8"
         env["NUMBA_NUM_THREADS"] = "4"
         env["OPENBLAS_NUM_THREADS"] = "4"
         env["PYTHONUNBUFFERED"] = "1"
@@ -601,6 +603,260 @@ final class EditRecoveryStore {
     }
 }
 
+// MARK: - Original Photos library import
+
+/// One resource at a time, streamed to disk. Photos is only read; completed
+/// copies are atomically promoted to deterministic paths so a retry adds new
+/// originals without duplicating those already imported.
+private final class PhotosLibraryImporter {
+    private struct Item {
+        let resource: PHAssetResource
+        let identity: String
+    }
+    private final class Transfer {
+        let temporary: URL
+        let destination: URL
+        let handle: FileHandle
+        var request: PHAssetResourceDataRequestID?
+        var error: Error?
+        init(temporary: URL, destination: URL, handle: FileHandle) {
+            self.temporary = temporary
+            self.destination = destination
+            self.handle = handle
+        }
+    }
+    private let directory: URL
+    private let event: ([String: Any]) -> Void
+    private let queue = DispatchQueue(label: "lighttable.photos-library-import", qos: .utility)
+    private let cancellationLock = NSLock()
+    private var cancelled = false
+    private var items: [Item] = []
+    private var index = 0
+    private var imported = 0
+    private var existing = 0
+    private var failures = 0
+    private var transfer: Transfer?
+    private var finished = false
+    private var lockDescriptor: Int32 = -1
+    private var lastProgressTime = Date.distantPast
+
+    init(directory: URL, event: @escaping ([String: Any]) -> Void) {
+        self.directory = directory
+        self.event = event
+    }
+
+    private var isCancelled: Bool {
+        cancellationLock.lock()
+        defer { cancellationLock.unlock() }
+        return cancelled
+    }
+
+    func start() {
+        queue.async { [self] in
+            guard !isCancelled else { finish("cancelled"); return }
+            lockDescriptor = Darwin.open(directory.appendingPathComponent(
+                ".lighttable-library-import.lock").path, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR)
+            guard lockDescriptor >= 0, flock(lockDescriptor, LOCK_EX | LOCK_NB) == 0 else {
+                finish("error", message: "Another LightTable window may be importing this library. Close that import and try again.")
+                return
+            }
+            emit("running", message: "Reading your Photos library…")
+            let options = PHFetchOptions()
+            options.includeHiddenAssets = true
+            options.includeAllBurstAssets = true
+            let assets = PHAsset.fetchAssets(with: .image, options: options)
+            assets.enumerateObjects { asset, _, stop in
+                if self.isCancelled { stop.pointee = true; return }
+                autoreleasepool {
+                    // Do not import adjusted versions or the video part of a
+                    // Live Photo. A RAW+JPEG pair has two original resources.
+                    let originals = PHAssetResource.assetResources(for: asset)
+                        .filter { $0.type == .photo || $0.type == .alternatePhoto }
+                    var occurrences: [String: Int] = [:]
+                    for resource in originals {
+                        let key = "\(asset.localIdentifier)|\(resource.type.rawValue)|\(resource.uniformTypeIdentifier)|\(resource.originalFilename)"
+                        let occurrence = occurrences[key, default: 0]
+                        occurrences[key] = occurrence + 1
+                        self.items.append(Item(resource: resource, identity: "\(key)|\(occurrence)"))
+                    }
+                }
+            }
+            guard !isCancelled else { finish("cancelled"); return }
+            emit("running", message: "Copying original photos…")
+            next()
+        }
+    }
+
+    func cancel() {
+        cancellationLock.lock()
+        cancelled = true
+        cancellationLock.unlock()
+        queue.async { [self] in
+            guard !finished else { return }
+            discardTransfer()
+            finish("cancelled")
+        }
+    }
+
+    /// Quit cannot wait for a download, but it must close and remove its partial
+    /// file. The directory lock and completed copies remain crash-safe too.
+    func shutdown() {
+        cancellationLock.lock()
+        cancelled = true
+        cancellationLock.unlock()
+        queue.sync {
+            discardTransfer()
+            finish("cancelled")
+        }
+    }
+
+    private static func digest(_ value: String) -> String {
+        SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined()
+    }
+
+    private func destination(for item: Item) -> URL {
+        let digest = Self.digest(item.identity)
+        let name = URL(fileURLWithPath: item.resource.originalFilename)
+        let invalid = CharacterSet(charactersIn: "/:\0").union(.controlCharacters)
+        let stem = name.deletingPathExtension().lastPathComponent
+            .components(separatedBy: invalid).joined(separator: "_")
+        var safeStem = String((stem.isEmpty ? "Photo" : stem).prefix(80))
+        while safeStem.utf8.count > 100 { safeStem.removeLast() }
+        let ext = name.pathExtension.isEmpty
+            ? (UTType(item.resource.uniformTypeIdentifier)?.preferredFilenameExtension ?? "")
+            : name.pathExtension
+        let safeExtension = String(ext.components(separatedBy: invalid).joined(separator: "_").prefix(16))
+        return directory.appendingPathComponent("Originals", isDirectory: true)
+            .appendingPathComponent(String(digest.prefix(2)), isDirectory: true)
+            .appendingPathComponent("\(safeStem)-\(digest)" + (safeExtension.isEmpty ? "" : ".\(safeExtension)"))
+    }
+
+    private func next() {
+        guard !finished else { return }
+        guard !isCancelled else { finish("cancelled"); return }
+        guard index < items.count else { finish("completed"); return }
+        let item = items[index]
+        let destination = destination(for: item)
+        let parent = destination.deletingLastPathComponent()
+        // Each deterministic destination is only created after the whole
+        // resource has been flushed. A partial file never counts as imported.
+        if let values = try? destination.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
+           values.isRegularFile == true, (values.fileSize ?? 0) > 0 {
+            existing += 1
+            advance()
+            return
+        }
+        do {
+            try FileManager.default.createDirectory(at: parent, withIntermediateDirectories: true)
+            let temporary = parent.appendingPathComponent(".lighttable-\(Self.digest(item.identity)).partial")
+            if FileManager.default.fileExists(atPath: temporary.path) {
+                try FileManager.default.removeItem(at: temporary)
+            }
+            guard FileManager.default.createFile(atPath: temporary.path, contents: nil) else {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            let current = Transfer(temporary: temporary, destination: destination,
+                                   handle: try FileHandle(forWritingTo: temporary))
+            transfer = current
+            let options = PHAssetResourceRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { [weak self, weak current] progress in
+                guard let self, let current else { return }
+                self.queue.async {
+                    guard self.transfer === current, !self.finished else { return }
+                    self.emit("running", message: "Downloading an original from iCloud…", progress: progress)
+                }
+            }
+            current.request = PHAssetResourceManager.default().requestData(
+                for: item.resource, options: options,
+                dataReceivedHandler: { [weak self, weak current] data in
+                    guard let self, let current else { return }
+                    // Synchronous backpressure keeps at most one PhotoKit data
+                    // chunk pending, even when disk is slower than the download.
+                    self.queue.sync {
+                        guard self.transfer === current, current.error == nil else { return }
+                        do { try current.handle.write(contentsOf: data) }
+                        catch { current.error = error }
+                    }
+                }, completionHandler: { [weak self, weak current] error in
+                    guard let self, let current else { return }
+                    self.queue.async {
+                        guard self.transfer === current, !self.finished else { return }
+                        self.complete(current, error: error)
+                    }
+                })
+        } catch {
+            failures += 1
+            advance()
+        }
+    }
+
+    private func complete(_ current: Transfer, error: Error?) {
+        if isCancelled { discardTransfer(); finish("cancelled"); return }
+        do {
+            if let error = current.error ?? error { throw error }
+            try current.handle.synchronize()
+            try current.handle.close()
+            let values = try current.temporary.resourceValues(forKeys: [.fileSizeKey])
+            guard (values.fileSize ?? 0) > 0 else { throw CocoaError(.fileReadCorruptFile) }
+            // moveItem does not overwrite a user's existing file.
+            try FileManager.default.moveItem(at: current.temporary, to: current.destination)
+            imported += 1
+        } catch {
+            try? current.handle.close()
+            try? FileManager.default.removeItem(at: current.temporary)
+            failures += 1
+        }
+        transfer = nil
+        advance()
+    }
+
+    private func advance() {
+        index += 1
+        emit("running", message: "Copying original photos…")
+        // Yield between resources so cancellation is handled even when a large
+        // rerun consists entirely of already imported files.
+        queue.async { [self] in next() }
+    }
+
+    private func discardTransfer() {
+        guard let current = transfer else { return }
+        transfer = nil
+        if let request = current.request { PHAssetResourceManager.default().cancelDataRequest(request) }
+        try? current.handle.close()
+        try? FileManager.default.removeItem(at: current.temporary)
+    }
+
+    private func finish(_ state: String, message: String? = nil) {
+        guard !finished else { return }
+        finished = true
+        if lockDescriptor >= 0 {
+            _ = flock(lockDescriptor, LOCK_UN)
+            Darwin.close(lockDescriptor)
+            lockDescriptor = -1
+        }
+        emit(state, message: message ?? (state == "cancelled"
+            ? "Import stopped. Completed copies are safe; run it again to continue."
+            : (items.isEmpty ? "No photo originals were found in your Photos library."
+                : (failures > 0 ? "Import finished with some originals unavailable. Run it again to retry."
+                    : "Your photo originals are ready in LightTable."))))
+        items.removeAll()
+    }
+
+    private func emit(_ state: String, message: String, progress: Double? = nil) {
+        let now = Date()
+        if state == "running", now.timeIntervalSince(lastProgressTime) < 0.2 { return }
+        lastProgressTime = now
+        var payload: [String: Any] = [
+            "type": "photosLibraryImport", "state": state, "completed": index,
+            "total": items.count, "imported": imported, "existing": existing,
+            "failures": failures, "message": message, "path": directory.path,
+        ]
+        if let progress { payload["resourceProgress"] = progress }
+        DispatchQueue.main.async { [event] in event(payload) }
+    }
+}
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
@@ -627,6 +883,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private var schemeCommandItems: [String: NSMenuItem] = [:]
     private var photoPicker: PHPickerViewController?
     private var pendingPhotosImportEvent: [String: Any]?
+    private var photosLibraryImporter: PhotosLibraryImporter?
+    private var photosLibraryImportEvent: [String: Any]?
+    private var photosLibraryAuthorizationID: UUID?
+    private var firstRun = false
+    private var pendingSetupFolderEvent: [String: Any]?
+    private var pendingSetupCatalogEvent: [String: Any]?
     private let photoImportQueue = DispatchQueue(
         label: "lighttable.photos-import", qos: .userInitiated)
     /// Consecutive unexpected server exits. Reset after a session that ran
@@ -651,12 +913,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             return
         }
 
-        sources = loadSources()
+        let defaults = UserDefaults.standard
         let environmentFolder = ProcessInfo.processInfo.environment[
             "LIGHTTABLE_DIR"]?.trimmingCharacters(in: .whitespacesAndNewlines)
-        folder = (environmentFolder?.isEmpty == false ? environmentFolder : nil)
-            ?? UserDefaults.standard.string(forKey: "photoFolder")
-            ?? sources.first?.path ?? defaultPhotoFolder
+        firstRun = environmentFolder?.isEmpty != false
+            && defaults.object(forKey: "photoFolder") == nil
+            && defaults.object(forKey: "folderSources") == nil
+            && defaults.integer(forKey: "firstRunCompleted") < 1
+        sources = firstRun ? [] : loadSources()
+        if firstRun {
+            do { folder = try gettingStartedFolder().path }
+            catch { showFatal("Could not prepare your library: \(error.localizedDescription)"); return }
+        } else {
+            folder = (environmentFolder?.isEmpty == false ? environmentFolder : nil)
+                ?? defaults.string(forKey: "photoFolder")
+                ?? sources.first?.path ?? defaultPhotoFolder
+        }
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: folder, isDirectory: &isDir)
             || !isDir.boolValue {
@@ -667,7 +939,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         launch(folder: folder)
     }
 
-    func applicationWillTerminate(_ note: Notification) { server.stop() }
+    func applicationWillTerminate(_ note: Notification) {
+        photosLibraryImporter?.shutdown()
+        server.stop()
+    }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if closeApproved || webView == nil { return .terminateNow }
@@ -966,7 +1241,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         nativePreview?.hide()
         let automated = ProcessInfo.processInfo.environment[
             "LIGHTTABLE_DIR"]?.isEmpty == false
-        if !automated {
+        if !automated && !(firstRun && sources.isEmpty) {
             addSource(clean)
             UserDefaults.standard.set(clean, forKey: "photoFolder")
         }
@@ -1200,6 +1475,129 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         }
     }
 
+    private func gettingStartedFolder() throws -> URL {
+        let root = FileManager.default.urls(for: .applicationSupportDirectory,
+                                             in: .userDomainMask).first!
+        let destination = root.appendingPathComponent("LightTable", isDirectory: true)
+            .appendingPathComponent("Getting Started", isDirectory: true)
+        try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
+        return destination
+    }
+
+    private func finishFirstRun() {
+        firstRun = false
+        pendingSetupFolderEvent = nil
+        pendingSetupCatalogEvent = nil
+        if photosLibraryImportEvent?["state"] as? String != "running" {
+            photosLibraryImportEvent = nil
+        }
+        let defaults = UserDefaults.standard
+        defaults.set(1, forKey: "firstRunCompleted")
+        // Skip keeps the empty workspace on the next launch too.
+        defaults.set(folder, forKey: "photoFolder")
+        saveSources()
+        sendEvent(sourcePayload())
+    }
+
+    private func completeSetupCatalogImport(_ body: [String: Any]) {
+        var seen = Set<String>()
+        let paths = (body["paths"] as? [String] ?? []).compactMap { path -> String? in
+            guard (path as NSString).isAbsolutePath else { return nil }
+            let clean = normalized(path)
+            guard isDirectory(clean), seen.insert(clean).inserted else { return nil }
+            return clean
+        }
+        paths.forEach { addSource($0) }
+        pendingSetupCatalogEvent = [
+            "type": "setupCatalogImported",
+            "matched": max(0, body["matched"] as? Int ?? 0),
+            "unmatched": max(0, body["unmatched"] as? Int ?? 0),
+        ]
+        if let first = paths.first {
+            launch(folder: first)
+        } else if let pendingSetupCatalogEvent {
+            sendEvent(pendingSetupCatalogEvent)
+        }
+    }
+
+    private func publishPhotosLibraryEvent(_ payload: [String: Any]) {
+        photosLibraryImportEvent = payload
+        sendEvent(payload)
+    }
+
+    private func importEntirePhotosLibrary() {
+        guard photosLibraryImporter == nil, photosLibraryAuthorizationID == nil else {
+            if let photosLibraryImportEvent { sendEvent(photosLibraryImportEvent) }
+            return
+        }
+        let authorizationID = UUID()
+        photosLibraryAuthorizationID = authorizationID
+        publishPhotosLibraryEvent([
+            "type": "photosLibraryImport", "state": "running", "completed": 0,
+            "total": 0, "imported": 0, "existing": 0, "failures": 0,
+            "message": "Waiting for permission to read your Photos library…",
+        ])
+        // The OS permission request is only reached by the explicit import
+        // action, never by startup, capability checks, or selecting the card.
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
+            DispatchQueue.main.async {
+                guard let self, self.photosLibraryAuthorizationID == authorizationID else { return }
+                self.photosLibraryAuthorizationID = nil
+                guard status == .authorized else {
+                    self.publishPhotosLibraryEvent([
+                        "type": "photosLibraryImport", "state": "error", "completed": 0,
+                        "total": 0, "imported": 0, "existing": 0, "failures": 0,
+                        "message": status == .limited
+                            ? "Importing the entire library needs full Photos access. Allow access in System Settings, or choose individual photos instead."
+                            : "Photos access was not allowed. You can enable it in System Settings → Privacy & Security → Photos, or start with a folder.",
+                    ])
+                    return
+                }
+                do {
+                    let directory = try self.photosImportRoot()
+                    let importer = PhotosLibraryImporter(directory: directory) { [weak self] payload in
+                        guard let self else { return }
+                        self.publishPhotosLibraryEvent(payload)
+                        guard let state = payload["state"] as? String, state != "running" else { return }
+                        self.photosLibraryImporter = nil
+                        let available = (payload["imported"] as? Int ?? 0) + (payload["existing"] as? Int ?? 0)
+                        if available > 0 {
+                            self.addSource(directory.path)
+                            self.sendEvent(self.sourcePayload())
+                            self.launch(folder: directory.path)
+                        }
+                    }
+                    self.photosLibraryImporter = importer
+                    importer.start()
+                } catch {
+                    self.publishPhotosLibraryEvent([
+                        "type": "photosLibraryImport", "state": "error", "completed": 0,
+                        "total": 0, "imported": 0, "existing": 0, "failures": 0,
+                        "message": "Could not create the Photos import folder: \(error.localizedDescription)",
+                    ])
+                }
+            }
+        }
+    }
+
+    private func cancelEntirePhotosLibraryImport() {
+        if photosLibraryAuthorizationID != nil {
+            photosLibraryAuthorizationID = nil
+            publishPhotosLibraryEvent([
+                "type": "photosLibraryImport", "state": "cancelled", "completed": 0,
+                "total": 0, "imported": 0, "existing": 0, "failures": 0,
+                "message": "Import cancelled. No photos were copied.",
+            ])
+        }
+        photosLibraryImporter?.cancel()
+    }
+
+    private func replaySetupEvents() {
+        if let photosLibraryImportEvent { sendEvent(photosLibraryImportEvent) }
+        if let pendingSetupFolderEvent { sendEvent(pendingSetupFolderEvent) }
+        if let pendingSetupCatalogEvent { sendEvent(pendingSetupCatalogEvent) }
+    }
+
     private func presentPhotosPicker() {
         let alert = NSAlert()
         alert.messageText = "Import from Apple Photos"
@@ -1385,6 +1783,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         [
             "type": "sources",
             "active": folder,
+            "firstRun": firstRun,
+            "photosLibraryImportAvailable": true,
             "sources": sources.map { source in
                 ["path": source.path,
                  "name": (source.path as NSString).lastPathComponent,
@@ -1406,6 +1806,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         sendEvent(sourcePayload())
+        replaySetupEvents()
         if let pendingPhotosImportEvent {
             sendEvent(pendingPhotosImportEvent)
             self.pendingPhotosImportEvent = nil
@@ -1475,6 +1876,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             openSecondaryLoupe()
         case "requestSources":
             sendEvent(sourcePayload())
+            replaySetupEvents()
+        case "completeFirstRun":
+            finishFirstRun()
+        case "setupCatalogImported":
+            completeSetupCatalogImport(body)
+        case "setupChooseFolder":
+            if let picked = pickFolder(title: "Choose your first photo folder") {
+                addSource(picked)
+                pendingSetupFolderEvent = ["type": "setupFolderSelected", "path": picked]
+                launch(folder: picked)
+            } else {
+                sendEvent(["type": "setupFolderCancelled"])
+            }
+        case "importApplePhotosLibrary":
+            importEntirePhotosLibrary()
+        case "cancelApplePhotosLibraryImport":
+            cancelEntirePhotosLibraryImport()
         case "showServerLog":
             showLog(nil)
         case "openRecoveryFolder":
@@ -2134,8 +2552,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     @objc func openHelp(_ sender: Any?) {
-        guard let url = URL(string: "https://lighttable.app/") else { return }
-        NSWorkspace.shared.open(url)
+        sendEvent(["type": "menuCommand", "command": "help"])
     }
 
     @objc func performEditorCommand(_ sender: NSMenuItem) {

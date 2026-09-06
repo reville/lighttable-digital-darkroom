@@ -117,7 +117,8 @@ def _cf_symbol(library, name: str) -> int:
 
 def _build_thumbnail_imageio(source: Path, destination: Path,
                              max_pixel: int = 240,
-                             quality: float = 0.8) -> None:
+                             quality: float = 0.8, *, output_type: str = "public.jpeg",
+                             from_full_image: bool = False) -> None:
     """Decode an oriented thumbnail in-process through macOS ImageIO.
 
     ``CGImageSourceCreateThumbnailAtIndex`` asks ImageIO for the bounded draft
@@ -147,6 +148,7 @@ def _build_thumbnail_imageio(source: Path, destination: Path,
             None, 3, ctypes.byref(maximum)), "thumbnail size")
         keys = (ctypes.c_void_p * 3)(
             _cf_symbol(imageio,
+                       "kCGImageSourceCreateThumbnailFromImageAlways" if from_full_image else
                        "kCGImageSourceCreateThumbnailFromImageIfAbsent"),
             _cf_symbol(imageio, "kCGImageSourceCreateThumbnailWithTransform"),
             _cf_symbol(imageio, "kCGImageSourceThumbnailMaxPixelSize"),
@@ -158,7 +160,7 @@ def _build_thumbnail_imageio(source: Path, destination: Path,
         thumbnail = own(imageio.CGImageSourceCreateThumbnailAtIndex(
             source_ref, 0, options), "thumbnail")
         jpeg_type = own(core.CFStringCreateWithCString(
-            None, b"public.jpeg", 0x08000100), "JPEG type")
+            None, output_type.encode("ascii"), 0x08000100), "JPEG type")
         output = own(imageio.CGImageDestinationCreateWithURL(
             file_url(destination), jpeg_type, 1, None), "image destination")
         compression = ctypes.c_float(max(0.0, min(1.0, float(quality))))
@@ -394,6 +396,39 @@ def convert_processed_to_tiff(
     image, profile = _convert_profile(image, embedded, app_root, output_space)
     options = {"icc_profile": profile} if profile else {}
     image.save(destination, "TIFF", compression="tiff_lzw", **options)
+
+
+def processed_preview(source: Path, max_width: int, *, app_root: Path,
+                      output_space: str = "prophoto") -> np.ndarray:
+    """Decode/convert at preview size; keep full-precision TIFFs for export."""
+    source = Path(source)
+    max_width = max(1, int(max_width))
+    try:
+        with Image.open(source) as opened:
+            embedded = opened.info.get("icc_profile")
+            orientation = opened.getexif().get(274, 1)
+            oriented_width = opened.height if orientation in (5, 6, 7, 8) else opened.width
+            ratio = min(1.0, max_width / max(1, oriented_width))
+            opened.draft("RGB", (max(1, round(opened.width * ratio)),
+                                 max(1, round(opened.height * ratio))))
+            image = ImageOps.exif_transpose(opened).convert("RGB")
+    except (OSError, ValueError):
+        if sys.platform == "darwin":
+            import tempfile
+            with tempfile.TemporaryDirectory(prefix="lighttable-preview-") as directory:
+                draft = Path(directory) / "preview.tif"
+                # ImageIO handles HEIC with bounded native decode. A lossless
+                # temporary retains its ICC profile without a JPEG round-trip.
+                _build_thumbnail_imageio(source, draft, max_pixel=max_width,
+                                         output_type="public.tiff", from_full_image=True)
+                image, embedded = _open_portable(draft)
+        else:
+            image, embedded = _open_portable(source)
+    if image.width > max_width:
+        image = image.resize((max_width, max(1, round(
+            image.height * max_width / image.width))), Image.Resampling.LANCZOS)
+    image, _ = _convert_profile(image, embedded, app_root, output_space)
+    return np.asarray(image, dtype=np.float32) / 255.0
 
 
 def build_thumbnail(

@@ -1485,6 +1485,7 @@ class Catalog:
     def image_row(self, image_id: int) -> dict | None:
         row = self.connection.execute(
             "SELECT i.*, f.relpath, f.source_id, f.header_hash, f.kind,"
+            "       f.camera_make, f.camera_model, f.lens,"
             "       s.path AS source_path"
             " FROM images i JOIN files f ON f.id=i.file_id"
             " JOIN sources s ON s.id=f.source_id WHERE i.id=?",

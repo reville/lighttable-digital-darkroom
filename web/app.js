@@ -32,6 +32,7 @@ import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
+import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
   initMidi, setMidiLearnTarget, toggleMidiLearn, resetMidiMappings,
@@ -45,6 +46,7 @@ let SURVEY = null;
 let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
+let FIRST_RUN = null;
 let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
@@ -61,6 +63,7 @@ import { createPresetBrowser } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installUIBridge } from '/web/ui-bridge.js';
 import { installSettings } from '/web/settings.js';
+import { HELP_SECTION_TOPICS } from '/web/help-search.js';
 import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
@@ -304,6 +307,8 @@ function setAllPhotoSelection(selected) {
 }
 
 function performNativeMenuCommand(command) {
+  if (command === 'help') { window.LightTableHelp?.open(); return; }
+  if (window.LightTableHelp?.isOpen()) return;
   let result;
   if (command.startsWith('flag:')) {
     setStatus(command.slice('flag:'.length));
@@ -478,6 +483,7 @@ window.lightTableNativeEvent = (event) => {
       presentedAt,
       presentation: 'native-metal',
       nativeFetchMs: +timings.fetchMs || 0,
+      nativeSharedMemory: Boolean(timings.sharedMemory),
       nativeGpuMs: +timings.gpuMs || 0,
       nativeTotalMs: +timings.totalMs || 0,
       textureCacheHit: Boolean(timings.textureCacheHit),
@@ -827,6 +833,8 @@ function syncGrade() {
 
 /* ------------------------------------------------------------------ view */
 function clampPan() {
+  // The crop view places the photo wherever the centred frame needs it.
+  if (S.cropping || S.cropTransition) return;
   if (S.zoom <= 1 && S.zoomMode === 'fit') { S.panX = 0; S.panY = 0; return; }
   const w = $('zoomwrap').getBoundingClientRect();
   const r = $('cmp').getBoundingClientRect();
@@ -839,8 +847,16 @@ function applyViewNow() {
   clampPan();
   syncPreviewDetailStatus();
   const cmp = $('cmp');
-  cmp.style.transform =
-    `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  const fit = cropViewState().fit;
+  if ((S.cropping || S.cropTransition) && fit) {
+    // Cropping zooms the frame itself; only the pan is a transform.
+    cmp.style.width = `${fit.width * S.zoom}px`;
+    cmp.style.height = `${fit.height * S.zoom}px`;
+    cmp.style.transform = `translate(${S.panX}px,${S.panY}px)`;
+  } else {
+    cmp.style.transform =
+      `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  }
 
   const cv = $('cv');
   const naturalW = displaySourcePixelWidth();
@@ -874,6 +890,7 @@ function applyViewNow() {
   cmp.classList.toggle('is-zoomed', isZoomed);
 
   scheduleNativeViewportLayout();
+  scheduleViewportRegionRender();
 }
 const viewFrameScheduler = createFrameScheduler(() => applyViewNow());
 function applyView() {
@@ -920,6 +937,11 @@ function zoomCentre(f) {
   zoomAt(f, w.left + w.width / 2, w.top + w.height / 2);
 }
 function zoomReset() {
+  if (S.cropping && !S.cropTransition) {
+    // Fit means the cropping view itself while the crop tool is open.
+    const target = cropViewTarget(S.crop);
+    if (target) { applyCropView(target, { immediate: true }); return; }
+  }
   S.zoomMode = 'fit';
   S.zoom = 1;
   S.panX = 0;
@@ -962,6 +984,58 @@ function displaySourcePixelWidth() {
   return width > 0 ? width : (+$('cv')?.width || 0);
 }
 
+function viewportRegionEnabled() {
+  return nativePreviewActive() && $('engine').value === 'rs' &&
+    S.zoomMode === '100' && S.params.profile_enabled !== false &&
+    S.presentedPhotoName === cur()?.name && !S.crop && !S.cropSession &&
+    !S.compareActive && !S.holdBefore && !S.wbPick && !S.pointColorPick && !S.maskColorPick &&
+    !S.reference?.active && !(S.heals || []).length && !(S.masks || []).length &&
+    !Object.keys(OPTICS_DEFAULTS).some((key) =>
+      (S.optics?.[key] ?? OPTICS_DEFAULTS[key]) !== OPTICS_DEFAULTS[key]);
+}
+
+function viewportPixelWindow(canvas, clip, width, height, margin = 96) {
+  if (!(canvas.width > 0 && canvas.height > 0 && width > 0 && height > 0)) return null;
+  const left = Math.max(canvas.left, clip.left), top = Math.max(canvas.top, clip.top);
+  const right = Math.min(canvas.right, clip.right), bottom = Math.min(canvas.bottom, clip.bottom);
+  if (right <= left || bottom <= top) return null;
+  const x = Math.max(0, Math.floor(((left - canvas.left) / canvas.width * width - margin) / 64) * 64);
+  const y = Math.max(0, Math.floor(((top - canvas.top) / canvas.height * height - margin) / 64) * 64);
+  const endX = Math.min(width, Math.ceil(((right - canvas.left) / canvas.width * width + margin) / 64) * 64);
+  const endY = Math.min(height, Math.ceil(((bottom - canvas.top) / canvas.height * height + margin) / 64) * 64);
+  return { x, y, width: endX - x, height: endY - y };
+}
+
+function viewportSourceGeometryKey() {
+  return JSON.stringify([cur()?.name, cur()?.fileKey || cur()?.mtime || null,
+    Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2]);
+}
+
+function requestedViewportRegion() {
+  if (!viewportRegionEnabled()) return null;
+  const decoded = S.viewportSourceGeometry?.key === viewportSourceGeometryKey()
+    ? S.viewportSourceGeometry : null;
+  let width = decoded?.width || +cur()?.width || 0;
+  let height = decoded?.height || +cur()?.height || 0;
+  if (!(width > 0 && height > 0)) return null;
+  if (!decoded && Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) [width, height] = [height, width];
+  return viewportPixelWindow($('cv').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), width, height);
+}
+
+let viewportRegionTimer = null;
+let lastViewportRenderKey = null;
+function scheduleViewportRegionRender() {
+  const region = requestedViewportRegion();
+  if (!region && !S.nativeViewport) return;
+  const key = JSON.stringify([cur()?.name, region]);
+  if (key === lastViewportRenderKey) return;
+  clearTimeout(viewportRegionTimer);
+  viewportRegionTimer = setTimeout(() => {
+    doRender(performance.now(), { width: requestedPreviewWidth(), phase: 'settled' });
+  }, 45);
+}
+
 function requestedPreviewWidth() {
   if ($('pw').value === 'auto') {
     // Catalog dimensions already include EXIF orientation. Do not borrow the
@@ -974,7 +1048,10 @@ function requestedPreviewWidth() {
     const viewport = $('zoomwrap');
     return automaticPreviewWidth({ sourceWidth: +source.width, sourceHeight: +source.height,
       viewportWidth: viewport.clientWidth, viewportHeight: viewport.clientHeight,
-      deviceScale: window.devicePixelRatio || 1, zoom: S.zoom, crop: previewCrop(),
+      deviceScale: window.devicePixelRatio || 1,
+      // The cropping view's zoom is presentation only; re-rendering for it
+      // would swap textures under a drag.
+      zoom: S.cropping || S.cropTransition ? 1 : S.zoom, crop: previewCrop(),
       actualSize: S.zoomMode === '100' });
   }
   const selected = +$('pw').value || INTERACTIVE_PREVIEW_WIDTH;
@@ -1143,14 +1220,23 @@ for (const section of document.querySelectorAll('#editPane .sec, #filmPane .sec'
   if (!summary) continue;
   const hints = [...section.querySelectorAll('.hint:not([id])')]
     .filter((hint) => hint.closest('.sec') === section);
-  if (!hints.length) continue;
+  const topicCategory = section.closest('#filmPane') ? 'Film' : 'Editing';
+  const topicLabel = summary.querySelector('span')?.textContent.trim() || '';
+  const topicId = HELP_SECTION_TOPICS[topicCategory]?.[topicLabel];
+  if (!hints.length && !topicId) continue;
   const help = document.createElement('button');
   help.type = 'button';
   help.className = 'section-help';
   help.textContent = '?';
-  help.title = hints.map((hint) => hint.textContent.trim()).join(' ');
+  help.title = hints.map((hint) => hint.textContent.trim()).join(' ') || `Read help for ${topicLabel}`;
   help.setAttribute('aria-label', `Help: ${summary.querySelector('span')?.textContent || 'section'}`);
-  help.onclick = (event) => event.stopPropagation();
+  help.onclick = (event) => {
+    event.preventDefault(); event.stopPropagation();
+    window.LightTableHelp?.open({
+      article: topicId, query: topicId ? '' : topicLabel,
+      category: topicId ? '' : topicCategory,
+    });
+  };
   hints.forEach((hint) => { hint.hidden = true; });
   summary.appendChild(help);
 }
@@ -1637,6 +1723,7 @@ function nativeGradePayload(grade) {
 }
 
 function drawGradeNow(forceWebGL = false, refreshScope = true) {
+  scheduleViewportRegionRender();
   if (S.renderState === 'pending' && S.presentedPhotoName && S.presentedPhotoName !== cur()?.name) return;
   const activeGrade = S.holdBefore ? GRADE_DEFAULTS : S.grade;
   syncPreviewBackend();
@@ -2620,7 +2707,16 @@ let settleRenderTimer = null;
 let lastInteractiveRenderAt = -Infinity;
 let lastContinuousInputAt = -Infinity;
 const INTERACTIVE_PREVIEW_WIDTH = 1100;
-const INTERACTIVE_RENDER_INTERVAL_MS = 60;
+// Learn from real server round trips, excluding presentation-cache hits and
+// settled/refinement renders. One-frame minimum lets fast film parameters keep
+// pace with the display; slower ones naturally stop flooding the render queue.
+function adaptiveInteractiveInterval(previous, roundTripMs) {
+  if (!Number.isFinite(roundTripMs) || roundTripMs <= 0) return previous;
+  const sample = Math.max(1000 / 60, Math.min(250, roundTripMs));
+  return previous == null ? sample : previous * 0.7 + sample * 0.3;
+}
+let interactiveRenderIntervalMs = null;
+let interactiveRenderPhoto = null;
 const FULL_RESOLUTION_SETTLE_MS = 160;
 function markContinuousInput() {
   lastContinuousInputAt = performance.now();
@@ -2767,12 +2863,33 @@ const JOURNEY_RENDER_FIELDS = [
   'residentMs', 'gpuMs', 'imageDecodeMs', 'textureUploadMs',
   'paintAfterUploadMs', 'presentation', 'nativeFetchMs', 'nativeGpuMs',
   'nativeTotalMs', 'totalMs', 'textureCacheHit', 'presentationCacheHit', 'serverQueueMs',
+  'generation', 'viewport', 'nativeSharedMemory',
 ];
 
 function compactJourneyRender(render) {
   return Object.fromEntries(JOURNEY_RENDER_FIELDS
     .filter((key) => render?.[key] !== undefined)
     .map((key) => [key, render[key]]));
+}
+
+function waitForNativeViewportFrame(imageName, region, afterGeneration, previousRegion = null) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      window.removeEventListener('lighttable-rendered', onRender);
+      reject(new Error(`Timed out waiting for native ${region ? 'viewport' : 'full-frame'} presentation`));
+    }, 180000);
+    const onRender = ({ detail }) => {
+      if (detail.image !== imageName || detail.generation <= afterGeneration ||
+          detail.generation !== S.seq || detail.presentation !== 'native-metal' || detail.refining ||
+          Boolean(detail.viewport) !== region) return;
+      if (previousRegion && detail.viewport.x === previousRegion.x &&
+          detail.viewport.y === previousRegion.y) return;
+      clearTimeout(timer);
+      window.removeEventListener('lighttable-rendered', onRender);
+      resolve(detail);
+    };
+    window.addEventListener('lighttable-rendered', onRender);
+  });
 }
 
 async function waitForJourneyFrame() {
@@ -2824,8 +2941,10 @@ async function runNativeProductJourney(width, layer) {
 async function runEditRecoveryJourney() {
   const name = cur().name;
   const original = await getJSON(`/api/state?name=${encodeURIComponent(name)}`);
-  const pending = {state: {name, ...original, grade: {...GRADE_DEFAULTS,
-    ...(original.grade || {}), exposure: 0.321}}};
+  const originalGrade = {...GRADE_DEFAULTS, ...(original.grade || {})};
+  // Change only the tested edit. A state response also contains read-only
+  // provenance and unset film parameters that the server normalizes on write.
+  const pending = {state: {name, grade: {...originalGrade, exposure: 0.321}}};
   const originalFetch = window.fetch;
   let failedClose = false;
   try {
@@ -2855,7 +2974,7 @@ async function runEditRecoveryJourney() {
   if ((await editRecovery.list()).some(record => record.name === name)) {
     throw new Error('Acknowledged recovery was not removed');
   }
-  editSaveQueue.enqueue(name, {state: {name, ...original}});
+  editSaveQueue.enqueue(name, {state: {name, grade: originalGrade}});
   if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
   window.lightTableCancelClose();
   return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
@@ -2959,10 +3078,15 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     return { pointColor, maskColor };
   });
 
-  await renderStep('film-off', next.name, 'native-metal', () =>
-    executeUICommand('filmToggle'));
-  await renderStep('film-on', next.name, 'native-metal', () =>
-    executeUICommand('filmToggle'));
+  await renderStep('film-off', next.name, 'native-metal', () => {
+    if (S.params.profile_enabled !== false) return executeUICommand('filmToggle');
+    renderFilm(0);
+  });
+  await renderStep('film-on', next.name, 'native-metal', () => {
+    if (S.params.profile_enabled === false) return executeUICommand('filmToggle');
+    renderFilm(0);
+  });
+  if (S.params.profile_enabled === false) throw new Error('Film did not activate before slider/viewport proof');
   await renderStep('slider-adjustment', next.name, 'native-metal', () =>
     executeUICommand('slider', { key: 'print_exposure', value: 0.05 }));
 
@@ -2980,25 +3104,52 @@ async function runNativeSmokeJourney(width, layer = 'pr') {
     if (state.compare.active) throw new Error('Compare did not turn off');
     return state;
   });
-  await record('zoom-actual', async () => {
+  const actualRender = await record('zoom-actual', async () => {
     await executeUICommand('zoomIn');
     await waitForJourneyFrame();
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq);
     for (let attempt = 0; attempt < 3; attempt++) {
       const state = await executeUICommand('zoomActual');
       if (state.zoomMode === '100') {
-        await waitForJourneyFrame();
-        return uiStateReport();
+        const result = await presented;
+        if (result.viewport.width * result.viewport.height >=
+            result.viewport.fullWidth * result.viewport.fullHeight) {
+          throw new Error('Actual-size proof rendered the entire source');
+        }
+        return result;
       }
       await waitForJourneyFrame();
     }
     throw new Error('Actual-size zoom did not activate');
   });
+  await record('viewport-pan', async () => {
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq, actualRender.viewport);
+    const wrap = $('zoomwrap'), bounds = wrap.getBoundingClientRect();
+    const origin = { clientX: bounds.left + bounds.width / 2, clientY: bounds.top + bounds.height / 2 };
+    wrap.dispatchEvent(new PointerEvent('pointerdown', { ...origin, button: 0, pointerId: 997, bubbles: true }));
+    wrap.dispatchEvent(new PointerEvent('pointermove', { clientX: origin.clientX + 320,
+      clientY: origin.clientY + 160, button: 0, pointerId: 997, bubbles: true }));
+    wrap.dispatchEvent(new PointerEvent('pointerup', { clientX: origin.clientX + 320,
+      clientY: origin.clientY + 160, button: 0, pointerId: 997, bubbles: true }));
+    return presented;
+  });
+  await record('viewport-film-slider', async () => {
+    const presented = waitForNativeViewportFrame(next.name, true, S.seq);
+    const previous = +S.params.print_exposure;
+    await executeUICommand('slider', { key: 'print_exposure', value: previous === 1.37 ? 1.73 : 1.37 });
+    const result = await presented;
+    if (+S.params.print_exposure === previous || result.presentationCacheHit) {
+      throw new Error('Viewport film slider did not produce a distinct film render');
+    }
+    if (result.engine !== 'rs') throw new Error('Viewport film slider did not use the resident film engine');
+    return result;
+  });
   await record('zoom-fit', async () => {
+    const presented = waitForNativeViewportFrame(next.name, false, S.seq);
     await executeUICommand('zoomFit');
-    await waitForJourneyFrame();
-    const state = uiStateReport();
-    if (state.zoomMode !== 'fit') throw new Error('Fit zoom did not activate');
-    return state;
+    const result = await presented;
+    if (S.zoomMode !== 'fit' || S.nativeViewport) throw new Error('Fit zoom did not restore a full-frame surface');
+    return result;
   });
 
   const destination = window.__LIGHTTABLE_NATIVE_JOURNEY_EXPORT_DIR__;
@@ -3128,7 +3279,8 @@ async function runNativeRawJourney(width, layer) {
 function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
   clearTimeout(renderTimer);
   const requestedWidth = requestedPreviewWidth();
-  const width = Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
+  const width = viewportRegionEnabled() ? requestedWidth
+    : Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
   renderTimer = setTimeout(() => {
     lastInteractiveRenderAt = performance.now();
     doRender(scheduledAt, {
@@ -3149,7 +3301,7 @@ function renderPhysicalPreview() {
   markContinuousInput();
   const scheduledAt = performance.now();
   const delay = Math.max(0,
-    INTERACTIVE_RENDER_INTERVAL_MS - (scheduledAt - lastInteractiveRenderAt));
+    (interactiveRenderIntervalMs ?? 1000 / 60) - (scheduledAt - lastInteractiveRenderAt));
   scheduleProgressiveRender(scheduledAt, delay);
 }
 
@@ -3173,7 +3325,14 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       requestedWidth, phase,
     });
   }
+  if (interactiveRenderPhoto !== im.name) {
+    interactiveRenderPhoto = im.name;
+    interactiveRenderIntervalMs = null;
+  }
   const requestStartedAt = performance.now();
+  const viewport = w === requestedWidth ? requestedViewportRegion() : null;
+  const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
+    requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
   spin(true);
@@ -3183,13 +3342,21 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       client: CLIENT_ID, generation: my, priority: 'interactive',
       native: nativePreviewActive(),
+      ...(viewport ? { viewport } : {}),
     };
+    clearTimeout(viewportRegionTimer);
+    lastViewportRenderKey = JSON.stringify([im.name, viewport]);
     const presentationKey = renderRequestKey(im, request);
     const remembered = options.skipPresentationCache ? null : presentationCache.get(presentationKey);
     const m = remembered ? { ...remembered, cached: true }
       : await api('/api/render', request);
     presentationCache.set(presentationKey, m);
     const responseAt = performance.now();
+    if (measureInteractiveRoundTrip && !remembered && !m.cached && !m.error &&
+        !m.cancelled && interactiveRenderPhoto === im.name) {
+      interactiveRenderIntervalMs = adaptiveInteractiveInterval(
+        interactiveRenderIntervalMs, responseAt - requestStartedAt);
+    }
     if (window.__LIGHTTABLE_NATIVE_BENCHMARK_ITERATIONS__) {
       postNative('nativeBenchmarkProgress', {
         stage: 'render-response', generation: my, currentGeneration: S.seq,
@@ -3207,7 +3374,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       return;
     }
-    S.matchFactor = m.match || 1;
+    if (Number.isFinite(m.match) && m.match > 0) S.matchFactor = m.match;
     if (Object.prototype.hasOwnProperty.call(m, 'lens_profile')) {
       S.lensProfile = m.lens_profile;
       syncOpticsPanel();
@@ -3218,29 +3385,43 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     const nextGeometryKey = previewGeometryKey(im.name, S.params.rotate);
     const preservePresentationGeometry = shouldPreservePresentationGeometry(
       phase, S.presentedGeometryKey, nextGeometryKey);
-    const imageTiming = await setBaseImage(m, my, {
-      preserveCanvasSize: preservePresentationGeometry,
-    });
-    if (my !== S.seq) return;
-    if (imageTiming.failed && remembered) {
-      presentationCache.delete(presentationKey);
-      return doRender(scheduledAt, { ...options, skipPresentationCache: true });
+    // A draft (embedded-camera) render only stands in while nothing accurate
+    // is on screen. When this photo is already presented accurately, keep
+    // those pixels and let the refinement replace them: swapping in a draft
+    // flashes a different rendering on every zoom, crop, or panel change.
+    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
+      S.presentedPhotoName === im.name;
+    let imageTiming = null;
+    if (!keepAccuratePixels) {
+      imageTiming = await setBaseImage(m, my, {
+        preserveCanvasSize: preservePresentationGeometry,
+      });
+      if (my !== S.seq) return;
+      if (imageTiming.failed && remembered) {
+        presentationCache.delete(presentationKey);
+        return doRender(scheduledAt, { ...options, skipPresentationCache: true });
+      }
+      if (imageTiming.failed) {
+        $('rstat').textContent = imageTiming.error || 'preview unavailable';
+        $('rstat').className = '';
+        setRenderPresentation('error', im.name, 'Could not display this photo');
+        return;
+      }
+      S.baseEditsBaked = Boolean(m.baseEditsBaked);
+      S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+        delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
+          +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
+      setRenderPresentation('ready', im.name);
+      drawGrade();
     }
-    if (imageTiming.failed) {
-      $('rstat').textContent = imageTiming.error || 'preview unavailable';
-      $('rstat').className = '';
-      setRenderPresentation('error', im.name, 'Could not display this photo');
-      return;
-    }
-    S.baseEditsBaked = Boolean(m.baseEditsBaked);
-    S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
-      delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
-        +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
-    setRenderPresentation('ready', im.name);
-    drawGrade();
-    const paintedAt = imageTiming.presentedAt || await afterVisiblePaint();
+    const paintedAt = keepAccuratePixels ? performance.now()
+      : (imageTiming.presentedAt || await afterVisiblePaint());
+    imageTiming ||= {
+      decodeMs: 0, uploadMs: 0, uploadedAt: paintedAt, presentation: 'draft-skipped',
+    };
     const timing = {
       image: im.name,
+      generation: my,
       width: w,
       requestedWidth,
       phase,
@@ -3248,6 +3429,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       refining: Boolean(m.refining),
       engine: m.engine,
       backend: m.backend || null,
+      viewport: m.native?.viewport || null,
+      nativeSharedMemory: imageTiming.nativeSharedMemory || false,
       queueMs: requestStartedAt - scheduledAt,
       requestMs: responseAt - requestStartedAt,
       serverMs: !m.cached && Number.isFinite(+m.ms) ? +m.ms : null,
@@ -3459,11 +3642,16 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
     failed: true, error: 'Native preview data is missing',
   });
 
-  if (surface.width > 0 && surface.height > 0 && !preserveCanvasSize) {
-    if ($('cv').width !== surface.width || $('cv').height !== surface.height) {
+  S.nativeViewport = surface.viewport || null;
+  if (surface.viewport) S.viewportSourceGeometry = { key: viewportSourceGeometryKey(),
+    width: surface.viewport.fullWidth, height: surface.viewport.fullHeight };
+  const canvasWidth = surface.viewport?.fullWidth || surface.width;
+  const canvasHeight = surface.viewport?.fullHeight || surface.height;
+  if (canvasWidth > 0 && canvasHeight > 0 && !preserveCanvasSize) {
+    if ($('cv').width !== canvasWidth || $('cv').height !== canvasHeight) {
       S.maskTextureDirty = true;
-      $('cv').width = surface.width;
-      $('cv').height = surface.height;
+      $('cv').width = canvasWidth;
+      $('cv').height = canvasHeight;
     }
     applyCropVisual();
     if (S.maskTextureDirty) drawGrade();
@@ -3473,7 +3661,7 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   // Histogram, WB sampling, and reference matching retain a 256px WebGL
   // helper, generated only after interaction settles. A response without a
   // helper still presents a JPEG surface, which seeds sampling just as well.
-  scheduleNativeHelper(render.helper || render.img, generation);
+  if (!surface.viewport) scheduleNativeHelper(render.helper || render.img, generation);
 
   return new Promise((resolve) => {
     nativePreviewPending.set(generation, { resolve });
@@ -5515,7 +5703,7 @@ function clampCrop(crop) {
 }
 
 function previewCrop() {
-  return S.crop && !S.cropping ? clampCrop(S.crop) : null;
+  return S.crop && !S.cropping && !S.cropTransition ? clampCrop(S.crop) : null;
 }
 
 function cropViewportSize(availableWidth, availableHeight, sourceWidth, sourceHeight, crop) {
@@ -5544,6 +5732,9 @@ function syncCropPresentationNow() {
   cmp.classList.toggle('preview-framed', framed);
   cmp.classList.toggle('crop-framed', S.cropping || !!crop);
   cmp.classList.toggle('crop-committed', !!crop);
+  // While cropping the frame is the whole photo under a zoom/pan transform, so
+  // its handles may reach past the frame edge and the workspace does the clipping.
+  cmp.classList.toggle('is-cropping', S.cropping || !!S.cropTransition);
   if (!framed) {
     cmp.style.removeProperty('width');
     cmp.style.removeProperty('height');
@@ -5560,8 +5751,12 @@ function syncCropPresentationNow() {
   const viewport = cropViewportSize(
     wrap.width, wrap.height, source.width, source.height, frameCrop);
   if (viewport) {
-    cmp.style.width = `${viewport.width}px`;
-    cmp.style.height = `${viewport.height}px`;
+    // The cropping view zooms by resizing this frame rather than transforming
+    // it, so the crop chrome keeps its screen size at any zoom.
+    const scale = S.cropping || S.cropTransition ? (S.zoom || 1) : 1;
+    cropViewState().fit = { width: viewport.width, height: viewport.height };
+    cmp.style.width = `${viewport.width * scale}px`;
+    cmp.style.height = `${viewport.height * scale}px`;
   }
   cmp.style.setProperty('--crop-source-left', `${-frameCrop.x / frameCrop.w * 100}%`);
   cmp.style.setProperty('--crop-source-top', `${-frameCrop.y / frameCrop.h * 100}%`);
@@ -5644,6 +5839,9 @@ function applyCropVisualNow() {
   r.style.top = (selection.y * 100) + '%';
   r.style.width = (selection.w * 100) + '%';
   r.style.height = (selection.h * 100) + '%';
+  // Keep the photo gliding under the frame: a move drag pans it 1:1, a drawn
+  // frame settles into view once the pointer lifts, everything else eases.
+  syncCropView({ immediate: cropInteractionKind === 'move', defer: cropInteractionKind === 'draw' });
   syncCropPanel();
 }
 const cropFrameScheduler = createFrameScheduler(() => applyCropVisualNow());
@@ -5654,16 +5852,220 @@ function setCropMode(on) {
   const next = Boolean(on);
   const changed = S.cropping !== next;
   S.cropping = next;
-  $('cropLayer').classList.toggle('on', next);
+  // Leaving glides the frame out to its committed framing before the source
+  // frame is swapped, so the transition is marked before the presentation sync.
+  if (changed && !next) cropViewTransition(false);
+  $('cropLayer').classList.toggle('on', next || S.cropTransition === 'exit');
   syncCropPresentationNow();
+  if (changed && next) cropViewTransition(true);
   applyCropVisual();
   // Crop editing needs the whole source; the committed result should fit the
   // crop itself. Resetting on either transition makes both states predictable.
-  if (changed) zoomReset();
-  else applyView();
+  if (changed && !next && !S.cropTransition) zoomReset();
+  else if (!changed) applyView();
   if (next) requestAnimationFrame(() => $('cropRect').focus({ preventScroll: true }));
   renderCompare();
   syncCompareControl();
+}
+
+/* ------------------------------------------------ crop view (Lightroom feel) */
+// While cropping, the crop frame stays centred in the workspace and the photo
+// zooms and pans underneath it. The on-screen frame is the geometric mean of
+// the crop's fitted size and the workspace (zoom bias 0.5), so a dragged handle
+// stays under the pointer while the rest of the frame glides toward the centre
+// and the photo swells to follow. Dragging inside moves the photo under the
+// frame. Entering and leaving ease between the committed framing and this view.
+let cropInteractionKind = null;
+let cropPointerRefresh = null;
+function cropViewState() {
+  return (cropViewState.value ||= {
+    bias: 0.5, dimAlpha: 0.62, tau: 90, transitionTau: 70, pad: 14,
+    target: null, dimTarget: null, dim: null, photo: null, fit: null,
+    running: false, lastAt: 0, onSettle: null,
+  });
+}
+function cropViewPrefersImmediate() {
+  return typeof matchMedia === 'function' &&
+    matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+function cropViewWrapKey() {
+  const rect = $('zoomwrap')?.getBoundingClientRect?.();
+  return rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}` : '';
+}
+function cropViewFrame() {
+  const rect = $('zoomwrap')?.getBoundingClientRect?.();
+  const fit = cropViewState().fit;
+  const width = fit?.width || 0;
+  const height = fit?.height || 0;
+  if (!rect || !(rect.width > 0) || !(rect.height > 0) || !(width > 0) || !(height > 0)) return null;
+  return { wrapWidth: rect.width, wrapHeight: rect.height, width, height };
+}
+function cropFitScale(crop, frame) {
+  // How much the crop could grow, relative to the whole photo's fit, before it
+  // would leave the workspace. The whole photo is 1 by construction.
+  const full = Math.min(frame.wrapWidth / frame.width, frame.wrapHeight / frame.height);
+  const part = Math.min(frame.wrapWidth / (frame.width * crop.w),
+    frame.wrapHeight / (frame.height * crop.h));
+  return Math.max(1, part / full);
+}
+function cropViewTarget(crop, bias = cropViewState().bias) {
+  const frame = cropViewFrame();
+  if (!frame) return null;
+  const c = clampCrop(crop || { x: 0, y: 0, w: 1, h: 1 });
+  if (!(c.w > 0) || !(c.h > 0)) return null;
+  // The cropping view keeps a small margin so handles on the photo's edge
+  // stay inside the workspace; the committed framing (bias 1) uses none.
+  const pad = bias < 1 ? cropViewState().pad : 0;
+  const base = Math.min(1, (frame.wrapWidth - 2 * pad) / frame.width,
+    (frame.wrapHeight - 2 * pad) / frame.height);
+  const zoom = Math.pow(cropFitScale(c, frame), bias) * base;
+  return {
+    zoom,
+    panX: -frame.width * (c.x + c.w / 2 - 0.5) * zoom,
+    panY: -frame.height * (c.y + c.h / 2 - 0.5) * zoom,
+  };
+}
+function cropViewBackgroundRGB() {
+  let value = '';
+  if (typeof getComputedStyle === 'function' && typeof document !== 'undefined') {
+    value = getComputedStyle(document.documentElement).getPropertyValue('--viewer-bg').trim();
+  }
+  const hex = /^#([0-9a-f]{6})$/i.exec(value)?.[1] || '121212';
+  return [0, 2, 4].map((offset) => parseInt(hex.slice(offset, offset + 2), 16));
+}
+function cropViewDimStyle(mix, alpha) {
+  const layer = $('cropLayer');
+  if (!layer?.style?.setProperty) return;
+  const rgb = cropViewBackgroundRGB().map((channel) => Math.round(channel * mix));
+  layer.style.setProperty('--crop-dim-rgb', rgb.join(' '));
+  layer.style.setProperty('--crop-dim-alpha', alpha.toFixed(3));
+}
+function snapCropView() {
+  const state = cropViewState();
+  const target = state.target;
+  state.running = false;
+  if (!target) return;
+  S.zoom = target.zoom; S.panX = target.panX; S.panY = target.panY;
+  if (state.dimTarget) {
+    state.dim = { ...state.dimTarget };
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+  }
+  applyViewNow();
+  const settle = state.onSettle;
+  state.onSettle = null;
+  if (settle) settle();
+}
+function stepCropView(now) {
+  const state = cropViewState();
+  const target = state.target;
+  if (!state.running || !target) { state.running = false; return; }
+  if (!S.cropping && S.cropTransition !== 'exit') { state.running = false; return; }
+  const dt = state.lastAt ? Math.min(64, now - state.lastAt) : 16;
+  state.lastAt = now;
+  const k = 1 - Math.exp(-dt / state.tau);
+  S.zoom += (target.zoom - S.zoom) * k;
+  S.panX += (target.panX - S.panX) * k;
+  S.panY += (target.panY - S.panY) * k;
+  let dimDone = true;
+  if (state.dimTarget) {
+    state.dim ||= { ...state.dimTarget };
+    state.dim.alpha += (state.dimTarget.alpha - state.dim.alpha) * k;
+    state.dim.mix += (state.dimTarget.mix - state.dim.mix) * k;
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+    dimDone = Math.abs(state.dimTarget.alpha - state.dim.alpha) < 0.01 &&
+      Math.abs(state.dimTarget.mix - state.dim.mix) < 0.01;
+  }
+  const settled = dimDone && Math.abs(target.zoom - S.zoom) < 0.002 * target.zoom &&
+    Math.abs(target.panX - S.panX) < 0.5 && Math.abs(target.panY - S.panY) < 0.5;
+  if (settled) { snapCropView(); return; }
+  applyViewNow();
+  // A held handle stays under the pointer while the photo glides beneath it.
+  if (cropInteractionKind === 'resize' && cropPointerRefresh) cropPointerRefresh();
+  requestAnimationFrame(stepCropView);
+}
+function applyCropView(target, options = {}) {
+  const { immediate = false, dim = null, onSettle, tau = null, essential = false } = options;
+  const state = cropViewState();
+  if (!target) return;
+  state.target = target;
+  state.tau = tau || 90;
+  if (dim) state.dimTarget = dim;
+  // A re-target (a drag step, a workspace resize) keeps any pending completion.
+  if (onSettle !== undefined) state.onSettle = onSettle;
+  S.zoomMode = 'crop';
+  S.targetPixelScale = null;
+  // Reduced motion skips the decorative enter/leave glides; the short easing
+  // that follows a handle drag is direct-manipulation feedback and stays.
+  if (immediate || (!essential && cropViewPrefersImmediate())) { snapCropView(); return; }
+  if (state.running) return;
+  state.running = true;
+  state.lastAt = 0;
+  requestAnimationFrame(stepCropView);
+}
+function syncCropView({ immediate = false, defer = false } = {}) {
+  if (!S.cropping || S.cropTransition) return;
+  const state = cropViewState();
+  const photo = cur()?.name || null;
+  const changedPhoto = state.photo !== photo;
+  state.photo = photo;
+  if (defer) return;
+  const target = cropViewTarget(S.crop);
+  if (!target) return;
+  applyCropView(target, {
+    immediate: immediate || changedPhoto,
+    dim: { mix: 0, alpha: state.dimAlpha },
+    essential: true,
+  });
+}
+function finishCropViewExit() {
+  if (S.cropTransition !== 'exit') return;
+  S.cropTransition = null;
+  $('cropLayer').classList.remove('exiting');
+  if (!S.cropping) $('cropLayer').classList.remove('on');
+  syncCropPresentationNow();
+  applyCropVisual();
+  if (!S.cropping) zoomReset();
+}
+function cropViewTransition(entering) {
+  const state = cropViewState();
+  const layer = $('cropLayer');
+  state.onSettle = null;
+  state.running = false;
+  state.wrapKey = cropViewWrapKey();
+  layer.classList.remove('exiting');
+  if (entering) {
+    S.cropTransition = null;
+    state.photo = cur()?.name || null;
+    state.target = null;
+    const committed = S.crop ? clampCrop(S.crop) : null;
+    const start = committed ? cropViewTarget(committed, 1) : null;
+    S.zoomMode = 'crop';
+    S.targetPixelScale = null;
+    if (start) {
+      // Start exactly where the committed crop was framed; the crop visual
+      // then eases the photo out to the cropping view.
+      S.zoom = start.zoom; S.panX = start.panX; S.panY = start.panY;
+      state.dim = { mix: 1, alpha: 1 };
+    } else {
+      S.zoom = 1; S.panX = 0; S.panY = 0;
+      state.dim = { mix: 0, alpha: state.dimAlpha };
+    }
+    state.dimTarget = { ...state.dim };
+    cropViewDimStyle(state.dim.mix, state.dim.alpha);
+    // Paint the starting view in this frame; the crop visual eases from here.
+    applyViewNow();
+    return;
+  }
+  const target = S.crop ? cropViewTarget(clampCrop(S.crop), 1) : null;
+  if (!target || cropViewPrefersImmediate()) {
+    S.cropTransition = null;
+    return;
+  }
+  S.cropTransition = 'exit';
+  layer.classList.add('exiting');
+  applyCropView(target, {
+    dim: { mix: 1, alpha: 1 }, onSettle: finishCropViewExit, tau: state.transitionTau,
+  });
 }
 
 function restoreCropChoices(choices) {
@@ -6562,6 +6964,7 @@ async function initializeEditRecovery(data) {
 
 /* ------------------------------------------------------------------ boot */
 fetch('/api/images').then((r) => r.json()).then(async (d) => {
+  FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;
   S.catalogEnabled = !!d.catalog?.enabled;
   S.catalogTotal = Number.isFinite(+d.total) ? +d.total : 0;
@@ -8233,8 +8636,9 @@ function finishSpeedKey(key) {
   const layer = $('cropLayer');
   let interaction = null;
 
-  const pointInLayer = (event, rect = interaction?.rect ||
-      layer.getBoundingClientRect()) => {
+  // The frame moves and grows under the pointer while cropping, so map through
+  // its live rectangle rather than the one captured on pointer down.
+  const pointInLayer = (event, rect = layer.getBoundingClientRect()) => {
     return {
       x: clamp((event.clientX - rect.left) / rect.width, 0, 1),
       y: clamp((event.clientY - rect.top) / rect.height, 0, 1),
@@ -8326,7 +8730,7 @@ function finishSpeedKey(key) {
   };
 
   layer.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || S.cropTransition) return;
     const rect = layer.getBoundingClientRect();
     const point = pointInLayer(e, rect);
     const handle = e.target.closest('[data-crop-handle]')?.dataset.cropHandle;
@@ -8345,27 +8749,33 @@ function finishSpeedKey(key) {
       rect,
     };
     if (handle) layer.dataset.activeCropHandle = handle;
+    cropInteractionKind = interaction.action;
     layer.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
   layer.addEventListener('pointermove', (e) => {
     if (!interaction) return;
-    const point = pointInLayer(e);
+    const layerRect = layer.getBoundingClientRect();
+    const point = pointInLayer(e, layerRect);
     if (Math.hypot(point.x - interaction.startPoint.x, point.y - interaction.startPoint.y) < 0.001) return;
     captureUndoOnce();
+    interaction.lastEvent = { clientX: e.clientX, clientY: e.clientY };
     const ratio = cropLayerRatio();
     if (interaction.action === 'move') {
+      // The frame stays put and the photo follows the pointer underneath it,
+      // so the crop travels the opposite way through the photo. The photo pans
+      // as the pointer moves, so measure against the rectangle from pointer down.
       const start = interaction.startCrop;
+      const moved = pointInLayer(e, interaction.rect);
       S.crop = {
-        x: clamp(start.x + point.x - interaction.startPoint.x, 0, 1 - start.w),
-        y: clamp(start.y + point.y - interaction.startPoint.y, 0, 1 - start.h),
+        x: clamp(start.x - (moved.x - interaction.startPoint.x), 0, 1 - start.w),
+        y: clamp(start.y - (moved.y - interaction.startPoint.y), 0, 1 - start.h),
         w: start.w,
         h: start.h,
       };
     } else if (interaction.action === 'resize') {
       S.crop = resizeCrop(
-        interaction.startCrop, interaction.handle, point, ratio,
-        interaction.rect);
+        interaction.startCrop, interaction.handle, point, ratio, layerRect);
     } else if (ratio) {
       S.crop = ratioBox(interaction.startPoint, point, ratio);
     } else {
@@ -8380,11 +8790,22 @@ function finishSpeedKey(key) {
     applyCropVisual();
     e.preventDefault();
   });
+  cropPointerRefresh = () => {
+    if (!interaction || interaction.action !== 'resize' || !interaction.lastEvent) return;
+    const layerRect = layer.getBoundingClientRect();
+    const point = pointInLayer(interaction.lastEvent, layerRect);
+    S.crop = resizeCrop(
+      interaction.startCrop, interaction.handle, point, cropLayerRatio(), layerRect);
+    applyCropVisualNow();
+  };
   const finishCropInteraction = () => {
     if (!interaction) return;
     const changed = interaction.historyCaptured;
+    const drawn = interaction.action === 'draw';
     interaction = null;
+    cropInteractionKind = null;
     delete layer.dataset.activeCropHandle;
+    if (drawn) syncCropView();
     if (changed) saveState();
   };
   layer.addEventListener('pointerup', finishCropInteraction);
@@ -9664,6 +10085,7 @@ async function savePrefs() {
 });
 fetch('/api/prefs').then((r) => r.json()).then((p) => {
   p = p && typeof p === 'object' ? p : {};
+  FIRST_RUN?.setPrefs(p);
   const migrated = {};
   if (!Object.prototype.hasOwnProperty.call(p, 'keyScheme') &&
       localStorage.getItem('lt.keyScheme')) {
@@ -9770,6 +10192,22 @@ function onViewportResize() {
     scheduleNativeViewportLayout();
     return;
   }
+  if (S.cropping || S.cropTransition) {
+    // The observer also fires for the frame's own animated resizes; only a
+    // workspace change re-targets the cropping view.
+    const state = cropViewState();
+    const wrapKey = cropViewWrapKey();
+    if (wrapKey === state.wrapKey) {
+      scheduleNativeViewportLayout();
+      return;
+    }
+    state.wrapKey = wrapKey;
+    const target = cropViewTarget(S.crop, S.cropTransition ? 1 : state.bias);
+    if (target) applyCropView(target);
+    else applyViewNow();
+    scheduleAutomaticPreview();
+    return;
+  }
   if (S.zoomMode === '100') {
     S.zoom = clamp(displaySourcePixelWidth() / baseW, 1, 32);
     S.targetPixelScale = 1;
@@ -9869,6 +10307,8 @@ CATALOG_UI = createCatalogUI({
   get: getJSON,
   toast,
   sendNative,
+  onCatalogImportCompleted: (result) => FIRST_RUN?.catalogCompleted(result),
+  onCatalogImportClosed: () => FIRST_RUN?.catalogClosed(),
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onLibraryChanged: () => { reloadLibrary(); },
   onWatchArrival: async (status) => {
@@ -10121,6 +10561,7 @@ if ($('enhanceRun')) {
 /* ------------------------------------------------------- native messages */
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
+  FIRST_RUN?.nativeEvent(message);
   if (message && message.type === 'openLibraryHealth') {
     RECOVERY?.open();
     return;
@@ -10463,4 +10904,14 @@ installSettings({
       .map((image) => image.name);
   },
   toast,
+});
+
+FIRST_RUN = installFirstRunSetup({
+  el: $, post: api, sendNative, nativeBridge, reloadLibrary,
+  onComplete: () => {
+    S.includeSubfolders = true;
+    $('includeSubfolders').checked = true;
+    refreshFilteredView();
+  },
+  openCatalog: () => $('importCatalogBtn').click(),
 });

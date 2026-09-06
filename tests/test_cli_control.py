@@ -16,10 +16,13 @@ import server
 from events import EventBroker, encode_sse
 from jobs import JobRegistry
 from lighttable_cli.__main__ import (
+    OPTICS_DEFAULTS,
     build_parser,
     curve_assignments,
+    dispatch,
     dispatch_domain,
     normalize_global_arguments,
+    preset_state,
     state_merge_update,
 )
 from lighttable_cli.instances import discover, select
@@ -329,3 +332,84 @@ class CLIContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PresetApplicationTests(unittest.TestCase):
+    """A preset applies only the groups it carries, the way the window does."""
+
+    PRESET = {
+        "name": "Warm", "includeFilm": False, "params": {},
+        "grade": {"exposure": 0.3, "contrast": 0.0},
+        "includedGrade": ["exposure"], "masks": [], "heals": [],
+        "optics": dict(OPTICS_DEFAULTS),
+    }
+    PHOTO = {
+        "params": {"stock": "kodak_portra_400"}, "grade": {"contrast": 0.1},
+        "masks": [{"id": "mask-1", "type": "radial"}],
+        "heals": [{"id": "heal-1"}],
+        "optics": {**OPTICS_DEFAULTS, "rotate": 2.0},
+    }
+
+    def client(self, preset):
+        photo = self.PHOTO
+
+        class FakeClient:
+            def __init__(self): self.posts = []
+            def get(self, path):
+                if path == "/api/presets": return [preset]
+                return json.loads(json.dumps(photo))
+            def post(self, path, body):
+                self.posts.append((path, body)); return {"ok": True}
+        return FakeClient()
+
+    def arguments(self, **extra):
+        base = dict(command="presets", action="apply", name="Warm",
+                    refs=["a.jpg"], where=[], names_from=None, limit=10,
+                    sort="capture:desc", origin="test")
+        base.update(extra)
+        return SimpleNamespace(**base)
+
+    def test_cli_lens_defaults_match_the_server(self):
+        import edits
+        self.assertEqual(OPTICS_DEFAULTS, edits.clean_optics({}))
+
+    def test_a_grade_only_preset_carries_only_its_grade(self):
+        self.assertEqual(preset_state(self.PRESET), {"grade": {"exposure": 0.3}})
+
+    def test_applying_a_grade_only_preset_keeps_film_masks_and_lens(self):
+        client = self.client(self.PRESET)
+        dispatch(client, self.arguments())
+        path, body = client.posts[0]
+        self.assertEqual(path, "/api/state")
+        self.assertEqual(body["grade"], {"contrast": 0.1, "exposure": 0.3})
+        for group in ("params", "masks", "heals", "optics"):
+            self.assertNotIn(group, body)
+
+    def test_preset_masks_layer_over_the_photo_with_fresh_identities(self):
+        preset = dict(self.PRESET, masks=[{"id": "mask-1", "type": "linear"}],
+                      optics={**OPTICS_DEFAULTS, "vignette": 0.5})
+        client = self.client(preset)
+        dispatch(client, self.arguments())
+        body = client.posts[0][1]
+        self.assertEqual([mask["type"] for mask in body["masks"]],
+                         ["radial", "linear"])
+        self.assertEqual(body["masks"][0]["id"], "mask-1")
+        self.assertNotEqual(body["masks"][1]["id"], "mask-1")
+        self.assertEqual(body["optics"],
+                         {**OPTICS_DEFAULTS, "rotate": 2.0, "vignette": 0.5})
+        self.assertNotIn("heals", body)
+
+    def test_edit_with_a_preset_follows_the_same_rules(self):
+        client = self.client(self.PRESET)
+        args = SimpleNamespace(
+            command="edit", action="set", refs=["a.jpg"], where=[],
+            names_from=None, limit=10, sort="capture:desc", origin="test",
+            grade=[], film=[], rotate=None, curve=[], hsl=[], crop=None,
+            patch=None, replace=None, copy_from=None,
+            include="film,grade,crop,masks,heals,optics", preset="Warm",
+            layer=False, group="all", history_label="Preset")
+        dispatch(client, args)
+        body = client.posts[0][1]
+        self.assertEqual(body["grade"], {"contrast": 0.1, "exposure": 0.3})
+        for group in ("params", "masks", "heals", "optics"):
+            self.assertNotIn(group, body)

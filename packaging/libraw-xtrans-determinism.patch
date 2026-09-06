@@ -1,0 +1,13 @@
+diff --git a/src/demosaic/xtrans_demosaic.cpp b/src/demosaic/xtrans_demosaic.cpp
+index 6d9f999..a1e07f1 100644
+--- a/src/demosaic/xtrans_demosaic.cpp
++++ b/src/demosaic/xtrans_demosaic.cpp
+@@ -168,3 +168,8 @@ void LibRaw::xtrans_interpolate(int passes)
++// LightTable: this in-place tile loop reads neighbouring strips while other
++// threads overwrite them. Keep X-Trans deterministic until upstream provides
++// independent tile input. Other LibRaw translation units retain OpenMP.
++#undef LIBRAW_USE_OPENMP
++
+ #if defined(LIBRAW_USE_OPENMP)
+   int buffer_count = omp_get_max_threads();
+ #else

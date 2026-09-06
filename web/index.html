@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="/web/style.css">
 <link rel="stylesheet" href="/web/grid-layout.css">
 <link rel="stylesheet" href="/web/preset-browser.css">
+<link rel="stylesheet" href="/web/help.css">
+<link rel="stylesheet" href="/web/first-run.css">
 </head>
 <body>
 
@@ -65,6 +67,9 @@
     </button>
     <span id="estat" role="status" aria-live="polite"></span><button class="quiet compact" id="exportCancel" hidden>Cancel export</button><button class="quiet compact" id="exportDetails" hidden>Export details</button>
     <span id="editSaveStatus" role="status" aria-live="polite"></span><button class="quiet compact" id="retryEditSave" hidden>Retry save</button>
+    <button class="quiet icon-btn" id="helpBtn" title="Help (F1 or ?)" aria-label="Help" aria-haspopup="dialog" aria-controls="helpDialog" aria-expanded="false">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M8 7a2 2 0 0 1 4 .5c0 1.5-2 1.5-2 3M10 13.5v.2"/></svg>
+    </button>
     <button class="accent-btn icon-btn topbar-export-btn" id="exportBtn" title="Export photos" aria-label="Export photos">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V2M6 6l4-4 4 4M4 10v6h12v-6"/></svg>
     </button>
@@ -631,7 +636,7 @@
             <div class="row"><span class="name">Horizontal</span><input type="range" data-optics="horizontal" min="-1" max="1" step="0.01"><span class="val" data-opticsv="horizontal">0.00</span></div>
             <div class="row"><span class="name">Scale</span><input type="range" data-optics="scale" min="1" max="1.6" step="0.005" value="1"><span class="val" data-opticsv="scale">1.00</span></div>
           </div></details>
-          <p class="hint crop-hint">Drag outside the frame to draw a new crop. Drag inside to reposition it, or use the handles to resize. Arrow keys nudge the selection; hold Shift for larger steps. Enter accepts; Escape restores the frame from when you opened Crop.</p>
+          <p class="hint crop-hint">Drag the handles to resize; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop. Arrow keys nudge the crop; hold Shift for larger steps. Enter accepts; Escape restores the frame from when you opened Crop.</p>
         </div>
       </section>
 
@@ -914,6 +919,60 @@
   </div>
 </div>
 
+<div class="modal-backdrop setup-backdrop" id="firstRunDialog" aria-hidden="true">
+  <section class="setup-window" id="setupPanel" role="dialog" aria-modal="true" aria-labelledby="setupWelcome">
+    <div class="setup-brand"><svg class="setup-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10v12h12M10 17h12M17 10v12" stroke="currentColor" stroke-width="1.5"/></svg><span>LightTable</span></div>
+    <div data-setup-page="choices">
+      <h1 id="setupWelcome" tabindex="-1">Where are your photos?</h1>
+      <p class="setup-intro">Choose a place to start. Make yourself at home.</p>
+      <div class="setup-options">
+        <button class="setup-option" id="setupLightroom"><span class="setup-option-icon setup-lr" aria-hidden="true">Lr</span><span><strong>Move from Lightroom</strong><small>Bring your catalog, ratings, and collections.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
+        <button class="setup-option" id="setupPhotos"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="16" cy="16" rx="5" ry="13"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(45 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(90 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(135 16 16)"/></svg></span><span><strong>Apple Photos</strong><small>Start with the photos in your Mac’s library.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
+        <button class="setup-option" id="setupFolder"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10V7a2 2 0 0 1 2-2h7l3 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10Z"/><path d="M3 12h26"/></svg></span><span><strong>Choose a folder</strong><small>Browse photos right where they are.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
+      </div>
+      <p class="setup-caption">You can add more sources any time.</p>
+    </div>
+    <div class="setup-detail" data-setup-page="lightroom" hidden>
+      <h2 id="setupHeading-lightroom" tabindex="-1">Bring your Lightroom library</h2>
+      <p class="setup-intro">Start with a Lightroom Classic catalog.</p>
+      <ul class="setup-facts"><li>Your originals stay where they are. Your Lightroom catalog stays unchanged.</li><li>Bring ratings, keywords, collections, and supported edits. Develop settings are approximate.</li><li>Close Lightroom Classic, then choose its <strong>.lrcat</strong> file. You’ll review what to import before starting.</li></ul>
+      <button class="accent-btn" id="setupCatalogChoose">Choose catalog…</button>
+      <p class="setup-availability">Using cloud-based Lightroom? Export your originals to a folder, then choose that folder here.</p>
+    </div>
+    <div class="setup-detail" data-setup-page="photos" hidden>
+      <h2 id="setupHeading-photos" tabindex="-1">Start with Apple Photos</h2>
+      <p class="setup-intro">Import the originals from your Photos library.</p>
+      <ul class="setup-facts"><li>LightTable saves separate copies in <strong>Pictures / LightTable Imports / Apple Photos</strong>. Your Photos library stays unchanged.</li><li>Originals stored in iCloud will download. A large library may take time and extra disk space.</li><li>This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren’t transferred.</li></ul>
+      <button class="accent-btn" id="setupPhotosAll">Import entire library</button><button class="quiet" id="setupPhotosSelected" hidden>Choose a few…</button>
+      <p class="setup-availability" id="setupPhotosAvailability">Whole-library import requires the updated LightTable app for macOS. You can also export originals from Photos and choose their folder.</p>
+      <p class="setup-availability">Add new photos by running this import again. There’s no automatic sync.</p>
+    </div>
+    <div class="setup-detail" data-setup-page="folder" hidden>
+      <h2 id="setupHeading-folder" tabindex="-1">Start with a folder</h2>
+      <p class="setup-intro">A few favorites or your whole photo archive.</p>
+      <ul class="setup-facts"><li>Photos stay in their current folder. No moving or copying required.</li><li>Subfolders are included, so you can start with a single folder or an entire archive.</li><li>You can add more folders later from the Library menu.</li></ul>
+      <label class="field" id="setupFolderPathField" hidden><span>Folder path on this computer</span><input id="setupFolderPath" type="text" placeholder="/Users/you/Pictures/My photos" autocomplete="off" spellcheck="false"></label>
+      <button class="accent-btn" id="setupFolderChoose">Choose folder…</button>
+    </div>
+    <div class="setup-detail" data-setup-page="photos-progress" hidden>
+      <h2 id="setupHeading-photos-progress" tabindex="-1">Bringing in your photos</h2>
+      <p class="setup-intro">Your library in Photos stays unchanged.</p>
+      <progress class="setup-progress" id="setupPhotosProgress" aria-label="Import progress"></progress>
+      <p id="setupPhotosProgressText" role="status" aria-live="polite">Preparing import…</p>
+      <p class="setup-availability">Keep LightTable open. iCloud originals may take a little longer.</p>
+      <button class="quiet" id="setupPhotosCancel">Stop import</button>
+    </div>
+    <div class="setup-detail" data-setup-page="result" hidden>
+      <svg class="setup-result-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="m12 20 5 5 11-11"/></svg>
+      <h2 id="setupHeading-result" tabindex="-1">Your photos are ready</h2>
+      <p id="setupResultMessage" class="setup-intro"></p>
+      <button class="accent-btn" id="setupDone">Start editing</button>
+    </div>
+    <p class="setup-error" id="setupError" role="alert"></p>
+    <footer class="setup-footer"><button id="setupBack" hidden>‹ Back</button><button id="setupLater">Set up later</button></footer>
+  </section>
+</div>
+
 <div class="modal-backdrop" id="importDialog" aria-hidden="true">
   <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <strong id="importTitle">Import a catalog</strong>
@@ -923,6 +982,7 @@
     </div>
     <div class="import-summary" id="importSummary">Choose a catalog to see what it holds.</div>
     <div class="import-options" id="importOptions" hidden>
+      <label><input type="checkbox" id="impAddSources" checked> Add the photo folders used by this catalog</label>
       <label><input type="checkbox" id="impMetadata" checked> Ratings, flags, labels, and IPTC</label>
       <label><input type="checkbox" id="impKeywords" checked> Keywords</label>
       <label><input type="checkbox" id="impCollections" checked> Collections</label>
@@ -989,6 +1049,7 @@
       <div class="settings-content">
         <section class="settings-pane on" data-settings-pane="general" role="tabpanel">
           <h2>General</h2><p class="settings-intro">Culling, updates, and job completion behavior.</p>
+          <div class="settings-group"><div class="settings-action-row"><span>Bring photos from Lightroom, Apple Photos, or a folder.</span><button id="setupReopen">Photo setup…</button></div></div>
           <div class="settings-group">
             <label class="settings-choice"><span><strong>Auto-advance</strong><small>Move to the next photo after a pick, reject, or rating.</small></span><input type="checkbox" id="autoAdvance" checked></label>
             <label class="settings-choice"><span><strong>Completion notifications</strong><small>Notify when exports, ingests, or denoise jobs finish.</small></span><input type="checkbox" id="completionNotifications"></label>
@@ -1224,6 +1285,25 @@
 
 <div class="health-overlay" id="healthOverlay" hidden><div class="b"></div><span id="healthOverlayText"></span></div>
 <div class="toast" id="toast"></div>
+<div class="modal-backdrop help-backdrop" id="helpDialog" aria-hidden="true">
+  <div class="modal help-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <header class="help-header">
+      <div class="help-heading"><h1 id="helpTitle">LightTable Help</h1><p>Guides for your photographs, from first edit to export.</p></div>
+      <button class="quiet compact" id="helpShortcuts">Keyboard shortcuts</button>
+      <button class="quiet icon-btn" id="helpClose" aria-label="Close help" title="Close help (Escape)">×</button>
+    </header>
+    <div class="help-layout">
+      <aside class="help-browser" aria-label="Find help">
+        <label class="help-search-label" for="helpSearch">Search help</label>
+        <div class="help-search-box"><input id="helpSearch" type="search" placeholder="Try crop, masks, or export…" autocomplete="off" spellcheck="false" aria-controls="helpResults"><button class="quiet icon-btn" id="helpClear" aria-label="Clear help search" hidden>×</button></div>
+        <div class="help-filter no-dd"><select id="helpCategory" aria-label="Help topic"><option value="">All topics</option></select><output id="helpResultCount" role="status" aria-live="polite"></output></div>
+        <nav class="help-results" id="helpResults" aria-label="Help articles"></nav>
+      </aside>
+      <div class="help-reader"><button class="quiet help-back" id="helpBack">← Back to articles</button><article class="help-article" id="helpArticle" aria-label="Help article" tabindex="0"></article></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="/web/help-panel.js"></script>
 <script type="module" src="/web/dropdown.js"></script>
 <script type="module" src="/web/app.js"></script>
 <script type="module" src="/web/slider-ux.js"></script>
