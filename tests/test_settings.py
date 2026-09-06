@@ -121,6 +121,9 @@ class SettingsTests(unittest.TestCase):
     def test_mirror_preference_disables_delayed_portable_writes_but_not_xmp(self):
         cat = mock.Mock()
         cat.sources.return_value = [{"id": 1, "available": True}]
+        # Flushed XMP leaves no durable outbox rows, so the mirror callback
+        # should not schedule a retry while we change its preferences.
+        cat.connection.execute.return_value.fetchall.return_value = []
         timer = mock.Mock()
         callbacks = []
         def capture_timer(delay, callback):
