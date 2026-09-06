@@ -15,6 +15,21 @@ CMAKE_REV=6e26c9e73677dc04f9eb236a97c6a4dc225ba7e8
 for TOOL in git cmake pkg-config uv; do
   command -v "$TOOL" >/dev/null
 done
+# Clang 21 substantially regresses the serial X-Trans kernel. Prefer the
+# installed, measured Clang 17 toolchain when the caller chose no compilers;
+# Other toolchains remain available and explicit overrides take priority.
+CLT_BIN=/Library/Developer/CommandLineTools/usr/bin
+if [[ -z "${CC+x}" && -z "${CXX+x}" \
+      && -x "$CLT_BIN/clang" && -x "$CLT_BIN/clang++" ]]; then
+  CLT_VERSION="$("$CLT_BIN/clang++" --version)"
+  if [[ "$CLT_VERSION" == "Apple clang version 17."* ]]; then
+    export CC="$CLT_BIN/clang" CXX="$CLT_BIN/clang++"
+    if [[ -z "${SDKROOT+x}" ]]; then
+      export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+    fi
+  fi
+fi
+export SDKROOT="${SDKROOT:-$(xcrun --show-sdk-path)}"
 mkdir -p "$OUTPUT"
 OUTPUT="$(cd "$OUTPUT" && pwd)"
 # rawpy's upstream setup script contains unquoted shell paths. Keep its
@@ -53,6 +68,9 @@ for path in [root/'setup.py', package/'__init__.py', package/'enhance.py']:
     path.write_text(text.replace('github.com/letmaik/rawpy_openmp',
                                  'github.com/letmaik/rawpy'))
 package.rename(root/'rawpy_openmp')
+with (root/'rawpy_openmp'/'__init__.py').open('a') as handle:
+    handle.write('\n# The bundled LibRaw has deterministic X-Trans wavefront scheduling.\n')
+    handle.write('LIGHTTABLE_XTRANS_WAVEFRONT = 1\n')
 PY
 
 uv venv --python "$PYTHON" "$WORK/env"
@@ -62,6 +80,7 @@ cmake -S "$WORK/source/external/LibRaw-cmake" -B "$WORK/libraw-build" \
   -DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON \
   -DLIBRAW_PATH="$WORK/source/external/LibRaw" \
   -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 \
+  -DCMAKE_OSX_SYSROOT="$SDKROOT" \
   -DCMAKE_INSTALL_PREFIX="$WORK/install" \
   -DCMAKE_INSTALL_NAME_DIR="$WORK/install/lib" \
   -DCMAKE_PREFIX_PATH="$PREFIX" -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew \
@@ -76,6 +95,32 @@ cmake -S "$WORK/source/external/LibRaw-cmake" -B "$WORK/libraw-build" \
   -DENABLE_EXAMPLES=OFF -DENABLE_X3FTOOLS=ON -DENABLE_6BY9RPI=ON \
   -DENABLE_RAWSPEED=OFF
 cmake --build "$WORK/libraw-build" --target install --parallel 8
+"$WORK/env/bin/python" - "$WORK/libraw-build" "$OUTPUT/build-info.json" <<'PY'
+from pathlib import Path
+import json, re, subprocess, sys
+build = Path(sys.argv[1])
+cache = {}
+for line in (build/'CMakeCache.txt').read_text().splitlines():
+    match = re.match(r'([^/#][^:]*):[^=]+=(.*)', line)
+    if match:
+        cache[match[1]] = match[2]
+compiler = cache['CMAKE_CXX_COMPILER']
+metadata = {
+    'compiler': compiler,
+    'compilerVersion': subprocess.check_output([compiler, '--version'], text=True).strip(),
+    'sdk': cache['CMAKE_OSX_SYSROOT'],
+    'deploymentTarget': cache['CMAKE_OSX_DEPLOYMENT_TARGET'],
+    'buildType': cache['CMAKE_BUILD_TYPE'],
+    'releaseFlags': cache.get('CMAKE_CXX_FLAGS_RELEASE', ''),
+    'openmpFlags': cache.get('OpenMP_CXX_FLAGS', ''),
+    'xtransWavefront': 1,
+}
+sdk_settings = Path(metadata['sdk'])/'SDKSettings.json'
+if sdk_settings.is_file():
+    metadata['sdkVersion'] = json.loads(sdk_settings.read_text()).get('Version')
+Path(sys.argv[2]).write_text(json.dumps(metadata, indent=2) + '\n')
+print(json.dumps(metadata, indent=2), flush=True)
+PY
 /usr/bin/grep -q '#define LIBRAW_USE_OPENMP 1' "$WORK/install/include/libraw/libraw_config.h"
 (
   cd "$WORK/source"

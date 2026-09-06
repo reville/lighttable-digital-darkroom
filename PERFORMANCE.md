@@ -39,9 +39,10 @@ Malformed generated TIFF/JPEG files are discarded and rebuilt.
   yielding to interaction. Measured RAW thumbnails retain rawpy: ImageIO was
   slower on the tested NEF and CR2 files.
 - macOS packaging adds a reproducible, relocatable OpenMP decoder for Bayer
-  while preserving the stock decoder for X-Trans. See
+  and X-Trans. X-Trans tiles run in dependency order to retain exact serial
+pixels; older wheels lacking that schedule retain stock decoding. See
   [RAW runtime details](packaging/README-rawpy.md) for the source pins, macOS 13
-  dependency checks, and the unresolved upstream X-Trans limitation.
+  dependency checks, compiler selection, and deterministic tile scheduling.
 
 ## Measured verification
 
@@ -54,7 +55,10 @@ latency claims.
 | --- | ---: | ---: |
 | Cold NEF input preparation plus Match, 1100px | 174ms | 72ms |
 | Cold 24MP JPEG preview preparation | 573ms | 47ms |
-| 24MP Bayer DNG decode, stock versus 8-thread decoder | 741ms | 437ms |
+| 24MP Bayer DNG decode, stock versus 8-thread decoder | 772ms | 450ms |
+| 40MP X100VI X-Trans decode, stock versus 8-thread decoder | 12908ms | 4291ms |
+| 26MP X-T30 III X-Trans decode, stock versus 8-thread decoder | 8080ms | 2641ms |
+| 12MP XQ2 X-Trans decode, stock versus 8-thread decoder | 3619ms | 1837ms |
 | Downstream film controls, 1100px GPU median | 12.43ms | 4.49ms |
 | Downstream film controls, 2200px GPU median | 52.24ms | 18.40ms |
 | Eligible 2200px full render versus viewport GPU median | 42.61ms | 3.61ms |
@@ -68,6 +72,21 @@ Native transport tests compare every RGBA byte for disk/shared and full/viewport
 outputs, and real Metal tests cover padded rows, mapping lifetime after unlink,
 and tile sampling with a retained full-frame texture.
 
+The X-Trans follow-up built the actual macOS 13 wheel from pinned sources,
+including the patched diagonal schedule and Clang 17 compiler selection.
+On three X-Trans cameras and one Bayer camera, two fresh-process runs each of
+stock, candidate 1-thread, candidate 4-thread, and candidate 8-thread decoding
+produced identical dimensions and SHA-256 pixel hashes: 32 full RAW decodes.
+The table uses medians of the stock and 8-thread runs. The 1-thread candidate
+is for parity checks; the performance gain requires multiple threads.
+Another 32 half-size decodes, 18 alternate-setting decodes (one-pass,
+smooth, daylight white balance/highlight blending), and two 2-/16-thread
+stress runs also matched stock: 84 final-wheel decodes in total. The app's
+`decode_raw` entry point used `rawpy_openmp` and matched stock with the detail
+profile, tungsten white balance, and highlight blending. The wheel, build
+metadata, JSON measurements, and suite log are retained in
+`bench/results/xtrans-wavefront/` as ignored local evidence.
+
 The real macOS photo journey verifies native presentation, navigation, edit
 recovery, film controls, completed actual-size tiles, panning, return to Fit,
 and export in a disposable catalog. Export integration also verifies a second
@@ -78,12 +97,12 @@ integration run completed a preview in 27ms during a 507ms export; repeated
 export avoided decoding and completed in 460ms versus 1363ms on the first run.
 
 Local JSON evidence and the actual macOS screenshot are retained in
-`bench/results/remaining-performance/` (ignored build evidence). The native
-journey used a separate ad-hoc signed review app with the new decoder runtime;
+`bench/results/remaining-performance/` (ignored build evidence). That native
+journey preceded the X-Trans follow-up and used a separate ad-hoc signed review app;
 the personal app was not replaced, and a full distributable release was not
 built or published.
 
-The final Python suite ran 1044 tests successfully with four skips: the optional
+The final Python suite ran 1045 tests successfully with four skips: the optional
 Git LFS RAW scan fixture suite and three Windows signing checks requiring
 PowerShell. All 18 Rust tests passed. Separate real RAW comparisons and native
 Metal journeys provide the RAW and macOS runtime evidence described above.
