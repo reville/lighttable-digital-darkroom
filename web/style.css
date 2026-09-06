@@ -1924,3 +1924,22 @@ body { display:flex; flex-direction:column; }
   .app:not(.grid-mode) .workspace-cullbar .centre-tools { grid-column:2; grid-row:1; }
   .app:not(.grid-mode) .workspace-cullbar .marking-tools { grid-column:1 / -1; grid-row:2; justify-self:end; border:0; padding:0; }
 }
+
+/* Compact settings transfer and explicit crop completion. */
+.transfer-modal { width: min(520px, calc(100vw - 40px)); max-height: calc(100vh - 48px); overflow: auto; }
+.transfer-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin: 16px 0; }
+.transfer-choice { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; }
+.transfer-choice input { margin-top: 2px; flex: 0 0 auto; }
+.transfer-choice strong, .transfer-choice small { display: block; }
+.transfer-choice small { color: var(--muted); font-size: 11px; line-height: 1.4; margin-top: 3px; }
+.transfer-status { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 180px; overflow: auto; }
+.crop-session-actions { margin-bottom: 14px; }
+.crop-session-actions button { flex: 1; }
+.pair-note { margin: 0 16px 10px; }
+@media (max-width: 560px) { .transfer-groups { grid-template-columns: 1fr; } }
+
+.pair-badge { position: absolute; top: 6px; right: 6px; padding: 2px 4px;
+  border-radius: 3px; background: rgba(0,0,0,.7); color: #eee;
+  font-size: 9px; line-height: 1.2; pointer-events: none; }
+
+.cell.stack-cover .pair-badge { top: 32px; }
