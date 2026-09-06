@@ -8,6 +8,7 @@ import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
+import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
@@ -40,6 +41,7 @@ let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
 let RECOVERY = null;
+let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
 let EXTERNAL_EDITORS = [];
@@ -4164,7 +4166,7 @@ function visible() {
     list = [...list].sort((a, b) => String(a.status || '').localeCompare(String(b.status || '')));
   } else if (s === 'date' || s === 'capture') {
     list = [...list].sort((a, b) =>
-      String(a.date || a.mtime || '').localeCompare(String(b.date || b.mtime || '')));
+      captureSortValue(a) - captureSortValue(b));
   } else if (s === 'label') {
     list = [...list].sort((a, b) =>
       LABELS.indexOf(cleanLabel(a.label)) - LABELS.indexOf(cleanLabel(b.label)));
@@ -5864,6 +5866,7 @@ async function go(i) {
   $('panel').inert = true;
   $('cmp').inert = true;
   const im = cur();
+  CAPTURE_TIME?.selectionChanged();
   const generation = ++navigationGeneration;
   ++S.seq;
   if (NATIVE_PREVIEW) {
@@ -9536,6 +9539,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
     c.classList.toggle('sel', c.dataset.name === currentName);
@@ -9794,12 +9798,25 @@ HISTORY = createHistoryPanel({
   toast,
   onStatus(status) { historySaveStatus = status; updateEditSaveStatus(); },
   enabled: () => S.catalogEnabled,
+  onRestoreCaptureTime: async (name, historyId) => {
+    if (!await saveState(true)) return;
+    const result = await api('/api/metadata/capture-time', {action:'restore-history',name,historyId});
+    if (!result?.ok || result.error) throw Error(result?.error || 'Could not restore capture time');
+    _exifCache.clear(); await reloadLibrary();
+    toast('Capture time restored; photo edits are unchanged');
+  },
   onRestore: (state) => {
     pushUndo();
     restore(JSON.stringify(state));
     saveState(true);
     toast('Restored that step');
   },
+});
+
+CAPTURE_TIME = installCaptureTime({ el: $, post: api, toast,
+  selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
+  flush: () => saveState(true),
+  changed: async () => { _exifCache.clear(); await reloadLibrary(); HISTORY?.refresh(cur()?.name, true); },
 });
 
 METADATA = createMetadataPanel({

@@ -679,6 +679,16 @@
           <div class="keyword-entry"><input id="keywordInput" type="text" maxlength="400" list="keywordSuggestions" placeholder="Add keywords"><datalist id="keywordSuggestions"></datalist><button id="keywordAdd">Add</button></div>
           <div class="keyword-list" id="keywordList"></div>
           <details class="info-section" open><summary>Camera</summary><div class="info-section-body"><div id="exif" class="exif">—</div></div></details>
+          <details class="info-section"><summary>Correct capture time</summary><div class="info-section-body">
+            <p class="hint">Shift the camera clock across the selection while preserving the time between photos. These catalog corrections affect capture-date sorting and exported metadata; original files and filesystem dates stay unchanged.</p>
+            <label class="field"><span>Shift clock by hours</span><input id="captureShiftHours" type="number" step="any" value="0" placeholder="For example, -1 or 5.5"></label>
+            <label class="field"><span>Assign time zone</span><input id="captureTimeZone" type="text" placeholder="Keep existing; or -04:00, +05:30" maxlength="6"></label>
+            <p class="hint">Assigning a zone does not also shift the clock. Use “remove” to clear an incorrect offset.</p>
+            <label class="check-row"><input id="captureIncludePairs" type="checkbox"><span>Include RAW + JPEG companions</span></label>
+            <div class="btnrow stack-gap"><button id="captureTimePreview">Preview selection</button><button id="captureTimeReset" class="quiet">Restore camera times…</button></div>
+            <div id="captureTimeStatus" class="capture-time-status" role="status" aria-live="polite">Select photos, choose a correction, then preview.</div>
+            <div class="btnrow stack-gap"><button id="captureTimeApply" class="accent-btn" disabled>Apply previewed changes</button><button id="captureTimeUndo" disabled>Undo last correction</button></div>
+          </div></details>
           <details class="info-section"><summary>Description</summary><div class="info-section-body">
             <label class="field"><span>Title</span><input id="iptcTitle" type="text" maxlength="200"></label>
             <label class="field"><span>Caption</span><textarea id="iptcCaption" rows="2" maxlength="600"></textarea></label>

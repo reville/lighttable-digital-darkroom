@@ -233,7 +233,10 @@ export function createHistoryPanel(ctx) {
         const state = await get(`/api/history/state?id=${button.dataset.id}`);
         if (name !== currentName || selection !== selectionSequence) return;
         if (state?.error) throw new Error(state.error);
-        if (state && ctx.onRestore) ctx.onRestore(state);
+        if (state?.captureTimeOnly) {
+          if (!ctx.onRestoreCaptureTime) throw new Error('Capture-time restore is unavailable');
+          await ctx.onRestoreCaptureTime(name, Number(button.dataset.id));
+        } else if (state && ctx.onRestore) await ctx.onRestore(state);
       } catch (error) {
         toast('Could not restore that step');
       }

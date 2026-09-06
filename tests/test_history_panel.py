@@ -33,7 +33,7 @@ const nodes = Object.fromEntries(['historyList', 'historyClear', 'historyPane'].
   classList: {contains: () => false},
   addEventListener(type, callback) { this.handlers[type] = callback; },
 }]));
-const posts = [], notices = [], restored = [], statuses = [];
+const posts = [], notices = [], restored = [], statuses = [], captureRestores = [];
 let get = async () => ({steps: []});
 let post = async (path, body) => { posts.push({path, body}); return {ok: true}; };
 let enabled = true;
@@ -42,6 +42,7 @@ const h = createHistoryPanel({
   toast: message => notices.push(message), enabled: () => enabled,
   onRestore: state => restored.push(state),
   onStatus: status => statuses.push(status),
+  onRestoreCaptureTime: async (name, historyId) => captureRestores.push({name, historyId}),
 });
 """
 
@@ -52,6 +53,16 @@ class HistoryPanelTests(unittest.TestCase):
         result = subprocess.run(['node', '--input-type=module', '-e', HARNESS + body],
                                 cwd=ROOT, text=True, capture_output=True, check=True, timeout=30)
         return json.loads(result.stdout)
+
+    def test_capture_history_uses_metadata_restore_without_replaying_pixel_state(self):
+        result = self.run_js("""
+await h.refresh('a', true);
+get = async () => ({captureTimeOnly:true,captureTimeOverride:null});
+await nodes.historyList.handlers.click({target:{closest:()=>({dataset:{id:'12'}})}});
+console.log(JSON.stringify({restored,captureRestores}));
+""")
+        self.assertEqual(result['restored'], [])
+        self.assertEqual(result['captureRestores'], [{'name': 'a', 'historyId': 12}])
 
     def test_final_slider_snapshot_flushes_without_another_interaction(self):
         result = self.run_js("""

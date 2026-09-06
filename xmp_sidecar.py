@@ -318,6 +318,7 @@ def parse(text: str) -> dict | None:
     angle = _number(crs.get("CropAngle"))
     parsed = {
         "rating": rating,
+        "captureTime": scalars.get(("exif", "DateTimeOriginal")) or scalars.get(("photoshop", "DateCreated")),
         "rejected": rejected,
         "label": _label(scalars.get(("xmp", "Label"))),
         "keywords": list(arrays.get(("dc", "subject")) or []),
@@ -498,6 +499,7 @@ _XMP_TEMPLATE = """<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:lr="http://ns.adobe.com/lightroom/1.0/"
    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+   xmlns:exif="http://ns.adobe.com/exif/1.0/"
    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
    xmlns:lighttable="https://lighttable.photo/ns/1.0/"
 {attributes}>
@@ -575,6 +577,14 @@ def build_sidecar(record: dict) -> str:
     if label and label != "none":
         attributes.append(f'   xmp:Label="{_escape(label.title())}"')
     attributes.append('   xmp:CreatorTool="LightTable"')
+    if record.get("captureTimeOverride"):
+        import capture_time
+        try:
+            stamp = capture_time.normalized_timestamp(record["captureTimeOverride"])
+            attributes.append(f'   exif:DateTimeOriginal="{_escape(stamp)}"')
+            attributes.append(f'   photoshop:DateCreated="{_escape(stamp)}"')
+        except ValueError:
+            pass
 
     grade = record.get("grade") or {}
     for key, (crs_name, scale) in _CRS_EXPORT.items():

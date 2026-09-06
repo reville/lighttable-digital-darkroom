@@ -72,7 +72,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `sources / folders` | `/api/catalog/sources`, `/api/catalog/scan`, `/api/catalog/folders`, `/api/folders` |
 | `collections / stacks / virtual-copy` | `/api/catalog/collections`, `/api/library` |
 | `keywords` | `/api/catalog/keywords`, `/api/state` |
-| `metadata` | `/api/metadata`, `/api/metadata/bulk`, `/api/exif` |
+| `metadata / api post` | `/api/metadata`, `/api/metadata/bulk`, `/api/metadata/capture-time`, `/api/exif` |
 | `history` | `/api/history`, `/api/history/state`, `/api/history/clear` |
 | `versions` | `/api/state` |
 | `film / schema` | `/api/options` |

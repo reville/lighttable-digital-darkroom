@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import atexit
 import copy
+import capture_time as capture_clock
 import faulthandler
 import hashlib
 import io
@@ -2304,12 +2305,56 @@ def video_thumbnail(name: str) -> bytes:
 _EXIF_CACHE: dict[str, dict] = {}
 def exif_for(name: str) -> dict:
     """Camera metadata for the info panel. Cached; exiftool costs ~50 ms."""
-    if name in _EXIF_CACHE:
-        return _EXIF_CACHE[name]
     guard_local_photo(name)
-    out = platform_image.metadata(src_path(name))
-    _EXIF_CACHE[name] = out
+    if name not in _EXIF_CACHE:
+        _EXIF_CACHE[name] = platform_image.metadata(src_path(name))
+    out = dict(_EXIF_CACHE[name])
+    cat = catalog_handle()
+    image_id = catalog_image_id(name) if cat is not None else None
+    info = cat.capture_details(image_id) if image_id is not None else None
+    if info and info["override"]:
+        out.update(capture_clock.exif_fields(info["override"]))
+        out["CaptureTimeCorrection"] = "Catalog override · original unchanged"
     return out
+
+
+def capture_time_action(body: dict) -> dict:
+    cat = require_catalog()
+    action = str(body.get("action", "preview"))
+    if action == "preview":
+        return capture_clock.preview(cat, body.get("names"), catalog_image_id, exif_for,
+            shift_seconds=body.get("shiftSeconds", 0), time_zone=body.get("timeZone", ""),
+            include_pairs=body.get("includePairs") is True, reset=body.get("reset") is True)
+    if action == "restore-history":
+        name = str(body.get("name", ""))
+        image_id = catalog_image_id(name)
+        history_id = int(body.get("historyId", 0))
+        row = cat.connection.execute("SELECT image_id,origin FROM history WHERE id=?", (history_id,)).fetchone()
+        state = cat.history_state(history_id)
+        if (not row or row["image_id"] != image_id or row["origin"] != "capture-time"
+                or not state or state.get("captureTimeOnly") is not True):
+            raise ValueError("That capture-time history step does not belong to this photo")
+        info = cat.capture_details(image_id)
+        changes = [{"name": name, "fileId": info["fileId"], "original": info["original"],
+                    "beforeOverride": info["override"], "after": state.get("captureTimeOverride")}]
+    elif action == "apply":
+        changes = body.get("changes")
+        if not isinstance(changes, list) or not changes or len(changes) > capture_clock.MAX_BATCH * 2:
+            raise ValueError("Preview a bounded selection before applying")
+        for change in changes:
+            image_id = catalog_image_id(str(change.get("name", "")))
+            info = cat.capture_details(image_id) if image_id is not None else None
+            if not info or info["fileId"] != change.get("fileId"):
+                raise ValueError("Photo identity changed since preview")
+    else:
+        raise ValueError("Unknown capture-time action")
+    names = cat.apply_capture_changes(changes,
+        label="Capture time restored" if action == "restore-history" else "Capture time corrected")
+    for name in names:
+        queue_sidecar(name)
+    _queue_mirror()
+    EVENTS.publish("library", {"reason": "capture-time", "names": names})
+    return {"ok": True, "count": len(changes), "names": names}
 
 
 def parse_camera_ev(metadata: dict) -> float | None:
@@ -3571,6 +3616,8 @@ def export_metadata_fields(name: str) -> dict:
         fields["rating"] = int(state["rating"])
     if state.get("label") and state["label"] != "none":
         fields["label"] = state["label"]
+    if state.get("captureTimeOverride"):
+        fields["captureTime"] = state["captureTimeOverride"]
     return fields
 
 
@@ -6116,6 +6163,8 @@ class Handler(BaseHTTPRequestHandler):
                                           "fields": ["metadata"],
                                           "origin": "metadata"})
                 self._json({"ok": True, "iptc": cat.iptc_for(image_id)})
+            elif u.path == "/api/metadata/capture-time":
+                self._json(capture_time_action(self._body()))
             elif u.path == "/api/metadata/bulk":
                 body = self._body()
                 cat = require_catalog()
@@ -6779,6 +6828,11 @@ def import_sidecars(body: dict) -> dict:
                          or current.get("crop"))
         entry: dict = {}
         if want_metadata:
+            if parsed.get("captureTime") and not (current.get("captureTimeOverride") and conflict == "skip-existing"):
+                try:
+                    entry["captureTimeOverride"] = capture_clock.normalized_timestamp(parsed["captureTime"])
+                except ValueError:
+                    report["ignored"]["invalid capture time"] = report["ignored"].get("invalid capture time", 0) + 1
             if parsed.get("rating") is not None:
                 entry["rating"] = max(0, min(5, int(parsed["rating"])))
             if parsed.get("label"):

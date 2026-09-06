@@ -45,6 +45,7 @@ EXIF_FIELDS = {
     "ExposureTime": ("Exif.Photo.ExposureTime",),
     "ISO": ("Exif.Photo.PhotographicSensitivity", "Exif.Photo.ISOSpeedRatings"),
     "DateTimeOriginal": ("Exif.Photo.DateTimeOriginal",),
+    "OffsetTimeOriginal": ("Exif.Photo.OffsetTimeOriginal",),
     "ImageWidth": ("Exif.Photo.PixelXDimension", "Exif.Image.ImageWidth"),
     "ImageHeight": ("Exif.Photo.PixelYDimension", "Exif.Image.ImageLength"),
     "FocusDistance": ("Exif.Photo.SubjectDistance",),
@@ -610,6 +611,20 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
             exif["Exif.Photo.PixelYDimension"] = height
         xmp = image.xmpData()
         _write_catalog_fields(xmp, fields, rights_only=policy == "copyright")
+        if fields.get("captureTime") and policy in ("all", "all-except-location"):
+            import capture_time
+            corrected = capture_time.exif_fields(fields["captureTime"])
+            exif["Exif.Photo.DateTimeOriginal"] = corrected["DateTimeOriginal"]
+            # Digitization may have happened later (for example, a scanned print).
+            # A capture-clock correction must preserve that separate timestamp.
+            if corrected["OffsetTimeOriginal"]:
+                exif["Exif.Photo.OffsetTimeOriginal"] = corrected["OffsetTimeOriginal"]
+            else:
+                position = exif.findKey(exiv2.ExifKey("Exif.Photo.OffsetTimeOriginal"))
+                if position != exif.end():
+                    exif.erase(position)
+            _xmp_text(xmp, "Xmp.exif.DateTimeOriginal", fields["captureTime"])
+            _xmp_text(xmp, "Xmp.photoshop.DateCreated", fields["captureTime"])
         image.setExifData(exif)
         image.setXmpData(xmp)
         image.writeMetadata()

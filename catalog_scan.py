@@ -504,6 +504,11 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
             "keywords": entry.get("keywords") or [],
         }
         cat.save_state(image_id, payload)
+        if "captureTimeOverride" in entry:
+            try:
+                cat.set_capture_override(image_id, entry["captureTimeOverride"])
+            except ValueError:
+                pass  # Older or malformed portable dates cannot block import.
         versions = entry.get("versions")
         if isinstance(versions, list) and versions:
             cat.save_versions(image_id, versions)
@@ -627,6 +632,7 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
             and not state.get("params") and not state.get("crop")
             and not state.get("masks") and not state.get("heals")
             and not state.get("optics") and not state.get("versions")
+            and not state.get("captureTimeOverride")
         )
         if is_default:
             images.pop(name, None)
