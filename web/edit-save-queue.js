@@ -16,6 +16,7 @@ function freezePayload(value) {
 
 /**
  * Debounce independently per photo and serialize requests for each photo.
+ * A bounded shared transport pool prevents bulk actions from flooding the server.
  * send(name, payload) must reject on an unsuccessful write. enqueue() never
  * returns a rejecting promise; background failures are retained in getStatus()
  * and onStatus(). A failed photo pauses until retry(), retaining its newest edit.
@@ -25,17 +26,22 @@ function freezePayload(value) {
 export function createEditSaveQueue({
   send,
   delay = 400,
+  maxConcurrent = 4,
   onStatus = () => {},
   journal = null,
   setTimeout: schedule = globalThis.setTimeout.bind(globalThis),
   clearTimeout: unschedule = globalThis.clearTimeout.bind(globalThis),
 }) {
   if (typeof send !== 'function') throw new TypeError('An edit save function is required');
-  const entries = new Map();
-  let tokenCounter = 0;
+  if (!Number.isSafeInteger(maxConcurrent) || maxConcurrent < 1) {
+    throw new RangeError('maxConcurrent must be a positive integer');
+  }
+  const entries = new Map(), ready = new Set();
+  let runningCount = 0;  let tokenCounter = 0;
   const tokenPrefix = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`;
   let journalError = null;
   const cleanupPending = new Map();
+
 
   function getStatus() {
     const active = [...entries.values()];
@@ -62,12 +68,26 @@ export function createEditSaveQueue({
     entry.timer = null;
   }
 
+  function pump() {
+    while (runningCount < maxConcurrent && ready.size) {
+      const entry = ready.values().next().value;
+      ready.delete(entry);
+      if (!entry.error && !entry.running && entry.queued) begin(entry);
+    }
+  }
+
   function start(entry) {
     if (entry.error || entry.running || !entry.queued) return;
     clearTimer(entry);
+    ready.add(entry);
+    pump();
+  }
+
+  function begin(entry) {
     const job = entry.queued;
     entry.queued = null;
     entry.running = job;
+    runningCount++;
     notify();
     // Own both outcomes here so debounce/immediate saves cannot leave an
     // unhandled rejection when their caller has no reason to await a write.
@@ -82,6 +102,7 @@ export function createEditSaveQueue({
         catch (error) { cleanupPending.set(entry.name, job.token); journalError = error; }
       }
       entry.running = null;
+      runningCount--;
       const waiting = [];
       for (const waiter of entry.waiters) {
         if (waiter.revision <= job.revision) waiter.resolve();
@@ -93,8 +114,10 @@ export function createEditSaveQueue({
       // Flush barriers bypass a later edit's debounce, but ordinary subsequent
       // input retains its own debounce window.
       if (entry.queued && (entry.timer === null || waiting.length)) start(entry);
+      else pump();
     }, reason => {
       entry.running = null;
+      runningCount--;
       entry.error = reason instanceof Error ? reason : new Error(String(reason));
       if (!entry.queued) entry.queued = job;
       clearTimer(entry);
@@ -102,6 +125,7 @@ export function createEditSaveQueue({
       entry.waiters = [];
       waiting.forEach(waiter => waiter.reject(entry.error));
       notify();
+      pump();
     });
   }
 
@@ -125,14 +149,18 @@ export function createEditSaveQueue({
     persisted?.catch(error => { journalError = error; notify(); });
     entry.queued = {revision: ++entry.revision, payload: snapshot, token, persisted};
     clearTimer(entry);
-    if (!entry.error && !immediate) {
+    // A flush waiting for a transport slot must not be postponed by later
+    // input. A normal edit still gets its full debounce while slots are busy.
+    const urgent = immediate || (!entry.running && entry.waiters.length > 0);
+    if (!urgent) ready.delete(entry);
+    if (!entry.error && !urgent) {
       entry.timer = schedule(() => {
         entry.timer = null;
         start(entry);
       }, delay);
     }
     notify();
-    if (immediate) start(entry);
+    if (urgent) start(entry);
   }
 
   function selectedEntries(name) {

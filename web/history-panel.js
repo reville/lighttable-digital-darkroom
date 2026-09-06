@@ -8,6 +8,11 @@
 const STEP_LIMIT = 200;
 const COALESCE_MS = 2000;
 
+// Step labels and origins arrive from the CLI and other clients as free text.
+const escapeHTML = (value) => String(value ?? '')
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+
 export function createHistoryPanel(ctx) {
   const { el, post, get, toast } = ctx;
   const list = el('historyList');
@@ -44,11 +49,11 @@ export function createHistoryPanel(ctx) {
       return;
     }
     list.innerHTML = steps.map((step) => `
-      <button class="history-step" data-id="${step.id}" type="button">
-        <span class="history-label">${step.label || 'Edit'}</span>
+      <button class="history-step" data-id="${escapeHTML(step.id)}" type="button">
+        <span class="history-label">${escapeHTML(step.label || 'Edit')}</span>
         <span class="history-meta">${timeText(step.created)}${
           step.origin && step.origin !== 'edit'
-            ? ` · ${step.origin}` : ''}</span>
+            ? ` · ${escapeHTML(step.origin)}` : ''}</span>
       </button>`).join('');
   }
 
@@ -94,41 +99,74 @@ export function createHistoryPanel(ctx) {
   function channelFor(name) {
     if (!channels.has(name)) channels.set(name, {
       name, label: '', stateJSON: null, deadline: 0, pending: null,
-      timer: null, tail: Promise.resolve(true), queued: 0,
+      timer: null, tail: Promise.resolve(true), queue: [], failed: false, error: null,
     });
     return channels.get(name);
+  }
+
+  function notifyStatus() {
+    const active = [...channels.values()];
+    ctx.onStatus?.({
+      pendingNames: active.filter(channel => channel.pending || channel.queue.length)
+        .map(channel => channel.name),
+      failedNames: active.filter(channel => channel.failed).map(channel => channel.name),
+      error: active.find(channel => channel.failed)?.error || null,
+    });
   }
 
   function retire(channel) {
     // Retain a recipe only for its active coalescing window or outstanding
     // writes, rather than keeping every visited photo's large mask snapshot.
-    if (!channel.timer && !channel.pending && !channel.queued) {
+    if (!channel.timer && !channel.pending && !channel.queue.length &&
+        channels.get(channel.name) === channel) {
       channels.delete(channel.name);
     }
   }
 
-  function enqueue(channel, path, body) {
-    channel.queued++;
+  function sendQueued(channel, retry = false) {
     channel.tail = channel.tail.then(async () => {
-      const response = await post(path, body);
-      if (response?.error || response?.ok === false) {
-        throw new Error(response.error || 'History request failed');
+      if (retry) {
+        channel.failed = false;
+        channel.error = null;
+        notifyStatus();
       }
-      if (channel.name === currentName) {
-        loadedName = null;
-        void refresh(channel.name);
+      if (channel.failed) return false;
+      while (channel.queue.length) {
+        const { path, body } = channel.queue[0];
+        try {
+          const response = await post(path, body);
+          if (response?.error || response?.ok === false) {
+            throw new Error(response.error || 'History request failed');
+          }
+        } catch (error) {
+          // Keep the failed operation at the head. In particular, neither a
+          // later edit nor Clear may overtake a write awaiting Retry save.
+          channel.failed = true;
+          channel.error = path === '/api/history/clear'
+            ? 'Could not clear photo history' : 'Could not save photo history';
+          toast(channel.error);
+          notifyStatus();
+          return false;
+        }
+        channel.queue.shift();
+        notifyStatus();
+        if (channel.name === currentName) {
+          loadedName = null;
+          void refresh(channel.name);
+        }
       }
       return true;
-    }).catch(() => {
-      channel.stateJSON = null;
-      toast(path === '/api/history/clear'
-        ? 'Could not clear photo history' : 'Could not save photo history');
-      return false;
     }).finally(() => {
-      channel.queued--;
       retire(channel);
+      notifyStatus();
     });
     return channel.tail;
+  }
+
+  function enqueue(channel, path, body) {
+    channel.queue.push({ path, body });
+    notifyStatus();
+    return sendQueued(channel);
   }
 
   function flushPending(channel) {
@@ -160,6 +198,7 @@ export function createHistoryPanel(ctx) {
       if (stateJSON === channel.stateJSON) return;
       channel.stateJSON = stateJSON;
       channel.pending = packet;
+      notifyStatus();
       return;
     }
     flushPending(channel);
@@ -173,8 +212,14 @@ export function createHistoryPanel(ctx) {
 
   function flush(name = null) {
     const selected = [...channels.values()].filter(channel => !name || channel.name === name);
-    for (const channel of selected) finishWindow(channel);
-    return Promise.all(selected.map(channel => channel.tail))
+    const results = selected.map(channel => {
+      // Retry failures already observed by this call. A write that first fails
+      // during this flush remains pending and makes this attempt return false.
+      const retry = channel.failed;
+      finishWindow(channel);
+      return sendQueued(channel, retry);
+    });
+    return Promise.all(results)
       .then(results => results.every(Boolean));
   }
 
@@ -210,10 +255,11 @@ export function createHistoryPanel(ctx) {
   }
 
   render();
+  notifyStatus();
   return {
-    refresh, record, flush,
+    refresh, record, flush, retry: flush,
     get hasPending() {
-      return [...channels.values()].some(channel => channel.pending || channel.queued > 0);
+      return [...channels.values()].some(channel => channel.pending || channel.queue.length > 0);
     },
     get limit() { return STEP_LIMIT; },
   };

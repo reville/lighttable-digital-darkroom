@@ -6,6 +6,12 @@
  * beyond what it is currently showing.
  */
 
+// Source names, card filenames, and watch names are text from disks and
+// people, never markup.
+const escapeHTML = (value) => String(value ?? '')
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+
 export function createCatalogUI(ctx) {
   const { el, post, get, toast, sendNative } = ctx;
   let catalog = null;
@@ -55,11 +61,11 @@ export function createCatalogUI(ctx) {
     }
     container.innerHTML = sources.map((source) => `
       <div class="source-row${source.available ? '' : ' unavailable'}"
-           data-id="${source.id}">
+           data-id="${escapeHTML(source.id)}">
         <button class="source-star${source.favorite ? ' on' : ''}"
                 data-act="favorite" title="Favourite">★</button>
-        <span class="source-name" title="${source.path}">${source.name}</span>
-        <span class="source-count">${source.count || 0}</span>
+        <span class="source-name" title="${escapeHTML(source.path)}">${escapeHTML(source.name)}</span>
+        <span class="source-count">${Number(source.count) || 0}</span>
         <button class="source-act" data-act="rescan" title="Rescan">⟳</button>
         <button class="source-act" data-act="remove" title="Remove from catalog">×</button>
       </div>`).join('') || 'No sources yet.';
@@ -351,8 +357,8 @@ export function createCatalogUI(ctx) {
           grid.innerHTML = (ingestPlan.items || []).slice(0, 200).map((item) => `
             <label class="ingest-cell">
               <input type="checkbox" checked data-source="${encodeURIComponent(item.source)}">
-              <span class="ingest-cell-name">${item.name}</span>
-              <span class="ingest-cell-dest">${item.destination.split('/').slice(-2).join('/')}</span>
+              <span class="ingest-cell-name">${escapeHTML(item.name)}</span>
+              <span class="ingest-cell-dest">${escapeHTML(String(item.destination || '').split('/').slice(-2).join('/'))}</span>
             </label>`).join('');
           el('ingestStatus').textContent =
             `${ingestPlan.total} photos to copy`
@@ -412,10 +418,6 @@ export function createCatalogUI(ctx) {
   }
 
   /* ------------------------------------------------------------- watches */
-
-  const escapeHTML = (value) => String(value ?? '')
-    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 
   function renderWatches(statuses = []) {
     const byId = new Map(statuses.map((status) => [status.id, status]));
