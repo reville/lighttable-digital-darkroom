@@ -87,7 +87,7 @@ function harness({manual = false} = {}) {
     'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
     'setCompareActive', 'updateLoupeInfoOverlay', 'syncAIPhoto', 'loadLensProfile',
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
-    'setEditorLoading', 'syncPairControls', 'beginCropSession',
+    'setEditorLoading', 'syncPairControls', 'beginCropSession', 'syncPreviewDetailStatus',
   ]) context[name] = noop;
   const stateStart = appSource.indexOf("let _lastHistorySnapshot = '';");
   const stateEnd = appSource.indexOf('function photoMatchesQuery(', stateStart);

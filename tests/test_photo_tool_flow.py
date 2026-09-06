@@ -10,7 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 HARNESS = r"""
 import {createAppState, cloneValue} from './web/state.js';
-import {OPTICS_DEFAULTS, MAX_HEALS} from './web/editor-panels.js';
+import {OPTICS_DEFAULTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics} from './web/editor-panels.js';
+import {cropGeometry, restoreCropGeometry} from './web/edit-transfer.js';
 const S = createAppState({}, OPTICS_DEFAULTS);
 Object.assign(S, {params:{rotate:0}, editingName:'a', viewMode:'detail'});
 let photo = {name:'a', width:1200, height:800};
@@ -26,7 +27,10 @@ const renderFilm = () => counts.render++;
 const refreshBaseEdits = () => counts.refresh++;
 const syncCropPresentationNow = noop, zoomReset = noop, applyView = noop;
 const syncOpticsPanel = noop, syncMaskPanel = noop, syncControls = noop;
-const syncGrade = noop, drawGrade = noop;
+const syncGrade = noop, drawGrade = noop, syncCurveFromGrade = noop, syncHsl = noop;
+const renderKeywords = noop, renderVersions = noop, refreshLists = noop, updateUndoRedoButtons = noop;
+const normalizeFilmParams = value => cloneValue(value);
+const serializableMasks = () => cloneValue(S.masks);
 const drawEditOverlay = noop, scheduleNativeMenuState = noop, savePrefs = noop;
 const renderEditItems = noop, syncOverlayCursorClass = noop;
 const nativePreviewActive = () => false;
@@ -124,6 +128,7 @@ class PhotoToolFlowTests(unittest.TestCase):
             return source[begin:source.index(end, begin)]
 
         functions = [function(name) for name in (
+            'snapshot', 'restore', 'filmRenderFingerprint', 'baseEditsFingerprint',
             'exitPhotoTool', 'selectPhotoTool', 'switchPane', 'setCropMode',
             'cropSourceSize', 'cropImageAspect', 'cropOutputRatio', 'cropLayerRatio',
             'clampCrop', 'previewCrop', 'previewSourceX', 'cropForRatio', 'syncCropPanel',
@@ -134,7 +139,7 @@ class PhotoToolFlowTests(unittest.TestCase):
         cls.script = HARNESS + "\n" + section('const paneScrollPositions', 'function exitPhotoTool')
         cls.script += '\n' + '\n'.join(functions)
         cls.script += '\n' + section("document.querySelectorAll('.tool-btn').forEach((b)", "$('aiToggle').onclick")
-        cls.script += '\n' + section("$('cropReset').onclick", 'function rotate(delta)')
+        cls.script += '\n' + section("$('cropDone').onclick", 'function rotate(delta)')
         cls.script += '\n' + section("$('cropRatio').addEventListener", '/* ------------------------------------------------------- multi-select */')
         cls.script += '\n' + section("for (const id of ['healRadius', 'healFeather', 'healOpacity'])", "for (const id of ['lensProfileEnabled'")
         cls.script += '\n' + section("$('lensReset').onclick", 'function overlayPoint(')
@@ -169,6 +174,50 @@ console.log(JSON.stringify(cases));
             self.assertEqual(case['exit'], case['home'])
             self.assertFalse(case['cropAfter'])
             self.assertEqual(case['back'], 'Back to Film' if case['home'] == 'filmPane' else 'Back to Edit')
+
+    def test_cancel_restores_entry_geometry_and_keeps_other_edits_and_history(self):
+        result = self.run_js("""
+S.crop={x:.1,y:.2,w:.7,h:.6}; S.params.rotate=90; S.optics.rotate=2;
+S.grade.exposure=.5; photo.rating=4; counts.undo=2;
+const before=JSON.stringify(cropGeometry(JSON.parse(snapshot())));
+clickPane('cropPane'); S.crop={x:.3,y:.3,w:.4,h:.4}; S.params.rotate=180;
+S.optics.rotate=-4; S.optics.distortion=.25; S.grade.exposure=1.2;
+// Temporarily showing the original must not reset the crop session entry.
+setCompareActive(true); setCompareActive(false);
+press('Escape');
+console.log(JSON.stringify({same:before===JSON.stringify(cropGeometry(JSON.parse(snapshot()))),
+  exposure:S.grade.exposure,distortion:S.optics.distortion,rating:photo.rating,
+  undo:counts.undo,save:counts.save,pane:S.activePane}));
+""")
+        self.assertTrue(result['same'])
+        self.assertEqual(result['exposure'], 1.2)
+        self.assertEqual(result['distortion'], .25)
+        self.assertEqual(result['rating'], 4)
+        self.assertEqual(result['undo'], 3)
+        self.assertGreater(result['save'], 0)
+        self.assertEqual(result['pane'], 'editPane')
+
+    def test_done_and_enter_accept_but_cancel_button_restores(self):
+        result = self.run_js("""
+const values=[];
+for (const action of ['done','enter','cancel']) {
+  S.crop=null; S.params.rotate=0; clickPane('cropPane');
+  S.crop={x:.2,y:.2,w:.6,h:.6}; S.params.rotate=90;
+  if(action==='done') $('cropDone').onclick();
+  else if(action==='cancel') $('cropCancel').onclick();
+  else press('Enter');
+  values.push({action,crop:S.crop,rotate:S.params.rotate,pane:S.activePane});
+}
+console.log(JSON.stringify(values));
+""")
+        for case in result:
+            self.assertEqual(case['pane'], 'editPane')
+            if case['action'] == 'cancel':
+                self.assertIsNone(case['crop'])
+                self.assertEqual(case['rotate'], 0)
+            else:
+                self.assertEqual(case['crop']['x'], .2)
+                self.assertEqual(case['rotate'], 90)
 
     def test_compare_temporarily_suspends_and_restores_each_tool(self):
         result = self.run_js("""

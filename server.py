@@ -810,8 +810,7 @@ def save_image_states(entries: dict[str, dict]) -> None:
             cat.save_versions(image_id, version)
         for name in names:
             queue_sidecar(name)
-        if CATALOG_MIRROR or load_json_file(PREFS_FILE, {}).get("writeSidecars"):
-            _queue_mirror()
+        _queue_mirror()
         return
     with STATE_LOCK:
         st = load_state()
@@ -873,6 +872,10 @@ def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
 _MIRROR_TIMER: threading.Timer | None = None
 
 
+def catalog_mirror_enabled() -> bool:
+    return CATALOG_MIRROR and load_preferences().get("catalogMirror", True) is not False
+
+
 def _queue_mirror(delay: float = 5.0, retries: int = 2) -> None:
     """Rewrite the per-folder state file a few seconds after the last edit.
 
@@ -888,18 +891,26 @@ def _queue_mirror(delay: float = 5.0, retries: int = 2) -> None:
         if _MIRROR_TIMER is not None:
             _MIRROR_TIMER.cancel()
 
+        prefs = load_preferences()
+        if not catalog_mirror_enabled() and not prefs.get("writeSidecars"):
+            _MIRROR_TIMER = None
+            return
+
         def run() -> None:
             try:
-                if CATALOG_MIRROR:
+                if cat is not catalog_handle():
+                    return
+                if catalog_mirror_enabled():
                     for source in cat.sources():
                         if source["available"]:
                             catalog_scan.mirror_state_file(cat, source["id"])
-                if load_json_file(PREFS_FILE, {}).get("writeSidecars"):
+                if load_preferences().get("writeSidecars"):
                     write_pending_sidecars()
                     if retries and sidecar_sync_status()["pending"]:
                         _queue_mirror(delay=30.0, retries=retries - 1)
             finally:
                 cat.close()
+
 
         _MIRROR_TIMER = threading.Timer(delay, run)
         _MIRROR_TIMER.daemon = True
@@ -1169,8 +1180,7 @@ def update_catalog_library(body: dict) -> dict:
         result["ok"] = True
     else:
         raise ValueError("unknown library action")
-    if CATALOG_MIRROR:
-        _queue_mirror()
+    _queue_mirror()
     result["library"] = current_library_state()
     return result
 
@@ -5535,6 +5545,8 @@ class Handler(BaseHTTPRequestHandler):
                 cat = catalog_handle()
                 self._json({
                     "enabled": cat is not None,
+                    "mirrorEnabled": catalog_mirror_enabled(),
+                    "mirrorAllowed": CATALOG_MIRROR,
                     "path": str(cat.path.resolve()) if cat else None,
                     "backupPath": str(configured_backup_directory(cat).resolve())
                     if cat else None,
@@ -5951,11 +5963,14 @@ class Handler(BaseHTTPRequestHandler):
                     current = load_json_file(PREFS_FILE, {})
                     if not isinstance(current, dict):
                         current = {}
-                    current.update(self._body())
+                    patch = self._body()
+                    current.update(patch)
                     # An unreadable live file is about to be replaced; keep
                     # its bytes rather than letting the rewrite erase them.
                     recovery.preserve_damaged_json(PREFS_FILE)
                     durable_io.atomic_write_json(PREFS_FILE, current)
+                if {"catalogMirror", "writeSidecars"} & set(patch):
+                    _queue_mirror(0)
                 self._json({"ok": True})
             elif u.path == "/api/recovery":
                 self._json(recovery_action(self._body()))
@@ -6666,8 +6681,7 @@ def catalog_collections_action(body: dict) -> dict:
         members = [int(i) for i in body.get("imageIds", [])]
         if members and action == "create":
             cat.set_collection_members(collection_id, members)
-        if CATALOG_MIRROR:
-            _queue_mirror()
+        _queue_mirror()
         return {"ok": True, "id": collection_id,
                 "collections": cat.collections(),
                 "library": current_library_state()}
@@ -6681,7 +6695,7 @@ def catalog_collections_action(body: dict) -> dict:
                                    [int(i) for i in body.get("imageIds", [])])
     elif action != "list":
         raise ValueError(f"unknown collection action: {action}")
-    if action != "list" and CATALOG_MIRROR:
+    if action != "list":
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
             "library": current_library_state()}

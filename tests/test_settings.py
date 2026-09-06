@@ -118,6 +118,40 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(server.automatic_backup_max_age(), 7 * 24 * 60 * 60)
         self.assertEqual(server.configured_backup_directory(catalog), custom)
 
+    def test_mirror_preference_disables_delayed_portable_writes_but_not_xmp(self):
+        cat = mock.Mock()
+        cat.sources.return_value = [{"id": 1, "available": True}]
+        timer = mock.Mock()
+        callbacks = []
+        def capture_timer(delay, callback):
+            callbacks.append(callback)
+            return timer
+        with mock.patch.object(server, "CATALOG", cat), \
+                mock.patch.object(server, "CATALOG_MIRROR", True), \
+                mock.patch.object(server, "_MIRROR_TIMER", None), \
+                mock.patch.object(server.threading, "Timer", side_effect=capture_timer), \
+                mock.patch.object(server.catalog_scan, "mirror_state_file") as mirror, \
+                mock.patch.object(server, "write_pending_sidecars") as sidecars:
+            self.write_prefs({"catalogMirror": True})
+            server._queue_mirror()
+            self.assertEqual(len(callbacks), 1)
+            self.write_prefs({"catalogMirror": False, "writeSidecars": True})
+            callbacks[0]()
+            mirror.assert_not_called()
+            sidecars.assert_called_once()
+            self.assertFalse(server.catalog_mirror_enabled())
+            server._queue_mirror()
+            self.assertEqual(len(callbacks), 2)
+            self.write_prefs({"catalogMirror": False, "writeSidecars": False})
+            server._queue_mirror()
+            self.assertEqual(len(callbacks), 2)
+            timer.cancel.assert_called()
+
+    def test_launch_configuration_can_disable_mirrors_even_with_preference_on(self):
+        self.write_prefs({"catalogMirror": True})
+        with mock.patch.object(server, "CATALOG_MIRROR", False):
+            self.assertFalse(server.catalog_mirror_enabled())
+
     def test_settings_surface_and_durable_migration_are_shipped(self):
         root = Path(__file__).resolve().parents[1]
         html = (root / "web" / "index.html").read_text()
