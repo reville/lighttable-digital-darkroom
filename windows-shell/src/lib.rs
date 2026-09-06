@@ -353,3 +353,40 @@ mod recovery_tests {
         fs::remove_dir_all(directory).unwrap();
     }
 }
+
+/// Correlate native close replies across timeout, keep-open, and retry.
+#[derive(Default)]
+pub struct CloseAttempts {
+    generation: u64,
+    active: Option<u64>,
+}
+impl CloseAttempts {
+    pub fn begin(&mut self) -> u64 {
+        self.generation += 1;
+        self.active = Some(self.generation);
+        self.generation
+    }
+    pub fn accepts(&self, reply: Option<u64>) -> bool {
+        self.active.is_some() && self.active == reply
+    }
+    pub fn cancel(&mut self) {
+        self.active = None;
+    }
+}
+#[cfg(test)]
+mod close_tests {
+    use super::CloseAttempts;
+    #[test]
+    fn timed_out_reply_cannot_close_a_newer_edit_session() {
+        let mut attempts = CloseAttempts::default();
+        let first = attempts.begin();
+        attempts.cancel();
+        assert!(!attempts.accepts(Some(first)));
+        let second = attempts.begin();
+        assert!(!attempts.accepts(Some(first)));
+        assert!(!attempts.accepts(None));
+        assert!(attempts.accepts(Some(second)));
+        attempts.cancel();
+        assert!(!attempts.accepts(Some(second)));
+    }
+}

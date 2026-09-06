@@ -107,8 +107,14 @@ export function createEditSaveQueue({
 
   function enqueue(name, payload, {immediate = false} = {}) {
     if (typeof name !== 'string' || !name) throw new TypeError('A photo name is required');
-    const snapshot = freezePayload(copyPayload(payload));
     let entry = entries.get(name);
+    const previous = entry && (entry.queued || entry.running)?.payload;
+    // A rejected recovery must not turn into an unchecked write when the user
+    // makes another adjustment before resolving its source-identity conflict.
+    const guarded = previous?.expectedRecoverySourceKey && !payload.expectedRecoverySourceKey
+      ? {...payload, expectedRecoverySourceKey: previous.expectedRecoverySourceKey,
+          sourceKey: previous.sourceKey} : payload;
+    const snapshot = freezePayload(copyPayload(guarded));
     if (!entry) {
       entry = {name, revision: 0, queued: null, running: null, timer: null, error: null, waiters: []};
       entries.set(name, entry);

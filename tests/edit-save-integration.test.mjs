@@ -94,6 +94,7 @@ function harness({manual = false} = {}) {
   assert.ok(stateStart >= 0 && stateEnd > stateStart);
   const code = [
     read('edit-save-queue.js').replace('export function ', 'function '),
+    read('close-barrier.js').replace('export function ', 'function '),
     read('photo-undo.js').replace('export function ', 'function '),
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',

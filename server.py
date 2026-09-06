@@ -1030,6 +1030,21 @@ def catalog_entry_for(name: str) -> dict:
     }
 
 
+def recovery_state_for(name: str) -> dict:
+    state = dict(catalog_entry_for(name))
+    try:
+        state["_recoverySourceKey"] = file_key(name)
+    except (ValueError, OSError):
+        state["_recoverySourceKey"] = None
+    cat = catalog_handle()
+    state["_recoveryHistoryAvailable"] = cat is not None
+    if cat is not None:
+        image_id = catalog_image_id(name)
+        steps = cat.history_for(image_id, limit=1) if image_id is not None else []
+        state["_recoveryHistory"] = cat.history_state(steps[0]["id"]) if steps else None
+    return state
+
+
 LABEL_VALUES = ("none", "red", "yellow", "green", "blue", "purple")
 
 
@@ -1681,8 +1696,7 @@ def file_key(name: str) -> str:
     """
     src = src_path(name)
     stat = src.stat()
-    identity = f"{content_hash(src)}\0{stat.st_size}\0{stat.st_mtime_ns}"
-    return hashlib.md5(identity.encode()).hexdigest()
+    return catalog_module.source_revision(content_hash(src), stat.st_size, stat.st_mtime_ns)
 
 
 _TIFF_CACHE_MAX_BYTES = int(os.environ.get(
@@ -5577,13 +5591,8 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 self._json({"groups": cat.duplicates()})
             elif u.path == "/api/state":
-                state = catalog_entry_for(q["name"])
-                if q.get("recovery") == "1":
-                    try:
-                        state["_recoverySourceKey"] = file_key(q["name"])
-                    except (ValueError, OSError):
-                        state["_recoverySourceKey"] = None
-                self._json(state)
+                self._json(recovery_state_for(q["name"]) if q.get("recovery") == "1"
+                           else catalog_entry_for(q["name"]))
             elif u.path == "/api/metadata":
                 cat = require_catalog()
                 image_id = catalog_image_id(q["name"])
@@ -5705,6 +5714,9 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(benchmark_export(b["name"], b["job"]))
             elif u.path == "/api/state":
                 b = self._body()
+                expected_revision = b.pop("expectedRecoverySourceKey", None)
+                if expected_revision is not None and expected_revision != file_key(b["name"]):
+                    raise ValueError("The original changed since these edits were recovered; the draft was kept")
                 strict = str(self.headers.get("X-LightTable-Strict", "")) == "1"
                 entry, warnings = cleaned_state_request(b, strict=strict)
                 if "params" in entry:
@@ -7228,7 +7240,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 folder="" if parent == "." else parent,
                 displayName=(copy["displayName"] if copy
                              else Path(source).name),
-                fileKey=file_key(name),
+                fileKey=(revision := file_key(name)), recoverySourceKey=revision,
                 mtime=snapshot["mtimes"].get(source, 0.0),
                 width=entry.get("width"),
                 height=entry.get("height"),
@@ -7261,6 +7273,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "folder": item["folder"],
             "displayName": item["displayName"],
             "fileKey": item["fileKey"],
+            "recoverySourceKey": item.get("recoverySourceKey"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
             "status": item["status"],

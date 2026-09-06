@@ -28,6 +28,7 @@ every connection is per-thread and every write goes through a short transaction.
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import os
 import shutil
@@ -2395,6 +2396,12 @@ def _fts_query(text: str) -> str:
     return " AND ".join(terms) if terms else '""'
 
 
+def source_revision(header_hash: str, size: int, mtime_ns: int) -> str:
+    """The same revision for scanned rows and a freshly inspected source."""
+    identity = f"{header_hash}\0{size}\0{mtime_ns}"
+    return hashlib.md5(identity.encode()).hexdigest()
+
+
 def _item(row: sqlite3.Row) -> dict:
     """The lean per-image record the grid needs; edits are fetched on open."""
     source_id = _int_or(row["source_id"], 0, minimum=0)
@@ -2428,6 +2435,8 @@ def _item(row: sqlite3.Row) -> dict:
             row["capture_time"] or row["mtime_iso"], None),
         "mtime": mtime_ns / 1e9,
         "fileKey": _text_or(row["header_hash"]),
+        "recoverySourceKey": source_revision(_text_or(row["header_hash"]),
+            _int_or(row["size"], 0, minimum=0), mtime_ns),
         "width": width,
         "height": height,
         "camera": " ".join(filter(None, (camera_make, camera_model))),

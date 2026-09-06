@@ -685,6 +685,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             alert.addButton(withTitle: "Quit Anyway")
             let approved = alert.runModal() == .alertSecondButtonReturn
             self.closeApproved = approved
+            if !approved { self.sendEvent(["type": "closeCancelled"]) }
             completion(approved)
         }
         webView.callAsyncJavaScript(

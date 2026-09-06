@@ -2,7 +2,8 @@ import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
-import { createEditRecovery, recoveryPayloadMatches } from '/web/edit-recovery.js';
+import { createCloseBarrier } from '/web/close-barrier.js';
+import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
@@ -370,6 +371,7 @@ function performNativeMenuCommand(command) {
 }
 
 window.lightTableNativeEvent = (event) => {
+  if (event?.type === 'closeCancelled') { window.lightTableCancelClose?.(); return; }
   if (event?.type === 'editJournalReply') {
     window.dispatchEvent(new CustomEvent('lighttable-edit-journal', {detail: event}));
     return;
@@ -2813,6 +2815,7 @@ async function runEditRecoveryJourney() {
   }
   editSaveQueue.enqueue(name, {state: {name, ...original}});
   if (!(await window.lightTablePrepareToClose())) throw new Error('Close did not flush the final edit');
+  window.lightTableCancelClose();
   return {failedSaveBlockedClose: failedClose, nativeDraftRecovered: true,
     retrySaved: true, finalCloseFlushed: true};
 }
@@ -3898,7 +3901,8 @@ const editSaveQueue = createEditSaveQueue({
     remove(name, token) { return editRecovery?.remove(name, token); },
   },
   async send(name, payload) {
-    const result = await api('/api/state', payload.state);
+    const result = await api('/api/state', {...payload.state, ...(payload.expectedRecoverySourceKey
+      ? {expectedRecoverySourceKey: payload.expectedRecoverySourceKey} : {})});
     if (!result?.ok || result.error) throw new Error(result?.error || 'Could not save edits');
     const image = S.images.find((item) => item.name === name);
     if (image) invalidateEditedThumbnail(image);
@@ -3929,11 +3933,12 @@ async function flushEditSaves() {
   catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
 }
 
-window.lightTablePrepareToClose = async () => {
-  // Capture a control gesture even if its final change event has not fired.
-  await saveState();
-  return await flushEditSaves();
-};
+const closeBarrier = createCloseBarrier({
+  capture: () => saveState(), flush: flushEditSaves,
+  setBlocked: blocked => { document.body.inert = blocked; },
+});
+window.lightTablePrepareToClose = () => closeBarrier.prepare();
+window.lightTableCancelClose = () => closeBarrier.cancel();
 
 $('retryEditSave').onclick = async () => {
   try { await editSaveQueue.retry(); toast('Edits saved'); }
@@ -3963,7 +3968,7 @@ function saveState(immediate = false) {
     label: cleanLabel(im.label), ...edits,
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
-  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.fileKey || null }, { immediate });
+  editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
 
@@ -6063,7 +6068,7 @@ function saveStateFor(im, immediate = false) {
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, {
     status: im.status, rating: im.rating, label: cleanLabel(im.label) });
   editSaveQueue.enqueue(im.name, {
-    ...pending, sourceKey: im.fileKey || null,
+    ...pending, sourceKey: im.recoverySourceKey || null,
     state: { ...pending?.state, name: im.name, status: im.status,
       rating: im.rating, label: cleanLabel(im.label) },
   }, { immediate });
@@ -6454,7 +6459,7 @@ async function initializeEditRecovery(data) {
       toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
       continue;
     }
-    if (saved && !saved.error && recoveryPayloadMatches(record.payload, saved)) {
+    if (saved && !saved.error && recoveryAcknowledged(record.payload, saved)) {
       await editRecovery.remove(record.name, record.token).catch(error =>
         toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
     } else outstanding.push(record);
@@ -6463,15 +6468,18 @@ async function initializeEditRecovery(data) {
   if (await chooseEditRecovery(outstanding)) {
     for (const record of outstanding) {
       editSaveQueue.enqueue(record.name, {...record.payload,
+        expectedRecoverySourceKey: record.payload.sourceKey,
         history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
       {immediate: true});
+      const image = S.images.find(item => item.name === record.name);
+      if (image) Object.assign(image, normalizeLibraryImage({
+        ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
+      }, true));
     }
     await flushEditSaves();
-    // Reload saved records before showing the first photo. Failed saves remain
-    // in the per-photo queue, which already overlays navigation state.
-    for (const image of S.images) { image.stateLoaded = false; image.hasEdits = true; }
   } else {
-    for (const record of outstanding) await editRecovery.remove(record.name, record.token);
+    for (const record of outstanding) await editRecovery.remove(record.name, record.token)
+      .catch(error => toast(`Saved edits kept; recovery cleanup needs attention: ${error.message}`));
   }
 }
 
@@ -7204,7 +7212,7 @@ async function pasteSettingsTo(targets) {
       const { cropChoices, ...entry } = patch;
       const merged = { ...destination, ...patch };
       editSaveQueue.enqueue(image.name, {
-        state: { name: image.name, ...entry }, sourceKey: image.fileKey || null,
+        state: { name: image.name, ...entry }, sourceKey: image.recoverySourceKey || null,
         history: { label: 'Paste selected settings', state: {
           params: merged.params, grade: merged.grade, crop: merged.crop || null,
           masks: merged.masks || [], heals: merged.heals || [], optics: merged.optics,
