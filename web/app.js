@@ -1,3 +1,6 @@
+import {installDialogFocus} from '/web/dialog-focus.js';
+import {installMaskBatch, mergeMaskDelta} from '/web/batch-masks.js';
+import {createSelectionRequest} from '/web/selection-request.js';
 import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
@@ -33,6 +36,8 @@ import { installRecovery } from '/web/recovery.js';
 import {
   initMidi, setMidiLearnTarget, toggleMidiLearn, resetMidiMappings,
 } from '/web/midi.js';
+
+installDialogFocus();
 
 /* Declared here, built at the end of the file once every function they close
  * over exists, so start-up code never touches a `const` before it exists. */
@@ -96,6 +101,8 @@ const RESET_GROUPS = {
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
+let MASK_BATCH = null;
+let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
 let KEYS = KEY_SCHEMES[KEY_SCHEME_NAME];
 const CLIENT_ID = (crypto.randomUUID && crypto.randomUUID()) ||
@@ -284,9 +291,15 @@ document.addEventListener('keydown', (event) => {
   if ($('mergeDialog').classList.contains('on')) setActionDialog('mergeDialog', false);
 });
 
+function selectionScope() {
+  return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
+    ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'search', 'sort'].map(id => $(id)?.value),
+    S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+}
 function setAllPhotoSelection(selected) {
+  if (selected) return SELECTION_REQUEST.selectAll();
+  SELECTION_REQUEST.cancel();
   S.msel.clear();
-  if (selected) visible().forEach((image) => S.msel.add(image.name));
   refreshLists();
 }
 
@@ -307,7 +320,7 @@ function performNativeMenuCommand(command) {
     switch (command) {
       case 'undo': undo(); break;
       case 'redo': redo(); break;
-      case 'selectAll': setAllPhotoSelection(true); break;
+      case 'selectAll': result = setAllPhotoSelection(true); break;
       case 'deselectAll': setAllPhotoSelection(false); break;
       case 'search': $('search').focus(); $('search').select(); break;
       case 'preferences': window.LightTableSettings?.open('general'); break;
@@ -4933,41 +4946,6 @@ $('pregenPreviewsBtn').onclick = async () => {
     button.disabled = false;
   }
 };
-$('batchAiMaskBtn').onclick = async () => {
-  const targets = transferTargets().map((image) => image.name);
-  if (!targets.length) return toast('Select photos for batch AI masking');
-  const button = $('batchAiMaskBtn');
-  button.disabled = true;
-  try {
-    const res = await fetch('/api/batch/semantic-masks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ names: targets, categories: ['subject'] }),
-    });
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Failed to start batch AI masking');
-    toast(`Batch detecting subject masks for ${data.queued} photos…`);
-    const poll = async () => {
-      try {
-        const sres = await fetch('/api/batch/semantic-masks/status');
-        const sdata = await sres.json();
-        if (sdata.active) {
-          toast(`Batch AI Masks: ${sdata.completed} / ${sdata.total} done`);
-          setTimeout(poll, 1500);
-        } else if (sdata.total > 0 && sdata.completed >= sdata.total) {
-          toast(`Batch AI Masks finished: ${sdata.completed} photos masked`);
-          await loadState();
-          if (cur()) selectPhoto(cur());
-        }
-      } catch {}
-    };
-    setTimeout(poll, 1500);
-  } catch (err) {
-    toast(err.message || 'Error starting batch AI masks');
-  } finally {
-    button.disabled = false;
-  }
-};
 $('addCollection').onclick = async () => {
   const name = await askName('New collection');
   if (!name) return;
@@ -5973,9 +5951,10 @@ async function loadLensProfile(name) {
   syncOpticsPanel();
 }
 function markingTargets() {
+  if (SELECTION_REQUEST?.pending) return [];
   const survey = surveyTarget();
   if (survey) return [survey];
-  if (S.viewMode !== 'detail') {
+  if (S.msel.size || S.viewMode !== 'detail') {
     if (S.msel.size) {
       return [...S.msel]
         .map((name) => S.images.find((image) => image.name === name))
@@ -6014,7 +5993,7 @@ function syncCullBars() {
   let detail = 'Select a photo to rate or flag';
   if (active && multiple) {
     title = `${targets.length} photos selected`;
-    detail = 'Changes apply to the selection';
+    detail = 'Flags and ratings apply to selection';
   } else if (active) {
     title = displayName(active);
     if (SURVEY && SURVEY.isOpen) {
@@ -6026,6 +6005,8 @@ function syncCullBars() {
       detail = index >= 0 ? `${index + 1} of ${ordered.length}` : 'Current photo';
     }
   }
+  if (SELECTION_REQUEST?.pending) { title = 'Loading the full selection…'; detail = `${S.images.length} of ${S.catalogTotal} photos loaded`; }
+  else if (S.catalogLoadError) detail += ' · Catalog loading paused; Select All retries';
   const linkedCount = linkedMetadataTargets(targets).length;
   if (linkedCount > targets.length) detail += ` · ${linkedCount - targets.length} paired file${linkedCount - targets.length === 1 ? '' : 's'} linked`;
   document.querySelectorAll('[data-cull-context-title]').forEach((element) => {
@@ -6437,28 +6418,41 @@ function catalogIdleTurn() {
   });
 }
 
-async function loadRemainingCatalogRows(total) {
+let catalogPageTask = null;
+function loadRemainingCatalogRows(total) {
+  if (catalogPageTask?.images === S.images) return catalogPageTask.promise;
+  const images = S.images;
   const generation = ++catalogPageGeneration;
-  let offset = S.images.length;
-  const known = new Set(S.images.map((image) => image.name));
-  while (S.catalogEnabled && generation === catalogPageGeneration &&
-         offset < total) {
-    await catalogIdleTurn();
-    const page = await api('/api/catalog/query', {
-      limit: 2000, offset, sort: { field: 'capture', dir: 'desc' },
-    }).catch(() => null);
-    if (!page?.items?.length) return;
-    for (const row of page.items) {
-      if (known.has(row.name)) continue;
-      known.add(row.name);
-      S.images.push(normalizeLibraryImage(row, false));
+  S.catalogLoadError = '';
+  const promise = (async () => {
+    let offset = images.length;
+    const known = new Set(images.map(image => image.name));
+    while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
+      await catalogIdleTurn();
+      const page = await api('/api/catalog/query', {limit: 2000, offset, sort: {field: 'capture', dir: 'desc'}});
+      if (generation !== catalogPageGeneration || images !== S.images) throw new Error('The library changed; select photos again');
+      if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
+      total = Number.isFinite(+page.total) ? +page.total : total;
+      if (!page.items.length && offset < total) throw new Error('Catalog loading stopped before all photos arrived');
+      for (const row of page.items) {
+        if (known.has(row.name)) continue;
+        known.add(row.name);
+        images.push(normalizeLibraryImage(row, false));
+      }
+      offset += page.items.length;
+      S.catalogTotal = total;
+      _stripKey = _gridKey = '';
+      refreshLists();
     }
-    offset += page.items.length;
-    total = Math.max(total, +page.total || 0);
-    S.catalogTotal = total;
-    _stripKey = _gridKey = '';
-    refreshLists();
-  }
+    if (images !== S.images) throw new Error('The library changed; select photos again');
+  })().catch(error => {
+    if (images === S.images) { S.catalogLoadError = error.message; syncCullBars(); }
+    throw error;
+  }).finally(() => {
+    if (catalogPageTask?.images === images) catalogPageTask = null;
+  });
+  catalogPageTask = {images, promise};
+  return promise;
 }
 
 let catalogPageGeneration = 0;
@@ -6635,7 +6629,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   }
   if (S.activePane === 'cropPane') setCropMode(true);
   if (S.catalogEnabled && S.images.length < S.catalogTotal) {
-    loadRemainingCatalogRows(S.catalogTotal);
+    loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
   }
   watchCatalogScan();
   postNative('requestSources', {}, true);
@@ -7175,6 +7169,7 @@ function confirmTransfer(id) {
   button._confirmTimer = setTimeout(() => button.classList.remove('confirmed'), 900);
 }
 function transferTargets() {
+  if (SELECTION_REQUEST?.pending) return [];
   const selected = [...S.msel]
     .map((name) => S.images.find((im) => im.name === name))
     .filter(Boolean);
@@ -7192,7 +7187,7 @@ function updateTransferActions() {
   $('unstackBtn').disabled = !targets.some((image) => stackForImage(image.name));
   $('matchExposureBtn').disabled = targets.length < 2;
   $('pregenPreviewsBtn').disabled = !targets.length;
-  $('batchAiMaskBtn').disabled = !targets.length;
+  $('batchAiMaskBtn').disabled = !targets.length || Boolean(MASK_BATCH?.active);
   const mergeTargets = [...new Set(targets.map((image) => image.sourceName || image.name))];
   $('mergeRun').disabled = mergeTargets.length < 2;
   $('mergeSelectionSummary').textContent = mergeTargets.length >= 2
@@ -8449,8 +8444,11 @@ document.addEventListener('keydown', (e) => {
     return;
   }
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-  if (cur() && S.editingName !== cur().name && !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
   const meta = e.metaKey || e.ctrlKey;
+  if (meta && e.key.toLowerCase() === 'a') {
+    e.preventDefault(); void setAllPhotoSelection(!e.shiftKey); return;
+  }
+  if (cur() && S.editingName !== cur().name && !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
   if (meta && e.key.toLowerCase() === 'z') {
     e.preventDefault(); e.shiftKey ? redo() : undo(); return;
   }
@@ -9586,6 +9584,7 @@ function paintSelectionState() {
 }
 
 function toggleSel(name, additive) {
+  SELECTION_REQUEST?.cancel();
   if (!additive) S.msel.clear();
   S.msel.has(name) ? S.msel.delete(name) : S.msel.add(name);
   selectionAnchorName = name;
@@ -9593,6 +9592,7 @@ function toggleSel(name, additive) {
 }
 
 async function selectPhotoFromPointer(image, event) {
+  SELECTION_REQUEST?.cancel();
   const additive = event.metaKey || event.ctrlKey;
   if (event.shiftKey) {
     const list = visible();
@@ -9899,7 +9899,7 @@ async function reloadLibrary() {
     if (S.idx >= 0) await go(S.idx);
     else refreshLists();
     if (S.catalogEnabled && S.images.length < S.catalogTotal) {
-      loadRemainingCatalogRows(S.catalogTotal);
+      loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
     }
     watchCatalogScan();
     renderFolders();
@@ -10254,7 +10254,14 @@ async function applyServerStateEvent(event) {
   if (event.client === CLIENT_ID) return;
   const names = Array.isArray(event.names) ? event.names : [];
   const current = cur();
-  const patchFor = name => event.patches?.[name] || event.patch;
+  const patchFor = name => {
+    const patch = event.patches?.[name] || event.patch;
+    if (!event.maskDelta || !patch) return patch;
+    const image = S.images.find(image => image.name === name);
+    const base = current?.name === name ? S.masks
+      : editSaveQueue.getPending(name)?.state?.masks || image?.masks || patch.masks;
+    return {...patch, masks: mergeMaskDelta(base, event.maskDelta)};
+  };
   const patch = current ? patchFor(current.name) : event.patch;
   const hasPatches = names.some(name => patchFor(name) && typeof patchFor(name) === 'object');
   if (!hasPatches) {
@@ -10297,7 +10304,7 @@ async function applyServerStateEvent(event) {
     HISTORY?.refresh(current.name, true);
     const label = event.origin && event.origin !== 'window'
       ? `Updated by ${event.origin}` : 'Photo updated externally';
-    toast(label, { label: 'Undo', run: undo });
+    if (event.origin !== 'batch-masks') toast(label, { label: 'Undo', run: undo });
   }
   refreshLists();
   renderKeywords();
@@ -10310,6 +10317,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     if (index < 0) throw new Error('Photo is not in the current library');
     await go(index);
   } else if (command === 'select') {
+    SELECTION_REQUEST?.cancel();
     const names = new Set(Array.isArray(args.names) ? args.names
       : String(args.names || '').split(',').filter(Boolean));
     if (args.action === 'clear') S.msel.clear();
@@ -10381,12 +10389,22 @@ if ($('allowAutomation')) {
   });
 }
 
+SELECTION_REQUEST = createSelectionRequest({
+  load: () => S.catalogEnabled && S.images.length < S.catalogTotal
+    ? loadRemainingCatalogRows(S.catalogTotal) : Promise.resolve(),
+  scope: selectionScope, visible, selection: () => S.msel,
+  changed: () => refreshLists(), onError: error => toast(error.message),
+});
+MASK_BATCH = installMaskBatch({el: $, post: api, get: getJSON,
+  flush: flushEditSaves, targets: transferTargets, toast});
+
 UI_BRIDGE = installUIBridge({
   client: CLIENT_ID,
   post: api,
   report: uiStateReport,
   execute: executeUICommand,
   handlers: {
+    job: record => MASK_BATCH?.update(record),
     state: (event) => applyServerStateEvent(event).catch(() => {}),
     library: () => reloadLibrary(),
     resync: () => reloadLibrary(),

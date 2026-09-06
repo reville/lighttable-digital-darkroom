@@ -93,6 +93,7 @@ try {
     # so a new module cannot ship on macOS and be missing here.
     foreach ($File in @(
         "server.py",
+        "bounded_logging.py",
         "events.py",
         "jobs.py",
         "validation.py",
