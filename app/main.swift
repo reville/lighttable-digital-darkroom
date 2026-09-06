@@ -2134,8 +2134,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     @objc func openHelp(_ sender: Any?) {
-        guard let url = URL(string: "https://lighttable.app/") else { return }
-        NSWorkspace.shared.open(url)
+        sendEvent(["type": "menuCommand", "command": "help"])
     }
 
     @objc func performEditorCommand(_ sender: NSMenuItem) {

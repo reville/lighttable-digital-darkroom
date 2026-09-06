@@ -61,6 +61,7 @@ import { createPresetBrowser } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installUIBridge } from '/web/ui-bridge.js';
 import { installSettings } from '/web/settings.js';
+import { HELP_SECTION_TOPICS } from '/web/help-search.js';
 import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
@@ -304,6 +305,8 @@ function setAllPhotoSelection(selected) {
 }
 
 function performNativeMenuCommand(command) {
+  if (command === 'help') { window.LightTableHelp?.open(); return; }
+  if (window.LightTableHelp?.isOpen()) return;
   let result;
   if (command.startsWith('flag:')) {
     setStatus(command.slice('flag:'.length));
@@ -1215,14 +1218,23 @@ for (const section of document.querySelectorAll('#editPane .sec, #filmPane .sec'
   if (!summary) continue;
   const hints = [...section.querySelectorAll('.hint:not([id])')]
     .filter((hint) => hint.closest('.sec') === section);
-  if (!hints.length) continue;
+  const topicCategory = section.closest('#filmPane') ? 'Film' : 'Editing';
+  const topicLabel = summary.querySelector('span')?.textContent.trim() || '';
+  const topicId = HELP_SECTION_TOPICS[topicCategory]?.[topicLabel];
+  if (!hints.length && !topicId) continue;
   const help = document.createElement('button');
   help.type = 'button';
   help.className = 'section-help';
   help.textContent = '?';
-  help.title = hints.map((hint) => hint.textContent.trim()).join(' ');
+  help.title = hints.map((hint) => hint.textContent.trim()).join(' ') || `Read help for ${topicLabel}`;
   help.setAttribute('aria-label', `Help: ${summary.querySelector('span')?.textContent || 'section'}`);
-  help.onclick = (event) => event.stopPropagation();
+  help.onclick = (event) => {
+    event.preventDefault(); event.stopPropagation();
+    window.LightTableHelp?.open({
+      article: topicId, query: topicId ? '' : topicLabel,
+      category: topicId ? '' : topicCategory,
+    });
+  };
   hints.forEach((hint) => { hint.hidden = true; });
   summary.appendChild(help);
 }

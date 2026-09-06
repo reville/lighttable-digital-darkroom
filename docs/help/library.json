@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "add-photos",
+    "title": "Add photos and start browsing",
+    "category": "Getting started",
+    "summary": "Open photos or folders in place, then choose a folder and start reviewing.",
+    "keywords": [
+      "start",
+      "open",
+      "browse",
+      "add folder",
+      "originals",
+      "import",
+      "new library"
+    ],
+    "sections": [
+      {
+        "title": "Open a local folder",
+        "paragraphs": [
+          "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+        ],
+        "steps": [
+          "Click Add Photos at the upper left and choose one or more photos or folders.",
+          "Choose the folder under Local in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
+          "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active."
+        ],
+        "tips": [
+          "If the sidebar is hidden, use Show or hide library at the upper left."
+        ]
+      },
+      {
+        "title": "Bring new files into an existing folder",
+        "paragraphs": [
+          "Use the Local ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu."
+        ]
+      }
+    ],
+    "related": [
+      "browse-folders",
+      "import-from-card",
+      "views-and-selection"
+    ],
+    "sources": [
+      {
+        "path": "app/main.swift",
+        "anchor": "panel.message = \"Choose photos or folders. LightTable keeps originals in place.\""
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "isDir.boolValue ? url.path : url.deletingLastPathComponent().path"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<button id=\"catalogRescan\" role=\"menuitem\">Rescan folders</button>"
+      }
+    ]
+  },
+  {
+    "id": "import-from-card",
+    "title": "Import photos from a card",
+    "category": "Getting started",
+    "summary": "Copy selected photos into dated folders, with verification and an optional second copy.",
+    "keywords": [
+      "ingest",
+      "memory card",
+      "camera card",
+      "copy",
+      "backup",
+      "duplicates",
+      "import photos"
+    ],
+    "sections": [
+      {
+        "title": "Plan the copy",
+        "paragraphs": [
+          "Import from card copies files into the destination you choose. The card originals stay in place."
+        ],
+        "steps": [
+          "Open Local ••• → Import from card….",
+          "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
+          "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
+          "Click Scan. Review the destination preview and the checked files, then click Import.",
+          "Wait for the copied count and check whether any files failed."
+        ],
+        "tips": [
+          "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
+          "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
+          "If files are reported as cloud-only, download them locally and scan again."
+        ]
+      },
+      {
+        "title": "Refresh the plan when settings change",
+        "paragraphs": [
+          "Scan again after changing the destination or naming templates so you can review the updated paths before importing."
+        ]
+      }
+    ],
+    "related": [
+      "add-photos",
+      "rename-photos"
+    ],
+    "sources": [
+      {
+        "path": "web/index.html",
+        "anchor": "<strong id=\"ingestTitle\">Import from card</strong>"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "(ingestPlan.items || []).slice(0, 200)"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "items: ingestPlan.items.filter((item) => checked.has(item.source))"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "the originals on the card were not touched."
+      },
+      {
+        "path": "ingest_workflow.py",
+        "anchor": "TOKENS = {\"filename\", \"camera\", \"sequence\", \"custom\", *DATE_TOKENS}"
+      }
+    ]
+  },
+  {
+    "id": "browse-folders",
+    "title": "Browse folders and save favorites",
+    "category": "Library",
+    "summary": "Choose the folder scope, include subfolders, and keep frequent folders close at hand.",
+    "keywords": [
+      "favorites",
+      "local",
+      "folders",
+      "sidebar",
+      "missing photos",
+      "rescan",
+      "synchronize"
+    ],
+    "sections": [
+      {
+        "title": "Choose what is in view",
+        "paragraphs": [
+          "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply."
+        ],
+        "steps": [
+          "Click a folder under Local.",
+          "Turn Include subfolders on to include child folders, or off to view only that folder.",
+          "Click the star beside a folder, or open its ••• menu and choose Add as Favorite.",
+          "Use Local → Favorites to return to your saved folders."
+        ]
+      },
+      {
+        "title": "Folder actions",
+        "paragraphs": [
+          "A folder’s ••• menu includes Show in Finder on Mac or Show in File Explorer on Windows. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
+          "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
+        ]
+      }
+    ],
+    "related": [
+      "add-photos",
+      "search-filter-sort",
+      "trash-rejected"
+    ],
+    "sources": [
+      {
+        "path": "web/index.html",
+        "anchor": "<label class=\"include-subfolders\"><input type=\"checkbox\" id=\"includeSubfolders\">"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "favorite ? 'Remove from Favorites' : 'Add as Favorite'"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "items.push(menuButton('Synchronize Folder', () => location.reload()));"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "sources.removeAll { $0.path == clean }"
+      }
+    ]
+  },
+  {
+    "id": "search-filter-sort",
+    "title": "Find photos with search, filters, and sorting",
+    "category": "Library",
+    "summary": "Narrow the current folder or collection by text, flags, stars, colour, and file kind.",
+    "keywords": [
+      "find",
+      "search",
+      "keywords",
+      "rating filter",
+      "sort",
+      "capture date",
+      "no results",
+      "unrated"
+    ],
+    "sections": [
+      {
+        "title": "Search the current view",
+        "paragraphs": [
+          "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters."
+        ],
+        "steps": [
+          "Click Search photos and keywords, or press / when you are not typing in a field.",
+          "Type a word or phrase from the filename or keywords.",
+          "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.",
+          "Expand Filter for workflow state, minimum rating, colour label, and file kind.",
+          "Choose File name, Rating, Flag, Capture date, or Colour label in Sort."
+        ]
+      },
+      {
+        "title": "When a photo seems missing",
+        "paragraphs": [
+          "Clear the search text and reset Filter choices, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.",
+          "Capture date sorts from earlier to later; Rating sorts higher ratings first."
+        ]
+      }
+    ],
+    "related": [
+      "browse-folders",
+      "smart-collections",
+      "raw-jpeg-pairs",
+      "virtual-copies-and-stacks"
+    ],
+    "sources": [
+      {
+        "path": "web/library.js",
+        "anchor": "const terms = [image.name, image.displayName, ...(image.keywords || []),"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "return matchesKind && photoMatchesQuery(im, search);"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<label for=\"labelFilter\">Colour label</label>"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "list = [...list].sort((a, b) => (b.rating || 0) - (a.rating || 0));"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "captureSortValue(a) - captureSortValue(b)"
+      }
+    ]
+  },
+  {
+    "id": "views-and-selection",
+    "title": "Switch views and select photos",
+    "category": "Getting started",
+    "summary": "Use the grids to choose a set and Detail to inspect an individual photo.",
+    "keywords": [
+      "grid",
+      "detail",
+      "filmstrip",
+      "select multiple",
+      "shift click",
+      "command click",
+      "control click",
+      "navigation",
+      "zoom"
+    ],
+    "sections": [
+      {
+        "title": "Move between views",
+        "paragraphs": [
+          "Photo Grid presents photos as a visual overview. Culling Grid adds room for selection and rating information. Detail opens the active photo for close inspection."
+        ],
+        "steps": [
+          "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
+          "In a grid, use the Size slider to change thumbnail size.",
+          "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus."
+        ]
+      },
+      {
+        "title": "Build a selection",
+        "paragraphs": [
+          "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
+          "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action."
+        ]
+      }
+    ],
+    "related": [
+      "flags-and-ratings",
+      "survey-photos",
+      "shortcut-schemes"
+    ],
+    "sources": [
+      {
+        "path": "web/index.html",
+        "anchor": "aria-label=\"Photo view\""
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "const additive = event.metaKey || event.ctrlKey;"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "for (const item of list.slice(first, last + 1)) S.msel.add(item.name);"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (S.viewMode !== 'detail') {"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (e.code === 'Space' && S.viewMode === 'detail' && cur() &&"
+      }
+    ]
+  },
+  {
+    "id": "flags-and-ratings",
+    "title": "Pick, reject, and rate photos",
+    "category": "Library",
+    "summary": "Mark keepers and rejects, give star ratings, and control automatic advance.",
+    "keywords": [
+      "cull",
+      "pick",
+      "reject",
+      "flag",
+      "unflag",
+      "stars",
+      "rating",
+      "auto advance",
+      "keeper"
+    ],
+    "sections": [
+      {
+        "title": "Mark the active photo or grid selection",
+        "paragraphs": [
+          "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it."
+        ],
+        "steps": [
+          "Use Pick, Reject, and Unflag in the marking toolbar or Info. The P, X, and U keys perform the same actions.",
+          "Click a star or press 1–5 to rate. Press 0 to clear the rating.",
+          "To clear an existing pick, reject, or rating, apply that same mark again.",
+          "Use the sidebar’s Picked, Rejected, and Rated views to review your decisions."
+        ]
+      },
+      {
+        "title": "Control what happens next",
+        "paragraphs": [
+          "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.",
+          "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions."
+        ]
+      }
+    ],
+    "related": [
+      "views-and-selection",
+      "colour-labels",
+      "raw-jpeg-pairs",
+      "trash-rejected"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "const next = st !== 'pending' && targets.every((image) => image.status === st)"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (targets.length === 1 && next !== 'pending' && APP_PREFS.autoAdvance !== false)"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (targets.length === 1 && (advance || APP_PREFS.autoAdvance !== false))"
+      },
+      {
+        "path": "web/labels.js",
+        "anchor": "pick: ['p'], reject: ['x'], unflag: ['u'],"
+      }
+    ]
+  },
+  {
+    "id": "colour-labels",
+    "title": "Organize a workflow with colour labels",
+    "category": "Library",
+    "summary": "Use five colours independently of picks and star ratings.",
+    "keywords": [
+      "color",
+      "colour",
+      "labels",
+      "red",
+      "yellow",
+      "green",
+      "blue",
+      "purple",
+      "workflow"
+    ],
+    "sections": [
+      {
+        "title": "Apply and filter a label",
+        "paragraphs": [
+          "Colour labels are yours to assign meaning to—for example, red for retouching or green for delivery. They do not change star ratings or pick/reject status."
+        ],
+        "steps": [
+          "Select a photo, or a set in a grid, and open Info.",
+          "Under Colour label, choose Red, Yellow, Green, Blue, or Purple. Choose No label to clear it.",
+          "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.",
+          "Expand Filter in the library sidebar and use Colour label to find a particular colour, any colour, or unlabelled photos."
+        ],
+        "tips": [
+          "Applying the same label again clears it. Colour-label actions do not auto-advance."
+        ]
+      }
+    ],
+    "related": [
+      "flags-and-ratings",
+      "search-filter-sort",
+      "shortcut-schemes"
+    ],
+    "sources": [
+      {
+        "path": "web/labels.js",
+        "anchor": "export const LABELS = ['none', 'red', 'yellow', 'green', 'blue', 'purple'];"
+      },
+      {
+        "path": "web/labels.js",
+        "anchor": "export const LABEL_KEYS = { 6: 'red', 7: 'yellow', 8: 'green', 9: 'blue' };"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "const next = targets.every(image => cleanLabel(image.label) === labelValue) ? 'none' : labelValue;"
+      }
+    ]
+  },
+  {
+    "id": "shortcut-schemes",
+    "title": "Choose LightTable or Classic shortcuts",
+    "category": "Getting started",
+    "summary": "Choose the keyboard layout that fits your editing habits.",
+    "keywords": [
+      "keyboard",
+      "shortcuts",
+      "classic",
+      "Lightroom",
+      "crop key",
+      "detail key",
+      "before after"
+    ],
+    "sections": [
+      {
+        "title": "Choose a scheme",
+        "paragraphs": [
+          "Open Settings → Shortcuts & Hardware and choose Shortcut scheme. LightTable and Classic share most culling shortcuts, but differ for Detail, Crop, and before/after Compare."
+        ],
+        "steps": [
+          "Choose LightTable for D = Detail, C = Crop, and backslash (\\) = before/after Compare.",
+          "Choose Classic for E = Detail, R = Crop, and C = before/after Compare."
+        ],
+        "tips": [
+          "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0–5 for stars.",
+          "Hold B to show the original while inspecting an edit. Slash (/) focuses photo search.",
+          "Photo shortcuts are ignored while typing in text, number, or selection fields. Leave the field before using a photo command."
+        ]
+      }
+    ],
+    "related": [
+      "views-and-selection",
+      "flags-and-ratings",
+      "colour-labels",
+      "survey-photos"
+    ],
+    "sources": [
+      {
+        "path": "web/labels.js",
+        "anchor": "grid: 'g', squareGrid: 'G', detail: 'd', survey: 'n', compare: '\\\\',"
+      },
+      {
+        "path": "web/labels.js",
+        "anchor": "grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compare: 'c',"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<h2>Shortcuts &amp; Hardware</h2>"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;"
+      }
+    ]
+  },
+  {
+    "id": "collections",
+    "title": "Group photos into collections",
+    "category": "Library",
+    "summary": "Create named groups without moving the original files.",
+    "keywords": [
+      "collection",
+      "album",
+      "organize",
+      "group",
+      "selected",
+      "delete collection"
+    ],
+    "sections": [
+      {
+        "title": "Create and add photos",
+        "paragraphs": [
+          "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+        ],
+        "steps": [
+          "Select the photos you want to group.",
+          "Click Create collection or the + beside Collections, enter a name, and save. The current selection is included.",
+          "Click a collection to view it. Clicking the active collection again leaves it.",
+          "With a regular collection active, choose photos to add and click Add selected to collection."
+        ]
+      },
+      {
+        "title": "Delete a collection",
+        "paragraphs": [
+          "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+        ]
+      }
+    ],
+    "related": [
+      "smart-collections",
+      "views-and-selection",
+      "browse-folders"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "const name = await askName('New collection');"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "action: 'create_collection', name,"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "S.activeCollection = S.activeCollection === collection.id ? '' : collection.id;"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "await runLibraryAction({ action: 'delete_collection', id: collection.id });"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<button class=\"quiet full compact\" id=\"addToCollection\" disabled>Add selected to collection</button>"
+      }
+    ]
+  },
+  {
+    "id": "smart-collections",
+    "title": "Save a search as a smart collection",
+    "category": "Library",
+    "summary": "Keep a named group that updates from supported rules as photo metadata changes.",
+    "keywords": [
+      "smart collection",
+      "saved search",
+      "dynamic",
+      "filter rules",
+      "automatically",
+      "minimum rating"
+    ],
+    "sections": [
+      {
+        "title": "Save supported rules",
+        "paragraphs": [
+          "A smart collection finds photos that match its saved rules. Supported rules are pick/reject/unflag status, minimum star rating, file kind, and search text."
+        ],
+        "steps": [
+          "Set the search text, desired flag group, minimum rating, and file kind in the library.",
+          "Click the ✦ beside Collections, labelled Save filters as smart collection.",
+          "Name the collection and save.",
+          "Click its name to view matching photos. Changing a photo’s relevant metadata changes whether it matches."
+        ]
+      },
+      {
+        "title": "Know what is saved",
+        "paragraphs": [
+          "Colour-label filters, the selected folder, and Include subfolders are not saved in the smart collection rules. Edited and Unrated only are not supported smart-collection rules. Use supported flag and minimum-rating choices when creating one.",
+          "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and sidebar filters can still narrow the collection view."
+        ]
+      }
+    ],
+    "related": [
+      "collections",
+      "search-filter-sort",
+      "flags-and-ratings"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "action: 'create_smart_collection', name,"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "kind: $('kindFilter').value, query: $('search').value },"
+      },
+      {
+        "path": "web/library.js",
+        "anchor": "export function photoMatchesRules(image, rules = {}, exif = null) {"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (!collection || collection.type !== 'regular') return;"
+      }
+    ]
+  },
+  {
+    "id": "survey-photos",
+    "title": "Compare several photos in Survey",
+    "category": "Library",
+    "summary": "Review a group together, mark the active frame, and narrow a set of candidates.",
+    "keywords": [
+      "survey",
+      "compare photos",
+      "compare frames",
+      "burst",
+      "side by side",
+      "keeper",
+      "make select"
+    ],
+    "sections": [
+      {
+        "title": "Review a group",
+        "paragraphs": [
+          "Survey displays original previews for choosing between photos. It shows up to 16 selected photos. If there is no explicit selection, it uses up to six nearby photos in the current view."
+        ],
+        "steps": [
+          "Select candidates in a grid and press N, or open Info → Survey selection.",
+          "Click a photo to make that survey cell active. Use left and right arrows to move between cells.",
+          "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.",
+          "Click × on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
+          "Click Close or press Escape to leave Survey."
+        ]
+      },
+      {
+        "title": "Choose one keeper",
+        "paragraphs": [
+          "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
+          "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
+        ]
+      }
+    ],
+    "related": [
+      "views-and-selection",
+      "flags-and-ratings",
+      "raw-jpeg-pairs",
+      "shortcut-schemes"
+    ],
+    "sources": [
+      {
+        "path": "web/survey.js",
+        "anchor": "return `/api/orig?name=${encodeURIComponent(image.name)}&w=800"
+      },
+      {
+        "path": "web/survey.js",
+        "anchor": "names = Array.from(new Set(list || [])).slice(0, 16);"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "chosen = list.slice(start, start + 6).map((image) => image.name);"
+      },
+      {
+        "path": "web/survey.js",
+        "anchor": "<button class=\"survey-remove\" title=\"Remove from survey\">×</button>"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "toast('Marked the select and rejected the rest');"
+      }
+    ]
+  },
+  {
+    "id": "virtual-copies-and-stacks",
+    "title": "Try virtual copies and group photos in stacks",
+    "category": "Library",
+    "summary": "Keep alternate edits of one original and collapse related photos in the grid.",
+    "keywords": [
+      "virtual copy",
+      "version",
+      "alternate edit",
+      "stack",
+      "unstack",
+      "duplicate",
+      "copy"
+    ],
+    "sections": [
+      {
+        "title": "Create an alternate edit",
+        "paragraphs": [
+          "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk."
+        ],
+        "steps": [
+          "Make the source photo active.",
+          "Open the Photo actions ••• menu beside Sort and Size, then choose Create virtual copy.",
+          "Name the copy and save. The new copy becomes active.",
+          "Edit the copy. Use Filter → Workflow state → Virtual copies to find copies later."
+        ],
+        "tips": [
+          "Delete virtual copy in Photo actions removes the active virtual copy. For a real second file on disk, export a rendered image."
+        ]
+      },
+      {
+        "title": "Collapse a group",
+        "paragraphs": [
+          "Select at least two photos, then choose Photo actions ••• → Stack selected photos and enter a name. The stack’s grid badge shows the member count; click it to expand or collapse. Unstack selected photos removes the grouping."
+        ]
+      }
+    ],
+    "related": [
+      "views-and-selection",
+      "search-filter-sort",
+      "collections"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "action: 'create_virtual', name: source.name, displayName: displayNameValue,"
+      },
+      {
+        "path": "library_workflow.py",
+        "anchor": "return str(name).split(VIRTUAL_MARKER, 1)[0]"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "const result = await runLibraryAction({ action: 'delete_virtual', name: image.name });"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (members.length < 2) return toast('Select at least two photos to stack');"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "badge.title = stack.collapsed ? 'Expand stack' : 'Collapse stack';"
+      }
+    ]
+  },
+  {
+    "id": "raw-jpeg-pairs",
+    "title": "Work with RAW and JPEG pairs",
+    "category": "Library",
+    "summary": "Choose which companion to show and whether new metadata changes affect both.",
+    "keywords": [
+      "raw",
+      "jpeg",
+      "jpg",
+      "pair",
+      "companion",
+      "linked metadata",
+      "hidden jpeg"
+    ],
+    "sections": [
+      {
+        "title": "Choose the visible companion",
+        "paragraphs": [
+          "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent."
+        ],
+        "steps": [
+          "Open Settings → Files & Metadata and turn on Pair RAW and JPEG captures.",
+          "Set Show paired captures to Both files, Prefer RAW, or Prefer JPEG.",
+          "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion."
+        ]
+      },
+      {
+        "title": "Link new metadata changes",
+        "paragraphs": [
+          "Turn on Link pair metadata to link new ratings, flags, labels, and keyword changes. It does not combine the photo edits.",
+          "Exports and Trash use the files you choose or include in the current view. They do not automatically include a hidden companion. Choose Both files and review the selection when you need both originals. Capture-time correction has its own Include RAW + JPEG companions checkbox."
+        ]
+      }
+    ],
+    "related": [
+      "flags-and-ratings",
+      "metadata-and-keywords",
+      "capture-time",
+      "trash-rejected"
+    ],
+    "sources": [
+      {
+        "path": "web/photo-pairs.js",
+        "anchor": "/** RAW+JPEG pairs share a source and folder. Virtual copies remain independent. */"
+      },
+      {
+        "path": "web/photo-pairs.js",
+        "anchor": "if (members.length !== 2 || members.filter(image => image.raw).length !== 1) continue;"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "<h2>Files &amp; Metadata</h2>"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Exports and Trash use only the files you choose."
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "button.textContent = image.raw ? 'RAW → JPEG' : 'JPEG → RAW';"
+      }
+    ]
+  },
+  {
+    "id": "rename-photos",
+    "title": "Rename photos with a preview",
+    "category": "Library",
+    "summary": "Apply a consistent filename template to selected originals and their sidecars.",
+    "keywords": [
+      "rename",
+      "filename",
+      "sequence",
+      "batch",
+      "custom text",
+      "date tokens",
+      "sidecars"
+    ],
+    "sections": [
+      {
+        "title": "Preview and apply",
+        "paragraphs": [
+          "Rename changes filenames on disk and keeps the catalog records with the files. It also handles adjacent XMP sidecars. This is different from naming a virtual copy."
+        ],
+        "steps": [
+          "Select the photos to rename.",
+          "Open Info → Rename… (or Photo → Rename… in the Mac menu).",
+          "Enter a Template such as {custom}_{sequence}. Set Custom text and Start at as needed.",
+          "Review the before-and-after filenames in the preview.",
+          "Click Rename to apply."
+        ],
+        "tips": [
+          "Available tokens include {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min}, and {ss}. Sequence numbers use four digits.",
+          "The original extension is retained. A naming collision receives a numeric suffix. Rename templates cannot create folders.",
+          "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button."
+        ]
+      }
+    ],
+    "related": [
+      "import-from-card",
+      "virtual-copies-and-stacks",
+      "views-and-selection"
+    ],
+    "sources": [
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "function bindRename() {"
+      },
+      {
+        "path": "server.py",
+        "anchor": "def rename_photos(body: dict) -> dict:"
+      },
+      {
+        "path": "server.py",
+        "anchor": "continue  # a virtual copy shares its original's file"
+      },
+      {
+        "path": "server.py",
+        "anchor": "raise ValueError(\"a rename template cannot create folders\")"
+      },
+      {
+        "path": "server.py",
+        "anchor": "target = path.with_name(f\"{stem}-{suffix}{path.suffix}\")"
+      },
+      {
+        "path": "ingest_workflow.py",
+        "anchor": "SEQUENCE_DIGITS = 4"
+      }
+    ]
+  },
+  {
+    "id": "trash-rejected",
+    "title": "Move rejected photos to the Trash",
+    "category": "Library",
+    "summary": "Review the current view carefully before moving rejected originals and sidecars.",
+    "keywords": [
+      "delete",
+      "trash",
+      "rejected",
+      "restore",
+      "recover",
+      "remove originals",
+      "recycle bin"
+    ],
+    "sections": [
+      {
+        "title": "Review and move rejected files",
+        "paragraphs": [
+          "Rejecting a photo only changes its flag. Move Rejected Photos to Trash is a separate desktop action that affects rejected photos in the current view, not just the active photo."
+        ],
+        "steps": [
+          "Choose the folder or collection and filters that define the photos you want to review.",
+          "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
+          "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.",
+          "Read the photo count in the confirmation and confirm only when it matches your intended set."
+        ],
+        "tips": [
+          "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.",
+          "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original."
+        ]
+      },
+      {
+        "title": "Recover a mistaken removal on Mac",
+        "paragraphs": [
+          "Use Finder’s Trash to put the original and its sidecars back in their previous folder, then rescan the folder in LightTable. The app does not have an in-app Trash browser."
+        ]
+      }
+    ],
+    "related": [
+      "flags-and-ratings",
+      "raw-jpeg-pairs",
+      "browse-folders",
+      "virtual-copies-and-stacks"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "const rejected = visible().filter((image) => image.status === 'skipped');"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "Paired files hidden from this view stay in the library."
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "title: \"Move Rejected Photos to Trash…\""
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "try FileManager.default.trashItem("
+      },
+      {
+        "path": "server.py",
+        "anchor": "for sidecar in (path.with_suffix(\".xmp\"), Path(str(path) + \".xmp\")):"
+      }
+    ]
+  },
+  {
+    "id": "metadata-and-keywords",
+    "title": "Add keywords, captions, and rights information",
+    "category": "Library",
+    "summary": "Make photos easier to find and prepare descriptive metadata for export.",
+    "keywords": [
+      "metadata",
+      "IPTC",
+      "EXIF",
+      "keywords",
+      "caption",
+      "title",
+      "copyright",
+      "creator",
+      "location",
+      "GPS"
+    ],
+    "sections": [
+      {
+        "title": "Add searchable keywords",
+        "paragraphs": [
+          "Open Info on the active photo. Enter keywords in Add keywords and click Add or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
+          "Use a hierarchical path such as Places > Boston to keep related terms together. The Keyword tree lists catalog terms; click a term to search, or double-click it to rename that catalog keyword."
+        ],
+        "tips": [
+          "The keyword entry acts on the active photo, rather than every selected grid photo. Link pair metadata can also update its RAW or JPEG companion."
+        ]
+      },
+      {
+        "title": "Describe the photo",
+        "paragraphs": [
+          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type.",
+          "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file."
+        ]
+      }
+    ],
+    "related": [
+      "search-filter-sort",
+      "raw-jpeg-pairs",
+      "capture-time"
+    ],
+    "sources": [
+      {
+        "path": "web/app.js",
+        "anchor": "const separator = APP_PREFS.keywordSeparators === 'comma-semicolon'"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "function addKeyword() {\n  const im = cur();"
+      },
+      {
+        "path": "web/metadata-panel.js",
+        "anchor": "pendingSave = { name: currentName, fields: collect() };"
+      },
+      {
+        "path": "web/metadata-panel.js",
+        "anchor": "{ names, fields: collect() });"
+      },
+      {
+        "path": "web/metadata-panel.js",
+        "anchor": "fields[key] = input.value.trim() || null;"
+      },
+      {
+        "path": "web/metadata-panel.js",
+        "anchor": "const name = await ctx.askName('Rename keyword',"
+      },
+      {
+        "path": "web/metadata-panel.js",
+        "anchor": "files when the recipe asks for them; originals are never modified."
+      }
+    ]
+  },
+  {
+    "id": "capture-time",
+    "title": "Correct a camera clock or time zone",
+    "category": "Library",
+    "summary": "Preview a shared clock correction while preserving the intervals between photos.",
+    "keywords": [
+      "capture time",
+      "date",
+      "camera clock",
+      "time zone",
+      "timezone",
+      "daylight saving",
+      "sort date",
+      "timestamp"
+    ],
+    "sections": [
+      {
+        "title": "Preview the correction",
+        "paragraphs": [
+          "Capture-time corrections change catalog dates used for capture-date sorting and exported metadata. Original image files and filesystem dates stay unchanged."
+        ],
+        "steps": [
+          "Select the affected photos and open Info → Correct capture time.",
+          "Enter Shift clock by hours, such as -1 or 5.5.",
+          "Optionally enter Assign time zone as an offset such as -04:00 or +05:30. Leave it blank to keep the existing zone, or enter remove to clear it.",
+          "Choose whether to Include RAW + JPEG companions.",
+          "Click Preview selection and review the before-and-after times and any skipped photos.",
+          "Click Apply previewed changes. If you change the selection or correction controls, preview again first."
+        ]
+      },
+      {
+        "title": "Restore a correction",
+        "paragraphs": [
+          "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
+          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History."
+        ]
+      }
+    ],
+    "related": [
+      "search-filter-sort",
+      "metadata-and-keywords",
+      "raw-jpeg-pairs"
+    ],
+    "sources": [
+      {
+        "path": "web/index.html",
+        "anchor": "These catalog corrections affect capture-date sorting and exported metadata; original files and filesystem dates stay unchanged."
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Assigning a zone does not also shift the clock."
+      },
+      {
+        "path": "web/capture-time.js",
+        "anchor": "el('captureTimeReset').onclick=()=>preview(true);"
+      },
+      {
+        "path": "web/capture-time.js",
+        "anchor": "return {selectionChanged:invalidate};"
+      },
+      {
+        "path": "web/capture-time.js",
+        "anchor": "You can also restore capture-time steps in History."
+      }
+    ]
+  },
+  {
+    "id": "import-lightroom-catalog",
+    "title": "Bring a Lightroom Classic catalog into LightTable",
+    "category": "Getting started",
+    "summary": "Import supported metadata and approximate edits, then review the conversion report.",
+    "keywords": [
+      "Lightroom",
+      "Lightroom Classic",
+      "migrate",
+      "migration",
+      "catalog import",
+      "lrcat",
+      "sidecars",
+      "XMP"
+    ],
+    "sections": [
+      {
+        "title": "Prepare and inspect",
+        "paragraphs": [
+          "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog. It matches photos already added to LightTable; it does not automatically add missing source folders or copy original photos."
+        ],
+        "steps": [
+          "Add the folders containing the Lightroom originals to LightTable and let them scan.",
+          "Open Local ••• → Import catalog….",
+          "Choose the .lrcat file, or enter its path, then review the photo counts, folder roots, and warnings.",
+          "Choose which categories to import: metadata, keywords, collections, stacks, approximate develop settings, and optional edit history.",
+          "For photos with existing edits, choose Keep mine or Replace with imported.",
+          "Click Import and review the final matched, not found, and skipped counts."
+        ]
+      },
+      {
+        "title": "Review translated edits",
+        "paragraphs": [
+          "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
+          "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop."
+        ]
+      }
+    ],
+    "related": [
+      "add-photos",
+      "collections",
+      "metadata-and-keywords"
+    ],
+    "sources": [
+      {
+        "path": "catalog_import.py",
+        "anchor": "The importer matches files a\n  scan has already added to the catalog."
+      },
+      {
+        "path": "catalog_import.py",
+        "anchor": "Every read here happens against a throwaway\n  copy of the catalog"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Develop settings (approximate)"
+      },
+      {
+        "path": "catalog_import.py",
+        "anchor": "\"filmOff\": True,"
+      },
+      {
+        "path": "catalog_import.py",
+        "anchor": "masks and imported LUT payloads, local masks, camera profiles, and any\nsmart-collection rule the catalog cannot express."
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "apply: { metadata: true, develop: false, crop: false },"
+      }
+    ]
+  }
+]

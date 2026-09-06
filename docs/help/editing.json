@@ -1,0 +1,531 @@
+[
+  {
+    "id": "editing-save-recovery",
+    "title": "Save edits and recover unsaved changes",
+    "category": "Editing",
+    "summary": "Edits save automatically. Check the save status, retry a failed save, or choose which edits to recover after reopening.",
+    "keywords": ["save", "autosave", "unsaved", "recovery", "crash", "original", "non-destructive", "retry", "saving"],
+    "sections": [
+      {
+        "title": "Check that your work is saved",
+        "paragraphs": ["Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."],
+        "steps": ["Make your adjustment, then check the save status in the app.", "Wait for Saving… to change to Saved. Saving also includes pending edit-history writes.", "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing."],
+        "tips": ["Saved · recovery needs attention means the save completed but the local recovery system reported a problem. Use the available retry control and read the status message."]
+      },
+      {
+        "title": "Choose recovered or saved edits",
+        "paragraphs": ["If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts."],
+        "steps": ["Read the affected photo names and choose Restore edits or Keep saved edits.", "If you restore, wait for saving to complete before closing the app."],
+        "tips": ["Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.", "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo."]
+      }
+    ],
+    "related": ["editing-history-snapshots"],
+    "sources": [
+      {"path": "web/app.js", "anchor": "function renderEditSaveStatus(status)"},
+      {"path": "web/app.js", "anchor": "Still unable to save. Your changes are kept in this window."},
+      {"path": "web/app.js", "anchor": "Restoring replaces their saved edits with these recovered changes."},
+      {"path": "web/app.js", "anchor": "its original is unavailable or has changed."},
+      {"path": "web/edit-save-queue.js", "anchor": "export function createEditSaveQueue"}
+    ]
+  },
+  {
+    "id": "editing-history-snapshots",
+    "title": "Undo edits, restore History, and save snapshots",
+    "category": "Editing",
+    "summary": "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.",
+    "keywords": ["undo", "redo", "history", "snapshot", "version", "restore", "revert", "reset"],
+    "sections": [
+      {
+        "title": "Undo or restore an earlier step",
+        "paragraphs": ["Undo and redo follow each photo during the current session. In catalog libraries, History persists after quitting. Nearby adjustments can be combined into a history step, so the list is not a record of every slider position."],
+        "steps": ["Use Command-Z on Mac or Ctrl-Z on Windows to undo. Add Shift to redo.", "Open History in the editing toolbar to see the current photo’s stored steps, newest first.", "Click a step to restore its settings. Restoring a step is itself an undoable edit."],
+        "tips": ["Persistent History requires a catalog library. Folder-only use still supports session Undo and Redo.", "Clear removes the photo’s stored history steps; it is not an adjustment-reset command."]
+      },
+      {
+        "title": "Keep a named look",
+        "paragraphs": ["A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo."],
+        "steps": ["Open History, expand Snapshots, and click Create snapshot.", "Enter a useful name, such as Soft portrait or Before retouching.", "Click the snapshot’s name to apply it later. Use Undo if you want to return to the state you just replaced."],
+        "tips": ["The photo keeps up to 50 snapshots; creating another beyond that limit drops the oldest snapshot from the list.", "The × beside a snapshot deletes that named snapshot, not the original photo."]
+      }
+    ],
+    "related": ["editing-save-recovery", "editing-presets"],
+    "sources": [
+      {"path": "web/history-panel.js", "anchor": "The pane lists\n * steps newest first; restoring one creates another undoable edit."},
+      {"path": "web/history-panel.js", "anchor": "Persistent history is available in catalog libraries. Undo and redo still work in this session."},
+      {"path": "web/history-panel.js", "anchor": "const COALESCE_MS = 2000;"},
+      {"path": "web/app.js", "anchor": "im.versions = [version, ...(im.versions || [])].slice(0, 50);"},
+      {"path": "web/index.html", "anchor": "Undo (Ctrl/⌘Z)"},
+      {"path": "web/index.html", "anchor": "Redo (Ctrl/⌘Shift+Z)"}
+    ]
+  },
+  {
+    "id": "editing-tone",
+    "title": "Adjust exposure, contrast, and tonal range",
+    "category": "Editing",
+    "summary": "Use Light controls and the histogram to set brightness and contrast, then check the result against the original.",
+    "keywords": ["exposure", "brightness", "light", "tone", "contrast", "highlights", "shadows", "whites", "blacks", "auto", "histogram", "clipping", "before"],
+    "sections": [
+      {
+        "title": "Start with Light",
+        "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation."],
+        "steps": ["Set Exposure for the main subject.", "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.", "Use the Clipping warning button beside the histogram to inspect clipping.", "Compare your result with the original using the before control, or hold B while the photo is active."],
+        "tips": ["Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment."]
+      },
+      {
+        "title": "Use Auto as a starting point",
+        "paragraphs": ["Auto in the Light heading analyzes the available image preview and sets Exposure, Blacks, and Whites. It does not set every editing control."],
+        "steps": ["Wait until the photo preview appears, then click Auto.", "Review the result and refine the sliders for the photograph."],
+        "tips": ["If Auto says it is waiting for the image preview, let the preview load and try again.", "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color."]
+      }
+    ],
+    "related": ["editing-white-balance", "editing-curves", "editing-history-snapshots"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<details class=\"sec\" id=\"lightSection\" open>"},
+      {"path": "web/index.html", "anchor": "Clipping warning"},
+      {"path": "web/index.html", "anchor": "data-scope=\"vectorscope\""},
+      {"path": "web/app.js", "anchor": "S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);"},
+      {"path": "web/app.js", "anchor": "Auto tone: waiting for image preview…"},
+      {"path": "web/index.html", "anchor": "<b>B</b><span>Show original</span>"}
+    ]
+  },
+  {
+    "id": "editing-white-balance",
+    "title": "Set white balance and overall color",
+    "category": "Editing",
+    "summary": "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.",
+    "keywords": ["white balance", "wb", "temperature", "temp", "tint", "neutral", "eyedropper", "color cast", "vibrance", "saturation"],
+    "sections": [
+      {
+        "title": "Neutralize a color cast",
+        "paragraphs": ["The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls."],
+        "steps": ["Open Edit and expand Color.", "Click the white-balance eyedropper beside Temp, then click an area in the photo that should be neutral gray.", "Refine Temp and Tint by eye if the sampled result is too warm, cool, green, or magenta.", "Adjust Vibrance and Saturation to control the overall intensity of color."],
+        "tips": ["Choose a visible neutral patch. A nearly black sample produces Too dark to sample; an unavailable preview produces a waiting message.", "Click the eyedropper again to leave sampling mode without choosing a point.", "Color’s Reset also resets its associated color adjustments, including Color Mixer, Point Color, and Color Grading. Use a tool’s own Reset for a narrower change."]
+      }
+    ],
+    "related": ["editing-tone", "editing-color-mixer-point-color", "editing-color-grading"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Click a neutral area to set white balance"},
+      {"path": "web/index.html", "anchor": "Edit-panel Exposure and Temp/Tint are creative finishing controls."},
+      {"path": "web/app.js", "anchor": "if (rr + gg + bb < 0.06) return toast('Too dark to sample');"},
+      {"path": "web/app.js", "anchor": "S.wbPick = !S.wbPick;"},
+      {"path": "web/app.js", "anchor": "delete S.grade.pointColor;"}
+    ]
+  },
+  {
+    "id": "editing-curves",
+    "title": "Shape contrast and color with curves",
+    "category": "Editing",
+    "summary": "Add and move curve points for the combined RGB channel or individual red, green, and blue channels.",
+    "keywords": ["curve", "curves", "tone curve", "rgb", "red", "green", "blue", "contrast", "control point", "s curve"],
+    "sections": [
+      {
+        "title": "Edit a curve",
+        "paragraphs": ["In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels."],
+        "steps": ["Open Edit and expand Curve.", "Choose RGB, R, G, or B.", "Click the graph to add a point, then drag it to shape the curve. Drag an existing handle to move it.", "Double-click an interior point to remove it. The two endpoint handles remain.", "Use Curve’s Reset to reset the curves, or Undo to reverse the latest change."],
+        "tips": ["Use a few points and compare the photo as you work; channel curves can introduce strong color casts.", "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."]
+      }
+    ],
+    "related": ["editing-tone", "editing-color-grading", "editing-presets"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<button class=\"curveCh on\" data-ch=\"L\">RGB</button>"},
+      {"path": "web/app.js", "anchor": "(function curveEvents()"},
+      {"path": "web/app.js", "anchor": "if (i > 0 && i < pts.length - 1)"},
+      {"path": "web/app.js", "anchor": "handles for editing while drawing the exact table until the first edit."}
+    ]
+  },
+  {
+    "id": "editing-color-mixer-point-color",
+    "title": "Change individual colors with Color Mixer and Point Color",
+    "category": "Editing",
+    "summary": "Adjust a broad color band or sample a specific hue and refine its range, brightness, and uniformity.",
+    "keywords": ["hsl", "color mixer", "colour mixer", "point color", "sample", "hue", "uniformity", "luminance", "saturation", "range"],
+    "sections": [
+      {
+        "title": "Adjust a color band",
+        "paragraphs": ["Color Mixer sits inside Edit → Color. It changes colors within the selected band throughout the photo."],
+        "steps": ["Choose one of the colored band buttons in Color Mixer.", "Adjust Hue to shift that band, Saturation to change its color intensity, and Luminance to change its brightness.", "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments."]
+      },
+      {
+        "title": "Sample a particular color",
+        "paragraphs": ["Point Color gives a sampled hue its own controls. It affects matching colors throughout the photo; use a local mask when you also need to restrict the area."],
+        "steps": ["Click Sample color under Point Color, then click a colorful patch in the photo.", "Adjust Range to narrow or widen the hues affected, then refine Hue shift, Saturation, and Luminance.", "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.", "Choose a saved point in the selector to edit it, or use Delete point to remove it."],
+        "tips": ["Neutral gray patches cannot provide a useful hue sample; choose a more colorful area when prompted.", "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.", "Point Color’s Reset clears the sampled points without requiring a full Color reset."]
+      }
+    ],
+    "related": ["editing-white-balance", "editing-color-grading", "editing-masks-ranges-refinements"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<div class=\"hsl-dots\" id=\"hslBands\"></div>"},
+      {"path": "web/index.html", "anchor": "Uniformity evens the sampled colour across its range. Sample the patch the rest should match."},
+      {"path": "web/app.js", "anchor": "? S.grade.pointColor.slice(0, 7) : [];"},
+      {"path": "web/app.js", "anchor": "toast('Point color sampled');"}
+    ]
+  },
+  {
+    "id": "editing-color-grading",
+    "title": "Color grade shadows, midtones, and highlights",
+    "category": "Editing",
+    "summary": "Give tonal regions different color treatments and control how those treatments blend.",
+    "keywords": ["color grading", "colour grading", "split toning", "shadows", "midtones", "highlights", "global grade", "blending", "balance"],
+    "sections": [
+      {
+        "title": "Build a grade",
+        "paragraphs": ["Color Grading in Edit provides separate Shadows, Midtones, and Highlights selections, plus a global grade. Each has Hue, Saturation, and Luminance controls."],
+        "steps": ["Expand Color Grading and select Shadows, Midtones, or Highlights.", "Choose a Hue, then increase Saturation to make the color treatment visible. Adjust Luminance for that tonal region if needed.", "Repeat for the other regions, or click Edit global grade to change the global treatment.", "Refine Blending and Balance, comparing the photo as you adjust them.", "Use Color Grading’s Reset to clear the grade."],
+        "tips": ["Changing Hue with Saturation at zero does not add visible color. Start with a modest saturation value.", "Use Color Mixer or Point Color when you want to target an existing hue, and a mask when you want to target a location in the photo."]
+      }
+    ],
+    "related": ["editing-color-mixer-point-color", "editing-curves", "editing-masks-brush-gradients"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<div class=\"grading-wheels\" id=\"gradingWheels\">"},
+      {"path": "web/index.html", "anchor": "Edit global grade"},
+      {"path": "web/index.html", "anchor": "data-color-grade-master=\"blending\""},
+      {"path": "web/color-tools.js", "anchor": "export function emptyColorGrading(tones)"}
+    ]
+  },
+  {
+    "id": "editing-detail-effects-enhance",
+    "title": "Sharpen, reduce noise, and use Enhance",
+    "category": "Editing",
+    "summary": "Inspect detail at 1:1, apply ordinary detail controls, or run local learned denoise when available.",
+    "keywords": ["detail", "sharpening", "noise", "denoise", "noise reduction", "enhance", "super resolution", "upscale", "texture", "clarity", "dehaze", "vignette", "sensor"],
+    "sections": [
+      {
+        "title": "Judge detail at 1:1",
+        "paragraphs": ["The Detail section includes Sharpening, Radius, Detail, Masking, Luminance NR, and Color NR. Effects contains Texture, Clarity, Dehaze, and Vignette."],
+        "steps": ["Open a photo and use Space to switch between Fit and 1:1.", "Expand Detail in Edit. Adjust noise reduction and sharpening while looking at both textured and smooth areas.", "Use Effects for texture, local contrast, haze, or edge shading, then check the whole photo at Fit.", "Use the relevant section’s Reset if you want to start that group again."],
+        "tips": ["Detail controls work in both Film and Develop modes. Avoid judging sharpening from a small Fit preview alone."]
+      },
+      {
+        "title": "Run learned denoise on a RAW photo",
+        "paragraphs": ["RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live."],
+        "steps": ["Select a RAW photo and expand Detail.", "Check that Apply denoise is available, choose Strength, and click Apply denoise.", "Watch the progress message. Use Cancel if you need to stop the job.", "Inspect the completed preview at 1:1."],
+        "tips": ["Availability depends on the local model, helper, and supported platform. Development builds may lack the model, and the app reports this instead of pretending denoise succeeded."]
+      },
+      {
+        "title": "Create an enhanced derivative in the Mac app",
+        "paragraphs": ["Photo → Enhance Photo… offers Denoise and Super resolution and writes a new 16-bit master when the selected operation succeeds. The original remains untouched."],
+        "steps": ["Select the photo, choose Photo → Enhance Photo…, and read the availability message.", "Choose the enhancement and click Enhance if available.", "After completion, find the new result in the refreshed library and inspect it."],
+        "tips": ["Super resolution has no bundled model and requires a compatible local model. A listed option alone does not mean that operation is available.", "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."]
+      }
+    ],
+    "related": ["editing-tone", "editing-effects", "editing-history-snapshots"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Judge sharpening and noise reduction at 1:1. These controls work in both Film and Develop modes."},
+      {"path": "web/index.html", "anchor": "<b>Space</b><span>Toggle Fit / 1:1</span>"},
+      {"path": "web/app.js", "anchor": "Runs locally when Apply is pressed; the slider is not live."},
+      {"path": "web/app.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
+      {"path": "enhance_workflow.py", "anchor": "Super-resolution has no bundled model."},
+      {"path": "enhance_workflow.py", "anchor": "Enhance output is model-generated detail, not measured detail."},
+      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: \"Enhance Photo…\","}
+    ]
+  },
+  {
+    "id": "editing-effects",
+    "title": "Adjust Texture, Clarity, Dehaze, and Vignette",
+    "category": "Editing",
+    "summary": "Refine surface detail, local contrast, haze, and edge brightness from the Effects section.",
+    "keywords": ["effects", "texture", "clarity", "dehaze", "haze", "vignette", "soften", "detail", "local contrast", "dark edges", "bright edges"],
+    "sections": [
+      {
+        "title": "Refine detail and contrast",
+        "paragraphs": ["Expand Effects in Edit. Texture changes fine local detail, while Clarity applies local contrast with greater emphasis on midtones. Positive values strengthen these effects; negative values soften them."],
+        "steps": ["Adjust Texture while looking at a textured part of the photo, such as fabric, foliage, or skin.", "Adjust Clarity while checking contrast around the subject and edges.", "Inspect at 1:1 and then return to Fit to judge the overall result."],
+        "tips": ["For a localized treatment, use a mask’s Texture and Clarity controls."]
+      },
+      {
+        "title": "Change haze and edge brightness",
+        "paragraphs": ["Dehaze changes the image’s haze-like tonal and color treatment. Vignette changes edge brightness: positive values darken the edges and negative values brighten them."],
+        "steps": ["Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.", "Set Vignette for the edge treatment you want and inspect the corners.", "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together."],
+        "tips": ["Effects’ Vignette is a creative edge treatment. Use Lens corrections when you want to correct lens shading."]
+      }
+    ],
+    "related": ["editing-detail-effects-enhance", "editing-lens-corrections", "editing-masks-brush-gradients", "editing-tone"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<summary><span>Effects</span><a class=\"reset\" href=\"#\" data-reset=\"effects\">Reset</a></summary>"},
+      {"path": "grade.py", "anchor": "\"texture\": 0.0,      # -1..1, one-pixel local detail"},
+      {"path": "grade.py", "anchor": "\"clarity\": 0.0,      # -1..1, midtone-weighted local contrast"},
+      {"path": "grade.py", "anchor": "haze = g[\"dehaze\"] * 0.12"},
+      {"path": "grade.py", "anchor": "falloff = np.clip(1.0 - g[\"vignette\"] * 0.9 * (r ** 2.2), 0.0, 2.0)[..., None]"},
+      {"path": "web/app.js", "anchor": "effects: ['texture', 'clarity', 'dehaze', 'vignette'],"},
+      {"path": "web/index.html", "anchor": "data-local=\"clarity\""}
+    ]
+  },
+  {
+    "id": "editing-photo-merge",
+    "title": "Merge HDR brackets, panoramas, and focus stacks",
+    "category": "Editing",
+    "summary": "Combine a sequence of distinct originals into a new 16-bit TIFF, then edit the merged result.",
+    "keywords": ["photo merge", "merge", "hdr", "high dynamic range", "exposure fusion", "bracket", "panorama", "pano", "stitch", "focus stack", "focus stacking", "tiff", "alignment"],
+    "sections": [
+      {
+        "title": "Start a merge in the Mac app",
+        "paragraphs": ["Photo Merge uses a neutral render of each original and creates a new 16-bit TIFF in LightTable Merges. Apply your final look, crop, and local adjustments to the merged result. The source originals remain available."],
+        "steps": ["Select at least two distinct originals in the library. Multiple virtual copies of one original count as one source.", "Choose Photo → Photo Merge… in the Mac menu.", "Choose HDR · exposure fusion, Panorama · feature aligned, or Focus stack · sharpness fused.", "Optionally enter a Result name, then click Merge.", "Watch the preparation, alignment, blending, and saving progress. When the app reports completion and refreshes the library, open the TIFF in LightTable Merges and inspect it."],
+        "tips": ["Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.", "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.", "If a merge reports an error, read the specific message and correct the input selection before trying again."]
+      },
+      {
+        "title": "Choose suitable inputs",
+        "paragraphs": ["HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.", "Panorama accepts 2–20 overlapping frames. Select neighboring frames in sequence so adjacent inputs share visual detail. The app aligns features and blends overlaps; featureless areas or insufficient overlap can prevent a reliable stitch. Panorama canvases are limited to 120 megapixels.", "Focus stack accepts 2–60 focus-bracketed photos with matching dimensions. Use a tripod or focus-rail sequence with shared framing. The app aligns the frames, combines sharp regions, and crops to their common aligned area."],
+        "steps": ["For HDR, inspect highlights, shadows, and anything that moved between exposures.", "For Panorama, inspect seams and the outer boundary, then crop the result as needed.", "For Focus stack, inspect transitions between sharp regions, foreground edges, and the final crop at 1:1."],
+        "tips": ["HDR here is exposure fusion into a rendered TIFF. It does not produce a scene-linear RAW or DNG master.", "An alignment failure can mean the frames lack enough overlap or a common area. Try a more consistent sequence rather than adding unrelated frames."]
+      }
+    ],
+    "related": ["editing-crop-geometry", "editing-tone", "editing-detail-effects-enhance"],
+    "sources": [
+      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: \"Photo Merge…\","},
+      {"path": "web/index.html", "anchor": "HDR · exposure fusion"},
+      {"path": "web/app.js", "anchor": "return [...new Set(transferTargets().map((image) => image.sourceName || image.name))];"},
+      {"path": "server.py", "anchor": "return neutral_tiff_for(name, entry.get(\"params\") or default_params)"},
+      {"path": "server.py", "anchor": "folder = FOLDER / \"LightTable Merges\""},
+      {"path": "server.py", "anchor": "\"outputSpace\": \"prophoto\", \"bitDepth\": 16,"},
+      {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"6000\"))"},
+      {"path": "server.py", "anchor": "return {\"error\": \"a merge is already running\"}"},
+      {"path": "merge_workflow.py", "anchor": "Align and exposure-fuse 2-9 bracketed, display-referred frames."},
+      {"path": "merge_workflow.py", "anchor": "HDR inputs must have matching dimensions"},
+      {"path": "merge_workflow.py", "anchor": "Feature-align and feather 2-20 overlapping frames into one panorama."},
+      {"path": "merge_workflow.py", "anchor": "output_width * output_height > 120_000_000"},
+      {"path": "merge_workflow.py", "anchor": "Align and sharpness-fuse 2-60 focus-bracketed frames."},
+      {"path": "merge_workflow.py", "anchor": "Map a focus rail sequence into its middle frame and common crop."},
+      {"path": "merge_workflow.py", "anchor": "candidate = path.with_name(f\"{path.stem}-{index}{path.suffix}\")"}
+    ]
+  },
+  {
+    "id": "editing-crop-geometry",
+    "title": "Crop, straighten, rotate, and correct perspective",
+    "category": "Editing",
+    "summary": "Set a frame and aspect ratio, adjust orientation and perspective, then accept or cancel the crop session.",
+    "keywords": ["crop", "aspect ratio", "straighten", "rotate", "flip", "perspective", "geometry", "upright", "level", "portrait", "landscape", "resize"],
+    "sections": [
+      {
+        "title": "Set the frame",
+        "paragraphs": ["Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained."],
+        "steps": ["Choose an aspect ratio. Use Custom to enter your own width-to-height proportion, and the swap button to change orientation.", "Drag a handle to resize the crop or drag inside the frame to move it. Drag outside the existing frame to draw a new crop.", "Use arrow keys to nudge the selection; hold Shift for larger steps.", "Click Done or press Enter to accept. Click Cancel or press Escape to restore the frame from when you opened Crop."],
+        "tips": ["The ratio Lock control lets you keep the current aspect ratio while resizing."]
+      },
+      {
+        "title": "Refine geometry",
+        "paragraphs": ["Crop & Rotate also contains Straighten, 90-degree rotation, horizontal and vertical flips, and Perspective controls."],
+        "steps": ["Try Auto level for a tilted horizon, then refine Straighten if needed.", "Use Rotate left, Rotate right, or the flip buttons for orientation changes.", "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.", "Inspect the edges and final framing, then click Done."],
+        "tips": ["Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.", "Crop’s Reset resets the crop, rotation, flips, and perspective together."]
+      }
+    ],
+    "related": ["editing-lens-corrections", "editing-history-snapshots"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Reset crop, rotation, flips, and perspective"},
+      {"path": "web/index.html", "anchor": "Drag outside the frame to draw a new crop."},
+      {"path": "web/index.html", "anchor": "Enter accepts; Escape restores the frame from when you opened Crop."},
+      {"path": "web/index.html", "anchor": "Levels the frame from the lines it can find."},
+      {"path": "web/index.html", "anchor": "<button class=\"quiet full\" id=\"autoUpright\">Auto upright</button>"}
+    ]
+  },
+  {
+    "id": "editing-lens-corrections",
+    "title": "Apply lens and chromatic-aberration corrections",
+    "category": "Editing",
+    "summary": "Use a matched or manually selected lens profile, or make manual corrections when an exact profile is unavailable.",
+    "keywords": ["lens", "profile", "distortion", "vignette", "shading", "chromatic aberration", "fringing", "red cyan", "blue yellow", "optics"],
+    "sections": [
+      {
+        "title": "Choose and verify a correction",
+        "paragraphs": ["Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available."],
+        "steps": ["Read the profile name and match explanation.", "Enable Use matched lens profile when a profile is available, then choose Correct distortion and Correct lens shading as needed.", "If necessary, choose a different entry in Lens profile and compare the correction against the original.", "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration."],
+        "tips": ["No exact lens profile found leaves manual distortion and perspective controls available.", "Profile distortion and shading checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.", "A manually selected profile needs visual checking; the selection does not establish that it is an exact match.", "Lens and fringe corrections remain non-destructive through export."]
+      }
+    ],
+    "related": ["editing-crop-geometry", "editing-detail-effects-enhance"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Automatic correction uses the bundled camera and lens database."},
+      {"path": "web/index.html", "anchor": "Lens and fringe corrections remain non-destructive through export."},
+      {"path": "web/app.js", "anchor": "No exact lens profile found"},
+      {"path": "web/app.js", "anchor": "Profile selected manually. Verify the correction against the original."},
+      {"path": "web/app.js", "anchor": "!profile || !S.optics.profileEnabled || !profile.hasDistortion"}
+    ]
+  },
+  {
+    "id": "editing-masks-brush-gradients",
+    "title": "Make local adjustments with Brush, Linear, and Radial masks",
+    "category": "Editing",
+    "summary": "Paint or draw a mask, inspect its overlay, and adjust only the selected area.",
+    "keywords": ["mask", "masking", "local adjustment", "brush", "linear gradient", "radial gradient", "feather", "flow", "overlay", "dodge", "burn"],
+    "sections": [
+      {
+        "title": "Create a manual mask",
+        "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments."],
+        "steps": ["Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.", "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.", "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.", "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.", "Rename the mask using its ••• button so its purpose is easy to recognize later."],
+        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."]
+      }
+    ],
+    "related": ["editing-masks-ai", "editing-masks-ranges-refinements", "editing-history-snapshots"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "<span>Create New Mask</span>"},
+      {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
+      {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = `Drag on the photo to edit the ${mask.type} mask.`;"},
+      {"path": "web/app.js", "anchor": "Up to sixteen local masks can be active"},
+      {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"}
+    ]
+  },
+  {
+    "id": "editing-masks-ai",
+    "title": "Select Subject, Sky, Object, Depth, or People",
+    "category": "Editing",
+    "summary": "Create local selections on the device, inspect their accuracy, and refine the result before applying adjustments.",
+    "keywords": ["ai mask", "subject", "sky", "object", "depth", "people", "person", "face", "skin", "hair", "eyes", "teeth", "portrait", "select background"],
+    "sections": [
+      {
+        "title": "Create a smart selection",
+        "paragraphs": ["Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform."],
+        "steps": ["Open Mask and expand Create New Mask.", "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.", "Choose Depth to make a selection from relative distance, then open Range and adjust Far limit and Near limit. Depth runs from far to near.", "Inspect Show Overlay and refine missed or extra areas before adjusting Light or Color."],
+        "tips": ["Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.", "Depth uses embedded capture depth when available, otherwise a local estimate. Estimated depth is relative and can be inaccurate.", "Use Invert if you want to adjust the area outside the resulting selection."]
+      },
+      {
+        "title": "Select people or facial regions",
+        "paragraphs": ["People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. People masks require the Vision helper on macOS 14 or later. Face skin and hair are estimated, and no identity is inferred."],
+        "steps": ["Choose People, then the part you want to adjust.", "Inspect the overlay and use painted refinements around boundaries as needed.", "For Soften skin, review the automatically applied Texture and Clarity reduction, then adjust it to suit the portrait."],
+        "tips": ["Read any availability or detection error in the mask panel. A tool appearing in the menu does not guarantee that the required helper or a usable selection is available."]
+      }
+    ],
+    "related": ["editing-masks-brush-gradients", "editing-masks-ranges-refinements", "editing-copy-paste-match-exposure"],
+    "sources": [
+      {"path": "semantic_masks.py", "anchor": "Private, on-device semantic selections for local adjustment masks."},
+      {"path": "semantic_masks.py", "anchor": "People masks need the Vision helper (macOS 14 or later)"},
+      {"path": "semantic_masks.py", "anchor": "Select the connected colour region under a normalized user point."},
+      {"path": "web/index.html", "anchor": "Depth runs from far to near. Embedded capture depth is used when available; otherwise LightTable estimates locally."},
+      {"path": "web/index.html", "anchor": "Face skin and hair are estimated; no identity is inferred."},
+      {"path": "web/app.js", "anchor": "mask.grade.texture = -0.4;"},
+      {"path": "web/app.js", "anchor": "Click the object to select."}
+    ]
+  },
+  {
+    "id": "editing-masks-ranges-refinements",
+    "title": "Refine masks with painting, ranges, and combined selections",
+    "category": "Editing",
+    "summary": "Add, subtract, or intersect areas, then limit an adjustment by luminance or sampled color.",
+    "keywords": ["mask refinement", "add", "subtract", "intersect", "component", "luminance range", "color range", "colour range", "sample colour", "opacity", "amount", "invert"],
+    "sections": [
+      {
+        "title": "Refine by painting",
+        "paragraphs": ["Select the mask in the mask list before refining it. Add expands the selection; Subtract removes painted areas; Intersect keeps only the painted area of the existing selection."],
+        "steps": ["Choose Add, Subtract, or Intersect beneath Selected Mask.", "Set Size, Feather, and Flow, then paint while watching the overlay.", "While using Add, hold Option on Mac to subtract temporarily.", "Turn the overlay off and inspect the adjustment. Use Undo for a refinement you want to reverse."]
+      },
+      {
+        "title": "Combine a smart selection",
+        "paragraphs": ["Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask."],
+        "steps": ["Select an existing mask, then expand Create New Mask.", "Choose Add to selected mask, Subtract from selected mask, or Intersect with selected mask in Smart selection action.", "Choose the smart tool, such as Subject or Sky, and inspect the combined result."],
+        "tips": ["Set Smart selection action back to Create new mask when you want the next smart selection to have independent adjustments.", "A mask has a component limit; the panel reports when another smart component cannot be added."]
+      },
+      {
+        "title": "Limit by brightness or color",
+        "paragraphs": ["Range narrows a selected mask further. Luminance Low and High restrict brightness values. Colour range targets a hue, and Amount controls the whole mask’s strength."],
+        "steps": ["Expand Range for the selected mask and adjust Luminance Low and Luminance High while checking the overlay.", "Enable Colour range, then click Sample colour and sample a colorful point, or hold Shift and drag over an area to average it.", "Refine Hue, Range, and Colour amount, then use Amount for the overall adjustment strength."],
+        "tips": ["A nearly neutral area does not provide a useful hue sample. Choose a more colorful area when prompted."]
+      }
+    ],
+    "related": ["editing-masks-brush-gradients", "editing-masks-ai", "editing-color-mixer-point-color"],
+    "sources": [
+      {"path": "web/app.js", "anchor": "Paint the only area this mask should retain."},
+      {"path": "web/app.js", "anchor": "Paint over areas to add to this mask. Hold Option to subtract."},
+      {"path": "web/index.html", "anchor": "Smart selection action"},
+      {"path": "web/app.js", "anchor": "This mask has reached its component limit"},
+      {"path": "web/index.html", "anchor": "Luminance Low"},
+      {"path": "web/app.js", "anchor": "Click a color, or Shift-drag to average an area"}
+    ]
+  },
+  {
+    "id": "editing-remove-heal",
+    "title": "Remove spots and refine Heal or Clone corrections",
+    "category": "Editing",
+    "summary": "Paint over distractions, inspect spot visibility, and move the source or target of a correction.",
+    "keywords": ["remove", "heal", "healing", "clone", "retouch", "dust", "spot removal", "visualize spots", "source", "target", "distraction"],
+    "sections": [
+      {
+        "title": "Create a correction",
+        "paragraphs": ["Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable."],
+        "steps": ["Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.", "Click a spot or drag over a distraction in the photo.", "For small dust spots, enable Visualize Spots and adjust Threshold to make edges easier to inspect.", "Turn Visualize Spots off and inspect the corrected photograph."],
+        "tips": ["Selecting a correction and choosing a different mode changes that correction’s mode."]
+      },
+      {
+        "title": "Refine an existing correction",
+        "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."],
+        "steps": ["Drag the target circle to reposition the correction, or choose Move Target and click its new position.", "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.", "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.", "Toggle Enable this correction to compare, or use Delete correction to remove it."],
+        "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change."]
+      }
+    ],
+    "related": ["editing-detail-effects-enhance", "editing-history-snapshots", "editing-copy-paste-match-exposure"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Click or drag over a distraction. Heal and Clone choose a source automatically."},
+      {"path": "web/index.html", "anchor": "Visualize Spots"},
+      {"path": "web/app.js", "anchor": "function setHealToolMode(mode)"},
+      {"path": "web/app.js", "anchor": "$('healRefresh').hidden = spot.mode === 'remove';"},
+      {"path": "web/app.js", "anchor": "Click the new target position."},
+      {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."}
+    ]
+  },
+  {
+    "id": "editing-presets",
+    "title": "Apply, save, and import editing presets",
+    "category": "Editing",
+    "summary": "Reuse editing recipes and inspect conversion coverage when importing Lightroom, Camera Raw, or Capture One presets.",
+    "keywords": ["preset", "presets", "Lightroom", "Camera Raw", "Capture One", "xmp", "lrtemplate", "costyle", "ltpreset", "import preset", "save look", "replace adjustments"],
+    "sections": [
+      {
+        "title": "Apply an existing recipe",
+        "paragraphs": ["Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."],
+        "steps": ["Choose a preset and review its summary, especially if it came from another editor.", "Use Apply mapped adjustments to apply the settings the preset supplies.", "Use Replace adjustment settings only when you want to reset adjustments, masks, Remove corrections, and geometry before applying the preset.", "Inspect the photo and use Undo if you want to restore the previous edit."],
+        "tips": ["Replace keeps your crop. It keeps Film unless the preset includes Film settings or you enable Turn Film off for the actions below.", "Presets from other editors are converted approximately because their processing differs. Read skipped settings and conversion notes; matching controls do not promise identical pixels."]
+      },
+      {
+        "title": "Save or import a preset",
+        "paragraphs": ["Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."],
+        "steps": ["To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….", "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.", "Review the import result and the new preset’s conversion coverage before applying it.", "To share a selected preset, choose an Export format and click Export…."],
+        "tips": ["LightTable export is lossless for its preset format. Lightroom XMP and Capture One style exports are approximate.", "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee that every setting inside can be converted."]
+      }
+    ],
+    "related": ["editing-history-snapshots", "editing-copy-paste-match-exposure", "editing-curves"],
+    "sources": [
+      {"path": "web/index.html", "anchor": "Replacing resets adjustments, masks, Remove corrections, and geometry before applying this preset."},
+      {"path": "web/index.html", "anchor": "Your crop is kept. Film is kept unless the preset includes it or you turn it off above."},
+      {"path": "web/index.html", "anchor": "accept=\".ltpreset,.xmp,.lrtemplate,.costyle,.costylepack,.zip,.json\""},
+      {"path": "web/index.html", "anchor": "LightTable · lossless"},
+      {"path": "preset_io.py", "anchor": "Control conversion is approximate because Adobe and LightTable use different render engines."},
+      {"path": "web/index.html", "anchor": "In the Mac app, choose individual files or a whole preset folder."}
+    ]
+  },
+  {
+    "id": "editing-copy-paste-match-exposure",
+    "title": "Copy edits to selected photos and match exposure",
+    "category": "Editing",
+    "summary": "Choose which settings to transfer, review mask-specific limits, or match a group to an active exposure reference.",
+    "keywords": ["copy settings", "paste settings", "batch edit", "sync", "auto sync", "synchronize", "multiple photos", "match total exposure", "selection", "clipboard"],
+    "sections": [
+      {
+        "title": "Transfer selected settings",
+        "paragraphs": ["Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."],
+        "steps": ["Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Windows.", "Check the groups you want to transfer, then click Copy settings.", "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.", "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."],
+        "tips": ["Crop and geometry, Local masks, and Healing are separate choices and are not included by default.", "Healing copies spot positions and should only be transferred between photos with matching framing."]
+      },
+      {
+        "title": "Review transferred masks",
+        "paragraphs": ["Selected Local masks replace destination masks. Smart selections are detected again for each different photo. Manual mask shapes are copied, so their placement still needs checking."],
+        "tips": ["Object selections need a new object choice on the destination. Smart masks with painted refinements also need manual recreation; these cause the destination paste to be refused rather than silently copying a source-specific selection.", "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.", "Inspect the completion report for failed photos. A batch can finish with some photos changed and others left unchanged."]
+      },
+      {
+        "title": "Match total exposure",
+        "paragraphs": ["Match total exposure uses the active photo as its reference. When capture exposure metadata is available, it compares that information; otherwise it falls back to average image brightness. Review the result when scenes or lighting differ."],
+        "steps": ["Select at least two photos and make the intended reference photo active.", "Let the reference edits finish saving.", "Choose Match total exposure in Photo actions, or Library → Match Total Exposure in the Mac menu.", "Inspect each result. The operation updates the relevant exposure control and limits the resulting adjustment to the supported range."],
+        "tips": ["The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing."]
+      }
+    ],
+    "related": ["editing-tone", "editing-presets", "editing-masks-ai", "editing-remove-heal"],
+    "sources": [
+      {"path": "web/edit-transfer.js", "anchor": "Edit transfer plans preserve every unselected destination setting."},
+      {"path": "web/edit-transfer.js", "anchor": "const defaults = ['film', 'raw', 'tone', 'color', 'detail', 'optics'];"},
+      {"path": "web/edit-transfer.js", "anchor": "Copy spot positions; use only with matching framing"},
+      {"path": "web/edit-transfer.js", "anchor": "needs a new object selection. Exclude masks to paste other edits."},
+      {"path": "web/edit-transfer.js", "anchor": "has painted refinements. Recreate it on this photo or exclude masks."},
+      {"path": "web/app.js", "anchor": "Stopping after the current photo…"},
+      {"path": "server.py", "anchor": "targets = [t for t in targets if t != ref_name]"},
+      {"path": "server.py", "anchor": "delta = float(np.log2(ref_lum / target_lum))"},
+      {"path": "app/main.swift", "anchor": "addEditorItem(libraryMenu, title: \"Match Total Exposure\","}
+    ]
+  }
+]
