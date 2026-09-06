@@ -10202,6 +10202,23 @@ function uiStateReport() {
   };
 }
 
+async function reconcilePeerSave(image) {
+  const generation = image.peerSyncGeneration = (image.peerSyncGeneration || 0) + 1;
+  try {
+    // Peer windows each have their own ordered queue. Echoing their accepted
+    // edits back as new writes can make the two queues repair one another
+    // forever. Finish our write, then read the authoritative saved recipe.
+    await editSaveQueue.flush(image.name);
+    const before = JSON.stringify(image);
+    const response = await fetch(`/api/state?name=${encodeURIComponent(image.name)}`);
+    const state = await response.json();
+    if (!state || state.error) throw new Error(state?.error || 'Could not refresh shared edits');
+    if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
+        || before !== JSON.stringify(image)) return;
+    await applyServerStateEvent({names: [image.name], patch: state, origin: 'window', reconciled: true});
+  } catch { /* A failed local save stays pending for the explicit Retry action. */ }
+}
+
 async function applyServerStateEvent(event) {
   if (event.client === CLIENT_ID) return;
   const names = Array.isArray(event.names) ? event.names : [];
@@ -10215,10 +10232,20 @@ async function applyServerStateEvent(event) {
     if (current && names.includes(current.name)) METADATA?.refresh(current.name);
     return;
   }
-  const currentChanged = current && names.includes(current.name) && S.editingName === current.name;
+  const deferredNames = new Set();
+  if (!event.reconciled && event.origin?.startsWith('window')) {
+    for (const image of S.images) {
+      if (names.includes(image.name) && editSaveQueue.getPending(image.name)) {
+        deferredNames.add(image.name);
+        void reconcilePeerSave(image);
+      }
+    }
+  }
+  const currentChanged = current && names.includes(current.name)
+    && !deferredNames.has(current.name) && S.editingName === current.name;
   const before = currentChanged ? snapshot() : null;
   for (const image of S.images) {
-    if (!names.includes(image.name)) continue;
+    if (!names.includes(image.name) || deferredNames.has(image.name)) continue;
     const patch = patchFor(image.name);
     if (!patch || typeof patch !== 'object' || Array.isArray(patch)) continue;
     if (image !== current) photoUndo.clear(image.name);

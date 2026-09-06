@@ -20,7 +20,7 @@ class ResidentAdmissionTests(unittest.TestCase):
         self.stack.enter_context(mock.patch.object(server, "RENDER_LOCK", self.gate))
         self.stack.enter_context(mock.patch.object(server, "RENDER_CONTEXT", threading.local()))
         self.stack.enter_context(mock.patch.object(server, "LATEST_GENERATION", {}))
-        self.stack.enter_context(mock.patch.object(server, "guard_photo"))
+        self.stack.enter_context(mock.patch.object(server, "guard_local_photo"))
         self.client = server.RustEngineClient(None)
 
     def wait_for_waiters(self, count):
