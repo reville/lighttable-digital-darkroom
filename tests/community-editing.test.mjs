@@ -4,6 +4,8 @@ import vm from 'node:vm';
 import test from 'node:test';
 const moduleFrom = async file => import(`data:text/javascript;base64,${Buffer.from(readFileSync(new URL(file, import.meta.url))).toString('base64')}`);
 const {transferChoices, transferPatch, regenerateTransferMasks, cropGeometry, restoreCropGeometry} = await moduleFrom('../web/edit-transfer.js');
+const {createEditSaveQueue} = await moduleFrom('../web/edit-save-queue.js');
+const {previewDetailLabel} = await moduleFrom('../web/preview-detail.js');
 const {indexPairs, pairViewPreference, collapsePairs, pairedTargets} = await moduleFrom('../web/photo-pairs.js');
 const only = (...selected) => Object.fromEntries(Object.keys(transferChoices()).map(key => [key, selected.includes(key)]));
 const source = {params: {stock: 'source', rotate: 90, wb_temperature: 5600}, grade: {exposure: 2, temp: .3, curveL: [.1,.9], clarity: .4}, optics: {rotate: 2, distortion: .1}, crop: {x:.2,y:.1,w:.5,h:.5}, masks: [], heals: [{source:[.1,.1],target:[.2,.2]}]};
@@ -84,19 +86,20 @@ test('preferred view retains filtered-only companions and honors explicit editor
 // must leave each target untouched, while subsequent safe targets still save.
 const app=readFileSync(new URL('../web/app.js',import.meta.url),'utf8');
 const pasteSource=app.slice(app.indexOf('async function pasteSettingsTo('),app.indexOf("$('pasteBtn').onclick =",app.indexOf('async function pasteSettingsTo(')));
-function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choices:only('tone')}, failLoad=false, semanticError=false}={}) {
+function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choices:only('tone')}, failLoad=false, semanticError=false, saveError=false}={}) {
   const calls=[], notices=[], nodes=new Map();
   const context={S:{clipboard,editingName:''},transferRunning:false,transferCancelled:false,
     cloneValue:structuredClone,transferPatch,regenerateTransferMasks,
     $:id=> {if(!nodes.has(id))nodes.set(id,{focus(){}});return nodes.get(id);},
     saveState:async()=>true,prefetchState:async image=>{image.stateLoaded=!failLoad;},isStateLoaded:image=>image.stateLoaded,
-    editSaveQueue:{flush:async()=>{}},normalizeFilmParams:p=>({...p}),normalizeOptics:p=>({...p}),GRADE_DEFAULTS:{},
-    api:async(path,body)=>{calls.push({path,body}); return path.includes('semantic') ? semanticError?{error:'No model'}:{bitmap:{data:body.name}} : {ok:true};},
+    normalizeFilmParams:p=>({...p}),normalizeOptics:p=>({...p}),GRADE_DEFAULTS:{},
+    api:async(path,body)=>{calls.push({path,body}); if(path==='/api/state' && saveError) throw Error('Disk full'); return path.includes('semantic') ? semanticError?{error:'No model'}:{bitmap:{data:body.name}} : {ok:true};},
     HISTORY:{record(){}},cur:()=>null,displayName:i=>i.name,showTransferDialog(){},closeTransferDialog(){},
     invalidateEditedThumbnail(){},refreshLists(){},confirmTransfer(){},toast:t=>notices.push(t),
   };
+  context.editSaveQueue = createEditSaveQueue({send: async(name,payload)=>{const result=await context.api('/api/state',payload.state); if(!result.ok)throw Error('Save failed');},setTimeout:()=>0,clearTimeout(){}});
   vm.createContext(context); vm.runInContext(pasteSource+'\nthis.run = pasteSettingsTo;',context);
-  return {run:()=>context.run(images),calls,nodes,notices};
+  return {run:()=>context.run(images),calls,nodes,notices,queue:context.editSaveQueue};
 }
 test('paste refuses unloaded edited destinations before writing',async()=>{
   const target={name:'target.raw',...structuredClone(destination)};
@@ -117,4 +120,23 @@ test('AI failure prevents saving any part of a target paste',async()=>{
   const h=pasteHarness([target],{clipboard,semanticError:true}); await h.run();
   assert.equal(h.calls.filter(c=>c.path==='/api/state').length,0); assert.equal(target.grade.exposure,-1);
   assert.match(h.nodes.get('transferStatus').textContent,/No model/);
+});
+
+test('paste save failure retains the entire target edit in the queue for retry', async()=>{
+  const target={name:'target.raw',fileKey:'identity',...structuredClone(destination)};
+  const h=pasteHarness([target],{saveError:true}); await h.run();
+  assert.equal(target.grade.exposure,-1);
+  const retained=h.queue.getPending(target.name);
+  assert.equal(retained.state.grade.exposure,2); assert.equal(retained.state.grade.temp,-.2);
+  assert.equal(retained.sourceKey,'identity'); assert.equal(retained.history.label,'Paste selected settings');
+  assert.equal(retained.history.state.optics.distortion,.6);
+  assert.match(h.nodes.get('transferStatus').textContent,/Disk full|save/i);
+});
+test('preview status distinguishes refining, incomplete detail and true 100% readiness', ()=>{
+  assert.equal(previewDetailLabel({state:'ready',refining:true,actual:true}),'Refining RAW detail…');
+  assert.equal(previewDetailLabel({state:'ready',delivered:1100,requested:6000,source:6000,actual:true}),'Updating preview detail…');
+  assert.equal(previewDetailLabel({state:'ready',delivered:6000,requested:6000,source:6000,actual:true}),'100% detail ready');
+  assert.equal(previewDetailLabel({state:'ready',delivered:8000,requested:8000,source:12000,actual:true}),'Preview 8000 px · source 12000 px');
+  assert.equal(previewDetailLabel({state:'ready',delivered:1400,requested:1400,source:6000,actual:false}),'');
+  assert.equal(previewDetailLabel({state:'error',actual:true}),'');
 });

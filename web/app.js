@@ -6,6 +6,7 @@ import { createEditRecovery, recoveryPayloadMatches } from '/web/edit-recovery.j
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
+import { previewDetailLabel } from '/web/preview-detail.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
@@ -819,6 +820,7 @@ function clampPan() {
 }
 function applyViewNow() {
   clampPan();
+  syncPreviewDetailStatus();
   const cmp = $('cmp');
   cmp.style.transform =
     `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
@@ -2535,10 +2537,19 @@ function shouldPreservePresentationGeometry(phase, previousKey, nextKey) {
   return phase === 'interactive' && !!previousKey && previousKey === nextKey;
 }
 
+function syncPreviewDetailStatus() {
+  const image = cur(), detail = S.previewDetail?.name === image?.name ? S.previewDetail : {};
+  const label = previewDetailLabel({ ...detail, state: S.renderState,
+    source: Math.max(+image?.width || 0, +image?.height || 0), actual: S.zoomMode === '100' });
+  $('previewDetailStatus').textContent = image ? label : '';
+  $('previewDetailStatus').hidden = !image || !label;
+  $('zoom1').title = label || 'View actual pixels (100%) to assess sharpness and noise';
+}
 function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
   S.renderState = state;
   S.renderName = name || null;
+  syncPreviewDetailStatus();
   if (state === 'ready') {
     S.hasPresentedImage = true;
     S.presentedPhotoName = name;
@@ -3175,6 +3186,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     S.baseEditsBaked = Boolean(m.baseEditsBaked);
+    S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+      delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
+        +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
     setRenderPresentation('ready', im.name);
     drawGrade();
     const paintedAt = imageTiming.presentedAt || await afterVisiblePaint();
@@ -5368,7 +5382,7 @@ function switchPane(id, { fromCompare = false } = {}) {
   PRESET_BROWSER?.setActive(id === 'presetsPane');
   const panel = $('panel');
   const previousPane = S.activePane;
-  if (previousPane === 'cropPane' && id !== 'cropPane') cropSession = null;
+  if (previousPane === 'cropPane' && id !== 'cropPane' && !fromCompare) cropSession = null;
   if (previousPane && previousPane !== id) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
@@ -7188,17 +7202,20 @@ async function pasteSettingsTo(targets) {
           (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
       if (transferCancelled) break;
       const { cropChoices, ...entry } = patch;
-      const result = await api('/api/state', { name: image.name, ...entry });
-      if (!result?.ok || result.error) throw new Error(result?.error || 'Edits could not be saved');
+      const merged = { ...destination, ...patch };
+      editSaveQueue.enqueue(image.name, {
+        state: { name: image.name, ...entry }, sourceKey: image.fileKey || null,
+        history: { label: 'Paste selected settings', state: {
+          params: merged.params, grade: merged.grade, crop: merged.crop || null,
+          masks: merged.masks || [], heals: merged.heals || [], optics: merged.optics,
+        } },
+      }, { immediate: true });
+      await editSaveQueue.flush(image.name);
       if (image === cur() && S.editingName === image.name) pushUndo();
       Object.assign(image, cloneValue(patch));
       image.stateLoaded = true;
       if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(patch));
       invalidateEditedThumbnail(image);
-      HISTORY?.record(image.name, 'Paste selected settings', {
-        params: image.params, grade: image.grade, crop: image.crop || null,
-        masks: image.masks || [], heals: image.heals || [], optics: image.optics,
-      });
       if (image === cur() && S.editingName === image.name) {
         restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
         _lastHistorySnapshot = editHistorySnapshot();

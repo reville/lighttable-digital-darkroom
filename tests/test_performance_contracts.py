@@ -649,9 +649,9 @@ process.stdout.write(JSON.stringify({
 
     def test_crop_pane_immediately_activates_crop_mode(self):
         javascript = (ROOT / "web" / "app.js").read_text()
-        self.assertIn("if (id === 'cropPane') setCropMode(true);", javascript)
+        self.assertIn("if (id === 'cropPane') { beginCropSession(); setCropMode(true); }", javascript)
         self.assertIn(
-            "if (S.activePane === 'cropPane') setCropMode(true);",
+            "if (S.activePane === 'cropPane') beginCropSession();",
             javascript,
         )
         self.assertIn("selectPhotoTool('cropPane');", javascript)
@@ -1035,8 +1035,9 @@ process.stdout.write(JSON.stringify({
                       self.javascript)
 
     def test_crop_tool_and_zoom_survive_photo_navigation(self):
-        self.assertIn("applyView(); setCropMode(S.activePane === 'cropPane')",
-                      self.javascript)
+        self.assertIn("applyView();", self.javascript)
+        self.assertIn("setCropMode(S.activePane === 'cropPane')", self.javascript)
+        self.assertIn("if (S.activePane === 'cropPane') beginCropSession();", self.javascript)
 
     def test_folder_mode_keyword_tree_is_a_clean_empty_response(self):
         server_source = (ROOT / "server.py").read_text()

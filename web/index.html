@@ -162,6 +162,7 @@
     <div class="editor" id="editor">
       <div class="stage">
         <div class="zoomwrap" id="zoomwrap">
+          <span class="preview-detail-status" id="previewDetailStatus" role="status" aria-live="polite" hidden></span>
           <div class="cmp" id="cmp" style="--pos:0%; --clip:100%">
             <canvas id="cv"></canvas>
             <img id="orig" alt="Original photograph">
@@ -993,6 +994,7 @@
         <section class="settings-pane" data-settings-pane="files" role="tabpanel">
           <h2>Files &amp; Metadata</h2><p class="settings-intro">Portable edits, RAW companion files, and keyword entry.</p>
           <div class="settings-group">
+            <label class="settings-choice"><span><strong>Keep portable LightTable edits beside originals</strong><small id="catalogMirrorNote">Complete edits travel in .lighttable-state.json when you copy the folder.</small></span><input type="checkbox" id="catalogMirror" checked></label>
             <label class="settings-choice"><span><strong>Automatically write XMP sidecars</strong><small>Keep ratings, labels, keywords, rights, and compatible edits beside originals.</small></span><input type="checkbox" id="writeSidecars"></label>
             <div class="settings-action-row"><span id="sidecarWriteStatus" role="status" aria-live="polite">Pending edits are written after the catalog settles.</span><button id="writeSidecarsNow">Write now</button></div>
             <label class="settings-choice"><span><strong>Pair RAW and JPEG captures</strong><small>Recognize same-folder RAW and JPEG files as one capture, with separate edits.</small></span><input type="checkbox" id="pairRawJPEG" checked></label>

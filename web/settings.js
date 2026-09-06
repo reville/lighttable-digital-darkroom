@@ -99,6 +99,11 @@ export function installSettings(context) {
       byId('backupDirectory').placeholder = catalog.backupPath;
     }
     byId('settingsBackupNow').disabled = !catalog?.enabled;
+    byId('catalogMirror').disabled = !catalog?.enabled || catalog?.mirrorAllowed === false;
+    byId('catalogMirror').checked = catalog?.mirrorEnabled === true;
+    byId('catalogMirrorNote').textContent = catalog?.mirrorAllowed === false
+      ? 'Disabled for this app session by its launch configuration.'
+      : 'Save complete LightTable edits in .lighttable-state.json beside each photo folder. Copy that file with the originals to another computer. Existing files remain when turned off.';
   }
 
   async function populate() {
@@ -128,6 +133,7 @@ export function installSettings(context) {
     byId('newPhotoPreset').value = defaults.preset || '';
     byId('rawDefaultMatch').value = pref('rawDefaultMatch', 'model');
     byId('writeSidecars').checked = pref('writeSidecars', false);
+    byId('catalogMirror').checked = pref('catalogMirror', true);
     byId('pairRawJPEG').checked = pref('pairRawJPEG', true);
     byId('pairView').value = pref('pairView', pref('hidePairedJPEG', false) ? 'raw' : 'both');
     byId('pairView').disabled = !byId('pairRawJPEG').checked;
@@ -199,7 +205,7 @@ export function installSettings(context) {
   const checkboxPrefs = {
     autoAdvance: 'autoAdvance', completionNotifications: 'completionNotifications',
     automaticUpdateChecks: 'automaticUpdateChecks', lightsOutEnabled: 'lightsOutEnabled',
-    loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars',
+    loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars', catalogMirror: 'catalogMirror',
     pairRawJPEG: 'pairRawJPEG', linkPairedMetadata: 'linkPairedMetadata',
     keywordAutocomplete: 'keywordAutocomplete', settingsExternalEditStack: 'externalEditStack',
   };
