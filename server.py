@@ -1793,8 +1793,6 @@ _BASE_CACHE_BUDGET_BYTES = sum((
     _NATIVE_SURFACE_CACHE_MAX_BYTES, _RENDER_CACHE_MAX_BYTES,
     _ORIGINAL_CACHE_MAX_BYTES, _THUMB_CACHE_MAX_BYTES,
 ))
-NATIVE_BROWSER_HELPER_MAX_WIDTH = int(os.environ.get(
-    "LIGHTTABLE_NATIVE_HELPER_WIDTH", "1100"))
 NATIVE_BROWSER_HELPER_OUTPUT_WIDTH = int(os.environ.get(
     "LIGHTTABLE_NATIVE_HELPER_OUTPUT_WIDTH", "256"))
 
@@ -3546,7 +3544,9 @@ def preview_response(meta: dict, key: str, jpg: Path, native: Path,
         if meta.get("viewport"):
             surface["viewport"] = meta["viewport"]
         response["native"] = surface
-        if not meta.get("viewport") and surface["width"] <= NATIVE_BROWSER_HELPER_MAX_WIDTH:
+        # A full native surface needs sampling at every resolution. Viewport
+        # tiles retain the existing full-photo helper.
+        if not meta.get("viewport"):
             response["helper"] = f"/api/render/helper?key={key}"
     return response
 

@@ -253,6 +253,50 @@ class ResponsivePreviewTests(unittest.TestCase):
             with Image.open(helper) as image:
                 self.assertEqual(image.size, (256, 171))
 
+    def test_every_native_surface_offers_a_sampling_helper(self):
+        """Scopes, Auto tone, and the samplers read a WebGL helper texture.
+
+        A photo is rendered twice: an interactive preview and, once the view
+        settles, a wider full-resolution one. Both have to offer a helper. When
+        the response for the settled render omitted it, the browser was left
+        with no sampled pixels at all and every scope drew an empty canvas.
+        """
+        interactive, settled = 1100, 3000
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            for width in (interactive, settled):
+                native = folder / f"render-{width}.rgba"
+                server.write_native_surface(
+                    native, np.zeros((120, width, 3), dtype=np.uint8))
+                response = server.preview_response(
+                    {"ms": 1}, "a" * 32, folder / "missing.jpg", native,
+                    cached=False, refining=False)
+                self.assertEqual(response["native"]["width"], width)
+                self.assertEqual(
+                    response.get("helper"),
+                    f"/api/render/helper?key={'a' * 32}",
+                    f"a {width}px native surface must offer a sampling helper",
+                )
+
+    def test_sampling_helper_cost_does_not_grow_with_the_settled_surface(self):
+        """The helper is always encoded at the sampling width, so serving one
+        for a full-resolution surface stays as cheap as the interactive one."""
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            sizes = []
+            for width, height in ((1100, 874), (3000, 2382)):
+                native = folder / f"render-{width}.rgba"
+                helper = folder / f"render-{width}.jpg"
+                server.write_native_surface(
+                    native, np.full((height, width, 3), 127, dtype=np.uint8))
+                server.ensure_jpeg_surface(
+                    helper, native, server.NATIVE_BROWSER_HELPER_OUTPUT_WIDTH)
+                with Image.open(helper) as image:
+                    sizes.append(image.size)
+        self.assertEqual(sizes[0][0], server.NATIVE_BROWSER_HELPER_OUTPUT_WIDTH)
+        self.assertEqual(sizes[1][0], server.NATIVE_BROWSER_HELPER_OUTPUT_WIDTH)
+        self.assertEqual(sizes[0], sizes[1])
+
     def test_resampling_edits_fall_back_to_the_edited_image(self):
         with tempfile.TemporaryDirectory() as directory:
             cache = Path(directory)
@@ -831,6 +875,21 @@ process.stdout.write(JSON.stringify(states.map(nativePreviewCanDraw)));
         self.assertIn("preserveCanvasSize: true", helper)
         self.assertIn("forceWebGLDraw: true", helper)
         self.assertIn("generation,", helper)
+        # A response that carries no dedicated helper still presents a JPEG
+        # surface, and sampling falls back to it rather than going blind.
+        native_loader = self.javascript[
+            self.javascript.index("function setNativeBaseImage"):
+            self.javascript.index("function originalPreviewURL")
+        ]
+        self.assertIn("scheduleNativeHelper(render.helper || render.img, generation)",
+                      native_loader)
+        # Cancelling the pending helper when a render starts stranded the
+        # sampling surface, because the early return skips the generation bump.
+        render_preamble = self.javascript[
+            self.javascript.index("async function doRender("):
+            self.javascript.index("const my = ++S.seq;")
+        ]
+        self.assertNotIn("clearTimeout(nativeHelperTimer)", render_preamble)
         webgl_loader = self.javascript[
             self.javascript.index("function setWebGLBaseImage"):
             self.javascript.index(
