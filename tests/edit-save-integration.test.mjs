@@ -87,7 +87,7 @@ function harness({manual = false} = {}) {
     'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
     'setCompareActive', 'updateLoupeInfoOverlay', 'syncAIPhoto', 'loadLensProfile',
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
-    'setEditorLoading',
+    'setEditorLoading', 'syncPairControls', 'beginCropSession',
   ]) context[name] = noop;
   const stateStart = appSource.indexOf("let _lastHistorySnapshot = '';");
   const stateEnd = appSource.indexOf('function photoMatchesQuery(', stateStart);
@@ -97,7 +97,7 @@ function harness({manual = false} = {}) {
     read('photo-undo.js').replace('export function ', 'function '),
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
-    'let navigationGeneration = 0, lastNavigationDirection = 1;',
+    'let navigationGeneration = 0, lastNavigationDirection = 1, cropSession = null;',
     'let renderTimer, refineTimer, settleRenderTimer, browserOriginal, browserOriginalTextureURL;',
     ...['snapshot', 'filmRenderFingerprint', 'baseEditsFingerprint', 'updateUndoRedoButtons',
       'pushUndoState', 'pushUndo', 'restore', 'undo', 'redo', 'isStateLoaded',
@@ -158,7 +158,7 @@ test('marking an outgoing photo serializes with its pending full edit and preser
   const outgoing = app.S.images[0];
   outgoing.rating = 5;
   outgoing.status = 'approved';
-  app.persistMark([outgoing], {rating: 5});
+  app.persistMark([outgoing], {rating: 5, status: 'approved'});
   await settle();
   assert.equal(app.requests.length, 1, 'mark must wait for the earlier A save');
   app.requests[0].resolve({ok: true});
@@ -270,4 +270,16 @@ test('marks on the already displayed photo survive a concurrent state reload aft
   assert.equal(current.rating, 4);
   assert.equal(current.status, 'approved');
   assert.equal(app.S.grade.exposure, 0);
+});
+
+
+test('a rating action does not write unrelated divergent pair metadata', async () => {
+  const app = harness();
+  const companion = app.S.images[1];
+  companion.rating = 4;
+  companion.status = 'skipped';
+  companion.label = 'blue';
+  app.persistMark([companion], {rating: 4});
+  await app.flushEditSaves();
+  assert.deepEqual(app.requests[0].state, {name: 'B.raw', rating: 4});
 });

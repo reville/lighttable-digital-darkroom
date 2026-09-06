@@ -32,7 +32,7 @@
   </div>
 
   <div class="top-actions">
-    <span class="counts" id="counts"></span>
+    <span class="counts" id="counts"></span><button class="quiet compact" id="switchPair" hidden></button>
     <div class="view-switch" role="group" aria-label="Photo view">
       <button class="quiet icon-btn" data-view="photo" title="Photo Grid (G)" aria-label="Photo Grid">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 3h6v5h-6zM9.5 3h8v5h-8zM2.5 9h9v8h-9zM12.5 9h5v8h-5z"/></svg>
@@ -594,7 +594,7 @@
       <section class="panel-pane" id="cropPane">
         <div class="panel-title"><div><strong>Crop &amp; Rotate</strong><span>Refine the frame</span></div><button class="quiet compact" id="cropReset" title="Reset crop, rotation, flips, and perspective" disabled>Reset</button></div>
         <div class="pane-content">
-          <button class="quiet compact tool-back" type="button" data-exit-tool>Back to Edit</button>
+          <div class="btnrow crop-session-actions"><button id="cropCancel" type="button">Cancel</button><button id="cropDone" type="button" class="accent-btn">Done</button></div>
           <label class="field-label" for="cropRatio">Aspect ratio</label>
           <div class="crop-aspect-controls">
             <select id="cropRatio"><option value="free">Free</option><option value="original">Original</option><option value="1">1:1</option><option value="1.25">5:4</option><option value="1.333333">4:3</option><option value="1.5">3:2</option><option value="1.777778">16:9</option><option value="custom">Custom…</option></select>
@@ -617,7 +617,7 @@
             <div class="row"><span class="name">Horizontal</span><input type="range" data-optics="horizontal" min="-1" max="1" step="0.01"><span class="val" data-opticsv="horizontal">0.00</span></div>
             <div class="row"><span class="name">Scale</span><input type="range" data-optics="scale" min="1" max="1.6" step="0.005" value="1"><span class="val" data-opticsv="scale">1.00</span></div>
           </div></details>
-          <p class="hint crop-hint">Drag outside the frame to draw a new crop. Drag inside to reposition it, or use the handles to resize. Arrow keys nudge the selection; hold Shift for larger steps.</p>
+          <p class="hint crop-hint">Drag outside the frame to draw a new crop. Drag inside to reposition it, or use the handles to resize. Arrow keys nudge the selection; hold Shift for larger steps. Enter accepts; Escape restores the frame from when you opened Crop.</p>
         </div>
       </section>
 
@@ -664,7 +664,7 @@
       <section id="catalogSupport" hidden><span id="catalogSummary">—</span><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div><div class="source-list watch-list" id="watchList"></div></section>
 
       <section class="panel-pane" id="infoPane">
-        <div class="panel-title"><div><strong>Info</strong><span>Photo details and metadata</span></div></div>
+        <div class="panel-title"><div><strong>Info</strong><span>Photo details and metadata</span></div></div><p class="hint pair-note" id="pairedMetadataNote" hidden></p>
         <div class="pane-content">
           <div class="subheading">Rating</div><div class="stars-edit" id="stars"></div>
           <div class="btnrow stack-gap"><button id="approveBtn">Pick</button><button id="skipBtn">Reject</button><button id="unflagBtn">Unflag</button></div>
@@ -911,6 +911,15 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="transferDialog" aria-hidden="true">
+  <div class="modal transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+    <strong id="transferTitle">Copy edit settings</strong>
+    <div id="transferGroups" class="transfer-groups"></div>
+    <p id="transferStatus" class="hint transfer-status" role="status" aria-live="polite"></p>
+    <div class="modal-actions"><button id="transferCancel">Cancel</button><button id="transferCopy" class="accent-btn">Copy settings</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="nameDialog" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="nameDialogTitle">
     <strong id="nameDialogTitle">Name</strong>
@@ -962,7 +971,7 @@
         <section class="settings-pane" data-settings-pane="interface" role="tabpanel">
           <h2>Interface</h2><p class="settings-intro">Tune the editing canvas without changing exported pixels.</p>
           <div class="settings-group settings-fields">
-            <label class="field"><span>Viewer background</span><select id="viewerBackground"><option value="#0f0f0f">Black</option><option value="#121212">Charcoal</option><option value="#252525">Medium gray</option></select></label>
+            <label class="field"><span>Viewer background</span><select id="viewerBackground"><option value="#0f0f0f">Black</option><option value="#121212">Charcoal</option><option value="#252525">Dark gray</option><option value="#777777">Neutral gray</option><option value="#ffffff">White</option></select></label>
             <label class="field"><span>Font scale</span><div class="settings-range"><input type="range" id="uiFontScale" min="85" max="125" step="5" value="100"><output id="uiFontScaleV">100%</output></div></label>
             <label class="settings-choice"><span><strong>Lights Out</strong><small>Dim chrome and panels around the current photo. Press L to toggle.</small></span><input type="checkbox" id="lightsOutEnabled"></label>
             <label class="field"><span>Lights Out dim level</span><div class="settings-range"><input type="range" id="lightsOutDim" min="25" max="85" step="5" value="60"><output id="lightsOutDimV">60%</output></div></label>
@@ -986,8 +995,8 @@
           <div class="settings-group">
             <label class="settings-choice"><span><strong>Automatically write XMP sidecars</strong><small>Keep ratings, labels, keywords, rights, and compatible edits beside originals.</small></span><input type="checkbox" id="writeSidecars"></label>
             <div class="settings-action-row"><span id="sidecarWriteStatus" role="status" aria-live="polite">Pending edits are written after the catalog settles.</span><button id="writeSidecarsNow">Write now</button></div>
-            <label class="settings-choice"><span><strong>Pair RAW and JPEG captures</strong><small>Recognize same-folder files with the same base name as one capture.</small></span><input type="checkbox" id="pairRawJPEG" checked></label>
-            <label class="settings-choice nested-setting"><span><strong>Hide the paired JPEG</strong><small>The JPEG remains cataloged and is never deleted.</small></span><input type="checkbox" id="hidePairedJPEG"></label>
+            <label class="settings-choice"><span><strong>Pair RAW and JPEG captures</strong><small>Recognize same-folder RAW and JPEG files as one capture, with separate edits.</small></span><input type="checkbox" id="pairRawJPEG" checked></label>
+            <label class="field nested-setting"><span>Show paired captures</span><select id="pairView"><option value="both">Both files</option><option value="raw">Prefer RAW</option><option value="jpeg">Prefer JPEG</option></select></label><label class="settings-choice nested-setting"><span><strong>Link pair metadata</strong><small>New ratings, flags, labels and keywords apply to both files. Exports and Trash use only the files you choose.</small></span><input type="checkbox" id="linkPairedMetadata"></label>
             <label class="settings-choice"><span><strong>Keyword autocomplete</strong><small>Suggest terms already used in this catalog.</small></span><input type="checkbox" id="keywordAutocomplete" checked></label>
             <label class="field settings-inline-field"><span>Keyword separators</span><select id="keywordSeparators"><option value="comma">Comma</option><option value="comma-semicolon">Comma or semicolon</option></select></label>
           </div>

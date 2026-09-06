@@ -2,7 +2,7 @@ import { api } from '/web/api.js';
 import { sendNative } from '/web/native-bridge.js';
 
 const byId = (id) => document.getElementById(id);
-const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525']);
+const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525', '#777777', '#ffffff']);
 
 function bytesLabel(value) {
   const bytes = Math.max(0, Number(value) || 0);
@@ -129,8 +129,10 @@ export function installSettings(context) {
     byId('rawDefaultMatch').value = pref('rawDefaultMatch', 'model');
     byId('writeSidecars').checked = pref('writeSidecars', false);
     byId('pairRawJPEG').checked = pref('pairRawJPEG', true);
-    byId('hidePairedJPEG').checked = pref('hidePairedJPEG', false);
-    byId('hidePairedJPEG').disabled = !byId('pairRawJPEG').checked;
+    byId('pairView').value = pref('pairView', pref('hidePairedJPEG', false) ? 'raw' : 'both');
+    byId('pairView').disabled = !byId('pairRawJPEG').checked;
+    byId('linkPairedMetadata').checked = pref('linkPairedMetadata', false);
+    byId('linkPairedMetadata').disabled = !byId('pairRawJPEG').checked;
     byId('keywordAutocomplete').checked = pref('keywordAutocomplete', true);
     byId('keywordSeparators').value = pref('keywordSeparators', 'comma');
     byId('settingsExternalEditSpace').value = pref('externalEditorSpace', 'prophoto');
@@ -198,19 +200,23 @@ export function installSettings(context) {
     autoAdvance: 'autoAdvance', completionNotifications: 'completionNotifications',
     automaticUpdateChecks: 'automaticUpdateChecks', lightsOutEnabled: 'lightsOutEnabled',
     loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars',
-    pairRawJPEG: 'pairRawJPEG', hidePairedJPEG: 'hidePairedJPEG',
+    pairRawJPEG: 'pairRawJPEG', linkPairedMetadata: 'linkPairedMetadata',
     keywordAutocomplete: 'keywordAutocomplete', settingsExternalEditStack: 'externalEditStack',
   };
   Object.entries(checkboxPrefs).forEach(([id, key]) => {
     byId(id).addEventListener('change', async (event) => {
-      if (id === 'pairRawJPEG') byId('hidePairedJPEG').disabled = !event.target.checked;
+      if (id === 'pairRawJPEG') {
+        byId('pairView').disabled = !event.target.checked;
+        byId('linkPairedMetadata').disabled = !event.target.checked;
+      }
       await savePatch({ [key]: event.target.checked });
       if (id === 'writeSidecars') {
         if (event.target.checked) {
           showSidecarStatus(await api('/api/sidecars/write', { names: [] }));
         } else await refreshSidecarStatus();
       }
-      if (['pairRawJPEG', 'hidePairedJPEG'].includes(id)) context.refreshPreferences();
+      if (['pairRawJPEG', 'linkPairedMetadata'].includes(id)) context.refreshPreferences();
+
       if (id === 'automaticUpdateChecks') {
         sendNative('automaticUpdateChecks', { enabled: event.target.checked });
       }
@@ -220,7 +226,7 @@ export function installSettings(context) {
     });
   });
   const selectPrefs = {
-    viewerBackground: 'viewerBackground', cropGuide: 'cropGuide',
+    viewerBackground: 'viewerBackground', cropGuide: 'cropGuide', pairView: 'pairView',
     rawDefaultMatch: 'rawDefaultMatch', keywordSeparators: 'keywordSeparators',
     settingsExternalEditSpace: 'externalEditorSpace',
     settingsExternalEditBitDepth: 'externalEditBitDepth', backupFrequency: 'backupFrequency',
@@ -228,6 +234,7 @@ export function installSettings(context) {
   Object.entries(selectPrefs).forEach(([id, key]) => {
     byId(id).addEventListener('change', async (event) => {
       await savePatch({ [key]: event.target.value });
+      if (id === 'pairView') context.refreshPreferences();
       if (id === 'rawDefaultMatch') await context.reloadCurrentRawDefault();
     });
   });

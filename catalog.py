@@ -1533,40 +1533,90 @@ class Catalog:
 
     def save_state(self, image_id: int, entry: dict) -> None:
         """Persist one image's editing state. Keys absent are left alone."""
+        self.save_states({image_id: entry})
+
+    def save_states(self, entries: dict[int, dict]) -> None:
+        """Persist a batch, including paired metadata, in one transaction."""
         with self.write() as conn:
-            conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
-                         " updated_at) VALUES(?,?)", (image_id, _now()))
-            assignments, values = [], []
-            simple = {"status": "status", "rating": "rating", "label": "label"}
-            for key, column in simple.items():
-                if key in entry:
-                    assignments.append(f"{column}=?")
-                    value = entry[key]
-                    if key == "status":
-                        value = _enum_or(value, STATUS_VALUES, "pending")
-                    elif key == "rating":
-                        value = _int_or(value, 0, minimum=0, maximum=5)
-                    elif key == "label":
-                        value = _enum_or(value, LABEL_VALUES, "none")
-                    values.append(value)
-            blobs = {"params": "params_json", "grade": "grade_json",
-                     "crop": "crop_json", "masks": "masks_json",
-                     "heals": "heals_json", "optics": "optics_json",
-                     "provenance": "provenance_json"}
-            for key, column in blobs.items():
-                if key in entry:
-                    assignments.append(f"{column}=?")
-                    value = entry[key]
-                    values.append(None if value is None
-                                  else json.dumps(value, separators=(",", ":")))
-            assignments.append("updated_at=?")
-            values.append(_now())
-            conn.execute(
-                f"UPDATE image_state SET {', '.join(assignments)}"
-                " WHERE image_id=?", (*values, image_id))
-            if "keywords" in entry:
-                self._set_keywords(conn, image_id, entry["keywords"] or [])
-            self._reindex(conn, image_id)
+            for image_id, entry in entries.items():
+                self._save_state(conn, image_id, entry)
+
+    def _save_state(self, conn, image_id: int, entry: dict) -> None:
+        conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
+                     " updated_at) VALUES(?,?)", (image_id, _now()))
+        assignments, values = [], []
+        simple = {"status": "status", "rating": "rating", "label": "label"}
+        for key, column in simple.items():
+            if key in entry:
+                assignments.append(f"{column}=?")
+                value = entry[key]
+                if key == "status":
+                    value = _enum_or(value, STATUS_VALUES, "pending")
+                elif key == "rating":
+                    value = _int_or(value, 0, minimum=0, maximum=5)
+                elif key == "label":
+                    value = _enum_or(value, LABEL_VALUES, "none")
+                values.append(value)
+        blobs = {"params": "params_json", "grade": "grade_json",
+                 "crop": "crop_json", "masks": "masks_json",
+                 "heals": "heals_json", "optics": "optics_json",
+                 "provenance": "provenance_json"}
+        for key, column in blobs.items():
+            if key in entry:
+                assignments.append(f"{column}=?")
+                value = entry[key]
+                values.append(None if value is None
+                              else json.dumps(value, separators=(",", ":")))
+        assignments.append("updated_at=?")
+        values.append(_now())
+        conn.execute(
+            f"UPDATE image_state SET {', '.join(assignments)}"
+            " WHERE image_id=?", (*values, image_id))
+        if "keywords" in entry:
+            self._set_keywords(conn, image_id, entry["keywords"] or [])
+        self._reindex(conn, image_id)
+
+
+    def paired_image_names(self, image_id: int) -> list[str]:
+        """Physical RAW/JPEG companions in exactly the same catalog folder.
+
+        Query the catalog, not the loaded UI page. Virtual copies, missing
+        originals, retired sources and other folders never join a capture.
+        """
+        row = self.connection.execute(
+            "SELECT i.virtual, f.*, s.active FROM images i"
+            " JOIN files f ON f.id=i.file_id JOIN sources s ON s.id=f.source_id"
+            " WHERE i.id=?", (image_id,)).fetchone()
+        if not row or row["virtual"] or row["missing"] or not row["active"]:
+            return []
+        raw = row["kind"] == "raw"
+        if not raw and Path(row["filename"]).suffix.casefold() not in {".jpg", ".jpeg"}:
+            return []
+        stem = Path(row["filename"]).stem.casefold()
+        candidates = self.connection.execute(
+            "SELECT i.id, f.relpath, f.filename, f.kind FROM files f"
+            " JOIN images i ON i.file_id=f.id"
+            " WHERE f.source_id=? AND f.folder_id IS ?"
+            " AND f.missing=0 AND i.virtual=0 AND i.copy_ident IS NULL",
+            (row["source_id"], row["folder_id"])).fetchall()
+        members = [candidate for candidate in candidates
+                   if Path(candidate["relpath"]).parent == Path(row["relpath"]).parent
+                   and Path(candidate["filename"]).stem.casefold() == stem
+                   and (candidate["kind"] == "raw" or
+                        Path(candidate["filename"]).suffix.casefold() in {".jpg", ".jpeg"})]
+        # Multiple RAW variants or .jpg + .jpeg are ambiguous: keep independent.
+        if len(members) != 2 or sum(member["kind"] == "raw" for member in members) != 1:
+            return []
+        return [qualified_name(row["source_id"], member["relpath"])
+                for member in members if member["id"] != image_id]
+
+    def mark_metadata_for(self, image_id: int) -> dict:
+        """Read small mark fields without decoding image-sized mask state."""
+        row = self.connection.execute(
+            "SELECT status, rating, label FROM image_state WHERE image_id=?",
+            (image_id,)).fetchone()
+        return {**(dict(row) if row else {"status": "pending", "rating": 0, "label": "none"}),
+                "keywords": self.keywords_for(image_id)}
 
     # ------------------------------------------------------------ keywords
 

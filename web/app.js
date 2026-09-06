@@ -6,6 +6,9 @@ import { createEditRecovery, recoveryPayloadMatches } from '/web/edit-recovery.j
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
+import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
+  cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
+import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import {
   LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
   MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics,
@@ -3985,11 +3988,44 @@ function invalidateVisibleCache() {
   _cachedVisibleList = null;
 }
 
-function rawJPEGPairKey(image) {
-  const name = String(image?.sourceName || image?.name || '');
-  return name.replace(/\.(?:jpe?g|cr2|cr3|nef|nrw|arw|srf|sr2|raf|rw2|orf|dng|pef|3fr|erf|kdc|mos|mrw|rwl|srw|x3f)$/i, '')
-    .toLocaleLowerCase();
+const pairOverrides = new Map();
+let pairIndexImages = null, pairIndexLength = -1, pairIndex = new Map();
+function photoPairs() {
+  if (pairIndexImages !== S.images || pairIndexLength !== S.images.length) {
+    pairIndex = indexPairs(S.images); pairIndexImages = S.images; pairIndexLength = S.images.length;
+  }
+  return pairIndex;
 }
+function linkedMetadataTargets(targets) {
+  return pairedTargets(targets, photoPairs(), APP_PREFS.pairRawJPEG !== false && APP_PREFS.linkPairedMetadata === true);
+}
+function syncPairControls() {
+  const image = cur(), members = APP_PREFS.pairRawJPEG === false ? [] : photoPairs().get(image?.name) || [];
+  const companion = members.find(member => member.raw !== image?.raw);
+  const button = $('switchPair');
+  button.hidden = !companion;
+  if (companion) {
+    button.textContent = image.raw ? 'RAW → JPEG' : 'JPEG → RAW';
+    button.title = `Open ${displayName(companion)}. Each file keeps its own edits.`;
+  }
+  $('pairedMetadataNote').hidden = !companion;
+  $('pairedMetadataNote').textContent = APP_PREFS.linkPairedMetadata === true
+    ? 'RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.'
+    : 'RAW + JPEG · Ratings and edits stay separate. Link metadata in Settings → Library.';
+}
+$('switchPair').onclick = async () => {
+  const image = cur();
+  const companion = photoPairs().get(image?.name)?.find(member => member.raw !== image.raw);
+  if (!companion) return;
+  pairOverrides.set(pairKey(companion), companion.name);
+  invalidateVisibleCache();
+  // The requested member is explicit. A RAW-only/JPEG-only filter should not
+  // immediately navigate away from it; keep other library filters intact.
+  if (['raw', 'processed'].includes($('kindFilter').value)) $('kindFilter').value = 'all';
+  if (S.msel.delete(image.name)) S.msel.add(companion.name);
+  await go(S.images.indexOf(companion));
+  refreshLists(); savePrefs();
+};
 
 function visible() {
   const f = $('filter')?.value || 'all';
@@ -3999,7 +4035,7 @@ function visible() {
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
-  const pairMode = APP_PREFS.pairRawJPEG !== false && APP_PREFS.hidePairedJPEG === true;
+  const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
   const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
@@ -4019,13 +4055,6 @@ function visible() {
       if (f === 'pending') return !im.status || im.status === 'pending';
       return im.status === f;
     });
-  if (pairMode) {
-    const rawKeys = new Set(S.images.filter((image) => image.raw && !image.virtual)
-      .map(rawJPEGPairKey));
-    list = list.filter((image) => image.raw || image.virtual ||
-      !/\.jpe?g$/i.test(String(image.sourceName || image.name || '')) ||
-      !rawKeys.has(rawJPEGPairKey(image)));
-  }
   list = list.filter((im) => (labelFilter === 'all'
       || (labelFilter === 'any' ? cleanLabel(im.label) !== 'none'
           : cleanLabel(im.label) === labelFilter)));
@@ -4041,6 +4070,7 @@ function visible() {
       (kind === 'virtual' && im.virtual));
     return matchesKind && photoMatchesQuery(im, search);
   });
+  list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
     if (!stack.collapsed) continue;
     const visibleMembers = stack.members.filter((name) => list.some((im) => im.name === name));
@@ -4316,7 +4346,7 @@ function createStripItem(im) {
   const element = document.createElement('div');
   element.innerHTML = `<img loading="lazy" decoding="async">
     <span class="dot"></span>
-    <span class="label-dot" hidden></span>`;
+    <span class="label-dot" hidden></span><span class="pair-badge" hidden></span>`;
   element.onclick = (event) => {
     const image = imageForLibraryElement(element);
     if (image) selectPhotoFromPointer(image, event);
@@ -4325,8 +4355,15 @@ function createStripItem(im) {
   return element;
 }
 
+function syncPairBadge(element, im) {
+  const badge = element.querySelector('.pair-badge');
+  badge.hidden = APP_PREFS.pairRawJPEG === false || !photoPairs().has(im.name);
+  badge.textContent = im.raw ? 'RAW + J' : 'J + RAW';
+  badge.title = 'RAW + JPEG capture. Switch file in the top bar; edits stay separate.';
+}
 function syncStripItem(element, im) {
   element.dataset.name = im.name;
+  syncPairBadge(element, im);
   syncThumbnailImage(element, im);
 }
 
@@ -4403,7 +4440,7 @@ function createGridCell(im) {
   d.innerHTML = `<img loading="lazy" decoding="async">
     <span class="idx"></span>
     <span class="label-dot" hidden></span>
-    <button class="stack-badge" type="button" hidden></button>
+    <button class="stack-badge" type="button" hidden></button><span class="pair-badge" hidden></span>
     <div class="meta"><span class="dot"></span>
     <span class="nm"></span>
     <span class="stars"></span></div>`;
@@ -4452,6 +4489,7 @@ function createGridCell(im) {
 
 function syncGridCell(element, im) {
   element.dataset.name = im.name;
+  syncPairBadge(element, im);
   element.draggable = !im.virtual;
   element.style.setProperty('--photo-aspect-ratio', im.width && im.height
     ? `${im.width} / ${im.height}` : 'auto');
@@ -5277,6 +5315,7 @@ function setViewMode(mode, persist = true) {
     doRender();
   }
   syncCullBars();
+  syncPairControls();
   scheduleNativeViewportLayout();
   scheduleNativeMenuState();
   if (persist) savePrefs();
@@ -5286,6 +5325,23 @@ const paneScrollPositions = new Map();
 const PHOTO_TOOL_PANES = ['cropPane', 'maskPane', 'healPane'];
 let lastAdjustmentPane = 'editPane';
 let compareReturnPane = null;
+let cropSession = null;
+function beginCropSession() {
+  if (cur() && (!cropSession || cropSession.name !== cur().name)) {
+    cropSession = { name: cur().name, entry: cropGeometry(JSON.parse(snapshot())) };
+  }
+}
+function cancelCropSession() {
+  const session = cropSession; cropSession = null;
+  if (session?.name === cur()?.name && S.editingName === session.name) {
+    const current = JSON.parse(snapshot());
+    const restored = restoreCropGeometry(current, session.entry);
+    if (JSON.stringify(cropGeometry(current)) !== JSON.stringify(session.entry)) {
+      pushUndo(); restore(JSON.stringify(restored));
+    }
+  }
+  exitPhotoTool();
+}
 function exitPhotoTool() {
   if (S.compareActive) { setCompareActive(false); return; }
   switchPane(lastAdjustmentPane);
@@ -5312,6 +5368,7 @@ function switchPane(id, { fromCompare = false } = {}) {
   PRESET_BROWSER?.setActive(id === 'presetsPane');
   const panel = $('panel');
   const previousPane = S.activePane;
+  if (previousPane === 'cropPane' && id !== 'cropPane') cropSession = null;
   if (previousPane && previousPane !== id) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
@@ -5324,7 +5381,7 @@ function switchPane(id, { fromCompare = false } = {}) {
     button.setAttribute('aria-pressed', String(selected));
     if (selected) activeButton = button;
   });
-  if (id === 'cropPane') setCropMode(true);
+  if (id === 'cropPane') { beginCropSession(); setCropMode(true); }
   else if (S.cropping) setCropMode(false);
   S.editGesture = null;
   $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane'));
@@ -5653,7 +5710,9 @@ function showCurrentImage(im) {
   updateUndoRedoButtons();
   syncControls(); syncGrade(); syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
   $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane');
-  applyView(); setCropMode(S.activePane === 'cropPane');
+  applyView();
+  if (S.activePane === 'cropPane') beginCropSession();
+  setCropMode(S.activePane === 'cropPane');
   setCompareActive(false);
   S.originalImageName = null;
   browserOriginal = null;
@@ -5661,6 +5720,7 @@ function showCurrentImage(im) {
   S.gl?.clearOriginalImage();
   $('orig').removeAttribute('src');
   $('currentName').textContent = displayName(im);
+  syncPairControls();
   $('editFilename').textContent = displayName(im);
   $('filmFilename').textContent = displayName(im);
   $('rawCameraDefaultStatus').textContent = isRawInput()
@@ -5716,6 +5776,7 @@ loupeChannel.onmessage = (event) => {
 
 async function go(i) {
   if (i < 0 || i >= S.images.length) return;
+  cropSession = null;
   if (cur()) {
     const outgoing = cur().name;
     void editSaveQueue.flush(outgoing).then(() => HISTORY?.flush(outgoing)).catch(() => {});
@@ -5853,7 +5914,13 @@ function commonMarkValue(targets, field, fallback) {
 }
 
 function persistMark(targets, entry) {
-  for (const image of targets) saveStateFor(image, true);
+  for (const image of targets) {
+    const pending = editSaveQueue.getPending(image.name);
+    if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(entry));
+    editSaveQueue.enqueue(image.name, { ...pending,
+      state: { ...pending?.state, name: image.name, ...entry } }, { immediate: true });
+  }
+  void flushEditSaves();
 }
 
 function syncCullBars() {
@@ -5878,6 +5945,8 @@ function syncCullBars() {
       detail = index >= 0 ? `${index + 1} of ${ordered.length}` : 'Current photo';
     }
   }
+  const linkedCount = linkedMetadataTargets(targets).length;
+  if (linkedCount > targets.length) detail += ` · ${linkedCount - targets.length} paired file${linkedCount - targets.length === 1 ? '' : 's'} linked`;
   document.querySelectorAll('[data-cull-context-title]').forEach((element) => {
     element.textContent = title;
   });
@@ -5912,10 +5981,11 @@ function setStatus(st) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = st !== 'pending' && targets.every((image) => image.status === st)
     ? 'pending' : st;
-  for (const image of targets) image.status = next;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.status = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
-  persistMark(targets, { status: next });
+  persistMark(linked, { status: next });
   /* Unflagging is a correction, not a decision, so it does not advance. */
   if (targets.length === 1 && next !== 'pending' && APP_PREFS.autoAdvance !== false) {
     advanceAfterMark(targets[0]);
@@ -5928,10 +5998,11 @@ function setStatus(st) {
 function setRating(r, advance = false) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;
-  for (const image of targets) image.rating = next;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.rating = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
-  persistMark(targets, { rating: next });
+  persistMark(linked, { rating: next });
   if (targets.length === 1 && (advance || APP_PREFS.autoAdvance !== false)) {
     advanceAfterMark(targets[0]);
   } else if (SURVEY && SURVEY.isOpen) {
@@ -5942,14 +6013,14 @@ function setRating(r, advance = false) {
 }
 
 function setLabel(label) {
-  const im = surveyTarget() || cur(); if (!im) return;
-  const next = cleanLabel(label);
-  im.label = cleanLabel(im.label) === next ? 'none' : next;
-  S.libraryRevision = (S.libraryRevision || 0) + 1;
-  invalidateVisibleCache();
-  saveStateFor(im, true);
-  if (SURVEY && SURVEY.isOpen) refreshLists();
-  else refreshFilteredView();
+  const targets = markingTargets(); if (!targets.length) return;
+  const labelValue = cleanLabel(label);
+  const next = targets.every(image => cleanLabel(image.label) === labelValue) ? 'none' : labelValue;
+  const linked = linkedMetadataTargets(targets);
+  for (const image of linked) image.label = next;
+  S.libraryRevision = (S.libraryRevision || 0) + 1; invalidateVisibleCache();
+  persistMark(linked, { label: next });
+  if (SURVEY && SURVEY.isOpen) refreshLists(); else refreshFilteredView();
 }
 
 /* When survey is open the marking keys act on its active cell, not on the
@@ -6080,19 +6151,21 @@ function setCullReview(review) {
 }
 
 async function applyCullFlags(group, status) {
-  const targets = cullResults(group);
+  const targets = linkedMetadataTargets(cullResults(group));
   if (!targets.length) return;
   const criteria = chosenCull(group).map((name) => CULL_LABELS[name]).join(', ');
   const verb = status === 'approved' ? 'Pick' : 'Reject';
   if (!window.confirm(
     `${verb} ${targets.length} photo${targets.length === 1 ? '' : 's'} `
     + `matching ${criteria}? Existing flags on those photos are replaced.`)) return;
-  for (const image of targets) image.status = status;
-  await api('/api/state/bulk', {
+  if (!await saveState(true)) return;
+  const result = await api('/api/state/bulk', {
     names: targets.map((image) => image.name),
     entry: { status },
     historyLabel: `Assisted culling: ${criteria}`,
   });
+  if (!result?.ok || result.error) return toast(result?.error || 'Flags could not be saved');
+  for (const image of targets) image.status = status;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   refreshLists();
@@ -6848,6 +6921,8 @@ $('zoomOut').onclick = () => {
 };
 $('zoomFit').onclick = zoomReset;
 document.querySelectorAll('[data-exit-tool]').forEach((button) => { button.onclick = exitPhotoTool; });
+$('cropDone').onclick = exitPhotoTool;
+$('cropCancel').onclick = cancelCropSession;
 $('cropReset').onclick = () => {
   if ($('cropReset').disabled) return;
   switchPane('cropPane');
@@ -7026,7 +7101,7 @@ function updateTransferActions() {
   $('addToCollection').disabled = !collection || collection.type !== 'regular' ||
     !targets.length;
   $('copyBtn').title = cur()
-    ? `Copy film and edit settings (${primaryKey}+Shift+C) — crop is excluded`
+    ? `Choose edit settings to copy (${primaryKey}+Shift+C)`
     : 'Select a photo to copy its settings';
   $('pasteBtn').title = !S.clipboard
     ? 'Copy settings first'
@@ -7035,51 +7110,109 @@ function updateTransferActions() {
       : `Paste edit settings (${primaryKey}+Shift+V)`;
   scheduleNativeMenuState();
 }
-$('copyBtn').onclick = () => {
-  readControls();
-  S.clipboard = {
-    params: cloneValue(S.params), grade: cloneValue(S.grade),
-    masks: cloneValue(serializableMasks()), heals: cloneValue(S.heals), optics: cloneValue(S.optics),
-  };
-  updateTransferActions();
-  confirmTransfer('copyBtn');
-  toast('Settings copied');
-};
-function pasteInto(im) {
-  im.params = cloneValue(S.clipboard.params);
-  im.grade = cloneValue(S.clipboard.grade);
-  im.masks = normalizeMasks(cloneValue(S.clipboard.masks));
-  im.heals = normalizeHeals(cloneValue(S.clipboard.heals));
-  im.optics = normalizeOptics(cloneValue(S.clipboard.optics));
+let transferReturnFocus = null, transferSource = null, transferRunning = false, transferCancelled = false;
+function closeTransferDialog() {
+  if (transferRunning) { transferCancelled = true; $('transferStatus').textContent = 'Stopping after the current photo…'; return; }
+  $('transferDialog').classList.remove('on'); $('transferDialog').setAttribute('aria-hidden', 'true');
+  transferReturnFocus?.focus?.({ preventScroll: true });
 }
-async function pasteSettingsTo(targets) {
-  if (!S.clipboard) return toast('Nothing copied');
-  const items = [...new Set(targets)].filter(Boolean);
-  if (!items.length) return;
-  const currentIncluded = items.includes(cur());
-  const names = items.map((im) => im.name);
-  const result = await api('/api/state/bulk', {
-    names, entry: {
-      params: S.clipboard.params, grade: S.clipboard.grade,
-      masks: S.clipboard.masks, heals: S.clipboard.heals, optics: S.clipboard.optics,
-    },
-  });
-  if (result.error) return toast(result.error);
-  if (currentIncluded) pushUndo();
-  items.forEach(pasteInto);
-  items.forEach(invalidateEditedThumbnail);
-  if (currentIncluded) {
-    S.params = cloneValue(cur().params);
-    S.grade = cloneValue(cur().grade);
-    S.masks = normalizeMasks(cur().masks); S.heals = normalizeHeals(cur().heals);
-    S.optics = normalizeOptics(cur().optics); S.maskTextureDirty = true;
-    S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
-    syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
-    syncMaskPanel(); syncHealPanel(); syncOpticsPanel(); drawGrade(); renderFilm(0);
+function showTransferDialog(title) {
+  transferReturnFocus = document.activeElement;
+  $('transferTitle').textContent = title;
+  $('transferDialog').classList.add('on'); $('transferDialog').setAttribute('aria-hidden', 'false');
+}
+$('transferCancel').onclick = closeTransferDialog;
+$('transferDialog').addEventListener('keydown', event => {
+  if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeTransferDialog(); }
+  if (event.key === 'Tab') {
+    const focusable = [...$('transferDialog').querySelectorAll('button:not(:disabled), input:not(:disabled)')]
+      .filter(element => !element.hidden && !element.closest('[hidden]'));
+    const index = focusable.indexOf(document.activeElement);
+    if (focusable.length && ((event.shiftKey && index <= 0) || (!event.shiftKey && index === focusable.length - 1))) {
+      event.preventDefault(); focusable[event.shiftKey ? focusable.length - 1 : 0].focus();
+    }
   }
-  refreshLists();
-  confirmTransfer('pasteBtn');
-  toast(names.length === 1 ? 'Settings pasted' : `Pasted to ${names.length} photos`);
+});
+$('copyBtn').onclick = () => {
+  if (!cur() || S.editingName !== cur().name || transferRunning) return;
+  readControls();
+  transferSource = { ...JSON.parse(snapshot()), sourceName: cur().name };
+  const selected = transferChoices(APP_PREFS.copySettings);
+  const host = $('transferGroups'); host.replaceChildren(); host.hidden = false;
+  for (const [id, title, description] of TRANSFER_GROUPS) {
+    const label = document.createElement('label'); label.className = 'transfer-choice';
+    const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.dataset.transferGroup = id; checkbox.checked = selected[id];
+    const text = document.createElement('span'), strong = document.createElement('strong'), small = document.createElement('small');
+    strong.textContent = title; small.textContent = description; text.append(strong, small); label.append(checkbox, text); host.append(label);
+    checkbox.onchange = () => { $('transferCopy').disabled = !host.querySelector('input:checked'); };
+  }
+  $('transferCopy').hidden = false; $('transferCopy').disabled = !Object.values(selected).some(Boolean);
+  $('transferCancel').textContent = 'Cancel';
+  $('transferStatus').textContent = 'Only selected settings replace the destination. AI masks are detected again; object selections and painted AI refinements require manual review.';
+  showTransferDialog('Copy edit settings');
+  requestAnimationFrame(() => host.querySelector('input')?.focus());
+};
+$('transferCopy').onclick = async () => {
+  const choices = Object.fromEntries([...$('transferGroups').querySelectorAll('input')].map(input => [input.dataset.transferGroup, input.checked]));
+  S.clipboard = { ...cloneValue(transferSource), choices };
+  APP_PREFS.copySettings = choices;
+  const saved = await api('/api/prefs', { copySettings: choices }).catch(() => null);
+  updateTransferActions(); closeTransferDialog(); confirmTransfer('copyBtn');
+  toast(saved?.error || !saved ? 'Settings copied; choices could not be remembered' : 'Settings copied');
+};
+async function pasteSettingsTo(targets) {
+  if (!S.clipboard || transferRunning) return toast('Copy settings first');
+  const items = [...new Set(targets)].filter(Boolean);
+  if (!items.length || !await saveState(true)) return;
+  const clipboard = cloneValue(S.clipboard), failures = [];
+  transferRunning = true; transferCancelled = false;
+  $('transferGroups').hidden = true; $('transferCopy').hidden = true; $('transferCancel').textContent = 'Stop';
+  showTransferDialog('Pasting edit settings');
+  $('transferCancel').focus();
+  let completed = 0;
+  for (const [index, image] of items.entries()) {
+    if (transferCancelled) break;
+    $('transferStatus').textContent = `Photo ${index + 1} of ${items.length} · ${displayName(image)}`;
+    try {
+      // A lean catalog row is not a destination edit state. Load it before
+      // merging so unchecked settings can never be replaced with defaults.
+      await prefetchState(image);
+      if (!isStateLoaded(image)) throw new Error("Existing settings could not be loaded; this photo was left unchanged");
+      await editSaveQueue.flush(image.name);
+      const destination = { ...image, params: normalizeFilmParams(image.params),
+        grade: { ...GRADE_DEFAULTS, ...(image.grade || {}) }, optics: normalizeOptics(image.optics) };
+      const patch = transferPatch(clipboard, destination, clipboard.choices);
+      if (patch.masks) patch.masks = await regenerateTransferMasks(patch.masks,
+        kind => api('/api/mask/semantic', { name: image.name, kind, params: patch.params || destination.params }),
+        { samePhoto: image.name === clipboard.sourceName &&
+          (clipboard.params?.rotate || 0) === ((patch.params || destination.params).rotate || 0) });
+      if (transferCancelled) break;
+      const { cropChoices, ...entry } = patch;
+      const result = await api('/api/state', { name: image.name, ...entry });
+      if (!result?.ok || result.error) throw new Error(result?.error || 'Edits could not be saved');
+      if (image === cur() && S.editingName === image.name) pushUndo();
+      Object.assign(image, cloneValue(patch));
+      image.stateLoaded = true;
+      if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(patch));
+      invalidateEditedThumbnail(image);
+      HISTORY?.record(image.name, 'Paste selected settings', {
+        params: image.params, grade: image.grade, crop: image.crop || null,
+        masks: image.masks || [], heals: image.heals || [], optics: image.optics,
+      });
+      if (image === cur() && S.editingName === image.name) {
+        restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
+        _lastHistorySnapshot = editHistorySnapshot();
+      }
+      completed++;
+    } catch (error) { failures.push(`${displayName(image)}: ${error.message || 'Could not paste'}`); }
+  }
+  transferRunning = false;
+  refreshLists(); confirmTransfer('pasteBtn');
+  $('transferCancel').textContent = 'Done';
+  $('transferStatus').textContent = `Pasted to ${completed} of ${items.length} photos${transferCancelled ? ' · stopped' : ''}.`
+    + (failures.length ? `\n${failures.join('\n')}` : '');
+  $('transferCancel').focus();
+  if (!failures.length && !transferCancelled) { closeTransferDialog(); toast(`Pasted to ${completed} photo${completed === 1 ? '' : 's'}`); }
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
 $('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
@@ -8174,7 +8307,10 @@ document.addEventListener('keydown', (e) => {
   if (tag === 'INPUT' && ['range', 'number'].includes(e.target.type) &&
       PHOTO_TOOL_PANES.includes(S.activePane) && e.target.closest('.panel-pane.on') &&
       ['Enter', 'Escape'].includes(e.key)) {
-    e.preventDefault(); e.target.blur(); exitPhotoTool(); return;
+    e.preventDefault(); e.target.blur();
+    if (e.key === 'Escape' && S.activePane === 'cropPane') cancelCropSession();
+    else exitPhotoTool();
+    return;
   }
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
   if (cur() && S.editingName !== cur().name && !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
@@ -8246,7 +8382,8 @@ document.addEventListener('keydown', (e) => {
   if ((S.compareActive || PHOTO_TOOL_PANES.includes(S.activePane)) &&
       (e.key === 'Enter' || e.key === 'Escape')) {
     e.preventDefault();
-    exitPhotoTool();
+    if (e.key === 'Escape' && S.activePane === 'cropPane' && !S.compareActive) cancelCropSession();
+    else exitPhotoTool();
     return;
   }
   if (S.cropping && S.crop && e.key.startsWith('Arrow')) {
@@ -8421,7 +8558,8 @@ function renderKeywords() {
     remove.setAttribute('aria-label', `Remove ${keyword}`);
     remove.textContent = '×';
     remove.onclick = () => {
-      im.keywords = im.keywords.filter((k) => k !== keyword);
+      im.keywords = (im.keywords || []).filter(k => k !== keyword);
+      for (const image of linkedMetadataTargets([im])) image.keywords = [...im.keywords];
       saveState(true); renderKeywords();
       _stripKey = _gridKey = ''; refreshLists();
     };
@@ -8448,6 +8586,9 @@ function addKeyword() {
   }
   if (changed) {
     im.keywords.sort((a, b) => a.localeCompare(b));
+    for (const image of linkedMetadataTargets([im])) {
+      if (image !== im) image.keywords = [...im.keywords];
+    }
     saveState(true);
   }
   $('keywordInput').value = '';
@@ -9660,7 +9801,7 @@ async function trashRejected() {
   if (!rejected.length) { toast('No rejected photos in this view'); return; }
   if (!window.confirm(
     `Move ${rejected.length} rejected photo${rejected.length === 1 ? '' : 's'} `
-    + 'to the Trash? Sidecars go with them.')) return;
+    + 'to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.')) return;
   const result = await api('/api/photos/trash',
                            { names: rejected.map((image) => image.name) });
   if (!sendNative('trashFiles', { paths: result.paths })) {
@@ -9677,15 +9818,22 @@ if ($('surveyKeep')) {
   $('surveyKeep').onclick = async () => {
     const keeper = SURVEY.active;
     if (!keeper) return;
-    const others = SURVEY.names.filter((name) => name !== keeper);
-    S.images.forEach((image) => {
-      if (image.name === keeper) image.status = 'approved';
-      else if (others.includes(image.name)) image.status = 'skipped';
-    });
-    await api('/api/state', { name: keeper, status: 'approved' });
+    const kept = linkedMetadataTargets(S.images.filter(image => image.name === keeper));
+    const keepNames = new Set(kept.map(image => image.name));
+    const others = linkedMetadataTargets(S.images.filter(image =>
+      SURVEY.names.includes(image.name) && !keepNames.has(image.name)))
+      .filter(image => !keepNames.has(image.name));
+    if (!await saveState(true)) return;
+    const picked = await api('/api/state', { name: keeper, status: 'approved' });
+    if (!picked?.ok || picked.error) return toast(picked?.error || 'Select could not be saved');
+    for (const image of kept) image.status = 'approved';
     if (others.length) {
-      await api('/api/state/bulk',
-                { names: others, entry: { status: 'skipped' } });
+      const rejected = await api('/api/state/bulk',
+        { names: others.map(image => image.name), entry: { status: 'skipped' } });
+      if (!rejected?.ok || rejected.error) {
+        refreshLists(); return toast(rejected?.error || 'Select saved; the remaining flags could not be saved');
+      }
+      for (const image of others) image.status = 'skipped';
     }
     refreshLists();
     toast('Marked the select and rejected the rest');
@@ -9697,10 +9845,12 @@ if ($('autoLevel')) {
   const runGeometry = async (mode) => {
     const im = cur();
     if (!im) return;
+    const session = cropSession;
     $('autoLevelNote').textContent = 'Looking for lines…';
     try {
       const result = await api('/api/geometry/auto',
                                { name: im.name, mode, rotate: S.params?.rotate || 0 });
+      if (cur()?.name !== im.name || cropSession !== session) return;
       if (result.error) { $('autoLevelNote').textContent = result.error; return; }
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
@@ -10073,6 +10223,7 @@ installSettings({
     syncCullBars();
   },
   refreshPreferences() {
+    pairOverrides.clear(); syncPairControls(); syncCullBars();
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
     refreshLists();

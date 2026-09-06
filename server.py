@@ -794,15 +794,21 @@ def save_image_states(entries: dict[str, dict]) -> None:
     """Merge one or more image edits and persist one atomic state snapshot."""
     cat = catalog_handle()
     if cat is not None:
+        updates, versions, names = {}, {}, []
         for name, entry in entries.items():
             image_id = catalog_image_id(name)
             if image_id is None:
                 continue
             payload = dict(entry)
-            versions = payload.pop("versions", None)
-            cat.save_state(image_id, payload)
-            if versions is not None:
-                cat.save_versions(image_id, versions)
+            version = payload.pop("versions", None)
+            updates[image_id] = payload
+            if version is not None:
+                versions[image_id] = version
+            names.append(name)
+        cat.save_states(updates)
+        for image_id, version in versions.items():
+            cat.save_versions(image_id, version)
+        for name in names:
             queue_sidecar(name)
         if CATALOG_MIRROR or load_json_file(PREFS_FILE, {}).get("writeSidecars"):
             _queue_mirror()
@@ -812,6 +818,56 @@ def save_image_states(entries: dict[str, dict]) -> None:
         for name, entry in entries.items():
             st["images"].setdefault(name, {}).update(entry)
         write_state(st)
+
+
+def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
+    """Opt-in metadata coupling at the API boundary; never expand pixel edits.
+
+    Exports and Trash deliberately do not call this. Existing divergent pairs
+    are not modified just by enabling the preference.
+    """
+    prefs = load_preferences()
+    if prefs.get("pairRawJPEG", True) is False or prefs.get("linkPairedMetadata") is not True:
+        return entries
+    cat = catalog_handle()
+    expanded = {name: dict(entry) for name, entry in entries.items()}
+    keys = {"status", "rating", "label", "keywords"}
+    for name, entry in entries.items():
+        metadata = {key: value for key, value in entry.items() if key in keys}
+        if not metadata:
+            continue
+        if cat is not None:
+            image_id = catalog_image_id(name)
+            companions = cat.paired_image_names(image_id) if image_id is not None else []
+            previous = cat.mark_metadata_for(image_id) if image_id is not None else {}
+        else:
+            source, _, _, virtual = resolve_name(name)
+            if virtual or (not is_raw(name) and source.suffix.casefold() not in {".jpg", ".jpeg"}):
+                continue
+            members = [candidate for candidate in source.parent.iterdir()
+                       if candidate.is_file() and candidate.stem.casefold() == source.stem.casefold()
+                       and (candidate.suffix.casefold() in RAW_EXTS or
+                            candidate.suffix.casefold() in {".jpg", ".jpeg"})]
+            companions = []
+            if len(members) == 2 and sum(candidate.suffix.casefold() in RAW_EXTS for candidate in members) == 1:
+                companions = [candidate.relative_to(FOLDER.resolve()).as_posix()
+                              for candidate in members if candidate != source]
+            previous = load_state().get("images", {}).get(name, {})
+        # UI edit snapshots contain unchanged marks. Couple only actual mark
+        # changes in those snapshots; a pixel adjustment must not synchronize
+        # divergent legacy metadata merely because linking was just enabled.
+        # Explicit metadata-only API/CLI actions still set the pair directly.
+        if set(entry) & {"params", "grade", "crop", "masks", "heals", "optics"}:
+            defaults = {"status": "pending", "rating": 0, "label": "none", "keywords": []}
+            metadata = {key: value for key, value in metadata.items()
+                        if value != previous.get(key, defaults[key])}
+        for companion in companions:
+            target = expanded.setdefault(companion, {})
+            for key, value in metadata.items():
+                if key in target and target[key] != value:
+                    raise ValueError("Paired RAW and JPEG received conflicting metadata; choose one capture decision")
+                target[key] = copy.deepcopy(value)
+    return expanded
 
 
 _MIRROR_TIMER: threading.Timer | None = None
@@ -5596,7 +5652,8 @@ class Handler(BaseHTTPRequestHandler):
                 entry, warnings = cleaned_state_request(b, strict=strict)
                 if "params" in entry:
                     entry["provenance"] = renderer_provenance()
-                save_image_state(b["name"], entry)
+                updates = expand_paired_metadata({b["name"]: entry})
+                save_image_states(updates)
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
@@ -5606,12 +5663,12 @@ class Handler(BaseHTTPRequestHandler):
                             image_id, str(b.get("historyLabel") or "External edit"),
                             catalog_entry_for(b["name"]), origin=origin)
                 EVENTS.publish("state", {
-                    "names": [b["name"]], "fields": sorted(entry),
+                    "names": list(updates), "fields": sorted(entry),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True}
+                response = {"ok": True, "names": list(updates)}
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
@@ -5626,6 +5683,7 @@ class Handler(BaseHTTPRequestHandler):
                 updates = {}
                 for name in b.get("names", []):
                     updates[str(name)] = dict(cleaned)
+                updates = expand_paired_metadata(updates)
                 if updates:
                     save_image_states(updates)
                 origin = str(b.get("origin", ""))[:80]
