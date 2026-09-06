@@ -85,10 +85,11 @@ export function installSettings(context) {
   }
 
   async function refreshLocations() {
-    const [cache, catalog] = await Promise.all([
-      fetch('/api/cache/status').then((response) => response.json()).catch(() => null),
+    const [catalog, storage] = await Promise.all([
       fetch('/api/catalog').then((response) => response.json()).catch(() => null),
+      fetch('/api/storage').then((response) => response.json()).catch(() => null),
     ]);
+    const cache = storage?.cache;
     if (cache) {
       byId('cacheLocation').textContent = cache.path || 'Unavailable';
       byId('cacheUsage').textContent = `${bytesLabel(cache.usedBytes)} used · `
@@ -97,6 +98,27 @@ export function installSettings(context) {
     byId('catalogLocation').textContent = catalog?.path || 'Folder mode · no catalog';
     if (!byId('backupDirectory').value && catalog?.backupPath) {
       byId('backupDirectory').placeholder = catalog.backupPath;
+    }
+    const breakdown = byId('storageBreakdown');
+    if (breakdown && storage) {
+      const db = storage.catalog;
+      const rows = db ? [
+        ['Originals (catalog estimate; excluded from backup)', db.originalsBytes],
+        ['Catalog and active journal', db.bytes + db.walBytes],
+        ['Stored mask data (within catalog)', db.maskPayloadBytes],
+        ['Compressed edit history (within catalog)', db.historyPayloadBytes],
+        ['Catalog backup archives', db.backupBytes],
+        ['Rebuildable previews and caches', storage.cache?.usedBytes || 0],
+        ['External presets and preferences', storage.presetsBytes + storage.preferencesBytes],
+      ] : [['Rebuildable previews and caches', storage.cache?.usedBytes || 0]];
+      breakdown.replaceChildren(...rows.flatMap(([label, size]) => {
+        const dt = document.createElement('dt'), dd = document.createElement('dd');
+        dt.textContent = label; dd.textContent = bytesLabel(size); return [dt, dd];
+      }));
+      const last = db?.lastVerifiedBackup;
+      byId('backupStatus').textContent = last
+        ? `Last verified backup: ${new Date(last.verifiedAt * 1000).toLocaleString()} · ${last.archive}`
+        : 'No verified backup recorded yet.';
     }
     byId('settingsBackupNow').disabled = !catalog?.enabled;
     byId('catalogMirror').disabled = !catalog?.enabled || catalog?.mirrorAllowed === false;
@@ -298,6 +320,7 @@ export function installSettings(context) {
     byId('backupStatus').textContent = result.archive
       ? `Verified backup: ${result.archive}` : (result.error || 'Backup failed.');
     byId('settingsBackupNow').disabled = false;
+    if (result.archive) await refreshLocations();
   };
   byId('settingsSaveCameraDefault').onclick = () => {
     byId('rawSaveCameraDefault')?.click();
