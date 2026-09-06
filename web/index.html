@@ -365,6 +365,9 @@
           <summary><span>Lens corrections</span><button class="quiet compact section-reset-button" id="lensReset" type="button">Reset</button></summary>
           <div class="secbody">
             <div class="lens-profile-card" id="lensProfileCard"><span class="status-dot"></span><div><strong id="lensProfileName">Checking photo metadata…</strong><span id="lensProfileDetail">Automatic correction uses the bundled camera and lens database.</span></div></div>
+            <label class="field-label" for="lensProfileOverride">Lens profile</label>
+            <select id="lensProfileOverride"><option value="">Automatic from photo metadata</option></select>
+            <p class="hint" id="lensProfileReason"></p>
             <label class="check-row"><input type="checkbox" id="lensProfileEnabled"><span>Use matched lens profile</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileDistortion" checked><span>Correct distortion</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileVignette" checked><span>Correct lens shading</span></label>
@@ -1130,6 +1133,7 @@
           <option value="display_p3">Display P3</option>
           <option value="prophoto">ProPhoto RGB · archive</option>
         </select>
+        <p class="hint">Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors.</p>
       </label>
 
       <label class="field full-width"><span>Destination layout</span><select id="modalExDestinationMode"><option value="fixed">One destination folder</option><option value="original-folder-relative">Subfolder beside each original</option><option value="preserve-source-hierarchy">Keep source folder hierarchy</option></select></label><label class="field full-width">

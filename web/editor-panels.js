@@ -4,7 +4,7 @@ export const LOCAL_GRADE_DEFAULTS = Object.freeze({
 });
 
 export const OPTICS_DEFAULTS = Object.freeze({
-  profileEnabled: false, profileDistortion: true, profileVignette: true,
+  profileOverride: null, profileEnabled: false, profileDistortion: true, profileVignette: true,
   flipHorizontal: false, flipVertical: false,
   distortion: 0, vignette: 0, vertical: 0, horizontal: 0, rotate: 0, scale: 1,
 });
@@ -132,6 +132,10 @@ export function normalizeOptics(raw) {
   value.profileEnabled = !!value.profileEnabled;
   value.profileDistortion = value.profileDistortion !== false;
   value.profileVignette = value.profileVignette !== false;
+  const overrideKeys = ['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'];
+  value.profileOverride = overrideKeys.every((key) => typeof value.profileOverride?.[key] === 'string'
+    && value.profileOverride[key].length > 0 && value.profileOverride[key].length <= 256)
+    ? Object.fromEntries(overrideKeys.map((key) => [key, value.profileOverride[key]])) : null;
   value.flipHorizontal = !!value.flipHorizontal;
   value.flipVertical = !!value.flipVertical;
   ['distortion', 'vignette', 'vertical', 'horizontal'].forEach((key) => {

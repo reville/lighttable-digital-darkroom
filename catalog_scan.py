@@ -28,6 +28,7 @@ from typing import Callable, Iterable
 import catalog as catalog_module
 import durable_io
 import media_formats
+import media_availability
 
 RAW_EXTS = media_formats.RAW_EXTENSIONS
 PROCESSED_EXTS = media_formats.PROCESSED_EXTENSIONS
@@ -58,7 +59,10 @@ def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
     """
     digest = hashlib.blake2b(digest_size=16)
     try:
-        size = path.stat().st_size
+        stat = path.stat()
+        if media_availability.from_stat(stat) != "local":
+            return ""
+        size = stat.st_size
     except OSError:
         return ""
     digest.update(str(size).encode("ascii"))
@@ -139,6 +143,7 @@ def walk_source(root: Path, *, limit: int = 500000,
                 "mtime_ns": stat.st_mtime_ns,
                 "mtime_iso": _iso(stat.st_mtime),
                 "path": entry.path,
+                "availability": media_availability.from_stat(stat),
             }
             seen += 1
 
@@ -181,6 +186,8 @@ def read_metadata(path: Path) -> dict:
     uses the in-process binding on both platforms.
     """
     out: dict[str, object] = {}
+    if media_availability.availability(path) != "local":
+        return out
     try:
         import exiv2
     except ImportError:
@@ -254,17 +261,17 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
 
     existing: dict[str, dict] = {}
     for row in cat.connection.execute(
-            "SELECT relpath, id, size, mtime_ns, header_hash, metadata_version, missing "
+            "SELECT relpath, id, size, mtime_ns, header_hash, metadata_version, missing, availability "
             "FROM files WHERE source_id=?",
             (source_id,)).fetchall():
         existing[row["relpath"]] = dict(row)
 
-    added = updated = relinked = 0
+    added = updated = relinked = cloud_only = 0
     seen: set[str] = set()
     batch: list[dict] = []
 
     def flush(records: list[dict]) -> None:
-        nonlocal added, updated, relinked
+        nonlocal added, updated, relinked, cloud_only
         if not records:
             return
         with cat.write() as conn:
@@ -277,12 +284,31 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
                     # without replacing its metadata or edit interpretations.
                     cat.restore_file(conn, previous["id"])
                     updated += 1
+                availability = record.get("availability", "local")
+                if availability != "local":
+                    cloud_only += int(availability == "cloud-only")
+                    # Eviction must never erase capture metadata, content identity
+                    # or edits. A placeholder has no bytes to fingerprint/relink.
+                    if previous:
+                        if previous["availability"] != availability:
+                            conn.execute("UPDATE files SET availability=? WHERE id=?",
+                                         (availability, previous["id"]))
+                            if not was_missing:
+                                updated += 1
+                    else:
+                        cat.upsert_file(conn, source_id, record)
+                        added += 1
+                    continue
+                became_local = previous and previous["availability"] != "local"
+                if became_local:
+                    conn.execute("UPDATE files SET availability='local' WHERE id=?",
+                                 (previous["id"],))
                 unchanged = previous \
                     and previous["size"] == record["size"] \
                     and previous["mtime_ns"] == record["mtime_ns"]
                 metadata_current = not read_metadata_for_new or (
                     previous and previous["metadata_version"] >= METADATA_VERSION)
-                if unchanged and metadata_current:
+                if unchanged and metadata_current and not became_local:
                     continue
                 if not previous:
                     record["header_hash"] = header_hash(Path(record["path"]))
@@ -295,7 +321,7 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
                     added += 1
                 else:
                     record["header_hash"] = (previous["header_hash"]
-                                             if unchanged else
+                                             if unchanged and previous["header_hash"] else
                                              header_hash(Path(record["path"])))
                     if read_metadata_for_new:
                         metadata = read_metadata(Path(record["path"]))
@@ -324,7 +350,7 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
             batch = []
             if progress:
                 progress({"seen": len(seen), "added": added,
-                          "updated": updated, "relinked": relinked})
+                          "updated": updated, "relinked": relinked, "cloudOnly": cloud_only})
     flush(batch)
 
     # Only a complete traversal can establish that an unvisited photo is gone.
@@ -336,6 +362,7 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
         cat.mark_scanned(source_id)
     result = {"added": added, "updated": updated, "missing": missing,
               "relinked": relinked, "seen": len(seen), "unavailable": False,
+              "cloudOnly": cloud_only,
               "complete": not scan_errors}
     if scan_errors:
         result["error"] = "Incomplete scan: " + "; ".join(scan_errors)
@@ -374,6 +401,7 @@ def register_file(cat: catalog_module.Catalog, path: Path | str) -> int:
         raise ValueError(f"{candidate.parent} is not inside a catalog source")
     _, source_id, _, relative = max(sources, key=lambda item: item[0])
     stat = candidate.stat()
+    media_availability.require_local(candidate, stat=stat)
     ext = candidate.suffix.lower()
     if ext not in ALL_EXTS:
         raise ValueError(f"unsupported photo type: {ext or 'none'}")
