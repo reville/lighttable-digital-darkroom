@@ -285,7 +285,7 @@
       "content": "5a0553049a8b55ee9243df162f16abbc78e3e1cd05ae464a8404b19e2c00f680",
       "sources": {
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
-        "web/catalog-ui.js": "485110df7b9caebe4b4a8be9897fe5e7e61b6c61e7dbcb4fdd5b3562c93af282",
+        "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
         "web/index.html": "42e921fd1cb8c08cebb3ca956f9a3316138f98334e7bd5d505a701bec62f30dc"
       }
     },
@@ -294,7 +294,7 @@
       "sources": {
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
         "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
-        "web/catalog-ui.js": "485110df7b9caebe4b4a8be9897fe5e7e61b6c61e7dbcb4fdd5b3562c93af282",
+        "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
         "web/index.html": "42e921fd1cb8c08cebb3ca956f9a3316138f98334e7bd5d505a701bec62f30dc"
       }
     },
@@ -345,7 +345,7 @@
       "sources": {
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
         "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
-        "web/catalog-ui.js": "485110df7b9caebe4b4a8be9897fe5e7e61b6c61e7dbcb4fdd5b3562c93af282"
+        "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba"
       }
     },
     "search-filter-sort": {
