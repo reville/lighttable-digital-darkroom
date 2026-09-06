@@ -68,7 +68,7 @@ records completed, skipped, cancelledCount and per-file warnings.
 | `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
-| `import` | `/api/import/catalog`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write` |
+| `import` | `/api/import/catalog`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
 | `ingest` | `/api/ingest`, `/api/ingest/scan`, `/api/ingest/status`, `/api/ingest/sources`, `/api/ingest/cancel` |
 | `watch` | `/api/watch`, `/api/watch/status` |
 | `merge` | `/api/merge`, `/api/merge/status` |

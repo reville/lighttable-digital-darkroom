@@ -57,7 +57,7 @@ ROUTE_COVERAGE = {
     "export": ["/api/export", "/api/export/status", "/api/export-recipes"],
     "jobs": ["/api/jobs", "/api/jobs/<id>", "/api/jobs/<id>/cancel"],
     "import": ["/api/import/catalog", "/api/import/status",
-               "/api/import/sidecars", "/api/sidecars/write"],
+               "/api/import/sidecars", "/api/sidecars/write", "/api/sidecars/status"],
     "ingest": ["/api/ingest", "/api/ingest/scan", "/api/ingest/status",
                "/api/ingest/sources", "/api/ingest/cancel"],
     "watch": ["/api/watch", "/api/watch/status"],
