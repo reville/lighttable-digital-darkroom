@@ -2,6 +2,16 @@
 
 This work uses public photo-editor discussions, issues, and pull requests as evidence of real photo workflows. A complaint about another application is a lead to investigate, not proof of the same defect in LightTable. Closed threads, proposed fixes, and merged code are separate from verified product behavior.
 
+## Saving, metadata, export, and storage
+
+- Pending edits are journaled before their save debounce. Native Mac and Windows journals use atomic replacement, durable writes, catalog scope, and original-file identity checks. Restart offers recovery; stale acknowledgements cannot delete newer drafts. Corrupt individual records are retained and reported without hiding healthy drafts. Native close waits for edits and history or gives an explicit failure choice.
+- State writes stay ordered per photo and share a bounded transport pool. Failed state or History writes retain Retry. Peer windows reconcile against saved state without recursively echoing repairs, and delayed responses cannot replace newer controls or an active slider gesture.
+- XMP updates preserve foreign namespaces and subtrees. Malformed sidecars are left intact, virtual copies do not compete for one original's sidecar, and pending or failed synchronization is durable and visible with explicit Retry.
+- Export metadata is staged and read back by tests for JPEG and TIFF. Metadata failure preserves the delivered pixels and appears in per-file warnings. ICC embedding is required for successful output; capture timestamps, UTC offsets, filesystem-date policies, GPS policies, and independent digitization dates have separate coverage.
+- Batch exports use bounded workers, immutable per-job input identity, cooperative cancellation, explicit skipped/cancelled counts, and per-file results. Recipes support fixed destinations, folders relative to each original, and preserved source hierarchy, with destination preview before export.
+- Cloud-only placeholders have an explicit availability state. Scanning, hashing, previews, ingest, and watched-folder import avoid reading those bytes or inadvertently forcing hydration. Missing originals remain distinguishable from available files. A reproducible synthetic storage benchmark measures a 10,000-file cold scan, warm scan, query latency, and placeholder reads; it does not claim real HDD/NAS or 8 GB hardware performance.
+- Lens matching reports missing or ambiguous metadata and exposes candidate profiles for an explicit override. Unadjusted Develop exports can preserve the selected wider output gamut before the first clipping boundary. Graded or locally edited paths retain an explicit working-space limitation instead of implying that a wider ICC tag restores clipped colors.
+
 ## Editing and organization delivered in this follow-up
 
 - Copy Settings opens a remembered chooser for Film, RAW development, Tone, Color, Detail, Lens corrections, Crop/geometry, Masks, and Healing. Unchecked groups preserve the destination. An edited destination must load successfully before merging. Paste uses the edit-save queue and History; failed saves retain the intended patch for Retry.

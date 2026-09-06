@@ -614,3 +614,18 @@ test('selective paste never replaces unchecked edits with defaults after a libra
   assert.equal(app.requests.some(request => request.state.name === 'B.raw'), false);
   assert.match(app.nodes.get('transferStatus').textContent, /latest existing settings are not loaded/);
 });
+
+test('peer reconciliation cannot interrupt a slider gesture before its change event saves', async () => {
+  const app = harness({manual: true});
+  app.S.grade.exposure = 1;
+  const saved = app.saveState(true);
+  await settle();
+  await app.applyServerStateEvent({client: 'peer', origin: 'window', names: ['A.raw'], patch: {grade: {exposure: 2}}});
+  app.requests[0].resolve({ok: true});
+  await saved;
+  await settle();
+  app.S.grade.exposure = 4; // input event, before pointer-up/change enqueues it
+  app.stateReads[0].resolve({grade: {exposure: 2}});
+  await settle();
+  assert.equal(app.S.grade.exposure, 4);
+});
