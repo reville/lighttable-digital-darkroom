@@ -147,6 +147,17 @@ float3 sampleEditedSource(texture2d<float> image, texture2d<float> fallback, sam
     return clamp(color, 0.0, 1.0);
 }
 
+float3 sampleEditedNeighbor(texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
+                            float2 outputCoordinate, constant GradeUniforms &grade,
+                            float2 texel, float redCyan, float blueYellow) {
+    // CPU grading replicates the outermost pixel for blur/sharpen taps. Clamp
+    // in output space, before optical mapping: genuine empty areas created by
+    // rotation/distortion must still become black in sampleEditedSource.
+    float2 coordinate = clamp(outputCoordinate, texel * 0.5, 1.0 - texel * 0.5);
+    return sampleEditedSource(image, fallback, linearSampler, coordinate,
+                              grade, texel, redCyan, blueYellow);
+}
+
 float3 applyHeals(float3 color, float2 uv,
                   texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
                   constant GradeUniforms &grade,
@@ -339,13 +350,13 @@ float3 localGrade(float3 color, float4 tone, float4 localColorValue,
                   float2 texel) {
     if (detail.x != 0.0 || detail.y != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, grade.detail1.z, grade.detail1.w)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, grade.detail1.z, grade.detail1.w)) / 5.0;
         float3 localDetail = color - blur;
         color = clamp(color + localDetail * detail.x * 1.1, 0.0, 1.0);
@@ -464,13 +475,13 @@ fragment float4 nativePreviewFragment(
 
     if (luminanceNoise != 0.0 || colorNoise != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float luminance = dot(color, LUMA);
         float blurLuminance = dot(blur, LUMA);
@@ -489,13 +500,13 @@ fragment float4 nativePreviewFragment(
 
     if (texture != 0.0 || clarity != 0.0) {
         float3 blur = (color
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, texel.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         color = clamp(color + detail * texture * 1.1, 0.0, 1.0);
@@ -506,13 +517,13 @@ fragment float4 nativePreviewFragment(
     if (sharpness != 0.0) {
         float2 radius = texel * sharpenRadius;
         float3 blur = (color
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(radius.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(radius.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(radius.x, 0.0),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(radius.x, 0.0),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv + float2(0.0, radius.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, radius.y),
                                  grade, texel, redCyan, blueYellow)
-            + sampleEditedSource(image, fallback, linearSampler, uv - float2(0.0, radius.y),
+            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, radius.y),
                                  grade, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         float luminanceDetail = dot(detail, LUMA);
