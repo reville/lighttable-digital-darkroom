@@ -1,7 +1,7 @@
 // Separable Gaussian blur — horizontal pass.
 //
 // Each thread reads `2*radius+1` samples from a row of the input image and
-// writes the convolved value to the output. Boundary handling clamps indices.
+// writes the convolved value to the output. Reflect edges like CPU/SciPy.
 //
 // Pair this with `gaussian_blur_v.wgsl` for the full 2D blur. Kernel weights
 // are pre-computed on CPU (see `gaussian_kernel` in spektrafilm-math).
@@ -32,7 +32,9 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     for (var k = 0u; k < kernel_size; k++) {
         let dx = i32(k) - i32(params.radius);
         let sx_signed = i32(x) + dx;
-        let sx = u32(clamp(sx_signed, 0i, w_i32 - 1i));
+        let period = 2i * w_i32;
+        let wrapped = ((sx_signed % period) + period) % period;
+        let sx = u32(select(wrapped, period - 1i - wrapped, wrapped >= w_i32));
         let idx = (y * params.width + sx) * 3u;
         let w = kernel_buf[k];
         sum.x += w * input[idx];

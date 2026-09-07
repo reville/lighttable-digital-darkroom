@@ -189,6 +189,10 @@ and contract tests, Rust tests, renderer parity checks, and real macOS
 [product journeys](JOURNEY-TESTING.md). Run the checks that exercise your change
 and report what you verified.
 
+The [processing correctness pipeline](PROCESSING-CORRECTNESS.md) compares film
+stages, exports, and displayed previews with independent numerical references,
+and saves per-case pixel differences and CI reports.
+
 ## Project documentation
 
 - [Film profiles and provenance](FILM-PROFILES.md)

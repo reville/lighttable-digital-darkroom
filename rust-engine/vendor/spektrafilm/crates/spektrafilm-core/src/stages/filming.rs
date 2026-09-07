@@ -338,21 +338,13 @@ pub fn expose(
     }
 
     // Diffusion filter (camera): lens diffusion-filter PSF on linear raw.
-    // GPU uses a downsampled sum-of-Gaussians (fast preview); CPU keeps the
-    // exact FFT convolution (export parity).
+    // Use the same sampled PSF on every backend. The former GPU Gaussian
+    // approximation produced substantially different preview halos when the
+    // sharp core was smaller than one pixel.
     let df = &params.camera.diffusion_filter;
     if df.active {
         let dm = df.to_model();
-        raw = if backend.is_gpu() {
-            spektrafilm_model::diffusion::apply_diffusion_filter_blur(
-                &raw,
-                &dm,
-                pix_um as f64,
-                backend,
-            )
-        } else {
-            spektrafilm_model::diffusion::apply_diffusion_filter_um(&raw, &dm, pix_um as f64)
-        };
+        raw = spektrafilm_model::diffusion::apply_diffusion_filter_um(&raw, &dm, pix_um as f64);
     }
 
     // Lens blur
