@@ -17,7 +17,7 @@ use spektrafilm_math::spectral::TcLut;
 /// pixel data to that path as a raw little-endian f64 blob. Used to
 /// bisect the Python ↔ Rust drift one stage at a time without
 /// modifying call sites. Silent no-op when the env var is unset.
-fn dump_if_env(var: &str, image: &ImageBuf) {
+pub(crate) fn dump_if_env(var: &str, image: &ImageBuf) {
     let Ok(path) = std::env::var(var) else {
         return;
     };
@@ -64,6 +64,28 @@ fn apply_film_specific_params(film: &Profile, params: &mut RuntimeParams) {
         params.film_render.dir_couplers.gamma_interlayer_r_to_gb = [0.353, 0.302];
         params.film_render.dir_couplers.gamma_interlayer_g_to_rb = [0.154, 0.353];
         params.film_render.dir_couplers.gamma_interlayer_b_to_rg = [0.168, 0.226];
+    }
+
+    // Match Python's profile-specific antihalation baseline. Leaving the
+    // generic defaults here made modern strong-AH stocks (e.g. Portra) bloom
+    // about three times too strongly and used the still-film radius for cine
+    // stocks. User amount/spatial-scale controls remain independent multipliers.
+    if film.info.support == "film" {
+        let sigma = match film.info.usage.as_str() {
+            "still" => Some(65.0),
+            "cine" => Some(50.0),
+            _ => None,
+        };
+        let strength = match film.info.antihalation.as_str() {
+            "strong" => Some([0.015, 0.005, 0.0]),
+            "weak" => Some([0.08, 0.02, 0.0]),
+            "no" => Some([0.30, 0.10, 0.015]),
+            _ => None,
+        };
+        if let (Some(sigma), Some(strength)) = (sigma, strength) {
+            params.film_render.halation.halation_first_sigma_um = [sigma; 3];
+            params.film_render.halation.halation_strength = strength;
+        }
     }
 
     // Monochrome grain is derived from the film, never user-set — clear it
@@ -724,6 +746,19 @@ impl Pipeline {
         color_ref: &crate::color_reference::ColorReference,
         film_cache_key: Option<&str>, metered_ev: Option<f32>, native_rotation: Option<spektrafilm_gpu::NativeOutputSpec>,
     ) -> Option<spektrafilm_gpu::FilmChainOutput> {
+        // The resident sum-of-Gaussians diffusion is a continuous-PSF
+        // approximation, whereas export samples and normalizes the measured
+        // 2D PSF on the pixel grid. They diverge strongly for subpixel cores
+        // (up to 59/255 at highlight edges). Use the per-stage path for active
+        // diffusion: its exact convolution runs on CPU, with other supported
+        // stages still dispatched to this GPU backend.
+        if [&self.params.camera.diffusion_filter, &self.params.enlarger.diffusion_filter]
+            .into_iter()
+            .take(if self.params.io.scan_film { 1 } else { 2 })
+            .any(|filter| filter.active && filter.strength > 0.0 && filter.spatial_scale > 0.0)
+        {
+            return None;
+        }
         // Bake the exposure scale (auto-exposure × manual EV compensation)
         // into the front-pass matrix. Both upsamplers (hanatos and mallett)
         // are homogeneous in the input RGB, so scaling the matrix is
