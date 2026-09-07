@@ -815,6 +815,7 @@ pub fn diffusion_gpu_plan(
 
     Some(spektrafilm_gpu::DiffusionGpuPlan {
         d: d as u32,
+        pixel_origin: [0, 0],
         small_w: (width as usize).div_ceil(d) as u32,
         small_h: (height as usize).div_ceil(d) as u32,
         p_s: p_s as f32,

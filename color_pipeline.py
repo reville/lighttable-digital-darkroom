@@ -21,9 +21,15 @@ import tifffile
 from PIL import Image, ImageOps
 
 import platform_image
+from raw_decode_cache import DecodedRawCache, source_identity
 
 # Leave CPU capacity for the second renderer and the UI during RAW decode.
 os.environ.setdefault("OMP_NUM_THREADS", "8")
+
+# RGB16 preserves LibRaw output exactly and uses half the space of renderer
+# float32 inputs. The shared budget is independent of the two engine caches.
+RAW_DEMOSAIC_CACHE = DecodedRawCache(int(os.environ.get(
+    "LIGHTTABLE_RAW_DECODE_CACHE_BYTES", str(512 * 1024 * 1024))))
 
 
 ICC_PROFILES = {
@@ -331,6 +337,9 @@ def decode_raw(path: Path | str, params: dict | None = None,
     mode = str(params.get("wb_mode", "as_shot"))
     if mode not in RAW_WB_MODES:
         mode = "as_shot"
+    # Capture identity before opening: an atomic replacement must never put
+    # pixels from an old open handle under the replacement's cache identity.
+    identity = source_identity(path)
     with raw_decode_runtime.open_raw(path) as (raw, decoder):
         sensor_width = int(getattr(raw.sizes, "width", 0) or 0)
         preview_half_size = bool(
@@ -341,16 +350,29 @@ def decode_raw(path: Path | str, params: dict | None = None,
             kwargs["use_camera_wb"] = True
         else:
             kwargs["user_wb"] = list(raw.daylight_whitebalance)
-        try:
-            rgb = raw.postprocess(**kwargs)
-        except decoder.LibRawError:
-            # Some non-Bayer sensors do not support DCB or FBDD. Preserve the
-            # selected colour/recovery settings and fall back to the camera's
-            # supported demosaic rather than making the photo unreadable.
-            for key in ("demosaic_algorithm", "dcb_iterations", "dcb_enhance",
-                        "median_filter_passes", "fbdd_noise_reduction"):
-                kwargs.pop(key, None)
-            rgb = raw.postprocess(**kwargs)
+        # Key only the actual LibRaw decisions. Custom temperature/tint,
+        # Develop curves and learned-denoise strength act on these pixels
+        # afterwards and therefore do not require another demosaic.
+        option_key = tuple(sorted((key, repr(getattr(value, "value", value)))
+                                  for key, value in kwargs.items()))
+        key = (identity, option_key) if identity is not None else None
+
+        def demosaic():
+            with raw_decode_runtime.decode_slot(), raw_decode_runtime.interruptible(raw, decoder):
+                try:
+                    return raw.postprocess(**kwargs)
+                except decoder.LibRawError:
+                    raw_decode_runtime.check_cancel()
+                    # Unsupported sensor algorithms retain the established
+                    # camera fallback without retrying a cancelled decode.
+                    fallback = dict(kwargs)
+                    for key in ("demosaic_algorithm", "dcb_iterations", "dcb_enhance",
+                                "median_filter_passes", "fbdd_noise_reduction"):
+                        fallback.pop(key, None)
+                    return raw.postprocess(**fallback)
+
+        rgb = RAW_DEMOSAIC_CACHE.get_or_build(
+            key, demosaic, raw_decode_runtime.check_cancel)
     if mode in ("tungsten", "custom"):
         temperature = 3200.0 if mode == "tungsten" else float(
             params.get("wb_temperature", 5500.0))
@@ -364,11 +386,18 @@ def decode_raw(path: Path | str, params: dict | None = None,
         import enhance_workflow
         strength = params.get("learned_denoise_strength", params.get(
             "learnedDenoiseStrength", 0.6))
-        cleaned = enhance_workflow.denoise_linear_prophoto(
-            rgb.astype(np.float32) / 65535.0, strength=float(strength),
-            runner=learned_denoise_runner,
-            status=learned_denoise_status, cancel=learned_denoise_cancel)
+        try:
+            cleaned = enhance_workflow.denoise_linear_prophoto(
+                rgb.astype(np.float32) / 65535.0, strength=float(strength),
+                runner=learned_denoise_runner,
+                status=learned_denoise_status,
+                cancel=lambda: raw_decode_runtime.is_cancelled() or
+                    enhance_workflow._cancel_requested(learned_denoise_cancel))
+        except Exception:
+            raw_decode_runtime.check_cancel()
+            raise
         rgb = (cleaned * 65535.0 + 0.5).astype(np.uint16)
+    raw_decode_runtime.check_cancel()
     return rgb
 
 

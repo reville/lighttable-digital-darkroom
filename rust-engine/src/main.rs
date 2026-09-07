@@ -17,6 +17,7 @@ use spektrafilm_gpu::ComputeBackend;
 use spektrafilm_math::{image::ImageBuf, precision};
 
 mod export;
+mod export_surface;
 mod region;
 mod native_surface;
 
@@ -33,6 +34,8 @@ struct Request {
     native_output: Option<PathBuf>,
     #[serde(default)]
     native_shared: bool,
+    #[serde(default)]
+    export_shared: bool,
     viewport: Option<region::Rect>,
     data_dir: Option<PathBuf>,
     film: Option<String>,
@@ -76,6 +79,8 @@ struct Response {
     mean: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     native_shared: Option<native_surface::SharedSurface>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    export_shared: Option<export_surface::SharedExport>,
     input_cache_hit: bool,
     viewport_accelerated: bool,
     native_gpu_packed: bool,
@@ -103,6 +108,7 @@ impl Response {
             full_height: None,
             mean: None,
             native_shared: None,
+            export_shared: None,
             input_cache_hit: false,
             viewport_accelerated: false,
             native_gpu_packed: false,
@@ -198,6 +204,7 @@ impl Engine {
                 full_height: None,
                 mean: None,
             native_shared: None,
+                export_shared: None,
                 input_cache_hit: cached_input.is_some(),
                 viewport_accelerated: false,
             native_gpu_packed: false,
@@ -219,7 +226,7 @@ impl Engine {
 
         let output = request.output.as_deref();
         let native_output = request.native_output.as_deref();
-        if output.is_none() && native_output.is_none() {
+        if output.is_none() && native_output.is_none() && !request.export_shared {
             bail!("missing output");
         }
         let data_dir = request.data_dir.as_deref().context("missing data_dir")?;
@@ -388,6 +395,7 @@ impl Engine {
         } else { key });
         let render_started = Instant::now();
         let native_only = native_output.is_some() && output.is_none()
+            && !request.export_shared
             && request.grade.is_none() && request.masks.is_none()
             && request.crop.is_none() && request.long_edge.is_none();
         let packed = if native_only {
@@ -478,6 +486,9 @@ impl Engine {
                 }
             }
         }
+        let export_shared = if request.export_shared {
+            Some(export_surface::publish(width, height, &samples)?)
+        } else { None };
         let encode_ms = millis(encode_started.elapsed());
 
         Ok(Response {
@@ -490,6 +501,7 @@ impl Engine {
             full_height: request.viewport.map(|_| if request.rotate_quarters_ccw % 2 == 0 { image.height } else { image.width }),
             mean: Some(mean),
             native_shared,
+            export_shared,
             input_cache_hit,
             viewport_accelerated: accelerated,
             native_gpu_packed: packed.is_some(),

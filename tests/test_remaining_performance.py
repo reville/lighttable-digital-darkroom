@@ -1,5 +1,7 @@
 """Behavioral contracts for cold decoding, disposable writes and engine isolation."""
 import http.client
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager, nullcontext
 import io
 import tempfile
 import threading
@@ -101,6 +103,43 @@ class ColdPreviewTests(unittest.TestCase):
 
 
 class BackgroundEngineTests(unittest.TestCase):
+    def test_cancelled_export_before_decode_is_counted_without_error(self):
+        batch = mock.Mock(cancelled=threading.Event())
+        batch.cancelled.set()
+        with mock.patch.object(server.SESSION, "inflight", return_value=nullcontext()), \
+             mock.patch.object(server, "_export_one") as render:
+            server.export_one("frame.dng", {}, batch)
+        render.assert_not_called()
+        batch.finish.assert_called_once_with("frame.dng", {"cancelledCount": 1})
+
+    def test_next_capture_decodes_while_previous_export_owns_engine(self):
+        decoded = threading.Event()
+        @contextmanager
+        def shared(*_):
+            decoded.set()
+            yield {"input_shm": "pixels", "input_shm_len": 64,
+                   "input_cache_key": "source"}
+        engine = mock.Mock()
+        def render(_):
+            with server.BACKGROUND_RENDER_LOCK:
+                return {"width": 8, "height": 6}
+        engine.render.side_effect = render
+        with mock.patch.object(server, "BACKGROUND_ENGINE", engine), \
+             mock.patch.object(server, "is_raw", return_value=True), \
+             mock.patch.object(server, "file_key", return_value="source"), \
+             mock.patch.object(server, "shared_input_supported", return_value=True), \
+             mock.patch.object(server, "raw_shared_input", shared), \
+             ThreadPoolExecutor(max_workers=1) as pool:
+            server.BACKGROUND_RENDER_LOCK.acquire()
+            try:
+                future = pool.submit(server._resident_render_full, "next.dng", {}, {})
+                self.assertTrue(decoded.wait(1), "next decode waited for GPU completion")
+                self.assertFalse(future.done())
+                engine.probe_input.assert_not_called()
+            finally:
+                server.BACKGROUND_RENDER_LOCK.release()
+            self.assertEqual(future.result(2)["input_transport"], "shared-memory-rgb16")
+
     def test_export_probe_hit_does_not_decode_again(self):
         engine = mock.Mock()
         engine.probe_input.return_value = True
