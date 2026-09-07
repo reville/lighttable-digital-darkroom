@@ -21,6 +21,7 @@ build() {
   shift
   cmake -S "$WORK/$NAME" -B "$WORK/$NAME-build" \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=13.0 \
+    -DCMAKE_OSX_SYSROOT="${SDKROOT:-$(xcrun --show-sdk-path)}" \
     -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_NAME_DIR="$PREFIX/lib" \
     -DCMAKE_PREFIX_PATH="$PREFIX" -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew \
     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 "$@"
@@ -34,7 +35,7 @@ build jasper -DJAS_ENABLE_PROGRAMS=OFF -DJAS_ENABLE_DOC=OFF \
   -DJPEG_INCLUDE_DIR="$PREFIX/include" -DJPEG_LIBRARY_RELEASE="$PREFIX/lib/libjpeg.dylib"
 (
   cd "$WORK/lcms"
-  CC=clang CPPFLAGS= lt_cv_sys_max_cmd_len=262144 \
+  CC="${CC:-clang}" CPPFLAGS= lt_cv_sys_max_cmd_len=262144 \
     CFLAGS="-O3 -mmacosx-version-min=13.0" LDFLAGS="-mmacosx-version-min=13.0" \
     ./configure --prefix="$PREFIX" --disable-static --without-jpeg --without-tiff
   make -j8

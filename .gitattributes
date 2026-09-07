@@ -5,3 +5,5 @@
 *.png binary
 *.jpg binary
 *.icns binary
+# Unified patch context preserves upstream whitespace literally.
+packaging/*.patch -whitespace

@@ -1,13 +1,89 @@
-diff --git a/src/demosaic/xtrans_demosaic.cpp b/src/demosaic/xtrans_demosaic.cpp
-index 6d9f999..a1e07f1 100644
 --- a/src/demosaic/xtrans_demosaic.cpp
 +++ b/src/demosaic/xtrans_demosaic.cpp
-@@ -168,3 +168,8 @@ void LibRaw::xtrans_interpolate(int passes)
-+// LightTable: this in-place tile loop reads neighbouring strips while other
-+// threads overwrite them. Keep X-Trans deterministic until upstream provides
-+// independent tile input. Other LibRaw translation units retain OpenMP.
-+#undef LIBRAW_USE_OPENMP
-+
+@@ -174,11 +174,29 @@
+   size_t buffer_size = LIBRAW_AHD_TILE * LIBRAW_AHD_TILE * (ndir * 11 + 6);
+   char** buffers = malloc_omp_buffers(buffer_count, buffer_size);
+ 
++  // Preserve the original row-major read/write dependencies. A tile needs
++  // its left neighbour and the previous row through the tile above-right.
++  // wave = 2 * row + col puts those predecessors on earlier diagonals.
++  // Tiles on one diagonal cannot touch each other's input/output pixels.
++  // The omp-for barrier publishes a completed diagonal before the next one.
++  const int tile_step = LIBRAW_AHD_TILE - 16;
++  const int tile_rows = (height - 22 + tile_step - 1) / tile_step;
++  const int tile_cols = (width - 22 + tile_step - 1) / tile_step;
  #if defined(LIBRAW_USE_OPENMP)
-   int buffer_count = omp_get_max_threads();
+-# pragma omp parallel for schedule(dynamic) default(none) firstprivate(buffers, allhex, passes, sgrow, sgcol, ndir) shared(dir) 
++# pragma omp parallel default(none) firstprivate(buffers, allhex, passes, sgrow, sgcol, ndir, tile_step, tile_rows, tile_cols) shared(dir)
+ #endif
+-    for (int top = 3; top < height - 19; top += LIBRAW_AHD_TILE - 16)
++  {
++    for (int wave = 0; wave < 2 * (tile_rows - 1) + tile_cols; ++wave)
+     {
++#if defined(LIBRAW_USE_OPENMP)
++# pragma omp for schedule(static,1)
++#endif
++      for (int tile_row = 0; tile_row < tile_rows; ++tile_row)
++      {
++        const int tile_col = wave - 2 * tile_row;
++        if (tile_col < 0 || tile_col >= tile_cols) continue;
++        const int top = 3 + tile_row * tile_step;
++        const int left = 3 + tile_col * tile_step;
+ #if defined(LIBRAW_USE_OPENMP)
+         char* buffer = buffers[omp_get_thread_num()];
  #else
+@@ -198,7 +216,6 @@
+         homo = (char(*)[LIBRAW_AHD_TILE][LIBRAW_AHD_TILE])(
+             buffer + LIBRAW_AHD_TILE * LIBRAW_AHD_TILE * (ndir * 10 + 6));
+ 
+-        for (int left = 3; left < width - 19; left += LIBRAW_AHD_TILE - 16)
+         {
+             int mrow = MIN(top + LIBRAW_AHD_TILE, height - 3);
+             int mcol = MIN(left + LIBRAW_AHD_TILE, width - 3);
+@@ -423,14 +440,12 @@
+                     FORC3 image[(row + top) * width + col + left][c] = avg[c] / avg[3];
+                 }
+         }
++      }
+     }
+-  
+-#ifdef LIBRAW_USE_OPENMP
+-#pragma omp barrier
+-#endif
+-
+-    free_omp_buffers(buffers, buffer_count);
+-
+-    border_interpolate(8);
++  }
++
++  free_omp_buffers(buffers, buffer_count);
++
++  border_interpolate(8);
+ }
+ #undef fcol
+--- a/src/preprocessing/raw2image.cpp
++++ b/src/preprocessing/raw2image.cpp
+@@ -217,8 +217,10 @@
+ void LibRaw::copy_fuji_uncropped(unsigned short cblack[4],
+                                  unsigned short *dmaxp)
+ {
++  // Shrinking maps adjacent source rows to the same pixel/channel. Keep
++  // their serial last-writer order; full-size rows remain independent.
+ #if defined(LIBRAW_USE_OPENMP)
+-#pragma omp parallel for schedule(dynamic) default(none) firstprivate(cblack) shared(dmaxp)
++#pragma omp parallel for schedule(dynamic) default(none) firstprivate(cblack) shared(dmaxp) if(!IO.shrink)
+ #endif
+   for (int row = 0; row < int(S.raw_height) - int(S.top_margin) * 2; row++)
+   {
+@@ -272,8 +274,10 @@
+ {
+   // Both cropped and uncropped
+   int maxHeight = MIN(int(S.height),int(S.raw_height)-int(S.top_margin));
++  // Shrinking maps adjacent source rows to the same pixel/channel. Keep
++  // their serial last-writer order; full-size rows remain independent.
+ #if defined(LIBRAW_USE_OPENMP)
+-#pragma omp parallel for schedule(dynamic) default(none) shared(dmaxp) firstprivate(cblack, maxHeight)
++#pragma omp parallel for schedule(dynamic) default(none) shared(dmaxp) firstprivate(cblack, maxHeight) if(!IO.shrink)
+ #endif
+   for (int row = 0; row < maxHeight ; row++)
+   {

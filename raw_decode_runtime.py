@@ -14,10 +14,11 @@ def open_raw(path):
     raw = None
     try:
         raw = decoder.imread(str(path))
-        if decoder is not stock and raw.is_xtrans:
+        if (decoder is not stock and raw.is_xtrans
+                and getattr(decoder, "LIGHTTABLE_XTRANS_WAVEFRONT", 0) != 1):
             # is_xtrans reads only the already-open header; it never unpacks
             # sensor pixels. Bayer takes one header open; X-Trans adds one
-            # cheap header read before retaining the stock decoder's speed.
+            # cheap header read for old wheels lacking the verified schedule.
             raw.close()
             raw = None
             decoder = stock
