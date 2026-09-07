@@ -13,6 +13,7 @@ import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
+import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
@@ -2656,12 +2657,11 @@ $('editOverlay').addEventListener('pointerleave', () => {
 });
 
 /* ------------------------------------------------------------ film render */
-let spinTimer = null;
-function spin(on) {
-  clearTimeout(spinTimer);
-  if (on) spinTimer = setTimeout(() => $('cmp').classList.add('loading'), 90);
-  else $('cmp').classList.remove('loading');
-}
+const previewProgress = createPreviewProgress((progress) => {
+  S.previewProgress = progress;
+  $('zoomwrap').setAttribute('aria-busy', String(progress.active));
+  syncPreviewDetailStatus();
+});
 
 function previewGeometryKey(name, rotate = 0) {
   const quarterTurns = ((Math.round((+rotate || 0) / 90) % 4) + 4) % 4;
@@ -2674,16 +2674,21 @@ function shouldPreservePresentationGeometry(phase, previousKey, nextKey) {
 
 function syncPreviewDetailStatus() {
   const image = cur(), detail = S.previewDetail?.name === image?.name ? S.previewDetail : {};
-  const label = previewDetailLabel({ ...detail, state: S.renderState,
+  const detailLabel = previewDetailLabel({ ...detail, state: S.renderState,
     source: Math.max(+image?.width || 0, +image?.height || 0), actual: S.zoomMode === '100' });
+  const progress = S.previewProgress;
+  const label = progress?.visible ? progress.label : progress?.active ? '' : detailLabel;
   $('previewDetailStatus').textContent = image ? label : '';
   $('previewDetailStatus').hidden = !image || !label;
-  $('zoom1').title = label || 'View actual pixels (100%) to assess sharpness and noise';
+  $('previewDetailStatus').classList.toggle('working', Boolean(progress?.visible && progress?.active));
+  $('zoom1').title = detailLabel || 'View actual pixels (100%) to assess sharpness and noise';
 }
 function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
   S.renderState = state;
   S.renderName = name || null;
+  if (state === 'pending') previewProgress.start('Loading preview…');
+  else if (state === 'empty') previewProgress.finish({ immediate: true });
   syncPreviewDetailStatus();
   if (state === 'ready') {
     S.hasPresentedImage = true;
@@ -2706,7 +2711,6 @@ function setRenderPresentation(state, name = cur()?.name, message = '') {
 let automaticPreviewTimer = null;
 let automaticPreviewRequest = null;
 let renderTimer = null;
-let refineTimer = null;
 let settleRenderTimer = null;
 let lastInteractiveRenderAt = -Infinity;
 let lastContinuousInputAt = -Infinity;
@@ -3311,7 +3315,6 @@ function renderPhysicalPreview() {
 
 async function doRender(scheduledAt = performance.now(), options = {}) {
   clearTimeout(prefetchTimer);
-  clearTimeout(refineTimer);
   // A pending helper is left alone. Its own generation guard drops a
   // superseded fetch, while the early return below happens before the
   // generation is bumped, so cancelling here stranded the sampling surface.
@@ -3339,7 +3342,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
-  spin(true);
+  previewProgress.start(phase === 'refinement' ? 'Finishing RAW preview…'
+    : phase === 'settled' && S.presentedPhotoName === im.name ? 'Updating preview detail…'
+    : S.params.profile_enabled ? 'Applying film…' : 'Loading preview…');
   try {
     const request = {
       name: im.name, params: S.params, w, engine: $('engine').value,
@@ -3368,9 +3373,14 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my !== S.seq) return;
-    if (m.cancelled) return;
-    spin(false);
+    if (m.cancelled) {
+      previewProgress.finish({ immediate: true });
+      $('rstat').textContent = '';
+      $('rstat').className = '';
+      return;
+    }
     if (m.error) {
+      previewProgress.finish({ error: 'Could not render preview' });
       $('rstat').textContent = 'error: ' + m.error;
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
@@ -3406,6 +3416,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         return doRender(scheduledAt, { ...options, skipPresentationCache: true });
       }
       if (imageTiming.failed) {
+        previewProgress.finish({ error: 'Could not display preview' });
         $('rstat').textContent = imageTiming.error || 'preview unavailable';
         $('rstat').className = '';
         setRenderPresentation('error', im.name, 'Could not display this photo');
@@ -3420,6 +3431,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     }
     const paintedAt = keepAccuratePixels ? performance.now()
       : (imageTiming.presentedAt || await afterVisiblePaint());
+    if (my !== S.seq) return;
     imageTiming ||= {
       decodeMs: 0, uploadMs: 0, uploadedAt: paintedAt, presentation: 'draft-skipped',
     };
@@ -3464,6 +3476,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
     $('rstat').className = '';
     if (phase === 'interactive' && w !== requestedWidth) {
+      previewProgress.start(m.refining ? 'Preparing RAW detail…' : 'Updating preview detail…');
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3482,15 +3495,17 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
     } else if (m.refining) {
-      api('/api/refine', { name: im.name, params: S.params, w, client: CLIENT_ID, generation: my }).catch(() => {});
-      refineTimer = setTimeout(() => {
-        if (my === S.seq && cur() && cur().name === im.name) {
-          doRender(performance.now(), {
-            width: w, requestedWidth, phase: 'refinement',
-          });
-        }
-      }, 350);
-    }
+      previewProgress.start('Refining RAW detail…');
+      const refinementRequest = { name: im.name, params: { ...request.params },
+        w, client: CLIENT_ID, generation: my };
+      const ready = await waitForRawRefinement({
+        request: () => api('/api/refine', refinementRequest),
+        isCurrent: () => my === S.seq && cur()?.name === im.name,
+      });
+      if (ready) return doRender(scheduledAt, {
+        width: w, requestedWidth, phase: 'refinement',
+      });
+    } else previewProgress.finish();
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
     const failedAt = performance.now();
@@ -3512,8 +3527,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my === S.seq) {
-      spin(false);
-      $('rstat').textContent = 'server unreachable on :' + location.port;
+      previewProgress.finish({ error: 'Could not finish preview' });
+      $('rstat').textContent = failure.error || 'Could not finish preview';
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
         setRenderPresentation('error', im.name, 'Could not reach the renderer');
@@ -6275,7 +6290,6 @@ async function go(i) {
     postNative('nativePreloadReset', { epoch: generation });
   }
   clearTimeout(renderTimer);
-  clearTimeout(refineTimer);
   clearTimeout(settleRenderTimer);
   setRenderPresentation('pending', im.name);
   if (!isStateLoaded(im)) {
