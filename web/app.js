@@ -758,7 +758,11 @@ function syncControls() {
   $('filmProfileState').textContent = profileEnabled ? 'On' : 'Off';
   $('filmProfileOffNote').hidden = profileEnabled;
   $('filmProfileSection').classList.toggle('profile-off', !profileEnabled);
-  $('filmStagesSection').classList.toggle('profile-off', !profileEnabled);
+  const filmStages = $('filmStagesSection');
+  if (profileEnabled && filmStages.classList.contains('profile-off')) {
+    filmStages.open = true;
+  }
+  filmStages.classList.toggle('profile-off', !profileEnabled);
   document.querySelectorAll('#filmProfileControls input, #filmProfileControls select, #filmStagesSection .secbody input, #filmStagesSection .secbody select').forEach((el) => {
     el.disabled = !profileEnabled;
   });
