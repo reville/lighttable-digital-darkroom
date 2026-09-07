@@ -764,8 +764,6 @@ body.filmstrip-resizing { cursor:ns-resize; user-select:none; }
 .app.grid-mode .panel { opacity:0; pointer-events:none; }
 .toolrail { grid-column:2; grid-row:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:7px 4px 12px; overflow-y:auto; border-left:1px solid var(--line-soft); background:linear-gradient(var(--inset) 92%,rgba(26,26,26,.76)); scrollbar-width:none; }
 .toolrail::-webkit-scrollbar { display:none; }
-.toolrail-group { width:42px; margin:5px 0 1px; color:var(--muted-2); font-size:8px; font-weight:650; letter-spacing:.09em; line-height:1; text-align:center; text-transform:uppercase; }
-.toolrail-group:first-child { margin-top:1px; }
 .tool-btn { width:48px; min-height:46px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; border:0; border-radius:var(--radius); padding:4px 2px; background:transparent; color:var(--muted); font-size:10px; font-weight:500; letter-spacing:.01em; }
 .tool-btn svg { width:19px; height:19px; }
 .tool-btn:hover { background:var(--hover); color:#fff; }
@@ -1880,7 +1878,6 @@ body { display:flex; flex-direction:column; }
 .workspace-cullbar .cullbar-auto { width:auto; font-size:11px; }
 .cullbar-context strong { font-size:12px; }
 .cullbar-context span { color:var(--muted); font-size:11px; }
-.toolrail-group { font-size:9px; color:var(--muted); }
 .tool-btn { font-size:11px; }
 .panel-title { position:sticky; top:0; z-index:5; background:var(--edit-panel); }
 .panel .field-label, .panel .hint, .panel .check-row { font-size:12px; }
