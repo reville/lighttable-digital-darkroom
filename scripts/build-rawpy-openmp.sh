@@ -54,9 +54,17 @@ root = Path(sys.argv[1])
 package = root / 'rawpy'
 source = package / '_rawpy.pyx'
 text = source.read_text()
+native_method = '            int dcraw_process() nogil\n'
+assert text.count(native_method) == 2
+text = text.replace(native_method, native_method + '            void setCancelFlag() nogil\n')
 needle = '    property raw_type:\n'
 assert text.count(needle) == 1
-text = text.replace(needle, '''    property is_xtrans:
+text = text.replace(needle, '''    def request_cancel(self):
+        # The caller joins its monitor before recycling this RawPy object.
+        # LibRaw owns the atomic flag and unwinds on its processing thread.
+        self.p.setCancelFlag()
+
+    property is_xtrans:
         def __get__(self):
             return self.p.imgdata.idata.filters == 9
 
@@ -71,6 +79,7 @@ package.rename(root/'rawpy_openmp')
 with (root/'rawpy_openmp'/'__init__.py').open('a') as handle:
     handle.write('\n# The bundled LibRaw has deterministic X-Trans wavefront scheduling.\n')
     handle.write('LIGHTTABLE_XTRANS_WAVEFRONT = 1\n')
+    handle.write('LIGHTTABLE_RAW_CANCEL = 1\n')
 PY
 
 uv venv --python "$PYTHON" "$WORK/env"
@@ -114,6 +123,7 @@ metadata = {
     'releaseFlags': cache.get('CMAKE_CXX_FLAGS_RELEASE', ''),
     'openmpFlags': cache.get('OpenMP_CXX_FLAGS', ''),
     'xtransWavefront': 1,
+    'cooperativeCancellation': 1,
 }
 sdk_settings = Path(metadata['sdk'])/'SDKSettings.json'
 if sdk_settings.is_file():

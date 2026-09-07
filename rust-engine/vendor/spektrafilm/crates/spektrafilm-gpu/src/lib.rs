@@ -297,6 +297,9 @@ pub enum FrontPass<'a> {
 #[derive(Debug, Clone)]
 pub struct DiffusionGpuPlan {
     pub d: u32,
+    /// Full-resolution source origin. Cropped inputs start on a multiple of d.
+    /// Absolute coordinates preserve the full-frame f32 interpolation weights.
+    pub pixel_origin: [u32; 2],
     pub small_w: u32,
     pub small_h: u32,
     pub p_s: f32,

@@ -44,6 +44,18 @@ An immutable copy of the pre-development input removed the race but changed
 pixels, so that approach was rejected. The diagonal schedule needs no extra
 full-frame copy. Both one-pass and three-pass interpolation use this schedule.
 
+A per-tile OpenMP task-dependency schedule was also tested against the diagonal
+schedule, with identical cancellation checks and compiler settings. Three
+interleaved eight-thread runs per camera preserved exact pixels but showed no
+repeatable gain: X100VI medians were 4277/4290 ms (diagonal/tasks), and X-T30III
+2625/2606 ms. The simpler diagonal schedule remains selected.
+
+Each tile reads LibRaw's cancellation flag atomically before starting work.
+Cancelled tiles skip their work; the flag stays set until all workers leave
+the parallel region. Scratch buffers are then freed before `checkCancel()`
+throws. This avoids propagating an exception across OpenMP workers while
+allowing obsolete full-resolution decoding to stop between tiles.
+
 Half-size input has a separate race: adjacent sensor rows can write the same
 output pixel/channel during the initial RAW copy. The patch serializes only
 that inexpensive copy when shrinking; full-size copies remain parallel. This

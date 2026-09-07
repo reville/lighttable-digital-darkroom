@@ -2,7 +2,7 @@
 """Verify every viewport float against the same full-frame GPU render.
 
 Covers panning, frame boundaries, every quarter rotation, film/grain pitch,
-scanner kernels, stochastic glare, and the exact full-frame diffusion fallback.
+scanner kernels, stochastic glare, and lattice-aligned camera/print diffusion.
 """
 import argparse
 import array
@@ -57,6 +57,10 @@ def main():
     parser.add_argument('--binary',type=Path,default=Path(__file__).parent/'target/release/lighttable-engine')
     parser.add_argument('--data',type=Path,required=True)
     parser.add_argument('--width',type=int,default=1100)
+    parser.add_argument('--viewport-width',type=int,default=240)
+    parser.add_argument('--viewport-height',type=int,default=160)
+    parser.add_argument('--case',action='append',dest='cases',
+                        help='run only the named case (repeatable)')
     parser.add_argument('--output',type=Path)
     args=parser.parse_args()
     records=[]
@@ -77,7 +81,27 @@ def main():
                 cases.append(('spatial',spatial))
                 diffusion=copy.deepcopy(spatial)
                 diffusion['camera']['diffusion_filter']={'active':True,'strength':0.5}
-                cases.append(('diffusion_fallback',diffusion))
+                cases.append(('camera_diffusion',diffusion))
+                for family in ('glimmerglass', 'pro_mist', 'cinebloom'):
+                    filtered=copy.deepcopy(spatial)
+                    filtered['camera']['diffusion_filter']={
+                        'active':True,'strength':0.5,'filter_family':family,'spatial_scale':0.3}
+                    cases.append((family,filtered))
+                both=copy.deepcopy(diffusion)
+                both['camera']['diffusion_filter']['spatial_scale']=0.3
+                both['enlarger']={'diffusion_filter':{
+                    'active':True,'strength':0.25,'spatial_scale':0.2}}
+                cases.append(('camera_and_print_diffusion',both))
+                print_only=copy.deepcopy(spatial)
+                print_only['enlarger']={'diffusion_filter':{'active':True,'strength':0.5}}
+                cases.append(('print_diffusion',print_only))
+                noop=copy.deepcopy(spatial)
+                noop['camera']['diffusion_filter']={'active':True,'strength':0.0}
+                cases.append(('zero_strength_diffusion',noop))
+                if args.cases:
+                    unknown=set(args.cases)-{case for case,_ in cases}
+                    if unknown: parser.error('unknown cases: '+', '.join(sorted(unknown)))
+                    cases=[case for case in cases if case[0] in args.cases]
                 for case,params in cases:
                     for rotation in range(4):
                         request=dict(id=len(records)+1,command='render',input=str(source),
@@ -89,7 +113,7 @@ def main():
                         if 'wgpu' not in baseline['backend'].lower():
                             raise RuntimeError('GPU path NOT DONE: '+baseline['backend'])
                         width,height,pixels=read_float_tiff(full)
-                        tw,th=min(240,width//3),min(160,height//3)
+                        tw,th=min(args.viewport_width,width//3),min(args.viewport_height,height//3)
                         rects=[dict(x=width//3,y=height//3,width=tw,height=th),
                                dict(x=0,y=0,width=tw,height=th),
                                dict(x=width-tw,y=height-th,width=tw,height=th),
@@ -103,7 +127,8 @@ def main():
                             assert (result['full_width'],result['full_height'])==(width,height),result
                             assert actual==expected, (case,rotation,rect,
                                 max(abs(a-b) for a,b in zip(actual,expected)))
-                            assert result['viewport_accelerated']==(case!='diffusion_fallback'), result
+                            if case in ('default','spatial','zero_strength_diffusion'):
+                                assert result['viewport_accelerated'], result
                             result.update(case=case,rotation=rotation,viewport=rect,bit_identical=True,
                                           full_render_ms=baseline['render_ms'])
                             records.append(result)
