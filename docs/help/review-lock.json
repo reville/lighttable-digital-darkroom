@@ -72,7 +72,7 @@
       "content": "ea587a5f680591f686563eed6326436e6413f5da512086974be55c4603bebe85",
       "sources": {
         "app/main.swift": "88a5ace95307e1633a051291cd00b318323f566e87a35216139c138b8a0fced6",
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/app.js": "0e068af795fa9db3329459b2c6adf1965e552a1bcdc0c178fa401eb1865ab576",
         "web/edit-transfer.js": "4575e626c642cf4604cc1574dc52120d96d820f7a3e4b283b6598d64ca57d166"
       }
@@ -149,7 +149,7 @@
       "sources": {
         "app/main.swift": "88a5ace95307e1633a051291cd00b318323f566e87a35216139c138b8a0fced6",
         "merge_workflow.py": "42aaacd9addb07d1257dec2c2da9e299903f1b68aa213082cff0b2747ccc9e68",
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/app.js": "0e068af795fa9db3329459b2c6adf1965e552a1bcdc0c178fa401eb1865ab576",
         "web/index.html": "bb3fbd79ca4234b0051724c25a24dc3625ef8fdf9d377c1887b2e3ff0c461aef"
       }
@@ -215,7 +215,7 @@
     "export-photos": {
       "content": "4d390512f607806ae441447fd841b11e98359bbb324fb6750416268864a4f62a",
       "sources": {
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/app.js": "0e068af795fa9db3329459b2c6adf1965e552a1bcdc0c178fa401eb1865ab576",
         "web/index.html": "bb3fbd79ca4234b0051724c25a24dc3625ef8fdf9d377c1887b2e3ff0c461aef"
       }
@@ -293,7 +293,7 @@
       "content": "431fb5fc10894d56e863219e9661ab2995d81996b9f8816abf7f3c7b9f4485ce",
       "sources": {
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
         "web/index.html": "bb3fbd79ca4234b0051724c25a24dc3625ef8fdf9d377c1887b2e3ff0c461aef"
       }
@@ -344,7 +344,7 @@
       "content": "66a50e18b2e2dee4d8a35ea3c59b09e45f609b5dddea804b663e9744a456617d",
       "sources": {
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba"
       }
     },
@@ -398,7 +398,7 @@
       "content": "85731343eefbc085ca0eff4b39db0d043c537b6cc69f3b77c8722ec01725acb9",
       "sources": {
         "app/main.swift": "88a5ace95307e1633a051291cd00b318323f566e87a35216139c138b8a0fced6",
-        "server.py": "e1cc7aa3f3050f8a2487a2532c5edd3fd10b93a74b09b7332a3b9fb3f8f9adf7",
+        "server.py": "a66d553fa0d22359180cef9363e5ced1146bb712ad6a04d0beea29aa1ab7603b",
         "web/app.js": "0e068af795fa9db3329459b2c6adf1965e552a1bcdc0c178fa401eb1865ab576"
       }
     },

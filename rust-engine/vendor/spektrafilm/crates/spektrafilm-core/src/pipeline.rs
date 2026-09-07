@@ -1186,25 +1186,17 @@ impl Pipeline {
 
         // Camera diffusion filter plan (downsampled sum-of-Gaussians) for the
         // resident chain. `None` when the filter is a no-op.
-        let diffusion = if self.params.camera.diffusion_filter.active {
-            spektrafilm_model::diffusion::diffusion_gpu_plan(
-                &self.params.camera.diffusion_filter.to_model(),
-                pix_um as f64,
-                image.width,
-                image.height,
-            )
-        } else {
-            None
+        let region_diffusion = |filter: &crate::params::DiffusionFilterParams| {
+            filter.gpu_plan(pix_um as f64, image.width, image.height).map(|mut plan| {
+                plan.pixel_origin = self.image_region.map_or([0, 0], |r| [r[0], r[1]]);
+                plan
+            })
         };
+        let diffusion = region_diffusion(&self.params.camera.diffusion_filter);
 
         let enlarger_diffusion =
             if !self.params.io.scan_film && self.params.enlarger.diffusion_filter.active {
-                spektrafilm_model::diffusion::diffusion_gpu_plan(
-                    &self.params.enlarger.diffusion_filter.to_model(),
-                    pix_um as f64,
-                    image.width,
-                    image.height,
-                )
+                region_diffusion(&self.params.enlarger.diffusion_filter)
             } else {
                 None
             };

@@ -11,6 +11,8 @@ assert rawpy_openmp.__version__ == "0.26.1", rawpy_openmp.__version__
 assert rawpy_openmp.flags.get("OPENMP"), rawpy_openmp.flags
 assert hasattr(rawpy_openmp.RawPy, "is_xtrans"), "missing header-only sensor dispatch"
 assert getattr(rawpy_openmp, "LIGHTTABLE_XTRANS_WAVEFRONT", 0) == 1, "missing deterministic X-Trans parallel schedule"
+assert getattr(rawpy_openmp, "LIGHTTABLE_RAW_CANCEL", 0) == 1, "missing cooperative RAW cancellation"
+assert hasattr(rawpy_openmp.RawPy, "request_cancel"), "missing RAW cancellation bridge"
 package = Path(rawpy_openmp.__file__).resolve().parent
 libraries = list(package.rglob("*.dylib")) + list(package.glob("*.so"))
 assert any("libomp" in p.name for p in libraries), "OpenMP runtime not bundled"

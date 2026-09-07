@@ -52,6 +52,7 @@ import color_pipeline  # noqa: E402
 import calibration_target  # noqa: E402
 import preset_io  # noqa: E402
 import export_workflow  # noqa: E402
+import export_surface  # noqa: E402
 import library_workflow  # noqa: E402
 import catalog as catalog_module  # noqa: E402
 import catalog_scan  # noqa: E402
@@ -1858,6 +1859,8 @@ def cache_status() -> dict:
 
 def purge_generated_cache() -> dict:
     """Delete only generated files below this instance's exact cache root."""
+    color_pipeline.RAW_DEMOSAIC_CACHE.clear()
+    EXPORT_SHARED_CACHE.clear()
     removed, bytes_removed = 0, 0
     root = CACHE.resolve()
     if not root.is_dir():
@@ -2051,9 +2054,12 @@ def raw_shared_input(name: str, params: dict | None = None, *,
     large full-resolution exchange in memory and leaves ``tiff_for`` as the
     failure fallback.
     """
-    rgb = np.ascontiguousarray(color_pipeline.decode_raw(
-        src_path(name), params, learned_denoise_status=denoise_status,
-        learned_denoise_cancel=denoise_cancel))
+    import raw_decode_runtime
+    with raw_decode_runtime.cancellation(getattr(RENDER_CONTEXT, "cancelled", None),
+            priority=getattr(RENDER_CONTEXT, "priority", "export")):
+        rgb = np.ascontiguousarray(color_pipeline.decode_raw(
+            src_path(name), params, learned_denoise_status=denoise_status,
+            learned_denoise_cancel=denoise_cancel))
     cache_key = (
         f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
         f"{color_pipeline.raw_decode_fingerprint(params)}")
@@ -2207,8 +2213,12 @@ def _run_refinement(function, args, client: str, generation: int | None):
     if not RENDER_LOCK.acquire(priority="refine", cancelled=cancelled):
         return None
     RENDER_LOCK.release()
+    import raw_decode_runtime
     try:
-        return function(*args)
+        with raw_decode_runtime.cancellation(cancelled, priority="refine"):
+            return function(*args)
+    except raw_decode_runtime.RawDecodeCancelled:
+        return None
     finally:
         cat = catalog_handle()
         if cat is not None:
@@ -3578,8 +3588,10 @@ def render_preview(name: str, params: dict, width: int,
         RENDER_CONTEXT.priority = priority
         RENDER_CONTEXT.cancelled = lambda: render_is_stale(client, generation)
         try:
-            return _render_preview(name, params, width, engine, client,
-                                   generation, native, priority, viewport)
+            import raw_decode_runtime
+            with raw_decode_runtime.cancellation(RENDER_CONTEXT.cancelled, priority=priority):
+                return _render_preview(name, params, width, engine, client,
+                                       generation, native, priority, viewport)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -3886,6 +3898,35 @@ EXPORT_LOCK = threading.Lock()
 EXPORT_PATH_LOCK = threading.Lock()
 EXPORT_RESERVED_PATHS: set[Path] = set()
 EXPORT_FILM_LOCK = threading.Lock()
+
+
+def _write_export_frame(key, pixels, commit):
+    destination = CACHE / "export-film" / f"{key}.tif"
+    if valid_tiff_cache(destination):
+        return
+    temporary = durable_io.temporary_path(destination, "film")
+    try:
+        import tifffile
+        tifffile.imwrite(temporary, pixels, photometric="rgb")
+        if commit(lambda: durable_io.publish_cache(temporary, destination)):
+            prune_cache(destination.parent, "*.tif", _EXPORT_FILM_CACHE_MAX_BYTES)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+EXPORT_FRAME_WRITER = export_surface.FilmCacheWriter(_write_export_frame)
+EXPORT_SHARED_CACHE = export_surface.SharedFilmCache(
+    max_bytes=int(os.environ.get("LIGHTTABLE_EXPORT_FRAME_CACHE_BYTES", str(512 * 1024 * 1024))),
+    on_evict=EXPORT_FRAME_WRITER.submit, on_clear=EXPORT_FRAME_WRITER.invalidate)
+
+
+def close_export_cache():
+    # Python joins ThreadPoolExecutor workers before ordinary atexit handlers;
+    # the final retained frames must flush synchronously during shutdown.
+    EXPORT_FRAME_WRITER.close(EXPORT_SHARED_CACHE.flush)
+
+
+atexit.register(close_export_cache)
 EXPORT_POOL = ThreadPoolExecutor(max_workers=2)
 MERGE = {"running": False, "mode": "", "progress": 0, "total": 0,
          "phase": "", "phaseProgress": 0, "phaseTotal": 0,
@@ -3979,9 +4020,10 @@ def export_render_source(name: str, job: dict) -> Path:
                             output_space=input_space)
 
 
-def finish_export(film_png: Path, dst: Path, job: dict) -> tuple[int, int]:
+def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[int, int]:
     """Apply the display grade/crop and encode a full-precision film render."""
-    out = color_pipeline.load_float_rgb(film_png)
+    out = (color_pipeline.as_float_rgb(film_png) if isinstance(film_png, np.ndarray)
+           else color_pipeline.load_float_rgb(film_png))
     out = edits.apply_base(
         out, job.get("optics"), job.get("heals"), job.get("lensProfile"))
     g = job.get("grade") or {}
@@ -4097,9 +4139,15 @@ def export_phase(job: dict, phase: str):
 
 
 def _resident_render_full(name: str, params: dict, request: dict) -> dict:
-    # Serialize only the background process. Probe + decode + render must be
-    # one admission so parallel recipes do not decode the same RAW twice.
-    with BACKGROUND_RENDER_LOCK:
+    # Two export workers bound the pipeline. Sensor decode has its own priority
+    # slot and shared cache; it can prepare the next capture during GPU work.
+    # Keep a serial switch for repeatable throughput comparisons.
+    import raw_decode_runtime
+    with raw_decode_runtime.cancellation(getattr(RENDER_CONTEXT, "cancelled", None),
+                                        priority="export"):
+        if os.environ.get("LIGHTTABLE_EXPORT_PIPELINE", "1") == "0":
+            with BACKGROUND_RENDER_LOCK:
+                return _resident_render_full_locked(name, params, request)
         return _resident_render_full_locked(name, params, request)
 
 
@@ -4112,7 +4160,15 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
             key = (f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
                    f"{color_pipeline.raw_decode_fingerprint(params)}")
             probe_start = time.perf_counter()
-            hit = BACKGROUND_ENGINE.probe_input(key)
+            # A busy GPU must not delay preparation of the next capture.
+            # The Python demosaic cache still deduplicates matching inputs.
+            acquired = BACKGROUND_RENDER_LOCK.acquire(blocking=False,
+                priority="export", cancelled=getattr(RENDER_CONTEXT, "cancelled", None))
+            try:
+                hit = BACKGROUND_ENGINE.probe_input(key) if acquired else False
+            finally:
+                if acquired:
+                    BACKGROUND_RENDER_LOCK.release()
             phases["input_probe"] = (time.perf_counter() - probe_start) * 1000
             if hit:
                 # A restarted/evicted engine can miss between probe and render;
@@ -4203,6 +4259,46 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
 
     cache_key = render_key(name, params, 0, "rs-export")
     film_png = CACHE / "export-film" / f"{cache_key}.tif"
+    shared_error = None
+    if export_surface.supported() and os.environ.get("LIGHTTABLE_SHARED_EXPORT", "1") != "0":
+        metrics = {"cached": True, "total_ms": 0.0}
+        cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
+        def check_cancel():
+            if cancelled and cancelled():
+                raise RenderCancelled("export cancelled before finishing")
+        def build_shared():
+            nonlocal metrics
+            if valid_tiff_cache(film_png):
+                # Retain the existing persistent-cache benefit across RAM
+                # eviction and application restarts, without rerendering.
+                return color_pipeline.load_float_rgb(film_png)
+            request = {
+                "export_shared": True,
+                "data_dir": str(RUST_DATA), "film": cp["stock"],
+                "paper": cp["paper"], "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
+                "params": fp.rust_params_json(params),
+                "rotate_quarters_ccw": rot90k(cp["rotate"]), "bit_depth": 32,
+            }
+            metrics = _resident_render_full(name, params, request)
+            # Adoption unlinks the name immediately, even if a subsequent
+            # cancellation prevents caching or delivering the mapped pixels.
+            return export_surface.adopt_surface(metrics["export_shared"])
+        try:
+            pixels = EXPORT_SHARED_CACHE.get_or_build(cache_key, build_shared, check_cancel)
+            check_cancel()
+            job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
+            with export_phase(job, "finish"):
+                width, height = finish_export(pixels, dst, job)
+            return dict(metrics, width=width, height=height,
+                        phase_ms=dict(job.get("phase_ms", {})),
+                        direct_export=False, direct_fallback=direct_error,
+                        export_transport="shared-memory-rgb32")
+        except RenderCancelled:
+            raise
+        except Exception as error:
+            # Older workers and restricted shared-memory environments keep
+            # the established float TIFF path and identical finishing rules.
+            shared_error = type(error).__name__
     metrics = {"cached": True, "total_ms": 0.0}
     with EXPORT_FILM_LOCK:
         cancelled = getattr(RENDER_CONTEXT, "cancelled", None)
@@ -4231,7 +4327,8 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     with export_phase(job, "finish"):
         width, height = finish_export(film_png, dst, job)
     return dict(metrics, width=width, height=height, phase_ms=dict(job.get("phase_ms", {})),
-                direct_export=False, direct_fallback=direct_error)
+                direct_export=False, direct_fallback=direct_error,
+                export_transport="tiff", shared_export_fallback=shared_error)
 
 
 def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
@@ -4544,7 +4641,12 @@ def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
         RENDER_CONTEXT.cancelled = batch.cancelled.is_set
     try:
         with SESSION.inflight("export", library_workflow.source_name(name)):
-            outcome = _export_one(name, job, batch)
+            import raw_decode_runtime
+            with raw_decode_runtime.cancellation(getattr(RENDER_CONTEXT, "cancelled", None),
+                                                priority="export"):
+                outcome = _export_one(name, job, batch)
+    except (ExportCancelled, RenderCancelled):
+        outcome = {"cancelledCount": 1}
     except Exception as error:
         outcome = {"error": str(error)}
     finally:

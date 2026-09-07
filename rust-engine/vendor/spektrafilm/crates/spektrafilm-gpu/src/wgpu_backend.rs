@@ -2946,9 +2946,9 @@ fn build_diffusion_state(
         out_w: u32,
         out_h: u32,
         inv_factor: f32,
-        _p0: u32,
-        _p1: u32,
-        _p2: u32,
+        origin_x: u32,
+        origin_y: u32,
+        factor: u32,
     }
     let down_pipe = backend.cached_pipeline(
         include_str!("../../spektrafilm-shaders/wgsl/downsample_area.wgsl"),
@@ -3165,9 +3165,9 @@ fn build_diffusion_state(
             out_w: width,
             out_h: height,
             inv_factor: 1.0 / plan.d as f32,
-            _p0: 0,
-            _p1: 0,
-            _p2: 0,
+            origin_x: plan.pixel_origin[0],
+            origin_y: plan.pixel_origin[1],
+            factor: plan.d,
         }),
         usage: wgpu::BufferUsages::UNIFORM,
     });

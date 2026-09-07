@@ -31,6 +31,22 @@ pub struct DiffusionFilterParams {
 }
 
 impl DiffusionFilterParams {
+    /// Shared plan for rendering and viewport support; both must use the same
+    /// downsample factor and finite Gaussian kernels.
+    pub fn gpu_plan(
+        &self,
+        pixel_size_um: f64,
+        width: u32,
+        height: u32,
+    ) -> Option<spektrafilm_gpu::DiffusionGpuPlan> {
+        if !self.active {
+            return None;
+        }
+        spektrafilm_model::diffusion::diffusion_gpu_plan(
+            &self.to_model(), pixel_size_um, width, height,
+        )
+    }
+
     /// Borrowed view as the model crate's `DiffusionFilter` (f64), for the
     /// CPU diffusion-filter apply. `family` borrows `self.filter_family`.
     pub fn to_model(&self) -> spektrafilm_model::diffusion::DiffusionFilter<'_> {

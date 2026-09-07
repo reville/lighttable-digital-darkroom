@@ -1,6 +1,6 @@
 --- a/src/demosaic/xtrans_demosaic.cpp
 +++ b/src/demosaic/xtrans_demosaic.cpp
-@@ -174,11 +174,29 @@
+@@ -174,11 +174,37 @@
    size_t buffer_size = LIBRAW_AHD_TILE * LIBRAW_AHD_TILE * (ndir * 11 + 6);
    char** buffers = malloc_omp_buffers(buffer_count, buffer_size);
  
@@ -29,10 +29,18 @@
 +        if (tile_col < 0 || tile_col >= tile_cols) continue;
 +        const int top = 3 + tile_row * tile_step;
 +        const int left = 3 + tile_col * tile_step;
++        // Do not throw across an OpenMP region. Leave the cancellation
++        // flag set for every worker; release scratch before checkCancel().
++#ifdef _MSC_VER
++        const bool cancelled = InterlockedExchangeAdd(&_exitflag, 0) != 0;
++#else
++        const bool cancelled = __sync_fetch_and_add(&_exitflag, 0) != 0;
++#endif
++        if (cancelled) continue;
  #if defined(LIBRAW_USE_OPENMP)
          char* buffer = buffers[omp_get_thread_num()];
  #else
-@@ -198,7 +216,6 @@
+@@ -198,7 +224,6 @@
          homo = (char(*)[LIBRAW_AHD_TILE][LIBRAW_AHD_TILE])(
              buffer + LIBRAW_AHD_TILE * LIBRAW_AHD_TILE * (ndir * 10 + 6));
  
@@ -40,7 +48,7 @@
          {
              int mrow = MIN(top + LIBRAW_AHD_TILE, height - 3);
              int mcol = MIN(left + LIBRAW_AHD_TILE, width - 3);
-@@ -423,14 +440,12 @@
+@@ -423,14 +448,13 @@
                      FORC3 image[(row + top) * width + col + left][c] = avg[c] / avg[3];
                  }
          }
@@ -57,6 +65,7 @@
 +  }
 +
 +  free_omp_buffers(buffers, buffer_count);
++  checkCancel();
 +
 +  border_interpolate(8);
  }
