@@ -5886,7 +5886,7 @@ function setCropMode(on) {
   syncCompareControl();
 }
 
-/* ------------------------------------------------ crop view (Lightroom feel) */
+/* ---------------------------------------------- crop view (centred frame) */
 // While cropping, the crop frame stays centred in the workspace and the photo
 // zooms and pans underneath it. The on-screen frame is the geometric mean of
 // the crop's fitted size and the workspace (zoom bias 0.5), so a dragged handle
