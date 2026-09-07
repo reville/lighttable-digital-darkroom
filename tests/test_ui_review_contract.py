@@ -13,7 +13,7 @@ class UIReviewContractTests(unittest.TestCase):
         cls.javascript = (root / "web" / "app.js").read_text()
         cls.native = (root / "app" / "main.swift").read_text()
 
-    def test_tool_rail_is_grouped_and_has_eight_primary_destinations(self):
+    def test_tool_rail_has_eight_primary_destinations_without_section_labels(self):
         rail = self.html.split('<nav class="toolrail"', 1)[1].split("</nav>", 1)[0]
         self.assertEqual(
             re.findall(r'data-pane="([^"]+)"', rail),
@@ -24,7 +24,7 @@ class UIReviewContractTests(unittest.TestCase):
         )
         self.assertEqual(
             re.findall(r'<span class="toolrail-group">([^<]+)</span>', rail),
-            ["Adjust", "Tools", "Photo"],
+            [],
         )
 
     def test_edit_inspector_uses_the_reviewed_progressive_order(self):

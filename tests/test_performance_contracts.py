@@ -712,7 +712,7 @@ process.stdout.write(JSON.stringify({
         ).group(1)
         self.assertNotIn("cropPane", blocked)
 
-    def test_primary_sidebar_groups_the_eight_photo_tools(self):
+    def test_primary_sidebar_has_eight_photo_tools_without_section_labels(self):
         html = (ROOT / "web" / "index.html").read_text()
         toolrail = re.search(
             r'<nav class="toolrail".*?</nav>', html, flags=re.DOTALL
@@ -728,7 +728,7 @@ process.stdout.write(JSON.stringify({
         self.assertEqual(
             re.findall(r'<span class="toolrail-group">([^<]+)</span>',
                        toolrail),
-            ["Adjust", "Tools", "Photo"],
+            [],
         )
 
     def test_native_window_chrome_tracks_live_control_bounds(self):
