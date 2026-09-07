@@ -809,6 +809,10 @@ body.filmstrip-resizing { cursor:ns-resize; user-select:none; }
 .section-switch.on { border:0; background:transparent; color:var(--ink-2); }
 .section-switch.on .switch-track { border-color:var(--slider-accent); background:var(--slider-accent); box-shadow:none; }
 .section-switch.on .switch-track > span { background:#fff; transform:translateX(11px); }
+#filmProfileToggle { min-height:36px; flex-shrink:0; gap:8px; font-size:12px; }
+#filmProfileToggle .switch-track { width:48px; height:28px; flex-basis:48px; border-radius:14px; }
+#filmProfileToggle .switch-track > span { width:22px; height:22px; }
+#filmProfileToggle.on .switch-track > span { transform:translateX(20px); }
 .profile-off-note { margin:0; padding:8px 10px; border-left:2px solid var(--muted-2); border-radius:0 var(--radius-s) var(--radius-s) 0; background:var(--inset); color:var(--muted); font-size:11px; line-height:1.5; }
 #filmProfileSection.profile-off #filmProfileControls, #filmStagesSection.profile-off { display:none; }
 a.reset { color:var(--muted); font-size:11px; font-weight:400; text-decoration:none; opacity:0; transition:opacity .12s ease,color .12s ease; }
