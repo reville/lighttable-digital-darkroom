@@ -132,32 +132,42 @@
         <div class="btnrow"><button id="cullApplyPicks" disabled>Pick selects</button><button id="cullApplyRejects" disabled>Reject rejects</button></div>
       </div>
     </details>
-
-    <section class="sidebar-controls">
-      <details class="sidebar-disclosure filter-disclosure">
-        <summary>Filter</summary>
-        <div class="sidebar-disclosure-body">
-          <label for="filter">Workflow state</label>
-          <select id="filter"><option value="all">Any state</option><option value="unrated">Unrated</option><option value="edited">Edited</option><option value="virtual">Virtual copies</option><option value="pending" hidden>Unflagged</option><option value="approved" hidden>Picked</option><option value="skipped" hidden>Rejected</option><option value="rated" hidden>Rated 1+</option></select>
-          <label for="ratingFilter">Minimum rating</label>
-          <select id="ratingFilter"><option value="0">Any rating</option><option value="unrated">Unrated only</option><option value="1">1 star+</option><option value="2">2 stars+</option><option value="3">3 stars+</option><option value="4">4 stars+</option><option value="5">5 stars</option></select>
-          <label for="labelFilter">Colour label</label>
-          <select id="labelFilter"><option value="all">Any label</option><option value="any">Any colour</option><option value="none">No label</option><option value="red">Red</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="blue">Blue</option><option value="purple">Purple</option></select>
-          <label for="kindFilter">File kind</label>
-          <select id="kindFilter"><option value="all">RAW and processed</option><option value="raw">RAW originals</option><option value="processed">Processed files</option><option value="virtual">Virtual copies</option></select>
-        </div>
-      </details>
-    </section>
   </aside>
+
+  <div id="libraryFilterPanel" class="library-filter-panel" role="dialog" aria-labelledby="libraryFilterTitle" hidden>
+    <div class="library-filter-heading"><strong id="libraryFilterTitle">Filter photos</strong><button id="closeLibraryFilters" class="quiet icon-btn" type="button" aria-label="Close filters">×</button></div>
+    <fieldset class="file-type-filters"><legend>File type</legend>
+      <label><input type="checkbox" data-file-type="raw">RAW</label>
+      <label><input type="checkbox" data-file-type="jpeg">JPEG</label>
+      <label><input type="checkbox" data-file-type="heic">HEIC / HEIF</label>
+      <label><input type="checkbox" data-file-type="tiff">TIFF</label>
+      <label><input type="checkbox" data-file-type="png">PNG</label>
+    </fieldset>
+    <label class="field-label" for="filter">Flag</label>
+    <select id="filter"><option value="all">Any flag</option><option value="pending">Unflagged</option><option value="approved">Picked</option><option value="skipped">Rejected</option><option value="rated" hidden>Rated 1+</option><option value="unrated" hidden>Unrated</option><option value="edited" hidden>Edited</option><option value="unedited" hidden>Unedited</option><option value="virtual" hidden>Virtual copies</option></select>
+    <label class="field-label" for="ratingFilter">Rating</label>
+    <select id="ratingFilter"><option value="0">Any rating</option><option value="unrated">Unrated only</option><option value="1">1 star+</option><option value="2">2 stars+</option><option value="3">3 stars+</option><option value="4">4 stars+</option><option value="5">5 stars</option></select>
+    <label class="field-label" for="labelFilter">Color label</label>
+    <select id="labelFilter"><option value="all">Any label</option><option value="any">Any color</option><option value="none">No label</option><option value="red">Red</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="blue">Blue</option><option value="purple">Purple</option></select>
+    <label class="field-label" for="editFilter">Edit status</label>
+    <select id="editFilter"><option value="all">Any edit status</option><option value="edited">Edited</option><option value="unedited">Unedited</option><option value="virtual">Virtual copies</option></select>
+    <div class="no-dd" hidden><select id="kindFilter" aria-label="Legacy file kind"><option value="all">All photos</option><option value="raw">RAW originals</option><option value="processed">Processed files</option><option value="virtual">Virtual copies</option></select></div>
+    <div class="library-filter-footer"><button id="clearLibraryFilters" class="quiet" type="button">Clear all filters</button></div>
+  </div>
 
   <main class="workspace">
     <div class="library" id="library">
       <div class="library-head">
         <div><strong id="libraryTitle">All Photos</strong><span id="searchSummary">Local folder</span></div>
         <div class="library-tools">
+          <button id="libraryFilterBtn" class="library-filter-btn" type="button" aria-haspopup="dialog" aria-controls="libraryFilterPanel" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M4 8h8M6 13h4"/></svg><span id="libraryFilterLabel">Filter</span></button>
           <label><span>Sort</span><select id="sort"><option value="name">File name</option><option value="rating">Rating</option><option value="status">Flag</option><option value="date">Capture date</option><option value="label">Colour label</option></select></label>
           <label class="thumbnail-size-control"><span>Size</span><input type="range" id="gridSize" min="120" max="280" step="10" value="180"></label>
           <button class="quiet icon-btn" id="libraryMenuBtn" aria-controls="libraryMenu" title="Photo actions" aria-label="Photo actions" aria-expanded="false">•••</button>
+        </div>
+        <div id="activeLibraryFilters" class="active-library-filters" hidden>
+          <div id="libraryFilterChips" class="library-filter-chips" role="group" aria-label="Active filters"></div>
+          <button id="clearActiveLibraryFilters" class="quiet" type="button">Clear all</button>
         </div>
       </div>
       <div class="grid" id="grid"></div>

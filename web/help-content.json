@@ -398,7 +398,7 @@
       "id": "search-filter-sort",
       "title": "Find photos with search, filters, and sorting",
       "category": "Library",
-      "summary": "Narrow the current folder or collection by text, flags, stars, colour, and file kind.",
+      "summary": "Narrow the current folder or collection by text, file type, flags, stars, color label, and edit status.",
       "keywords": [
         "find",
         "search",
@@ -407,7 +407,15 @@
         "sort",
         "capture date",
         "no results",
-        "unrated"
+        "unrated",
+        "file type",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "unedited",
+        "clear filters"
       ],
       "sections": [
         {
@@ -419,14 +427,22 @@
             "Click Search photos and keywords, or press / when you are not typing in a field.",
             "Type a word or phrase from the filename or keywords.",
             "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.",
-            "Expand Filter for workflow state, minimum rating, colour label, and file kind.",
+            "Click Filter beside Sort. Select one or more file types, then combine them with Flag, Rating, Color label, or Edit status.",
             "Choose File name, Rating, Flag, Capture date, or Colour label in Sort."
+          ]
+        },
+        {
+          "title": "Combine and clear filters",
+          "paragraphs": [
+            "Select RAW, JPEG, HEIC / HEIF, TIFF, or PNG. Multiple file types include any of those formats; flag, rating, color label, edit status, and search narrow that set further. No selected file types means all file types.",
+            "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its ×, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
+            "Edit status offers Edited, Unedited, and Virtual copies. A virtual copy uses its original file’s type. Press Escape or click outside the panel to close it without clearing your choices."
           ]
         },
         {
           "title": "When a photo seems missing",
           "paragraphs": [
-            "Clear the search text and reset Filter choices, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.",
+            "Clear the search text and choose Clear all above the grid, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.",
             "Capture date sorts from earlier to later; Rating sorts higher ratings first."
           ]
         }
@@ -548,7 +564,7 @@
             "Select a photo, or a set in a grid, and open Info.",
             "Under Colour label, choose Red, Yellow, Green, Blue, or Purple. Choose No label to clear it.",
             "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.",
-            "Expand Filter in the library sidebar and use Colour label to find a particular colour, any colour, or unlabelled photos."
+            "Click Filter beside Sort and use Color label to find a particular colour, any colour, or unlabelled photos."
           ],
           "tips": [
             "Applying the same label again clears it. Colour-label actions do not auto-advance."
@@ -662,10 +678,10 @@
         {
           "title": "Save supported rules",
           "paragraphs": [
-            "A smart collection finds photos that match its saved rules. Supported rules are pick/reject/unflag status, minimum star rating, file kind, and search text."
+            "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text."
           ],
           "steps": [
-            "Set the search text, desired flag group, minimum rating, and file kind in the library.",
+            "Set the search text and desired choices in Filter beside Sort.",
             "Click the ✦ beside Collections, labelled Save filters as smart collection.",
             "Name the collection and save.",
             "Click its name to view matching photos. Changing a photo’s relevant metadata changes whether it matches."
@@ -674,8 +690,8 @@
         {
           "title": "Know what is saved",
           "paragraphs": [
-            "Colour-label filters, the selected folder, and Include subfolders are not saved in the smart collection rules. Edited and Unrated only are not supported smart-collection rules. Use supported flag and minimum-rating choices when creating one.",
-            "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and sidebar filters can still narrow the collection view."
+            "The selected folder and Include subfolders are not saved in the smart collection rules. The collection searches the library using the saved filter choices.",
+            "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and library filters can still narrow the collection view."
           ]
         }
       ],
@@ -709,7 +725,7 @@
             "Make the source photo active.",
             "Open the Photo actions ••• menu beside Sort and Size, then choose Create virtual copy.",
             "Name the copy and save. The new copy becomes active.",
-            "Edit the copy. Use Filter → Workflow state → Virtual copies to find copies later."
+            "Edit the copy. Use Filter → Edit status → Virtual copies to find copies later."
           ],
           "tips": [
             "Delete virtual copy in Photo actions removes the active virtual copy. For a real second file on disk, export a rendered image."

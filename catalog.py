@@ -2035,6 +2035,33 @@ class Catalog:
             where.append("f.kind='video'")
         elif kind == "virtual":
             where.append("i.virtual=1")
+        # Saved toolbar filters use the same OR-within-types / AND-between-
+        # fields semantics as the browser, including virtual-copy source types.
+        file_types = flt.get("fileTypes")
+        if isinstance(file_types, list):
+            type_clauses = []
+            groups = {"jpeg": (".jpg", ".jpeg", ".jpe"),
+                      "heic": (".heic", ".heif", ".hif"),
+                      "tiff": (".tif", ".tiff"), "png": (".png",)}
+            if "raw" in file_types:
+                type_clauses.append("f.kind='raw'")
+            for name, suffixes in groups.items():
+                if name in file_types:
+                    placeholders = ",".join("?" for _ in suffixes)
+                    type_clauses.append(f"(f.kind='processed' AND f.ext IN ({placeholders}))")
+                    params.extend(suffixes)
+            if type_clauses:
+                where.append("(" + " OR ".join(type_clauses) + ")")
+        edit_state = flt.get("editState")
+        if edit_state in ("edited", "unedited"):
+            edited = "(" + " OR ".join(
+                f"s.{field}_json IS NOT NULL" for field in
+                ("params", "grade", "crop", "masks", "heals", "optics")) + ")"
+            where.append(edited if edit_state == "edited" else "NOT " + edited)
+        elif edit_state == "virtual":
+            where.append("i.virtual=1")
+        if flt.get("unrated") is True:
+            where.append("COALESCE(s.rating,0)=0")
         raw_excluded_kinds = spec.get("excludeKinds", [])
         if not isinstance(raw_excluded_kinds, (list, tuple, set)):
             raw_excluded_kinds = []

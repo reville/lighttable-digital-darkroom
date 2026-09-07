@@ -1,3 +1,4 @@
+import { matchesLibraryFilters, normalizeFileTypes } from '/web/library-filters.js';
 import { aiSearchTerms } from '/web/local-ai.js';
 
 export function photoMatchesQuery(image, query, exif = null) {
@@ -11,7 +12,14 @@ export function photoMatchesQuery(image, query, exif = null) {
 
 export function photoMatchesRules(image, rules = {}, exif = null) {
   if ((+image.rating || 0) < (+rules.ratingMin || 0)) return false;
-  if (rules.flag && rules.flag !== 'all' && image.status !== rules.flag) return false;
+  const flag = rules.status || rules.flag;
+  if (flag && flag !== 'all' && (image.status || 'pending') !== flag) return false;
+  if (rules.unrated && (+image.rating || 0) !== 0) return false;
+  if (rules.label && rules.label !== 'all') {
+    const label = image.label || 'none';
+    if (rules.label === 'any' ? label === 'none' : label !== rules.label) return false;
+  }
+  if (!matchesLibraryFilters(image, normalizeFileTypes(rules.fileTypes), rules.editState)) return false;
   if (rules.kind === 'raw' && !image.raw) return false;
   if (rules.kind === 'processed' && (image.raw || image.virtual)) return false;
   if (rules.kind === 'virtual' && !image.virtual) return false;

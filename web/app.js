@@ -1,3 +1,5 @@
+import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
+import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
 import {installMaskBatch, mergeMaskDelta} from '/web/batch-masks.js';
 import {createSelectionRequest} from '/web/selection-request.js';
@@ -104,6 +106,8 @@ const RESET_GROUPS = {
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
+const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
+  onChange: () => { refreshFilteredView(); savePrefs(); } });
 let MASK_BATCH = null;
 let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
@@ -296,8 +300,8 @@ document.addEventListener('keydown', (event) => {
 
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
-    ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'search', 'sort'].map(id => $(id)?.value),
-    S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
+    LIBRARY_FILTERS.types(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -4301,6 +4305,7 @@ $('switchPair').onclick = async () => {
   // The requested member is explicit. A RAW-only/JPEG-only filter should not
   // immediately navigate away from it; keep other library filters intact.
   if (['raw', 'processed'].includes($('kindFilter').value)) $('kindFilter').value = 'all';
+  LIBRARY_FILTERS.setTypes([]);
   if (S.msel.delete(image.name)) S.msel.add(companion.name);
   await go(S.images.indexOf(companion));
   refreshLists(); savePrefs();
@@ -4311,13 +4316,15 @@ function visible() {
   const rf = $('ratingFilter')?.value || 'all';
   const kind = $('kindFilter')?.value || 'all';
   const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
+  const editState = $('editFilter')?.value || 'all';
+  const fileTypes = LIBRARY_FILTERS.types();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -4329,7 +4336,8 @@ function visible() {
       if (f === 'all') return true;
       if (f === 'rated') return (im.rating || 0) >= 1;
       if (f === 'unrated') return !im.rating || +im.rating === 0;
-      if (f === 'edited') return !!(im.hasEdits || im.params || (im.grade && Object.keys(im.grade).length) || im.crop);
+      if (f === 'edited') return photoHasEdits(im);
+      if (f === 'unedited') return !photoHasEdits(im);
       if (f === 'virtual') return !!im.virtual;
       if (f === 'pending') return !im.status || im.status === 'pending';
       return im.status === f;
@@ -4347,7 +4355,7 @@ function visible() {
     const matchesKind = (kind === 'all' || (kind === 'raw' && im.raw) ||
       (kind === 'processed' && !im.raw && !im.virtual) ||
       (kind === 'virtual' && im.virtual));
-    return matchesKind && photoMatchesQuery(im, search);
+    return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
@@ -4915,6 +4923,7 @@ const cachedLibrarySummary = createSummaryCache();
 let _countsPaintKey = '';
 
 function counts() {
+  LIBRARY_FILTERS.sync();
   // Selection changes do not alter catalog counts or collection membership.
   const summaryKey = `${S.libraryRevision || 0}|${_visibleEpoch}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${S.images.length}`;
   const summary = cachedLibrarySummary(summaryKey, S.images, () => {
@@ -4943,7 +4952,7 @@ function counts() {
   $('sourceRatedCount').textContent = rated;
   $('filmstripCount').textContent = `${shown} photo${shown === 1 ? '' : 's'}`;
   const labels = { all: 'All Photos', pending: 'Unflagged', approved: 'Picked',
-    skipped: 'Rejected', rated: 'Rated', unrated: 'Unrated', edited: 'Edited',
+    skipped: 'Rejected', rated: 'Rated', unrated: 'Unrated', edited: 'Edited', unedited: 'Unedited',
     virtual: 'Virtual Copies' };
   const folder = S.folders.find((item) => item.path === S.activeFolder);
   const folderLabel = folder?.name || (S.rootFolder.split('/').filter(Boolean).pop() || 'All Photos');
@@ -4951,9 +4960,12 @@ function counts() {
   const scopeLabel = collection?.name || folderLabel;
   $('libraryTitle').textContent = $('filter').value === 'all'
     ? scopeLabel : `${labels[$('filter').value] || 'All Photos'} — ${scopeLabel}`;
+  const resultCount = shown === scope.length
+    ? `${scope.length} photo${scope.length === 1 ? '' : 's'}`
+    : `${shown} of ${scope.length} photos`;
   $('searchSummary').textContent = $('search').value.trim()
-    ? `Results for “${$('search').value.trim()}”`
-    : `${scope.length} photo${scope.length === 1 ? '' : 's'} · Local`;
+    ? `${resultCount} · Results for “${$('search').value.trim()}”`
+    : `${resultCount} · Local`;
   document.querySelectorAll('[data-source]').forEach((b) => {
     b.classList.toggle('on', !collection && b.dataset.source === $('filter').value);
   });
@@ -5154,10 +5166,15 @@ $('addSmartCollection').onclick = async () => {
   if (!name) return;
   const result = await runLibraryAction({
     action: 'create_smart_collection', name,
-    rules: { flag: $('filter').value === 'rated' ? 'all' : $('filter').value,
+    rules: { flag: ['pending', 'approved', 'skipped'].includes($('filter').value) ? $('filter').value : 'all',
       ratingMin: Math.max(+$('ratingFilter').value || 0,
         $('filter').value === 'rated' ? 1 : 0),
-      kind: $('kindFilter').value, query: $('search').value },
+      kind: $('kindFilter').value, query: $('search').value,
+      fileTypes: LIBRARY_FILTERS.types(),
+      editState: ['edited', 'unedited', 'virtual'].includes($('filter').value)
+        ? $('filter').value : $('editFilter').value,
+      unrated: $('ratingFilter').value === 'unrated' || $('filter').value === 'unrated',
+      label: $('labelFilter').value },
   });
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
@@ -5547,6 +5564,7 @@ function refreshFilteredView() {
 function setViewMode(mode, persist = true) {
   if (!['photo', 'square', 'detail'].includes(mode)) return;
   const gridMode = mode !== 'detail';
+  LIBRARY_FILTERS.close();
   S.viewMode = mode;
   if (gridMode) S.gridViewMode = mode;
   $('library').classList.toggle('show', gridMode);
@@ -7243,6 +7261,7 @@ document.querySelectorAll('[data-view]').forEach((button) => {
   button.onclick = () => setViewMode(button.dataset.view);
 });
 $('filter').onchange = refreshFilteredView;
+$('editFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
 $('ratingFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
 $('kindFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
 $('sort').onchange = refreshFilteredView;
@@ -10061,7 +10080,8 @@ async function savePrefs() {
     gridViewMode: S.gridViewMode,
     activeCollection: S.activeCollection,
     ratingFilter: $('ratingFilter').value, kindFilter: $('kindFilter').value,
-    labelFilter: $('labelFilter').value,
+    labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
+    fileTypeFilters: LIBRARY_FILTERS.types(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10119,6 +10139,8 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
     if (el && v != null) el.value = v;
   }
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
+  if (!$('editFilter').value) $('editFilter').value = 'all';
+  LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -10665,6 +10687,7 @@ function uiStateReport() {
       status: $('filter')?.value || 'all',
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
+      fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',
     },
