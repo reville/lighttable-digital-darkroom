@@ -719,7 +719,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 #cropLayer[data-active-crop-handle="ne"],
 #cropLayer[data-active-crop-handle="sw"] { cursor:nesw-resize; }
 #cropLayer[data-active-crop-handle] * { cursor:inherit !important; }
-/* Lightroom-style cropping: the frame is the whole photo, sized by the
+/* Centred-frame cropping: the frame is the whole photo, sized by the
    cropping zoom and panned under a centred crop, and the workspace clips it. */
 .cmp.is-cropping { flex:0 0 auto; overflow:visible; max-width:none; max-height:none; }
 #cropLayer.exiting { pointer-events:none; }
