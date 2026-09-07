@@ -173,7 +173,8 @@ class CaptureColourTests(unittest.TestCase):
                 return np.full((70, 80, 3), 16384, dtype=np.uint16)
 
         runner = mock.Mock(side_effect=lambda tile, *_: tile)
-        with mock.patch.object(rawpy, "imread", return_value=Raw()):
+        with mock.patch("raw_decode_runtime.open_raw") as opened:
+            opened.return_value.__enter__.return_value = (Raw(), rawpy)
             first = color_pipeline.decode_raw(
                 "frame.dng", {"learned_denoise": True,
                               "learned_denoise_strength": 0.6},

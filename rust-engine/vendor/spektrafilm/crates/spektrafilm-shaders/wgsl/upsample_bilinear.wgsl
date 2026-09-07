@@ -9,9 +9,9 @@ struct Params {
     out_w: u32,
     out_h: u32,
     inv_factor: f32, // 1.0 / factor
-    _p0: u32,
-    _p1: u32,
-    _p2: u32,
+    origin_x: u32,
+    origin_y: u32,
+    factor: u32,
 }
 
 @group(0) @binding(0) var<uniform> params: Params;
@@ -29,12 +29,16 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     if x >= params.out_w || y >= params.out_h {
         return;
     }
-    let max_x = f32(params.in_w - 1u);
-    let max_y = f32(params.in_h - 1u);
-    let fx = clamp((f32(x) + 0.5) * params.inv_factor - 0.5, 0.0, max_x);
-    let fy = clamp((f32(y) + 0.5) * params.inv_factor - 0.5, 0.0, max_y);
-    let x0 = u32(floor(fx));
-    let y0 = u32(floor(fy));
+    let ox = params.origin_x / params.factor;
+    let oy = params.origin_y / params.factor;
+    let max_x = f32(ox + params.in_w - 1u);
+    let max_y = f32(oy + params.in_h - 1u);
+    // Evaluate in full-frame coordinates before translating to local indices.
+    // Computing the fractions after subtracting the origin changes f32 rounding.
+    let fx = clamp((f32(x + params.origin_x) + 0.5) * params.inv_factor - 0.5, f32(ox), max_x);
+    let fy = clamp((f32(y + params.origin_y) + 0.5) * params.inv_factor - 0.5, f32(oy), max_y);
+    let x0 = u32(floor(fx)) - ox;
+    let y0 = u32(floor(fy)) - oy;
     let x1 = min(x0 + 1u, params.in_w - 1u);
     let y1 = min(y0 + 1u, params.in_h - 1u);
     let wx = fx - floor(fx);

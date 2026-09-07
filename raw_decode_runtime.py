@@ -1,7 +1,95 @@
 """Use the bundled parallel decoder without regressing X-Trans development."""
 from contextlib import contextmanager
+from contextvars import ContextVar
 from enum import Enum
 import importlib
+import threading
+
+from render_scheduling import PriorityGate, RenderCancelled
+
+
+class RawDecodeCancelled(RenderCancelled):
+    """A superseded capture never publishes partial sensor pixels."""
+
+
+_cancelled = ContextVar("raw_decode_cancelled", default=None)
+_priority = ContextVar("raw_decode_priority", default="interactive")
+_decode_gate = PriorityGate()
+
+
+@contextmanager
+def cancellation(check, *, priority=None):
+    previous = _cancelled.get()
+    combined = (lambda: check() or previous()) if check and previous else check or previous
+    token = _cancelled.set(combined)
+    priority_token = _priority.set(priority or _priority.get())
+    try:
+        check_cancel()
+        yield
+    finally:
+        _cancelled.reset(token)
+        _priority.reset(priority_token)
+
+
+def check_cancel():
+    check = _cancelled.get()
+    if check and check():
+        raise RawDecodeCancelled("RAW decode superseded or cancelled")
+
+
+def is_cancelled():
+    check = _cancelled.get()
+    return bool(check and check())
+
+
+@contextmanager
+def decode_slot():
+    """One multithreaded demosaic at a time; visible requests get first admission.
+
+    The slot ends before GPU rendering, allowing the next batch capture to
+    decode while the current one renders without oversubscribing CPU threads.
+    """
+    if not _decode_gate.acquire(priority=_priority.get(), cancelled=is_cancelled):
+        raise RawDecodeCancelled("RAW decode cancelled while queued")
+    try:
+        check_cancel()
+        yield
+    finally:
+        _decode_gate.release()
+
+
+@contextmanager
+def interruptible(raw, decoder):
+    """Bridge request cancellation to LibRaw's atomic flag, never kill a thread.
+
+    The monitor owns a strong reference until it joins, before RawPy recycles
+    its native object. Older wheels retain the ordinary completion fallback.
+    """
+    check_cancel()
+    check = _cancelled.get()
+    finished = threading.Event()
+    monitor = None
+    if check and getattr(decoder, "LIGHTTABLE_RAW_CANCEL", 0) == 1:
+        def watch():
+            # A hard ten-minute bound also covers a defective native decoder.
+            for _ in range(30000):
+                if finished.wait(0.02):
+                    return
+                if check():
+                    raw.request_cancel()
+                    return
+        monitor = threading.Thread(target=watch, name="lighttable-raw-cancel", daemon=True)
+        monitor.start()
+    try:
+        yield
+    except Exception:
+        check_cancel()
+        raise
+    finally:
+        finished.set()
+        if monitor is not None:
+            monitor.join()
+    check_cancel()
 
 
 @contextmanager

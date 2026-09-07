@@ -2,8 +2,8 @@
 //!
 //! Input and metering remain full frame. Only the image sent through the pixel
 //! stages is cropped, with the sum of the sequential kernels' support. Noise
-//! uses absolute source coordinates. Diffusion's resampling lattice currently
-//! requires the full frame; that path returns the same requested output crop.
+//! uses absolute source coordinates. Diffusion crops align to the full-frame
+//! downsample lattice and retain its absolute interpolation coordinates.
 use anyhow::{Result, bail};
 use serde::{Deserialize, Serialize};
 use spektrafilm_core::params::RuntimeParams;
@@ -81,17 +81,21 @@ pub fn plan(
             height: v.width,
         },
     };
-    let padding = wgpu.then(|| kernel_margin(params, width, height)).flatten();
-    let render = if let Some(pad) = padding {
-        let x = source.x.saturating_sub(pad);
-        let y = source.y.saturating_sub(pad);
+    let padding = wgpu
+        .then(|| kernel_support(params, width, height))
+        .flatten();
+    let render = if let Some((pad, alignment)) = padding {
+        let align_down = |v: u32| v / alignment * alignment;
+        let align_up = |v: u32| v.div_ceil(alignment).saturating_mul(alignment);
+        let x = align_down(source.x.saturating_sub(pad));
+        let y = align_down(source.y.saturating_sub(pad));
         let right = (source.x + source.width).saturating_add(pad).min(width);
         let bottom = (source.y + source.height).saturating_add(pad).min(height);
         Rect {
             x,
             y,
-            width: right - x,
-            height: bottom - y,
+            width: align_up(right).min(width) - x,
+            height: align_up(bottom).min(height) - y,
         }
     } else {
         Rect {
@@ -118,19 +122,37 @@ fn blur_radius(sigma: f32) -> u32 {
     (3.0 * sigma.max(0.01)).ceil().min(256.0) as u32
 }
 
-fn kernel_margin(p: &RuntimeParams, width: u32, height: u32) -> Option<u32> {
-    // Downsample/interpolate in diffusion currently depends on full-frame grid
-    // dimensions, so a padded crop alone cannot preserve the sampling lattice.
-    if p.camera.diffusion_filter.active
-        || (!p.io.scan_film && p.enlarger.diffusion_filter.active)
-        || (p.io.upscale_factor - 1.0).abs() > 1e-6
-        || p.io.crop
-    {
+fn kernel_support(p: &RuntimeParams, width: u32, height: u32) -> Option<(u32, u32)> {
+    if (p.io.upscale_factor - 1.0).abs() > 1e-6 || p.io.crop {
         return None;
     }
     let pixel_um =
         spektrafilm_core::stages::filming::pixel_size_um(p.camera.film_format_mm, width, height);
     let mut margin = 0;
+    let mut alignment = 1;
+    for filter in [&p.camera.diffusion_filter, &p.enlarger.diffusion_filter]
+        .into_iter()
+        .take(if p.io.scan_film { 1 } else { 2 })
+    {
+        if let Some(plan) = filter.gpu_plan(pixel_um as f64, width, height) {
+            // Bilinear interpolation reads two small pixels. Each small pixel
+            // reads a radius of small blocks, and each block reads d source
+            // pixels. Two extra blocks safely include both resampling stages.
+            let radius = plan
+                .sigmas
+                .iter()
+                .map(|&s| blur_radius(s))
+                .max()
+                .unwrap_or(0);
+            margin = u32::checked_add(margin, (radius + 2).checked_mul(plan.d)?)?;
+            let mut a = alignment;
+            let mut b = plan.d;
+            while b != 0 {
+                (a, b) = (b, a % b);
+            }
+            alignment = (alignment / a).checked_mul(plan.d)?;
+        }
+    }
     if p.camera.lens_blur_um > 0.0 {
         margin += blur_radius(p.camera.lens_blur_um / pixel_um);
     }
@@ -175,7 +197,7 @@ fn kernel_margin(p: &RuntimeParams, width: u32, height: u32) -> Option<u32> {
     if sigma > 0.0 && amount > 0.0 {
         margin += blur_radius(sigma);
     }
-    Some(margin)
+    Some((margin, alignment))
 }
 
 pub fn crop_image(image: &ImageBuf, rect: Rect) -> ImageBuf {
@@ -273,7 +295,7 @@ mod tests {
             height: 60,
         };
         for gpu in [false, true] {
-            p.camera.diffusion_filter.active = gpu;
+            p.io.crop = gpu;
             let region = plan(viewport, 200, 150, 0, &p, gpu).unwrap();
             assert!(!region.accelerated);
             assert_eq!(
@@ -287,6 +309,62 @@ mod tests {
             );
             assert_eq!(region.trim, viewport);
         }
+    }
+    #[test]
+    fn diffusion_crops_preserve_both_resampling_lattices() {
+        let mut p = pointwise();
+        p.camera.diffusion_filter.active = true;
+        p.camera.diffusion_filter.spatial_scale = 0.15;
+        p.enlarger.diffusion_filter.active = true;
+        p.enlarger.diffusion_filter.spatial_scale = 0.25;
+        let pixel_um =
+            spektrafilm_core::stages::filming::pixel_size_um(p.camera.film_format_mm, 6000, 4000);
+        let region = plan(
+            Rect {
+                x: 2711,
+                y: 1987,
+                width: 200,
+                height: 150,
+            },
+            6000,
+            4000,
+            0,
+            &p,
+            true,
+        )
+        .unwrap();
+        assert!(region.accelerated);
+        for filter in [&p.camera.diffusion_filter, &p.enlarger.diffusion_filter] {
+            let diffusion = filter.gpu_plan(pixel_um as f64, 6000, 4000).unwrap();
+            assert_eq!(region.render.x % diffusion.d, 0);
+            assert_eq!(region.render.y % diffusion.d, 0);
+            assert_eq!(region.render.width % diffusion.d, 0);
+            assert_eq!(region.render.height % diffusion.d, 0);
+        }
+    }
+    #[test]
+    fn diffusion_with_frame_sized_support_keeps_full_frame() {
+        let mut p = pointwise();
+        p.camera.diffusion_filter.active = true;
+        p.camera.diffusion_filter.spatial_scale = 50.0;
+        let viewport = Rect {
+            x: 50,
+            y: 50,
+            width: 100,
+            height: 100,
+        };
+        let region = plan(viewport, 1100, 733, 0, &p, true).unwrap();
+        assert!(!region.accelerated);
+        assert_eq!(
+            region.render,
+            Rect {
+                x: 0,
+                y: 0,
+                width: 1100,
+                height: 733
+            }
+        );
+        assert_eq!(region.trim, viewport);
     }
     #[test]
     fn invalid_and_overflowing_viewports_fail_before_allocating() {
