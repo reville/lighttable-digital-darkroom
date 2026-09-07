@@ -85,8 +85,14 @@ def _check(name, condition, **details):
 
 
 def _subprocess_environment():
+    # The CLI runs in a fresh interpreter. CI prepares the pinned runtime in
+    # vendor rather than installing it, so the parent's sys.path is insufficient.
+    pythonpath = os.pathsep.join(filter(None, [
+        str(APP), str(APP / "vendor" / "spektrafilm" / "src"),
+        os.environ.get("PYTHONPATH"),
+    ]))
     return dict(os.environ, SPEKTRAFILM_BACKEND="cpu", NUMBA_NUM_THREADS="2",
-                RAYON_NUM_THREADS="2", PYTHONHASHSEED="0")
+                RAYON_NUM_THREADS="2", PYTHONHASHSEED="0", PYTHONPATH=pythonpath)
 
 
 def _read_export(path):
