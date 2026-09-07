@@ -49,6 +49,17 @@ class RawDecodeRuntimeTests(unittest.TestCase):
             with raw_decode_runtime.open_raw("photo.dng") as result:
                 self.assertEqual(result, (raw, stock))
 
+    def test_verified_xtrans_schedule_uses_parallel_decoder_without_reopening(self):
+        stock, accelerated, _, raw = self.runtimes(xtrans=True)
+        accelerated.LIGHTTABLE_XTRANS_WAVEFRONT = 1
+        with mock.patch.object(raw_decode_runtime.importlib, "import_module",
+                               side_effect=[stock, accelerated]):
+            with raw_decode_runtime.open_raw("photo.raf") as result:
+                self.assertEqual(result, (raw, accelerated))
+        stock.imread.assert_not_called()
+        raw.close.assert_not_called()
+        raw.__exit__.assert_called_once()
+
     def test_translate_native_exception_to_existing_public_error(self):
         stock, accelerated, _, _ = self.runtimes()
         with mock.patch.object(raw_decode_runtime.importlib, "import_module",
