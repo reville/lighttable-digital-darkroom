@@ -66,6 +66,13 @@ def clean_collections(values) -> list[dict]:
                 if str(rules.get("kind", "all")) in
                 ("all", "raw", "processed", "virtual") else "all",
                 "query": str(rules.get("query", ""))[:200],
+                "fileTypes": [kind for kind in ("raw", "jpeg", "heic", "tiff", "png")
+                              if isinstance(rules.get("fileTypes"), list) and kind in rules["fileTypes"]],
+                "editState": rules.get("editState") if rules.get("editState") in
+                ("edited", "unedited", "virtual") else "all",
+                "unrated": rules.get("unrated") is True,
+                "label": rules.get("label") if rules.get("label") in
+                ("any", "none", "red", "yellow", "green", "blue", "purple") else "all",
             },
         })
     return result
