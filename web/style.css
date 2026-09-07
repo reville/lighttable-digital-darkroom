@@ -534,6 +534,22 @@ input[type=checkbox]:disabled { opacity:.4; }
 .library-tools select { width:116px; }
 .library-tools .thumbnail-size-control { width:126px; }
 .library-tools #gridSize { min-width:70px; }
+.library-filter-btn { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.library-filter-btn svg { width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
+.library-head .library-filter-btn span { margin:0; color:inherit; font-size:12px; }
+.library-filter-btn.on { color:var(--accent); border-color:var(--accent); }
+.library-filter-panel { position:fixed; z-index:110; width:280px; max-width:calc(100vw - 16px); max-height:calc(100vh - 16px); overflow:auto; padding:12px 16px; background:var(--panel); border:1px solid var(--line-strong); border-radius:var(--radius); box-shadow:0 12px 35px #0008; }
+.library-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.library-filter-heading strong { font-size:13px; font-weight:600; }
+.file-type-filters { display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; margin:0; padding:0 0 12px; border:0; border-bottom:1px solid var(--line-soft); }
+.file-type-filters legend { padding:0 0 8px; font-size:11px; color:var(--muted); }
+.file-type-filters label { display:flex; align-items:center; gap:7px; font-size:12px; cursor:pointer; }
+.file-type-filters input { margin:0; }
+.library-filter-footer { margin-top:14px; padding-top:8px; border-top:1px solid var(--line-soft); }
+.active-library-filters { flex:0 0 100%; display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; }
+.library-filter-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.filter-chip { min-height:24px; padding:3px 8px; border-radius:var(--radius-s); color:var(--ink-2); font-size:11px; }
+.active-library-filters > button { font-size:11px; }
 .grid { position:relative; flex:0 0 auto; margin-top:16px; overflow-anchor:none; }
 .grid > .cell { position:absolute; content-visibility:visible; contain:layout paint; }
 .cell { position:relative; min-width:0; cursor:default; border-radius:var(--radius-s); background:#1f1f1f; }

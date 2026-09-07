@@ -103,6 +103,7 @@ function render(state) {
   menu.replaceChildren();
   state.items = [];
   const addOption = (option) => {
+    if (option.hidden) return;
     const el = document.createElement('div');
     el.className = 'dd-option';
     el.id = `${menu.id}-${option.index}`;
