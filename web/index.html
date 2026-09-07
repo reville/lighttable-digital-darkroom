@@ -183,9 +183,6 @@
             <img id="orig" alt="Original photograph">
             <img id="referenceImg" alt="Film reference" hidden>
             <canvas id="editOverlay" aria-label="Local edit overlay"></canvas>
-            <span class="cmp-bar"></span>
-            <span class="tag tag-l" id="tagL" style="display:none">Original</span>
-            <span class="tag tag-r" id="tagR" style="display:none">Edited</span>
             <div class="speed-hud" id="speedHud" hidden></div>
             <div class="render-badge" id="denoiseBadge" hidden>Denoising…</div>
             <div class="loupe-info" id="loupeInfoOverlay" hidden><strong id="loupeInfoName"></strong><span id="loupeInfoMetadata"></span></div>
@@ -206,6 +203,12 @@
               </div>
             </div>
           </div>
+          <div class="compare-overlay" id="compareOverlay" hidden>
+            <span class="cmp-bar" id="compareBar"></span>
+            <span class="tag tag-l" id="tagL">Original</span>
+            <span class="tag tag-r" id="tagR">Edited</span>
+          </div>
+          <button class="compact compare-snap" id="compareSnap" type="button" hidden>snap slider to view</button>
         </div>
       </div>
 
