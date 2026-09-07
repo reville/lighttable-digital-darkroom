@@ -27,7 +27,9 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     for (var k = 0u; k < kernel_size; k++) {
         let dy = i32(k) - i32(params.radius);
         let sy_signed = i32(y) + dy;
-        let sy = u32(clamp(sy_signed, 0i, h_i32 - 1i));
+        let period = 2i * h_i32;
+        let wrapped = ((sy_signed % period) + period) % period;
+        let sy = u32(select(wrapped, period - 1i - wrapped, wrapped >= h_i32));
         let idx = (sy * params.width + x) * 3u;
         let w = kernel_buf[k];
         sum.x += w * input[idx];
