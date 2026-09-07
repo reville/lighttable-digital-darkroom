@@ -7,7 +7,7 @@
     "keywords": ["film", "stock", "simulation", "negative", "slide", "browse", "preview", "preset", "film off"],
     "sections": [
       {"title": "Start with a stock", "paragraphs": ["Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off."], "steps": ["Open a still photo and select Film in the tool rail.", "Turn the Film profile switch on.", "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.", "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it."]},
-      {"title": "What the previews include", "paragraphs": ["Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.", "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file."], "tips": ["If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."]}
+      {"title": "What the previews include", "paragraphs": ["Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.", "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file.", "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The steady status badge explains the work still in progress. Wait for it to finish before judging fine detail."], "tips": ["If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."]}
     ],
     "related": ["film-exposure-and-processing", "film-negative-paper-and-slides", "film-grain-and-format"],
     "sources": [
@@ -15,7 +15,8 @@
       {"path": "web/film-browser.js", "anchor": "button.onclick = () => { close(); apply(stock.id, snapshot.name); };"},
       {"path": "web/index.html", "anchor": "Film processing is bypassed. Edit adjustments remain active."},
       {"path": "web/app.js", "anchor": "option.disabled = profile.rustOnly && !S.rustAvailable;"},
-      {"path": "web/index.html", "anchor": "Include Film profile and physical settings"}
+      {"path": "web/index.html", "anchor": "Include Film profile and physical settings"},
+      {"path": "web/app.js", "anchor": "previewProgress.start('Refining RAW detail…');"}
     ]
   },
   {
@@ -319,7 +320,7 @@
     "summary": "Choose preview resolution, wait for real detail, and manage generated caches.",
     "keywords": ["performance", "slow", "blurry", "pixelated", "preview", "resolution", "100%", "1:1", "gpu", "rust", "python", "cache", "purge"],
     "sections": [
-      {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. The viewer may show Loading 100% detail…, Refining RAW detail…, or Updating preview detail… while it works. Wait for 100% detail ready when assessing fine detail.", "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit."], "steps": ["Open Settings → Performance.", "Use Auto · fit display for preview resolution, or choose a smaller fixed resolution to reduce preview work.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
+      {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The steady status badge shows Applying film…, Refining RAW detail…, or Updating preview detail… as needed, and stays visible until the requested preview is displayed. The photo stays visible without dimming. At 1:1, wait for 100% detail ready when assessing fine detail; Preview ready alone refers to the requested preview resolution.", "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit."], "steps": ["Open Settings → Performance.", "Use Auto · fit display for preview resolution, or choose a smaller fixed resolution to reduce preview work.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
       {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files."]}
     ],
     "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
@@ -329,7 +330,10 @@
       {"path": "web/view-performance.js", "anchor": "if (actualSize) return Math.max(64, Math.min(8000, source || 1100));"},
       {"path": "web/index.html", "anchor": "Auto · fit display"},
       {"path": "web/settings.js", "anchor": "Purge generated previews and render caches? Originals and edits are not affected."},
-      {"path": "web/app.js", "anchor": "pythonOption.disabled = rustOnly;"}
+      {"path": "web/app.js", "anchor": "pythonOption.disabled = rustOnly;"},
+      {"path": "web/app.js", "anchor": "previewProgress.start('Refining RAW detail…');"},
+      {"path": "web/preview-progress.js", "anchor": "export function createPreviewProgress"},
+      {"path": "web/preview-progress.js", "anchor": "export async function waitForRawRefinement"}
     ]
   },
   {
