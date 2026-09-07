@@ -113,14 +113,13 @@ button {
   white-space:nowrap;
   transition:background-color .12s ease,border-color .12s ease,color .12s ease;
 }
-button:hover:not(:disabled) { background:var(--btn-face-hover); border-color:var(--btn-line); color:#fff; }
-button:active:not(:disabled) { background:var(--btn-face-active); box-shadow:inset 0 1px 2px rgba(0,0,0,.45); }
+/* Pointer feedback must not replace a toggle's persistent selected styling. */
+button:hover:not(:disabled):not(.on) { background:var(--btn-face-hover); border-color:var(--btn-line); color:#fff; }
+button:active:not(:disabled):not(.on) { background:var(--btn-face-active); box-shadow:inset 0 1px 2px rgba(0,0,0,.45); }
 button:disabled { opacity:.38; }
-button.on,
-#softProofToolbar.on:hover,
-#zoomFit.on:hover { border-color:var(--slider-accent); color:var(--on-ink); background:var(--on-soft); }
+button.on { border-color:var(--slider-accent); color:var(--on-ink); background:var(--on-soft); }
 .quiet { border-color:transparent; background:transparent; color:var(--ink-2); box-shadow:none; }
-.quiet:hover:not(:disabled) { border-color:transparent; background:var(--hover); }
+.quiet:hover:not(:disabled):not(.on) { border-color:transparent; background:var(--hover); }
 .compact { min-height:26px; padding:3px 10px; font-size:11px; }
 .icon-btn { width:28px; min-width:28px; height:28px; min-height:28px; padding:0; border-radius:var(--radius-s); display:inline-grid; place-items:center; }
 .icon-btn.on { border-color:transparent; background:var(--active); color:var(--accent); }
