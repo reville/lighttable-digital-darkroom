@@ -830,7 +830,7 @@ a.reset:hover { color:#fff; }
   display:grid;
   /* The value column holds at least --row-value-w and grows for the few long
      readouts (0.40 µm², 5500 K) rather than letting them run over the track. */
-  grid-template-columns:var(--row-label-w) minmax(0,1fr) auto var(--row-reset-w);
+  grid-template-columns:var(--row-label-w) minmax(0,1fr) auto 0;
   grid-template-areas:"name track val reset";
   align-items:center;
   column-gap:var(--row-gap);
@@ -853,7 +853,7 @@ a.reset:hover { color:#fff; }
   -webkit-user-select:none;
   transition:color .12s ease;
 }
-.row-with-action { grid-template-columns:62px 18px minmax(0,1fr) auto var(--row-reset-w); grid-template-areas:"name action track val reset"; }
+.row-with-action { grid-template-columns:62px 18px minmax(0,1fr) auto 0; grid-template-areas:"name action track val reset"; }
 .row-with-action .row-action { grid-area:action; width:18px; min-width:18px; height:18px; min-height:18px; padding:0; border:0; color:var(--muted); background:transparent; box-shadow:none; }
 .row.changed .val, .row.no-default .val { color:var(--row-value-ink); }
 .row.scrubbing .val { color:#fff; }
@@ -869,6 +869,9 @@ a.reset:hover { color:#fff; }
 }
 .row .row-reset {
   grid-area:reset;
+  /* Keep the hit target in the section inset without reserving a column. */
+  position:relative;
+  left:-4px;
   width:var(--row-reset-w);
   min-width:var(--row-reset-w);
   height:18px;
@@ -892,7 +895,7 @@ a.reset:hover { color:#fff; }
 .row .row-reset:active:not(:disabled) { background:transparent; transform:none; }
 .row .val-edit {
   position:absolute;
-  right:calc(var(--row-reset-w) + var(--row-gap));
+  right:var(--row-gap);
   z-index:3;
   width:84px;
   height:20px;
@@ -906,7 +909,7 @@ a.reset:hover { color:#fff; }
   font-variant-numeric:tabular-nums;
 }
 .row.flash input[type=range]::-webkit-slider-thumb { background:#f0f0f0; }
-.row.toggle-slider { grid-template-columns:16px calc(var(--row-label-w) - 16px - var(--row-gap)) minmax(0,1fr) auto var(--row-reset-w); grid-template-areas:"check name track val reset"; }
+.row.toggle-slider { grid-template-columns:16px calc(var(--row-label-w) - 16px - var(--row-gap)) minmax(0,1fr) auto 0; grid-template-areas:"check name track val reset"; }
 .row.toggle-slider input[type=checkbox] { grid-area:check; margin:0; }
 .check-row { min-height:28px; display:flex; align-items:center; gap:8px; color:var(--ink-2); font-size:12px; }
 .curve-head { display:flex; align-items:center; justify-content:space-between; margin:14px 0 8px; color:var(--ink); font-size:12px; font-weight:600; }
@@ -1884,7 +1887,7 @@ body { display:flex; flex-direction:column; }
 .panel .hint { color:#b4b4ba; line-height:1.5; }
 .panel .row .val { color:#b5b5bc; }
 .panel .row .name { font-size:12px; }
-.panel .row-long { grid-template-columns:minmax(0,1fr) var(--row-value-w) var(--row-reset-w); height:auto; min-height:52px; row-gap:4px; padding:8px 0; }
+.panel .row-long { grid-template-columns:minmax(0,1fr) var(--row-value-w) 0; height:auto; min-height:52px; row-gap:4px; padding:8px 0; }
 .panel .row-long .name { grid-column:1 / -1; white-space:normal; text-align:left; overflow:visible; }
 .panel .row-long input { grid-column:1; }
 .panel .row-long .val { grid-column:2; }
