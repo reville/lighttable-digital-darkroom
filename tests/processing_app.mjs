@@ -9,11 +9,16 @@ for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, async () => {awai
 try {
   const page = await browser.newPage({viewport: {width: 1440, height: 1000}, deviceScaleFactor: 1});
   let delayedFilmResponses = 0;
+  let delayedEditResponses = 0;
   await page.route('**/api/render', async route => {
     const request = route.request().postDataJSON();
-    if (request?.params?.print_exposure === 1.6 && request.name.endsWith('a.png')) {
+    const delayFilm = request?.params?.print_exposure === 1.6 && request.name.endsWith('a.png');
+    const delayEdit = request?.name?.endsWith('edit-flat.png') && request.grade?.exposure === 1 &&
+      request.masks?.some(mask => mask.grade?.texture === 1);
+    if (delayFilm || delayEdit) {
       const response = await route.fetch();
-      delayedFilmResponses++;
+      if (delayFilm) delayedFilmResponses++;
+      if (delayEdit) delayedEditResponses++;
       await new Promise(resolve => setTimeout(resolve, 750));
       await route.fulfill({response});
     } else await route.continue();
@@ -100,6 +105,22 @@ try {
     if (!response.ok || result.error || result.ok === false) throw Error(JSON.stringify(result));
     return result;
   }, {path, body});
+  const waitForRecipe = async (name, recipe) => {
+    const render = await page.evaluate(() => __lightTablePerf.renders.at(-1));
+    const response = await page.request.post(config.baseUrl + '/api/render', {
+      data:{name, ...recipe, w:render.width, engine:render.engine, native:false}, timeout:120000});
+    if (!response.ok()) throw Error(await response.text());
+    const base = await response.json();
+    if (!base.img) throw Error('Expected browser source surface');
+    const source = new URL(base.img, config.baseUrl).href;
+    const grade = {exposure:0, sharpness:0, ...(base.gradeEditsBaked ? {} : recipe.grade)};
+    // A navigation or prior edit can complete on the same photo while the
+    // requested recipe is pending. Match the texture actually uploaded by the
+    // app, then verify the finishing grade applied to that particular source.
+    await page.waitForFunction(({source, grade}) => processingFrame.sourceURL === source &&
+      Object.entries(grade).every(([key, value]) =>
+        Math.abs(processingFrame.grade[key] - value) < 0.0001), {source, grade}, {timeout:120000});
+  };
   for (const [index, test] of config.cases.entries()) {
     process.stdout.write(JSON.stringify({event:'case', name:test.name}) + '\n');
     // Catalog enumeration order varies with metadata availability. Select the
@@ -138,6 +159,7 @@ try {
         await page.waitForFunction(count => __lightTablePerf.renders.length > count &&
           document.querySelector('#rstat').className !== 'busy', count, {timeout:120000});
       }
+      await waitForRecipe(name, recipe);
       // doRender queues drawGrade on the animation scheduler before recording
       // its timing. Let that actual presentation run before reading its frame.
       await page.evaluate(() => new Promise(resolve =>
@@ -189,18 +211,7 @@ try {
     for (const [key, value] of Object.entries(test.params)) {
       if (JSON.stringify(saved.params[key]) !== JSON.stringify(value)) throw Error(`Recipe drift: ${key} expected ${JSON.stringify(value)}, got ${JSON.stringify(saved.params[key])}`);
     }
-    const render = await page.evaluate(() => __lightTablePerf.renders.at(-1));
-    const baseResponse = await page.request.post(config.baseUrl + '/api/render', {
-      data:{name, params:test.params, w:render.width, engine:render.engine, native:false}, timeout:120000});
-    if (!baseResponse.ok()) throw Error(await baseResponse.text());
-    const base = await baseResponse.json();
-    if (!base.img) throw Error('Expected browser source surface');
-    const expectedSource = new URL(base.img, config.baseUrl).href;
-    // Match the texture actually uploaded by the app to the requested film
-    // recipe, not just any completed navigation/render on this same photo.
-    await page.waitForFunction(({source, exposure}) => processingFrame.sourceURL === source &&
-      Math.abs(processingFrame.grade.exposure - exposure) < 0.0001,
-      {source:expectedSource, exposure:test.exposure}, {timeout:120000});
+    await waitForRecipe(name, {params:test.params, grade:{exposure:test.exposure}});
     const state = await post('/api/ui/command', {command:'slider', args:{key:'exposure', value:test.exposure}});
     const ui = state.result?.result || state.result || state;
     if (ui.current !== name || ui.render?.name !== name || ui.render?.state !== 'ready' || ui.render?.backend !== 'webgl') {
@@ -219,5 +230,6 @@ try {
     results.push({name:test.name, photo:name, bounds, ...frame});
   }
   if (!delayedFilmResponses) throw Error('Slow physical-render regression was not exercised');
-  fs.writeFileSync(config.result, JSON.stringify({records:results, delayedFilmResponses}));
+  if (!delayedEditResponses) throw Error('Slow edited response regression was not exercised');
+  fs.writeFileSync(config.result, JSON.stringify({records:results, delayedFilmResponses, delayedEditResponses}));
 } finally { await browser.close(); }
