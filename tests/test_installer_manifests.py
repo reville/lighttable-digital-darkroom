@@ -10,6 +10,8 @@ import unittest
 import xml.etree.ElementTree as ET
 import zipfile
 
+from test_linux_arch_packaging import fixture as linux_fixture
+
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "generate-installers.py"
 REPO_URL = "https://github.com/reville/lighttable-digital-darkroom"
@@ -111,6 +113,33 @@ class InstallerManifestTests(unittest.TestCase):
         self.artifact("unsupported.bin")
         result = self.generate(successful=False)
         self.assertIn("no supported release artifacts", result.stderr)
+        self.assertFalse(self.output.exists())
+
+    def test_linux_only_generates_verified_aur_recipe_and_checksums(self):
+        artifact = self.artifacts / "LightTable-0.5.0-linux-x86_64.tar.gz"
+        revision = "a" * 40
+        linux_fixture(artifact, manifest={"version": "0.5.0", "source_revision": revision,
+                                         "source_dirty": False})
+        self.generate("--source-revision", revision, version="0.5.0")
+        recipe = self.output / "aur/lighttable-bin"
+        self.assertEqual({p.name for p in recipe.iterdir()},
+                         {"PKGBUILD", ".SRCINFO", "app.lighttable.LightTable.desktop"})
+        checksum = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        self.assertIn(checksum, (recipe / "PKGBUILD").read_text())
+        self.assertIn(f"{REPO_URL}/releases/download/v0.5.0/{artifact.name}",
+                      (recipe / ".SRCINFO").read_text())
+        self.assertEqual((self.output / "SHA256SUMS").read_text(), f"{checksum}  {artifact.name}\n")
+        self.assertFalse((self.output / "homebrew").exists())
+
+    def test_linux_release_requires_matching_clean_source_before_writing_any_channel(self):
+        self.artifact("macos-arm64.dmg")
+        artifact = self.artifacts / "LightTable-1.2.3-linux-x86_64.tar.gz"
+        linux_fixture(artifact, manifest={"version": "1.2.3", "source_revision": "a" * 40,
+                                         "source_dirty": False})
+        result = self.generate(successful=False)
+        self.assertIn("--source-revision", result.stderr)
+        result = self.generate("--source-revision", "b" * 40, successful=False)
+        self.assertIn("source revision", result.stderr)
         self.assertFalse(self.output.exists())
 
     def test_license_is_never_invented_for_windows(self):
