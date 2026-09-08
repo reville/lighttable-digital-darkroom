@@ -974,9 +974,9 @@ class Catalog:
                     conn.execute("ALTER TABLE files ADD COLUMN availability "
                                  "TEXT NOT NULL DEFAULT 'local'")
             if from_version < 8:
-                # Two earlier schema-6 builds added different fields: DAM
-                # exposure metadata or complete source identities. Accept
-                # either layout, preserving all existing values and edits.
+                # Earlier schema-6/7 builds added different fields: DAM
+                # exposure metadata, identities, or preset state. Accept
+                # every layout, preserving all existing values and edits.
                 file_columns = {row[1] for row in conn.execute(
                     "PRAGMA table_info(files)").fetchall()}
                 needs_search_rebuild = from_version < 6 or any(

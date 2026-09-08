@@ -55,7 +55,7 @@ async function start({catalog = true, savedExposure = 0, history = null, restore
     cur: () => S.images[S.idx], cropSession: null, lastNavigationDirection: 1,
     navigationGeneration: 0, renderTimer: null, settleRenderTimer: null,
     clearTimeout: () => {}, NATIVE_PREVIEW: false, CAPTURE_TIME: null, HISTORY: null,
-    setRenderPresentation: () => {}, isStateLoaded: () => true, prefetch: () => {},
+    syncPhotoActions: () => {}, setRenderPresentation: () => {}, isStateLoaded: () => true, prefetch: () => {},
     snapshot: () => JSON.stringify(S.images[S.idx].grade),
     fetch: async () => {
       if (failReads-- > 0) throw new Error('temporary read failure');
