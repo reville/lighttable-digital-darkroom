@@ -28,6 +28,10 @@ Run **Linux sandbox candidates** from the intended preparation branch with versi
 `0.5.0`. It builds the native archive once, then independently checks Arch,
 Flatpak and Snap candidates. Its permissions are read-only and it uploads Actions
 artifacts only. It contains no release, store submission or AUR publication step.
+The workflow is manual. When fixing only the Flatpak recipe, its optional
+`bundle_run_id` and `bundle_source_revision` inputs reuse a prior run's exact
+verified archive and skip the bundle/Arch/Snap rebuilds. A final source cutoff
+still requires a fresh full candidate run without those overrides.
 
 The archive build uses Ubuntu 24.04 x86_64, checks the relocated Python/runtime,
 both render engines, ICC conversion, HTTP/CLI startup, X11 and Wayland desktop

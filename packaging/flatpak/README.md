@@ -19,6 +19,12 @@ checks private shared memory, denied host-file access, rendering, HTTP, CLI, and
 actual GTK/WebKit photo window. It uploads candidate artifacts and evidence only;
 it does not tag, release, upload to a remote Flatpak repository, or submit to a store.
 The workflow must pass before this candidate is described as tested or runnable.
+It runs manually so ordinary source PRs do not rebuild every distribution format.
+For a Flatpak-recipe-only fix, provide `bundle_run_id` and the existing archive's
+full `bundle_source_revision` to retest only Flatpak. The archive's manifest and
+checksum must still match; this does not test later application-source changes.
+Completed dependency stages are cached against the SDK commit and dependency
+recipe, including when a later application check fails.
 
 ```sh
 python3 scripts/flatpak/make-candidate.py \

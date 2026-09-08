@@ -1,21 +1,20 @@
 name: Linux sandbox candidates
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/linux-*.yml'
-      - 'packaging/linux/**'
-      - 'packaging/flatpak/**'
-      - 'packaging/snap/**'
-      - 'scripts/linux/**'
-      - 'scripts/flatpak/**'
-      - 'tests/test_*packaging.py'
   workflow_dispatch:
     inputs:
       version:
         description: Version for local candidate artifacts; this does not publish a release
         required: true
         default: '0.5.0'
+        type: string
+      bundle_run_id:
+        description: 'Optional: retest only Flatpak using this run’s existing Linux archive'
+        default: ''
+        type: string
+      bundle_source_revision:
+        description: 'Required when reusing an archive: its exact build-manifest source revision'
+        default: ''
         type: string
 
 permissions:
@@ -27,6 +26,7 @@ concurrency:
 
 jobs:
   bundle:
+    if: inputs.bundle_run_id == ''
     uses: ./.github/workflows/linux-build.yml
     with:
       version: ${{ inputs.version || '0.5.0' }}
@@ -36,12 +36,30 @@ jobs:
   flatpak:
     name: Build and test upstream Flatpak candidate
     needs: bundle
+    if: >-
+      !cancelled() && (needs.bundle.result == 'success' ||
+      (needs.bundle.result == 'skipped' && inputs.bundle_run_id != ''))
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
     env:
       PACKAGE_VERSION: ${{ inputs.version || '0.5.0' }}
       APP_ID: app.lighttable.LightTable
+      REUSED_BUNDLE_RUN_ID: ${{ inputs.bundle_run_id }}
+      REUSED_BUNDLE_SOURCE_REVISION: ${{ inputs.bundle_source_revision }}
+      BUNDLE_SOURCE_REVISION: ${{ inputs.bundle_source_revision || github.sha }}
     steps:
+      - name: Validate optional archive reuse
+        run: |
+          if [[ -n "$REUSED_BUNDLE_RUN_ID" ]]; then
+            [[ "$REUSED_BUNDLE_RUN_ID" =~ ^[1-9][0-9]*$ ]] || { echo 'Use a numeric Actions run ID'; exit 1; }
+            [[ "$REUSED_BUNDLE_SOURCE_REVISION" =~ ^[0-9a-f]{40}$ ]] || { echo 'The reused archive requires its exact source commit'; exit 1; }
+          elif [[ -n "$REUSED_BUNDLE_SOURCE_REVISION" ]]; then
+            echo 'A source override requires an existing archive run ID' >&2
+            exit 1
+          fi
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
@@ -49,13 +67,26 @@ jobs:
         with:
           name: LightTable-linux-x86_64
           path: dist
+          run-id: ${{ inputs.bundle_run_id || github.run_id }}
+          github-token: ${{ github.token }}
       - name: Install Flatpak build and display tools
+        id: runtime
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends flatpak flatpak-builder \
             appstream desktop-file-utils xvfb xauth dbus-x11 xdg-desktop-portal xdg-desktop-portal-gtk
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak install --user --noninteractive flathub org.gnome.Platform//50 org.gnome.Sdk//50
+          echo "sdk_commit=$(flatpak info --user --show-commit org.gnome.Sdk//50)" >> "$GITHUB_OUTPUT"
+      - name: Restore compiled Flatpak dependency stages
+        uses: actions/cache/restore@v4
+        id: flatpak-cache
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: flatpak-x86_64-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/direct-bundle.json.in') }}
       - name: Validate sources, metadata and exact bundle identity
         run: |
           python3 -m unittest discover -s tests -p test_flatpak_packaging.py -v
@@ -65,7 +96,7 @@ jobs:
           read -r ARCHIVE_SHA _ < "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz.sha256"
           python3 scripts/flatpak/make-candidate.py \
             --bundle "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" \
-            --sha256 "$ARCHIVE_SHA" --version "$PACKAGE_VERSION" --source-revision "$GITHUB_SHA" \
+            --sha256 "$ARCHIVE_SHA" --version "$PACKAGE_VERSION" --source-revision "$BUNDLE_SOURCE_REVISION" \
             --output-dir .build/flatpak/candidate
       - name: Fetch pinned sources, then build without downloads
         run: |
@@ -112,6 +143,15 @@ jobs:
             .build/flatpak/candidate/candidate-provenance.json
           include-hidden-files: true
           if-no-files-found: error
+      - name: Preserve completed dependency stages even if app validation fails
+        if: always() && steps.flatpak-cache.outcome == 'success' && steps.flatpak-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: ${{ steps.flatpak-cache.outputs.cache-primary-key }}
 
   arch:
     name: Build and install the Arch package

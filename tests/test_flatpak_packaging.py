@@ -119,7 +119,8 @@ class FlatpakPackagingTests(unittest.TestCase):
         prefix = self.root / "app"
         INSTALL.install(manifest.parent, prefix)
         self.assertTrue((prefix / "LightTable/Resources/LightTable/engine/lighttable-engine").is_file())
-        self.assertTrue((prefix / "share/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png").is_file())
+        self.assertFalse((prefix / "share/icons/hicolor/1024x1024").exists())
+        self.assertTrue((prefix / "LightTable/Resources/LightTable/build/icon-1024.png").is_file())
         for size in (64, 128, 256):
             icon = prefix / f"share/icons/hicolor/{size}x{size}/apps/app.lighttable.LightTable.png"
             data = icon.read_bytes()
