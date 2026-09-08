@@ -51,6 +51,13 @@ def run(output_dir):
         cases.append({**case, 'edits': True, 'photoName': f"edit-{case['fixture']}.png",
                       'params': {**params, 'profile_enabled': False}})
     cases.extend([
+        {'name': 'vignette-size-slider', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False}, 'grade': {'vignette': .65},
+         'gradeSliders': {'vignetteSize': .2}},
+        {'name': 'vignette-feather-slider', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False},
+         'grade': {'vignette': -.65, 'vignetteSize': .3},
+         'gradeSliders': {'vignetteFeather': .25}},
         {'name': 'masked-global-slider', 'edits': True, 'photoName': 'edit-flat.png',
          'params': {**params, 'profile_enabled': False}, 'grade': {'exposure': .4},
          'masks': edit_cases()[0]['masks'], 'sliderExposure': .8},

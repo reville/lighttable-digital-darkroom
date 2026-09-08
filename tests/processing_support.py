@@ -59,6 +59,14 @@ def grade_cases():
     for key in ("sharpness", "luminanceNoise", "colorNoise"):
         cases.append({"name": key, "grade": {key: 0.7}})
     cases.extend([
+        {"name": "vignette-small-soft", "grade": {"vignette": .65,
+         "vignetteSize": .2, "vignetteFeather": .8}},
+        {"name": "vignette-large-soft", "grade": {"vignette": .65,
+         "vignetteSize": .8, "vignetteFeather": 1}},
+        {"name": "vignette-hard-bright", "grade": {"vignette": -.65,
+         "vignetteSize": .3, "vignetteFeather": 0}},
+        {"name": "vignette-shape-disabled", "grade": {
+         "vignetteSize": 0, "vignetteFeather": 0}},
         {"name": "sharpen-controls", "grade": {"sharpness": 0.7,
          "sharpenRadius": 2.2, "sharpenDetail": 0.6, "sharpenMasking": 0.4}},
         {"name": "curves", "grade": {"curveL": (np.linspace(0, 1, 256) ** 0.8).tolist(),

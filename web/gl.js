@@ -9,6 +9,7 @@ export const GRADE_DEFAULTS = {
   exposure: 0, contrast: 0, highlights: 0, shadows: 0, whites: 0, blacks: 0,
   temp: 0, tint: 0, vibrance: 0, saturation: 0,
   texture: 0, clarity: 0, dehaze: 0, vignette: 0,
+  vignetteSize: 0.5, vignetteFeather: 1,
   sharpness: 0, sharpenRadius: 1, sharpenDetail: 0.25, sharpenMasking: 0,
   luminanceNoise: 0, colorNoise: 0,
   chromaticAberrationRedCyan: 0, chromaticAberrationBlueYellow: 0,
@@ -35,6 +36,7 @@ uniform vec2 u_referenceOffset;
 uniform float u_exposure, u_contrast, u_highlights, u_shadows;
 uniform float u_whites, u_blacks, u_temp, u_tint;
 uniform float u_vibrance, u_saturation, u_texture, u_clarity, u_dehaze, u_vignette;
+uniform float u_vignetteSize, u_vignetteFeather;
 uniform float u_sharpness, u_sharpenRadius, u_sharpenDetail, u_sharpenMasking;
 uniform float u_luminanceNoise, u_colorNoise;
 uniform float u_chromaticAberrationRedCyan, u_chromaticAberrationBlueYellow;
@@ -425,6 +427,14 @@ void main() {
   if (u_vignette != 0.0) {
     vec2 n = (uv - 0.5) * 2.0;
     float r = length(n) / 1.4142;
+    if (u_vignetteSize != 0.5 || u_vignetteFeather != 1.0) {
+      // Match export's pixel endpoints, especially at a nearly hard edge.
+      vec2 position = (uv - 0.5 * u_texel) / max(vec2(1.0) - u_texel, u_texel);
+      r = length((position - 0.5) * 2.0) / 1.4142;
+      float outer = 0.25 + 1.5 * u_vignetteSize;
+      float width = outer * max(u_vignetteFeather, 0.01);
+      r = clamp((r - outer + width) / width, 0.0, 1.0);
+    }
     c = clamp(c * clamp(1.0 - u_vignette * 0.9 * pow(r, 2.2), 0.0, 2.0), 0.0, 1.0);
   }
 

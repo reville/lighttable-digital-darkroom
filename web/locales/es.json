@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1322,7 +1322,7 @@
     "History": "Historial",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "El Historial se almacena en el catálogo, así que persiste al salir. Deshacer y rehacer siguen cada foto durante esta sesión.",
     "History request failed": "La solicitud del historial falló",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Mantenga pulsado B para comparar con el original, o use Restablecer de Efectos para restablecer juntos Textura, Claridad, Quitar bruma y Viñeta.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Mantenga pulsado B para comparar con el original, o use Restablecer en Efectos para restablecer todos los deslizadores de Efectos a la vez.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Mantenga pulsada B para mostrar el original sin Película, máscaras locales ni ajustes de acabado; suelte B para restaurar la edición. La barra oblicua (/) enfoca la búsqueda de fotos.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Mantenga pulsada B para ver el original sin Película, máscaras locales ni ajustes de acabado. Suelte B para restaurar la vista editada.",
     "Hold a mapped key and scroll or use arrow keys.": "Mantenga pulsada una tecla asignada y desplace o use las teclas de flecha.",
@@ -1421,6 +1421,8 @@
     "Include subfolders": "Incluir subcarpetas",
     "Includes the Film profile and physical stages.": "Incluye el perfil de película y las etapas físicas.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Aumente Quitar bruma para intensificar una imagen con neblina, o pruebe un valor negativo para un tratamiento más suave. Compruebe contraste y color mientras lo ajusta.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Aumente Desvanecer para suavizar la transición, o redúzcalo para obtener un borde más definido.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Aumente Tamaño para mantener una mayor parte del centro sin efecto; redúzcalo para que la viñeta llegue más hacia dentro.",
     "Index data stays in LightTable's local data folder.": "Los datos del índice permanecen en la carpeta de datos local de LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indexando {SAiCompleted} de {SAiTotal}",
     "Info": "Información",
@@ -2299,8 +2301,10 @@
     "Reset all Color Mixer channels": "Restablecer todos los canales del Mezclador de color",
     "Reset crop, rotation, flips, and perspective": "Restablezca recorte, rotación, volteos y perspectiva",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Restablece tono global, color, curvas, enfoque, reducción de ruido y efectos",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Restablecer en Simulación de película realista devuelve todos los deslizadores de Película a sus valores predeterminados. Restablecer en una sección solo afecta a los deslizadores de esa sección. Los interruptores y las opciones seleccionadas se mantienen.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Restablecer las correcciones del perfil de lente, distorsión, viñeteo y aberración cromática",
     "Reset sharpening and noise reduction adjustments": "Restablece los ajustes de enfoque y reducción de ruido",
+    "Reset sliders to their defaults": "Restablecer los valores predeterminados de los deslizadores",
     "Reset the RAW profile and capture-stage processing settings": "Restablece el perfil RAW y la configuración de procesamiento de la etapa de captura",
     "Reset the combined RGB and individual channel curves": "Restablece las curvas RGB combinadas y las de cada canal",
     "Reset this slider": "Restablecer este deslizador",
@@ -2602,6 +2606,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Los rostros similares se agrupan juntos. Agregue nombres, revise posibles coincidencias y corrija un grupo cuando lo necesite.",
     "Simulate paper and ink": "Simular papel y tinta",
     "Size": "Tamaño",
+    "Size of the clear area at the center of the vignette.": "Tamaño de la zona sin efecto en el centro de la viñeta.",
     "Size only": "Solo tamaño",
     "Skip": "Saltar",
     "Skip existing": "Saltar existentes",
@@ -2626,6 +2631,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "La prueba en pantalla es un estado de visualización. Elige por separado el espacio de color real del archivo en Exportar.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Los controles de prueba en pantalla están en las opciones Vista del visor (•••). Permiten inspeccionar una vista previa de salida mientras edita.",
     "Soften skin": "Suavizar piel",
+    "Softness of the vignette transition.": "Suavidad de la transición de la viñeta.",
     "Software rendering": "Renderizado por software",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Algunos borradores usan una identidad parcial de archivo que no puede verificar el original completo. Restaure estos solo si las fotos originales no han sido reemplazadas.",
     "Some edits have not been saved": "Algunas ediciones no se han guardado",
@@ -4031,9 +4037,7 @@
     "‹ Back": "‹ Atrás",
     "← Back to articles": "← Volver a los artículos",
     "← People": "← Personas",
-    "☆ Favorites": "☆ Favoritos",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Restablecer en Simulación de película realista devuelve todos los deslizadores de Película a sus valores predeterminados. Restablecer en una sección solo afecta a los deslizadores de esa sección. Los interruptores y las opciones seleccionadas se mantienen.",
-    "Reset sliders to their defaults": "Restablecer los valores predeterminados de los deslizadores"
+    "☆ Favorites": "☆ Favoritos"
   },
   "plurals": {
     " · {count} paired file linked": {
