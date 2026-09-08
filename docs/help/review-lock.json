@@ -72,7 +72,7 @@
       "content": "ea587a5f680591f686563eed6326436e6413f5da512086974be55c4603bebe85",
       "sources": {
         "app/main.swift": "37445f4c3aca195ba1614131a98de89e21391e3ec3aa8bb7c912ec553e325869",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/app.js": "9b9f892fff47d199e719657ec29062556a127f47adafefec28492bb3f9434c9d",
         "web/edit-transfer.js": "4575e626c642cf4604cc1574dc52120d96d820f7a3e4b283b6598d64ca57d166"
       }
@@ -149,7 +149,7 @@
       "sources": {
         "app/main.swift": "37445f4c3aca195ba1614131a98de89e21391e3ec3aa8bb7c912ec553e325869",
         "merge_workflow.py": "42aaacd9addb07d1257dec2c2da9e299903f1b68aa213082cff0b2747ccc9e68",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/app.js": "9b9f892fff47d199e719657ec29062556a127f47adafefec28492bb3f9434c9d",
         "web/index.html": "57e43f807a52ff109e6adf91213ea90540c2a48cfa6fb9b6bbf9ea653ef9b4d0"
       }
@@ -161,7 +161,7 @@
         "preset_io.py": "ef53c6ad973ce5ab42c7c328fdd3e88ac002f913cad158bf20446e6219a94c8c",
         "preset_library.py": "98efb1e5151d8406e158681cde6da78003e2fe8c4bea911ee645fe78a644d14d",
         "preset_submission.py": "d0880b6df5b1d4fd31fc845cc8353da883f45ab430c00ee9faa3d403082ea5ca",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/app.js": "9b9f892fff47d199e719657ec29062556a127f47adafefec28492bb3f9434c9d",
         "web/index.html": "57e43f807a52ff109e6adf91213ea90540c2a48cfa6fb9b6bbf9ea653ef9b4d0",
         "web/preset-browser.css": "b83edbc52e4a3f4fa24161fa9501b39bb73582eaefa72551f412a03e11c5d246",
@@ -223,7 +223,7 @@
     "export-photos": {
       "content": "4d390512f607806ae441447fd841b11e98359bbb324fb6750416268864a4f62a",
       "sources": {
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/app.js": "9b9f892fff47d199e719657ec29062556a127f47adafefec28492bb3f9434c9d",
         "web/index.html": "57e43f807a52ff109e6adf91213ea90540c2a48cfa6fb9b6bbf9ea653ef9b4d0"
       }
@@ -302,7 +302,7 @@
       "content": "431fb5fc10894d56e863219e9661ab2995d81996b9f8816abf7f3c7b9f4485ce",
       "sources": {
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
         "web/index.html": "57e43f807a52ff109e6adf91213ea90540c2a48cfa6fb9b6bbf9ea653ef9b4d0"
       }
@@ -356,7 +356,7 @@
       "content": "66a50e18b2e2dee4d8a35ea3c59b09e45f609b5dddea804b663e9744a456617d",
       "sources": {
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba"
       }
     },
@@ -410,7 +410,7 @@
       "content": "85731343eefbc085ca0eff4b39db0d043c537b6cc69f3b77c8722ec01725acb9",
       "sources": {
         "app/main.swift": "37445f4c3aca195ba1614131a98de89e21391e3ec3aa8bb7c912ec553e325869",
-        "server.py": "d94c131fc806d9039461ec7a3ea15a4620ff43ef556c3541f73a5335a4b05c31",
+        "server.py": "8bd85b37fab1d3748d58876aa6344fc7bfe0541087f874e2689ac502ea49dc93",
         "web/app.js": "9b9f892fff47d199e719657ec29062556a127f47adafefec28492bb3f9434c9d"
       }
     },
