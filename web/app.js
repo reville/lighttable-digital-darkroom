@@ -9587,11 +9587,7 @@ PRESET_BROWSER = createPresetBrowser({
     downloadPresetFile(result);
     return result;
   },
-  onManage() {
-    $('presetManage').open = true;
-    $('presetManage').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    $('presetManage').querySelector('summary').focus();
-  },
+  managementSection: $('presetManage'),
   async getPreview(preset, photo, { signal, width = 320 }) {
     const response = await fetch('/api/render/file', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,

@@ -87,7 +87,7 @@ export function createPresetBrowser({
   onSelect = () => {}, onApply, canApply = () => true,
   getFavorites = () => [], onFavoritesChange = () => {},
   getHidden = () => [], onHiddenChange = () => {},
-  getPreview, onManage, getCommunity = () => ({}), loadCommunity,
+  getPreview, managementSection, getCommunity = () => ({}), loadCommunity,
   getRecipe = async (preset) => preset, onInstall, onSubmit, onDuplicate,
   getSubmission, onDownloadExample,
   canUndo = () => false, onUndo = () => {},
@@ -125,7 +125,23 @@ export function createPresetBrowser({
   const order = root.querySelector('[data-order]'), tag = root.querySelector('[data-tag]');
   const refresh = root.querySelector('[data-action="refresh"]');
   const tabs = [...root.querySelectorAll('[data-collection]')];
-  root.querySelector('[data-action="manage"]').onclick = onManage;
+  const manage = root.querySelector('[data-action="manage"]');
+  manage.classList.add('preset-browser-manage');
+  let syncManagement;
+  if (managementSection) {
+    manage.setAttribute('aria-label', 'Manage presets');
+    manage.setAttribute('aria-controls', managementSection.id);
+    syncManagement = () => manage.setAttribute('aria-expanded', String(managementSection.open));
+    syncManagement();
+    managementSection.addEventListener('toggle', syncManagement);
+    manage.onclick = () => {
+      managementSection.open = !managementSection.open;
+      syncManagement();
+      if (managementSection.open) {
+        managementSection.querySelector('summary').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    };
+  } else manage.hidden = true;
   const queue = createPresetPreviewQueue({
     render: (item, options) => getPreview(item.preset, item.photo, { ...options, width: item.width || 320 }),
     onResult: ({ image, previewStatus, after, download }, value) => {
@@ -505,6 +521,10 @@ export function createPresetBrowser({
       if (preset) showDetail({ ...preset, collection: 'community' });
       else { render(); status.textContent = 'This preset is unavailable. Refresh the catalog and try again.'; }
     },
-    destroy() { destroyed = true; cancel(); root.remove(); },
+    destroy() {
+      destroyed = true; cancel();
+      if (syncManagement) managementSection.removeEventListener('toggle', syncManagement);
+      root.remove();
+    },
   };
 }
