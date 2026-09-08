@@ -955,65 +955,6 @@
       ]
     },
     {
-      "id": "editing-presets",
-      "title": "Apply, save, and import editing presets",
-      "category": "Editing",
-      "summary": "Reuse editing recipes and inspect conversion coverage when importing Lightroom, Camera Raw, or Capture One presets.",
-      "keywords": [
-        "preset",
-        "presets",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "import preset",
-        "save look",
-        "replace adjustments"
-      ],
-      "sections": [
-        {
-          "title": "Apply an existing recipe",
-          "paragraphs": [
-            "Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."
-          ],
-          "steps": [
-            "Choose a preset and review its summary, especially if it came from another editor.",
-            "Use Apply mapped adjustments to apply the settings the preset supplies.",
-            "Use Replace adjustment settings only when you want to reset adjustments, masks, Remove corrections, and geometry before applying the preset.",
-            "Inspect the photo and use Undo if you want to restore the previous edit."
-          ],
-          "tips": [
-            "Replace keeps your crop. It keeps Film unless the preset includes Film settings or you enable Turn Film off for the actions below.",
-            "Presets from other editors are converted approximately because their processing differs. Read skipped settings and conversion notes; matching controls do not promise identical pixels."
-          ]
-        },
-        {
-          "title": "Save or import a preset",
-          "paragraphs": [
-            "Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."
-          ],
-          "steps": [
-            "To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….",
-            "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
-            "Review the import result and the new preset’s conversion coverage before applying it.",
-            "To share a selected preset, choose an Export format and click Export…."
-          ],
-          "tips": [
-            "LightTable export is lossless for its preset format. Lightroom XMP and Capture One style exports are approximate.",
-            "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee that every setting inside can be converted."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "editing-curves"
-      ]
-    },
-    {
       "id": "editing-color-mixer-point-color",
       "title": "Change individual colors with Color Mixer and Point Color",
       "category": "Editing",
@@ -1230,6 +1171,133 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
+      ]
+    },
+    {
+      "id": "editing-presets",
+      "title": "Find, try, and share editing presets",
+      "category": "Editing",
+      "summary": "Browse built-in and community looks, preview them on your photo, and save or share your own presets.",
+      "keywords": [
+        "preset",
+        "presets",
+        "community",
+        "gallery",
+        "built-in",
+        "favorites",
+        "hide preset",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "import preset",
+        "save look",
+        "try preset",
+        "update preset",
+        "submit preset",
+        "replace adjustments"
+      ],
+      "sections": [
+        {
+          "title": "Choose a collection",
+          "paragraphs": [
+            "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+          ],
+          "steps": [
+            "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
+            "Use the star beside a preset to favorite it; Favorites filters the current collection.",
+            "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos."
+          ],
+          "tips": [
+            "Featured is an editorial collection, not a popularity ranking.",
+            "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back."
+          ]
+        },
+        {
+          "title": "Try before applying",
+          "paragraphs": [
+            "Try on this photo renders a preview locally inside the preset details. It does not change or save your edit, and your photo is not uploaded to the community gallery."
+          ],
+          "steps": [
+            "Select a photo and a preset, then click Try on this photo.",
+            "Wait for the preview, then use Before and With preset to compare. Creator examples have their own before/after controls and, when available, an Example photo selector.",
+            "Click Apply to commit the preset to the active photo. Use Undo in the details or the Undo action in the completion message to restore the previous edit."
+          ],
+          "tips": [
+            "Selecting a card, browsing another preset, or closing the details does not apply it.",
+            "Consecutive look applications use the edit from before the first look, so settings from one look do not accumulate into the next. A later manual edit starts a new comparison baseline. If you change photos or edit settings while a detail is open, select the preset again before applying."
+          ]
+        },
+        {
+          "title": "What a look keeps",
+          "paragraphs": [
+            "Built-in and community looks keep Edit Exposure, Temp/Tint, capture white balance, RAW corrections, film format, crop, geometry, masks, Remove corrections, lens corrections, sharpening, and noise reduction. They change the creative settings included in their recipe.",
+            "Film on enables the included film treatment. Film off bypasses Film. Film unchanged leaves its enabled state alone. A film treatment may intentionally change Camera EV, automatic metering, development, print, grain, and other creative film controls."
+          ],
+          "tips": [
+            "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; inspect its details before applying."
+          ]
+        },
+        {
+          "title": "Add community presets and updates",
+          "paragraphs": [
+            "Add to Yours downloads and saves the selected community recipe without applying it. Installed recipes work offline. Your existing photo edits store their settings separately from the preset."
+          ],
+          "steps": [
+            "Select a Community preset and click Add to Yours.",
+            "Use it later from Yours, or return to Community to inspect the public preset page.",
+            "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it."
+          ],
+          "tips": [
+            "Updating a preset does not change photos you have already edited.",
+            "The offline message distinguishes a cached catalog from an unavailable first download. Uncached recipes and creator example images can require a connection; Built-in and installed recipes remain available.",
+            "Update LightTable means that a preset needs features this app version does not support. Its installation and application controls stay disabled.",
+            "Open in LightTable on a public preset page opens its details in the installed app; it does not apply the look automatically."
+          ]
+        },
+        {
+          "title": "Save, import, and export",
+          "paragraphs": [
+            "Manage… opens Manage presets. Save current look defaults to Look · keep photo corrections. Full edit · include photo corrections also offers All adjustment settings or Changed settings only."
+          ],
+          "steps": [
+            "Choose the preset scope and whether to Include Film profile and physical settings, then click Save new… and name it.",
+            "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
+            "Review the import result and the new preset’s conversion coverage before applying it.",
+            "To export, choose a Selected preset and Export format, then click Export…."
+          ],
+          "tips": [
+            "LightTable export preserves the native preset recipe. Lightroom XMP and Capture One style exports are approximate.",
+            "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee every setting can be converted.",
+            "For an older or Full edit preset, Apply mapped adjustments changes its included settings. Replace adjustment settings also resets adjustments, masks, Remove corrections, and geometry first. Replace keeps the crop and keeps Film unless the preset includes Film or you enable Turn Film off for the actions below."
+          ]
+        },
+        {
+          "title": "Prepare a community submission",
+          "paragraphs": [
+            "Community publication is reviewed. The submission section shows the exact Develop and Film settings in the prepared look, its Film behavior, and the photo corrections it keeps. Nothing is uploaded when inspecting this summary or preparing a download."
+          ],
+          "steps": [
+            "Save a preset in Yours, select it, and review the included-settings summary under Community submission.",
+            "Click Prepare community submission… and wait for the local examples to render. Save the ZIP containing the preset, three licensed before/after photo pairs, photo credits, and rights notes.",
+            "Open the package and inspect the examples. You can also select your own photo and use Download example on this photo to save a 960-pixel JPEG of the shared look without changing the edit.",
+            "Click Open submission form, attach the package and any permitted additional examples, and add your creator details, description, and publishing permissions before submitting."
+          ],
+          "tips": [
+            "The three standard sample scenes are bundled with LightTable. Their export does not use your photographs or catalog, and their JPEGs contain no embedded photo metadata.",
+            "Submission preparation excludes photo-specific corrections. Inspect the resulting look before sharing it.",
+            "Only share photos you have permission to publish. Existing creator credit and parent-preset attribution are kept; recipe reuse permission and photo display permission are separate."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
       ]
     },
     {

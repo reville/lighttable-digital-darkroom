@@ -77,7 +77,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `versions` | `/api/state` |
 | `film / schema` | `/api/options` |
 | `raw-default` | `/api/raw-default` |
-| `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export` |
+| `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export`, `/api/presets/community`, `/api/presets/community/recipe`, `/api/presets/community/install`, `/api/presets/submission` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
 | `import` | `/api/import/catalog`, `/api/import/report`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |

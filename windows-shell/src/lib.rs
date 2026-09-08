@@ -1,3 +1,5 @@
+pub mod preset_links;
+
 use std::{
     collections::HashSet,
     fs,
@@ -6,6 +8,20 @@ use std::{
 
 use anyhow::{Context, Result, bail};
 use serde::{Deserialize, Serialize};
+
+/// Export data arrives as UTF-8 for recipes and base64 for submission ZIPs.
+/// Its destination remains exclusively the native Save dialog selection.
+pub fn preset_export_data(content: &str, encoding: Option<&str>) -> Result<Vec<u8>> {
+    use base64::{Engine as _, engine::general_purpose::STANDARD};
+    if content.len() > 15 * 1024 * 1024 {
+        bail!("The preset export exceeds 15 MB")
+    }
+    match encoding.unwrap_or("utf8") {
+        "utf8" | "utf-8" => Ok(content.as_bytes().to_vec()),
+        "base64" => STANDARD.decode(content).context("The preset export contains invalid base64 data"),
+        _ => bail!("The preset export uses an unsupported encoding"),
+    }
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FolderSource {
@@ -197,6 +213,17 @@ pub fn rename_root(path: &Path, raw_name: &str) -> Result<PathBuf> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn exported_recipes_and_binary_submissions_keep_their_exact_bytes() {
+        assert_eq!(preset_export_data("{\"name\":\"Café\"}", None).unwrap(), "{\"name\":\"Café\"}".as_bytes());
+        assert_eq!(preset_export_data("UEsDBAD/", Some("base64")).unwrap(), vec![80, 75, 3, 4, 0, 255]);
+        for invalid in ["not base64!", "UEsDBAD_", "AA", "AB==", "AA==\n"] {
+            assert!(preset_export_data(invalid, Some("base64")).is_err(), "{invalid:?}");
+        }
+        assert!(preset_export_data("text", Some("hex")).is_err());
+        assert!(preset_export_data(&"A".repeat(15 * 1024 * 1024 + 1), Some("base64")).is_err());
+    }
 
     #[test]
     fn settings_deduplicate_sources_and_preserve_favorites() {

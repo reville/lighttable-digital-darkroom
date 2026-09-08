@@ -654,7 +654,7 @@
       </section>
 
       <section class="panel-pane" id="presetsPane">
-        <div class="panel-title"><div><strong>Presets</strong><span>LightTable and portable edit recipes</span></div></div>
+        <div class="panel-title"><div><strong>Presets</strong><span>Looks for your photographs</span></div></div>
         <div class="pane-content">
           <div id="presetBrowser"></div>
           <details class="info-section preset-management" id="presetManage">
@@ -671,8 +671,13 @@
               <button class="quiet full stack-gap" id="presetReplace">Replace adjustment settings</button>
               <p class="hint">Replacing resets adjustments, masks, Remove corrections, and geometry before applying this preset. Your crop is kept. Film is kept unless the preset includes it or you turn it off above. Undo restores the previous edit.</p>
               <div class="subheading">Save current look</div>
+              <label class="field-label" for="presetSaveScope">Preset scope</label>
+              <select id="presetSaveScope"><option value="look">Look · keep photo corrections</option><option value="full">Full edit · include photo corrections</option></select>
+              <p class="hint">Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.</p>
+              <div id="presetSaveOptions" hidden>
               <label class="field-label" for="presetSaveType">Include adjustments</label>
               <select id="presetSaveType"><option value="style">All adjustment settings</option><option value="tool">Changed settings only</option></select>
+              </div>
               <label class="check-row"><input type="checkbox" id="presetIncludeFilm" checked><span>Include Film profile and physical settings</span></label>
               <button class="primary-btn full stack-gap" id="presetSave">Save new…</button>
               <button class="text-btn negative" id="presetDel">Delete selected preset</button>

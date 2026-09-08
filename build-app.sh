@@ -44,6 +44,11 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleName</key><string>LightTable</string>
   <key>CFBundleDisplayName</key><string>LightTable</string>
   <key>CFBundleIdentifier</key><string>$BUNDLE_IDENTIFIER</string>
+  <key>CFBundleURLTypes</key><array><dict>
+    <key>CFBundleURLName</key><string>org.lighttable.preset</string>
+    <key>CFBundleURLSchemes</key><array><string>lighttable</string></array>
+    <key>CFBundleTypeRole</key><string>Viewer</string>
+  </dict></array>
   <key>CFBundleVersion</key><string>1.0</string>
   <key>CFBundleShortVersionString</key><string>1.0</string>
   <key>CFBundlePackageType</key><string>APPL</string>
