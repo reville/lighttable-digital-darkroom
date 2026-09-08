@@ -114,6 +114,9 @@ try {
     Get-ChildItem (Join-Path $Project "film_lab_ai") -Filter *.py |
         ForEach-Object { Copy-Item $_.FullName $AiPackage }
     Copy-Item (Join-Path $Project "web") $Resources -Recurse
+    $BuildAssets = Join-Path $Resources "build"
+    New-Item -ItemType Directory -Force -Path $BuildAssets | Out-Null
+    Copy-Item (Join-Path $Project "build\icon-1024.png") $BuildAssets
     Copy-Item (Join-Path $Project "profiles") $Resources -Recurse
     Copy-Item (Join-Path $Project "presets") $Resources -Recurse
 
