@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {createZoomMotion} from '../web/zoom-motion.js';
+import {createZoomMotion, smoothZoomEnabled} from '../web/zoom-motion.js';
 
 function clock(reduced=false) {
   let at=0, next=0, done=0, latest=null;
   const frames=new Map(),timers=new Map(),painted=[];
-  const motion=createZoomMotion({now:()=>at,reducedMotion:()=>reduced,
+  const motion=createZoomMotion({now:()=>at,reducedMotion:()=>typeof reduced === 'function' ? reduced() : reduced,
     requestFrame:fn=>{frames.set(++next,fn);return next;},cancelFrame:id=>frames.delete(id),
     setTimer:fn=>{timers.set(++next,fn);return next;},clearTimer:id=>timers.delete(id),
     paint:v=>{latest=v;painted.push(v);},settled:()=>done++});
@@ -64,4 +64,24 @@ test('native viewport layout follows each animation frame without a second RAF d
   assert.deepEqual(sent,[{x:0},{x:20}]);assert.deepEqual(cancelled,[4]);assert.equal(queued.length,0);
   motion.active=false;x=30;schedule();schedule();
   assert.equal(queued.length,1);queued[0]();assert.deepEqual(sent.at(-1),{x:30});
+});
+
+
+test('saved Smooth zoom choices override Reduce Motion in both directions',()=>{
+  for(const systemReduced of [true,false]) {
+    assert.equal(smoothZoomEnabled({},()=>systemReduced),!systemReduced);
+    assert.equal(smoothZoomEnabled({smoothZoom:null},()=>systemReduced),!systemReduced);
+    assert.equal(smoothZoomEnabled({smoothZoom:true},()=>systemReduced),true);
+    assert.equal(smoothZoomEnabled({smoothZoom:false},()=>systemReduced),false);
+  }
+  const prefs={smoothZoom:true};
+  const view=clock(()=>!smoothZoomEnabled(prefs,()=>true));
+  view.motion.start(fit,actual);view.tick(80);
+  assert.ok(view.latest.zoom>1 && view.latest.zoom<8, 'explicit On animates with system Reduce Motion');
+  prefs.smoothZoom=false;view.tick(96);
+  assert.deepEqual(view.latest,actual);assert.equal(view.done,1);
+  view.motion.start(actual,fit);
+  assert.deepEqual(view.latest,fit);assert.equal(view.frames.size,0);
+  prefs.smoothZoom=true;view.motion.start(fit,actual);view.tick(160);
+  assert.ok(view.latest.zoom>1 && view.latest.zoom<8, 'On restores animation immediately');
 });

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279",
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Un'esportazione non può sostituire un originale catalogato o il suo file compagno di acquisizione",
     "An external edit is already rendering": "Una modifica esterna è già in rendering",
     "Analysis stays on this Mac and never modifies photo folders.": "L'analisi resta su questo Mac e non modifica mai le cartelle delle foto.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Anima lo zoom della foto. La tua scelta ha la precedenza su Riduci movimento nelle impostazioni di sistema.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Un'altra finestra di LightTable potrebbe stare importando questa libreria. Chiudi quell'importazione e riprova.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Un'altra applicazione ha modificato il file XMP. Riprova per unire le sue modifiche più recenti.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Un'altra copia di LightTable ha già aperto questa libreria. Usa quella finestra oppure chiudi LightTable, poi riprova.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
     "Fit the whole photo to the available space": "Adatta l’intera foto allo spazio disponibile",
     "Fit to window ({actualPct}%)": "Adatta alla finestra ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento.",
     "Flag": "Contrassegna",
     "Flag and rate survey photo": "Contrassegna e valuta la foto della panoramica",
     "Flag and rating filters": "Filtri contrassegno e valutazione",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "Azione di selezione intelligente",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "L'azione di selezione intelligente controlla se la prossima selezione intelligente diventa una nuova maschera o si combina con la maschera attualmente selezionata.",
     "Smooth color": "Colore uniforme",
+    "Smooth zoom": "Zoom fluido",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
     "Snapshots": "Istantanee",
     "Soft Filmic": "Filmico morbido",
     "Soft Proof": "Prova di stampa",

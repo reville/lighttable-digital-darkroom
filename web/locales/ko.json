@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279",
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "내보내기는 카탈로그에 있는 원본이나 캡처 보조본을 대체할 수 없습니다",
     "An external edit is already rendering": "외부 편집이 이미 렌더링 중입니다",
     "Analysis stays on this Mac and never modifies photo folders.": "분석은 이 Mac에서만 유지되며 사진 폴더를 변경하지 않습니다.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "사진 확대/축소에 애니메이션을 적용합니다. 이 선택은 시스템의 동작 줄이기 설정보다 우선합니다.",
     "Another LightTable window may be importing this library. Close that import and try again.": "다른 LightTable 창에서 이 라이브러리를 가져오는 중일 수 있습니다. 해당 가져오기를 닫고 다시 시도하세요.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "다른 응용 프로그램이 XMP 파일을 변경했습니다. 다시 시도하여 최신 변경 내용을 병합하세요.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "다른 LightTable 복사본에서 이미 이 라이브러리를 열어 두었습니다. 해당 창을 사용하거나 종료한 다음 다시 시도하세요.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "맞춤은 작은 사진을 확대할 수 있습니다. 1:1은 사진이 맞춤보다 작아지더라도 실제 픽셀을 표시하며, 창 크기를 변경해도 같은 픽셀 배율을 유지합니다.",
     "Fit the whole photo to the available space": "전체 사진이 사용 가능한 공간에 맞도록",
     "Fit to window ({actualPct}%)": "창에 맞춤 ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "맞춤, 1:1, 확대/축소 버튼과 단축키는 부드럽게 애니메이션됩니다. 스크롤, 핀치, 드래그는 직접 반응합니다. 시스템의 동작 줄이기 설정이 켜져 있으면 확대/축소 애니메이션이 비활성화됩니다.",
     "Flag": "플래그",
     "Flag and rate survey photo": "서베이 사진에 플래그 지정 및 평점 매기기",
     "Flag and rating filters": "플래그 및 평점 필터",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "스마트 선택 작업",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "스마트 선택 동작은 다음 스마트 선택이 새 마스크가 될지, 아니면 현재 선택된 마스크와 결합될지를 제어합니다.",
     "Smooth color": "색상 부드럽게 하기",
+    "Smooth zoom": "부드러운 확대/축소",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "설정 → 인터페이스의 부드러운 확대/축소에서 맞춤, 1:1, 확대/축소 버튼 및 단축키의 애니메이션을 켜거나 끌 수 있습니다. 이 선택은 동작 줄이기보다 우선하며, 선택하기 전에는 LightTable이 시스템 설정을 따릅니다. 스크롤, 핀치 및 드래그는 조작에 직접 반응합니다.",
     "Snapshots": "스냅샷",
     "Soft Filmic": "부드러운 필름 느낌",
     "Soft Proof": "소프트 프루프",

@@ -226,7 +226,7 @@
             "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin.",
             "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
             "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
-            "Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayolları akıcı biçimde canlandırılır. Kaydırma, iki parmakla yakınlaştırma ve sürükleme doğrudan tepki verir. Sisteminizde Hareketi Azalt ayarı etkinleştirildiğinde yakınlaştırma animasyonu devre dışı kalır."
+            "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -2730,6 +2730,7 @@
           "paragraphs": [
             "Çoğu ayar değişikliği otomatik olarak kaydedilir. Dil, düzenlemeleri kaydettikten sonra Uygula dilini kullanır ve pencereyi yeniden yükler. Genel ayrıca seçme, reddetme veya puanlama sonrası Otomatik ilerle’yi, tamamlanma bildirimlerini ve güncelleme denetimlerini de yönetir.",
             "Arayüz, görüntüleyici arka planını, yazı tipi ölçeğini, Lights Out'u, büyüteç bilgi katmanını ve kırpma kılavuzlarını denetler. Bu tercihler, dışa aktarılan pikselleri değiştirmeden çalışma alanının görünümünü değiştirir.",
+            "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
             "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun."
           ]
         },
@@ -3128,5 +3129,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
 }

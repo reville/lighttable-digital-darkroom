@@ -1,3 +1,9 @@
+/** An explicit app preference takes precedence over the system default. */
+export function smoothZoomEnabled(prefs = {}, systemReducedMotion = () =>
+  matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  return typeof prefs?.smoothZoom === 'boolean' ? prefs.smoothZoom : !systemReducedMotion();
+}
+
 /** A short, interruptible camera move shared by DOM and native presentation. */
 export function createZoomMotion({paint, settled, requestFrame = requestAnimationFrame,
   cancelFrame = cancelAnimationFrame, now = () => performance.now(),

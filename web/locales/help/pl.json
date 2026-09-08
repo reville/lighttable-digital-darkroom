@@ -226,7 +226,7 @@
             "Prawy panel boczny używa przycisków z ikonami dla Edytuj, Film, Kadruj, Usuń, Maskowanie, Informacje, Historia i Presety. Najedź kursorem na ikonę, aby zobaczyć jej nazwę.",
             "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
             "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby.",
-            "Dopasuj, 1:1 oraz przyciski i skróty powiększania działają z płynną animacją. Przewijanie, gesty szczypania i przeciąganie reagują bezpośrednio. Animacja powiększania jest wyłączona, gdy w systemie włączono opcję Ogranicz ruch."
+            "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio."
           ],
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
@@ -2730,6 +2730,7 @@
           "paragraphs": [
             "Większość zmian ustawień zapisuje się automatycznie. Język używa opcji Zastosuj język i po zapisaniu zmian przeładowuje okno. Ogólne kontroluje też Automatyczne przechodzenie po wybraniu, odrzuceniu lub ocenieniu, powiadomienia o zakończeniu oraz sprawdzanie aktualizacji.",
             "Opcje interfejsu sterują tłem przeglądarki, skalą czcionki, Lights Out, nakładką informacji lupy i prowadnicami kadrowania. Te preferencje zmieniają wygląd obszaru roboczego bez zmiany wyeksportowanych pikseli.",
+            "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio.",
             "Pliki i metadane kontrolują przenośne edycje LightTable obok oryginałów, automatyczny zapis XMP, parowanie RAW/JPEG oraz wprowadzanie słów kluczowych. Pełne przenośne edycje używają .lighttable-state.json; XMP przenosi zgodne edycje i metadane. Synchronizacja XMP zachowuje niepowiązane pola i zgłasza konflikty zmian zewnętrznych; odczytuj metadane Exchange przez sidecary XMP dla obsługiwanego przepływu pracy."
           ]
         },
@@ -3128,5 +3129,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
 }
