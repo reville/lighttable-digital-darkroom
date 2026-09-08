@@ -16,6 +16,7 @@ from typing import Callable
 import catalog as catalog_module
 import catalog_scan
 import ingest_workflow
+import file_identity
 import media_formats
 import media_availability
 
@@ -56,7 +57,8 @@ class WatchService:
         self._presets = presets or (lambda: [])
         self._render_busy = render_busy or (lambda: False)
         self._poll_seconds = max(0.05, float(poll_seconds))
-        self._candidates: dict[tuple[str, str], tuple[tuple[int, int], int]] = {}
+        self._candidates: dict[tuple[str, str], tuple[tuple[int, ...], int]] = {}
+        self._handled_revisions: dict[tuple[str, str], tuple[int, ...]] = {}
         self._session_paths: set[Path] = set()
         self._status: dict[str, dict] = {}
         self._lock = threading.Lock()
@@ -124,7 +126,7 @@ class WatchService:
         return next((item for item in self._presets()
                      if str(item.get("id")) == ident), None)
 
-    def _apply_preset(self, image_id: int, preset: dict | None) -> None:
+    def _apply_preset(self, image_id: int, preset: dict | None, *, connection=None) -> None:
         if not preset:
             return
         current = self.catalog.state_for(image_id)
@@ -132,7 +134,10 @@ class WatchService:
             from preset_library import look_patch
             patch = look_patch(preset)
             entry = {key: {**(current.get(key) or {}), **value} for key, value in patch.items()}
-            self.catalog.save_state(image_id, entry)
+            if connection is None:
+                self.catalog.save_state(image_id, entry)
+            else:
+                self.catalog._save_state(connection, image_id, entry)
             return
         entry: dict = {}
         if preset.get("includeFilm"):
@@ -148,11 +153,21 @@ class WatchService:
             if preset.get(key):
                 entry[key] = preset[key]
         if entry:
-            self.catalog.save_state(image_id, entry)
+            if connection is None:
+                self.catalog.save_state(image_id, entry)
+            else:
+                self.catalog._save_state(connection, image_id, entry)
 
-    def _handle(self, watch: dict, path: Path, digest: str) -> tuple[int, str]:
+    def _handle(self, watch: dict, path: Path, digest: str, *,
+                expected_signature: str | None = None) -> tuple[int, str]:
+        original = {"path": str(path), "content_signature": expected_signature
+                    or file_identity.signature_key(path.stat(), path=path)}
+        catalog_scan._validate_scan_identity(original)
+        content_digest = digest.removeprefix("full:")
         if watch["mode"] == "catalog":
-            image_id = catalog_scan.register_file(self.catalog, path)
+            image_id = catalog_scan.register_file(self.catalog, path,
+                expected_signature=original["content_signature"],
+                expected_content_hash=content_digest)
         else:
             item = ingest_workflow.describe_file(path)
             request = dict(watch.get("request") or {})
@@ -165,10 +180,29 @@ class WatchService:
                 plan["items"][0], verify=str(request.get("verify", "hash")))
             if not copied.get("ok"):
                 raise RuntimeError(copied.get("error") or "watched ingest failed")
+            catalog_scan._validate_scan_identity(original)
             path = Path(copied["destination"])
-            image_id = catalog_scan.register_file(self.catalog, path)
-        self._apply_preset(image_id, self._preset(watch["presetId"]))
-        self.catalog.record_watch_handled(watch["id"], digest)
+            image_id = catalog_scan.register_file(self.catalog, path,
+                expected_content_hash=content_digest)
+        preset = self._preset(watch["presetId"])
+        # A watcher acknowledges exactly the bytes that settled. Registration
+        # performs its expensive reads outside this short state/ledger writer.
+        # Guard both the arrival and its destination so neither an old digest
+        # nor its preset is published for a later replacement.
+        with self.catalog.write() as conn:
+            stored = conn.execute(
+                "SELECT f.content_hash, f.content_signature FROM files f"
+                " JOIN images i ON i.file_id=f.id WHERE i.id=?", (image_id,)).fetchone()
+            if not stored or stored["content_hash"] != content_digest:
+                raise OSError(f"watched file changed before acknowledgement: {path}")
+            registered = {"path": str(path), "content_signature": stored["content_signature"]}
+            catalog_scan._validate_scan_identity(original)
+            catalog_scan._validate_scan_identity(registered)
+            self._apply_preset(image_id, preset, connection=conn)
+            conn.execute("INSERT OR IGNORE INTO watch_ledger(watch_id, header_hash, handled_at)"
+                         " VALUES(?,?,?)", (watch["id"], digest, time.time()))
+            catalog_scan._validate_scan_identity(original)
+            catalog_scan._validate_scan_identity(registered)
         row = self.catalog.image_row(image_id)
         name = (catalog_module.qualified_name(row["source_id"], row["relpath"])
                 if row else path.name)
@@ -183,7 +217,10 @@ class WatchService:
         if media_availability.from_stat(stat) != "local":
             self._candidates.pop(key, None)
             raise OSError(media_availability.CLOUD_MESSAGE)
-        signature = (int(stat.st_size), int(stat.st_mtime_ns))
+        signature = file_identity.stat_signature(stat, path=path)
+        signature_key = ":".join(map(str, signature))
+        if self._handled_revisions.get(key) == signature:
+            return False
         previous, stable = self._candidates.get(key, (None, 0))
         stable = stable + 1 if previous == signature else 1
         self._candidates[key] = (signature, stable)
@@ -191,10 +228,31 @@ class WatchService:
             return False
         # A successful metadata read is the final settled-file gate.
         catalog_scan.read_metadata(path)
-        digest = ingest_workflow.header_hash(path)
+        digest = "full:" + file_identity.content_hash(path,
+            expected_revision=(stat.st_size, stat.st_mtime_ns),
+            expected_signature=signature_key)
         if self.catalog.watch_handled(watch["id"], digest):
+            self._handled_revisions[key] = signature
             return False
-        _, name = self._handle(watch, path, digest)
+        # Convert old prefix-only acknowledgements only when a complete copy
+        # still exists. Otherwise a colliding new arrival must be handled.
+        legacy_digest = ingest_workflow.header_hash(path)
+        if self.catalog.watch_handled(watch["id"], legacy_digest):
+            item = ingest_workflow.describe_file(path)
+            known = self.catalog.ingest_content_hashes([item])
+            if digest.removeprefix("full:") in known.get(legacy_digest, ()):
+                original = {"path": str(path),
+                            "content_signature": signature_key}
+                with self.catalog.write() as conn:
+                    catalog_scan._validate_scan_identity(original)
+                    conn.execute("INSERT OR IGNORE INTO watch_ledger(watch_id, header_hash, handled_at)"
+                                 " VALUES(?,?,?)", (watch["id"], digest, time.time()))
+                    catalog_scan._validate_scan_identity(original)
+                self._handled_revisions[key] = signature
+                return False
+        _, name = self._handle(watch, path, digest,
+                               expected_signature=signature_key)
+        self._handled_revisions[key] = signature
         now = time.time()
         with self._lock:
             status = self._status.setdefault(watch["id"], {})

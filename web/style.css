@@ -1058,6 +1058,7 @@ a.reset:hover { color:#fff; }
 .local-ai-status { padding:10px 12px; border:1px solid var(--line-soft); border-radius:var(--radius); background:var(--inset); }
 .local-ai-status-line { display:flex; align-items:center; gap:8px; color:var(--ink-2); font-size:12px; }
 .local-ai-status > span { display:block; min-height:16px; margin:4px 0 8px 16px; overflow:hidden; color:var(--muted); font-size:11px; line-height:1.45; text-overflow:ellipsis; white-space:nowrap; }
+.local-ai-status:not(.running) > span { overflow:visible; white-space:normal; overflow-wrap:anywhere; }
 .ai-status-dot { width:8px; height:8px; border-radius:50%; background:#666; box-shadow:0 0 0 1px rgba(255,255,255,.08); }
 .local-ai-status.running .ai-status-dot { background:var(--accent); box-shadow:0 0 0 3px rgba(75,156,245,.13); }
 .local-ai-status.ready .ai-status-dot { background:var(--ok); }

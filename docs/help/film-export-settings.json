@@ -126,8 +126,8 @@
     "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
     "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress"],
     "sections": [
-      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
-      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."]}
+      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
+      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."]}
     ],
     "related": ["export-format-color-space", "export-filenames-and-folders", "export-metadata-sidecars"],
     "sources": [
@@ -166,10 +166,11 @@
     "keywords": ["destination", "folder", "path", "filename", "rename", "overwrite", "skip", "collision", "hierarchy", "sequence", "template"],
     "sections": [
       {"title": "Destination layout", "paragraphs": ["One destination folder sends exports to the chosen folder. Subfolder beside each original uses a relative subfolder name for each source photo. Keep source folder hierarchy preserves source-folder organization beneath the export destination."], "steps": ["Open Export and choose Destination layout.", "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.", "Expand Advanced and edit Filename template.", "Check the filename and destination shown in Output preview before exporting."]},
-      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
+      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
     ],
     "related": ["export-photos", "export-metadata-sidecars"],
     "sources": [
+      {"path": "export_workflow.py", "anchor": "def _safe_piece("},
       {"path": "web/index.html", "anchor": "Keep source folder hierarchy"},
       {"path": "web/app.js", "anchor": "'Subfolder name, e.g. film-exports'"},
       {"path": "web/index.html", "anchor": "Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}."},
@@ -284,6 +285,7 @@
     "keywords": ["ai", "search", "index", "contents", "objects", "scenes", "ocr", "text", "faces", "privacy", "local", "description"],
     "sections": [
       {"title": "Build the index", "paragraphs": ["The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."], "steps": ["Open Settings → Photo Index.", "Check the On-device capabilities status and turn on Photo contents index.", "Wait for indexing progress to complete. Photos can gain results as they are indexed.", "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.", "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."]},
+      {"title": "Skipped photos", "paragraphs": ["Empty files, files that are not downloaded, and unavailable originals are skipped before analysis. Photo Index reports their counts separately from analysis errors. An empty file contains no image data; it may need to be downloaded again or restored from a backup.", "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index."]},
       {"title": "Pause, rebuild, or delete", "paragraphs": ["Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.", "Delete index removes generated index data after confirmation. Originals and saved edits are unchanged. If Apple Vision says Build required, the current installation lacks the required local analyzer. Foundation Models may be unavailable while basic Vision indexing remains usable."]}
     ],
     "related": ["assisted-culling", "settings-and-defaults"],
@@ -293,7 +295,11 @@
       {"path": "web/app.js", "anchor": "'Search photos, contents, text, and faces'"},
       {"path": "web/app.js", "anchor": "indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted."},
       {"path": "web/app.js", "anchor": "Delete the generated local photo index? Your originals and edits will not be changed."},
-      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"}
+      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"},
+      {"path": "film_lab_ai/service.py", "anchor": "self._source_availability(name)"},
+      {"path": "media_availability.py", "anchor": "def index_availability("},
+      {"path": "web/local-ai.js", "anchor": "export function aiSkippedSummary("},
+      {"path": "web/style.css", "anchor": ".local-ai-status:not(.running) > span"}
     ]
   },
   {
@@ -384,6 +390,7 @@
         "title": "Understand recovery choices",
         "paragraphs": [
           "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+          "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
           "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
         ]
       },
@@ -391,7 +398,21 @@
         "title": "Desktop diagnostics",
         "paragraphs": [
           "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
-          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."
+          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation."
+        ]
+      },
+      {
+        "title": "Report an unexpected exit on Mac",
+        "paragraphs": [
+          "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.",
+          "Help → Report a Problem… opens the latest report, or current diagnostics if no unexpected exit was recorded. Reports include the app build, macOS and hardware, the last recorded operation when available, filtered recent logs, and available error traces. A matching macOS crash report can add stack and binary information. An unexpected exit does not always leave an error trace or identify its cause.",
+          "Reports stay on your Mac until you choose to share them. Paths, photo filenames, quoted log values, and common credential fields are filtered; inspect the text before sharing. Photos and the catalog are not attached. The latest ten reports are kept locally."
+        ],
+        "steps": [
+          "Read the diagnostic report. Choose Copy report to paste it into an email yourself.",
+          "Or choose Email maintainer. This copies the report and opens a draft addressed to team@lighttable.app.",
+          "Describe what you were doing, paste the copied report into the draft, and send it when ready. If no email app opens, use your usual email service.",
+          "Choose Dismiss to close the report. Nothing is sent automatically."
         ]
       }
     ],
@@ -400,6 +421,7 @@
       "performance-previews"
     ],
     "sources": [
+      {"path": "catalog_scan.py", "anchor": "def scan_source("},
       {
         "path": "web/index.html",
         "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."
@@ -428,6 +450,8 @@
         "path": "web/recovery.js",
         "anchor": "Safe Mode: scanning, watched folders, local AI, and engine warm-up "
       },
+      {"path": "app/DiagnosticReports.swift", "anchor": "static let recipient = \"team@lighttable.app\""},
+      {"path": "fatal_diagnostics.py", "anchor": "faulthandler.enable(file=_fault_file, all_threads=True)"},
       {
         "path": "app/main.swift",
         "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
