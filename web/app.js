@@ -904,7 +904,7 @@ function applyViewNow() {
   const actualScale = naturalW > 0 ? (displayedW / naturalW) : null;
   const actualPct = actualScale === null ? null : Math.round(actualScale * 100);
 
-  const isFit = S.zoomMode === 'fit' || S.zoom <= 1;
+  const isFit = S.zoomMode === 'fit';
   const is1to1 = !isFit && Math.abs(actualScale - 1.0) < 0.02;
 
   $('zoomVal').textContent = actualPct === null ? '—' : `${actualPct}%`;
@@ -937,14 +937,17 @@ function applyView() {
   viewFrameScheduler.request({ view: true });
   scheduleAutomaticPreview();
 }
-function zoomAt(factor, sx, sy) {
+function zoomAt(factor, sx, sy, { actual = false } = {}) {
   const currentZoom = S.zoom;
-  const next = clamp(currentZoom * factor, 1, 32);
-  if (next <= 1.001) {
+  const r = $('cmp').getBoundingClientRect();
+  const actualZoom = r.width > 0 ? displaySourcePixelWidth() * currentZoom / r.width : 0;
+  const next = actual ? currentZoom * factor : clamp(currentZoom * factor,
+    Math.min(1, actualZoom || 1), Math.max(32, currentZoom));
+  if (!(next > 0 && Number.isFinite(next))) return;
+  if (!actual && Math.abs(next - 1) < 0.001) {
     zoomReset();
     return;
   }
-  const r = $('cmp').getBoundingClientRect();
   const c0x = r.left + r.width / 2 - S.panX;
   const c0y = r.top + r.height / 2 - S.panY;
   const dx = sx - c0x, dy = sy - c0y, k = next / currentZoom;
@@ -1001,7 +1004,7 @@ function toggleActualZoomAt(x, y) {
   }
   S.zoomMode = '100';
   S.targetPixelScale = 1;
-  zoomAt(sourceWidth / rect.width, x, y);
+  zoomAt(sourceWidth / rect.width, x, y, { actual: true });
   S.zoomMode = '100';
   S.targetPixelScale = 1;
   applyView();
@@ -1051,7 +1054,7 @@ function viewportPixelWindow(canvas, clip, width, height, margin = 96) {
 }
 
 function viewportSourceGeometryKey() {
-  return JSON.stringify([cur()?.name, cur()?.fileKey || cur()?.mtime || null,
+  return JSON.stringify([cur()?.name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null,
     Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2]);
 }
 
@@ -3517,6 +3520,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
       S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+        native: m.native || null,
         delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
           +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
       setRenderPresentation('ready', im.name);
@@ -7610,10 +7614,7 @@ $('resetFilm').onclick = () => {
 };
 
 $('zoomIn').onclick = () => { S.zoomMode = 'custom'; zoomCentre(1.25); };
-$('zoomOut').onclick = () => {
-  if (S.zoom <= 1.05) zoomReset();
-  else { S.zoomMode = 'custom'; zoomCentre(1 / 1.25); }
-};
+$('zoomOut').onclick = () => { S.zoomMode = 'custom'; zoomCentre(1 / 1.25); };
 $('zoomFit').onclick = zoomReset;
 document.querySelectorAll('[data-exit-tool]').forEach((button) => { button.onclick = exitPhotoTool; });
 $('cropDone').onclick = exitPhotoTool;
@@ -8821,7 +8822,7 @@ function finishSpeedKey(key) {
     if (!gestureFrame) gestureFrame = requestAnimationFrame(() => {
       gestureFrame = 0;
       const latest = gestureEvent;
-      zoomAt(clamp(gStart * latest.scale, 1, 16) / S.zoom,
+      zoomAt(clamp(gStart * latest.scale, Math.min(1, gStart), Math.max(16, gStart)) / S.zoom,
         latest.x, latest.y);
     });
   });
@@ -9273,26 +9274,30 @@ function updateLoupeInfoOverlay() {
 }
 async function showExif(name) {
   const box = $('exif');
-  if (!_exifCache.has(name)) {
+  const imageKey = JSON.stringify([name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null]);
+  if (!_exifCache.has(imageKey)) {
     try {
-      _exifCache.set(name, await fetch(
+      _exifCache.set(imageKey, await fetch(
         '/api/exif?name=' + encodeURIComponent(name)).then((r) => r.json()));
-    } catch { _exifCache.set(name, {}); }
+    } catch { _exifCache.set(imageKey, {}); }
   }
-  const e = _exifCache.get(name) || {};
+  const e = _exifCache.get(imageKey) || {};
   if (cur()?.name !== name) return;
+  if (imageKey !== JSON.stringify([name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null])) return;
   S.exif = e;
   updateLoupeInfoOverlay();
   const im = cur();
-  const width = +(e.ImageWidth || e.ExifImageWidth || e.PixelXDimension || 0);
-  const height = +(e.ImageHeight || e.ImageLength || e.ExifImageHeight ||
-    e.PixelYDimension || 0);
-  if (im && width > 0 && height > 0 && (!im.width || !im.height)) {
+  // These fields include camera orientation and describe decoded pixels. EXIF
+  // ImageWidth/ImageHeight may instead describe a RAW's embedded JPEG.
+  const width = +(e.SourceWidth || 0);
+  const height = +(e.SourceHeight || 0);
+  if (im && width > 0 && height > 0 && (im.width !== width || im.height !== height)) {
     im.width = width;
     im.height = height;
     const gridCell = _gridEls.get(im.name);
     if (gridCell) gridCell.style.setProperty('--photo-aspect-ratio', `${width} / ${height}`);
     layoutPhotoGrid();
+    onViewportResize();
     scheduleAutomaticPreview();
     if (S.zoomMode === '100' && S.viewMode === 'detail') renderFilm(0);
   }
@@ -10624,12 +10629,13 @@ function onViewportResize() {
     return;
   }
   if (S.zoomMode === '100') {
-    S.zoom = clamp(displaySourcePixelWidth() / baseW, 1, 32);
+    const sourceWidth = displaySourcePixelWidth();
+    if (sourceWidth > 0) S.zoom = displaySourcePixelWidth() / baseW;
     S.targetPixelScale = 1;
     clampPan();
   } else if (S.zoomMode === 'custom' && S.targetPixelScale) {
-    S.zoom = clamp(
-      (S.targetPixelScale * displaySourcePixelWidth()) / baseW, 1, 32);
+    const sourceWidth = displaySourcePixelWidth();
+    if (sourceWidth > 0) S.zoom = (S.targetPixelScale * sourceWidth) / baseW;
     clampPan();
   } else if (S.zoomMode !== 'custom') {
     S.zoom = 1;

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1193,6 +1193,7 @@
     "Finish saving your edits before undoing the batch": "일괄 작업을 되돌리기 전에 편집 내용 저장을 완료하세요",
     "First file lands at {firstDestination}": "첫 번째 파일이 {firstDestination}에 저장됩니다",
     "Fit": "맞춤",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "맞춤은 작은 사진을 확대할 수 있습니다. 1:1은 사진이 맞춤보다 작아지더라도 실제 픽셀을 표시하며, 창 크기를 변경해도 같은 픽셀 배율을 유지합니다.",
     "Fit the whole photo to the available space": "전체 사진이 사용 가능한 공간에 맞도록",
     "Fit to window ({actualPct}%)": "창에 맞춤 ({actualPct}%)",
     "Flag": "플래그",
@@ -1350,6 +1351,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "로컬 복구가 라이브러리 열기 시 미해결 변경 사항을 찾으면 저장되지 않음 편집 복구?에 영향을 받은 사진이 나열됩니다. 편집 복원은 해당 사진의 저장된 설정을 복구된 설정으로 바꿉니다. 저장된 편집 유지는 카탈로그 버전을 유지하고 해당 복구 초안을 버립니다.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "마스크를 전송할 수 없으면, 다른 그룹을 적용하려면 로컬 마스크 선택을 해제한 상태로 다시 복사하세요.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "필요하면 렌즈 프로필에서 다른 항목을 선택하고 보정을 원본과 비교하세요.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1 버튼의 도구 설명에 표시되는 미리보기 픽셀 크기가 원본보다 작다면, 더 작은 전달 미리보기를 보고 있는 것입니다. 자동 해상도는 화면에 맞추고 확대 보기 요청 시 해상도를 높입니다. 매우 큰 원본은 미리보기 요청 한도를 초과할 수 있습니다.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac 앱이 정상 종료되지 않고 닫히면 다음에 실행할 때 진단 보고서가 열립니다. 렌더링 엔진이 예기치 않게 중지되면 엔진이 복구되는 동안 보고서가 열릴 수 있습니다. 보고서는 기록된 사건마다 한 번씩 표시됩니다. 닫기를 선택하면 계속 진행할 수 있습니다. 앱을 정상적으로 닫거나 렌더링 서비스를 다시 시작해도 보고서는 생성되지 않습니다.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac 첫 사용 선택 사항을 저장할 수 없으면 다시 시도하면 선택 내용이 유지되고 다시 시도합니다. 앱은 저장이 성공한 뒤에만 시작됩니다.",
@@ -4030,8 +4032,7 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요."
+    "☆ Favorites": "☆ 즐겨찾기"
   },
   "plurals": {
     " · {count} paired file linked": {

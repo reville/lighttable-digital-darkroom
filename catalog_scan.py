@@ -30,6 +30,7 @@ import dam_filters
 import file_identity
 import media_formats
 import media_availability
+import source_geometry
 
 RAW_EXTS = media_formats.RAW_EXTENSIONS
 PROCESSED_EXTS = media_formats.PROCESSED_EXTENSIONS
@@ -43,7 +44,7 @@ MERGE_DIR_NAME = "LightTable Merges"
 SKIP_DIRS = {EXPORT_DIR_NAME, "__pycache__"}
 
 HEADER_CHUNK = 65536
-METADATA_VERSION = 5
+METADATA_VERSION = 6
 
 
 class _ChangedScanSource(OSError):
@@ -197,6 +198,21 @@ def _largest_image_dimensions(fields: dict[str, object]) \
 
 
 def read_metadata(path: Path) -> dict:
+    """Prefer decoder dimensions to RAW thumbnail or sensor EXIF dimensions."""
+    if media_availability.availability(path) != "local":
+        return {}
+    out = _read_exif_metadata(path)
+    try:
+        out.update(source_geometry.metadata(path))
+    except Exception:
+        # Unsupported or damaged files can still have useful camera metadata.
+        pass
+    if out:
+        out["metadata_version"] = METADATA_VERSION
+    return out
+
+
+def _read_exif_metadata(path: Path) -> dict:
     """Capture time, camera, lens, and dimensions, read once at scan time.
 
     The detail panel still shells out to exiftool for its full field list; this
