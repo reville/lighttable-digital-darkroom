@@ -6,20 +6,23 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Existing release tag version, such as 0.1.0"
+        description: "Existing release tag version, such as 0.5.0 (LightTable 0.5)"
         required: true
+        default: '0.5.0'
         type: string
       platforms:
         description: "Platforms to publish"
         type: choice
-        options: [both, macos, windows]
-        default: both
+        options: [all, linux, macos, windows, both]
+        default: all
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ inputs.version || github.ref }}
+  # Serialize tag-triggered and manually dispatched publication together.
+  # Otherwise the same tag can race under two differently formatted keys.
+  group: lighttable-release
   cancel-in-progress: false
 
 jobs:
@@ -31,6 +34,8 @@ jobs:
       source_ref: ${{ steps.version.outputs.source_ref }}
       macos: ${{ steps.version.outputs.macos }}
       windows: ${{ steps.version.outputs.windows }}
+      linux: ${{ steps.version.outputs.linux }}
+      title: ${{ steps.version.outputs.title }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,16 +44,23 @@ jobs:
         name: Validate the immutable release tag
         env:
           REQUESTED_VERSION: ${{ inputs.version }}
-          PLATFORMS: ${{ inputs.platforms || 'both' }}
+          PLATFORMS: ${{ inputs.platforms || vars.LIGHTTABLE_RELEASE_PLATFORMS || 'all' }}
         run: |
           version="${REQUESTED_VERSION:-${GITHUB_REF_NAME#v}}"
-          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo 'Use a stable version such as 0.1.0'; exit 1; }
+          [[ "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || { echo 'Use a stable version such as 0.5.0'; exit 1; }
           source_ref="$(git rev-parse --verify "refs/tags/v$version^{commit}")"
           echo "source_ref=$source_ref" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "tag=v$version" >> "$GITHUB_OUTPUT"
-          if [[ "$PLATFORMS" != windows ]]; then echo 'macos=true' >> "$GITHUB_OUTPUT"; fi
-          if [[ "$PLATFORMS" != macos ]]; then echo 'windows=true' >> "$GITHUB_OUTPUT"; fi
+          echo "title=LightTable ${version%.0}" >> "$GITHUB_OUTPUT"
+          case "$PLATFORMS" in
+            all) printf 'macos=true\nwindows=true\nlinux=true\n' >> "$GITHUB_OUTPUT" ;;
+            both) printf 'macos=true\nwindows=true\nlinux=false\n' >> "$GITHUB_OUTPUT" ;;
+            macos) printf 'macos=true\nwindows=false\nlinux=false\n' >> "$GITHUB_OUTPUT" ;;
+            windows) printf 'macos=false\nwindows=true\nlinux=false\n' >> "$GITHUB_OUTPUT" ;;
+            linux) printf 'macos=false\nwindows=false\nlinux=true\n' >> "$GITHUB_OUTPUT" ;;
+            *) echo 'Unknown platform selection' >&2; exit 1 ;;
+          esac
 
   macos:
     needs: prepare
@@ -162,12 +174,21 @@ jobs:
       require_signing: true
     secrets: inherit
 
+  linux:
+    needs: prepare
+    if: needs.prepare.outputs.linux == 'true'
+    uses: ./.github/workflows/linux-build.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+      source_ref: ${{ needs.prepare.outputs.source_ref }}
+
   publish:
-    needs: [prepare, macos, windows]
+    needs: [prepare, macos, windows, linux]
     if: >-
       always() && needs.prepare.result == 'success' &&
       (needs.macos.result == 'success' || needs.macos.result == 'skipped') &&
-      (needs.windows.result == 'success' || needs.windows.result == 'skipped')
+      (needs.windows.result == 'success' || needs.windows.result == 'skipped') &&
+      (needs.linux.result == 'success' || needs.linux.result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -175,26 +196,43 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       VERSION: ${{ needs.prepare.outputs.version }}
       TAG: ${{ needs.prepare.outputs.tag }}
+      TITLE: ${{ needs.prepare.outputs.title }}
+      SOURCE_REVISION: ${{ needs.prepare.outputs.source_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.prepare.outputs.tag }}
       - uses: actions/download-artifact@v4
+        if: needs.prepare.outputs.macos == 'true'
         with:
-          pattern: LightTable-*
-          merge-multiple: true
+          name: LightTable-macos-arm64
+          path: dist
+      - uses: actions/download-artifact@v4
+        if: needs.prepare.outputs.windows == 'true'
+        with:
+          name: LightTable-windows-x64
+          path: dist
+      - uses: actions/download-artifact@v4
+        if: needs.prepare.outputs.linux == 'true'
+        with:
+          name: LightTable-linux-x86_64
           path: dist
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
       - name: Generate checksums and installer definitions
         run: |
-          python3 scripts/generate-installers.py --version "$VERSION" --artifacts-dir dist --output-dir dist/installers --license GPL-3.0-only --license-url "https://github.com/$GITHUB_REPOSITORY/blob/$TAG/LICENSE"
+          python3 scripts/generate-installers.py --version "$VERSION" --source-revision "$SOURCE_REVISION" --artifacts-dir dist --output-dir dist/installers --license GPL-3.0-only --license-url "https://github.com/$GITHUB_REPOSITORY/blob/$TAG/LICENSE"
           cp dist/installers/SHA256SUMS dist/SHA256SUMS
           tar -czf "dist/LightTable-$VERSION-installers.tar.gz" -C dist/installers .
-          node packaging/npm/scripts/prepare-release.mjs "$VERSION" dist
-          (cd packaging/npm && npm pack --pack-destination ../../dist)
-          (cd dist && sha256sum "LightTable-$VERSION-installers.tar.gz" "lighttable-$VERSION.tgz") >> dist/SHA256SUMS
+          # npm currently installs macOS/Windows. A Linux-only release must not
+          # fail on that unrelated channel or claim that npm supports Linux.
+          if [[ -f "dist/LightTable-$VERSION-macos-arm64.zip" || -f "dist/LightTable-$VERSION-windows-x64-setup.exe" ]]; then
+            node packaging/npm/scripts/prepare-release.mjs "$VERSION" dist
+            (cd packaging/npm && npm pack --pack-destination ../../dist)
+            (cd dist && sha256sum "lighttable-$VERSION.tgz") >> dist/SHA256SUMS
+          fi
+          (cd dist && sha256sum "LightTable-$VERSION-installers.tar.gz") >> dist/SHA256SUMS
       - name: Publish immutable release assets
         run: |
           draft="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null || true)"
@@ -203,12 +241,14 @@ jobs:
             exit 1
           fi
           if [[ "$draft" != true ]]; then
-            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "LightTable $VERSION" --generate-notes --draft
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TITLE" --generate-notes --draft
           fi
+          shopt -s nullglob
           assets=(dist/LightTable-* dist/SHA256SUMS dist/lighttable-*.tgz)
           if [[ -f dist/appcast.xml ]]; then assets+=(dist/appcast.xml); fi
           gh release upload "$TAG" "${assets[@]}" --repo "$GITHUB_REPOSITORY" --clobber
-          # A Windows-only release must not replace the latest Mac updater feed.
+          # Releases without macOS must not replace the latest Mac updater feed.
+          # The website discovers compatible Linux assets across public releases.
           if [[ -f dist/appcast.xml ]]; then
             gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
           else
@@ -217,7 +257,9 @@ jobs:
 
   npm:
     needs: [prepare, publish]
-    if: needs.publish.result == 'success' && vars.NPM_PUBLISH_ENABLED == 'true'
+    if: >-
+      needs.publish.result == 'success' && vars.NPM_PUBLISH_ENABLED == 'true' &&
+      (needs.prepare.outputs.macos == 'true' || needs.prepare.outputs.windows == 'true')
     permissions:
       contents: read
       id-token: write

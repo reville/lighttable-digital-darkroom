@@ -85,6 +85,9 @@ jobs:
       - name: Installer behavior and launcher tests
         run: |
           python3 -m unittest discover -s tests -p test_installer_manifests.py -v
+          python3 -m unittest discover -s tests -p test_release_selection.py -v
+          python3 -m unittest discover -s tests -p test_linux_aur_packaging.py -v
+          python3 -m unittest discover -s tests -p test_linux_snap_packaging.py -v
           python3 -m unittest discover -s tests -p test_cli_installation.py -v
           npm test --prefix packaging/npm
           (cd packaging/npm && npm pack --dry-run)
