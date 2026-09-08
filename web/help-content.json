@@ -2571,6 +2571,13 @@
           ]
         },
         {
+          "title": "Skipped photos",
+          "paragraphs": [
+            "Empty files, files that are not downloaded, and unavailable originals are skipped before analysis. Photo Index reports their counts separately from analysis errors. An empty file contains no image data; it may need to be downloaded again or restored from a backup.",
+            "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index."
+          ]
+        },
+        {
           "title": "Pause, rebuild, or delete",
           "paragraphs": [
             "Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.",
