@@ -12,14 +12,14 @@
       "sources": {
         "app/main.swift": "f883a0c632ab691c866b067a70e8cdf3a57c1914cabe926631ad27f0cd07ad7a",
         "web/first-run.js": "e581b791c20303a43c54e2e6565cea7a3e8072729b82c7dbef9838cb1cd25cb3",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "assisted-culling": {
       "content": "9af5dd7b18ed0202de1d8db1948c95b8f5f6a7273e97b3f6c02fb029296a5f60",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/local-ai.js": "7fd3cc2435b3905a0ba3952e9365db5924a3d2230a8f1effdef6eb923287a545"
       }
     },
@@ -29,14 +29,14 @@
         "app/main.swift": "f883a0c632ab691c866b067a70e8cdf3a57c1914cabe926631ad27f0cd07ad7a",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/catalog-ui.js": "0c247e2000a7f5f74be34c0806da2fa387a5919bc7fb89befe188d6878462e98",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "capture-time": {
       "content": "088465f98807f47c7b775777ca5f782cbfdf239e43af199a5d52c2d8795c1f22",
       "sources": {
         "web/capture-time.js": "53054dc9c78513c2a8d8cee51c91fdc01a4020fe4eeedd0b256a6630b8f57039",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "catalog-health-recovery": {
@@ -44,7 +44,7 @@
       "sources": {
         "app/main.swift": "f883a0c632ab691c866b067a70e8cdf3a57c1914cabe926631ad27f0cd07ad7a",
         "web/catalog-ui.js": "0c247e2000a7f5f74be34c0806da2fa387a5919bc7fb89befe188d6878462e98",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/recovery.js": "0b0c984746976d3895b5b922a6f2aecd4bf5ab0a3bd1bbcac1c18322acd306bb",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb"
       }
@@ -53,7 +53,7 @@
       "content": "977ba37bd8ff1b6b181aeffccaa24ca482b06d59b3371e7463e1faa96f6191e7",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "colour-labels": {
@@ -67,14 +67,14 @@
       "content": "e712dfb148dc4b8ecf156bfd3c7f98fad29204a8091ffb048b1b85b781e3f6d8",
       "sources": {
         "web/color-tools.js": "a71a5f5f4e026534cc6a0dd37a8467ac508c19e19dd6012cec12ee5192aeea96",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-color-mixer-point-color": {
       "content": "b0e38986c30ea898f08b9f26c3b362f9501905dfc5b3f744b35dfa93fac5e776",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-copy-paste-match-exposure": {
@@ -89,14 +89,14 @@
     "editing-crop-geometry": {
       "content": "847f666d8a355cae0104998f95f855baf7de6490a8445d2603e67e681623393c",
       "sources": {
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-curves": {
       "content": "498bf3ffd912c4de38f040a476a0a4d47236f02de2389e7f2faa2764fd231199",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-detail-effects-enhance": {
@@ -106,7 +106,7 @@
         "enhance_workflow.py": "28b67a61a50e86d5c9da51ed69266d96ce317f1e0996db31e0854e1532a32ed6",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/enhance-panel.js": "7d711f35ab34b4a87868123fb12456b8efa436fc611c4f2c0fa4109daca8b4db",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-effects": {
@@ -114,7 +114,7 @@
       "sources": {
         "grade.py": "fb353c05fa51927d0b12cc60c3d4b216db35199ddc5c409d85b94e8ffc682575",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-history-snapshots": {
@@ -122,14 +122,14 @@
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/history-panel.js": "cd627083e934d0e3601d0d8a1c1a605c110c1c164bc83c91ab6df65034810db6",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-lens-corrections": {
       "content": "f762cdbf87f331ba924707d70b72ad271cc9bed2ab8403bbcc1b6df99276af31",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-masks-ai": {
@@ -137,14 +137,14 @@
       "sources": {
         "semantic_masks.py": "1fde2645be458771b694bfb913e6443a5c771968b0b66908bb510db15dc87b48",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-masks-brush-gradients": {
       "content": "b8985b49d09c388575e45f806d333ccad8d2df4f28ec3a5bb941c166f2277d4d",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/screen-overlay.js": "506b41925988e0fd95edbf4bc7a4ea634366d8bcc3d969e2ad20a94f35081097"
       }
     },
@@ -152,7 +152,7 @@
       "content": "30a985ed6dc45dceaf2b898bd62b60452a0df6395d63a0060b93c3c2862fada2",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-photo-merge": {
@@ -162,7 +162,7 @@
         "merge_workflow.py": "af4489a9b4bdeb2374640e59d09a65b567a65da6b04ad7519b6d390eabee8e91",
         "server.py": "9f397d2d0aa1cdf53af27ac9a94125b5eca56b46fec26de903cc7c39954fe3d9",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-presets": {
@@ -174,7 +174,7 @@
         "preset_submission.py": "d0880b6df5b1d4fd31fc845cc8353da883f45ab430c00ee9faa3d403082ea5ca",
         "server.py": "9f397d2d0aa1cdf53af27ac9a94125b5eca56b46fec26de903cc7c39954fe3d9",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/preset-browser.css": "b83edbc52e4a3f4fa24161fa9501b39bb73582eaefa72551f412a03e11c5d246",
         "web/preset-browser.js": "ba0eaa2c1617814d25da6d2fd92e24961f2de4a4012acf6ba38773cb002bf465",
         "web/presets.js": "1ce2d7d1772bf0e46dc46c54f90ba7b2701a8c1eff0232a22bace13e62ae665f"
@@ -184,7 +184,7 @@
       "content": "430f3a6c8cf70a80ac1734ece3d17532ced4716d367cf3a889045770a5024cd8",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/screen-overlay.js": "506b41925988e0fd95edbf4bc7a4ea634366d8bcc3d969e2ad20a94f35081097"
       }
     },
@@ -199,14 +199,14 @@
       "content": "7558b9922bbf1501ae4fcaa7ec5a7257078a4bd5f7b02e995b1c2eeac731b9a4",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "editing-white-balance": {
       "content": "ef6c9baa924103c29e019f7d095f6645a7d34b8059cb118b66c749c01480a6d7",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "export-filenames-and-folders": {
@@ -214,7 +214,7 @@
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "export-format-color-space": {
@@ -222,14 +222,14 @@
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "export-metadata-sidecars": {
       "content": "261f370f2dc294998ff6bf5616fae9dfec97fcae48e74c49329fe2a9f756111a",
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "export-photos": {
@@ -237,14 +237,14 @@
       "sources": {
         "server.py": "9f397d2d0aa1cdf53af27ac9a94125b5eca56b46fec26de903cc7c39954fe3d9",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "external-editor": {
       "content": "a3d13d1cb1925ce67e1e93eb91dae2e189e700a3f40d66a11c658fe392a4e306",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "film-exposure-and-processing": {
@@ -252,7 +252,7 @@
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "film-getting-started": {
@@ -260,15 +260,15 @@
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
-        "web/style.css": "7aa0b6a0a4f91400ec63896f2ac9ebaab559a9a0e9717d78c1f255302d760344"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
+        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b"
       }
     },
     "film-grain-and-format": {
       "content": "117e7f33220929f2089dd5c4cf181a4373f627020fb119ac3badcc3c53066dc5",
       "sources": {
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "film-halation-diffusion-scan": {
@@ -276,7 +276,7 @@
       "sources": {
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "film-negative-paper-and-slides": {
@@ -285,14 +285,14 @@
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "film-reference-match": {
       "content": "8437ebbf70a45113536776e64be01fe91134024b82ba03807b1c0453a2a2719f",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "flags-and-ratings": {
@@ -308,7 +308,7 @@
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
         "server.py": "9f397d2d0aa1cdf53af27ac9a94125b5eca56b46fec26de903cc7c39954fe3d9",
         "web/catalog-ui.js": "0c247e2000a7f5f74be34c0806da2fa387a5919bc7fb89befe188d6878462e98",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "import-lightroom-catalog": {
@@ -317,7 +317,7 @@
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
         "server.py": "9f397d2d0aa1cdf53af27ac9a94125b5eca56b46fec26de903cc7c39954fe3d9",
         "web/catalog-ui.js": "0c247e2000a7f5f74be34c0806da2fa387a5919bc7fb89befe188d6878462e98",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "keyboard-midi": {
@@ -325,7 +325,7 @@
       "sources": {
         "app/main.swift": "f883a0c632ab691c866b067a70e8cdf3a57c1914cabe926631ad27f0cd07ad7a",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/midi.js": "b26af6994583bc28ec09294351785c77aeb0848269f5c5aa094ca85524935fb0"
       }
     },
@@ -346,12 +346,12 @@
         "grade.py": "fb353c05fa51927d0b12cc60c3d4b216db35199ddc5c409d85b94e8ffc682575",
         "merge_acceleration.py": "3d87500b5ee5222f111cbf6edb99b9136720475466b7300c0b15920729de4f01",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/preview-detail.js": "9fd803f1c070fba51f7466e03ca45c1c7b802765d48f943b2d510a23f368b595",
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "4f9101296cb8bf1c269b20afe60ef13d3cb2903733c74fcd733e97db7cb61947",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb",
-        "web/style.css": "7aa0b6a0a4f91400ec63896f2ac9ebaab559a9a0e9717d78c1f255302d760344",
+        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b",
         "web/view-performance.js": "8284cb871f75d1774996af75f78a434af92d33a001e647ab64a2fac0fa88fb6c"
       }
     },
@@ -360,14 +360,14 @@
       "sources": {
         "film_lab_ai/providers.py": "ff2e49c21a3ab2285ee1f3a1f438b14868a6e3f5a15c5d04d4cde1131521b7fd",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "raw-jpeg-pairs": {
       "content": "da12918a5daaf43a611386d4a8d7c2d5cc59b9a9cf4d85bb76efa3cb2c543f6e",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/photo-pairs.js": "555822d1f88b09cc2ec316f2a7e1665f78721b8dab2053a97d9600550895a6d5"
       }
     },
@@ -385,7 +385,7 @@
         "catalog_scan.py": "1a5179c94b5c0a2e27990765fb1a20978e7de1631b9e07692fcb4acfe7dbeee9",
         "dam_filters.py": "7190afdfe5aba3bd715ae281782a7fc966783aa4699ae3190e7eee058ae8bc0d",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/library-filters.js": "e7dcf58cdd378a68797023a54052c54e40bd507320fda116e3190abfcd90667c",
         "web/library.js": "28fd7b59813710582e54ea1950c7a9e66223b4f7681657057a018ae5e0b9cd2e"
       }
@@ -393,7 +393,7 @@
     "settings-and-defaults": {
       "content": "1cde6311046ebd3780715b226c84b72c16aef9f5396294f54489936d21b64232",
       "sources": {
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb"
       }
     },
@@ -401,7 +401,7 @@
       "content": "9117f2d6a953f9a3f836b91420b22d75cc570201d2d5cc822f2adf7e64f9d224",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
         "web/labels.js": "4b56076017a4e70eb5b2f1f2b5d7cbb51f458628e6c3171432d819561aaa418e"
       }
     },
@@ -418,7 +418,7 @@
       "sources": {
         "soft_proof.py": "9d353ea6ba4bd911103632ec7e0463e08e8edf2679baa71fe24afd73d920e3aa",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
       }
     },
     "survey-photos": {
@@ -437,12 +437,12 @@
       }
     },
     "views-and-selection": {
-      "content": "9ebb5b5cdb1366a1d628888627cd133347341b2820fcddae7bcbeae8f129d07f",
+      "content": "3b3c5e71abbe3bb69e1246986ddf4aa7906a266198e1546bec46c23283be4352",
       "sources": {
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
-        "web/index.html": "955c60012f1c06def8df8d746cbe52e409141f16c0a8b9c07397618da923600c",
-        "web/style.css": "7aa0b6a0a4f91400ec63896f2ac9ebaab559a9a0e9717d78c1f255302d760344"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
+        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b"
       }
     },
     "virtual-copies-and-stacks": {
