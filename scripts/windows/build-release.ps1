@@ -3,6 +3,7 @@ param(
     [string]$Version = "0.1.0",
     [string]$OutputDirectory = "dist",
     [switch]$PortableOnly,
+    [switch]$RuntimeSmokeOnly,
     [switch]$RequireSigning
 )
 
@@ -11,7 +12,12 @@ Set-StrictMode -Version Latest
 
 # Public releases must fail before downloads or compilation when signing is
 # unavailable. CI builds can run without a certificate unless explicitly gated.
-$SigningEnabled = & (Join-Path $PSScriptRoot "sign-release.ps1") -CheckOnly -RequireSigning:$RequireSigning
+if ($RuntimeSmokeOnly -and ($RequireSigning -or $PortableOnly)) {
+    throw "RuntimeSmokeOnly cannot be combined with release artifact options"
+}
+$SigningEnabled = if ($RuntimeSmokeOnly) { $false } else {
+    & (Join-Path $PSScriptRoot "sign-release.ps1") -CheckOnly -RequireSigning:$RequireSigning
+}
 
 $PythonVersion = "3.13.12"
 $PythonArchiveSha256 = "76f238f606250c87c6beac75dccd35ee99070a13490555936abb6cb64ecce3d0"
@@ -34,7 +40,8 @@ $PythonSource = Join-Path $BuildRoot "python-engine"
 $RustSource = Join-Path $BuildRoot "rust-engine-source"
 $PreviousIcon = [Environment]::GetEnvironmentVariable("LIGHTTABLE_ICON_ICO", "Process")
 
-foreach ($Tool in @("cargo", "git", "rustup", "uv")) {
+$RequiredTools = if ($RuntimeSmokeOnly) { @("git", "uv") } else { @("cargo", "git", "rustup", "uv") }
+foreach ($Tool in $RequiredTools) {
     if (-not (Get-Command $Tool -ErrorAction SilentlyContinue)) {
         throw "$Tool is required to build the Windows package"
     }
@@ -46,11 +53,14 @@ if (-not $MakeNsis) {
     $NsisPath = Join-Path ${env:ProgramFiles(x86)} "NSIS\makensis.exe"
     if (Test-Path $NsisPath) { $MakeNsis = Get-Command $NsisPath }
 }
-if (-not $PortableOnly -and -not $MakeNsis) {
+if (-not $RuntimeSmokeOnly -and -not $PortableOnly -and -not $MakeNsis) {
     throw "NSIS is required to build an installer. Use -PortableOnly explicitly for a ZIP-only build."
 }
 
-New-Item -ItemType Directory -Force -Path $Output, $Payload, $Resources | Out-Null
+New-Item -ItemType Directory -Force -Path $Payload, $Resources | Out-Null
+if (-not $RuntimeSmokeOnly) {
+    New-Item -ItemType Directory -Force -Path $Output | Out-Null
+}
 
 try {
     $PythonArchive = Join-Path $BuildRoot "python.zip"
@@ -88,51 +98,9 @@ try {
     & git -C $RustSource checkout --quiet $RustSourceRevision
     if ($LASTEXITCODE -ne 0) { throw "Could not check out the pinned Rust render source" }
 
-    # Every top-level module server.py imports. The Python contract test
-    # `WindowsPackagingContractTests` compares this list against those imports,
-    # so a new module cannot ship on macOS and be missing here.
-    foreach ($File in @(
-        "server.py",
-        "bounded_logging.py",
-        "events.py",
-        "jobs.py",
-        "validation.py",
-        "media_formats.py",
-        "media_availability.py",
-        "capture_time.py",
-        "film_pipeline.py",
-        "grade.py",
-        "edits.py",
-        "color_pipeline.py",
-        "preview_progress.py",
-        "calibration_target.py",
-        "preset_io.py",
-        "preset_library.py",
-        "preset_submission.py",
-        "platform_image.py",
-        "semantic_masks.py",
-        "export_workflow.py",
-        "export_surface.py",
-        "library_workflow.py",
-        "merge_workflow.py",
-        "soft_proof.py",
-        "catalog.py",
-        "catalog_scan.py",
-        "thumbnail_warmup.py",
-        "raw_decode_runtime.py",
-        "raw_decode_cache.py",
-        "catalog_import.py",
-        "xmp_sidecar.py",
-        "durable_io.py",
-        "recovery.py",
-        "ingest_workflow.py",
-        "watch_workflow.py",
-        "geometry_auto.py",
-        "enhance_workflow.py",
-        "render_cli.py"
-    )) {
-        Copy-Item (Join-Path $Project $File) $Resources
-    }
+    # Stage every root runtime module, including transitive and optional imports.
+    & $PythonExe -B (Join-Path $PSScriptRoot "stage-python-modules.py") $Project $Resources
+    if ($LASTEXITCODE -ne 0) { throw "Python runtime module staging failed" }
     Copy-Item (Join-Path $Project "media-formats.json") $Resources
     Copy-Item (Join-Path $Project "lighttable_cli") $Resources -Recurse
     Copy-Item (Join-Path $Project "scripts\windows\lighttable.cmd") $Payload
@@ -171,6 +139,15 @@ try {
 
     & $PythonExe (Join-Path $Project "scripts\fetch-color-profiles.py") (Join-Path $Resources "color-profiles")
     if ($LASTEXITCODE -ne 0) { throw "Color-profile download failed" }
+
+    # Pull requests exercise the exact embedded Python payload before paying
+    # for native engine/shell compilation, signing, or installer creation.
+    if ($RuntimeSmokeOnly) {
+        & $PythonExe -B (Join-Path $PSScriptRoot "runtime-smoke.py") $Resources
+        if ($LASTEXITCODE -ne 0) { throw "The staged Windows runtime smoke test failed" }
+        Write-Host "Staged Windows runtime smoke passed"
+        return
+    }
 
     & rustup target add $Target
     if ($LASTEXITCODE -ne 0) { throw "The Windows Rust target could not be installed" }
