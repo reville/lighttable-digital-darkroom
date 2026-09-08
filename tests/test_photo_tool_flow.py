@@ -130,6 +130,7 @@ class PhotoToolFlowTests(unittest.TestCase):
 
         functions = [function(name) for name in (
             'snapshot', 'restore', 'filmRenderFingerprint', 'baseEditsFingerprint',
+            'photoReadyForEditing',
             'exitPhotoTool', 'selectPhotoTool', 'switchPane', 'setCropMode',
             'cropViewState', 'cropViewPrefersImmediate', 'cropViewFrame', 'cropFitScale',
             'cropViewTarget', 'cropViewBackgroundRGB', 'cropViewDimStyle', 'snapCropView',
