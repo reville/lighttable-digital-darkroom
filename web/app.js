@@ -1,3 +1,4 @@
+import { installKeywordBatch } from '/web/keyword-batch.js';
 import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
 import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
@@ -112,6 +113,7 @@ const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
   onChange: () => { refreshFilteredView(); savePrefs(); } });
+let KEYWORD_BATCH = null;
 let MASK_BATCH = null;
 let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
@@ -305,7 +307,7 @@ document.addEventListener('keydown', (event) => {
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
     ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
-    LIBRARY_FILTERS.types(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -4393,13 +4395,14 @@ function visible() {
   const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
   const editState = $('editFilter')?.value || 'all';
   const fileTypes = LIBRARY_FILTERS.types();
+  const metadata = LIBRARY_FILTERS.metadata();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -4430,7 +4433,7 @@ function visible() {
     const matchesKind = (kind === 'all' || (kind === 'raw' && im.raw) ||
       (kind === 'processed' && !im.raw && !im.virtual) ||
       (kind === 'virtual' && im.virtual));
-    return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);
+    return matchesKind && matchesLibraryFilters(im, fileTypes, editState, metadata) && photoMatchesQuery(im, search);
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
@@ -5249,7 +5252,7 @@ $('addSmartCollection').onclick = async () => {
       editState: ['edited', 'unedited', 'virtual'].includes($('filter').value)
         ? $('filter').value : $('editFilter').value,
       unrated: $('ratingFilter').value === 'unrated' || $('filter').value === 'unrated',
-      label: $('labelFilter').value },
+      label: $('labelFilter').value, ...LIBRARY_FILTERS.metadata() },
   });
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
@@ -5595,6 +5598,7 @@ document.addEventListener('pointerdown', (event) => {
 window.addEventListener('resize', () => { closeFolderMenu(); closeActionMenus(); });
 
 function refreshLists() {
+  KEYWORD_BATCH?.sync();
   renderStrip();
   if ($('library').classList.contains('show')) renderGrid();
   counts();
@@ -5646,6 +5650,7 @@ function setViewMode(mode, persist = true) {
   $('editor').classList.toggle('hide', gridMode);
   $('filmstripShell').style.display = gridMode ? 'none' : '';
   $('appShell').classList.toggle('grid-mode', gridMode);
+  $('appShell').classList.toggle('grid-info-open', gridMode && S.activePane === 'infoPane');
   document.querySelectorAll('[data-view]').forEach((button) => {
     const selected = button.dataset.view === mode;
     button.classList.toggle('on', selected);
@@ -5715,6 +5720,8 @@ function switchPane(id, { fromCompare = false } = {}) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
   S.activePane = id;
+  $('appShell').classList.toggle('grid-info-open', S.viewMode !== 'detail' && id === 'infoPane');
+  if (S.viewMode !== 'detail') { _gridLayoutKey = ''; requestAnimationFrame(renderGrid); }
   let activeButton = null;
   document.querySelectorAll('.panel-pane').forEach((p) => p.classList.toggle('on', p.id === id));
   document.querySelectorAll('.tool-btn').forEach((button) => {
@@ -9210,6 +9217,7 @@ async function showExif(name) {
 
 /* ------------------------------------------------------------ keywords */
 function renderKeywords() {
+  KEYWORD_BATCH?.sync();
   const box = $('keywordList');
   box.replaceChildren();
   const im = cur();
@@ -9275,6 +9283,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   const separator = e.key === ',' ||
     (e.key === ';' && APP_PREFS.keywordSeparators === 'comma-semicolon');
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
+});
+
+KEYWORD_BATCH = installKeywordBatch({
+  el: $, post: api, toast, enabled: () => S.catalogEnabled,
+  names: () => [...S.msel], flush: flushEditSaves,
+  values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
+    .map(value => value.trim()).filter(Boolean),
+  apply: changes => {
+    for (const item of changes) {
+      const image = S.images.find(image => image.name === item.name);
+      if (!image) continue;
+      image.keywords = [...item.keywords];
+      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+    }
+    renderKeywords(); refreshFilteredView();
+    METADATA?.refreshKeywordTree();
+  },
 });
 
 /* ------------------------------------------------------------- versions */
@@ -10204,6 +10230,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  KEYWORD_BATCH?.sync();
   CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
@@ -10278,6 +10305,7 @@ async function savePrefs() {
     ratingFilter: $('ratingFilter').value, kindFilter: $('kindFilter').value,
     labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
     fileTypeFilters: LIBRARY_FILTERS.types(),
+    metadataFilters: LIBRARY_FILTERS.metadata(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10340,6 +10368,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
+  LIBRARY_FILTERS.setMetadata(p.metadataFilters);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -10895,6 +10924,7 @@ function uiStateReport() {
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
       fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
+      ...LIBRARY_FILTERS.metadata(),
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',
     },

@@ -43,8 +43,9 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 import durable_io
+import dam_filters
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 
 class CatalogVersionError(RuntimeError):
@@ -113,6 +114,10 @@ CREATE TABLE IF NOT EXISTS files (
     camera_make  TEXT,
     camera_model TEXT,
     lens         TEXT,
+    iso          REAL,
+    focal_length REAL,
+    aperture     REAL,
+    shutter_seconds REAL,
     width        INTEGER,
     height       INTEGER,
     orientation  INTEGER,
@@ -124,6 +129,7 @@ CREATE TABLE IF NOT EXISTS files (
 );
 CREATE INDEX IF NOT EXISTS files_hash ON files(header_hash);
 CREATE INDEX IF NOT EXISTS files_folder ON files(folder_id);
+CREATE INDEX IF NOT EXISTS files_source_missing ON files(source_id, missing);
 CREATE INDEX IF NOT EXISTS files_capture ON files(capture_time);
 
 CREATE TABLE IF NOT EXISTS capture_overrides (
@@ -464,9 +470,9 @@ def _rebuild_search_index(conn: sqlite3.Connection) -> int:
         title, caption = iptc.get(image_id, (None, None))
         camera = " ".join(filter(None, (row[2], row[3])))
         conn.execute(
-            "INSERT INTO image_search(image_id, filename, keywords, title,"
-            " caption, camera, lens) VALUES(?,?,?,?,?,?,?)",
-            (image_id, row[1] or "", " ".join(keywords.get(image_id, [])),
+            "INSERT INTO image_search(rowid, image_id, filename, keywords, title,"
+            " caption, camera, lens) VALUES(?,?,?,?,?,?,?,?)",
+            (image_id, image_id, row[1] or "", " ".join(keywords.get(image_id, [])),
              title or "", caption or "", camera, row[4] or ""))
         count += 1
     return count
@@ -963,6 +969,12 @@ class Catalog:
                 if "availability" not in file_columns:
                     conn.execute("ALTER TABLE files ADD COLUMN availability "
                                  "TEXT NOT NULL DEFAULT 'local'")
+            if from_version < 6:
+                file_columns = {row[1] for row in conn.execute("PRAGMA table_info(files)")}
+                for _, column, _ in dam_filters.EXPOSURE_FIELDS:
+                    if column not in file_columns:
+                        conn.execute(f"ALTER TABLE files ADD COLUMN {column} REAL")
+                _rebuild_search_index(conn)
             conn.execute(
                 "UPDATE meta SET value=? WHERE key='schema_version'",
                 (str(SCHEMA_VERSION),),
@@ -1238,7 +1250,10 @@ class Catalog:
             record.get("mtime_ns", 0), record.get("mtime_iso"),
             record.get("header_hash"), record.get("capture_time"),
             record.get("camera_make"), record.get("camera_model"),
-            record.get("lens"), record.get("width"), record.get("height"),
+            record.get("lens"),
+            *(dam_filters.positive_number(record.get(column))
+              for _, column, _ in dam_filters.EXPOSURE_FIELDS),
+            record.get("width"), record.get("height"),
             record.get("orientation"), record.get("metadata_version", 0),
             record.get("availability", "local"), 0,
         )
@@ -1248,15 +1263,17 @@ class Catalog:
                 "UPDATE files SET folder_id=?, filename=?, ext=?, kind=?,"
                 " size=?, mtime_ns=?, mtime_iso=?, header_hash=?,"
                 " capture_time=?, camera_make=?, camera_model=?, lens=?,"
+                " iso=?, focal_length=?, aperture=?, shutter_seconds=?,"
                 " width=?, height=?, orientation=?, metadata_version=?, availability=?, missing=?"
                 " WHERE id=?", (*values, file_id))
         else:
             cur = conn.execute(
                 "INSERT INTO files(source_id, folder_id, filename, ext, kind,"
                 " size, mtime_ns, mtime_iso, header_hash, capture_time,"
-                " camera_make, camera_model, lens, width, height, orientation,"
+                " camera_make, camera_model, lens, iso, focal_length, aperture, shutter_seconds,"
+                " width, height, orientation,"
                 " metadata_version, availability, missing, relpath, added_at)"
-                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (source_id, *values, relpath, _now()))
             file_id = int(cur.lastrowid)
         self._ensure_image(conn, file_id, record["filename"])
@@ -1420,6 +1437,26 @@ class Catalog:
                 rows.append((int(row["id"]), old_source, old_relpath,
                              new_source, new_relpath))
             for file_id, old_source, old_relpath, new_source, new_relpath in rows:
+                old_root = conn.execute("SELECT path FROM sources WHERE id=?", (old_source,)).fetchone()[0]
+                new_root = conn.execute("SELECT path FROM sources WHERE id=?", (new_source,)).fetchone()[0]
+                old_path, new_path = Path(old_root) / old_relpath, Path(new_root) / new_relpath
+                sidecar_moves = {
+                    str(old_path.with_suffix(".xmp")): str(new_path.with_suffix(".xmp")),
+                    str(old_path) + ".xmp": str(new_path) + ".xmp",
+                }
+                for image in conn.execute("SELECT id FROM images WHERE file_id=?", (file_id,)).fetchall():
+                    for prefix in ("sidecar.pending:", "sidecar.synced:"):
+                        key = prefix + str(image[0])
+                        saved = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+                        if not saved:
+                            continue
+                        record = json.loads(saved[0])
+                        snapshot = record.get("snapshot") if prefix == "sidecar.pending:" else record
+                        if snapshot and snapshot.get("path") in sidecar_moves:
+                            # Only update location; fingerprints must continue to
+                            # protect external edits made before our rename.
+                            snapshot["path"] = sidecar_moves[snapshot["path"]]
+                            conn.execute("UPDATE meta SET value=? WHERE key=?", (json.dumps(record), key))
                 filename = new_relpath.rsplit("/", 1)[-1]
                 parent = new_relpath.rsplit("/", 1)[0] \
                     if "/" in new_relpath else ""
@@ -1486,6 +1523,7 @@ class Catalog:
         row = self.connection.execute(
             "SELECT i.*, f.relpath, f.source_id, f.header_hash, f.kind,"
             "       f.camera_make, f.camera_model, f.lens,"
+            "       f.iso, f.focal_length, f.aperture, f.shutter_seconds,"
             "       s.path AS source_path"
             " FROM images i JOIN files f ON f.id=i.file_id"
             " JOIN sources s ON s.id=f.source_id WHERE i.id=?",
@@ -1694,7 +1732,9 @@ class Catalog:
             row = conn.execute("SELECT file_id FROM images WHERE id=?", (image_id,)).fetchone()
             if row:
                 self._write_capture_override(conn, row["file_id"], value)
-        self._reindex(conn, image_id)
+        # Rating, flags and rendering state do not change searchable text.
+        if "keywords" in entry:
+            self._reindex(conn, image_id)
 
 
     def paired_image_names(self, image_id: int) -> list[str]:
@@ -1943,11 +1983,11 @@ class Catalog:
             "SELECT title, caption FROM iptc WHERE image_id=?",
             (image_id,)).fetchone()
         camera = " ".join(filter(None, (row["camera_make"], row["camera_model"])))
-        conn.execute("DELETE FROM image_search WHERE image_id=?", (image_id,))
+        conn.execute("DELETE FROM image_search WHERE rowid=?", (image_id,))
         conn.execute(
-            "INSERT INTO image_search(image_id, filename, keywords, title,"
-            " caption, camera, lens) VALUES(?,?,?,?,?,?,?)",
-            (image_id, row["filename"] or "", keywords,
+            "INSERT INTO image_search(rowid, image_id, filename, keywords, title,"
+            " caption, camera, lens) VALUES(?,?,?,?,?,?,?,?)",
+            (image_id, image_id, row["filename"] or "", keywords,
              (iptc["title"] if iptc else "") or "",
              (iptc["caption"] if iptc else "") or "",
              camera, row["lens"] or ""))
@@ -1966,6 +2006,7 @@ class Catalog:
         spec = spec if isinstance(spec, dict) else {}
         where = ["f.missing=0", "src.active=1"]
         params: list[Any] = []
+        collection_rules = {}
 
         scope = str(spec.get("scope", "all"))
         if scope == "source" and spec.get("sourceId"):
@@ -1999,118 +2040,122 @@ class Catalog:
         elif scope == "collection" and spec.get("collectionId"):
             collection = self.collection(int(spec["collectionId"]))
             if collection and collection["type"] == "smart":
-                merged = dict(spec.get("filter") or {})
-                merged.update(collection.get("rules") or {})
-                spec = dict(spec, filter=merged)
+                collection_rules = collection.get("rules") or {}
             else:
                 where.append(
                     "i.id IN (SELECT image_id FROM collection_images"
                     " WHERE collection_id=?)")
                 params.append(int(spec["collectionId"]))
 
-        flt = spec.get("filter") if isinstance(spec.get("filter"), dict) else {}
-        status = str(flt.get("status", "all"))
-        if status in STATUS_VALUES:
-            where.append("s.status=?")
-            params.append(status)
-        try:
-            rating_min = int(flt.get("ratingMin", 0) or 0)
-        except (TypeError, ValueError):
-            rating_min = 0
-        if rating_min > 0:
-            where.append("s.rating>=?")
-            params.append(rating_min)
-        label = str(flt.get("label", "all"))
-        if label in LABEL_VALUES:
-            where.append("s.label=?")
-            params.append(label)
-        elif label == "any":
-            where.append("s.label!='none'")
-        kind = str(flt.get("kind", "all"))
-        if kind == "raw":
-            where.append("f.kind='raw'")
-        elif kind == "processed":
-            where.append("f.kind='processed'")
-        elif kind == "video":
-            where.append("f.kind='video'")
-        elif kind == "virtual":
-            where.append("i.virtual=1")
-        # Saved toolbar filters use the same OR-within-types / AND-between-
-        # fields semantics as the browser, including virtual-copy source types.
-        file_types = flt.get("fileTypes")
-        if isinstance(file_types, list):
-            type_clauses = []
-            groups = {"jpeg": (".jpg", ".jpeg", ".jpe"),
-                      "heic": (".heic", ".heif", ".hif"),
-                      "tiff": (".tif", ".tiff"), "png": (".png",)}
-            if "raw" in file_types:
-                type_clauses.append("f.kind='raw'")
-            for name, suffixes in groups.items():
-                if name in file_types:
-                    placeholders = ",".join("?" for _ in suffixes)
-                    type_clauses.append(f"(f.kind='processed' AND f.ext IN ({placeholders}))")
-                    params.extend(suffixes)
-            if type_clauses:
-                where.append("(" + " OR ".join(type_clauses) + ")")
-        edit_state = flt.get("editState")
-        if edit_state in ("edited", "unedited"):
-            edited = "(" + " OR ".join(
-                f"s.{field}_json IS NOT NULL" for field in
-                ("params", "grade", "crop", "masks", "heals", "optics")) + ")"
-            where.append(edited if edit_state == "edited" else "NOT " + edited)
-        elif edit_state == "virtual":
-            where.append("i.virtual=1")
-        if flt.get("unrated") is True:
-            where.append("COALESCE(s.rating,0)=0")
-        raw_excluded_kinds = spec.get("excludeKinds", [])
-        if not isinstance(raw_excluded_kinds, (list, tuple, set)):
-            raw_excluded_kinds = []
-        excluded_kinds = {
-            str(value) for value in raw_excluded_kinds
-            if str(value) in {"raw", "processed", "video"}
-        }
-        if excluded_kinds:
-            placeholders = ",".join("?" for _ in excluded_kinds)
-            where.append(f"f.kind NOT IN ({placeholders})")
-            params.extend(sorted(excluded_kinds))
-        if flt.get("camera"):
-            where.append("(f.camera_model LIKE ? OR f.camera_make LIKE ?)")
-            params.extend([f"%{flt['camera']}%", f"%{flt['camera']}%"])
-        if flt.get("lens"):
-            where.append("f.lens LIKE ?")
-            params.append(f"%{flt['lens']}%")
-        if flt.get("keyword"):
-            keyword = str(flt["keyword"])
-            descendant_prefix = keyword + " > "
-            where.append(
-                "i.id IN (SELECT ik.image_id FROM image_keywords ik"
-                " JOIN keywords k ON k.id=ik.keyword_id"
-                " WHERE k.path=? OR substr(k.path,1,?)=?)")
-            params.extend([
-                keyword, len(descendant_prefix), descendant_prefix,
-            ])
-        date_from, date_to = flt.get("dateFrom"), flt.get("dateTo")
-        if date_from:
-            where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) >= ?")
-            params.append(str(date_from))
-        if date_to:
-            bound = str(date_to)
-            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", bound):
-                # A bare date bound is inclusive: capture times carry a time
-                # of day, so comparing the full text excluded everything shot
-                # after midnight on the last day.
+        for flt in (collection_rules, spec.get("filter") or {}):
+            flt = flt if isinstance(flt, dict) else {}
+            status = str(flt.get("status", "all"))
+            if status in STATUS_VALUES:
+                where.append("s.status=?")
+                params.append(status)
+            try:
+                rating_min = int(flt.get("ratingMin", 0) or 0)
+            except (TypeError, ValueError):
+                rating_min = 0
+            if rating_min > 0:
+                where.append("s.rating>=?")
+                params.append(rating_min)
+            label = str(flt.get("label", "all"))
+            if label in LABEL_VALUES:
+                where.append("s.label=?")
+                params.append(label)
+            elif label == "any":
+                where.append("s.label!='none'")
+            kind = str(flt.get("kind", "all"))
+            if kind == "raw":
+                where.append("f.kind='raw'")
+            elif kind == "processed":
+                where.append("f.kind='processed'")
+            elif kind == "video":
+                where.append("f.kind='video'")
+            elif kind == "virtual":
+                where.append("i.virtual=1")
+            # Saved toolbar filters use the same OR-within-types / AND-between-
+            # fields semantics as the browser, including virtual-copy source types.
+            file_types = flt.get("fileTypes")
+            if isinstance(file_types, list):
+                type_clauses = []
+                groups = {"jpeg": (".jpg", ".jpeg", ".jpe"),
+                          "heic": (".heic", ".heif", ".hif"),
+                          "tiff": (".tif", ".tiff"), "png": (".png",)}
+                if "raw" in file_types:
+                    type_clauses.append("f.kind='raw'")
+                for name, suffixes in groups.items():
+                    if name in file_types:
+                        placeholders = ",".join("?" for _ in suffixes)
+                        type_clauses.append(f"(f.kind='processed' AND f.ext IN ({placeholders}))")
+                        params.extend(suffixes)
+                if type_clauses:
+                    where.append("(" + " OR ".join(type_clauses) + ")")
+            edit_state = flt.get("editState")
+            if edit_state in ("edited", "unedited"):
+                edited = "(" + " OR ".join(
+                    f"s.{field}_json IS NOT NULL" for field in
+                    ("params", "grade", "crop", "masks", "heals", "optics")) + ")"
+                where.append(edited if edit_state == "edited" else "NOT " + edited)
+            elif edit_state == "virtual":
+                where.append("i.virtual=1")
+            if flt.get("unrated") is True:
+                where.append("COALESCE(s.rating,0)=0")
+            raw_excluded_kinds = spec.get("excludeKinds", [])
+            if not isinstance(raw_excluded_kinds, (list, tuple, set)):
+                raw_excluded_kinds = []
+            excluded_kinds = {
+                str(value) for value in raw_excluded_kinds
+                if str(value) in {"raw", "processed", "video"}
+            }
+            if excluded_kinds:
+                placeholders = ",".join("?" for _ in excluded_kinds)
+                where.append(f"f.kind NOT IN ({placeholders})")
+                params.extend(sorted(excluded_kinds))
+            flt = dict(flt, **dam_filters.clean_filters(flt))
+            for field, column, _ in dam_filters.EXPOSURE_FIELDS:
+                for bound, operator in (("Min", ">="), ("Max", "<=")):
+                    if field + bound in flt and flt[field + bound] not in (None, ""):
+                        where.append(f"f.{column} {operator} ?")
+                        params.append(flt[field + bound])
+            if flt.get("camera"):
+                where.append("instr(lower(trim(COALESCE(f.camera_make,'') || ' ' || COALESCE(f.camera_model,''))), lower(?)) > 0")
+                params.append(flt["camera"])
+            if flt.get("lens"):
+                where.append("instr(lower(COALESCE(f.lens,'')), lower(?)) > 0")
+                params.append(flt["lens"])
+            if flt.get("keyword"):
+                keyword = str(flt["keyword"])
+                descendant_prefix = keyword + " > "
                 where.append(
-                    "substr(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso), 1, 10) <= ?")
-            else:
-                where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) <= ?")
-            params.append(bound)
-        query_text = " ".join(str(flt.get("query", "")).split())
-        if query_text:
-            where.append(
-                "i.id IN (SELECT image_id FROM image_search"
-                " WHERE image_search MATCH ?)")
-            params.append(_fts_query(query_text))
-
+                    "i.id IN (SELECT ik.image_id FROM image_keywords ik"
+                    " JOIN keywords k ON k.id=ik.keyword_id"
+                    " WHERE k.path=? OR substr(k.path,1,?)=?)")
+                params.extend([
+                    keyword, len(descendant_prefix), descendant_prefix,
+                ])
+            date_from, date_to = flt.get("dateFrom"), flt.get("dateTo")
+            if date_from:
+                where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) >= ?")
+                params.append(str(date_from))
+            if date_to:
+                bound = str(date_to)
+                if re.fullmatch(r"\d{4}-\d{2}-\d{2}", bound):
+                    # A bare date bound is inclusive: capture times carry a time
+                    # of day, so comparing the full text excluded everything shot
+                    # after midnight on the last day.
+                    where.append(
+                        "substr(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso), 1, 10) <= ?")
+                else:
+                    where.append("COALESCE(ct.capture_time, f.capture_time, f.mtime_iso) <= ?")
+                params.append(bound)
+            query_text = " ".join(str(flt.get("query", "")).split())
+            if query_text:
+                where.append(
+                    "i.id IN (SELECT image_id FROM image_search"
+                    " WHERE image_search MATCH ?)")
+                params.append(_fts_query(query_text))
         sort = spec.get("sort") if isinstance(spec.get("sort"), dict) else {}
         field = SORT_FIELDS.get(str(sort.get("field", "capture")),
                                 SORT_FIELDS["capture"])
@@ -2126,12 +2171,12 @@ class Catalog:
             offset = 0
 
         clause = " AND ".join(where)
-        base = (" FROM images i"
+        joins = (" FROM images i"
                 " JOIN files f ON f.id=i.file_id"
                 " JOIN sources src ON src.id=f.source_id"
                 " LEFT JOIN image_state s ON s.image_id=i.id"
-                " LEFT JOIN capture_overrides ct ON ct.file_id=f.id"
-                f" WHERE {clause}")
+                " LEFT JOIN capture_overrides ct ON ct.file_id=f.id")
+        base = joins + f" WHERE {clause}"
         total = self.connection.execute(
             f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
         # The edit blobs are pulled in the same statement when asked for.
@@ -2140,12 +2185,17 @@ class Catalog:
         blobs = (", s.params_json, s.grade_json, s.crop_json, s.masks_json,"
                  " s.heals_json, s.optics_json, s.provenance_json"
                  if include_state else "")
+        # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
+        # through SQLite's temporary sort made the last page grow with the library.
+        ordering = f"{field} {direction}, f.filename COLLATE NOCASE, i.id"
         rows = self.connection.execute(
+            f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
             " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
             " f.mtime_iso, f.header_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
+            " f.iso, f.focal_length, f.aperture, f.shutter_seconds,"
             " f.orientation, f.availability, f.source_id, src.path AS source_path,"
             " COALESCE(s.status,'pending') AS status,"
             " COALESCE(s.rating,0) AS rating,"
@@ -2155,11 +2205,13 @@ class Catalog:
             "  OR s.heals_json IS NOT NULL OR s.optics_json IS NOT NULL)"
             " AS has_edits"
             f"{blobs}"
-            f"{base} ORDER BY {field} {direction}, f.filename COLLATE NOCASE, i.id"
-            " LIMIT ? OFFSET ?", (*params, limit, offset)).fetchall()
+            f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
+            (*params, limit, offset)).fetchall()
         items = [_item(row) for row in rows]
+        keywords = self._keywords_for_many([row["id"] for row in rows])
+        for item in items:
+            item["keywords"] = keywords.get(item["id"], [])
         if include_state:
-            keywords = self._keywords_for_many([row["id"] for row in rows])
             for item, row in zip(items, rows):
                 for key, column in (("params", "params_json"),
                                     ("grade", "grade_json"),
@@ -2215,6 +2267,8 @@ class Catalog:
     def add_collection(self, name: str, *, kind: str = "regular",
                        rules: dict | None = None,
                        parent_id: int | None = None) -> int:
+        if rules:
+            rules = dict(rules, **dam_filters.clean_filters(rules))
         with self.write() as conn:
             cur = conn.execute(
                 "INSERT INTO collections(parent_id, name, type, rules_json)"
@@ -2691,6 +2745,8 @@ def _item(row: sqlite3.Row) -> dict:
         "height": height,
         "camera": " ".join(filter(None, (camera_make, camera_model))),
         "lens": _text_or(row["lens"], None),
+        **{public: dam_filters.positive_number(row[column])
+           for _, column, public in dam_filters.EXPOSURE_FIELDS},
         "hasEdits": bool(row["has_edits"]),
         "size": _int_or(row["size"], 0, minimum=0),
     }

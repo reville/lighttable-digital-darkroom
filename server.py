@@ -477,13 +477,13 @@ def clean_crop(c):
 
 
 def clean_keywords(values) -> list[str]:
-    """Short, unique, user-authored search tags for one photo."""
+    """Unique search tags, retaining complete supported keyword hierarchies."""
     if not isinstance(values, list):
         return []
     out = []
     seen = set()
     for value in values[:100]:
-        text = " ".join(str(value).split()).strip()[:60]
+        text = " ".join(str(value).split()).strip()[:400]
         key = text.casefold()
         if text and key not in seen:
             seen.add(key)
@@ -885,13 +885,16 @@ def save_image_states(entries: dict[str, dict]) -> None:
     """Merge one or more image edits and persist one atomic state snapshot."""
     cat = catalog_handle()
     if cat is not None:
-        updates, versions, names = {}, {}, []
+        updates, versions, names, changed = {}, {}, [], {}
         for name, entry in entries.items():
             image_id = catalog_image_id(name)
             if image_id is None:
                 continue
             payload = dict(entry)
             version = payload.pop("versions", None)
+            previous = (cat.mark_metadata_for(image_id) if set(payload) <= {"rating", "status", "label", "keywords"}
+                        else cat.state_for(image_id))
+            changed[name] = [key for key, value in payload.items() if previous.get(key) != value]
             updates[image_id] = payload
             if version is not None:
                 versions[image_id] = version
@@ -900,7 +903,8 @@ def save_image_states(entries: dict[str, dict]) -> None:
         for image_id, version in versions.items():
             cat.save_versions(image_id, version)
         for name in names:
-            queue_sidecar(name)
+            if changed[name]:
+                queue_sidecar(name, changed[name])
         _queue_mirror()
         return
     with STATE_LOCK:
@@ -1012,7 +1016,7 @@ _SIDECAR_PREFIX = "sidecar.pending:"
 _SIDECAR_WRITE_LOCK = threading.Lock()
 
 
-def queue_sidecar(name: str) -> None:
+def queue_sidecar(name: str, fields=None) -> None:
     """Persist the outbox entry by image ID, so renames and restarts are safe."""
     if library_workflow.is_virtual(name):
         return  # A virtual edit must never replace its original's XMP.
@@ -1022,10 +1026,26 @@ def queue_sidecar(name: str) -> None:
     image_id = catalog_image_id(name)
     if image_id is None:
         return
+    import xmp_sidecar
+    key = _SIDECAR_PREFIX + str(image_id)
     with cat.write() as conn:
+        row = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        previous = json.loads(row[0]) if row else {}
+        pending_fields = (None if fields is None or (row and previous.get("fields") is None)
+                          else sorted(set(previous.get("fields", [])) | set(fields)))
+        baseline = previous.get("snapshot")
+        error = previous.get("snapshotError", "")
+        if baseline is None and not error:
+            synced = conn.execute("SELECT value FROM meta WHERE key=?",
+                                  ("sidecar.synced:" + str(image_id),)).fetchone()
+            try:
+                baseline = json.loads(synced[0]) if synced else xmp_sidecar.sidecar_snapshot(src_path(name))
+            except Exception as failure:
+                error = str(failure)
         conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES(?, ?)",
-                     (_SIDECAR_PREFIX + str(image_id), json.dumps({
-                         "revision": time.time_ns(), "error": ""})))
+                     (key, json.dumps({"revision": time.time_ns(), "error": error,
+                                       "snapshot": baseline, "snapshotError": error,
+                                       "fields": pending_fields})))
 
 
 def _pending_sidecars(cat) -> list:
@@ -1062,6 +1082,7 @@ def write_pending_sidecars() -> int:
     try:
         for pending in _pending_sidecars(cat):
             errors = []
+            snapshot = None
             try:
                 image_id = int(pending["key"][len(_SIDECAR_PREFIX):])
                 image = cat.image_row(image_id)
@@ -1074,9 +1095,24 @@ def write_pending_sidecars() -> int:
                     path = src_path(name)
                     if not path.is_file():
                         raise OSError("Original is unavailable. Reconnect its folder and retry.")
+                    pending_record = json.loads(pending["value"])
+                    if pending_record.get("snapshotError"):
+                        raise ValueError(pending_record["snapshotError"])
                     record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
-                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors)
+                    fields = pending_record.get("fields")
+                    if fields is not None:
+                        iptc = {key: value for key, value in record["iptc"].items()
+                                if "iptc" in fields or "iptc." + key in fields}
+                        record = {key: value for key, value in record.items() if key in fields}
+                        if iptc:
+                            record["iptc"] = iptc
+                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors,
+                        expected_snapshot=pending_record.get("snapshot"))
                     if succeeded:
+                        snapshot = xmp_sidecar.sidecar_snapshot(path)
+                        with cat.write() as conn:
+                            conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                                ("sidecar.synced:" + str(image_id), json.dumps(snapshot)))
                         written += 1
             except Exception as error:  # retain the outbox entry for retry
                 succeeded = False
@@ -1085,6 +1121,17 @@ def write_pending_sidecars() -> int:
                 if succeeded:
                     conn.execute("DELETE FROM meta WHERE key=? AND value=?",
                                  (pending["key"], pending["value"]))
+                    # A newer local edit may have queued while disk I/O ran.
+                    # Advance only that same baseline past our own successful
+                    # write; otherwise it would look like an external conflict.
+                    newer = conn.execute("SELECT value FROM meta WHERE key=?",
+                                         (pending["key"],)).fetchone()
+                    if snapshot is not None and newer:
+                        queued = json.loads(newer[0])
+                        if queued.get("snapshot") == pending_record.get("snapshot"):
+                            queued["snapshot"] = snapshot
+                            conn.execute("UPDATE meta SET value=? WHERE key=?",
+                                         (json.dumps(queued), pending["key"]))
                 else:
                     updated = dict(json.loads(pending["value"]),
                                    error="; ".join(errors) or "XMP could not be written.")
@@ -2602,7 +2649,7 @@ def capture_time_action(body: dict) -> dict:
     names = cat.apply_capture_changes(changes,
         label="Capture time restored" if action == "restore-history" else "Capture time corrected")
     for name in names:
-        queue_sidecar(name)
+        queue_sidecar(name, ["captureTimeOverride"])
     _queue_mirror()
     EVENTS.publish("library", {"reason": "capture-time", "names": names})
     return {"ok": True, "count": len(changes), "names": names}
@@ -5398,7 +5445,7 @@ class PreviewPregenQueue:
 
 
 def publish_mask_change(name: str, masks: list[dict], *, added=None, removed=None) -> None:
-    queue_sidecar(name)
+    queue_sidecar(name, ["masks"])
     _queue_mirror()
     EVENTS.publish("state", {"names": [name], "fields": ["masks"],
         "patch": {"masks": masks}, "origin": "batch-masks",
@@ -6994,6 +7041,9 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(result)
             elif u.path == "/api/catalog/keywords":
                 body = self._body()
+                if body.get("action") in {"add", "remove", "undo"}:
+                    self._json(keyword_batch_action(body))
+                    return
                 cat = require_catalog()
                 if body.get("action") == "rename":
                     cat.rename_keyword(int(body["id"]), str(body["name"]))
@@ -7010,7 +7060,8 @@ class Handler(BaseHTTPRequestHandler):
                 image_id = catalog_image_id(body["name"])
                 if image_id is None:
                     raise ValueError("unknown image")
-                cat.save_iptc(image_id, body.get("fields") or {})
+                save_catalog_metadata(body["name"], image_id, body.get("fields") or {})
+                _queue_mirror()
                 EVENTS.publish("state", {"names": [body["name"]],
                                           "fields": ["metadata"],
                                           "origin": "metadata"})
@@ -7025,8 +7076,9 @@ class Handler(BaseHTTPRequestHandler):
                 for name in body.get("names", [])[:5000]:
                     image_id = catalog_image_id(str(name))
                     if image_id is not None:
-                        cat.save_iptc(image_id, fields)
+                        save_catalog_metadata(str(name), image_id, fields)
                         count += 1
+                _queue_mirror()
                 EVENTS.publish("state", {
                     "names": [str(name) for name in body.get("names", [])[:5000]],
                     "fields": ["metadata"], "origin": "metadata"})
@@ -7635,6 +7687,51 @@ def catalog_collections_action(body: dict) -> dict:
             "library": current_library_state()}
 
 
+def keyword_batch_action(body: dict) -> dict:
+    import keyword_workflow
+
+    cat = require_catalog()
+    action = str(body.get("action", ""))
+    names = body.get("names", [])
+    if not isinstance(names, list) or len(names) > keyword_workflow.MAX_BATCH:
+        raise ValueError("Select no more than 5000 photos for a keyword batch")
+    names = list(dict.fromkeys(str(name) for name in names))
+    ids = []
+    for name in names:
+        image_id = catalog_image_id(name)
+        if image_id is None:
+            raise ValueError("A selected photo is no longer in the catalog")
+        ids.append(image_id)
+        if load_preferences().get("linkPairedMetadata"):
+            for companion in cat.paired_image_names(image_id):
+                paired_id = catalog_image_id(companion)
+                if paired_id is not None:
+                    ids.append(paired_id)
+    result = keyword_workflow.change(cat, ids, clean_keywords(body.get("keywords")),
+                                     action, undo_id=str(body.get("undoId", "")))
+    patches = {}
+    for item in result["changes"]:
+        row = cat.image_row(item["id"])
+        name = catalog_module.qualified_name(row["source_id"], row["relpath"], row["copy_ident"])
+        item["name"] = name
+        patches[name] = {"keywords": item["keywords"]}
+        queue_sidecar(name, ["keywords"])
+    _queue_mirror()
+    EVENTS.publish("state", {"names": list(patches), "fields": ["keywords"],
+                             "patches": patches, "origin": "keywords"})
+    return result
+
+
+def save_catalog_metadata(name: str, image_id: int, fields: dict) -> None:
+    cat = require_catalog()
+    before = cat.iptc_for(image_id)
+    cat.save_iptc(image_id, fields)
+    after = cat.iptc_for(image_id)
+    changed = ["iptc." + key for key in after if before.get(key) != after[key]]
+    if changed:
+        queue_sidecar(name, changed)
+
+
 def import_sidecars(body: dict) -> dict:
     """Read rating, label, keywords, IPTC, and develop settings from XMP.
 
@@ -7653,20 +7750,38 @@ def import_sidecars(body: dict) -> dict:
     conflict = str(body.get("conflict", "skip-existing"))
 
     names = body.get("names")
-    if not names:
-        scope = require_catalog().query({"limit": 5000,
-                                         **(body.get("scope") or {})})
-        names = [item["name"] for item in scope["items"]]
+    if names is None:
+        names = []
+        # Snapshot the scope before importing: metadata changes can alter a
+        # smart collection's membership. Never silently import one page only.
+        for offset in range(0, 100000, 5000):
+            page = cat.query({**(body.get("scope") or {}), "limit": 5000,
+                              "offset": offset})
+            if page["total"] > 100000:
+                raise ValueError("Import at most 100000 photos at once; narrow the source or folder scope")
+            names.extend(item["name"] for item in page["items"])
+            if len(names) >= page["total"] or not page["items"]:
+                break
+    if not isinstance(names, list) or len(names) > 100000:
+        raise ValueError("Import at most 100000 photos at once")
+    names = list(dict.fromkeys(str(name) for name in names))
 
     report = {"read": 0, "applied": 0, "skipped": 0, "missing": 0,
               "ignored": {}, "errors": []}
-    for name in names[:20000]:
+    for name in names:
+        if library_workflow.is_virtual(name):
+            report["skipped"] += 1
+            continue  # The physical original's XMP does not describe its variants.
         try:
             path = src_path(name)
         except ValueError:
             report["missing"] += 1
             continue
         parsed = xmp_sidecar.read_for(path)
+        if parsed and parsed.get("sidecarConflicts"):
+            report["errors"].append(f"{path.name}: multiple XMP sidecars; keep one naming convention before importing")
+            report["skipped"] += 1
+            continue
         if not parsed:
             report["missing"] += 1
             continue
@@ -7685,13 +7800,18 @@ def import_sidecars(body: dict) -> dict:
                     entry["captureTimeOverride"] = capture_clock.normalized_timestamp(parsed["captureTime"])
                 except ValueError:
                     report["ignored"]["invalid capture time"] = report["ignored"].get("invalid capture time", 0) + 1
+            if parsed.get("status") in {"pending", "approved", "skipped"}:
+                entry["status"] = parsed["status"]
             if parsed.get("rating") is not None:
                 entry["rating"] = max(0, min(5, int(parsed["rating"])))
-            if parsed.get("label"):
-                entry["label"] = clean_label(parsed["label"])
-            keywords = list(parsed.get("keywordPaths")
-                            or parsed.get("keywords") or [])
-            if keywords:
+            if "label" in parsed.get("metadataPresent", []):
+                label = clean_label(parsed.get("label"))
+                if label == "none" and str(parsed["label"]).casefold() not in {"none", ""}:
+                    report["ignored"]["custom color label"] = report["ignored"].get("custom color label", 0) + 1
+                else:
+                    entry["label"] = label
+            keywords = list(parsed.get("metadataKeywords") or [])
+            if "keywords" in parsed.get("metadataPresent", []):
                 entry["keywords"] = clean_keywords(keywords)
         if (want_develop or want_crop) and not (has_edits
                                                 and conflict == "skip-existing"):
@@ -7705,14 +7825,16 @@ def import_sidecars(body: dict) -> dict:
             for note in patch.get("ignored", []) or []:
                 report["ignored"][note] = report["ignored"].get(note, 0) + 1
         if entry:
+            cat.add_history(image_id, "Before sidecar metadata import", current, origin="sidecar")
             cat.save_state(image_id, entry)
+            cat.add_history(image_id, "Sidecar metadata import", cat.state_for(image_id), origin="sidecar")
             report["applied"] += 1
         else:
             report["skipped"] += 1
         iptc_fields = {key: parsed.get(key) for key in
                        ("title", "caption", "creator", "copyright", "credit",
                         "headline", "city", "state", "country")
-                       if parsed.get(key)}
+                       if key in parsed.get("metadataPresent", [])}
         gps = parsed.get("gps")
         if gps:
             iptc_fields.update({"gps_lat": gps.get("lat"),
@@ -7720,6 +7842,30 @@ def import_sidecars(body: dict) -> dict:
                                 "gps_alt": gps.get("alt")})
         if want_metadata and iptc_fields:
             cat.save_iptc(image_id, iptc_fields)
+            if not entry:
+                report["applied"] += 1
+                report["skipped"] -= 1
+        if want_metadata and parsed.get("origin") == "sidecar":
+            try:
+                baseline = xmp_sidecar.sidecar_snapshot(path)
+                with cat.write() as conn:
+                    conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                                 ("sidecar.synced:" + str(image_id), json.dumps(baseline)))
+                    key = _SIDECAR_PREFIX + str(image_id)
+                    pending = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+                    if pending:
+                        queued = json.loads(pending[0])
+                        fields = set(queued.get("fields") or ("params", "grade", "crop", "masks", "heals", "optics"))
+                        fields -= {"rating", "status", "label", "keywords", "iptc", "captureTimeOverride"}
+                        fields = {field for field in fields if not field.startswith("iptc.")}
+                        if fields:
+                            queued.update(snapshot=baseline, snapshotError="", error="", fields=sorted(fields))
+                            conn.execute("UPDATE meta SET value=? WHERE key=?", (json.dumps(queued), key))
+                        else:
+                            conn.execute("DELETE FROM meta WHERE key=?", (key,))
+            except Exception as error:
+                report["errors"].append(str(error))
+    EVENTS.publish("library", {"reason": "sidecar-import"})
     return report
 
 
@@ -8242,6 +8388,8 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
+            **{key: item.get(key) for key in
+               ("camera", "lens", "iso", "focalLength", "aperture", "shutterSeconds", "keywords")},
             "status": item["status"],
             "rating": item["rating"],
             "label": item["label"],
