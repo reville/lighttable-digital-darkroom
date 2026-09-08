@@ -25,15 +25,17 @@ export function createFilmBrowser({ context, apply }) {
     <div class="film-browser-header"><div><strong id="filmBrowserTitle">${i18nHTML(tr("Preview film stocks"))}</strong><p id="filmBrowserPhoto"></p></div><button type="button" id="filmBrowserClose" aria-label="${i18nHTML(tr("Close film previews"))}">${i18nHTML(tr("Close"))}</button></div>
     <label class="film-browser-search">${i18nHTML(tr("Find a stock"))}<input id="filmBrowserSearch" type="search" placeholder="${i18nHTML(tr("Search film stocks"))}" autocomplete="off"></label>
     <p class="hint">${i18nHTML(tr("Previews use this photo’s edits. Choose a stock to apply it."))}</p>
+    <p id="filmBrowserEmpty" class="hint" role="status" hidden>${i18nHTML(tr("No matching stocks"))}</p>
     <div class="film-preview-grid" id="filmPreviewGrid"></div>
-    <div class="film-browser-footer"><button type="button" id="filmBrowserPrevious">${i18nHTML(tr("Previous"))}</button><span id="filmBrowserPage" role="status"></span><button type="button" id="filmBrowserNext">${i18nHTML(tr("Next"))}</button></div>
   </section>`;
   document.body.append(overlay);
   const el = (id) => overlay.querySelector(`#${id}`);
-  let snapshot, page = 0, generation = 0, controller, returnFocus, searchTimer;
+  const grid = el('filmPreviewGrid');
+  let snapshot, generation = 0, controller, observer, returnFocus, searchTimer;
   const urls = new Set();
   function cancel() {
     generation++;
+    observer?.disconnect();
     controller?.abort();
     for (const url of urls) URL.revokeObjectURL(url);
     urls.clear();
@@ -45,21 +47,17 @@ export function createFilmBrowser({ context, apply }) {
     overlay.setAttribute('aria-hidden', 'true');
     returnFocus?.focus();
   }
-  async function render() {
+  function render(scrollToCurrent = false) {
     cancel();
     controller = new AbortController();
     const signal = controller.signal;
     const request = generation;
     const query = el('filmBrowserSearch').value.trim().toLocaleLowerCase();
     const stocks = snapshot.stocks.filter((p) => p.label.toLocaleLowerCase().includes(query));
-    page = Math.min(page, Math.max(0, Math.ceil(stocks.length / 4) - 1));
-    const shown = stocks.slice(page * 4, page * 4 + 4);
-    el('filmBrowserPrevious').disabled = page === 0;
-    el('filmBrowserNext').disabled = (page + 1) * 4 >= stocks.length;
-    el('filmBrowserPage').textContent = stocks.length ? tr("{value}–{value2} of {stocksLength} stocks", {value: page * 4 + 1, value2: page * 4 + shown.length, stocksLength: stocks.length}) : tr("No matching stocks");
-    const grid = el('filmPreviewGrid');
+    el('filmBrowserEmpty').hidden = stocks.length > 0;
     grid.replaceChildren();
-    const cards = shown.map((stock) => {
+    grid.scrollTop = 0;
+    const cards = stocks.map((stock) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'film-preview-card';
@@ -68,35 +66,61 @@ export function createFilmBrowser({ context, apply }) {
       const image = document.createElement('img');
       image.alt = tr("{stockLabel} preview", {stockLabel: stock.label});
       image.hidden = true;
+      const frame = document.createElement('div');
+      frame.className = 'film-preview-image';
+      frame.append(image);
       const label = document.createElement('strong'); label.textContent = stock.label;
       const status = document.createElement('span'); status.textContent = tr("Rendering preview…");
-      button.append(image, label, status);
+      button.append(frame, label, status);
       button.onclick = () => { close(); apply(stock.id, snapshot.name); };
       grid.append(button);
-      return { stock, image, status };
+      return { stock, button, frame, image, status, near: false, started: false };
     });
-    // Bound work to four visible stocks, one render at a time. Closing/searching
-    // cancels the browser request and prevents further queued renders.
-    for (const { stock, image, status } of cards) {
-      if (request !== generation) return;
-      try {
-        const params = filmParamsForStock(snapshot.state.params, stock.id, snapshot.profiles);
-        params.profile_enabled = true;
-        const response = await fetch('/api/render/file', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-          body: JSON.stringify({ name: snapshot.name, state: { ...snapshot.state, params }, w: 360, format: 'jpeg', engine: snapshot.engine, client: 'film-stock-browser' }),
-        });
-        if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(tr("Preview unavailable"));
-        const blob = await response.blob();
-        if (request !== generation) return;
-        const url = URL.createObjectURL(blob); urls.add(url);
-        image.src = url; image.hidden = false;
-        status.textContent = stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false ? tr("Current stock") : tr("Apply stock");
-      } catch (error) {
-        if (request !== generation || error.name === 'AbortError') return;
-        status.textContent = tr("Preview unavailable · select to apply");
+    // Keep every stock reachable by scrolling or keyboard, but only render cards
+    // near the viewport. Leaving the viewport removes unstarted work from the
+    // queue; closing/searching cancels the request and discards stale results.
+    let rendering = false;
+    async function renderVisible() {
+      if (rendering || request !== generation) return;
+      rendering = true;
+      let card;
+      while (request === generation && (card = cards.find((item) => item.near && !item.started))) {
+        card.started = true;
+        const { stock, frame, image, status } = card;
+        const width = Math.min(1600, Math.max(720, Math.ceil(
+          Math.max(frame.clientWidth, frame.clientHeight) * Math.min(window.devicePixelRatio || 1, 2) * 1.2,
+        )));
+        try {
+          const params = filmParamsForStock(snapshot.state.params, stock.id, snapshot.profiles);
+          params.profile_enabled = true;
+          const response = await fetch('/api/render/file', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
+            body: JSON.stringify({ name: snapshot.name, state: { ...snapshot.state, params }, w: width, format: 'jpeg', engine: snapshot.engine, client: 'film-stock-browser' }),
+          });
+          if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(tr("Preview unavailable"));
+          const blob = await response.blob();
+          if (request !== generation) return;
+          const url = URL.createObjectURL(blob); urls.add(url);
+          image.src = url; image.hidden = false;
+          status.textContent = stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false ? tr("Current stock") : tr("Apply stock");
+        } catch (error) {
+          if (request !== generation || error.name === 'AbortError') return;
+          status.textContent = tr("Preview unavailable · select to apply");
+        }
       }
+      rendering = false;
     }
+    const byButton = new Map(cards.map((card) => [card.button, card]));
+    observer = new IntersectionObserver((entries) => {
+      if (request !== generation) return;
+      for (const entry of entries) byButton.get(entry.target).near = entry.isIntersecting;
+      renderVisible();
+    }, { root: grid, rootMargin: '240px 0px' });
+    if (scrollToCurrent) {
+      const current = cards.find((card) => card.button.getAttribute('aria-pressed') === 'true');
+      if (current) grid.scrollTop = current.button.offsetTop;
+    }
+    for (const { button } of cards) observer.observe(button);
   }
   el('filmBrowserClose').onclick = close;
   overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
@@ -109,20 +133,17 @@ export function createFilmBrowser({ context, apply }) {
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   });
-  el('filmBrowserPrevious').onclick = () => { page--; render(); };
-  el('filmBrowserNext').onclick = () => { page++; render(); };
   el('filmBrowserSearch').addEventListener('input', () => {
-    cancel(); clearTimeout(searchTimer); page = 0;
+    cancel(); clearTimeout(searchTimer);
     searchTimer = setTimeout(render, 180);
   });
   return { open() {
     snapshot = context();
     if (!snapshot?.name) return;
     returnFocus = document.activeElement;
-    page = Math.max(0, Math.floor(snapshot.stocks.findIndex((p) => p.id === snapshot.state.params.stock) / 4));
     el('filmBrowserSearch').value = '';
     el('filmBrowserPhoto').textContent = snapshot.label;
     overlay.classList.add('on'); overlay.setAttribute('aria-hidden', 'false');
-    el('filmBrowserSearch').focus(); render();
+    el('filmBrowserSearch').focus(); render(true);
   }, close };
 }

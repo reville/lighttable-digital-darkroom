@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Cari",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Pencarian mencakup judul artikel, nama alat, dan seluruh instruksi. Pilih Semua topik untuk mencari di seluruh aplikasi.",
     "Search film stocks": "Cari stok film",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Cari nama stok, gunakan Previous atau Next untuk menelusuri, lalu pilih pratinjau untuk menerapkannya.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Cari nama film atau gulir pratinjau, lalu pilih salah satu untuk menerapkannya. Pratinjau diperbesar dan dipotong agar detail lebih terlihat.",
     "Search help": "Cari bantuan",
     "Search index: {value}": "Indeks pencarian: {value}",
     "Search objects, scenes, text, and faces": "Cari objek, adegan, teks, dan wajah",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% dipertahankan",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Nama mencerminkan file yang ada dan dapat berubah sebelum ekspor.",
     "{value}× stock baseline": "{value}× baseline stok",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} dari {stocksLength} stok",
     "— none —": "— tidak ada —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” memiliki penyempurnaan yang dicat. Buat ulang di foto ini atau kecualikan masker.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” memerlukan pemilihan objek baru. Kecualikan masker untuk menempel penyuntingan lain.",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Ara",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Arama; makale başlıklarını, araç adlarını ve tüm yönergeleri kapsar. Uygulama genelinde aramak için Tüm konular’ı seçin.",
     "Search film stocks": "Film stoklarını ara",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Bir film stoğu adı arayın, gözatmak için Previous veya Next kullanın, ardından uygulamak için bir önizleme seçin.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Bir film adı arayın veya önizlemeleri kaydırın, ardından uygulamak için birini seçin. Ayrıntıları daha iyi göstermek için önizlemeler büyütülür ve kırpılır.",
     "Search help": "Yardımda ara",
     "Search index: {value}": "Arama dizini: {value}",
     "Search objects, scenes, text, and faces": "Nesneleri, sahneleri, metni ve yüzleri arayın",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "%{value} korundu",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Adlar mevcut dosyaları yansıtır ve dışa aktarmadan önce değişebilir.",
     "{value}× stock baseline": "{value}× film stoğu temel çizgisi",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} film stoğu arasında {value}–{value2}",
     "— none —": "— yok —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” boyanmış iyileştirmelere sahip. Bunu bu fotoğrafta yeniden oluşturun veya maskeleri hariç tutun.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” yeni bir nesne seçimi gerektiriyor. Diğer düzenlemeleri yapıştırmak için maskeleri hariç tutun.",
