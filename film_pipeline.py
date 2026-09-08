@@ -11,7 +11,11 @@ import math
 import os
 import shutil
 import sys
+import tempfile
+from contextlib import contextmanager
 from pathlib import Path
+
+import film_tuning
 
 APP = Path(__file__).resolve().parent
 RUST_PROFILE_DIR = APP / "engine" / "data" / "profiles"
@@ -106,6 +110,7 @@ def load_profile_catalog() -> list[dict]:
             "citation": (raw.get("metadata", {}).get("citation")
                          or info.get("citation")),
             "grainBasis": "speed-derived visual baseline",
+            "tunings": film_tuning.profile_tunings(ident),
         }
         profile.update(PROFILE_OVERRIDES.get(ident, {}))
         profiles.append(profile)
@@ -248,6 +253,10 @@ DEFAULT_PARAMS = {
     # settings remain stored so the film look can be restored with one click.
     "profile_enabled": True,
     "stock": "kodak_portra_400",
+    # Missing variant fields always preserve the upstream rendering of old
+    # photos/presets. Version is persisted separately from the base stock.
+    "film_tuning": "original",
+    "film_tuning_version": "1",
     "paper": "kodak_portra_endura",
     "workflow_mode": "authentic",
     "paper_locked": False,
@@ -420,7 +429,8 @@ def rust_params_json(p: dict) -> dict:
         },
         "io": {
             "input_color_space": p["input_color_space"],
-            "input_cctf_decoding": not p["linear_input"],
+            "input_cctf_decoding": (not p["linear_input"]
+                                    and film_tuning.specification(p) is None),
             "output_color_space": "sRGB",
             "output_cctf_encoding": True,
             "scan_film": positive,
@@ -429,6 +439,29 @@ def rust_params_json(p: dict) -> dict:
     if p["print_development_time"] > 0:
         result["print_render"]["development_time"] = p["print_development_time"]
     return result
+
+
+def rust_tuning_request(p: dict) -> dict:
+    """LightTable worker extension, deliberately outside upstream params."""
+    spec = film_tuning.specification(clean_params(p))
+    return {"input_tuning": spec} if spec is not None else {}
+
+
+@contextmanager
+def prepared_input_file(source: str | Path, p: dict):
+    """Apply the same tuning for the separately pinned one-shot Rust CLI."""
+    spec = film_tuning.specification(clean_params(p))
+    if spec is None:
+        yield Path(source)
+        return
+    import numpy as np
+    import tifffile
+    with tempfile.TemporaryDirectory(prefix="lighttable-film-input-") as directory:
+        path = Path(directory) / "linear-prophoto.tif"
+        tuned = film_tuning.prepare_input(load_linear(str(source)), spec)
+        tifffile.imwrite(path, (np.clip(tuned, 0, 1) * 65535 + 0.5).astype(np.uint16),
+                         photometric="rgb")
+        yield path
 
 
 def clean_params(p: dict) -> dict:
@@ -462,6 +495,11 @@ def clean_params(p: dict) -> dict:
         out[key] = round(max(minimum, min(maximum, out[key])), 4)
     if out["stock"] not in {p["id"] for p in FILM_PROFILES}:
         out["stock"] = DEFAULT_PARAMS["stock"]
+    if (out["film_tuning"] != "lighttable"
+            or out["film_tuning_version"] != film_tuning.VERSION
+            or out["stock"] not in film_tuning.TUNINGS):
+        out["film_tuning"] = "original"
+        out["film_tuning_version"] = film_tuning.VERSION
     if out["workflow_mode"] not in ("authentic", "creative"):
         out["workflow_mode"] = "authentic"
     valid_papers = compatible_papers(out["stock"])
@@ -503,7 +541,8 @@ def build_params(p: dict):
         film_profile=p["stock"], print_profile=p["paper"])
 
     params.io.input_color_space = p["input_color_space"]
-    params.io.input_cctf_decoding = not p["linear_input"]
+    params.io.input_cctf_decoding = (not p["linear_input"]
+                                   and film_tuning.specification(p) is None)
     params.io.output_color_space = "sRGB"
     params.io.output_cctf_encoding = True
     params.settings.use_enlarger_lut = True
@@ -585,6 +624,9 @@ def render_float(image: np.ndarray, p: dict) -> np.ndarray:
                            out * 12.92,
                            1.055 * np.power(out, 1.0 / 2.4) - 0.055)
         return np.clip(out, 0.0, 1.0).astype(np.float32)
+    spec = film_tuning.specification(p)
+    if spec is not None:
+        image = film_tuning.prepare_input(image, spec)
     out = spektrafilm.simulate(image, build_params(p))
     return np.clip(out, 0.0, 1.0).astype(np.float32)
 

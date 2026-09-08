@@ -226,7 +226,8 @@
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
-            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente."
+            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
+            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -2240,6 +2241,14 @@
           ]
         },
         {
+          "title": "Pellicole ottimizzate e originali",
+          "paragraphs": [
+            "Ottimizzato da LightTable mostra prima Portra 160, 400 e 800. Riduce le variazioni verso il giallo nel fogliame verde-giallo. I controlli della carta e dell’uscita restano disponibili.",
+            "Spektrafilm originale conserva tutte le rese originali e rimane l’opzione predefinita per le nuove foto, le modifiche precedenti e i vecchi predefiniti di pellicola.",
+            "Queste versioni ottimizzate sono interpretazioni visive basate su fotografie di riferimento e controlli numerici del colore, non riproduzioni della pellicola calibrate tramite misurazioni. Le modifiche e i predefiniti nativi salvano la versione scelta."
+          ]
+        },
+        {
           "title": "Cosa includono le anteprime",
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
@@ -3129,5 +3138,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

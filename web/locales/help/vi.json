@@ -226,7 +226,8 @@
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
-            "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp."
+            "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
+            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -2240,6 +2241,14 @@
           ]
         },
         {
+          "title": "Phim tinh chỉnh và phim gốc",
+          "paragraphs": [
+            "LightTable tinh chỉnh đưa Portra 160, 400 và 800 lên đầu danh sách. Các phiên bản này giảm hiện tượng lá xanh vàng bị ngả sang vàng. Các điều khiển giấy và đầu ra vẫn dùng được.",
+            "Spektrafilm gốc giữ nguyên mọi cách kết xuất ban đầu và vẫn là mặc định cho ảnh mới, các chỉnh sửa cũ và các thiết lập sẵn phim cũ.",
+            "Các phiên bản tinh chỉnh này là cách diễn giải thị giác dựa trên ảnh tham chiếu và kiểm tra màu bằng số liệu, không phải bản mô phỏng phim được hiệu chuẩn bằng phép đo. Các chỉnh sửa và thiết lập sẵn ở định dạng gốc lưu phiên bản bạn đã chọn."
+          ]
+        },
+        {
           "title": "Nội dung bao gồm trong bản xem trước",
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
@@ -3129,5 +3138,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

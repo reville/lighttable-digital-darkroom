@@ -226,7 +226,8 @@
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
-            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt."
+            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
+            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -2240,6 +2241,14 @@
           ]
         },
         {
+          "title": "Abgestimmte und originale Filme",
+          "paragraphs": [
+            "Von LightTable abgestimmt zeigt Portra 160, 400 und 800 zuerst. Diese Varianten verringern die Verschiebung gelbgrünen Laubs ins Gelbe. Die Einstellungen für Papier und Ausgabe bleiben verfügbar.",
+            "Spektrafilm-Original behält alle ursprünglichen Wiedergaben bei und bleibt der Standard für neue Fotos, ältere Bearbeitungen und ältere Filmvorgaben.",
+            "Diese abgestimmten Varianten sind visuelle Interpretationen auf Grundlage von Referenzfotos und numerischen Farbprüfungen, keine anhand von Messungen kalibrierten Filmnachbildungen. Bearbeitungen und native Vorgaben speichern die gewählte Variante."
+          ]
+        },
+        {
           "title": "Was die Vorschaubilder enthalten",
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
@@ -3129,5 +3138,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

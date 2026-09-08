@@ -6,7 +6,8 @@ import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
 import {installMaskBatch, mergeMaskDelta} from '/web/batch-masks.js';
 import {createSelectionRequest} from '/web/selection-request.js';
-import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
+import { createFilmBrowser, filmParamsForStock, filmChoiceValue, filmSelectionForChoice,
+  normalizeFilmTuning, mergeFilmTuning, filmStockGroups } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
@@ -17,6 +18,7 @@ import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { createZoomMotion, smoothZoomEnabled } from '/web/zoom-motion.js';
+import { createPhotoPanMemory } from '/web/photo-pan.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
@@ -535,7 +537,7 @@ function fmtFilm(id, v) {
   if (id === 'exposure_ev') return (v >= 0 ? '+' : '') + v.toFixed(1);
   if (id === 'halation_amount') return v.toFixed(1);
   if (id === 'grain_amount') {
-    const stock = $('stock')?.value || S.params?.stock;
+    const stock = selectedFilmProfile()?.id || S.params?.stock;
     return (grainBaseline(stock) * v).toFixed(2) + ' µm²';
   }
   if (id === 'wb_temperature') return Math.round(v) + ' K';
@@ -561,7 +563,8 @@ function profileFor(id) {
 }
 
 function selectedFilmProfile() {
-  return profileFor($('stock')?.value || S.params?.stock);
+  const choice = $('stock')?.value;
+  return profileFor(choice ? filmSelectionForChoice(choice, S.profiles).stock : S.params?.stock);
 }
 
 function selectedPaperProfile() {
@@ -651,7 +654,9 @@ function syncEngineForProfile() {
 
 function normalizeFilmParams(raw = {}) {
   const source = raw && typeof raw === 'object' ? { ...raw } : {};
-  const params = { ...S.filmDefaults, ...source };
+  const params = normalizeFilmTuning({ ...S.filmDefaults, ...source,
+    film_tuning: source.film_tuning || 'original',
+    film_tuning_version: source.film_tuning_version || '1' }, S.profiles);
   if (!Object.prototype.hasOwnProperty.call(source, 'grain_amount')) {
     const legacyArea = +source.grain_um2;
     params.grain_amount = Number.isFinite(legacyArea)
@@ -663,7 +668,7 @@ function normalizeFilmParams(raw = {}) {
 }
 
 function mergeFilmParams(base, overlay = {}) {
-  const merged = { ...base, ...overlay };
+  const merged = mergeFilmTuning(base, overlay, S.profiles);
   // A legacy preset carries absolute grain_um2 but no grain_amount. Remove
   // the base multiplier so normalizeFilmParams converts the preset value.
   if (Object.prototype.hasOwnProperty.call(overlay, 'grain_um2') &&
@@ -766,7 +771,7 @@ function redo() {
 /* ------------------------------------------------------------- controls */
 function syncControls() {
   const profileEnabled = S.params.profile_enabled !== false;
-  $('stock').value = S.params.stock;
+  $('stock').value = filmChoiceValue(S.params);
   populatePaperOptions();
   populateDevelopmentTimes();
   populatePrintDevelopmentTimes();
@@ -851,7 +856,7 @@ function setDevelopMode(profileEnabled) {
 }
 function readControls() {
   S.params.profile_enabled = $('filmProfileToggle').getAttribute('aria-checked') === 'true';
-  S.params.stock = $('stock').value;
+  Object.assign(S.params, filmSelectionForChoice($('stock').value, S.profiles));
   S.params.paper = $('paper').value;
   S.params.development_time = +$('development_time').value || 0;
   S.params.print_development_time = +$('print_development_time').value || 0;
@@ -872,6 +877,19 @@ function syncGrade() {
 }
 
 /* ------------------------------------------------------------------ view */
+const photoPanMemory = createPhotoPanMemory();
+let photoPanKey = null;
+function rememberPhotoPan() {
+  if (S.editingName !== cur()?.name) return; // Navigation may still be loading.
+  photoPanMemory.remember(photoPanKey, S, $('cmp').getBoundingClientRect());
+}
+function restorePhotoPan() {
+  if (S.viewMode !== 'detail' || S.cropping || S.cropTransition) return;
+  // Establish the incoming photo's pixel scale before restoring its position.
+  onViewportResize();
+  photoPanMemory.restore(photoPanKey, S, $('cmp').getBoundingClientRect());
+  applyViewNow();
+}
 function clampPan() {
   // The crop view places the photo wherever the centred frame needs it.
   if (S.cropping || S.cropTransition) return;
@@ -1033,6 +1051,7 @@ function zoomCentre(f) {
 }
 function zoomReset({animate = false} = {}) {
   zoomMotion.cancel();
+  rememberPhotoPan();
   const from = zoomView();
   if (S.cropping && !S.cropTransition) {
     // Fit means the cropping view itself while the crop tool is open.
@@ -5919,6 +5938,7 @@ function refreshFilteredView() {
 function setViewMode(mode, persist = true) {
   if (!['photo', 'square', 'detail'].includes(mode)) return;
   stopZoomMotion({finish: true});
+  if (mode !== S.viewMode) rememberPhotoPan();
   const gridMode = mode !== 'detail';
   LIBRARY_FILTERS.close();
   S.viewMode = mode;
@@ -5936,6 +5956,7 @@ function setViewMode(mode, persist = true) {
   if (gridMode) {
     renderGrid();
   } else if (cur()) {
+    restorePhotoPan();
     doRender();
   }
   syncCullBars();
@@ -6511,6 +6532,7 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
 
 function showCurrentImage(im) {
   stopZoomMotion({finish: true});
+  photoPanKey = JSON.stringify([S.rootFolder, im.name, im.recoverySourceKey || im.fileKey || null]);
   S.editingName = im.name;
   $('panel').inert = false;
   $('cmp').inert = false;
@@ -6559,6 +6581,7 @@ function showCurrentImage(im) {
   applyView();
   if (S.activePane === 'cropPane') beginCropSession();
   setCropMode(S.activePane === 'cropPane');
+  restorePhotoPan();
   setCompareActive(false);
   S.originalImageName = null;
   browserOriginal = null;
@@ -6621,6 +6644,8 @@ loupeChannel.onmessage = (event) => {
 
 async function go(i) {
   if (i < 0 || i >= S.images.length) return;
+  stopZoomMotion({finish: true});
+  rememberPhotoPan();
   cropSession = null;
   if (cur()) {
     const outgoing = cur().name;
@@ -7391,16 +7416,15 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
     option.title = ((recipe.description || ''));
     return option;
   }));
-  const groups = [
-    [tr("Color negative"), (p) => p.type === 'negative' && p.channelModel === 'color'],
-    [tr("Black & white negative"), (p) => p.type === 'negative' && p.channelModel === 'bw'],
-    [tr("Reversal / slide (scanned)"), (p) => p.type === 'positive'],
-  ];
-  for (const [label, matches] of groups) {
+  $('stock').replaceChildren();
+  for (const { label, options } of filmStockGroups(S.profiles)) {
     const group = document.createElement('optgroup');
     group.label = label;
-    S.profiles.filter((p) => p.stage === 'filming' && matches(p))
-      .forEach((profile) => group.appendChild(profileOption(profile)));
+    options.forEach((choice) => {
+      const option = profileOption({ ...choice, name: choice.label });
+      option.title = choice.label;
+      group.appendChild(option);
+    });
     if (group.children.length) $('stock').appendChild(group);
   }
   populatePaperOptions();
