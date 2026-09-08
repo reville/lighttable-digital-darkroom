@@ -225,7 +225,8 @@
             "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
-            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya."
+            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
+            "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Tingkatkan Dehaze untuk memperkuat gambar berkabut, atau coba nilai negatif untuk perlakuan yang lebih lembut. Periksa kontras dan warna saat Anda menyesuaikannya.",
             "Atur Vinyet untuk perlakuan tepi yang Anda inginkan dan periksa sudutnya.",
-            "Tahan B untuk membandingkan dengan original, atau gunakan Atur Ulang pada Effects untuk mengatur ulang Texture, Clarity, Dehaze, dan Vignette sekaligus."
+            "Naikkan Ukuran agar lebih banyak bagian tengah tidak terpengaruh; turunkan agar vinyet menjangkau lebih jauh ke dalam.",
+            "Naikkan Kehalusan Tepi untuk transisi yang lebih halus, atau turunkan untuk tepi yang lebih tegas.",
+            "Tahan B untuk membandingkan dengan foto asli, atau gunakan Atur Ulang di Efek untuk mengatur ulang semua penggeser Efek sekaligus."
           ],
           "tips": [
             "Vignette di Effects adalah perlakuan tepi kreatif. Gunakan koreksi lensa saat Anda ingin mengoreksi shading lensa."
@@ -3078,5 +3081,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915"
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
 }

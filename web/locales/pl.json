@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
     "Fit the whole photo to the available space": "Dopasuj całe zdjęcie do dostępnego miejsca",
     "Fit to window ({actualPct}%)": "Dopasuj do okna ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Dopasuj, 1:1 oraz przyciski i skróty powiększania działają z płynną animacją. Przewijanie, gesty szczypania i przeciąganie reagują bezpośrednio. Animacja powiększania jest wyłączona, gdy w systemie włączono opcję Ogranicz ruch.",
     "Flag": "Flaga",
     "Flag and rate survey photo": "Oceń i oznacz zdjęcie w przeglądzie",
     "Flag and rating filters": "Filtry flag i oceny",
@@ -1322,7 +1323,7 @@
     "History": "Historia",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "Historia jest przechowywana w katalogu, więc przetrwa zamknięcie programu. Cofnij i ponów podążają za każdym zdjęciem podczas tej sesji.",
     "History request failed": "Nie udało się pobrać historii",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Przytrzymaj B, aby porównać z oryginałem, albo użyj Resetuj w Efektach, aby zresetować razem Teksturę, Klarowność, Usuń zamglenie i Winietę.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Przytrzymaj B, aby porównać z oryginałem, albo użyj Resetuj w Efektach, aby zresetować wszystkie suwaki Efektów jednocześnie.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Przytrzymaj B, aby pokazać oryginał bez filmu, lokalnych masek ani końcowych korekt; puść B, aby przywrócić edycję. Kreska ukośna (/) ustawia fokus na wyszukiwanie zdjęć.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Przytrzymaj B, aby zobaczyć oryginał bez filmu, lokalnych masek ani końcowych korekt. Puść B, aby przywrócić widok po edycji.",
     "Hold a mapped key and scroll or use arrow keys.": "Przytrzymaj przypisany klawisz i przewijaj lub użyj klawiszy strzałek.",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "Uwzględnij podfoldery",
     "Includes the Film profile and physical stages.": "Zawiera profil filmu i etapy fizyczne.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Zwiększ Usuń zamglenie, aby wzmocnić zamglony obraz, albo spróbuj wartości ujemnej dla łagodniejszego efektu. Podczas regulacji sprawdzaj zarówno kontrast, jak i kolor.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Zwiększ Wtapianie, aby uzyskać łagodniejsze przejście, lub zmniejsz je, aby krawędź była wyraźniejsza.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Zwiększ Rozmiar, aby większa część środka pozostała bez efektu; zmniejsz go, aby winieta sięgała dalej do wewnątrz.",
     "Index data stays in LightTable's local data folder.": "Dane indeksu pozostają w lokalnym folderze danych LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indeksowanie {SAiCompleted} z {SAiTotal}",
     "Info": "Informacje",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "Resetuj wszystkie kanały Mieszacza kolorów",
     "Reset crop, rotation, flips, and perspective": "Resetuj kadrowanie, obrót, odbicia i perspektywę",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Zresetuj ton globalny, kolor, krzywe, wyostrzanie, redukcję szumu i efekty",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Zresetuj korekcje profilu obiektywu, zniekształcenia, winietowania i aberracji chromatycznej",
     "Reset sharpening and noise reduction adjustments": "Zresetuj regulacje wyostrzania i redukcji szumu",
+    "Reset sliders to their defaults": "Przywróć domyślne wartości suwaków",
     "Reset the RAW profile and capture-stage processing settings": "Zresetuj profil RAW i ustawienia przetwarzania na etapie aparatu",
     "Reset the combined RGB and individual channel curves": "Zresetuj połączone krzywe RGB i krzywe poszczególnych kanałów",
     "Reset this slider": "Resetuj ten suwak",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Podobne twarze są grupowane razem. Dodawaj nazwy, przeglądaj możliwe dopasowania i poprawiaj grupę zawsze, gdy trzeba.",
     "Simulate paper and ink": "Symuluj papier i atrament",
     "Size": "Rozmiar",
+    "Size of the clear area at the center of the vignette.": "Rozmiar obszaru bez efektu w środku winiety.",
     "Size only": "Tylko rozmiar",
     "Skip": "Pomiń",
     "Skip existing": "Pomiń istniejące",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof to stan podglądu. Wybierz rzeczywistą przestrzeń kolorów pliku oddzielnie w Eksportuj.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Sterowanie soft proof znajduje się w opcjach Widok przeglądarki (•••). Pozwalają one sprawdzać podgląd wyjściowy podczas edycji.",
     "Soften skin": "Wygładź skórę",
+    "Softness of the vignette transition.": "Miękkość przejścia winiety.",
     "Software rendering": "Renderowanie programowe",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Niektóre wersje robocze używają częściowej tożsamości pliku, która nie może zweryfikować całego oryginału. Przywracaj je tylko wtedy, gdy oryginalne zdjęcia nie zostały zastąpione.",
     "Some edits have not been saved": "Niektóre edycje nie zostały zapisane",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian.",
-    "Reset sliders to their defaults": "Przywróć domyślne wartości suwaków"
+    "☆ Favorites": "☆ Ulubione"
   },
   "plurals": {
     " · {count} paired file linked": {

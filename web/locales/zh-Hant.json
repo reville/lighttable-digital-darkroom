@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "符合視窗可能會放大小照片。1:1 顯示實際像素，即使照片因此比符合視窗時更小，也會在調整視窗大小時保持相同的像素比例。",
     "Fit the whole photo to the available space": "將整張相片符合到可用空間",
     "Fit to window ({actualPct}%)": "符合視窗 ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "符合、1:1、縮放按鈕和縮放快速鍵會平滑過渡。捲動、雙指縮放和拖移會直接回應。啟用系統的「減少動態效果」設定後，縮放動畫會停用。",
     "Flag": "旗標",
     "Flag and rate survey photo": "為總覽相片加上旗標並評分",
     "Flag and rating filters": "旗標與評分篩選",
@@ -1322,7 +1323,7 @@
     "History": "歷史",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "歷史會儲存在目錄中，因此關閉程式後仍會保留。復原與重做會在本次工作階段中依照每張相片進行。",
     "History request failed": "歷史請求失敗",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "按住 B 可與原始版本比較，或使用「效果」的「重設」將紋理、清晰度、去朦朧與暈映一起重設。",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "按住 B 可與原始版本比較，或在「效果」中使用「重設」將所有效果滑桿一併重設。",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "按住 B 可顯示沒有底片、本機遮罩或收尾調整的原始影像；放開 B 可恢復編輯。斜線（/）會將焦點移到相片搜尋。",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "按住 B 可查看沒有底片、本機遮罩或收尾調整的原始影像。放開 B 可恢復編輯後的檢視。",
     "Hold a mapped key and scroll or use arrow keys.": "按住已對應的按鍵並捲動，或使用方向鍵。",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "包含子資料夾",
     "Includes the Film profile and physical stages.": "包含底片描述檔和實體階段。",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "提高去朦朧可加強霧感影像，或嘗試負值以獲得較柔和的處理。調整時請同時檢查對比與色彩。",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "增大「羽化」可使過渡更柔和，減小則使邊緣更明顯。",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "增大「大小」可讓更多中央區域不受影響；減小則讓暈影進一步向內延伸。",
     "Index data stays in LightTable's local data folder.": "索引資料保留在 LightTable 的本機資料資料夾中。",
     "Indexing {SAiCompleted} of {SAiTotal}": "正在索引 {SAiCompleted}/{SAiTotal}",
     "Info": "資訊",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "重設所有色彩混合器通道",
     "Reset crop, rotation, flips, and perspective": "重設裁切、旋轉、翻轉與透視",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "重設全域色調、色彩、曲線、銳利化、雜訊降低與效果",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「寫實底片模擬」中的「重設」會將所有底片滑桿恢復為預設值。各區段的「重設」僅影響該區段的滑桿。開關和已選選項保持不變。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "重設鏡頭描述檔、失真、暗角和色差校正",
     "Reset sharpening and noise reduction adjustments": "重設銳利化與雜訊降低調整",
+    "Reset sliders to their defaults": "將滑桿恢復為預設值",
     "Reset the RAW profile and capture-stage processing settings": "重設 RAW 描述檔與擷取階段處理設定",
     "Reset the combined RGB and individual channel curves": "重設合併的 RGB 與各別色版曲線",
     "Reset this slider": "重設此滑桿",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "相似的臉部會分組在一起。您可以加入名稱、檢視可能的匹配，並在需要時更正群組。",
     "Simulate paper and ink": "模擬紙張與墨水",
     "Size": "大小",
+    "Size of the clear area at the center of the vignette.": "暈影中央不受影響區域的大小。",
     "Size only": "僅大小",
     "Skip": "略過",
     "Skip existing": "略過現有項目",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "軟打樣是一種檢視狀態。請在匯出中另外選擇檔案的實際色彩空間。",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "柔和校樣控制位於檢視器的「檢視」選項（•••）中。它們可讓你在編輯時檢視輸出預覽。",
     "Soften skin": "柔化膚色",
+    "Softness of the vignette transition.": "暈影過渡的柔和程度。",
     "Software rendering": "軟體轉譯",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "有些草稿使用部分檔案身分，無法驗證整個原始檔。只有在原始相片尚未被取代時才還原這些項目。",
     "Some edits have not been saved": "有些編輯尚未儲存",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「寫實底片模擬」中的「重設」會將所有底片滑桿恢復為預設值。各區段的「重設」僅影響該區段的滑桿。開關和已選選項保持不變。",
-    "Reset sliders to their defaults": "將滑桿恢復為預設值"
+    "☆ Favorites": "☆ 最愛"
   },
   "plurals": {
     " · {count} paired file linked": {

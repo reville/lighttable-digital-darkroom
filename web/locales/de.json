@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
     "Fit the whole photo to the available space": "Das gesamte Foto an den verfügbaren Platz anpassen",
     "Fit to window ({actualPct}%)": "An Fenster anpassen ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist.",
     "Flag": "Markierung",
     "Flag and rate survey photo": "Foto in Übersicht markieren und bewerten",
     "Flag and rating filters": "Filter für Markierung und Bewertung",
@@ -1322,7 +1323,7 @@
     "History": "Verlauf",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "Der Verlauf wird im Katalog gespeichert, sodass er beim Beenden erhalten bleibt. Undo und Redo folgen in dieser Sitzung jeweils dem einzelnen Foto.",
     "History request failed": "Verlaufsanfrage fehlgeschlagen",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen bei Effekte, um Textur, Klarheit, Dunst entfernen und Vignette gemeinsam zurückzusetzen.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen unter Effekte, um alle Effekte-Regler gemeinsam zurückzusetzen.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen; lassen Sie B los, um die Bearbeitung wiederherzustellen. Der Schrägstrich (/) fokussiert die Fotosuche.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen. Lassen Sie B los, um die bearbeitete Ansicht wiederherzustellen.",
     "Hold a mapped key and scroll or use arrow keys.": "Eine zugeordnete Taste gedrückt halten und scrollen oder Pfeiltasten verwenden.",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "Unterordner einbeziehen",
     "Includes the Film profile and physical stages.": "Enthält das Filmprofil und die physischen Stufen.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Erhöhen Sie Dunst entfernen, um ein diesiges Bild zu verstärken, oder versuchen Sie einen negativen Wert für eine weichere Wirkung. Prüfen Sie dabei sowohl Kontrast als auch Farbe.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Erhöhen Sie Weiche Kante für einen weicheren Übergang oder verringern Sie den Wert für einen deutlicheren Rand.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Erhöhen Sie Größe, um mehr von der Mitte unbeeinflusst zu lassen; verringern Sie den Wert, damit die Vignette weiter nach innen reicht.",
     "Index data stays in LightTable's local data folder.": "Indexdaten bleiben im lokalen Datenordner von LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indiziere {SAiCompleted} von {SAiTotal}",
     "Info": "Info",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "Alle Farbmischer-Kanäle zurücksetzen",
     "Reset crop, rotation, flips, and perspective": "Zuschneiden, Drehung, Spiegelungen und Perspektive zurücksetzen",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Globale Tonwerte, Farbe, Kurven, Schärfen, Rauschreduzierung und Effekte zurücksetzen",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Zurücksetzen in Realistische Filmsimulation setzt alle Film-Schieberegler auf ihre Standardwerte zurück. Zurücksetzen in einem Abschnitt betrifft nur dessen Schieberegler. Schalter und ausgewählte Optionen bleiben unverändert.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Objektivprofil-, Verzeichnungs-, Vignettierungs- und chromatische Aberrationskorrekturen zurücksetzen",
     "Reset sharpening and noise reduction adjustments": "Schärfen und Rauschreduzierung zurücksetzen",
+    "Reset sliders to their defaults": "Schieberegler auf Standardwerte zurücksetzen",
     "Reset the RAW profile and capture-stage processing settings": "RAW-Profil und Verarbeitungs-Einstellungen der Aufnahmestufe zurücksetzen",
     "Reset the combined RGB and individual channel curves": "Die kombinierten RGB- und Einzelkanal-Kurven zurücksetzen",
     "Reset this slider": "Diesen Schieberegler zurücksetzen",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Ähnliche Gesichter werden zusammen gruppiert. Fügen Sie Namen hinzu, überprüfen Sie mögliche Übereinstimmungen und korrigieren Sie eine Gruppe jederzeit nach Bedarf.",
     "Simulate paper and ink": "Papier und Tinte simulieren",
     "Size": "Größe",
+    "Size of the clear area at the center of the vignette.": "Größe des unbeeinflussten Bereichs in der Mitte der Vignette.",
     "Size only": "Nur Größe",
     "Skip": "Überspringen",
     "Skip existing": "Vorhandene überspringen",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft Proof ist ein Anzeigestatus. Wählen Sie den tatsächlichen Farbraum der Datei separat unter Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Die Steuerungen für Weichzeichnungskontrolle befinden sich in den Ansicht-Optionen (•••) des Betrachters. Damit können Sie beim Bearbeiten eine Ausgabevorschau prüfen.",
     "Soften skin": "Haut glätten",
+    "Softness of the vignette transition.": "Weichheit des Vignettenübergangs.",
     "Software rendering": "Software-Rendering",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Einige Entwürfe verwenden eine teilweise Dateidentität, die nicht das gesamte Original verifizieren kann. Stellen Sie diese nur wieder her, wenn die Originalfotos nicht ersetzt wurden.",
     "Some edits have not been saved": "Einige Bearbeitungen wurden nicht gespeichert",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ Zurück",
     "← Back to articles": "← Zurück zu Artikeln",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favoriten",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Zurücksetzen in Realistische Filmsimulation setzt alle Film-Schieberegler auf ihre Standardwerte zurück. Zurücksetzen in einem Abschnitt betrifft nur dessen Schieberegler. Schalter und ausgewählte Optionen bleiben unverändert.",
-    "Reset sliders to their defaults": "Schieberegler auf Standardwerte zurücksetzen"
+    "☆ Favorites": "☆ Favoriten"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -11,6 +11,7 @@ struct GradeUniforms {
     float4 tone1;       // whites, blacks, temp, tint
     float4 tone2;       // vibrance, saturation, texture, clarity
     float4 tone3;       // dehaze, vignette, texel x, texel y
+    float4 vignetteShape; // size, feather, reserved, reserved
     float4 detail0;     // sharpness, radius, detail, masking
     float4 detail1;     // luminance noise, color noise, red/cyan CA, blue/yellow CA
     float4 curveOn;
@@ -681,6 +682,14 @@ fragment float4 nativePreviewFragment(
     if (vignette != 0.0) {
         float2 normalized = (uv - 0.5) * 2.0;
         float radius = length(normalized) / 1.4142;
+        if (grade.vignetteShape.x != 0.5 || grade.vignetteShape.y != 1.0) {
+            // Use the same pixel endpoints as export for defined vignette edges.
+            float2 position = (uv - 0.5 * texel) / max(float2(1.0) - texel, texel);
+            radius = length((position - 0.5) * 2.0) / 1.4142;
+            float outer = 0.25 + 1.5 * grade.vignetteShape.x;
+            float width = outer * max(grade.vignetteShape.y, 0.01);
+            radius = clamp((radius - outer + width) / width, 0.0, 1.0);
+        }
         color = clamp(color * clamp(1.0 - vignette * 0.9 * pow(radius, 2.2), 0.0, 2.0), 0.0, 1.0);
     }
     int maskTiles = max(1, min(int(grade.optics1.w), 4));

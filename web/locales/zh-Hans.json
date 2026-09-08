@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "适合窗口可能会放大小照片。1:1 显示实际像素，即使照片因此比适合窗口时更小，也会在调整窗口大小时保持相同的像素比例。",
     "Fit the whole photo to the available space": "将整张照片适配到可用空间",
     "Fit to window ({actualPct}%)": "适合窗口（{actualPct}%）",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "适合、1:1、缩放按钮和缩放快捷键会平滑过渡。滚动、双指缩放和拖动会直接响应。启用系统的“减弱动态效果”设置后，将停用缩放动画。",
     "Flag": "标记",
     "Flag and rate survey photo": "为概览照片标记和评分",
     "Flag and rating filters": "标记和评分筛选",
@@ -1322,7 +1323,7 @@
     "History": "历史记录",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "历史记录保存在目录中，因此退出后仍会保留。撤销和重做在本次会话中会按每张照片进行。",
     "History request failed": "历史记录请求失败",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "按住 B 可与原图比较，或在“效果”中使用“重置”将“纹理”、“清晰度”、“去薄雾”和“晕影”一并重置。",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "按住 B 可与原图比较，或在“效果”中使用“重置”将所有效果滑块一并重置。",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "按住 B 可在不使用胶片、局部蒙版或收尾调整的情况下显示原始图像；松开 B 可恢复编辑。斜杠（/）可聚焦照片搜索。",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "按住 B 可在不使用胶片、局部蒙版或收尾调整的情况下查看原始图像。松开 B 可恢复编辑后的视图。",
     "Hold a mapped key and scroll or use arrow keys.": "按住已映射的按键并滚动，或使用方向键。",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "包含子文件夹",
     "Includes the Film profile and physical stages.": "包括胶片配置文件和物理阶段。",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "提高“去薄雾”可增强雾化图像；或者尝试负值以获得更柔和的效果。调整时请同时检查对比度和颜色。",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "增大“羽化”可使过渡更柔和，减小则使边缘更明显。",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "增大“大小”可让更多中心区域不受影响；减小则让晕影进一步向内延伸。",
     "Index data stays in LightTable's local data folder.": "索引数据保留在 LightTable 的本地数据文件夹中。",
     "Indexing {SAiCompleted} of {SAiTotal}": "正在索引 {SAiCompleted}/{SAiTotal}",
     "Info": "信息",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "重置所有“颜色混合器”通道",
     "Reset crop, rotation, flips, and perspective": "重置裁剪、旋转、翻转和透视",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "重置全局色调、颜色、曲线、锐化、降噪和效果",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "“真实胶片模拟”中的“重置”会将所有胶片滑块恢复为默认值。各分区的“重置”仅影响该分区的滑块。开关和已选选项保持不变。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "重置镜头配置文件、失真、暗角和色差校正",
     "Reset sharpening and noise reduction adjustments": "重置锐化和降噪调整",
+    "Reset sliders to their defaults": "将滑块恢复为默认值",
     "Reset the RAW profile and capture-stage processing settings": "重置 RAW 配置文件和拍摄阶段处理设置",
     "Reset the combined RGB and individual channel curves": "重置合并的 RGB 曲线和各通道曲线",
     "Reset this slider": "重置此滑块",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "相似面部会被归为一组。添加名称、审阅可能的匹配项，并在需要时更正某个组。",
     "Simulate paper and ink": "模拟纸张和墨水",
     "Size": "大小",
+    "Size of the clear area at the center of the vignette.": "晕影中心不受影响区域的大小。",
     "Size only": "仅大小",
     "Skip": "跳过",
     "Skip existing": "跳过现有文件",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "软打样是一种查看状态。请在导出中单独选择文件的实际色彩空间。",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "软打样控制位于查看器的“视图”选项（•••）中。它们可让你在编辑时检查输出预览。",
     "Soften skin": "柔化皮肤",
+    "Softness of the vignette transition.": "晕影过渡的柔和程度。",
     "Software rendering": "软件渲染",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "某些草稿使用部分文件身份，无法验证整个原始文件。仅当原始照片未被替换时才恢复这些内容。",
     "Some edits have not been saved": "部分编辑尚未保存",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "“真实胶片模拟”中的“重置”会将所有胶片滑块恢复为默认值。各分区的“重置”仅影响该分区的滑块。开关和已选选项保持不变。",
-    "Reset sliders to their defaults": "将滑块恢复为默认值"
+    "☆ Favorites": "☆ 收藏"
   },
   "plurals": {
     " · {count} paired file linked": {

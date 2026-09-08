@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
     "Fit the whole photo to the available space": "Adatta l’intera foto allo spazio disponibile",
     "Fit to window ({actualPct}%)": "Adatta alla finestra ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento.",
     "Flag": "Contrassegna",
     "Flag and rate survey photo": "Contrassegna e valuta la foto della panoramica",
     "Flag and rating filters": "Filtri contrassegno e valutazione",
@@ -1322,7 +1323,7 @@
     "History": "Cronologia",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "La Cronologia è memorizzata nel catalogo, quindi sopravvive alla chiusura. Annulla e ripeti seguono ogni foto durante questa sessione.",
     "History request failed": "Richiesta cronologia non riuscita",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Tieni premuto B per confrontare con l'originale, oppure usa Reimposta in Effetti per reimpostare insieme Struttura, Chiarezza, Rimuovi foschia e Vignettatura.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Tieni premuto B per confrontare con l’originale, oppure usa Reimposta in Effetti per reimpostare tutti i cursori di Effetti insieme.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Tieni premuto B per mostrare l'originale senza Pellicola, maschere locali o regolazioni finali; rilascia B per ripristinare la modifica. La barra (/) mette a fuoco la ricerca foto.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Tieni premuto B per vedere l'originale senza Pellicola, maschere locali o regolazioni finali. Rilascia B per ripristinare la vista modificata.",
     "Hold a mapped key and scroll or use arrow keys.": "Tieni premuto un tasto mappato e scorri o usa i tasti freccia.",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "Includi sottocartelle",
     "Includes the Film profile and physical stages.": "Include il Profilo Pellicola e le fasi fisiche.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Aumenta Rimuovi foschia per rafforzare un'immagine velata, oppure prova un valore negativo per un trattamento più morbido. Controlla sia il contrasto sia il colore mentre la regoli.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Aumenta Sfumatura per una transizione più morbida, o riducila per un bordo più definito.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Aumenta Dimensione per mantenere una parte maggiore del centro priva di effetto; riducila per estendere la vignettatura verso l’interno.",
     "Index data stays in LightTable's local data folder.": "I dati dell'indice restano nella cartella dati locale di LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indicizzazione di {SAiCompleted} su {SAiTotal}",
     "Info": "Info",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "Reimposta tutti i canali del Miscelatore colore",
     "Reset crop, rotation, flips, and perspective": "Reimposta ritaglio, rotazione, capovolgimenti e prospettiva",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Reimposta tono globale, colore, curve, nitidezza, riduzione rumore ed effetti",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Reimposta le correzioni del profilo obiettivo, della distorsione, della vignettatura e dell'aberrazione cromatica",
     "Reset sharpening and noise reduction adjustments": "Reimposta le regolazioni di nitidezza e riduzione rumore",
+    "Reset sliders to their defaults": "Ripristina i valori predefiniti dei cursori",
     "Reset the RAW profile and capture-stage processing settings": "Reimposta il profilo RAW e le impostazioni di elaborazione della fase di acquisizione",
     "Reset the combined RGB and individual channel curves": "Reimposta le curve RGB combinate e le curve dei singoli canali",
     "Reset this slider": "Reimposta questo cursore",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "I volti simili vengono raggruppati insieme. Aggiungi nomi, rivedi le possibili corrispondenze e correggi un gruppo ogni volta che ne hai bisogno.",
     "Simulate paper and ink": "Simula carta e inchiostro",
     "Size": "Dimensione",
+    "Size of the clear area at the center of the vignette.": "Dimensione dell’area priva di effetto al centro della vignettatura.",
     "Size only": "Solo dimensione",
     "Skip": "Salta",
     "Skip existing": "Salta esistenti",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "La prova di stampa è uno stato di visualizzazione. Scegli separatamente lo spazio Colore effettivo del file in Esporta.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "I controlli di soft proof si trovano nelle opzioni Visualizza del visualizzatore (•••). Consentono di controllare un'anteprima di output mentre modifichi.",
     "Soften skin": "Leviga la pelle",
+    "Softness of the vignette transition.": "Morbidezza della transizione della vignettatura.",
     "Software rendering": "Rendering software",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Alcune bozze usano un'identità parziale del file che non può verificare l'intero originale. Ripristinale solo se le foto originali non sono state sostituite.",
     "Some edits have not been saved": "Alcune modifiche non sono state salvate",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati.",
-    "Reset sliders to their defaults": "Ripristina i valori predefiniti dei cursori"
+    "☆ Favorites": "☆ Preferiti"
   },
   "plurals": {
     " · {count} paired file linked": {

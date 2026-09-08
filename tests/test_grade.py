@@ -26,6 +26,47 @@ class GradeEffectsTests(unittest.TestCase):
         out = grade.apply(self.image, {})
         np.testing.assert_array_equal(out, self.image)
 
+    def test_vignette_defaults_reproduce_legacy_pixels(self):
+        image = np.full((97, 129, 3), 0.4, dtype=np.float32)
+        yy, xx = np.mgrid[:97, :129].astype(np.float32)
+        radius = np.sqrt(((xx / 128 - .5) * 2) ** 2 +
+                         ((yy / 96 - .5) * 2) ** 2) / 1.4142
+        for amount in (-0.6, 0.6):
+            expected = np.clip(image * np.clip(
+                1 - amount * .9 * radius ** 2.2, 0, 2)[..., None], 0, 1)
+            actual = grade.apply(image, {"vignette": amount})
+            np.testing.assert_allclose(actual, expected, rtol=0, atol=1e-7)
+            np.testing.assert_array_equal(actual, grade.apply(image, {
+                "vignette": amount, "vignetteSize": .5, "vignetteFeather": 1}))
+
+    def test_vignette_size_and_feather_shape_the_transition(self):
+        image = np.full((101, 101, 3), .5, dtype=np.float32)
+        def render(size, feather):
+            return grade.apply(image, {"vignette": .8,
+                "vignetteSize": size, "vignetteFeather": feather})
+        small, large = render(.2, .5), render(.6, .5)
+        self.assertGreater(float(large[50, 85, 0]), float(small[50, 85, 0]))
+        hard, soft = render(.3, 0), render(.3, 1)
+        self.assertLess(float(soft[50, 85, 0]), float(hard[50, 85, 0]))
+        for pixels in (small, large, hard, soft):
+            np.testing.assert_array_equal(pixels[50, 50], image[50, 50])
+            self.assertTrue(np.isfinite(pixels).all())
+            self.assertGreaterEqual(float(pixels.min()), 0)
+            self.assertLessEqual(float(pixels.max()), .5)
+
+    def test_vignette_shape_without_amount_is_an_exact_identity(self):
+        image = self.image * 2 - .5
+        for size in (0, .5, 1):
+            for feather in (0, .5, 1):
+                settings = {"vignetteSize": size, "vignetteFeather": feather}
+                self.assertTrue(grade.is_identity(settings))
+                np.testing.assert_array_equal(grade.apply(image, settings), image)
+
+    def test_vignette_shape_ranges_are_bounded(self):
+        cleaned = grade.clean({"vignetteSize": -1, "vignetteFeather": 2})
+        self.assertEqual(cleaned["vignetteSize"], 0)
+        self.assertEqual(cleaned["vignetteFeather"], 1)
+
     def test_new_effects_are_cleaned_and_non_identity(self):
         cleaned = grade.clean({"texture": 0.4, "clarity": -0.3,
                                "dehaze": 0.25})
