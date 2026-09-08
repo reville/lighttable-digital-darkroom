@@ -38,6 +38,7 @@ class SnapPackageTests(unittest.TestCase):
         self.assertIn("confinement: strict", manifest)
         self.assertNotIn("classic", manifest)
         self.assertIn("private: true", manifest)
+        self.assertIn("- libopenblas0-pthread", manifest)
         bundle = self.output / "payload/LightTable"
         self.assertTrue((bundle / "Python/bin/python3").is_file())
         self.assertTrue((bundle / "Resources/LightTable/engine/lighttable-engine").is_file())
@@ -69,13 +70,17 @@ class SnapPackageTests(unittest.TestCase):
         common = self.root / "user data"
         for revision in ("1", "2"):
             environment = os.environ | {"SNAP": str(self.root / revision), "SNAP_USER_COMMON": str(common),
-                                        "PYTHONHOME": "/invalid", "PYTHONPATH": "/invalid"}
+                                        "PYTHONHOME": "/invalid", "PYTHONPATH": "/invalid",
+                                        "LD_LIBRARY_PATH": "/gnome/gpu-provider"}
             result = subprocess.run(["sh", str(launcher), "sh", "-c",
-                                     'printf "%s\\n" "$XDG_DATA_HOME" "$XDG_STATE_HOME" "${PYTHONHOME-unset}" "$1"',
+                                     'printf "%s\\n" "$XDG_DATA_HOME" "$XDG_STATE_HOME" "${PYTHONHOME-unset}" "$1" "$LD_LIBRARY_PATH"',
                                      "check", "photo with spaces.raw"], env=environment,
                                     capture_output=True, text=True, check=True)
             self.assertEqual(result.stdout.splitlines(), [str(common / "data"), str(common / "state"),
-                                                         "unset", "photo with spaces.raw"])
+                                                         "unset", "photo with spaces.raw",
+                                                         f"{self.root / revision}/usr/lib/x86_64-linux-gnu/openblas-pthread:"
+                                                         f"{self.root / revision}/usr/lib/x86_64-linux-gnu:"
+                                                         f"{self.root / revision}/usr/lib:/gnome/gpu-provider"])
 
 
 if __name__ == "__main__":

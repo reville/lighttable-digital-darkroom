@@ -13,6 +13,6 @@ export GTK_USE_PORTAL=1
 unset PYTHONHOME PYTHONPATH
 # The GNOME extension supplies GTK, WebKit and the GPU provider. These are only
 # additional libraries staged by this package; never bundle a host GPU driver.
-export LD_LIBRARY_PATH="$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="$SNAP/usr/lib/x86_64-linux-gnu/openblas-pthread:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 mkdir -p "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_STATE_HOME"
 exec "$@"

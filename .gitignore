@@ -11,6 +11,8 @@ build/*
 !build/LightTable.icns
 /engine
 /rust-engine/target
+# Standalone portability tests generate a lock for the vendored workspace.
+/rust-engine/vendor/spektrafilm/Cargo.lock
 /windows-shell/target
 dist/
 presets.json
