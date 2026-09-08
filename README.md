@@ -182,6 +182,9 @@ The render order is **RAW decode → film (optional) → optical/healing correct
 → global grade → local masks → crop and resize → encoded output**.
 The resident engine keeps its GPU device, image buffers, and pipelines warm;
 ordinary grade changes run in the live Metal preview or WebGL fallback.
+The WebGL viewer reuses recently displayed textures by render identity, with
+a six-preview / 256 MiB texture budget (one larger current preview can stand
+alone). Original loads on demand when Compare or held Original is active.
 
 On the [documented benchmark Mac](bench/results/responsiveness-2026-09-01.md),
 a warmed 1100 px film render had a median of **50.5 ms across 30 runs**.

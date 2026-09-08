@@ -348,6 +348,7 @@
     ],
     "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
     "sources": [
+      {"path": "web/gl.js", "anchor": "    this.maxImageTextureBytes = 256 * 1024 * 1024;"},
       {"path": "web/app.js", "anchor": "function scheduleAutomaticPreview()"},
       {"path": "server.py", "anchor": "def build_neutral_preview("},
       {"path": "app/NativePreview.swift", "anchor": "metalView.presentsWithTransaction = true"},

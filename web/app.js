@@ -4019,7 +4019,8 @@ function originalPreviewURL(requestedWidth = requestedPreviewWidth()) {
 let browserOriginal = null;
 let browserOriginalTextureURL = null;
 function installBrowserOriginal() {
-  if (!S.gl || !browserOriginal?.image?.complete ||
+  if ((!S.compareActive && !S.holdBefore) || nativePreviewActive() ||
+      !S.gl || !browserOriginal?.image?.complete ||
       !browserOriginal.image.naturalWidth ||
       browserOriginal.url !== S.originalImageName ||
       browserOriginalTextureURL === browserOriginal.url) return;
@@ -4031,7 +4032,7 @@ function installBrowserOriginal() {
 function syncBrowserOriginal(requestedWidth = requestedPreviewWidth()) {
   $('orig').removeAttribute('src');
   const url = originalPreviewURL(requestedWidth);
-  if (!url || nativePreviewActive()) return;
+  if (!url || nativePreviewActive() || (!S.compareActive && !S.holdBefore)) return;
   if (S.originalImageName === url && browserOriginal?.url === url) {
     installBrowserOriginal();
     return;
@@ -4078,7 +4079,7 @@ async function setBaseImage(render, generation, { preserveCanvasSize = false } =
   try {
     timing = native
       ? await setNativeBaseImage(render, generation, { preserveCanvasSize })
-      : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize });
+      : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
     if (generation === S.seq && timing.failed) {
       [S.presentedGradeKey, S.gradeEditsBaked] = previousGradeState;
     }
@@ -4090,12 +4091,13 @@ async function setBaseImage(render, generation, { preserveCanvasSize = false } =
 }
 
 function setWebGLBaseImage(dataUri, {
-  preserveCanvasSize = false, forceWebGLDraw = false, generation = null,
+  preserveCanvasSize = false, forceWebGLDraw = false, generation = null, cacheKey = null,
 } = {}) {
   return new Promise((res) => {
     const startedAt = performance.now();
-    const img = new Image();
-    img.onload = async () => {
+    const cached = S.gl?.cachedImage(cacheKey);
+    const img = cached || new Image();
+    const present = async () => {
       // A helper requested while idle may finish after another drag began.
       while (forceWebGLDraw && nativePreviewActive() && generation === S.seq &&
              performance.now() - lastContinuousInputAt < 180) {
@@ -4119,7 +4121,7 @@ function setWebGLBaseImage(dataUri, {
         browserReferenceTextureURL = null;
       }
       const uploadStartedAt = performance.now();
-      S.gl.setImage(img, { resizeCanvas: !preserveCanvasSize });
+      const { textureCacheHit } = S.gl.setImage(img, { resizeCanvas: !preserveCanvasSize, cacheKey });
       installBrowserOriginal();
       installBrowserReference();
       S.maskTextureDirty = true;
@@ -4130,8 +4132,10 @@ function setWebGLBaseImage(dataUri, {
       scheduleHistogram(true);
       applyCropVisual();
       res({ decodeMs: uploadStartedAt - startedAt,
-        uploadMs: uploadedAt - uploadStartedAt, uploadedAt });
+        uploadMs: uploadedAt - uploadStartedAt, uploadedAt, textureCacheHit });
     };
+    if (cached) { void present(); return; }
+    img.onload = present;
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
@@ -7924,6 +7928,7 @@ function setCompareActive(on, { restoreTool = true } = {}) {
     switchPane(lastAdjustmentPane, { fromCompare: true });
   }
   S.compareActive = next;
+  if (next) syncBrowserOriginal();
   if (entering) snapCompareToView();
   if (!next) compareReturnPane = null;
   renderCompare();
@@ -7984,6 +7989,7 @@ $('compareSnap').addEventListener('click', snapCompareToView);
 function setBefore(on) {
   if (on && S.compareActive) setCompareActive(false);
   S.holdBefore = on;
+  if (on) syncBrowserOriginal();
   $('beforeBtn').classList.toggle('on', on);
   renderCompare();
   drawGrade();

@@ -28,7 +28,7 @@ try {
       const image = new Image();
       image.src = test.source;
       await image.decode();
-      renderer.setImage(image);
+      renderer.setImage(image, {cacheKey: test.source});
       renderer.clearOriginalImage();
       if (test.original) {
         const original = new Image(); original.src = test.original;
