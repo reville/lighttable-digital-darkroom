@@ -101,6 +101,35 @@ console.log(JSON.stringify({first,next,disabled:off.take()}));
         self.assertEqual(result['next']['presented'], 0)
         self.assertIsNone(result['disabled'])
 
+    def test_loading_saved_png_replaces_empty_mask_preview(self):
+        result = self.run_js("""
+import {readFileSync} from 'node:fs';
+const source = readFileSync('./web/app.js','utf8');
+const body = source.slice(source.indexOf('function semanticBitmapValues('),
+ source.indexOf('const semanticPngCache ='));
+const semanticPngCache = new Map(), maskGeometryCache = new Map([['saved', {values:[0,0]}]]);
+const cumulativeBrushCache = new Map([['saved', {values:[0,0]}]]);
+const clamp = (v, low, high) => Math.max(low, Math.min(high, v));
+const S = {}; let redraws = 0, loaded;
+const drawGrade = () => {redraws++;};
+const resizeMaskValues = source => source;
+class Image { set src(value) { loaded = this.onload; } }
+const document = {createElement: () => ({getContext: () => ({
+ drawImage() {}, getImageData: () => ({data:[255,255,255,255,0,0,0,255]})
+})})};
+const raster = eval('('+body.trim()+')');
+const component = {bitmap:{width:2,height:1,encoding:'png',data:'saved-selection'}};
+const pending = Array.from(raster(component,2,1));
+loaded();
+console.log(JSON.stringify({pending,loaded:Array.from(raster(component,2,1)),
+ cached:maskGeometryCache.size,dirty:S.maskTextureDirty,redraws}));
+""")
+        self.assertEqual(result['pending'], [0, 0])
+        self.assertEqual(result['loaded'], [255, 0])
+        self.assertEqual(result['cached'], 0)
+        self.assertTrue(result['dirty'])
+        self.assertEqual(result['redraws'], 1)
+
 
 if __name__ == '__main__':
     unittest.main()

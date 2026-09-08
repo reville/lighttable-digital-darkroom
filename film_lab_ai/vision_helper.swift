@@ -194,7 +194,14 @@ private func writeForegroundMask(sourceURL: URL, outputURL: URL) throws {
     }
     let buffer = try observation.generateScaledMaskForImage(
         forInstances: observation.allInstances, from: handler)
-    let image = CIImage(cvPixelBuffer: buffer)
+    var image = CIImage(cvPixelBuffer: buffer)
+    let scale = min(1.0, 1024.0 / max(image.extent.width, image.extent.height))
+    if scale < 1.0 {
+        image = image.applyingFilter("CILanczosScaleTransform", parameters: [
+            kCIInputScaleKey: scale,
+            kCIInputAspectRatioKey: 1.0,
+        ])
+    }
     let context = CIContext(options: [.useSoftwareRenderer: false])
     try context.writePNGRepresentation(
         of: image, to: outputURL, format: .L8,
@@ -344,18 +351,12 @@ private func writePersonParts(sourceURL: URL, outputDirectory: URL) throws
     -> [String: Any] {
     // ImageIO reliably materializes the embedded/developed image for RAW
     // formats that Core Image cannot render directly. Vision receives a
-    // bounded image; masks are still written at the oriented source size.
+    // bounded image; masks retain up to 1024 pixels on their longest edge.
     guard let imageSource = CGImageSourceCreateWithURL(
         sourceURL as CFURL, nil),
-          let properties = CGImageSourceCopyPropertiesAtIndex(
-            imageSource, 0, nil) as? [CFString: Any] else {
+          CGImageSourceGetCount(imageSource) > 0 else {
         throw HelperFailure.message("Could not decode image")
     }
-    let sourceWidth = (properties[kCGImagePropertyPixelWidth] as? NSNumber)?
-        .doubleValue ?? 2048
-    let sourceHeight = (properties[kCGImagePropertyPixelHeight] as? NSNumber)?
-        .doubleValue ?? 2048
-    let inferenceScale = min(1.0, 2048.0 / max(sourceWidth, sourceHeight))
     let options: [CFString: Any] = [
         kCGImageSourceCreateThumbnailFromImageAlways: true,
         kCGImageSourceCreateThumbnailWithTransform: true,
@@ -365,8 +366,10 @@ private func writePersonParts(sourceURL: URL, outputDirectory: URL) throws
         imageSource, 0, options as CFDictionary) else {
         throw HelperFailure.message("Could not render image for people masks")
     }
-    let width = max(1, Int(round(Double(inferenceImage.width) / inferenceScale)))
-    let height = max(1, Int(round(Double(inferenceImage.height) / inferenceScale)))
+    let outputScale = min(1.0, 1024.0 / Double(max(
+        inferenceImage.width, inferenceImage.height)))
+    let width = max(1, Int(round(Double(inferenceImage.width) * outputScale)))
+    let height = max(1, Int(round(Double(inferenceImage.height) * outputScale)))
     let renderer = CIContext(options: [.useSoftwareRenderer: false])
 
     var people = VNGeneratePersonSegmentationRequest()
@@ -482,12 +485,12 @@ private func writePersonParts(sourceURL: URL, outputDirectory: URL) throws
     var hair = maskBytes(hairContext, width: width, height: height)
     for index in 0..<person.count {
         skin[index] = min(skin[index], person[index])
-        if eyes[index] > 0 || brows[index] > 0 || lips[index] > 0 {
+        if eyes[index] > 0 || brows[index] > 0 || lips[index] > 0 || teeth[index] > 0 {
             skin[index] = 0
         }
-        hair[index] = (person[index] > 0 && skin[index] == 0 &&
-                       eyes[index] == 0 && brows[index] == 0 &&
-                       lips[index] == 0) ? hair[index] : 0
+        hair[index] = (skin[index] == 0 && eyes[index] == 0 &&
+                       brows[index] == 0 && lips[index] == 0 &&
+                       teeth[index] == 0) ? min(hair[index], person[index]) : 0
     }
     let masks: [String: [UInt8]] = [
         "person": person, "face-skin": skin, "eyes": eyes,

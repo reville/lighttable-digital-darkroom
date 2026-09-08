@@ -74,6 +74,12 @@ export async function regenerateTransferMasks(masks, generate, { samePhoto = fal
   const generated = new Map();
   for (const mask of result) {
     const components = mask.components?.length ? mask.components : [mask];
+    const autoMask = [mask, ...components].some(component =>
+      ['strokes', 'addStrokes', 'subtractStrokes', 'intersectStrokes'].some(key =>
+        Array.isArray(component[key]) && component[key].some(stroke => stroke?.edgeMask != null)));
+    if (autoMask) {
+      throw new Error(tr("“{value}” uses Auto Mask. Recreate its strokes on this photo or exclude masks.", {value: (mask.name || tr("Mask"))}));
+    }
     const smart = components.some(component => !MANUAL_MASKS.has(component.type));
     if (smart && (components.some(component => component.type === 'brush') ||
         ['addStrokes', 'subtractStrokes', 'intersectStrokes'].some(key => mask[key]?.length))) {
