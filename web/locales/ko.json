@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "이전 세션이 정상적으로 종료되지 않았습니다{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "비율 잠금은 크기를 조정하는 동안 현재 종횡비를 유지할 수 있게 해줍니다.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "참조 사진은 대상 업데이트에서 제외됩니다. 특히 사진의 피사체나 구도가 다를 때는 일치가 시작점일 뿐입니다.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "오른쪽 사이드바에는 편집, 필름, 자르기, 제거, 마스킹, 정보, 기록, 사전 설정용 아이콘 버튼이 있습니다. 아이콘 위에 마우스를 올리면 이름이 표시됩니다.",
     "The saved language preference could not be read.": "저장된 언어 기본 설정을 읽을 수 없습니다.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "스코프 메뉴에는 톤과 색상을 검사하기 위한 웨이브폼, RGB 패레이드, 벡터스코프도 있습니다.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "검색 상자는 파일 이름, 표시 이름, 키워드, 사용 가능한 사진 인덱스 메타데이터의 텍스트와 일치합니다. 현재 폴더 또는 컬렉션 내에서 검색하며 다른 활성 필터와 함께 적용됩니다.",

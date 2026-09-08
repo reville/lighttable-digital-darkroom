@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "La sessione precedente non si è conclusa correttamente{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "Il controllo Blocca del rapporto ti consente di mantenere il rapporto d'aspetto corrente durante il ridimensionamento.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "La foto di riferimento è esclusa dagli aggiornamenti della destinazione. L'abbinamento è un punto di partenza, soprattutto quando le foto contengono soggetti o inquadrature diversi.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
     "The saved language preference could not be read.": "Impossibile leggere la preferenza della lingua salvata.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "Il menu dello strumento offre anche Waveform, RGB Parade e Vettorscopio per ispezionare tono e colore.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "La casella di ricerca corrisponde al testo nei nomi dei file, nei nomi visualizzati, nelle parole chiave e nei metadati dell’indice foto disponibili. Cerca nella cartella o raccolta corrente e si combina con gli altri filtri attivi.",

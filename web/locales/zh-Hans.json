@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "上一个会话没有正常结束{value}。",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "比例锁定控件可让你在调整大小时保持当前宽高比。",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "参考照片不会包含在目标更新中。匹配只是一个起点，尤其是在照片包含不同主体或构图时。",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "右侧边栏使用图标按钮表示 编辑、胶片、裁剪、移除、蒙版、信息、历史记录 和 预设。将鼠标悬停在某个图标上即可查看其名称。",
     "The saved language preference could not be read.": "无法读取已保存的语言偏好设置。",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "示波器菜单还提供波形、RGB Parade 和矢量示波器，用于检查色调和颜色。",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "搜索框会匹配文件名、显示名称、关键字以及可用的照片索引元数据中的文本。它会在当前文件夹或集合内搜索，并与其他活动筛选条件组合使用。",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "เซสชันก่อนหน้าไม่ได้สิ้นสุดอย่างสมบูรณ์{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "ตัวควบคุม ล็อก ของอัตราส่วนช่วยให้คุณคงอัตราส่วนภาพปัจจุบันไว้ขณะปรับขนาด",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "ภาพถ่ายอ้างอิงจะถูกตัดออกจากการอัปเดตของเป้าหมาย การจับคู่เป็นเพียงจุดเริ่มต้น โดยเฉพาะเมื่อภาพถ่ายมีวัตถุหลักหรือการจัดเฟรมที่แตกต่างกัน",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "แถบด้านข้างขวาใช้ปุ่มไอคอนสำหรับ แก้ไข, ฟิล์ม, ครอป, นำออก, มาสก์, ข้อมูล, ประวัติ และ พรีเซ็ต วางเมาส์เหนือไอคอนเพื่อดูชื่อของมัน",
     "The saved language preference could not be read.": "ไม่สามารถอ่านค่ากำหนดภาษาที่บันทึกไว้ได้",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "เมนู scope ยังมี Waveform, RGB Parade และ Vectorscope สำหรับตรวจสอบโทนและสี",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "ช่องค้นหาจะจับคู่ข้อความในชื่อไฟล์ ชื่อที่แสดง คีย์เวิร์ด และเมตาดาต้า photo-index ที่มีอยู่ โดยค้นหาในโฟลเดอร์หรือคอลเลกชันปัจจุบัน และทำงานร่วมกับตัวกรองที่เปิดใช้อื่นๆ",

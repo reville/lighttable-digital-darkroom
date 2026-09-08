@@ -209,7 +209,8 @@
         {
           "title": "Tussen weergaven schakelen",
           "paragraphs": [
-            "Foto-raster presenteert foto's als een visueel overzicht. Selectieraster voegt ruimte toe voor selectie- en beoordelingsinformatie. Details opent de actieve foto voor nauwkeurige inspectie."
+            "Foto-raster presenteert foto's als een visueel overzicht. Selectieraster voegt ruimte toe voor selectie- en beoordelingsinformatie. Details opent de actieve foto voor nauwkeurige inspectie.",
+            "De rechterzijbalk gebruikt pictogramknoppen voor Bewerken, Film, Bijsnijden, Verwijderen, Maskering, Info, Geschiedenis en Voorinstellingen. Beweeg de aanwijzer over een pictogram om de naam ervan te zien."
           ],
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

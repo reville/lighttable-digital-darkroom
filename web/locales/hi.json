@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "पिछला सत्र ठीक से समाप्त नहीं हुआ{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "ratio Lock control आपको resizing के दौरान वर्तमान aspect ratio बनाए रखने देता है।",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "संदर्भ फ़ोटो लक्ष्य अद्यतनों से बाहर रखी जाती है। मिलान एक प्रारंभिक बिंदु है, विशेष रूप से तब जब फ़ोटो में अलग-अलग विषय या फ्रेमिंग हो।",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "दाईं साइडबार में Edit, Film, Crop, Remove, Masking, Info, History, और Presets के लिए आइकन बटन होते हैं। किसी आइकन पर होवर करें और उसका नाम देखें।",
     "The saved language preference could not be read.": "सहेजी गई भाषा वरीयता पढ़ी नहीं जा सकी।",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "tone और color की जाँच के लिए scope menu में Waveform, RGB Parade, और Vectorscope भी उपलब्ध हैं।",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "खोज बॉक्स फ़ाइलनाम, डिस्प्ले नाम, कीवर्ड, और उपलब्ध फ़ोटो-इंडेक्स मेटाडेटा में पाठ से मेल करता है। यह वर्तमान फ़ोल्डर या संग्रह के भीतर खोजता है और अन्य सक्रिय फ़िल्टरों के साथ संयोजित होता है।",

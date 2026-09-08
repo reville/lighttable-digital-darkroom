@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "上次工作階段沒有正常結束{value}。",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "比例的「鎖定」控制可讓你在調整大小時維持目前的長寬比。",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "參考相片不包含在目標更新中。匹配只是起點，特別是在相片包含不同主體或構圖時更是如此。",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "右側邊欄使用圖示按鈕來切換 編輯、底片、裁切、移除、遮罩、資訊、歷史 和 預設集。將游標停在圖示上可查看其名稱。",
     "The saved language preference could not be read.": "無法讀取已儲存的語言偏好設定。",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "範圍選單也提供波形圖、RGB Parade 與向量示波器，用於檢查色調與色彩。",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "搜尋框會比對檔名、顯示名稱、關鍵字，以及可用的相片索引中繼資料中的文字。它會在目前資料夾或集合內搜尋，並與其他啟用中的篩選條件一起作用。",

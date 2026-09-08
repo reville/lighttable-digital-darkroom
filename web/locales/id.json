@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "Sesi sebelumnya tidak berakhir dengan bersih{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "Kontrol Kunci rasio memungkinkan Anda mempertahankan rasio aspek saat mengubah ukuran.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "Foto referensi dikecualikan dari pembaruan target. Pencocokan adalah titik awal, terutama ketika foto berisi subjek atau framing yang berbeda.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
     "The saved language preference could not be read.": "Preferensi bahasa yang disimpan tidak dapat dibaca.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "Menu scope juga menawarkan Waveform, RGB Parade, dan Vectorscope untuk memeriksa nada dan warna.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "Kotak cari mencocokkan teks dalam nama file, nama tampilan, keyword, dan metadata indeks foto yang tersedia. Pencarian bekerja di dalam folder atau koleksi saat ini dan digabungkan dengan filter aktif lainnya.",
