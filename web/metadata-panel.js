@@ -37,12 +37,35 @@ export function createMetadataPanel(ctx) {
   let pendingSave = null;
   let saveChain = Promise.resolve();
   let refreshSequence = 0;
+  let loadedName = null;
+
+  function coordinates() {
+    const latText = String(el('iptcLat')?.value ?? '').trim();
+    const lonText = String(el('iptcLon')?.value ?? '').trim();
+    if (!latText || !lonText) return null;
+    const lat = Number(latText);
+    const lon = Number(lonText);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)
+        || Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+    return { lat, lon };
+  }
+
+  function canOpenMap() {
+    return !loading && Boolean(currentName) && loadedName === currentName
+      && Boolean(coordinates());
+  }
+
+  function syncMapAvailability() {
+    const mapLink = el('iptcMapLink');
+    if (mapLink) mapLink.disabled = !canOpenMap();
+  }
 
   function setLoading(value) {
     loading = value;
     for (const id of [...Object.keys(FIELDS), ...Object.keys(GPS_FIELDS)]) {
       if (el(id)) el(id).disabled = value || !currentName;
     }
+    syncMapAvailability();
   }
 
   function flushSave() {
@@ -76,14 +99,13 @@ export function createMetadataPanel(ctx) {
   }
 
   function queueSave() {
+    syncMapAvailability();
     if (loading || !currentName) return;
     // A later navigation must not change either the destination or the values.
     pendingSave = { name: currentName, fields: collect() };
     clearTimeout(saveTimer);
     saveTimer = setTimeout(flushSave, 500);
   }
-
-  let loadedName = null;
 
   async function refresh(name, force = false) {
     const saving = flushSave();
@@ -168,15 +190,15 @@ export function createMetadataPanel(ctx) {
     const mapLink = el('iptcMapLink');
     if (mapLink) {
       mapLink.addEventListener('click', () => {
-        const lat = Number(el('iptcLat') && el('iptcLat').value);
-        const lon = Number(el('iptcLon') && el('iptcLon').value);
-        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        if (!canOpenMap()) {
           toast('Add a latitude and longitude first');
           return;
         }
+        const { lat, lon } = coordinates();
         window.open(`https://maps.apple.com/?ll=${lat},${lon}&q=Photo`,
                     '_blank', 'noopener');
       });
+      syncMapAvailability();
     }
 
     const applyAll = el('iptcApplyAll');

@@ -248,7 +248,7 @@
           <button class="quiet icon-btn" id="filmstripToggle" title="Show or hide filmstrip" aria-label="Show or hide filmstrip">
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 5h15v10h-15zM6 5v10M14 5v10"/></svg>
           </button>
-          <button class="quiet" id="beforeBtn" title="Hold to view unedited (B)">Original</button>
+          <button class="quiet" id="beforeBtn" title="Hold to view unedited (B)" disabled>Original</button>
           <button class="quiet" id="compareBtn" type="button" aria-pressed="false" title="Toggle split before and after view (\)" disabled>Compare</button>
           <button class="quiet compact" id="compareReturn" type="button" hidden>Return to tool</button>
           <button class="quiet compact" id="softProofToolbar" type="button" aria-pressed="false" title="Turn off soft proof" hidden>Soft Proof on</button>
@@ -258,8 +258,8 @@
           <button class="quiet icon-btn" id="zoomOut" title="Zoom out" aria-label="Zoom out">&minus;</button>
           <span class="zoom-value" id="zoomVal">100%</span>
           <button class="quiet icon-btn" id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button>
-          <button class="quiet compact on" id="zoomFit" aria-pressed="true" title="Fit the whole photo to the available space">Fit</button>
-          <button class="quiet compact" id="zoom1" aria-pressed="false">1:1</button>
+          <button class="quiet compact on" id="zoomFit" aria-pressed="true" title="Fit the whole photo to the available space" disabled>Fit</button>
+          <button class="quiet compact" id="zoom1" aria-pressed="false" disabled>1:1</button>
         </div>
         <div class="under-group marking-tools">
           <div class="cullbar-segment cullbar-flags" role="group" aria-label="Flag">
@@ -285,23 +285,23 @@
 
   <aside class="right-shell" id="rightShell">
     <nav class="toolrail" aria-label="Photo tools">
-      <button class="tool-btn on" data-pane="editPane" title="Edit" aria-label="Edit"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M7 3v4M4 10h12M13 8v4M4 15h12M9 13v4"/></svg><span>Edit</span></button>
-      <button class="tool-btn" data-pane="filmPane" title="Film" aria-label="Film"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="1"/><path d="M7 4v12M13 4v12M3 8h4M13 8h4M3 12h4M13 12h4"/></svg><span>Film</span></button>
-      <button class="tool-btn" data-pane="cropPane" title="Crop and rotate" aria-label="Crop and rotate"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2v11a2 2 0 0 0 2 2h11M2 5h11a2 2 0 0 1 2 2v11"/></svg><span>Crop</span></button>
-      <button class="tool-btn" data-pane="healPane" title="Remove (Q)" aria-label="Remove"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 14 9-9a2.1 2.1 0 0 1 3 3l-9 9a2.1 2.1 0 0 1-3-3zM10 9l3 3M3 6h4M5 4v4"/></svg><span>Remove</span></button>
-      <button class="tool-btn" data-pane="maskPane" title="Masking (M)" aria-label="Masking"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13M10 6.5v7M6.5 10h7"/></svg><span>Mask</span></button>
-      <button class="tool-btn" data-pane="infoPane" title="Info and keywords" aria-label="Info and keywords"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.5h.01"/></svg><span>Info</span></button>
-      <button class="tool-btn" data-pane="historyPane" title="History" aria-label="History"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10a7 7 0 1 0 2-4.9M3 3v3h3M10 6v4.5l3 1.8"/></svg><span>History</span></button>
-      <button class="tool-btn" data-pane="presetsPane" title="Presets" aria-label="Presets"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5zM15.5 13l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/></svg><span>Presets</span></button>
+      <button class="tool-btn on" data-pane="editPane" title="Edit" aria-label="Edit"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M7 3v4M4 10h12M13 8v4M4 15h12M9 13v4"/></svg></button>
+      <button class="tool-btn" data-pane="filmPane" title="Film" aria-label="Film"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="1"/><path d="M7 4v12M13 4v12M3 8h4M13 8h4M3 12h4M13 12h4"/></svg></button>
+      <button class="tool-btn" data-pane="cropPane" title="Crop and rotate" aria-label="Crop and rotate"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2v11a2 2 0 0 0 2 2h11M2 5h11a2 2 0 0 1 2 2v11"/></svg></button>
+      <button class="tool-btn" data-pane="healPane" title="Remove (Q)" aria-label="Remove"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 14 9-9a2.1 2.1 0 0 1 3 3l-9 9a2.1 2.1 0 0 1-3-3zM10 9l3 3M3 6h4M5 4v4"/></svg></button>
+      <button class="tool-btn" data-pane="maskPane" title="Masking (M)" aria-label="Masking"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13M10 6.5v7M6.5 10h7"/></svg></button>
+      <button class="tool-btn" data-pane="infoPane" title="Info and keywords" aria-label="Info and keywords"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.5h.01"/></svg></button>
+      <button class="tool-btn" data-pane="historyPane" title="History" aria-label="History"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10a7 7 0 1 0 2-4.9M3 3v3h3M10 6v4.5l3 1.8"/></svg></button>
+      <button class="tool-btn" data-pane="presetsPane" title="Presets" aria-label="Presets"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5zM15.5 13l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/></svg></button>
     </nav>
 
     <div class="panel" id="panel">
       <section class="panel-pane on" id="editPane">
-        <div class="panel-title panel-title-compact"><strong>Edit</strong><button class="quiet compact" id="resetEdit" title="Reset global tone, color, curves, sharpening, noise reduction, and effects">Reset</button></div>
+        <div class="panel-title panel-title-compact"><strong>Edit</strong><button class="quiet compact" id="resetEdit" title="Reset global tone, color, curves, sharpening, noise reduction, and effects" disabled>Reset</button></div>
         <div class="histogram-wrap">
           <canvas id="hist" width="300" height="110"></canvas>
           <span class="hist-label hist-black" id="scopeLowLabel">0</span><span class="hist-label hist-white" id="scopeHighLabel">255</span>
-          <button class="histogram-clip quiet icon-btn" id="clipBtn" title="Clipping warning" aria-label="Clipping warning"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 3 7 13H3z"/></svg></button>
+          <button class="histogram-clip quiet icon-btn" id="clipBtn" title="Clipping warning" aria-label="Clipping warning" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 3 7 13H3z"/></svg></button>
           <button class="scope-menu-button quiet compact" id="scopeMenuButton" type="button" aria-expanded="false" aria-controls="scopeMenu"><span id="scopeMenuLabel">Histogram</span><span aria-hidden="true">⌄</span></button>
           <div class="scope-menu context-menu" id="scopeMenu" role="menu" aria-hidden="true">
             <button type="button" data-scope="histogram" aria-pressed="true">Histogram</button>
@@ -312,7 +312,7 @@
         </div>
 
         <details class="sec" id="lightSection" open>
-          <summary><span>Light</span><span class="summary-actions"><button class="quiet compact section-action" id="autoBtn" type="button" title="Automatically set tone">Auto</button><a class="reset" href="#" data-reset="tone" title="Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks">Reset</a></span></summary>
+          <summary><span>Light</span><span class="summary-actions"><button class="quiet compact section-action" id="autoBtn" type="button" title="Automatically set tone" disabled>Auto</button><a class="reset" href="#" data-reset="tone" title="Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks">Reset</a></span></summary>
           <div class="secbody">
             <div class="row"><span class="name">Exposure</span><input type="range" data-g="exposure" min="-3" max="3" step="0.01" value="0"><span class="val" data-gv="exposure">0.00</span></div>
             <div class="row"><span class="name">Contrast</span><input type="range" data-g="contrast" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="contrast">0.00</span></div>
@@ -326,7 +326,7 @@
         <details class="sec">
           <summary><span>Color</span><a class="reset" href="#" data-reset="colour" title="Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading">Reset</a></summary>
           <div class="secbody">
-            <div class="row row-with-action"><span class="name">Temp</span><input type="range" data-g="temp" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="temp">0.00</span><button class="quiet icon-btn row-action" id="wbBtn" type="button" title="Click a neutral area to set white balance" aria-label="White balance eyedropper"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 15 8-8M11 5l4 4M4 16l3-.5-2.5-2.5z"/></svg></button></div>
+            <div class="row row-with-action"><span class="name">Temp</span><input type="range" data-g="temp" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="temp">0.00</span><button class="quiet icon-btn row-action" id="wbBtn" type="button" title="Click a neutral area to set white balance" aria-label="White balance eyedropper" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 15 8-8M11 5l4 4M4 16l3-.5-2.5-2.5z"/></svg></button></div>
             <div class="row"><span class="name">Tint</span><input type="range" data-g="tint" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="tint">0.00</span></div>
             <div class="row"><span class="name">Vibrance</span><input type="range" data-g="vibrance" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="vibrance">0.00</span></div>
             <div class="row"><span class="name">Saturation</span><input type="range" data-g="saturation" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="saturation">0.00</span></div>
@@ -441,7 +441,7 @@
       </section>
 
       <section class="panel-pane" id="maskPane">
-        <div class="panel-title"><div><strong>Masking</strong><span>Create and refine local adjustments</span></div><button class="quiet compact" id="maskReset" title="Delete all masks and their local adjustments from this photo">Clear All</button></div>
+        <div class="panel-title"><div><strong>Masking</strong><span>Create and refine local adjustments</span></div><button class="quiet compact" id="maskReset" title="Delete all masks and their local adjustments from this photo" disabled>Clear All</button></div>
         <div class="pane-content local-pane-content">
           <button class="quiet compact tool-back" type="button" data-exit-tool>Back to Edit</button>
           <button class="mask-create-toggle" id="maskCreateToggle" type="button" aria-expanded="true">
@@ -537,7 +537,7 @@
       </section>
 
       <section class="panel-pane" id="healPane">
-        <div class="panel-title"><div><strong>Remove</strong><span>Clean up spots and distractions</span></div><button class="quiet compact" id="healReset" title="Delete all Remove, Heal, and Clone corrections from this photo">Clear All</button></div>
+        <div class="panel-title"><div><strong>Remove</strong><span>Clean up spots and distractions</span></div><button class="quiet compact" id="healReset" title="Delete all Remove, Heal, and Clone corrections from this photo" disabled>Clear All</button></div>
         <div class="pane-content local-pane-content">
           <button class="quiet compact tool-back" type="button" data-exit-tool>Back to Edit</button>
           <div class="heal-mode-grid" role="group" aria-label="Removal mode">
@@ -709,12 +709,12 @@
           <p class="pane-note">History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.</p>
           <details class="info-section" id="versionsPane">
             <summary>Snapshots</summary>
-            <div class="info-section-body"><button class="primary-btn full" id="versionCreate">Create snapshot</button><div class="version-list" id="versionList"></div></div>
+            <div class="info-section-body"><button class="primary-btn full" id="versionCreate" disabled>Create snapshot</button><div class="version-list" id="versionList"></div></div>
           </details>
         </div>
       </section>
 
-      <section id="catalogSupport" hidden><span id="catalogSummary">—</span><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div><div class="source-list watch-list" id="watchList"></div></section>
+      <section id="catalogSupport" hidden><span id="catalogSummary">—</span><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div></section>
 
       <section class="panel-pane" id="infoPane">
         <div class="panel-title"><div><strong>Info</strong><span>Photo details and metadata</span></div></div><p class="hint pair-note" id="pairedMetadataNote" hidden></p>
@@ -833,7 +833,7 @@
     <p class="hint" id="enhanceNote">Create an enhanced derivative and keep the original untouched.</p>
     <label class="field-label" for="enhanceMode">Enhancement</label>
     <select id="enhanceMode"><option value="denoise">Denoise</option><option value="upscale">Super resolution</option></select>
-    <div class="modal-actions"><button class="quiet" id="enhanceDialogCancel">Cancel</button><button class="primary-btn" id="enhanceRun">Enhance</button></div>
+    <div class="modal-actions"><button class="quiet" id="enhanceDialogCancel">Cancel</button><button class="primary-btn" id="enhanceRun" disabled>Enhance</button></div>
   </div>
 </div>
 
@@ -884,6 +884,14 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="catalogResultDialog" aria-hidden="true">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="catalogResultTitle">
+    <strong id="catalogResultTitle">Catalog</strong>
+    <div id="catalogResultBody" class="catalog-result-body" role="status"></div>
+    <div class="modal-actions"><button id="catalogResultClose" type="button" title="Close the catalog results">Close</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="ingestDialog" aria-hidden="true">
   <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="ingestTitle">
     <strong id="ingestTitle">Import from card</strong>
@@ -891,9 +899,17 @@
       <div class="ingest-row">
         <label class="field grow"><span>Source</span><input id="ingestSource" type="text" placeholder="Choose a card or folder"></label>
         <button id="ingestChoose" class="quiet compact">Choose…</button>
-        <button id="ingestScan" class="quiet compact">Scan</button>
+        <button id="ingestScan" class="quiet compact" title="Review photos from the source using the destination and naming settings">Scan</button>
       </div>
-      <div class="ingest-status" id="ingestStatus">Choose a card to begin.</div>
+      <div class="ingest-status" id="ingestStatus" role="status">Choose a source and destination, then scan.</div>
+      <div class="ingest-row" id="ingestSelection" hidden>
+        <button id="ingestSelectAll" class="quiet compact" title="Select every photo across all pages" type="button">Select all</button>
+        <button id="ingestSelectNone" class="quiet compact" title="Clear the selection across all pages" type="button">Select none</button>
+        <span class="grow"></span>
+        <button id="ingestPrevious" class="quiet compact" title="Show the previous page of photos" type="button">Previous</button>
+        <span id="ingestPage" class="ingest-status"></span>
+        <button id="ingestNext" class="quiet compact" title="Show the next page of photos" type="button">Next</button>
+      </div>
       <div class="ingest-grid" id="ingestGrid"></div>
       <div class="ingest-row">
         <label class="field grow"><span>Destination</span><input id="ingestDest" type="text"></label>
@@ -922,6 +938,7 @@
 <div class="modal-backdrop" id="watchDialog" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="watchTitle">
     <strong id="watchTitle">Watch a folder</strong>
+    <label class="field" id="watchExistingRow" hidden><span>Watched folders</span><select id="watchExisting"><option value="">New watched folder</option></select></label>
     <input id="watchId" type="hidden">
     <label class="field"><span>Name</span><input id="watchName" type="text" maxlength="80" placeholder="Capture"></label>
     <div class="ingest-row">
@@ -936,8 +953,8 @@
     <label class="field"><span>Apply preset</span><select id="watchPreset"><option value="">None</option></select></label>
     <label class="check-row"><input type="checkbox" id="watchRecursive"><span>Include subfolders</span></label>
     <label class="check-row"><input type="checkbox" id="watchFollow"><span>Follow the newest arrival when I am not culling</span></label>
-    <p class="hint" id="watchStatus">The watched folder is never changed, moved, or emptied.</p>
-    <div class="modal-actions"><button class="text-btn negative" id="watchDelete" hidden>Delete watch</button><span class="grow"></span><button id="watchCancel">Cancel</button><button class="accent-btn" id="watchSave">Save</button></div>
+    <p class="hint" id="watchStatus" role="status">The watched folder is never changed, moved, or emptied.</p>
+    <div class="modal-actions"><button class="text-btn negative" id="watchDelete" hidden>Delete watch</button><span class="grow"></span><button id="watchCancel">Cancel</button><button class="accent-btn" id="watchSave" disabled>Save</button></div>
   </div>
 </div>
 

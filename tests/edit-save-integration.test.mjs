@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {presetEditState, reconcilePresetAdjustment} from '../web/preset-amount.js';
 
 const read = file => readFileSync(new URL(`../web/${file}`, import.meta.url), 'utf8');
 const appSource = read('app.js');
@@ -44,6 +45,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
   };
   const context = {
     console, structuredClone, Promise, AggregateError, S,
+    presetEditState, reconcilePresetAdjustment,
     transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
     window: {addEventListener: noop, confirm: () => true},
@@ -51,7 +53,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
     cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
-    PRESET_BROWSER: null, METADATA: null, CAPTURE_TIME: null,
+    PRESET_BROWSER: null, METADATA: null, CAPTURE_TIME: null, ENHANCE: null,
     HISTORY: {
       record: (name, label, state) => history.push(plain({name, label, state})),
       refresh: noop,
@@ -105,13 +107,15 @@ function harness({manual = false, client = 'test-window'} = {}) {
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
     'let navigationGeneration = 0, lastNavigationDirection = 1, cropSession = null;',
+    'let presetAmountGesture = null;',
     "let _stripKey = '', _gridKey = '';",
 
     'let renderTimer, refineTimer, settleRenderTimer, browserOriginal, browserOriginalTextureURL;',
     ...['snapshot', 'filmRenderFingerprint', 'baseEditsFingerprint', 'updateUndoRedoButtons',
       'pushUndoState', 'pushUndo', 'restore', 'undo', 'redo', 'isStateLoaded',
       'normalizeLibraryImage', 'prefetchState',
-      'showCurrentImage', 'go', 'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
+      'showCurrentImage', 'go', 'photoReadyForEditing', 'syncPhotoActions',
+      'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
       'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',

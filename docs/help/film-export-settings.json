@@ -325,7 +325,8 @@
     "sections": [
       {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.", "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.", "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."], "steps": ["Open Settings → Performance.", "Keep automatic preview detail for normal editing. It follows the window size, display density, crop, and zoom without a pixel-size choice.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
       {"title": "Advanced preview override", "paragraphs": ["Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.", "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active."], "steps": ["Open Settings → Performance and expand Advanced.", "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.", "Choose Automatic (recommended) to return to previews that follow your view."]},
-      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files. Export finishing and Photo Merge use GPU acceleration automatically for supported image-processing stages, with a CPU fallback when unavailable. The film-engine preference controls film previews; it does not disable this acceleration."]}
+      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files. Export finishing and Photo Merge use GPU acceleration automatically for supported image-processing stages, with a CPU fallback when unavailable. The film-engine preference controls film previews; it does not disable this acceleration."]},
+      {"title": "Read a preview error", "paragraphs": ["If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."]}
     ],
     "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
     "sources": [
@@ -333,6 +334,7 @@
       {"path": "web/index.html", "anchor": "Preview resolution override"},
       {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return '100% detail ready';"},
       {"path": "web/preview-detail.js", "anchor": "if (refining) return 'Refining RAW detail…';"},
+      {"path": "web/preview-detail.js", "anchor": "export function previewFailureMessage"},
       {"path": "web/view-performance.js", "anchor": "if (actualSize) return Math.max(64, Math.min(8000, source || 1100));"},
       {"path": "web/index.html", "anchor": "Automatic (recommended)"},
       {"path": "web/settings.js", "anchor": "Purge generated previews and render caches? Originals and edits are not affected."},
@@ -369,7 +371,7 @@
       {
         "title": "Back up and inspect",
         "paragraphs": [
-          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Local ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found."
         ],
         "steps": [
           "Choose an Automatic backup interval and Backup location.",
@@ -429,6 +431,14 @@
       {
         "path": "app/main.swift",
         "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Back up catalog'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Find duplicates'"
       }
     ]
   }

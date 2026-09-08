@@ -13,7 +13,7 @@ import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
-import { previewDetailLabel } from '/web/preview-detail.js';
+import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
@@ -39,6 +39,7 @@ import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
+import { createEnhancePanel } from '/web/enhance-panel.js';
 import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
@@ -58,6 +59,7 @@ let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
+let ENHANCE = null;
 let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
@@ -289,6 +291,7 @@ function setActionDialog(id, open) {
   dialog.setAttribute('aria-hidden', String(!open));
   if (open) {
     updateTransferActions();
+    if (id === 'enhanceDialog') void ENHANCE?.refresh();
     requestAnimationFrame(() => dialog.querySelector('select, input, button')?.focus());
   }
 }
@@ -478,11 +481,12 @@ window.lightTableNativeEvent = (event) => {
     if (!pending) return;
     nativePreviewPending.delete(event.generation);
     if (event.type === 'nativePreviewFailed') {
-      toast('Native preview unavailable for this photo');
+      const error = event.message || 'Native preview unavailable';
+      if (event.generation === S.seq) toast(error);
       pending.resolve({
         decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
         presentedAt: performance.now(), presentation: 'native-failed',
-        failed: true, error: 'Native preview unavailable',
+        failed: true, error,
       });
       return;
     }
@@ -1929,7 +1933,8 @@ function renderEditItems(kind) {
 function syncMaskPanel() {
   renderEditItems('mask');
   const mask = selectedMask();
-  const createOpen = !S.masks.length || S.maskCreateOpen;
+  const createOpen = S.maskCreateOpen;
+  $('maskReset').disabled = !photoReadyForEditing() || !S.masks.length;
   $('maskCreateMenu').hidden = !createOpen;
   $('maskCreateToggle').setAttribute('aria-expanded', String(createOpen));
   $('maskSemanticCombineRow').hidden = !mask;
@@ -1999,6 +2004,7 @@ function syncMaskPanel() {
 
 function syncHealPanel() {
   renderEditItems('heal');
+  $('healReset').disabled = !photoReadyForEditing() || !S.heals.length;
   const spot = selectedHeal();
   for (const mode of ['remove', 'heal', 'clone']) {
     $(`healTool${mode[0].toUpperCase()}${mode.slice(1)}`).setAttribute(
@@ -3449,7 +3455,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = 'error: ' + m.error;
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not render this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not render this photo', m.error));
       }
       return;
     }
@@ -3485,7 +3492,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || 'preview unavailable';
         $('rstat').className = '';
-        setRenderPresentation('error', im.name, 'Could not display this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not display this photo', imageTiming.error));
         return;
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
@@ -3602,7 +3610,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = failure.error || 'Could not finish preview';
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not reach the renderer');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not finish this preview', failure.error));
       }
     }
   }
@@ -3888,7 +3897,7 @@ function setWebGLBaseImage(dataUri, {
           toast('WebGL unavailable: ' + e.message);
           return res({ decodeMs: performance.now() - startedAt, uploadMs: 0,
             uploadedAt: performance.now(), failed: true,
-            error: 'WebGL preview could not be initialized' });
+            error: previewFailureMessage('WebGL preview could not be initialized', e) });
         }
         browserOriginalTextureURL = null;
         browserReferenceTextureURL = null;
@@ -3910,7 +3919,7 @@ function setWebGLBaseImage(dataUri, {
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
-        failed: true, error: 'Preview image could not be decoded' });
+        failed: true, error: 'Preview image could not be loaded or decoded' });
     };
     img.src = dataUri;
   });
@@ -5498,8 +5507,10 @@ function closeActionMenus() {
 }
 
 function openActionMenu(id, anchor = null, event = null) {
+  const wasOpen = $(id).classList.contains('on');
   closeActionMenus();
   closeFolderMenu();
+  if (anchor && wasOpen) return;
   updateTransferActions();
   const menu = $(id);
   menu.classList.add('on');
@@ -6380,6 +6391,7 @@ async function go(i) {
   S.idx = i;
   $('panel').inert = true;
   $('cmp').inert = true;
+  syncPhotoActions();
   const im = cur();
   CAPTURE_TIME?.selectionChanged();
   const generation = ++navigationGeneration;
@@ -7745,7 +7757,25 @@ function transferTargets() {
     .filter(Boolean);
   return selected.length ? selected : (cur() ? [cur()] : []);
 }
+function photoReadyForEditing() {
+  const photo = cur();
+  return !!photo && photo.kind !== 'video' && S.editingName === photo.name;
+}
+function syncPhotoActions() {
+  const ready = photoReadyForEditing();
+  for (const id of ['editPane', 'filmPane', 'cropPane', 'maskPane', 'healPane']) {
+    $(id).inert = !ready;
+  }
+  for (const id of ['resetEdit', 'autoBtn', 'zoomFit', 'zoom1', 'beforeBtn',
+    'wbBtn', 'clipBtn', 'versionCreate']) {
+    $(id).disabled = !ready;
+  }
+  $('maskReset').disabled = !ready || !S.masks.length;
+  $('healReset').disabled = !ready || !S.heals.length;
+  ENHANCE?.sync();
+}
 function updateTransferActions() {
+  syncPhotoActions();
   const targets = transferTargets();
   const primaryKey = window.__LIGHTTABLE_PLATFORM__ === 'windows' ? 'Ctrl' : '⌘';
   $('copyBtn').disabled = !cur();
@@ -10191,6 +10221,7 @@ $('clipBtn').onclick = () => {
 /* ------------------------------------------------------------ auto tone */
 $('autoBtn').onclick = (event) => {
   event.stopPropagation();
+  if (!photoReadyForEditing()) return;
   refreshWebGLSamplingSurface();
   const s = S.gl && S.gl.sample();
   if (!s) {
@@ -10891,29 +10922,16 @@ if ($('learnedDenoiseApply')) {
 }
 
 if ($('enhanceRun')) {
-  getJSON('/api/enhance/capabilities').then((capabilities) => {
-    const note = $('enhanceNote');
-    if (!capabilities.available) {
-      $('enhanceRun').disabled = true;
-      if (note) note.textContent = capabilities.reason || 'Not available.';
-    } else if (note) {
-      note.textContent = 'Writes a new 16-bit master; the original is untouched.';
-    }
-  }).catch(() => {});
-  $('enhanceRun').onclick = async () => {
-    const im = cur();
-    if (!im) return;
-    const mode = $('enhanceMode') ? $('enhanceMode').value : 'denoise';
-    $('enhanceNote').textContent = 'Working…';
-    const result = await api('/api/enhance', { name: im.name, mode });
-    $('enhanceNote').textContent = result.ok
-      ? `Wrote ${String(result.destination).split('/').pop()}`
-      : (result.error || 'Enhance failed');
-    if (result.ok) {
+  ENHANCE = createEnhancePanel({
+    el: $, getPhoto: () => photoReadyForEditing() ? cur() : null,
+    getCapabilities: () => getJSON('/api/enhance/capabilities'),
+    run: (request) => api('/api/enhance', request),
+    onComplete: async () => {
       setActionDialog('enhanceDialog', false);
-      reloadLibrary();
-    }
-  };
+      await reloadLibrary();
+    },
+  });
+  void ENHANCE.refresh();
 }
 
 /* ------------------------------------------------------- native messages */
