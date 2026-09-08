@@ -103,6 +103,7 @@ done
 /bin/chmod 755 "$APP/Contents/MacOS/lighttable-cli"
 /usr/bin/ditto "$ROOT/media-formats.json" "$PAYLOAD/media-formats.json"
 mkdir -p "$PAYLOAD/film_lab_ai" "$PAYLOAD/build"
+/usr/bin/ditto "$ROOT/build/icon-1024.png" "$PAYLOAD/build/icon-1024.png"
 for AI_SOURCE in "$ROOT"/film_lab_ai/*.py; do
   /usr/bin/ditto "$AI_SOURCE" "$PAYLOAD/film_lab_ai/$(basename "$AI_SOURCE")"
 done

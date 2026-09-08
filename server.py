@@ -6269,6 +6269,8 @@ class Handler(BaseHTTPRequestHandler):
                                "Set-Cookie": "lighttable_token="
                                f"{INSTANCE_TOKEN}; Path=/; HttpOnly; SameSite=Strict",
                            })
+            elif u.path == "/app-icon.png":
+                self._send_file(200, APP / "build" / "icon-1024.png", "image/png")
             elif u.path == "/api/health":
                 self._json(health_payload())
             elif u.path == "/api/events":
