@@ -15,6 +15,7 @@ import urllib.request
 import numpy as np
 from PIL import Image
 from processing_support import compare_images, target_rgb8, run_browser
+from processing_edit_cases import edit_sources, edit_cases
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -29,6 +30,8 @@ def run(output_dir):
     photos.mkdir(exist_ok=True)
     Image.fromarray(target_rgb8()).save(photos / 'a.png')
     Image.fromarray(target_rgb8(96, 128)).save(photos / 'b.png')
+    for name, pixels in edit_sources().items():
+        Image.fromarray(pixels).save(photos / f'edit-{name}.png')
     with socket.socket() as listener:
         listener.bind(('127.0.0.1', 0))
         port = listener.getsockname()[1]
@@ -45,6 +48,17 @@ def run(output_dir):
         {'name':'navigate-portrait', 'params':{**params, 'profile_enabled':False}, 'exposure':0.3, 'photo':1},
         {'name':'return-landscape', 'params':{**params, 'profile_enabled':False}, 'exposure':-0.2},
     ]
+    for case in edit_cases():
+        cases.append({**case, 'edits': True, 'photoName': f"edit-{case['fixture']}.png",
+                      'params': {**params, 'profile_enabled': False}})
+    cases.extend([
+        {'name': 'masked-global-slider', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False}, 'grade': {'exposure': .4},
+         'masks': edit_cases()[0]['masks'], 'sliderExposure': .8},
+        {'name': 'clear-last-detail-mask', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False}, 'grade': {'exposure': .8},
+         'masks': edit_cases()[0]['masks'], 'clearMasks': True},
+    ])
     for case in cases:
         case.update(raw=str(output / f"{case['name']}.rgba"),
                     reference=str(output / f"{case['name']}-cli.png"),
@@ -85,7 +99,7 @@ def run(output_dir):
                     raise RuntimeError('Isolated application server exited; see server.log')
                 try:
                     with urllib.request.urlopen(base + '/api/images', timeout=2) as response:
-                        if len(json.load(response).get('images', [])) == 2:
+                        if len(json.load(response).get('images', [])) == 6:
                             break
                 except (OSError, ValueError):
                     pass

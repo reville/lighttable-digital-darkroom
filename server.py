@@ -3786,20 +3786,31 @@ def _preview_source_bytes(result: dict, name: str, width: int,
 
 
 def native_base_edits_required(optics=None, heals=None) -> bool:
-    """Bake only corrections outside the live Metal preview's contract."""
+    """Retouch sources must include earlier corrections, exactly as in export."""
     return (edits.clean_optics(optics)["profileEnabled"]
-            or sum(spot["enabled"] for spot in edits.clean_heals(heals)) > 16)
+            or any(spot["enabled"] for spot in edits.clean_heals(heals)))
+
+
+def preview_grade_requires_bake(masks=None) -> bool:
+    """Spatial local filters need the complete preceding grade/mask image."""
+    return any(mask["enabled"] and mask["opacity"] > 0
+               and (mask["grade"]["texture"] or mask["grade"]["clarity"])
+               for mask in edits.clean_masks(masks))
 
 
 def _native_corrected_preview(result: dict, name: str, width: int,
-                              params: dict, optics, heals) -> dict:
+                              params: dict, optics, heals, *,
+                              grade_values=None, masks=None) -> dict:
     cleaned_optics = edits.clean_optics(optics)
     cleaned_heals = edits.clean_heals(heals)
+    bake_grade = preview_grade_requires_bake(masks)
+    cleaned_grade = grade.clean(grade_values) if bake_grade else None
+    cleaned_masks = edits.clean_masks(masks) if bake_grade else None
     profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
     token = json.dumps([
-        "native-base-edits-v1", file_key(name), result.get("key"),
+        "native-base-edits-v2", file_key(name), result.get("key"),
         result.get("img"), (result.get("native") or {}).get("url"),
-        width, cleaned_optics, cleaned_heals, profile,
+        width, cleaned_optics, cleaned_heals, profile, cleaned_grade, cleaned_masks,
     ], sort_keys=True, separators=(",", ":"))
     key = hashlib.md5(token.encode()).hexdigest()
     surface = CACHE / "render" / f"{key}.rgba"
@@ -3821,6 +3832,8 @@ def _native_corrected_preview(result: dict, name: str, width: int,
                 result, name, width, fp.clean_params(params)["rotate"]))).convert("RGB")
             image = np.asarray(base, dtype=np.float32) / 255.0
         adjusted = edits.apply_base(image, cleaned_optics, cleaned_heals, profile)
+        if bake_grade:
+            adjusted = edits.apply_masks(grade.apply(adjusted, cleaned_grade), cleaned_masks)
         write_native_surface(surface, adjusted)
         # Publish metadata last, matching the ordinary render bundle contract.
         durable_io.atomic_write_json(metadata, {"baseEditsBaked": True},
@@ -3828,7 +3841,7 @@ def _native_corrected_preview(result: dict, name: str, width: int,
         prune_render_cache_throttled(surface.parent, _RENDER_CACHE_MAX_BYTES)
     response = {field: value for field, value in result.items()
                 if field not in {"img", "native", "helper", "key"}}
-    response.update(baseEditsBaked=True, edit_cached=cached,
+    response.update(baseEditsBaked=True, gradeEditsBaked=bake_grade, edit_cached=cached,
                     edit_ms=round((time.perf_counter() - started) * 1000, 2),
                     lens_profile=profile)
     return preview_response(
@@ -3838,56 +3851,29 @@ def _native_corrected_preview(result: dict, name: str, width: int,
 
 def apply_preview_edits(result: dict, name: str, width: int,
                         params: dict, optics=None, heals=None, *,
-                        native: bool = False) -> dict:
+                        native: bool = False, grade_values=None, masks=None) -> dict:
     """Apply cached geometry/healing after the expensive base render.
 
-    Global and local-mask colour work remains in WebGL for instant sliders;
-    this stage is reserved for operations that resample source pixels.
+    Ordinary grading remains live on the GPU. Masks with spatial detail bake
+    the ordered grade/mask stack so their neighbours contain earlier edits.
     """
     if result.get("cancelled") or result.get("error"):
+        return result
+    if preview_grade_requires_bake(masks) or (
+            not native and not edits.base_edits_are_identity(optics, heals)):
+        result = _native_corrected_preview(result, name, width, params, optics, heals,
+                                            grade_values=grade_values, masks=masks)
+        if not native:
+            # Browser presentation is lossless, just like the native RGBA base.
+            # Generate PNG lazily from the same cached surface.
+            result = {field: value for field, value in result.items()
+                      if field not in {"native", "helper"}}
+            result["img"] = f"/api/render/png?key={result['key']}"
         return result
     if native:
         if native_base_edits_required(optics, heals):
             return _native_corrected_preview(result, name, width, params, optics, heals)
         return dict(result, baseEditsBaked=False)
-    if edits.base_edits_are_identity(optics, heals):
-        return result
-    cleaned_optics = edits.clean_optics(optics)
-    cleaned_heals = edits.clean_heals(heals)
-    profile = edits.lens_profile_for(exif_for(name), cleaned_optics.get("profileOverride"))
-    rotate = fp.clean_params(params).get("rotate", 0)
-    token = json.dumps([
-        EDIT_PREVIEW_CACHE_VERSION, file_key(name), result.get("img"),
-        (result.get("native") or {}).get("url"), width,
-        cleaned_optics, cleaned_heals, profile,
-    ], sort_keys=True, separators=(",", ":"))
-    key = hashlib.md5(token.encode()).hexdigest()
-    output = CACHE / "edit" / f"{key}.jpg"
-    started = time.perf_counter()
-    cached = output.is_file()
-    if not cached:
-        source = Image.open(io.BytesIO(
-            _preview_source_bytes(result, name, width, rotate))).convert("RGB")
-        image = np.asarray(source, dtype=np.float32) / 255.0
-        adjusted = edits.apply_base(image, cleaned_optics, cleaned_heals, profile)
-        durable_io.atomic_write_bytes(
-            output,
-            jpeg_bytes(
-                (np.clip(adjusted, 0, 1) * 255 + 0.5).astype(np.uint8),
-                quality=90,
-            ),
-        )
-        prune_cache(output.parent, "*.jpg", _EDIT_CACHE_MAX_BYTES)
-    result = dict(result)
-    result.pop("native", None)
-    result.pop("helper", None)
-    result.update(
-        img=f"/api/edit/image?key={key}",
-        key=key,
-        edit_cached=cached,
-        edit_ms=round((time.perf_counter() - started) * 1000, 2),
-        lens_profile=profile,
-    )
     return result
 
 
@@ -6223,6 +6209,19 @@ class Handler(BaseHTTPRequestHandler):
                     self._send(
                         200, image.read_bytes(), "image/jpeg",
                         "public, max-age=31536000, immutable")
+            elif u.path == "/api/render/png":
+                key = q.get("key", "")
+                if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
+                    raise ValueError("bad render key")
+                surface = CACHE / "render" / f"{key}.rgba"
+                if not native_surface_exists(surface):
+                    self._json({"error": "render not found"}, 404)
+                else:
+                    rgba, _ = read_native_surface(surface)
+                    payload = io.BytesIO()
+                    Image.fromarray(np.asarray(rgba[..., :3])).save(payload, "PNG")
+                    self._send(200, payload.getvalue(), "image/png",
+                               "public, max-age=31536000, immutable")
             elif u.path == "/api/render/native":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
@@ -6433,7 +6432,8 @@ class Handler(BaseHTTPRequestHandler):
                     with GENERATION_LOCK:
                         LATEST_GENERATION[client] = max(
                             generation, LATEST_GENERATION.get(client, generation))
-                if b.get("viewport") and not edits.base_edits_are_identity(b.get("optics"), b.get("heals")):
+                if b.get("viewport") and (not edits.base_edits_are_identity(b.get("optics"), b.get("heals"))
+                                           or preview_grade_requires_bake(b.get("masks"))):
                     raise ValueError("viewport rendering requires unwarped source geometry")
                 result = render_preview(
                     b["name"], b.get("params", {}), int(b.get("w", 1100)),
@@ -6445,7 +6445,7 @@ class Handler(BaseHTTPRequestHandler):
                     result = apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),
                         b.get("params", {}), b.get("optics"), b.get("heals"),
-                        native=True)
+                        native=True, grade_values=b.get("grade"), masks=b.get("masks"))
                     if not result.get("cancelled"):
                         result = dict(result, lens_profile=edits.lens_profile_for(
                             preview_lens_metadata(b["name"], b.get("optics")),
@@ -6454,7 +6454,8 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self._json(apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),
-                        b.get("params", {}), b.get("optics"), b.get("heals")))
+                        b.get("params", {}), b.get("optics"), b.get("heals"),
+                        grade_values=b.get("grade"), masks=b.get("masks")))
             elif u.path == "/api/mask/semantic":
                 b = self._body()
                 params = fp.clean_params(b.get("params", {}))

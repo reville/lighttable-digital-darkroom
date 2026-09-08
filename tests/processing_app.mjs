@@ -19,7 +19,7 @@ try {
   // Establish the normal HttpOnly instance cookie without starting app scripts.
   await page.request.get(config.baseUrl);
   const images = (await (await page.request.get(config.baseUrl + '/api/images')).json()).images;
-  if (!images || images.length !== 2) throw Error('Expected exactly two isolated fixture photos');
+  if (!images || images.length !== 6) throw Error('Expected exactly six isolated fixture photos');
   for (const image of images) {
     const response = await page.request.post(config.baseUrl + '/api/state', {headers:{Origin:config.baseUrl}, data:{name:image.name,
       params:config.cases[0].params, grade:{}, masks:[], heals:[], optics:{}, crop:null}});
@@ -53,10 +53,56 @@ try {
   }, {path, body});
   for (const [index, test] of config.cases.entries()) {
     process.stdout.write(JSON.stringify({event:'case', name:test.name}) + '\n');
-    const name = images[test.photo || 0].name;
+    const name = test.photoName ? images.find(image => image.name.endsWith(test.photoName))?.name
+      : images[test.photo || 0].name;
+    if (!name) throw Error('Missing fixture photo');
     await post('/api/ui/command', {command:'goto', args:{name}});
     await page.waitForFunction(name => __lightTablePerf.renders.at(-1)?.image === name &&
       !document.querySelector('#zoomwrap').classList.contains('photo-pending'), name, {timeout:120000});
+    if (test.edits) {
+      const recipe = {params:test.params, grade:test.grade || {}, masks:test.masks || [],
+        heals:test.heals || [], optics:test.optics || {}, crop:null};
+      if (!test.clearMasks) {
+        const beforeRender = await page.evaluate(() => __lightTablePerf.renders.length);
+        // External state uses the same supported route as the CLI; its event
+        // updates the open app. Do not inject internal S or draw a test renderer.
+        const accepted = await page.request.post(config.baseUrl + '/api/state', {
+          headers:{Origin:config.baseUrl}, data:{name, ...recipe, origin:'processing-regression'}});
+        if (!accepted.ok()) throw Error(await accepted.text());
+        await page.waitForFunction(({count, name}) => __lightTablePerf.renders.length > count &&
+          __lightTablePerf.renders.at(-1).image === name &&
+          document.querySelector('#rstat').className !== 'busy', {count:beforeRender, name}, {timeout:120000});
+      }
+      if (test.sliderExposure != null || test.clearMasks) {
+        const count = await page.evaluate(() => __lightTablePerf.renders.length);
+        if (test.clearMasks) {
+          await post('/api/ui/command', {command:'resetMasks'});
+          recipe.masks = [];
+        } else {
+          await post('/api/ui/command', {command:'slider', args:{key:'exposure', value:test.sliderExposure}});
+          recipe.grade.exposure = test.sliderExposure;
+        }
+        await page.waitForFunction(count => __lightTablePerf.renders.length > count &&
+          document.querySelector('#rstat').className !== 'busy', count, {timeout:120000});
+      }
+      // doRender queues drawGrade on the animation scheduler before recording
+      // its timing. Let that actual presentation run before reading its frame.
+      await page.evaluate(() => new Promise(resolve =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const frame = await page.evaluate(() => processingFrame);
+      fs.writeFileSync(test.raw, Buffer.from(frame.pixels)); delete frame.pixels;
+      const reference = await page.request.post(config.baseUrl + '/api/render/file',
+        {data:{name, w:frame.width, format:'png', state:recipe}, timeout:120000});
+      if (!reference.ok()) throw Error(await reference.text());
+      fs.writeFileSync(test.reference, await reference.body());
+      await page.screenshot({path:test.screenshot});
+      const canvas = page.locator('#cv');
+      if (!await canvas.isVisible()) throw Error('App preview canvas is hidden');
+      const bounds = await canvas.boundingBox();
+      await canvas.screenshot({path:test.display, timeout:15000});
+      results.push({name:test.name, photo:name, bounds, ...frame});
+      continue;
+    }
     const filmEnabled = await page.locator('#filmProfileToggle').getAttribute('aria-checked');
     if (filmEnabled !== String(test.params.profile_enabled)) await post('/api/ui/command', {command:'filmToggle'});
     await post('/api/ui/command', {command:'slider', args:{key:'print_exposure', value:test.params.print_exposure}});
