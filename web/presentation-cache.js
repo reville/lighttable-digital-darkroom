@@ -5,13 +5,14 @@ function stable(value) {
   return value;
 }
 
-// Grade and crop are display operations. Every base-render dependency is part
-// of this identity; stale generations can never alias a different recipe.
+// Ordinary grade/crop are display operations. Spatial local masks additionally
+// bake the ordered grade stack; those request fields participate in identity.
 export function renderRequestKey(image, request) {
   return JSON.stringify(stable({
     source: [image.name, image.fileKey, image.mtime],
     w: request.w, engine: request.engine, native: request.native,
     params: request.params, optics: request.optics, heals: request.heals,
+    grade: request.grade, masks: request.masks,
     viewport: request.viewport || null,
   }));
 }

@@ -2257,6 +2257,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             preview.updateEdits(
                 optics: body["optics"] as? [String: Any] ?? [:],
                 heals: body["heals"] as? [[String: Any]] ?? [])
+            if let masks = body["masks"] as? [String: Any] {
+                preview.updateMasks(masks)
+            }
             if let originalPayload = body["original"] as? [String: Any],
                let original = NativeSurfaceDescription(payload: originalPayload, baseURL: pageURL) {
                 preview.loadOriginal(original, generation: generation)

@@ -1307,6 +1307,7 @@ fn select_illuminant(name: &str) -> &'static [f32] {
         "D50" => &spectral::ILLUMINANT_D50,
         "D55" => &spectral::ILLUMINANT_D55,
         "D65" => &spectral::ILLUMINANT_D65,
+        "T" => &spectral::ILLUMINANT_T,
         _ => &spectral::ILLUMINANT_D55,
     }
 }
@@ -1317,6 +1318,7 @@ fn select_illuminant_f64(name: &str) -> &'static [f64] {
         "D50" => &spectral::ILLUMINANT_D50_F64,
         "D55" => &spectral::ILLUMINANT_D55_F64,
         "D65" => &spectral::ILLUMINANT_D65_F64,
+        "T" => &spectral::ILLUMINANT_T_F64,
         _ => &spectral::ILLUMINANT_D55_F64,
     }
 }

@@ -76,6 +76,26 @@ struct NativeProcessingPreview {
                 originalLoaded = true
             }
 
+            if item["type"] as? String == "processed" {
+                // Edit setters can schedule frames. Finish source loading
+                // before selecting the drawable which proves these edits.
+                renderer.beginNavigation(generation: index + 1)
+                let loadFrame = -1000 - index
+                renderer.recordInteraction(["frame": loadFrame])
+                let surface = NativeSurfaceDescription(payload: item["surface"] as! [String: Any], baseURL: base)!
+                var loaded = false
+                var failure: String?
+                renderer.load(surface, generation: index + 1, grade: [:]) { result in
+                    DispatchQueue.main.async {
+                        if case .failure(let error) = result { failure = error.localizedDescription }
+                        loaded = true
+                    }
+                }
+                wait("processed source upload") { loaded && completed == loadFrame }
+                require(failure == nil, "source load failed: \(failure ?? "")")
+                RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+                renderer.view.releaseDrawables()
+            }
             guard let drawable = renderer.view.currentDrawable else {
                 fputs("BLOCKED: MTKView drawable unavailable; a graphical session is required\n", stderr)
                 exit(1)
@@ -99,6 +119,11 @@ struct NativeProcessingPreview {
                 }
                 wait("loading \(name)") { loadFinished }
                 require(loadError == nil, "\(name): \(loadError ?? "")")
+            } else if item["type"] as? String == "processed" {
+                renderer.updateEdits(optics: item["optics"] as? [String: Any] ?? [:],
+                                     heals: item["heals"] as? [[String: Any]] ?? [])
+                renderer.updateMasks(item["maskPayload"] as! [String: Any])
+                renderer.updateGrade(item["grade"] as? [String: Any] ?? [:])
             } else if item["type"] as? String == "compare" {
                 renderer.updateComparePosition(item["position"] as! Double)
             } else {

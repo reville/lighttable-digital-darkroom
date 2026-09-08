@@ -514,6 +514,7 @@ pub(crate) fn select_illuminant(name: &str) -> &'static [f32] {
         "D50" => &spectral::ILLUMINANT_D50,
         "D55" => &spectral::ILLUMINANT_D55,
         "D65" => &spectral::ILLUMINANT_D65,
+        "T" => &spectral::ILLUMINANT_T,
         _ => &spectral::ILLUMINANT_D55,
     }
 }
