@@ -598,7 +598,7 @@
       {
         "title": "Save, import, and export",
         "paragraphs": [
-          "Manage… opens Manage presets. Save current look defaults to Look · keep photo corrections. Full edit · include photo corrections also offers All adjustment settings or Changed settings only."
+          "Manage… opens or closes Manage presets; the button is highlighted while the section is open. Save current look defaults to Look · keep photo corrections. Full edit · include photo corrections also offers All adjustment settings or Changed settings only."
         ],
         "steps": [
           "Choose the preset scope and whether to Include Film profile and physical settings, then click Save new… and name it.",
@@ -640,6 +640,10 @@
       {
         "path": "web/preset-browser.js",
         "anchor": "export function createPresetBrowser({"
+      },
+      {
+        "path": "web/preset-browser.css",
+        "anchor": ".preset-browser-manage[aria-expanded=\"true\"]"
       },
       {
         "path": "web/presets.js",
