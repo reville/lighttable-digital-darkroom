@@ -12,6 +12,11 @@ on:
         type: string
   workflow_call:
     inputs:
+      build_package:
+        description: Build and smoke-test the complete package for packaging pull requests
+        required: false
+        default: false
+        type: boolean
       version:
         required: true
         type: string
@@ -73,6 +78,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p test_linux_packaging.py -v
           python3 -m unittest discover -s tests -p test_linux_arch_packaging.py -v
+          python3 -m unittest discover -s tests -p test_linux_aur_packaging.py -v
           cargo +1.88.0 test --locked --manifest-path rust-engine/Cargo.toml
           cargo +1.88.0 test --locked --manifest-path windows-shell/Cargo.toml
           SPEKTRAFILM_BACKEND=wgpu cargo +1.88.0 test \
@@ -126,13 +132,13 @@ jobs:
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_merge_acceleration.py -v
 
       - name: Build and smoke-test relocated package
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
         run: ./scripts/linux/build-release.sh --version "$PACKAGE_VERSION"
 
       - name: Open native GTK desktop and require a rendered photo
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         timeout-minutes: 3
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
@@ -144,7 +150,7 @@ jobs:
             "$BUNDLE/Python/bin/python3" -B scripts/linux/desktop-smoke.py "$BUNDLE"
 
       - name: Require native Wayland startup on a headless compositor
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         timeout-minutes: 3
         run: |
           BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
@@ -152,7 +158,7 @@ jobs:
             scripts/linux/wayland-smoke.py "$BUNDLE"
 
       - name: Prepare local pacman package recipe
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
         run: |
@@ -160,7 +166,7 @@ jobs:
             "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" --output-dir .build/linux/arch-package
 
       - name: Upload portable bundle and checksum
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-linux-x86_64
@@ -170,11 +176,11 @@ jobs:
           if-no-files-found: error
 
       - name: Upload matching local pacman recipe
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || inputs.build_package
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-arch-recipe
           path: |
             .build/linux/arch-package/PKGBUILD
-            .build/linux/arch-package/org.lighttable.LightTable.desktop
+            .build/linux/arch-package/app.lighttable.LightTable.desktop
           if-no-files-found: error
