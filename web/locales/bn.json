@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "ফিট ছোট ছবি বড় করতে পারে। 1:1 প্রকৃত পিক্সেল দেখায়, এমনকি ছবি ফিটের চেয়েও ছোট হয়ে গেলেও, এবং উইন্ডোর আকার পরিবর্তন করলে একই পিক্সেল স্কেল বজায় রাখে।",
     "Fit the whole photo to the available space": "সম্পূর্ণ ফটোটি উপলব্ধ স্থানে ফিট করুন",
     "Fit to window ({actualPct}%)": "উইন্ডোতে ফিট করুন ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "ফিট, 1:1, জুম বোতাম ও জুম শর্টকাট মসৃণ অ্যানিমেশন দেখায়। স্ক্রল, পিঞ্চ ও টেনে সরানো সরাসরি সাড়া দেয়। সিস্টেমের গতিবিধি কমানোর সেটিং চালু থাকলে জুম অ্যানিমেশন বন্ধ থাকে।",
     "Flag": "ফ্ল্যাগ",
     "Flag and rate survey photo": "সার্ভে ফটোতে ফ্ল্যাগ এবং রেটিং দিন",
     "Flag and rating filters": "ফ্ল্যাগ ও রেটিং ফিল্টার",

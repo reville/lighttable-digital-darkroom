@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
     "Fit the whole photo to the available space": "Adatta l’intera foto allo spazio disponibile",
     "Fit to window ({actualPct}%)": "Adatta alla finestra ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento.",
     "Flag": "Contrassegna",
     "Flag and rate survey photo": "Contrassegna e valuta la foto della panoramica",
     "Flag and rating filters": "Filtri contrassegno e valutazione",

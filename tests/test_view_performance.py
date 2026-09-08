@@ -11,6 +11,7 @@ class ViewPerformanceTests(unittest.TestCase):
     def test_actual_pixel_zoom_and_metadata_recovery(self):
         result = subprocess.run(['node', '--test',
             str(ROOT / 'tests/actual-pixel-zoom.test.mjs'),
+            str(ROOT / 'tests/zoom-motion.test.mjs'),
             str(ROOT / 'tests/missing-preview-dimensions.test.mjs')],
             capture_output=True, text=True, timeout=20)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

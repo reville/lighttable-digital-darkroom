@@ -1,13 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createZoomMotion} from '../web/zoom-motion.js';
 import {previewDetailLabel} from '../web/preview-detail.js';
 
 const source = fs.readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
+const setup = source.slice(source.indexOf('function zoomView()'), source.indexOf('function zoomAt('));
 const helpers = ['zoomAt','zoomReset','toggleActualZoomAt','onViewportResize','applyViewNow']
   .map(name => source.match(new RegExp(`function ${name}\\(.*?\\n\\}`, 's'))[0]).join('\n');
-function scene(sourceWidth, fitWidth) {
-  const S = {zoom:1,zoomMode:'fit',panX:0,panY:0};
+function scene(sourceWidth, fitWidth, reduced = true) {
+  let at = 0, frame = null;
+  const S = {viewMode:'detail',presentedPhotoName:'photo',zoom:1,zoomMode:'fit',panX:0,panY:0};
   const buttons = Object.fromEntries(['zoomFit','zoom1','zoomVal'].map(id => [id, {
     classList:{toggle(){}},setAttribute(key,value){this[key]=value;}}]));
   const rect = () => ({left:0,top:0,width:fitWidth*S.zoom,height:fitWidth*S.zoom/1.5});
@@ -18,12 +21,15 @@ function scene(sourceWidth, fitWidth) {
   const methods = new Function('S','$','displaySourcePixelWidth','clamp','sourceLongEdge',
     'clampPan','syncPreviewDetailStatus','cropViewState','syncCompareView','syncViewerChrome',
     'drawEditOverlayNow','scheduleNativeViewportLayout','scheduleViewportRegionRender','applyView',
-    'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview','doRender','requestedPreviewWidth','cur',
-    `${helpers}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt};`)(
+    'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview','createZoomMotion','cur','document',
+    'viewportRegionEnabled','markContinuousInput','automaticPreviewTimer','viewportRegionTimer','doRender','requestedPreviewWidth',
+    `${helpers}\n${setup}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt,zoomMotion,stopZoomMotion};`)(
       S,id=>({cv,cmp,...buttons})[id],()=>sourceWidth,(v,a,b)=>Math.max(a,Math.min(b,v)),
       ()=>sourceWidth,noop,noop,()=>({}),noop,noop,noop,noop,noop,noop,noop,noop,noop,
-      noop,()=>Math.min(sourceWidth,8000),()=>({name:'photo.dng'}));
-  return {S,buttons,...methods,resize(width){fitWidth=width;methods.onViewportResize();}};
+      options=>createZoomMotion({...options,now:()=>at,reducedMotion:()=>reduced,
+        requestFrame:run=>{frame=run;return 1;},cancelFrame:()=>{frame=null;},
+        setTimer:()=>1,clearTimer:noop}),()=>({name:'photo'}),{hidden:false},()=>false,noop,null,null,noop,()=>Math.min(sourceWidth,8000));
+  return {S,buttons,...methods,tick(time){at=time;const run=frame;frame=null;run?.(at);},resize(width){fitWidth=width;methods.onViewportResize();}};
 }
 
 for (const [sourceWidth, fitWidth] of [[240,960],[6000,960],[48000,960]]) {
@@ -64,4 +70,46 @@ test('full-density native tiles finish detail status without claiming the tile i
   assert.equal(previewDetailLabel({...detail,state:'pending'}),'Loading 100% detail…');
   assert.equal(previewDetailLabel({...detail,native:{...detail.native,width:750}}),'Updating preview detail…');
   assert.equal(previewDetailLabel({...detail,native:null}),'Updating preview detail…');
+});
+
+
+test('the actual viewer animates 1:1, keeps its anchor and settles exactly', () => {
+  const view = scene(6000,960,false);
+  view.toggleActualZoomAt(600,320);
+  assert.equal(view.S.zoom,1,'first frame keeps the current view');
+  view.tick(120);
+  assert.ok(view.S.zoom>1 && view.S.zoom<6.25);
+  assert.ok(Math.abs(view.S.panX + 120*view.S.zoom - 120)<1e-8);
+  view.tick(240);
+  assert.equal(view.S.zoom,6.25);
+  assert.equal(view.buttons.zoomVal.textContent,'100%');
+  assert.equal(view.zoomMotion.active,false);
+});
+
+test('Fit reverses an unfinished 1:1 move from the displayed position', () => {
+  const view = scene(6000,960,false);
+  view.toggleActualZoomAt(480,320);view.tick(80);
+  const visible=view.S.zoom;
+  view.toggleActualZoomAt(480,320);
+  assert.equal(view.S.zoom,visible);
+  view.tick(200);
+  assert.ok(view.S.zoom>1 && view.S.zoom<visible);
+  view.tick(320);
+  assert.equal(view.S.zoom,1);
+  assert.equal(view.S.zoomMode,'fit');
+});
+
+test('continuous zoom interrupts motion, and resize cannot revive its old target', () => {
+  const view=scene(6000,960,false);
+  view.toggleActualZoomAt(480,320);view.tick(80);
+  const visible=view.S.zoom;
+  view.zoomAt(1.1,480,320);
+  assert.equal(view.zoomMotion.active,false);
+  assert.ok(Math.abs(view.S.zoom-visible*1.1)<1e-8);
+  view.toggleActualZoomAt(480,320);view.tick(120);
+  view.resize(1200);
+  assert.equal(view.zoomMotion.active,false);
+  assert.equal(view.S.zoom,5);
+  view.tick(1000);
+  assert.equal(view.S.zoom,5);
 });
