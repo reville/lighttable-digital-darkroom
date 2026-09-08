@@ -159,7 +159,7 @@
         {
           "title": "Lập kế hoạch sao chép",
           "paragraphs": [
-            "Import from card sao chép tệp vào đích bạn chọn. Bản gốc trên thẻ vẫn ở nguyên vị trí."
+            "Nhập từ thẻ sao chép tệp vào đích đến bạn chọn. Các bản gốc trên thẻ vẫn ở nguyên vị trí. Bỏ qua bản sao trùng so sánh toàn bộ nội dung tệp; tên tệp trùng hoặc tiêu đề máy ảnh trùng riêng lẻ là không đủ."
           ],
           "steps": [
             "Mở Local ••• → Nhập từ thẻ….",
@@ -169,7 +169,7 @@
             "Hãy đợi số lượng đã sao chép và kiểm tra xem có tệp nào bị lỗi không. Hủy sẽ dừng sau khi tệp hiện tại hoàn tất sao chép và xác minh; các bản sao đã hoàn tất được giữ lại và ảnh gốc trên thẻ không bị chạm tới."
           ],
           "tips": [
-            "Các mã mẫu bao gồm {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, và {dd}. Start at điều khiển chuỗi bốn chữ số.",
+            "Các mã mẫu gồm {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, và {dd}. Start at điều khiển chuỗi bốn chữ số. Các trường mẫu dài sẽ bị rút gọn; hãy kiểm tra bản xem trước đích đến.",
             "Bản xem trước hiển thị 200 tệp mỗi trang. Vùng chọn được giữ xuyên qua các trang; Chọn tất cả và Chọn không có áp dụng cho toàn bộ lần quét, kể cả các trang bạn chưa mở.",
             "Nếu tệp được báo là chỉ có trên đám mây, hãy tải chúng về cục bộ rồi quét lại."
           ]
@@ -438,7 +438,7 @@
           "title": "Khôi phục một chỉnh sửa",
           "paragraphs": [
             "Gán múi giờ không đồng thời làm lệch đồng hồ máy ảnh. Dùng trường dịch chuyển khi chính thời gian hiển thị là sai.",
-            "Hoàn tác chỉnh sửa gần nhất sẽ đảo ngược chỉnh sửa gần đây nhất đang được giữ trong cửa sổ này. Khôi phục thời gian của máy ảnh… xem trước việc xóa các chỉnh sửa trong danh mục; hãy xem lại bản xem trước và áp dụng nó để khôi phục thời gian gốc của máy ảnh. Các bước tại thời điểm chụp cũng có sẵn trong Lịch sử."
+            "Hoàn tác chỉnh sửa gần nhất sẽ đảo ngược chỉnh sửa gần đây nhất được giữ trong cửa sổ này. Khôi phục thời gian của máy ảnh… xem trước việc xóa các chỉnh sửa danh mục; hãy xem trước và áp dụng để khôi phục thời gian chụp gốc của máy ảnh. Các bước thời gian chụp cũng có sẵn trong Lịch sử. Khi bật ghi XMP, việc đặt lại một chỉnh sửa sẽ khôi phục các ngày sidecar đã lưu trước khi LightTable áp dụng nó. Ngày chụp trong các sidecar cũ hơn không có ngày đã lưu đó sẽ không thay đổi."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Khôi phục có thể không khả dụng nếu bộ nhớ cục bộ hoặc nhật ký khôi phục trên máy tính để bàn gặp lỗi. Ứng dụng báo trạng thái đó; đó không phải là đảm bảo rằng mọi chỉnh sửa chưa lưu đều có thể được khôi phục.",
-            "Nếu một bản gốc không khả dụng hoặc đã thay đổi, bản ghi khôi phục của nó sẽ được giữ lại thay vì áp dụng cho một ảnh có thể khác."
+            "Nếu một bản gốc không khả dụng hoặc đã thay đổi, bản ghi khôi phục của nó sẽ được giữ lại thay vì được áp dụng cho một ảnh có thể khác. Một số bản nháp khôi phục hiển thị thông báo danh tính một phần vì chúng không thể xác minh toàn bộ bản gốc. Điều này có thể xảy ra với các bản nháp cũ hơn hoặc khi dùng chế độ thư mục. Chỉ khôi phục các bản này nếu ảnh gốc chưa bị thay thế."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Tạo một lần xuất",
           "paragraphs": [
-            "Xuất tạo các tệp đầu ra đã dựng từ các chỉnh sửa ảnh của bạn. Dùng Selected photos khi bạn muốn giới hạn xuất cho một lựa chọn cụ thể."
+            "Xuất tạo các tệp đầu ra đã kết xuất từ các chỉnh sửa ảnh của bạn. Dùng Ảnh đã chọn khi bạn muốn giới hạn xuất cho một vùng chọn cụ thể. Mỗi ảnh trong hàng đợi sẽ giữ các chỉnh sửa, xếp hạng và hiệu chỉnh thời gian chụp đã chọn khi bạn bắt đầu xuất."
           ],
           "steps": [
             "Chọn các ảnh bạn muốn, rồi nhấp nút Xuất ảnh ở thanh trên cùng. Command/Ctrl+Shift+E cũng mở Xuất.",
@@ -2437,7 +2437,7 @@
           "title": "Kiểm tra biểu đồ và kết quả",
           "paragraphs": [
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
-            "Dùng Cancel export để yêu cầu dừng. Export details báo số lượng hoàn thành, bỏ qua và đã hủy, cùng với cảnh báo và lỗi; một cảnh báo có thể xuất hiện sau khi một ảnh đã được ghi thành công. Clip video không được render bởi quy trình xuất ảnh tĩnh."
+            "Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn thành, đã bỏ qua và đã hủy, cùng với cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được kết xuất bởi quy trình làm việc xuất ảnh tĩnh. Nếu một bản gốc thay đổi trong khi xuất của nó đang xếp hàng hoặc đang kết xuất, ảnh đó sẽ lỗi với một thông báo; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Tên và tệp hiện có",
           "paragraphs": [
-            "Mẫu tên tệp hỗ trợ {filename}, {stock}, {date}, {rating}, và {sequence}. Ví dụ, {filename}_{stock} bao gồm tên nguồn và phim.",
+            "Mẫu tên tệp hỗ trợ {filename}, {stock}, {date}, {rating}, và {sequence}. Ví dụ, {filename}_{stock} bao gồm tên nguồn và phim. Các trường tên tệp dài sẽ bị rút gọn để chừa chỗ cho tên đầu ra và sidecar; hãy kiểm tra Bản xem trước đầu ra.",
             "Giữ cả hai · thêm một số sẽ tạo một tên tệp khác, chẳng hạn như một tên kết thúc bằng -2. Bỏ qua mục đã tồn tại sẽ để nguyên các tên đang bị chiếm. Ghi đè thay thế đầu ra hiện có tại đường dẫn đã chọn. Hãy dùng bản xem trước đầu ra để xác nhận đích đến trước khi chọn Ghi đè."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Ảnh đã bỏ qua",
+          "paragraphs": [
+            "Các tệp trống, tệp chưa được tải xuống và bản gốc không khả dụng sẽ bị bỏ qua trước khi phân tích. Chỉ mục ảnh báo cáo số lượng của chúng riêng với các lỗi phân tích. Một tệp trống không chứa dữ liệu ảnh; có thể cần tải xuống lại hoặc khôi phục từ bản sao lưu.",
+            "Hãy tải xuống hoặc khôi phục các bản gốc, kết nối lại mọi nguồn không khả dụng, và dùng Xây dựng lại chỉ mục để thử lại. Việc lập chỉ mục không tải xuống tệp hay thay đổi bản gốc. Siêu dữ liệu tìm kiếm đã tạo trước đó vẫn được giữ khi một tệp trở nên không khả dụng, trừ khi bạn xây dựng lại hoặc xóa chỉ mục."
+          ]
+        },
+        {
           "title": "Tạm dừng, xây dựng lại hoặc xóa",
           "paragraphs": [
             "Tắt index sẽ tạm dừng phân tích và xóa kết quả được tạo ra khỏi chế độ xem tìm kiếm đang hoạt động; dữ liệu chỉ mục hiện có vẫn ở cục bộ cho đến khi bị xóa. Rebuild index chạy lại lập chỉ mục khi tính năng được bật.",
@@ -2855,6 +2862,7 @@
           "title": "Hiểu các lựa chọn khôi phục",
           "paragraphs": [
             "Khôi phục một bản sao lưu sẽ trả dữ liệu danh mục về trạng thái của bản sao lưu đó, nên các chỉnh sửa sau đó sẽ không có trong đó. Khi một danh mục đang làm việc được khôi phục, danh mục hiện tại sẽ được sao lưu trước.",
+            "Sau khi nâng cấp, lần quét đầu tiên sẽ đọc các bản gốc cục bộ để tăng độ chính xác khớp tệp. Việc này có thể lâu hơn với thư viện lớn. Những bản gốc đã thiếu trước đó mà không có danh tính tệp đầy đủ vẫn sẽ thiếu; hãy giữ các mục của chúng và khôi phục các bản gốc về các đường dẫn danh mục trước đây của chúng trước khi quét lại.",
             "Đối với danh mục bị hư hỏng, Tình trạng thư viện có thể cung cấp salvage, restore hoặc một danh mục mới. Salvage sao chép các hàng đọc được nhưng mất các hàng trên những trang bị hư hỏng. Bắt đầu lại từ đầu sẽ không mang theo xếp hạng, chỉnh sửa, bộ sưu tập hoặc lịch sử. Tệp danh mục bị hư hỏng hiện tại được giữ lại trong Recovery."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Chẩn đoán máy tính để bàn",
           "paragraphs": [
             "Trên macOS, Help → Diagnostics cung cấp Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, và Restart in Safe Mode.",
-            "Safe Mode tắt quét, thư mục được theo dõi, AI cục bộ và khởi động công cụ. Dùng Restart Rendering Service để quay lại hoạt động bình thường. Nếu vấn đề vẫn còn, hãy đính kèm lỗi hiển thị và các chi tiết nhật ký máy chủ liên quan khi báo cáo."
+            "Chế độ an toàn tắt quét, các thư mục được theo dõi, AI cục bộ và khởi động sẵn công cụ. Dùng Khởi động lại Dịch vụ Kết xuất để trở về hoạt động bình thường."
+          ]
+        },
+        {
+          "title": "Báo cáo thoát ứng dụng bất ngờ trên Mac",
+          "paragraphs": [
+            "Nếu ứng dụng Mac đóng mà không thoát sạch, báo cáo chẩn đoán sẽ mở vào lần tiếp theo bạn khởi chạy. Nếu công cụ kết xuất dừng đột ngột, báo cáo có thể mở trong khi công cụ đang phục hồi. Báo cáo xuất hiện một lần cho mỗi sự cố đã ghi nhận; Bỏ qua cho phép bạn tiếp tục. Đóng ứng dụng bình thường hoặc khởi động lại dịch vụ kết xuất của nó sẽ không tạo báo cáo.",
+            "Trợ giúp → Báo cáo sự cố… sẽ mở báo cáo mới nhất, hoặc phần chẩn đoán hiện tại nếu chưa ghi nhận thoát bất ngờ nào. Báo cáo bao gồm bản dựng ứng dụng, macOS và phần cứng, thao tác được ghi nhận gần nhất khi có, các log gần đây đã lọc, và các vết lỗi có sẵn. Một báo cáo sự cố macOS khớp có thể bổ sung thông tin stack và binary. Một lần thoát bất ngờ không phải lúc nào cũng để lại vết lỗi hoặc xác định nguyên nhân của nó.",
+            "Các báo cáo sẽ ở lại trên máy Mac của bạn cho đến khi bạn chọn chia sẻ chúng. Đường dẫn, tên tệp ảnh, các giá trị log trong dấu ngoặc kép và các trường thông tin xác thực thông dụng đều được lọc; hãy kiểm tra văn bản trước khi chia sẻ. Ảnh và danh mục không được đính kèm. Mười báo cáo mới nhất được giữ cục bộ."
+          ],
+          "steps": [
+            "Đọc báo cáo chẩn đoán. Chọn Sao chép báo cáo để tự dán vào email.",
+            "Hoặc chọn Gửi email cho người bảo trì. Thao tác này sẽ sao chép báo cáo và mở một bản nháp gửi tới team@lighttable.app.",
+            "Hãy mô tả việc bạn đang làm, dán báo cáo đã sao chép vào bản nháp, và gửi khi sẵn sàng. Nếu không có ứng dụng email nào mở ra, hãy dùng dịch vụ email thường dùng của bạn.",
+            "Chọn Bỏ qua để đóng báo cáo. Không có gì được gửi tự động."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

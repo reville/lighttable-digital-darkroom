@@ -1,3 +1,5 @@
+import {tn as trn} from './i18n.js';
+
 export function aiSearchTerms(metadata) {
   if (!metadata) return [];
   const terms = [metadata.caption, ...(metadata.tags || []), ...(metadata.ocr || [])];
@@ -5,6 +7,19 @@ export function aiSearchTerms(metadata) {
   if (faces) terms.push('face', 'faces', 'person', 'people');
   if (faces > 1) terms.push('group', `${faces} faces`, `${faces} people`);
   return terms;
+}
+
+export function aiSkippedSummary(status) {
+  if (!status.skipped) return '';
+  const reasons = status.skippedReasons || {};
+  const counts = [
+    reasons.empty > 0 ? trn('{count} empty file', '{count} empty files', reasons.empty) : '',
+    reasons['cloud-only'] > 0 ? trn('{count} file not downloaded', '{count} files not downloaded', reasons['cloud-only']) : '',
+    reasons.unavailable > 0 ? trn('{count} unavailable file', '{count} unavailable files', reasons.unavailable) : '',
+  ].filter(Boolean);
+  return trn('{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.',
+    '{count} photos skipped{reasons}. Download or restore the originals, then rebuild the index.', status.skipped,
+    {reasons: counts.length ? ` (${counts.join(', ')})` : ''});
 }
 
 /* Assisted culling ------------------------------------------------------- */

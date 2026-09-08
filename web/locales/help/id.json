@@ -159,7 +159,7 @@
         {
           "title": "Rencanakan salinan",
           "paragraphs": [
-            "Import from card menyalin file ke tujuan yang Anda pilih. Original pada kartu tetap di tempat."
+            "Impor dari kartu menyalin file ke tujuan yang Anda pilih. Asli pada kartu tetap di tempatnya. Lewati duplikat membandingkan isi lengkap file; nama file yang cocok atau header kamera saja tidak cukup."
           ],
           "steps": [
             "Buka Lokal ••• → Impor dari kartu….",
@@ -169,7 +169,7 @@
             "Tunggu jumlah yang disalin dan periksa apakah ada file yang gagal. Batal menghentikan setelah file saat ini selesai disalin dan diverifikasi; salinan yang selesai dipertahankan dan file asli di kartu tetap tidak disentuh."
           ],
           "tips": [
-            "Token template mencakup {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, dan {dd}. Start at mengontrol urutan empat digit.",
+            "Token template mencakup {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, dan {dd}. Start at mengontrol urutan empat digit. Bidang template yang panjang dipersingkat; periksa pratinjau tujuan.",
             "Pratinjau menampilkan 200 file per halaman. Pilihan berlaku lintas halaman; Pilih semua dan Pilih tidak ada berlaku untuk seluruh hasil pemindaian, termasuk halaman yang belum Anda buka.",
             "Jika file dilaporkan sebagai cloud-only, unduh secara lokal lalu pindai lagi."
           ]
@@ -438,7 +438,7 @@
           "title": "Pulihkan koreksi",
           "paragraphs": [
             "Menetapkan zona waktu tidak juga menggeser jam kamera. Gunakan kolom pergeseran saat waktu yang ditampilkan itu sendiri salah.",
-            "Undo last correction membatalkan koreksi paling baru yang tersimpan di jendela ini. Restore camera times… menampilkan pratinjau penghapusan koreksi katalog; tinjau pratinjau tersebut dan terapkan untuk memulihkan waktu kamera asli. Langkah waktu pengambilan juga tersedia di History."
+            "Urungkan koreksi terakhir membatalkan koreksi paling baru yang ada di jendela ini. Pulihkan waktu kamera… menampilkan pratinjau penghapusan koreksi katalog; tinjau pratinjau dan terapkan untuk memulihkan waktu kamera asli. Langkah waktu tangkap juga tersedia di Riwayat. Saat penulisan XMP diaktifkan, mengatur ulang koreksi memulihkan tanggal sidecar yang disimpan sebelum LightTable menerapkannya. Tanggal tangkap dalam sidecar lama tanpa tanggal tersimpan itu tetap tidak berubah."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Recovery mungkin tidak tersedia jika penyimpanan lokal atau jurnal pemulihan desktop gagal. Aplikasi melaporkan kondisi itu; itu bukan jaminan bahwa setiap pengeditan yang belum disimpan dapat dipulihkan.",
-            "Jika original tidak tersedia atau telah berubah, catatan pemulihannya disimpan alih-alih diterapkan ke foto yang mungkin berbeda."
+            "Jika asli tidak tersedia atau telah berubah, catatan pemulihannya disimpan alih-alih diterapkan ke foto yang mungkin berbeda. Beberapa draf pemulihan menampilkan pemberitahuan identitas sebagian karena tidak dapat memverifikasi seluruh asli. Ini dapat terjadi pada draf yang lebih lama atau saat menggunakan mode folder. Pulihkan ini hanya jika foto asli belum diganti."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Buat ekspor",
           "paragraphs": [
-            "Ekspor membuat file keluaran yang telah dirender dari edit foto Anda. Gunakan Foto terpilih saat Anda ingin ekspor dibatasi pada seleksi tertentu."
+            "Ekspor membuat file keluaran yang dirender dari edit foto Anda. Gunakan Foto terpilih saat Anda ingin ekspor dibatasi pada pilihan tertentu. Setiap foto yang diantrekan mempertahankan edit, rating, dan koreksi waktu tangkap yang dipilih saat Anda memulai ekspor."
           ],
           "steps": [
             "Pilih foto yang Anda inginkan, lalu klik tombol Ekspor foto di bilah atas. Command/Ctrl+Shift+E juga membuka Ekspor.",
@@ -2437,7 +2437,7 @@
           "title": "Periksa scope dan hasil",
           "paragraphs": [
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
-            "Pilih Cancel export untuk meminta penghentian. Export details melaporkan jumlah selesai, dilewati, dan dibatalkan, plus peringatan dan error; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam."
+            "Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah yang selesai, dilewati, dan dibatalkan, plus peringatan dan kesalahan; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika asli berubah saat ekornya menunggu atau saat dirender, foto itu gagal dengan kesalahan; antrekan lagi setelah memeriksa aslinya."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Nama dan file yang sudah ada",
           "paragraphs": [
-            "Template nama file mendukung {filename}, {stock}, {date}, {rating}, dan {sequence}. Misalnya, {filename}_{stock} menyertakan nama sumber dan stok film.",
+            "Template nama file mendukung {filename}, {stock}, {date}, {rating}, dan {sequence}. Misalnya, {filename}_{stock} menyertakan nama sumber dan stok film. Bidang nama file yang panjang dipersingkat untuk memberi ruang bagi nama keluaran dan sidecar; periksa Pratinjau keluaran.",
             "Keep both · add a number membuat nama file lain, seperti nama yang diakhiri dengan -2. Skip existing membiarkan nama yang sudah terpakai apa adanya. Overwrite mengganti output yang sudah ada pada path tujuan yang dipilih. Gunakan pratinjau keluaran untuk memastikan tujuan sebelum memilih Overwrite."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Foto yang dilewati",
+          "paragraphs": [
+            "File kosong, file yang belum diunduh, dan asli yang tidak tersedia dilewati sebelum analisis. Indeks Foto melaporkan hitungannya secara terpisah dari kesalahan analisis. File kosong tidak berisi data gambar; file itu mungkin perlu diunduh lagi atau dipulihkan dari cadangan.",
+            "Unduh atau pulihkan aslinya, sambungkan kembali sumber yang tidak tersedia, dan gunakan Bangun ulang indeks untuk mencoba lagi. Pengindeksan tidak mengunduh file atau mengubah asli. Metadata pencarian yang sebelumnya dibuat dipertahankan saat file menjadi tidak tersedia, kecuali Anda membangun ulang atau menghapus indeks."
+          ]
+        },
+        {
           "title": "Jeda, bangun ulang, atau hapus",
           "paragraphs": [
             "Mematikan indeks menjeda analisis dan menghapus hasil yang dihasilkan dari tampilan cari aktif; data indeks yang ada tetap lokal sampai dihapus. Rebuild index menjalankan ulang pengindeksan saat fitur diaktifkan.",
@@ -2855,6 +2862,7 @@
           "title": "Pahami pilihan pemulihan",
           "paragraphs": [
             "Memulihkan cadangan mengembalikan data katalog ke keadaan pada cadangan itu, sehingga pengeditan yang lebih baru tidak ada di dalamnya. Saat katalog kerja dipulihkan, katalog saat ini dicadangkan terlebih dahulu.",
+            "Setelah pemutakhiran, pemindaian pertama membaca asli lokal untuk memperkuat pencocokan file. Ini bisa memakan waktu lebih lama pada pustaka yang besar. Asli yang sebelumnya sudah hilang tanpa identitas file lengkap akan tetap hilang; pertahankan entri mereka dan pulihkan asli ke jalur katalog sebelumnya sebelum memindai ulang.",
             "Untuk katalog yang rusak, Library Health mungkin menawarkan salvage, restore, atau katalog baru. Salvage menyalin baris yang masih dapat dibaca tetapi kehilangan baris pada halaman yang rusak. Memulai dari awal tidak memindahkan rating, pengeditan, koleksi, atau riwayat. Berkas katalog rusak saat ini dipertahankan di Recovery."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnostik desktop",
           "paragraphs": [
             "Di macOS, Bantuan → Diagnostics menawarkan Muat Ulang Antarmuka, Mulai Ulang Layanan Rendering, Tampilkan Log Server, Kesehatan Pustaka…, dan Mulai Ulang dalam Mode Aman.",
-            "Safe Mode mematikan pemindaian, folder yang dipantau, AI lokal, dan pemanasan mesin. Gunakan Restart Rendering Service untuk kembali ke operasi normal. Jika masalah berlanjut, sertakan error yang terlihat dan detail server-log yang relevan saat melaporkannya."
+            "Mode Aman mematikan pemindaian, folder yang dipantau, AI lokal, dan pemanasan mesin. Gunakan Mulai Ulang Layanan Rendering untuk kembali ke operasi normal."
+          ]
+        },
+        {
+          "title": "Laporkan keluar tak terduga di Mac",
+          "paragraphs": [
+            "Jika aplikasi Mac ditutup tanpa keluar yang bersih, laporan diagnostik akan terbuka saat Anda meluncurkannya berikutnya. Jika mesin rendering berhenti tak terduga, laporan dapat terbuka saat mesin pulih. Laporan muncul sekali untuk setiap insiden yang tercatat; Tutup memungkinkan Anda melanjutkan. Menutup aplikasi secara normal atau memulai ulang layanan rendering-nya tidak akan membuat laporan.",
+            "Bantuan → Laporkan Masalah… membuka laporan terbaru, atau diagnostik saat ini jika tidak ada keluar tak terduga yang tercatat. Laporan mencakup build aplikasi, macOS dan perangkat keras, operasi terakhir yang tercatat jika tersedia, log terbaru yang difilter, dan jejak kesalahan yang tersedia. Laporan crash macOS yang cocok dapat menambahkan informasi stack dan biner. Keluar tak terduga tidak selalu meninggalkan jejak kesalahan atau mengidentifikasi penyebabnya.",
+            "Laporan tetap di Mac Anda sampai Anda memilih untuk membagikannya. Jalur, nama file foto, nilai log yang dikutip, dan bidang kredensial umum difilter; periksa teks sebelum membagikan. Foto dan katalog tidak dilampirkan. Sepuluh laporan terbaru disimpan secara lokal."
+          ],
+          "steps": [
+            "Baca laporan diagnostik. Pilih Salin laporan untuk menempelkannya ke email sendiri.",
+            "Atau pilih Email pengelola. Ini menyalin laporan dan membuka draf yang ditujukan ke team@lighttable.app.",
+            "Jelaskan apa yang sedang Anda lakukan, tempel laporan yang disalin ke draf, dan kirim saat siap. Jika tidak ada aplikasi email yang terbuka, gunakan layanan email yang biasa Anda pakai.",
+            "Pilih Tutup untuk menutup laporan. Tidak ada yang dikirim secara otomatis."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

@@ -159,7 +159,7 @@
         {
           "title": "De kopie plannen",
           "paragraphs": [
-            "Importeren vanaf kaart kopieert bestanden naar de bestemming die je kiest. De originelen op de kaart blijven op hun plaats."
+            "Van kaart importeren kopieert bestanden naar de bestemming die u kiest. De originelen op de kaart blijven op hun plaats. Het overslaan van duplicaten vergelijkt de volledige bestandsinhoud; alleen een overeenkomende bestandsnaam of camerakop is niet voldoende."
           ],
           "steps": [
             "Open Lokaal ••• → Importeren vanaf kaart….",
@@ -169,7 +169,7 @@
             "Wacht op het gekopieerde aantal en controleer of er bestanden zijn mislukt. Annuleren stopt nadat het huidige bestand klaar is met kopiëren en verifiëren; voltooide kopieën worden behouden en originelen op de kaart blijven onaangetast."
           ],
           "tips": [
-            "Sjabloontokens zijn onder andere {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} en {dd}. Start op bepaalt de viercijferige reeks.",
+            "Sjabloontokens zijn {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} en {dd}. Beginnen bij regelt de viercijferige reeks. Lange sjabloonvelden worden afgekort; controleer het bestemmingsvoorbeeld.",
             "Voorvertoningen tonen 200 bestanden per pagina. Selectie loopt door over pagina's; Alles selecteren en Niets selecteren gelden voor de hele scan, inclusief pagina's die u nog niet hebt geopend.",
             "Als bestanden als alleen in de cloud worden gemeld, download ze dan lokaal en scan opnieuw."
           ]
@@ -438,7 +438,7 @@
           "title": "Een correctie herstellen",
           "paragraphs": [
             "Het toewijzen van een tijdzone verschuift niet ook de cameraklok. Gebruik het verschuivingsveld wanneer de weergegeven tijd zelf onjuist is.",
-            "Laatste correctie ongedaan maken draait de meest recente correctie in dit venster terug. Cameratijden herstellen… toont een voorbeeld van het verwijderen van cataloguscorrecties; bekijk het voorbeeld en pas het toe om de oorspronkelijke cameratijden te herstellen. Stappen van opnametijd zijn ook beschikbaar in Geschiedenis."
+            "Laatste correctie ongedaan maken draait de meest recente correctie terug die in dit venster wordt vastgehouden. Cameratijden herstellen… toont een voorbeeld van het verwijderen van cataloguscorrigeringen; bekijk het voorbeeld en pas het toe om de oorspronkelijke cameratijden te herstellen. Opnamedatumstappen zijn ook beschikbaar in Geschiedenis. Wanneer XMP schrijven is ingeschakeld, herstelt het opnieuw instellen van een correctie de sidecar-datums die zijn opgeslagen voordat LightTable deze toepaste. Opnamedatums in oudere sidecars zonder die opgeslagen datum blijven ongewijzigd."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Herstel kan niet beschikbaar zijn als lokale opslag of het hersteljournaal op het bureaublad mislukt. De app meldt die toestand; het is geen garantie dat elke niet-opgeslagen bewerking kan worden hersteld.",
-            "Als een origineel niet beschikbaar is of gewijzigd is, wordt het herstelrecord bewaard in plaats van toegepast op een mogelijk andere foto."
+            "Als een origineel niet beschikbaar is of is gewijzigd, blijft het herstelrecord behouden in plaats van toegepast te worden op een mogelijk andere foto. Sommige herstelconcepten tonen een melding voor gedeeltelijke identiteit omdat ze het volledige origineel niet kunnen verifiëren. Dit kan gebeuren met oudere concepten of bij gebruik van mapmodus. Herstel deze alleen als de originele foto's niet zijn vervangen."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Een export maken",
           "paragraphs": [
-            "Exporteren maakt gerenderde uitvoerbestanden van uw fotobewerkingen. Gebruik Geselecteerde foto's wanneer u de export wilt beperken tot een specifieke selectie."
+            "Exporteren maakt gerenderde uitvoerbestanden van uw fotobewerkingen. Gebruik Geselecteerde foto's wanneer u wilt dat de export beperkt blijft tot een specifieke selectie. Elke foto in de wachtrij behoudt de bewerkingen, beoordeling en de opnamedatumcorrectie die u hebt gekozen toen u de export startte."
           ],
           "steps": [
             "Selecteer de foto's die u wilt en klik vervolgens op de knop Foto's exporteren in de bovenbalk. Command/Ctrl+Shift+E opent ook Exporteren.",
@@ -2437,7 +2437,7 @@
           "title": "Controleer de scope en het resultaat",
           "paragraphs": [
             "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
-            "Gebruik Export annuleren om een stop te vragen. Exportdetails rapporteert voltooide, overgeslagen en geannuleerde aantallen, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s."
+            "Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de workflow voor export van stilstaande foto's. Als een origineel wijzigt terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet deze opnieuw in de wachtrij nadat u het origineel hebt gecontroleerd."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Namen en bestaande bestanden",
           "paragraphs": [
-            "Bestandsnaamsjablonen ondersteunen {filename}, {stock}, {date}, {rating} en {sequence}. Bijvoorbeeld: {filename}_{stock} bevat de bronnaam en filmsoort.",
+            "Bestandssjablonen ondersteunen {filename}, {stock}, {date}, {rating} en {sequence}. Bijvoorbeeld: {filename}_{stock} bevat de bronnaam en de film. Lange bestandsnaamsvelden worden afgekort om ruimte over te laten voor uitvoer- en sidecar-namen; controleer Uitvoervoorbeeld.",
             "Beide behouden · een nummer toevoegen maakt een extra bestandsnaam aan, zoals een naam die eindigt op -2. Bestaande overslaan laat bezette namen ongemoeid. Overschrijven vervangt bestaande uitvoer op het gekozen pad. Gebruik de uitvoerpreview om de bestemming te bevestigen voordat u Overschrijven kiest."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Overgeslagen foto's",
+          "paragraphs": [
+            "Lege bestanden, bestanden die niet zijn gedownload en niet-beschikbare originelen worden overgeslagen vóór de analyse. Foto-index rapporteert hun aantallen afzonderlijk van analysefouten. Een leeg bestand bevat geen afbeeldingsgegevens; het moet mogelijk opnieuw worden gedownload of uit een back-up worden hersteld.",
+            "Download of herstel de originelen, maak opnieuw verbinding met een eventuele niet-beschikbare bron en gebruik Index opnieuw opbouwen om het opnieuw te proberen. Indexeren downloadt geen bestanden en wijzigt geen originelen. Eerder gegenereerde zoekmetagegevens blijven behouden wanneer een bestand niet beschikbaar wordt, tenzij u de index opnieuw opbouwt of verwijdert."
+          ]
+        },
+        {
           "title": "Pauzeren, opnieuw opbouwen of verwijderen",
           "paragraphs": [
             "Het uitschakelen van de index pauzeert de analyse en verwijdert gegenereerde resultaten uit de actieve zoekweergave; bestaande indexgegevens blijven lokaal bewaard totdat ze worden verwijderd. Index opnieuw opbouwen voert indexering opnieuw uit wanneer de functie is ingeschakeld.",
@@ -2855,6 +2862,7 @@
           "title": "Begrijp de herstelkeuzes",
           "paragraphs": [
             "Het herstellen van een back-up zet catalogusgegevens terug naar de toestand van die back-up, zodat latere bewerkingen daar niet in staan. Wanneer een werkcatalogus wordt hersteld, wordt de huidige catalogus eerst geback-upt.",
+            "Na het upgraden leest de eerste scan lokale originelen om de bestandskoppeling te versterken. Dit kan langer duren bij een grote bibliotheek. Originelen die al ontbraken zonder volledige bestandsidentiteit blijven ontbreken; bewaar hun vermeldingen en herstel de originelen naar hun eerdere gecatalogiseerde paden voordat u opnieuw scant.",
             "Voor een beschadigde catalogus kan Bibliotheekgezondheid herstel, terugzetten of een nieuwe catalogus aanbieden. Herstellen kopieert leesbare rijen, maar verliest rijen op beschadigde pagina's. Opnieuw beginnen draagt geen beoordelingen, bewerkingen, collecties of geschiedenis over. Het huidige beschadigde catalogusbestand wordt bewaard in Herstel."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnostiek voor desktop",
           "paragraphs": [
             "Op macOS biedt Help → Diagnostiek Opnieuw laden interface, Herstart renderingservice, Serverlog tonen, Bibliotheekgezondheid…, en Opnieuw starten in veilige modus.",
-            "Veilige modus schakelt scannen, bewaakte mappen, lokale ai en engine-opwarming uit. Gebruik Renderingsservice opnieuw starten om terug te keren naar normale werking. Als een probleem aanhoudt, voeg dan de zichtbare fout en relevante details van het serverlog toe wanneer u het meldt."
+            "Veilige modus schakelt scannen, bewaakte mappen, lokale AI en het opwarmen van de engine uit. Gebruik Renderingsservice opnieuw starten om terug te keren naar de normale werking."
+          ]
+        },
+        {
+          "title": "Onverwacht afsluiten op Mac melden",
+          "paragraphs": [
+            "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
+            "Help → Een probleem melden… opent het nieuwste rapport, of de huidige diagnostiek als er geen onverwacht afsluiten is vastgelegd. Rapporten bevatten de app-build, macOS en hardware, de laatst vastgelegde bewerking indien beschikbaar, gefilterde recente logs en beschikbare fouttraces. Een overeenkomend macOS-crashrapport kan stack- en binaire informatie toevoegen. Een onverwacht afsluiten laat niet altijd een fouttrace achter of wijst de oorzaak aan.",
+            "Rapporten blijven op uw Mac totdat u ervoor kiest ze te delen. Paden, fotobestandsnamen, geciteerde logwaarden en veelvoorkomende referentievelden worden gefilterd; inspecteer de tekst voordat u deelt. Foto's en de catalogus worden niet bijgevoegd. De laatste tien rapporten worden lokaal bewaard."
+          ],
+          "steps": [
+            "Lees het diagnostische rapport. Kies Rapport kopiëren om het zelf in een e-mail te plakken.",
+            "Of kies Beheerder e-mailen. Hiermee wordt het rapport gekopieerd en wordt een concept geopend dat is geadresseerd aan team@lighttable.app.",
+            "Beschrijf wat u aan het doen was, plak het gekopieerde rapport in het concept en verzend het wanneer u klaar bent. Als er geen e-mailapp wordt geopend, gebruik dan uw gebruikelijke e-maildienst.",
+            "Kies Sluiten om het rapport te sluiten. Er wordt niets automatisch verzonden."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

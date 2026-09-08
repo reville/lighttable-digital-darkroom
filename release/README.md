@@ -110,6 +110,10 @@ the desktop app. Automatic npm postinstall downloads are disabled.
 `scripts/update-personal-app.sh --check` is a read-only preflight. The personal
 updater reuses a verified installed runtime when compatible, stages changed code,
 rebuilds changed helpers, signs/verifies the bundle, and keeps a recovery copy.
+Changed native sources compile directly with the Xcode Release Swift settings
+and the verified base's pinned Sparkle framework. The compiler recipe is part of
+the native cache key; the signed package must pass the real-photo native journey
+before installation.
 When packaging inputs change, establish a new base with `scripts/build-release.sh`.
 Personal builds do not constitute signed public releases.
 

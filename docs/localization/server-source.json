@@ -3,6 +3,7 @@
   "messages": [
     "A RAW original cannot be edited in place; send an adjusted TIFF",
     "A denoise is already running",
+    "A file path or descriptor is required for Windows identity",
     "A mask batch is already running; finish or cancel it first",
     "A photo in this keyword change is no longer available",
     "A photo supports {limit} masks; existing masks were preserved",
@@ -41,6 +42,8 @@
     "Existing LightTable edits could not be merged safely",
     "Export renderer exceeded 30 minutes",
     "External XMP changes conflict with pending edits ({properties}). Read the sidecar metadata before syncing again.",
+    "File changed before querying its identity",
+    "File changed while querying its identity",
     "Give this preset a name",
     "HEIF export failed: {detail}",
     "HEIF export requires the bundled macOS ImageIO helper",
@@ -56,7 +59,12 @@
     "No enhancement model is installed in {value}. Run the model fetch and conversion scripts for this development build",
     "Objects, scenes, visible text, and face detection",
     "Opening the catalog…",
+    "Original changed after export was queued; queue this photo again",
+    "Original changed while identifying it: {path}",
+    "Original changed while reading its metadata: {source}",
+    "Original changed while reading recovery identity",
     "Original is unavailable. Reconnect its folder and retry.",
+    "Original was unavailable when export was queued; queue this photo again",
     "Paired RAW and JPEG received conflicting metadata; choose one capture decision",
     "People masks need the Vision helper (macOS 14 or later)",
     "Photo Mechanic preferences could not be updated safely",
@@ -85,7 +93,9 @@
     "The export destination moved while rendering; nothing was published",
     "The export hierarchy must stay inside its destination",
     "The export subfolder must stay inside the original folder",
+    "The file extension is too long for a staging filename",
     "The filesystem could not preserve capture time; kept its export timestamp.",
+    "The filesystem does not provide a file change time",
     "The folder LightTable last opened is not available. Its photos will return when the volume is mounted.",
     "The optional Apple Foundation Models bridge is not installed",
     "The original changed during detection; retry this photo",
@@ -149,6 +159,8 @@
     "existing XMP is too large to update safely",
     "expected an HxWx3 RGB image",
     "export already running",
+    "file changed before hashing: {path}",
+    "file changed while hashing: {path}",
     "folder moved but catalog update and filesystem rollback failed; it remains at {destination}: {rollback_error}",
     "folder names cannot end with a dot or space",
     "folder not found",
@@ -263,6 +275,7 @@
     "viewport rendering requires unwarped source geometry",
     "viewport requires x, y, width and height",
     "virtual copies cannot move originals",
+    "watched file changed before acknowledgement: {path}",
     "watched ingest failed",
     "window automation is disabled",
     "{mode} failed",
@@ -275,7 +288,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "1ef9881e2c4502d5b84b5a3e38066785d45327cbbac2558aba5cce38dcb86c10",
+  "sourceDigest": "34eb28600e7b794fdfbc8e41c02e55000807eb2c4fdb5dc7e8ff4f4dd472b126",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -311,7 +324,12 @@
       "Missing photo",
       "Move with photo",
       "Opening the catalog…",
+      "Original changed after export was queued; queue this photo again",
+      "Original changed while identifying it: {path}",
+      "Original changed while reading its metadata: {source}",
+      "Original changed while reading recovery identity",
       "Original is unavailable. Reconnect its folder and retry.",
+      "Original was unavailable when export was queued; queue this photo again",
       "Paired RAW and JPEG received conflicting metadata; choose one capture decision",
       "Photo exported, but its recipe sidecar could not be saved: {error}",
       "Photo identity changed since preview",
@@ -553,6 +571,7 @@
     ],
     "watch_workflow.py": [
       "the watched file did not produce an ingest copy",
+      "watched file changed before acknowledgement: {path}",
       "watched ingest failed"
     ],
     "keyword_workflow.py": [
@@ -580,6 +599,17 @@
     "platform_image.py": [
       "could not decode {name}: {error}",
       "image decoder did not return color pixels"
+    ],
+    "file_identity.py": [
+      "A file path or descriptor is required for Windows identity",
+      "File changed before querying its identity",
+      "File changed while querying its identity",
+      "The filesystem does not provide a file change time",
+      "file changed before hashing: {path}",
+      "file changed while hashing: {path}"
+    ],
+    "durable_io.py": [
+      "The file extension is too long for a staging filename"
     ]
   }
 }

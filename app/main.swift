@@ -318,7 +318,7 @@ private func lightTablePreferencesURL() -> URL {
 private let nativeLocalization = NativeLocaleStore(
     directory: projectDir.appendingPathComponent("web/locales", isDirectory: true),
     preferencesURL: lightTablePreferencesURL())
-private func L(_ source: String, _ arguments: [String: String] = [:]) -> String {
+func L(_ source: String, _ arguments: [String: String] = [:]) -> String {
     nativeLocalization.text(source, arguments)
 }
 
@@ -352,7 +352,12 @@ final class ServerController {
     /// Called on the main queue when the server exits without being asked.
     var onUnexpectedExit: ((Int32) -> Void)?
     private var stopping = false
-    private var startedAt = Date()
+    private(set) var startedAt = Date()
+    private(set) var sessionID = UUID().uuidString
+    private(set) var lastProcessID: Int32 = 0
+    var faultLogURL: URL {
+        catalogDirectory.appendingPathComponent("Diagnostics/engine-fault-\(getpid()).log")
+    }
 
     /// The server exits with this status when it wants a clean relaunch,
     /// for instance after replacing the catalog file. It is not a crash.
@@ -462,6 +467,7 @@ final class ServerController {
     func start(folder: String) throws {
         stop()
         stopping = false
+        sessionID = UUID().uuidString
         port = choosePort()
         try FileManager.default.createDirectory(
             at: supportDirectory, withIntermediateDirectories: true)
@@ -551,6 +557,7 @@ final class ServerController {
         env["OPENBLAS_NUM_THREADS"] = "4"
         env["PYTHONUNBUFFERED"] = "1"
         env["LIGHTTABLE_LOG_FILE"] = logURL.path
+        env["LIGHTTABLE_FAULT_LOG"] = faultLogURL.path
         p.environment = env
         p.standardOutput = log
         p.standardError = log
@@ -565,6 +572,7 @@ final class ServerController {
         }
         try p.run()
         process = p
+        lastProcessID = p.processIdentifier
         startedAt = Date()
     }
 
@@ -1245,6 +1253,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
     let server = ServerController()
+    private lazy var diagnostics = DiagnosticStore(
+        root: server.catalogDirectory.appendingPathComponent("Diagnostics"))
+    private var diagnosticWindow: DiagnosticReportWindow?
     var folder: String = ""
     var sources: [FolderSource] = []
     private var editorMenuState: [String: Any] = [:]
@@ -1271,8 +1282,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func applicationDidFinishLaunching(_ note: Notification) {
         guard chooseInitialLanguage() else { return }
+        diagnostics.begin(log: server.logURL, fault: server.faultLogURL,
+                          catalog: server.catalogDirectory)
         buildMenu()
         buildWindow()
+        DispatchQueue.main.async { [weak self] in self?.presentPendingDiagnostic() }
 
         guard server.isInstalled else {
             showFatal(L("LightTable's Python runtime was not found at:\n{path}\n\nExpected bundled Python and server.py resources, or a project checkout with .venv/bin/python. Rebuild or restore the app.", ["path": projectDir.path]))
@@ -1329,6 +1343,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         cancelJavaScriptConfirmation()
         photosLibraryImporter?.shutdown()
         server.stop()
+        diagnostics.end()
     }
 
     /// Complete this before the folder picker or server can write preferences.
@@ -1604,6 +1619,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if notification.object as? NSWindow === window {
             cancelJavaScriptConfirmation()
             secondaryLoupeWindow?.close()
+            diagnosticWindow?.close()
         } else if notification.object as? NSWindow === secondaryLoupeWindow {
             secondaryLoupeWindow = nil
         }
@@ -1806,6 +1822,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             launch(folder: resolvedLaunchFolder())
             return
         }
+        diagnostics.captureEngine(id: server.sessionID, pid: server.lastProcessID,
+            executable: server.python.resolvingSymlinksInPath().path,
+            startedAt: server.startedAt, status: status)
+        presentPendingDiagnostic()
         if server.uptime > Self.healthySessionSeconds { crashRestarts = 0 }
         crashRestarts += 1
         server.previousExitStatus = status
@@ -3066,6 +3086,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         NSWorkspace.shared.open(server.logURL)
     }
 
+    private func presentPendingDiagnostic() {
+        guard diagnosticWindow?.window?.isVisible != true,
+              let incident = diagnostics.pending else { return }
+        showDiagnostic(incident)
+        diagnostics.markPresented(incident)
+    }
+
+    private func showDiagnostic(_ incident: DiagnosticIncident?) {
+        diagnosticWindow?.close()
+        let report = incident?.report ?? diagnostics.manualReport(log: server.logURL)
+        diagnosticWindow = DiagnosticReportWindow(report: report, incident: incident)
+        diagnosticWindow?.showWindow(nil)
+        diagnosticWindow?.window?.makeKeyAndOrderFront(nil)
+    }
+
+    @objc func reportProblem(_ sender: Any?) {
+        let incident = diagnostics.incidents().last
+        showDiagnostic(incident)
+        if let incident { diagnostics.markPresented(incident) }
+    }
+
     @objc func revealExports(_ sender: Any?) {
         let dir = URL(fileURLWithPath: folder)
             .appendingPathComponent("film-exports")
@@ -3585,6 +3626,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let helpItem = addSystemItem(
             helpMenu, title: L("LightTable Help"), action: #selector(openHelp(_:)))
         helpItem.target = self
+        let reportItem = addSystemItem(
+            helpMenu, title: L("Report a Problem…"), action: #selector(reportProblem(_:)))
+        reportItem.target = self
         addEditorItem(helpMenu, title: L("Keyboard Shortcuts"),
                       command: "keyboardShortcuts")
         helpMenu.addItem(.separator())

@@ -249,7 +249,9 @@ def apply_capture_timestamp(path: Path, metadata: dict, policy: str) -> str | No
 def _safe_piece(value, default="untitled") -> str:
     value = re.sub(r"[\\/:*?\"<>|\x00-\x1f]+", "_", str(value or ""))
     value = re.sub(r"\s+", " ", value).strip(" ._")
-    return (value or default)[:120]
+    # Names must also fit destinations that count UTF-8 bytes, with room for
+    # a recipe sidecar, collision suffix and the atomic staging filename.
+    return (value or default).encode("utf-8")[:120].decode("utf-8", errors="ignore")
 
 
 def render_filename(template: str, context: dict, extension: str) -> str:

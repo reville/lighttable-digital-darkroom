@@ -67,6 +67,7 @@ PLIST
 # A developer shell may be copied out of build/. Preserve the checkout it was
 # built against instead of relying on a historical folder-name fallback.
 /usr/libexec/PlistBuddy -c "Add :LightTableProjectDir string $PROJECT" "$APP/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Add :LightTableSourceRevision string $(git rev-parse HEAD)" "$APP/Contents/Info.plist"
 
 # --- binary -----------------------------------------------------------------
 SWIFT_CACHE="${TMPDIR:-/tmp}/lighttable-swift-module-cache"
@@ -77,7 +78,7 @@ export CLANG_MODULE_CACHE_PATH="$CLANG_CACHE"
 swiftc -O -swift-version 5 \
   -target arm64-apple-macos13.0 \
   -o "$APP/Contents/MacOS/LightTable" \
-  app/main.swift app/NativePreview.swift
+  app/main.swift app/NativePreview.swift app/DiagnosticReports.swift
 cp lighttable "$APP/Contents/MacOS/lighttable-cli"
 chmod 755 "$APP/Contents/MacOS/lighttable-cli"
 

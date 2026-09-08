@@ -159,7 +159,7 @@
         {
           "title": "Pianifica la copia",
           "paragraphs": [
-            "Importa da scheda copia i file nella destinazione che scegli. Gli originali sulla scheda restano al loro posto."
+            "Importa da scheda copia i file nella destinazione che scegli. Gli originali sulla scheda restano al loro posto. La verifica dei duplicati confronta il contenuto completo dei file; un nome file corrispondente o solo l'intestazione della fotocamera non sono sufficienti."
           ],
           "steps": [
             "Apri Local ••• → Importa da scheda….",
@@ -169,7 +169,7 @@
             "Attendi il conteggio delle copiate e verifica se qualche file non è riuscito. Annulla si interrompe dopo il completamento della copia e della verifica del file corrente; le copie completate vengono mantenute e gli originali sulla scheda restano intatti."
           ],
           "tips": [
-            "I token del modello includono {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Inizia da controlla la sequenza a quattro cifre.",
+            "I token del modello includono {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Inizia da controlla la sequenza a quattro cifre. I campi lunghi del modello vengono abbreviati; controlla l'anteprima di destinazione.",
             "Le anteprime mostrano 200 file per pagina. La selezione si estende su più pagine; Seleziona tutto e Deseleziona tutto si applicano all'intera scansione, comprese le pagine non ancora aperte.",
             "Se i file vengono segnalati come solo cloud, scaricali in locale e scansiona di nuovo."
           ]
@@ -438,7 +438,7 @@
           "title": "Ripristina una correzione",
           "paragraphs": [
             "L'assegnazione di un fuso orario non modifica anche l'orologio della fotocamera. Usa il campo di spostamento quando l'ora visualizzata è errata.",
-            "Annulla l’ultima correzione annulla la correzione più recente memorizzata in questa finestra. Ripristina orari fotocamera… mostra in anteprima la rimozione delle correzioni del catalogo; rivedi l’anteprima e applicala per ripristinare gli orari originali della fotocamera. Le modifiche dell’orario di acquisizione sono disponibili anche in Cronologia."
+            "Annulla l'ultima correzione annulla la correzione più recente conservata in questa finestra. Ripristina orari fotocamera… mostra in anteprima la rimozione delle correzioni del catalogo; rivedi l'anteprima e applicala per ripristinare gli orari originali della fotocamera. Le correzioni dell'orario di acquisizione sono disponibili anche in Cronologia. Quando la scrittura XMP è abilitata, reimpostare una correzione ripristina le date sidecar salvate prima che LightTable la applicasse. Le date di acquisizione nei sidecar più vecchi senza quella data salvata restano invariati."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Il ripristino può non essere disponibile se l'archiviazione locale o il journal di ripristino del desktop falliscono. L'app segnala questa condizione; non è una garanzia che ogni modifica non salvata possa essere recuperata.",
-            "Se un originale non è disponibile o è cambiato, il relativo record di recupero viene mantenuto invece di essere applicato a una foto potenzialmente diversa."
+            "Se un originale non è disponibile o è cambiato, il suo record di recupero viene mantenuto invece di essere applicato a una foto potenzialmente diversa. Alcune bozze di recupero mostrano un avviso di identità parziale perché non possono verificare l'intero originale. Questo può accadere con bozze più vecchie o quando si usa la modalità cartella. Ripristinale solo se le foto originali non sono state sostituite."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Crea un'esportazione",
           "paragraphs": [
-            "Esporta crea file di output renderizzati dalle modifiche della foto. Usa Foto selezionate quando vuoi limitare l'esportazione a una selezione specifica."
+            "Esporta crea file di output renderizzati a partire dalle modifiche delle foto. Usa Foto selezionate quando vuoi limitare l'esportazione a una selezione specifica. Ogni foto messa in coda conserva le modifiche, la valutazione e la correzione dell'orario di acquisizione scelti quando hai avviato l'esportazione."
           ],
           "steps": [
             "Seleziona le foto desiderate, quindi fai clic sul pulsante Esporta foto nella barra superiore. Command/Ctrl+Shift+E apre anche Esporta.",
@@ -2437,7 +2437,7 @@
           "title": "Controlla l'ambito e il risultato",
           "paragraphs": [
             "Solo selezionati, Classificate 1+ e Tutti eccetto rifiutati selezionano le foto fisse corrispondenti dal catalogo attivo e possono includere foto al di fuori della raccolta o del filtro visualizzati. Foto selezionate offre un controllo esplicito sull’insieme.",
-            "Scegli Annulla esportazione per richiedere un’interruzione. I dettagli dell’esportazione riportano i conteggi di completati, saltati e annullati, oltre a avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta correttamente. I clip video non vengono renderizzati dal flusso di lavoro di esportazione per foto fisse."
+            "Usa Annulla esportazione per richiedere l'arresto. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre ad avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta con successo. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in rendering, quella foto fallisce con un errore; accodala di nuovo dopo aver controllato l'originale."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Nomi e file esistenti",
           "paragraphs": [
-            "I modelli di nome file supportano {filename}, {stock}, {date}, {rating} e {sequence}. Ad esempio, {filename}_{stock} include il nome sorgente e la pellicola.",
+            "I modelli nome file supportano {filename}, {stock}, {date}, {rating} e {sequence}. Ad esempio, {filename}_{stock} include il nome origine e la pellicola. I campi lunghi del nome file vengono abbreviati per lasciare spazio ai nomi di output e sidecar; controlla Anteprima output.",
             "Keep both · add a number crea un altro filename, ad esempio un nome che termina con -2. Salta esistenti lascia invariati i nomi già occupati. Sovrascrivi sostituisce l’output esistente nel percorso scelto. Usa l’anteprima dell’output per confermare la destinazione prima di scegliere Sovrascrivi."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Foto saltate",
+          "paragraphs": [
+            "I file vuoti, i file non scaricati e gli originali non disponibili vengono saltati prima dell'analisi. Foto Index riporta i loro conteggi separatamente dagli errori di analisi. Un file vuoto non contiene dati immagine; potrebbe dover essere scaricato di nuovo o ripristinato da un backup.",
+            "Scarica o ripristina gli originali, riconnetti eventuali origini non disponibili e usa Ricostruisci indice per riprovare. L'indicizzazione non scarica i file né modifica gli originali. I metadati di ricerca generati in precedenza vengono mantenuti quando un file diventa non disponibile, a meno che tu non ricostruisca o elimini l'indice."
+          ]
+        },
+        {
           "title": "Metti in pausa, ricostruisci o elimina",
           "paragraphs": [
             "Disattivando l’indice si mette in pausa l’analisi e si rimuovono i risultati generati dalla vista di ricerca attiva; i dati dell’indice esistenti restano locali finché non vengono eliminati. Ricostruisci indice esegue di nuovo l’indicizzazione quando la funzione è attivata.",
@@ -2855,6 +2862,7 @@
           "title": "Comprendi le opzioni di recupero",
           "paragraphs": [
             "Ripristinare un backup riporta i dati del catalogo allo stato di quel backup, quindi le modifiche successive non sono incluse. Quando viene ripristinato un catalogo di lavoro, il catalogo corrente viene prima salvato in backup.",
+            "Dopo l'aggiornamento, la prima scansione legge gli originali locali per rafforzare la corrispondenza dei file. Su una raccolta grande può richiedere più tempo. Gli originali che erano già mancanti senza un'identità completa del file restano mancanti; conserva le loro voci e ripristina gli originali ai loro percorsi catalogati precedenti prima di riscansionare.",
             "Per un catalogo danneggiato, Salute libreria può offrire salvataggio, ripristino o un catalogo nuovo. Il salvataggio copia le righe leggibili ma perde le righe nelle pagine danneggiate. Ripartire da zero non trasferisce valutazioni, modifiche, collezioni o cronologia. Il file del catalogo danneggiato corrente viene conservato in Recovery."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnostica desktop",
           "paragraphs": [
             "Su macOS, Aiuto → Diagnostica offre Ricarica interfaccia, Riavvia servizio di rendering, Mostra log server, Integrità libreria…, e Riavvia in modalità provvisoria.",
-            "La Modalità sicura disattiva scansione, cartelle sorvegliate, IA locale e preriscaldamento del motore. Usa Riavvia servizio di rendering per tornare al funzionamento normale. Se il problema persiste, includi l’errore visibile e i dettagli pertinenti del log del server quando segnali il problema."
+            "La Modalità sicura disattiva la scansione, le cartelle monitorate, l'IA locale e il preriscaldamento del motore. Usa Riavvia il servizio di rendering per tornare al normale funzionamento."
+          ]
+        },
+        {
+          "title": "Segnala un'uscita imprevista su Mac",
+          "paragraphs": [
+            "Se l'app per Mac si chiude senza una chiusura corretta, la prossima volta che la avvii si apre un report diagnostico. Se il suo motore di rendering si arresta in modo imprevisto, il report può aprirsi mentre il motore si ripristina. Il report appare una volta per ogni incidente registrato; Ignora ti consente di continuare. Chiudere normalmente l'app o riavviare il suo servizio di rendering non crea un report.",
+            "Aiuto → Segnala un problema… apre il report più recente, oppure la diagnostica corrente se non è stata registrata alcuna uscita imprevista. I report includono la build dell'app, macOS e l'hardware, l'ultima operazione registrata quando disponibile, i log recenti filtrati e le tracce di errore disponibili. Un report di crash corrispondente di macOS può aggiungere informazioni sullo stack e sui binari. Un'uscita imprevista non lascia sempre una traccia di errore né ne identifica la causa.",
+            "I report restano sul tuo Mac finché non scegli di condividerli. Percorsi, nomi file delle foto, valori di log tra virgolette e campi comuni delle credenziali vengono filtrati; esamina il testo prima di condividerlo. Le foto e il catalogo non vengono allegati. Gli ultimi dieci report vengono conservati localmente."
+          ],
+          "steps": [
+            "Leggi il report diagnostico. Scegli Copia report per incollarlo tu stesso in un'email.",
+            "Oppure scegli Invia email al manutentore. Questa opzione copia il report e apre una bozza indirizzata a team@lighttable.app.",
+            "Descrivi cosa stavi facendo, incolla il report copiato nella bozza e invialo quando sei pronto. Se non si apre alcuna app email, usa il tuo normale servizio email.",
+            "Scegli Ignora per chiudere il report. Non viene inviato nulla automaticamente."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }
