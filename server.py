@@ -73,6 +73,7 @@ from film_lab_ai import AIIndexService  # noqa: E402
 from film_lab_ai.face_service import FaceService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
 import platform_image  # noqa: E402
+import source_geometry  # noqa: E402
 import platform_paths  # noqa: E402
 from events import EventBroker, encode_sse  # noqa: E402
 from jobs import JobRegistry  # noqa: E402
@@ -2688,6 +2689,11 @@ def exif_for(name: str, *, capture_override=_LIVE_CAPTURE_TIME) -> dict:
                   if _EXIF_CACHE_SIGNATURES.get(name) == signature else None)
     if cached is None:
         cached = platform_image.metadata(source)
+        try:
+            width, height = source_geometry.dimensions(source)
+            cached.update(SourceWidth=width, SourceHeight=height)
+        except Exception:
+            pass
         if (str(source), *file_identity.stat_signature(source.stat(), path=source)) != signature:
             raise OSError(T("Original changed while reading its metadata: {source}", source=source))
         with _EXIF_CACHE_LOCK:
@@ -5305,26 +5311,12 @@ def export_requested_path(name: str, job: dict, metadata: dict) -> Path:
 
 def export_source_dimensions(name: str) -> tuple[int, int]:
     """Read the oriented source geometry without demosaicing or rendering."""
-    source = src_path(name)
-    if is_raw(name):
-        import rawpy
-        with rawpy.RawPy() as raw:
-            raw.open_file(str(source))
-            size = raw.sizes
-            if size.pixel_aspect != 1.0:
-                raise ValueError(T("Decoder adjusts non-square source pixels"))
-            width, height = size.iwidth, size.iheight
-            if size.flip in (5, 6):
-                width, height = height, width
-    else:
-        from PIL import Image
-        with Image.open(source) as image:
-            width, height = image.size
-            if image.getexif().get(274, 1) in (5, 6, 7, 8):
-                width, height = height, width
-    if not width or not height:
-        raise ValueError(T("Source dimensions are unavailable"))
-    return int(width), int(height)
+    try:
+        return source_geometry.dimensions(src_path(name))
+    except ValueError as error:
+        if str(error) == "Decoder adjusts non-square source pixels":
+            raise ValueError(T("Decoder adjusts non-square source pixels")) from error
+        raise ValueError(T("Source dimensions are unavailable")) from error
 
 
 def preview_export(opts: dict) -> dict:

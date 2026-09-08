@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1194,6 +1194,7 @@
     "Finish saving your edits before undoing the batch": "Zakończ zapisywanie zmian, zanim cofniesz wsad",
     "First file lands at {firstDestination}": "Pierwszy plik trafia do {firstDestination}",
     "Fit": "Dopasuj",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
     "Fit the whole photo to the available space": "Dopasuj całe zdjęcie do dostępnego miejsca",
     "Fit to window ({actualPct}%)": "Dopasuj do okna ({actualPct}%)",
     "Flag": "Flaga",
@@ -1352,6 +1353,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Jeśli lokalne odzyskiwanie znajdzie nierozwiązane zmiany podczas otwierania biblioteki, „Odzyskaj niezapisane edycje?” wyświetla listę dotkniętych zdjęć. „Przywróć edycje” zastępuje ich zapisane ustawienia odzyskanymi ustawieniami. „Zachowaj zapisane edycje” pozostawia wersję katalogu i odrzuca te szkice odzyskiwania.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Jeśli maski nie mogą zostać przeniesione, skopiuj ponownie z odznaczonymi Lokalnymi maskami, aby zastosować pozostałe grupy.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "W razie potrzeby wybierz inną pozycję w Profil obiektywu i porównaj korektę z oryginałem.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Jeśli nie można zapisać pierwszego wyboru na Macu, Spróbuj ponownie zachowuje wybór i ponawia próbę. Aplikacja uruchamia się dopiero po pomyślnym zapisie.",
@@ -4032,8 +4034,7 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary."
+    "☆ Favorites": "☆ Ulubione"
   },
   "plurals": {
     " · {count} paired file linked": {
