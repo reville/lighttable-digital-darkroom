@@ -324,7 +324,8 @@
       {
         "title": "Compare while zoomed in",
         "paragraphs": [
-          "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom."
+          "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
+          "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail."
         ],
         "steps": [
           "Turn on Compare, then zoom beyond Fit.",
