@@ -226,7 +226,8 @@
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
-            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống."
+            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống.",
+            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531"
 }

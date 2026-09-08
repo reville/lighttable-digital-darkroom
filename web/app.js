@@ -17,6 +17,7 @@ import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { createZoomMotion } from '/web/zoom-motion.js';
+import { createPhotoPanMemory } from '/web/photo-pan.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
@@ -868,6 +869,19 @@ function syncGrade() {
 }
 
 /* ------------------------------------------------------------------ view */
+const photoPanMemory = createPhotoPanMemory();
+let photoPanKey = null;
+function rememberPhotoPan() {
+  if (S.editingName !== cur()?.name) return; // Navigation may still be loading.
+  photoPanMemory.remember(photoPanKey, S, $('cmp').getBoundingClientRect());
+}
+function restorePhotoPan() {
+  if (S.viewMode !== 'detail' || S.cropping || S.cropTransition) return;
+  // Establish the incoming photo's pixel scale before restoring its position.
+  onViewportResize();
+  photoPanMemory.restore(photoPanKey, S, $('cmp').getBoundingClientRect());
+  applyViewNow();
+}
 function clampPan() {
   // The crop view places the photo wherever the centred frame needs it.
   if (S.cropping || S.cropTransition) return;
@@ -1028,6 +1042,7 @@ function zoomCentre(f) {
 }
 function zoomReset({animate = false} = {}) {
   zoomMotion.cancel();
+  rememberPhotoPan();
   const from = zoomView();
   if (S.cropping && !S.cropTransition) {
     // Fit means the cropping view itself while the crop tool is open.
@@ -5786,6 +5801,7 @@ function refreshFilteredView() {
 function setViewMode(mode, persist = true) {
   if (!['photo', 'square', 'detail'].includes(mode)) return;
   stopZoomMotion({finish: true});
+  if (mode !== S.viewMode) rememberPhotoPan();
   const gridMode = mode !== 'detail';
   LIBRARY_FILTERS.close();
   S.viewMode = mode;
@@ -5803,6 +5819,7 @@ function setViewMode(mode, persist = true) {
   if (gridMode) {
     renderGrid();
   } else if (cur()) {
+    restorePhotoPan();
     doRender();
   }
   syncCullBars();
@@ -6378,6 +6395,7 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
 
 function showCurrentImage(im) {
   stopZoomMotion({finish: true});
+  photoPanKey = JSON.stringify([S.rootFolder, im.name, im.recoverySourceKey || im.fileKey || null]);
   S.editingName = im.name;
   $('panel').inert = false;
   $('cmp').inert = false;
@@ -6426,6 +6444,7 @@ function showCurrentImage(im) {
   applyView();
   if (S.activePane === 'cropPane') beginCropSession();
   setCropMode(S.activePane === 'cropPane');
+  restorePhotoPan();
   setCompareActive(false);
   S.originalImageName = null;
   browserOriginal = null;
@@ -6488,6 +6507,8 @@ loupeChannel.onmessage = (event) => {
 
 async function go(i) {
   if (i < 0 || i >= S.images.length) return;
+  stopZoomMotion({finish: true});
+  rememberPhotoPan();
   cropSession = null;
   if (cur()) {
     const outgoing = cur().name;
