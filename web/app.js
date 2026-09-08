@@ -66,6 +66,7 @@ import {
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
+import { presetEditState, blendPresetState, reconcilePresetAdjustment } from '/web/preset-amount.js';
 import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installUIBridge } from '/web/ui-bridge.js';
@@ -663,7 +664,7 @@ function syncFilmReadout(id, value) {
 function snapshot() {
   const image = cur();
   return JSON.stringify({
-    params: S.params, grade: S.grade, crop: S.crop,
+    params: S.params, grade: S.grade, crop: S.crop, preset: S.preset || null,
     cropChoices: cur()?.cropChoices,
     masks: serializableMasks(), heals: S.heals, optics: S.optics,
     status: image?.status, rating: image?.rating, label: image?.label,
@@ -693,6 +694,8 @@ function restore(json, stack, persist = true) {
   const previousFilm = filmRenderFingerprint();
   const previousBaseEdits = baseEditsFingerprint();
   const st = JSON.parse(json);
+  S.preset = cloneValue(st.preset || null);
+  presetAmountGesture = null;
   S.params = normalizeFilmParams(st.params); S.grade = st.grade; S.crop = st.crop;
   restoreCropChoices(st.cropChoices);
   S.masks = normalizeMasks(st.masks); S.heals = normalizeHeals(st.heals);
@@ -716,6 +719,7 @@ function restore(json, stack, persist = true) {
   if (filmRenderFingerprint() !== previousFilm) renderFilm();
   else if (baseEditsFingerprint() !== previousBaseEdits) refreshBaseEdits();
   updateUndoRedoButtons();
+  PRESET_BROWSER?.refresh();
 }
 function undo() {
   if (S.editingName !== cur()?.name) return;
@@ -4207,7 +4211,7 @@ const PANE_STEP_LABELS = {
 
 function editHistorySnapshot() {
   return JSON.stringify({ params: S.params, grade: S.grade, crop: S.crop,
-    masks: serializableMasks(), heals: S.heals, optics: S.optics });
+    masks: serializableMasks(), heals: S.heals, optics: S.optics, preset: S.preset || null });
 }
 
 let editRecovery = null;
@@ -4324,6 +4328,7 @@ function saveState(immediate = false) {
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
   readControls();
+  S.preset = reconcilePresetAdjustment(S.preset, presetEditState(S));
   const edits = JSON.parse(editHistorySnapshot());
   Object.assign(im, cloneValue(edits));
   const current = JSON.stringify(edits);
@@ -6269,6 +6274,8 @@ function showCurrentImage(im) {
   S.params = normalizeFilmParams(im.params);
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...(im.grade || {}) };
   S.crop = im.crop || null;
+  S.preset = cloneValue(im.preset || null);
+  presetAmountGesture = null;
   S.masks = normalizeMasks(im.masks);
   S.heals = normalizeHeals(im.heals);
   S.optics = normalizeOptics(im.optics);
@@ -9506,6 +9513,62 @@ $('presetList').addEventListener('change', () => {
   PRESET_BROWSER?.select();
 });
 
+let presetAmountGesture = null;
+function currentPresetAdjustment() {
+  return reconcilePresetAdjustment(S.preset, presetEditState(S));
+}
+
+function presentPresetAdjustment(adjustment, immediate = true) {
+  const previousFilm = filmRenderFingerprint(), previousBase = baseEditsFingerprint();
+  S.preset = adjustment;
+  Object.assign(S, blendPresetState(adjustment.base, adjustment.target,
+    adjustment.enabled ? adjustment.amount : 0));
+  S.maskTextureDirty = true;
+  S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
+  syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
+  syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
+  drawGrade(); saveState(immediate);
+  if (filmRenderFingerprint() !== previousFilm) renderFilm(immediate ? 0 : 120);
+  else if (baseEditsFingerprint() !== previousBase) refreshBaseEdits();
+}
+
+function toggleBrowserPreset(preset, photo, identity = presetKey(preset)) {
+  if (!photo?.name || cur()?.name !== photo.name || S.editingName !== photo.name) return;
+  readControls();
+  const previous = currentPresetAdjustment();
+  if (previous?.id !== identity && !presetHasApplicableSettings(preset)) return;
+  pushUndo(); presetAmountGesture = null;
+  let adjustment;
+  if (previous?.id === identity) {
+    adjustment = { ...previous, enabled: !previous.enabled };
+    if (adjustment.enabled && adjustment.amount === 0) adjustment.amount = 100;
+  } else {
+    const base = previous ? previous.base : presetEditState(S);
+    const target = composePresetState(base, preset, {
+      normalizeFilmParams, mergeFilmParams, createId: editId,
+    });
+    adjustment = { id: identity, name: preset.name, amount: 100, enabled: true,
+      base: cloneValue(base), target: presetEditState(target) };
+  }
+  LAST_PRESET_APPLICATION = null;
+  presentPresetAdjustment(adjustment);
+  return true;
+}
+
+function changePresetAmount(id, photoName, amount, commit = false) {
+  if (cur()?.name !== photoName || S.editingName !== photoName) return false;
+  const adjustment = currentPresetAdjustment();
+  if (!adjustment || adjustment.id !== id) return false;
+  amount = Math.max(0, Math.min(100, Math.round(Number(amount) || 0)));
+  if (amount !== adjustment.amount || adjustment.enabled !== (amount > 0)) {
+    if (presetAmountGesture !== photoName) { pushUndo(); presetAmountGesture = photoName; }
+    markContinuousInput();
+    presentPresetAdjustment({ ...adjustment, amount, enabled: amount > 0 }, false);
+  }
+  if (commit) { presetAmountGesture = null; saveState(true); }
+  return true;
+}
+
 function presetPhotoSnapshot() {
   const image = cur();
   if (!image || !S.params || S.editingName !== image.name) return null;
@@ -9525,8 +9588,12 @@ function presetApplicationMatches(state, preset, options, photoName) {
 
 function stateWithPreset(state, preset, options = {}, photoName) {
   // Consecutive public looks use the edit before the first application.
-  // A manual edit or navigation invalidates that baseline. Legacy tool presets
-  // retain their existing layering behavior.
+  // The saved Amount baseline also survives navigation and unrelated edits.
+  // Management actions retain their explicit layering/replacement behavior.
+  const adjustment = reconcilePresetAdjustment(state.preset, presetEditState(state));
+  if (adjustment) return composePresetState({ ...state, ...adjustment.base }, preset, {
+    ...options, normalizeFilmParams, mergeFilmParams, createId: editId,
+  });
   if (presetApplicationMatches(state, preset, options, photoName)) return cloneValue(state);
   const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
     LAST_PRESET_APPLICATION.name === photoName &&
@@ -9548,6 +9615,7 @@ function applyPreset(preset, photo, options = {}) {
     ? LAST_PRESET_APPLICATION.base : currentState;
   const next = stateWithPreset(currentState, preset, options, photo.name);
   pushUndo();
+  S.preset = null;
   S.params = next.params; S.grade = next.grade;
   S.masks = next.masks; S.heals = next.heals; S.optics = next.optics;
   S.maskTextureDirty = true;
@@ -9580,13 +9648,9 @@ PRESET_BROWSER = createPresetBrowser({
   getHidden: () => Array.isArray(APP_PREFS.hiddenBuiltinPresets) ? APP_PREFS.hiddenBuiltinPresets : [],
   onHiddenChange(ids) { APP_PREFS.hiddenBuiltinPresets = ids; savePrefs(); },
   onSelect(preset) { $('presetList').value = presetKey(preset); renderPresetSummary(true); },
-  onApply: (preset, photo) => applyPreset(preset, photo),
-  canUndo: () => !!LAST_PRESET_APPLICATION && LAST_PRESET_APPLICATION.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot(),
-  onUndo() {
-    if (LAST_PRESET_APPLICATION?.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot()) {
-      undo(); LAST_PRESET_APPLICATION = null;
-    }
-  },
+  onApply: (preset, photo, identity) => toggleBrowserPreset(preset, photo, identity),
+  getAdjustment: currentPresetAdjustment,
+  onAmount: changePresetAmount,
   getCommunity: () => COMMUNITY_PRESETS,
   async loadCommunity(refresh) {
     try {
