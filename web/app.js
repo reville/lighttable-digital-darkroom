@@ -73,6 +73,7 @@ import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '
 import { presetEditState, blendPresetState, reconcilePresetAdjustment } from '/web/preset-amount.js';
 import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
+import { installDesktopTheme } from '/web/desktop-theme.js';
 import { installUIBridge } from '/web/ui-bridge.js';
 import { installSettings } from '/web/settings.js';
 import { HELP_SECTION_TOPICS } from '/web/help-search.js';
@@ -447,7 +448,7 @@ window.lightTableNativeEvent = (event) => {
       const saved = APP_PREFS.externalEditor || EXTERNAL_PREFS.externalEditor || {};
       select.replaceChildren(new Option(tr("Default application"), ''),
         ...EXTERNAL_EDITORS.map((editor) => new Option(editor.name, editor.path)));
-      if (window.__LIGHTTABLE_PLATFORM__ === 'windows') {
+      if (['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__)) {
         select.appendChild(new Option(tr("Choose application…"), '__choose__'));
       }
       if (saved.path && !select.querySelector(
@@ -5581,7 +5582,7 @@ function openFolderMenu(anchor, context) {
       () => renameFolder(source, data, isRoot, relative)));
   }
   const browserName = window.__LIGHTTABLE_PLATFORM__ === 'windows'
-    ? 'File Explorer' : 'Finder';
+    ? tr('File Explorer') : window.__LIGHTTABLE_PLATFORM__ === 'linux' ? tr('File Manager') : 'Finder';
   items.push(menuButton(tr("Show in {browserName}", {browserName: browserName}),
     () => postNative('revealFolder', { path: fullPath })));
   if (current) {
@@ -6871,7 +6872,7 @@ function syncAI(status = S.ai) {
   toggle.setAttribute('aria-pressed', String(enabled));
   toggle.querySelector('.switch-label').textContent = enabled ? tr("On") : tr("Off");
   toggle.disabled = !vision.available && !enabled;
-  $('aiVisionStatus').textContent = vision.available ? tr("Available") : tr("Build required");
+  $('aiVisionStatus').textContent = vision.available ? tr("Available") : (S.serverPlatform && S.serverPlatform !== 'darwin' ? tr("Not available on this platform") : tr("Build required"));
   $('aiFoundationStatus').textContent = foundation.available ? tr("Rich descriptions on") : (foundation.reason || tr("Not available"));
   $('aiToggleDescription').textContent = foundation.available ? tr("Descriptions, objects, scenes, text, and faces") : tr("Objects, scenes, visible text, and faces");
   $('search').placeholder = enabled ? tr("Search photos, contents, text, and faces") : tr("Search photos and keywords");
@@ -7132,6 +7133,20 @@ async function initializeEditRecovery(data) {
 
 /* ------------------------------------------------------------------ boot */
 fetch('/api/images').then((r) => r.json()).then(async (d) => {
+  S.serverPlatform = d.platform || null;
+  installDesktopTheme({ platform: d.platform });
+  if (!window.__LIGHTTABLE_PLATFORM__ && d.platform) {
+    window.__LIGHTTABLE_PLATFORM__ = { darwin: 'macos', win32: 'windows' }[d.platform] || d.platform;
+  }
+  if (d.platform && d.platform !== 'darwin') {
+    for (const id of ['exFormat', 'modalExFormat']) {
+      const select = $(id);
+      const heif = select.querySelector('option[value="heif"]');
+      if (heif) { heif.disabled = true; heif.hidden = true; }
+      if (select.value === 'heif') select.value = 'jpeg';
+    }
+    for (const id of ['maskAddPeople', 'maskSoftenSkin']) $(id).hidden = true;
+  }
   FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;
   S.catalogEnabled = !!d.catalog?.enabled;
@@ -7797,7 +7812,7 @@ function syncPhotoActions() {
 function updateTransferActions() {
   syncPhotoActions();
   const targets = transferTargets();
-  const primaryKey = window.__LIGHTTABLE_PLATFORM__ === 'windows' ? 'Ctrl' : '⌘';
+  const primaryKey = ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__) ? 'Ctrl' : '⌘';
   $('copyBtn').disabled = !cur();
   $('pasteBtn').disabled = !S.clipboard || !targets.length;
   $('pasteAllBtn').disabled = !S.clipboard || !visible().length;
@@ -8037,6 +8052,10 @@ function renderExportRecipes(selected = '') {
 }
 function applyExportRecipe(recipe) {
   if (!recipe) return;
+  if (recipe.format === 'heif' && S.serverPlatform && S.serverPlatform !== 'darwin') {
+    toast(tr('HEIF export requires macOS. Choose JPEG, PNG, or TIFF.'));
+    return;
+  }
   const { id: _id, name: _name, builtin: _builtin, ...settings } = recipe;
   EXPORT_RECIPE_EXTRAS = settings;
   for (const key of EXPORT_EXTRA_FIELDS) {
@@ -10491,7 +10510,12 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   for (const [k, v] of Object.entries(p)) {
     if (k === 'pw') continue; // Retired preference; Advanced owns the override.
     const el = $(k);
-    if (el && v != null) el.value = v;
+    if (el && v != null) {
+      // A catalog may carry export preferences from another platform.
+      const unavailable = k === 'exFormat' && v === 'heif'
+        && ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__);
+      el.value = unavailable ? 'jpeg' : v;
+    }
   }
   $('pw').value = previewResolutionPreference(p);
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
@@ -10532,7 +10556,8 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   $('includeSubfolders').checked = S.includeSubfolders;
   applyFilmstripHeight(p.filmstripHeight || FILMSTRIP_DEFAULT_HEIGHT);
   setFolderMode(p.folderMode === 'favorites' ? 'favorites' : 'browse', false);
-  $('appShell').classList.toggle('left-collapsed', !!p.leftCollapsed);
+  $('appShell').classList.toggle('left-collapsed', p.leftCollapsed === undefined
+    ? window.__LIGHTTABLE_PLATFORM__ === 'linux' && window.innerWidth < 1100 : !!p.leftCollapsed);
   document.querySelector('.workspace').classList.toggle('filmstrip-hidden', !!p.filmstripHidden);
   $('leftPanelToggle').classList.toggle('on', isLibraryVisible());
   $('filmstripToggle').classList.toggle('on', !p.filmstripHidden);

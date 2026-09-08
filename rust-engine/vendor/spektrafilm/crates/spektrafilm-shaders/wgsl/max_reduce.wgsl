@@ -15,10 +15,15 @@ var<workgroup> partial: array<f32, 256>;
 @compute @workgroup_size(256)
 fn main(
     @builtin(workgroup_id) wid: vec3<u32>,
-    @builtin(local_invocation_id) lid: vec3<u32>
+    @builtin(local_invocation_id) lid: vec3<u32>,
+    @builtin(num_workgroups) grid: vec3<u32>
 ) {
+    let block = wid.x + wid.y * grid.x;
+    if block >= (params.n_values + 2047u) / 2048u {
+        return;
+    }
     let local = lid.x;
-    let base = wid.x * 2048u + local * 8u;
+    let base = block * 2048u + local * 8u;
     var m = -3.402823466e38;
     for (var i = 0u; i < 8u; i++) {
         let idx = base + i;
@@ -42,6 +47,6 @@ fn main(
     }
 
     if local == 0u {
-        output[wid.x] = partial[0];
+        output[block] = partial[0];
     }
 }

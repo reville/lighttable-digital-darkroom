@@ -44,10 +44,10 @@
         {
           "title": "Einen lokalen Ordner öffnen",
           "paragraphs": [
-            "In der Desktop-App öffnet Fotos hinzufügen einen Auswahldialog für Fotos und Ordner. LightTable behält die Originale an ihrem aktuellen Speicherort. Wenn Sie ein einzelnes Foto auswählen, wird der darin enthaltene Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können."
+            "Fotos hinzufügen öffnet einen Fotoauswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Lokal, um einen ganzen Ordner hinzuzufügen. LightTable behält Originale am Speicherort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass möglicherweise auch andere unterstützte Fotos in diesem Ordner angezeigt werden."
           ],
           "steps": [
-            "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie ein oder mehrere Fotos oder Ordner aus.",
+            "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie Fotos aus, oder verwenden Sie das + neben Lokal, um einen Ordner auszuwählen.",
             "Wählen Sie den Ordner unter Lokal in der linken Seitenleiste. Aktivieren Sie Unterordner einbeziehen, um Fotos in den Unterordnern zu durchsuchen.",
             "Wählen Sie oben Photo Grid, Culling Grid oder Detail. Klicken Sie auf ein Foto, um es aktiv zu machen."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Wählen Sie aus, was sichtbar ist",
           "paragraphs": [
-            "Lokal → Durchsuchen listet Ihre hinzugefügten Ordner auf. Unterordner einschließen steuert, ob ein ausgewählter Ordner auch seine Unterordner anzeigt. Andere Bibliotheksfilter gelten weiterhin."
+            "Lokal → Durchsuchen listet Ihre hinzugefügten Ordner auf. Unterordner einschließen steuert, ob ein ausgewählter Ordner auch seine Unterordner anzeigt. Andere Bibliotheksfilter gelten weiterhin.",
+            "In einem schmalen Linux-Fenster verwenden Sie Show or hide library oben links, um die Bibliotheksschublade zu öffnen. Schließen Sie sie mit derselben Schaltfläche, nachdem Sie einen Ordner ausgewählt haben, damit mehr Platz für das Foto bleibt."
           ],
           "steps": [
             "Unter Lokal auf einen Ordner klicken.",
@@ -353,7 +354,7 @@
         {
           "title": "Ordneraktionen",
           "paragraphs": [
-            "Das •••-Menü eines Ordners enthält Auf dem Finder zeigen auf dem Mac bzw. Im Datei-Explorer anzeigen unter Windows. Für den aktuellen Ordner aktualisiert Ordner synchronisieren die Ansicht. Lokal ••• → Ordner neu scannen scannt die Katalogquellen.",
+            "Das •••-Menü eines Ordners enthält auf dem Mac Im Finder anzeigen, unter Windows Im Datei-Explorer anzeigen oder unter Linux Im Dateimanager anzeigen. Für den aktuellen Ordner aktualisiert Ordner synchronisieren die Ansicht. Lokal ••• → Ordner erneut scannen scannt die Katalogquellen.",
             "Aus LightTable entfernen entfernt eine hinzugefügte Wurzel aus der Quellenliste der App; die originalen Dateien werden dabei nicht in den Papierkorb verschoben. Die Aktion wird angeboten, wenn mehr als eine Quelle verfügbar ist."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Wählen Sie den Ordner oder die Sammlung sowie Filter, die die Fotos definieren, die Sie überprüfen möchten.",
             "Prüfen Sie die abgelehnten Fotos. Überprüfen Sie die Einstellungen für verknüpfte Dateien und erweitern Sie vorhandene Stapel, wenn Sie erwarten, dass ihre anderen Mitglieder einbezogen werden sollen.",
-            "Wählen Sie auf dem Mac Foto → Abgelehnte Fotos in den Papierkorb verschieben…, oder drücken Sie Command+Delete.",
+            "Wählen Sie auf dem Mac Foto → Abgelehnte Fotos in den Papierkorb verschieben…, oder drücken Sie Command+Delete. In der Linux- oder Windows-Desktop-App drücken Sie Ctrl+Delete.",
             "Lesen Sie die Fotoanzahl in der Bestätigung und bestätigen Sie nur, wenn sie Ihrer beabsichtigten Auswahl entspricht."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Eine versehentliche Entfernung auf dem Mac wiederherstellen",
+          "title": "Eine versehentliche Entfernung rückgängig machen",
           "paragraphs": [
-            "Verwenden Sie den Papierkorb des Finders, um das Original und seine Sidecars wieder in ihren vorherigen Ordner zu legen, und scannen Sie den Ordner dann in LightTable erneut. Die App hat keinen Papierkorb-Browser in der App."
+            "Verwenden Sie auf dem Mac den Papierkorb von Finder, unter Linux den Desktop-Papierkorb oder unter Windows den Papierkorb, um das Original und seine Sidecars in den vorherigen Ordner zurückzusetzen, und scannen Sie dann in LightTable erneut. Die App verfügt nicht über einen integrierten Papierkorb-Browser."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Kopieren und Einfügen übertragen die Gruppen, die Sie ausdrücklich auswählen. Einstellungen in nicht aktivierten Gruppen bleiben auf jedem Ziel unverändert. Dies ist ein expliziter Kopieren/Einfügen-Workflow: Spätere Änderungen an der Quelle werden nicht automatisch auf die Ziele synchronisiert."
           ],
           "steps": [
-            "Öffnen Sie das Quellfoto und klicken Sie auf Copy edit settings, oder drücken Sie Command-Shift-C auf dem Mac bzw. Ctrl-Shift-C unter Windows.",
+            "Öffnen Sie das Quellfoto und klicken Sie auf Bearbeitungseinstellungen kopieren, oder drücken Sie Command-Shift-C auf dem Mac bzw. Ctrl-Shift-C unter Linux und Windows.",
             "Aktivieren Sie die Gruppen, die Sie übertragen möchten, und klicken Sie dann auf Einstellungen kopieren.",
             "Wählen Sie die Zielfotos in der Bibliothek aus und klicken Sie auf Bearbeitungseinstellungen einfügen, oder verwenden Sie Command-Shift-V / Ctrl-Shift-V.",
             "Lesen Sie die Abschlussmeldung. Bei einem Stapel beendet Stopp die Verarbeitung nach dem aktuellen Foto; abgeschlossene Fotos behalten die eingefügten Bearbeitungen."
@@ -1763,7 +1764,7 @@
         {
           "title": "Personen oder Gesichtsbereiche auswählen",
           "paragraphs": [
-            "Personen bietet Person, Haut im Gesicht, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Personenmasken erfordern den Vision-Helfer unter macOS 14 oder neuer. Haut im Gesicht und Haare werden geschätzt, und es wird keine Identität abgeleitet."
+            "Personen bietet Person, Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Diese Steuerelemente benötigen den Vision-Helfer unter macOS 14 oder neuer und sind unter Linux und Windows ausgeblendet. Gesichtshaut und Haare werden geschätzt, und es wird keine Identität abgeleitet."
           ],
           "steps": [
             "Personen wählen und dann den Teil, den Sie anpassen möchten.",
@@ -1916,7 +1917,7 @@
             "Die fertige Vorschau bei 1:1 prüfen."
           ],
           "tips": [
-            "Die Verfügbarkeit hängt vom lokalen Modell, Helfer und der unterstützten Plattform ab. Entwicklungs-Builds verfügen möglicherweise nicht über das Modell, und die App meldet dies, statt so zu tun, als wäre das Entrauschen erfolgreich gewesen."
+            "Erlerntes Entrauschen erfordert den Inferenz-Helfer von macOS und ein kompatibles lokales Modell. Unter Linux und Windows ist es nicht verfügbar. Gewöhnliche Rauschreduzierung und Schärfen bleiben verfügbar. Entwicklungs-Builds verfügen möglicherweise nicht über das Modell; lesen Sie die Verfügbarkeitsmeldung vor dem Start."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Rückgängig und Wiederholen gelten für jedes Foto während der aktuellen Sitzung. In Katalogbibliotheken bleibt der Verlauf nach dem Beenden erhalten. Nahe beieinander liegende Anpassungen können zu einem Verlaufsschritt zusammengefasst werden, sodass die Liste kein Protokoll jeder einzelnen Schiebereglerposition ist."
           ],
           "steps": [
-            "Verwenden Sie auf dem Mac Command-Z oder unter Windows Strg-Z, um rückgängig zu machen. Fügen Sie Umschalt hinzu, um zu wiederholen.",
+            "Verwenden Sie auf dem Mac Command-Z oder unter Linux und Windows Ctrl-Z, um rückgängig zu machen. Fügen Sie Shift hinzu, um zu wiederholen.",
             "Öffnen Sie History in der Bearbeitungs-Werkzeugleiste, um die gespeicherten Schritte des aktuellen Fotos zu sehen, die neuesten zuerst.",
             "Klicken Sie auf einen Schritt, um seine Einstellungen wiederherzustellen. Das Wiederherstellen eines Schritts ist selbst eine rückgängig machbare Bearbeitung."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Formate und Vorgaben",
           "paragraphs": [
-            "Der Exportdialog bietet JPEG, HEIF, PNG und 16-Bit-TIFF. HEIF ist unter macOS eine 8-Bit-Ausgabeoption. Der Qualitätsregler gilt für JPEG und HEIF.",
+            "Der Export-Dialog bietet JPEG, PNG und 16-Bit-TIFF. Unter macOS bietet er außerdem 8-Bit-HEIF; HEIF ist unter Linux und Windows ausgeblendet. Ein gespeichertes HEIF-Rezept kann dort nicht angewendet werden, wählen Sie also ein anderes Format. Der Qualitätsschieberegler gilt für JPEG und HEIF.",
             "JPG (Groß) verwendet JPEG in voller Größe mit Qualität 92 in sRGB. JPG (Klein) verwendet eine lange Kante von 2048 Pixeln mit Qualität 90 in sRGB. 16-Bit-TIFF verwendet volle Größe und ProPhoto RGB. Wenn Sie diese Einstellungen ändern, wird Benutzerdefiniert gewählt."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Externen Editor öffnen",
           "paragraphs": [
-            "Verwenden Sie Bearbeiten in…, um Fotos für einen anderen Pixel-Editor vorzubereiten. Die angepasste TIFF wird neben dem Original geschrieben und kann im Katalog damit gestapelt werden."
+            "Verwenden Sie Bearbeiten in…, um Fotos für einen anderen Pixel-Editor vorzubereiten. Das angepasste TIFF wird neben dem Original geschrieben und kann im Katalog damit gestapelt werden. Unter Linux und Windows können Sie über Anwendung auswählen… eine Editor-Programmdatei auswählen; Standardanwendung verwendet die Dateizuordnung des Desktops."
           ],
           "steps": [
             "Wählen Sie ein Foto aus und drücken Sie Command/Ctrl+E, um Bearbeiten in einer anderen App zu öffnen.",
@@ -2623,6 +2624,13 @@
             "Wählen Sie die Übereinstimmung nach Kameramodell, Seriennummer oder Kamera und ISO und klicken Sie dann auf Use current RAW settings.",
             "Verwenden Sie Zurücksetzen im Bereich Aktuelle Kamera, um diese Kamera-Standardeinstellung zu entfernen."
           ]
+        },
+        {
+          "title": "Erscheinungsbild unter Linux und Omarchy",
+          "paragraphs": [
+            "Unter Linux folgen die Steuerelemente dem hellen oder dunklen Erscheinungsbild des Systems. Unter Omarchy folgen Symbolleisten, Seitenleisten, Menüs und Dialoge der aktiven Desktop-Palette und werden innerhalb weniger Sekunden nach einer Designänderung aktualisiert. Die Bildpixel, die Hintergrundvoreinstellung des Betrachters und neutrale Farbbereiche behalten ihre eigenen Farben.",
+            "In einem schmalen Linux-Fenster öffnet Show or hide library die Bibliothek als Schublade. Wenn Sie das Fenster vergrößern, wird wieder das normale Layout nebeneinander angezeigt. Unter Hyprland verwenden Sie die Fenster-Tastenkürzel des Compositors, um LightTable zu verschieben, zu kacheln, in der Größe zu ändern oder zu schließen."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Den Index erstellen",
           "paragraphs": [
-            "Der Foto-Index ist standardmäßig ausgeschaltet. Die Analyse bleibt auf diesem Mac und verändert keine Fotoordner. Apple Vision liefert die Kernanalyse; ausführlichere Beschreibungen von Foundation Models erscheinen nur, wenn diese Funktion verfügbar ist."
+            "Der Fotoindex ist standardmäßig deaktiviert und erfordert macOS. Unter Linux und Windows wird Nicht verfügbar auf dieser Plattform angezeigt, und neue Indizierung kann nicht aktiviert werden. Auf dem Mac bleibt die Analyse auf dem Gerät und verändert die Fotoordner nicht. Apple Vision liefert die Kernanalyse; umfangreichere Beschreibungen durch Foundation Models werden nur angezeigt, wenn diese Funktion verfügbar ist."
           ],
           "steps": [
             "Einstellungen → Fotoindex öffnen.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Signale überprüfen",
           "paragraphs": [
-            "Assisted Culling verwendet den privaten Foto-Index. Es markiert Fotos nicht, bis Sie es dazu auffordern. Ein Foto passt zu einer Gruppe, wenn eines Ihrer gewählten Kriterien mit Ja beantwortet wird; Nicht beurteilt bedeutet, dass dieses Signal kein brauchbares Urteil hat."
+            "Assistiertes Aussortieren verwendet den privaten Fotoindex, der macOS erfordert. Neue Analyse ist unter Linux und Windows nicht verfügbar. Fotos werden erst markiert, wenn Sie dies anfordern. Ein Foto stimmt mit einer Gruppe überein, wenn eines Ihrer ausgewählten Kriterien mit ja beantwortet wird; nicht beurteilt bedeutet, dass dieses Signal kein verwendbares Urteil hat."
           ],
           "steps": [
             "Aktivieren Sie den Foto-Index in Einstellungen und warten Sie, bis Fotos bewertet wurden.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Tastatur-Einstellungen",
           "paragraphs": [
-            "Einstellungen → Tastenkürzel & Hardware enthält das Tastenkürzel-Schema und eine Tastaturreferenz unter Tastatur- und MIDI-Steuerungen. Das Desktop-Hilfemenü enthält außerdem Tastenkürzel.",
+            "Einstellungen → Tastenkombinationen & Hardware enthält das Tastenkürzel-Schema und eine Tastaturreferenz unter Tastatur- und MIDI-Steuerungen. Unter macOS hat auch das Desktop-Menü Hilfe Tastenkombinationen. Verwenden Sie Ctrl für Command/Ctrl-Tastenkombinationen unter Linux und Windows.",
             "Wählen Sie LightTable oder Klassisch; das Schema wird nach einem Neuladen angewendet. Die Schiebereglersteuerung mit gedrückter Taste erlaubt es, eine zugeordnete Taste gedrückt zu halten, während Sie scrollen oder die Pfeiltasten verwenden. Automatisierung zulassen bestimmt, ob freigegebene lokale Werkzeuge das Fenster mit Verlauf und Rückgängig steuern dürfen."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Nach dem Upgrade liest der erste Scan lokale Originale, um die Dateizuordnung zu verbessern. Das kann bei einer großen Mediathek länger dauern. Originale, die bereits ohne vollständige Dateidentität fehlten, bleiben fehlend; behalten Sie ihre Einträge und stellen Sie die Originale vor dem erneuten Scannen an ihre zuvor erfassten Pfade wieder her.",
             "Unter Windows liest die Prüfung, ob sich Originale geändert haben, jede lokale Datei vollständig ein. Erneutes Scannen, das Öffnen von Fotos und Exportprüfungen können bei großen Originalen länger dauern. Diese Prüfungen laden keine Dateien herunter, die nur in der Cloud gespeichert sind.",
             "Bei einem beschädigten Katalog kann Library Health Wiederherstellung, Wiederherstellen oder einen neuen Katalog anbieten. Salvage kopiert lesbare Zeilen, verliert jedoch Zeilen auf beschädigten Seiten. Ein Neustart übernimmt keine Bewertungen, Bearbeitungen, Sammlungen oder Verlaufseinträge. Die aktuelle beschädigte Katalogdatei wird in Recovery aufbewahrt."
+          ]
+        },
+        {
+          "title": "Linux-Anwendungsdaten finden",
+          "paragraphs": [
+            "Unter Linux werden Katalog und Vorgaben normalerweise in ~/.local/share/lighttable gespeichert, Einstellungen in ~/.config/lighttable, Render-Cache-Dateien in ~/.cache/lighttable und Protokolle in ~/.local/state/lighttable/logs. Benutzerdefinierte Speicherorte des Systems oder von LightTable können diese Pfade ändern; in Einstellungen werden die aktiven Katalog- und Cache-Pfade angezeigt.",
+            "Die Originale bleiben in den von Ihnen gewählten Fotoordnern. Katalogsicherungen enthalten diese Originale, Ihre Einstellungen oder separat gespeicherte Vorgaben nicht. Frühere experimentelle Linux-Daten werden nicht automatisch aus älteren Speicherorten verschoben."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Linux-Rendering prüfen",
+          "paragraphs": [
+            "Unter Linux meldet Einstellungen → Leistung nach der Startphase den aktiven Rust-Renderer und den erkannten Adapter. Die Auswahl GPU · Rust kann CPU-Rendering verwenden, wenn keine Hardware-GPU verfügbar ist. Software-Vulkan ist keine Hardwarebeschleunigung.",
+            "Ein Foto, das die GPU-Grenzen überschreitet, wird mit der CPU verarbeitet. Wenn der Rendering-Worker nicht mehr reagiert, versucht LightTable es einmal mit der CPU erneut und behält diesen Worker für die Sitzung bei. Öffnen Sie LightTable nach einer Reparatur oder Aktualisierung Ihres Grafiktreibers erneut, um das GPU-Rendering wieder zu versuchen. Große Fotos und Software-Rendering können länger dauern; verwenden Sie Automatisch für die Vorschau-Detailstufe beim normalen Bearbeiten."
+          ]
+        },
+        {
           "title": "Vorschaufehler lesen",
           "paragraphs": [
             "Wenn ein Foto nicht gerendert oder angezeigt werden kann, enthält die Meldung im Foto-Bereich die gemeldete Ursache, sofern eine verfügbar ist. So lässt sich eine fehlende Datei, ein Problem beim Laden des Bildes oder ein Grafikfehler erkennen. Wenn keine Ursache verfügbar ist, bleibt die Meldung allgemein."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

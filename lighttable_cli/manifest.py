@@ -92,6 +92,7 @@ ROUTE_COVERAGE = {
 }
 
 INTERNAL_ROUTES = {
+    "/api/desktop-theme": "read-only Linux desktop palette for interface chrome",
     "/api/export/preview": "read-only export dialog delivery example",
     "/api/thumb/rendered": "edit-aware browser thumbnail replacement",
     "/api/render/native": "native surface transport",

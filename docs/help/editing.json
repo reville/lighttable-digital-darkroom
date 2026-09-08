@@ -38,7 +38,7 @@
       {
         "title": "Undo or restore an earlier step",
         "paragraphs": ["Undo and redo follow each photo during the current session. In catalog libraries, History persists after quitting. Nearby adjustments can be combined into a history step, so the list is not a record of every slider position."],
-        "steps": ["Use Command-Z on Mac or Ctrl-Z on Windows to undo. Add Shift to redo.", "Open History in the editing toolbar to see the current photo’s stored steps, newest first.", "Click a step to restore its settings. Restoring a step is itself an undoable edit."],
+        "steps": ["Use Command-Z on Mac or Ctrl-Z on Linux and Windows to undo. Add Shift to redo.", "Open History in the editing toolbar to see the current photo’s stored steps, newest first.", "Click a step to restore its settings. Restoring a step is itself an undoable edit."],
         "tips": ["Persistent History requires a catalog library. Folder-only use still supports session Undo and Redo.", "Clear removes the photo’s stored history steps; it is not an adjustment-reset command."]
       },
       {
@@ -199,7 +199,7 @@
         "title": "Run learned denoise on a RAW photo",
         "paragraphs": ["RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live."],
         "steps": ["Select a RAW photo and expand Detail.", "Check that Apply denoise is available, choose Strength, and click Apply denoise.", "Watch the progress message. Use Cancel if you need to stop the job.", "Inspect the completed preview at 1:1."],
-        "tips": ["Availability depends on the local model, helper, and supported platform. Development builds may lack the model, and the app reports this instead of pretending denoise succeeded."]
+        "tips": ["Learned denoise requires the macOS inference helper and a compatible local model. It is unavailable on Linux and Windows. Ordinary noise reduction and sharpening remain available. Development builds may lack the model; read the availability message before starting."]
       },
       {
         "title": "Create an enhanced derivative in the Mac app",
@@ -434,7 +434,7 @@
       },
       {
         "title": "Select people or facial regions",
-        "paragraphs": ["People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. People masks require the Vision helper on macOS 14 or later. Face skin and hair are estimated, and no identity is inferred."],
+        "paragraphs": ["People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. These controls require the Vision helper on macOS 14 or later and are hidden on Linux and Windows. Face skin and hair are estimated, and no identity is inferred."],
         "steps": ["Choose People, then the part you want to adjust.", "Inspect the overlay and use painted refinements around boundaries as needed.", "For Soften skin, review the automatically applied Texture and Clarity reduction, then adjust it to suit the portrait."],
         "tips": ["Read any availability or detection error in the mask panel. A tool appearing in the menu does not guarantee that the required helper or a usable selection is available."]
       }
@@ -726,7 +726,7 @@
       {
         "title": "Transfer selected settings",
         "paragraphs": ["Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."],
-        "steps": ["Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Windows.", "Check the groups you want to transfer, then click Copy settings.", "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.", "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."],
+        "steps": ["Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Linux and Windows.", "Check the groups you want to transfer, then click Copy settings.", "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.", "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."],
         "tips": ["Crop and geometry, Local masks, and Healing are separate choices and are not included by default.", "Healing copies spot positions and should only be transferred between photos with matching framing."]
       },
       {

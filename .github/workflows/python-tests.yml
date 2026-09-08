@@ -23,6 +23,10 @@ jobs:
 
       - name: Install the runtime set
         run: |
+          # The cross-platform suite also exercises Linux float ICC transforms.
+          # macOS itself uses ColorSync, so this is a test dependency only.
+          brew install little-cms2
+          echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix little-cms2)/lib:/usr/local/lib:/usr/lib" >> "$GITHUB_ENV"
           python -m pip install --upgrade pip
           python -m pip install -r requirements-runtime.lock
 

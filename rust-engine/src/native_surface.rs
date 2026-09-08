@@ -51,9 +51,7 @@ pub fn publish_packed(width: u32, height: u32, row_bytes: usize, packed: &[u8]) 
     let fd = unsafe { libc::shm_open(c_name.as_ptr(), libc::O_RDWR | libc::O_CREAT | libc::O_EXCL, 0o600) };
     if fd < 0 { return Err(std::io::Error::last_os_error()).context("creating native shared memory"); }
     let result = (|| {
-        if unsafe { libc::ftruncate(fd, length as libc::off_t) } != 0 {
-            return Err(std::io::Error::last_os_error()).context("sizing native shared memory");
-        }
+        crate::shared_memory::size_output(fd, length).context("sizing native shared memory")?;
         let address = unsafe { libc::mmap(std::ptr::null_mut(), length, libc::PROT_READ | libc::PROT_WRITE,
             libc::MAP_SHARED, fd, 0) };
         if address == libc::MAP_FAILED {

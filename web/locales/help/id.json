@@ -44,10 +44,10 @@
         {
           "title": "Buka folder lokal",
           "paragraphs": [
-            "Di aplikasi desktop, Add Photos membuka pemilih untuk foto dan folder. LightTable menyimpan original di lokasi saat ini. Memilih foto individual menambahkan folder yang menampungnya, sehingga foto lain yang didukung di folder itu juga dapat muncul."
+            "Tambahkan Foto membuka pemilih foto. Di Mac, pemilih itu juga menerima folder. Di Linux dan Windows, gunakan + di samping Lokal untuk menambahkan seluruh folder. LightTable menyimpan original tetap di tempatnya. Memilih satu foto menambahkan folder yang memuatnya, sehingga foto lain yang didukung di folder itu juga dapat muncul."
           ],
           "steps": [
-            "Klik Tambahkan Foto di kiri atas dan pilih satu atau lebih foto atau folder.",
+            "Klik Tambahkan Foto di kiri atas dan pilih foto, atau gunakan + di samping Lokal untuk memilih folder.",
             "Pilih folder di bawah Lokal pada bilah samping kiri. Aktifkan Sertakan subfolder untuk menelusuri foto di folder anaknya.",
             "Pilih Photo Grid, Culling Grid, atau Detail di bagian atas. Klik foto untuk menjadikannya aktif."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Pilih apa yang terlihat",
           "paragraphs": [
-            "Local → Browse mencantumkan folder yang Anda tambahkan. Include subfolders mengontrol apakah folder yang dipilih juga menampilkan turunannya. Filter pustaka lain tetap berlaku."
+            "Local → Browse mencantumkan folder yang Anda tambahkan. Include subfolders mengontrol apakah folder yang dipilih juga menampilkan turunannya. Filter pustaka lain tetap berlaku.",
+            "Di jendela Linux yang sempit, gunakan Tampilkan atau sembunyikan pustaka di kiri atas untuk membuka laci pustaka. Tutup dengan tombol yang sama setelah memilih folder agar ada lebih banyak ruang untuk foto."
           ],
           "steps": [
             "Klik folder di bawah Lokal.",
@@ -353,7 +354,7 @@
         {
           "title": "Aksi folder",
           "paragraphs": [
-            "Menu ••• pada sebuah folder mencakup Show in Finder di Mac atau Show in File Explorer di Windows. Untuk folder saat ini, Synchronize Folder menyegarkan tampilan. Local ••• → Rescan folders memindai sumber katalog.",
+            "Menu ••• pada folder mencakup Tampilkan di Finder di Mac, Tampilkan di File Explorer di Windows, atau Tampilkan di Manajer Berkas di Linux. Untuk folder saat ini, Sinkronkan Folder menyegarkan tampilan. Lokal ••• → Pindai ulang folder memindai sumber katalog.",
             "Remove from LightTable menghapus root yang ditambahkan dari daftar sumber aplikasi; itu tidak memindahkan file asli ke Trash. Tindakan ini tersedia ketika lebih dari satu sumber tersedia."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Pilih folder atau koleksi dan filter yang menentukan foto yang ingin Anda tinjau.",
             "Periksa foto yang ditolak. Cek pengaturan file pasangan dan perluas tumpukan apa pun jika Anda berharap menyertakan anggota lainnya.",
-            "Di Mac, pilih Photo → Move Rejected Photos to Trash…, atau tekan Command+Delete.",
+            "Di Mac, pilih Foto → Pindahkan Foto yang Ditolak ke Tempat Sampah…, atau tekan Command+Delete. Di aplikasi desktop Linux atau Windows, tekan Ctrl+Delete.",
             "Baca jumlah foto di konfirmasi dan konfirmasikan hanya jika sesuai dengan set yang Anda inginkan."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Pulihkan penghapusan yang keliru di Mac",
+          "title": "Memulihkan penghapusan yang keliru",
           "paragraphs": [
-            "Gunakan Trash di Finder untuk menempatkan kembali file asli dan sidecar-nya ke folder sebelumnya, lalu pindai ulang folder tersebut di LightTable. Aplikasi ini tidak memiliki penjelajah Trash di dalam aplikasi."
+            "Gunakan Tempat Sampah Finder di Mac, Tempat Sampah desktop di Linux, atau Recycle Bin di Windows untuk memulihkan original dan sidecar-nya ke folder sebelumnya, lalu pindai ulang di LightTable. Aplikasi ini tidak memiliki penjelajah Tempat Sampah bawaan."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan."
           ],
           "steps": [
-            "Buka foto sumber dan klik Copy edit settings, atau tekan Command-Shift-C di Mac atau Ctrl-Shift-C di Windows.",
+            "Buka foto sumber dan klik Salin pengaturan edit, atau tekan Command-Shift-C di Mac atau Ctrl-Shift-C di Linux dan Windows.",
             "Centang grup yang ingin Anda transfer, lalu klik Salin pengaturan.",
             "Pilih foto tujuan di pustaka lalu klik Tempel pengaturan edit, atau gunakan Command-Shift-V / Ctrl-Shift-V.",
             "Baca pesan penyelesaian. Untuk batch, Stop mengakhiri pemrosesan setelah foto saat ini; foto yang selesai mempertahankan edit yang ditempel."
@@ -1763,7 +1764,7 @@
         {
           "title": "Pilih orang atau area wajah",
           "paragraphs": [
-            "People menyediakan Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, dan Soften skin. Masker People memerlukan helper Vision di macOS 14 atau yang lebih baru. Face skin dan hair diperkirakan, dan tidak ada identitas yang disimpulkan."
+            "Orang menawarkan Orang, Kulit wajah, Mata, Alis, Bibir, Gigi, Rambut, dan Haluskan kulit. Kontrol ini memerlukan helper Vision di macOS 14 atau lebih baru dan disembunyikan di Linux dan Windows. Kulit wajah dan rambut diperkirakan, dan tidak ada identitas yang disimpulkan."
           ],
           "steps": [
             "Pilih Orang, lalu bagian yang ingin Anda sesuaikan.",
@@ -1916,7 +1917,7 @@
             "Periksa pratinjau yang selesai pada 1:1."
           ],
           "tips": [
-            "Ketersediaan bergantung pada model lokal, helper, dan platform yang didukung. Build pengembangan mungkin tidak memiliki model, dan aplikasi melaporkan hal ini alih-alih berpura-pura denoise berhasil."
+            "Kurangi noise terlatih memerlukan helper inferensi macOS dan model lokal yang kompatibel. Fitur ini tidak tersedia di Linux dan Windows. Pengurangan noise dan penajaman biasa tetap tersedia. Build pengembangan mungkin tidak memiliki model; baca pesan ketersediaan sebelum memulai."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Urungkan dan ulang mengikuti setiap foto selama sesi saat ini. Di pustaka katalog, History tetap ada setelah keluar. Penyesuaian yang berdekatan dapat digabung menjadi satu langkah history, sehingga daftar ini bukan catatan setiap posisi penggeser."
           ],
           "steps": [
-            "Gunakan Command-Z di Mac atau Ctrl-Z di Windows untuk batalkan. Tambahkan Shift untuk ulang.",
+            "Gunakan Command-Z di Mac atau Ctrl-Z di Linux dan Windows untuk membatalkan. Tambahkan Shift untuk mengulang.",
             "Buka History di toolbar pengeditan untuk melihat langkah tersimpan foto saat ini, terbaru lebih dulu.",
             "Klik sebuah langkah untuk memulihkan pengaturannya. Memulihkan langkah adalah edit yang bisa di-undo."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Format dan preset",
           "paragraphs": [
-            "Dialog ekspor menawarkan JPEG, HEIF, PNG, dan TIFF 16-bit. HEIF adalah opsi keluaran 8-bit di macOS. Penggeser kualitas berlaku untuk JPEG dan HEIF.",
+            "Dialog ekspor menawarkan JPEG, PNG, dan TIFF 16-bit. Di macOS juga tersedia HEIF 8-bit; HEIF disembunyikan di Linux dan Windows. Resep HEIF yang disimpan tidak dapat diterapkan di sana, jadi pilih format lain. Penggeser kualitas berlaku untuk JPEG dan HEIF.",
             "JPG (Large) menggunakan JPEG ukuran penuh pada kualitas 92 dalam sRGB. JPG (Small) menggunakan sisi panjang 2048 piksel pada kualitas 90 dalam sRGB. TIFF 16-bit menggunakan ukuran penuh dan ProPhoto RGB. Mengubah pengaturan ini memilih Kustom."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Buka penyunting eksternal",
           "paragraphs": [
-            "Gunakan Edit in… untuk menyiapkan foto bagi penyunting piksel lain. TIFF yang disesuaikan ditulis di samping aslinya, dan dapat digabungkan dalam tumpukan di katalog."
+            "Gunakan Edit di… untuk menyiapkan foto bagi penyunting piksel lain. TIFF yang sudah disesuaikan ditulis di samping aslinya, dan dapat ditumpuk dengannya di katalog. Di Linux dan Windows, Pilih aplikasi… memungkinkan Anda memilih eksekutabel penyunting; Aplikasi bawaan menggunakan asosiasi berkas desktop."
           ],
           "steps": [
             "Pilih foto dan tekan Command/Ctrl+E untuk membuka Edit di aplikasi lain.",
@@ -2623,6 +2624,13 @@
             "Pilih pencocokan berdasarkan model kamera, nomor serial, atau kamera dan ISO, lalu klik Use current RAW settings.",
             "Gunakan Atur Ulang di area Kamera Saat Ini untuk menghapus default kamera tersebut."
           ]
+        },
+        {
+          "title": "Tampilan Linux dan Omarchy",
+          "paragraphs": [
+            "Di Linux, kontrol mengikuti tampilan terang atau gelap sistem. Di Omarchy, toolbar, sidebar, menu, dan dialog mengikuti palet desktop aktif dan diperbarui dalam beberapa detik setelah perubahan tema. Piksel foto, preferensi latar belakang penampil, dan scope warna netral mempertahankan warnanya sendiri.",
+            "Di jendela Linux yang sempit, Tampilkan atau sembunyikan pustaka membuka pustaka sebagai laci. Memperlebar jendela memulihkan tata letak normal berdampingan. Di Hyprland, gunakan pintasan jendela compositor untuk memindahkan, menata ubin, mengubah ukuran, atau menutup LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Bangun indeks",
           "paragraphs": [
-            "Photo Index mati secara default. Analisis tetap di Mac ini dan tidak mengubah folder foto. Apple Vision menyediakan analisis inti; deskripsi Foundation Models yang lebih kaya hanya muncul saat kemampuan itu tersedia."
+            "Indeks Foto nonaktif secara default dan memerlukan macOS. Linux dan Windows menampilkan Tidak tersedia pada platform ini, dan pengindeksan baru tidak dapat diaktifkan. Di Mac, analisis tetap berada di perangkat dan tidak memodifikasi folder foto. Apple Vision menyediakan analisis inti; deskripsi Model Dasar yang lebih kaya hanya muncul saat kemampuan itu tersedia."
           ],
           "steps": [
             "Buka Pengaturan → Indeks Foto.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Tinjau sinyal",
           "paragraphs": [
-            "Assisted culling menggunakan Private Photo Index. Ini tidak memberi bendera pada foto sampai Anda memintanya. Sebuah foto cocok dengan grup jika salah satu kriteria yang Anda pilih menghasilkan yes; not judged berarti sinyal itu tidak memiliki putusan yang dapat digunakan."
+            "Seleksi terbantu menggunakan Indeks Foto privat, yang memerlukan macOS. Analisis baru tidak tersedia di Linux dan Windows. Fitur ini tidak menandai foto sampai Anda memintanya. Sebuah foto cocok dengan grup jika salah satu kriteria yang Anda pilih menghasilkan ya; belum dinilai berarti sinyal itu tidak memiliki keputusan yang dapat digunakan."
           ],
           "steps": [
             "Aktifkan Indeks Foto di Pengaturan dan tunggu foto diberi skor.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Preferensi keyboard",
           "paragraphs": [
-            "Settings → Shortcuts & Hardware berisi skema pintasan dan referensi keyboard di bawah kontrol Keyboard and MIDI. Menu Bantuan desktop juga memiliki Keyboard Shortcuts.",
+            "Pengaturan → Pintasan & Perangkat Keras berisi skema pintasan dan referensi keyboard di bawah Kontrol keyboard dan MIDI. Di macOS, menu Bantuan desktop juga memiliki Pintasan Keyboard. Gunakan Ctrl untuk pintasan Command/Ctrl di Linux dan Windows.",
             "Pilih LightTable atau Classic; skema diterapkan setelah memuat ulang. Hold-key slider control memungkinkan Anda menahan key yang dipetakan sambil menggulir atau menggunakan tombol panah. Allow automation mengatur apakah alat lokal yang disetujui dapat mengontrol jendela dengan history dan Urungkan."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Setelah pemutakhiran, pemindaian pertama membaca asli lokal untuk memperkuat pencocokan file. Ini bisa memakan waktu lebih lama pada pustaka yang besar. Asli yang sebelumnya sudah hilang tanpa identitas file lengkap akan tetap hilang; pertahankan entri mereka dan pulihkan asli ke jalur katalog sebelumnya sebelum memindai ulang.",
             "Di Windows, pemeriksaan apakah file asli telah berubah akan membaca setiap file lokal secara penuh. Pemindaian ulang, pembukaan foto, dan pemeriksaan ekspor dapat memakan waktu lebih lama untuk file asli berukuran besar. Pemeriksaan ini tidak akan mengunduh file yang hanya disimpan di cloud.",
             "Untuk katalog yang rusak, Library Health mungkin menawarkan salvage, restore, atau katalog baru. Salvage menyalin baris yang masih dapat dibaca tetapi kehilangan baris pada halaman yang rusak. Memulai dari awal tidak memindahkan rating, pengeditan, koleksi, atau riwayat. Berkas katalog rusak saat ini dipertahankan di Recovery."
+          ]
+        },
+        {
+          "title": "Menemukan data aplikasi Linux",
+          "paragraphs": [
+            "Linux biasanya menyimpan katalog dan preset di ~/.local/share/lighttable, preferensi di ~/.config/lighttable, cache render di ~/.cache/lighttable, dan log di ~/.local/state/lighttable/logs. Pengaturan penyimpanan sistem atau LightTable kustom dapat mengubah lokasi ini; Pengaturan menampilkan jalur katalog dan cache aktif.",
+            "Original tetap berada di folder foto yang Anda pilih. Cadangan katalog tidak menyertakan original tersebut, preferensi Anda, atau preset yang disimpan terpisah. Data Linux eksperimental sebelumnya tidak dipindahkan secara otomatis dari lokasi lama."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Periksa perenderan Linux",
+          "paragraphs": [
+            "Di Linux, Pengaturan → Performa melaporkan perender Rust aktif dan adapter yang terdeteksi setelah pemanasan. Pilihan GPU · Rust dapat menggunakan perenderan CPU saat GPU perangkat keras tidak tersedia. Vulkan perangkat lunak bukan akselerasi perangkat keras.",
+            "Foto yang melampaui batas GPU menggunakan CPU. Jika pekerja render berhenti merespons, LightTable mencoba sekali lagi di CPU dan mempertahankan pekerja itu untuk sesi tersebut. Buka kembali LightTable setelah memperbaiki atau memperbarui driver grafis Anda untuk mencoba perenderan GPU lagi. Foto besar dan perenderan perangkat lunak dapat memakan waktu lebih lama; gunakan detail pratinjau Otomatis untuk pengeditan normal."
+          ]
+        },
+        {
           "title": "Baca kesalahan pratinjau",
           "paragraphs": [
             "Jika foto tidak dapat dirender atau ditampilkan, pesan di area foto menyertakan alasan yang dilaporkan bila tersedia. Ini dapat mengidentifikasi file yang hilang, masalah pemuatan gambar, atau kegagalan grafis. Jika tidak ada alasan yang tersedia, pesannya tetap umum."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

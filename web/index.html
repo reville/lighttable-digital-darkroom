@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="/web/preset-browser.css">
 <link rel="stylesheet" href="/web/help.css">
 <link rel="stylesheet" href="/web/first-run.css">
+<link rel="stylesheet" href="/web/linux-layout.css">
+<link rel="stylesheet" href="/web/desktop-theme.css">
 <link rel="stylesheet" href="/web/localization.css">
 </head>
 <body class="locale-loading">
@@ -1160,6 +1162,7 @@
           <h2 data-i18n-text="{&quot;0&quot;:&quot;Performance&quot;}">Performance</h2><p class="settings-intro" data-i18n-text="{&quot;0&quot;:&quot;Rendering and generated preview storage.&quot;}">Rendering and generated preview storage.</p>
           <div class="settings-group settings-fields">
             <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Film engine&quot;}">Film engine</span><select id="settingsEngine"><option value="rs" data-i18n-text="{&quot;0&quot;:&quot;GPU · Rust&quot;}">GPU · Rust</option><option value="py" data-i18n-text="{&quot;0&quot;:&quot;Compatible · Python&quot;}">Compatible · Python</option></select></label>
+            <p class="hint" id="rendererStatus" role="status" hidden></p>
             <div class="settings-action-block"><div><strong data-i18n-text="{&quot;0&quot;:&quot;Preview detail&quot;}">Preview detail</strong><small id="settingsPreviewSummary" role="status" data-i18n-text="{&quot;0&quot;:&quot;Automatic · matches the window, display, and zoom.&quot;}">Automatic · matches the window, display, and zoom.</small></div></div>
             <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Cache budget&quot;}">Cache budget</span><div class="settings-range"><input type="range" id="cacheBudgetGB" min="2" max="32" step="1" value="8"><output id="cacheBudgetGBV" data-i18n-text="{&quot;0&quot;:&quot;8 GB&quot;}">8 GB</output></div></label>
             <div class="settings-path"><span data-i18n-text="{&quot;0&quot;:&quot;Location&quot;}">Location</span><code id="cacheLocation">Checking…</code></div>

@@ -134,10 +134,19 @@ Windows has a Rust desktop shell and packaging workflow. Follow
 runtime checks, and native GUI checks. The macOS setup commands above are not a
 Windows packaging recipe.
 
-Linux and Omarchy need maintainers to establish and test installation, desktop
-integration, GPU behavior, and release packaging. The shared Python, web, and
-Rust components provide a starting point; there is no supported Linux desktop
-package or documented native build yet.
+Linux has an experimental GTK/WebKitGTK desktop port and portable-bundle build
+tooling. Follow [LINUX.md](LINUX.md) for Ubuntu and Arch/Omarchy dependencies,
+build instructions, XDG storage locations, and the platform validation checklist.
+The initial target is x86-64; public packages and physical GPU validation are
+still needed. An ARM64 virtual-machine build does not establish x86-64 support
+or hardware rendering performance.
+
+Linux contributions should check both the shared photo workflow and native
+integration: import, edit, export, reopen, file dialogs, display scaling,
+removable drives, and recoverable Trash. Report the distribution, desktop,
+Wayland or X11 session, GPU, and driver with results. Apple Vision/CoreML
+features and HEIF export remain unavailable on Linux. There is no supported
+Linux desktop release yet.
 
 ## Send a contribution
 
