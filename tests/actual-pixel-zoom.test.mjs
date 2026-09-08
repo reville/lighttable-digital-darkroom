@@ -18,10 +18,11 @@ function scene(sourceWidth, fitWidth) {
   const methods = new Function('S','$','displaySourcePixelWidth','clamp','sourceLongEdge',
     'clampPan','syncPreviewDetailStatus','cropViewState','syncCompareView','syncViewerChrome',
     'drawEditOverlayNow','scheduleNativeViewportLayout','scheduleViewportRegionRender','applyView',
-    'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview',
+    'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview','doRender','requestedPreviewWidth','cur',
     `${helpers}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt};`)(
       S,id=>({cv,cmp,...buttons})[id],()=>sourceWidth,(v,a,b)=>Math.max(a,Math.min(b,v)),
-      ()=>sourceWidth,noop,noop,()=>({}),noop,noop,noop,noop,noop,noop,noop,noop,noop);
+      ()=>sourceWidth,noop,noop,()=>({}),noop,noop,noop,noop,noop,noop,noop,noop,noop,
+      noop,()=>Math.min(sourceWidth,8000),()=>({name:'photo.dng'}));
   return {S,buttons,...methods,resize(width){fitWidth=width;methods.onViewportResize();}};
 }
 

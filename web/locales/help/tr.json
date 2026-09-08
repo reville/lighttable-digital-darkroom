@@ -2182,7 +2182,8 @@
         {
           "title": "Bir film stoğu ile başla",
           "paragraphs": [
-            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır."
+            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır.",
+            "Gerçekçi Film Simülasyonundaki Sıfırla, tüm Film kaydırıcılarını varsayılan değerlerine döndürür. Bir bölümün Sıfırla düğmesi yalnızca o bölümün kaydırıcılarını etkiler. Anahtarlar ve seçili seçenekler olduğu gibi kalır."
           ],
           "steps": [
             "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
@@ -2196,7 +2197,7 @@
           "paragraphs": [
             "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
             "Bir film stoğu, fiziksel film sürecini tanımlar. Bir düzenleme hazır ayarı daha geniş kaydedilmiş ayarlar içerebilir ve Film ayarlarını da içerebilir. Film içindeki Çıkış menüsü bir tarama veya baskı iş akışı seçer; bir dosya dışa aktarmaz.",
-            "Film’i açtıktan sonra, doğru RAW ayrıntısı ve daha büyük önizleme bitmeden önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar ve önizleme görünür hale gelince kaybolur. Doğru RAW ayrıntısı ve tam çözünürlüklü işleme arka planda sürer."
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
           ],
           "tips": [
             "Bir film stoğu kullanılamıyorsa GPU motoru gerekebilir. Motor kullanılabilirliği Ayarlar → Performans bölümünde gösterilir."
@@ -3024,7 +3025,8 @@
         {
           "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
           "paragraphs": [
-            "100% yakınlaştırma ayarı, tam görüntü ayrıntısının ulaştığını garanti etmez. Doğru RAW işleme ve daha büyük önizleme tamamlanırken önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar; örneğin 2 / 5 gibi bir sayım gösterir. Kullanılabilir bir önizleme gösterilir gösterilmez kaybolur; doğru RAW işleme ve daha büyük önizlemeler bindirme olmadan arka planda sürer. Sayım, kalan zamanı değil tamamlanan aşamaları temsil eder. Azaltılmış hareket, animasyon olmadan aynı aşama güncellemelerini korur. Fotoğraf karartılmadan görünür kalır. 1:1’de, ince ayrıntıları değerlendirirken tam kaynak ayrıntısının hazır olup olmadığını kontrol etmek için 1:1 düğmesinin üzerine gelin.",
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
+            "Yakınlaştırma, daha fazla ayrıntı yüklenirken mevcut en keskin önizlemeyi korur. Uzaklaştırmada aynı önizleme yeniden kullanılır. 1:1 görünümde, ince ayrıntıları değerlendirmeden önce düğmenin araç ipucunu kontrol edin.",
             "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
             "Kaldır, İyileştir, Klonla ve Doku ya da Netlik içeren maskeler ek bir önizleme güncellemesi gerektirir. Ayrıntılarını veya sonraki ayarlamaların etkisini değerlendirmeden önce önizlemenin bitmesini bekleyin.",
             "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
@@ -3078,5 +3080,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
+  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd"
 }

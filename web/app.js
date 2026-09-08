@@ -99,16 +99,12 @@ const RESET_GROUPS = {
   raw: ['raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
         'learned_denoise', 'learned_denoise_strength',
         'developProfile'],
-  film: ['profile_enabled', 'workflow_mode', 'wb_mode', 'wb_temperature',
-         'wb_tint', 'stock', 'film_format', 'output_recipe', 'paper',
-         'paper_locked', 'development_time',
-         'print_development_time',
-         'exposure_ev', 'print_exposure', 'gamma', 'auto_exposure'],
-  stages: ['couplers_on', 'couplers_amount', 'halation_on', 'halation_amount',
-           'grain_on', 'grain_amount', 'glare_on', 'glare_amount',
+  // Film resets restore sliders while keeping switches and selected options.
+  film: ['wb_temperature', 'wb_tint', 'exposure_ev', 'print_exposure', 'gamma'],
+  stages: ['couplers_amount', 'halation_amount', 'grain_amount', 'glare_amount',
            'camera_diffusion_strength', 'print_preflash',
            'print_y_filter_shift', 'print_m_filter_shift',
-           'scan_softness', 'scan_sharpness', 'scan_sharpen'],
+           'scan_softness', 'scan_sharpness'],
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks'],
   colour: ['temp', 'tint', 'vibrance', 'saturation'],
   effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],
@@ -1008,7 +1004,10 @@ function toggleActualZoomAt(x, y) {
   S.zoomMode = '100';
   S.targetPixelScale = 1;
   applyView();
-  if (sourceLongEdge() > Math.max(cv.width, cv.height) + 1) renderFilm(0);
+  if (sourceLongEdge() > Math.max(cv.width, cv.height) + 1) {
+    doRender(performance.now(), { width: requestedPreviewWidth(), phase: 'settled',
+      background: S.presentedPhotoName === cur()?.name && S.renderState === 'ready' });
+  }
 }
 
 function toggleActualZoom() {
@@ -3365,7 +3364,10 @@ async function runNativeRawJourney(width, layer) {
 function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
   clearTimeout(renderTimer);
   const requestedWidth = requestedPreviewWidth();
-  const width = viewportRegionEnabled() ? requestedWidth
+  // Navigation needs one consistent first image. Small interactive renders
+  // are useful for changing a recipe, not for opening or magnifying a photo.
+  const opening = S.presentedPhotoName !== cur()?.name || S.renderState !== 'ready';
+  const width = opening || viewportRegionEnabled() ? requestedWidth
     : Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
   renderTimer = setTimeout(() => {
     lastInteractiveRenderAt = performance.now();
@@ -3434,7 +3436,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
-      allow_draft: !hasAccuratePixels,
+      allow_draft: false,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3465,6 +3467,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     if (m.cancelled) {
+      automaticPreviewRequest = null;
       previewProgress.finish();
       $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = '';
@@ -3472,6 +3475,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     if (m.error) {
+      automaticPreviewRequest = null;
       if (!options.background) previewProgress.finish({ error: tr('Could not render preview') });
       $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = tr('error: {mError}', {mError: m.error});
@@ -3510,6 +3514,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         return doRender(scheduledAt, { ...options, skipPresentationCache: true });
       }
       if (imageTiming.failed) {
+        automaticPreviewRequest = null;
         if (!options.background) previewProgress.finish({ error: tr('Could not display preview') });
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || tr('preview unavailable');
@@ -3520,6 +3525,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
       S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+        renderedWidth: w,
         native: m.native || null,
         delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
           +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
@@ -3610,6 +3616,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
     const failedAt = performance.now();
+    if (my === S.seq) automaticPreviewRequest = null;
     const failure = {
       image: im?.name || null,
       width: w,
@@ -4197,6 +4204,7 @@ function prefetchImage(target, epoch = navigationGeneration) {
         : Math.min(requestedPreviewWidth(), INTERACTIVE_PREVIEW_WIDTH),
       engine: $('engine').value,
       client: CLIENT_ID, generation: S.seq, priority: 'prefetch',
+      allow_draft: false,
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
@@ -10597,9 +10605,21 @@ function scheduleAutomaticPreview() {
   clearTimeout(automaticPreviewTimer);
   if ($('pw').value !== 'auto' || S.viewMode !== 'detail' || !cur()) return;
   automaticPreviewTimer = setTimeout(() => {
+    viewFrameScheduler.flush();
     const width = requestedPreviewWidth();
-    if (automaticPreviewRequest?.name !== cur()?.name ||
-        automaticPreviewRequest?.width !== width) renderFilm(0);
+    const detail = S.previewDetail;
+    // Keep the largest useful surface while zooming out or back in. A view
+    // change does not invalidate the recipe, and must not install a small
+    // interactive texture over a sharper, already-presented result.
+    if (!S.nativeViewport && S.presentedPhotoName === cur()?.name &&
+        S.renderState === 'ready' && detail?.name === cur()?.name &&
+        detail.refining === false && detail.renderedWidth >= width) return;
+    if (automaticPreviewRequest?.name === cur()?.name &&
+        automaticPreviewRequest?.width >= width) return;
+    clearTimeout(renderTimer);
+    clearTimeout(settleRenderTimer);
+    doRender(performance.now(), { width, requestedWidth: width, phase: 'settled',
+      background: S.presentedPhotoName === cur()?.name && S.renderState === 'ready' });
   }, 200);
 }
 
