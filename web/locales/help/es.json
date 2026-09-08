@@ -220,9 +220,10 @@
         {
           "title": "Comparar con zoom aplicado",
           "paragraphs": [
-            "Haga clic en Comparar en Detalle para dividir la foto original y la editada. Arrastre el divisor para mover la división; arrastre en otra parte de una foto ampliada para desplazarla. El divisor y su controlador conservan el mismo tamaño al hacer zoom.",
+            "Haz clic en Comparar en Detalle para dividir la foto original y la editada. Cada vez que activas Comparar, el divisor se centra automáticamente en la vista actual sin cambiar tu zoom ni el desplazamiento. Arrastra el divisor para mover la división; arrastra en otra parte de una foto ampliada para desplazarte. El divisor y su control permanecen del mismo tamaño mientras haces zoom.",
             "Original usa la misma resolución de vista previa que la foto editada, incluso en 1:1. Para fotos RAW, Original usa la conversión neutra y sin editar; permita que termine de cargarse antes de juzgar el detalle.",
-            "Mantenga pulsada B para ver el original sin Película, máscaras locales ni ajustes de acabado. Suelte B para restaurar la vista editada."
+            "Mantenga pulsada B para ver el original sin Película, máscaras locales ni ajustes de acabado. Suelte B para restaurar la vista editada.",
+            "La información de la foto, los indicadores de procesamiento y las lecturas de ajuste al mantener una tecla permanecen al tamaño normal de la pantalla mientras haces zoom o desplazas la vista."
           ],
           "steps": [
             "Activa Comparar y luego amplía más allá de Ajustar.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Agregar, Restar e Intersecar te ponen en modos de refinamiento con pintura. Para una máscara Lineal o Radial, elige Editar forma para volver a manipular su forma.",
             "Activar cambia temporalmente el efecto de una máscara a apagado o encendido. Invertir revierte su selección.",
-            "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo quita las máscaras de la foto."
+            "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo quita las máscaras de la foto.",
+            "Los pines de la máscara y los contornos del pincel se mantienen nítidos y con el mismo grosor a medida que haces zoom. El contorno crece junto con el área que cubre en la foto."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Refinar una corrección existente",
           "paragraphs": [
-            "Seleccione una corrección en la lista para mostrar sus controles. Los círculos sobre la imagen indican el objetivo editable y, para Corregir y Clonar, la fuente."
+            "Seleccione una corrección en la lista para mostrar sus controles. Los círculos sobre la imagen indican el objetivo editable y, para Corregir y Clonar, la fuente.",
+            "Acerca para una colocación precisa. Los contornos circulares y los pines se mantienen nítidos en todos los niveles de zoom; los círculos siguen mostrando la misma área de la foto."
           ],
           "steps": [
             "Arrastra el círculo de destino para reposicionar la corrección, o elige Mover destino y haz clic en su nueva posición.",
@@ -2874,7 +2877,13 @@
           "title": "Administrar almacenamiento de caché",
           "paragraphs": [
             "Rendimiento muestra la ubicación, el uso y el presupuesto de la caché de vista previa. Purgar caché quita las vistas previas generadas y las cachés de renderizado después de la confirmación; los originales y las ediciones no se ven afectados. Será necesario generar de nuevo las vistas previas.",
-            "La resolución de vista previa es independiente del ajuste de Dimensiones usado para los archivos exportados."
+            "La resolución de la vista previa es independiente del ajuste de Dimensiones usado para los archivos exportados. El acabado de exportación y Combinar fotos usan aceleración de GPU automáticamente para las etapas de procesamiento de imágenes compatibles, con una alternativa de CPU cuando no está disponible. La preferencia del motor de película controla las vistas previas de película; no desactiva esta aceleración."
+          ]
+        },
+        {
+          "title": "Leer un error de vista previa",
+          "paragraphs": [
+            "Si una foto no se puede renderizar o mostrar, el mensaje en el área de la foto incluye el motivo informado cuando está disponible. Esto puede identificar un archivo faltante, un problema al cargar la imagen o un fallo de la tarjeta gráfica. Si no hay un motivo disponible, el mensaje permanece general."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

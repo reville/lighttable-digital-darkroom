@@ -220,9 +220,10 @@
         {
           "title": "Comparer en effectuant un zoom avant",
           "paragraphs": [
-            "Cliquez sur Comparer dans Détails pour diviser la photo originale et la photo modifiée. Faites glisser le séparateur pour déplacer la division ; faites glisser ailleurs sur une photo zoomée pour effectuer un panoramique. Le séparateur et sa poignée conservent la même taille lorsque vous zoomez.",
+            "Cliquez sur Comparer dans Détails pour séparer la photo originale et la photo modifiée. Chaque fois que vous activez Comparer, le séparateur se recentre automatiquement dans la vue actuelle sans modifier votre zoom ni votre panoramique. Faites glisser le séparateur pour déplacer la séparation ; faites glisser ailleurs sur une photo zoomée pour la déplacer. Le séparateur et sa poignée conservent la même taille lorsque vous zoomez.",
             "Original utilise la même résolution d’aperçu que la photo modifiée, y compris en 1:1. Pour les photos RAW, Original utilise la conversion neutre et non modifiée ; laissez le chargement se terminer avant d’évaluer les détails.",
-            "Maintenez B enfoncé pour voir l’original sans Film, sans masques locaux ni ajustements de finition. Relâchez B pour restaurer la vue modifiée."
+            "Maintenez B enfoncé pour voir l’original sans Film, sans masques locaux ni ajustements de finition. Relâchez B pour restaurer la vue modifiée.",
+            "Les informations Photo, les badges de traitement et les valeurs de réglage avec touche maintenue conservent leur taille d’écran normale lorsque vous zoomez ou faites un panoramique."
           ],
           "steps": [
             "Activez Comparer, puis zoomez au-delà de Ajuster.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Ajouter, Soustraire et Intersecter vous placent dans les modes de raffinement par peinture. Pour un masque Linéaire ou Radial, choisissez Modifier la forme pour revenir à la manipulation de sa forme.",
             "Activer coupe temporairement l’effet d’un masque. Inverser inverse sa sélection.",
-            "L’éditeur permet jusqu’à seize masques locaux. Supprimer le masque enlève le masque sélectionné ; Effacer tout supprime les masques de la photo."
+            "L’éditeur permet jusqu’à seize masques locaux. Supprimer le masque enlève le masque sélectionné ; Effacer tout supprime les masques de la photo.",
+            "Les épingles du Masque et les contours du pinceau restent nets et gardent la même épaisseur lorsque vous zoomez. Le contour s’agrandit avec la zone qu’il couvre sur la photo."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Affiner une correction existante",
           "paragraphs": [
-            "Sélectionnez une correction dans la liste pour afficher ses contrôles. Les cercles sur l’image indiquent la cible modifiable et, pour Heal et Clone, la source."
+            "Sélectionnez une correction dans la liste pour afficher ses contrôles. Les cercles sur l’image indiquent la cible modifiable et, pour Heal et Clone, la source.",
+            "Agrandissez pour un placement précis. Les contours des cercles et les épingles restent nets à chaque niveau de zoom ; les cercles continuent d’afficher la même zone de la photo."
           ],
           "steps": [
             "Faites glisser le cercle cible pour repositionner la correction, ou choisissez Déplacer la cible et cliquez sur sa nouvelle position.",
@@ -2676,7 +2679,7 @@
     },
     {
       "id": "assisted-culling",
-      "title": "Examiner les सुझाव assistées de tri",
+      "title": "Examiner les suggestions de tri assisté",
       "category": "Settings",
       "summary": "Examinez les indicateurs d’analyse locale et appliquez les drapeaux sélectionner ou rejeter uniquement lorsque vous le choisissez.",
       "keywords": [
@@ -2874,7 +2877,13 @@
           "title": "Gérer le stockage du cache",
           "paragraphs": [
             "Performance affiche l’emplacement, l’utilisation et le budget du cache d’aperçu. Vider le cache supprime les aperçus générés et les caches de rendu après confirmation ; les originaux et les modifications ne sont pas affectés. Les aperçus devront être générés à nouveau.",
-            "La résolution d’aperçu est distincte du réglage Dimensions utilisé pour les fichiers exportés."
+            "La résolution de l’aperçu est distincte du paramètre Dimensions utilisé pour les fichiers exportés. La finalisation de l’export et Fusionner Photo utilisent automatiquement l’accélération GPU pour les étapes de traitement d’image prises en charge, avec un repli sur le CPU lorsqu’elle n’est pas disponible. La préférence du moteur film contrôle les aperçus film ; elle ne désactive pas cette accélération."
+          ]
+        },
+        {
+          "title": "Lire une erreur d’aperçu",
+          "paragraphs": [
+            "Si une photo ne peut pas être rendue ou affichée, le message dans la zone photo inclut la raison signalée lorsqu’elle est disponible. Cela peut permettre d’identifier un fichier manquant, un problème de chargement d’image ou une défaillance graphique. Si aucune raison n’est disponible, le message reste général."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

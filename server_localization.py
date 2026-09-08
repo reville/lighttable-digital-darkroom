@@ -24,7 +24,7 @@ SOURCE_MODULES = ('server.py', 'export_workflow.py', 'media_availability.py',
                   'jobs.py', 'enhance_workflow.py', 'color_pipeline.py',
                   'film_lab_ai/providers.py', 'film_lab_ai/service.py',
                   'ingest_workflow.py', 'watch_workflow.py',
-                  'keyword_workflow.py', 'xmp_sidecar.py')
+                  'keyword_workflow.py', 'xmp_sidecar.py', 'platform_image.py')
 TOKENS = re.compile(r'\{\w+\}')
 LOCALE = re.compile(r'[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*')
 

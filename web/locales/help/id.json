@@ -220,9 +220,10 @@
         {
           "title": "Bandingkan saat zoom masuk",
           "paragraphs": [
-            "Klik Bandingkan di Detail untuk membagi foto original dan yang diedit. Seret pembagi untuk memindahkan belahan; seret di tempat lain pada foto yang dizoom untuk panning. Pembagi dan pegangannya tetap berukuran sama saat Anda zoom.",
+            "Klik Bandingkan di Detail untuk pisahkan foto asli dan foto yang telah diedit. Setiap kali Anda mengaktifkan Bandingkan, pembatas secara otomatis berada di tengah tampilan saat ini tanpa mengubah zoom atau penggeseran Anda. Seret pembatas untuk memindahkan pisahan; seret di tempat lain pada foto yang diperbesar untuk menggeser. Pembatas dan pegangannya tetap sama ukuran saat Anda melakukan zoom.",
             "Original menggunakan resolusi pratinjau yang sama seperti foto yang diedit, termasuk pada 1:1. Untuk foto RAW, Original menggunakan konversi netral tanpa edit; biarkan selesai dimuat sebelum menilai detail.",
-            "Tahan B untuk melihat original tanpa Film, masker lokal, atau penyesuaian akhir. Lepaskan B untuk memulihkan tampilan yang diedit."
+            "Tahan B untuk melihat original tanpa Film, masker lokal, atau penyesuaian akhir. Lepaskan B untuk memulihkan tampilan yang diedit.",
+            "Informasi foto, lencana pemrosesan, dan pembacaan penyesuaian saat tombol ditahan tetap pada ukuran layar normal saat Anda melakukan zoom atau menggeser."
           ],
           "steps": [
             "Nyalakan Bandingkan, lalu zoom melebihi Pas.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Add, Subtract, dan Intersect menempatkan Anda dalam mode penyempurnaan lukisan. Untuk masker Linear atau Radial, pilih Edit Shape untuk kembali memanipulasi bentuknya.",
             "Enable sementara mematikan atau menghidupkan efek masker. Invert membalik seleksinya.",
-            "Editor mengizinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker pada foto."
+            "Editor mengizinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker pada foto.",
+            "Pin masker dan garis luar kuas tetap tajam dan memiliki ketebalan yang sama saat Anda melakukan zoom. Garis luar bertambah sesuai area yang dicakupnya di foto."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Perhalus koreksi yang sudah ada",
           "paragraphs": [
-            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran pada gambar menunjukkan target yang dapat diedit dan, untuk Heal dan Clone, sumbernya."
+            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran pada gambar menunjukkan target yang dapat diedit dan, untuk Heal dan Clone, sumbernya.",
+            "Perbesar untuk penempatan yang presisi. Garis luar lingkaran dan pin tetap tajam pada setiap level zoom; lingkaran terus menampilkan area foto yang sama."
           ],
           "steps": [
             "Seret lingkaran target untuk memindahkan koreksi, atau pilih Move Target dan klik posisi barunya.",
@@ -2874,7 +2877,13 @@
           "title": "Kelola penyimpanan cache",
           "paragraphs": [
             "Performance menampilkan lokasi cache pratinjau, penggunaan, dan anggaran. Purge cache menghapus pratinjau yang dihasilkan dan cache render setelah konfirmasi; original dan edit tidak terpengaruh. Pratinjau perlu dihasilkan lagi.",
-            "Resolusi pratinjau terpisah dari pengaturan Dimensions yang digunakan untuk file ekspor."
+            "Resolusi pratinjau terpisah dari pengaturan Dimensi yang digunakan untuk file yang diekspor. Penyelesaian Ekspor dan Gabungkan Foto menggunakan akselerasi GPU secara otomatis untuk tahap pemrosesan gambar yang didukung, dengan fallback CPU saat tidak tersedia. Preferensi mesin film mengontrol pratinjau film; ini tidak menonaktifkan akselerasi ini."
+          ]
+        },
+        {
+          "title": "Baca kesalahan pratinjau",
+          "paragraphs": [
+            "Jika foto tidak dapat dirender atau ditampilkan, pesan di area foto menyertakan alasan yang dilaporkan bila tersedia. Ini dapat mengidentifikasi file yang hilang, masalah pemuatan gambar, atau kegagalan grafis. Jika tidak ada alasan yang tersedia, pesannya tetap umum."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

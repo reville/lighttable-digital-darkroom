@@ -48,7 +48,7 @@ def translate(locale, source, args, deadline):
     translated = dict(previous.get('messages', {}))
     # Small control labels first: later help paragraphs receive this glossary.
     pending = sorted((message for message in source['messages']
-                      if localization.validate_translation(message, translated.get(message))),
+                      if localization.validate_translation(message, translated.get(message), code)),
                      key=lambda message: (len(message), message))
     batches = list(chunks(pending))
     for index, batch in enumerate(batches):
@@ -100,7 +100,7 @@ def translate(locale, source, args, deadline):
                 if len(items) != len(batch) or {item['id'] for item in items} != set(range(len(batch))):
                     raise ValueError('Translation IDs incomplete or duplicated')
                 values = {batch[item['id']]: item['text'] for item in items}
-                errors = [(message, localization.validate_translation(message, text)) for message, text in values.items()]
+                errors = [(message, localization.validate_translation(message, text, code)) for message, text in values.items()]
                 errors = [(message, error) for message, error in errors if error]
                 if errors:
                     input_data['validation_feedback'] = [
@@ -141,7 +141,7 @@ def translate_plurals(client, locale, source, catalog, args, deadline, path):
     slots = []
     for pair in pairs:
         for category in categories:
-            if localization.validate_translation(pair['one'], existing.get(pair['one'], {}).get(category)):
+            if localization.validate_translation(pair['one'], existing.get(pair['one'], {}).get(category), locale['code']):
                 slots.append({'one': pair['one'], 'other': pair['other'], 'category': category,
                               'translatedOne': catalog['messages'].get(pair['one']),
                               'translatedOther': catalog['messages'].get(pair['other'])})
@@ -181,7 +181,7 @@ def translate_plurals(client, locale, source, catalog, args, deadline, path):
                 values = json.loads(result.output_text)['translations']
                 if len(values) != len(batch) or {item['id'] for item in values} != set(range(len(batch))):
                     raise ValueError('Incomplete plural IDs')
-                errors = [{'id': item['id'], 'error': localization.validate_translation(batch[item['id']]['one'], item['text'])}
+                errors = [{'id': item['id'], 'error': localization.validate_translation(batch[item['id']]['one'], item['text'], locale['code'])}
                           for item in values]
                 errors = [error for error in errors if error['error']]
                 if errors:

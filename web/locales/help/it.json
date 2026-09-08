@@ -129,7 +129,7 @@
           "tips": [
             "Entrambi gli schemi usano G per Griglia foto, Shift+G per Griglia scarto, N per Panoramica, P/X/U per i contrassegni e 0–5 per le stelle.",
             "Tieni premuto B per mostrare l'originale senza Pellicola, maschere locali o regolazioni finali; rilascia B per ripristinare la modifica. La barra (/) mette a fuoco la ricerca foto.",
-            "Le scorciatoie foto vengono ignorate أثناء la digitazione nei campi di testo, numero o selezione. Esci dal campo prima di usare un comando foto."
+            "Le scorciatoie foto vengono ignorate durante la digitazione nei campi di testo, numero o selezione. Esci dal campo prima di usare un comando foto."
           ]
         }
       ],
@@ -220,9 +220,10 @@
         {
           "title": "Confronta con lo zoom attivato",
           "paragraphs": [
-            "Fai clic su Confronta in Dettagli per dividere l'originale e la foto modificata. Trascina il divisore per spostare la divisione; trascina altrove su una foto ingrandita per eseguire la panoramica. Il divisore e la sua maniglia restano della stessa dimensione mentre ingrandisci.",
+            "Fai clic su Confronta in Dettagli per dividere la foto originale e quella modificata. Ogni volta che attivi Confronta, il divisore si centra automaticamente nella vista corrente senza modificare lo zoom o lo spostamento. Trascina il divisore per spostare la divisione; trascina altrove su una foto ingrandita per spostarti. Il divisore e la relativa maniglia restano della stessa dimensione mentre ingrandisci.",
             "Originale usa la stessa risoluzione di anteprima della foto modificata, incluso a 1:1. Per le foto RAW, Originale usa la conversione neutra e non modificata; attendi che finisca di caricarsi prima di giudicare i dettagli.",
-            "Tieni premuto B per vedere l'originale senza Pellicola, maschere locali o regolazioni finali. Rilascia B per ripristinare la vista modificata."
+            "Tieni premuto B per vedere l'originale senza Pellicola, maschere locali o regolazioni finali. Rilascia B per ripristinare la vista modificata.",
+            "Le informazioni della foto, i badge di elaborazione e le letture delle regolazioni con tasto premuto mantengono la loro dimensione normale sullo schermo mentre ingrandisci o sposti la vista."
           ],
           "steps": [
             "Attiva Confronta, quindi esegui lo zoom oltre Adatta.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Aggiungi, Sottrai e Interseca attivano le modalità di rifinitura tramite pennello. Per una maschera Lineare o Radiale, scegli Modifica forma per tornare a manipolarne la forma.",
             "Abilita disattiva o attiva temporaneamente l'effetto di una maschera. Inverti ne capovolge la selezione.",
-            "L'editor consente fino a sedici maschere locali. Elimina maschera rimuove la maschera selezionata; Cancella tutto rimuove le maschere della foto."
+            "L'editor consente fino a sedici maschere locali. Elimina maschera rimuove la maschera selezionata; Cancella tutto rimuove le maschere della foto.",
+            "I pin della Maschera e i contorni del pennello restano nitidi e con lo stesso spessore mentre ingrandisci. Il contorno cresce con l'area che copre nella foto."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Perfeziona una correzione esistente",
           "paragraphs": [
-            "Seleziona una correzione nell'elenco per mostrarne i controlli. I cerchi sull'immagine indicano il target modificabile e, per Correggi e Clona, la sorgente."
+            "Seleziona una correzione nell'elenco per mostrarne i controlli. I cerchi sull'immagine indicano il target modificabile e, per Correggi e Clona, la sorgente.",
+            "Ingrandisci per un posizionamento preciso. I contorni dei cerchi e i pin restano nitidi a ogni livello di zoom; i cerchi continuano a mostrare la stessa area della foto."
           ],
           "steps": [
             "Trascina il cerchio di destinazione per riposizionare la correzione, oppure scegli Sposta destinazione e fai clic sulla nuova posizione.",
@@ -2874,7 +2877,13 @@
           "title": "Gestisci spazio di archiviazione della cache",
           "paragraphs": [
             "Prestazioni mostra la posizione della cache di anteprima, l’uso e il budget. Svuota cache rimuove le anteprime generate e le cache di rendering dopo la conferma; originali e modifiche non vengono influenzati. Le anteprime dovranno essere rigenerate.",
-            "La risoluzione dell'anteprima è separata dall'impostazione Dimensioni usata per i file esportati."
+            "La risoluzione dell'anteprima è separata dall'impostazione Dimensioni usata per i file esportati. Il completamento dell'esportazione e Unisci Foto usano automaticamente l'accelerazione GPU per le fasi di elaborazione delle immagini supportate, con un fallback alla CPU quando non disponibile. La preferenza del motore pellicola controlla le anteprime della pellicola; non disabilita questa accelerazione."
+          ]
+        },
+        {
+          "title": "Leggi un errore dell'anteprima",
+          "paragraphs": [
+            "Se una foto non può essere renderizzata o visualizzata, il messaggio nell'area della foto include il motivo segnalato quando disponibile. Può identificare un file mancante, un problema di caricamento dell'immagine o un errore della grafica. Se non è disponibile alcun motivo, il messaggio resta generico."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

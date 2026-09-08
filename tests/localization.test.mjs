@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
 import { t, tn, useCatalog, launchLanguage, resolveLocale, saveLanguage,
   initializeLanguage, currentLocale } from '../web/i18n.js';
 const codes = ['en','es','fr','de','it','pt','ru','zh-Hans','zh-Hant','ja','ko','ar','hi','bn','id','tr','vi','th','pl','nl'];
@@ -62,4 +64,21 @@ test('non-English launch waits for explicit selection, then uses that catalog', 
   const boot=initializeLanguage({fetcher,languages:['ko-KR'],choose:async suggested=>{assert.equal(suggested,'ko');await new Promise(resolve=>{release=resolve;});return 'ja';}}).then(()=>{done=true;});
   await new Promise(resolve=>setImmediate(resolve));assert.equal(done,false);
   release();await boot;assert.equal(t('Hello'),'こんにちは');
+});
+
+// Exercise the production command with a catalog that would visibly corrupt an ID.
+test('localized automation keeps DOM identifiers stable when filtering by color', async () => {
+  useCatalog('fr', {messages:{labelFilter:'filtreEtiquette'}}, manifest);
+  const source = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
+  const start = source.indexOf('async function executeUICommand(');
+  const end = source.indexOf("\nif ($('allowAutomation'))", start);
+  assert.ok(start >= 0 && end > start);
+  const fields = Object.fromEntries(['filter','ratingFilter','kindFilter','labelFilter','search'].map(id => [id, {value:''}]));
+  let refreshed = false;
+  const context = vm.createContext({tr:t, $:id=>fields[id], refreshFilteredView:()=>{refreshed=true;}, uiStateReport:()=>({})});
+  vm.runInContext(source.slice(start,end), context);
+  await context.executeUICommand('filter', {label:'red',query:'Sunset.jpg'});
+  assert.equal(fields.labelFilter.value,'red');
+  assert.equal(fields.search.value,'Sunset.jpg');
+  assert.equal(refreshed,true);
 });

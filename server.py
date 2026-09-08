@@ -2198,11 +2198,18 @@ def valid_tiff_cache(path: Path) -> bool:
         return False
 
 
+def processed_tiff_cache_tag() -> str:
+    # Portable conversion now preserves 16-bit/float source precision. Rebuild
+    # its old 8-bit intermediates without invalidating Mac or RAW caches.
+    return "romm" if sys.platform == "darwin" else "romm-icc16-v1"
+
+
 def tiff_for(name: str, params: dict | None = None, *,
              denoise_status=None, denoise_cancel=None) -> Path:
-    """Full-resolution 16-bit TIFF decode of the source, cached on disk."""
+    """Full-resolution source TIFF decode, cached on disk."""
     src = src_path(name)
-    wb_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    wb_key = (color_pipeline.raw_decode_fingerprint(params) if is_raw(name)
+              else processed_tiff_cache_tag())
     t = CACHE / "tiff" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{wb_key}.tif"
     with TIFF_BUILD_LOCK:
         if not valid_tiff_cache(t) or t.stat().st_mtime < src.stat().st_mtime:
@@ -2234,7 +2241,8 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                      output_space: str = "srgb") -> Path:
     """Full-resolution, display-referred source for profile-off exports."""
     src = src_path(name)
-    raw_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    raw_key = (color_pipeline.raw_decode_fingerprint(params) if is_raw(name)
+               else processed_tiff_cache_tag())
     output_space = color_pipeline.normalise_output_space(output_space)
     # Keep preview cache identity stable, and isolate color-preserving exports.
     color_key = "" if output_space == "srgb" else f"_gamut-v1-{output_space}"
@@ -3278,7 +3286,7 @@ def preview_engine():
 
 
 
-def render_key(name: str, params: dict, width: int, engine: str = "py") -> str:
+def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
     cleaned = fp.clean_params(params)
     if not is_raw(name):
         # Capture WB is deliberately RAW-only. Preserve it in the saved edit
@@ -3709,10 +3717,11 @@ def native_image_payload(url: str, image: bytes | Path) -> dict:
 
 
 def render_preview(name: str, params: dict, width: int,
-                   engine: str = "py", client: str = "",
+                   engine: str = "rs", client: str = "",
                    generation: int | None = None,
                    native: bool = False,
-                   priority: str = "interactive", viewport: dict | None = None) -> dict:
+                   priority: str = "interactive", viewport: dict | None = None,
+                   allow_draft: bool = True) -> dict:
     viewport = clean_viewport(viewport)
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
@@ -3730,7 +3739,8 @@ def render_preview(name: str, params: dict, width: int,
                         client, generation, name, completed)):
                 preview_progress.advance(1)
                 return _render_preview(name, params, width, engine, client,
-                                       generation, native, priority, viewport)
+                                       generation, native, priority, viewport,
+                                       allow_draft)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -3739,13 +3749,24 @@ def render_preview(name: str, params: dict, width: int,
 
 
 def _render_preview(name: str, params: dict, width: int,
-                    engine: str = "py", client: str = "",
+                    engine: str = "rs", client: str = "",
                     generation: int | None = None,
                     native: bool = False,
-                    priority: str = "interactive", viewport: dict | None = None) -> dict:
+                    priority: str = "interactive", viewport: dict | None = None,
+                    allow_draft: bool = True) -> dict:
     params = dict(params)
     params["linear_input"] = is_raw(name)
     cp = fp.clean_params(params)
+    # Once accurate pixels are visible, an embedded-camera film pass would
+    # only be discarded by the window. Prepare the accurate input first and
+    # spend the film render on pixels the window can actually present.
+    if is_raw(name) and not allow_draft:
+        if render_is_stale(client, generation):
+            return {"cancelled": True, "reason": "superseded"}
+        if cp["profile_enabled"]:
+            build_raw_preview(name, width, "full", params)
+        else:
+            build_neutral_preview(name, width, cp["rotate"], cp)
     if not cp["profile_enabled"]:
         t0 = time.time()
         accurate = neutral_preview_path(name, width, cp["rotate"], cp)
@@ -4158,8 +4179,8 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         out, job.get("optics"), job.get("heals"), job.get("lensProfile"))
     g = job.get("grade") or {}
     if not grade.is_identity(g):
-        out = np.clip(grade.apply(out, g), 0, 1).astype(np.float32)
-    out = edits.apply_masks(out, job.get("masks"))
+        out = np.clip(grade.apply_accelerated(out, g), 0, 1).astype(np.float32)
+    out = edits.apply_masks(out, job.get("masks"), accelerated=True)
 
     crop = job.get("crop")
     if crop:
@@ -6602,10 +6623,11 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError(T("viewport rendering requires unwarped source geometry"))
                 result = render_preview(
                     b["name"], b.get("params", {}), int(b.get("w", 1100)),
-                    b.get("engine", "py"), client,
+                    b.get("engine", "rs"), client,
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
-                    str(b.get("priority", "interactive")), b.get("viewport"))
+                    str(b.get("priority", "interactive")), b.get("viewport"),
+                    allow_draft=b.get("allow_draft") is not False)
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),

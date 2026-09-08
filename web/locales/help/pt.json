@@ -220,9 +220,10 @@
         {
           "title": "Comparar com zoom aplicado",
           "paragraphs": [
-            "Clique em Comparar em Detalhe para dividir a foto original e a editada. Arraste o divisor para mover a divisão; arraste em outro lugar em uma foto ampliada para mover a vista. O divisor e sua alça mantêm o mesmo tamanho conforme você amplia.",
+            "Clique em Comparar em Detalhe para dividir a foto original e a editada. Sempre que você ativar Comparar, o divisor se centraliza automaticamente na visualização atual sem alterar seu zoom ou posicionamento. Arraste o divisor para mover a divisão; arraste em outro ponto de uma foto ampliada para mover a imagem. O divisor e a alça permanecem do mesmo tamanho conforme você amplia.",
             "Original usa a mesma resolução de pré-visualização da foto editada, inclusive em 1:1. Para fotos RAW, Original usa a conversão neutra e sem edição; deixe terminar de carregar antes de julgar o detalhe.",
-            "Mantenha B pressionado para ver o original sem Filme, máscaras locais ou ajustes de finalização. Solte B para restaurar a visualização editada."
+            "Mantenha B pressionado para ver o original sem Filme, máscaras locais ou ajustes de finalização. Solte B para restaurar a visualização editada.",
+            "As informações da foto, os indicadores de processamento e as leituras de ajuste com a tecla pressionada permanecem no tamanho normal da tela enquanto você amplia ou move a imagem."
           ],
           "steps": [
             "Ative Comparar e depois amplie além de Ajustar.",
@@ -1247,7 +1248,7 @@
             "Clique em Concluído ou pressione Enter para aceitar. Clique em Cancelar ou pressione Escape para restaurar o enquadramento do momento em que você abriu Cortar."
           ],
           "tips": [
-            "O controle Bloquear da proporção permite manter a proporção de aspecto atual أثناء redimensionar."
+            "O controle Bloquear da proporção permite manter a proporção de aspecto atual ao redimensionar."
           ]
         },
         {
@@ -1436,7 +1437,8 @@
           "tips": [
             "Adicionar, Subtrair e Interseção colocam você nos modos de refinamento por pintura. Para uma máscara Linear ou Radial, escolha Editar Forma para voltar a manipular a forma.",
             "Ativar alterna temporariamente o efeito de uma máscara para desligado ou ligado. Inverter reverte sua seleção.",
-            "O editor permite até dezesseis máscaras locais. Excluir máscara remove a máscara selecionada; Limpar tudo remove as máscaras da foto."
+            "O editor permite até dezesseis máscaras locais. Excluir máscara remove a máscara selecionada; Limpar tudo remove as máscaras da foto.",
+            "Os pinos da máscara e os contornos do pincel permanecem nítidos e com a mesma espessura conforme você amplia. O contorno aumenta junto com a área que ele cobre na foto."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Refinar uma correção existente",
           "paragraphs": [
-            "Selecione uma correção na lista para mostrar seus controles. Os círculos na imagem indicam o destino editável e, para Corrigir e Clonar, a origem."
+            "Selecione uma correção na lista para mostrar seus controles. Os círculos na imagem indicam o destino editável e, para Corrigir e Clonar, a origem.",
+            "Amplie para posicionamento preciso. Os contornos circulares e os pinos permanecem nítidos em todos os níveis de zoom; os círculos continuam mostrando a mesma área da foto."
           ],
           "steps": [
             "Arraste o círculo de destino para reposicionar a correção ou escolha Move Target e clique na nova posição.",
@@ -2316,7 +2319,7 @@
           "title": "Metadados e arquivos de receita",
           "paragraphs": [
             "Exportar → Avançado oferece Todos exceto localização, Todos os metadados, Apenas direitos autorais e Sem metadados. A escolha inicial de metadados é Todos exceto localização.",
-            "O controle de sidecar da Receita determina se o LightTable grava uma receita ao lado da exportação renderizada. Isso é अलग ao lado das preferências de edições portáveis e sidecar XMP para os originais em Configurações → Arquivos e metadados."
+            "O controle de sidecar da Receita determina se o LightTable grava uma receita ao lado da exportação renderizada. Esse controle é separado das preferências de edições portáveis e sidecar XMP para os originais em Configurações → Arquivos e metadados."
           ],
           "steps": [
             "Expanda Avançado em Exportar.",
@@ -2581,7 +2584,7 @@
       "keywords": [
         "idioma",
         "tradução",
-        "ინგlês",
+        "Inglês",
         "Espanhol",
         "Francês",
         "Alemão",
@@ -2874,7 +2877,13 @@
           "title": "Gerenciar armazenamento do cache",
           "paragraphs": [
             "Desempenho mostra a localização do cache de pré-visualização, o uso e o orçamento. Limpar cache remove pré-visualizações geradas e caches de renderização após confirmação; originais e edições não são afetados. As pré-visualizações precisarão ser geradas novamente.",
-            "A resolução da pré-visualização é separada da configuração Dimensões usada para arquivos exportados."
+            "A resolução da pré-visualização é separada da configuração de Dimensões usada para arquivos exportados. O término da exportação e o Mesclar Foto usam aceleração por GPU automaticamente para as etapas de processamento de imagem compatíveis, com um fallback de CPU quando ela não estiver disponível. A preferência do mecanismo de filme controla as pré-visualizações de filme; ela não desativa essa aceleração."
+          ]
+        },
+        {
+          "title": "Ler um erro de pré-visualização",
+          "paragraphs": [
+            "Se uma foto não puder ser renderizada ou exibida, a mensagem na área da foto inclui o motivo informado, quando houver um disponível. Isso pode identificar um arquivo ausente, um problema ao carregar a imagem ou uma falha gráfica. Se nenhum motivo estiver disponível, a mensagem permanece genérica."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

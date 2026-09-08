@@ -21,3 +21,5 @@ input[type=range], canvas, .loupe-viewport, #viewer, .curve-editor, .histogram, 
 html:not([lang=en]) .settings-choice { align-items: start; }
 html:not([lang=en]) .settings-nav button { white-space: normal; line-height: 1.4; }
 html:not([lang=en]) .row .name { overflow-wrap: anywhere; }
+/* Camera values and filenames keep their token order inside RTL metadata rows. */
+[dir=rtl] .exif b { direction: ltr; unicode-bidi: isolate; }

@@ -119,8 +119,13 @@ class PresetPackagingTests(unittest.TestCase):
         self.assertIn('"$ROOT/presets/" "$STAGE_PAYLOAD/presets/"', personal)
         self.assertIn('"$ROOT"/*.py', release)
         self.assertIn('"$ROOT"/*.py', personal)
-        self.assertIn('"preset_library.py"', windows)
-        self.assertIn('"preset_submission.py"', windows)
+        self.assertIn('"stage-python-modules.py"', windows)
+        with tempfile.TemporaryDirectory() as temporary:
+            resources = Path(temporary) / "payload"
+            subprocess.run([sys.executable, str(ROOT / "scripts/windows/stage-python-modules.py"),
+                            str(ROOT), str(resources)], check=True, capture_output=True, timeout=10)
+            for name in ("preset_library.py", "preset_submission.py"):
+                self.assertEqual((resources / name).read_bytes(), (ROOT / name).read_bytes())
         self.assertIn('Copy-Item (Join-Path $Project "presets") $Resources -Recurse', windows)
         hash_source = personal.split('SOURCE_TREE_HASH="$(hash_sources', 1)[1].split('SOURCE_REVISION=', 1)[0]
         self.assertIn('"$ROOT/presets"', hash_source)

@@ -606,9 +606,21 @@ input[type=checkbox]:disabled { opacity:.4; }
 .zoomwrap.photo-pending::after,
 .zoomwrap.photo-empty::after { content:"Rendering photo…"; }
 .zoomwrap.photo-pending:not(.photo-empty)::after { display:none; }
-.zoomwrap.photo-error::after { color:var(--skip); }
+.zoomwrap.photo-error::after {
+  color:var(--skip);
+  padding:24px;
+  text-align:center;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+  overflow:auto;
+}
 .zoomwrap.photo-empty .cmp,
-.zoomwrap.photo-error .cmp { opacity:0; pointer-events:none; }
+.zoomwrap.photo-error .cmp,
+.zoomwrap.photo-empty #editOverlay,
+.zoomwrap.photo-error #editOverlay,
+.zoomwrap.photo-empty #viewerChrome,
+.zoomwrap.photo-error #viewerChrome { opacity:0; pointer-events:none; }
 .cmp { position:relative; max-width:100%; max-height:100%; cursor:default; touch-action:none; user-select:none; overflow:hidden; transform-origin:center; transition:opacity .16s ease; }
 .cmp.is-zoomed { cursor:grab; }
 .cmp.is-zoomed.is-panning { cursor:grabbing; }
@@ -630,7 +642,8 @@ input[type=checkbox]:disabled { opacity:.4; }
 #orig { position:absolute; inset:0; width:100%; height:100%; clip-path:inset(0 var(--clip,100%) 0 0); }
 #orig:not([src]) { display:none; }
 #referenceImg { position:absolute; z-index:2; inset:0; width:100%; height:100%; max-width:none; max-height:none; object-fit:fill; transform-origin:center; pointer-events:none; }
-#editOverlay { position:absolute; z-index:5; inset:0; width:100%; height:100%; max-width:none; max-height:none; pointer-events:none; touch-action:none; }
+#viewerChrome { position:absolute; z-index:7; overflow:hidden; pointer-events:none; }
+#editOverlay { position:absolute; z-index:5; left:0; top:0; width:0; height:0; max-width:none; max-height:none; pointer-events:none; touch-action:none; }
 #editOverlay.active { pointer-events:auto; cursor:crosshair; }
 #editOverlay.active.brush-cursor, #editOverlay.active.heal-cursor { cursor:none; }
 #editOverlay.active.dragging-handle { cursor:grabbing; }
@@ -639,8 +652,7 @@ input[type=checkbox]:disabled { opacity:.4; }
    that stable frame, so progressive textures cannot resize the photograph. */
 .cmp.preview-framed > #cv,
 .cmp.preview-framed > #orig,
-.cmp.preview-framed > #referenceImg,
-.cmp.preview-framed > #editOverlay {
+.cmp.preview-framed > #referenceImg {
   position:absolute;
   inset:auto;
   left:var(--crop-source-left);
@@ -1809,6 +1821,12 @@ body.lights-out .filmstrip-shell:hover { opacity:1; }
 }
 
 /* Assisted culling ------------------------------------------------------ */
+#cullEnableIndex {
+  min-height:0; padding:0; border:0; border-radius:0;
+  background:none; box-shadow:none; color:var(--ink-2); font:inherit;
+  text-decoration:underline; text-underline-offset:2px; cursor:pointer;
+}
+#cullEnableIndex:hover:not(:disabled), #cullEnableIndex:focus-visible { color:var(--ink); }
 .cull-group { margin-top:14px; }
 .cull-group-title { margin:0 0 4px; color:var(--ink); font-size:12px; font-weight:600; }
 .cull-group .check-row { justify-content:flex-start; }

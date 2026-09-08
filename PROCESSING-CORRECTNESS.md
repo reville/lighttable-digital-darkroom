@@ -130,6 +130,31 @@ python scripts/check-processing.py --suites native --output build/native-pixels
 python -m unittest discover -s tests -p 'test_processing_*.py' -v
 ```
 
+Application GPU finishing and merge stages have additional device tests. Build
+the current resident engine into `engine/lighttable-engine`, then run these in
+an unlocked graphical session with GPU access:
+
+```sh
+LIGHTTABLE_TEST_GPU=1 python -m unittest discover -s tests -p 'test_gpu_grade.py' -v
+LIGHTTABLE_TEST_GPU=1 python -m unittest discover -s tests -p 'test_merge_acceleration.py' -v
+```
+
+These compare float32 output against the existing CPU algorithms, including
+odd dimensions, image boundaries, tiled filter halos, local-mask composition,
+and direct resident export ordering. Eligible device cases fail if they silently
+fall back. Ordinary runs still exercise the explicit unavailable-device fallback.
+Export finishing retains CPU chromatic-aberration geometry and precision-sensitive
+Point Color luminance-uniformity recipes; basic-only grades use the existing
+Numba path when available because worker transport can cost more than it saves.
+
+`bench/gpu_finish_benchmark.py` measures full-resolution finishing including
+worker transport, and can compare encoded 16-bit TIFFs with `--export-check`.
+`bench/merge_benchmark.py` measures complete merges and their phases with fixed
+registration randomness. Its `--baseline-source` option accepts the original
+`merge_workflow.py` for a baseline/new-CPU/GPU comparison. Use fresh processes
+to measure cold startup separately, and report source dimensions, recipe,
+repetition count, output error and device identity alongside speed.
+
 Install a reproducible browser test runtime if one is not already configured:
 
 ```sh

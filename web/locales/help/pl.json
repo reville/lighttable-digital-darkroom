@@ -220,9 +220,10 @@
         {
           "title": "Porównuj przy powiększeniu",
           "paragraphs": [
-            "Kliknij Porównaj w Szczegółach, aby podzielić oryginał i edytowane zdjęcie. Przeciągnij linię podziału, aby przesunąć rozdzielenie; przeciągnij gdzie indziej na powiększonym zdjęciu, aby przesunąć widok. Linia podziału i jej uchwyt pozostają tego samego rozmiaru podczas powiększania.",
+            "Kliknij Porównaj w Szczegóły, aby podzielić oryginalne i edytowane zdjęcie. Za każdym razem, gdy włączasz Porównaj, separator automatycznie centruje się w bieżącym widoku bez zmiany powiększenia ani przesunięcia. Przeciągnij separator, aby przesunąć podział; przeciągnij w innym miejscu na powiększonym zdjęciu, aby przesunąć widok. Separator i jego uchwyt pozostają tego samego rozmiaru podczas powiększania.",
             "Oryginalny używa tej samej rozdzielczości podglądu co edytowane zdjęcie, także w 1:1. Dla zdjęć RAW Oryginalny używa neutralnej, nieedytowanej konwersji; pozwól jej zakończyć wczytywanie, zanim ocenisz szczegóły.",
-            "Przytrzymaj B, aby zobaczyć oryginał bez filmu, lokalnych masek ani końcowych korekt. Puść B, aby przywrócić widok po edycji."
+            "Przytrzymaj B, aby zobaczyć oryginał bez filmu, lokalnych masek ani końcowych korekt. Puść B, aby przywrócić widok po edycji.",
+            "Informacje o zdjęciu, znaczniki przetwarzania oraz odczyty regulacji po naciśnięciu klawisza pozostają w normalnym rozmiarze ekranu podczas powiększania lub przesuwania obrazu."
           ],
           "steps": [
             "Włącz Porównaj, a potem powiększ poza Dopasuj.",
@@ -286,7 +287,7 @@
             "Użyj Cofnij zmianę słowa kluczowego, aby przywrócić ostatni wsad, dopóki to okno pozostaje otwarte. Cofnij odmawia nadpisania słów kluczowych zmienionych po tamtym wsadzie. Historia zdjęcia zachowuje też stany słów kluczowych przed i po."
           ],
           "paragraphs": [
-            "Partia może objąć maksymalnie 5000 zdjęć, w tym powiązanych towarzyszy. Usunięcie hierarchicznego słowa kluczowego usuwa dokładnie tę ścieżkę, a nie każdy element podrzędny. Drzewo słów kluczowych i podpowiedzi używają terminów już موجودnych w katalogu."
+            "Partia może objąć maksymalnie 5000 zdjęć, w tym powiązanych towarzyszy. Usunięcie hierarchicznego słowa kluczowego usuwa dokładnie tę ścieżkę, a nie każdy element podrzędny. Drzewo słów kluczowych i podpowiedzi używają terminów już istniejących w katalogu."
           ]
         },
         {
@@ -1436,7 +1437,8 @@
           "tips": [
             "Dodaj, Odejmij i Przecięcie wprowadzają tryby dopracowywania malowaniem. W przypadku maski Liniowej lub Promieniowej wybierz Edytuj kształt, aby wrócić do manipulowania jej kształtem.",
             "Włącz tymczasowo wyłącza lub włącza efekt maski. Odwróć odwraca jej zaznaczenie.",
-            "Edytor pozwala użyć maksymalnie szesnastu lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystkie usuwa maski zdjęcia."
+            "Edytor pozwala użyć maksymalnie szesnastu lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystkie usuwa maski zdjęcia.",
+            "Punkty maski i obrysy pędzla pozostają ostre i mają tę samą grubość podczas powiększania. Obrys rośnie wraz z obszarem, który obejmuje na zdjęciu."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Doprecyzuj istniejącą korektę",
           "paragraphs": [
-            "Wybierz korektę z listy, aby pokazać jej sterowania. Kółka na obrazie wskazują edytowalny cel oraz, dla Napraw i Klon, źródło."
+            "Wybierz korektę z listy, aby pokazać jej sterowania. Kółka na obrazie wskazują edytowalny cel oraz, dla Napraw i Klon, źródło.",
+            "Powiększ, aby uzyskać precyzyjne umieszczenie. Obrysy okręgów i punkty pozostają ostre na każdym poziomie powiększenia; okręgi nadal pokazują ten sam obszar zdjęcia."
           ],
           "steps": [
             "Przeciągnij okrąg celu, aby zmienić położenie korekty, albo wybierz Przesuń cel i kliknij jego nowe położenie.",
@@ -2874,7 +2877,13 @@
           "title": "Zarządzaj pamięcią podręczną",
           "paragraphs": [
             "Wydajność pokazuje lokalizację pamięci podręcznej podglądu, użycie i budżet. Opróżnij pamięć podręczną usuwa wygenerowane podglądy i pamięci podręczne renderowania po potwierdzeniu; oryginały i edycje nie są naruszone. Podglądy trzeba będzie wygenerować ponownie.",
-            "Rozdzielczość podglądu jest oddzielna od ustawienia Wymiary używanego dla eksportowanych plików."
+            "Rozdzielczość podglądu jest niezależna od ustawienia Wymiary używanego dla wyeksportowanych plików. Zakończenie eksportu i Scal zdjęcie korzystają z akceleracji GPU automatycznie dla obsługiwanych etapów przetwarzania obrazu, z fallbackiem CPU, gdy jest niedostępna. Ustawienie silnika filmu kontroluje podglądy filmu; nie wyłącza tej akceleracji."
+          ]
+        },
+        {
+          "title": "Odczytaj błąd podglądu",
+          "paragraphs": [
+            "Jeśli zdjęcia nie można wyrenderować lub wyświetlić, wiadomość w obszarze zdjęcia zawiera zgłoszoną przyczynę, gdy jest dostępna. Może to wskazywać brakujący plik, problem z wczytywaniem obrazu lub awarię grafiki. Jeśli przyczyna nie jest dostępna, wiadomość pozostaje ogólna."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }
