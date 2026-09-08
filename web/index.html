@@ -759,7 +759,6 @@
           <button class="accent-btn full export-run" id="exportBtn2">Export photos</button>
           <div class="subheading">Rendering</div>
           <label class="field-label" for="engine">Film engine</label><select id="engine"><option value="rs">Rust / GPU (fast)</option><option value="py">Python (reference)</option></select>
-          <label class="field-label" for="pw">Preview resolution</label><select id="pw"><option value="auto" selected>Auto · fit display</option><option value="900">900 px</option><option value="1100">1100 px</option><option value="1400">1400 px</option><option value="1800">1800 px</option><option value="2200">2200 px</option><option value="2600">2600 px</option><option value="3000">3000 px</option><option value="3500">3500 px</option><option value="4000">4000 px</option><option value="4500">4500 px</option><option value="5000">5000 px</option></select>
       </section>
 
       <section class="utility-support" id="proofSupport" hidden>
@@ -1113,11 +1112,15 @@
           <h2>Performance</h2><p class="settings-intro">Rendering and generated preview storage.</p>
           <div class="settings-group settings-fields">
             <label class="field"><span>Film engine</span><select id="settingsEngine"><option value="rs">GPU · Rust</option><option value="py">Compatible · Python</option></select></label>
-            <label class="field"><span>Preview resolution</span><select id="settingsPreviewWidth"><option value="auto">Auto · fit display</option><option value="900">900 px</option><option value="1100">1100 px</option><option value="1400">1400 px</option><option value="1800">1800 px</option><option value="2200">2200 px</option><option value="2600">2600 px</option><option value="3000">3000 px</option><option value="3500">3500 px</option><option value="4000">4000 px</option><option value="4500">4500 px</option><option value="5000">5000 px</option></select></label>
+            <div class="settings-action-block"><div><strong>Preview detail</strong><small id="settingsPreviewSummary" role="status">Automatic · matches the window, display, and zoom.</small></div></div>
             <label class="field"><span>Cache budget</span><div class="settings-range"><input type="range" id="cacheBudgetGB" min="2" max="32" step="1" value="8"><output id="cacheBudgetGBV">8 GB</output></div></label>
             <div class="settings-path"><span>Location</span><code id="cacheLocation">Checking…</code></div>
             <div class="settings-action-row"><span id="cacheUsage">Calculating cache size…</span><button id="purgeCache">Purge cache</button></div>
           </div>
+          <details class="settings-advanced"><summary>Advanced</summary><div class="settings-fields">
+            <label class="field"><span>Preview resolution override</span><select id="pw" aria-describedby="previewResolutionHint"><option value="auto" selected>Automatic (recommended)</option><option value="900">900 px</option><option value="1100">1100 px</option><option value="1400">1400 px</option><option value="1800">1800 px</option><option value="2200">2200 px</option><option value="2600">2600 px</option><option value="3000">3000 px</option><option value="3500">3500 px</option><option value="4000">4000 px</option><option value="4500">4500 px</option><option value="5000">5000 px</option></select></label>
+            <p class="hint" id="previewResolutionHint">Automatic adjusts preview detail as you resize the window or zoom. A fixed resolution can reduce processing, but may look softer. The 100% view still requests source detail. Export dimensions are set separately.</p>
+          </div></details>
         </section>
         <section class="settings-pane" data-settings-pane="ai" role="tabpanel">
           <h2>Photo Index</h2><p class="settings-intro">Private, on-device search and review signals.</p>

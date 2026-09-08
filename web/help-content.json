@@ -2572,7 +2572,7 @@
       "id": "performance-previews",
       "title": "Improve preview speed and check image detail",
       "category": "Troubleshooting",
-      "summary": "Choose preview resolution, wait for real detail, and manage generated caches.",
+      "summary": "Let previews adapt to your view, check real detail, and manage generated caches.",
       "keywords": [
         "performance",
         "slow",
@@ -2597,9 +2597,21 @@
           ],
           "steps": [
             "Open Settings → Performance.",
-            "Use Auto · fit display for preview resolution, or choose a smaller fixed resolution to reduce preview work.",
+            "Keep automatic preview detail for normal editing. It follows the window size, display density, crop, and zoom without a pixel-size choice.",
             "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.",
             "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."
+          ]
+        },
+        {
+          "title": "Advanced preview override",
+          "paragraphs": [
+            "Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.",
+            "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active."
+          ],
+          "steps": [
+            "Open Settings → Performance and expand Advanced.",
+            "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.",
+            "Choose Automatic (recommended) to return to previews that follow your view."
           ]
         },
         {

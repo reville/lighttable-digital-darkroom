@@ -1757,6 +1757,8 @@ body.lights-out .filmstrip-shell:hover { opacity:1; }
 .settings-group { border-top:1px solid var(--line); }
 .settings-group > :last-child { border-bottom:1px solid var(--line); }
 .settings-fields { display:grid; }
+.settings-advanced { margin-top:20px; border-top:1px solid var(--line); }
+.settings-advanced > summary { padding:14px 0; cursor:pointer; color:var(--ink-2); font-size:12px; }
 .settings-fields > .field {
   display:grid; grid-template-columns:minmax(160px,1fr) minmax(230px,1.2fr);
   align-items:center; gap:24px; min-height:52px; margin:0; padding:9px 0;
