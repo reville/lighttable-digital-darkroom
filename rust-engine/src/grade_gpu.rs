@@ -130,6 +130,10 @@ pub(crate) fn parameters(width: u32, height: u32, grade: &Value) -> Vec<f32> {
             }
         }
     }
+    // Use the two spare slots before the curve tables; all existing parameter
+    // offsets and the buffer length remain unchanged.
+    p[178] = number(grade, "vignetteSize", 0.5).clamp(0.0, 1.0);
+    p[179] = number(grade, "vignetteFeather", 1.0).clamp(0.0, 1.0);
     p
 }
 
@@ -184,6 +188,65 @@ pub(crate) fn apply(
 mod tests {
     use super::*;
     use spektrafilm_gpu::cpu_backend::CpuBackend;
+
+    #[test]
+    fn vignette_shape_parameters_preserve_existing_offsets() {
+        let defaults = parameters(13, 17, &serde_json::json!({"vignette": 0.4}));
+        assert_eq!(defaults.len(), 1204);
+        assert_eq!(defaults[15], 0.4);
+        assert_eq!(&defaults[178..180], &[0.5, 1.0]);
+        let curve = vec![0.25; 256];
+        let changed = parameters(
+            13,
+            17,
+            &serde_json::json!({
+                "vignetteSize": 2.0, "vignetteFeather": -1.0,
+                "colorGrading": {"balance": 0.3, "blending": 0.7},
+                "curveL": curve,
+            }),
+        );
+        assert_eq!(&changed[176..180], &[0.3, 0.7, 1.0, 0.0]);
+        assert_eq!(changed[28], 1.0);
+        assert_eq!(&changed[180..436], vec![0.25; 256]);
+    }
+
+    #[test]
+    #[ignore = "requires an available WGPU adapter"]
+    fn vignette_gpu_matches_cpu_shape_rendering() {
+        let backend = spektrafilm_gpu::wgpu_backend::WgpuBackend::new()
+            .expect("WGPU adapter is required for the vignette parity check");
+        let (width, height) = (33_u32, 19_u32);
+        let input: Vec<f32> = (0..width * height * 3)
+            .map(|i| 0.12 + (i % 19) as f32 * 0.015)
+            .collect();
+        for amount in [-0.8, 0.0, 0.8] {
+            for (size, feather) in [(0.5, 1.0), (0.0, 0.0), (0.25, 0.4), (0.8, 0.8), (1.0, 1.0)] {
+                let grade = serde_json::json!({
+                    "vignette": amount, "vignetteSize": size, "vignetteFeather": feather,
+                });
+                let actual = apply(&backend, &input, width, height, &grade)
+                    .expect("vignette shader must execute on WGPU");
+                let mut expected = input.clone();
+                crate::export::apply_grade(&mut expected, width, height, &grade);
+                let max_error = actual
+                    .iter()
+                    .zip(&expected)
+                    .map(|(a, b)| (a - b).abs())
+                    .fold(0.0_f32, f32::max);
+                // Legacy CPU uses sqrt(2), while the established shader uses
+                // 1.4142. New shape settings should agree within float error.
+                let tolerance = if size == 0.5 && feather == 1.0 {
+                    2e-5
+                } else {
+                    1e-6
+                };
+                assert!(
+                    max_error < tolerance,
+                    "{grade}: maximum CPU/GPU error {max_error}"
+                );
+            }
+        }
+    }
 
     #[test]
     fn unavailable_gpu_and_invalid_shapes_return_to_reference() {

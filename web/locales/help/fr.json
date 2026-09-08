@@ -1032,7 +1032,9 @@
           "steps": [
             "Augmentez Supprimer la brume pour renforcer une image brumeuse, ou essayez une valeur négative pour un rendu plus doux. Vérifiez à la fois le contraste et la couleur pendant l’ajustement.",
             "Réglez Vignette pour le traitement des bords souhaité et inspectez les coins.",
-            "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser ensemble Texture, Clarté, Supprimer la brume et Vignettage."
+            "Augmentez Taille pour préserver une plus grande partie du centre ; diminuez-la pour étendre la vignette vers l’intérieur.",
+            "Augmentez Contour progressif pour une transition plus douce, ou diminuez-le pour un bord plus net.",
+            "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser tous les curseurs d’Effets ensemble."
           ],
           "tips": [
             "Le Vignettage d’Effets est un traitement créatif des bords. Utilisez les corrections d’objectif lorsque vous voulez corriger l’ombrage de l’objectif."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

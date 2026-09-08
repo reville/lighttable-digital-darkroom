@@ -1032,7 +1032,9 @@
           "steps": [
             "Aumenta Rimuovi foschia per rafforzare un'immagine velata, oppure prova un valore negativo per un trattamento più morbido. Controlla sia il contrasto sia il colore mentre la regoli.",
             "Imposta Vignettatura per il trattamento dei bordi desiderato e ispeziona gli angoli.",
-            "Tieni premuto B per confrontare con l'originale, oppure usa Reimposta in Effetti per reimpostare insieme Struttura, Chiarezza, Rimuovi foschia e Vignettatura."
+            "Aumenta Dimensione per mantenere una parte maggiore del centro priva di effetto; riducila per estendere la vignettatura verso l’interno.",
+            "Aumenta Sfumatura per una transizione più morbida, o riducila per un bordo più definito.",
+            "Tieni premuto B per confrontare con l’originale, oppure usa Reimposta in Effetti per reimpostare tutti i cursori di Effetti insieme."
           ],
           "tips": [
             "Vignettatura di Effetti è un trattamento creativo dei bordi. Usa le correzioni obiettivo quando vuoi correggere l’ombreggiatura dell’obiettivo."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

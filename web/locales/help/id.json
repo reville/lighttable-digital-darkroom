@@ -1032,7 +1032,9 @@
           "steps": [
             "Tingkatkan Dehaze untuk memperkuat gambar berkabut, atau coba nilai negatif untuk perlakuan yang lebih lembut. Periksa kontras dan warna saat Anda menyesuaikannya.",
             "Atur Vinyet untuk perlakuan tepi yang Anda inginkan dan periksa sudutnya.",
-            "Tahan B untuk membandingkan dengan original, atau gunakan Atur Ulang pada Effects untuk mengatur ulang Texture, Clarity, Dehaze, dan Vignette sekaligus."
+            "Naikkan Ukuran agar lebih banyak bagian tengah tidak terpengaruh; turunkan agar vinyet menjangkau lebih jauh ke dalam.",
+            "Naikkan Kehalusan Tepi untuk transisi yang lebih halus, atau turunkan untuk tepi yang lebih tegas.",
+            "Tahan B untuk membandingkan dengan foto asli, atau gunakan Atur Ulang di Efek untuk mengatur ulang semua penggeser Efek sekaligus."
           ],
           "tips": [
             "Vignette di Effects adalah perlakuan tepi kreatif. Gunakan koreksi lensa saat Anda ingin mengoreksi shading lensa."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "Verlauf",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "Der Verlauf wird im Katalog gespeichert, sodass er beim Beenden erhalten bleibt. Undo und Redo folgen in dieser Sitzung jeweils dem einzelnen Foto.",
     "History request failed": "Verlaufsanfrage fehlgeschlagen",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen bei Effekte, um Textur, Klarheit, Dunst entfernen und Vignette gemeinsam zurückzusetzen.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen unter Effekte, um alle Effekte-Regler gemeinsam zurückzusetzen.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen; lassen Sie B los, um die Bearbeitung wiederherzustellen. Der Schrägstrich (/) fokussiert die Fotosuche.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen. Lassen Sie B los, um die bearbeitete Ansicht wiederherzustellen.",
     "Hold a mapped key and scroll or use arrow keys.": "Eine zugeordnete Taste gedrückt halten und scrollen oder Pfeiltasten verwenden.",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "Unterordner einbeziehen",
     "Includes the Film profile and physical stages.": "Enthält das Filmprofil und die physischen Stufen.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Erhöhen Sie Dunst entfernen, um ein diesiges Bild zu verstärken, oder versuchen Sie einen negativen Wert für eine weichere Wirkung. Prüfen Sie dabei sowohl Kontrast als auch Farbe.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Erhöhen Sie Weiche Kante für einen weicheren Übergang oder verringern Sie den Wert für einen deutlicheren Rand.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Erhöhen Sie Größe, um mehr von der Mitte unbeeinflusst zu lassen; verringern Sie den Wert, damit die Vignette weiter nach innen reicht.",
     "Index data stays in LightTable's local data folder.": "Indexdaten bleiben im lokalen Datenordner von LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indiziere {SAiCompleted} von {SAiTotal}",
     "Info": "Info",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Ähnliche Gesichter werden zusammen gruppiert. Fügen Sie Namen hinzu, überprüfen Sie mögliche Übereinstimmungen und korrigieren Sie eine Gruppe jederzeit nach Bedarf.",
     "Simulate paper and ink": "Papier und Tinte simulieren",
     "Size": "Größe",
+    "Size of the clear area at the center of the vignette.": "Größe des unbeeinflussten Bereichs in der Mitte der Vignette.",
     "Size only": "Nur Größe",
     "Skip": "Überspringen",
     "Skip existing": "Vorhandene überspringen",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft Proof ist ein Anzeigestatus. Wählen Sie den tatsächlichen Farbraum der Datei separat unter Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Die Steuerungen für Weichzeichnungskontrolle befinden sich in den Ansicht-Optionen (•••) des Betrachters. Damit können Sie beim Bearbeiten eine Ausgabevorschau prüfen.",
     "Soften skin": "Haut glätten",
+    "Softness of the vignette transition.": "Weichheit des Vignettenübergangs.",
     "Software rendering": "Software-Rendering",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Einige Entwürfe verwenden eine teilweise Dateidentität, die nicht das gesamte Original verifizieren kann. Stellen Sie diese nur wieder her, wenn die Originalfotos nicht ersetzt wurden.",
     "Some edits have not been saved": "Einige Bearbeitungen wurden nicht gespeichert",

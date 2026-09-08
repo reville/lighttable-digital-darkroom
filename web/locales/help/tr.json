@@ -1032,7 +1032,9 @@
           "steps": [
             "Puslu bir görüntüyü güçlendirmek için Pus Gider'i artırın veya daha yumuşak bir işlem için negatif bir değer deneyin. Ayarlarken hem kontrastı hem de rengi kontrol edin.",
             "İstediğiniz kenar işlemi için Vinyet’i ayarlayın ve köşeleri inceleyin.",
-            "Özgünle karşılaştırmak için B tuşunu basılı tutun veya Etkiler bölümündeki Sıfırla'yı kullanarak Doku, Netlik, Pus Gider ve Vinyet'i birlikte sıfırlayın."
+            "Merkezin daha büyük bir bölümünü etkilenmeden bırakmak için Boyut değerini artırın; vinyetin daha içeriye uzanması için azaltın.",
+            "Daha yumuşak bir geçiş için Yumuşatma değerini artırın veya daha belirgin bir kenar için azaltın.",
+            "Özgünle karşılaştırmak için B tuşunu basılı tutun veya tüm Efektler kaydırıcılarını birlikte sıfırlamak için Efektler bölümündeki Sıfırla seçeneğini kullanın."
           ],
           "tips": [
             "Effects’teki Vignette yaratıcı bir kenar işlemesidir. Objektif gölgelemesini düzeltmek istediğinizde Lens corrections kullanın."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

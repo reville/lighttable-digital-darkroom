@@ -1032,7 +1032,9 @@
           "steps": [
             "Aumente Quitar bruma para intensificar una imagen con neblina, o pruebe un valor negativo para un tratamiento más suave. Compruebe contraste y color mientras lo ajusta.",
             "Configura Viñeta para el tratamiento de borde que quieras e inspecciona las esquinas.",
-            "Mantenga pulsado B para comparar con el original, o use Restablecer de Efectos para restablecer juntos Textura, Claridad, Quitar bruma y Viñeta."
+            "Aumente Tamaño para mantener una mayor parte del centro sin efecto; redúzcalo para que la viñeta llegue más hacia dentro.",
+            "Aumente Desvanecer para suavizar la transición, o redúzcalo para obtener un borde más definido.",
+            "Mantenga pulsado B para comparar con el original, o use Restablecer en Efectos para restablecer todos los deslizadores de Efectos a la vez."
           ],
           "tips": [
             "Viñeta de Efectos es un tratamiento creativo de bordes. Usa Correcciones de lente cuando quieras corregir el sombreado de la lente."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

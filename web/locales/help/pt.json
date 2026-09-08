@@ -1032,7 +1032,9 @@
           "steps": [
             "Aumente Remover névoa para fortalecer uma imagem enevoada, ou tente um valor negativo para um tratamento mais suave. Verifique contraste e cor enquanto ajusta.",
             "Defina Vinheta para o tratamento de borda desejado e inspecione os cantos.",
-            "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir juntos Textura, Claridade, Remover névoa e Vinheta."
+            "Aumente Tamanho para manter uma parte maior do centro sem efeito; diminua para que a vinheta alcance mais o interior.",
+            "Aumente Suavizar bordas para uma transição mais suave, ou diminua para uma borda mais definida.",
+            "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir todos os controles deslizantes de Efeitos juntos."
           ],
           "tips": [
             "Vignette em Effects é um tratamento criativo de borda. Use Lens corrections quando quiser corrigir o sombreamento da lente."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

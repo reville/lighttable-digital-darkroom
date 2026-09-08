@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "ইতিহাস",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History ক্যাটালগে সংরক্ষিত থাকে, তাই অ্যাপ বন্ধ করলেও এটি থাকে। এই session-এ Undo এবং redo প্রতিটি ফটোর সঙ্গে অনুসরণ করে।",
     "History request failed": "ইতিহাস অনুরোধ ব্যর্থ হয়েছে",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "মূল ছবির সাথে তুলনা করতে B ধরে রাখুন, অথবা Effects-এর Reset ব্যবহার করে Texture, Clarity, Dehaze, এবং Vignette একসাথে রিসেট করুন।",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "মূল ছবির সাথে তুলনা করতে B ধরে রাখুন, অথবা এফেক্টসের সব স্লাইডার একসাথে রিসেট করতে এফেক্টসের রিসেট ব্যবহার করুন।",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Film, স্থানীয় মাস্ক, বা ফিনিশিং সমন্বয় ছাড়া মূলটি দেখাতে B চেপে ধরে রাখুন; সম্পাদনা ফিরিয়ে আনতে B ছেড়ে দিন। Slash (/) ফটো অনুসন্ধানে ফোকাস করে।",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Film, স্থানীয় মাস্ক, বা ফিনিশিং সমন্বয় ছাড়া মূলটি দেখতে B চেপে ধরে রাখুন। সম্পাদিত দৃশ্য ফিরিয়ে আনতে B ছেড়ে দিন।",
     "Hold a mapped key and scroll or use arrow keys.": "একটি ম্যাপ করা কী চেপে ধরে স্ক্রল করুন বা অ্যারো কী ব্যবহার করুন।",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "উপফোল্ডার অন্তর্ভুক্ত করুন",
     "Includes the Film profile and physical stages.": "এতে Film profile এবং ভৌত ধাপগুলো অন্তর্ভুক্ত রয়েছে।",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "কুয়াশাচ্ছন্ন ছবি জোরদার করতে Dehaze বাড়ান, অথবা আরও নরম প্রভাবের জন্য একটি ঋণাত্মক মান চেষ্টা করুন। এটি সমন্বয় করার সময় contrast এবং color উভয়ই পরীক্ষা করুন।",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "আরও মসৃণ রূপান্তরের জন্য ফেদার বাড়ান, অথবা আরও স্পষ্ট প্রান্তের জন্য এটি কমান।",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "কেন্দ্রের আরও বেশি অংশ প্রভাবমুক্ত রাখতে আকার বাড়ান; ভিগনেট আরও ভেতরের দিকে আনতে এটি কমান।",
     "Index data stays in LightTable's local data folder.": "সূচির ডেটা LightTable-এর স্থানীয় ডেটা ফোল্ডারেই থাকে।",
     "Indexing {SAiCompleted} of {SAiTotal}": "সূচিকরণ করা হচ্ছে {SAiCompleted} / {SAiTotal}",
     "Info": "তথ্য",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "সদৃশ মুখসমূহ একত্রে গ্রুপ করা হয়। নাম যোগ করুন, সম্ভাব্য মিল পর্যালোচনা করুন, এবং প্রয়োজন অনুযায়ী কোনো গ্রুপ সংশোধন করুন।",
     "Simulate paper and ink": "কাগজ ও ink অনুকরণ করুন",
     "Size": "আকার",
+    "Size of the clear area at the center of the vignette.": "ভিগনেটের কেন্দ্রে প্রভাবমুক্ত এলাকার আকার।",
     "Size only": "শুধু আকার",
     "Skip": "এড়িয়ে যান",
     "Skip existing": "বিদ্যমানটি এড়িয়ে যান",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof একটি viewing state। Export-এ ফাইলের প্রকৃত Colour space আলাদাভাবে বেছে নিন।",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "সফট-প্রুফ নিয়ন্ত্রণগুলো ভিউয়ারের View বিকল্পগুলোতে (•••) আছে। এগুলো আপনাকে সম্পাদনার সময় একটি আউটপুট প্রিভিউ পরীক্ষা করতে দেয়।",
     "Soften skin": "ত্বক মসৃণ করুন",
+    "Softness of the vignette transition.": "ভিগনেটের রূপান্তরের কোমলতা।",
     "Software rendering": "সফটওয়্যার রেন্ডারিং",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "কিছু খসড়া আংশিক ফাইল পরিচয় ব্যবহার করে, যা পুরো মূল ফাইল যাচাই করতে পারে না। কেবল তখনই এগুলি পুনঃস্থাপন করুন যদি মূল ফটোগুলি প্রতিস্থাপিত না হয়ে থাকে।",
     "Some edits have not been saved": "কিছু সম্পাদনা সংরক্ষণ করা হয়নি",

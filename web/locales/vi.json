@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "Lịch sử",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History được lưu trong danh mục, nên nó vẫn còn sau khi thoát. Undo và redo theo từng ảnh trong phiên này.",
     "History request failed": "Yêu cầu lịch sử thất bại",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Effects để đặt lại Texture, Clarity, Dehaze và Vignette cùng lúc.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Hiệu ứng để đặt lại tất cả thanh trượt Hiệu ứng cùng lúc.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Giữ B để hiển thị bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện; thả B để khôi phục chỉnh sửa. Dấu gạch chéo (/) đưa tiêu điểm vào tìm kiếm ảnh.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Giữ B để xem bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện. Thả B để khôi phục chế độ xem đã chỉnh sửa.",
     "Hold a mapped key and scroll or use arrow keys.": "Giữ một phím đã gán và cuộn hoặc dùng phím mũi tên.",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "Bao gồm thư mục con",
     "Includes the Film profile and physical stages.": "Bao gồm Hồ sơ phim và các giai đoạn vật lý.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Tăng Dehaze để tăng cường một ảnh có sương mù, hoặc thử giá trị âm cho một xử lý mềm hơn. Kiểm tra cả tương phản lẫn màu sắc khi bạn điều chỉnh.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Tăng Làm mềm mép để chuyển tiếp mềm hơn, hoặc giảm để có đường biên rõ hơn.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Tăng Kích thước để giữ vùng giữa không bị ảnh hưởng rộng hơn; giảm để hiệu ứng tối góc lan sâu hơn vào trong.",
     "Index data stays in LightTable's local data folder.": "Dữ liệu chỉ mục vẫn nằm trong thư mục dữ liệu cục bộ của LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Đang lập chỉ mục {SAiCompleted} trong {SAiTotal}",
     "Info": "Thông tin",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Các khuôn mặt tương tự sẽ được nhóm cùng nhau. Thêm tên, xem lại các kết quả khớp có thể có và chỉnh sửa một nhóm bất cứ khi nào bạn cần.",
     "Simulate paper and ink": "Mô phỏng giấy và mực",
     "Size": "Kích thước",
+    "Size of the clear area at the center of the vignette.": "Kích thước vùng không bị ảnh hưởng ở giữa hiệu ứng tối góc.",
     "Size only": "Chỉ kích thước",
     "Skip": "Bỏ qua",
     "Skip existing": "Bỏ qua mục đã tồn tại",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof là một trạng thái xem. Chọn riêng không gian Colour thực tế của tệp trong Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Các điều khiển soft-proof nằm trong tùy chọn Xem của trình xem (•••). Chúng cho phép bạn kiểm tra bản xem trước đầu ra trong khi chỉnh sửa.",
     "Soften skin": "Làm mềm da",
+    "Softness of the vignette transition.": "Độ mềm của vùng chuyển tiếp hiệu ứng tối góc.",
     "Software rendering": "Kết xuất bằng phần mềm",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Một số bản nháp dùng danh tính tệp một phần, không thể xác minh toàn bộ bản gốc. Chỉ khôi phục các bản này nếu ảnh gốc chưa bị thay thế.",
     "Some edits have not been saved": "Một số chỉnh sửa chưa được lưu",
