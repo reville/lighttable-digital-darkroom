@@ -1,5 +1,32 @@
 # Maintaining in-app help
 
+## update-text
+
+`update-text` means completing this sequence after the implementation is ready:
+
+1. Update the README and relevant workflow, compatibility, and command
+   documentation against the implemented behavior.
+2. Update in-app Help using the source review, build, and check steps below.
+3. Update the separate `reville/lighttable-site` feature content. Preserve
+   existing user-written copy and distinguish implemented features from
+   deferred work and unverified compatibility claims.
+4. Once English is settled, refresh the affected UI and Help source strings,
+   every declared translation catalog, and generated localized Help bundles.
+   Preserve placeholders, file formats, paths, keyboard shortcuts, and user
+   data. Run the localization checks provided by that checkout and inspect
+   translated controls and Help in the running interface.
+
+Keep app, website, and translation changes reviewable together. Report their
+actual source, publication, and installation states separately. If localization
+is being developed in another checkout, identify that location and its remaining
+integration work; English fallback is not evidence of a completed translation.
+
+The current [DAM translation handoff](../localization/dam-update/README.md)
+keeps the new messages and complete Help translations with the feature while
+the separate localization runtime is finished.
+
+## Help source
+
 Help is authored alongside the implementation in the JSON arrays in this
 directory. `web/help-content.json` is the generated, offline reader bundle.
 The app loads it only when Help opens. No network search or external service

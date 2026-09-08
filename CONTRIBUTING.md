@@ -10,6 +10,11 @@ steps to reproduce, and what you expected to happen. For image problems, include
 the camera model and file format; a sample you can share and a screenshot or
 export showing the problem help us reproduce it.
 
+For user-facing changes, follow the **update-text** workflow: update the
+documentation, in-app Help, and website feature content, then refresh affected
+localizations. The [content maintenance guide](docs/help/README.md#update-text)
+describes the order and checks.
+
 ## Source setup (macOS)
 
 The native development app targets Apple silicon and macOS 13 or later. You need
