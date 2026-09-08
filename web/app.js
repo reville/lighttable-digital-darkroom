@@ -3386,6 +3386,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   // generation is bumped, so cancelling here stranded the sampling surface.
   const im = cur();
   if (!im) return;
+  // Zoom/pan state can change before its animation-frame layout is applied.
+  // Measure the current view before choosing the native source-pixel region.
+  viewFrameScheduler.flush();
   readControls();
   const my = ++S.seq;
   const requestedWidth = options.requestedWidth || requestedPreviewWidth();
