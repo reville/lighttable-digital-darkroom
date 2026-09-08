@@ -59,14 +59,19 @@ try {
       !document.querySelector('#zoomwrap').classList.contains('photo-pending'), name, {timeout:120000});
     const filmEnabled = await page.locator('#filmProfileToggle').getAttribute('aria-checked');
     if (filmEnabled !== String(test.params.profile_enabled)) await post('/api/ui/command', {command:'filmToggle'});
+    const rendersBefore = await page.evaluate(() => __lightTablePerf.renders.length);
     await post('/api/ui/command', {command:'slider', args:{key:'print_exposure', value:test.params.print_exposure}});
     // Actual slider event takes the normal app UI -> grade -> preview -> save route.
     const before = await page.evaluate(() => processingFrames);
     await post('/api/ui/command', {command:'slider', args:{key:'exposure', value:test.exposure}});
-    await page.waitForFunction(({before, exposure}) => processingFrames > before &&
+    // A grade draw can use the previous film texture while the new base is
+    // still rendering. Require a fresh, fully presented base before readback.
+    await page.waitForFunction(({before, rendersBefore, exposure}) => processingFrames > before &&
       Math.abs(processingFrame.grade.exposure - exposure) < 0.0001 &&
+      __lightTablePerf.renders.length > rendersBefore &&
+      document.querySelector('#zoomwrap').getAttribute('aria-busy') === 'false' &&
       !document.querySelector('#zoomwrap').classList.contains('photo-pending'),
-      {before, exposure:test.exposure}, {timeout:120000});
+      {before, rendersBefore, exposure:test.exposure}, {timeout:120000});
     // Poll authoritative saved state, so the CLI reference uses the accepted recipe.
     let saved;
     for (let attempt = 0; attempt < 120; attempt++) {
