@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 بت",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "لا يضمن إعداد التكبير 100% وصول تفاصيل الصورة الكاملة. قد تظهر معاينة سريعة أولًا بينما تكتمل معالجة RAW الدقيقة والمعاينة الأكبر. يمتلئ شريط التقدم مع اكتمال مراحل معالجة المعاينة، مع عدد مثل 2 / 5. ويختفي بمجرد عرض معاينة قابلة للاستخدام؛ وتستمر معالجة RAW الدقيقة والمعاينات الأكبر في الخلفية دون التراكب. يمثل العدد المراحل المكتملة، لا الوقت المتبقي. يحافظ تقليل الحركة على تحديثات المراحل نفسها دون حركة. تبقى الصورة مرئية دون تعتيم. عند 1:1، مرِّر المؤشر فوق زر 1:1 للتحقق مما إذا كانت تفاصيل المصدر الكاملة جاهزة قبل تقييم التفاصيل الدقيقة.",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "لا يمكن تحرير نسخة RAW الأصلية في مكانها؛ أرسل TIFF معدّلًا",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "يمكن أن تؤثر الدفعة في ما يصل إلى 5000 صورة، بما في ذلك الرفقاء المرتبطين. تؤدي إزالة كلمة مفتاحية هرمية إلى إزالة ذلك المسار الدقيق، لا كل الأصول الفرعية. تستخدم شجرة الكلمات المفتاحية والاقتراحات مصطلحات موجودة بالفعل في الكتالوج.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "الإعداد المسبق المدمج للقراءة فقط. يؤدي Save a copy… إلى وضع نسخة مسماة في Yours. تؤدي Hide preset إلى إزالته من عرض Built-in المعتاد؛ ويعيد Show hidden وRestore to Built-in إظهاره.",
@@ -159,7 +158,6 @@
     "Advanced preview override": "تجاوز المعاينة المتقدم",
     "After completion, find the new result in the refreshed library and inspect it.": "بعد الاكتمال، اعثر على النتيجة الجديدة في المكتبة المحدَّثة وافحصها.",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "بعد الترقية، يقرأ أول مسح النسخ الأصلية المحلية لتعزيز مطابقة الملفات. قد يستغرق هذا وقتًا أطول في مكتبة كبيرة. تظل النسخ الأصلية التي كانت مفقودة بالفعل من دون هوية ملف كاملة مفقودة؛ احتفظ بإدخالاتها واستعد النسخ الأصلية إلى مساراتها السابقة المفهرسة قبل إعادة المسح.",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "بعد تشغيل «فيلم»، قد تظهر معاينة سريعة قبل اكتمال تفاصيل RAW الدقيقة والمعاينة الأكبر. يمتلئ شريط التقدم مع اكتمال مراحل معالجة المعاينة ويختفي بمجرد أن تصبح المعاينة مرئية. وتستمر تفاصيل RAW الدقيقة والعرض الكامل الدقة في الخلفية.",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "حاذِ مسحًا ضوئيًا أو مرجعًا آخر، وقِس الفرق، وطبّق تطابقًا ابتدائيًا.",
     "Aligning frames": "محاذاة الإطارات",
     "All": "الكل",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "يجب عرض أصول RAW الأصلية كملفات TIFF معدلة. لا يكون Processed original متاحًا إذا كان التحديد يتضمن ملف RAW. وبالنسبة إلى الصور المعالجة، فإن ذلك الخيار يفتح الأصل بدلًا من إعداد ملف TIFF معدّل.",
     "RAW originals only.": "نسخ RAW الأصلية فقط.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "يمكن أن تعرض صور RAW عناصر التحكم في تقليل ضوضاء المستشعر وإزالة الضوضاء المتعلمة. تعمل إزالة الضوضاء المتعلمة محليًا عند الضغط على تطبيق إزالة الضوضاء؛ ولا يؤدي تحريك الشدة إلى تشغيلها مباشرة.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "تُفتح صور RAW بمعالجة LightTable، حتى عند إيقاف وضع الفيلم. قد يستغرق ظهور أول صورة غير مخزنة مؤقتًا لحظة. يعرض شريط التقدم مراحل المعالجة المكتملة ويختفي عند ظهور الصورة.",
     "RAW preview could not finish. Try the photo again.": "تعذر إكمال معاينة RAW. حاول مع الصورة مرة أخرى.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "تصغير",
     "Zoom in": "تكبير",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "كبّر للحصول على موضع دقيق. تظل الحدود الدائرية والنقاط حادة عند كل مستوى تكبير؛ وتستمر الدوائر في عرض المساحة نفسها من الصورة.",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "يحافظ التكبير على أوضح معاينة متاحة أثناء تحميل مزيد من التفاصيل. وعند التصغير تُستخدم المعاينة نفسها. عند العرض بنسبة 1:1، راجع تلميح الزر قبل تقييم التفاصيل الدقيقة.",
     "Zoom out": "تكبير للخارج",
     "Zoom: {actualPct}%": "التكبير: {actualPct}%",
     "a command-line server": "خادم سطر أوامر",

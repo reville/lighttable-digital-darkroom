@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 bitów",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "Ustawienie powiększenia 100% nie gwarantuje, że dotarł pełny szczegół obrazu. Najpierw może pojawić się szybki podgląd, podczas gdy dokładne przetwarzanie RAW i większy podgląd kończą się. Pasek postępu wypełnia się w miarę kończenia etapów przetwarzania podglądu, z licznikiem takim jak 2 / 5. Znika, gdy tylko zostanie wyświetlony użyteczny podgląd; dokładne przetwarzanie RAW i większe podglądy są kontynuowane w tle bez nakładki. Licznik oznacza ukończone etapy, a nie pozostały czas. Zmniejszony ruch zachowuje te same aktualizacje etapów bez animacji. Zdjęcie pozostaje widoczne bez przyciemnienia. Przy 1:1 najedź na przycisk 1:1, aby sprawdzić, czy pełne szczegóły źródła są gotowe przed oceną drobnych detali.",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "Oryginału RAW nie można edytować na miejscu; wyślij dostosowany TIFF",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "Partia może objąć maksymalnie 5000 zdjęć, w tym powiązanych towarzyszy. Usunięcie hierarchicznego słowa kluczowego usuwa dokładnie tę ścieżkę, a nie każdy element podrzędny. Drzewo słów kluczowych i podpowiedzi używają terminów już istniejących w katalogu.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "Wbudowany preset jest tylko do odczytu. Save a copy… umieszcza nazwaną kopię w Yours. Hide preset usuwa go ze zwykłego widoku Built-in; Show hidden i Restore to Built-in przywracają go.",
@@ -159,7 +158,6 @@
     "Advanced preview override": "Zaawansowane zastąpienie podglądu",
     "After completion, find the new result in the refreshed library and inspect it.": "Po zakończeniu znajdź nowy wynik w odświeżonej bibliotece i sprawdź go.",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "Po uaktualnieniu pierwsze skanowanie odczytuje lokalne oryginały, aby wzmocnić dopasowywanie plików. Na dużej bibliotece może to zająć więcej czasu. Oryginały, które już były brakujące bez pełnej tożsamości pliku, pozostaną brakujące; zachowaj ich wpisy i przywróć oryginały do poprzednich zarejestrowanych ścieżek przed ponownym skanowaniem.",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "Po włączeniu filmu może pojawić się szybki podgląd, zanim zakończy się dokładny szczegół RAW i większy podgląd. Pasek postępu wypełnia się w miarę kończenia etapów przetwarzania podglądu i znika, gdy podgląd staje się widoczny. Dokładne szczegóły RAW i renderowanie w pełnej rozdzielczości są kontynuowane w tle.",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "Wyrównaj skan lub inne odniesienie, zmierz różnicę i zastosuj początkowe dopasowanie.",
     "Aligning frames": "Wyrównywanie klatek",
     "All": "Wszystkie",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Oryginały RAW muszą zostać wyrenderowane jako skorygowane TIFF-y. Przetworzony oryginał jest niedostępny, jeśli zaznaczenie zawiera plik RAW. W przypadku zdjęć przetworzonych ta opcja otwiera oryginał zamiast przygotowywać skorygowany TIFF.",
     "RAW originals only.": "Tylko oryginały RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Zdjęcia RAW mogą pokazywać kontrolki Redukcja szumu matrycy oraz Uczone usuwanie szumu. Uczone usuwanie szumu działa lokalnie po naciśnięciu Zastosuj usuwanie szumu; przesuwanie Siła nie uruchamia go na żywo.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
     "RAW preview could not finish. Try the photo again.": "Podgląd RAW nie mógł się zakończyć. Spróbuj ponownie ze zdjęciem.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "Pomniejsz",
     "Zoom in": "Powiększ",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "Powiększ, aby uzyskać precyzyjne umieszczenie. Obrysy okręgów i punkty pozostają ostre na każdym poziomie powiększenia; okręgi nadal pokazują ten sam obszar zdjęcia.",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "Powiększanie zachowuje najostrzejszy dostępny podgląd podczas wczytywania dodatkowych szczegółów. Przy pomniejszaniu ten podgląd jest używany ponownie. W skali 1:1 sprawdź podpowiedź przycisku przed oceną drobnych szczegółów.",
     "Zoom out": "Pomniejsz",
     "Zoom: {actualPct}%": "Powiększenie: {actualPct}%",
     "a command-line server": "serwer wiersza poleceń",

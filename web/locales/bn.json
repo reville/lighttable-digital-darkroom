@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 bit",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "100% zoom setting মানে এই নয় যে পূর্ণ image detail এসে গেছে। সঠিক RAW processing এবং বড় পূর্বরূপ শেষ হওয়ার আগেই একটি দ্রুত পূর্বরূপ দেখা যেতে পারে। preview processing stages শেষ হওয়ার সঙ্গে সঙ্গে progress bar পূরণ হয়, 2 / 5-এর মতো একটি count দেখিয়ে। ব্যবহারযোগ্য preview দেখানো মাত্রই এটি অদৃশ্য হয়ে যায়; সঠিক RAW processing এবং বড় পূর্বরূপ overlay ছাড়াই পটভূমিতে চলতে থাকে। count সময় নয়, সম্পন্ন ধাপ বোঝায়। Reduced motion-এ animation ছাড়াই একই stage updates থাকে। ফটো dim না হয়ে দৃশ্যমান থাকে। 1:1-এ, সূক্ষ্ম বিস্তারিত বিচার করার আগে পূর্ণ source detail প্রস্তুত আছে কি না দেখতে 1:1 বোতামের ওপর hover করুন।",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "একটি RAW মূলকে জায়গাতেই সম্পাদনা করা যায় না; একটি সমন্বিত TIFF পাঠান",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "একটি batch সর্বোচ্চ 5,000টি ফটোকে প্রভাবিত করতে পারে, সংযুক্ত সঙ্গীগুলোসহ। শ্রেণিবিন্যস্ত কোনো কীওয়ার্ড সরালে সেই নির্দিষ্ট পাথটিই সরানো হয়, সব অধস্তন নয়। keyword tree এবং suggestions ক্যাটালগে ইতিমধ্যেই থাকা শব্দগুলো ব্যবহার করে।",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "একটি built-in প্রিসেট শুধু পড়ার জন্য। Save a copy… একটি নামযুক্ত কপি Yours-এ রাখে। Hide preset এটিকে স্বাভাবিক Built-in দৃশ্য থেকে সরিয়ে দেয়; Show hidden এবং Restore to Built-in এটিকে ফিরিয়ে আনে।",
@@ -159,7 +158,6 @@
     "Advanced preview override": "অ্যাডভান্সড পূর্বরূপ ওভাররাইড",
     "After completion, find the new result in the refreshed library and inspect it.": "কাজ শেষ হলে, refreshed library-তে নতুন ফলাফলটি খুঁজে নিয়ে তা পরীক্ষা করুন।",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "আপগ্রেডের পরে, প্রথম স্ক্যান ফাইল ম্যাচিং শক্তিশালী করতে স্থানীয় মূল ফাইল পড়ে। বড় লাইব্রেরিতে এতে বেশি সময় লাগতে পারে। যেসব মূল ফাইল আগে থেকেই অনুপস্থিত ছিল এবং যাদের সম্পূর্ণ ফাইল পরিচয় নেই, সেগুলি অনুপস্থিতই থাকবে; সেগুলির এন্ট্রি রেখে দিন এবং পুনরায় স্ক্যান করার আগে মূল ফাইলগুলি তাদের আগের তালিকাভুক্ত পাথে পুনঃস্থাপন করুন।",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "Film চালু করার পর, সঠিক RAW detail এবং বড় পূর্বরূপ শেষ হওয়ার আগে একটি দ্রুত পূর্বরূপ দেখা যেতে পারে। পূর্বরূপ প্রক্রিয়াকরণের ধাপ শেষ হওয়ার সঙ্গে সঙ্গে progress bar পূর্ণ হয় এবং পূর্বরূপ দৃশ্যমান হলে অদৃশ্য হয়ে যায়। সঠিক RAW detail এবং full-resolution rendering পটভূমিতে চলতে থাকে।",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "একটি scan বা অন্য reference সামঞ্জস্য করুন, পার্থক্য মাপুন, এবং একটি প্রাথমিক match প্রয়োগ করুন।",
     "Aligning frames": "ফ্রেম সারিবদ্ধ করা হচ্ছে",
     "All": "সব",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW মূল ফাইলগুলো adjusted TIFF হিসেবে render করতে হবে। নির্বাচনটিতে RAW ফাইল থাকলে Processed original অনুপলব্ধ। প্রসেসড ফটোর জন্য, ওই বিকল্পটি adjusted TIFF প্রস্তুত না করে মূল ফাইলটি খোলে।",
     "RAW originals only.": "শুধু RAW মূলগুলো।",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW photo-তে Sensor noise reduction এবং Learned denoise নিয়ন্ত্রণ দেখা যেতে পারে। Apply denoise চাপলে Learned denoise localভাবে চলে; Strength সরালে এটি সরাসরি চলে না।",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW ছবি শুরু থেকেই LightTable-এর প্রসেসিংসহ খোলে, এমনকি ফিল্ম বন্ধ থাকলেও। ক্যাশে না থাকা প্রথম ছবিটি দেখাতে কিছুক্ষণ লাগতে পারে। অগ্রগতি বার সম্পন্ন হওয়া প্রসেসিং ধাপ দেখায় এবং ছবি দেখা গেলে অদৃশ্য হয়ে যায়।",
     "RAW preview could not finish. Try the photo again.": "RAW পূর্বরূপ সম্পন্ন করা যায়নি। ফটোটি আবার চেষ্টা করুন।",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "জুম আউট",
     "Zoom in": "জুম ইন",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "সুনির্দিষ্ট স্থাপনের জন্য জুম ইন করুন। বৃত্তের আউটলাইন এবং পিন প্রতিটি জুম স্তরে তীক্ষ্ণ থাকে; বৃত্তগুলো ছবির একই অংশ দেখাতে থাকে।",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "জুম করার সময় আরও সূক্ষ্ম বিবরণ লোড হওয়া পর্যন্ত উপলব্ধ সবচেয়ে স্পষ্ট প্রিভিউ বজায় থাকে। জুম আউট করলে সেই প্রিভিউ আবার ব্যবহার করা হয়। 1:1-এ সূক্ষ্ম বিবরণ বিচার করার আগে বোতামের টুলটিপ দেখুন।",
     "Zoom out": "জুম আউট",
     "Zoom: {actualPct}%": "জুম: {actualPct}%",
     "a command-line server": "একটি কমান্ড-লাইন সার্ভার",
