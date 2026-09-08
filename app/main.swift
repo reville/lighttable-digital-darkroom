@@ -857,6 +857,51 @@ private final class PhotosLibraryImporter {
     }
 }
 
+// MARK: - Preset links
+
+/// A link names a reviewed catalog entry; it is never a file or fetch URL.
+/// Keep the ASCII grammar identical to the Windows host and catalog IDs.
+func presetID(from raw: String) -> String? {
+    let prefix = "lighttable://preset/"
+    guard raw.utf8.count <= prefix.utf8.count + 129,
+          raw.hasPrefix(prefix) else { return nil }
+    let identifier = String(raw.dropFirst(prefix.count))
+    let parts = identifier.split(separator: "/", omittingEmptySubsequences: false)
+    guard parts.count == 2 else { return nil }
+    for part in parts {
+        let bytes = Array(part.utf8)
+        guard (1...64).contains(bytes.count),
+              let first = bytes.first,
+              (first >= 97 && first <= 122) || (first >= 48 && first <= 57),
+              bytes.allSatisfy({ ($0 >= 97 && $0 <= 122) || ($0 >= 48 && $0 <= 57) || $0 == 45 })
+        else { return nil }
+    }
+    return identifier
+}
+
+/// Decode an exported recipe or its submission ZIP before opening the same
+/// user-controlled Save dialog. The bridge never supplies a destination path.
+func presetExportData(content: String, encoding: String = "utf8") throws -> Data {
+    guard content.utf8.count <= 15 * 1024 * 1024 else {
+        throw NSError(domain: "LightTablePresetExport", code: 1,
+            userInfo: [NSLocalizedDescriptionKey: "The preset export exceeds 15 MB."])
+    }
+    switch encoding {
+    case "utf8", "utf-8":
+        return Data(content.utf8)
+    case "base64":
+        guard let data = Data(base64Encoded: content),
+              data.base64EncodedString() == content else {
+            throw NSError(domain: "LightTablePresetExport", code: 2,
+                userInfo: [NSLocalizedDescriptionKey: "The preset export contains invalid base64 data."])
+        }
+        return data
+    default:
+        throw NSError(domain: "LightTablePresetExport", code: 3,
+            userInfo: [NSLocalizedDescriptionKey: "The preset export uses an unsupported encoding."])
+    }
+}
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
@@ -889,6 +934,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private var firstRun = false
     private var pendingSetupFolderEvent: [String: Any]?
     private var pendingSetupCatalogEvent: [String: Any]?
+    private var pendingPresetLinks: [String] = []
+    private var presetLinksReady = false
     private let photoImportQueue = DispatchQueue(
         label: "lighttable.photos-import", qos: .userInitiated)
     /// Consecutive unexpected server exits. Reset after a session that ran
@@ -937,6 +984,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             }
         }
         launch(folder: folder)
+    }
+
+    func application(_ application: NSApplication, open urls: [URL]) {
+        for url in urls.prefix(8) {
+            guard let id = presetID(from: url.absoluteString) else { continue }
+            // Bound the startup queue; repeated links after readiness still work.
+            if pendingPresetLinks.count == 8 { pendingPresetLinks.removeFirst() }
+            pendingPresetLinks.append(id)
+        }
+        guard !pendingPresetLinks.isEmpty else { return }
+        window?.makeKeyAndOrderFront(nil)
+        application.activate(ignoringOtherApps: true)
+        deliverPresetLinks()
+    }
+
+    private func deliverPresetLinks() {
+        guard presetLinksReady, webView != nil else { return }
+        let links = pendingPresetLinks
+        pendingPresetLinks.removeAll()
+        for id in links { sendEvent(["type": "presetLink", "id": id]) }
     }
 
     func applicationWillTerminate(_ note: Notification) {
@@ -1818,7 +1885,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
                  didStartProvisionalNavigation navigation: WKNavigation!) {
         (webView as? LightTableWebView)?.resetWindowChromeLayout()
         // A server restart or library switch may change the editor's origin.
-        if webView === self.webView { secondaryLoupeWindow?.close() }
+        if webView === self.webView {
+            presetLinksReady = false
+            secondaryLoupeWindow?.close()
+        }
     }
 
     /// A catalog file from another editor, opened read-only by the server.
@@ -1859,6 +1929,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
               let body = message.body as? [String: Any],
               let action = body["action"] as? String else { return }
         switch action {
+        case "requestPresetLinks":
+            guard message.frameInfo.isMainFrame,
+                  message.frameInfo.request.url?.host == "127.0.0.1",
+                  message.frameInfo.request.url?.port == Int(server.port) else { return }
+            presetLinksReady = true
+            deliverPresetLinks()
         case "editJournal":
             guard message.frameInfo.isMainFrame,
                   message.frameInfo.request.url?.host == "127.0.0.1",
@@ -2010,7 +2086,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         case "savePreset":
             guard let filename = body["filename"] as? String,
                   let content = body["content"] as? String else { return }
-            savePreset(filename: filename, content: content)
+            savePreset(filename: filename, content: content,
+                       encoding: body["encoding"] as? String ?? "utf8")
         case "importPresets":
             importPresets()
         case "menuState":
@@ -2183,7 +2260,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         }
     }
 
-    private func savePreset(filename: String, content: String) {
+    private func savePreset(filename: String, content: String, encoding: String = "utf8") {
+        let data: Data
+        do { data = try presetExportData(content: content, encoding: encoding) }
+        catch {
+            sendEvent(["type": "error",
+                       "message": "Could not export preset: \(error.localizedDescription)"])
+            return
+        }
         let cleanName = (filename as NSString).lastPathComponent
         let panel = NSSavePanel()
         panel.title = "Export Preset"
@@ -2194,7 +2278,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         }
         guard panel.runModal() == .OK, let destination = panel.url else { return }
         do {
-            try Data(content.utf8).write(to: destination, options: .atomic)
+            try data.write(to: destination, options: .atomic)
             sendEvent(["type": "presetSaved", "filename": destination.lastPathComponent])
         } catch {
             sendEvent(["type": "error",

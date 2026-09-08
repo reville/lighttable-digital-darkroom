@@ -1,6 +1,9 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
 
-use lighttable_desktop_shell::CloseAttempts;
+use lighttable_desktop_shell::{
+    CloseAttempts,
+    preset_links::{self, PresetLinkInbox},
+};
 
 use std::{
     env,
@@ -84,6 +87,8 @@ enum UserEvent {
     NativeMessage(String),
     EditJournalReply(Value),
     PageLoaded,
+    PageStarted,
+    PresetLink(String),
     ServerReady {
         generation: u64,
         folder: PathBuf,
@@ -253,6 +258,9 @@ struct AppState {
     fallback: Option<PathBuf>,
     /// Shown as a toast once the next page finishes loading.
     pending_error: Option<String>,
+    pending_preset_links: std::collections::VecDeque<String>,
+    preset_links_ready: bool,
+    preset_link_inbox: Option<PresetLinkInbox>,
 }
 
 impl AppState {
@@ -261,6 +269,34 @@ impl AppState {
         self.webview
             .evaluate_script(&format!("window.lightTableNativeEvent?.({encoded})"))?;
         Ok(())
+    }
+
+    fn open_preset(&mut self, id: String) {
+        if !preset_links::valid_preset_id(&id) {
+            return;
+        }
+        if self.pending_preset_links.len() == 8 {
+            self.pending_preset_links.pop_front();
+        }
+        self.pending_preset_links.push_back(id);
+        self.window.set_minimized(false);
+        self.window.set_focus();
+        self.deliver_preset_links();
+    }
+
+    fn deliver_preset_links(&mut self) {
+        if !self.preset_links_ready {
+            return;
+        }
+        while let Some(id) = self.pending_preset_links.front() {
+            if self
+                .send_event(json!({"type": "presetLink", "id": id}))
+                .is_err()
+            {
+                break;
+            }
+            self.pending_preset_links.pop_front();
+        }
     }
 
     fn finish_close(&mut self, saved: bool) {
@@ -320,6 +356,7 @@ impl AppState {
             previous.stop();
         }
         self.folder = folder.clone();
+        self.preset_links_ready = false;
         self.fallback = fallback;
         self.set_title(&folder);
         let _ = self.webview.load_html(LOADING_PAGE);
@@ -442,6 +479,10 @@ impl AppState {
                 }
             }
             "requestSources" => self.send_sources()?,
+            "requestPresetLinks" => {
+                self.preset_links_ready = true;
+                self.deliver_preset_links();
+            }
             "addPhotos" => {
                 let extensions = photo_extensions();
                 if let Some(files) = FileDialog::new()
@@ -610,8 +651,10 @@ impl AppState {
                     .get("content")
                     .and_then(Value::as_str)
                     .unwrap_or_default();
+                let data = lighttable_desktop_shell::preset_export_data(
+                    content, message.get("encoding").and_then(Value::as_str))?;
                 if let Some(destination) = FileDialog::new().set_file_name(filename).save_file() {
-                    fs::write(&destination, content.as_bytes())?;
+                    fs::write(&destination, data)?;
                     self.send_event(json!({
                         "type": "presetSaved",
                         "filename": destination.file_name()
@@ -864,7 +907,34 @@ fn show_fatal(message: &str) {
 }
 
 fn run() -> Result<()> {
+    let arguments: Vec<String> = env::args().skip(1).collect();
+    let initial_preset = match arguments.as_slice() {
+        [] => None,
+        [flag, url] if flag == "--preset-url" => Some(
+            preset_links::preset_id(url)
+                .context("invalid preset link")?
+                .to_owned(),
+        ),
+        [url] => Some(
+            preset_links::preset_id(url)
+                .context("invalid preset link")?
+                .to_owned(),
+        ),
+        _ => bail!("unsupported LightTable application arguments"),
+    };
     let paths = RuntimePaths::discover()?;
+    if initial_preset
+        .as_deref()
+        .is_some_and(|id| preset_links::forward(&paths.support, id))
+    {
+        return Ok(());
+    }
+    let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
+    let proxy = event_loop.create_proxy();
+    let link_proxy = proxy.clone();
+    let preset_link_inbox = PresetLinkInbox::start(&paths.support, move |id| {
+        link_proxy.send_event(UserEvent::PresetLink(id)).is_ok()
+    })?;
     let mut settings = Settings::load(&paths.settings);
     let folder = initial_folder(&settings)
         .or_else(|| {
@@ -878,8 +948,6 @@ fn run() -> Result<()> {
     settings.active = Some(folder.clone());
     settings.save(&paths.settings)?;
 
-    let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
-    let proxy = event_loop.create_proxy();
     let available = event_loop
         .primary_monitor()
         .map(|monitor| {
@@ -921,9 +989,10 @@ fn run() -> Result<()> {
             let _ = command_proxy.send_event(UserEvent::NativeMessage(request.body().clone()));
         })
         .with_on_page_load_handler(move |event, _| {
-            if matches!(event, PageLoadEvent::Finished) {
-                let _ = load_proxy.send_event(UserEvent::PageLoaded);
-            }
+            let _ = load_proxy.send_event(match event {
+                PageLoadEvent::Started => UserEvent::PageStarted,
+                PageLoadEvent::Finished => UserEvent::PageLoaded,
+            });
         });
     #[cfg(target_os = "windows")]
     let builder = builder.with_theme(WebViewTheme::Dark);
@@ -971,6 +1040,9 @@ fn run() -> Result<()> {
         queued: None,
         fallback: None,
         pending_error: None,
+        pending_preset_links: initial_preset.into_iter().collect(),
+        preset_links_ready: false,
+        preset_link_inbox: Some(preset_link_inbox),
     };
     app.begin_server(folder, None);
 
@@ -989,6 +1061,8 @@ fn run() -> Result<()> {
                 let _ = app.send_event(reply);
             }
             Event::UserEvent(UserEvent::PageLoaded) => app.page_loaded(),
+            Event::UserEvent(UserEvent::PageStarted) => app.preset_links_ready = false,
+            Event::UserEvent(UserEvent::PresetLink(id)) => app.open_preset(id),
             Event::UserEvent(UserEvent::ServerReady {
                 generation,
                 folder,
@@ -1014,6 +1088,7 @@ fn run() -> Result<()> {
             _ => {}
         }
         if app.close_approved {
+            app.preset_link_inbox.take();
             if let Some(mut server) = app.server.take() {
                 server.stop();
             }

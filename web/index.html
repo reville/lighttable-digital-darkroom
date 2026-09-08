@@ -114,7 +114,7 @@
     <details class="sidebar-disclosure ai-cull-disclosure">
       <summary>Assisted culling</summary>
       <div class="sidebar-disclosure-body">
-        <p class="sidebar-note" id="cullIntro">Build a private photo index in Settings, then choose the signals for this review.</p>
+        <p class="sidebar-note" id="cullIntro"><button type="button" id="cullEnableIndex">Turn the index on</button><span id="cullIntroText"> to sort a shoot into selects and rejects.</span></p>
         <div class="cull-group">
           <div class="cull-group-title">Select</div>
           <label class="check-row"><input type="checkbox" id="cullSubjectSharpness"><span>Subject sharpness</span><em class="cull-count" id="cullSubjectSharpnessCount"></em></label>
@@ -152,6 +152,20 @@
     <label class="field-label" for="editFilter">Edit status</label>
     <select id="editFilter"><option value="all">Any edit status</option><option value="edited">Edited</option><option value="unedited">Unedited</option><option value="virtual">Virtual copies</option></select>
     <div class="no-dd" hidden><select id="kindFilter" aria-label="Legacy file kind"><option value="all">All photos</option><option value="raw">RAW originals</option><option value="processed">Processed files</option><option value="virtual">Virtual copies</option></select></div>
+    <details class="metadata-filters"><summary>Camera, exposure &amp; date</summary>
+      <label>Camera <input data-metadata-filter="camera" type="text" placeholder="Camera model or maker" maxlength="200"></label>
+      <label>Lens <input data-metadata-filter="lens" type="text" placeholder="Lens model" maxlength="200"></label>
+      <label>Keyword <input data-metadata-filter="keyword" type="text" placeholder="Places > Boston" list="keywordSuggestions" maxlength="200"></label>
+      <fieldset class="metadata-range"><legend>ISO</legend><input data-metadata-filter="isoMin" type="number" placeholder="Minimum" aria-label="Minimum ISO" min="0" step="any"><span>–</span><input data-metadata-filter="isoMax" type="number" placeholder="Maximum" aria-label="Maximum ISO" min="0" step="any"></fieldset>
+      <fieldset class="metadata-range"><legend>Focal length (mm)</legend><input data-metadata-filter="focalLengthMin" type="number" placeholder="Minimum" aria-label="Minimum Focal length (mm)" min="0" step="any"><span>–</span><input data-metadata-filter="focalLengthMax" type="number" placeholder="Maximum" aria-label="Maximum Focal length (mm)" min="0" step="any"></fieldset>
+      <fieldset class="metadata-range"><legend>Aperture (f-number)</legend><input data-metadata-filter="apertureMin" type="number" placeholder="Minimum" aria-label="Minimum Aperture (f-number)" min="0" step="any"><span>–</span><input data-metadata-filter="apertureMax" type="number" placeholder="Maximum" aria-label="Maximum Aperture (f-number)" min="0" step="any"></fieldset>
+      <fieldset class="metadata-range"><legend>Exposure time (seconds)</legend><input data-metadata-filter="shutterMin" type="text" placeholder="Minimum" aria-label="Minimum Exposure time (seconds)"><span>–</span><input data-metadata-filter="shutterMax" type="text" placeholder="Maximum" aria-label="Maximum Exposure time (seconds)"></fieldset>
+      <p class="metadata-filter-hint">Exposure accepts fractions such as 1/250. Set both limits to the same value for an exact match.</p>
+      <label>Captured from <input data-metadata-filter="dateFrom" type="date"></label>
+      <label>Captured through <input data-metadata-filter="dateTo" type="date"></label>
+      <p class="metadata-filter-hint">Missing exposure metadata does not match an exposure filter. Rescan folders to index existing photos.</p>
+      <p id="metadataFilterError" class="metadata-filter-error" role="alert"></p>
+    </details>
     <div class="library-filter-footer"><button id="clearLibraryFilters" class="quiet" type="button">Clear all filters</button></div>
   </div>
 
@@ -185,10 +199,6 @@
             <canvas id="cv"></canvas>
             <img id="orig" alt="Original photograph">
             <img id="referenceImg" alt="Film reference" hidden>
-            <canvas id="editOverlay" aria-label="Local edit overlay"></canvas>
-            <div class="speed-hud" id="speedHud" hidden></div>
-            <div class="render-badge" id="denoiseBadge" hidden>Denoising…</div>
-            <div class="loupe-info" id="loupeInfoOverlay" hidden><strong id="loupeInfoName"></strong><span id="loupeInfoMetadata"></span></div>
             <div id="cropLayer">
               <span class="crop-dimmer crop-dimmer-top" aria-hidden="true"></span>
               <span class="crop-dimmer crop-dimmer-right" aria-hidden="true"></span>
@@ -205,6 +215,12 @@
                 <span class="crop-handle crop-handle-w" data-crop-handle="w" aria-hidden="true"></span>
               </div>
             </div>
+          </div>
+          <canvas id="editOverlay" aria-label="Local edit overlay"></canvas>
+          <div id="viewerChrome" hidden>
+            <div class="speed-hud" id="speedHud" hidden></div>
+            <div class="render-badge" id="denoiseBadge" hidden>Denoising…</div>
+            <div class="loupe-info" id="loupeInfoOverlay" hidden><strong id="loupeInfoName"></strong><span id="loupeInfoMetadata"></span></div>
           </div>
           <div class="compare-overlay" id="compareOverlay" hidden>
             <span class="cmp-bar" id="compareBar"></span>
@@ -654,7 +670,7 @@
       </section>
 
       <section class="panel-pane" id="presetsPane">
-        <div class="panel-title"><div><strong>Presets</strong><span>LightTable and portable edit recipes</span></div></div>
+        <div class="panel-title"><div><strong>Presets</strong><span>Looks for your photographs</span></div></div>
         <div class="pane-content">
           <div id="presetBrowser"></div>
           <details class="info-section preset-management" id="presetManage">
@@ -671,8 +687,13 @@
               <button class="quiet full stack-gap" id="presetReplace">Replace adjustment settings</button>
               <p class="hint">Replacing resets adjustments, masks, Remove corrections, and geometry before applying this preset. Your crop is kept. Film is kept unless the preset includes it or you turn it off above. Undo restores the previous edit.</p>
               <div class="subheading">Save current look</div>
+              <label class="field-label" for="presetSaveScope">Preset scope</label>
+              <select id="presetSaveScope"><option value="look">Look · keep photo corrections</option><option value="full">Full edit · include photo corrections</option></select>
+              <p class="hint">Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.</p>
+              <div id="presetSaveOptions" hidden>
               <label class="field-label" for="presetSaveType">Include adjustments</label>
               <select id="presetSaveType"><option value="style">All adjustment settings</option><option value="tool">Changed settings only</option></select>
+              </div>
               <label class="check-row"><input type="checkbox" id="presetIncludeFilm" checked><span>Include Film profile and physical settings</span></label>
               <button class="primary-btn full stack-gap" id="presetSave">Save new…</button>
               <button class="text-btn negative" id="presetDel">Delete selected preset</button>
@@ -704,7 +725,9 @@
           <div class="label-row" id="labelRow"></div>
           <div class="btnrow stack-gap"><button id="surveyOpen" class="quiet compact">Survey selection</button><button id="renameOpen" class="quiet compact">Rename…</button></div>
           <div class="subheading">Keywords</div>
-          <div class="keyword-entry"><input id="keywordInput" type="text" maxlength="400" list="keywordSuggestions" placeholder="Add keywords"><datalist id="keywordSuggestions"></datalist><button id="keywordAdd">Add</button></div>
+          <div class="keyword-entry"><input id="keywordInput" type="text" maxlength="400" list="keywordSuggestions" placeholder="Add keywords"><datalist id="keywordSuggestions"></datalist><button id="keywordAdd">Add to photo</button></div>
+          <div class="keyword-batch-actions"><button id="keywordBatchAdd" type="button">Add to selection</button><button id="keywordBatchRemove" type="button">Remove from selection</button><button id="keywordBatchUndo" type="button" hidden>Undo keyword change</button></div>
+          <p id="keywordBatchScope" class="metadata-filter-hint"></p>
           <div class="keyword-list" id="keywordList"></div>
           <details class="info-section" open><summary>Camera</summary><div class="info-section-body"><div id="exif" class="exif">—</div></div></details>
           <details class="info-section"><summary>Correct capture time</summary><div class="info-section-body">

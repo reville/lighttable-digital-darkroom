@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Callable
 
 import numpy as np
+
+import merge_acceleration
 from scipy import ndimage
 from scipy.spatial.distance import cdist
 from skimage import color, feature, transform
@@ -89,29 +91,43 @@ def _align_exposures(values: list[ImageInput], *,
         image = reference if index == reference_index else _load_input(value)
         if image.shape[:2] != (height, width):
             raise ValueError("HDR inputs must have matching dimensions")
-        small = transform.resize(_alignment_gray(image), ref_small.shape,
-                                 anti_aliasing=True, preserve_range=True)
-        if index == reference_index or not np.any(ref_small) or not np.any(small):
+        if index == reference_index or not np.any(ref_small):
             # The reference is already aligned. A featureless exposure has no
             # translation evidence; phase correlation otherwise invents a
             # subpixel shift and creates black borders even in identical frames.
-            shift = np.zeros(2, dtype=np.float64)
+            full_shift = np.zeros(2, dtype=np.float64)
         else:
-            shift, _, _ = phase_cross_correlation(ref_small, small,
-                                                  upsample_factor=10)
-        full_shift = np.asarray(shift) / scale
+            small = transform.resize(_alignment_gray(image), ref_small.shape,
+                                     anti_aliasing=True, preserve_range=True)
+            if not np.any(small):
+                full_shift = np.zeros(2, dtype=np.float64)
+            else:
+                shift, _, _ = phase_cross_correlation(ref_small, small,
+                                                      upsample_factor=10)
+                full_shift = np.asarray(shift) / scale
         if np.any(np.abs(full_shift) > np.asarray((height, width)) * 0.2):
             # A featureless bracket can make phase correlation wrap to a false
             # distant peak. Same-sized frames are still safely mergeable as a
             # tripod sequence; deghosting suppresses local motion.
             full_shift = np.zeros(2, dtype=np.float64)
-        moved = ndimage.shift(image, (*full_shift, 0), order=1,
-                              mode="constant", cval=0.0, prefilter=False)
-        mask = ndimage.shift(np.ones((height, width), dtype=np.float32),
-                             full_shift, order=0, mode="constant", cval=0.0,
-                             prefilter=False)
-        aligned[index] = moved
-        valid[index] = mask
+        if not np.any(full_shift):
+            aligned[index] = image
+            valid[index].fill(1.0)
+        else:
+            moved = merge_acceleration.shift(image, full_shift)
+            if moved is not None:
+                aligned[index] = moved[..., :3]
+                valid[index] = moved[..., 3]
+            else:
+                # There is no channel displacement. Three spatial shifts avoid
+                # the 3-D interpolator's redundant channel-neighbour work.
+                for channel in range(3):
+                    ndimage.shift(image[..., channel], full_shift, order=1,
+                                  mode="constant", cval=0.0, prefilter=False,
+                                  output=aligned[index, ..., channel])
+                ndimage.shift(np.ones((height, width), dtype=np.float32),
+                              full_shift, order=0, mode="constant", cval=0.0,
+                              prefilter=False, output=valid[index])
         _notify(progress, "aligning", index + 1, len(values))
     return aligned, valid
 
@@ -121,6 +137,12 @@ def hdr_merge(values: list[ImageInput], *, progress: Progress | None = None) -> 
     if not 2 <= len(values) <= 9:
         raise ValueError("HDR merge needs 2 to 9 photos")
     stack, valid = _align_exposures(values, progress=progress)
+    _notify(progress, "fusing", 0, len(values))
+    accelerated = merge_acceleration.hdr_fuse(stack, valid)
+    if accelerated is not None:
+        for index in range(len(values)):
+            _notify(progress, "fusing", index + 1, len(values))
+        return accelerated
     median = np.median(stack, axis=0).astype(np.float32)
     numerator = np.zeros_like(stack[0])
     denominator = np.zeros(stack.shape[1:3], dtype=np.float32)
@@ -432,6 +454,23 @@ def _source_feather(shape: tuple[int, int]) -> np.ndarray:
     return np.minimum(rows, columns).astype(np.float32)
 
 
+def _panorama_tile(image: np.ndarray, feather: np.ndarray | None,
+                   matrix: np.ndarray, shape: tuple[int, int]):
+    accelerated = merge_acceleration.panorama_warp(image, matrix, shape)
+    if accelerated is not None:
+        return accelerated[..., :3], accelerated[..., 3]
+    mapping = transform.ProjectiveTransform(matrix)
+    warped = transform.warp(image, inverse_map=mapping.inverse,
+                            output_shape=shape, order=1,
+                            preserve_range=True).astype(np.float32)
+    if feather is None:
+        feather = _source_feather(image.shape[:2])
+    weight = transform.warp(feather, inverse_map=mapping.inverse,
+                            output_shape=shape, order=1,
+                            preserve_range=True).astype(np.float32)
+    return warped * weight[..., None], weight
+
+
 def panorama_merge(values: list[ImageInput], *, progress: Progress | None = None,
                    tile_edge: int = PANORAMA_TILE_EDGE) -> np.ndarray:
     """Feature-align and feather 2-20 overlapping frames into one panorama."""
@@ -495,18 +534,9 @@ def panorama_merge(values: list[ImageInput], *, progress: Progress | None = None
                     tile_offset = np.array([[1.0, 0.0, -left],
                                             [0.0, 1.0, -top],
                                             [0.0, 0.0, 1.0]])
-                    mapping = transform.ProjectiveTransform(
-                        tile_offset @ offset @ matrix)
-                    warped = transform.warp(
-                        image, inverse_map=mapping.inverse,
-                        output_shape=tile_shape, order=1,
-                        preserve_range=True).astype(np.float32)
-                    weight = transform.warp(
-                        feather, inverse_map=mapping.inverse,
-                        output_shape=tile_shape, order=1,
-                        preserve_range=True).astype(np.float32)
-                    accumulated[top:bottom, left:right] += (
-                        warped * weight[..., None])
+                    weighted, weight = _panorama_tile(
+                        image, feather, tile_offset @ offset @ matrix, tile_shape)
+                    accumulated[top:bottom, left:right] += weighted
                     total_weight[top:bottom, left:right] += weight
                     occupied = weight > 1e-6
                     occupied_rows[top:bottom] |= np.any(occupied, axis=1)
@@ -535,21 +565,13 @@ def panorama_merge(values: list[ImageInput], *, progress: Progress | None = None
                                         [0.0, 1.0, -top],
                                         [0.0, 0.0, 1.0]])
                 for image, matrix in zip(images, matrices):
-                    mapping = transform.ProjectiveTransform(
-                        tile_offset @ offset @ matrix)
-                    warped = transform.warp(
-                        image, inverse_map=mapping.inverse,
-                        output_shape=tile_shape, order=1,
-                        preserve_range=True).astype(np.float32)
                     feather = feathers.get(image.shape[:2])
                     if feather is None:
                         feather = _source_feather(image.shape[:2])
                         feathers[image.shape[:2]] = feather
-                    weight = transform.warp(
-                        feather, inverse_map=mapping.inverse,
-                        output_shape=tile_shape, order=1,
-                        preserve_range=True).astype(np.float32)
-                    accumulated += warped * weight[..., None]
+                    weighted, weight = _panorama_tile(
+                        image, feather, tile_offset @ offset @ matrix, tile_shape)
+                    accumulated += weighted
                     total_weight += weight
                 result[top:bottom, left:right] = accumulated / np.maximum(
                     total_weight[..., None], 1e-6)
@@ -622,6 +644,9 @@ def _warp_focus(image: np.ndarray, matrix: np.ndarray,
 
 
 def _sharpness(image: np.ndarray) -> np.ndarray:
+    accelerated = merge_acceleration.sharpness(image)
+    if accelerated is not None:
+        return accelerated
     gray = ndimage.gaussian_filter(_gray(image), 1.0)
     return ndimage.gaussian_filter(np.abs(ndimage.laplace(gray)), 2.5).astype(
         np.float32)
@@ -631,27 +656,34 @@ def _pyramid(value: np.ndarray, levels: int, *, laplacian: bool) -> list[np.ndar
     gaussian = [value.astype(np.float32)]
     for _ in range(levels - 1):
         current = gaussian[-1]
-        blurred = ndimage.gaussian_filter(
-            current, (1.0, 1.0, 0) if current.ndim == 3 else 1.0)
-        gaussian.append(blurred[::2, ::2].astype(np.float32))
+        reduced = merge_acceleration.pyramid_down(current)
+        if reduced is None:
+            blurred = ndimage.gaussian_filter(
+                current, (1.0, 1.0, 0) if current.ndim == 3 else 1.0)
+            reduced = blurred[::2, ::2].astype(np.float32)
+        gaussian.append(reduced)
     if not laplacian:
         return gaussian
     result = []
     for current, smaller in zip(gaussian, gaussian[1:]):
-        expanded = transform.resize(
-            smaller, current.shape, order=1, preserve_range=True,
-            anti_aliasing=False).astype(np.float32)
+        expanded = _pyramid_resize(smaller, current.shape)
         result.append(current - expanded)
     result.append(gaussian[-1])
     return result
 
 
+def _pyramid_resize(value: np.ndarray, shape) -> np.ndarray:
+    accelerated = merge_acceleration.resize(value, shape)
+    if accelerated is not None:
+        return accelerated
+    return transform.resize(value, shape, order=1, preserve_range=True,
+                            anti_aliasing=False).astype(np.float32)
+
+
 def _reconstruct_pyramid(levels: list[np.ndarray]) -> np.ndarray:
     result = levels[-1]
     for level in reversed(levels[:-1]):
-        result = transform.resize(
-            result, level.shape, order=1, preserve_range=True,
-            anti_aliasing=False).astype(np.float32) + level
+        result = _pyramid_resize(result, level.shape) + level
     return result
 
 

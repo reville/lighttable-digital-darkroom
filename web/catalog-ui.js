@@ -183,16 +183,14 @@ export function createCatalogUI(ctx) {
           apply: { metadata: true, develop: false, crop: false },
         });
         if (report) {
-          const ignored = Object.entries(result.ignored || {});
-          report.innerHTML = `Read ${result.read} sidecars, applied `
-            + `${result.applied}. ${result.missing} photos had none.`
-            + (ignored.length
-              ? `<br>Skipped: ${ignored.map(([k, n]) => `${k} (${n})`)
-                .join(', ')}` : '');
+          const ignored = Object.entries(result.ignored || {}).map(([key, count]) => `${key} (${count})`);
+          report.textContent = `Read ${result.read} sidecars, applied ${result.applied}. ${result.missing} photos had none.`
+            + (ignored.length ? ` Skipped: ${ignored.join(', ')}.` : '')
+            + (result.errors?.length ? ` ${result.errors.length} errors: ${result.errors.slice(0, 5).join('; ')}` : '');
         }
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
       } catch (error) {
-        if (report) report.textContent = 'Sidecar import needs the catalog.';
+        if (report) report.textContent = error.message || 'Sidecars could not be read.';
       }
     });
   }

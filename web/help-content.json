@@ -96,7 +96,8 @@
       "related": [
         "add-photos",
         "collections",
-        "metadata-and-keywords"
+        "metadata-and-keywords",
+        "xmp-interchange"
       ]
     },
     {
@@ -215,9 +216,10 @@
         {
           "title": "Compare while zoomed in",
           "paragraphs": [
-            "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
+            "Click Compare in Detail to split the original and edited photo. Each time you turn Compare on, the divider automatically centers in the current view without changing your zoom or pan. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
             "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail.",
-            "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view."
+            "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.",
+            "Photo information, processing badges, and hold-key adjustment readouts stay at their normal screen size while you zoom or pan."
           ],
           "steps": [
             "Turn on Compare, then zoom beyond Fit.",
@@ -229,7 +231,8 @@
           "title": "Build a selection",
           "paragraphs": [
             "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
-            "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action."
+            "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action.",
+            "Open Info beside either grid to view metadata or tag selected photos. The grid narrows to make room for the inspector. Choose another inspector tool to return to the wider grid."
           ]
         }
       ],
@@ -254,17 +257,32 @@
         "copyright",
         "creator",
         "location",
-        "GPS"
+        "GPS",
+        "batch keywords",
+        "remove keywords",
+        "undo keywords",
+        "hierarchical keywords"
       ],
       "sections": [
         {
           "title": "Add searchable keywords",
           "paragraphs": [
-            "Open Info on the active photo. Enter keywords in Add keywords and click Add or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
+            "Open Info on the active photo. Enter keywords in Add keywords and click Add to photo or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
             "Use a hierarchical path such as Places > Boston to keep related terms together. The Keyword tree lists catalog terms; click a term to search, or double-click it to rename that catalog keyword."
           ],
           "tips": [
-            "The keyword entry acts on the active photo, rather than every selected grid photo. Link pair metadata can also update its RAW or JPEG companion."
+            "Add to photo and Enter affect the active photo. The separate selection buttons act on the selected grid photos. Link pair metadata can also update their RAW or JPEG companions."
+          ]
+        },
+        {
+          "title": "Add or remove keywords on a selection",
+          "steps": [
+            "Select photos in either grid and open Info. Check the selected-photo count below the keyword buttons.",
+            "Enter one or more keywords, then choose Add to selection or Remove from selection. Each photo keeps its other keywords.",
+            "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states."
+          ],
+          "paragraphs": [
+            "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog."
           ]
         },
         {
@@ -278,7 +296,8 @@
       "related": [
         "search-filter-sort",
         "raw-jpeg-pairs",
-        "capture-time"
+        "capture-time",
+        "xmp-interchange"
       ]
     },
     {
@@ -410,10 +429,50 @@
       ]
     },
     {
+      "id": "xmp-interchange",
+      "title": "Exchange metadata through XMP sidecars",
+      "category": "Library",
+      "summary": "Read culling metadata from other editors and keep supported changes beside your originals.",
+      "keywords": [
+        "XMP",
+        "sidecars",
+        "Photo Mechanic",
+        "digiKam",
+        "interoperability",
+        "sync conflict",
+        "portable metadata"
+      ],
+      "sections": [
+        {
+          "title": "Read metadata from another editor",
+          "paragraphs": [
+            "Ask the other editor to save its metadata to adjacent XMP files, then choose Local ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
+            "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
+            "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are not applied by this menu action."
+          ]
+        },
+        {
+          "title": "Write changes beside originals",
+          "paragraphs": [
+            "Turn on automatic XMP writing in Settings → Files & Metadata. LightTable queues changed fields and writes them beside available originals. It preserves unrelated metadata and saves a backup of the existing sidecar before first updating it. Offline or failed writes stay queued for retry.",
+            "If another application changes the same XMP property after the last read or sync, LightTable reports a conflict and leaves that sidecar unchanged. Review the external metadata, then import sidecars to accept those metadata values before making further changes in LightTable.",
+            "Use either photo.xmp or photo.RAW.xmp for one original. If both are present, import and sync report the ambiguity instead of choosing one. Keep one naming convention after checking their contents.",
+            "XMP exchanges supported metadata; it is not a complete catalog backup. Keep catalog backups for collections, history, and variants, and enable portable LightTable edits when you need the full editing recipe to travel with a folder."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ]
+    },
+    {
       "id": "search-filter-sort",
       "title": "Find photos with search, filters, and sorting",
       "category": "Library",
-      "summary": "Narrow the current folder or collection by text, file type, flags, stars, color label, and edit status.",
+      "summary": "Narrow photos by text, camera, lens, exposure, capture date, keywords, and culling marks.",
       "keywords": [
         "find",
         "search",
@@ -430,7 +489,14 @@
         "TIFF",
         "PNG",
         "unedited",
-        "clear filters"
+        "clear filters",
+        "camera",
+        "lens",
+        "ISO",
+        "aperture",
+        "shutter speed",
+        "focal length",
+        "EXIF"
       ],
       "sections": [
         {
@@ -452,6 +518,14 @@
             "Select RAW, JPEG, HEIC / HEIF, TIFF, or PNG. Multiple file types include any of those formats; flag, rating, color label, edit status, and search narrow that set further. No selected file types means all file types.",
             "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its ×, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
             "Edit status offers Edited, Unedited, and Virtual copies. A virtual copy uses its original file’s type. Press Escape or click outside the panel to close it without clearing your choices."
+          ]
+        },
+        {
+          "title": "Filter camera, exposure, and capture date",
+          "paragraphs": [
+            "Expand Camera, exposure & date in Filter. Camera and Lens match part of a name. Keyword matches a complete catalog keyword path and its descendants; for example, Places includes Places > Boston.",
+            "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.",
+            "Capture dates include both the first and last day. These filters combine with ratings and other choices, survive a reload, and can be saved in a smart collection. Existing photos gain exposure values when their source is next scanned; rescan a folder if values are missing."
           ]
         },
         {
@@ -693,7 +767,7 @@
         {
           "title": "Save supported rules",
           "paragraphs": [
-            "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text."
+            "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text. Camera, lens, hierarchical keyword, capture date, ISO, focal length, aperture, and shutter-time ranges are also saved."
           ],
           "steps": [
             "Set the search text and desired choices in Filter beside Sort.",
@@ -706,7 +780,8 @@
           "title": "Know what is saved",
           "paragraphs": [
             "The selected folder and Include subfolders are not saved in the smart collection rules. The collection searches the library using the saved filter choices.",
-            "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and library filters can still narrow the collection view."
+            "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and library filters can still narrow the collection view.",
+            "For four-star photos taken at 50mm in 2026, set Rating to 4 stars and up, focal length minimum and maximum to 50, and capture dates from January 1 through December 31, 2026. Save those filters as a smart collection."
           ]
         }
       ],
@@ -955,65 +1030,6 @@
       ]
     },
     {
-      "id": "editing-presets",
-      "title": "Apply, save, and import editing presets",
-      "category": "Editing",
-      "summary": "Reuse editing recipes and inspect conversion coverage when importing Lightroom, Camera Raw, or Capture One presets.",
-      "keywords": [
-        "preset",
-        "presets",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "import preset",
-        "save look",
-        "replace adjustments"
-      ],
-      "sections": [
-        {
-          "title": "Apply an existing recipe",
-          "paragraphs": [
-            "Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."
-          ],
-          "steps": [
-            "Choose a preset and review its summary, especially if it came from another editor.",
-            "Use Apply mapped adjustments to apply the settings the preset supplies.",
-            "Use Replace adjustment settings only when you want to reset adjustments, masks, Remove corrections, and geometry before applying the preset.",
-            "Inspect the photo and use Undo if you want to restore the previous edit."
-          ],
-          "tips": [
-            "Replace keeps your crop. It keeps Film unless the preset includes Film settings or you enable Turn Film off for the actions below.",
-            "Presets from other editors are converted approximately because their processing differs. Read skipped settings and conversion notes; matching controls do not promise identical pixels."
-          ]
-        },
-        {
-          "title": "Save or import a preset",
-          "paragraphs": [
-            "Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."
-          ],
-          "steps": [
-            "To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….",
-            "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
-            "Review the import result and the new preset’s conversion coverage before applying it.",
-            "To share a selected preset, choose an Export format and click Export…."
-          ],
-          "tips": [
-            "LightTable export is lossless for its preset format. Lightroom XMP and Capture One style exports are approximate.",
-            "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee that every setting inside can be converted."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "editing-curves"
-      ]
-    },
-    {
       "id": "editing-color-mixer-point-color",
       "title": "Change individual colors with Color Mixer and Point Color",
       "category": "Editing",
@@ -1233,6 +1249,133 @@
       ]
     },
     {
+      "id": "editing-presets",
+      "title": "Find, try, and share editing presets",
+      "category": "Editing",
+      "summary": "Browse built-in and community looks, preview them on your photo, and save or share your own presets.",
+      "keywords": [
+        "preset",
+        "presets",
+        "community",
+        "gallery",
+        "built-in",
+        "favorites",
+        "hide preset",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "import preset",
+        "save look",
+        "try preset",
+        "update preset",
+        "submit preset",
+        "replace adjustments"
+      ],
+      "sections": [
+        {
+          "title": "Choose a collection",
+          "paragraphs": [
+            "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+          ],
+          "steps": [
+            "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
+            "Use the star beside a preset to favorite it; Favorites filters the current collection.",
+            "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos."
+          ],
+          "tips": [
+            "Featured is an editorial collection, not a popularity ranking.",
+            "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back."
+          ]
+        },
+        {
+          "title": "Try before applying",
+          "paragraphs": [
+            "Try on this photo renders a preview locally inside the preset details. It does not change or save your edit, and your photo is not uploaded to the community gallery."
+          ],
+          "steps": [
+            "Select a photo and a preset, then click Try on this photo.",
+            "Wait for the preview, then use Before and With preset to compare. Creator examples have their own before/after controls and, when available, an Example photo selector.",
+            "Click Apply to commit the preset to the active photo. Use Undo in the details or the Undo action in the completion message to restore the previous edit."
+          ],
+          "tips": [
+            "Selecting a card, browsing another preset, or closing the details does not apply it.",
+            "Consecutive look applications use the edit from before the first look, so settings from one look do not accumulate into the next. A later manual edit starts a new comparison baseline. If you change photos or edit settings while a detail is open, select the preset again before applying."
+          ]
+        },
+        {
+          "title": "What a look keeps",
+          "paragraphs": [
+            "Built-in and community looks keep Edit Exposure, Temp/Tint, capture white balance, RAW corrections, film format, crop, geometry, masks, Remove corrections, lens corrections, sharpening, and noise reduction. They change the creative settings included in their recipe.",
+            "Film on enables the included film treatment. Film off bypasses Film. Film unchanged leaves its enabled state alone. A film treatment may intentionally change Camera EV, automatic metering, development, print, grain, and other creative film controls."
+          ],
+          "tips": [
+            "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; inspect its details before applying."
+          ]
+        },
+        {
+          "title": "Add community presets and updates",
+          "paragraphs": [
+            "Add to Yours downloads and saves the selected community recipe without applying it. Installed recipes work offline. Your existing photo edits store their settings separately from the preset."
+          ],
+          "steps": [
+            "Select a Community preset and click Add to Yours.",
+            "Use it later from Yours, or return to Community to inspect the public preset page.",
+            "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it."
+          ],
+          "tips": [
+            "Updating a preset does not change photos you have already edited.",
+            "The offline message distinguishes a cached catalog from an unavailable first download. Uncached recipes and creator example images can require a connection; Built-in and installed recipes remain available.",
+            "Update LightTable means that a preset needs features this app version does not support. Its installation and application controls stay disabled.",
+            "Open in LightTable on a public preset page opens its details in the installed app; it does not apply the look automatically."
+          ]
+        },
+        {
+          "title": "Save, import, and export",
+          "paragraphs": [
+            "Manage… opens or closes Manage presets; the button is highlighted while the section is open. Save current look defaults to Look · keep photo corrections. Full edit · include photo corrections also offers All adjustment settings or Changed settings only."
+          ],
+          "steps": [
+            "Choose the preset scope and whether to Include Film profile and physical settings, then click Save new… and name it.",
+            "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
+            "Review the import result and the new preset’s conversion coverage before applying it.",
+            "To export, choose a Selected preset and Export format, then click Export…."
+          ],
+          "tips": [
+            "LightTable export preserves the native preset recipe. Lightroom XMP and Capture One style exports are approximate.",
+            "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee every setting can be converted.",
+            "For an older or Full edit preset, Apply mapped adjustments changes its included settings. Replace adjustment settings also resets adjustments, masks, Remove corrections, and geometry first. Replace keeps the crop and keeps Film unless the preset includes Film or you enable Turn Film off for the actions below."
+          ]
+        },
+        {
+          "title": "Prepare a community submission",
+          "paragraphs": [
+            "Community publication is reviewed. The submission section shows the exact Develop and Film settings in the prepared look, its Film behavior, and the photo corrections it keeps. Nothing is uploaded when inspecting this summary or preparing a download."
+          ],
+          "steps": [
+            "Save a preset in Yours, select it, and review the included-settings summary under Community submission.",
+            "Click Prepare community submission… and wait for the local examples to render. Save the ZIP containing the preset, three licensed before/after photo pairs, photo credits, and rights notes.",
+            "Open the package and inspect the examples. You can also select your own photo and use Download example on this photo to save a 960-pixel JPEG of the shared look without changing the edit.",
+            "Click Open submission form, attach the package and any permitted additional examples, and add your creator details, description, and publishing permissions before submitting."
+          ],
+          "tips": [
+            "The three standard sample scenes are bundled with LightTable. Their export does not use your photographs or catalog, and their JPEGs contain no embedded photo metadata.",
+            "Submission preparation excludes photo-specific corrections. Inspect the resulting look before sharing it.",
+            "Only share photos you have permission to publish. Existing creator credit and parent-preset attribution are kept; recipe reuse permission and photo display permission are separate."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ]
+    },
+    {
       "id": "editing-masks-brush-gradients",
       "title": "Make local adjustments with Brush, Linear, and Radial masks",
       "category": "Editing",
@@ -1267,7 +1410,8 @@
           "tips": [
             "Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.",
             "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.",
-            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."
+            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks.",
+            "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."
           ]
         }
       ],
@@ -1446,7 +1590,8 @@
         {
           "title": "Refine an existing correction",
           "paragraphs": [
-            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."
+            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.",
+            "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."
           ],
           "steps": [
             "Drag the target circle to reposition the correction, or choose Move Target and click its new position.",
@@ -2355,7 +2500,7 @@
           "paragraphs": [
             "Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.",
             "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
-            "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata."
+            "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow."
           ]
         },
         {
@@ -2376,7 +2521,8 @@
         "keyboard-midi",
         "photo-index",
         "performance-previews",
-        "catalog-health-recovery"
+        "catalog-health-recovery",
+        "xmp-interchange"
       ]
     },
     {
@@ -2623,7 +2769,7 @@
           "title": "Manage cache storage",
           "paragraphs": [
             "Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.",
-            "Preview resolution is separate from the Dimensions setting used for exported files."
+            "Preview resolution is separate from the Dimensions setting used for exported files. Export finishing and Photo Merge use GPU acceleration automatically for supported image-processing stages, with a CPU fallback when unavailable. The film-engine preference controls film previews; it does not disable this acceleration."
           ]
         }
       ],

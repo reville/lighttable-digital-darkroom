@@ -75,11 +75,23 @@ test('RAW polling stops on navigation, failure, or the retry limit', async () =>
     request: async () => ({ ready: false }), maxAttempts: 3, sleep: async () => {} }), /could not finish/);
 });
 
+test('ready RAW detail is detected within 100 ms without shortening the slow-decoder allowance', async () => {
+  let time = 0;
+  await waitForRawRefinement({ isCurrent: () => true,
+    request: async () => ({ ready: time >= 1250 }), sleep: async ms => { time += ms; } });
+  assert.equal(time, 1300);
+  time = 0;
+  await waitForRawRefinement({ isCurrent: () => true,
+    request: async () => ({ ready: time >= 179000 }), sleep: async ms => { time += ms; } });
+  assert.equal(time, 179000);
+});
+
 // Run the actual orchestration with only HTTP and display boundaries stubbed.
 // A slow decode spans several polls; no new render may invalidate its generation.
 function renderHarness() {
   const S = { seq: 0, params: { profile_enabled: true }, renderState: 'ready',
-    presentedPhotoName: 'photo.dng', optics: {}, heals: [] };
+    presentedPhotoName: 'photo.dng', optics: {}, heals: [],
+    previewDetail: { name: 'photo.dng', refining: false } };
   const requests = [], displays = [], progress = [], scheduled = [], nodes = new Map();
   const noop = () => {};
   let finishDecode, finishPaint;
@@ -100,7 +112,7 @@ function renderHarness() {
     previewProgress: { start: label => progress.push(label), advance: noop, finish: () => progress.push('done') },
     waitForRawRefinement: options => waitForRawRefinement({ ...options, sleep: async () => {} }),
     api: async (path, body) => {
-      requests.push({ path, generation: body.generation });
+      requests.push({ path, generation: body.generation, width: body.w, allowDraft: body.allow_draft });
       if (path === '/api/refine') {
         if (requests.filter(r => r.path === path).length < 4) return { ready: false };
         return new Promise(resolve => { finishDecode = () => resolve({ ready: true }); });
@@ -128,6 +140,7 @@ test('actual RAW render waits on one generation, retains accurate pixels, and fi
   assert.ok(app.requests.every(r => r.generation === 1));
   assert.deepEqual(app.displays, [], 'draft must not replace existing accurate pixels');
   assert.equal(app.progress.at(-1), 'done', 'an existing usable preview hides progress during RAW work');
+  assert.equal(app.requests[0].allowDraft, false, 'do not compute a draft that cannot be displayed');
   app.finishDecode(); await tick();
   assert.equal(app.requests.at(-1).path, '/api/render');
   assert.equal(app.requests.at(-1).generation, 2);
@@ -135,6 +148,27 @@ test('actual RAW render waits on one generation, retains accurate pixels, and fi
   assert.equal(app.progress.filter(value => value !== 'done').length, 1, 'background refinement must not restart the bar');
   app.finishPaint(); await rendered;
   assert.equal(app.progress.at(-1), 'done');
+});
+
+test('a displayed neutral RAW draft is not mistaken for accurate pixels; refine before a large film render', async () => {
+  const app = renderHarness();
+  app.S.previewDetail.refining = true;
+  const rendered = app.render(performance.now(), {
+    width: 1100, requestedWidth: 2200, phase: 'interactive',
+  });
+  await tick();
+  assert.deepEqual(app.displays, [1], 'the small film result must replace the neutral draft');
+  assert.equal(app.requests[0].allowDraft, true);
+  assert.equal(app.requests.length, 1, 'first visible paint still takes priority over demosaic');
+  app.finishPaint(); await tick();
+  assert.deepEqual(app.requests.map(r => r.path), ['/api/render', ...Array(4).fill('/api/refine')]);
+  assert.ok(app.requests.slice(1).every(r => r.width === 2200));
+  app.finishDecode(); await tick();
+  assert.deepEqual(app.requests.filter(r => r.path === '/api/render').map(r => r.width), [1100, 2200]);
+  assert.deepEqual(app.displays, [1, 2]);
+  app.finishPaint(); await rendered;
+  assert.equal(app.progress.at(-1), 'done');
+  assert.equal(app.PERF.renders.filter(r => r.presentation === 'draft-skipped').length, 0);
 });
 
 test('obsolete RAW completion neither renders nor hides progress for the new photo', async () => {

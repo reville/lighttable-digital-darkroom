@@ -19,7 +19,7 @@ export function photoMatchesRules(image, rules = {}, exif = null) {
     const label = image.label || 'none';
     if (rules.label === 'any' ? label === 'none' : label !== rules.label) return false;
   }
-  if (!matchesLibraryFilters(image, normalizeFileTypes(rules.fileTypes), rules.editState)) return false;
+  if (!matchesLibraryFilters(image, normalizeFileTypes(rules.fileTypes), rules.editState, rules)) return false;
   if (rules.kind === 'raw' && !image.raw) return false;
   if (rules.kind === 'processed' && (image.raw || image.virtual)) return false;
   if (rules.kind === 'virtual' && !image.virtual) return false;

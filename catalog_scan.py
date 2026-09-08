@@ -26,6 +26,7 @@ from typing import Callable, Iterable
 
 import catalog as catalog_module
 import durable_io
+import dam_filters
 import file_identity
 import media_formats
 import media_availability
@@ -42,7 +43,7 @@ MERGE_DIR_NAME = "LightTable Merges"
 SKIP_DIRS = {EXPORT_DIR_NAME, "__pycache__"}
 
 HEADER_CHUNK = 65536
-METADATA_VERSION = 3
+METADATA_VERSION = 4
 
 
 class _ChangedScanSource(OSError):
@@ -238,6 +239,13 @@ def read_metadata(path: Path) -> dict:
     out["camera_model"] = value("Exif.Image.Model") or None
     out["lens"] = (value("Exif.Photo.LensModel", "Exif.Image.LensInfo")
                    or None)
+    for column, keys in {
+        "iso": ("Exif.Photo.PhotographicSensitivity", "Exif.Photo.ISOSpeedRatings"),
+        "focal_length": ("Exif.Photo.FocalLength",),
+        "aperture": ("Exif.Photo.FNumber",),
+        "shutter_seconds": ("Exif.Photo.ExposureTime",),
+    }.items():
+        out[column] = dam_filters.positive_number(value(*keys))
     dimension_fields: dict[str, str] = {}
     try:
         for item in data:

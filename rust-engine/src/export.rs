@@ -253,7 +253,7 @@ fn apply_color_grading(pixel: &mut [f32], settings: &Value) {
     }
 }
 
-fn grade_is_identity(grade: &Value) -> bool {
+pub(crate) fn grade_is_identity(grade: &Value) -> bool {
     const NUMERIC_DEFAULTS: [(&str, f32); 22] = [
         ("exposure", 0.0),
         ("contrast", 0.0),

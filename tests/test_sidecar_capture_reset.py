@@ -23,3 +23,27 @@ exif:DateTimeOriginal="2025-01-02T03:04:05Z"/>
         self.assertEqual(server.write_pending_sidecars(), 1)
         self.assertEqual(xmp_sidecar.read_sidecar(self.root/'a.jpg')['captureTime'], '2025-01-02T03:04:05Z')
         self.assertEqual(server.sidecar_sync_status()['pending'], 0)
+
+    def test_field_limited_outbox_resets_dates_only_when_requested(self):
+        name = self.qualified('a.jpg')
+        image_id = server.catalog_image_id(name)
+        photo = self.root/'a.jpg'
+        (self.root/'a.xmp').write_text('''<x:xmpmeta xmlns:x="adobe:ns:meta/">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description rdf:about="" xmlns:exif="http://ns.adobe.com/exif/1.0/"
+exif:DateTimeOriginal="2025-01-02T03:04:05Z"/>
+</rdf:RDF></x:xmpmeta>''')
+        self.catalog.set_capture_override(image_id, '2026-06-01T12:00:00Z')
+        server.queue_sidecar(name, ['captureTimeOverride'])
+        self.assertEqual(server.write_pending_sidecars(), 1)
+        self.catalog.set_capture_override(image_id, None)
+        self.catalog.save_state(image_id, {'rating': 3})
+        server.queue_sidecar(name, ['rating'])
+        self.assertEqual(server.write_pending_sidecars(), 1)
+        saved = xmp_sidecar.read_sidecar(photo)
+        self.assertEqual(saved['rating'], 3)
+        self.assertEqual(saved['captureTime'], '2026-06-01T12:00:00+00:00')
+        server.queue_sidecar(name, ['captureTimeOverride'])
+        self.assertEqual(server.write_pending_sidecars(), 1)
+        self.assertEqual(xmp_sidecar.read_sidecar(photo)['captureTime'], '2025-01-02T03:04:05Z')
+        self.assertEqual(server.sidecar_sync_status()['pending'], 0)

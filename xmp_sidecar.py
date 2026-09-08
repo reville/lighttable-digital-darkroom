@@ -16,6 +16,9 @@ identical grades.
 """
 from __future__ import annotations
 
+import hashlib
+import json
+import math
 import re
 import xml.etree.ElementTree as ET
 from xml.dom import minidom, Node
@@ -33,6 +36,9 @@ NAMESPACES = {
     "exif": "http://ns.adobe.com/exif/1.0/",
     "tiff": "http://ns.adobe.com/tiff/1.0/",
     "photoshop": "http://ns.adobe.com/photoshop/1.0/",
+    "digiKam": "http://www.digikam.org/ns/1.0/",
+    "photomechanic": "http://ns.camerabits.com/photomechanic/1.0/",
+    "lighttable": "https://lighttable.photo/ns/1.0/",
 }
 _PREFIX_BY_URI = {uri: prefix for prefix, uri in NAMESPACES.items()}
 
@@ -55,6 +61,23 @@ EMBEDDED_SUFFIXES = frozenset({
 # Lightroom's five colour labels.  Anything else is a user-named label and is
 # kept as written.
 LABEL_COLORS = ("red", "yellow", "green", "blue", "purple")
+# digiKam's enum is distinct from Photo Mechanic's user-customizable classes.
+_DIGIKAM_COLORS = ("none", "red", "orange", "yellow", "green", "blue",
+                   "purple", "gray", "black", "white")
+_DIGIKAM_STATUS = {0: "pending", 1: "skipped", 2: "pending", 3: "approved"}
+
+_IPTC_PROPERTIES = {
+    "title": ("dc", "title", "alt"),
+    "caption": ("dc", "description", "alt"),
+    "copyright": ("dc", "rights", "alt"),
+    "creator": ("dc", "creator", "seq"),
+    "headline": ("photoshop", "Headline", "attr"),
+    "credit": ("photoshop", "Credit", "attr"),
+    "city": ("photoshop", "City", "attr"),
+    "state": ("photoshop", "State", "attr"),
+    "country": ("photoshop", "Country", "attr"),
+}
+_NATIVE_FIELDS = ("params", "grade", "crop", "masks", "heals", "optics", "status", "rating")
 
 # Placeholder for a nested crs structure (a look, a mask group) that has no
 # scalar value.  It reads as "present but unsupported" to the crs mapper.
@@ -81,7 +104,8 @@ def _split(tag: str) -> tuple[str, str]:
 
 def _number(value, default: float | None = None) -> float | None:
     try:
-        return float(str(value).strip().lstrip("+"))
+        number = float(str(value).strip().lstrip("+"))
+        return number if math.isfinite(number) else default
     except (TypeError, ValueError):
         return default
 
@@ -105,10 +129,10 @@ def _container(element) -> tuple[str, list[str]] | None:
             text = (item.text or "").strip()
             if not text and len(item):
                 text = STRUCTURED
-            if not text:
-                continue
             if item.get(f"{{{XML_NS}}}lang") == "x-default" and default is None:
                 default = text
+            if not text and item.get(f"{{{XML_NS}}}lang") != "x-default":
+                continue
             items.append(text)
         if default is not None and items and items[0] != default:
             items.remove(default)
@@ -155,15 +179,14 @@ def _collect(root) -> tuple[dict, dict, dict]:
                 scalars.setdefault((prefix, local), STRUCTURED)
                 continue
             text = (child.text or "").strip()
-            if text:
-                scalars.setdefault((prefix, local), text)
+            scalars.setdefault((prefix, local), text)
     return scalars, arrays, kinds
 
 
 def _first(arrays: dict, scalars: dict, prefix: str, local: str) -> str | None:
     items = arrays.get((prefix, local))
     if items:
-        return items[0]
+        return items[0] or None
     value = scalars.get((prefix, local))
     return value.strip() or None if value else None
 
@@ -266,7 +289,7 @@ def _label(value: str | None) -> str | None:
 
 def _rating(value) -> tuple[int | None, bool]:
     number = _number(value)
-    if number is None:
+    if number is None or not math.isfinite(number):
         return None, False
     if number < 0:
         # Lightroom writes -1 for a rejected photo; LightTable keeps the
@@ -275,13 +298,33 @@ def _rating(value) -> tuple[int | None, bool]:
     return int(max(0, min(5, round(number)))), False
 
 
+def _enum(value, choices):
+    number = _number(value)
+    if number is None or not math.isfinite(number) or number != int(number):
+        return None
+    return int(number) if int(number) in choices else None
+
+
+def metadata_keywords(parsed: dict) -> list[str]:
+    """Retain full hierarchy plus flat terms not already represented by it."""
+    paths = list(dict.fromkeys(parsed.get("keywordPaths") or []))
+    represented = {part.casefold() for path in paths for part in path.split("|")}
+    represented.update(path.casefold() for path in paths)
+    for keyword in parsed.get("keywords") or []:
+        if keyword.casefold() not in represented:
+            paths.append(keyword)
+            represented.add(keyword.casefold())
+    return [path.replace("|", " > ") for path in paths]
+
+
 def parse(text: str) -> dict | None:
     """Read one XMP document into LightTable's normalised metadata dict.
 
     Returns None for anything that is not parseable XML, or is too large to
     be a sidecar.
     """
-    if not text or len(text) > MAX_XMP_BYTES:
+    if (not text or len(text.encode("utf-8")) > MAX_XMP_BYTES
+            or re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", text, re.I)):
         return None
     body = text.lstrip("\ufeff \t\r\n")
     if body.startswith("<?xml"):
@@ -297,6 +340,7 @@ def parse(text: str) -> dict | None:
         return None
 
     scalars, arrays, kinds = _collect(root)
+    present = set(scalars) | set(arrays)
 
     crs: dict[str, str] = {}
     curves: dict[str, list[tuple[float, float]]] = {}
@@ -314,15 +358,39 @@ def parse(text: str) -> dict | None:
                           else "; ".join(items))
 
     rating, rejected = _rating(scalars.get(("xmp", "Rating")))
+    pick = _enum(scalars.get(("digiKam", "PickLabel")), _DIGIKAM_STATUS)
+    status = _DIGIKAM_STATUS.get(pick)
+    tagged = scalars.get(("photomechanic", "Tagged"))
+    if status is None and tagged is not None:
+        status = "approved" if _flag(tagged) else "pending"
+    if rejected:
+        status = "skipped"
+        # Standard XMP uses the rating slot for rejection. Our own payload
+        # retains the independent star count when both have been assigned.
+        try:
+            native = json.loads(scalars.get(("lighttable", "edit")) or "{}")
+            if isinstance(native, dict) and "rating" in native:
+                rating, _ = _rating(native["rating"])
+        except (TypeError, ValueError):
+            pass
+    color = _enum(scalars.get(("digiKam", "ColorLabel")), range(10))
+    label = _label(scalars.get(("xmp", "Label")))
+    if label is None and color is not None:
+        label = _DIGIKAM_COLORS[color]
+    # digiKam's default mapping prefers its slash-separated path list.
+    paths = arrays.get(("digiKam", "TagsList"))
+    paths = ([path.replace("/", "|") for path in paths] if paths else
+             list(arrays.get(("lr", "hierarchicalSubject")) or []))
     orientation = _number(scalars.get(("tiff", "Orientation")))
     angle = _number(crs.get("CropAngle"))
     parsed = {
         "rating": rating,
         "captureTime": scalars.get(("exif", "DateTimeOriginal")) or scalars.get(("photoshop", "DateCreated")),
-        "rejected": rejected,
-        "label": _label(scalars.get(("xmp", "Label"))),
+        "rejected": status == "skipped",
+        "status": status,
+        "label": label,
         "keywords": list(arrays.get(("dc", "subject")) or []),
-        "keywordPaths": list(arrays.get(("lr", "hierarchicalSubject")) or []),
+        "keywordPaths": paths,
         "title": _first(arrays, scalars, "dc", "title"),
         "caption": _first(arrays, scalars, "dc", "description"),
         "creator": _first(arrays, scalars, "dc", "creator"),
@@ -339,6 +407,20 @@ def parse(text: str) -> dict | None:
                        ("country", "Country")):
         value = scalars.get(("photoshop", tag))
         parsed[field] = value.strip() or None if value else None
+    parsed["metadataKeywords"] = metadata_keywords(parsed)
+    fields = []
+    for field, properties in {
+        "rating": [("xmp", "Rating")],
+        "label": [("xmp", "Label"), ("digiKam", "ColorLabel")],
+        "keywords": [("dc", "subject"), ("lr", "hierarchicalSubject"), ("digiKam", "TagsList")],
+        "captureTimeOverride": [("exif", "DateTimeOriginal"), ("photoshop", "DateCreated")],
+        **{key: [(prefix, name)] for key, (prefix, name, _) in _IPTC_PROPERTIES.items()},
+    }.items():
+        if any(prop in present for prop in properties):
+            fields.append(field)
+    if status is not None:
+        fields.append("status")
+    parsed["metadataPresent"] = fields
     return parsed
 
 
@@ -350,17 +432,28 @@ def sidecar_paths(source: Path) -> list[Path]:
     return [replaced] if replaced == appended else [replaced, appended]
 
 
-def find_sidecar(source: Path) -> Path | None:
-    """The first sidecar on disk for one image, in Adobe's naming order."""
+def find_sidecars(source: Path) -> list[Path]:
+    """Existing conventional names, deduplicated on case-insensitive disks."""
+    found = []
+    identities = set()
     for candidate in sidecar_paths(source):
         for suffix in SIDECAR_SUFFIXES:
             path = candidate.with_suffix(suffix)
             try:
                 if path.is_file():
-                    return path
+                    stat = path.stat()
+                    identity = (stat.st_dev, stat.st_ino)
+                    if identity not in identities:
+                        found.append(path)
+                        identities.add(identity)
             except OSError:
                 continue
-    return None
+    return found
+
+
+def find_sidecar(source: Path) -> Path | None:
+    """The first sidecar on disk for one image, in Adobe's naming order."""
+    return next(iter(find_sidecars(source)), None)
 
 
 def _decode(data: bytes) -> str:
@@ -374,9 +467,10 @@ def _decode(data: bytes) -> str:
 
 def read_sidecar(source: Path) -> dict | None:
     """Parse the sidecar beside one image, if there is one."""
-    path = find_sidecar(source)
-    if path is None:
+    paths = find_sidecars(source)
+    if not paths:
         return None
+    path = paths[0]
     try:
         if path.stat().st_size > MAX_XMP_BYTES:
             return None
@@ -387,6 +481,8 @@ def read_sidecar(source: Path) -> dict | None:
     if parsed is not None:
         parsed["origin"] = "sidecar"
         parsed["path"] = str(path)
+        if len(paths) > 1:
+            parsed["sidecarConflicts"] = [str(candidate) for candidate in paths]
     return parsed
 
 
@@ -501,6 +597,8 @@ _XMP_TEMPLATE = """<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
    xmlns:exif="http://ns.adobe.com/exif/1.0/"
    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+   xmlns:digiKam="http://www.digikam.org/ns/1.0/"
+   xmlns:photomechanic="http://ns.camerabits.com/photomechanic/1.0/"
    xmlns:lighttable="https://lighttable.photo/ns/1.0/"
 {attributes}>
 {elements}
@@ -570,17 +668,25 @@ def build_sidecar(record: dict) -> str:
     namespace as JSON rather than being bent into a `crs:` key that means
     something else somewhere else.
     """
-    import json as _json
-
     attributes: list[str] = []
     elements: list[str] = []
 
     rating = -1 if record.get("status") == "skipped" else record.get("rating")
-    if rating:
-        attributes.append(f'   xmp:Rating="{int(rating)}"')
+    if rating or "rating" in record:
+        attributes.append(f'   xmp:Rating="{int(rating or 0)}"')
     label = record.get("label")
     if label and label != "none":
-        attributes.append(f'   xmp:Label="{_escape(label.title())}"')
+        text = label.title() if label in LABEL_COLORS else label
+        attributes.append(f'   xmp:Label="{_escape(text)}"')
+    elif "label" in record:
+        attributes.append('   xmp:Label=""')
+    if label in _DIGIKAM_COLORS:
+        attributes.append(f'   digiKam:ColorLabel="{_DIGIKAM_COLORS.index(label)}"')
+    status = record.get("status")
+    if status in ("pending", "approved", "skipped"):
+        pick = {"pending": 0, "skipped": 1, "approved": 3}[status]
+        attributes.append(f'   digiKam:PickLabel="{pick}"')
+        attributes.append(f'   photomechanic:Tagged="{"True" if status == "approved" else "False"}"')
     attributes.append('   xmp:CreatorTool="LightTable"')
     if record.get("captureTimeOverride"):
         import capture_time
@@ -611,27 +717,20 @@ def build_sidecar(record: dict) -> str:
         attributes.append(f'   crs:CropBottom="{crop["y"] + crop["h"]:.6f}"')
 
     keywords = record.get("keywords") or []
-    if keywords:
-        flat = [path.rsplit(" > ", 1)[-1] for path in keywords]
+    if "keywords" in record:
+        paths = list(dict.fromkeys(path.replace(" > ", "|") for path in keywords))
+        flat = [path.rsplit("|", 1)[-1] for path in paths]
         elements.append(_bag("dc", "subject", dict.fromkeys(flat)))
-        elements.append(_bag("lr", "hierarchicalSubject",
-                             [path.replace(" > ", "|") for path in keywords]))
+        elements.append(_bag("lr", "hierarchicalSubject", paths))
+        elements.append(_seq("digiKam", "TagsList",
+                             [path.replace("|", "/") for path in paths]))
 
     iptc = record.get("iptc") or {}
-    for key, (prefix, local, kind) in {
-        "title": ("dc", "title", "alt"),
-        "caption": ("dc", "description", "alt"),
-        "copyright": ("dc", "rights", "alt"),
-        "creator": ("dc", "creator", "seq"),
-        "headline": ("photoshop", "Headline", "attr"),
-        "credit": ("photoshop", "Credit", "attr"),
-        "city": ("photoshop", "City", "attr"),
-        "state": ("photoshop", "State", "attr"),
-        "country": ("photoshop", "Country", "attr"),
-    }.items():
+    for key, (prefix, local, kind) in _IPTC_PROPERTIES.items():
         value = iptc.get(key)
-        if not value:
+        if key not in iptc:
             continue
+        value = value or ""
         prefix_name, local_name, kind_name = prefix, local, kind
         if kind_name == "alt":
             elements.append(_alt(prefix_name, local_name, value))
@@ -641,11 +740,10 @@ def build_sidecar(record: dict) -> str:
             attributes.append(
                 f'   {prefix_name}:{local_name}="{_escape(value)}"')
 
-    native = {key: record.get(key) for key in
-              ("params", "grade", "crop", "masks", "heals", "optics", "status")
+    native = {key: record.get(key) for key in _NATIVE_FIELDS
               if record.get(key) not in (None, [], {})}
     if native:
-        payload = _escape(_json.dumps(native, separators=(",", ":")))
+        payload = _escape(json.dumps(native, separators=(",", ":")))
         attributes.append(f'   lighttable:edit="{payload}"')
         attributes.append('   lighttable:note="crs values are approximate; '
                           'the lighttable:edit payload is authoritative"')
@@ -670,6 +768,86 @@ def _import_scoped_element(document, node):
     return saved
 
 
+def _owned_properties(record: dict) -> set[tuple[str, str]]:
+    """Only explicitly supplied fields are ours to update."""
+    owned = {(NAMESPACES["xmp"], "CreatorTool")}
+    for key, properties in {
+        "rating": [("xmp", "Rating"), ("photomechanic", "Prefs")],
+        "status": [("xmp", "Rating"), ("digiKam", "PickLabel"),
+                   ("photomechanic", "Tagged"), ("photomechanic", "Prefs")],
+        "label": [("xmp", "Label"), ("digiKam", "ColorLabel")],
+        "keywords": [("dc", "subject"), ("lr", "hierarchicalSubject"),
+                     ("digiKam", "TagsList")],
+        "grade": [("crs", name) for name, _ in _CRS_EXPORT.values()],
+        "crop": [("crs", name) for name in
+                 ("HasCrop", "CropLeft", "CropTop", "CropRight", "CropBottom")],
+        "captureTimeOverride": [("exif", "DateTimeOriginal"),
+                                ("photoshop", "DateCreated"),
+                                ("lighttable", "captureTimeOriginal")],
+    }.items():
+        if key in record:
+            owned.update((NAMESPACES[prefix], name) for prefix, name in properties)
+    for key in record.get("iptc") or {}:
+        if key in _IPTC_PROPERTIES:
+            prefix, name, _ = _IPTC_PROPERTIES[key]
+            owned.add((NAMESPACES[prefix], name))
+    native_uri = "https://lighttable.photo/ns/1.0/"
+    if any(key in record for key in _NATIVE_FIELDS):
+        owned.update((native_uri, name) for name in ("edit", "note"))
+    return owned
+
+
+def _preserve_alternatives(document, holders, fresh, record):
+    """Editing x-default must leave translations of that field recoverable."""
+    for key in record.get("iptc") or {}:
+        field = _IPTC_PROPERTIES.get(key)
+        if not field or field[2] != "alt":
+            continue
+        prefix, name, _ = field
+        uri = NAMESPACES[prefix]
+        translations = {}
+        for holder in holders:
+            for node in holder.childNodes:
+                if (node.namespaceURI, node.localName) != (uri, name):
+                    continue
+                for alt in node.childNodes:
+                    if (alt.namespaceURI, alt.localName) != (RDF_NS, "Alt"):
+                        continue
+                    for item in alt.childNodes:
+                        if (item.namespaceURI, item.localName) != (RDF_NS, "li"):
+                            continue
+                        language = item.getAttributeNS(XML_NS, "lang")
+                        if language and language != "x-default":
+                            translations.setdefault(language, item)
+        if not translations:
+            continue
+        properties = fresh.getElementsByTagNameNS(uri, name)
+        if properties:
+            prop = properties[0]
+            alt = prop.getElementsByTagNameNS(RDF_NS, "Alt")[0]
+        else:
+            prop = document.createElementNS(uri, f"{prefix}:{name}")
+            alt = document.createElementNS(RDF_NS, "rdf:Alt")
+            prop.appendChild(alt)
+            fresh.appendChild(prop)
+            # An explicit empty default distinguishes a clear from a missing
+            # default, which otherwise falls back to a retained translation.
+            item = document.createElementNS(RDF_NS, "rdf:li")
+            item.setAttributeNS(XML_NS, "xml:lang", "x-default")
+            alt.appendChild(item)
+        for item in translations.values():
+            clone = document.importNode(item, deep=True)
+            # A qualifier may use a prefix declared on an old ancestor that
+            # disappears when the owned property is replaced.
+            ancestor = item
+            while ancestor is not None and ancestor.nodeType == Node.ELEMENT_NODE:
+                for attr in ancestor.attributes.values():
+                    if attr.namespaceURI == "http://www.w3.org/2000/xmlns/" and not clone.hasAttribute(attr.name):
+                        clone.setAttribute(attr.name, attr.value)
+                ancestor = ancestor.parentNode
+            alt.appendChild(clone)
+
+
 def merge_sidecar(existing: str, record: dict) -> str:
     """Update our properties, retaining the rest of an editor's RDF document.
 
@@ -682,6 +860,17 @@ def merge_sidecar(existing: str, record: dict) -> str:
     if re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", existing, re.I):
         raise ValueError("XMP declarations cannot be updated safely")
     document = minidom.parseString(existing)
+    scalars, _, _ = _collect(ET.fromstring(existing))
+    supplied = record
+    if "rating" in record and "status" not in record:
+        # Stars and rejection are independent in LightTable. A star edit
+        # must not silently turn a rejected photo into an unflagged photo.
+        if (parse(existing) or {}).get("status") == "skipped":
+            record = dict(record, status="skipped")
+    if "status" in record and "rating" not in record:
+        rating = (parse(existing) or {}).get("rating")
+        if rating is not None:
+            record = dict(record, rating=rating)
     generated = minidom.parseString(build_sidecar(record))
     rdf_nodes = document.getElementsByTagNameNS(RDF_NS, "RDF")
     if not rdf_nodes:
@@ -699,25 +888,14 @@ def merge_sidecar(existing: str, record: dict) -> str:
         holder.setAttributeNS(RDF_NS, "rdf:about", "")
         rdf.appendChild(holder)
         holders.append(holder)
-    owned = {(NAMESPACES["xmp"], "CreatorTool")}
-    for key, properties in {
-        "rating": [("xmp", "Rating")], "status": [("xmp", "Rating")],
-        "label": [("xmp", "Label")],
-        "keywords": [("dc", "subject"), ("lr", "hierarchicalSubject")],
-        "grade": [("crs", name) for name, _ in _CRS_EXPORT.values()],
-        "crop": [("crs", name) for name in
-                 ("HasCrop", "CropLeft", "CropTop", "CropRight", "CropBottom")],
-        "iptc": [("dc", name) for name in
-                 ("title", "description", "rights", "creator")]
-                + [("photoshop", name) for name in
-                   ("Headline", "Credit", "City", "State", "Country")],
-    }.items():
-        if key in record:
-            owned.update((NAMESPACES[prefix], name) for prefix, name in properties)
+    owned = _owned_properties(record)
     native_uri = "https://lighttable.photo/ns/1.0/"
     capture_properties = {(NAMESPACES["exif"], "DateTimeOriginal"),
                           (NAMESPACES["photoshop"], "DateCreated")}
     capture_marker = (native_uri, "captureTimeOriginal")
+    # Capture fields participate in external-edit conflict detection, but a
+    # full-state mirror may replace them only when an override owns them.
+    owned.difference_update(capture_properties | {capture_marker})
     previous_capture = next((child for holder in holders for child in holder.childNodes
                              if (child.namespaceURI, child.localName) == capture_marker), None)
     if "captureTimeOverride" in record:
@@ -746,9 +924,34 @@ def merge_sidecar(existing: str, record: dict) -> str:
                 for child in previous_capture.childNodes:
                     if (child.namespaceURI, child.localName) in capture_properties:
                         fresh.appendChild(_import_scoped_element(generated, child))
-    if any(key in record for key in
-           ("params", "grade", "crop", "masks", "heals", "optics", "status")):
-        owned.update((native_uri, name) for name in ("edit", "note"))
+    if any(key in supplied for key in _NATIVE_FIELDS):
+        payload = scalars.get(("lighttable", "edit")) or "{}"
+        try:
+            native = json.loads(payload)
+        except (TypeError, ValueError) as error:
+            raise ValueError("Existing LightTable edits could not be merged safely") from error
+        if not isinstance(native, dict):
+            raise ValueError("Existing LightTable edits could not be merged safely")
+        # Keep unknown future keys and explicit clears. Do not feed these
+        # inherited fields to build_sidecar, which would also export them to
+        # Camera Raw properties the user did not request to change.
+        native.update({key: record[key] for key in _NATIVE_FIELDS if key in record})
+        fresh.setAttributeNS(NAMESPACES["lighttable"], "lighttable:edit",
+                             json.dumps(native, separators=(",", ":")))
+    _preserve_alternatives(generated, holders, fresh, record)
+    # Photo Mechanic also caches tag and rating in a colon-separated field.
+    # Preserve its arbitrary color class and frame number while keeping the
+    # culling values consistent with the standard properties we change.
+    prefs = scalars.get(("photomechanic", "Prefs"))
+    if prefs and ("rating" in record or "status" in record):
+        values = prefs.split(":", 3)
+        if len(values) != 4 or not all(value.strip().isdigit() for value in values[:3]):
+            raise ValueError("Photo Mechanic preferences could not be updated safely")
+        if "status" in record:
+            values[0] = "1" if record["status"] == "approved" else "0"
+        if "rating" in record:
+            values[2] = str(int(record["rating"] or 0))
+        fresh.setAttributeNS(NAMESPACES["photomechanic"], "photomechanic:Prefs", ":".join(values))
     for holder in holders:
         for attribute in list(holder.attributes.values()):
             if (attribute.namespaceURI, attribute.localName) in owned:
@@ -772,23 +975,98 @@ def merge_sidecar(existing: str, record: dict) -> str:
     return document.toxml()
 
 
+def _property_signatures(text: str) -> dict[str, str]:
+    """Fingerprint RDF values without depending on the writer's prefixes."""
+    if (len(text.encode("utf-8")) > MAX_XMP_BYTES
+            or re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", text, re.I)):
+        raise ValueError("XMP cannot be checked safely")
+    root = ET.fromstring(text)
+    rdfs = list(root.iter(f"{{{RDF_NS}}}RDF"))
+    if not rdfs:
+        raise ValueError("existing XMP has no RDF metadata document")
+
+    def value(node):
+        # Attribute and simple element property forms have equal values.
+        if not len(node) and not node.attrib:
+            return (node.text or "").strip()
+        return (tuple(sorted(node.attrib.items())), (node.text or "").strip(),
+                tuple((child.tag, value(child)) for child in node))
+
+    properties = {}
+    for rdf in rdfs:
+        for holder in rdf:
+            if (holder.tag != f"{{{RDF_NS}}}Description"
+                    or holder.get(f"{{{RDF_NS}}}about")):
+                continue
+            for name, item in holder.attrib.items():
+                if _split(name)[0] not in ("", RDF_NS):
+                    properties.setdefault(name, []).append(item.strip())
+            for child in holder:
+                properties.setdefault(child.tag, []).append(value(child))
+    return {name: hashlib.sha256(repr(items).encode("utf-8")).hexdigest()
+            for name, items in properties.items()}
+
+
+def sidecar_snapshot(source: Path) -> dict:
+    """Persist this with an outbox entry to detect later external changes.
+
+    No metadata values or image bytes are stored in the snapshot. Failure to
+    read a present sidecar must prevent a write, not count as an absent file.
+    """
+    paths = find_sidecars(source)
+    if len(paths) > 1:
+        raise ValueError("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.")
+    if not paths:
+        return {"path": None, "properties": {}}
+    target = paths[0]
+    if target.stat().st_size > MAX_XMP_BYTES:
+        raise ValueError("existing XMP is too large to update safely")
+    return {"path": str(target),
+            "properties": _property_signatures(_decode(target.read_bytes()))}
+
+
+def _check_snapshot(target, original, document, record, expected):
+    if expected.get("path") != (str(target) if original is not None else None):
+        raise OSError("The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again.")
+    before = expected.get("properties") or {}
+    current = _property_signatures(_decode(original)) if original is not None else {}
+    proposed = _property_signatures(document)
+    conflicts = []
+    for uri, name in _owned_properties(record):
+        if (uri, name) == (NAMESPACES["xmp"], "CreatorTool"):
+            continue
+        key = f"{{{uri}}}{name}"
+        if current.get(key) != before.get(key) and current.get(key) != proposed.get(key):
+            conflicts.append(f"{_PREFIX_BY_URI.get(uri, 'lighttable')}:{name}")
+    if conflicts:
+        raise OSError("External XMP changes conflict with pending edits ("
+                      + ", ".join(sorted(conflicts))
+                      + "). Read the sidecar metadata before syncing again.")
+
+
 def write_sidecar(source: Path, record: dict,
-                  errors: list[str] | None = None) -> bool:
+                  errors: list[str] | None = None, *,
+                  expected_snapshot: dict | None = None) -> bool:
     """Write `photo.xmp` beside an original. Best effort, never raises.
 
-    A read-only volume or a permission error returns False rather than
-    surfacing an error: the catalog is the real store and this file is a
-    convenience for other software.
+    Errors are returned for the durable outbox to show and retry. A caller
+    with an earlier snapshot also refuses conflicting external edits.
     """
     source = Path(source)
     target = source.with_suffix(".xmp")
-    existing = find_sidecar(source)
-    if existing is not None:
-        target = existing
     try:
+        existing = find_sidecars(source)
+        if len(existing) > 1:
+            raise ValueError("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.")
+        if existing:
+            target = existing[0]
+        if target.exists() and target.stat().st_size > MAX_XMP_BYTES:
+            raise ValueError("existing XMP is too large to update safely")
         original = target.read_bytes() if target.exists() else None
-        document = (merge_sidecar(original.decode("utf-8"), record)
+        document = (merge_sidecar(_decode(original), record)
                     if original is not None else build_sidecar(record))
+        if expected_snapshot is not None:
+            _check_snapshot(target, original, document, record, expected_snapshot)
         if ((target.read_bytes() if target.exists() else None) != original):
             raise OSError("Another application changed the XMP file. Retry to merge its latest changes.")
         # Retain the first pre-LightTable sidecar. Other editors may carry

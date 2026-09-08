@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import vm from 'node:vm';
-import { normalizeFileTypes, photoFileType, photoHasEdits, matchesLibraryFilters, filterChips } from '../web/library-filters.js';
+import { normalizeFileTypes, photoFileType, photoHasEdits, matchesLibraryFilters, filterChips, cleanMetadataFilters, matchesMetadataFilters } from '../web/library-filters.js';
 import { collapsePairs, pairViewPreference } from '../web/photo-pairs.js';
 import { normalizeMasks, normalizeHeals, normalizeOptics, OPTICS_DEFAULTS } from '../web/editor-panels.js';
 
@@ -19,7 +19,7 @@ function harness() {
     labelFilter:'all', editFilter:'all', search:'', sort:'name' }).map(([id,value])=>[id,{value}]));
   let types = [];
   const ctx = vm.createContext({ $: id=>controls[id], S:{images,library:{stacks:[]},cull:{review:'all',on:{}}},
-    LIBRARY_FILTERS:{types:()=>types}, APP_PREFS:{pairView:'raw'},
+    LIBRARY_FILTERS:{types:()=>types, metadata:()=>({})}, APP_PREFS:{pairView:'raw'},
     _cachedVisibleList:null, _cachedVisibleKey:'', _visibleEpoch:0, _cachedVisibleImages:null, _cachedVisibleLibrary:null,
     CULL_SELECT:[], CULL_REJECT:[], matchesCullReview:()=>true, collectionScope:()=>images,
     cleanLabel:label=>label||'none', photoHasEdits, matchesLibraryFilters,
@@ -98,4 +98,22 @@ test('saved collection rules preserve the same file type, flag, rating and edit 
   const rules={fileTypes:['jpeg','png'],status:'approved',ratingMin:4,label:'red',editState:'unedited'};
   assert.deepEqual(images.filter(im=>ctx.photoMatchesRules(im,rules)).map(im=>im.name),['1:Tree.JPG','2:Portrait.PNG']);
   assert.equal(ctx.photoMatchesRules(images[1],{...rules,unrated:true}),false);
+});
+
+
+test('exposure rules accept fractions, exact ranges, missing EXIF and inclusive dates', () => {
+  const rules = cleanMetadataFilters({camera:' Nikon ', focalLengthMin:'50', focalLengthMax:'50',
+    apertureMax:'2.8', shutterMin:'1/250', shutterMax:'1/250',dateFrom:'2026-01-01',dateTo:'2026-12-31'});
+  const photo = {camera:'Nikon Z6', focalLength:50, aperture:2.8, shutterSeconds:0.004,date:'2026-12-31T23:59:59'};
+  assert.equal(matchesMetadataFilters(photo,rules),true);
+  assert.equal(matchesMetadataFilters({...photo,focalLength:null},rules),false);
+  assert.equal(matchesMetadataFilters({...photo,focalLength:85},rules),false);
+  assert.equal(matchesMetadataFilters({...photo,date:'2027-01-01'},rules),false);
+  assert.equal(matchesMetadataFilters({keywords:['Places > Boston']},{keyword:'Places'}),true);
+  assert.equal(matchesMetadataFilters({keywords:['PlacesX > Boston']},{keyword:'Places'}),false);
+  assert.throws(()=>cleanMetadataFilters({isoMin:800,isoMax:100}),/minimum/);
+  assert.throws(()=>cleanMetadataFilters({shutterMin:'1\/0'}),/positive/);
+  assert.throws(()=>cleanMetadataFilters({dateFrom:'2027-01-01',dateTo:'2026-01-01'}),/start/);
+  const chips = filterChips({metadata:rules},[]);
+  assert(chips.some(chip=>chip.id==='metadata:focalLengthMin'));
 });

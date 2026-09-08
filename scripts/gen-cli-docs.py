@@ -24,6 +24,7 @@ lines = [
     "`--profile review` option may start an isolated headless server for that command.",
     "", "## Common recipes", "", "```sh",
     "lighttable photos list --where status=pending --jsonl",
+    "lighttable photos list --where 'rating>=4' --where focal-length=50 --where from=2026-01-01 --where to=2026-12-31 --jsonl",
     "lighttable rate 5 @current",
     "lighttable flag reject --where 'rating>=1' --where status=pending",
     "lighttable edit set @selection --grade exposure=0.25 --curve 'L=0,0;0.5,0.4;1,1' --label 'Lift exposure'",
