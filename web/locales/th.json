@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "รีเซ็ตการปรับการเพิ่มความคมชัดและการลดนอยส์",
     "Reset the RAW profile and capture-stage processing settings": "รีเซ็ตโปรไฟล์ RAW และการตั้งค่าการประมวลผลขั้นจับภาพ",
     "Reset the combined RGB and individual channel curves": "รีเซ็ตเส้นโค้ง RGB รวมและเส้นโค้งแต่ละช่องสี",
-    "Reset the film profile and physical film stages for this photo": "รีเซ็ตโปรไฟล์ฟิล์มและขั้นฟิล์มจริงสำหรับภาพถ่ายนี้",
-    "Reset the film profile, stock, output, and capture settings": "รีเซ็ตโปรไฟล์ฟิล์ม, สต็อก, เอาต์พุต และการตั้งค่าการจับภาพ",
-    "Reset the physical film stage controls to their defaults": "รีเซ็ตการควบคุมแท่นฟิล์มจริงให้เป็นค่าเริ่มต้น",
     "Reset this slider": "รีเซ็ตสไลด์นี้",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "รีเซ็ตสมดุลแสงขาว ความสดของสี ความอิ่มสี ตัวผสมสี สีจุด และการไล่ระดับสี",
     "Reset {value}": "รีเซ็ต {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ ย้อนกลับ",
     "← Back to articles": "← กลับไปที่บทความ",
     "← People": "← ผู้คน",
-    "☆ Favorites": "☆ รายการโปรด"
+    "☆ Favorites": "☆ รายการโปรด",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "รีเซ็ตในส่วนการจำลองฟิล์มสมจริงจะคืนค่าแถบเลื่อนฟิล์มทั้งหมดเป็นค่าเริ่มต้น รีเซ็ตของแต่ละส่วนจะมีผลเฉพาะแถบเลื่อนในส่วนนั้น สวิตช์และตัวเลือกที่เลือกไว้จะคงเดิม",
+    "Reset sliders to their defaults": "รีเซ็ตแถบเลื่อนเป็นค่าเริ่มต้น"
   },
   "plurals": {
     " · {count} paired file linked": {

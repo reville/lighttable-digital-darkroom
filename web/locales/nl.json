@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Stel verscherping en ruisvermindering opnieuw in",
     "Reset the RAW profile and capture-stage processing settings": "Stel het RAW-profiel en de verwerkingsinstellingen van de opnamefase opnieuw in",
     "Reset the combined RGB and individual channel curves": "Stel de gecombineerde RGB-krommen en de afzonderlijke kanaalkrommen opnieuw in",
-    "Reset the film profile and physical film stages for this photo": "Stel het filmprofiel en de fysieke filmfasen voor deze foto opnieuw in",
-    "Reset the film profile, stock, output, and capture settings": "Stel het filmprofiel, de film, uitvoer- en opname-instellingen opnieuw in",
-    "Reset the physical film stage controls to their defaults": "Stel de bedieningselementen van de fysieke filmfase opnieuw in op de standaardwaarden",
     "Reset this slider": "Deze schuifregelaar opnieuw instellen",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Witbalans, Levendigheid, Verzadiging, Kleurenmixer, Puntkleur en Kleurbewerking opnieuw instellen",
     "Reset {value}": "{value} opnieuw instellen",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten"
+    "☆ Favorites": "☆ Favorieten",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn.",
+    "Reset sliders to their defaults": "Schuifregelaars terugzetten naar de standaardwaarden"
   },
   "plurals": {
     " · {count} paired file linked": {
