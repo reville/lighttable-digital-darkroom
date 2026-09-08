@@ -1012,7 +1012,9 @@
           "steps": [
             "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.",
             "Set Vignette for the edge treatment you want and inspect the corners.",
-            "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together."
+            "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.",
+            "Increase Feather for a softer transition, or decrease it for a more defined edge.",
+            "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together."
           ],
           "tips": [
             "Effects’ Vignette is a creative edge treatment. Use Lens corrections when you want to correct lens shading."

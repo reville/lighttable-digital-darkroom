@@ -1032,7 +1032,9 @@
           "steps": [
             "Verhoog Nevel verwijderen om een nevelig beeld te versterken, of probeer een negatieve waarde voor een zachtere behandeling. Controleer zowel contrast als kleur terwijl u dit aanpast.",
             "Stel Vignettering in voor de gewenste randbehandeling en inspecteer de hoeken.",
-            "Houd B ingedrukt om te vergelijken met het origineel, of gebruik in Effecten Opnieuw instellen om Textuur, Helderheid, Nevel verwijderen en Vignettering samen opnieuw in te stellen."
+            "Verhoog Grootte om meer van het midden onaangetast te laten; verlaag de waarde om de vignettering verder naar binnen te laten reiken.",
+            "Verhoog Vervaging voor een zachtere overgang, of verlaag de waarde voor een duidelijkere rand.",
+            "Houd B ingedrukt om te vergelijken met het origineel, of gebruik Opnieuw instellen in Effecten om alle schuifregelaars van Effecten tegelijk opnieuw in te stellen."
           ],
           "tips": [
             "Vignet in Effecten is een creatieve randbehandeling. Gebruik lenscorrecties wanneer je lensverdonkering wilt corrigeren."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

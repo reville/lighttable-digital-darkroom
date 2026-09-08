@@ -1032,7 +1032,9 @@
           "steps": [
             "Tăng Dehaze để tăng cường một ảnh có sương mù, hoặc thử giá trị âm cho một xử lý mềm hơn. Kiểm tra cả tương phản lẫn màu sắc khi bạn điều chỉnh.",
             "Đặt Tối góc cho kiểu xử lý viền bạn muốn và kiểm tra các góc.",
-            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Effects để đặt lại Texture, Clarity, Dehaze và Vignette cùng lúc."
+            "Tăng Kích thước để giữ vùng giữa không bị ảnh hưởng rộng hơn; giảm để hiệu ứng tối góc lan sâu hơn vào trong.",
+            "Tăng Làm mềm mép để chuyển tiếp mềm hơn, hoặc giảm để có đường biên rõ hơn.",
+            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Hiệu ứng để đặt lại tất cả thanh trượt Hiệu ứng cùng lúc."
           ],
           "tips": [
             "Vignette của Effects là một hiệu ứng sáng tạo ở rìa ảnh. Dùng Lens corrections khi bạn muốn sửa shading của ống kính."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

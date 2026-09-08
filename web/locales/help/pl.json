@@ -1032,7 +1032,9 @@
           "steps": [
             "Zwiększ Usuń zamglenie, aby wzmocnić zamglony obraz, albo spróbuj wartości ujemnej dla łagodniejszego efektu. Podczas regulacji sprawdzaj zarówno kontrast, jak i kolor.",
             "Ustaw Winietę dla żądanego traktowania krawędzi i sprawdź narożniki.",
-            "Przytrzymaj B, aby porównać z oryginałem, albo użyj Resetuj w Efektach, aby zresetować razem Teksturę, Klarowność, Usuń zamglenie i Winietę."
+            "Zwiększ Rozmiar, aby większa część środka pozostała bez efektu; zmniejsz go, aby winieta sięgała dalej do wewnątrz.",
+            "Zwiększ Wtapianie, aby uzyskać łagodniejsze przejście, lub zmniejsz je, aby krawędź była wyraźniejsza.",
+            "Przytrzymaj B, aby porównać z oryginałem, albo użyj Resetuj w Efektach, aby zresetować wszystkie suwaki Efektów jednocześnie."
           ],
           "tips": [
             "Winieta w Efektach to kreatywne traktowanie krawędzi. Użyj korekcji obiektywu, gdy chcesz skorygować winietowanie obiektywu."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

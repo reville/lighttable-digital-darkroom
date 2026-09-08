@@ -111,7 +111,7 @@ const RESET_GROUPS = {
            'scan_softness', 'scan_sharpness', 'scan_sharpen'],
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks'],
   colour: ['temp', 'tint', 'vibrance', 'saturation'],
-  effects: ['texture', 'clarity', 'dehaze', 'vignette'],
+  effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],
   detail: ['sharpness', 'sharpenRadius', 'sharpenDetail', 'sharpenMasking',
            'luminanceNoise', 'colorNoise'],
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "इतिहास",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History कैटलॉग में संग्रहीत होती है, इसलिए यह बंद करने के बाद भी रहती है। Undo और redo इस session में प्रत्येक फ़ोटो का अनुसरण करते हैं।",
     "History request failed": "इतिहास अनुरोध विफल रहा",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "मूल से तुलना करने के लिए B दबाए रखें, या Texture, Clarity, Dehaze, और Vignette को एक साथ रीसेट करने के लिए Effects के Reset का उपयोग करें।",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "मूल से तुलना करने के लिए B दबाए रखें, या इफ़ेक्ट्स के सभी स्लाइडर एक साथ रीसेट करने के लिए इफ़ेक्ट्स में रीसेट करें का उपयोग करें।",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "फ़िल्म, स्थानीय मास्क, या अंतिम समायोजन के बिना मूल दिखाने के लिए B दबाए रखें; संपादन पुनर्स्थापित करने के लिए B छोड़ें। स्लैश (/) फ़ोटो खोज पर फ़ोकस करता है।",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "फ़िल्म, स्थानीय मास्क, या अंतिम समायोजन के बिना मूल देखने के लिए B दबाए रखें। संपादित दृश्य पुनर्स्थापित करने के लिए B छोड़ें।",
     "Hold a mapped key and scroll or use arrow keys.": "एक मैप की हुई कुंजी दबाकर रखें और स्क्रॉल करें या तीर कुंजियों का उपयोग करें।",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "उपफ़ोल्डर शामिल करें",
     "Includes the Film profile and physical stages.": "इसमें फ़िल्म प्रोफ़ाइल और भौतिक चरण शामिल हैं।",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "धुंधले चित्र को अधिक मजबूत करने के लिए Dehaze बढ़ाएँ, या अधिक कोमल उपचार के लिए नकारात्मक मान आज़माएँ। समायोजन करते समय contrast और color दोनों जाँचें।",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "अधिक कोमल संक्रमण के लिए फेदर बढ़ाएँ, या अधिक स्पष्ट किनारे के लिए इसे घटाएँ।",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "केंद्र के अधिक हिस्से को प्रभाव से मुक्त रखने के लिए आकार बढ़ाएँ; विग्नेट को और अंदर तक लाने के लिए इसे घटाएँ।",
     "Index data stays in LightTable's local data folder.": "सूचकांक डेटा LightTable के स्थानीय डेटा फ़ोल्डर में ही रहता है।",
     "Indexing {SAiCompleted} of {SAiTotal}": "{SAiCompleted} में से {SAiTotal} का सूचकांकित किया जा रहा है",
     "Info": "जानकारी",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "मिलते-जुलते चेहरे एक साथ समूहित किए जाते हैं. नाम जोड़ें, संभावित मिलानों की समीक्षा करें, और जब भी ज़रूरत हो किसी समूह को सही करें.",
     "Simulate paper and ink": "कागज़ और स्याही का अनुकरण करें",
     "Size": "आकार",
+    "Size of the clear area at the center of the vignette.": "विग्नेट के केंद्र में प्रभाव से मुक्त क्षेत्र का आकार।",
     "Size only": "केवल आकार",
     "Skip": "छोड़ें",
     "Skip existing": "मौजूदा को छोड़ें",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof एक देखने की स्थिति है। फ़ाइल का वास्तविक Colour space Export में अलग से चुनें।",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "सॉफ्ट-प्रूफ नियंत्रण व्यूअर के View विकल्पों (•••) में हैं। ये आपको संपादन करते समय आउटपुट पूर्वावलोकन जाँचने देते हैं।",
     "Soften skin": "त्वचा को मुलायम करें",
+    "Softness of the vignette transition.": "विग्नेट के संक्रमण की कोमलता।",
     "Software rendering": "सॉफ़्टवेयर रेंडरिंग",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "कुछ ड्राफ्ट आंशिक फ़ाइल पहचान का उपयोग करते हैं जो पूरे मूल को सत्यापित नहीं कर सकती। इन्हें केवल तभी पुनर्स्थापित करें जब मूल फ़ोटो बदली न गई हों।",
     "Some edits have not been saved": "कुछ संपादन सहेजे नहीं गए हैं",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "السجل",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "يُخزن History في الكتالوج، لذا يبقى بعد الإغلاق. يتبع Undo وredo كل صورة خلال هذه الجلسة.",
     "History request failed": "فشل طلب السجل",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "اضغط B للمقارنة مع الأصل، أو استخدم إعادة تعيين ضمن التأثيرات لإعادة تعيين النسيج والوضوح وإزالة الضباب والتظليل معًا.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "اضغط مطولًا على B للمقارنة مع الأصل، أو استخدم إعادة تعيين ضمن التأثيرات لإعادة تعيين جميع أشرطة تمرير التأثيرات معًا.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "اضغط مع الاستمرار على B لإظهار الأصل من دون الفيلم أو الأقنعة المحلية أو تعديلات الإنهاء؛ حرر B لاستعادة التعديل. يركز الشرطة المائلة (/) على البحث في الصور.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "اضغط مع الاستمرار على B لعرض الأصل من دون الفيلم أو الأقنعة المحلية أو تعديلات الإنهاء. حرر B لاستعادة العرض المعدل.",
     "Hold a mapped key and scroll or use arrow keys.": "اضغط باستمرار على مفتاح معيّن ثم مرّر أو استخدم مفاتيح الأسهم.",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "تضمين المجلدات الفرعية",
     "Includes the Film profile and physical stages.": "يتضمن الملف الشخصي للفيلم والمراحل المادية.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "زِد إزالة الضباب لتقوية صورة ضبابية، أو جرّب قيمة سالبة لمعالجة أكثر نعومة. تحقق من كلٍ من التباين واللون أثناء الضبط.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "زِد تنعيم الحواف للحصول على انتقال أنعم، أو قلّله للحصول على حافة أكثر تحديدًا.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "زِد الحجم لإبقاء مساحة أكبر من المركز صافية؛ وقلّله لتمديد التظليل أكثر نحو الداخل.",
     "Index data stays in LightTable's local data folder.": "تظل بيانات الفهرس في مجلد البيانات المحلي الخاص بـ LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "جارٍ الفهرسة {SAiCompleted} من {SAiTotal}",
     "Info": "معلومات",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "تُجمَّع الوجوه المتشابهة معًا. أضف أسماء، وراجع التطابقات المحتملة، وصحح أي مجموعة كلما احتجت إلى ذلك.",
     "Simulate paper and ink": "محاكاة الورق والحبر",
     "Size": "الحجم",
+    "Size of the clear area at the center of the vignette.": "حجم المنطقة الصافية في مركز التظليل.",
     "Size only": "الحجم فقط",
     "Skip": "تخطي",
     "Skip existing": "تخطي الموجود",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof هي حالة عرض. اختر مساحة الألوان الفعلية للملف بشكل منفصل في Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "تقع عناصر التحكم في التدقيق اللوني ضمن خيارات عرض العارض (•••). وهي تتيح لك فحص معاينة المخرجات أثناء التحرير.",
     "Soften skin": "تنعيم البشرة",
+    "Softness of the vignette transition.": "مدى نعومة انتقال التظليل.",
     "Software rendering": "إخراج برمجي",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "تستخدم بعض المسودات هوية ملف جزئية لا يمكنها التحقق من الملف الأصلي بالكامل. استعد هذه فقط إذا لم تُستبدل الصور الأصلية.",
     "Some edits have not been saved": "لم يتم حفظ بعض التعديلات",

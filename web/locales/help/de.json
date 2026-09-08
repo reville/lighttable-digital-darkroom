@@ -1032,7 +1032,9 @@
           "steps": [
             "Erhöhen Sie Dunst entfernen, um ein diesiges Bild zu verstärken, oder versuchen Sie einen negativen Wert für eine weichere Wirkung. Prüfen Sie dabei sowohl Kontrast als auch Farbe.",
             "Legen Sie Vignette für die gewünschte Randbehandlung fest und prüfen Sie die Ecken.",
-            "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen bei Effekte, um Textur, Klarheit, Dunst entfernen und Vignette gemeinsam zurückzusetzen."
+            "Erhöhen Sie Größe, um mehr von der Mitte unbeeinflusst zu lassen; verringern Sie den Wert, damit die Vignette weiter nach innen reicht.",
+            "Erhöhen Sie Weiche Kante für einen weicheren Übergang oder verringern Sie den Wert für einen deutlicheren Rand.",
+            "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen unter Effekte, um alle Effekte-Regler gemeinsam zurückzusetzen."
           ],
           "tips": [
             "Effects’ Vignette ist eine kreative Randgestaltung. Verwenden Sie Lens corrections, wenn Sie die Objektivabschattung korrigieren möchten."
@@ -3076,5 +3078,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
 }

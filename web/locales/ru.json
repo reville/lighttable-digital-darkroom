@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "История",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "История хранится в каталоге, поэтому сохраняется после выхода. Undo и redo идут за каждым фото в течение этого сеанса.",
     "History request failed": "Не удалось выполнить запрос к истории",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Удерживайте B, чтобы сравнить с оригиналом, или используйте «Сброс» в разделе «Эффекты», чтобы сбросить «Текстура», «Четкость», «Убрать дымку» и «Виньетирование» вместе.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Удерживайте B, чтобы сравнить с оригиналом, или используйте «Сбросить» в разделе «Эффекты», чтобы сбросить все ползунки этого раздела вместе.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Удерживайте B, чтобы показать оригинал без Пленка, локальных масок и финишных корректировок; отпустите B, чтобы вернуть правку. Слэш (/) переводит фокус в поиск фото.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Удерживайте B, чтобы просмотреть оригинал без Пленка, локальных масок и финишных корректировок. Отпустите B, чтобы вернуть отредактированный вид.",
     "Hold a mapped key and scroll or use arrow keys.": "Удерживайте назначенную клавишу и прокручивайте или используйте клавиши со стрелками.",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "Включить подпапки",
     "Includes the Film profile and physical stages.": "Включает Пленочный профиль и физические этапы.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Увеличьте «Убрать дымку», чтобы усилить дымчатое изображение, или попробуйте отрицательное значение для более мягкой обработки. При настройке проверяйте и контраст, и цвет.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Увеличьте «Растушевка» для более плавного перехода или уменьшите для более четкой границы.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Увеличьте «Размер», чтобы оставить большую часть центра без эффекта; уменьшите его, чтобы виньетка заходила дальше к центру.",
     "Index data stays in LightTable's local data folder.": "Данные индекса хранятся в локальной папке данных LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Индексация {SAiCompleted} из {SAiTotal}",
     "Info": "Инфо",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Похожие лица группируются вместе. Добавляйте имена, проверяйте возможные совпадения и при необходимости исправляйте группу.",
     "Simulate paper and ink": "Сымитировать бумагу и чернила",
     "Size": "Размер",
+    "Size of the clear area at the center of the vignette.": "Размер области без эффекта в центре виньетки.",
     "Size only": "Только размер",
     "Skip": "Пропустить",
     "Skip existing": "Пропускать существующие",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Мягкая цветопроба — это режим просмотра. Выберите фактическое цветовое пространство файла отдельно в Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Элементы управления soft-proof находятся в параметрах «Вид» просмотрщика (•••). Они позволяют просматривать предварительный вывод во время редактирования.",
     "Soften skin": "Смягчить кожу",
+    "Softness of the vignette transition.": "Мягкость перехода виньетки.",
     "Software rendering": "Программный рендеринг",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Некоторые черновики используют частичную идентичность файла, которая не может проверить весь оригинал. Восстанавливайте их только если оригинальные фото не были заменены.",
     "Some edits have not been saved": "Некоторые правки не были сохранены",

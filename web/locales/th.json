@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "ประวัติ",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History ถูกเก็บไว้ในแค็ตตาล็อก จึงยังคงอยู่หลังปิดโปรแกรม Undo และ redo จะติดตามแต่ละภาพถ่ายในเซสชันนี้",
     "History request failed": "คำขอประวัติล้มเหลว",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "กด B ค้างไว้เพื่อเปรียบเทียบกับต้นฉบับ หรือใช้ Reset ของ Effects เพื่อรีเซ็ต Texture, Clarity, Dehaze และ Vignette พร้อมกัน",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "กด B ค้างไว้เพื่อเปรียบเทียบกับต้นฉบับ หรือใช้รีเซ็ตในเอฟเฟ็กต์เพื่อรีเซ็ตแถบเลื่อนเอฟเฟ็กต์ทั้งหมดพร้อมกัน",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "กด B ค้างไว้เพื่อแสดงต้นฉบับโดยไม่มี Film, มาสก์เฉพาะที่ หรือการปรับแต่งขั้นสุดท้าย; ปล่อย B เพื่อคืนการแก้ไข Slash (/) จะโฟกัสการค้นหารูปถ่าย",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "กด B ค้างไว้เพื่อดูต้นฉบับโดยไม่มี Film, มาสก์เฉพาะที่ หรือการปรับแต่งขั้นสุดท้าย ปล่อย B เพื่อคืนมุมมองที่แก้ไขแล้ว",
     "Hold a mapped key and scroll or use arrow keys.": "กดค้างปุ่มที่กำหนดไว้แล้วเลื่อนหรือใช้ปุ่มลูกศร",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "รวมโฟลเดอร์ย่อย",
     "Includes the Film profile and physical stages.": "รวมโปรไฟล์ฟิล์มและขั้นตอนทางกายภาพ",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "เพิ่ม Dehaze เพื่อทำให้ภาพที่มีหมอกควันเด่นชัดขึ้น หรือลองค่าติดลบเพื่อให้ภาพดูนุ่มนวลขึ้น ตรวจทั้งคอนทราสต์และสีขณะปรับ",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "เพิ่มฟุ้งเพื่อให้รอยต่อนุ่มนวลขึ้น หรือลดเพื่อให้ขอบชัดเจนขึ้น",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "เพิ่มขนาดเพื่อให้พื้นที่ตรงกลางที่ไม่ได้รับผลจากเอฟเฟ็กต์กว้างขึ้น หรือลดขนาดเพื่อให้วินเยตต์ขยายเข้ามาด้านในมากขึ้น",
     "Index data stays in LightTable's local data folder.": "ข้อมูลดัชนียังคงอยู่ในโฟลเดอร์ข้อมูลเฉพาะที่ของ LightTable",
     "Indexing {SAiCompleted} of {SAiTotal}": "กำลังจัดทำดัชนี {SAiCompleted} จาก {SAiTotal}",
     "Info": "ข้อมูล",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "ใบหน้าที่คล้ายกันจะถูกจัดกลุ่มไว้ด้วยกัน เพิ่มชื่อ ตรวจทานการจับคู่ที่เป็นไปได้ และแก้ไขกลุ่มได้ทุกเมื่อที่ต้องการ",
     "Simulate paper and ink": "จำลองกระดาษและหมึก",
     "Size": "ขนาด",
+    "Size of the clear area at the center of the vignette.": "ขนาดของพื้นที่ตรงกลางวินเยตต์ที่ไม่ได้รับผลจากเอฟเฟ็กต์",
     "Size only": "เฉพาะขนาด",
     "Skip": "ข้าม",
     "Skip existing": "ข้ามที่มีอยู่แล้ว",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof เป็นสถานะการดูภาพ เลือก Colour space ของไฟล์จริงแยกต่างหากใน Export",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "การควบคุม soft proof อยู่ในตัวเลือก มุมมอง ของตัวแสดง (•••) ช่วยให้คุณตรวจดูตัวอย่างเอาต์พุตขณะกำลังแก้ไขได้",
     "Soften skin": "ทำให้ผิวนุ่มนวล",
+    "Softness of the vignette transition.": "ความนุ่มนวลของรอยต่อวินเยตต์",
     "Software rendering": "การเรนเดอร์แบบซอฟต์แวร์",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "ฉบับร่างบางรายการใช้ข้อมูลอัตลักษณ์ไฟล์บางส่วนที่ไม่สามารถยืนยันต้นฉบับทั้งหมดได้ ให้คืนค่าเหล่านี้เฉพาะเมื่อภาพถ่ายต้นฉบับยังไม่ได้ถูกแทนที่",
     "Some edits have not been saved": "มีการแก้ไขบางรายการที่ยังไม่ได้บันทึก",

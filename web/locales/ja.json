@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "履歴",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History はカタログに保存されるため、終了しても残ります。このセッション中の各写真には Undo と redo が適用されます。",
     "History request failed": "履歴要求に失敗しました",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "B を押し続けるとオリジナルと比較できます。あるいは Effects の リセット を使うと、Texture、Clarity、Dehaze、Vignette をまとめてリセットできます。",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "B を押し続けるとオリジナルと比較できます。「効果」の「リセット」を使うと、「効果」のすべてのスライダーをまとめてリセットできます。",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "B キーを押すと、Film、ローカルマスク、仕上げ調整なしのオリジナルを表示します。B を離すと編集に戻ります。スラッシュ（/）で写真検索にフォーカスします。",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "B キーを押すと、Film、ローカルマスク、仕上げ調整なしのオリジナルを表示します。B を離すと編集済み表示に戻ります。",
     "Hold a mapped key and scroll or use arrow keys.": "割り当てたキーを押しながら、スクロールするか矢印キーを使います。",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "サブフォルダーを含める",
     "Includes the Film profile and physical stages.": "Filmプロファイルと物理ステージが含まれます。",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Dehaze を上げると霞んだ画像を強められます。やわらかい仕上がりにしたい場合は負の値も試してください。調整中はコントラストとカラーの両方を確認します。",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "フェザーを上げると境界がなめらかになり、下げると境界がはっきりします。",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "サイズを上げると、中央の効果がかからない領域が広がります。下げると、ビネットがより内側まで広がります。",
     "Index data stays in LightTable's local data folder.": "インデックスデータはLightTableのローカルデータフォルダーに保持されます。",
     "Indexing {SAiCompleted} of {SAiTotal}": "{SAiCompleted}/{SAiTotal} をインデックス化中",
     "Info": "情報",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "類似した顔はまとめてグループ化されます。名前を追加し、候補の一致を確認し、必要に応じていつでもグループを修正できます。",
     "Simulate paper and ink": "紙とインクをシミュレート",
     "Size": "サイズ",
+    "Size of the clear area at the center of the vignette.": "ビネット中央の効果がかからない領域の大きさ。",
     "Size only": "サイズのみ",
     "Skip": "スキップ",
     "Skip existing": "既存のものをスキップ",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "ソフトプルーフは表示状態です。ファイルの実際の Colour space は Export で別途選択します。",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "ソフトプルーフのコントロールは、ビューアーの 表示 オプション（•••）にあります。編集しながら出力プレビューを確認できます。",
     "Soften skin": "肌をなめらかにする",
+    "Softness of the vignette transition.": "ビネットの境界のなめらかさ。",
     "Software rendering": "ソフトウェアレンダリング",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "一部の下書きでは、オリジナル全体を確認できない部分的なファイル識別情報が使用されます。元の写真が置き換えられていない場合のみ、これらを復元してください。",
     "Some edits have not been saved": "一部の編集は保存されていません",

@@ -4,6 +4,9 @@ use rayon::prelude::*;
 use serde_json::Value;
 
 const LUMA: [f32; 3] = [0.2126, 0.7152, 0.0722];
+// Match the established preview radius when using the new shape controls.
+#[allow(clippy::approx_constant)]
+const VIGNETTE_RADIUS_SCALE: f32 = 1.4142;
 const HSL_BANDS: [(&str, f32); 8] = [
     ("red", 0.0),
     ("orange", 30.0),
@@ -254,6 +257,8 @@ fn apply_color_grading(pixel: &mut [f32], settings: &Value) {
 }
 
 pub(crate) fn grade_is_identity(grade: &Value) -> bool {
+    // Vignette size and feather only shape a nonzero amount, so they do not
+    // affect identity on their own.
     const NUMERIC_DEFAULTS: [(&str, f32); 22] = [
         ("exposure", 0.0),
         ("contrast", 0.0),
@@ -440,6 +445,11 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
     let points = grade.get("pointColor");
     let color_grading = grade.get("colorGrading");
     let vignette = number(grade, "vignette", 0.0);
+    let vignette_size = number(grade, "vignetteSize", 0.5).clamp(0.0, 1.0);
+    let vignette_feather = number(grade, "vignetteFeather", 1.0).clamp(0.0, 1.0);
+    let legacy_vignette = vignette_size == 0.5 && vignette_feather == 1.0;
+    let vignette_outer = 0.25 + 1.5 * vignette_size;
+    let vignette_width = vignette_outer * vignette_feather.max(0.01);
 
     samples
         .par_chunks_mut(3)
@@ -555,8 +565,17 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
                 let y = (index as u32 / width) as f32;
                 let nx = (x / width.saturating_sub(1).max(1) as f32 - 0.5) * 2.0;
                 let ny = (y / height.saturating_sub(1).max(1) as f32 - 0.5) * 2.0;
-                let radius = (nx * nx + ny * ny).sqrt() / std::f32::consts::SQRT_2;
-                let falloff = (1.0 - vignette * 0.9 * radius.powf(2.2)).clamp(0.0, 2.0);
+                let distance = (nx * nx + ny * ny).sqrt();
+                let shaped = if legacy_vignette {
+                    // Keep the original CPU divisor and unbounded radius at
+                    // default settings so existing edits retain their pixels.
+                    distance / std::f32::consts::SQRT_2
+                } else {
+                    ((distance / VIGNETTE_RADIUS_SCALE - vignette_outer + vignette_width)
+                        / vignette_width)
+                        .clamp(0.0, 1.0)
+                };
+                let falloff = (1.0 - vignette * 0.9 * shaped.powf(2.2)).clamp(0.0, 2.0);
                 for channel in pixel.iter_mut() {
                     *channel = clamp(*channel * falloff);
                 }
@@ -884,6 +903,96 @@ pub(crate) fn postprocess(
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn vignette_default_shape_preserves_legacy_pixels() {
+        let (width, height) = (17_u32, 13_u32);
+        for amount in [-0.7_f32, 0.7] {
+            let input: Vec<f32> = (0..width * height * 3)
+                .map(|i| 0.15 + (i % 17) as f32 * 0.02)
+                .collect();
+            let mut implicit = input.clone();
+            apply_grade(&mut implicit, width, height, &json!({"vignette": amount}));
+            let mut explicit = input.clone();
+            apply_grade(
+                &mut explicit,
+                width,
+                height,
+                &json!({"vignette": amount, "vignetteSize": 0.5, "vignetteFeather": 1.0}),
+            );
+            assert_eq!(implicit, explicit);
+            for (i, (&source, &actual)) in input.iter().zip(&implicit).enumerate() {
+                let x = ((i / 3) as u32 % width) as f32;
+                let y = ((i / 3) as u32 / width) as f32;
+                let nx = (x / (width - 1) as f32 - 0.5) * 2.0;
+                let ny = (y / (height - 1) as f32 - 0.5) * 2.0;
+                let radius = (nx * nx + ny * ny).sqrt() / std::f32::consts::SQRT_2;
+                let linear = ((source + 0.055) / 1.055).powf(2.4);
+                let neutral = clamp(1.055 * linear.powf(1.0 / 2.4) - 0.055);
+                let expected = clamp(neutral * (1.0 - amount * 0.9 * radius.powf(2.2)));
+                assert_eq!(actual, expected, "legacy vignette changed at sample {i}");
+            }
+        }
+    }
+
+    #[test]
+    fn vignette_size_protects_more_of_the_center() {
+        let mut small = vec![0.4; 21 * 21 * 3];
+        let mut large = small.clone();
+        apply_grade(
+            &mut small,
+            21,
+            21,
+            &json!({"vignette": 0.8, "vignetteSize": 0.2, "vignetteFeather": 0.5}),
+        );
+        apply_grade(
+            &mut large,
+            21,
+            21,
+            &json!({"vignette": 0.8, "vignetteSize": 0.8, "vignetteFeather": 0.5}),
+        );
+        let middle = (10 * 21 + 10) * 3;
+        let shoulder = (10 * 21 + 17) * 3;
+        assert_eq!(small[middle], large[middle]);
+        assert!((large[shoulder] - 0.4).abs() < 1e-6);
+        assert!(large[shoulder] > small[shoulder] + 0.1);
+        assert!(large[0] < large[middle]);
+    }
+
+    #[test]
+    fn vignette_feather_spreads_the_edge_transition() {
+        let mut hard = vec![0.4; 21 * 21 * 3];
+        let mut soft = hard.clone();
+        apply_grade(
+            &mut hard,
+            21,
+            21,
+            &json!({"vignette": 0.8, "vignetteSize": 0.5, "vignetteFeather": 0.0}),
+        );
+        apply_grade(
+            &mut soft,
+            21,
+            21,
+            &json!({"vignette": 0.8, "vignetteSize": 0.5, "vignetteFeather": 1.0}),
+        );
+        let edge_midpoint = (10 * 21 + 20) * 3;
+        assert!((hard[edge_midpoint] - 0.4).abs() < 1e-6);
+        assert!(soft[edge_midpoint] < hard[edge_midpoint] - 0.1);
+        assert!((hard[0] - soft[0]).abs() < 1e-6);
+        assert!(hard.iter().chain(&soft).all(|sample| sample.is_finite()));
+    }
+
+    #[test]
+    fn vignette_shape_without_amount_keeps_exact_identity() {
+        let original = vec![-0.1, 0.3, 1.2, 0.8, 0.0, 1.0];
+        for amount in [json!(null), json!(0.0)] {
+            let grade = json!({"vignette": amount, "vignetteSize": 0.1, "vignetteFeather": 0.0});
+            assert!(grade_is_identity(&grade));
+            let mut actual = original.clone();
+            apply_grade(&mut actual, 2, 1, &grade);
+            assert_eq!(actual, original);
+        }
+    }
 
     #[test]
     fn resized_dimensions_match_python_half_even_rounding() {

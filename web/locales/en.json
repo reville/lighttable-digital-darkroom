@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "plurals": {
     " · {count} paired file linked": {
@@ -1615,7 +1615,7 @@
     "History": "History",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.",
     "History request failed": "History request failed",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.",
     "Hold a mapped key and scroll or use arrow keys.": "Hold a mapped key and scroll or use arrow keys.",
@@ -1714,6 +1714,8 @@
     "Include subfolders": "Include subfolders",
     "Includes the Film profile and physical stages.": "Includes the Film profile and physical stages.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Increase Feather for a softer transition, or decrease it for a more defined edge.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.",
     "Index data stays in LightTable's local data folder.": "Index data stays in LightTable's local data folder.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indexing {SAiCompleted} of {SAiTotal}",
     "Info": "Info",
@@ -2897,6 +2899,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.",
     "Simulate paper and ink": "Simulate paper and ink",
     "Size": "Size",
+    "Size of the clear area at the center of the vignette.": "Size of the clear area at the center of the vignette.",
     "Size only": "Size only",
     "Skip": "Skip",
     "Skip existing": "Skip existing",
@@ -2921,6 +2924,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.",
     "Soften skin": "Soften skin",
+    "Softness of the vignette transition.": "Softness of the vignette transition.",
     "Software rendering": "Software rendering",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.",
     "Some edits have not been saved": "Some edits have not been saved",

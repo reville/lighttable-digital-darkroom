@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1324,7 +1324,7 @@
     "History": "Geçmiş",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "History katalogda saklanır, bu yüzden uygulamadan çıkınca da kalır. Undo ve redo, bu oturumda her fotoğraf için sırayla uygulanır.",
     "History request failed": "Geçmiş isteği başarısız oldu",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Özgünle karşılaştırmak için B tuşunu basılı tutun veya Etkiler bölümündeki Sıfırla'yı kullanarak Doku, Netlik, Pus Gider ve Vinyet'i birlikte sıfırlayın.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Özgünle karşılaştırmak için B tuşunu basılı tutun veya tüm Efektler kaydırıcılarını birlikte sıfırlamak için Efektler bölümündeki Sıfırla seçeneğini kullanın.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Film, yerel maskeler veya bitirme ayarları olmadan orijinali göstermek için B’ye basılı tutun; düzenlemeyi geri yüklemek için B’yi bırakın. Eğik çizgi (/) fotoğraf aramasına odaklanır.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Film, yerel maskeler veya bitirme ayarları olmadan orijinali görmek için B tuşunu basılı tutun. Düzenlenmiş görünümü geri yüklemek için B’yi bırakın.",
     "Hold a mapped key and scroll or use arrow keys.": "Atanmış bir tuşa basılı tutun ve kaydırın veya ok tuşlarını kullanın.",
@@ -1423,6 +1423,8 @@
     "Include subfolders": "Alt klasörleri dahil et",
     "Includes the Film profile and physical stages.": "Film profilini ve fiziksel aşamaları içerir.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Puslu bir görüntüyü güçlendirmek için Pus Gider'i artırın veya daha yumuşak bir işlem için negatif bir değer deneyin. Ayarlarken hem kontrastı hem de rengi kontrol edin.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Daha yumuşak bir geçiş için Yumuşatma değerini artırın veya daha belirgin bir kenar için azaltın.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Merkezin daha büyük bir bölümünü etkilenmeden bırakmak için Boyut değerini artırın; vinyetin daha içeriye uzanması için azaltın.",
     "Index data stays in LightTable's local data folder.": "Dizin verileri LightTable'ın yerel veri klasöründe kalır.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Dizine alınıyor: {SAiCompleted}/{SAiTotal}",
     "Info": "Bilgi",
@@ -2606,6 +2608,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Benzer yüzler birlikte gruplandırılır. Ad ekleyin, olası eşleşmeleri inceleyin ve gerektiğinde bir grubu düzeltin.",
     "Simulate paper and ink": "Kağıdı ve mürekkebi simüle et",
     "Size": "Boyut",
+    "Size of the clear area at the center of the vignette.": "Vinyetin merkezindeki etkilenmeyen alanın boyutu.",
     "Size only": "Yalnızca boyut",
     "Skip": "Atla",
     "Skip existing": "Mevcut olanları atla",
@@ -2630,6 +2633,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof bir görüntüleme durumudur. Dosyanın gerçek Renk alanını Export içinde ayrı olarak seçin.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Yumuşak prova kontrolleri, görüntüleyicinin Görünüm seçeneklerinde (•••) bulunur. Düzenleme yaparken bir çıktı önizlemesini incelemenizi sağlarlar.",
     "Soften skin": "Cildi yumuşat",
+    "Softness of the vignette transition.": "Vinyet geçişinin yumuşaklığı.",
     "Software rendering": "Yazılım işlemesi",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Bazı taslaklar, tüm orijinali doğrulayamayan kısmi bir dosya kimliği kullanır. Bunları yalnızca orijinal fotoğraflar değiştirilmemişse geri yükleyin.",
     "Some edits have not been saved": "Bazı düzenlemeler kaydedilmedi",
