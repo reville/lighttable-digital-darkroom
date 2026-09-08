@@ -9,7 +9,7 @@ export function connectServerEvents(client, handlers = {}) {
   source.onopen = () => window.dispatchEvent(new CustomEvent(
     'lighttable-server-connection', { detail: { state: 'open' } }));
   const eventTypes = ['ready', 'state', 'library', 'job', 'ui.command',
-    'ui.state', 'resync', 'sidecars'];
+    'ui.state', 'resync', 'sidecars', 'preview.progress'];
   eventTypes.forEach((type) => {
     source.addEventListener(type, (event) => {
       let record = {};

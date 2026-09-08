@@ -49,6 +49,7 @@ import film_pipeline as fp  # noqa: E402
 import grade  # noqa: E402
 import edits  # noqa: E402
 import color_pipeline  # noqa: E402
+import preview_progress  # noqa: E402
 import calibration_target  # noqa: E402
 import preset_io  # noqa: E402
 import export_workflow  # noqa: E402
@@ -2206,6 +2207,12 @@ def render_is_stale(client: str, generation: int | None) -> bool:
         return generation < LATEST_GENERATION.get(client, generation)
 
 
+def publish_preview_progress(client, generation, name, completed):
+    if client and isinstance(generation, int) and not render_is_stale(client, generation):
+        EVENTS.publish("preview.progress", {"client": client, "generation": generation,
+            "name": name, "completed": completed, "total": 5})
+
+
 def _run_refinement(function, args, client: str, generation: int | None):
     # Pause decode admission while an interactive render owns the hot path.
     # Release before LibRaw: a long demosaic must not lock out warm previews.
@@ -3069,6 +3076,8 @@ class RustEngineClient:
                 self.request_id += 1
                 payload = dict(request, id=self.request_id)
                 payload.setdefault("command", "render")
+                if payload["command"] == "render":
+                    preview_progress.advance(2)
                 try:
                     assert process.stdin and process.stdout
                     process.stdin.write(json.dumps(payload, separators=(",", ":"))
@@ -3081,6 +3090,8 @@ class RustEngineClient:
                     if not result.get("ok"):
                         raise RuntimeError(result.get("error") or
                                            "resident Rust render failed")
+                    if payload["command"] == "render":
+                        preview_progress.advance(3)
                     return dict(result, queue_ms=round(queue_ms, 3))
                 except (BrokenPipeError, OSError, ValueError,
                         TimeoutError, RuntimeError):
@@ -3249,10 +3260,12 @@ def render_rust(name: str, params: dict, width: int,
         cmd += ["--paper", cp["paper"]]
     else:
         cmd += ["--scan-film"]
+    preview_progress.advance(2)
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
                        **subprocess_flags())
     if r.returncode != 0 or not out_png.exists():
         raise RuntimeError((r.stderr or r.stdout).strip()[-400:])
+    preview_progress.advance(3)
     img = np.asarray(Image.open(out_png).convert("RGB"))
     k = rot90k(cp["rotate"])
     if k:
@@ -3598,7 +3611,10 @@ def render_preview(name: str, params: dict, width: int,
         RENDER_CONTEXT.cancelled = lambda: render_is_stale(client, generation)
         try:
             import raw_decode_runtime
-            with raw_decode_runtime.cancellation(RENDER_CONTEXT.cancelled, priority=priority):
+            with raw_decode_runtime.cancellation(RENDER_CONTEXT.cancelled, priority=priority), \
+                    preview_progress.reporting(lambda completed: publish_preview_progress(
+                        client, generation, name, completed)):
+                preview_progress.advance(1)
                 return _render_preview(name, params, width, engine, client,
                                        generation, native, priority, viewport)
         except RenderCancelled:
@@ -3645,6 +3661,7 @@ def _render_preview(name: str, params: dict, width: int,
         }
         if native:
             response["native"] = native_image_payload(image_url, preview_image)
+        preview_progress.advance(3)
         return response
     if fp.profile_requires_rust(cp["stock"]):
         if not RUST_AVAILABLE:
@@ -3734,7 +3751,9 @@ def _render_preview(name: str, params: dict, width: int,
             film_mean = float(rust_metrics["mean"])
         else:
             arr = linear_for(name, width, params)
+            preview_progress.advance(2)
             out = fp.render(arr, params)
+            preview_progress.advance(3)
         ms = int((time.time() - t0) * 1000)
         if engine != "rs":
             k = rot90k(fp.clean_params(params)["rotate"])
@@ -6460,12 +6479,14 @@ class Handler(BaseHTTPRequestHandler):
                         result = dict(result, lens_profile=edits.lens_profile_for(
                             preview_lens_metadata(b["name"], b.get("optics")),
                             edits.clean_optics(b.get("optics")).get("profileOverride")))
-                    self._json(result)
                 else:
-                    self._json(apply_preview_edits(
+                    result = apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),
                         b.get("params", {}), b.get("optics"), b.get("heals"),
-                        grade_values=b.get("grade"), masks=b.get("masks")))
+                        grade_values=b.get("grade"), masks=b.get("masks"))
+                if not result.get("cancelled") and not result.get("error"):
+                    publish_preview_progress(client, generation, b["name"], 4)
+                self._json(result)
             elif u.path == "/api/mask/semantic":
                 b = self._body()
                 params = fp.clean_params(b.get("params", {}))

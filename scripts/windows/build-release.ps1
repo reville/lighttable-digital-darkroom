@@ -104,6 +104,7 @@ try {
         "grade.py",
         "edits.py",
         "color_pipeline.py",
+        "preview_progress.py",
         "calibration_target.py",
         "preset_io.py",
         "platform_image.py",
