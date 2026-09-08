@@ -1064,6 +1064,137 @@
       "categoryLabel": "Bearbeitung"
     },
     {
+      "id": "editing-presets",
+      "title": "Bearbeitungsvorgaben anwenden, anpassen und teilen",
+      "category": "Editing",
+      "summary": "Klicke auf eine Vorgabe, um sie anzuwenden, passe die Menge an und speichere oder teile Deine eigenen Looks.",
+      "keywords": [
+        "Vorgabe",
+        "Vorgaben",
+        "community",
+        "Galerie",
+        "integriert",
+        "Favoriten",
+        "Voreinstellung ausblenden",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "Vorgabe importieren",
+        "Look speichern",
+        "Voreinstellung ausprobieren",
+        "Vorgabenmenge",
+        "Vorgabenstärke",
+        "Vorgabe deaktivieren",
+        "Voreinstellung aktualisieren",
+        "Voreinstellung einreichen",
+        "Anpassungen ersetzen"
+      ],
+      "sections": [
+        {
+          "title": "Eine Sammlung auswählen",
+          "paragraphs": [
+            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält zehn mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
+          ],
+          "steps": [
+            "Wähle Integriert, Yours oder Community. Suche nach Name, Beschreibung, Urheber oder Motiv.",
+            "Mit dem Stern neben einer Vorgabe favorisierst du sie; Favoriten filtert die aktuelle Sammlung.",
+            "Wähle in Community Empfohlen, Neu oder Alle und verwende Motiv, um die Sammlung einzugrenzen. Wähle eine Vorgabe aus, um ihre Beschreibung, den Urheber, die Version, das Filmverhalten und verfügbare Beispielfotos zu sehen."
+          ],
+          "tips": [
+            "Featured ist eine redaktionelle Sammlung, kein Beliebtheitsranking.",
+            "Eine integrierte Vorgabe ist schreibgeschützt. Mit Kopie speichern… wird eine benannte Kopie unter Yours abgelegt. Vorgabe ausblenden entfernt sie aus der üblichen Integriert-Ansicht; Ausgeblendete anzeigen und Auf Integriert zurücksetzen bringen sie zurück."
+          ]
+        },
+        {
+          "title": "Anwenden und Menge anpassen",
+          "paragraphs": [
+            "Klicke auf eine Vorgabekarte, um sie sofort auf das Hauptfoto anzuwenden. Klicke erneut auf dieselbe Karte oder verwende ihre Ein/Aus-Schaltfläche, um sie zu deaktivieren. Dein Foto bleibt auf diesem Computer."
+          ],
+          "steps": [
+            "Wähle ein Foto aus und klicke auf eine Vorgabekarte. Die ausgewählte Vorgabe zeigt die Menge unter ihrem Namen an.",
+            "Ziehe die Menge von 0 % bis 100 %. Bei null wird die Bearbeitung vor der Vorgabe wiederhergestellt; 100 % verwendet die vollständige Vorgabe. Doppelklicke auf die Menge, um sie auf 100 % zurückzusetzen.",
+            "Klicke auf eine andere Vorgabe, um den Look zu wechseln. Rückgängig und Wiederholen stellen die Vorgabenauswahl, den Aktivierungsstatus und die Menge wieder her. Die ausgewählte Vorgabe und die Menge werden mit dem Foto gespeichert."
+          ],
+          "tips": [
+            "Filmstock, Film ein/aus und andere feste Optionen wechseln bei jeder Menge über null. Ton, Farbe, Kurven und numerische Anpassungen variieren mit der Menge. Creator-Beispiele bleiben getrennt von Deinem Foto.",
+            "Beim Wechseln zwischen Vorgabekarten wird die Bearbeitung von vor der ersten Vorgabe verwendet, damit sich Looks nicht aufaddieren. Manuelle Änderungen außerhalb der Vorgabe, etwa Belichtung für einen Look, bleiben erhalten. Wenn eine von der Vorgabe gesteuerte Einstellung manuell geändert wird, endet die Mengenanpassung; die aktuelle Bearbeitung wird dann zur Ausgangsbasis für die nächste Vorgabe."
+          ]
+        },
+        {
+          "title": "Was ein Look beibehält",
+          "paragraphs": [
+            "Integrierte und Community-Looks behalten Bearbeiten-Belichtung, Temp/Tönung, Aufnahme-Weißabgleich, RAW-Korrekturen, Filmformat, Zuschnitt, Geometrie, Masken, Entfernen-Korrekturen, Objektivkorrekturen, Schärfen und Rauschreduzierung bei. Sie ändern die kreativen Einstellungen, die in ihrem Rezept enthalten sind.",
+            "Film ein aktiviert die enthaltene Filmbehandlung. Film aus umgeht Film. Film unverändert lässt den aktivierten Status unverändert. Eine Filmbehandlung kann absichtlich Kamera-EV, automatische Messung, Entwicklung, Druck, Körnung und andere kreative Filmsteuerungen ändern."
+          ],
+          "tips": [
+            "Die Beibehaltung des Looks gilt für Looks, die mit Look · Fotokorrekturen beibehalten gespeichert wurden. Eine Voll-Bearbeitung oder eine ältere importierte Vorgabe kann fotospezifische Korrekturen enthalten; überprüfe das resultierende Foto und verwende Rückgängig, wenn sich Korrekturen ändern, die Du behalten möchtest."
+          ]
+        },
+        {
+          "title": "Community-Vorgaben und Updates hinzufügen",
+          "paragraphs": [
+            "Zu Yours hinzufügen lädt das ausgewählte Community-Rezept herunter und speichert es, ohne es anzuwenden. Installierte Rezepte funktionieren offline. Deine vorhandenen Fotobearbeitungen speichern ihre Einstellungen getrennt von der Vorgabe."
+          ],
+          "steps": [
+            "Klicke auf eine Community-Vorgabe, um sie auf Deinem Foto zu verwenden, und klicke dann auf Zu Deinen hinzufügen, um eine Offline-Kopie zu behalten.",
+            "Später unter Yours verwenden oder zu Community zurückkehren, um die öffentliche Vorgabenseite zu prüfen.",
+            "Klicke auf Aktualisieren, um den Katalog zu prüfen. Wenn eine neuere Version aufgeführt ist, ersetzt Update in Yours das gespeicherte Rezept nur, wenn du es auswählst."
+          ],
+          "tips": [
+            "Das Aktualisieren einer Vorgabe ändert keine Fotos, die du bereits bearbeitet hast.",
+            "Die Offline-Meldung unterscheidet zwischen einem zwischengespeicherten Katalog und einem nicht verfügbaren Erstdownload. Nicht zwischengespeicherte Rezepte und Creator-Beispielbilder können eine Verbindung erfordern; Integriert und installierte Rezepte bleiben verfügbar.",
+            "Update LightTable bedeutet, dass eine Vorgabe Funktionen benötigt, die diese App-Version nicht unterstützt. Ihre Installations- und Anwendungssteuerungen bleiben deaktiviert.",
+            "Open in LightTable auf einer öffentlichen Vorgabenseite öffnet die Details in der installierten App; der Look wird nicht automatisch angewendet."
+          ]
+        },
+        {
+          "title": "Speichern, importieren und exportieren",
+          "paragraphs": [
+            "Verwalten… öffnet oder schließt Vorgaben verwalten; die Schaltfläche ist hervorgehoben, solange der Abschnitt geöffnet ist. Aktuellen Look speichern verwendet standardmäßig Look · Foto-Korrekturen beibehalten. Vollbearbeitung · Foto-Korrekturen einbeziehen bietet auch Alle Anpassungseinstellungen oder Nur geänderte Einstellungen an."
+          ],
+          "steps": [
+            "Wähle den Umfang der Vorgabe und ob Filmprofil und physische Einstellungen einbezogen werden sollen, klicke dann auf Neu speichern… und gib ihr einen Namen.",
+            "Zum Importieren klicken Sie auf Import… und wählen die Vorgabedateien. Die Mac-App unterstützt außerdem die Auswahl eines ganzen Vorgabeordners.",
+            "Prüfen Sie das Importergebnis und die Konvertierungsabdeckung der neuen Vorgabe, bevor Sie sie anwenden.",
+            "Zum Exportieren wähle eine Ausgewählte Vorgabe und ein Exportformat aus und klicke dann auf Exportieren…."
+          ],
+          "tips": [
+            "Der LightTable-Export bewahrt das native Rezept der Vorgabe. Lightroom-XMP- und Capture-One-Stil-Exporte sind ungefähr.",
+            "Unterstützte Dateitypen sind .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip und .json. Eine unterstützte Erweiterung garantiert nicht, dass jede Einstellung konvertiert werden kann.",
+            "Bei einer älteren oder Vollbearbeitungs-Vorgabe ändert Apply mapped adjustments die enthaltenen Einstellungen. Replace adjustment settings setzt außerdem zuerst Anpassungen, Masken, Entfernen-Korrekturen und Geometrie zurück. Replace behält den Zuschnitt und behält Film bei, sofern die Vorgabe nicht Film enthält oder du Turn Film off für die untenstehenden Aktionen aktivierst."
+          ]
+        },
+        {
+          "title": "Einen Community-Beitrag vorbereiten",
+          "paragraphs": [
+            "Die Veröffentlichung in Community wird geprüft. Der Einreichungsabschnitt zeigt die genauen Entwickeln- und Film-Einstellungen im vorbereiteten Look, sein Filmverhalten und die Fotoskorrekturen, die er beibehält. Beim Prüfen dieser Zusammenfassung oder beim Vorbereiten eines Downloads wird nichts hochgeladen."
+          ],
+          "steps": [
+            "Speichere eine Vorgabe unter Yours, wähle sie aus und prüfe die Zusammenfassung der enthaltenen Einstellungen unter Community-Einreichung.",
+            "Klicke auf Community-Einreichung vorbereiten… und warte, bis die lokalen Beispiele gerendert wurden. Speichere das ZIP mit der Vorgabe, drei lizenzierten Vorher/Nachher-Fotopaaren, Fotocredits und Rechtehinweisen.",
+            "Öffne das Paket und prüfe die Beispiele. Du kannst auch dein eigenes Foto auswählen und Mit diesem Foto Beispiel herunterladen verwenden, um ein 960-Pixel-JPEG des geteilten Looks zu speichern, ohne die Bearbeitung zu ändern.",
+            "Klicke auf Einreichungsformular öffnen, hänge das Paket und alle zulässigen zusätzlichen Beispiele an und füge vor dem Senden deine Urheberangaben, Beschreibung und Veröffentlichungsrechte hinzu."
+          ],
+          "tips": [
+            "Die drei standardmäßigen Beispielszenen sind in LightTable enthalten. Ihr Export verwendet weder deine Fotos noch deinen Katalog, und ihre JPEGs enthalten keine eingebetteten Fotometadaten.",
+            "Die Vorbereitung der Einreichung schließt fotospezifische Korrekturen aus. Prüfe den resultierenden Look, bevor du ihn teilst.",
+            "Teile nur Fotos, die du veröffentlichen darfst. Vorhandene Urheberangaben und die Zuordnung zur übergeordneten Vorgabe bleiben erhalten; die Erlaubnis zur Wiederverwendung des Rezepts und die Erlaubnis zur Fotodarstellung sind getrennt."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Bearbeitung"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Ändern Sie einzelne Farben mit Farbmischer und Punktfarbe",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Bearbeitung"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Bearbeitungsvorgaben finden, ausprobieren und teilen",
-      "category": "Editing",
-      "summary": "Durchsuche integrierte und Community-Looks, sieh sie dir auf deinem Foto in der Vorschau an und speichere oder teile deine eigenen Vorgaben.",
-      "keywords": [
-        "Vorgabe",
-        "Vorgaben",
-        "community",
-        "Galerie",
-        "integriert",
-        "Favoriten",
-        "Voreinstellung ausblenden",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "Vorgabe importieren",
-        "Look speichern",
-        "Voreinstellung ausprobieren",
-        "Voreinstellung aktualisieren",
-        "Voreinstellung einreichen",
-        "Anpassungen ersetzen"
-      ],
-      "sections": [
-        {
-          "title": "Eine Sammlung auswählen",
-          "paragraphs": [
-            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält zehn mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
-          ],
-          "steps": [
-            "Wähle Integriert, Yours oder Community. Suche nach Name, Beschreibung, Urheber oder Motiv.",
-            "Mit dem Stern neben einer Vorgabe favorisierst du sie; Favoriten filtert die aktuelle Sammlung.",
-            "Wähle in Community Empfohlen, Neu oder Alle und verwende Motiv, um die Sammlung einzugrenzen. Wähle eine Vorgabe aus, um ihre Beschreibung, den Urheber, die Version, das Filmverhalten und verfügbare Beispielfotos zu sehen."
-          ],
-          "tips": [
-            "Featured ist eine redaktionelle Sammlung, kein Beliebtheitsranking.",
-            "Eine integrierte Vorgabe ist schreibgeschützt. Mit Kopie speichern… wird eine benannte Kopie unter Yours abgelegt. Vorgabe ausblenden entfernt sie aus der üblichen Integriert-Ansicht; Ausgeblendete anzeigen und Auf Integriert zurücksetzen bringen sie zurück."
-          ]
-        },
-        {
-          "title": "Vor dem Anwenden ausprobieren",
-          "paragraphs": [
-            "Mit Auf diesem Foto testen wird lokal in den Vorgabedetails eine Vorschau gerendert. Dabei werden deine Bearbeitung nicht geändert oder gespeichert, und dein Foto wird nicht in die Community-Galerie hochgeladen."
-          ],
-          "steps": [
-            "Wähle ein Foto und eine Vorgabe aus und klicke dann auf Auf diesem Foto ausprobieren.",
-            "Warte auf die Vorschau und vergleiche dann mit Vorher und Mit Vorgabe. Creator-Beispiele haben ihre eigenen Vorher/Nachher-Steuerelemente und, sofern verfügbar, einen Beispiel-Fotoauswähler.",
-            "Klicke auf Anwenden, um die Vorgabe auf das aktive Foto zu übernehmen. Verwende Rückgängig in den Details oder die Rückgängig-Aktion in der Abschlussmeldung, um die vorherige Bearbeitung wiederherzustellen."
-          ],
-          "tips": [
-            "Das Auswählen einer Karte, das Durchsuchen einer anderen Vorgabe oder das Schließen der Details wendet sie nicht an.",
-            "Aufeinanderfolgende Look-Anwendungen verwenden die Bearbeitung von vor dem ersten Look, sodass sich Einstellungen eines Looks nicht in den nächsten aufsummieren. Eine spätere manuelle Bearbeitung setzt eine neue Vergleichsbasis. Wenn du Fotos oder Bearbeitungseinstellungen änderst, während eine Detailansicht geöffnet ist, wähle die Vorgabe vor dem Anwenden erneut aus."
-          ]
-        },
-        {
-          "title": "Was ein Look beibehält",
-          "paragraphs": [
-            "Integrierte und Community-Looks behalten Bearbeiten-Belichtung, Temp/Tönung, Aufnahme-Weißabgleich, RAW-Korrekturen, Filmformat, Zuschnitt, Geometrie, Masken, Entfernen-Korrekturen, Objektivkorrekturen, Schärfen und Rauschreduzierung bei. Sie ändern die kreativen Einstellungen, die in ihrem Rezept enthalten sind.",
-            "Film ein aktiviert die enthaltene Filmbehandlung. Film aus umgeht Film. Film unverändert lässt den aktivierten Status unverändert. Eine Filmbehandlung kann absichtlich Kamera-EV, automatische Messung, Entwicklung, Druck, Körnung und andere kreative Filmsteuerungen ändern."
-          ],
-          "tips": [
-            "Die Look-Bewahrung gilt für mit Look · Foto-Korrekturen beibehalten gespeicherte Looks. Eine Voll-Bearbeitung oder eine ältere importierte Vorgabe kann fotospezifische Korrekturen enthalten; prüfe die Details vor dem Anwenden."
-          ]
-        },
-        {
-          "title": "Community-Vorgaben und Updates hinzufügen",
-          "paragraphs": [
-            "Zu Yours hinzufügen lädt das ausgewählte Community-Rezept herunter und speichert es, ohne es anzuwenden. Installierte Rezepte funktionieren offline. Deine vorhandenen Fotobearbeitungen speichern ihre Einstellungen getrennt von der Vorgabe."
-          ],
-          "steps": [
-            "Wähle eine Community-Vorgabe aus und klicke auf Zu Deinen hinzufügen.",
-            "Später unter Yours verwenden oder zu Community zurückkehren, um die öffentliche Vorgabenseite zu prüfen.",
-            "Klicke auf Aktualisieren, um den Katalog zu prüfen. Wenn eine neuere Version aufgeführt ist, ersetzt Update in Yours das gespeicherte Rezept nur, wenn du es auswählst."
-          ],
-          "tips": [
-            "Das Aktualisieren einer Vorgabe ändert keine Fotos, die du bereits bearbeitet hast.",
-            "Die Offline-Meldung unterscheidet zwischen einem zwischengespeicherten Katalog und einem nicht verfügbaren Erstdownload. Nicht zwischengespeicherte Rezepte und Creator-Beispielbilder können eine Verbindung erfordern; Integriert und installierte Rezepte bleiben verfügbar.",
-            "Update LightTable bedeutet, dass eine Vorgabe Funktionen benötigt, die diese App-Version nicht unterstützt. Ihre Installations- und Anwendungssteuerungen bleiben deaktiviert.",
-            "Open in LightTable auf einer öffentlichen Vorgabenseite öffnet die Details in der installierten App; der Look wird nicht automatisch angewendet."
-          ]
-        },
-        {
-          "title": "Speichern, importieren und exportieren",
-          "paragraphs": [
-            "Verwalten… öffnet oder schließt Vorgaben verwalten; die Schaltfläche ist hervorgehoben, solange der Abschnitt geöffnet ist. Aktuellen Look speichern verwendet standardmäßig Look · Foto-Korrekturen beibehalten. Vollbearbeitung · Foto-Korrekturen einbeziehen bietet auch Alle Anpassungseinstellungen oder Nur geänderte Einstellungen an."
-          ],
-          "steps": [
-            "Wähle den Umfang der Vorgabe und ob Filmprofil und physische Einstellungen einbezogen werden sollen, klicke dann auf Neu speichern… und gib ihr einen Namen.",
-            "Zum Importieren klicken Sie auf Import… und wählen die Vorgabedateien. Die Mac-App unterstützt außerdem die Auswahl eines ganzen Vorgabeordners.",
-            "Prüfen Sie das Importergebnis und die Konvertierungsabdeckung der neuen Vorgabe, bevor Sie sie anwenden.",
-            "Zum Exportieren wähle eine Ausgewählte Vorgabe und ein Exportformat aus und klicke dann auf Exportieren…."
-          ],
-          "tips": [
-            "Der LightTable-Export bewahrt das native Rezept der Vorgabe. Lightroom-XMP- und Capture-One-Stil-Exporte sind ungefähr.",
-            "Unterstützte Dateitypen sind .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip und .json. Eine unterstützte Erweiterung garantiert nicht, dass jede Einstellung konvertiert werden kann.",
-            "Bei einer älteren oder Vollbearbeitungs-Vorgabe ändert Apply mapped adjustments die enthaltenen Einstellungen. Replace adjustment settings setzt außerdem zuerst Anpassungen, Masken, Entfernen-Korrekturen und Geometrie zurück. Replace behält den Zuschnitt und behält Film bei, sofern die Vorgabe nicht Film enthält oder du Turn Film off für die untenstehenden Aktionen aktivierst."
-          ]
-        },
-        {
-          "title": "Einen Community-Beitrag vorbereiten",
-          "paragraphs": [
-            "Die Veröffentlichung in Community wird geprüft. Der Einreichungsabschnitt zeigt die genauen Entwickeln- und Film-Einstellungen im vorbereiteten Look, sein Filmverhalten und die Fotoskorrekturen, die er beibehält. Beim Prüfen dieser Zusammenfassung oder beim Vorbereiten eines Downloads wird nichts hochgeladen."
-          ],
-          "steps": [
-            "Speichere eine Vorgabe unter Yours, wähle sie aus und prüfe die Zusammenfassung der enthaltenen Einstellungen unter Community-Einreichung.",
-            "Klicke auf Community-Einreichung vorbereiten… und warte, bis die lokalen Beispiele gerendert wurden. Speichere das ZIP mit der Vorgabe, drei lizenzierten Vorher/Nachher-Fotopaaren, Fotocredits und Rechtehinweisen.",
-            "Öffne das Paket und prüfe die Beispiele. Du kannst auch dein eigenes Foto auswählen und Mit diesem Foto Beispiel herunterladen verwenden, um ein 960-Pixel-JPEG des geteilten Looks zu speichern, ohne die Bearbeitung zu ändern.",
-            "Klicke auf Einreichungsformular öffnen, hänge das Paket und alle zulässigen zusätzlichen Beispiele an und füge vor dem Senden deine Urheberangaben, Beschreibung und Veröffentlichungsrechte hinzu."
-          ],
-          "tips": [
-            "Die drei standardmäßigen Beispielszenen sind in LightTable enthalten. Ihr Export verwendet weder deine Fotos noch deinen Katalog, und ihre JPEGs enthalten keine eingebetteten Fotometadaten.",
-            "Die Vorbereitung der Einreichung schließt fotospezifische Korrekturen aus. Prüfe den resultierenden Look, bevor du ihn teilst.",
-            "Teile nur Fotos, die du veröffentlichen darfst. Vorhandene Urheberangaben und die Zuordnung zur übergeordneten Vorgabe bleiben erhalten; die Erlaubnis zur Wiederverwendung des Rezepts und die Erlaubnis zur Fotodarstellung sind getrennt."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

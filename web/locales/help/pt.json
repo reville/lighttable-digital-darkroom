@@ -1064,6 +1064,137 @@
       "categoryLabel": "Edição"
     },
     {
+      "id": "editing-presets",
+      "title": "Aplique, ajuste e compartilhe predefinições de edição",
+      "category": "Editing",
+      "summary": "Clique em uma predefinição para aplicá-la, ajuste a Quantidade e salve ou compartilhe suas próprias aparências.",
+      "keywords": [
+        "predefinição",
+        "predefinições",
+        "comunidade",
+        "galeria",
+        "integrado",
+        "favoritos",
+        "ocultar predefinição",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "importar predefinição",
+        "salvar visual",
+        "tente a predefinição",
+        "quantidade da predefinição",
+        "força da predefinição",
+        "desativar predefinição",
+        "atualizar predefinição",
+        "enviar predefinição",
+        "substituir ajustes"
+      ],
+      "sections": [
+        {
+          "title": "Escolha uma coleção",
+          "paragraphs": [
+            "Abra Predefinições na barra de ferramentas de edição. Integrado contém dez aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
+          ],
+          "steps": [
+            "Escolha Integrado, Yours ou Community. Pesquise por nome, descrição, criador ou assunto.",
+            "Use a estrela ao lado de uma predefinição para adicioná-la aos Favoritos; Favoritos filtra a coleção atual.",
+            "Em Community, escolha Em destaque, Novo ou Todos e use Assunto para refinar a coleção. Selecione uma predefinição para ver sua descrição, criador, versão, comportamento de Film e fotos de exemplo disponíveis."
+          ],
+          "tips": [
+            "Destaques é uma coleção editorial, não uma classificação de popularidade.",
+            "Uma predefinição integrada é somente leitura. Salvar uma cópia… coloca uma cópia nomeada em Yours. Ocultar predefinição a remove da visualização integrada usual; Mostrar ocultas e Restaurar para Integrado a trazem de volta."
+          ]
+        },
+        {
+          "title": "Aplicar e ajustar Quantidade",
+          "paragraphs": [
+            "Clique em um cartão de predefinição para aplicá-la imediatamente à foto principal. Clique novamente no mesmo cartão, ou use o botão Ligado/Desligado dele, para desativá-la. Sua foto permanece neste computador."
+          ],
+          "steps": [
+            "Selecione uma foto e clique em um cartão de predefinição. A predefinição selecionada mostra Quantidade abaixo do nome.",
+            "Arraste a Quantidade de 0% a 100%. Zero restaura a edição de antes da predefinição; 100% usa a predefinição completa. Clique duas vezes em Quantidade para redefini-la para 100%.",
+            "Clique em outra predefinição para trocar a aparência. Desfazer e Refazer restauram a seleção da predefinição, o estado ativado e a quantidade. A predefinição selecionada e a quantidade são salvas com a foto."
+          ],
+          "tips": [
+            "A película, Film ligado/desligado e outras opções fixas alternam com qualquer quantidade acima de zero. Tom, cor, curvas e ajustes numéricos variam com a Quantidade. Os exemplos de Criador permanecem separados da sua foto.",
+            "Trocar de cartões de predefinição usa a edição anterior à primeira predefinição, para que as aparências não se acumulem. Alterações manuais fora da predefinição, como exposição em uma Aparência, são mantidas. Alterar manualmente uma configuração controlada pela predefinição encerra o ajuste de Quantidade; a edição atual então se torna a base para a próxima predefinição."
+          ]
+        },
+        {
+          "title": "O que uma aparência preserva",
+          "paragraphs": [
+            "As aparências Integradas e da comunidade mantêm Edit Exposure, Temp/Tint, balanço de branco da captura, correções RAW, formato de filme, corte, geometria, máscaras, correções de Remove, correções de lente, nitidez e redução de ruído. Elas alteram as configurações criativas incluídas em sua receita.",
+            "Film ligado ativa o tratamento de filme incluído. Film desligado ignora Film. Film inalterado deixa o estado ativado como está. Um tratamento de filme pode alterar intencionalmente EV da câmera, fotometria automática, desenvolvimento, impressão, granulação e outros controles criativos de filme."
+          ],
+          "tips": [
+            "A preservação da aparência se aplica às aparências salvas com Aparência · manter correções da foto. Uma edição Completa ou uma predefinição importada mais antiga pode incluir correções específicas da foto; revise a foto resultante e use Desfazer se ela alterar correções que você quer manter."
+          ]
+        },
+        {
+          "title": "Adicionar predefinições e atualizações da comunidade",
+          "paragraphs": [
+            "Adicionar a Yours baixa e salva a receita da comunidade selecionada sem aplicá-la. As receitas instaladas funcionam offline. As edições de foto existentes armazenam suas configurações separadamente da predefinição."
+          ],
+          "steps": [
+            "Clique em uma predefinição da Comunidade para usá-la na sua foto e depois clique em Adicionar aos Seus para manter uma cópia offline.",
+            "Use isso depois em Yours ou volte para Community para inspecionar a página pública da predefinição.",
+            "Clique em Atualizar para verificar o catálogo. Quando uma versão mais recente for listada, Atualizar em Yours substitui a receita salva somente quando você a escolher."
+          ],
+          "tips": [
+            "Atualizar uma predefinição não altera as fotos que você já editou.",
+            "A mensagem offline distingue um catálogo em cache de um primeiro download indisponível. Receitas não em cache e imagens de exemplo do criador podem exigir conexão; receitas Integradas e instaladas permanecem disponíveis.",
+            "Atualizar LightTable significa que uma predefinição precisa de recursos que esta versão do app não oferece suporte. Seus controles de instalação e aplicação permanecem desativados.",
+            "Abrir no LightTable em uma página pública de predefinição abre seus detalhes no app instalado; isso não aplica a aparência automaticamente."
+          ]
+        },
+        {
+          "title": "Salvar, importar e exportar",
+          "paragraphs": [
+            "Gerenciar… abre ou fecha Gerenciar predefinições; o botão fica destacado enquanto a seção está aberta. Salvar aparência atual usa por padrão Aparência · manter correções da foto. Edição Completa · incluir correções da foto também oferece Todas as configurações de ajuste ou Somente configurações alteradas."
+          ],
+          "steps": [
+            "Escolha o escopo da predefinição e se deve incluir Perfil de filme e configurações físicas, depois clique em Salvar novo… e dê um nome a ele.",
+            "Para importar, clique em Import… e escolha os arquivos de predefinição. O app para Mac também permite escolher uma pasta inteira de predefinições.",
+            "Revise o resultado da importação e a cobertura de conversão da nova predefinição antes de aplicá-la.",
+            "Para exportar, escolha uma predefinição Selecionada e um Formato de exportação e clique em Exportar…."
+          ],
+          "tips": [
+            "A exportação do LightTable preserva a receita nativa da predefinição. Exportações XMP do Lightroom e estilos do Capture One são aproximadas.",
+            "As escolhas de arquivo compatíveis incluem .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip e .json. Uma extensão aceita não garante que todas as configurações possam ser convertidas.",
+            "Para uma predefinição de edição antiga ou Completa, Aplicar ajustes mapeados altera as configurações incluídas. Substituir configurações de ajuste também redefine ajustes, máscaras, correções de Remove e geometria primeiro. Substituir mantém o corte e mantém Film, a menos que a predefinição inclua Film ou você ative Desligar Film para as ações abaixo."
+          ]
+        },
+        {
+          "title": "Preparar um envio para a comunidade",
+          "paragraphs": [
+            "A publicação em Community é revisada. A seção de envio mostra as configurações exatas de Develop e Film na aparência preparada, seu comportamento de Film e as correções de foto que ela mantém. Nada é enviado ao inspecionar este resumo ou preparar um download."
+          ],
+          "steps": [
+            "Salve uma predefinição em Yours, selecione-a e revise o resumo das configurações incluídas em Envio à Community.",
+            "Clique em Preparar envio à comunidade… e aguarde a renderização dos exemplos locais. Salve o ZIP contendo a predefinição, três pares licenciados de fotos antes/depois, créditos das fotos e notas de direitos.",
+            "Abra o pacote e inspecione os exemplos. Você também pode selecionar sua própria foto e usar Baixar exemplo nesta foto para salvar um JPEG de 960 pixels da aparência compartilhada sem alterar a edição.",
+            "Clique em Abrir formulário de envio, anexe o pacote e quaisquer exemplos adicionais permitidos e adicione seus dados de criador, descrição e permissões de publicação antes de enviar."
+          ],
+          "tips": [
+            "As três cenas de amostra padrão vêm incluídas com o LightTable. A exportação delas não usa suas fotografias nem seu catálogo, e seus JPEGs não contêm metadados de foto incorporados.",
+            "A preparação do envio exclui correções específicas da foto. Inspecione a aparência resultante antes de compartilhá-la.",
+            "Compartilhe apenas fotos que você tem permissão para publicar. O crédito de criador existente e a atribuição da predefinição pai são mantidos; a permissão de reutilização da receita e a permissão de exibição da foto são separadas."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Edição"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Altere cores individuais com Misturador de Cores e Cor Pontual",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Edição"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Encontre, experimente e compartilhe predefinições de edição",
-      "category": "Editing",
-      "summary": "Navegue por aparências integradas e da comunidade, visualize-as em sua foto e salve ou compartilhe suas próprias predefinições.",
-      "keywords": [
-        "predefinição",
-        "predefinições",
-        "comunidade",
-        "galeria",
-        "integrado",
-        "favoritos",
-        "ocultar predefinição",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "importar predefinição",
-        "salvar visual",
-        "tente a predefinição",
-        "atualizar predefinição",
-        "enviar predefinição",
-        "substituir ajustes"
-      ],
-      "sections": [
-        {
-          "title": "Escolha uma coleção",
-          "paragraphs": [
-            "Abra Predefinições na barra de ferramentas de edição. Integrado contém dez aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
-          ],
-          "steps": [
-            "Escolha Integrado, Yours ou Community. Pesquise por nome, descrição, criador ou assunto.",
-            "Use a estrela ao lado de uma predefinição para adicioná-la aos Favoritos; Favoritos filtra a coleção atual.",
-            "Em Community, escolha Em destaque, Novo ou Todos e use Assunto para refinar a coleção. Selecione uma predefinição para ver sua descrição, criador, versão, comportamento de Film e fotos de exemplo disponíveis."
-          ],
-          "tips": [
-            "Destaques é uma coleção editorial, não uma classificação de popularidade.",
-            "Uma predefinição integrada é somente leitura. Salvar uma cópia… coloca uma cópia nomeada em Yours. Ocultar predefinição a remove da visualização integrada usual; Mostrar ocultas e Restaurar para Integrado a trazem de volta."
-          ]
-        },
-        {
-          "title": "Tente antes de aplicar",
-          "paragraphs": [
-            "Testar nesta foto renderiza uma pré-visualização localmente dentro dos detalhes da predefinição. Isso não altera nem salva sua edição, e sua foto não é enviada para a galeria da comunidade."
-          ],
-          "steps": [
-            "Selecione uma foto e uma predefinição e clique em Experimentar nesta foto.",
-            "Aguarde a pré-visualização e então use Antes e Com predefinição para comparar. Os exemplos do Criador têm seus próprios controles de antes/depois e, quando disponível, um seletor de foto de exemplo.",
-            "Clique em Aplicar para confirmar a predefinição na foto ativa. Use Desfazer nos detalhes ou a ação Desfazer na mensagem de conclusão para restaurar a edição anterior."
-          ],
-          "tips": [
-            "Selecionar um cartão, navegar para outra predefinição ou fechar os detalhes não o aplica.",
-            "Aplicações consecutivas de aparência usam a edição anterior à primeira aparência, então as configurações de uma aparência não se acumulam na próxima. Uma edição manual posterior inicia uma nova linha de base de comparação. Se você mudar de foto ou editar configurações enquanto um detalhe estiver aberto, selecione a predefinição novamente antes de aplicar."
-          ]
-        },
-        {
-          "title": "O que uma aparência preserva",
-          "paragraphs": [
-            "As aparências Integradas e da comunidade mantêm Edit Exposure, Temp/Tint, balanço de branco da captura, correções RAW, formato de filme, corte, geometria, máscaras, correções de Remove, correções de lente, nitidez e redução de ruído. Elas alteram as configurações criativas incluídas em sua receita.",
-            "Film ligado ativa o tratamento de filme incluído. Film desligado ignora Film. Film inalterado deixa o estado ativado como está. Um tratamento de filme pode alterar intencionalmente EV da câmera, fotometria automática, desenvolvimento, impressão, granulação e outros controles criativos de filme."
-          ],
-          "tips": [
-            "A preservação da aparência se aplica a aparências salvas com Aparência · manter correções da foto. Uma edição Completa ou uma predefinição importada mais antiga pode incluir correções específicas da foto; inspecione seus detalhes antes de aplicar."
-          ]
-        },
-        {
-          "title": "Adicionar predefinições e atualizações da comunidade",
-          "paragraphs": [
-            "Adicionar a Yours baixa e salva a receita da comunidade selecionada sem aplicá-la. As receitas instaladas funcionam offline. As edições de foto existentes armazenam suas configurações separadamente da predefinição."
-          ],
-          "steps": [
-            "Selecione uma predefinição da Comunidade e clique em Adicionar a Seus.",
-            "Use isso depois em Yours ou volte para Community para inspecionar a página pública da predefinição.",
-            "Clique em Atualizar para verificar o catálogo. Quando uma versão mais recente for listada, Atualizar em Yours substitui a receita salva somente quando você a escolher."
-          ],
-          "tips": [
-            "Atualizar uma predefinição não altera as fotos que você já editou.",
-            "A mensagem offline distingue um catálogo em cache de um primeiro download indisponível. Receitas não em cache e imagens de exemplo do criador podem exigir conexão; receitas Integradas e instaladas permanecem disponíveis.",
-            "Atualizar LightTable significa que uma predefinição precisa de recursos que esta versão do app não oferece suporte. Seus controles de instalação e aplicação permanecem desativados.",
-            "Abrir no LightTable em uma página pública de predefinição abre seus detalhes no app instalado; isso não aplica a aparência automaticamente."
-          ]
-        },
-        {
-          "title": "Salvar, importar e exportar",
-          "paragraphs": [
-            "Gerenciar… abre ou fecha Gerenciar predefinições; o botão fica destacado enquanto a seção está aberta. Salvar aparência atual usa por padrão Aparência · manter correções da foto. Edição Completa · incluir correções da foto também oferece Todas as configurações de ajuste ou Somente configurações alteradas."
-          ],
-          "steps": [
-            "Escolha o escopo da predefinição e se deve incluir Perfil de filme e configurações físicas, depois clique em Salvar novo… e dê um nome a ele.",
-            "Para importar, clique em Import… e escolha os arquivos de predefinição. O app para Mac também permite escolher uma pasta inteira de predefinições.",
-            "Revise o resultado da importação e a cobertura de conversão da nova predefinição antes de aplicá-la.",
-            "Para exportar, escolha uma predefinição Selecionada e um Formato de exportação e clique em Exportar…."
-          ],
-          "tips": [
-            "A exportação do LightTable preserva a receita nativa da predefinição. Exportações XMP do Lightroom e estilos do Capture One são aproximadas.",
-            "As escolhas de arquivo compatíveis incluem .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip e .json. Uma extensão aceita não garante que todas as configurações possam ser convertidas.",
-            "Para uma predefinição de edição antiga ou Completa, Aplicar ajustes mapeados altera as configurações incluídas. Substituir configurações de ajuste também redefine ajustes, máscaras, correções de Remove e geometria primeiro. Substituir mantém o corte e mantém Film, a menos que a predefinição inclua Film ou você ative Desligar Film para as ações abaixo."
-          ]
-        },
-        {
-          "title": "Preparar um envio para a comunidade",
-          "paragraphs": [
-            "A publicação em Community é revisada. A seção de envio mostra as configurações exatas de Develop e Film na aparência preparada, seu comportamento de Film e as correções de foto que ela mantém. Nada é enviado ao inspecionar este resumo ou preparar um download."
-          ],
-          "steps": [
-            "Salve uma predefinição em Yours, selecione-a e revise o resumo das configurações incluídas em Envio à Community.",
-            "Clique em Preparar envio à comunidade… e aguarde a renderização dos exemplos locais. Salve o ZIP contendo a predefinição, três pares licenciados de fotos antes/depois, créditos das fotos e notas de direitos.",
-            "Abra o pacote e inspecione os exemplos. Você também pode selecionar sua própria foto e usar Baixar exemplo nesta foto para salvar um JPEG de 960 pixels da aparência compartilhada sem alterar a edição.",
-            "Clique em Abrir formulário de envio, anexe o pacote e quaisquer exemplos adicionais permitidos e adicione seus dados de criador, descrição e permissões de publicação antes de enviar."
-          ],
-          "tips": [
-            "As três cenas de amostra padrão vêm incluídas com o LightTable. A exportação delas não usa suas fotografias nem seu catálogo, e seus JPEGs não contêm metadados de foto incorporados.",
-            "A preparação do envio exclui correções específicas da foto. Inspecione a aparência resultante antes de compartilhá-la.",
-            "Compartilhe apenas fotos que você tem permissão para publicar. O crédito de criador existente e a atribuição da predefinição pai são mantidos; a permissão de reutilização da receita e a permissão de exibição da foto são separadas."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Edição"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

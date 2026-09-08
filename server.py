@@ -533,6 +533,7 @@ def entry_for(st, name):
         "keywords": clean_keywords(e.get("keywords", [])),
         "versions": clean_versions(e.get("versions", [])),
         "provenance": e.get("provenance"),
+        "preset": e.get("preset"),
         "label": clean_label(e.get("label")),
     }
 
@@ -1166,6 +1167,7 @@ def catalog_entry_for(name: str) -> dict:
         "keywords": clean_keywords(state.get("keywords", [])),
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
+        "preset": state.get("preset"),
     }
 
 

@@ -1064,6 +1064,137 @@
       "categoryLabel": "Bewerken"
     },
     {
+      "id": "editing-presets",
+      "title": "Voorinstellingen toepassen, aanpassen en bewerken delen",
+      "category": "Editing",
+      "summary": "Klik op een voorinstelling om deze toe te passen, pas Hoeveelheid aan en sla je eigen looks op of deel ze.",
+      "keywords": [
+        "voorinstelling",
+        "voorinstellingen",
+        "community",
+        "galerij",
+        "ingebouwd",
+        "favorieten",
+        "voorinstelling verbergen",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "Voorinstelling importeren",
+        "look opslaan",
+        "voorinstelling proberen",
+        "voorinstelling hoeveelheid",
+        "voorinstelling sterkte",
+        "voorinstelling uitschakelen",
+        "voorinstelling bijwerken",
+        "voorinstelling indienen",
+        "Aanpassingen vervangen"
+      ],
+      "sections": [
+        {
+          "title": "Kies een collectie",
+          "paragraphs": [
+            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+          ],
+          "steps": [
+            "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
+            "Gebruik de ster naast een voorinstelling om deze als favoriet te markeren; Favorieten filtert de huidige verzameling.",
+            "Kies in Community Aanbevolen, Nieuw of Alles en gebruik Onderwerp om de verzameling te verfijnen. Selecteer een voorinstelling om de beschrijving, maker, versie, Film-gedrag en beschikbare voorbeeldfoto's te zien."
+          ],
+          "tips": [
+            "Featured is een redactionele collectie, geen populariteitsranglijst.",
+            "Een ingebouwde voorinstelling is alleen-lezen. Kopie opslaan… plaatst een benoemde kopie in Uw. Voorinstelling verbergen verwijdert deze uit de gebruikelijke ingebouwde weergave; Verborgen weergeven en Terugzetten naar Ingebouwd brengen deze terug."
+          ]
+        },
+        {
+          "title": "Toepassen en Hoeveelheid aanpassen",
+          "paragraphs": [
+            "Klik op een voorinstellingskaart om deze direct op de hoofdfoto toe te passen. Klik nogmaals op dezelfde kaart, of gebruik de Aan/Uit-knop, om deze uit te schakelen. Je foto blijft op deze computer."
+          ],
+          "steps": [
+            "Selecteer een foto en klik op een voorinstellingskaart. De geselecteerde voorinstelling toont Hoeveelheid onder de naam.",
+            "Sleep Hoeveelheid van 0% naar 100%. Nul zet de bewerking terug naar vóór de voorinstelling; 100% gebruikt de volledige voorinstelling. Dubbelklik op Hoeveelheid om deze terug te zetten naar 100%.",
+            "Klik op een andere voorinstelling om van look te wisselen. Ongedaan maken en Opnieuw herstellen de selectie van voorinstellingen, de ingeschakelde status en de hoeveelheid. De geselecteerde voorinstelling en hoeveelheid worden met de foto opgeslagen."
+          ],
+          "tips": [
+            "Filmstock, Film aan/uit en andere vaste keuzes schakelen bij elke hoeveelheid boven nul. Toon, kleur, krommen en numerieke aanpassingen variëren met Hoeveelheid. Maker-voorbeelden blijven gescheiden van je foto.",
+            "Door tussen voorinstellingskaarten te wisselen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet opstapelen. Handmatige wijzigingen buiten de voorinstelling, zoals belichting voor een Look, blijven behouden. Het handmatig wijzigen van een instelling die door de voorinstelling wordt beheerd, beëindigt de Hoeveelheid-aanpassing; de huidige bewerking wordt daarna het startpunt voor de volgende voorinstelling."
+          ]
+        },
+        {
+          "title": "Wat een look behoudt",
+          "paragraphs": [
+            "Ingebouwde en community-looks behouden Bewerken Belichting, Temp/Tint, opnamewitbalans, RAW-correcties, filmformaat, bijsnijden, geometrie, maskers, Verwijderen-correcties, lenscorrecties, verscherpen en ruisvermindering. Ze wijzigen de creatieve instellingen die in hun recept zijn opgenomen.",
+            "Film aan schakelt de meegeleverde filmbewerking in. Film uit omzeilt Film. Film ongewijzigd laat de ingeschakelde status ongemoeid. Een filmbewerking kan opzettelijk Camera-EV, automatische meting, ontwikkeling, afdrukken, korrel en andere creatieve filmregelaars wijzigen."
+          ],
+          "tips": [
+            "Lookbehoud is van toepassing op looks die zijn opgeslagen met Look · fotocorrecties behouden. Een Volledig-bewerking of een oudere geïmporteerde voorinstelling kan fotospecifieke correcties bevatten; beoordeel de resulterende foto en gebruik Ongedaan maken als die correcties wijzigt die je wilt behouden."
+          ]
+        },
+        {
+          "title": "Community-voorinstellingen en updates toevoegen",
+          "paragraphs": [
+            "Toevoegen aan Uw downloadt en slaat het geselecteerde communityrecept op zonder het toe te passen. Geïnstalleerde recepten werken offline. Uw bestaande fotobewerkingen slaan hun instellingen afzonderlijk van de voorinstelling op."
+          ],
+          "steps": [
+            "Klik op een Community-voorinstelling om die op je foto te gebruiken en klik daarna op Toevoegen aan Jouw om een offline kopie te bewaren.",
+            "Gebruik het later vanuit Uw, of keer terug naar Community om de openbare voorinstellingspagina te bekijken.",
+            "Klik op Vernieuwen om de catalogus te controleren. Wanneer een nieuwere versie wordt vermeld, vervangt Bijwerken in Uw het opgeslagen recept alleen wanneer u dat kiest."
+          ],
+          "tips": [
+            "Het bijwerken van een voorinstelling verandert geen foto's die je al hebt bewerkt.",
+            "Het offlinebericht onderscheidt een gecachte catalogus van een niet-beschikbare eerste download. Niet-gecachete recepten en voorbeeldafbeeldingen van de maker kunnen een verbinding vereisen; ingebouwde en geïnstalleerde recepten blijven beschikbaar.",
+            "Bijwerken van LightTable betekent dat een voorinstelling functies nodig heeft die deze appversie niet ondersteunt. De installatie- en toepassingsknoppen blijven uitgeschakeld.",
+            "Openen in LightTable op een openbare voorinstellingspagina opent de details in de geïnstalleerde app; de look wordt niet automatisch toegepast."
+          ]
+        },
+        {
+          "title": "Opslaan, importeren en exporteren",
+          "paragraphs": [
+            "Beheren… opent of sluit Voorinstellingen beheren; de knop is gemarkeerd terwijl de sectie open is. Huidige look opslaan gebruikt standaard Look · fotocorrecties behouden. Volledige bewerking · fotocorrecties opnemen biedt ook Alle aanpassingsinstellingen of Alleen gewijzigde instellingen."
+          ],
+          "steps": [
+            "Kies de voorinstelling-scope en of Filmprofiel en fysieke instellingen moeten worden opgenomen, klik vervolgens op Opslaan als nieuw… en geef het een naam.",
+            "Klik om te importeren op Importeren… en kies de voorinstellingsbestanden. De Mac-app ondersteunt ook het kiezen van een volledige voorinstellingenmap.",
+            "Bekijk het importresultaat en de conversiedekking van de nieuwe voorinstelling voordat je deze toepast.",
+            "Kies voor exporteren een Geselecteerde voorinstelling en Exportformaat en klik vervolgens op Exporteren…."
+          ],
+          "tips": [
+            "LightTable-export behoudt het native voorinstellingsrecept. Lightroom XMP- en Capture One-stijlexports zijn bij benadering.",
+            "Ondersteunde bestandskeuzes zijn .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip en .json. Een geaccepteerde extensie garandeert niet dat elke instelling kan worden geconverteerd.",
+            "Voor een ouder voorinstellingsbestand of een Volledige bewerking wijzigt Gemapte aanpassingen toepassen de meegeleverde instellingen. Aanpassingsinstellingen vervangen reset ook eerst aanpassingen, maskers, Verwijderen-correcties en geometrie. Vervangen behoudt het bijsnijden en behoudt Film, tenzij de voorinstelling Film bevat of u Film uitschakelen inschakelt voor de onderstaande acties."
+          ]
+        },
+        {
+          "title": "Een community-inzending voorbereiden",
+          "paragraphs": [
+            "Community-publicatie wordt beoordeeld. De indieningssectie toont de exacte Ontwikkel- en Film-instellingen in de voorbereide look, het Film-gedrag en de fotocorrecties die behouden blijven. Er wordt niets geüpload wanneer u deze samenvatting bekijkt of een download voorbereidt."
+          ],
+          "steps": [
+            "Sla een voorinstelling op in Uw, selecteer deze en bekijk de samenvatting van meegeleverde instellingen onder Community-indiening.",
+            "Klik op Community-indiening voorbereiden… en wacht tot de lokale voorbeelden zijn gerenderd. Sla de ZIP op met de voorinstelling, drie gelicentieerde voor/na-fotoparen, fotocredits en rechtennotities.",
+            "Open het pakket en bekijk de voorbeelden. U kunt ook uw eigen foto selecteren en Voorbeeld downloaden op deze foto gebruiken om een JPEG van 960 pixels van de gedeelde look op te slaan zonder de bewerking te wijzigen.",
+            "Klik op Indieningsformulier openen, voeg het pakket en eventuele toegestane extra voorbeelden toe, en voeg uw makergegevens, beschrijving en publicatierechten toe voordat u indient."
+          ],
+          "tips": [
+            "De drie standaard voorbeelddoelen zijn meegeleverd met LightTable. Hun export gebruikt niet uw foto's of catalogus, en hun JPEG's bevatten geen ingebedde fotometagegevens.",
+            "Bij de voorbereiding van de indiening worden foto-specifieke correcties uitgesloten. Inspecteer de resulterende look voordat u deze deelt.",
+            "Deel alleen foto's die u mag publiceren. Bestaande makerstoeschrijving en toeschrijving aan bovenliggende voorinstelling blijven behouden; toestemming voor hergebruik van het recept en toestemming voor weergave van de foto zijn afzonderlijk."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Wijzig afzonderlijke kleuren met Kleurenmenger en Puntkleur",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Bewerken"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Bewerkingsvoorinstellingen vinden, proberen en delen",
-      "category": "Editing",
-      "summary": "Blader door ingebouwde looks en looks uit de community, bekijk ze in voorbeeld op uw foto en sla uw eigen voorinstellingen op of deel ze.",
-      "keywords": [
-        "voorinstelling",
-        "voorinstellingen",
-        "community",
-        "galerij",
-        "ingebouwd",
-        "favorieten",
-        "voorinstelling verbergen",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "Voorinstelling importeren",
-        "look opslaan",
-        "voorinstelling proberen",
-        "voorinstelling bijwerken",
-        "voorinstelling indienen",
-        "Aanpassingen vervangen"
-      ],
-      "sections": [
-        {
-          "title": "Kies een collectie",
-          "paragraphs": [
-            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
-          ],
-          "steps": [
-            "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
-            "Gebruik de ster naast een voorinstelling om deze als favoriet te markeren; Favorieten filtert de huidige verzameling.",
-            "Kies in Community Aanbevolen, Nieuw of Alles en gebruik Onderwerp om de verzameling te verfijnen. Selecteer een voorinstelling om de beschrijving, maker, versie, Film-gedrag en beschikbare voorbeeldfoto's te zien."
-          ],
-          "tips": [
-            "Featured is een redactionele collectie, geen populariteitsranglijst.",
-            "Een ingebouwde voorinstelling is alleen-lezen. Kopie opslaan… plaatst een benoemde kopie in Uw. Voorinstelling verbergen verwijdert deze uit de gebruikelijke ingebouwde weergave; Verborgen weergeven en Terugzetten naar Ingebouwd brengen deze terug."
-          ]
-        },
-        {
-          "title": "Probeer voor je toepast",
-          "paragraphs": [
-            "Proberen op deze foto rendert lokaal een voorbeeld in de details van de voorinstelling. Het wijzigt of slaat uw bewerking niet op, en uw foto wordt niet geüpload naar de communitygalerij."
-          ],
-          "steps": [
-            "Selecteer een foto en een voorinstelling en klik vervolgens op Probeer op deze foto.",
-            "Wacht op het voorbeeld en gebruik daarna Voor en Met voorinstelling om te vergelijken. Voorbeelden van de maker hebben hun eigen voor/na-bedieningselementen en, indien beschikbaar, een selector voor Voorbeeldfoto.",
-            "Klik op Toepassen om de voorinstelling op de actieve foto toe te passen. Gebruik Ongedaan maken in de details of de actie Ongedaan maken in het voltooiingsbericht om de vorige bewerking terug te zetten."
-          ],
-          "tips": [
-            "Een kaart selecteren, naar een andere voorinstelling bladeren of de details sluiten past deze niet toe.",
-            "Opeenvolgende look-toepassingen gebruiken de bewerking van vóór de eerste look, zodat instellingen van de ene look niet opstapelen in de volgende. Een latere handmatige bewerking start een nieuwe vergelijkingsbasis. Als u foto's of bewerkingsinstellingen wijzigt terwijl een detailvenster open is, selecteer de voorinstelling dan opnieuw voordat u deze toepast."
-          ]
-        },
-        {
-          "title": "Wat een look behoudt",
-          "paragraphs": [
-            "Ingebouwde en community-looks behouden Bewerken Belichting, Temp/Tint, opnamewitbalans, RAW-correcties, filmformaat, bijsnijden, geometrie, maskers, Verwijderen-correcties, lenscorrecties, verscherpen en ruisvermindering. Ze wijzigen de creatieve instellingen die in hun recept zijn opgenomen.",
-            "Film aan schakelt de meegeleverde filmbewerking in. Film uit omzeilt Film. Film ongewijzigd laat de ingeschakelde status ongemoeid. Een filmbewerking kan opzettelijk Camera-EV, automatische meting, ontwikkeling, afdrukken, korrel en andere creatieve filmregelaars wijzigen."
-          ],
-          "tips": [
-            "Behouden van look is van toepassing op looks die zijn opgeslagen met Look · fotocorrecties behouden. Een Volledige bewerking of een ouder geïmporteerd voorinstellingsbestand kan foto-specifieke correcties bevatten; bekijk de details voordat u het toepast."
-          ]
-        },
-        {
-          "title": "Community-voorinstellingen en updates toevoegen",
-          "paragraphs": [
-            "Toevoegen aan Uw downloadt en slaat het geselecteerde communityrecept op zonder het toe te passen. Geïnstalleerde recepten werken offline. Uw bestaande fotobewerkingen slaan hun instellingen afzonderlijk van de voorinstelling op."
-          ],
-          "steps": [
-            "Selecteer een Community-voorinstelling en klik op Toevoegen aan Jouw.",
-            "Gebruik het later vanuit Uw, of keer terug naar Community om de openbare voorinstellingspagina te bekijken.",
-            "Klik op Vernieuwen om de catalogus te controleren. Wanneer een nieuwere versie wordt vermeld, vervangt Bijwerken in Uw het opgeslagen recept alleen wanneer u dat kiest."
-          ],
-          "tips": [
-            "Het bijwerken van een voorinstelling verandert geen foto's die je al hebt bewerkt.",
-            "Het offlinebericht onderscheidt een gecachte catalogus van een niet-beschikbare eerste download. Niet-gecachete recepten en voorbeeldafbeeldingen van de maker kunnen een verbinding vereisen; ingebouwde en geïnstalleerde recepten blijven beschikbaar.",
-            "Bijwerken van LightTable betekent dat een voorinstelling functies nodig heeft die deze appversie niet ondersteunt. De installatie- en toepassingsknoppen blijven uitgeschakeld.",
-            "Openen in LightTable op een openbare voorinstellingspagina opent de details in de geïnstalleerde app; de look wordt niet automatisch toegepast."
-          ]
-        },
-        {
-          "title": "Opslaan, importeren en exporteren",
-          "paragraphs": [
-            "Beheren… opent of sluit Voorinstellingen beheren; de knop is gemarkeerd terwijl de sectie open is. Huidige look opslaan gebruikt standaard Look · fotocorrecties behouden. Volledige bewerking · fotocorrecties opnemen biedt ook Alle aanpassingsinstellingen of Alleen gewijzigde instellingen."
-          ],
-          "steps": [
-            "Kies de voorinstelling-scope en of Filmprofiel en fysieke instellingen moeten worden opgenomen, klik vervolgens op Opslaan als nieuw… en geef het een naam.",
-            "Klik om te importeren op Importeren… en kies de voorinstellingsbestanden. De Mac-app ondersteunt ook het kiezen van een volledige voorinstellingenmap.",
-            "Bekijk het importresultaat en de conversiedekking van de nieuwe voorinstelling voordat je deze toepast.",
-            "Kies voor exporteren een Geselecteerde voorinstelling en Exportformaat en klik vervolgens op Exporteren…."
-          ],
-          "tips": [
-            "LightTable-export behoudt het native voorinstellingsrecept. Lightroom XMP- en Capture One-stijlexports zijn bij benadering.",
-            "Ondersteunde bestandskeuzes zijn .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip en .json. Een geaccepteerde extensie garandeert niet dat elke instelling kan worden geconverteerd.",
-            "Voor een ouder voorinstellingsbestand of een Volledige bewerking wijzigt Gemapte aanpassingen toepassen de meegeleverde instellingen. Aanpassingsinstellingen vervangen reset ook eerst aanpassingen, maskers, Verwijderen-correcties en geometrie. Vervangen behoudt het bijsnijden en behoudt Film, tenzij de voorinstelling Film bevat of u Film uitschakelen inschakelt voor de onderstaande acties."
-          ]
-        },
-        {
-          "title": "Een community-inzending voorbereiden",
-          "paragraphs": [
-            "Community-publicatie wordt beoordeeld. De indieningssectie toont de exacte Ontwikkel- en Film-instellingen in de voorbereide look, het Film-gedrag en de fotocorrecties die behouden blijven. Er wordt niets geüpload wanneer u deze samenvatting bekijkt of een download voorbereidt."
-          ],
-          "steps": [
-            "Sla een voorinstelling op in Uw, selecteer deze en bekijk de samenvatting van meegeleverde instellingen onder Community-indiening.",
-            "Klik op Community-indiening voorbereiden… en wacht tot de lokale voorbeelden zijn gerenderd. Sla de ZIP op met de voorinstelling, drie gelicentieerde voor/na-fotoparen, fotocredits en rechtennotities.",
-            "Open het pakket en bekijk de voorbeelden. U kunt ook uw eigen foto selecteren en Voorbeeld downloaden op deze foto gebruiken om een JPEG van 960 pixels van de gedeelde look op te slaan zonder de bewerking te wijzigen.",
-            "Klik op Indieningsformulier openen, voeg het pakket en eventuele toegestane extra voorbeelden toe, en voeg uw makergegevens, beschrijving en publicatierechten toe voordat u indient."
-          ],
-          "tips": [
-            "De drie standaard voorbeelddoelen zijn meegeleverd met LightTable. Hun export gebruikt niet uw foto's of catalogus, en hun JPEG's bevatten geen ingebedde fotometagegevens.",
-            "Bij de voorbereiding van de indiening worden foto-specifieke correcties uitgesloten. Inspecteer de resulterende look voordat u deze deelt.",
-            "Deel alleen foto's die u mag publiceren. Bestaande makerstoeschrijving en toeschrijving aan bovenliggende voorinstelling blijven behouden; toestemming voor hergebruik van het recept en toestemming voor weergave van de foto zijn afzonderlijk."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

@@ -1064,6 +1064,137 @@
       "categoryLabel": "Modification"
     },
     {
+      "id": "editing-presets",
+      "title": "Appliquer, ajuster et partager des préréglages de retouche",
+      "category": "Editing",
+      "summary": "Cliquez sur un préréglage pour l’appliquer, ajustez la Quantité, puis enregistrez ou partagez vos propres rendus.",
+      "keywords": [
+        "préréglage",
+        "préréglages",
+        "communauté",
+        "galerie",
+        "intégré",
+        "favoris",
+        "masquer le préréglage",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "modèle Lightroom",
+        "costyle",
+        "ltpreset",
+        "importer un préréglage",
+        "enregistrer l’apparence",
+        "essayer le préréglage",
+        "quantité du préréglage",
+        "intensité du préréglage",
+        "désactiver le préréglage",
+        "mettre à jour le préréglage",
+        "soumettre le préréglage",
+        "remplacer les ajustements"
+      ],
+      "sections": [
+        {
+          "title": "Choisir une collection",
+          "paragraphs": [
+            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient dix rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
+          ],
+          "steps": [
+            "Choisissez Intégré, Vos ou Communauté. Recherchez par nom, description, créateur ou sujet.",
+            "Utilisez l’étoile à côté d’un préréglage pour l’ajouter aux favoris ; Favoris filtre la collection actuelle.",
+            "Dans Communauté, choisissez En vedette, Nouveautés ou Tout et utilisez Sujet pour affiner la collection. Sélectionnez un préréglage pour voir sa description, son créateur, sa version, le comportement Film et les photos d’exemple disponibles."
+          ],
+          "tips": [
+            "Featured est une sélection éditoriale, pas un classement de popularité.",
+            "Un préréglage intégré est en lecture seule. Enregistrer une copie… place une copie nommée dans Vos. Masquer le préréglage le retire de la vue intégrée habituelle ; Afficher les éléments masqués et Restaurer dans Intégré le ramènent."
+          ]
+        },
+        {
+          "title": "Appliquer et ajuster la Quantité",
+          "paragraphs": [
+            "Cliquez sur une carte de préréglage pour l’appliquer immédiatement à la photo principale. Cliquez à nouveau sur la même carte, ou utilisez son bouton Activé/Désactivé, pour la désactiver. Votre photo reste sur cet ordinateur."
+          ],
+          "steps": [
+            "Sélectionnez une photo et cliquez sur une carte de préréglage. Le préréglage sélectionné affiche la Quantité sous son nom.",
+            "Faites glisser la Quantité de 0 % à 100 %. À zéro, l’édition précédente au préréglage est restaurée ; à 100 %, le préréglage complet est utilisé. Double-cliquez sur Quantité pour la réinitialiser à 100 %.",
+            "Cliquez sur un autre préréglage pour changer de rendu. Annuler et Rétablir restaurent la sélection du préréglage, son état activé/désactivé et sa quantité. Le préréglage sélectionné et sa quantité sont enregistrés avec la photo."
+          ],
+          "tips": [
+            "La pellicule, l’activation/désactivation du Film et les autres choix fixes changent dès toute quantité supérieure à zéro. La tonalité, la couleur, les courbes et les réglages numériques varient selon la Quantité. Les exemples de créateur restent séparés de votre photo.",
+            "Le changement de carte de préréglage utilise l’édition d’avant le premier préréglage afin que les rendus ne s’accumulent pas. Les modifications manuelles en dehors du préréglage, comme l’exposition pour un Rendu, sont conservées. Modifier manuellement un réglage contrôlé par le préréglage met fin à l’ajustement de sa Quantité ; l’édition actuelle devient alors la base du préréglage suivant."
+          ]
+        },
+        {
+          "title": "Ce qu’un rendu conserve",
+          "paragraphs": [
+            "Les rendus Intégré et Communauté conservent Modifier l’exposition, Temp/Teinte, la balance des blancs de capture, les corrections RAW, le format de film, le recadrage, la géométrie, les masques, les corrections de Réparer, les corrections d’objectif, l’accentuation et la réduction du bruit. Ils modifient les réglages créatifs inclus dans leur recette.",
+            "Film activé applique le traitement de film inclus. Film désactivé contourne Film. Film inchangé laisse l’état d’activation tel quel. Un traitement de film peut modifier intentionnellement EV de l’appareil photo, la mesure automatique, le développement, l’impression, le grain et d’autres commandes créatives de film."
+          ],
+          "tips": [
+            "La préservation du rendu s’applique aux rendus enregistrés avec Rendu · conserver les corrections photo. Une édition Plein ou un ancien préréglage importé peut inclure des corrections spécifiques à la photo ; examinez la photo obtenue et utilisez Annuler si cela modifie des corrections que vous souhaitez conserver."
+          ]
+        },
+        {
+          "title": "Ajouter des préréglages et des mises à jour de la communauté",
+          "paragraphs": [
+            "Ajouter à Vos télécharge et enregistre la recette communautaire sélectionnée sans l’appliquer. Les recettes installées fonctionnent hors ligne. Les retouches de vos photos existantes stockent leurs réglages séparément du préréglage."
+          ],
+          "steps": [
+            "Cliquez sur un préréglage Communauté pour l’utiliser sur votre photo, puis cliquez sur Ajouter à Vos pour conserver une copie hors ligne.",
+            "Utilisez-le plus tard depuis Vos, ou revenez à Communauté pour consulter la page publique du préréglage.",
+            "Cliquez sur Actualiser pour vérifier le catalogue. Lorsqu’une version plus récente est affichée, Mettre à jour dans Vos remplace la recette enregistrée uniquement lorsque vous la choisissez."
+          ],
+          "tips": [
+            "La mise à jour d’un préréglage ne modifie pas les photos que vous avez déjà modifiées.",
+            "Le message hors ligne distingue un catalogue mis en cache d’un premier téléchargement indisponible. Les recettes non mises en cache et les images d’exemple du créateur peuvent nécessiter une connexion ; les recettes Intégré et installées restent disponibles.",
+            "Mettre à jour LightTable signifie qu’un préréglage requiert des fonctions non prises en charge par cette version de l’application. Ses commandes d’installation et d’application restent désactivées.",
+            "Ouvrir dans LightTable sur une page publique de préréglage ouvre ses détails dans l’application installée ; cela n’applique pas automatiquement le rendu."
+          ]
+        },
+        {
+          "title": "Enregistrer, importer et exporter",
+          "paragraphs": [
+            "Gérer… ouvre ou ferme Gérer les préréglages ; le bouton est mis en surbrillance lorsque la section est ouverte. Enregistrer le rendu actuel utilise par défaut Rendu · conserver les corrections photo. Retouche Plein · inclure les corrections photo propose aussi Tous les paramètres de retouche ou Uniquement les paramètres modifiés."
+          ],
+          "steps": [
+            "Choisissez la portée du préréglage et indiquez si vous souhaitez inclure le profil de film et les réglages physiques, puis cliquez sur Enregistrer sous un nouveau nom… et donnez-lui un nom.",
+            "Pour importer, cliquez sur Importer… et choisissez les fichiers de préréglages. L’application Mac prend aussi en charge le choix d’un dossier de préréglages complet.",
+            "Examinez le résultat de l’importation et la couverture de conversion du nouveau préréglage avant de l’appliquer.",
+            "Pour exporter, choisissez un préréglage sélectionné et un format d’exportation, puis cliquez sur Exporter…."
+          ],
+          "tips": [
+            "L’export LightTable conserve la recette native du préréglage. Les exportations XMP de Lightroom et les exportations de style Capture One ne sont qu’approximatives.",
+            "Les choix de fichiers pris en charge incluent .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip et .json. Une extension acceptée ne garantit pas que chaque réglage puisse être converti.",
+            "Pour un préréglage plus ancien ou une retouche Plein, Appliquer les ajustements mappés modifie les réglages inclus. Remplacer les réglages de l’ajustement réinitialise aussi d’abord les ajustements, les masques, les corrections de Réparer et la géométrie. Remplacer conserve le recadrage et conserve Film, sauf si le préréglage inclut Film ou si vous activez Désactiver Film pour les actions ci-dessous."
+          ]
+        },
+        {
+          "title": "Préparer une soumission à la communauté",
+          "paragraphs": [
+            "La publication dans la Communauté est vérifiée. La section de soumission affiche les réglages exacts de Développement et de Film du rendu préparé, son comportement Film et les corrections photo qu’il conserve. Rien n’est téléversé lors de la consultation de ce résumé ou de la préparation d’un téléchargement."
+          ],
+          "steps": [
+            "Enregistrez un préréglage dans Vos, sélectionnez-le, puis consultez le résumé des réglages inclus sous Soumission à la communauté.",
+            "Cliquez sur Préparer la soumission à la communauté… et attendez que les exemples locaux soient rendus. Enregistrez le ZIP contenant le préréglage, trois paires photo avant/après sous licence, les crédits photo et les notes de droits.",
+            "Ouvrez le paquet et inspectez les exemples. Vous pouvez aussi sélectionner votre propre photo et utiliser Télécharger l’exemple sur cette photo pour enregistrer un JPEG de 960 pixels du rendu partagé sans modifier la retouche.",
+            "Cliquez sur Ouvrir le formulaire de soumission, joignez le paquet et tout exemple supplémentaire autorisé, puis ajoutez vos informations de créateur, la description et les autorisations de publication avant d’envoyer."
+          ],
+          "tips": [
+            "Les trois scènes d’exemple standard sont fournies avec LightTable. Leur export n’utilise ni vos photographies ni votre catalogue, et leurs JPEG ne contiennent aucune métadonnée photo intégrée.",
+            "La préparation de la soumission exclut les corrections propres aux photos. Vérifiez le rendu obtenu avant de le partager.",
+            "Ne partagez que des photos que vous êtes autorisé à publier. Le crédit du créateur existant et l’attribution du préréglage parent sont conservés ; l’autorisation de réutiliser la recette et l’autorisation d’afficher la photo sont distinctes."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Modification"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Modifiez des couleurs individuelles avec Mixeur de couleur et Couleur ponctuelle",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Modification"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Trouver, essayer et partager des préréglages d’édition",
-      "category": "Editing",
-      "summary": "Parcourez les rendus intégrés et communautaires, prévisualisez-les sur votre photo, puis enregistrez ou partagez vos propres préréglages.",
-      "keywords": [
-        "préréglage",
-        "préréglages",
-        "communauté",
-        "galerie",
-        "intégré",
-        "favoris",
-        "masquer le préréglage",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "modèle Lightroom",
-        "costyle",
-        "ltpreset",
-        "importer un préréglage",
-        "enregistrer l’apparence",
-        "essayer le préréglage",
-        "mettre à jour le préréglage",
-        "soumettre le préréglage",
-        "remplacer les ajustements"
-      ],
-      "sections": [
-        {
-          "title": "Choisir une collection",
-          "paragraphs": [
-            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient dix rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
-          ],
-          "steps": [
-            "Choisissez Intégré, Vos ou Communauté. Recherchez par nom, description, créateur ou sujet.",
-            "Utilisez l’étoile à côté d’un préréglage pour l’ajouter aux favoris ; Favoris filtre la collection actuelle.",
-            "Dans Communauté, choisissez En vedette, Nouveautés ou Tout et utilisez Sujet pour affiner la collection. Sélectionnez un préréglage pour voir sa description, son créateur, sa version, le comportement Film et les photos d’exemple disponibles."
-          ],
-          "tips": [
-            "Featured est une sélection éditoriale, pas un classement de popularité.",
-            "Un préréglage intégré est en lecture seule. Enregistrer une copie… place une copie nommée dans Vos. Masquer le préréglage le retire de la vue intégrée habituelle ; Afficher les éléments masqués et Restaurer dans Intégré le ramènent."
-          ]
-        },
-        {
-          "title": "Essayer avant d’appliquer",
-          "paragraphs": [
-            "Essayer sur cette photo affiche un aperçu local dans les détails du préréglage. Cela ne modifie ni n’enregistre votre retouche, et votre photo n’est pas téléversée dans la galerie communautaire."
-          ],
-          "steps": [
-            "Sélectionnez une photo et un préréglage, puis cliquez sur Essayer sur cette photo.",
-            "Attendez l’aperçu, puis utilisez Avant et Avec le préréglage pour comparer. Les exemples du Créateur ont leurs propres contrôles avant/après et, lorsque c’est disponible, un sélecteur de photo Exemple.",
-            "Cliquez sur Appliquer pour valider le préréglage sur la photo active. Utilisez Annuler dans les détails ou l’action Annuler dans le message d’achèvement pour restaurer la modification précédente."
-          ],
-          "tips": [
-            "La sélection d’une carte, la consultation d’un autre préréglage ou la fermeture des détails ne l’applique pas.",
-            "Les applications de rendus successives utilisent la retouche d’avant le premier rendu, de sorte que les réglages d’un rendu ne s’accumulent pas dans le suivant. Une retouche manuelle ultérieure démarre une nouvelle base de comparaison. Si vous changez de photo ou de réglages d’édition alors qu’un détail est ouvert, sélectionnez de nouveau le préréglage avant de l’appliquer."
-          ]
-        },
-        {
-          "title": "Ce qu’un rendu conserve",
-          "paragraphs": [
-            "Les rendus Intégré et Communauté conservent Modifier l’exposition, Temp/Teinte, la balance des blancs de capture, les corrections RAW, le format de film, le recadrage, la géométrie, les masques, les corrections de Réparer, les corrections d’objectif, l’accentuation et la réduction du bruit. Ils modifient les réglages créatifs inclus dans leur recette.",
-            "Film activé applique le traitement de film inclus. Film désactivé contourne Film. Film inchangé laisse l’état d’activation tel quel. Un traitement de film peut modifier intentionnellement EV de l’appareil photo, la mesure automatique, le développement, l’impression, le grain et d’autres commandes créatives de film."
-          ],
-          "tips": [
-            "La conservation du rendu s’applique aux rendus enregistrés avec Rendu · conserver les corrections photo. Une retouche Plein ou un ancien préréglage importé peut inclure des corrections propres aux photos ; examinez ses détails avant de l’appliquer."
-          ]
-        },
-        {
-          "title": "Ajouter des préréglages et des mises à jour de la communauté",
-          "paragraphs": [
-            "Ajouter à Vos télécharge et enregistre la recette communautaire sélectionnée sans l’appliquer. Les recettes installées fonctionnent hors ligne. Les retouches de vos photos existantes stockent leurs réglages séparément du préréglage."
-          ],
-          "steps": [
-            "Sélectionnez un préréglage de la Communauté et cliquez sur Ajouter à Vos.",
-            "Utilisez-le plus tard depuis Vos, ou revenez à Communauté pour consulter la page publique du préréglage.",
-            "Cliquez sur Actualiser pour vérifier le catalogue. Lorsqu’une version plus récente est affichée, Mettre à jour dans Vos remplace la recette enregistrée uniquement lorsque vous la choisissez."
-          ],
-          "tips": [
-            "La mise à jour d’un préréglage ne modifie pas les photos que vous avez déjà modifiées.",
-            "Le message hors ligne distingue un catalogue mis en cache d’un premier téléchargement indisponible. Les recettes non mises en cache et les images d’exemple du créateur peuvent nécessiter une connexion ; les recettes Intégré et installées restent disponibles.",
-            "Mettre à jour LightTable signifie qu’un préréglage requiert des fonctions non prises en charge par cette version de l’application. Ses commandes d’installation et d’application restent désactivées.",
-            "Ouvrir dans LightTable sur une page publique de préréglage ouvre ses détails dans l’application installée ; cela n’applique pas automatiquement le rendu."
-          ]
-        },
-        {
-          "title": "Enregistrer, importer et exporter",
-          "paragraphs": [
-            "Gérer… ouvre ou ferme Gérer les préréglages ; le bouton est mis en surbrillance lorsque la section est ouverte. Enregistrer le rendu actuel utilise par défaut Rendu · conserver les corrections photo. Retouche Plein · inclure les corrections photo propose aussi Tous les paramètres de retouche ou Uniquement les paramètres modifiés."
-          ],
-          "steps": [
-            "Choisissez la portée du préréglage et indiquez si vous souhaitez inclure le profil de film et les réglages physiques, puis cliquez sur Enregistrer sous un nouveau nom… et donnez-lui un nom.",
-            "Pour importer, cliquez sur Importer… et choisissez les fichiers de préréglages. L’application Mac prend aussi en charge le choix d’un dossier de préréglages complet.",
-            "Examinez le résultat de l’importation et la couverture de conversion du nouveau préréglage avant de l’appliquer.",
-            "Pour exporter, choisissez un préréglage sélectionné et un format d’exportation, puis cliquez sur Exporter…."
-          ],
-          "tips": [
-            "L’export LightTable conserve la recette native du préréglage. Les exportations XMP de Lightroom et les exportations de style Capture One ne sont qu’approximatives.",
-            "Les choix de fichiers pris en charge incluent .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip et .json. Une extension acceptée ne garantit pas que chaque réglage puisse être converti.",
-            "Pour un préréglage plus ancien ou une retouche Plein, Appliquer les ajustements mappés modifie les réglages inclus. Remplacer les réglages de l’ajustement réinitialise aussi d’abord les ajustements, les masques, les corrections de Réparer et la géométrie. Remplacer conserve le recadrage et conserve Film, sauf si le préréglage inclut Film ou si vous activez Désactiver Film pour les actions ci-dessous."
-          ]
-        },
-        {
-          "title": "Préparer une soumission à la communauté",
-          "paragraphs": [
-            "La publication dans la Communauté est vérifiée. La section de soumission affiche les réglages exacts de Développement et de Film du rendu préparé, son comportement Film et les corrections photo qu’il conserve. Rien n’est téléversé lors de la consultation de ce résumé ou de la préparation d’un téléchargement."
-          ],
-          "steps": [
-            "Enregistrez un préréglage dans Vos, sélectionnez-le, puis consultez le résumé des réglages inclus sous Soumission à la communauté.",
-            "Cliquez sur Préparer la soumission à la communauté… et attendez que les exemples locaux soient rendus. Enregistrez le ZIP contenant le préréglage, trois paires photo avant/après sous licence, les crédits photo et les notes de droits.",
-            "Ouvrez le paquet et inspectez les exemples. Vous pouvez aussi sélectionner votre propre photo et utiliser Télécharger l’exemple sur cette photo pour enregistrer un JPEG de 960 pixels du rendu partagé sans modifier la retouche.",
-            "Cliquez sur Ouvrir le formulaire de soumission, joignez le paquet et tout exemple supplémentaire autorisé, puis ajoutez vos informations de créateur, la description et les autorisations de publication avant d’envoyer."
-          ],
-          "tips": [
-            "Les trois scènes d’exemple standard sont fournies avec LightTable. Leur export n’utilise ni vos photographies ni votre catalogue, et leurs JPEG ne contiennent aucune métadonnée photo intégrée.",
-            "La préparation de la soumission exclut les corrections propres aux photos. Vérifiez le rendu obtenu avant de le partager.",
-            "Ne partagez que des photos que vous êtes autorisé à publier. Le crédit du créateur existant et l’attribution du préréglage parent sont conservés ; l’autorisation de réutiliser la recette et l’autorisation d’afficher la photo sont distinctes."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Modification"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

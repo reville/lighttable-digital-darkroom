@@ -1064,6 +1064,137 @@
       "categoryLabel": "Düzenleme"
     },
     {
+      "id": "editing-presets",
+      "title": "Düzenleme hazır ayarlarını uygula, ayarla ve paylaş",
+      "category": "Editing",
+      "summary": "Bir hazır ayara tıklayarak uygulayın, Miktar'ı ayarlayın ve kendi görünümlerinizi kaydedin veya paylaşın.",
+      "keywords": [
+        "hazır ayar",
+        "hazır ayarlar",
+        "topluluk",
+        "galeri",
+        "yerleşik",
+        "favoriler",
+        "hazır ayarı gizle",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "hazır ayarı içe aktar",
+        "görünümü kaydet",
+        "hazır ayarı dene",
+        "hazır ayar miktarı",
+        "hazır ayar gücü",
+        "hazır ayarı devre dışı bırak",
+        "hazır ayarı güncelle",
+        "hazır ayar gönder",
+        "ayarları değiştir"
+      ],
+      "sections": [
+        {
+          "title": "Bir koleksiyon seç",
+          "paragraphs": [
+            "Düzenleme araç çubuğunda Presets'i açın. Built-in, on adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
+          ],
+          "steps": [
+            "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
+            "Bir hazır ayarı favorilere eklemek için yanındaki yıldızı kullanın; Favorites geçerli koleksiyonu filtreler.",
+            "Community içinde Featured, New veya All seçin ve koleksiyonu daraltmak için Subject kullanın. Bir hazır ayarı seçerek açıklamasını, oluşturan kişiyi, sürümünü, Film davranışını ve kullanılabilir örnek fotoğrafları görün."
+          ],
+          "tips": [
+            "Öne çıkanlar, popülerlik sıralaması değil, editoryal bir koleksiyondur.",
+            "Yerleşik bir hazır ayar salt okunurdur. Save a copy… adlı bir kopyayı Yours içine yerleştirir. Hide preset, onu normal Built-in görünümünden kaldırır; Show hidden ve Restore to Built-in onu geri getirir."
+          ]
+        },
+        {
+          "title": "Uygula ve Miktar'ı ayarla",
+          "paragraphs": [
+            "Hazır ayarı hemen ana fotoğrafa uygulamak için bir hazır ayar kartına tıklayın. Kapatmak için aynı karta yeniden tıklayın ya da Aç/Kapat düğmesini kullanın. Fotoğrafınız bu bilgisayarda kalır."
+          ],
+          "steps": [
+            "Bir fotoğraf seçin ve bir hazır ayar kartına tıklayın. Seçilen hazır ayarın adı altında Miktar görünür.",
+            "Miktar'ı %0 ile %100 arasında sürükleyin. Sıfır, hazır ayardan önceki düzenlemeyi geri yükler; %100 tam hazır ayarı kullanır. Miktar'a çift tıklayarak %100'e sıfırlayın.",
+            "Görünümleri değiştirmek için başka bir hazır ayara tıklayın. Geri Al ve Yinele, hazır ayar seçimini, etkin durumunu ve miktarı geri yükler. Seçilen hazır ayar ve miktar fotoğrafla birlikte kaydedilir."
+          ],
+          "tips": [
+            "Film stoğu, Film açık/kapalı ve diğer sabit seçimler, sıfırın üzerindeki herhangi bir miktarda değişir. Ton, renk, eğriler ve sayısal ayarlar Miktar ile değişir. Oluşturan örnekleri fotoğrafınızdan ayrı kalır.",
+            "Hazır ayar kartları arasında geçiş yapmak, görünümlerin birikmemesi için ilk hazır ayardan önceki düzenlemeyi kullanır. Bir Görünüm için pozlama gibi, hazır ayar dışındaki manuel değişiklikler korunur. Hazır ayarın kontrol ettiği bir ayarı elle değiştirmek, onun Miktar ayarlamasını sonlandırır; ardından geçerli düzenleme bir sonraki hazır ayar için başlangıç değeri olur."
+          ]
+        },
+        {
+          "title": "Bir görünümün koruduğu şey",
+          "paragraphs": [
+            "Built-in ve community görünümleri, Edit Exposure, Temp/Tint, capture white balance, RAW düzeltmeleri, film formatı, kırpma, geometri, maskeler, Remove düzeltmeleri, lens düzeltmeleri, keskinleştirme ve gürültü azaltmayı korur. İş akışlarına dahil edilen yaratıcı ayarları değiştirirler.",
+            "Film on, dahil edilen film işlemesini etkinleştirir. Film off, Film'i atlar. Film unchanged, etkin durumunu olduğu gibi bırakır. Bir film işlemesi, Camera EV, otomatik ölçüm, geliştirme, yazdırma, gren ve diğer yaratıcı film kontrollerini bilerek değiştirebilir."
+          ],
+          "tips": [
+            "Görünüm korunması, Look · keep photo corrections ile kaydedilmiş görünümlere uygulanır. Tam düzenleme veya daha eski içe aktarılmış bir hazır ayar, fotoğrafa özgü düzeltmeleri içerebilir; ortaya çıkan fotoğrafı inceleyin ve korumak istediğiniz düzeltmeleri değiştirirse Geri Al'ı kullanın."
+          ]
+        },
+        {
+          "title": "Topluluk hazır ayarları ve güncellemeleri ekle",
+          "paragraphs": [
+            "Add to Yours, seçilen topluluk iş akışını uygulamadan indirir ve kaydeder. Yüklenen iş akışları çevrimdışı çalışır. Mevcut fotoğraf düzenlemeleriniz, ayarlarını hazır ayardan ayrı olarak saklar."
+          ],
+          "steps": [
+            "Fotoğrafınızda kullanmak için bir Topluluk hazır ayarına tıklayın, ardından çevrimdışı bir kopyasını saklamak için Sizin'e ekle'ye tıklayın.",
+            "Daha sonra Yours içinden kullanın ya da genel hazır ayar sayfasını incelemek için Community'e geri dönün.",
+            "Kataloğu kontrol etmek için Yenile'ye tıklayın. Daha yeni bir sürüm listelenirse, Yours içindeki Update saved recipe yalnızca siz seçtiğinizde değiştirir."
+          ],
+          "tips": [
+            "Bir hazır ayarı güncellemek, zaten düzenlediğiniz fotoğrafları değiştirmez.",
+            "Çevrimdışı mesajı, önbelleğe alınmış bir katalog ile kullanılamayan ilk indirme arasındaki farkı belirtir. Önbelleğe alınmamış iş akışları ve oluşturan örnek görselleri bağlantı gerektirebilir; Built-in ve yüklenmiş iş akışları kullanılabilir durumda kalır.",
+            "Update LightTable, bir hazır ayarın bu uygulama sürümünün desteklemediği özelliklere ihtiyaç duyduğu anlamına gelir. Kurulum ve uygulama kontrolleri devre dışı kalır.",
+            "Bir genel hazır ayar sayfasında Open in LightTable, ayrıntıları yüklü uygulamada açar; görünümü otomatik olarak uygulamaz."
+          ]
+        },
+        {
+          "title": "Kaydet, içe aktar ve dışa aktar",
+          "paragraphs": [
+            "Manage…, Manage presets'i açar veya kapatır; bölüm açıkken düğme vurgulanır. Save current look varsayılan olarak Look · keep photo corrections kullanır. Full edit · include photo corrections ayrıca All adjustment settings veya Changed settings only seçeneklerini sunar."
+          ],
+          "steps": [
+            "Hazır ayar kapsamını ve Film profile ile fiziksel ayarları Include edip etmeyeceğinizi seçin, sonra Save new…'e tıklayıp adlandırın.",
+            "İçe aktarmak için Import…’a tıklayın ve hazır ayar dosyalarını seçin. Mac uygulaması ayrıca tüm bir hazır ayar klasörü seçmeyi destekler.",
+            "Uygulamadan önce içe aktarma sonucunu ve yeni hazır ayarın dönüştürme kapsamını gözden geçirin.",
+            "Dışa aktarmak için bir Seçili hazır ayar ve Dışa aktarma biçimi seçin, sonra Dışa Aktar….'e tıklayın."
+          ],
+          "tips": [
+            "LightTable dışa aktarması yerel hazır ayar iş akışını korur. Lightroom XMP ve Capture One stil dışa aktarımları yaklaşık değerdedir.",
+            "Desteklenen dosya seçenekleri .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip ve .json içerir. Kabul edilen bir uzantı, her ayarın dönüştürülebileceğini garanti etmez.",
+            "Daha eski veya Full edit bir hazır ayar için, Apply mapped adjustments dahil edilen ayarlarını değiştirir. Replace adjustment settings ayrıca önce ayarları, maskeleri, Remove düzeltmelerini ve geometrisini sıfırlar. Replace, kırpmayı korur ve hazır ayar Film içeriyorsa ya da aşağıdaki eylemler için Turn Film off'u etkinleştirirseniz Film'i korur."
+          ]
+        },
+        {
+          "title": "Bir topluluk gönderimi hazırlayın",
+          "paragraphs": [
+            "Community yayını incelenir. Gönderim bölümü, hazırlanan görünümdeki tam Develop ve Film ayarlarını, Film davranışını ve koruduğu fotoğraf düzeltmelerini gösterir. Bu özeti incelerken veya bir indirme hazırlarken hiçbir şey yüklenmez."
+          ],
+          "steps": [
+            "Yours içinde bir hazır ayar kaydedin, onu seçin ve Community gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
+            "Prepare community submission…'a tıklayın ve yerel örneklerin oluşturulmasını bekleyin. Hazır ayarı, lisanslı üç önce/sonra fotoğraf çiftini, fotoğraf kredilerini ve hak notlarını içeren ZIP'i kaydedin.",
+            "Paketi açın ve örnekleri inceleyin. Kendi fotoğrafınızı da seçebilir ve düzenlemeyi değiştirmeden paylaşılan görünümün 960 piksellik JPEG'ini kaydetmek için bu fotoğrafta Download example'ı kullanabilirsiniz.",
+            "Open submission form'a tıklayın, paketi ve izin verilen ek örnekleri ekleyin ve göndermeden önce oluşturan bilgilerinizi, açıklamayı ve yayınlama izinlerini ekleyin."
+          ],
+          "tips": [
+            "Üç standart örnek sahne LightTable ile birlikte gelir. Bunların dışa aktarımı fotoğraflarınızı veya kataloğunuzu kullanmaz ve JPEG'leri gömülü fotoğraf üstverisi içermez.",
+            "Gönderim hazırlığı, fotoğrafa özgü düzeltmeleri hariç tutar. Paylaşmadan önce ortaya çıkan görünümü inceleyin.",
+            "Yalnızca yayımlama izniniz olan fotoğrafları paylaşın. Mevcut oluşturan kredisi ve üst hazır ayar atfı korunur; iş akışı yeniden kullanım izni ve fotoğraf gösterme izni ayrıdır."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Renk Karıştırıcı ve Nokta Renk ile tek tek renkleri değiştirin",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Düzenleme"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Düzenleme hazır ayarlarını bulun, deneyin ve paylaşın",
-      "category": "Editing",
-      "summary": "Yerleşik ve topluluk görünümlerine göz atın, onları fotoğrafınız üzerinde önizleyin ve kendi hazır ayarlarınızı kaydedin veya paylaşın.",
-      "keywords": [
-        "hazır ayar",
-        "hazır ayarlar",
-        "topluluk",
-        "galeri",
-        "yerleşik",
-        "favoriler",
-        "hazır ayarı gizle",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "hazır ayarı içe aktar",
-        "görünümü kaydet",
-        "hazır ayarı dene",
-        "hazır ayarı güncelle",
-        "hazır ayar gönder",
-        "ayarları değiştir"
-      ],
-      "sections": [
-        {
-          "title": "Bir koleksiyon seç",
-          "paragraphs": [
-            "Düzenleme araç çubuğunda Presets'i açın. Built-in, on adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
-          ],
-          "steps": [
-            "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
-            "Bir hazır ayarı favorilere eklemek için yanındaki yıldızı kullanın; Favorites geçerli koleksiyonu filtreler.",
-            "Community içinde Featured, New veya All seçin ve koleksiyonu daraltmak için Subject kullanın. Bir hazır ayarı seçerek açıklamasını, oluşturan kişiyi, sürümünü, Film davranışını ve kullanılabilir örnek fotoğrafları görün."
-          ],
-          "tips": [
-            "Öne çıkanlar, popülerlik sıralaması değil, editoryal bir koleksiyondur.",
-            "Yerleşik bir hazır ayar salt okunurdur. Save a copy… adlı bir kopyayı Yours içine yerleştirir. Hide preset, onu normal Built-in görünümünden kaldırır; Show hidden ve Restore to Built-in onu geri getirir."
-          ]
-        },
-        {
-          "title": "Uygulamadan önce dene",
-          "paragraphs": [
-            "Try on this photo, hazır ayar ayrıntıları içinde yerel olarak bir önizleme oluşturur. Düzenlemenizi değiştirmez veya kaydetmez ve fotoğrafınız topluluk galerisine yüklenmez."
-          ],
-          "steps": [
-            "Bir fotoğraf ve bir hazır ayar seçin, sonra Bu fotoğrafta dene’ye tıklayın.",
-            "Önizlemenin oluşmasını bekleyin, ardından Before ve With preset ile karşılaştırın. Creator örneklerinin kendi önce/sonra kontrolleri vardır ve kullanılabiliyorsa bir Example photo seçicisi bulunur.",
-            "Hazır ayarı etkin fotoğrafa uygulamak için Uygula'ya tıklayın. Önceki düzenlemeyi geri yüklemek için ayrıntılardaki Geri Al'ı veya tamamlama mesajındaki Geri Al eylemini kullanın."
-          ],
-          "tips": [
-            "Bir kart seçmek, başka bir hazır ayara göz atmak veya ayrıntıları kapatmak onu uygulamaz.",
-            "Ardışık görünüm uygulamaları, ilk görünümden önceki düzenlemeyi kullanır; böylece bir görünümdeki ayarlar sonraki görünümde birikmez. Sonraki bir manuel düzenleme yeni bir karşılaştırma başlangıç noktası oluşturur. Ayrıntı açıkken fotoğrafı veya düzenleme ayarlarını değiştirirseniz, uygulamadan önce hazır ayarı yeniden seçin."
-          ]
-        },
-        {
-          "title": "Bir görünümün koruduğu şey",
-          "paragraphs": [
-            "Built-in ve community görünümleri, Edit Exposure, Temp/Tint, capture white balance, RAW düzeltmeleri, film formatı, kırpma, geometri, maskeler, Remove düzeltmeleri, lens düzeltmeleri, keskinleştirme ve gürültü azaltmayı korur. İş akışlarına dahil edilen yaratıcı ayarları değiştirirler.",
-            "Film on, dahil edilen film işlemesini etkinleştirir. Film off, Film'i atlar. Film unchanged, etkin durumunu olduğu gibi bırakır. Bir film işlemesi, Camera EV, otomatik ölçüm, geliştirme, yazdırma, gren ve diğer yaratıcı film kontrollerini bilerek değiştirebilir."
-          ],
-          "tips": [
-            "Görünüm koruması, Look · keep photo corrections ile kaydedilen görünümler için geçerlidir. Full edit veya daha eski bir içe aktarılmış hazır ayar fotoğrafa özgü düzeltmeler içerebilir; uygulamadan önce ayrıntılarını inceleyin."
-          ]
-        },
-        {
-          "title": "Topluluk hazır ayarları ve güncellemeleri ekle",
-          "paragraphs": [
-            "Add to Yours, seçilen topluluk iş akışını uygulamadan indirir ve kaydeder. Yüklenen iş akışları çevrimdışı çalışır. Mevcut fotoğraf düzenlemeleriniz, ayarlarını hazır ayardan ayrı olarak saklar."
-          ],
-          "steps": [
-            "Bir Topluluk hazır ayarı seçin ve Sizin’e Ekle’ye tıklayın.",
-            "Daha sonra Yours içinden kullanın ya da genel hazır ayar sayfasını incelemek için Community'e geri dönün.",
-            "Kataloğu kontrol etmek için Yenile'ye tıklayın. Daha yeni bir sürüm listelenirse, Yours içindeki Update saved recipe yalnızca siz seçtiğinizde değiştirir."
-          ],
-          "tips": [
-            "Bir hazır ayarı güncellemek, zaten düzenlediğiniz fotoğrafları değiştirmez.",
-            "Çevrimdışı mesajı, önbelleğe alınmış bir katalog ile kullanılamayan ilk indirme arasındaki farkı belirtir. Önbelleğe alınmamış iş akışları ve oluşturan örnek görselleri bağlantı gerektirebilir; Built-in ve yüklenmiş iş akışları kullanılabilir durumda kalır.",
-            "Update LightTable, bir hazır ayarın bu uygulama sürümünün desteklemediği özelliklere ihtiyaç duyduğu anlamına gelir. Kurulum ve uygulama kontrolleri devre dışı kalır.",
-            "Bir genel hazır ayar sayfasında Open in LightTable, ayrıntıları yüklü uygulamada açar; görünümü otomatik olarak uygulamaz."
-          ]
-        },
-        {
-          "title": "Kaydet, içe aktar ve dışa aktar",
-          "paragraphs": [
-            "Manage…, Manage presets'i açar veya kapatır; bölüm açıkken düğme vurgulanır. Save current look varsayılan olarak Look · keep photo corrections kullanır. Full edit · include photo corrections ayrıca All adjustment settings veya Changed settings only seçeneklerini sunar."
-          ],
-          "steps": [
-            "Hazır ayar kapsamını ve Film profile ile fiziksel ayarları Include edip etmeyeceğinizi seçin, sonra Save new…'e tıklayıp adlandırın.",
-            "İçe aktarmak için Import…’a tıklayın ve hazır ayar dosyalarını seçin. Mac uygulaması ayrıca tüm bir hazır ayar klasörü seçmeyi destekler.",
-            "Uygulamadan önce içe aktarma sonucunu ve yeni hazır ayarın dönüştürme kapsamını gözden geçirin.",
-            "Dışa aktarmak için bir Seçili hazır ayar ve Dışa aktarma biçimi seçin, sonra Dışa Aktar….'e tıklayın."
-          ],
-          "tips": [
-            "LightTable dışa aktarması yerel hazır ayar iş akışını korur. Lightroom XMP ve Capture One stil dışa aktarımları yaklaşık değerdedir.",
-            "Desteklenen dosya seçenekleri .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip ve .json içerir. Kabul edilen bir uzantı, her ayarın dönüştürülebileceğini garanti etmez.",
-            "Daha eski veya Full edit bir hazır ayar için, Apply mapped adjustments dahil edilen ayarlarını değiştirir. Replace adjustment settings ayrıca önce ayarları, maskeleri, Remove düzeltmelerini ve geometrisini sıfırlar. Replace, kırpmayı korur ve hazır ayar Film içeriyorsa ya da aşağıdaki eylemler için Turn Film off'u etkinleştirirseniz Film'i korur."
-          ]
-        },
-        {
-          "title": "Bir topluluk gönderimi hazırlayın",
-          "paragraphs": [
-            "Community yayını incelenir. Gönderim bölümü, hazırlanan görünümdeki tam Develop ve Film ayarlarını, Film davranışını ve koruduğu fotoğraf düzeltmelerini gösterir. Bu özeti incelerken veya bir indirme hazırlarken hiçbir şey yüklenmez."
-          ],
-          "steps": [
-            "Yours içinde bir hazır ayar kaydedin, onu seçin ve Community gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
-            "Prepare community submission…'a tıklayın ve yerel örneklerin oluşturulmasını bekleyin. Hazır ayarı, lisanslı üç önce/sonra fotoğraf çiftini, fotoğraf kredilerini ve hak notlarını içeren ZIP'i kaydedin.",
-            "Paketi açın ve örnekleri inceleyin. Kendi fotoğrafınızı da seçebilir ve düzenlemeyi değiştirmeden paylaşılan görünümün 960 piksellik JPEG'ini kaydetmek için bu fotoğrafta Download example'ı kullanabilirsiniz.",
-            "Open submission form'a tıklayın, paketi ve izin verilen ek örnekleri ekleyin ve göndermeden önce oluşturan bilgilerinizi, açıklamayı ve yayınlama izinlerini ekleyin."
-          ],
-          "tips": [
-            "Üç standart örnek sahne LightTable ile birlikte gelir. Bunların dışa aktarımı fotoğraflarınızı veya kataloğunuzu kullanmaz ve JPEG'leri gömülü fotoğraf üstverisi içermez.",
-            "Gönderim hazırlığı, fotoğrafa özgü düzeltmeleri hariç tutar. Paylaşmadan önce ortaya çıkan görünümü inceleyin.",
-            "Yalnızca yayımlama izniniz olan fotoğrafları paylaşın. Mevcut oluşturan kredisi ve üst hazır ayar atfı korunur; iş akışı yeniden kullanım izni ve fotoğraf gösterme izni ayrıdır."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Düzenleme"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

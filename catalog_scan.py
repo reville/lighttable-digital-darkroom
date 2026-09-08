@@ -522,6 +522,7 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
             "heals": entry.get("heals"),
             "optics": entry.get("optics"),
             "provenance": entry.get("provenance"),
+            "preset": entry.get("preset"),
             "keywords": entry.get("keywords") or [],
         }
         cat.save_state(image_id, payload)

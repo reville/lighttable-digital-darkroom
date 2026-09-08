@@ -1064,6 +1064,137 @@
       "categoryLabel": "Edición"
     },
     {
+      "id": "editing-presets",
+      "title": "Aplicar, ajustar y compartir ajustes preestablecidos de edición",
+      "category": "Editing",
+      "summary": "Haz clic en un ajuste preestablecido para aplicarlo, ajusta Cantidad y guarda o comparte tus propios looks.",
+      "keywords": [
+        "ajuste preestablecido",
+        "ajustes preestablecidos",
+        "comunidad",
+        "galería",
+        "integrado",
+        "favoritos",
+        "ocultar ajuste preestablecido",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "importar ajuste preestablecido",
+        "guardar aspecto",
+        "probar ajuste preestablecido",
+        "cantidad del ajuste preestablecido",
+        "intensidad del ajuste preestablecido",
+        "desactivar ajuste preestablecido",
+        "actualizar ajuste preestablecido",
+        "enviar ajuste preestablecido",
+        "reemplazar ajustes"
+      ],
+      "sections": [
+        {
+          "title": "Elegir una colección",
+          "paragraphs": [
+            "Abre Presets en la barra de herramientas de edición. Built-in contiene diez looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
+          ],
+          "steps": [
+            "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
+            "Usa la estrella junto a un ajuste preestablecido para marcarlo como favorito; Favorites filtra la colección actual.",
+            "En Community, elige Destacados, Nuevos o Todos y usa Sujeto para acotar la colección. Selecciona un ajuste preestablecido para ver su descripción, autor, versión, comportamiento de Film y las fotos de ejemplo disponibles."
+          ],
+          "tips": [
+            "Destacado es una colección editorial, no un ranking de popularidad.",
+            "Un ajuste preestablecido integrado es de solo lectura. Guardar una copia… coloca una copia con nombre en Yours. Ocultar ajuste preestablecido lo quita de la vista Built-in habitual; Mostrar ocultos y Restaurar a Built-in lo devuelven."
+          ]
+        },
+        {
+          "title": "Aplicar y ajustar Cantidad",
+          "paragraphs": [
+            "Haz clic en una tarjeta de ajuste preestablecido para aplicarlo de inmediato a la foto principal. Haz clic de nuevo en la misma tarjeta, o usa su botón Activado/Desactivado, para desactivarlo. Tu foto permanece en este ordenador."
+          ],
+          "steps": [
+            "Selecciona una foto y haz clic en una tarjeta de ajuste preestablecido. El ajuste preestablecido seleccionado muestra Cantidad debajo de su nombre.",
+            "Arrastra Cantidad de 0% a 100%. Cero restaura la edición antes del ajuste preestablecido; 100% usa el ajuste preestablecido completo. Haz doble clic en Cantidad para restablecerlo a 100%.",
+            "Haz clic en otro ajuste preestablecido para cambiar de look. Deshacer y Rehacer restauran la selección del ajuste preestablecido, el estado activado y la cantidad. El ajuste preestablecido y la cantidad seleccionados se guardan con la foto."
+          ],
+          "tips": [
+            "La película, Película activada/desactivada y otras opciones fijas cambian con cualquier cantidad superior a cero. Tono, color, curvas y ajustes numéricos varían con Cantidad. Los ejemplos del autor permanecen separados de tu foto.",
+            "Cambiar entre tarjetas de ajuste preestablecido usa la edición anterior al primer ajuste preestablecido para que los looks no se acumulen. Los cambios manuales fuera del ajuste preestablecido, como exposición para un look, se conservan. Cambiar manualmente un ajuste controlado por el ajuste preestablecido finaliza su ajuste de Cantidad; la edición actual se convierte entonces en la base para el siguiente ajuste preestablecido."
+          ]
+        },
+        {
+          "title": "Lo que conserva un look",
+          "paragraphs": [
+            "Los looks Built-in y de la comunidad conservan Edit Exposure, Temp/Tint, el balance de blancos de captura, las correcciones RAW, el formato de película, el recorte, la geometría, las máscaras, las correcciones de Remove, las correcciones de lente, el enfoque y la reducción de ruido. Cambian los ajustes creativos incluidos en su receta.",
+            "Film activado habilita el tratamiento de película incluido. Film desactivado omite Film. Film sin cambios deja intacto su estado activado. Un tratamiento de película puede cambiar intencionalmente Camera EV, la medición automática, revelado, impresión, grano y otros controles creativos de película."
+          ],
+          "tips": [
+            "La conservación del look se aplica a los looks guardados con Look · conservar correcciones de la foto. Una edición Completo o un ajuste preestablecido importado antiguo puede incluir correcciones específicas de la foto; revisa la foto resultante y usa Deshacer si cambia correcciones que quieras conservar."
+          ]
+        },
+        {
+          "title": "Agregar ajustes preestablecidos y actualizaciones de la comunidad",
+          "paragraphs": [
+            "Agregar a Yours descarga y guarda la receta comunitaria seleccionada sin aplicarla. Las recetas instaladas funcionan sin conexión. Las ediciones de tus fotos existentes guardan sus ajustes por separado del ajuste preestablecido."
+          ],
+          "steps": [
+            "Haz clic en un ajuste preestablecido de la Comunidad para usarlo en tu foto; luego haz clic en Agregar a Tuya para conservar una copia sin conexión.",
+            "Usa la opción más tarde desde Yours, o vuelve a Community para inspeccionar la página pública del ajuste preestablecido.",
+            "Haz clic en Actualizar para comprobar el catálogo. Cuando aparezca una versión más reciente, Actualizar en Yours reemplaza la receta guardada solo cuando la eliges."
+          ],
+          "tips": [
+            "Actualizar un ajuste preestablecido no cambia las fotos que ya has editado.",
+            "El mensaje sin conexión distingue un catálogo en caché de una primera descarga no disponible. Las recetas sin caché y las imágenes de ejemplo del autor pueden requerir conexión; Built-in e las recetas instaladas siguen disponibles.",
+            "Actualizar LightTable significa que un ajuste preestablecido necesita funciones que esta versión de la app no admite. Sus controles de instalación y aplicación permanecen deshabilitados.",
+            "Abrir en LightTable en una página pública de ajuste preestablecido abre sus detalles en la app instalada; no aplica el look automáticamente."
+          ]
+        },
+        {
+          "title": "Guardar, importar y exportar",
+          "paragraphs": [
+            "Manage… abre o cierra Manage presets; el botón se resalta mientras la sección está abierta. Guardar aspecto actual usa de forma predeterminada Look · conservar correcciones de foto. Edición Full · incluir correcciones de foto también ofrece Todos los ajustes de edición o Solo ajustes cambiados."
+          ],
+          "steps": [
+            "Elige el alcance del ajuste preestablecido y si incluir el perfil de película y los ajustes físicos, luego haz clic en Guardar nuevo… y asígnale un nombre.",
+            "Para importar, haz clic en Importar… y elige los archivos de ajustes preestablecidos. La app para Mac también admite elegir una carpeta completa de ajustes preestablecidos.",
+            "Revisa el resultado de importación y la cobertura de conversión del nuevo ajuste preestablecido antes de aplicarlo.",
+            "Para exportar, elige un ajuste preestablecido seleccionado y un formato de exportación, luego haz clic en Exportar…."
+          ],
+          "tips": [
+            "La exportación de LightTable conserva la receta nativa del ajuste preestablecido. Las exportaciones XMP de Lightroom y de estilo de Capture One son aproximadas.",
+            "Las opciones de archivo compatibles incluyen .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip y .json. Una extensión aceptada no garantiza que se pueda convertir cada ajuste.",
+            "Para un ajuste preestablecido antiguo o de edición Full, Aplicar ajustes asignados cambia sus ajustes incluidos. Reemplazar los ajustes de edición también restablece primero los ajustes, las máscaras, las correcciones de Remove y la geometría. Reemplazar conserva el recorte y conserva Film, salvo que el ajuste preestablecido incluya Film o que actives Desactivar Film para las acciones siguientes."
+          ]
+        },
+        {
+          "title": "Preparar un envío a la comunidad",
+          "paragraphs": [
+            "La publicación en Community se revisa. La sección de envío muestra los ajustes exactos de Develop y Film en el look preparado, su comportamiento de Film y las correcciones de foto que conserva. No se carga nada al inspeccionar este resumen ni al preparar una descarga."
+          ],
+          "steps": [
+            "Guarda un ajuste preestablecido en Yours, selecciónalo y revisa el resumen de ajustes incluidos en el envío a la comunidad.",
+            "Haz clic en Preparar envío a la comunidad… y espera a que se rendericen los ejemplos locales. Guarda el ZIP que contiene el ajuste preestablecido, tres pares de fotos antes/después con licencia, créditos de las fotos y notas de derechos.",
+            "Abre el paquete e inspecciona los ejemplos. También puedes seleccionar tu propia foto y usar Descargar ejemplo en esta foto para guardar un JPEG de 960 píxeles del look compartido sin cambiar la edición.",
+            "Haz clic en Abrir formulario de envío, adjunta el paquete y cualquier ejemplo adicional permitido, y añade tus datos de autor, descripción y permisos de publicación antes de enviarlo."
+          ],
+          "tips": [
+            "Las tres escenas de muestra estándar vienen incluidas con LightTable. Su exportación no usa tus fotografías ni tu catálogo, y sus JPEG no contienen metadatos incrustados de la foto.",
+            "La preparación del envío excluye las correcciones específicas de la foto. Inspecciona el look resultante antes de compartirlo.",
+            "Comparte solo fotos que tengas permiso para publicar. Se conserva el crédito de autor existente y la atribución del ajuste preestablecido principal; el permiso para reutilizar la receta y el permiso para mostrar la foto son independientes."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Edición"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Cambia colores individuales con Mezclador de color y Color puntual",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Edición"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Encuentra, prueba y comparte ajustes preestablecidos de edición",
-      "category": "Editing",
-      "summary": "Explora looks integrados y de la comunidad, prévisualízalos en tu foto y guarda o comparte tus propios ajustes preestablecidos.",
-      "keywords": [
-        "ajuste preestablecido",
-        "ajustes preestablecidos",
-        "comunidad",
-        "galería",
-        "integrado",
-        "favoritos",
-        "ocultar ajuste preestablecido",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "importar ajuste preestablecido",
-        "guardar aspecto",
-        "probar ajuste preestablecido",
-        "actualizar ajuste preestablecido",
-        "enviar ajuste preestablecido",
-        "reemplazar ajustes"
-      ],
-      "sections": [
-        {
-          "title": "Elegir una colección",
-          "paragraphs": [
-            "Abre Presets en la barra de herramientas de edición. Built-in contiene diez looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
-          ],
-          "steps": [
-            "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
-            "Usa la estrella junto a un ajuste preestablecido para marcarlo como favorito; Favorites filtra la colección actual.",
-            "En Community, elige Destacados, Nuevos o Todos y usa Sujeto para acotar la colección. Selecciona un ajuste preestablecido para ver su descripción, autor, versión, comportamiento de Film y las fotos de ejemplo disponibles."
-          ],
-          "tips": [
-            "Destacado es una colección editorial, no un ranking de popularidad.",
-            "Un ajuste preestablecido integrado es de solo lectura. Guardar una copia… coloca una copia con nombre en Yours. Ocultar ajuste preestablecido lo quita de la vista Built-in habitual; Mostrar ocultos y Restaurar a Built-in lo devuelven."
-          ]
-        },
-        {
-          "title": "Probar antes de aplicar",
-          "paragraphs": [
-            "Probar en esta foto genera una vista previa local dentro de los detalles del ajuste preestablecido. No cambia ni guarda tu edición, y tu foto no se carga en la galería de la comunidad."
-          ],
-          "steps": [
-            "Selecciona una foto y un ajuste preestablecido, luego haz clic en Probar en esta foto.",
-            "Espera la vista previa y luego usa Antes y Con ajuste preestablecido para comparar. Los ejemplos de Creator tienen sus propios controles antes/después y, cuando están disponibles, un selector de foto de ejemplo.",
-            "Haz clic en Aplicar para confirmar el ajuste preestablecido en la foto activa. Usa Deshacer en los detalles o la acción Deshacer en el mensaje de finalización para restaurar la edición anterior."
-          ],
-          "tips": [
-            "Seleccionar una tarjeta, explorar otro ajuste preestablecido o cerrar los detalles no lo aplica.",
-            "Las aplicaciones consecutivas de looks usan la edición anterior al primer look, de modo que los ajustes de un look no se acumulan en el siguiente. Una edición manual posterior inicia una nueva base de comparación. Si cambias de foto o editas ajustes mientras un detalle está abierto, selecciona el ajuste preestablecido de nuevo antes de aplicarlo."
-          ]
-        },
-        {
-          "title": "Lo que conserva un look",
-          "paragraphs": [
-            "Los looks Built-in y de la comunidad conservan Edit Exposure, Temp/Tint, el balance de blancos de captura, las correcciones RAW, el formato de película, el recorte, la geometría, las máscaras, las correcciones de Remove, las correcciones de lente, el enfoque y la reducción de ruido. Cambian los ajustes creativos incluidos en su receta.",
-            "Film activado habilita el tratamiento de película incluido. Film desactivado omite Film. Film sin cambios deja intacto su estado activado. Un tratamiento de película puede cambiar intencionalmente Camera EV, la medición automática, revelado, impresión, grano y otros controles creativos de película."
-          ],
-          "tips": [
-            "La conservación del look se aplica a los looks guardados con Look · conservar correcciones de foto. Una edición Full o un ajuste preestablecido importado antiguo puede incluir correcciones específicas de la foto; inspecciona sus detalles antes de aplicarlo."
-          ]
-        },
-        {
-          "title": "Agregar ajustes preestablecidos y actualizaciones de la comunidad",
-          "paragraphs": [
-            "Agregar a Yours descarga y guarda la receta comunitaria seleccionada sin aplicarla. Las recetas instaladas funcionan sin conexión. Las ediciones de tus fotos existentes guardan sus ajustes por separado del ajuste preestablecido."
-          ],
-          "steps": [
-            "Selecciona un ajuste preestablecido de la comunidad y haz clic en Agregar a Tuya.",
-            "Usa la opción más tarde desde Yours, o vuelve a Community para inspeccionar la página pública del ajuste preestablecido.",
-            "Haz clic en Actualizar para comprobar el catálogo. Cuando aparezca una versión más reciente, Actualizar en Yours reemplaza la receta guardada solo cuando la eliges."
-          ],
-          "tips": [
-            "Actualizar un ajuste preestablecido no cambia las fotos que ya has editado.",
-            "El mensaje sin conexión distingue un catálogo en caché de una primera descarga no disponible. Las recetas sin caché y las imágenes de ejemplo del autor pueden requerir conexión; Built-in e las recetas instaladas siguen disponibles.",
-            "Actualizar LightTable significa que un ajuste preestablecido necesita funciones que esta versión de la app no admite. Sus controles de instalación y aplicación permanecen deshabilitados.",
-            "Abrir en LightTable en una página pública de ajuste preestablecido abre sus detalles en la app instalada; no aplica el look automáticamente."
-          ]
-        },
-        {
-          "title": "Guardar, importar y exportar",
-          "paragraphs": [
-            "Manage… abre o cierra Manage presets; el botón se resalta mientras la sección está abierta. Guardar aspecto actual usa de forma predeterminada Look · conservar correcciones de foto. Edición Full · incluir correcciones de foto también ofrece Todos los ajustes de edición o Solo ajustes cambiados."
-          ],
-          "steps": [
-            "Elige el alcance del ajuste preestablecido y si incluir el perfil de película y los ajustes físicos, luego haz clic en Guardar nuevo… y asígnale un nombre.",
-            "Para importar, haz clic en Importar… y elige los archivos de ajustes preestablecidos. La app para Mac también admite elegir una carpeta completa de ajustes preestablecidos.",
-            "Revisa el resultado de importación y la cobertura de conversión del nuevo ajuste preestablecido antes de aplicarlo.",
-            "Para exportar, elige un ajuste preestablecido seleccionado y un formato de exportación, luego haz clic en Exportar…."
-          ],
-          "tips": [
-            "La exportación de LightTable conserva la receta nativa del ajuste preestablecido. Las exportaciones XMP de Lightroom y de estilo de Capture One son aproximadas.",
-            "Las opciones de archivo compatibles incluyen .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip y .json. Una extensión aceptada no garantiza que se pueda convertir cada ajuste.",
-            "Para un ajuste preestablecido antiguo o de edición Full, Aplicar ajustes asignados cambia sus ajustes incluidos. Reemplazar los ajustes de edición también restablece primero los ajustes, las máscaras, las correcciones de Remove y la geometría. Reemplazar conserva el recorte y conserva Film, salvo que el ajuste preestablecido incluya Film o que actives Desactivar Film para las acciones siguientes."
-          ]
-        },
-        {
-          "title": "Preparar un envío a la comunidad",
-          "paragraphs": [
-            "La publicación en Community se revisa. La sección de envío muestra los ajustes exactos de Develop y Film en el look preparado, su comportamiento de Film y las correcciones de foto que conserva. No se carga nada al inspeccionar este resumen ni al preparar una descarga."
-          ],
-          "steps": [
-            "Guarda un ajuste preestablecido en Yours, selecciónalo y revisa el resumen de ajustes incluidos en el envío a la comunidad.",
-            "Haz clic en Preparar envío a la comunidad… y espera a que se rendericen los ejemplos locales. Guarda el ZIP que contiene el ajuste preestablecido, tres pares de fotos antes/después con licencia, créditos de las fotos y notas de derechos.",
-            "Abre el paquete e inspecciona los ejemplos. También puedes seleccionar tu propia foto y usar Descargar ejemplo en esta foto para guardar un JPEG de 960 píxeles del look compartido sin cambiar la edición.",
-            "Haz clic en Abrir formulario de envío, adjunta el paquete y cualquier ejemplo adicional permitido, y añade tus datos de autor, descripción y permisos de publicación antes de enviarlo."
-          ],
-          "tips": [
-            "Las tres escenas de muestra estándar vienen incluidas con LightTable. Su exportación no usa tus fotografías ni tu catálogo, y sus JPEG no contienen metadatos incrustados de la foto.",
-            "La preparación del envío excluye las correcciones específicas de la foto. Inspecciona el look resultante antes de compartirlo.",
-            "Comparte solo fotos que tengas permiso para publicar. Se conserva el crédito de autor existente y la atribución del ajuste preestablecido principal; el permiso para reutilizar la receta y el permiso para mostrar la foto son independientes."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Edición"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }
