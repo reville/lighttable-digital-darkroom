@@ -268,7 +268,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
         setPage('folder'); show(true);
       } else if (event?.type === 'photosImported' && event.count > 0
           && (isOpen() || nativeFirstRun)) {
-        showResult('photos', tr('Your photos are ready'), [
+        showResult('photos', event.cancelled ? tr('Import stopped') : tr('Your photos are ready'), [
           trn('{count} photo imported.', '{count} photos imported.', event.count),
           event.failures ? trn('{count} could not be imported.', '{count} could not be imported.', event.failures) : '',
         ].filter(Boolean).join(' '));

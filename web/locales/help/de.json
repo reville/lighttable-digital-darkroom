@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Fotos aus Apple Fotos auswählen",
+          "paragraphs": [
+            "Verwenden Sie in der macOS-App Datei → Import aus Apple Fotos… oder Einige auswählen… in der Foto-Einrichtung. Aktuelles Format behält die von Fotos bereitgestellte Darstellung bei; Kompatibel fordert ein allgemein lesbares Format an. Diese ausgewählten Darstellungen können Fotos-Bearbeitungen enthalten und sind getrennt vom Import der Originale der gesamten Bibliothek.",
+            "Wählen Sie Fotos aus und klicken Sie dann auf Hinzufügen. LightTable zeigt den Fortschritt beim Herunterladen und Kopieren an. Mit Import stoppen bleiben abgeschlossene Kopien erhalten und die verbleibenden Übertragungen werden gestoppt. Ihre Fotos-Bibliothek bleibt unverändert.",
+            "Kopien werden in Pictures / LightTable Imports / Apple Photos gespeichert. Wenn Sie eine Auswahl erneut importieren, werden separate Kopien mit nummerierten Dateinamen erstellt; vorhandene Dateien werden niemals überschrieben."
+          ],
+          "steps": [
+            "Wählen Sie Aktuelles Format oder Kompatibel.",
+            "Wählen Sie im Auswahlfenster ein oder mehrere Fotos aus und klicken Sie auf Hinzufügen. Verwenden Sie Abbrechen, um ohne Importieren zu beenden.",
+            "Warten Sie, bis der Import abgeschlossen ist, und überprüfen Sie dann die Fotos in LightTable."
+          ]
+        },
+        {
           "title": "Einen lokalen Ordner öffnen",
           "paragraphs": [
             "In der Desktop-App öffnet Fotos hinzufügen einen Auswahldialog für Fotos und Ordner. LightTable behält die Originale an ihrem aktuellen Speicherort. Wenn Sie ein einzelnes Foto auswählen, wird der darin enthaltene Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können."
@@ -75,11 +88,11 @@
         {
           "title": "Vorbereiten und prüfen",
           "paragraphs": [
-            "Der Importer liest eine temporäre Kopie eines Lightroom Classic .lrcat-Katalogs. Wenn Sie Die von diesem Katalog verwendeten Fotoordner hinzufügen, kann der Import referenzierte Originale und deren enthaltene Ordner registrieren. Die Originale bleiben an ihrem Platz. Deaktivieren Sie diese Option, um nur Fotos abzugleichen, die bereits in LightTable vorhanden sind.",
+            "Der Importer liest eine temporäre Kopie eines Lightroom Classic .lrcat-Katalogs und lässt Ihre Lightroom-Einrichtung und Ihren Katalog unverändert. Fotos bleiben in ihren aktuellen Ordnern und werden referenziert, nicht dupliziert. Wenn Sie die Option Die für diesen Katalog verwendeten Fotoordner hinzufügen aktivieren, kann der Import referenzierte Originale und die zugehörigen Ordner registrieren. Deaktivieren Sie diese Option, um nur Fotos abzugleichen, die bereits in LightTable vorhanden sind.",
             "Die Vorschaukompatibilität meldet Übereinstimmungen in der aktuellen Bibliothek, ohne sie zu verändern. Fotos, die noch nicht hinzugefügt wurden, können in der Vorschau als nicht zugeordnet angezeigt werden; das Importieren mit aktivierter Option Die Fotoordner hinzufügen registriert verfügbare Originale vor dem erneuten Abgleichen."
           ],
           "steps": [
-            "Öffnen Sie Lokal ••• → Katalog importieren…, oder wählen Sie in der Einrichtung die Lightroom Classic-Katalogoption.",
+            "Öffnen Sie Lokal ••• → Katalog importieren… oder wählen Sie beim Einrichten Import aus Lightroom.",
             "Wählen Sie die .lrcat-Datei und prüfen Sie ihre Zähler und Warnungen.",
             "Wählen Sie die zu importierenden Kategorien, die Richtlinie für vorhandene Bearbeitungen und ob die referenzierten Fotodateien hinzugefügt werden sollen.",
             "Klicken Sie auf Vorschaukompatibilität und überprüfen Sie zugeordnete und übersprungene Einstellungen. Mit 20 Varianten testen werden vor einem größeren Import separate Testbearbeitungen erstellt.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

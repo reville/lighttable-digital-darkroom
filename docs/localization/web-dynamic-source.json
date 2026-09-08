@@ -388,6 +388,7 @@
   "Import finished with errors",
   "Import is still running. Use Jobs to check its progress or cancel it.",
   "Import sidecars",
+  "Import stopped",
   "Import stopped. Any completed copies are kept; you can resume by importing again.",
   "Imported {count} photo from Apple Photos{value}",
   "Imported {count} photos from Apple Photos{value}",

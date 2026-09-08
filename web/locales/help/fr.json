@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Choisissez des photos dans Photos Apple",
+          "paragraphs": [
+            "Dans l’application macOS, utilisez Fichier → Importer depuis Photos Apple… ou Choisissez-en quelques-uns… dans la configuration Photo. Format actuel conserve la représentation fournie par Photos ; Compatible demande un format largement lisible. Ces représentations sélectionnées peuvent inclure les retouches de Photos et sont distinctes de l’import des originaux de toute la bibliothèque.",
+            "Sélectionnez des photos, puis cliquez sur Ajouter. LightTable affiche la progression pendant leur téléchargement et leur copie. Arrêter l’import conserve les copies terminées et arrête les transferts restants. Votre bibliothèque Photos reste inchangée.",
+            "Les copies sont enregistrées dans Pictures / LightTable Imports / Apple Photos. Importer à nouveau une sélection crée des copies distinctes avec des noms de fichier numérotés ; les fichiers existants ne sont jamais écrasés."
+          ],
+          "steps": [
+            "Choisissez Format actuel ou Compatible.",
+            "Sélectionnez une ou plusieurs photos dans le sélecteur, puis cliquez sur Ajouter. Utilisez Annuler pour quitter sans importer.",
+            "Attendez la fin de l’import, puis revoyez les photos dans LightTable."
+          ]
+        },
+        {
           "title": "Ouvrir un dossier local",
           "paragraphs": [
             "Dans l’application de bureau, Ajouter des photos ouvre un sélecteur pour les photos et les dossiers. LightTable conserve les originaux à leur emplacement actuel. La sélection d’une photo individuelle ajoute son dossier conteneur, afin que d’autres photos prises en charge dans ce dossier puissent également apparaître."
@@ -75,11 +88,11 @@
         {
           "title": "Préparer et inspecter",
           "paragraphs": [
-            "L'importateur lit une copie temporaire d'un catalogue Lightroom Classic .lrcat. Ajouter les dossiers de photos utilisés par ce catalogue permet à l'importation d'enregistrer les originaux référencés et leurs dossiers parents. Les originaux restent en place. Effacez cette option pour faire correspondre uniquement les photos déjà présentes dans LightTable.",
+            "L’importeur lit une copie temporaire d’un catalogue .lrcat de Lightroom Classic et laisse votre configuration Lightroom ainsi que votre catalogue inchangés. Les photos restent dans leurs dossiers actuels et sont référencées, non dupliquées. Ajouter les dossiers de photos utilisés par ce catalogue permet à l’import d’enregistrer les originaux référencés et les dossiers qui les contiennent. Désactivez cette option pour faire correspondre uniquement les photos déjà présentes dans LightTable.",
             "La compatibilité de l'aperçu affiche les correspondances dans la bibliothèque actuelle sans la modifier. Les photos pas encore ajoutées peuvent apparaître comme non appariées dans l'aperçu ; l'importation avec Ajouter les dossiers de photos activé enregistre les originaux disponibles avant de relancer la correspondance."
           ],
           "steps": [
-            "Ouvrez Local ••• → Importer un catalogue…, ou choisissez l’option de catalogue Lightroom Classic dans la configuration.",
+            "Ouvrez Local ••• → Importer un catalogue…, ou choisissez Importer depuis Lightroom dans la configuration.",
             "Choisissez le fichier .lrcat et vérifiez ses nombres et avertissements.",
             "Choisissez les catégories à importer, la politique pour les modifications existantes et si vous souhaitez ajouter les dossiers de photos référencés.",
             "Cliquez sur Compatibilité de l’aperçu et examinez les paramètres mappés et ignorés. Essayer 20 variantes crée des essais distincts avant un import plus important.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

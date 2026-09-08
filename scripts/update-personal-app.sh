@@ -314,6 +314,7 @@ done
 /usr/bin/ditto "$ROOT/lighttable" "$STAGE_CONTENTS/MacOS/lighttable-cli"
 /bin/chmod 755 "$STAGE_CONTENTS/MacOS/lighttable-cli"
 /usr/bin/ditto "$ROOT/media-formats.json" "$STAGE_PAYLOAD/media-formats.json"
+/usr/bin/ditto "$ROOT/build/icon-1024.png" "$STAGE_PAYLOAD/build/icon-1024.png"
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
   "$ROOT/web/" "$STAGE_PAYLOAD/web/"
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \

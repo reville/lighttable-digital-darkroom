@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Apple Photos'tan fotoğraflar seçin",
+          "paragraphs": [
+            "macOS uygulamasında, Dosya → Apple Photos'tan içe aktar… seçeneğini veya Fotoğraf kurulumunda Birkaç tane seç… seçeneğini kullanın. Geçerli biçim, Photos tarafından sağlanan temsili korur; Uyumlu ise geniş ölçüde okunabilir bir biçim ister. Bu seçilmiş temsiller Photos düzenlemelerini içerebilir ve tüm kitaplığın orijinal dosyalarını içe aktarma işleminden ayrıdır.",
+            "Fotoğrafları seçin, ardından Ekle'ye tıklayın. LightTable, fotoğraflar indirilirken ve kopyalanırken ilerlemeyi gösterir. İçe Aktarmayı Durdur, tamamlanan kopyaları korur ve kalan aktarımları durdurur. Fotoğraflar kitaplığınız değişmeden kalır.",
+            "Kopyalar Pictures / LightTable Imports / Apple Photos içine kaydedilir. Bir seçimi yeniden içe aktarmak, numaralandırılmış dosya adlarıyla ayrı kopyalar oluşturur; mevcut dosyaların üzerine hiçbir zaman yazılmaz."
+          ],
+          "steps": [
+            "Geçerli biçim veya Uyumlu seçin.",
+            "Seçici içinde bir veya daha fazla fotoğraf seçin ve Ekle'ye tıklayın. İçe aktarmadan çıkmak için İptal'i kullanın.",
+            "İçe aktarımın bitmesini bekleyin, ardından fotoğrafları LightTable'da inceleyin."
+          ]
+        },
+        {
           "title": "Yerel bir klasör aç",
           "paragraphs": [
             "Masaüstü uygulamasında Fotoğraf Ekle, fotoğraflar ve klasörler için bir seçici açar. LightTable, orijinalleri mevcut konumlarında tutar. Bireysel bir fotoğraf seçmek, onun bulunduğu klasörü de ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
@@ -75,11 +88,11 @@
         {
           "title": "Hazırla ve incele",
           "paragraphs": [
-            "İçe aktarıcı, Lightroom Classic .lrcat kataloğunun geçici bir kopyasını okur. Bu katalog tarafından kullanılan Fotoğraf klasörlerini ekle seçeneği, içe aktarmanın başvurulan orijinalleri ve bunları içeren klasörleri kaydetmesini sağlar. Orijinalleri yerinde bırakır. Yalnızca LightTable’da zaten bulunan fotoğraflarla eşleşmesi için bu seçeneği temizleyin.",
+            "İçe aktarıcı, Lightroom Classic .lrcat kataloğunun geçici bir kopyasını okur ve Lightroom kurulumunuzu ve kataloğunuzu değiştirmeden bırakır. Fotoğraflar geçerli klasörlerinde kalır ve çoğaltılmadan, yalnızca referans alınır. Bu katalog tarafından kullanılan fotoğraf klasörlerini ekle, içe aktarmanın referans verilen orijinalleri ve bunların bulunduğu klasörleri kaydetmesini sağlar. Yalnızca LightTable'da zaten bulunan fotoğraflarla eşleştirmek için bu seçeneğin seçimini kaldırın.",
             "Önizleme uyumluluğu, mevcut kütüphanedeki eşleşmeleri değiştirmeden bildirir. Henüz eklenmemiş fotoğraflar önizlemede eşleşmemiş olarak görünebilir; Fotoğraf klasörlerini ekle etkinleştirilerek içe aktarma, eşleştirmeden önce kullanılabilir orijinalleri kaydeder."
           ],
           "steps": [
-            "Yerel ••• → Kataloğu içe aktar…'ı açın veya kurulumda Lightroom Classic katalog seçeneğini seçin.",
+            "Yerel ••• → Kataloğu içe aktar… seçin ya da kurulumda Lightroom'dan içe aktar seçeneğini kullanın.",
             ".lrcat dosyasını seçin ve sayılarını ile uyarılarını inceleyin.",
             "İçe aktarılacak kategorileri, var olan düzenlemeler için politikayı ve referans verilen fotoğraf klasörlerinin eklenip eklenmeyeceğini seçin.",
             "Önizleme uyumluluğu’na tıklayın ve eşlenen, atlanan ayarları inceleyin. 20 varyasyon dene, daha büyük bir içe aktarmadan önce ayrı deneme düzenlemeleri oluşturur.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

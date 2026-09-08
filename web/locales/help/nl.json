@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Kies foto's uit Apple Foto's",
+          "paragraphs": [
+            "Gebruik in de macOS-app Bestand → Importeren uit Apple Foto's… of Kies er een paar… in de configuratie van Foto. Huidig formaat behoudt de door Foto's aangeleverde weergave; Compatibel vraagt om een breed leesbaar formaat. Deze geselecteerde weergaven kunnen Foto's-bewerkingen bevatten en staan los van de originele import van de hele bibliotheek.",
+            "Selecteer foto's en klik vervolgens op Toevoegen. LightTable toont de voortgang tijdens het downloaden en kopiëren. Importeren stoppen behoudt voltooide kopieën en stopt de resterende overdrachten. Je Foto's-bibliotheek blijft ongewijzigd.",
+            "Kopieën worden opgeslagen in Pictures / LightTable Imports / Apple Photos. Als je een selectie opnieuw importeert, worden afzonderlijke kopieën met genummerde bestandsnamen gemaakt; bestaande bestanden worden nooit overschreven."
+          ],
+          "steps": [
+            "Kies Huidig formaat of Compatibel.",
+            "Selecteer een of meer foto's in de kiezer en klik op Toevoegen. Gebruik Annuleren om te vertrekken zonder te importeren.",
+            "Wacht tot het importeren is voltooid en beoordeel daarna de foto's in LightTable."
+          ]
+        },
+        {
           "title": "Een lokale map openen",
           "paragraphs": [
             "In de desktopapp opent Foto’s toevoegen een selectiehulpmiddel voor foto’s en mappen. LightTable houdt de originelen op hun huidige locatie. Als u één afzonderlijke foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat andere ondersteunde foto’s in die map ook kunnen verschijnen."
@@ -75,11 +88,11 @@
         {
           "title": "Voorbereiden en inspecteren",
           "paragraphs": [
-            "De importeur leest een tijdelijke kopie van een Lightroom Classic .lrcat-catalogus. Door De fotomappen gebruikt door deze catalogus toevoegen kan de import referentie-originelen en de mappen waarin ze staan registreren. De originelen blijven op hun plaats. Schakel die optie uit om alleen foto's te vergelijken die al in LightTable staan.",
+            "De importeerfunctie leest een tijdelijke kopie van een Lightroom Classic .lrcat-catalogus en laat je Lightroom-configuratie en catalogus ongewijzigd. Foto's blijven in hun huidige mappen en worden gerefereerd, niet gedupliceerd. Als je de optie Voeg de fotomappen die door deze catalogus worden gebruikt toe inschakelt, kan de import gerefereerde originelen en hun bovenliggende mappen registreren. Schakel die optie uit om alleen foto's af te stemmen die al in LightTable staan.",
             "Compatibiliteit in voorbeeld toont overeenkomsten in de huidige bibliotheek zonder deze te wijzigen. Foto's die nog niet zijn toegevoegd, kunnen in het voorbeeld als niet-overeenkomend worden weergegeven; importeren met De fotomappen toevoegen ingeschakeld registreert beschikbare originelen voordat opnieuw wordt afgestemd."
           ],
           "steps": [
-            "Open Local ••• → Catalogus importeren…, of kies in de setup de Lightroom Classic-catalogusoptie.",
+            "Open Lokaal ••• → Catalogus importeren…, of kies in de configuratie voor Importeren uit Lightroom.",
             "Kies het .lrcat-bestand en controleer de aantallen en waarschuwingen.",
             "Kies de categorieën om te importeren, het beleid voor bestaande bewerkingen en of de gekoppelde fotomappen moeten worden toegevoegd.",
             "Klik op Voorbeeldcompatibiliteit en bekijk toegewezen en overgeslagen instellingen. Probeer 20 varianten maakt afzonderlijke proefbewerkingen vóór een grotere import.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

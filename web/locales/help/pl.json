@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Wybierz zdjęcia z Apple Photos",
+          "paragraphs": [
+            "W aplikacji macOS użyj Plik → Importuj z Apple Photos… albo Wybierz kilka… w konfiguracji Zdjęcie. Bieżący format zachowuje reprezentację dostarczoną przez Photos; Zgodny żąda formatu możliwego do szerokiego odczytu. Te wybrane reprezentacje mogą zawierać edycje z Photos i są oddzielne od importu oryginałów z całej biblioteki.",
+            "Wybierz zdjęcia, a następnie kliknij Dodaj. LightTable pokazuje postęp podczas ich pobierania i kopiowania. Zatrzymaj import zachowuje ukończone kopie i zatrzymuje pozostałe transfery. Twoja biblioteka Zdjęcia pozostaje bez zmian.",
+            "Kopie są zapisywane w Pictures / LightTable Imports / Apple Photos. Ponowny import zaznaczenia tworzy oddzielne kopie z numerowanymi nazwami plików; istniejące pliki nigdy nie są nadpisywane."
+          ],
+          "steps": [
+            "Wybierz Bieżący format lub Zgodny.",
+            "Wybierz jedno lub więcej zdjęć w selektorze i kliknij Dodaj. Użyj Anuluj, aby wyjść bez importowania.",
+            "Poczekaj, aż import się zakończy, a następnie przejrzyj zdjęcia w LightTable."
+          ]
+        },
+        {
           "title": "Otwórz lokalny folder",
           "paragraphs": [
             "W aplikacji desktopowej Dodaj zdjęcia otwiera selektor zdjęć i folderów. LightTable zachowuje oryginały w ich bieżącej lokalizacji. Wybranie pojedynczego zdjęcia dodaje jego folder nadrzędny, więc inne obsługiwane zdjęcia w tym folderze również mogą się pojawić."
@@ -75,11 +88,11 @@
         {
           "title": "Przygotuj i sprawdź",
           "paragraphs": [
-            "Importer odczytuje tymczasową kopię katalogu Lightroom Classic .lrcat. Dodanie folderów zdjęć używanych przez ten katalog pozwala importowi zarejestrować odwołane oryginały i foldery, w których się znajdują. Oryginały pozostają na miejscu. Wyłącz tę opcję, aby dopasować tylko zdjęcia już znajdujące się w LightTable.",
+            "Importer odczytuje tymczasową kopię katalogu Lightroom Classic .lrcat i pozostawia Twoją konfigurację Lightroom oraz katalog bez zmian. Zdjęcia pozostają w swoich bieżących folderach i są tylko referencjami, a nie duplikatami. Dodanie folderów zdjęć używanych przez ten katalog pozwala importowi zarejestrować oryginały, do których istnieją odwołania, oraz ich foldery nadrzędne. Wyłącz tę opcję, aby dopasować tylko zdjęcia już znajdujące się w LightTable.",
             "Zgodność podglądu pokazuje dopasowania w bieżącej bibliotece bez jej zmieniania. Zdjęcia jeszcze nie dodane mogą w podglądzie wyglądać na niedopasowane; import z włączoną opcją Dodaj foldery zdjęć rejestruje dostępne oryginały przed ponownym dopasowaniem."
           ],
           "steps": [
-            "Otwórz Lokalnie ••• → Importuj katalog… albo wybierz podczas konfiguracji opcję katalogu Lightroom Classic.",
+            "Otwórz Lokalne ••• → Importuj katalog… albo w konfiguracji wybierz Importuj z Lightroom.",
             "Wybierz plik .lrcat i sprawdź jego liczby oraz ostrzeżenia.",
             "Wybierz kategorie do importu, zasady dotyczące istniejących edycji oraz to, czy dodać wskazane foldery zdjęć.",
             "Kliknij Podgląd zgodności i przejrzyj zmapowane oraz pominięte ustawienia. Wypróbuj 20 wariantów, aby utworzyć osobne wersje próbne przed większym importem.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }
