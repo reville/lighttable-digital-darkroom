@@ -1539,7 +1539,7 @@ a.reset:hover { color:#fff; }
   display: flex;
   flex-direction: column;
   gap: 4px;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .export-quality-row .row-label {
   display: flex;
