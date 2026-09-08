@@ -303,6 +303,103 @@ pub const CMF_Z: [f32; N_WAVELENGTHS] = [
 
 /// Illuminant SPDs normalized to match Python colour-science `standard_illuminant()`.
 /// These are the exact values returned by spektrafilm's Python illuminant loader.
+/// Measured incandescent reference used by the Vision3 tungsten profiles.
+/// Matches colour SDS_LIGHT_SOURCES["Incandescent"], aligned to 380-780 nm
+/// at 5 nm and normalized to mean 1, as in the pinned Python reference.
+pub const ILLUMINANT_T_F64: [f64; N_WAVELENGTHS] = [
+    0.04429086048707871,
+    0.051585750595832355,
+    0.06069536577621067,
+    0.08052635711823716,
+    0.10060221565179168,
+    0.11943272418540037,
+    0.13728858562967097,
+    0.15467112077302433,
+    0.16866507309404713,
+    0.1829082842522153,
+    0.19976734369038093,
+    0.2173077944063887,
+    0.2326798663933696,
+    0.2510444390730186,
+    0.2697795471874511,
+    0.2905205523565897,
+    0.31179466156241625,
+    0.3337220581980729,
+    0.35451979503226494,
+    0.37858377973780444,
+    0.39958340688637045,
+    0.422120260822385,
+    0.44670745384066046,
+    0.47049908200856416,
+    0.49632114404384897,
+    0.522977799611895,
+    0.5479190721125559,
+    0.5755373919150063,
+    0.6023864883284424,
+    0.6305289345911937,
+    0.6582191651370278,
+    0.686881056389086,
+    0.7173724325758171,
+    0.747604209548834,
+    0.7778256884073104,
+    0.809161816636445,
+    0.8419707046347984,
+    0.8743153620820648,
+    0.9059410302689376,
+    0.937950444880361,
+    0.9697294044529698,
+    1.0022160761344994,
+    1.0343503119459732,
+    1.0666486964784918,
+    1.0992623234923373,
+    1.1310901666113176,
+    1.1632143989406825,
+    1.1951538308384908,
+    1.2256472448160873,
+    1.2570867339479983,
+    1.2868689599150938,
+    1.3175466878101896,
+    1.3486075872861383,
+    1.3785499410728028,
+    1.4081914316826425,
+    1.4385009133027542,
+    1.4684603699913443,
+    1.4978645194556324,
+    1.5304444840631708,
+    1.5643993702428256,
+    1.5988494848691726,
+    1.6278929583694202,
+    1.6581353118655981,
+    1.6838037962950616,
+    1.7081754309383532,
+    1.732923209247628,
+    1.7641983427548216,
+    1.7869933057174028,
+    1.8125966948064482,
+    1.8416205709436502,
+    1.8635213785546003,
+    1.8791814272048726,
+    1.9067867621494494,
+    1.9368180338409047,
+    1.9561762040234099,
+    1.973705424857322,
+    2.0029397142179697,
+    1.9368180338409047,
+    1.9561762040234099,
+    1.973705424857322,
+    2.0029397142179697,
+];
+pub const ILLUMINANT_T: [f32; N_WAVELENGTHS] = {
+    let mut values = [0.0; N_WAVELENGTHS];
+    let mut i = 0;
+    while i < N_WAVELENGTHS {
+        values[i] = ILLUMINANT_T_F64[i] as f32;
+        i += 1;
+    }
+    values
+};
+pub const T_ILLUMINANT_XYZ_F64: [f64; 3] = [1.104602464502497, 1.0, 0.34607998084525826];
+
 pub const ILLUMINANT_D55: [f32; N_WAVELENGTHS] = [
     0.37928266, 0.41130471, 0.44333841, 0.57639697, 0.70945552, 0.75371138, 0.79797887, 0.81556713,
     0.83316704, 0.81185393, 0.79052917, 0.89349794, 0.99645507, 1.06855416, 1.14065325, 1.15502884,
@@ -743,6 +840,9 @@ pub fn colorspace_to_xyz_f64(name: &str) -> [[f64; 3]; 3] {
 pub fn illuminant_xyz(illuminant: &[f32]) -> [f32; 3] {
     // Match known illuminants by first value to use pre-computed XYZ
     if illuminant.len() == N_WAVELENGTHS {
+        if illuminant == ILLUMINANT_T {
+            return T_ILLUMINANT_XYZ_F64.map(|v| v as f32);
+        }
         if (illuminant[0] - ILLUMINANT_D55[0]).abs() < 1e-6 {
             return D55_ILLUMINANT_XYZ;
         }
@@ -783,6 +883,9 @@ pub fn illuminant_to_xy(illuminant: &[f32]) -> (f64, f64) {
 /// or falls back to live SPD integration in f64.
 pub fn illuminant_xyz_f64(illuminant: &[f32]) -> [f64; 3] {
     if illuminant.len() == N_WAVELENGTHS {
+        if illuminant == ILLUMINANT_T {
+            return T_ILLUMINANT_XYZ_F64;
+        }
         if (illuminant[0] - ILLUMINANT_D55[0]).abs() < 1e-6 {
             return D55_ILLUMINANT_XYZ_F64;
         }

@@ -329,8 +329,10 @@ class ResponsivePreviewTests(unittest.TestCase):
                     result, "frame.jpg", 1100, {}, {"distortion": 0.2}, [])
             self.assertNotIn("native", response)
             self.assertNotIn("helper", response)
-            self.assertTrue(response["img"].startswith("/api/edit/image?key="))
-            self.assertEqual(len(list(edit.glob("*.jpg"))), 1)
+            self.assertTrue(response["img"].startswith("/api/render/png?key="))
+            self.assertEqual(len(list(edit.glob("*.jpg"))), 0)
+            corrected, _ = server.read_native_surface(render / f"{response['key']}.rgba")
+            np.testing.assert_array_equal(corrected[..., :3], 127)
 
     def test_original_mean_does_not_reload_evicted_linear_pixels(self):
         with tempfile.TemporaryDirectory() as directory:

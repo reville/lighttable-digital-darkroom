@@ -1253,7 +1253,8 @@
         {
           "title": "Create a manual mask",
           "paragraphs": [
-            "Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments."
+            "Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments.",
+            "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."
           ],
           "steps": [
             "Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.",
@@ -1428,7 +1429,8 @@
         {
           "title": "Create a correction",
           "paragraphs": [
-            "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable."
+            "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.",
+            "Corrections are applied in order, so a later source can include an earlier correction. Wait for the preview update before judging the result or sharpening around the corrected area."
           ],
           "steps": [
             "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.",
@@ -2593,7 +2595,8 @@
           "title": "Check what has finished rendering",
           "paragraphs": [
             "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. A slim animated bar beneath Applying film…, Refining RAW detail…, or Updating preview detail… stays visible until the requested preview is displayed. The bar indicates ongoing work, not a percentage or time remaining. With reduced motion enabled, the bar stays still. The photo stays visible without dimming. At 1:1, wait for 100% detail ready when assessing fine detail; Preview ready alone refers to the requested preview resolution.",
-            "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit."
+            "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
+            "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."
           ],
           "steps": [
             "Open Settings → Performance.",
