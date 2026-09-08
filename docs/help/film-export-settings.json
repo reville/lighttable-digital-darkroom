@@ -14,7 +14,7 @@
       {"path": "web/film-browser.js", "anchor": "Previews use this photo’s edits. Choose a stock to apply it."},
       {"path": "web/film-browser.js", "anchor": "button.onclick = () => { close(); apply(stock.id, snapshot.name); };"},
       {"path": "web/index.html", "anchor": "Film processing is bypassed. Edit adjustments remain active."},
-      {"path": "web/index.html", "anchor": "<strong>Realistic Film Simulation</strong>"},
+      {"path": "web/index.html", "anchor": "id=\"filmProfileSection\""},
       {"path": "web/app.js", "anchor": "filmStages.open = true;"},
       {"path": "web/app.js", "anchor": "option.disabled = profile.rustOnly && !S.rustAvailable;"},
       {"path": "web/index.html", "anchor": "Include Film profile and physical settings"},
@@ -171,7 +171,7 @@
     "related": ["export-photos", "export-metadata-sidecars"],
     "sources": [
       {"path": "web/index.html", "anchor": "Keep source folder hierarchy"},
-      {"path": "web/app.js", "anchor": "'Subfolder name, e.g. film-exports'"},
+      {"path": "web/app.js", "anchor": "tr(\"Subfolder name, e.g. film-exports\")"},
       {"path": "web/index.html", "anchor": "Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}."},
       {"path": "export_workflow.py", "anchor": "def collision_path(path: Path, policy: str,"},
       {"path": "export_workflow.py", "anchor": "candidate = path.with_name(f\"{path.stem}-{index}{path.suffix}\")"}
@@ -189,9 +189,9 @@
     ],
     "related": ["export-photos", "export-filenames-and-folders", "settings-and-defaults"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<span>Metadata</span><select id=\"modalExMetadata\">"},
-      {"path": "web/index.html", "anchor": "<span>Recipe sidecar</span><select id=\"modalExSidecar\">"},
-      {"path": "web/index.html", "anchor": "<span>File timestamp</span><select id=\"modalExPreserveCaptureTime\">"},
+      {"path": "web/index.html", "anchor": "id=\"modalExMetadata\""},
+      {"path": "web/index.html", "anchor": "id=\"modalExSidecar\""},
+      {"path": "web/index.html", "anchor": "id=\"modalExPreserveCaptureTime\""},
       {"path": "export_workflow.py", "anchor": "Capture timezone is missing; kept the export file timestamp."},
       {"path": "export_workflow.py", "anchor": "Capture time or timezone is invalid; kept the export file timestamp."},
       {"path": "web/index.html", "anchor": "Keep portable LightTable edits beside originals"}
@@ -209,7 +209,7 @@
     ],
     "related": ["export-format-color-space", "export-photos"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<strong>Soft proof</strong><div id=\"viewProofControls\"></div>"},
+      {"path": "web/index.html", "anchor": "id=\"viewProofControls\""},
       {"path": "web/index.html", "anchor": "<select id=\"softProofProfile\">"},
       {"path": "soft_proof.py", "anchor": "\"matte\": (0.68, 0.032, 0.90),"},
       {"path": "web/app.js", "anchor": "$('softProofPaper').disabled = !S.softProof.enabled || !printTarget;"},
@@ -228,7 +228,7 @@
     ],
     "related": ["export-format-color-space", "settings-and-defaults"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<strong id=\"externalEditTitle\">Edit in another app</strong>"},
+      {"path": "web/index.html", "anchor": "id=\"externalEditTitle\""},
       {"path": "web/index.html", "anchor": "The adjusted TIFF is written beside its original."},
       {"path": "web/app.js", "anchor": "$('externalEditMode').querySelector('[value=\"original\"]').disabled = hasRaw;"},
       {"path": "web/app.js", "anchor": "if (meta && !e.shiftKey && e.key.toLowerCase() === 'e')"},
@@ -242,10 +242,10 @@
     "summary": "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.",
     "keywords": ["settings", "preferences", "defaults", "camera", "raw", "serial", "iso", "font", "background", "lights out", "notifications", "xmp", "portable"],
     "sections": [
-      {"title": "Interface and behavior", "paragraphs": ["Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow."]},
+      {"title": "Interface and behavior", "paragraphs": ["Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow."]},
       {"title": "Defaults for unedited photos", "paragraphs": ["Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."], "steps": ["Open Settings → Develop Defaults.", "Choose the starting Film, workflow, profile, and preset settings.", "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.", "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.", "Use Reset in the Current camera area to remove that camera default."]}
     ],
-    "related": ["keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery", "xmp-interchange"],
+    "related": ["settings-language", "keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery", "xmp-interchange"],
     "sources": [
       {"path": "web/index.html", "anchor": "Changes save automatically."},
       {"path": "web/index.html", "anchor": "Applied only to photos that do not already have saved edits."},
@@ -267,13 +267,13 @@
     ],
     "related": ["settings-and-defaults", "export-photos", "external-editor"],
     "sources": [
-      {"path": "web/app.js", "anchor": "toast('Shortcut scheme applies after a reload');"},
+      {"path": "web/app.js", "anchor": "toast(tr(\"Shortcut scheme applies after a reload\"));"},
       {"path": "web/index.html", "anchor": "Hold a mapped key and scroll or use arrow keys."},
       {"path": "web/index.html", "anchor": "Let approved local tools control this window with visible history and Undo."},
-      {"path": "web/midi.js", "anchor": "pill.title = 'Web MIDI API not supported in this browser';"},
+      {"path": "web/midi.js", "anchor": "pill.title = tr(\"Web MIDI API not supported in this browser\");"},
       {"path": "web/midi.js", "anchor": "if (status !== 0xb0) return;"},
-      {"path": "web/midi.js", "anchor": "showMidiHud(`Turn any knob to map → ${target.label || target.control}`);"},
-      {"path": "app/main.swift", "anchor": "addEditorItem(helpMenu, title: \"Keyboard Shortcuts\","}
+      {"path": "web/midi.js", "anchor": "showMidiHud(tr(\"Turn any knob to map → {value}\", {value: (target.label || target.control)}));"},
+      {"path": "app/main.swift", "anchor": "addEditorItem(helpMenu, title: L(\"Keyboard Shortcuts\"),"}
     ]
   },
   {
@@ -289,9 +289,9 @@
     "related": ["assisted-culling", "settings-and-defaults"],
     "sources": [
       {"path": "web/index.html", "anchor": "Analysis stays on this Mac and never modifies photo folders."},
-      {"path": "web/app.js", "anchor": "'Objects, scenes, visible text, and faces';"},
-      {"path": "web/app.js", "anchor": "'Search photos, contents, text, and faces'"},
-      {"path": "web/app.js", "anchor": "indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted."},
+      {"path": "web/app.js", "anchor": "tr(\"Objects, scenes, visible text, and faces\")"},
+      {"path": "web/app.js", "anchor": "tr(\"Search photos, contents, text, and faces\")"},
+      {"path": "web/app.js", "anchor": "trn(\"{count} indexed photo remains local until deleted.\", \"{count} indexed photos remain local until deleted.\", S.ai.indexed"},
       {"path": "web/app.js", "anchor": "Delete the generated local photo index? Your originals and edits will not be changed."},
       {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"}
     ]
@@ -310,7 +310,7 @@
     "sources": [
       {"path": "web/app.js", "anchor": "Nothing is flagged until you ask for it."},
       {"path": "web/local-ai.js", "anchor": "True when any of the chosen criteria answered yes for this photo."},
-      {"path": "web/index.html", "anchor": "<summary>Assisted culling</summary>"},
+      {"path": "web/index.html", "anchor": "Assisted culling"},
       {"path": "web/app.js", "anchor": "Existing flags on those photos are replaced."},
       {"path": "web/app.js", "anchor": "const targets = linkedMetadataTargets(cullResults(group));"},
       {"path": "web/app.js", "anchor": "for (const image of targets) enqueuePhotoPatch(image, { status });"}
@@ -331,8 +331,8 @@
     "sources": [
       {"path": "web/preview-preferences.js", "anchor": "export function previewResolutionPreference"},
       {"path": "web/index.html", "anchor": "Preview resolution override"},
-      {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return '100% detail ready';"},
-      {"path": "web/preview-detail.js", "anchor": "if (refining) return 'Refining RAW detail…';"},
+      {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return tr(\"100% detail ready\");"},
+      {"path": "web/preview-detail.js", "anchor": "if (refining) return tr(\"Refining RAW detail…\");"},
       {"path": "web/view-performance.js", "anchor": "if (actualSize) return Math.max(64, Math.min(8000, source || 1100));"},
       {"path": "web/index.html", "anchor": "Automatic (recommended)"},
       {"path": "web/settings.js", "anchor": "Purge generated previews and render caches? Originals and edits are not affected."},
@@ -401,11 +401,11 @@
       },
       {
         "path": "web/settings.js",
-        "anchor": "? `Verified backup: ${result.archive}`"
+        "anchor": "result.archive ? tr(\"Verified backup: {resultArchive}\", {resultArchive: result.archive})"
       },
       {
         "path": "web/recovery.js",
-        "anchor": "Missing files: ${verify.missingFiles} (kept with their edits)"
+        "anchor": "tr(\"Missing files: {verifyMissingFiles} (kept with their edits)\", {verifyMissingFiles: verify.missingFiles})"
       },
       {
         "path": "web/recovery.js",
@@ -425,8 +425,107 @@
       },
       {
         "path": "app/main.swift",
-        "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+        "anchor": "diagnosticsMenu, title: L(\"Restart Rendering Service\"),"
       }
     ]
-  }
+  },
+{
+  "id": "settings-language",
+  "title": "Choose the app and help language",
+  "category": "Settings",
+  "summary": "Set one language for the interface and searchable help, with your choice remembered for future launches.",
+  "keywords": [
+    "language",
+    "translation",
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Chinese",
+    "Arabic",
+    "localization",
+    "settings",
+    "first launch"
+  ],
+  "sections": [
+    {
+      "title": "Choose a language on first use",
+      "paragraphs": [
+        "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.",
+        "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.",
+        "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion."
+      ],
+      "steps": [
+        "Choose your preferred language in the first-use dialog.",
+        "Click Continue. The app proceeds after the choice is saved."
+      ]
+    },
+    {
+      "title": "Change the language later",
+      "paragraphs": [
+        "Changing language saves pending edits and reloads the current window. Photo filenames, your keywords, and other photo content keep their existing wording."
+      ],
+      "steps": [
+        "Open Settings → General.",
+        "Choose a language in Language.",
+        "Click Apply language and wait for the window to reload.",
+        "Open Help to search or browse in the selected language."
+      ],
+      "tips": [
+        "If language loading or saving fails, your window and language selection stay available for another attempt. If pending photo edits could not save, use Retry save, then apply the language again.",
+        "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds."
+      ]
+    }
+  ],
+  "related": [
+    "settings-and-defaults",
+    "shortcut-schemes"
+  ],
+  "sources": [
+    {
+      "path": "web/locale-bootstrap.js",
+      "anchor": "const ready = await window.lightTablePrepareToClose?.();"
+    },
+    {
+      "path": "web/locale-bootstrap.js",
+      "anchor": "sendNative('localizationChanged', { locale: code });\n    window.location.reload();"
+    },
+    {
+      "path": "web/locale-bootstrap.js",
+      "anchor": "window.lightTableCancelClose?.();"
+    },
+    {
+      "path": "web/i18n.js",
+      "anchor": "if (prefs?.localeChosen === true && supported.includes(prefs.locale)) {"
+    },
+    {
+      "path": "web/i18n.js",
+      "anchor": "body: JSON.stringify({ locale: code, localeChosen: true })"
+    },
+    {
+      "path": "web/index.html",
+      "anchor": "id=\"settingsLanguage\""
+    },
+    {
+      "path": "web/settings.js",
+      "anchor": "await changeLanguage(languageSelect.value);"
+    },
+    {
+      "path": "app/main.swift",
+      "anchor": "guard chooseInitialLanguage() else { return }\n        buildMenu()"
+    },
+    {
+      "path": "app/main.swift",
+      "anchor": "if !NativeLocaleStore.isEnglish(primary) {"
+    },
+    {
+      "path": "app/main.swift",
+      "anchor": "try nativeLocalization.saveChoice(selected)"
+    },
+    {
+      "path": "web/locales/manifest.json",
+      "anchor": "\"code\": \"zh-Hant\""
+    }
+  ]
+}
 ]

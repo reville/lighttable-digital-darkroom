@@ -1,0 +1,248 @@
+{
+  "pairs": [
+    {
+      "one": " · {count} paired file linked",
+      "other": " · {count} paired files linked"
+    },
+    {
+      "one": "Corrected {count} capture. You can also restore capture-time steps in History.",
+      "other": "Corrected {count} captures. You can also restore capture-time steps in History."
+    },
+    {
+      "one": "Export {count} Photo",
+      "other": "Export {count} Photos"
+    },
+    {
+      "one": "Exporting {count} photo to {destination}…",
+      "other": "Exporting {count} photos to {destination}…"
+    },
+    {
+      "one": "Imported {count} photo from Apple Photos{value}",
+      "other": "Imported {count} photos from Apple Photos{value}"
+    },
+    {
+      "one": "Imported {value} preset",
+      "other": "Imported {value} presets"
+    },
+    {
+      "one": "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.",
+      "other": "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes."
+    },
+    {
+      "one": "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.",
+      "other": "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them."
+    },
+    {
+      "one": "Pasted to {count} photo",
+      "other": "Pasted to {count} photos"
+    },
+    {
+      "one": "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.",
+      "other": "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced."
+    },
+    {
+      "one": "Pick {count} select",
+      "other": "Pick {count} selects"
+    },
+    {
+      "one": "Picked {count} photo",
+      "other": "Picked {count} photos"
+    },
+    {
+      "one": "Reject {count} photo",
+      "other": "Reject {count} photos"
+    },
+    {
+      "one": "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.",
+      "other": "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced."
+    },
+    {
+      "one": "Rejected {count} photo",
+      "other": "Rejected {count} photos"
+    },
+    {
+      "one": "Removed generated masks from {count} photo",
+      "other": "Removed generated masks from {count} photos"
+    },
+    {
+      "one": "Restored {count} capture. You can also restore capture-time steps in History.",
+      "other": "Restored {count} captures. You can also restore capture-time steps in History."
+    },
+    {
+      "one": "Reviewing {count} photo that met a reject criterion.",
+      "other": "Reviewing {count} photos that met a reject criterion."
+    },
+    {
+      "one": "Reviewing {count} photo that met a select criterion.",
+      "other": "Reviewing {count} photos that met a select criterion."
+    },
+    {
+      "one": "Wrote {count} sidecar.",
+      "other": "Wrote {count} sidecars."
+    },
+    {
+      "one": "{count} already added",
+      "other": "{count} already added"
+    },
+    {
+      "one": "{count} article",
+      "other": "{count} articles"
+    },
+    {
+      "one": "{count} capture will change. Originals stay unchanged.",
+      "other": "{count} captures will change. Originals stay unchanged."
+    },
+    {
+      "one": "{count} could not be imported.",
+      "other": "{count} could not be imported."
+    },
+    {
+      "one": "{count} could not be imported. Run this import again to retry.",
+      "other": "{count} could not be imported. Run this import again to retry."
+    },
+    {
+      "one": "{count} crash while {stage} · {time} · set aside",
+      "other": "{count} crashes while {stage} · {time} · set aside"
+    },
+    {
+      "one": "{count} crash while {stage} · {time} · still open",
+      "other": "{count} crashes while {stage} · {time} · still open"
+    },
+    {
+      "one": "{count} damaged recovery draft kept for repair; other drafts remain available.",
+      "other": "{count} damaged recovery drafts kept for repair; other drafts remain available."
+    },
+    {
+      "one": "{count} duplicate group covering {files}.",
+      "other": "{count} duplicate groups covering {files}."
+    },
+    {
+      "one": "{count} error",
+      "other": "{count} errors"
+    },
+    {
+      "one": "{count} face detected",
+      "other": "{count} faces detected"
+    },
+    {
+      "one": "{count} face found",
+      "other": "{count} faces found"
+    },
+    {
+      "one": "{count} file",
+      "other": "{count} files"
+    },
+    {
+      "one": "{count} indexed photo remains local until deleted.",
+      "other": "{count} indexed photos remain local until deleted."
+    },
+    {
+      "one": "{count} minimum alignment inlier",
+      "other": "{count} minimum alignment inliers"
+    },
+    {
+      "one": "{count} original could not be found; reconnect its folder to edit it.",
+      "other": "{count} originals could not be found; reconnect their folders to edit them."
+    },
+    {
+      "one": "{count} original could not be imported. Check your connection and available disk space, then try again.",
+      "other": "None of the {count} originals could be imported. Check your connection and available disk space, then try again."
+    },
+    {
+      "one": "{count} original imported",
+      "other": "{count} originals imported"
+    },
+    {
+      "one": "{count} photo",
+      "other": "{count} photos"
+    },
+    {
+      "one": "{count} photo added. Your original catalog is unchanged.",
+      "other": "{count} photos added. Your original catalog is unchanged."
+    },
+    {
+      "one": "{count} photo exported",
+      "other": "{count} photos exported"
+    },
+    {
+      "one": "{count} photo imported.",
+      "other": "{count} photos imported."
+    },
+    {
+      "one": "{count} photo indexed on this Mac.",
+      "other": "{count} photos indexed on this Mac."
+    },
+    {
+      "one": "{count} photo restored",
+      "other": "{count} photos restored"
+    },
+    {
+      "one": "{count} photo selected",
+      "other": "{count} photos selected"
+    },
+    {
+      "one": "{count} photo updated",
+      "other": "{count} photos updated"
+    },
+    {
+      "one": "{count} picked photo",
+      "other": "{count} picked photos"
+    },
+    {
+      "one": "{count} preset file could not be read",
+      "other": "{count} preset files could not be read"
+    },
+    {
+      "one": "{count} preset · select one to try",
+      "other": "{count} presets · select one to try"
+    },
+    {
+      "one": "{count} rated photo",
+      "other": "{count} rated photos"
+    },
+    {
+      "one": "{count} selected photo",
+      "other": "{count} selected photos"
+    },
+    {
+      "one": "{count} sidecar needs retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.",
+      "other": "{count} sidecars need retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now."
+    },
+    {
+      "one": "{count} sidecar waiting to be written.",
+      "other": "{count} sidecars waiting to be written."
+    },
+    {
+      "one": "{count} source",
+      "other": "{count} sources"
+    },
+    {
+      "one": "{count} unsupported setting skipped",
+      "other": "{count} unsupported settings skipped"
+    },
+    {
+      "one": "{count} unsupported setting skipped: {details}",
+      "other": "{count} unsupported settings skipped: {details}"
+    },
+    {
+      "one": "{count} warning",
+      "other": "{count} warnings"
+    },
+    {
+      "one": "{message} {completed} of {count} original",
+      "other": "{message} {completed} of {count} originals"
+    },
+    {
+      "one": "{source} · {count} mapped setting",
+      "other": "{source} · {count} mapped settings"
+    },
+    {
+      "one": "{value} photo copied{value2}",
+      "other": "{value} photos copied{value2}"
+    },
+    {
+      "one": "{value} unexpected exit in the last 24 hours.",
+      "other": "{value} unexpected exits in the last 24 hours."
+    }
+  ]
+}

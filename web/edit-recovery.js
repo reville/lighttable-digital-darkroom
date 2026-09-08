@@ -1,3 +1,4 @@
+import { t as tr, tn as trn } from './i18n.js';
 // Pending edits are kept outside the render server, scoped to one catalog.
 // Native hosts persist files; a normal browser uses its own origin storage.
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -20,7 +21,7 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
     const scopeId = await scopeKey;
     const key = name ? await hash(name) : null;
     if (nativeRequest) return nativeRequest({operation, scope: scopeId, key, value, token});
-    if (!storage) throw new Error('Local edit recovery storage is unavailable');
+    if (!storage) throw new Error(tr("Local edit recovery storage is unavailable"));
     const base = `${prefix}${scopeId}:`;
     if (operation === 'list') {
       const records = [];
@@ -48,9 +49,9 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
   return {
     async list() {
       const records = await request('list');
-      if (!Array.isArray(records)) throw new Error('Invalid edit recovery journal');
+      if (!Array.isArray(records)) throw new Error(tr("Invalid edit recovery journal"));
       const damaged = records.filter(record => record?.journalError);
-      onWarning(damaged.length ? new Error(`${damaged.length} damaged recovery draft${damaged.length === 1 ? '' : 's'} kept for repair; other drafts remain available.`) : null);
+      onWarning(damaged.length ? new Error(trn("{count} damaged recovery draft kept for repair; other drafts remain available.", "{count} damaged recovery drafts kept for repair; other drafts remain available.", damaged.length, {damagedLength: damaged.length})) : null);
       return records.filter(record => record?.scope === scope && typeof record.name === 'string'
         && typeof record.token === 'string' && record.payload?.state?.name === record.name);
     },

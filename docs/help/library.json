@@ -55,7 +55,7 @@
     "sources": [
       {
         "path": "app/main.swift",
-        "anchor": "panel.message = \"Choose photos or folders. LightTable keeps originals in place.\""
+        "anchor": "panel.message = L(\"Choose photos or folders. LightTable keeps originals in place.\")"
       },
       {
         "path": "app/main.swift",
@@ -63,7 +63,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<button id=\"catalogRescan\" role=\"menuitem\">Rescan folders</button>"
+        "anchor": "id=\"catalogRescan\""
       },
       {
         "path": "web/first-run.js",
@@ -126,7 +126,7 @@
     "sources": [
       {
         "path": "web/index.html",
-        "anchor": "<strong id=\"ingestTitle\">Import from card</strong>"
+        "anchor": "id=\"ingestTitle\""
       },
       {
         "path": "web/catalog-ui.js",
@@ -193,11 +193,11 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "favorite ? 'Remove from Favorites' : 'Add as Favorite'"
+        "anchor": "favorite ? tr(\"Remove from Favorites\") : tr(\"Add as Favorite\")"
       },
       {
         "path": "web/app.js",
-        "anchor": "items.push(menuButton('Synchronize Folder', () => location.reload()));"
+        "anchor": "items.push(menuButton(tr(\"Synchronize Folder\"), () => location.reload()));"
       },
       {
         "path": "app/main.swift",
@@ -290,7 +290,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<label class=\"field-label\" for=\"labelFilter\">Color label</label>"
+        "anchor": "for=\"labelFilter\""
       },
       {
         "path": "web/app.js",
@@ -573,7 +573,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<h2>Shortcuts &amp; Hardware</h2>"
+        "anchor": "Shortcuts &amp; Hardware"
       },
       {
         "path": "web/app.js",
@@ -622,7 +622,7 @@
     "sources": [
       {
         "path": "web/app.js",
-        "anchor": "const name = await askName('New collection');"
+        "anchor": "const name = await askName(tr(\"New collection\"));"
       },
       {
         "path": "web/app.js",
@@ -638,7 +638,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<button class=\"quiet full compact\" id=\"addToCollection\" disabled>Add selected to collection</button>"
+        "anchor": "id=\"addToCollection\""
       }
     ]
   },
@@ -762,11 +762,11 @@
       },
       {
         "path": "web/survey.js",
-        "anchor": "<button class=\"survey-remove\" title=\"Remove from survey\">×</button>"
+        "anchor": "<button class=\"survey-remove\" title=\"${i18nHTML(tr(\"Remove from survey\"))}\">×</button>"
       },
       {
         "path": "web/app.js",
-        "anchor": "toast('Marked the select and rejected the rest');"
+        "anchor": "toast(tr(\"Marked the select and rejected the rest\"));"
       }
     ]
   },
@@ -827,11 +827,11 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "if (members.length < 2) return toast('Select at least two photos to stack');"
+        "anchor": "if (members.length < 2) return toast(tr(\"Select at least two photos to stack\"));"
       },
       {
         "path": "web/app.js",
-        "anchor": "badge.title = stack.collapsed ? 'Expand stack' : 'Collapse stack';"
+        "anchor": "badge.title = stack.collapsed ? tr(\"Expand stack\") : tr(\"Collapse stack\");"
       }
     ]
   },
@@ -886,7 +886,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<h2>Files &amp; Metadata</h2>"
+        "anchor": "Files &amp; Metadata"
       },
       {
         "path": "web/index.html",
@@ -894,7 +894,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "button.textContent = image.raw ? 'RAW → JPEG' : 'JPEG → RAW';"
+        "anchor": "button.textContent = image.raw ? tr(\"RAW → JPEG\") : tr(\"JPEG → RAW\");"
       }
     ]
   },
@@ -952,7 +952,7 @@
       },
       {
         "path": "server.py",
-        "anchor": "raise ValueError(\"a rename template cannot create folders\")"
+        "anchor": "raise ValueError(T(\"a rename template cannot create folders\"))"
       },
       {
         "path": "server.py",
@@ -1019,7 +1019,7 @@
       },
       {
         "path": "app/main.swift",
-        "anchor": "title: \"Move Rejected Photos to Trash…\""
+        "anchor": "title: L(\"Move Rejected Photos to Trash…\")"
       },
       {
         "path": "app/main.swift",
@@ -1111,7 +1111,7 @@
       },
       {
         "path": "web/metadata-panel.js",
-        "anchor": "const name = await ctx.askName('Rename keyword',"
+        "anchor": "const name = await ctx.askName(tr(\"Rename keyword\"),"
       },
       {
         "path": "web/metadata-panel.js",

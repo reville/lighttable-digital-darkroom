@@ -52,7 +52,25 @@ test('every contextual help button has a bundled destination and a real section 
   for (const topics of Object.values(HELP_SECTION_TOPICS)) {
     for (const [label, id] of Object.entries(topics)) {
       assert.ok(ids.has(id), `Missing contextual help: ${id}`);
-      assert.ok(html.includes(`<span>${label}</span>`), `Missing section: ${label}`);
+      assert.ok(new RegExp(`<span[^>]*>${label}</span>`).test(html), `Missing section: ${label}`);
     }
   }
+});
+
+
+test('search retains Chinese, Arabic and Indic writing systems', () => {
+  for (const [title, query] of [['裁剪和拉直照片','裁剪'],['اقتصاص الصور','اقتصاص'],['फ़ोटो में बदलाव','फ़ोटो'],['ছবি সম্পাদনা','ছবি'],['ปรับแต่งภาพ','ภาพ']]) {
+    const translated = [{...articles[0], title, summary:'', keywords:[], sections:[], categoryLabel:title}];
+    assert.equal(helpSearch(translated, query)[0]?.id, 'export', query);
+    assert.notEqual(normalizeHelpText(query), '');
+  }
+});
+
+test('translated categories display and search while keeping canonical filters', () => {
+  const translated = [{ ...articles[0], title: 'Enregistrer une photo',
+    categoryLabel: 'Sortie', summary: '', keywords: [],
+    sections: [{title: 'Préparer', steps: ['Choisir un dossier.']}] }];
+  assert.equal(helpSearch(translated, 'sortie', 'Export')[0]?.id, 'export');
+  assert.equal(helpSearch(translated, 'dossier', 'Export')[0]?.id, 'export');
+  assert.deepEqual(helpSearch(translated, '', 'Sortie'), []);
 });

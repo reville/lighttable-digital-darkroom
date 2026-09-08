@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import tempfile
 import threading
@@ -142,7 +144,7 @@ class AIIndexService:
         try:
             capabilities = self.analyzer.capabilities()
             if not capabilities.get("vision", {}).get("available"):
-                raise RuntimeError("the local Vision analyzer has not been built")
+                raise RuntimeError(T("the local Vision analyzer has not been built"))
             names = self._list_images()
             with self._lock:
                 self._total = len(names)

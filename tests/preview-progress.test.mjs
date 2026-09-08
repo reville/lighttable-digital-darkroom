@@ -4,9 +4,8 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { gradeBakeRequest, gradeBakeKey } from '../web/preview-processing.js';
 
-const source = readFileSync(new URL('../web/preview-progress.js', import.meta.url), 'utf8');
-const { createPreviewProgress, waitForRawRefinement } = await import(
-  `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import { createPreviewProgress, waitForRawRefinement } from '../web/preview-progress.js';
+import {t as tr, tn as trn} from '../web/i18n.js';
 const appSource = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
 const renderSource = appSource.match(/^async function doRender\([^]*?^}/m)[0];
 const tick = () => new Promise(resolve => setImmediate(resolve));
@@ -83,7 +82,7 @@ function renderHarness() {
   const requests = [], displays = [], progress = [], scheduled = [], nodes = new Map();
   const noop = () => {};
   let finishDecode, finishPaint;
-  const context = {
+  const context = {tr, trn,
     S, performance, console, setTimeout: fn => scheduled.push(fn), clearTimeout: noop, CLIENT_ID: 'review',
     gradeBakeRequest, gradeBakeKey,
     prefetchTimer: null, refineTimer: null, viewportRegionTimer: null,

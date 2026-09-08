@@ -1,3 +1,5 @@
+import { t as tr, tn as trn, currentLocale, availableLocales } from './i18n.js';
+import { changeLanguage } from './locale-bootstrap.js';
 import { api } from '/web/api.js';
 import { sendNative } from '/web/native-bridge.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
@@ -17,6 +19,23 @@ export function installSettings(context) {
   if (!dialog) return null;
   let returnFocus = null;
   let currentPrefs = {};
+  const languageSelect = byId('settingsLanguage');
+  languageSelect.replaceChildren(...availableLocales().map(item => {
+    const option = new Option(item.nativeName, item.code);
+    option.lang = item.code; option.dir = item.dir;
+    return option;
+  }));
+  languageSelect.value = currentLocale();
+  byId('settingsApplyLanguage').onclick = async () => {
+    const button = byId('settingsApplyLanguage');
+    button.disabled = true;
+    try {
+      setStatus(tr('Saving edits and applying language…'));
+      await changeLanguage(languageSelect.value);
+      if (languageSelect.value === currentLocale()) setStatus(tr('Saved'));
+    } catch (error) { setStatus(error.message); }
+    finally { button.disabled = false; }
+  };
 
   const pref = (key, fallback) => currentPrefs[key] ?? fallback;
   const syncPreviewSummary = () => {
@@ -27,30 +46,30 @@ export function installSettings(context) {
   };
   const showSidecarStatus = (status) => {
     const label = byId('sidecarWriteStatus');
-    label.textContent = status.error ? status.error
-      : status.failed ? `${status.failed} sidecar${status.failed === 1 ? '' : 's'} need retry. `
-        + 'Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.'
-      : status.pending ? `${status.pending} sidecar${status.pending === 1 ? '' : 's'} waiting to be written.`
-      : Number.isFinite(status.written) ? `Wrote ${status.written} sidecar${status.written === 1 ? '' : 's'}.`
-      : 'Sidecars are up to date.';
+    label.textContent = status.error || (status.failed
+      ? trn('{count} sidecar needs retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.',
+        '{count} sidecars need retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.', status.failed)
+      : status.pending ? trn('{count} sidecar waiting to be written.', '{count} sidecars waiting to be written.', status.pending)
+        : Number.isFinite(status.written) ? trn('Wrote {count} sidecar.', 'Wrote {count} sidecars.', status.written)
+          : tr('Sidecars are up to date.'));
     label.title = (status.errors || []).map((item) => `${item.name}: ${item.error}`).join('\n');
   };
   const refreshSidecarStatus = async () => {
     try {
       const response = await fetch('/api/sidecars/status');
-      if (!response.ok) throw new Error('Could not read sidecar sync status.');
+      if (!response.ok) throw new Error(tr("Could not read sidecar sync status."));
       showSidecarStatus(await response.json());
     } catch (error) { showSidecarStatus({ error: error.message }); }
   };
   window.addEventListener('lighttable-sidecars', (event) => showSidecarStatus(event.detail));
   const setStatus = (text) => { byId('settingsSaveStatus').textContent = text; };
-  const savePatch = async (patch, message = 'Saved') => {
+  const savePatch = async (patch, message = tr('Saved')) => {
     currentPrefs = { ...currentPrefs, ...patch };
     context.setPrefs(currentPrefs);
     applyAppearance();
-    setStatus('Saving…');
+    setStatus(tr("Saving…"));
     const result = await api('/api/prefs', patch);
-    setStatus(result?.error ? 'Could not save changes.' : message);
+    setStatus((result?.error ? tr("Could not save changes.") : message));
     return result;
   };
 
@@ -98,11 +117,10 @@ export function installSettings(context) {
     ]);
     const cache = storage?.cache;
     if (cache) {
-      byId('cacheLocation').textContent = cache.path || 'Unavailable';
-      byId('cacheUsage').textContent = `${bytesLabel(cache.usedBytes)} used · `
-        + `${bytesLabel(cache.budgetBytes)} budget`;
+      byId('cacheLocation').textContent = (cache.path || tr("Unavailable"));
+      byId('cacheUsage').textContent = tr("{value} used · {value2} budget", {value: bytesLabel(cache.usedBytes), value2: bytesLabel(cache.budgetBytes)});
     }
-    byId('catalogLocation').textContent = catalog?.path || 'Folder mode · no catalog';
+    byId('catalogLocation').textContent = (catalog?.path || tr("Folder mode · no catalog"));
     if (!byId('backupDirectory').value && catalog?.backupPath) {
       byId('backupDirectory').placeholder = catalog.backupPath;
     }
@@ -130,15 +148,14 @@ export function installSettings(context) {
     byId('settingsBackupNow').disabled = !catalog?.enabled;
     byId('catalogMirror').disabled = !catalog?.enabled || catalog?.mirrorAllowed === false;
     byId('catalogMirror').checked = catalog?.mirrorEnabled === true;
-    byId('catalogMirrorNote').textContent = catalog?.mirrorAllowed === false
-      ? 'Disabled for this app session by its launch configuration.'
-      : 'Save complete LightTable edits in .lighttable-state.json beside each photo folder. Copy that file with the originals to another computer. Existing files remain when turned off.';
+    byId('catalogMirrorNote').textContent = (catalog?.mirrorAllowed === false ? tr("Disabled for this app session by its launch configuration.") : tr("Save complete LightTable edits in .lighttable-state.json beside each photo folder. Copy that file with the originals to another computer. Existing files remain when turned off."));
   }
 
   async function populate() {
     const loaded = await fetch('/api/prefs').then((response) => response.json())
       .catch(() => ({}));
     currentPrefs = { ...loaded };
+    languageSelect.value = currentLocale();
     context.setPrefs(currentPrefs);
     byId('autoAdvance').checked = pref('autoAdvance', true);
     byId('completionNotifications').checked = pref('completionNotifications', false);
@@ -157,7 +174,7 @@ export function installSettings(context) {
     byId('newPhotoDevelopProfile').value = defaults.developProfile || 'standard';
     const presets = await fetch('/api/presets').then((response) => response.json())
       .catch(() => []);
-    byId('newPhotoPreset').replaceChildren(new Option('None', ''),
+    byId('newPhotoPreset').replaceChildren(new Option(tr("None"), ''),
       ...presets.map((item) => new Option(item.name, item.name)));
     byId('newPhotoPreset').value = defaults.preset || '';
     byId('rawDefaultMatch').value = pref('rawDefaultMatch', 'model');
@@ -178,7 +195,7 @@ export function installSettings(context) {
     syncPreviewSummary();
     const budget = Math.round(Number(pref('cacheBudgetGB', 7.5)));
     byId('cacheBudgetGB').value = String(Math.max(2, Math.min(32, budget)));
-    byId('cacheBudgetGBV').textContent = `${byId('cacheBudgetGB').value} GB`;
+    byId('cacheBudgetGBV').textContent = tr("{valueValue} GB", {valueValue: byId('cacheBudgetGB').value});
     byId('backupFrequency').value = pref('backupFrequency', 'daily');
     byId('backupDirectory').value = pref('backupDirectory', '');
     byId('keySchemeSelect').value = pref('keyScheme', 'lighttable');
@@ -192,9 +209,7 @@ export function installSettings(context) {
     }
     byId('settingsExternalEditor').value = external.path || '';
     const raw = context.currentRawDefault();
-    byId('settingsCameraDefaultStatus').textContent = raw
-      ? `${raw.label}${raw.serial ? ` · ${raw.serial}` : ''}${raw.iso ? ` · ISO ${raw.iso}` : ''}`
-      : 'Open a RAW photo to set its camera default.';
+    byId('settingsCameraDefaultStatus').textContent = (raw ? `${raw.label}${raw.serial ? ` · ${raw.serial}` : ''}${raw.iso ? ` · ISO ${raw.iso}` : ''}` : tr("Open a RAW photo to set its camera default."));
     byId('settingsSaveCameraDefault').disabled = !raw;
     byId('settingsResetCameraDefault').disabled = !raw?.settings;
     applyAppearance();
@@ -291,7 +306,7 @@ export function installSettings(context) {
     workflow: byId('newPhotoWorkflow').value,
     developProfile: byId('newPhotoDevelopProfile').value,
     preset: byId('newPhotoPreset').value,
-    } }, 'Saved · applies to unedited photos');
+    } }, tr('Saved · applies to unedited photos'));
     await context.reloadDefaults();
   };
   for (const id of ['newPhotoFilmEnabled', 'newPhotoWorkflow',
@@ -315,18 +330,16 @@ export function installSettings(context) {
     finally { byId('writeSidecarsNow').disabled = false; }
   };
   byId('purgeCache').onclick = async () => {
-    if (!window.confirm('Purge generated previews and render caches? Originals and edits are not affected.')) return;
+    if (!window.confirm(tr("Purge generated previews and render caches? Originals and edits are not affected."))) return;
     byId('purgeCache').disabled = true;
     const result = await api('/api/cache/purge', {});
-    byId('cacheUsage').textContent = result.error
-      ? result.error : `Removed ${result.removed} files · ${bytesLabel(result.bytesRemoved)}`;
+    byId('cacheUsage').textContent = (result.error ? result.error : tr("Removed {resultRemoved} files · {value}", {resultRemoved: result.removed, value: bytesLabel(result.bytesRemoved)}));
     byId('purgeCache').disabled = false;
   };
   byId('settingsBackupNow').onclick = async () => {
     byId('settingsBackupNow').disabled = true;
     const result = await api('/api/catalog/backup', {});
-    byId('backupStatus').textContent = result.archive
-      ? `Verified backup: ${result.archive}` : (result.error || 'Backup failed.');
+    byId('backupStatus').textContent = (result.archive ? tr("Verified backup: {resultArchive}", {resultArchive: result.archive}) : (result.error || tr("Backup failed.")));
     byId('settingsBackupNow').disabled = false;
     if (result.archive) await refreshLocations();
   };

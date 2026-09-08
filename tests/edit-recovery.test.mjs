@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import test from 'node:test';
-const moduleFor = async file => import(`data:text/javascript;base64,${Buffer.from(readFileSync(new URL(`../web/${file}`, import.meta.url))).toString('base64')}`);
+const moduleFor = async file => import(new URL(`../web/${file}`, import.meta.url));
 const {createEditRecovery, recoveryPayloadMatches} = await moduleFor('edit-recovery.js');
 const {createEditSaveQueue} = await moduleFor('edit-save-queue.js');
 const settle = () => new Promise(resolve => setImmediate(resolve));

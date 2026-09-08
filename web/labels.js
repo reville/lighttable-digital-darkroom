@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /* Colour labels and the keyboard schemes that drive culling.
  *
  * Labels are the third axis of triage alongside stars and pick/reject: a
@@ -18,12 +19,12 @@ export const LABEL_COLORS = {
 };
 
 export const LABEL_TITLES = {
-  none: 'No label',
-  red: 'Red',
-  yellow: 'Yellow',
-  green: 'Green',
-  blue: 'Blue',
-  purple: 'Purple',
+  none: tr("No label"),
+  red: tr("Red"),
+  yellow: tr("Yellow"),
+  green: tr("Green"),
+  blue: tr("Blue"),
+  purple: tr("Purple"),
 };
 
 export const cleanLabel = (value) => (
@@ -43,7 +44,7 @@ export const KEY_SCHEMES = {
       l: 'saturation', y: 'clarity', z: 'dehaze' },
   },
   classic: {
-    name: 'Classic',
+    name: tr('Classic'),
     grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compare: 'c',
     crop: 'r', mask: 'm', heal: 'q', before: 'b', fit: 'f', search: '/',
     pick: ['p'], reject: ['x'], unflag: ['u'],
@@ -60,7 +61,7 @@ export function labelSwatch(label) {
   if (clean === 'none') return '';
   return `<span class="label-dot" data-label="${clean}"`
     + ` style="background:${LABEL_COLORS[clean]}"`
-    + ` title="${LABEL_TITLES[clean]}"></span>`;
+    + ` title="${String(LABEL_TITLES[clean]).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}"></span>`;
 }
 
 /* Build the label control shown in the Info pane. */

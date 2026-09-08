@@ -1,3 +1,6 @@
+
+const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
+import { t as tr } from './i18n.js';
 /* Survey and A/B compare — choosing between frames, not judging one.
  *
  * The existing compare is before/after on a single photo. Culling a burst is a
@@ -60,7 +63,7 @@ export function createSurvey(ctx) {
     cell.innerHTML = `
         <div class="survey-frame">
           <img loading="lazy" decoding="async" alt="">
-          <button class="survey-remove" title="Remove from survey">×</button>
+          <button class="survey-remove" title="${i18nHTML(tr("Remove from survey"))}">×</button>
         </div>
         <figcaption>
           <span class="survey-name"></span>
@@ -87,9 +90,7 @@ export function createSurvey(ctx) {
     if (!container || !grid) return;
     const rows = names.map(imageFor).filter(Boolean);
     if (title) {
-      title.textContent = mode === 'compare'
-        ? `Compare ${rows.length} photos`
-        : `Survey ${rows.length} photos`;
+      title.textContent = mode === 'compare' ? tr("Compare {rowsLength} photos", {rowsLength: rows.length}) : tr("Survey {rowsLength} photos", {rowsLength: rows.length});
     }
     grid.className = `survey-grid ${mode === 'compare' ? 'compare-two' : ''}`;
     grid.style.setProperty('--survey-columns',

@@ -6,6 +6,8 @@ and the file is registered or copied through the verified ingest path.
 """
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import os
 import threading
@@ -160,11 +162,11 @@ class WatchService:
             plan = ingest_workflow.build_plan([item], request,
                                               existing_hashes=())
             if not plan["items"]:
-                raise ValueError("the watched file did not produce an ingest copy")
+                raise ValueError(T("the watched file did not produce an ingest copy"))
             copied = ingest_workflow.copy_item(
                 plan["items"][0], verify=str(request.get("verify", "hash")))
             if not copied.get("ok"):
-                raise RuntimeError(copied.get("error") or "watched ingest failed")
+                raise RuntimeError(copied.get("error") or T("watched ingest failed"))
             path = Path(copied["destination"])
             image_id = catalog_scan.register_file(self.catalog, path)
         self._apply_preset(image_id, self._preset(watch["presetId"]))
@@ -182,7 +184,7 @@ class WatchService:
             return False
         if media_availability.from_stat(stat) != "local":
             self._candidates.pop(key, None)
-            raise OSError(media_availability.CLOUD_MESSAGE)
+            raise OSError(media_availability.cloud_message())
         signature = (int(stat.st_size), int(stat.st_mtime_ns))
         previous, stable = self._candidates.get(key, (None, 0))
         stable = stable + 1 if previous == signature else 1

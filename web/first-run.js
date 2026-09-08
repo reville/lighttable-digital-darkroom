@@ -1,4 +1,26 @@
 /* First-run orientation. Completion is durable; opening a picker is not. */
+import {t as tr, tn as trn} from './i18n.js';
+
+function catalogSummary(result) {
+  return [
+    trn('{count} photo added. Your original catalog is unchanged.',
+      '{count} photos added. Your original catalog is unchanged.', result.matched || 0),
+    result.unmatched ? trn('{count} original could not be found; reconnect its folder to edit it.',
+      '{count} originals could not be found; reconnect their folders to edit them.', result.unmatched) : '',
+  ].filter(Boolean).join(' ');
+}
+
+function photosSummary(event) {
+  const imported = trn('{count} original imported', '{count} originals imported', event.imported || 0);
+  const existing = trn('{count} already added', '{count} already added', event.existing || 0);
+  const summary = event.failures
+    ? tr('{imported} · {existing} · {failures}', { imported, existing,
+      failures: trn('{count} could not be imported. Run this import again to retry.',
+        '{count} could not be imported. Run this import again to retry.', event.failures) })
+    : tr('{imported} · {existing}.', { imported, existing });
+  return tr('{summary} Add new photos later by running this import again.', { summary });
+}
+
 export function shouldShowSetup(prefs, library, nativeFirstRun = null) {
   if (!prefs || !library || prefs.firstRunSetup?.version >= 1) return false;
   if (nativeFirstRun !== null) return nativeFirstRun;
@@ -70,7 +92,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
       || window.__LIGHTTABLE_PLATFORM__ === 'windows';
     el('setupPhotosAvailability').hidden = photosAvailable;
     el('setupFolderPathField').hidden = nativeSetup;
-    el('setupFolderChoose').textContent = nativeSetup ? 'Choose folder…' : 'Add folder';
+    el('setupFolderChoose').textContent = nativeSetup ? tr('Choose folder…') : tr('Add folder');
   }
 
   async function finish(status = 'completed', source = resultSource) {
@@ -83,13 +105,13 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
       // Folder archives and Photos originals can live entirely in subfolders.
       if (status === 'completed') patch.includeSubfolders = true;
       const result = await post('/api/prefs', patch);
-      if (!result?.ok || result.error) throw new Error(result?.error || 'Could not save setup.');
+      if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not save setup.'));
       prefs = { ...prefs, firstRunSetup: value };
       sendNative('completeFirstRun');
       if (status === 'completed') onComplete?.();
       show(false);
     } catch (error) {
-      el('setupError').textContent = `${error.message} Please try again.`;
+      el('setupError').textContent = tr('{error} Please try again.', { error: error.message });
     } finally {
       busy = false;
       el('setupDone').disabled = el('setupLater').disabled = false;
@@ -113,8 +135,10 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
       show(true);
       el('setupPhotosProgress').max = Math.max(1, event.total || 1);
       el('setupPhotosProgress').value = event.completed || 0;
-      el('setupPhotosProgressText').textContent = (event.message || 'Importing originals…')
-        + (event.total ? ` ${event.completed || 0} of ${event.total} originals` : '');
+      const message = event.message || tr('Importing originals…');
+      el('setupPhotosProgressText').textContent = event.total
+        ? trn('{message} {completed} of {count} original', '{message} {completed} of {count} originals',
+          event.total, { message, completed: event.completed || 0 }) : message;
       el('setupPhotosCancel').disabled = false;
       return;
     }
@@ -122,18 +146,17 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     if (event.state === 'completed' && event.failures > 0
         && !(event.imported > 0 || event.existing > 0)) {
       setPage('photos'); show(true);
-      el('setupError').textContent = `None of the ${event.failures} originals could be imported. Check your connection and available disk space, then try again.`;
+      el('setupError').textContent = trn('{count} original could not be imported. Check your connection and available disk space, then try again.',
+        'None of the {count} originals could be imported. Check your connection and available disk space, then try again.', event.failures);
     } else if (event.state === 'completed') {
-      showResult('photos', event.failures ? 'Your Photos import is ready to review' : 'Your photos are ready',
-        `${event.imported || 0} originals imported · ${event.existing || 0} already added`
-        + (event.failures ? ` · ${event.failures} could not be imported. Run this import again to retry.` : '.')
-        + ' Add new photos later by running this import again.');
+      showResult('photos', event.failures ? tr('Your Photos import is ready to review') : tr('Your photos are ready'),
+        photosSummary(event));
     } else if (event.state === 'cancelled') {
       setPage('photos'); show(true);
-      el('setupError').textContent = event.message || 'Import stopped. Any completed copies are kept; you can resume by importing again.';
+      el('setupError').textContent = event.message || tr('Import stopped. Any completed copies are kept; you can resume by importing again.');
     } else if (event.state === 'error') {
       setPage('photos'); show(true);
-      el('setupError').textContent = event.message || 'Photos could not be imported. Try again or choose a folder.';
+      el('setupError').textContent = event.message || tr('Photos could not be imported. Try again or choose a folder.');
     }
   }
 
@@ -155,12 +178,12 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     busy = true;
     setPage('photos-progress');
     el('setupPhotosProgress').removeAttribute('value');
-    el('setupPhotosProgressText').textContent = 'Waiting for access to Photos…';
+    el('setupPhotosProgressText').textContent = tr('Waiting for access to Photos…');
   };
   el('setupPhotosCancel').onclick = () => {
     sendNative('cancelApplePhotosLibraryImport');
     el('setupPhotosCancel').disabled = true;
-    el('setupPhotosProgressText').textContent = 'Stopping import…';
+    el('setupPhotosProgressText').textContent = tr('Stopping import…');
   };
   el('setupPhotosSelected').onclick = () => sendNative('importApplePhotos');
   el('setupFolderChoose').onclick = async () => {
@@ -170,9 +193,9 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     el('setupFolderChoose').disabled = true;
     try {
       const result = await post('/api/catalog/sources', { action: 'add', path });
-      if (!result?.ok || result.error) throw new Error(result?.error || 'Could not add that folder.');
+      if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
       await reloadLibrary();
-      showResult('folder', 'Your folder is ready', 'Photos stay in their current folder. You can add more folders whenever you like.');
+      showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'));
     } catch (error) { el('setupError').textContent = error.message; }
     finally { el('setupFolderChoose').disabled = false; }
   };
@@ -206,15 +229,14 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
       if (!(result.matched > 0)) {
         setPage('lightroom');
         el('setupError').textContent = result.images
-          ? 'No originals could be found. Reconnect the photo folders and import the catalog again.'
-          : 'This catalog has no photos. Choose another catalog or start with a folder.';
+          ? tr('No originals could be found. Reconnect the photo folders and import the catalog again.')
+          : tr('This catalog has no photos. Choose another catalog or start with a folder.');
         return;
       }
       catalogResult = result;
       resultSource = 'lightroom';
-      el('setupHeading-result').textContent = 'Your Lightroom catalog is imported';
-      el('setupResultMessage').textContent = `${result.matched || 0} photos added. Your original catalog is unchanged.`
-        + (result.unmatched ? ` ${result.unmatched} originals could not be found; reconnect their folders to edit them.` : '');
+      el('setupHeading-result').textContent = tr('Your Lightroom catalog is imported');
+      el('setupResultMessage').textContent = catalogSummary(result);
       setPage('result');
     },
     catalogClosed() {
@@ -239,19 +261,19 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
         maybeShow();
       } else if (event?.type === 'photosLibraryImport') photosEvent(event);
       else if (event?.type === 'setupFolderSelected') {
-        showResult('folder', 'Your folder is ready', 'Photos stay in their current folder. You can add more folders whenever you like.');
+        showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'));
       } else if (event?.type === 'setupCatalogImported') {
-        showResult('lightroom', 'Your Lightroom catalog is imported',
-          `${event.matched || 0} photos added. Your original catalog is unchanged.`
-          + (event.unmatched ? ` ${event.unmatched} originals could not be found; reconnect their folders to edit them.` : ''));
+        showResult('lightroom', tr('Your Lightroom catalog is imported'), catalogSummary(event));
       } else if (event?.type === 'setupFolderCancelled') {
         setPage('folder'); show(true);
       } else if (event?.type === 'photosImported' && event.count > 0
           && (isOpen() || nativeFirstRun)) {
-        showResult('photos', 'Your photos are ready', `${event.count} photos imported.`
-          + (event.failures ? ` ${event.failures} could not be imported.` : ''));
+        showResult('photos', tr('Your photos are ready'), [
+          trn('{count} photo imported.', '{count} photos imported.', event.count),
+          event.failures ? trn('{count} could not be imported.', '{count} could not be imported.', event.failures) : '',
+        ].filter(Boolean).join(' '));
       } else if (event?.type === 'error' && isOpen()) {
-        el('setupError').textContent = event.message || 'Something went wrong. Please try again.';
+        el('setupError').textContent = event.message || tr('Something went wrong. Please try again.');
       }
     },
   };

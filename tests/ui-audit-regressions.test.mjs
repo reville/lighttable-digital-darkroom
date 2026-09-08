@@ -1,3 +1,4 @@
+import {t as tr, tn as trn} from '../web/i18n.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
@@ -21,11 +22,11 @@ function metadataHarness({ get, post } = {}) {
       addEventListener(type, fn) { this[type] = fn; } });
   }
   elements.set('infoPane', { classList: { contains: () => true } });
-  const context = vm.createContext({
+  const context = vm.createContext({tr, trn,
     setTimeout(fn) { const id = ++timerId; timers.set(id, fn); return id; },
     clearTimeout(id) { timers.delete(id); },
   });
-  vm.runInContext(source('metadata-panel.js').replace('export function', 'function'), context);
+  vm.runInContext(source('metadata-panel.js').replace(/^import .*?;\n/gm, '').replace('export function', 'function'), context);
   const panel = context.createMetadataPanel({
     el: (id) => elements.get(id), toast() {},
     get: get || (async () => ({ iptc: {} })),
@@ -93,7 +94,7 @@ function selectionHarness() {
   const state = { images, idx: 0, msel: new Set() };
   const start = source('app.js').indexOf('async function selectPhotoFromPointer(');
   const implementation = source('app.js').slice(start).split('\n/* -------------------------------------------------------------- prefs */')[0];
-  const context = vm.createContext({ SELECTION_REQUEST: null,
+  const context = vm.createContext({tr, trn, SELECTION_REQUEST: null,
     S: state, selectionAnchorName: null, cur: () => images[state.idx],
     visible: () => images, paintSelectionState() {},
     go: async (index) => { state.idx = index; },
@@ -138,7 +139,7 @@ function renameHarness() {
   }
   const s = source('catalog-ui.js');
   const implementation = s.slice(s.indexOf('  function bindRename() {'), s.indexOf('\n  bindSources();'));
-  const context = vm.createContext({ document, el: (id) => elements.get(id),
+  const context = vm.createContext({tr, trn, document, el: (id) => elements.get(id),
     ctx: { selection: () => selection }, toast() {},
     post: async (_path, body) => { writes.push(JSON.parse(JSON.stringify(body))); return { ok: true, preview: [], renamed: 1 }; },
   });
@@ -178,7 +179,7 @@ test('editor shortcuts ignore an open modal even if focus is outside it', () => 
   const start = s.indexOf("document.addEventListener('keydown', (e) => {");
   const registration = s.slice(start, s.indexOf("document.addEventListener('keyup'", start));
   let handler, ratings = 0;
-  const context = vm.createContext({
+  const context = vm.createContext({tr, trn,
     document: { querySelector: () => ({}), addEventListener(_type, fn) { handler = fn; } },
     cur: () => null, S: {}, KEYS: { pick: [], reject: [], unflag: [] },
     setRating() { ratings++; }, LABEL_KEYS: {}, SURVEY: null,

@@ -1,10 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import test from 'node:test';
-
-// Browser modules use .js without a repository-wide Node package type.
-const source = readFileSync(new URL('../web/edit-save-queue.js', import.meta.url), 'utf8');
-const {createEditSaveQueue} = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import {createEditSaveQueue} from '../web/edit-save-queue.js';
 const settle = () => new Promise(resolve => setImmediate(resolve));
 const deferred = () => {
   let resolve, reject;

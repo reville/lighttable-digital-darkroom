@@ -49,6 +49,11 @@ this does not establish complete compatibility with either application. See
 [Digital asset management](DIGITAL-ASSET-MANAGEMENT.md) for the workflow and
 [catalog measurements](bench/dam-performance.md) for the performance evidence.
 
+The interface and searchable Help support 20 languages. Choose a language in
+Settings → General; applying it saves pending edits and reloads the window.
+See [localization maintenance](docs/localization/README.md) for contributing
+translations and keeping Help current.
+
 ### Film is a complete image pipeline
 
 Choose from **23 film stocks**, each with its own spectral response, density

@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LightTable — Loupe View</title>
+<title data-i18n-text="{&quot;0&quot;:&quot;LightTable — Loupe View&quot;}">LightTable — Loupe View</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="/web/style.css">
+<link rel="stylesheet" href="/web/localization.css">
 <style>
   html, body {
     margin: 0; padding: 0; width: 100%; height: 100%;
@@ -69,32 +70,32 @@
   }
 </style>
 </head>
-<body>
+<body class="locale-loading">
 <div class="loupe-container" id="container">
   <header class="loupe-hud" id="hud">
-    <span class="loupe-status">Live 1:1 Loupe</span>
+    <span class="loupe-status" data-i18n-text="{&quot;0&quot;:&quot;Live 1:1 Loupe&quot;}">Live 1:1 Loupe</span>
     <span class="loupe-info" id="photoName">—</span>
     <span class="loupe-meta" id="photoMeta"></span>
     <div class="loupe-zoom-controls">
-      <button class="loupe-btn" id="btnFit">Fit</button>
+      <button class="loupe-btn" id="btnFit" data-i18n-text="{&quot;0&quot;:&quot;Fit&quot;}">Fit</button>
       <button class="loupe-btn active" id="btn100">100%</button>
       <button class="loupe-btn" id="btn200">200%</button>
     </div>
     <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;cursor:pointer">
       <input type="checkbox" id="lockFocusCheck" checked>
-      <span>Lock Focus Point</span>
+      <span data-i18n-text="{&quot;0&quot;:&quot;Lock Focus Point&quot;}">Lock Focus Point</span>
     </label>
   </header>
   <div class="loupe-viewport" id="viewport">
     <div class="loupe-empty" id="emptyState">
-      <strong>Secondary Loupe Display</strong>
-      <span>Select a photo in LightTable to view at 100% 1:1 detail.</span>
+      <strong data-i18n-text="{&quot;0&quot;:&quot;Secondary Loupe Display&quot;}">Secondary Loupe Display</strong>
+      <span data-i18n-text="{&quot;0&quot;:&quot;Select a photo in LightTable to view at 100% 1:1 detail.&quot;}">Select a photo in LightTable to view at 100% 1:1 detail.</span>
     </div>
     <div class="loupe-stage" id="stage" hidden>
-      <img class="loupe-image" id="loupeImg" alt="Loupe view">
+      <img class="loupe-image" id="loupeImg" alt="Loupe view" data-i18n-attrs="{&quot;alt&quot;:&quot;Loupe view&quot;}">
     </div>
   </div>
 </div>
-<script type="module" src="/web/loupe.js"></script>
+<script type="module" src="/web/loupe-bootstrap.js"></script>
 </body>
 </html>

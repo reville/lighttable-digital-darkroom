@@ -110,6 +110,8 @@ if [[ -d "scripts/models/denoise.mlpackage" && -f "scripts/models/models.json" ]
   done
 fi
 
+python3 scripts/native_localization_sources.py --bundle "$APP"
+
 codesign --force --deep --sign - "$APP"
 
 echo "Built: $PROJECT/$APP"

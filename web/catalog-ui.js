@@ -1,3 +1,6 @@
+
+const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
+import { t as tr, tn as trn } from './i18n.js';
 /* The catalog pane: sources, migration, ingest, rename, and maintenance.
  *
  * This is where a library that spans several folders is managed, and where
@@ -35,44 +38,40 @@ export function createCatalogUI(ctx) {
     const maintenance = el('catalogMaintenance');
     if (!container) return;
     if (!catalog || !catalog.enabled) {
-      container.textContent = 'Running on a single folder.';
-      if (summary) summary.textContent = 'Folder mode';
+      container.textContent = tr("Running on a single folder.");
+      if (summary) summary.textContent = tr("Folder mode");
       if (maintenance && catalog?.recovery?.status === 'damaged') {
-        maintenance.textContent = 'The catalog is damaged. Photos are open in '
-          + 'folder mode and nothing has been changed. Open Library Health to '
-          + 'salvage it, restore a backup, or start a new catalog.';
+        maintenance.textContent = tr("The catalog is damaged. Photos are open in folder mode and nothing has been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.");
       } else if (maintenance && catalog?.recovery?.status === 'unavailable') {
-        maintenance.textContent = 'The catalog could not be opened and no valid '
-          + 'backup was available. Photos are open in safe folder mode; the '
-          + 'damaged catalog has not been overwritten.';
+        maintenance.textContent = tr("The catalog could not be opened and no valid backup was available. Photos are open in safe folder mode; the damaged catalog has not been overwritten.");
       } else if (maintenance && catalog?.recovery?.status === 'incompatible') {
-        maintenance.textContent = 'This catalog was created by a newer '
-          + 'LightTable build. It was left unchanged; update the app to reopen it.';
+        maintenance.textContent = tr("This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.");
       }
       return;
     }
     const sources = catalog.sources || [];
     const stats = catalog.stats || {};
     if (summary) {
-      summary.textContent = `${stats.files || 0} photos · ${sources.length} `
-        + `source${sources.length === 1 ? '' : 's'}`
-        + (stats.missing ? ` · ${stats.missing} missing` : '');
+      summary.textContent = [
+        trn('{count} photo', '{count} photos', stats.files || 0, {count: stats.files || 0}),
+        trn('{count} source', '{count} sources', sources.length, {count: sources.length}),
+        stats.missing ? tr('{count} missing', {count: stats.missing}) : '',
+      ].filter(Boolean).join(' · ');
     }
     container.innerHTML = sources.map((source) => `
       <div class="source-row${source.available ? '' : ' unavailable'}"
            data-id="${escapeHTML(source.id)}">
         <button class="source-star${source.favorite ? ' on' : ''}"
-                data-act="favorite" title="Favourite">★</button>
+                data-act="favorite" title="${i18nHTML(tr("Favourite"))}">★</button>
         <span class="source-name" title="${escapeHTML(source.path)}">${escapeHTML(source.name)}</span>
         <span class="source-count">${Number(source.count) || 0}</span>
-        <button class="source-act" data-act="rescan" title="Rescan">⟳</button>
-        <button class="source-act" data-act="remove" title="Remove from catalog">×</button>
-      </div>`).join('') || 'No sources yet.';
+        <button class="source-act" data-act="rescan" title="${i18nHTML(tr("Rescan"))}">⟳</button>
+        <button class="source-act" data-act="remove" title="${i18nHTML(tr("Remove from catalog"))}">×</button>
+      </div>`).join('') || i18nHTML(tr('No sources yet.'));
     if (maintenance && catalog.recovery?.status === 'recovered') {
-      maintenance.textContent = 'Recovered the catalog from a verified backup. '
-        + 'The damaged database was preserved in the Recovery folder.';
+      maintenance.textContent = tr("Recovered the catalog from a verified backup. The damaged database was preserved in the Recovery folder.");
       if (!recoveryShown) {
-        toast('Catalog recovered from a verified backup');
+        toast(tr("Catalog recovered from a verified backup"));
         recoveryShown = true;
       }
     }
@@ -100,9 +99,7 @@ export function createCatalogUI(ctx) {
         if (action === 'remove') {
           const source = (catalog.sources || []).find((s) => s.id === id);
           if (!window.confirm(
-            `Remove “${source ? source.name : 'this folder'}” from the `
-            + 'catalog? Photos and edits stay recoverable; adding the same '
-            + 'folder again restores them.')) {
+            tr("Remove “{value}” from the catalog? Photos and edits stay recoverable; adding the same folder again restores them.", {value: source ? source.name : tr("this folder")}))) {
             return;
           }
           await post('/api/catalog/sources', { action: 'remove', id });
@@ -112,7 +109,7 @@ export function createCatalogUI(ctx) {
                      { action: 'favorite', id, favorite: !(source && source.favorite) });
         } else if (action === 'rescan') {
           await post('/api/catalog/scan', { sourceId: id });
-          toast('Scanning…');
+          toast(tr("Scanning…"));
         }
         await refresh();
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
@@ -124,7 +121,7 @@ export function createCatalogUI(ctx) {
       add.addEventListener('click', () => {
         /* The host owns the folder picker; it answers with `addFolder`. */
         if (!sendNative('addFolder', {})) {
-          toast('Adding folders needs the desktop app');
+          toast(tr("Adding folders needs the desktop app"));
         }
       });
     }
@@ -133,7 +130,7 @@ export function createCatalogUI(ctx) {
     if (rescan) {
       rescan.addEventListener('click', async () => {
         await post('/api/catalog/scan', {});
-        toast('Rescanning every source…');
+        toast(tr("Rescanning every source…"));
       });
     }
 
@@ -143,8 +140,7 @@ export function createCatalogUI(ctx) {
         const result = await post('/api/catalog/backup', {});
         const target = el('catalogMaintenance');
         if (target) {
-          target.textContent = result.archive
-            ? `Backed up to ${result.archive}` : (result.error || 'Failed');
+          target.textContent = result.archive ? tr("Backed up to {resultArchive}", {resultArchive: result.archive}) : (result.error || tr("Failed"));
         }
       });
     }
@@ -157,15 +153,16 @@ export function createCatalogUI(ctx) {
         const target = el('catalogMaintenance');
         if (!target) return;
         if (!groups.length) {
-          target.textContent = 'No duplicate files found.';
+          target.textContent = tr("No duplicate files found.");
           return;
         }
         const total = groups.reduce((sum, g) => sum + g.files.length, 0);
-        target.innerHTML = `<strong>${groups.length} duplicate `
-          + `group${groups.length === 1 ? '' : 's'}</strong> covering `
-          + `${total} files.<br>`
+        const groupSummary = trn('{count} duplicate group covering {files}.',
+          '{count} duplicate groups covering {files}.', groups.length,
+          {count: groups.length, files: trn('{count} file', '{count} files', total, {count: total})});
+        target.innerHTML = `<strong>${i18nHTML(groupSummary)}</strong><br>`
           + groups.slice(0, 20).map((group) =>
-            group.files.map((file) => file.relpath).join(' = ')).join('<br>');
+            group.files.map((file) => escapeHTML(file.relpath)).join(' = ')).join('<br>');
       });
     }
   }
@@ -177,20 +174,20 @@ export function createCatalogUI(ctx) {
     if (!button) return;
     button.addEventListener('click', async () => {
       const report = el('importReport');
-      if (report) report.textContent = 'Reading sidecars…';
+      if (report) report.textContent = tr("Reading sidecars…");
       try {
         const result = await post('/api/import/sidecars', {
           apply: { metadata: true, develop: false, crop: false },
         });
         if (report) {
           const ignored = Object.entries(result.ignored || {}).map(([key, count]) => `${key} (${count})`);
-          report.textContent = `Read ${result.read} sidecars, applied ${result.applied}. ${result.missing} photos had none.`
-            + (ignored.length ? ` Skipped: ${ignored.join(', ')}.` : '')
-            + (result.errors?.length ? ` ${result.errors.length} errors: ${result.errors.slice(0, 5).join('; ')}` : '');
+          report.textContent = tr('Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.', {read: result.read, applied: result.applied, missing: result.missing})
+            + (ignored.length ? ' ' + tr('Skipped: {items}.', {items: ignored.join(', ')}) : '')
+            + (result.errors?.length ? ' ' + tr('{count} errors: {details}', {count: result.errors.length, details: result.errors.slice(0, 5).join('; ')}) : '');
         }
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
       } catch (error) {
-        if (report) report.textContent = error.message || 'Sidecars could not be read.';
+        if (report) report.textContent = error.message || tr('Sidecars could not be read.');
       }
     });
   }
@@ -266,7 +263,7 @@ export function createCatalogUI(ctx) {
     if (choose) {
       choose.addEventListener('click', () => {
         if (!sendNative('chooseCatalogFile', {})) {
-          toast('Choosing a file needs the desktop app; paste a path instead');
+          toast(tr("Choosing a file needs the desktop app; paste a path instead"));
         }
       });
     }
@@ -279,12 +276,12 @@ export function createCatalogUI(ctx) {
       controls();
       el('importCoverage').hidden = true;
       if (!path) return;
-      summary.textContent = 'Reading catalog…';
+      summary.textContent = tr('Reading catalog…');
       try {
         const result = await post('/api/import/catalog', {path, inspectOnly: true});
         if (ticket !== inspection || path !== pathInput.value.trim()) return;
         if (result.error) throw new Error(result.error);
-        summary.textContent = `${result.images || 0} photos · ${result.collections || 0} collections. `
+        summary.textContent = tr('{photos} photos · {collections} collections. ', {photos: result.images || 0, collections: result.collections || 0})
           + (result.warnings || []).join('; ');
         inspected = path;
         options.hidden = false;
@@ -299,18 +296,17 @@ export function createCatalogUI(ctx) {
     });
     options.addEventListener('change', controls);
     function showReport(result) {
-      const prefix = result.previewOnly ? 'Compatibility preview' : result.trial ? 'Trial variants created' : 'Import complete';
-      summary.textContent = `${prefix}: ${result.matched || 0} matched, ${result.unmatched || 0} not found. `
-        + `${result.collections || 0} collections; ${result.history || 0} history steps. `
+      const prefix = result.previewOnly ? tr('Compatibility preview') : result.trial ? tr('Trial variants created') : tr('Import complete');
+      summary.textContent = tr('{prefix}: {matched} matched, {unmatched} not found. {collections} collections; {history} history steps. ', {prefix, matched: result.matched || 0, unmatched: result.unmatched || 0, collections: result.collections || 0, history: result.history || 0})
         + (result.warnings || []).join('; ')
-        + (result.beforeBackup ? ` Backup before import: ${result.beforeBackup}` : '');
+        + (result.beforeBackup ? ' ' + tr('Backup before import: {path}', {path: result.beforeBackup}) : '');
       el('importCoverage').hidden = false;
       el('importCoverageRows').replaceChildren(...(result.photos || []).map(photo => {
         const row = document.createElement('p');
-        row.textContent = `${photo.sourcePath || photo.sourceId} → ${photo.targetName || 'No match'} · ${photo.outcome}. `
-          + `Mapped: ${(photo.mapped || []).join(', ') || 'none'}. `
-          + (photo.skipped?.length ? `Skipped: ${photo.skipped.join(', ')}. ` : '')
-          + (photo.reference ? `Reference: ${photo.reference.path || photo.reference.note}. ` : '')
+        row.textContent = `${photo.sourcePath || photo.sourceId} → ${photo.targetName || tr('No match')} · ${photo.outcome}. `
+          + tr('Mapped: {items}. ', {items: (photo.mapped || []).join(', ') || tr('none')})
+          + (photo.skipped?.length ? tr('Skipped: {items}. ', {items: photo.skipped.join(', ')}) : '')
+          + (photo.reference ? tr('Reference: {reference}. ', {reference: photo.reference.path || photo.reference.note}) : '')
           + (photo.appearance || '');
         return row;
       }));
@@ -324,14 +320,14 @@ export function createCatalogUI(ctx) {
       if (mode === 'import' && signature !== previewed) return;
       body.previewOnly = mode === 'preview';
       body.options.trial = mode === 'trial';
-      busy = true; controls(); summary.textContent = 'Preparing…';
+      busy = true; controls(); summary.textContent = tr('Preparing…');
       try {
         const started = await post('/api/import/catalog', body);
-        if (started.error || !started.jobId) throw new Error(started.error || 'Could not start import');
+        if (started.error || !started.jobId) throw new Error(started.error || tr('Could not start import'));
         for (let attempt = 0; attempt < 7200; attempt++) {
           const record = await get(`/api/jobs/${started.jobId}`);
           if (record.error) throw new Error(record.error);
-          if (record.state === 'failed') throw new Error(record.errors?.join('; ') || 'Import failed');
+          if (record.state === 'failed') throw new Error(record.errors?.join('; ') || tr('Import failed'));
           if (record.state === 'done') {
             const result = record.result || {};
             if (mode === 'preview') previewed = signature;
@@ -344,10 +340,10 @@ export function createCatalogUI(ctx) {
             return;
           }
           const status = record.result || {};
-          summary.textContent = `${status.stage || 'Working'}… ${status.done || 0}/${status.total || 0}`;
+          summary.textContent = `${status.stage || tr('Working')}… ${status.done || 0}/${status.total || 0}`;
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        throw new Error('The import is still running. Check its job status before starting another import.');
+        throw new Error(tr('The import is still running. Check its job status before starting another import.'));
       } catch (error) { summary.textContent = error.message; }
       finally { busy = false; controls(); }
     }
@@ -392,7 +388,7 @@ export function createCatalogUI(ctx) {
                         ingestChooseDest: 'ingestDest',
                         ingestChooseBackup: 'ingestBackup' }[id];
         if (!sendNative('chooseIngestFolder', { field })) {
-          toast('Choosing a folder needs the desktop app; paste a path instead');
+          toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
         }
       });
     });
@@ -401,8 +397,8 @@ export function createCatalogUI(ctx) {
     if (scan) {
       scan.addEventListener('click', async () => {
         const path = el('ingestSource').value.trim();
-        if (!path) { toast('Choose a card first'); return; }
-        el('ingestStatus').textContent = 'Scanning…';
+        if (!path) { toast(tr("Choose a card first")); return; }
+        el('ingestStatus').textContent = tr("Scanning…");
         try {
           const result = await post('/api/ingest/scan',
                                     { path, request: ingestRequest() });
@@ -415,16 +411,10 @@ export function createCatalogUI(ctx) {
               <span class="ingest-cell-dest">${escapeHTML(String(item.destination || '').split('/').slice(-2).join('/'))}</span>
             </label>`).join('');
           el('ingestStatus').textContent =
-            `${ingestPlan.total} photos to copy`
-            + (ingestPlan.duplicates
-              ? `, ${ingestPlan.duplicates} already in the catalog` : '')
-            + `, ${(ingestPlan.bytes / 1e9).toFixed(2)} GB`
-            + ((ingestPlan.skipped || []).some((item) => item.reason === 'cloud-only')
-              ? `. ${(ingestPlan.skipped || []).filter((item) => item.reason === 'cloud-only').length} cloud-only photos skipped; download them in Finder and scan again.` : '');
+            tr("{ingestPlanTotal} photos to copy{value}, {value2} GB{value3}", {ingestPlanTotal: ingestPlan.total, value: ingestPlan.duplicates ? tr(", {ingestPlanDuplicates} already in the catalog", {ingestPlanDuplicates: ingestPlan.duplicates}) : '', value2: (ingestPlan.bytes / 1e9).toFixed(2), value3: (ingestPlan.skipped || []).some((item) => item.reason === 'cloud-only') ? tr(". {valueLength} cloud-only photos skipped; download them in Finder and scan again.", {valueLength: (ingestPlan.skipped || []).filter((item) => item.reason === 'cloud-only').length}) : ''});
           el('ingestStart2').disabled = !ingestPlan.total;
           const first = (ingestPlan.items || [])[0];
-          el('ingestExample').textContent = first
-            ? `First file lands at ${first.destination}` : '';
+          el('ingestExample').textContent = first ? tr("First file lands at {firstDestination}", {firstDestination: first.destination}) : '';
         } catch (error) {
           el('ingestStatus').textContent = String(error.message || error);
         }
@@ -449,9 +439,7 @@ export function createCatalogUI(ctx) {
         ingestPoll = setInterval(async () => {
           const status = await get('/api/ingest/status');
           el('ingestStatus').textContent =
-            `Copied ${status.copied}/${status.total}`
-            + (status.errors && status.errors.length
-              ? ` · ${status.errors.length} failed` : '');
+            tr("Copied {statusCopied}/{statusTotal}{value}", {statusCopied: status.copied, statusTotal: status.total, value: status.errors && status.errors.length ? tr(" · {statusErrorsLength} failed", {statusErrorsLength: status.errors.length}) : ''});
           if (!status.running) {
             clearInterval(ingestPoll);
             start.disabled = false;
@@ -459,11 +447,10 @@ export function createCatalogUI(ctx) {
             if (ctx.onLibraryChanged) ctx.onLibraryChanged();
             if (status.errors && status.errors.length) {
               el('ingestStatus').textContent +=
-                ' — the originals on the card were not touched.';
+                tr(" — the originals on the card were not touched.");
             }
-            notifyCompletion('Import complete',
-              `${status.copied || 0} photo${status.copied === 1 ? '' : 's'} copied`
-              + ((status.errors || []).length ? ` · ${status.errors.length} failed` : ''));
+            notifyCompletion(tr("Import complete"),
+              trn("{value} photo copied{value2}", "{value} photos copied{value2}", status.copied, {value: (status.copied || 0), value2: (status.errors || []).length ? tr(" · {statusErrorsLength} failed", {statusErrorsLength: status.errors.length}) : ''}));
           }
         }, 600);
       });
@@ -479,11 +466,10 @@ export function createCatalogUI(ctx) {
     if (list) {
       list.innerHTML = watches.map((watch) => {
         const status = byId.get(watch.id) || {};
-        const detail = status.available === false
-          ? 'Unavailable' : `${status.handled || 0} new`;
+        const detail = (status.available === false ? tr("Unavailable") : tr("{value} new", {value: status.handled || 0}));
         return `<button class="source-row" data-watch-id="${escapeHTML(watch.id)}">`
           + `<span class="source-name">${escapeHTML(watch.name)}</span>`
-          + `<span class="source-count">${detail}</span></button>`;
+          + `<span class="source-count">${i18nHTML(detail)}</span></button>`;
       }).join('');
     }
     const enabled = watches.filter((watch) => watch.enabled);
@@ -494,7 +480,7 @@ export function createCatalogUI(ctx) {
     const first = byId.get(enabled[0].id) || {};
     const handled = statuses.reduce(
       (sum, status) => sum + (status.handled || 0), 0);
-    pill.textContent = `Watching ${enabled[0].name} · ${handled} new`;
+    pill.textContent = tr("Watching {valueName} · {handled} new", {valueName: enabled[0].name, handled: handled});
     pill.classList.toggle('unavailable', first.available === false);
   }
 
@@ -549,7 +535,7 @@ export function createCatalogUI(ctx) {
     const populatePreset = async (selected = '') => {
       const presets = await get('/api/presets').catch(() => []);
       const select = el('watchPreset');
-      select.innerHTML = '<option value="">None</option>'
+      select.innerHTML = `<option value="">${i18nHTML(tr("None"))}</option>`
         + presets.map((preset) => `<option value="${escapeHTML(preset.id)}">`
           + `${escapeHTML(preset.name)}</option>`).join('');
       select.value = selected;
@@ -566,7 +552,7 @@ export function createCatalogUI(ctx) {
       el('watchFollow').checked = !!current.follow;
       el('watchDelete').hidden = !current.id;
       el('watchStatus').textContent =
-        'The watched folder is never changed, moved, or emptied.';
+        tr("The watched folder is never changed, moved, or emptied.");
       syncMode();
       populatePreset(current.presetId || '');
       show(true);
@@ -584,7 +570,7 @@ export function createCatalogUI(ctx) {
     [['watchChoose', 'watchPath'], ['watchChooseDest', 'watchDest']]
       .forEach(([buttonId, field]) => el(buttonId)?.addEventListener('click', () => {
         if (!sendNative('chooseIngestFolder', { field })) {
-          toast('Choosing a folder needs the desktop app; paste a path instead');
+          toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
         }
       }));
     el('watchSave')?.addEventListener('click', async () => {
@@ -660,7 +646,7 @@ export function createCatalogUI(ctx) {
           line.textContent = `${row.sourcePath || row.from} → ${row.destinationPath || row.to}`;
           for (const companion of row.companions || []) {
             const detail = document.createElement('small');
-            detail.textContent = `${companion.source} → ${companion.target || companion.action}${companion.sharedWith?.length ? " (shared metadata retained)" : ""}`;
+            detail.textContent = `${companion.source} → ${companion.target || companion.action}${companion.sharedWith?.length ? tr(' (shared metadata retained)') : ''}`;
             detail.style.display = 'block'; line.append(detail);
           }
           return line;
@@ -670,7 +656,7 @@ export function createCatalogUI(ctx) {
         el('renamePreview').replaceChildren(policy, ...rows);
         apply.disabled = Boolean(result.error);
       } catch (error) {
-        if (request === previewSequence) toast('Could not preview the rename');
+        if (request === previewSequence) toast(tr("Could not preview the rename"));
       }
     }
 
@@ -708,18 +694,17 @@ export function createCatalogUI(ctx) {
             start: Number(el('renameStart').value) || 1,
           });
           show(false);
-          toast(result.ok ? `Renamed ${result.renamed} photos`
-            : `Rename stopped: ${result.error}`);
+          toast(result.ok ? tr("Renamed {resultRenamed} photos", {resultRenamed: result.renamed}) : tr("Rename stopped: {resultError}", {resultError: result.error}));
           if (ctx.onLibraryChanged) ctx.onLibraryChanged();
         } catch (error) {
-          toast('Could not rename photos');
+          toast(tr("Could not rename photos"));
           apply.disabled = false;
         }
       });
     }
     return { open() {
       names = [...ctx.selection()];
-      if (!names.length) { toast('Select photos first'); return; }
+      if (!names.length) { toast(tr("Select photos first")); return; }
       show(true); preview();
     } };
   }
