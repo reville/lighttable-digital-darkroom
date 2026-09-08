@@ -356,7 +356,7 @@
       },
       {
         "path": "catalog_scan.py",
-        "anchor": "METADATA_VERSION = 5"
+        "anchor": "METADATA_VERSION = 6"
       }
     ]
   },
@@ -383,7 +383,7 @@
         "title": "Move between views",
         "paragraphs": [
           "Photo Grid presents photos as a visual overview. Culling Grid adds room for selection and rating information. Detail opens the active photo for close inspection.",
-          "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name."
+          "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.", "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window."
         ],
         "steps": [
           "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",

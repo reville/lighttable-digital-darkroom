@@ -223,7 +223,8 @@
           "title": "Di chuyển giữa các chế độ xem",
           "paragraphs": [
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
-            "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó."
+            "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
+            "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -3074,5 +3075,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
+  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
 }
