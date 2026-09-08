@@ -65,6 +65,12 @@ previous installation and preserves your data. If you move the bundle, run
 `install.sh` again from its new location. The installer refuses to replace
 unrelated or manually modified launchers.
 
+LightTable 0.5 uses the application ID `app.lighttable.LightTable`. Upgrading an
+older portable installation migrates its `org.lighttable.LightTable` desktop
+entry and icon only when the installer record still matches those files.
+Modified or unrelated launchers are preserved. Catalog and other user-data
+directories keep their existing `lighttable` names.
+
 Run the active bundle's `uninstall.sh` to remove desktop and CLI integration.
 It leaves the extracted bundle, photographs, catalog, preferences, and caches
 in place. An old bundle cannot uninstall the newer bundle's launchers. You may
@@ -103,12 +109,22 @@ separately labelled ARM64 recipe for native ARM validation; it does not make
 an ARM bundle usable on x86-64. See [the packaging notes](packaging/linux/arch/README.md)
 for the package layout and validation boundary.
 
+For an AUR release recipe, use `scripts/linux/make-aur-package.py` with the
+verified release archive, canonical version `0.5.0`, and its full source commit.
+It generates `PKGBUILD`, `.SRCINFO`, and the desktop entry, with the official
+`v0.5.0` release asset URL and exact SHA-256 checksum. It rejects CI snapshots,
+dirty builds, mismatched source identities, and ARM archives. It does not
+download files, create a release, or submit anything to the AUR. See the
+[release recipe instructions](packaging/linux/arch/README.md#release-backed-aur-recipe).
+The matching official asset must be published before that recipe is distributed
+through the AUR; generating it alone does not make LightTable available there.
+
 ## Data and display behavior
 
 ### Omarchy and Hyprland
 
 LightTable uses GTK's native Wayland backend when available and keeps the same
-`org.lighttable.LightTable` identity on Wayland and X11. On Hyprland it leaves
+`app.lighttable.LightTable` identity on Wayland and X11. On Hyprland it leaves
 borders and window actions to the compositor, without restoring a saved
 maximized state over the tiling layout. No global Omarchy configuration is edited.
 The Linux minimum window size is 800 × 480 logical pixels. Below 1100 pixels

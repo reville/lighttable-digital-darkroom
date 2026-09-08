@@ -1,0 +1,53 @@
+{
+    "app-id": "app.lighttable.LightTable",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "50",
+    "sdk": "org.gnome.Sdk",
+    "command": "lighttable-desktop",
+    "finish-args": [
+        "--socket=wayland",
+        "--socket=fallback-x11",
+        "--device=dri",
+        "--share=network",
+        "--env=GTK_USE_PORTAL=1"
+    ],
+    "build-options": {
+        "strip": false,
+        "no-debuginfo": true
+    },
+    "modules": [
+        {
+            "name": "openblas",
+            "buildsystem": "simple",
+            "build-commands": [
+                "make -j${FLATPAK_BUILDER_N_JOBS} TARGET=GENERIC DYNAMIC_ARCH=1 NUM_THREADS=64 NOFORTRAN=1 USE_OPENMP=0",
+                "make PREFIX=/app TARGET=GENERIC DYNAMIC_ARCH=1 NUM_THREADS=64 NOFORTRAN=1 USE_OPENMP=0 install"
+            ],
+            "cleanup": ["/include", "/lib/*.a", "/lib/cmake", "/lib/pkgconfig"],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/OpenMathLib/OpenBLAS.git",
+                    "commit": "e0166008be8e466242aa76b2ff75ce3f0fbf574a",
+                    "tag": "v0.3.34"
+                }
+            ]
+        },
+        {
+            "name": "libxdo",
+            "buildsystem": "simple",
+            "build-commands": [
+                "make -j${FLATPAK_BUILDER_N_JOBS} libxdo.so",
+                "make PREFIX=/app installlib"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/jordansissel/xdotool.git",
+                    "commit": "eb489de1b4fb3fd0cd935d68ae16ecd4c653ac7d",
+                    "tag": "v3.20211022.1"
+                }
+            ]
+        }
+    ]
+}

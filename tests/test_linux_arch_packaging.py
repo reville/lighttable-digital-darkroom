@@ -18,12 +18,12 @@ package = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(package)
 
 
-def fixture(path: Path, architecture="x86_64", *, binary_architecture=None, extra=None):
+def fixture(path: Path, architecture="x86_64", *, binary_architecture=None, extra=None, manifest=None):
     machine = {"x86_64": 62, "aarch64": 183}[binary_architecture or architecture]
     elf = b"\x7fELF\x02\x01" + bytes(12) + machine.to_bytes(2, "little")
     files = {
         "build-manifest.json": json.dumps({"platform": "linux", "architecture": architecture,
-                                            "version": "0.1.0-ci.1"}).encode(),
+                                            "version": "0.1.0-ci.1", **(manifest or {})}).encode(),
         "bin/lighttable-desktop-shell": elf,
         "Resources/LightTable/engine/lighttable-engine": elf,
         "Resources/LightTable/engine/spektrafilm-rs": elf,
@@ -62,8 +62,8 @@ class ArchPackageTests(unittest.TestCase):
         self.assertEqual(source, "LightTable-0.1.0-ci.1-linux-x86_64.tar.gz")
         self.assertEqual(len(checksum), 64)
         self.assertTrue((self.output / source).is_file())
-        desktop = (self.output / "org.lighttable.LightTable.desktop").read_text()
-        self.assertIn("StartupWMClass=org.lighttable.LightTable\n", desktop)
+        desktop = (self.output / "app.lighttable.LightTable.desktop").read_text()
+        self.assertIn("StartupWMClass=app.lighttable.LightTable\n", desktop)
         self.assertIn("x-scheme-handler/lighttable", desktop)
         self.assertNotIn("image/", desktop)
 
@@ -106,7 +106,7 @@ class ArchPackageTests(unittest.TestCase):
         source.mkdir()
         with tarfile.open(self.archive) as archive:
             archive.extractall(source, filter="data")
-        desktop = "org.lighttable.LightTable.desktop"
+        desktop = "app.lighttable.LightTable.desktop"
         (source / desktop).write_bytes((self.output / desktop).read_bytes())
         target = self.root / "pkg"
         personal = self.root / "user-data/library.sqlite3"

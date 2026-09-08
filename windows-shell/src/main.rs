@@ -1113,9 +1113,9 @@ fn run() -> Result<()> {
     {
         // GTK derives its X11 WM_CLASS from the program name. Keep it aligned
         // with the Wayland app ID and installed desktop entry for launch/focus.
-        gtk::glib::set_prgname(Some("org.lighttable.LightTable"));
+        gtk::glib::set_prgname(Some("app.lighttable.LightTable"));
         gtk::glib::set_application_name("LightTable");
-        event_builder.with_app_id("org.lighttable.LightTable");
+        event_builder.with_app_id("app.lighttable.LightTable");
     }
     let event_loop = event_builder.build();
     let proxy = event_loop.create_proxy();
