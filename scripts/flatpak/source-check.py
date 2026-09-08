@@ -62,6 +62,15 @@ def main():
     blocked = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
                               str(PACKAGING / 'source-status.json')], capture_output=True, text=True)
     assert blocked.returncode == 2 and 'imagecodecs-native-closure' in blocked.stdout
+    with tempfile.TemporaryDirectory() as directory:
+        status = json.loads((PACKAGING / 'source-status.json').read_text())
+        status['unresolved'] = [item for item in status['unresolved'] if not item.get('blocks_build', True)]
+        target = Path(directory) / 'pending-validation.json'
+        target.write_text(json.dumps(status))
+        pending = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
+                                  str(target)], capture_output=True, text=True)
+        assert pending.returncode == 0 and 'native verification is still required' in pending.stdout
+        assert status['source_build_verified'] is False
     print(f'PASS: {len(manifest["modules"])} modules, all 29 runtime pins, {len(crates)} Cargo source archives, '
           f'{count} pinned/inline source entries, and intentional pre-build closure rejection')
 

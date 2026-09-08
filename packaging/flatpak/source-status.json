@@ -11,6 +11,7 @@
   "unresolved": [
     {
       "id": "imagecodecs-native-closure",
+      "blocks_build": true,
       "detail": "Add and verify source recipes for the Linux imagecodecs wheel codec set. The default sdist build silently selects a reduced core set; source-imagecodecs.py preserves the wheel set and deliberately does not suppress missing-header failures.",
       "libraries_not_yet_supplied": [
         "libaec/szip",
@@ -48,6 +49,7 @@
     },
     {
       "id": "native-source-validation",
+      "blocks_build": false,
       "detail": "Run the source graph in the GNOME 50 SDK with gfortran and Rust extension; verify Python build backend bounds, every native codec, source-built engine parity, TIFF/ICC precision, source runtime smoke and the installed native window. No native source-build execution has been performed."
     }
   ],

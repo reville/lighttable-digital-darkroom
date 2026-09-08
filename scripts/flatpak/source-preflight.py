@@ -17,12 +17,14 @@ def main():
                    if shutil.which(name) is None]
         if missing:
             parser.exit(2, 'Source SDK is missing: ' + ', '.join(missing) + '\n')
-    blockers = status.get('unresolved', [])
+    # Validation remains unfinished until a build has actually run. It cannot
+    # itself block that first build; only missing build prerequisites do so.
+    blockers = [item for item in status.get('unresolved', []) if item.get('blocks_build', True)]
     if blockers:
         for item in blockers:
             print(item['id'] + ': ' + item['detail'])
         parser.exit(2, 'Source-only candidate blocked before compilation; see source-status.json.\n')
-    print('Recorded source closure has no unresolved entries; native verification is still required.')
+    print('No recorded build dependency blockers; native verification is still required.')
 
 
 if __name__ == '__main__':
