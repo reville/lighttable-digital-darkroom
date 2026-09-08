@@ -71,6 +71,7 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
       button.type = 'button'; button.className = 'filter-chip';
       button.dataset.filterChip = chip.id;
       button.setAttribute('aria-label', `Remove ${chip.label} filter`);
+      button.title = `Remove ${chip.label} filter`;
       button.textContent = `${chip.label} ×`;
       button.onclick = () => {
         const index = [...chipsHost.children].indexOf(button);
