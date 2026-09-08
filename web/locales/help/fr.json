@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Les sélections d’objet nécessitent un nouveau choix d’objet sur la destination. Les masques intelligents avec raffinements peints nécessitent aussi une recréation manuelle ; cela provoque un refus du collage vers la destination plutôt qu’une copie silencieuse d’une sélection spécifique à la source.",
+            "Les traits du masque automatique conservent une sélection créée à partir de la photo source. Le collage dans une autre photo est refusé ; recréez ces traits sur la destination ou excluez les Masques locaux. Les copier à nouveau sur la même photo conserve la sélection enregistrée.",
             "Si les masques ne peuvent pas être transférés, copiez à nouveau avec Masques locaux décoché pour appliquer les autres groupes.",
             "Inspectez le rapport d’achèvement pour les photos en échec. Un lot peut se terminer avec certaines photos modifiées et d’autres laissées inchangées."
           ]
@@ -1517,8 +1518,16 @@
         "pinceau",
         "dégradé linéaire",
         "dégradé radial",
+        "ellipse",
+        "rotation",
         "contour progressif",
         "flux",
+        "densité",
+        "masque automatique",
+        "tolérance",
+        "courbe de tonalité",
+        "blancs",
+        "noirs",
         "superposition",
         "densité+",
         "densifier"
@@ -1527,14 +1536,14 @@
         {
           "title": "Créer un masque manuel",
           "paragraphs": [
-            "Ouvrez Masque dans la barre d’outils de modification et choisissez un outil sous Créer un nouveau masque. Cliquez sur Créer un nouveau masque pour afficher ou masquer les outils. Chaque masque possède ses propres réglages de Lumière et de Couleur.",
-            "Texture et Clarté utilisent l’image après les ajustements globaux et les masques précédents. Ces commandes nécessitent une mise à jour de l’aperçu ; attendez qu’elle se termine avant d’évaluer le résultat."
+            "Ouvrez Masque dans la barre d’outils de modification et choisissez un outil sous Créer un nouveau masque. Cliquez sur Créer un nouveau masque pour afficher ou masquer les outils. Chaque masque possède ses propres réglages de Lumière, Couleur et Courbe de tonalité.",
+            "Texture, Clarté, Blancs, Noirs et Courbe de tonalité utilisent l’image après les ajustements globaux et les masques précédents. Ces contrôles nécessitent une mise à jour de l’aperçu ; attendez qu’elle se termine avant d’évaluer le résultat. L’aperçu et l’exportation les appliquent dans le même ordre."
           ],
           "steps": [
-            "Choisissez Pinceau pour peindre, Linéaire pour un ajustement gradué, ou Radial pour un ajustement circulaire.",
-            "Pour Pinceau, choisissez Taille, Progressivité et Flux, puis peignez sur la photo. Pour Linéaire ou Radial, faites glisser sur la photo pour définir la forme.",
+            "Choisissez Pinceau pour peindre, Linéaire pour un ajustement gradué, ou Radial pour un ajustement rond ou ovale.",
+            "Pour Pinceau, choisissez Taille, Contour progressif, Flux et Densité, puis peignez sur la photo. Pour Linéaire ou Radial, faites glisser sur la photo pour définir la forme.",
             "Laissez Afficher la superposition activé pendant la vérification de la zone sélectionnée, puis désactivez-le pour juger la photo.",
-            "Ajustez les curseurs Lumière ou Couleur du masque sélectionné. Utilisez Quantité dans Plage pour réduire sa force globale.",
+            "Augmentez Exposition pour éclaircir une zone ou diminuez-la pour l’assombrir. Utilisez les autres commandes Lumière et Couleur selon les besoins, ainsi que Quantité dans Plage pour réduire l’intensité globale du masque.",
             "Renommez le masque à l’aide de son bouton ••• afin que sa fonction soit facile à reconnaître plus tard."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "L’éditeur autorise jusqu’à seize masques locaux. Supprimer le masque supprime le masque sélectionné ; Tout effacer supprime les masques de la photo et est indisponible lorsqu’il n’y en a aucun.",
             "Les épingles du Masque et les contours du pinceau restent nets et gardent la même épaisseur lorsque vous zoomez. Le contour s’agrandit avec la zone qu’il couvre sur la photo."
           ]
+        },
+        {
+          "title": "Construire progressivement la couverture du pinceau",
+          "paragraphs": [
+            "Le Flux contrôle la quantité de couverture ajoutée par chaque nouveau trait, et la Densité fixe sa limite. Les deux vont de 1 % à 100 %. Relâchez le pointeur et peignez à nouveau pour augmenter la couverture ; retracer un trait continu ne l’augmente pas davantage.",
+            "Activez le masque automatique pour limiter chaque trait aux couleurs proches de la couleur au point de départ du trait. Augmentez la Tolérance pour inclure une plage plus large de couleurs. Sa sélection est enregistrée avec le trait, de sorte que les modifications ultérieures de couleur ou d’exposition ne déplacent pas ses bords."
+          ],
+          "tips": [
+            "À 20 % de Flux et 60 % de Densité, trois traits distincts sur une zone entièrement couverte atteignent la limite. Réduire la Densité ne supprime pas la couverture déjà peinte.",
+            "Les réglages du pinceau s’appliquent aux nouveaux traits. Les traits existants conservent leur aspect enregistré, y compris le comportement antérieur du pinceau dans les anciennes modifications.",
+            "Chaque pinceau ou retouche peinte peut contenir jusqu’à 64 traits, avec jusqu’à 512 points par trait et 20 000 points de masque par photo. L’éditeur vous indique quand une limite est atteinte."
+          ]
+        },
+        {
+          "title": "Former un dégradé radial",
+          "paragraphs": [
+            "Dans Modifier la forme, faites glisser la poignée centrale pour déplacer le masque, l’une des poignées d’axe pour le redimensionner, ou la poignée extérieure pour le faire pivoter. Maintenez Maj en dessinant ou en redimensionnant pour rendre le dégradé circulaire."
+          ],
+          "tips": [
+            "Forme propose aussi les réglages Largeur, Hauteur, Rotation et Contour progressif.",
+            "Le fait de le faire glisser loin de ses poignées redessine le masque radial sélectionné."
+          ]
+        },
+        {
+          "title": "Ajuster une courbe de tonalité locale",
+          "steps": [
+            "Développez Courbe de tonalité pour le masque sélectionné, puis choisissez RGB, Rouge, Vert ou Bleu.",
+            "Cliquez sur le graphique pour ajouter un point, puis faites-le glisser. Le fait de monter un point éclaircit sa sortie ; le fait de l’abaisser l’assombrit. Double-cliquez un point intérieur pour le supprimer.",
+            "Utilisez Réinitialiser la courbe pour réinitialiser uniquement le canal sélectionné de ce masque, ou Annuler pour revenir sur une modification."
+          ],
+          "tips": [
+            "Lorsque le graphique est actif, [ et ] sélectionnent des points, les touches fléchées les déplacent et Maj permet des déplacements plus importants. Entrée ajoute un point, Supprimer retire un point intérieur et Échap annule un ajustement en cours.",
+            "Une courbe enregistrée reste exacte jusqu’à ce que vous la modifiiez. L’éditeur reconstruit des poignées représentatives, si bien que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Modification"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Choisissez Ajouter, Soustraire ou Intersecter sous Masque sélectionné.",
-            "Définissez Taille, Contour progressif et Flux, puis peignez en surveillant la superposition.",
+            "Réglez Taille, Contour progressif, Flux et Densité, puis peignez en surveillant la superposition. Des traits distincts construisent la couverture jusqu’à la Densité ; activez le masque automatique pour limiter les traits à leur couleur de départ.",
             "Lors de l’utilisation d’Ajouter, maintenez Option sur Mac pour soustraire temporairement.",
             "Désactivez la superposition et inspectez l’ajustement. Utilisez Annuler pour une retouche que vous souhaitez annuler."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Créer une sélection intelligente",
           "paragraphs": [
-            "Masque propose les sélections Sujet, Ciel, Objet, Profondeur et Personnes. Elles s’exécutent localement ; les méthodes disponibles dépendent du type de sélection et de la plateforme."
+            "Masque propose les sélections Sujet, Ciel, Objet, Profondeur et Personnes. Elles s’exécutent localement ; les méthodes disponibles dépendent du type de sélection et de la plateforme.",
+            "Les sélections Sujet, Ciel et Objet conservent jusqu’à 1 024 pixels le long de leur bord le plus long. Les contours sont affinés par rapport aux couleurs de l’image, et les sélections de sujet Vision conservent des transitions douces. Les limites fines nécessitent encore une inspection et un refinement peint."
           ],
           "steps": [
             "Ouvrir Masque et développer Créer un nouveau masque.",
@@ -3030,7 +3076,7 @@
             "Lorsque vous changez de photo avec le zoom activé, LightTable affiche immédiatement un aperçu correspondant en cache, s’il est disponible. Les détails plus nets se chargent en arrière-plan et les photos voisines sont préchargées pour votre niveau de zoom.",
             "Le zoom conserve l’aperçu le plus net disponible pendant le chargement des détails supplémentaires. Le dézoom réutilise cet aperçu. À 1:1, consultez l’infobulle du bouton avant d’évaluer les détails fins.",
             "Si l'infobulle du bouton 1:1 indique une taille de pixel d'aperçu inférieure à celle de la source, vous voyez un aperçu livré plus petit. La résolution automatique adapte l'affichage et augmente sa demande pour la visualisation zoomée ; les sources très grandes peuvent dépasser la limite de demande de l'aperçu.",
-            "Supprimer, Corriger, Dupliquer et les masques avec Texture ou Clarté nécessitent une mise à jour supplémentaire de l’aperçu. Attendez la fin de l’aperçu avant d’évaluer leur détail ou l’effet des ajustements ultérieurs.",
+            "Supprimer, Corriger, Dupliquer et les masques avec des réglages de Texture, Clarté, Blancs, Noirs ou Courbe de tonalité nécessitent une mise à jour supplémentaire de l’aperçu. Attendez la fin de l’aperçu avant d’évaluer leur détail ou l’effet des ajustements ultérieurs.",
             "Si les dimensions de l’original sont indisponibles, le pourcentage de zoom affiche — et 1:1 est désactivé. Auto s’adapte toujours à l’écran. Relancez l’analyse du dossier pour actualiser les dimensions."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
+  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
 }

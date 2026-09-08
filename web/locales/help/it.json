@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Le selezioni Oggetto richiedono una nuova scelta dell’oggetto sulla destinazione. Anche le maschere intelligenti con rifiniture dipinte richiedono una ricreazione manuale; ciò causa il rifiuto dell’incolla sulla destinazione invece di copiare silenziosamente una selezione specifica dell’origine.",
+            "Le pennellate di Maschera automatica mantengono una selezione ricavata dalla foto di origine. Incollarle in una foto diversa viene rifiutato; ricrea quelle pennellate sulla destinazione oppure escludi Maschere locali. Copiarle di nuovo sulla stessa foto conserva la selezione salvata.",
             "Se le maschere non possono essere trasferite, copia di nuovo con Maschere locali deselezionato per applicare gli altri gruppi.",
             "Esamina il rapporto di completamento per le foto non riuscite. Un lotto può terminare con alcune foto modificate e altre lasciate invariate."
           ]
@@ -1517,8 +1518,16 @@
         "pennello",
         "gradiente lineare",
         "gradiente radiale",
+        "ellisse",
+        "rotazione",
         "sfumatura",
         "flusso",
+        "densità",
+        "maschera automatica",
+        "tolleranza",
+        "curva tono",
+        "bianchi",
+        "neri",
         "sovrapposizione",
         "schiarisci",
         "Brucia"
@@ -1527,14 +1536,14 @@
         {
           "title": "Crea una maschera manuale",
           "paragraphs": [
-            "Apri Maschera nella barra degli strumenti di modifica e scegli uno strumento sotto Crea nuova maschera. Fai clic su Crea nuova maschera per mostrare o nascondere gli strumenti. Ogni maschera ha le proprie regolazioni di Luce e Colore.",
-            "Struttura e Chiarezza usano l'immagine dopo le regolazioni globali e le maschere precedenti. Questi controlli richiedono un aggiornamento dell'anteprima; attendi il completamento prima di giudicare il risultato."
+            "Apri Maschera nella barra degli strumenti di modifica e scegli uno strumento sotto Crea nuova maschera. Fai clic su Crea nuova maschera per mostrare o nascondere gli strumenti. Ogni maschera ha regolazioni proprie di Luce, Colore e Curva tono.",
+            "Struttura, Chiarezza, Bianchi, Neri e Curva tono usano l'immagine dopo le regolazioni globali e le maschere precedenti. Questi controlli richiedono un aggiornamento dell'anteprima; attendi che finisca prima di giudicare il risultato. Anteprima ed esportazione li applicano nello stesso ordine."
           ],
           "steps": [
-            "Scegli Pennello per dipingere, Lineare per una regolazione graduata o Radiale per una regolazione circolare.",
-            "Per Pennello, scegli Dimensione, Sfumatura e Flusso, quindi dipingi sulla foto. Per Lineare o Radiale, trascina sulla foto per impostare la forma.",
+            "Scegli Pennello per dipingere, Lineare per una regolazione graduata oppure Radiale per una regolazione circolare o ovale.",
+            "Per Pennello, scegli Dimensione, Sfumatura, Flusso e Densità, poi dipingi sulla foto. Per Lineare o Radiale, trascina sulla foto per impostare la forma.",
             "Mantieni attivo Mostra sovrapposizione mentre controlli l’area selezionata, poi disattivalo per valutare la foto.",
-            "Regola i cursori Luce o Colore della maschera selezionata. Usa Quantità in Intervallo per ridurne l’intensità complessiva.",
+            "Aumenta Esposizione per schiarire un'area oppure riducila per scurirla. Usa gli altri controlli Luce e Colore secondo necessità e Quantità in Intervallo per ridurre l'intensità complessiva della maschera.",
             "Rinomina la maschera usando il suo pulsante ••• in modo che il suo scopo sia facile da riconoscere in seguito."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "L'editor consente fino a sedici maschere locali. Elimina maschera rimuove la maschera selezionata; Cancella tutto rimuove le maschere della foto ed è non disponibile quando non ce ne sono.",
             "I pin della Maschera e i contorni del pennello restano nitidi e con lo stesso spessore mentre ingrandisci. Il contorno cresce con l'area che copre nella foto."
           ]
+        },
+        {
+          "title": "Costruisci gradualmente la copertura del pennello",
+          "paragraphs": [
+            "Flusso controlla quanta copertura aggiunge ogni nuova pennellata, e Densità ne imposta il limite massimo. Entrambi variano da 1% a 100%. Rilascia il puntatore e dipingi di nuovo per aumentare la copertura; ripercorrere la stessa traccia in una singola pennellata continua non la aumenta ulteriormente.",
+            "Abilita Maschera automatica per limitare ogni pennellata ai colori simili al colore nel punto in cui la pennellata inizia. Aumenta Tolleranza per includere una gamma più ampia di colori. La sua selezione viene salvata con la pennellata, quindi le modifiche successive di colore o esposizione non ne spostano i bordi."
+          ],
+          "tips": [
+            "Con Flusso al 20% e Densità al 60%, tre pennellate separate su un'area completamente coperta raggiungono il limite. Ridurre Densità non cancella la copertura già dipinta.",
+            "Le impostazioni del pennello si applicano alle nuove pennellate. Le pennellate esistenti mantengono l'aspetto salvato, incluso il comportamento precedente del pennello nelle modifiche meno recenti.",
+            "Ogni raffinamento con pennello o dipinto contiene fino a 64 pennellate, con fino a 512 punti per pennellata e 20.000 punti maschera per foto. L'editor ti avvisa quando viene raggiunto un limite."
+          ]
+        },
+        {
+          "title": "Modella un gradiente radiale",
+          "paragraphs": [
+            "In Modifica forma, trascina la maniglia centrale per spostare la maschera, una delle maniglie degli assi per ridimensionarla o la maniglia esterna per ruotarla. Tieni premuto Maiusc durante il disegno o il ridimensionamento per rendere il gradiente circolare."
+          ],
+          "tips": [
+            "Forma offre anche i controlli Larghezza, Altezza, Rotazione e Sfumatura.",
+            "Trascinando lontano dalle sue maniglie si ridisegna la maschera radiale selezionata."
+          ]
+        },
+        {
+          "title": "Regola una curva tono locale",
+          "steps": [
+            "Espandi Curva tono per la maschera selezionata e scegli RGB, Rosso, Verde o Blu.",
+            "Fai clic sul grafico per aggiungere un punto, quindi trascinalo. Spostare un punto verso l'alto schiarisce il suo output; spostarlo verso il basso lo scurisce. Fai doppio clic su un punto interno per rimuoverlo.",
+            "Usa Reimposta curva per reimpostare solo il canale selezionato di questa maschera, oppure Annulla per invertire una modifica."
+          ],
+          "tips": [
+            "Con il grafico attivo, [ e ] selezionano i punti, i tasti freccia li spostano e Maiusc consente spostamenti maggiori. Invio aggiunge un punto, Elimina rimuove un punto interno ed Esc annulla una regolazione in corso.",
+            "Una curva memorizzata resta esatta finché non la modifichi. L'editor ricostruisce maniglie rappresentative, quindi la prima regolazione può rimodellare una curva importata oltre il punto che sposti."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Modifica"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Scegli Aggiungi, Sottrai o Interseca sotto Maschera selezionata.",
-            "Imposta Dimensione, Sfumatura e Flusso, quindi dipingi tenendo d'occhio la sovrapposizione.",
+            "Imposta Dimensione, Sfumatura, Flusso e Densità, quindi dipingi osservando la sovrapposizione. Le pennellate separate creano copertura fino a Densità; abilita Maschera automatica per limitare le pennellate al colore di partenza.",
             "Mentre usi Aggiungi, tieni premuto Option su Mac per sottrarre temporaneamente.",
             "Disattiva la sovrapposizione e ispeziona la regolazione. Usa Annulla per una rifinitura che vuoi annullare."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Crea una selezione intelligente",
           "paragraphs": [
-            "Maschera offre selezioni Soggetto, Cielo, Oggetto, Profondità e Persone. Queste vengono eseguite localmente; i metodi disponibili dipendono dal tipo di selezione e dalla piattaforma."
+            "Maschera offre selezioni Soggetto, Cielo, Oggetto, Profondità e Persone. Queste vengono eseguite localmente; i metodi disponibili dipendono dal tipo di selezione e dalla piattaforma.",
+            "Le selezioni di Soggetto, Cielo e Oggetto mantengono fino a 1.024 pixel lungo il loro lato più lungo. I bordi vengono rifiniti in base ai colori dell'immagine e le selezioni Vision del soggetto preservano transizioni morbide. I confini più fini richiedono comunque un controllo e un raffinamento dipinto."
           ],
           "steps": [
             "Apri Maschera ed espandi Crea nuova maschera.",
@@ -3030,7 +3076,7 @@
             "Quando cambi foto con lo zoom attivo, LightTable mostra subito un’anteprima corrispondente nella cache, se disponibile. I dettagli più nitidi vengono caricati in background e le foto vicine vengono precaricate per il tuo livello di zoom.",
             "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
-            "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive.",
+            "Rimuovi, Correggi, Clona e le maschere con regolazioni di Struttura, Chiarezza, Bianchi, Neri o Curva tono richiedono un aggiornamento aggiuntivo dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il dettaglio o l'effetto di regolazioni successive.",
             "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
+  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
 }

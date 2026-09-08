@@ -2936,10 +2936,9 @@ def semantic_mask_payload(name: str, kind: str,
             faces = 0
     return {"kind": kind, "provider": provider, "faces": faces,
             "bitmap": semantic_masks.encode_bitmap(
-                mask, png=(kind == "depth" or kind in semantic_masks.PERSON_PARTS),
+                mask, png=True,
                 max_edge=(semantic_masks.MAX_DEPTH_EDGE if kind == "depth" else
-                          semantic_masks.MAX_PART_EDGE
-                          if kind in semantic_masks.PERSON_PARTS else None))}
+                          semantic_masks.MAX_PART_EDGE))}
 
 
 def capture_time(name: str) -> str:
@@ -3168,7 +3167,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 8  # sixteen-mask atlas, range masks, and uniformity
+RENDER_CACHE_VERSION = 9  # cumulative brush, elliptical masks, and local tone controls
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 2  # processed source previews now use display sRGB
 EDITED_THUMB_RENDER_EDGE = 512
@@ -4104,7 +4103,8 @@ def native_base_edits_required(optics=None, heals=None) -> bool:
 def preview_grade_requires_bake(masks=None) -> bool:
     """Spatial local filters need the complete preceding grade/mask image."""
     return any(mask["enabled"] and mask["opacity"] > 0
-               and (mask["grade"]["texture"] or mask["grade"]["clarity"])
+               and (any(mask["grade"].get(key) for key in
+                        ("texture", "clarity", "whites", "blacks", *grade.CURVE_KEYS)))
                for mask in edits.clean_masks(masks))
 
 
