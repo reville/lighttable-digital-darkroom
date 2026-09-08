@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Aktuelle Kamera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Das aktuelle Format bewahrt die derzeitige Darstellung des Assets, einschließlich RAW oder eingebetteter Tiefe, sofern verfügbar. Kompatibel erstellt ein weitgehend lesbares Bild. Ausgewählte Dateien werden in {path} kopiert.",
     "Current photo": "Aktuelles Foto",
+    "Current photo / total photos": "Aktuelles Foto / Gesamtzahl der Fotos",
     "Current settings": "Aktuelle Einstellungen",
     "Current stock": "Aktueller Film",
     "Curve": "Kurve",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Schieberegler mit Halte-Taste",
     "Horizontal": "Horizontal",
     "Hourly": "Stündlich",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
     "Hue": "Farbton",
     "Hue shift": "Farbtonverschiebung",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Fotos sind im Ordnermodus geöffnet, und der beschädigte Katalog wurde nicht geändert. Öffnen Sie den Bibliotheksstatus, um ihn zu retten, stellen Sie eine Sicherungskopie wieder her oder starten Sie einen neuen Katalog.",
     "Photos could not be imported. Try again or choose a folder.": "Fotos konnten nicht importiert werden. Versuche es erneut oder wähle einen Ordner aus.",
     "Photos set aside": "Fotos beiseitelegen",
+    "Photos shown / total photos in this folder or collection": "Angezeigte Fotos / Gesamtzahl der Fotos in diesem Ordner oder dieser Sammlung",
     "Photos stay in their current folder. No moving or copying required.": "Fotos bleiben in ihrem aktuellen Ordner. Verschieben oder Kopieren ist nicht erforderlich.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Fotos bleiben in ihrem aktuellen Ordner. Du kannst jederzeit weitere Ordner hinzufügen.",
     "Photos unstacked": "Fotos aus dem Stapel gelöst",

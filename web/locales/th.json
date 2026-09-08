@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "กล้องปัจจุบัน",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "รูปแบบปัจจุบันจะคงการแสดงผลปัจจุบันของแอสเซ็ตไว้ รวมถึง RAW หรือ depth ที่ฝังไว้เมื่อมี Compatible จะสร้างภาพที่อ่านได้กว้างขวาง ไฟล์ที่เลือกจะถูกคัดลอกไปยัง {path}",
     "Current photo": "ภาพถ่ายปัจจุบัน",
+    "Current photo / total photos": "ภาพปัจจุบัน / จำนวนภาพทั้งหมด",
     "Current settings": "การตั้งค่าปัจจุบัน",
     "Current stock": "สต็อกปัจจุบัน",
     "Curve": "เส้นโค้ง",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "ตัวควบคุมสไลด์แบบกดค้าง",
     "Horizontal": "แนวนอน",
     "Hourly": "รายชั่วโมง",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "วางเมาส์เหนือตัวนับภาพในแถบด้านบนเพื่อดูความหมายของตัวเลข",
     "Hue": "สีสัน",
     "Hue shift": "เปลี่ยนสีสัน",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "ภาพถ่ายเปิดอยู่ในโหมดโฟลเดอร์ และแค็ตตาล็อกที่เสียหายยังไม่ได้รับการเปลี่ยนแปลง เปิดสุขภาพของไลบรารีเพื่อกู้คืนข้อมูล, คืนค่าข้อมูลสำรอง, หรือเริ่มแค็ตตาล็อกใหม่",
     "Photos could not be imported. Try again or choose a folder.": "ไม่สามารถนำเข้าภาพถ่ายได้ ลองอีกครั้งหรือเลือกโฟลเดอร์",
     "Photos set aside": "ภาพถ่ายที่กันไว้",
+    "Photos shown / total photos in this folder or collection": "จำนวนภาพที่แสดง / จำนวนภาพทั้งหมดในโฟลเดอร์หรือคอลเลกชันนี้",
     "Photos stay in their current folder. No moving or copying required.": "ภาพถ่ายยังคงอยู่ในโฟลเดอร์ปัจจุบัน ไม่ต้องย้ายหรือคัดลอก",
     "Photos stay in their current folder. You can add more folders whenever you like.": "ภาพถ่ายยังคงอยู่ในโฟลเดอร์ปัจจุบัน คุณสามารถเพิ่มโฟลเดอร์เพิ่มเติมได้ทุกเมื่อ",
     "Photos unstacked": "ยกเลิกการสแต็กภาพถ่ายแล้ว",

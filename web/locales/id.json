@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Kamera saat ini",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Format saat ini mempertahankan representasi aset yang ada, termasuk RAW atau kedalaman tertanam jika tersedia. Kompatibel membuat gambar yang dapat dibaca secara luas. File yang dipilih disalin ke {path}.",
     "Current photo": "Foto saat ini",
+    "Current photo / total photos": "Foto saat ini / total foto",
     "Current settings": "Pengaturan saat ini",
     "Current stock": "Stok saat ini",
     "Curve": "Kurva",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Kontrol geser dengan tombol tahan",
     "Horizontal": "Horizontal",
     "Hourly": "Per Jam",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
     "Hue": "Rona",
     "Hue shift": "Pergeseran rona",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Foto terbuka dalam mode folder dan katalog yang rusak belum diubah. Buka Kesehatan Pustaka untuk menyelamatkannya, pulihkan cadangan, atau mulai katalog baru.",
     "Photos could not be imported. Try again or choose a folder.": "Foto tidak dapat diimpor. Coba lagi atau pilih folder.",
     "Photos set aside": "Foto disisihkan",
+    "Photos shown / total photos in this folder or collection": "Foto yang ditampilkan / total foto dalam folder atau koleksi ini",
     "Photos stay in their current folder. No moving or copying required.": "Foto tetap di folder saat ini. Tidak perlu memindahkan atau menyalin.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Foto tetap di folder saat ini. Anda dapat menambahkan folder lain kapan saja.",
     "Photos unstacked": "Foto dilepas dari tumpukan",

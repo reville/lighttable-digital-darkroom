@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "বর্তমান ক্যামেরা",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Current format অ্যাসেটের বর্তমান উপস্থাপনাটি বজায় রাখে, যেখানে প্রযোজ্য সেখানে RAW বা এমবেডেড depth-সহ। Compatible একটি ব্যাপকভাবে পাঠযোগ্য ছবি তৈরি করে। নির্বাচিত ফাইলগুলো {path}-এ কপি করা হয়।",
     "Current photo": "বর্তমান ফটো",
+    "Current photo / total photos": "বর্তমান ছবি / মোট ছবি",
     "Current settings": "বর্তমান সেটিংস",
     "Current stock": "বর্তমান স্টক",
     "Curve": "কার্ভ",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "হোল্ড-কী স্লাইডার নিয়ন্ত্রণ",
     "Horizontal": "আড়াআড়ি",
     "Hourly": "প্রতি ঘণ্টা",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "সংখ্যাগুলোর অর্থ জানতে ওপরের বারে ছবির কাউন্টারের ওপর মাউস পয়েন্টার রাখুন।",
     "Hue": "হিউ",
     "Hue shift": "হিউ শিফট",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "ফটোগুলি ফোল্ডার মোডে খোলা আছে এবং ক্ষতিগ্রস্ত ক্যাটালগটি পরিবর্তন করা হয়নি। এটি উদ্ধার করতে, ব্যাকআপ পুনঃস্থাপন করতে, অথবা একটি নতুন ক্যাটালগ শুরু করতে লাইব্রেরির স্বাস্থ্য খুলুন।",
     "Photos could not be imported. Try again or choose a folder.": "Photos আমদানি করা যায়নি। আবার চেষ্টা করুন বা একটি ফোল্ডার বেছে নিন।",
     "Photos set aside": "ফটোগুলি আলাদা করে রাখা হয়েছে",
+    "Photos shown / total photos in this folder or collection": "দেখানো ছবি / এই ফোল্ডার বা সংগ্রহের মোট ছবি",
     "Photos stay in their current folder. No moving or copying required.": "ফটোগুলো তাদের বর্তমান ফোল্ডারেই থাকে। সরানো বা কপি করার দরকার নেই।",
     "Photos stay in their current folder. You can add more folders whenever you like.": "ফটোগুলো তাদের বর্তমান ফোল্ডারেই থাকে। চাইলে যেকোনো সময় আরও ফোল্ডার যোগ করতে পারেন।",
     "Photos unstacked": "ফটোগুলি আনস্ট্যাক করা হয়েছে",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Huidige camera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Het huidige formaat behoudt de huidige representatie van het bestand, inclusief RAW of ingesloten diepte wanneer beschikbaar. Compatibel maakt een breed leesbare afbeelding. Geselecteerde bestanden worden gekopieerd naar {path}.",
     "Current photo": "Huidige foto",
+    "Current photo / total photos": "Huidige foto / totaal aantal foto’s",
     "Current settings": "Huidige instellingen",
     "Current stock": "Huidige film",
     "Curve": "Kromme",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Schuifregelaar met toets vasthouden",
     "Horizontal": "Horizontaal",
     "Hourly": "Uurlijks",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen.",
     "Hue": "Kleurtoon",
     "Hue shift": "Kleurtoonverschuiving",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Foto's staan open in mapmodus en de beschadigde catalogus is niet gewijzigd. Open Bibliotheekgezondheid om deze te redden, een back-up terug te zetten of een nieuwe catalogus te starten.",
     "Photos could not be imported. Try again or choose a folder.": "Foto's konden niet worden geïmporteerd. Probeer opnieuw of kies een map.",
     "Photos set aside": "Foto's apart gezet",
+    "Photos shown / total photos in this folder or collection": "Getoonde foto’s / totaal aantal foto’s in deze map of verzameling",
     "Photos stay in their current folder. No moving or copying required.": "Foto's blijven in hun huidige map. Verplaatsen of kopiëren is niet nodig.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Foto's blijven in hun huidige map. Je kunt nieuwe mappen toevoegen wanneer je maar wilt.",
     "Photos unstacked": "Foto's ontstapeld",

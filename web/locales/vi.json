@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Máy ảnh hiện tại",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Định dạng hiện tại giữ nguyên biểu diễn hiện tại của tài sản, bao gồm RAW hoặc độ sâu nhúng khi có. Tương thích tạo ra một hình ảnh có thể đọc rộng rãi. Các tệp đã chọn được sao chép vào {path}.",
     "Current photo": "Ảnh hiện tại",
+    "Current photo / total photos": "Ảnh hiện tại / tổng số ảnh",
     "Current settings": "Cài đặt hiện tại",
     "Current stock": "Phim hiện tại",
     "Curve": "Đường cong",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Điều khiển trượt khi giữ phím",
     "Horizontal": "Ngang",
     "Hourly": "Hàng giờ",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
     "Hue": "Sắc độ",
     "Hue shift": "Dịch chuyển sắc độ",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Ảnh đang được mở ở chế độ thư mục và danh mục bị hư hỏng chưa bị thay đổi. Mở Tình trạng thư viện để cứu dữ liệu, khôi phục từ bản sao lưu, hoặc bắt đầu một danh mục mới.",
     "Photos could not be imported. Try again or choose a folder.": "Không thể nhập ảnh. Hãy thử lại hoặc chọn một thư mục.",
     "Photos set aside": "Ảnh được để riêng",
+    "Photos shown / total photos in this folder or collection": "Số ảnh hiển thị / tổng số ảnh trong thư mục hoặc bộ sưu tập này",
     "Photos stay in their current folder. No moving or copying required.": "Ảnh vẫn ở trong thư mục hiện tại của chúng. Không cần di chuyển hay sao chép.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Ảnh vẫn ở trong thư mục hiện tại của chúng. Bạn có thể thêm thêm thư mục bất cứ lúc nào.",
     "Photos unstacked": "Ảnh đã bỏ ngăn xếp",

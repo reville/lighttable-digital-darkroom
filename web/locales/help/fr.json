@@ -223,7 +223,8 @@
           "title": "Naviguer entre les vues",
           "paragraphs": [
             "La grille Photo présente les photos comme une vue d’ensemble visuelle. La grille de tri ajoute de la place pour la sélection et les informations de notation. Détails ouvre la photo active pour un examen rapproché.",
-            "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom."
+            "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
+            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -3074,5 +3075,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
 }
