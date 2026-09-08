@@ -1,3 +1,4 @@
+import { installKeywordBatch } from '/web/keyword-batch.js';
 import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
 import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
@@ -15,6 +16,7 @@ import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
+import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
 import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
@@ -112,6 +114,7 @@ const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
   onChange: () => { refreshFilteredView(); savePrefs(); } });
+let KEYWORD_BATCH = null;
 let MASK_BATCH = null;
 let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
@@ -305,7 +308,7 @@ document.addEventListener('keydown', (event) => {
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
     ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
-    LIBRARY_FILTERS.types(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -901,6 +904,8 @@ function applyViewNow() {
   const isZoomed = !isFit && S.zoom > 1.01;
   cmp.classList.toggle('is-zoomed', isZoomed);
   syncCompareView();
+  syncViewerChrome();
+  drawEditOverlayNow();
 
   scheduleNativeViewportLayout();
   scheduleViewportRegionRender();
@@ -1563,15 +1568,15 @@ function buildMaskTexture(edge = 512) {
   return new ImageData(rgba, width, height * tiles);
 }
 
-function drawBrushCursor(ctx, overlay, point, size, feather, accent = '#fff') {
+function drawBrushCursor(ctx, surface, point, size, feather, accent = '#fff') {
   if (!point) return;
-  const x = point[0] * overlay.width, y = point[1] * overlay.height;
-  const outer = Math.max(3, size * Math.min(overlay.width, overlay.height) / 2);
+  const x = point[0] * surface.width, y = point[1] * surface.height;
+  const outer = Math.max(3, size * Math.min(surface.width, surface.height) / 2);
   const inner = Math.max(1.5, outer * (1 - feather));
   ctx.save();
   ctx.strokeStyle = accent;
-  ctx.lineWidth = Math.max(1, overlay.width / 1100);
-  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2;
+  ctx.lineWidth = 1;
+  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2 * surface.pixelRatio;
   ctx.beginPath(); ctx.arc(x, y, outer, 0, Math.PI * 2); ctx.stroke();
   if (feather > 0.02) {
     ctx.strokeStyle = 'rgba(255,255,255,.68)';
@@ -1591,15 +1596,33 @@ function syncOverlayCursorClass() {
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
 }
 
+function syncViewerChrome() {
+  const chrome = $('viewerChrome');
+  const frame = $('cmp').getBoundingClientRect();
+  const geometry = screenOverlayGeometry(frame, frame, $('zoomwrap').getBoundingClientRect());
+  chrome.hidden = !geometry;
+  if (!geometry) return;
+  for (const key of ['left', 'top', 'width', 'height']) chrome.style[key] = `${geometry[key]}px`;
+}
+
 function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
-  if (!canvas.width || !canvas.height) return;
-  if (overlay.width !== canvas.width || overlay.height !== canvas.height) {
-    overlay.width = canvas.width; overlay.height = canvas.height;
+  const active = canvas.width && canvas.height &&
+    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+  const geometry = active ? screenOverlayGeometry(
+    canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
+  const surface = prepareScreenOverlay(overlay, geometry);
+  syncOverlayCursorClass();
+  if (!surface) return;
+  const { ctx } = surface;
+  if (S.overlayHoverClientPoint) {
+    const [clientX, clientY] = S.overlayHoverClientPoint;
+    const rect = overlay.getBoundingClientRect();
+    S.overlayHoverPoint = clientX >= rect.left && clientX <= rect.right &&
+      clientY >= rect.top && clientY <= rect.bottom ? overlayPoint({clientX, clientY}) : null;
   }
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
   if (S.activePane === 'maskPane') {
     const mask = selectedMask();
     if (!mask) return;
@@ -1651,21 +1674,21 @@ function drawEditOverlayNow() {
           packedMaskData.data[sourceOffset + channel] * rangeWeight * 0.42);
       }
       tintCtx.putImageData(pixels, 0, 0);
-      ctx.drawImage(tinted, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(tinted, 0, 0, surface.width, surface.height);
     }
-    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = Math.max(1.5, overlay.width / 900);
+    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = 1.5;
     if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'linear') {
-      const [sx, sy] = [mask.start[0] * overlay.width, mask.start[1] * overlay.height];
-      const [ex, ey] = [mask.end[0] * overlay.width, mask.end[1] * overlay.height];
+      const [sx, sy] = [mask.start[0] * surface.width, mask.start[1] * surface.height];
+      const [ex, ey] = [mask.end[0] * surface.width, mask.end[1] * surface.height];
       ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
       for (const [x, y] of [[sx, sy], [ex, ey]]) { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'radial') {
-      const x = mask.center[0] * overlay.width, y = mask.center[1] * overlay.height;
-      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(overlay.width, overlay.height), 0, Math.PI * 2); ctx.stroke();
+      const x = mask.center[0] * surface.width, y = mask.center[1] * surface.height;
+      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(surface.width, surface.height), 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
     if (mask.type === 'brush' || S.maskRefineMode) {
-      drawBrushCursor(ctx, overlay, S.overlayHoverPoint, S.brushSize, S.brushFeather,
+      drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
         S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
@@ -1673,14 +1696,14 @@ function drawEditOverlayNow() {
       const threshold = +$('healVisualizeThreshold').value;
       ctx.save();
       ctx.filter = `grayscale(1) invert(1) contrast(${2 + threshold * 7}) brightness(${0.72 + threshold * 0.35})`;
-      ctx.drawImage(S.baseImg, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(S.baseImg, 0, 0, surface.width, surface.height);
       ctx.restore();
     }
     for (const spot of S.localPinsVisible ? S.heals : []) {
       const selected = spot.id === S.selectedHealId;
-      const tx = spot.target[0] * overlay.width, ty = spot.target[1] * overlay.height;
-      const sx = spot.source[0] * overlay.width, sy = spot.source[1] * overlay.height;
-      const radius = spot.radius * Math.min(overlay.width, overlay.height);
+      const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
+      const sx = spot.source[0] * surface.width, sy = spot.source[1] * surface.height;
+      const radius = spot.radius * Math.min(surface.width, surface.height);
       ctx.save();
       ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
       ctx.lineWidth = selected ? 2.2 : 1.25;
@@ -1703,10 +1726,9 @@ function drawEditOverlayNow() {
       }
       ctx.restore();
     }
-    drawBrushCursor(ctx, overlay, S.overlayHoverPoint,
+    drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
   }
-  syncOverlayCursorClass();
 }
 
 const previewFrameScheduler = createFrameScheduler((work) => {
@@ -2484,12 +2506,12 @@ $('lensReset').onclick = (event) => {
   syncOpticsPanel(); syncGrade(); drawGrade(); saveState(); refreshBaseEdits();
 };
 
-function overlayPoint(event, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayPoint(event, rect = $('cv').getBoundingClientRect()) {
   return [clamp((event.clientX - rect.left) / rect.width, 0, 1),
     clamp((event.clientY - rect.top) / rect.height, 0, 1)];
 }
 
-function overlayDistance(a, b, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayDistance(a, b, rect = $('cv').getBoundingClientRect()) {
   return Math.hypot((a[0] - b[0]) * rect.width, (a[1] - b[1]) * rect.height);
 }
 
@@ -2512,9 +2534,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
   if (!cur() || event.button !== 0) return;
   event.stopPropagation();
   event.preventDefault();
-  const rect = $('editOverlay').getBoundingClientRect();
+  const rect = $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (S.activePane === 'maskPane') {
     if (S.maskColorPick) {
       if (event.shiftKey) {
@@ -2589,9 +2612,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
   const gesture = S.editGesture;
-  const rect = gesture?.rect || $('editOverlay').getBoundingClientRect();
+  const rect = gesture?.rect || $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (!gesture || gesture.pointerId !== event.pointerId) { drawEditOverlay(); return; }
   if (S.activePane === 'maskPane') {
     if (gesture.type === 'mask-color-sample') {
@@ -2667,7 +2691,7 @@ $('editOverlay').addEventListener('pointerup', finishEditGesture);
 $('editOverlay').addEventListener('pointercancel', finishEditGesture);
 $('editOverlay').addEventListener('pointerleave', () => {
   if (S.editGesture?.pointerId !== undefined) return;
-  S.overlayHoverPoint = null; drawEditOverlay();
+  S.overlayHoverPoint = null; S.overlayHoverClientPoint = null; drawEditOverlay();
 });
 
 /* ------------------------------------------------------------ film render */
@@ -3365,6 +3389,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   const viewport = w === requestedWidth ? requestedViewportRegion() : null;
   const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
+  const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
+    S.previewDetail?.name === im.name && S.previewDetail.refining === false;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
   $('zoomwrap').setAttribute('aria-busy', 'true');
@@ -3372,10 +3398,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     S.params.profile_enabled ? 'Applying film…' : 'Loading preview…', my);
   try {
     const request = {
-      name: im.name, params: S.params, w, engine: $('engine').value,
+      name: im.name, params: { ...S.params }, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
+      allow_draft: !hasAccuratePixels,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3438,8 +3465,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     // is on screen. When this photo is already presented accurately, keep
     // those pixels and let the refinement replace them: swapping in a draft
     // flashes a different rendering on every zoom, crop, or panel change.
-    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
-      S.presentedPhotoName === im.name;
+    const keepAccuratePixels = Boolean(m.refining) && hasAccuratePixels;
     let imageTiming = null;
     if (!keepAccuratePixels) {
       imageTiming = await setBaseImage(m, my, {
@@ -3514,7 +3540,20 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
          ' · ' + (m.engine === 'rs' ? 'rust/gpu' : 'python');
     $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
     $('rstat').className = '';
-    if (phase === 'interactive' && w !== requestedWidth) {
+    if (m.refining) {
+      // Start accurate RAW work immediately after the useful first frame.
+      // Rendering a large embedded-camera draft first delays demosaic and
+      // creates a second temporary film result that will soon be replaced.
+      const refinementRequest = { name: im.name, params: { ...request.params },
+        w: requestedWidth, client: CLIENT_ID, generation: my };
+      const ready = await waitForRawRefinement({
+        request: () => api('/api/refine', refinementRequest),
+        isCurrent: () => my === S.seq && cur()?.name === im.name,
+      });
+      if (ready) return doRender(scheduledAt, {
+        width: requestedWidth, requestedWidth, phase: 'refinement', background: true,
+      });
+    } else if (phase === 'interactive' && w !== requestedWidth) {
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3532,16 +3571,6 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       };
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
-    } else if (m.refining) {
-      const refinementRequest = { name: im.name, params: { ...request.params },
-        w, client: CLIENT_ID, generation: my };
-      const ready = await waitForRawRefinement({
-        request: () => api('/api/refine', refinementRequest),
-        isCurrent: () => my === S.seq && cur()?.name === im.name,
-      });
-      if (ready) return doRender(scheduledAt, {
-        width: w, requestedWidth, phase: 'refinement', background: true,
-      });
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
@@ -4393,13 +4422,14 @@ function visible() {
   const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
   const editState = $('editFilter')?.value || 'all';
   const fileTypes = LIBRARY_FILTERS.types();
+  const metadata = LIBRARY_FILTERS.metadata();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -4430,7 +4460,7 @@ function visible() {
     const matchesKind = (kind === 'all' || (kind === 'raw' && im.raw) ||
       (kind === 'processed' && !im.raw && !im.virtual) ||
       (kind === 'virtual' && im.virtual));
-    return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);
+    return matchesKind && matchesLibraryFilters(im, fileTypes, editState, metadata) && photoMatchesQuery(im, search);
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
@@ -5249,7 +5279,7 @@ $('addSmartCollection').onclick = async () => {
       editState: ['edited', 'unedited', 'virtual'].includes($('filter').value)
         ? $('filter').value : $('editFilter').value,
       unrated: $('ratingFilter').value === 'unrated' || $('filter').value === 'unrated',
-      label: $('labelFilter').value },
+      label: $('labelFilter').value, ...LIBRARY_FILTERS.metadata() },
   });
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
@@ -5595,6 +5625,7 @@ document.addEventListener('pointerdown', (event) => {
 window.addEventListener('resize', () => { closeFolderMenu(); closeActionMenus(); });
 
 function refreshLists() {
+  KEYWORD_BATCH?.sync();
   renderStrip();
   if ($('library').classList.contains('show')) renderGrid();
   counts();
@@ -5646,6 +5677,7 @@ function setViewMode(mode, persist = true) {
   $('editor').classList.toggle('hide', gridMode);
   $('filmstripShell').style.display = gridMode ? 'none' : '';
   $('appShell').classList.toggle('grid-mode', gridMode);
+  $('appShell').classList.toggle('grid-info-open', gridMode && S.activePane === 'infoPane');
   document.querySelectorAll('[data-view]').forEach((button) => {
     const selected = button.dataset.view === mode;
     button.classList.toggle('on', selected);
@@ -5715,6 +5747,8 @@ function switchPane(id, { fromCompare = false } = {}) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
   S.activePane = id;
+  $('appShell').classList.toggle('grid-info-open', S.viewMode !== 'detail' && id === 'infoPane');
+  if (S.viewMode !== 'detail') { _gridLayoutKey = ''; requestAnimationFrame(renderGrid); }
   let activeButton = null;
   document.querySelectorAll('.panel-pane').forEach((p) => p.classList.toggle('on', p.id === id));
   document.querySelectorAll('.tool-btn').forEach((button) => {
@@ -6687,8 +6721,9 @@ function syncCullPanel() {
     }
   }
 
-  $('cullIntro').textContent = !S.ai.enabled
-    ? 'Turn the index on to sort a shoot into selects and rejects.'
+  $('cullEnableIndex').hidden = !!S.ai.enabled;
+  $('cullIntroText').textContent = !S.ai.enabled
+    ? ' to sort a shoot into selects and rejects.'
     : !scored
       ? (S.ai.running
         ? 'Scoring photos as the index reaches them.'
@@ -6882,6 +6917,7 @@ function scheduleAIStatusPoll(reset = false) {
 
 async function runAIAction(action) {
   $('aiToggle').disabled = true;
+  $('cullEnableIndex').disabled = true;
   try {
     const status = await api('/api/ai-index', { action });
     if (status.error) throw new Error(status.error);
@@ -6899,6 +6935,7 @@ async function runAIAction(action) {
   } catch (error) {
     toast(`Local index: ${error.message}`);
   } finally {
+    $('cullEnableIndex').disabled = false;
     syncAI();
   }
 }
@@ -7404,6 +7441,7 @@ document.querySelectorAll('.tool-btn').forEach((b) => {
     ? selectPhotoTool(b.dataset.pane) : switchPane(b.dataset.pane);
 });
 $('aiToggle').onclick = () => runAIAction(S.ai.enabled ? 'disable' : 'enable');
+$('cullEnableIndex').onclick = () => runAIAction('enable');
 $('aiRebuild').onclick = () => runAIAction('rebuild');
 $('aiClear').onclick = () => {
   if (window.confirm('Delete the generated local photo index? Your originals and edits will not be changed.')) {
@@ -7613,12 +7651,14 @@ function renderCompare() {
 
 function setCompareActive(on, { restoreTool = true } = {}) {
   const next = Boolean(on) && !!cur() && !S.wbPick && !S.pointColorPick && !S.maskColorPick;
+  const entering = next && !S.compareActive;
   const returnPane = compareReturnPane;
-  if (next && !S.compareActive && PHOTO_TOOL_PANES.includes(S.activePane)) {
+  if (entering && PHOTO_TOOL_PANES.includes(S.activePane)) {
     compareReturnPane = S.activePane;
     switchPane(lastAdjustmentPane, { fromCompare: true });
   }
   S.compareActive = next;
+  if (entering) snapCompareToView();
   if (!next) compareReturnPane = null;
   renderCompare();
   const back = $('compareReturn');
@@ -9210,6 +9250,7 @@ async function showExif(name) {
 
 /* ------------------------------------------------------------ keywords */
 function renderKeywords() {
+  KEYWORD_BATCH?.sync();
   const box = $('keywordList');
   box.replaceChildren();
   const im = cur();
@@ -9275,6 +9316,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   const separator = e.key === ',' ||
     (e.key === ';' && APP_PREFS.keywordSeparators === 'comma-semicolon');
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
+});
+
+KEYWORD_BATCH = installKeywordBatch({
+  el: $, post: api, toast, enabled: () => S.catalogEnabled,
+  names: () => [...S.msel], flush: flushEditSaves,
+  values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
+    .map(value => value.trim()).filter(Boolean),
+  apply: changes => {
+    for (const item of changes) {
+      const image = S.images.find(image => image.name === item.name);
+      if (!image) continue;
+      image.keywords = [...item.keywords];
+      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+    }
+    renderKeywords(); refreshFilteredView();
+    METADATA?.refreshKeywordTree();
+  },
 });
 
 /* ------------------------------------------------------------- versions */
@@ -10204,6 +10263,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  KEYWORD_BATCH?.sync();
   CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
@@ -10278,6 +10338,7 @@ async function savePrefs() {
     ratingFilter: $('ratingFilter').value, kindFilter: $('kindFilter').value,
     labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
     fileTypeFilters: LIBRARY_FILTERS.types(),
+    metadataFilters: LIBRARY_FILTERS.metadata(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10340,6 +10401,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
+  LIBRARY_FILTERS.setMetadata(p.metadataFilters);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -10455,6 +10517,14 @@ if (typeof ResizeObserver !== 'undefined') {
   viewportObserver.observe($('cv'));
 }
 window.addEventListener('resize', onViewportResize);
+function watchOverlayPixelRatio() {
+  const display = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  display.addEventListener('change', () => {
+    drawEditOverlay();
+    watchOverlayPixelRatio();
+  }, { once: true });
+}
+watchOverlayPixelRatio();
 document.addEventListener('visibilitychange', onViewportResize);
 if (NATIVE_PREVIEW) scheduleNativeViewportLayout();
 
@@ -10895,6 +10965,7 @@ function uiStateReport() {
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
       fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
+      ...LIBRARY_FILTERS.metadata(),
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',
     },

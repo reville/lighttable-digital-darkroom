@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hand-authored interoperability fixture, not a digiKam export. -->
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about=""
+   xmlns:dk="http://www.digikam.org/ns/1.0/"
+   xmlns:a="http://ns.adobe.com/xap/1.0/"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+   xmlns:mwg-rs="http://www.metadataworkinggroup.com/schemas/regions/"
+   xmlns:stArea="http://ns.adobe.com/xmp/sType/Area#">
+   <a:Rating>5</a:Rating><dk:PickLabel>3</dk:PickLabel><dk:ColorLabel>6</dk:ColorLabel>
+   <dk:TagsList><rdf:Seq><rdf:li>Places/France/Paris</rdf:li><rdf:li>People/Friends</rdf:li></rdf:Seq></dk:TagsList>
+   <dc:subject><rdf:Bag><rdf:li>Paris</rdf:li><rdf:li>Friends</rdf:li><rdf:li>Trip 2026</rdf:li></rdf:Bag></dc:subject>
+   <dc:title><rdf:Alt><rdf:li xml:lang="x-default">Evening by the river</rdf:li></rdf:Alt></dc:title>
+   <dc:description><rdf:Alt><rdf:li xml:lang="x-default">Friends near the Seine.</rdf:li><rdf:li xml:lang="fr">Des amis près de la Seine.</rdf:li></rdf:Alt></dc:description>
+   <photoshop:City>Paris</photoshop:City><photoshop:Country>France</photoshop:Country>
+   <dk:ImageUniqueID>synthetic-fixture-image-1</dk:ImageUniqueID>
+   <dk:ImageHistory>synthetic editor history retained verbatim</dk:ImageHistory>
+   <mwg-rs:Regions rdf:parseType="Resource"><mwg-rs:RegionList><rdf:Bag>
+    <rdf:li rdf:parseType="Resource"><mwg-rs:Name>Example person</mwg-rs:Name><mwg-rs:Area stArea:x="0.5" stArea:y="0.4" stArea:w="0.1" stArea:h="0.2" stArea:unit="normalized"/></rdf:li>
+   </rdf:Bag></mwg-rs:RegionList></mwg-rs:Regions>
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>

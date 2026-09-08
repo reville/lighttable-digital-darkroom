@@ -680,3 +680,50 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
         c = np.clip(c * falloff, 0.0, 1.0)
 
     return c
+
+
+def apply_accelerated(img: np.ndarray, g: dict) -> np.ndarray:
+    """Float32 GPU finishing for exports, with the established CPU fallback.
+
+    Small images stay on CPU because worker transport costs more than the
+    shader saves. This does not change the sRGB domain or any edit ordering.
+    """
+    g = clean(g)
+    if is_identity(g):
+        return img
+    heavy = (any(g[key] for key in ("texture", "clarity", "sharpness",
+                                   "luminanceNoise", "colorNoise"))
+             or any(g.get(key) for key in (*CURVE_KEYS, *ADVANCED_KEYS, "hsl")))
+    # Tone-only grades already have a fast fused Numba kernel. At 33 MP,
+    # sending those pixels across the worker boundary costs more than it saves.
+    # Luminance uniformity can lift near-black pixels by hundreds of times,
+    # amplifying harmless earlier float32 hue roundoff past 16-bit tolerance.
+    # A CPU Point Color pass after GPU detail would retain that roundoff, so
+    # these uncommon recipes keep the whole established reference sequence.
+    sensitive_uniformity = any(
+        point.get("uniformLuminance", 0.0) > 0.0
+        and point.get("refLuminance", 0.0) > 0.0
+        and "refSaturation" in point
+        for point in g.get("pointColor", []))
+    worthwhile = (heavy or not _HAS_NUMBA) and not sensitive_uniformity
+    if (worthwhile and img.ndim == 3 and img.shape[2] == 3
+            and img.shape[0] * img.shape[1] >= 262144):
+        try:
+            import gpu_compute
+            source, settings = img, g
+            if g["chromaticAberrationRedCyan"] or g["chromaticAberrationBlueYellow"]:
+                # Float32 GPU coordinate fusion shifts high-contrast fringes
+                # enough to exceed our 16-bit export tolerance. Keep this
+                # geometry step exact, then accelerate the remaining grade.
+                source = _correct_chromatic_aberration(
+                    np.clip(img.astype(np.float32), 0.0, 1.0),
+                    g["chromaticAberrationRedCyan"], g["chromaticAberrationBlueYellow"])
+                settings = dict(g, chromaticAberrationRedCyan=0.0,
+                                chromaticAberrationBlueYellow=0.0)
+                if is_identity(settings):
+                    return source
+            return gpu_compute.compute("grade", source,
+                [img.shape[1], img.shape[0]], img.shape, grade=settings)
+        except (RuntimeError, OSError, ValueError, TimeoutError):
+            pass
+    return apply(img, g)

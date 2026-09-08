@@ -413,7 +413,7 @@ def _color_weight(image: np.ndarray, hue: float | None,
         np.float32)
 
 
-def apply_masks(image: np.ndarray, masks) -> np.ndarray:
+def apply_masks(image: np.ndarray, masks, *, accelerated: bool = False) -> np.ndarray:
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
     for mask in clean_masks(masks):
         if not mask["enabled"] or grade.is_identity(mask["grade"]):
@@ -435,7 +435,8 @@ def apply_masks(image: np.ndarray, masks) -> np.ndarray:
             mask["colorAmount"])
         if not np.any(region_weight > 1e-6):
             continue
-        adjusted = grade.apply(region, mask["grade"])
+        apply_grade = grade.apply_accelerated if accelerated else grade.apply
+        adjusted = apply_grade(region, mask["grade"])
         output[y0:y1, x0:x1] = (
             region * (1.0 - region_weight[..., None])
             + adjusted * region_weight[..., None])
