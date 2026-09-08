@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO、毫米為單位的焦距、光圈 f 值與快門時間都可接受最小值與最大值。在兩端輸入相同數字即可精確匹配。快門時間可接受秒數或例如 1/250 的分數。缺少所需曝光中繼資料的相片不會匹配。",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "如果「自動」顯示正在等待影像預覽，請讓預覽載入後再試一次。",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "如果某個批次會寫入多個資料夾，「在 Finder 中顯示」會顯示第一張成功匯出的相片。當沒有任何相片被匯出時，此連結不會出現。使用「取消匯出」可要求停止。 「匯出詳細資料」會回報已完成、已略過與已取消的數量，以及警告和錯誤；即使某張相片已成功寫入之後，也可能出現警告。影片剪輯不會由靜態相片匯出工作流程轉譯。如果某個原始檔在排入匯出或正在轉譯時發生變更，該相片會因錯誤而失敗；請在檢查原始檔後重新將它排入佇列。",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "如果合併報告錯誤，請閱讀具體訊息，並在再次嘗試前修正輸入選取。",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "如果相片無法算繪或顯示，相片區域中的訊息會包含回報的原因（若有可用資訊）。這可用來判斷遺失的檔案、影像載入問題或圖形故障。如果沒有可用原因，訊息就會維持一般內容。",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "如果某種膠卷不可用，可能需要 GPU 引擎。可在「設定 → 效能」中查看引擎可用性。",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "紅色用 6、黃色用 7、綠色用 8、藍色用 9。紫色可在色彩控制中使用。",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "在側邊欄中使用全部相片、未旗標、已選取、已拒絕或已評分來選擇旗標或評分群組。",
     "Use Auto as a starting point": "使用自動作為起點",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "使用取消匯出來要求停止。匯出詳細資料會回報已完成、已略過與已取消的數量，以及警告與錯誤；即使相片已成功寫入，仍可能出現警告。影片剪輯不會由靜態相片匯出工作流程算繪。如果原始檔在排入匯出佇列時或在算繪期間變更，該相片會因錯誤而失敗；請在檢查原始檔後再將它排入佇列。",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "使用立即檢查執行可用的目錄檢查。遺失檔案項目會連同其編輯一起保留。",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "對於目標資料夾，使用「選擇…」；或在每個原始檔旁的「子資料夾」欄位輸入如 film-exports 之類的子資料夾名稱。",
     "Use Color Grading’s Reset to clear the grade.": "使用色彩分級的重設來清除分級。",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "當相片進來時",
     "When a photo seems missing": "當相片似乎遺失時",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "當格線中選取多張相片時，標記會套用到該組而不會前進。如果已開啟連結配對中繼資料，標記也會更新已辨識的 RAW 與 JPEG 夥伴檔。",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "當匯出完成時，請在完成通知的第二行點擊「在 Finder 中顯示」，以打開已匯出相片所在的資料夾。該通知會顯示 2.8 秒。",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "檢視配對相片時，請在頂部附近使用 RAW → JPEG 或 JPEG → RAW 切換到其搭檔。",
     "Where are your photos?": "你的相片在哪裡？",
     "While using Add, hold Option on Mac to subtract temporarily.": "使用新增時，在 Mac 上按住 Option 可暫時減去。",

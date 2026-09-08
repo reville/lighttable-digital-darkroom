@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO, 밀리미터 단위 초점 거리, 조리개 f값, 셔터 시간은 최소값과 최대값을 입력할 수 있습니다. 정확히 일치시키려면 양쪽 끝에 같은 숫자를 입력하세요. 셔터 시간은 초 또는 1/250 같은 분수로 입력할 수 있습니다. 필요한 노출 메타데이터가 없는 사진은 일치하지 않습니다.",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "자동이 이미지 미리보기를 기다리고 있다고 표시되면 미리보기가 로드될 때까지 기다린 뒤 다시 시도하세요.",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "일괄 내보내기가 여러 폴더에 기록하는 경우, Finder에서 표시는 성공적으로 내보내진 첫 번째 사진을 보여 줍니다. 내보낸 사진이 없으면 이 링크는 표시되지 않습니다. 취소를 요청하려면 내보내기 취소를 사용하십시오. 내보내기 세부 정보에는 완료, 건너뛰기, 취소된 항목 수와 경고 및 오류가 보고됩니다. 사진이 성공적으로 기록된 후에도 경고가 발생할 수 있습니다. 동영상 클립은 정지 사진 내보내기 워크플로에서 렌더링되지 않습니다. 원본이 내보내기 대기 중이거나 렌더링 중에 변경되면, 해당 사진은 오류와 함께 실패합니다. 원본을 확인한 후 다시 대기열에 넣으십시오.",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "병합에서 오류가 보고되면, 구체적인 메시지를 읽고 다시 시도하기 전에 입력 선택을 수정하세요.",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "사진을 렌더링하거나 표시할 수 없는 경우, 사진 영역의 메시지에는 보고된 이유가 있으면 함께 표시됩니다. 이 메시지는 누락된 파일, 이미지 로드 문제 또는 그래픽 오류를 식별하는 데 도움이 될 수 있습니다. 이유를 사용할 수 없으면 메시지는 일반적인 내용으로 유지됩니다.",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "스톡을 사용할 수 없으면 GPU 엔진이 필요할 수 있습니다. 엔진 사용 가능 여부는 설정 → 성능에 표시됩니다.",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "빨강에는 6, 노랑에는 7, 초록에는 8, 파랑에는 9를 사용하세요. 보라색은 색상 컨트롤에서 사용할 수 있습니다.",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "사이드바에서 모두 사진, 플래그 해제, 선택됨, 거부됨, 또는 평가됨을 사용해 플래그나 평점 그룹을 선택하세요.",
     "Use Auto as a starting point": "자동을 시작점으로 사용",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "내보내기 취소를 사용하여 중지를 요청하세요. 내보내기 세부 정보에는 완료, 건너뜀, 취소된 개수와 함께 경고 및 오류가 표시됩니다. 사진이 성공적으로 기록된 후에도 경고가 발생할 수 있습니다. 동영상 클립은 정지 사진 내보내기 워크플로로 렌더링되지 않습니다. 원본이 대기 중이거나 렌더링 중에 변경되면 해당 사진은 오류로 실패합니다. 원본을 확인한 후 다시 대기하세요.",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "지금 검사를 사용해 사용 가능한 카탈로그 검사를 실행하세요. 누락된 파일 항목은 편집과 함께 유지됩니다.",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "대상 폴더에는 찾아보기를 사용하거나, 각 원본 옆의 하위 폴더에 film-exports 같은 하위 폴더 이름을 입력하세요.",
     "Use Color Grading’s Reset to clear the grade.": "색보정의 초기화를 사용하여 보정을 지우세요.",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "사진이 들어오면",
     "When a photo seems missing": "사진이 누락된 것처럼 보일 때",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "그리드에서 여러 사진이 선택되면 마크는 진행 없이 그 집합에 적용됩니다. Link pair metadata가 켜져 있으면 마킹이 인식된 RAW 및 JPEG 동반 파일도 함께 업데이트합니다.",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "내보내기가 완료되면, 완료 알림의 두 번째 줄에서 Finder에서 표시를 클릭하여 내보낸 사진이 들어 있는 폴더를 엽니다. 알림은 2.8초 동안 표시된 상태로 유지됩니다.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "쌍으로 된 사진을 볼 때는 상단 근처의 RAW → JPEG 또는 JPEG → RAW를 사용해 동반 파일로 전환하세요.",
     "Where are your photos?": "사진은 어디에 있나요?",
     "While using Add, hold Option on Mac to subtract temporarily.": "추가를 사용하는 동안 Mac에서는 Option 키를 눌러 일시적으로 빼기로 전환합니다.",

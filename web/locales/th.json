@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO, ความยาวโฟกัสเป็นมิลลิเมตร, รูรับแสง f-number และเวลาชัตเตอร์ ยอมรับค่าต่ำสุดและค่าสูงสุด ป้อนตัวเลขเดียวกันที่ปลายทั้งสองเพื่อให้ตรงกันแบบเป๊ะๆ เวลาชัตเตอร์ยอมรับหน่วยเป็นวินาทีหรือเศษส่วน เช่น 1/250 รูปถ่ายที่ไม่มีเมทาดาทาการรับแสงที่ต้องการจะไม่ตรงกัน",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "หาก Auto แจ้งว่ากำลังรอภาพตัวอย่าง ให้รอให้ตัวอย่างโหลดแล้วลองอีกครั้ง",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "หากชุดงานเขียนไปยังหลายโฟลเดอร์ แสดงใน Finder จะแสดงรูปภาพแรกที่ส่งออกสำเร็จ ลิงก์นี้จะไม่ปรากฏเมื่อไม่มีรูปภาพใดถูกส่งออก ใช้ ยกเลิกการส่งออก เพื่อขอให้หยุด รายละเอียดการส่งออกจะแสดงจำนวนที่เสร็จสิ้น ข้าม และยกเลิก รวมถึงคำเตือนและข้อผิดพลาด โดยคำเตือนอาจเกิดขึ้นได้หลังจากที่เขียนรูปภาพสำเร็จแล้ว คลิปวิดีโอจะไม่ถูกเรนเดอร์โดยเวิร์กโฟลว์การส่งออกรูปภาพนิ่ง หากต้นฉบับมีการเปลี่ยนแปลงขณะที่การส่งออกของรูปนั้นอยู่ในคิวหรือกำลังเรนเดอร์ การส่งออกของรูปนั้นจะล้มเหลวพร้อมข้อผิดพลาด ให้ส่งเข้าคิวอีกครั้งหลังจากตรวจสอบต้นฉบับแล้ว",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "หากการผสานรายงานข้อผิดพลาด ให้อ่านข้อความเฉพาะและแก้ไขการเลือกอินพุตก่อนลองอีกครั้ง",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "หากไม่สามารถเรนเดอร์หรือแสดงภาพถ่ายได้ ข้อความในพื้นที่ภาพถ่ายจะระบุสาเหตุที่รายงานไว้เมื่อมีข้อมูลดังกล่าว ซึ่งอาจบ่งชี้ถึงไฟล์ที่หายไป ปัญหาในการโหลดภาพ หรือความขัดข้องของกราฟิก หากไม่มีสาเหตุให้ใช้ ข้อความจะยังคงเป็นแบบทั่วไป",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "หากสต็อกไม่พร้อมใช้งาน อาจต้องใช้เอนจิน GPU ความพร้อมใช้งานของเอนจินแสดงอยู่ใน การตั้งค่า → ประสิทธิภาพ",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "ใช้ 6 สำหรับ Red, 7 สำหรับ Yellow, 8 สำหรับ Green และ 9 สำหรับ Blue ส่วน Purple ใช้ได้จากตัวควบคุมสี",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "ใช้ All Photos, Unflagged, Picked, Rejected หรือ Rated ในแถบด้านข้างเพื่อเลือกกลุ่มธงหรือการให้คะแนน",
     "Use Auto as a starting point": "ใช้ Auto เป็นจุดเริ่มต้น",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "ใช้ ยกเลิกการส่งออก เพื่อขอให้หยุด รายละเอียดการส่งออกจะแจ้งจำนวนที่เสร็จสมบูรณ์ ข้าม และยกเลิก พร้อมทั้งคำเตือนและข้อผิดพลาด; คำเตือนอาจเกิดขึ้นหลังจากเขียนภาพถ่ายสำเร็จแล้ว คลิปวิดีโอจะไม่ถูกเรนเดอร์โดยเวิร์กโฟลว์การส่งออกภาพนิ่ง หากต้นฉบับเปลี่ยนแปลงระหว่างที่การส่งออกอยู่ในคิวหรือกำลังเรนเดอร์ ภาพถ่ายนั้นจะล้มเหลวพร้อมข้อผิดพลาด; จัดคิวอีกครั้งหลังจากตรวจสอบต้นฉบับ",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "ใช้ Check now เพื่อเรียกใช้การตรวจสอบแค็ตตาล็อกที่มีอยู่ รายการไฟล์ที่หายไปจะถูกเก็บพร้อมการแก้ไข",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "ใช้ Choose… สำหรับโฟลเดอร์ปลายทาง หรือป้อนชื่อโฟลเดอร์ย่อย เช่น film-exports สำหรับ Subfolder ถัดจากต้นฉบับแต่ละรายการ",
     "Use Color Grading’s Reset to clear the grade.": "ใช้ รีเซ็ต ของ Color Grading เพื่อล้างการเกรด",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "เมื่อภาพถ่ายเข้ามา",
     "When a photo seems missing": "เมื่อภาพถ่ายดูเหมือนหายไป",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "เมื่อเลือกภาพถ่ายหลายภาพในกริด เครื่องหมายจะถูกใช้กับชุดนั้นโดยไม่เลื่อนไปภาพถัดไป หาก Link pair metadata เปิดอยู่ การทำเครื่องหมายจะอัปเดตไฟล์ RAW และ JPEG คู่กันที่ตรวจพบด้วย",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "เมื่อการส่งออกเสร็จสิ้น ให้คลิก แสดงใน Finder บนบรรทัดที่สองของการแจ้งเตือนเมื่อเสร็จสิ้น เพื่อเปิดโฟลเดอร์ที่มีรูปภาพที่ส่งออกไว้ การแจ้งเตือนจะยังคงแสดงเป็นเวลา 2.8 วินาที",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "เมื่อดูภาพที่จับคู่กัน ใช้ RAW → JPEG หรือ JPEG → RAW ใกล้ด้านบนเพื่อสลับไปยังคู่ของมัน",
     "Where are your photos?": "ภาพถ่ายของคุณอยู่ที่ไหน?",
     "While using Add, hold Option on Mac to subtract temporarily.": "ขณะใช้ เพิ่ม ให้กด Option บน Mac เพื่อลบออกชั่วคราว",

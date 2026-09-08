@@ -2430,14 +2430,15 @@
             "Periksa field Photos. Pilih Selected photos, Picked only, Rated 1+, atau All except rejected.",
             "Pilih preset ekspor atau atur jenis file, dimensi, kualitas, dan ruang warna.",
             "Atur tujuan dan periksa pratinjau Keluaran untuk nama file, dimensi, dan jalur.",
-            "Klik Ekspor dan ikuti progresnya di bar atas."
+            "Klik Ekspor dan ikuti progresnya di bar atas.",
+            "Saat ekspor selesai, klik Tampilkan di Finder pada baris kedua notifikasi penyelesaian untuk membuka folder yang berisi foto yang diekspor. Notifikasi tetap terlihat selama 2,8 detik."
           ]
         },
         {
           "title": "Periksa scope dan hasil",
           "paragraphs": [
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
-            "Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah yang selesai, dilewati, dan dibatalkan, plus peringatan dan kesalahan; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika asli berubah saat ekornya menunggu atau saat dirender, foto itu gagal dengan kesalahan; antrekan lagi setelah memeriksa aslinya."
+            "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

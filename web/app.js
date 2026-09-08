@@ -134,18 +134,30 @@ const presentationCache = createPresentationCache();
 const GRADE_PERF = createInteractionRecorder(Boolean(window.__LIGHTTABLE_BENCHMARK__));
 
 /* ------------------------------------------------------------------ utils */
-function toast(msg, action = null) {
+function toast(msg, action = null, duration = null) {
   const t = $('toast');
   t.replaceChildren(document.createTextNode(msg));
+  t.classList.toggle('toast-stacked', !!action?.link);
   if (action?.run) {
-    const button = document.createElement('button');
-    button.type = 'button'; button.textContent = ((action.label || tr("Undo")));
-    button.onclick = () => { action.run(); t.classList.remove('show'); };
+    const button = document.createElement(action.link ? 'a' : 'button');
+    if (action.link) { button.href = '#'; button.className = 'toast-link'; }
+    else button.type = 'button';
+    button.textContent = action.label || tr('Undo');
+    button.onclick = (event) => {
+      event.preventDefault();
+      t.classList.remove('show');
+      t.inert = true;
+      action.run();
+    };
     t.appendChild(button);
   }
   t.classList.add('show');
+  t.inert = false;
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => t.classList.remove('show'), action ? 5000 : 1800);
+  toast._t = setTimeout(() => {
+    t.classList.remove('show');
+    t.inert = true;
+  }, duration ?? (action ? 5000 : 1800));
 }
 
 function notifyCompletion(title, message) {
@@ -8138,7 +8150,10 @@ async function runExport(customOpts = {}) {
           warnings ? trn('{count} warning', '{count} warnings', warnings) : '',
           errors ? trn('{count} error', '{count} errors', errors) : '',
         ].filter(Boolean).join(' · ');
-        toast($('estat').textContent);
+        toast($('estat').textContent, st.completed > 0 && st.revealPath ? {
+          label: tr('Show in Finder'), link: true,
+          run: () => postNative('revealFolder', { path: st.revealPath }),
+        } : null, 2800);
         notifyCompletion(record.state === 'cancelled' ? tr("Export cancelled") : tr("Export complete"), $('estat').textContent);
       }
     } catch (_error) {

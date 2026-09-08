@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO, tiêu cự tính bằng milimét, khẩu độ f-number và thời gian màn trập chấp nhận giá trị tối thiểu và tối đa. Nhập cùng một số ở cả hai đầu để khớp chính xác. Thời gian màn trập chấp nhận giây hoặc phân số như 1/250. Ảnh không có siêu dữ liệu phơi sáng bắt buộc sẽ không khớp.",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "Nếu Tự động báo đang chờ bản xem trước hình ảnh, hãy để bản xem trước tải xong rồi thử lại.",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc.",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "Nếu một lần hợp nhất báo lỗi, hãy đọc thông báo cụ thể và sửa vùng chọn đầu vào trước khi thử lại.",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "Nếu không thể hiển thị hoặc dựng ảnh, thông báo trong vùng ảnh sẽ bao gồm lý do được báo cáo khi có. Điều này có thể xác định tệp bị thiếu, sự cố tải ảnh hoặc lỗi đồ họa. Nếu không có lý do nào, thông báo sẽ vẫn mang tính chung chung.",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng.",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "Dùng 6 cho Red, 7 cho Yellow, 8 cho Green và 9 cho Blue. Purple có sẵn từ các điều khiển màu sắc.",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "Dùng All Photos, Unflagged, Picked, Rejected hoặc Rated trong thanh bên để chọn một nhóm cờ hoặc xếp hạng.",
     "Use Auto as a starting point": "Dùng Tự động làm điểm bắt đầu",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn thành, đã bỏ qua và đã hủy, cùng với cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được kết xuất bởi quy trình làm việc xuất ảnh tĩnh. Nếu một bản gốc thay đổi trong khi xuất của nó đang xếp hàng hoặc đang kết xuất, ảnh đó sẽ lỗi với một thông báo; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc.",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "Dùng Check now để chạy các kiểm tra danh mục có sẵn. Các mục tệp bị thiếu vẫn được giữ cùng các chỉnh sửa của chúng.",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "Dùng Choose… cho thư mục đích, hoặc nhập tên thư mục con như film-exports cho Subfolder bên cạnh mỗi bản gốc.",
     "Use Color Grading’s Reset to clear the grade.": "Dùng Đặt lại của Phân màu để xóa phân màu.",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "Khi một ảnh được nhập vào",
     "When a photo seems missing": "Khi một ảnh có vẻ bị thiếu",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "Khi nhiều ảnh được chọn trong một lưới, các đánh dấu sẽ áp dụng cho tập đó mà không chuyển sang ảnh tiếp theo. Nếu Liên kết siêu dữ liệu cặp đang bật, việc đánh dấu cũng cập nhật các bạn đồng hành RAW và JPEG đã nhận diện.",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Khi quá trình xuất hoàn tất, hãy nhấp Hiển thị trong Finder trên dòng thứ hai của thông báo hoàn tất để mở thư mục chứa ảnh đã xuất. Thông báo sẽ hiển thị trong 2,8 giây.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Khi xem một ảnh ghép đôi, dùng RAW → JPEG hoặc JPEG → RAW gần phía trên để chuyển sang ảnh đi kèm của nó.",
     "Where are your photos?": "Ảnh của bạn ở đâu?",
     "While using Add, hold Option on Mac to subtract temporarily.": "Khi đang dùng Thêm, giữ Option trên Mac để tạm thời trừ.",

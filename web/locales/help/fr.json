@@ -2430,14 +2430,15 @@
             "Vérifiez le champ Photos. Choisissez Photos sélectionnées, Sélectionnées seulement, Noté 1+, ou Tout sauf rejeté.",
             "Choisissez un préréglage d’exportation ou définissez le type de fichier, les dimensions, la qualité et l’espace colorimétrique.",
             "Définissez la destination et inspectez l’aperçu de sortie pour le nom de fichier, les dimensions et le chemin.",
-            "Cliquez sur Exporter et suivez la progression dans la barre supérieure."
+            "Cliquez sur Exporter et suivez la progression dans la barre supérieure.",
+            "Lorsque l’exportation est terminée, cliquez sur Afficher dans le Finder sur la deuxième ligne de la notification de fin pour ouvrir le dossier contenant la photo exportée. La notification reste visible pendant 2,8 secondes."
           ]
         },
         {
           "title": "Vérifier la portée et le résultat",
           "paragraphs": [
             "Sélectionné uniquement, Noté 1+ et Tout sauf rejeté sélectionnent les photos fixes correspondantes du catalogue actif et peuvent inclure des photos en dehors de la collection ou du filtre affichés. Photos sélectionnées offre un contrôle explicite sur l’ensemble.",
-            "Utilisez Annuler l’exportation pour demander un arrêt. Détails de l'export indique les nombres terminés, ignorés et annulés, ainsi que les avertissements et les erreurs ; un avertissement peut survenir après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’exportation des photos fixes. Si un original change pendant que son exportation est en file d’attente ou en cours de rendu, cette photo échoue avec une erreur ; remettez-la en file d’attente après avoir vérifié l’original."
+            "Si un lot écrit vers plusieurs dossiers, Afficher dans le Finder affiche la première photo exportée avec succès. Le lien est absent lorsqu’aucune photo n’a été exportée. Utilisez Annuler l’exportation pour demander l’arrêt. Détails de l'export indique les nombres de terminés, ignorés et annulés, ainsi que les avertissements et les erreurs ; un avertissement peut se produire après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’exportation des photos fixes. Si un original change pendant que son exportation est en file d’attente ou en cours de rendu, cette photo échoue avec une erreur ; remettez-la en file d’attente après avoir vérifié l’original."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

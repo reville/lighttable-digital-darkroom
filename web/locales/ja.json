@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO、ミリメートル単位の焦点距離、絞りf値、およびシャッター時間は、最小値と最大値を指定できます。完全一致にするには、両端に同じ数値を入力します。シャッター時間は、秒または1/250のような分数を受け付けます。必要な露出メタデータがない写真は一致しません。",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "自動が画像プレビューを待機中だと表示したら、プレビューの読み込みを待ってからもう一度試します。",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "バッチが複数のフォルダーに書き込む場合、「Finder で表示」は最初に正常に書き出された写真を表示します。写真が 1 枚も書き出されなかった場合、このリンクは表示されません。停止を要求するには「書き出しをキャンセル」を使用します。「書き出しの詳細」では、完了、スキップ、キャンセルの件数に加えて、警告とエラーを報告します。写真が正常に書き込まれた後でも警告が発生する場合があります。動画クリップは、静止画の書き出しワークフローではレンダリングされません。オリジナルが書き出し待ち中またはレンダリング中に変更されると、その写真はエラーで失敗します。オリジナルを確認したあと、もう一度キューに入れてください。",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "マージでエラーが報告された場合は、個別のメッセージを読み、再試行する前に入力選択を修正します。",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "写真を描画または表示できない場合、写真エリアのメッセージには、利用可能な場合、報告された理由が含まれます。これにより、見つからないファイル、画像の読み込み問題、またはグラフィックの障害を特定できます。理由が利用できない場合、メッセージは一般的な内容のままです。",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "ストックが使用できない場合は、GPU エンジンが必要な場合があります。エンジンの使用可否は 設定 → パフォーマンス に表示されます。",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "Red には 6、Yellow には 7、Green には 8、Blue には 9 を使います。Purple は colour コントロールから利用できます。",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "サイドバーで All Photos、Unflagged、Picked、Rejected、Rated を使って、フラグまたはレーティングのグループを選びます。",
     "Use Auto as a starting point": "開始点として自動を使用",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "停止を要求するには「書き出しをキャンセル」を使用してください。「書き出しの詳細」では、完了、スキップ、キャンセルの件数に加えて、警告とエラーを報告します。写真が正常に書き出された後に警告が発生する場合があります。静止画の書き出しワークフローでは動画クリップはレンダリングされません。オリジナルがキューに追加された後またはレンダリング中に変更された場合、その写真はエラーで失敗します。オリジナルを確認してから、もう一度キューに追加してください。",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "Check now を使って利用可能なカタログチェックを実行します。欠落ファイルのエントリは編集内容付きで保持されます。",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "保存先フォルダーには Choose… を使うか、Subfolder には film-exports のようなサブフォルダー名を各オリジナルの横に入力します。",
     "Use Color Grading’s Reset to clear the grade.": "Color Gradingのリセットを使ってグレードを消去します。",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "写真が取り込まれたとき",
     "When a photo seems missing": "写真が見つからない場合",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "グリッドで複数の写真が選択されている場合、マークはそのセットに適用され、次へは進みません。Link pair metadata がオンの場合、マークは認識された RAW と JPEG の関連ファイルにも反映されます。",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "書き出しが完了したら、完了通知の 2 行目にある「Finder で表示」をクリックして、書き出した写真を含むフォルダーを開きます。通知は 2.8 秒間表示されたままになります。",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "ペアの写真を表示しているときは、上部付近の RAW → JPEG または JPEG → RAW を使って相手側に切り替えます。",
     "Where are your photos?": "写真はどこにありますか？",
     "While using Add, hold Option on Mac to subtract temporarily.": "追加を使用中に、Mac では Option キーを押して一時的に減算します。",

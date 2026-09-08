@@ -2430,14 +2430,15 @@
             "Photos alanını kontrol edin. Seçilmiş fotoğraflar, Yalnızca seçilmişler, 1+ puanlı veya reddedilenler hariç tümü seçin.",
             "Bir dışa aktarma hazır ayarı seçin ya da dosya türünü, boyutları, kaliteyi ve renk uzayını ayarlayın.",
             "Hedefi ayarlayın ve dosya adı, boyutlar ve yol için Çıkış önizlemesini inceleyin.",
-            "Dışa Aktar’a tıklayın ve ilerlemeyi üst çubukta izleyin."
+            "Dışa Aktar’a tıklayın ve ilerlemeyi üst çubukta izleyin.",
+            "Dışa aktarma tamamlandığında, dışa aktarılan fotoğrafın bulunduğu klasörü açmak için tamamlanma bildirimindeki ikinci satırda yer alan Finder'da Göster bağlantısına tıklayın. Bildirim 2,8 saniye boyunca görünür kalır."
           ]
         },
         {
           "title": "Kapsamı ve sonucu kontrol edin",
           "paragraphs": [
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
-            "Bir durdurma isteği göndermek için Dışa aktarmayı iptal et'i kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları, ayrıca uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışıyla işlenmez. Bir orijinal, dışa aktarımı kuyruğa alındığında veya işlenirken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden kuyruğa alın."
+            "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

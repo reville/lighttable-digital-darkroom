@@ -2430,14 +2430,15 @@
             "Verifique o campo Photos. Escolha Selected photos, Picked only, Rated 1+ ou All except rejected.",
             "Escolha uma predefinição de exportação ou defina tipo de arquivo, dimensões, qualidade e espaço de cor.",
             "Defina o destino e inspecione a Pré-visualização da saída para o nome do arquivo, dimensões e caminho.",
-            "Clique em Exportar e acompanhe o andamento na barra superior."
+            "Clique em Exportar e acompanhe o andamento na barra superior.",
+            "Quando a exportação terminar, clique em Mostrar no Finder na segunda linha da notificação de conclusão para abrir a pasta que contém a foto exportada. A notificação permanece visível por 2,8 segundos."
           ]
         },
         {
           "title": "Verificar o escopo e o resultado",
           "paragraphs": [
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
-            "Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, ignoradas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original mudar enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falhará com um erro; coloque-a na fila novamente depois de verificar o original."
+            "Se um lote gravar em várias pastas, Mostrar no Finder revela a primeira foto exportada com sucesso. O link não está presente quando nenhuma foto foi exportada. Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original for alterado enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falha com um erro; coloque-a na fila novamente depois de verificar o original."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

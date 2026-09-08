@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO, panjang fokus dalam milimeter, f-number bukaan, dan waktu rana menerima nilai minimum dan maksimum. Masukkan angka yang sama di kedua ujung untuk kecocokan tepat. Waktu rana menerima detik atau pecahan seperti 1/250. Foto tanpa metadata eksposur yang diperlukan tidak cocok.",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "Jika Auto mengatakan sedang menunggu pratinjau gambar, biarkan pratinjau dimuat lalu coba lagi.",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli.",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "Jika merge melaporkan error, baca pesan spesifiknya dan perbaiki pilihan input sebelum mencoba lagi.",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "Jika foto tidak dapat dirender atau ditampilkan, pesan di area foto menyertakan alasan yang dilaporkan bila tersedia. Ini dapat mengidentifikasi file yang hilang, masalah pemuatan gambar, atau kegagalan grafis. Jika tidak ada alasan yang tersedia, pesannya tetap umum.",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "Jika suatu stok tidak tersedia, mungkin diperlukan engine GPU. Ketersediaan engine ditampilkan di Pengaturan → Performa.",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "Gunakan 6 untuk Red, 7 untuk Yellow, 8 untuk Green, dan 9 untuk Blue. Purple tersedia dari kontrol warna.",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "Gunakan All Photos, Unflagged, Picked, Rejected, atau Rated di sidebar untuk memilih grup bendera atau rating.",
     "Use Auto as a starting point": "Gunakan Otomatis sebagai titik awal",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah yang selesai, dilewati, dan dibatalkan, plus peringatan dan kesalahan; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika asli berubah saat ekornya menunggu atau saat dirender, foto itu gagal dengan kesalahan; antrekan lagi setelah memeriksa aslinya.",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "Gunakan Check now untuk menjalankan pemeriksaan katalog yang tersedia. Entri file hilang tetap disimpan bersama editnya.",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "Gunakan Pilih… untuk folder tujuan, atau masukkan nama subfolder seperti film-exports untuk Subfolder di samping setiap original.",
     "Use Color Grading’s Reset to clear the grade.": "Gunakan Atur Ulang pada Color Grading untuk menghapus gradasi.",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "Saat foto masuk",
     "When a photo seems missing": "Saat sebuah foto tampak hilang",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "Saat beberapa foto dipilih dalam kisi, tanda diterapkan ke set tersebut tanpa maju. Jika Link pair metadata aktif, penandaan juga memperbarui pendamping RAW dan JPEG yang dikenali.",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Saat ekspor selesai, klik Tampilkan di Finder pada baris kedua notifikasi penyelesaian untuk membuka folder yang berisi foto yang diekspor. Notifikasi tetap terlihat selama 2,8 detik.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Saat melihat foto berpasangan, gunakan RAW → JPEG atau JPEG → RAW di dekat atas untuk beralih ke pasangannya.",
     "Where are your photos?": "Di mana foto Anda?",
     "While using Add, hold Option on Mac to subtract temporarily.": "Saat menggunakan Tambahkan, tahan Option di Mac untuk mengurangi sementara.",

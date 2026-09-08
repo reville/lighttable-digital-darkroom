@@ -2430,14 +2430,15 @@
             "Sprawdź pole Zdjęcia. Wybierz Wybrane zdjęcia, Tylko wybrane, Ocenione 1+ lub Wszystkie oprócz odrzuconych.",
             "Wybierz preset eksportu albo ustaw typ pliku, wymiary, jakość i przestrzeń kolorów.",
             "Ustaw miejsce docelowe i sprawdź w podglądzie wyjścia nazwę pliku, wymiary i ścieżkę.",
-            "Kliknij Eksportuj i śledź postęp na górnym pasku."
+            "Kliknij Eksportuj i śledź postęp na górnym pasku.",
+            "Gdy eksport się zakończy, kliknij Pokaż w Finderze w drugim wierszu powiadomienia o ukończeniu, aby otworzyć folder zawierający wyeksportowane zdjęcie. Powiadomienie pozostaje widoczne przez 2,8 sekundy."
           ]
         },
         {
           "title": "Sprawdź zakres i wynik",
           "paragraphs": [
             "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
-            "Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu pokazują liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć statycznych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub renderowany, to zdjęcie zakończy się błędem; dodaj je do kolejki ponownie po sprawdzeniu oryginału."
+            "Jeśli wsadowy eksport zapisuje do wielu folderów, Pokaż w Finderze pokazuje pierwsze zdjęcie wyeksportowane pomyślnie. Łącze jest nieobecne, gdy nie wyeksportowano żadnych zdjęć. Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu podają liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć nieruchomych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub jest renderowany, to zdjęcie zakończy się błędem; dodaj je ponownie do kolejki po sprawdzeniu oryginału."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

@@ -2430,14 +2430,15 @@
             "Kiểm tra trường Photos. Chọn Selected photos, Picked only, Rated 1+ hoặc All except rejected.",
             "Chọn một thiết lập sẵn xuất hoặc đặt kiểu tệp, kích thước, chất lượng và không gian màu.",
             "Đặt đích đến và kiểm tra bản xem trước đầu ra cho tên tệp, kích thước và đường dẫn.",
-            "Nhấp Xuất và theo dõi tiến trình trong thanh trên cùng."
+            "Nhấp Xuất và theo dõi tiến trình trong thanh trên cùng.",
+            "Khi quá trình xuất hoàn tất, hãy nhấp Hiển thị trong Finder trên dòng thứ hai của thông báo hoàn tất để mở thư mục chứa ảnh đã xuất. Thông báo sẽ hiển thị trong 2,8 giây."
           ]
         },
         {
           "title": "Kiểm tra biểu đồ và kết quả",
           "paragraphs": [
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
-            "Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn thành, đã bỏ qua và đã hủy, cùng với cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được kết xuất bởi quy trình làm việc xuất ảnh tĩnh. Nếu một bản gốc thay đổi trong khi xuất của nó đang xếp hàng hoặc đang kết xuất, ảnh đó sẽ lỗi với một thông báo; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
+            "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }
