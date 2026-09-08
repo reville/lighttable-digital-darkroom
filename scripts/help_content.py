@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('Getting started', 'Library', 'Editing', 'Film', 'Export',
@@ -283,8 +284,44 @@ def literal_inputs(source):
     return ('remove',) if 'enter remove to clear it.' in source else ()
 
 
+def locale_script_issue(source, translated, locale):
+    """Catch accidental foreign-script fragments, not translation quality.
+
+    Latin product names and technical terms are valid in every locale. Keep
+    characters already present in the source (for example, a quoted filename),
+    shared combining accents, and the scripts normally used by the target.
+    """
+    scripts = {
+        'ru': ('CYRILLIC',),
+        'zh': ('CJK', 'IDEOGRAPHIC'),
+        'ja': ('CJK', 'IDEOGRAPHIC', 'HIRAGANA', 'KATAKANA'),
+        'ko': ('CJK', 'IDEOGRAPHIC', 'HANGUL'),
+        'ar': ('ARABIC',), 'hi': ('DEVANAGARI',),
+        'bn': ('BENGALI',), 'th': ('THAI',),
+    }.get(locale.split('-')[0], ())
+    allowed = ('LATIN', 'COMBINING', *scripts)
+    unexpected = set()
+    for character in translated:
+        if character in source or not unicodedata.category(character).startswith(('L', 'M')):
+            continue
+        name = unicodedata.name(character, '')
+        # Unicode classifies the ordinary Spanish/Portuguese ordinal indicators
+        # as letters, but their names do not contain LATIN.
+        if character in 'ªº' or any(script in name for script in allowed):
+            continue
+        unexpected.add(character)
+    if unexpected:
+        names = ', '.join(unicodedata.name(character, f'U+{ord(character):04X}')
+                          for character in sorted(unexpected)[:4])
+        return f'unexpected script for {locale}: {names}'
+    return None
+
+
 def validate_translation(source, translated, locale):
     require_text(translated, f'{locale} translation of {source[:70]!r}')
+    script_issue = locale_script_issue(source, translated, locale)
+    if script_issue:
+        raise HelpError(script_issue)
     if Counter(NAMED_TOKENS.findall(source)) != Counter(NAMED_TOKENS.findall(translated)):
         raise HelpError(f'{locale}: named placeholders changed in {source[:90]!r}')
     if Counter(FILE_TOKENS.findall(source)) != Counter(FILE_TOKENS.findall(translated)):

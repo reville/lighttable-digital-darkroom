@@ -5,6 +5,7 @@ import copy
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import types
 import unittest
@@ -28,6 +29,7 @@ class ServerLocalizationTests(unittest.TestCase):
             'job is not cancellable': 'Cette tâche ne peut pas être annulée',
             'the catalog is not available': 'Le catalogue est indisponible',
             'Export': 'Exporter',
+            'could not decode {name}: {error}': 'Impossible de décoder {name} : {error}',
             'Select no more than 5000 photos for a keyword batch':
                 'Sélectionnez au plus 5000 photos pour un lot de mots-clés',
             'External XMP changes conflict with pending edits ({properties}). Read the sidecar metadata before syncing again.':
@@ -103,6 +105,22 @@ class ServerLocalizationTests(unittest.TestCase):
         self.assertEqual(self.translator('Export'), 'Export')
         self.set_locale('../outside')
         self.assertEqual(self.translator.locale(), 'en')
+
+    def test_portable_decoder_error_preserves_filename_and_native_diagnostic(self):
+        import platform_image
+
+        buffer = types.SimpleNamespace(spec=lambda: types.SimpleNamespace(width=0, height=0),
+                                       geterror=lambda: 'Export {error}')
+        decoder = types.SimpleNamespace(
+            ImageSpec=lambda: types.SimpleNamespace(attribute=lambda *args: None),
+            ImageBuf=lambda *args: buffer)
+        with mock.patch.dict(sys.modules, {'OpenImageIO': decoder}):
+            with self.assertRaises(RuntimeError) as caught:
+                platform_image._open_portable_full_precision(Path('Export {name}.tif'))
+        self.assertEqual(str(caught.exception),
+                         'Impossible de décoder Export {name}.tif : Export {error}')
+        self.assertEqual(localization.source_message(caught.exception),
+                         'could not decode Export {name}.tif: Export {error}')
 
     def test_env_and_callable_preferences_paths_support_isolated_profiles(self):
         with mock.patch.dict(os.environ, {'LIGHTTABLE_PREFS_FILE': str(self.prefs)}):

@@ -40,7 +40,7 @@ export function createPreviewProgress(publish, {
 // new render on every poll invalidates and can cancel the active RAW decode.
 export async function waitForRawRefinement({ request, isCurrent,
   sleep = ms => new Promise(resolve => setTimeout(resolve, ms)),
-  maxAttempts = 360, interval = 500,
+  maxAttempts = 1800, interval = 100,
 }) {
   for (let attempt = 0; attempt < maxAttempts && isCurrent(); attempt++) {
     const result = await request();

@@ -700,6 +700,7 @@ name = "lighttable-engine"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bytemuck",
  "image",
  "libc",
  "rayon",

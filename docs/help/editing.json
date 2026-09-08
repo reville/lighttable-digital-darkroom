@@ -402,7 +402,7 @@
         "title": "Create a manual mask",
         "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments.", "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."],
         "steps": ["Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.", "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.", "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.", "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.", "Rename the mask using its ••• button so its purpose is easy to recognize later."],
-        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."]
+        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
       }
     ],
     "related": ["editing-masks-ai", "editing-masks-ranges-refinements", "editing-history-snapshots"],
@@ -411,7 +411,8 @@
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
       {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = tr('Drag on the photo to edit the {tool} mask.', {tool: localToolLabel(mask.type)});"},
       {"path": "web/app.js", "anchor": "Up to sixteen local masks can be active"},
-      {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"}
+      {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"},
+      {"path": "web/screen-overlay.js", "anchor": "export function prepareScreenOverlay("}
     ]
   },
   {
@@ -495,7 +496,7 @@
       },
       {
         "title": "Refine an existing correction",
-        "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."],
+        "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.", "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."],
         "steps": ["Drag the target circle to reposition the correction, or choose Move Target and click its new position.", "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.", "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.", "Toggle Enable this correction to compare, or use Delete correction to remove it."],
         "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change."]
       }
@@ -507,7 +508,8 @@
       {"path": "web/app.js", "anchor": "function setHealToolMode(mode)"},
       {"path": "web/app.js", "anchor": "$('healRefresh').hidden = spot.mode === 'remove';"},
       {"path": "web/app.js", "anchor": "Click the new target position."},
-      {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."}
+      {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."},
+      {"path": "web/screen-overlay.js", "anchor": "export function screenOverlayGeometry("}
     ]
   },
   {

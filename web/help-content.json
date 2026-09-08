@@ -216,9 +216,10 @@
         {
           "title": "Compare while zoomed in",
           "paragraphs": [
-            "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
+            "Click Compare in Detail to split the original and edited photo. Each time you turn Compare on, the divider automatically centers in the current view without changing your zoom or pan. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
             "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail.",
-            "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view."
+            "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.",
+            "Photo information, processing badges, and hold-key adjustment readouts stay at their normal screen size while you zoom or pan."
           ],
           "steps": [
             "Turn on Compare, then zoom beyond Fit.",
@@ -1409,7 +1410,8 @@
           "tips": [
             "Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.",
             "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.",
-            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."
+            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks.",
+            "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."
           ]
         }
       ],
@@ -1588,7 +1590,8 @@
         {
           "title": "Refine an existing correction",
           "paragraphs": [
-            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."
+            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.",
+            "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."
           ],
           "steps": [
             "Drag the target circle to reposition the correction, or choose Move Target and click its new position.",
@@ -2819,7 +2822,13 @@
           "title": "Manage cache storage",
           "paragraphs": [
             "Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.",
-            "Preview resolution is separate from the Dimensions setting used for exported files."
+            "Preview resolution is separate from the Dimensions setting used for exported files. Export finishing and Photo Merge use GPU acceleration automatically for supported image-processing stages, with a CPU fallback when unavailable. The film-engine preference controls film previews; it does not disable this acceleration."
+          ]
+        },
+        {
+          "title": "Read a preview error",
+          "paragraphs": [
+            "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."
           ]
         }
       ],

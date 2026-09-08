@@ -220,9 +220,10 @@
         {
           "title": "Vergleichen beim Hineinzoomen",
           "paragraphs": [
-            "Klicken Sie in Details auf Vergleichen, um das Original und das bearbeitete Foto zu teilen. Ziehen Sie die Trennlinie, um die Teilung zu verschieben; ziehen Sie bei einem gezoomten Foto an anderer Stelle, um zu verschieben. Trennlinie und Griff bleiben beim Zoomen gleich groß.",
+            "Klicken Sie in Details auf Vergleichen, um das Original und das bearbeitete Foto zu teilen. Jedes Mal, wenn Sie Vergleichen aktivieren, wird der Trenner automatisch in der aktuellen Ansicht zentriert, ohne Ihren Zoom oder die Position zu ändern. Ziehen Sie den Trenner, um die Teilung zu verschieben; ziehen Sie an einer anderen Stelle auf einem vergrößerten Foto, um die Ansicht zu verschieben. Der Trenner und sein Griff bleiben beim Vergrößern gleich groß.",
             "Original verwendet dieselbe Vorschauauflösung wie das bearbeitete Foto, auch bei 1:1. Bei RAW-Fotos verwendet Original die neutrale, unbearbeitete Konvertierung; warten Sie, bis das Laden abgeschlossen ist, bevor Sie Details beurteilen.",
-            "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen. Lassen Sie B los, um die bearbeitete Ansicht wiederherzustellen."
+            "Halten Sie B gedrückt, um das Original ohne Film, lokale Masken oder abschließende Anpassungen anzuzeigen. Lassen Sie B los, um die bearbeitete Ansicht wiederherzustellen.",
+            "Fotoinformationen, Verarbeitungsabzeichen und Anzeigen für Anpassungen mit gedrückter Taste bleiben beim Vergrößern oder Verschieben in ihrer normalen Bildschirmgröße."
           ],
           "steps": [
             "Schalten Sie Vergleichen ein und zoomen Sie dann über Anpassen hinaus.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Hinzufügen, Subtrahieren und Schneiden versetzen Sie in Mal-Verfeinerungsmodi. Wählen Sie bei einer linearen oder radialen Maske Form bearbeiten, um zur Bearbeitung ihrer Form zurückzukehren.",
             "Aktivieren schaltet die Wirkung einer Maske vorübergehend aus oder ein. Umkehren kehrt ihre Auswahl um.",
-            "Der Editor erlaubt bis zu sechzehn lokale Masken. Maske löschen entfernt die ausgewählte Maske; Alles löschen entfernt die Masken des Fotos."
+            "Der Editor erlaubt bis zu sechzehn lokale Masken. Maske löschen entfernt die ausgewählte Maske; Alles löschen entfernt die Masken des Fotos.",
+            "Masken-Pins und Pinselkonturen bleiben beim Vergrößern gestochen scharf und gleich dick. Die Kontur wächst mit dem Bereich, den sie im Foto abdeckt."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Eine vorhandene Korrektur verfeinern",
           "paragraphs": [
-            "Wählen Sie eine Korrektur in der Liste aus, um ihre Steuerungen anzuzeigen. Die Kreise im Bild zeigen das bearbeitbare Ziel und bei Reparieren und Klonen die Quelle an."
+            "Wählen Sie eine Korrektur in der Liste aus, um ihre Steuerungen anzuzeigen. Die Kreise im Bild zeigen das bearbeitbare Ziel und bei Reparieren und Klonen die Quelle an.",
+            "Vergrößern Sie für eine präzise Platzierung. Kreisumrisse und Pins bleiben auf jeder Zoom-Stufe gestochen scharf; die Kreise zeigen weiterhin denselben Bereich des Fotos an."
           ],
           "steps": [
             "Ziehen Sie den Zielkreis, um die Korrektur neu zu positionieren, oder wählen Sie Move Target und klicken Sie auf die neue Position.",
@@ -2874,7 +2877,13 @@
           "title": "Cache-Speicher verwalten",
           "paragraphs": [
             "Leistung zeigt Speicherort, Auslastung und Budget des Vorschaue-Caches an. Cache leeren entfernt nach Bestätigung erzeugte Vorschaubilder und Render-Caches; Originale und Bearbeitungen bleiben unberührt. Vorschauen müssen danach erneut erzeugt werden.",
-            "Die Vorschauauflösung ist getrennt von der Einstellung Abmessungen, die für exportierte Dateien verwendet wird."
+            "Die Auflösung der Vorschau ist getrennt von der Einstellung Abmessungen, die für exportierte Dateien verwendet wird. Das Fertigstellen von Exportieren und Fotozusammenführungen verwenden für unterstützte Bildverarbeitungsschritte automatisch GPU-Beschleunigung, mit einem CPU-Fallback, wenn diese nicht verfügbar ist. Die Film-Engine-Einstellung steuert Filmvorschauen; sie deaktiviert diese Beschleunigung nicht."
+          ]
+        },
+        {
+          "title": "Vorschaufehler lesen",
+          "paragraphs": [
+            "Wenn ein Foto nicht gerendert oder angezeigt werden kann, enthält die Meldung im Foto-Bereich die gemeldete Ursache, sofern eine verfügbar ist. So lässt sich eine fehlende Datei, ein Problem beim Laden des Bildes oder ein Grafikfehler erkennen. Wenn keine Ursache verfügbar ist, bleibt die Meldung allgemein."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

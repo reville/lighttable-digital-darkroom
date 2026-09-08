@@ -220,9 +220,10 @@
         {
           "title": "Yakınlaştırılmışken karşılaştır",
           "paragraphs": [
-            "Orijinali ve düzenlenmiş fotoğrafı bölmek için Ayrıntı’da Karşılaştır’a tıklayın. Bölmeyi hareket ettirmek için ayırıcıyı sürükleyin; yakınlaştırılmış bir fotoğrafı kaydırmak için başka bir yerden sürükleyin. Yaklaştırdıkça ayırıcı ve tutamacı aynı boyutta kalır.",
+            "Orijinal ve düzenlenmiş fotoğrafı bölmek için Ayrıntı bölümünde Karşılaştır'a tıklayın. Karşılaştırmayı her açtığınızda, ayırıcı mevcut görünümde yakınlaştırmanızı veya kaydırmanızı değiştirmeden otomatik olarak merkeze gelir. Bölmeyi taşımak için ayırıcıyı sürükleyin; yakınlaştırılmış bir fotoğrafta kaydırmak için başka bir yeri sürükleyin. Ayırıcı ve tutamacı yakınlaştırdıkça aynı boyutta kalır.",
             "Orijinal, 1:1 dahil olmak üzere düzenlenmiş fotoğrafla aynı önizleme çözünürlüğünü kullanır. RAW fotoğraflar için Orijinal, nötr ve düzenlenmemiş dönüşümü kullanır; ayrıntıyı değerlendirmeden önce yüklenmesinin bitmesine izin verin.",
-            "Film, yerel maskeler veya bitirme ayarları olmadan orijinali görmek için B tuşunu basılı tutun. Düzenlenmiş görünümü geri yüklemek için B’yi bırakın."
+            "Film, yerel maskeler veya bitirme ayarları olmadan orijinali görmek için B tuşunu basılı tutun. Düzenlenmiş görünümü geri yüklemek için B’yi bırakın.",
+            "Fotoğraf bilgileri, işleme rozetleri ve basılı tuş ayarı okumaları, yakınlaştırırken veya kaydırırken normal ekran boyutlarında kalır."
           ],
           "steps": [
             "Karşılaştır'ı açın, sonra Sığdır'ın ötesine yakınlaştırın.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Ekle, Çıkar ve Kesiştir sizi boyama iyileştirme modlarına sokar. Doğrusal veya Radyal bir maske için, şekli düzenlemek üzere Edit Shape’i seçin.",
             "Etkinleştir, bir maskenin etkisini geçici olarak kapatır ya da açar. Tersine Çevir, seçimini tersler.",
-            "Düzenleyici en fazla on altı yerel maske izin verir. Maske Sil seçili maskeyi kaldırır; Tümünü Temizle fotoğrafın maskelerini kaldırır."
+            "Düzenleyici en fazla on altı yerel maske izin verir. Maske Sil seçili maskeyi kaldırır; Tümünü Temizle fotoğrafın maskelerini kaldırır.",
+            "Maske sabitleme noktaları ve fırça konturları, yakınlaştırdıkça keskin ve aynı kalınlıkta kalır. Kontur, fotoğrafta kapladığı alanla birlikte büyür."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Mevcut bir düzeltmeyi ince ayarla",
           "paragraphs": [
-            "Kontrollerini göstermek için listedeki bir düzeltmeyi seçin. Görüntü üzerindeki daireler, düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir."
+            "Kontrollerini göstermek için listedeki bir düzeltmeyi seçin. Görüntü üzerindeki daireler, düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
+            "Hassas yerleştirme için yakınlaştırın. Daire konturları ve sabitleme noktaları her yakınlaştırma seviyesinde keskin kalır; daireler fotoğrafın aynı alanını göstermeye devam eder."
           ],
           "steps": [
             "Düzeltmeyi yeniden konumlandırmak için hedef daireyi sürükleyin veya Move Target’ı seçip yeni konumuna tıklayın.",
@@ -2874,7 +2877,13 @@
           "title": "Önbellek depolamasını yönet",
           "paragraphs": [
             "Performans, önizleme önbelleğinin konumunu, kullanımını ve bütçesini gösterir. Önbelleği temizle, onaydan sonra oluşturulan önizlemeleri ve işleme önbelleklerini kaldırır; orijinaller ve düzenlemeler etkilenmez. Önizlemelerin yeniden oluşturulması gerekir.",
-            "Önizleme çözünürlüğü, dışa aktarılan dosyalar için kullanılan Boyutlar ayarından ayrıdır."
+            "Önizleme çözünürlüğü, dışa aktarılan dosyalar için kullanılan Boyutlar ayarından ayrıdır. Dışa Aktarma bitirme işlemi ve Fotoğraf Birleştirme, desteklenen görüntü işleme aşamaları için GPU hızlandırmasını otomatik olarak kullanır; kullanılamadığında CPU yedekleme devreye girer. Film-motoru tercihi, film önizlemelerini denetler; bu hızlandırmayı devre dışı bırakmaz."
+          ]
+        },
+        {
+          "title": "Bir önizleme hatasını oku",
+          "paragraphs": [
+            "Bir fotoğraf oluşturulamazsa veya görüntülenemezse, fotoğraf alanındaki mesaj, varsa bildirilen nedeni içerir. Bu, eksik bir dosyayı, bir görüntü yükleme sorununu veya bir grafik hatasını belirleyebilir. Hiçbir neden yoksa, mesaj genel kalır."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

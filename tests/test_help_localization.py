@@ -128,6 +128,46 @@ class HelpLocalizationTests(unittest.TestCase):
         self.assertEqual(self.run_command('localization-build'), 0)
         self.assertEqual(self.localized()['articles'][0]['categoryLabel'], 'Export')
 
+    def test_script_check_rejects_foreign_fragments_and_cyrillic_lookalikes(self):
+        for locale, source, translated in [
+            ('fr', 'Review culling suggestions', 'Examiner les सुझाव de tri'),
+            ('pt', 'English', 'ინგlês'),
+            ('pl', '{name} copy', 'kopiа {name}'),
+            ('nl', 'Originals are unchanged.', 'Originelen zijn niet प्रभावित.'),
+            ('ja', 'Edits are safe.', '編集内容は सुरक्षितです。'),
+            ('ko', 'The snapshot is deleted.', '스냅샷이 हट습니다.'),
+        ]:
+            with self.subTest(locale=locale):
+                with self.assertRaisesRegex(help_content.HelpError, 'unexpected script'):
+                    help_content.validate_translation(source, translated, locale)
+
+    def test_script_check_keeps_target_scripts_technical_names_and_source_literals(self):
+        for locale, source, translated in [
+            ('fr', 'Preview RAW', 'Aperçu RAW'),
+            ('pt', 'January 1', '1º de janeiro'),
+            ('ja', 'Photo review', '写真のレビュー'),
+            ('ko', 'Photo review', '사진 검토 写真'),
+            ('zh-Hans', 'Photo review', '照片审查'),
+            ('zh-Hant', 'Photo review', '照片審查'),
+            ('ar', 'Photo review', 'مراجعة الصور'),
+            ('hi', 'Photo review', 'फ़ोटो की समीक्षा'),
+            ('bn', 'Photo review', 'ছবি পর্যালোচনা'),
+            ('th', 'Photo review', 'ตรวจสอบภาพ'),
+            ('ru', 'Photo review', 'Просмотр фотографий'),
+            ('fr', 'Open 東京.jpg', 'Ouvrir 東京.jpg'),
+        ]:
+            with self.subTest(locale=locale):
+                help_content.validate_translation(source, translated, locale)
+
+    def test_localized_build_checks_scripts_in_help_and_other_ui_messages(self):
+        for source in ('Export a photo', 'Export {0} photos'):
+            with self.subTest(source=source):
+                contaminated = copy.deepcopy(self.catalog)
+                contaminated['messages'][source] = source + ' सुझाव'
+                self.write('web/locales/fr.json', contaminated)
+                self.assertEqual(self.run_command('localization-build'), 1)
+                self.assertFalse((self.root / 'web/locales/help/fr.json').exists())
+
     def test_stale_catalog_and_stale_manifest_digests_fail(self):
         self.catalog['sourceDigest'] = 'outdated'
         self.write('web/locales/fr.json', self.catalog)

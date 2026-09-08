@@ -135,6 +135,7 @@
     "copied bytes do not match the source",
     "copied {copied_size} of {source_size} bytes",
     "could not choose a free enhanced filename",
+    "could not decode {name}: {error}",
     "could not find a free name for {name}",
     "could not listen: {error}",
     "cross-origin changes are not allowed",
@@ -153,6 +154,7 @@
     "folder not found",
     "format must be png or jpeg",
     "hidden folder names are not supported",
+    "image decoder did not return color pixels",
     "ingest item is missing a source or a destination",
     "invalid JPEG header",
     "invalid folder name",
@@ -270,7 +272,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "26fce615d72ab4354eea4e9367a7a03dc2016185bb5dade6944c8a1ca953d7ef",
+  "sourceDigest": "ab57d552530117c96d7babe3a24e7b1b692d8187f4116964cd35dd230a372d7f",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -568,6 +570,10 @@
       "XMP declarations cannot be updated safely",
       "existing XMP has no RDF metadata document",
       "existing XMP is too large to update safely"
+    ],
+    "platform_image.py": [
+      "could not decode {name}: {error}",
+      "image decoder did not return color pixels"
     ]
   }
 }

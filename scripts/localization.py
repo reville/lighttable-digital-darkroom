@@ -173,13 +173,17 @@ def write_source(messages):
     (ROOT / 'web/locales/en.json').write_text(json.dumps(english, ensure_ascii=False, indent=2) + '\n')
 
 
-def validate_translation(source, translation):
+def validate_translation(source, translation, locale=None):
     if not isinstance(translation, str) or not translation.strip():
         return 'empty translation'
     tokens = lambda text: Counter(re.findall(r'\{\w+\}', text))
     if tokens(source) != tokens(translation):
         return 'interpolation or filename tokens changed'
     help_content = load_extractor('help_content.py')
+    if locale:
+        script_issue = help_content.locale_script_issue(source, translation, locale)
+        if script_issue:
+            return script_issue
     file_tokens = help_content.FILE_TOKENS
     if Counter(file_tokens.findall(source)) != Counter(file_tokens.findall(translation)):
         return 'literal filenames or extensions changed'
@@ -209,11 +213,11 @@ def check(messages):
         for pair in pairs:
             forms = catalog.get('plurals', {}).get(pair['one'], {})
             for category in plural_categories(code):
-                error = validate_translation(pair['one'], forms.get(category))
+                error = validate_translation(pair['one'], forms.get(category), code)
                 if error:
                     raise ValueError(f'{code}: plural {category}: {error}: {pair["one"][:80]}')
         for message in messages:
-            error = validate_translation(message, catalog['messages'].get(message))
+            error = validate_translation(message, catalog['messages'].get(message), code)
             if error:
                 raise ValueError(f'{code}: {error}: {message[:100]}')
     print(f'Localization current: {len(manifest["locales"])} locales, {len(messages)} messages.')

@@ -15,9 +15,10 @@ import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
-import { previewDetailLabel } from '/web/preview-detail.js';
+import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
+import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
 import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
@@ -478,11 +479,12 @@ window.lightTableNativeEvent = (event) => {
     if (!pending) return;
     nativePreviewPending.delete(event.generation);
     if (event.type === 'nativePreviewFailed') {
-      toast(tr("Native preview unavailable for this photo"));
+      const error = event.message || tr('Native preview unavailable');
+      if (event.generation === S.seq) toast(error);
       pending.resolve({
         decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
         presentedAt: performance.now(), presentation: 'native-failed',
-        failed: true, error: 'Native preview unavailable',
+        failed: true, error,
       });
       return;
     }
@@ -899,6 +901,8 @@ function applyViewNow() {
   const isZoomed = !isFit && S.zoom > 1.01;
   cmp.classList.toggle('is-zoomed', isZoomed);
   syncCompareView();
+  syncViewerChrome();
+  drawEditOverlayNow();
 
   scheduleNativeViewportLayout();
   scheduleViewportRegionRender();
@@ -1566,15 +1570,15 @@ function buildMaskTexture(edge = 512) {
   return new ImageData(rgba, width, height * tiles);
 }
 
-function drawBrushCursor(ctx, overlay, point, size, feather, accent = '#fff') {
+function drawBrushCursor(ctx, surface, point, size, feather, accent = '#fff') {
   if (!point) return;
-  const x = point[0] * overlay.width, y = point[1] * overlay.height;
-  const outer = Math.max(3, size * Math.min(overlay.width, overlay.height) / 2);
+  const x = point[0] * surface.width, y = point[1] * surface.height;
+  const outer = Math.max(3, size * Math.min(surface.width, surface.height) / 2);
   const inner = Math.max(1.5, outer * (1 - feather));
   ctx.save();
   ctx.strokeStyle = accent;
-  ctx.lineWidth = Math.max(1, overlay.width / 1100);
-  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2;
+  ctx.lineWidth = 1;
+  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2 * surface.pixelRatio;
   ctx.beginPath(); ctx.arc(x, y, outer, 0, Math.PI * 2); ctx.stroke();
   if (feather > 0.02) {
     ctx.strokeStyle = 'rgba(255,255,255,.68)';
@@ -1594,15 +1598,33 @@ function syncOverlayCursorClass() {
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
 }
 
+function syncViewerChrome() {
+  const chrome = $('viewerChrome');
+  const frame = $('cmp').getBoundingClientRect();
+  const geometry = screenOverlayGeometry(frame, frame, $('zoomwrap').getBoundingClientRect());
+  chrome.hidden = !geometry;
+  if (!geometry) return;
+  for (const key of ['left', 'top', 'width', 'height']) chrome.style[key] = `${geometry[key]}px`;
+}
+
 function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
-  if (!canvas.width || !canvas.height) return;
-  if (overlay.width !== canvas.width || overlay.height !== canvas.height) {
-    overlay.width = canvas.width; overlay.height = canvas.height;
+  const active = canvas.width && canvas.height &&
+    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+  const geometry = active ? screenOverlayGeometry(
+    canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
+  const surface = prepareScreenOverlay(overlay, geometry);
+  syncOverlayCursorClass();
+  if (!surface) return;
+  const { ctx } = surface;
+  if (S.overlayHoverClientPoint) {
+    const [clientX, clientY] = S.overlayHoverClientPoint;
+    const rect = overlay.getBoundingClientRect();
+    S.overlayHoverPoint = clientX >= rect.left && clientX <= rect.right &&
+      clientY >= rect.top && clientY <= rect.bottom ? overlayPoint({clientX, clientY}) : null;
   }
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
   if (S.activePane === 'maskPane') {
     const mask = selectedMask();
     if (!mask) return;
@@ -1654,21 +1676,21 @@ function drawEditOverlayNow() {
           packedMaskData.data[sourceOffset + channel] * rangeWeight * 0.42);
       }
       tintCtx.putImageData(pixels, 0, 0);
-      ctx.drawImage(tinted, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(tinted, 0, 0, surface.width, surface.height);
     }
-    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = Math.max(1.5, overlay.width / 900);
+    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = 1.5;
     if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'linear') {
-      const [sx, sy] = [mask.start[0] * overlay.width, mask.start[1] * overlay.height];
-      const [ex, ey] = [mask.end[0] * overlay.width, mask.end[1] * overlay.height];
+      const [sx, sy] = [mask.start[0] * surface.width, mask.start[1] * surface.height];
+      const [ex, ey] = [mask.end[0] * surface.width, mask.end[1] * surface.height];
       ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
       for (const [x, y] of [[sx, sy], [ex, ey]]) { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'radial') {
-      const x = mask.center[0] * overlay.width, y = mask.center[1] * overlay.height;
-      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(overlay.width, overlay.height), 0, Math.PI * 2); ctx.stroke();
+      const x = mask.center[0] * surface.width, y = mask.center[1] * surface.height;
+      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(surface.width, surface.height), 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
     if (mask.type === 'brush' || S.maskRefineMode) {
-      drawBrushCursor(ctx, overlay, S.overlayHoverPoint, S.brushSize, S.brushFeather,
+      drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
         S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
@@ -1676,14 +1698,14 @@ function drawEditOverlayNow() {
       const threshold = +$('healVisualizeThreshold').value;
       ctx.save();
       ctx.filter = `grayscale(1) invert(1) contrast(${2 + threshold * 7}) brightness(${0.72 + threshold * 0.35})`;
-      ctx.drawImage(S.baseImg, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(S.baseImg, 0, 0, surface.width, surface.height);
       ctx.restore();
     }
     for (const spot of S.localPinsVisible ? S.heals : []) {
       const selected = spot.id === S.selectedHealId;
-      const tx = spot.target[0] * overlay.width, ty = spot.target[1] * overlay.height;
-      const sx = spot.source[0] * overlay.width, sy = spot.source[1] * overlay.height;
-      const radius = spot.radius * Math.min(overlay.width, overlay.height);
+      const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
+      const sx = spot.source[0] * surface.width, sy = spot.source[1] * surface.height;
+      const radius = spot.radius * Math.min(surface.width, surface.height);
       ctx.save();
       ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
       ctx.lineWidth = selected ? 2.2 : 1.25;
@@ -1706,10 +1728,9 @@ function drawEditOverlayNow() {
       }
       ctx.restore();
     }
-    drawBrushCursor(ctx, overlay, S.overlayHoverPoint,
+    drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
   }
-  syncOverlayCursorClass();
 }
 
 const previewFrameScheduler = createFrameScheduler((work) => {
@@ -2480,12 +2501,12 @@ $('lensReset').onclick = (event) => {
   syncOpticsPanel(); syncGrade(); drawGrade(); saveState(); refreshBaseEdits();
 };
 
-function overlayPoint(event, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayPoint(event, rect = $('cv').getBoundingClientRect()) {
   return [clamp((event.clientX - rect.left) / rect.width, 0, 1),
     clamp((event.clientY - rect.top) / rect.height, 0, 1)];
 }
 
-function overlayDistance(a, b, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayDistance(a, b, rect = $('cv').getBoundingClientRect()) {
   return Math.hypot((a[0] - b[0]) * rect.width, (a[1] - b[1]) * rect.height);
 }
 
@@ -2508,9 +2529,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
   if (!cur() || event.button !== 0) return;
   event.stopPropagation();
   event.preventDefault();
-  const rect = $('editOverlay').getBoundingClientRect();
+  const rect = $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (S.activePane === 'maskPane') {
     if (S.maskColorPick) {
       if (event.shiftKey) {
@@ -2585,9 +2607,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
   const gesture = S.editGesture;
-  const rect = gesture?.rect || $('editOverlay').getBoundingClientRect();
+  const rect = gesture?.rect || $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (!gesture || gesture.pointerId !== event.pointerId) { drawEditOverlay(); return; }
   if (S.activePane === 'maskPane') {
     if (gesture.type === 'mask-color-sample') {
@@ -2663,7 +2686,7 @@ $('editOverlay').addEventListener('pointerup', finishEditGesture);
 $('editOverlay').addEventListener('pointercancel', finishEditGesture);
 $('editOverlay').addEventListener('pointerleave', () => {
   if (S.editGesture?.pointerId !== undefined) return;
-  S.overlayHoverPoint = null; drawEditOverlay();
+  S.overlayHoverPoint = null; S.overlayHoverClientPoint = null; drawEditOverlay();
 });
 
 /* ------------------------------------------------------------ film render */
@@ -3346,7 +3369,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   const requestedWidth = options.requestedWidth || requestedPreviewWidth();
   const w = options.width || requestedWidth;
   if ($('pw').value === 'auto') automaticPreviewRequest = { name: im.name, width: requestedWidth };
-  const phase = (options.phase || tr("settled"));
+  const phase = (options.phase || 'settled');
   if (window.__LIGHTTABLE_NATIVE_BENCHMARK_ITERATIONS__) {
     postNative('nativeBenchmarkProgress', {
       stage: 'render-start', generation: my, width: w,
@@ -3361,6 +3384,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   const viewport = w === requestedWidth ? requestedViewportRegion() : null;
   const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
+  const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
+    S.previewDetail?.name === im.name && S.previewDetail.refining === false;
   $('rstat').textContent = tr('rendering…');
   $('rstat').className = 'busy';
   $('zoomwrap').setAttribute('aria-busy', 'true');
@@ -3368,10 +3393,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     S.params.profile_enabled ? tr('Applying film…') : tr('Loading preview…'), my);
   try {
     const request = {
-      name: im.name, params: S.params, w, engine: $('engine').value,
+      name: im.name, params: { ...S.params }, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
+      allow_draft: !hasAccuratePixels,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3414,7 +3440,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = tr('error: {mError}', {mError: m.error});
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, tr("Could not render this photo"));
+        setRenderPresentation('error', im.name,
+          previewFailureMessage(tr('Could not render this photo'), m.error));
       }
       return;
     }
@@ -3434,8 +3461,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     // is on screen. When this photo is already presented accurately, keep
     // those pixels and let the refinement replace them: swapping in a draft
     // flashes a different rendering on every zoom, crop, or panel change.
-    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
-      S.presentedPhotoName === im.name;
+    const keepAccuratePixels = Boolean(m.refining) && hasAccuratePixels;
     let imageTiming = null;
     if (!keepAccuratePixels) {
       imageTiming = await setBaseImage(m, my, {
@@ -3451,7 +3477,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || tr('preview unavailable');
         $('rstat').className = '';
-        setRenderPresentation('error', im.name, tr('Could not display this photo'));
+        setRenderPresentation('error', im.name,
+          previewFailureMessage(tr('Could not display this photo'), imageTiming.error));
         return;
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
@@ -3510,7 +3537,20 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
          ' · ' + (m.engine === 'rs' ? 'rust/gpu' : 'python');
     $('rstat').textContent = [status, m.refining ? tr('Refining RAW…') : ''].filter(Boolean).join(' · ');
     $('rstat').className = '';
-    if (phase === 'interactive' && w !== requestedWidth) {
+    if (m.refining) {
+      // Start accurate RAW work immediately after the useful first frame.
+      // Rendering a large embedded-camera draft first delays demosaic and
+      // creates a second temporary film result that will soon be replaced.
+      const refinementRequest = { name: im.name, params: { ...request.params },
+        w: requestedWidth, client: CLIENT_ID, generation: my };
+      const ready = await waitForRawRefinement({
+        request: () => api('/api/refine', refinementRequest),
+        isCurrent: () => my === S.seq && cur()?.name === im.name,
+      });
+      if (ready) return doRender(scheduledAt, {
+        width: requestedWidth, requestedWidth, phase: 'refinement', background: true,
+      });
+    } else if (phase === 'interactive' && w !== requestedWidth) {
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3528,16 +3568,6 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       };
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
-    } else if (m.refining) {
-      const refinementRequest = { name: im.name, params: { ...request.params },
-        w, client: CLIENT_ID, generation: my };
-      const ready = await waitForRawRefinement({
-        request: () => api('/api/refine', refinementRequest),
-        isCurrent: () => my === S.seq && cur()?.name === im.name,
-      });
-      if (ready) return doRender(scheduledAt, {
-        width: w, requestedWidth, phase: 'refinement', background: true,
-      });
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
@@ -3565,7 +3595,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = failure.error || tr('Could not finish preview');
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, tr("Could not reach the renderer"));
+        setRenderPresentation('error', im.name,
+          previewFailureMessage(tr('Could not finish this preview'), failure.error));
       }
     }
   }
@@ -3692,7 +3723,7 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   if (!surface) return Promise.resolve({
     decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
     presentedAt: performance.now(), presentation: 'native-missing',
-    failed: true, error: 'Native preview data is missing',
+    failed: true, error: tr('Native preview data is missing'),
   });
 
   S.nativeViewport = surface.viewport || null;
@@ -3851,7 +3882,7 @@ function setWebGLBaseImage(dataUri, {
           toast(tr("WebGL unavailable: {eMessage}", {eMessage: e.message}));
           return res({ decodeMs: performance.now() - startedAt, uploadMs: 0,
             uploadedAt: performance.now(), failed: true,
-            error: 'WebGL preview could not be initialized' });
+            error: previewFailureMessage(tr('WebGL preview could not be initialized'), e) });
         }
         browserOriginalTextureURL = null;
         browserReferenceTextureURL = null;
@@ -3873,7 +3904,7 @@ function setWebGLBaseImage(dataUri, {
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
-        failed: true, error: 'Preview image could not be decoded' });
+        failed: true, error: tr('Preview image could not be loaded or decoded') });
     };
     img.src = dataUri;
   });
@@ -6677,7 +6708,10 @@ function syncCullPanel() {
     }
   }
 
-  $('cullIntro').textContent = !S.ai.enabled ? tr("Turn the index on to sort a shoot into selects and rejects.") : !scored ? S.ai.running ? tr("Scoring photos as the index reaches them.") : tr("No photos have been scored yet.") : tr("{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.", {scored: scored, scopeLength: scope.length});
+  $('cullEnableIndex').hidden = !!S.ai.enabled;
+  $('cullIntroText').textContent = !S.ai.enabled ? '' : !scored
+    ? (S.ai.running ? tr('Scoring photos as the index reaches them.') : tr('No photos have been scored yet.'))
+    : tr('{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.', {scored, scopeLength: scope.length});
 
   for (const button of document.querySelectorAll('.cull-review button')) {
     button.classList.toggle('on', button.dataset.review === S.cull.review);
@@ -6849,6 +6883,7 @@ function scheduleAIStatusPoll(reset = false) {
 
 async function runAIAction(action) {
   $('aiToggle').disabled = true;
+  $('cullEnableIndex').disabled = true;
   try {
     const status = await api('/api/ai-index', { action });
     if (status.error) throw new Error(status.error);
@@ -6866,6 +6901,7 @@ async function runAIAction(action) {
   } catch (error) {
     toast(tr("Local index: {errorMessage}", {errorMessage: error.message}));
   } finally {
+    $('cullEnableIndex').disabled = false;
     syncAI();
   }
 }
@@ -7371,6 +7407,7 @@ document.querySelectorAll('.tool-btn').forEach((b) => {
     ? selectPhotoTool(b.dataset.pane) : switchPane(b.dataset.pane);
 });
 $('aiToggle').onclick = () => runAIAction(S.ai.enabled ? 'disable' : 'enable');
+$('cullEnableIndex').onclick = () => runAIAction('enable');
 $('aiRebuild').onclick = () => runAIAction('rebuild');
 $('aiClear').onclick = () => {
   if (window.confirm(tr("Delete the generated local photo index? Your originals and edits will not be changed."))) {
@@ -7578,12 +7615,14 @@ function renderCompare() {
 
 function setCompareActive(on, { restoreTool = true } = {}) {
   const next = Boolean(on) && !!cur() && !S.wbPick && !S.pointColorPick && !S.maskColorPick;
+  const entering = next && !S.compareActive;
   const returnPane = compareReturnPane;
-  if (next && !S.compareActive && PHOTO_TOOL_PANES.includes(S.activePane)) {
+  if (entering && PHOTO_TOOL_PANES.includes(S.activePane)) {
     compareReturnPane = S.activePane;
     switchPane(lastAdjustmentPane, { fromCompare: true });
   }
   S.compareActive = next;
+  if (entering) snapCompareToView();
   if (!next) compareReturnPane = null;
   renderCompare();
   const back = $('compareReturn');
@@ -10420,6 +10459,14 @@ if (typeof ResizeObserver !== 'undefined') {
   viewportObserver.observe($('cv'));
 }
 window.addEventListener('resize', onViewportResize);
+function watchOverlayPixelRatio() {
+  const display = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  display.addEventListener('change', () => {
+    drawEditOverlay();
+    watchOverlayPixelRatio();
+  }, { once: true });
+}
+watchOverlayPixelRatio();
 document.addEventListener('visibilitychange', onViewportResize);
 if (NATIVE_PREVIEW) scheduleNativeViewportLayout();
 
@@ -10959,7 +11006,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     refreshLists();
   } else if (command === 'filter') {
     const fields = { status: 'filter', rating: 'ratingFilter', kind: 'kindFilter',
-      label: tr("labelFilter"), query: 'search' };
+      label: 'labelFilter', query: 'search' };
     for (const [key, id] of Object.entries(fields)) {
       if (Object.prototype.hasOwnProperty.call(args, key) && $(id)) {
         $(id).value = String(args[key]);

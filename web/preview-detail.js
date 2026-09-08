@@ -11,3 +11,10 @@ export function previewDetailLabel({state, refining=false, delivered=0, requeste
   if (delivered >= source - 1) return tr("100% detail ready");
   return tr("Preview {value} px · source {value2} px", {value: Math.round(delivered), value2: Math.round(source)});
 }
+
+/** Keep the reported cause without guessing when a failure has no details. */
+export function previewFailureMessage(summary, error) {
+  const detail = typeof error === 'string' ? error : error?.message;
+  const reason = typeof detail === 'string' ? detail.trim() : '';
+  return reason ? `${summary}\n${reason}` : summary;
+}

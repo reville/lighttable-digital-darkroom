@@ -220,9 +220,10 @@
         {
           "title": "So sánh khi đã phóng to",
           "paragraphs": [
-            "Nhấp So sánh trong Chi tiết để chia đôi ảnh gốc và ảnh đã chỉnh sửa. Kéo đường chia để di chuyển phần tách; kéo ở chỗ khác trên ảnh đã phóng to để pan. Đường chia và tay cầm của nó giữ nguyên kích thước khi bạn zoom.",
+            "Nhấp So sánh trong Chi tiết để tách ảnh gốc và ảnh đã chỉnh sửa. Mỗi khi bạn bật So sánh, thanh phân cách sẽ tự động căn giữa trong khung nhìn hiện tại mà không làm thay đổi thu phóng hay di chuyển của bạn. Kéo thanh phân cách để di chuyển điểm tách; kéo ở nơi khác trên ảnh đã thu phóng để di chuyển. Thanh phân cách và tay nắm của nó giữ nguyên kích thước khi bạn thu phóng.",
             "Bản gốc dùng cùng độ phân giải bản xem trước như ảnh đã chỉnh sửa, kể cả ở 1:1. Với ảnh RAW, Bản gốc dùng bản chuyển đổi trung tính, chưa chỉnh sửa; hãy để nó tải xong trước khi đánh giá chi tiết.",
-            "Giữ B để xem bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện. Thả B để khôi phục chế độ xem đã chỉnh sửa."
+            "Giữ B để xem bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện. Thả B để khôi phục chế độ xem đã chỉnh sửa.",
+            "Thông tin ảnh, huy hiệu xử lý và các giá trị điều chỉnh khi giữ phím sẽ giữ nguyên kích thước hiển thị bình thường trên màn hình khi bạn thu phóng hoặc di chuyển."
           ],
           "steps": [
             "Bật So sánh, rồi thu phóng vượt quá Vừa khung.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Thêm, Trừ, và Giao nhau đưa bạn vào các chế độ tinh chỉnh bằng tô vẽ. Với mặt nạ Tuyến tính hoặc Hình tròn, chọn Chỉnh sửa hình dạng để quay lại thao tác với hình dạng của nó.",
             "Bật tạm thời sẽ tắt hoặc bật hiệu ứng của một mặt nạ. Đảo ngược sẽ đảo vùng chọn của nó.",
-            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa Mặt nạ sẽ xóa mặt nạ đã chọn; Clear All sẽ xóa các mặt nạ của ảnh."
+            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa Mặt nạ sẽ xóa mặt nạ đã chọn; Clear All sẽ xóa các mặt nạ của ảnh.",
+            "Các ghim mặt nạ và đường viền cọ vẫn sắc nét và có cùng độ dày khi bạn thu phóng. Đường viền sẽ lớn lên theo vùng nó bao phủ trong ảnh."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Tinh chỉnh một hiệu chỉnh hiện có",
           "paragraphs": [
-            "Chọn một hiệu chỉnh trong danh sách để hiện các điều khiển của nó. Các vòng tròn trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Heal và Clone, nguồn."
+            "Chọn một hiệu chỉnh trong danh sách để hiện các điều khiển của nó. Các vòng tròn trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Heal và Clone, nguồn.",
+            "Phóng to để đặt chính xác. Các đường viền hình tròn và các ghim vẫn sắc nét ở mọi mức thu phóng; các hình tròn tiếp tục hiển thị cùng một vùng của ảnh."
           ],
           "steps": [
             "Kéo vòng tròn mục tiêu để đổi vị trí chỉnh sửa, hoặc chọn Move Target và nhấp vào vị trí mới của nó.",
@@ -2874,7 +2877,13 @@
           "title": "Quản lý dung lượng bộ nhớ đệm",
           "paragraphs": [
             "Performance hiển thị vị trí bộ nhớ đệm xem trước, mức sử dụng và dung lượng cho phép. Purge cache xóa các bản xem trước đã tạo và bộ nhớ đệm render sau khi xác nhận; ảnh gốc và các chỉnh sửa không bị ảnh hưởng. Bản xem trước sẽ cần được tạo lại.",
-            "Độ phân giải bản xem trước tách biệt với cài đặt Kích thước được dùng cho các tệp đã xuất."
+            "Độ phân giải bản xem trước tách biệt với thiết lập Kích thước dùng cho các tệp đã xuất. Tính năng hoàn tất xuất và Hợp nhất Ảnh sử dụng tăng tốc GPU tự động cho các giai đoạn xử lý ảnh được hỗ trợ, với phương án dự phòng bằng CPU khi không khả dụng. Tùy chọn bộ máy phim điều khiển bản xem trước phim; nó không vô hiệu hóa khả năng tăng tốc này."
+          ]
+        },
+        {
+          "title": "Đọc lỗi bản xem trước",
+          "paragraphs": [
+            "Nếu không thể hiển thị hoặc dựng ảnh, thông báo trong vùng ảnh sẽ bao gồm lý do được báo cáo khi có. Điều này có thể xác định tệp bị thiếu, sự cố tải ảnh hoặc lỗi đồ họa. Nếu không có lý do nào, thông báo sẽ vẫn mang tính chung chung."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }

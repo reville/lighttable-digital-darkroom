@@ -115,7 +115,7 @@
     <details class="sidebar-disclosure ai-cull-disclosure">
       <summary data-i18n-text="{&quot;0&quot;:&quot;Assisted culling&quot;}">Assisted culling</summary>
       <div class="sidebar-disclosure-body">
-        <p class="sidebar-note" id="cullIntro" data-i18n-text="{&quot;0&quot;:&quot;Build a private photo index in Settings, then choose the signals for this review.&quot;}">Build a private photo index in Settings, then choose the signals for this review.</p>
+        <p class="sidebar-note" id="cullIntro"><button type="button" id="cullEnableIndex" data-i18n-text="{&quot;0&quot;:&quot;Turn the index on to sort a shoot into selects and rejects.&quot;}">Turn the index on to sort a shoot into selects and rejects.</button><span id="cullIntroText"></span></p>
         <div class="cull-group">
           <div class="cull-group-title" data-i18n-text="{&quot;0&quot;:&quot;Select&quot;}">Select</div>
           <label class="check-row"><input type="checkbox" id="cullSubjectSharpness"><span data-i18n-text="{&quot;0&quot;:&quot;Subject sharpness&quot;}">Subject sharpness</span><em class="cull-count" id="cullSubjectSharpnessCount"></em></label>
@@ -200,10 +200,6 @@
             <canvas id="cv"></canvas>
             <img id="orig" alt="Original photograph" data-i18n-attrs="{&quot;alt&quot;:&quot;Original photograph&quot;}">
             <img id="referenceImg" alt="Film reference" hidden data-i18n-attrs="{&quot;alt&quot;:&quot;Film reference&quot;}">
-            <canvas id="editOverlay" aria-label="Local edit overlay" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Local edit overlay&quot;}"></canvas>
-            <div class="speed-hud" id="speedHud" hidden></div>
-            <div class="render-badge" id="denoiseBadge" hidden data-i18n-text="{&quot;0&quot;:&quot;Denoising…&quot;}">Denoising…</div>
-            <div class="loupe-info" id="loupeInfoOverlay" hidden><strong id="loupeInfoName"></strong><span id="loupeInfoMetadata"></span></div>
             <div id="cropLayer">
               <span class="crop-dimmer crop-dimmer-top" aria-hidden="true"></span>
               <span class="crop-dimmer crop-dimmer-right" aria-hidden="true"></span>
@@ -220,6 +216,12 @@
                 <span class="crop-handle crop-handle-w" data-crop-handle="w" aria-hidden="true"></span>
               </div>
             </div>
+          </div>
+          <canvas id="editOverlay" aria-label="Local edit overlay" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Local edit overlay&quot;}"></canvas>
+          <div id="viewerChrome" hidden>
+            <div class="speed-hud" id="speedHud" hidden></div>
+            <div class="render-badge" id="denoiseBadge" hidden data-i18n-text="{&quot;0&quot;:&quot;Denoising…&quot;}">Denoising…</div>
+            <div class="loupe-info" id="loupeInfoOverlay" hidden><strong id="loupeInfoName"></strong><span id="loupeInfoMetadata"></span></div>
           </div>
           <div class="compare-overlay" id="compareOverlay" hidden>
             <span class="cmp-bar" id="compareBar"></span>

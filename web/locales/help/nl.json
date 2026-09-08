@@ -220,9 +220,10 @@
         {
           "title": "Vergelijken terwijl ingezoomd",
           "paragraphs": [
-            "Klik op Vergelijken in Details om de originele en bewerkte foto te splitsen. Sleep de scheidingslijn om de split te verplaatsen; sleep elders op een ingezoomde foto om te pannen. De scheidingslijn en de handgreep blijven even groot wanneer je inzoomt.",
+            "Klik op Vergelijken in Details om de originele en bewerkte foto te splitsen. Elke keer dat u Vergelijken inschakelt, centreert de scheidingslijn automatisch in de huidige weergave zonder uw zoom of verschuiving te wijzigen. Sleep de scheidingslijn om de splitsing te verplaatsen; sleep elders op een ingezoomde foto om te verschuiven. De scheidingslijn en het handvat blijven even groot terwijl u inzoomt.",
             "Origineel gebruikt dezelfde voorvertoningsresolutie als de bewerkte foto, inclusief op 1:1. Voor RAW-foto's gebruikt Origineel de neutrale, onbewerkte omzetting; laat het laden voltooien voordat je details beoordeelt.",
-            "Houd B ingedrukt om het origineel te bekijken zonder Film, lokale maskers of afwerkingsaanpassingen. Laat B los om de bewerkte weergave te herstellen."
+            "Houd B ingedrukt om het origineel te bekijken zonder Film, lokale maskers of afwerkingsaanpassingen. Laat B los om de bewerkte weergave te herstellen.",
+            "Foto-informatie, verwerkingsbadges en uitlezingen voor aanpassingen met ingedrukte toets blijven op hun normale schermgrootte terwijl u inzoomt of het beeld verschuift."
           ],
           "steps": [
             "Schakel Vergelijken in en zoom daarna verder dan Passend maken.",
@@ -1436,7 +1437,8 @@
           "tips": [
             "Toevoegen, Verwijderen en Snijden plaatsen u in verfverfijningsmodi. Kies bij een Lineair of Radiaal masker Bewerken van vorm om terug te keren naar het aanpassen van de vorm.",
             "Inschakelen schakelt het effect van een masker tijdelijk uit of in. Omkeren draait de selectie om.",
-            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto."
+            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto.",
+            "Maskerpinnen en penseelcontouren blijven scherp en even dik terwijl u inzoomt. De contour wordt groter naarmate het gebied dat deze in de foto bedekt groter wordt."
           ]
         }
       ],
@@ -1618,7 +1620,8 @@
         {
           "title": "Een bestaande correctie verfijnen",
           "paragraphs": [
-            "Selecteer een correctie in de lijst om de bedieningselementen weer te geven. De cirkels op de afbeelding geven het bewerkbare doel aan en, voor Retoucheren en Kloon, de bron."
+            "Selecteer een correctie in de lijst om de bedieningselementen weer te geven. De cirkels op de afbeelding geven het bewerkbare doel aan en, voor Retoucheren en Kloon, de bron.",
+            "Zoom in voor nauwkeurige plaatsing. Cirkels en pinnen blijven op elk zoomniveau scherp; de cirkels blijven hetzelfde gebied van de foto tonen."
           ],
           "steps": [
             "Sleep de doelcirkel om de correctie te verplaatsen, of kies Doel verplaatsen en klik op de nieuwe positie.",
@@ -2874,7 +2877,13 @@
           "title": "Cache-opslag beheren",
           "paragraphs": [
             "Prestaties tonen de locatie van de previewcache, het gebruik en het budget. Cache legen verwijdert gegenereerde voorvertoningen en rendercaches na bevestiging; originelen en bewerkingen blijven onaangetast. Voorvertoningen moeten opnieuw worden gegenereerd.",
-            "De resolutie van het voorbeeld staat los van de instelling Afmetingen die voor geëxporteerde bestanden wordt gebruikt."
+            "De resolutie van de voorvertoning staat los van de instelling Afmetingen die voor geëxporteerde bestanden wordt gebruikt. Exportafwerking en Foto samenvoegen gebruiken automatisch GPU-versnelling voor ondersteunde beeldverwerkingsstappen, met een CPU-fallback wanneer die niet beschikbaar is. De voorkeur voor de film-engine bepaalt de filmvoorvertoningen; deze schakelt deze versnelling niet uit."
+          ]
+        },
+        {
+          "title": "Lees een voorbeeldfout",
+          "paragraphs": [
+            "Als een foto niet kan worden gerenderd of weergegeven, bevat het bericht in het foto-gebied de gerapporteerde reden wanneer die beschikbaar is. Dit kan een ontbrekend bestand, een probleem met het laden van de afbeelding of een grafische fout aangeven. Als er geen reden beschikbaar is, blijft het bericht algemeen."
           ]
         }
       ],
@@ -2887,5 +2896,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "54319e06e29c5119a23756717a386966d2f7a0dde3a9c0acbe7d5bd395838e72"
+  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
 }
