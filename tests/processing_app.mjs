@@ -177,6 +177,19 @@ try {
         await page.waitForFunction(count => __lightTablePerf.renders.length > count &&
           document.querySelector('#rstat').className !== 'busy', count, {timeout:120000});
       }
+      for (const [key, value] of Object.entries(test.gradeSliders || {})) {
+        const slider = page.locator(`[data-g="${key}"]`);
+        await slider.evaluate(element => { element.closest('details').open = true; });
+        await slider.scrollIntoViewIfNeeded();
+        await slider.evaluate((element, value) => { element.value = String(value); }, value);
+        await slider.dispatchEvent('input');
+        await slider.dispatchEvent('change');
+        recipe.grade[key] = value;
+        await page.waitForFunction(async ({name, key, value}) => {
+          const saved = await (await fetch(`/api/state?name=${encodeURIComponent(name)}`)).json();
+          return saved.grade?.[key] === value && processingFrame?.grade?.[key] === value;
+        }, {name, key, value}, {timeout:15000});
+      }
       await waitForRecipe(name, recipe);
       // doRender queues drawGrade on the animation scheduler before recording
       // its timing. Let that actual presentation run before reading its frame.

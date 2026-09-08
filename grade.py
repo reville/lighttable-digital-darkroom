@@ -40,6 +40,8 @@ DEFAULTS = {
     "clarity": 0.0,      # -1..1, midtone-weighted local contrast
     "dehaze": 0.0,       # -1..1
     "vignette": 0.0,     # -1..1
+    "vignetteSize": 0.5,  # 0..1, size of the clear central area
+    "vignetteFeather": 1.0,  # 0..1, softness of the transition
     "sharpness": 0.0,    # 0..1, output sharpening
     "sharpenRadius": 1.0,  # 0.5..3 pixels
     "sharpenDetail": 0.25,  # 0..1, fine texture emphasis
@@ -51,6 +53,8 @@ DEFAULTS = {
 }
 
 RANGES = {
+    "vignetteSize": (0.0, 1.0),
+    "vignetteFeather": (0.0, 1.0),
     "exposure": (-3.0, 3.0),
     "sharpenRadius": (0.5, 3.0),
     "sharpenDetail": (0.0, 1.0),
@@ -195,7 +199,8 @@ def is_identity(g: dict) -> bool:
     g = clean(g)
     if any(g.get(k) for k in (*CURVE_KEYS, *ADVANCED_KEYS)) or g.get("hsl"):
         return False
-    return all(abs(g[k] - DEFAULTS[k]) < 1e-6 for k in DEFAULTS)
+    return all(abs(g[k] - DEFAULTS[k]) < 1e-6 for k in DEFAULTS
+               if g["vignette"] or k not in ("vignetteSize", "vignetteFeather"))
 
 
 def _apply_curve(c: np.ndarray, g: dict) -> np.ndarray:
@@ -676,6 +681,12 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
         nx = (xx / max(w - 1, 1) - 0.5) * 2.0
         ny = (yy / max(h - 1, 1) - 0.5) * 2.0
         r = np.sqrt(nx * nx + ny * ny) / 1.4142
+        size, feather = g["vignetteSize"], g["vignetteFeather"]
+        # The defaults retain the original curve, including its corner values.
+        if size != 0.5 or feather != 1.0:
+            outer = 0.25 + 1.5 * size
+            width = outer * max(feather, 0.01)
+            r = np.clip((r - outer + width) / width, 0.0, 1.0)
         falloff = np.clip(1.0 - g["vignette"] * 0.9 * (r ** 2.2), 0.0, 2.0)[..., None]
         c = np.clip(c * falloff, 0.0, 1.0)
 
