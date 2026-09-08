@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "pluralPairs": [
     {
@@ -1484,6 +1484,7 @@
     "Finish saving your edits before undoing the batch",
     "First file lands at {firstDestination}",
     "Fit",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.",
     "Fit the whole photo to the available space",
     "Fit to window ({actualPct}%)",
     "Flag",

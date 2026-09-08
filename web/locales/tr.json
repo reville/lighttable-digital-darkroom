@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1194,6 +1194,7 @@
     "Finish saving your edits before undoing the batch": "Toplu işlemi geri almadan önce düzenlemelerinizi kaydetmeyi bitirin",
     "First file lands at {firstDestination}": "İlk dosya {firstDestination} konumuna gider",
     "Fit": "Sığdır",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
     "Fit the whole photo to the available space": "Tüm fotoğrafı kullanılabilir alana sığdırın",
     "Fit to window ({actualPct}%)": "Pencereye sığdır ({actualPct}%)",
     "Flag": "Bayrak",
@@ -1352,6 +1353,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Yerel kurtarma, kitaplık açıldığında bekleyen değişiklikler bulursa, kaydedilmemiş düzenlemeler kurtarılsın mı? etkilenen fotoğrafları listeler. Restore edits, kaydedilmiş ayarlarını kurtarılan ayarlarla değiştirir. Keep saved edits, katalog sürümünü korur ve bu kurtarma taslaklarını atar.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Maskeler aktarılamazsa, diğer grupları uygulamak için Local masks işaretini kaldırarak yeniden kopyalayın.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Gerekirse Lens profile içinde farklı bir giriş seçin ve düzeltmeyi özgünle karşılaştırın.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac ilk kullanım seçimi kaydedilemiyorsa, Tekrar Dene seçimi korur ve yeniden dener. Uygulama yalnızca kaydetme başarılı olduktan sonra başlar.",
@@ -4032,8 +4034,7 @@
     "‹ Back": "‹ Geri",
     "← Back to articles": "← Makalelere geri dön",
     "← People": "← Kişiler",
-    "☆ Favorites": "☆ Sık kullanılanlar",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
+    "☆ Favorites": "☆ Sık kullanılanlar"
   },
   "plurals": {
     " · {count} paired file linked": {
