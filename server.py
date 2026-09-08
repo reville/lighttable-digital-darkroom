@@ -4838,6 +4838,8 @@ class ExportBatch:
             self.status["done"] += 1
             for key in ("completed", "skipped", "cancelledCount"):
                 self.status[key] += int(outcome.get(key, 0))
+            if outcome.get("completed") and outcome.get("path"):
+                self.status.setdefault("revealPath", outcome["path"])
             if outcome.get("error"):
                 self.status["errors"].append(f"{name}: {outcome['error']}")
             if outcome.get("log"):
