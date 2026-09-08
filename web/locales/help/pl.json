@@ -44,10 +44,10 @@
         {
           "title": "Otwórz lokalny folder",
           "paragraphs": [
-            "W aplikacji desktopowej Dodaj zdjęcia otwiera selektor zdjęć i folderów. LightTable zachowuje oryginały w ich bieżącej lokalizacji. Wybranie pojedynczego zdjęcia dodaje jego folder nadrzędny, więc inne obsługiwane zdjęcia w tym folderze również mogą się pojawić."
+            "Dodaj zdjęcia otwiera wybór zdjęć. Na Macu ten wybór akceptuje też foldery. W systemach Linux i Windows użyj + obok Lokalne, aby dodać cały folder. LightTable zachowuje oryginały na miejscu. Wybranie pojedynczego zdjęcia dodaje jego folder nadrzędny, więc mogą pojawić się też inne obsługiwane zdjęcia z tego folderu."
           ],
           "steps": [
-            "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz jedno lub więcej zdjęć albo folderów.",
+            "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz zdjęcia albo użyj + obok Lokalne, aby wybrać folder.",
             "Wybierz folder w sekcji Lokalne na lewym pasku bocznym. Włącz Uwzględnij podfoldery, aby przeglądać zdjęcia w folderach podrzędnych.",
             "Na górze wybierz Photo Grid, Culling Grid lub Detail. Kliknij zdjęcie, aby je uaktywnić."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Wybierz, co jest widoczne",
           "paragraphs": [
-            "Lokalne → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy wybrany folder pokazuje też swoje potomne foldery. Inne filtry biblioteki nadal obowiązują."
+            "Lokalne → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy wybrany folder pokazuje też swoje potomne foldery. Inne filtry biblioteki nadal obowiązują.",
+            "W wąskim oknie systemu Linux użyj Pokaż lub ukryj bibliotekę w lewym górnym rogu, aby otworzyć szufladę biblioteki. Zamknij ją tym samym przyciskiem po wybraniu folderu, aby zrobić więcej miejsca na zdjęcie."
           ],
           "steps": [
             "Kliknij folder pod Lokalna.",
@@ -353,7 +354,7 @@
         {
           "title": "Działania folderu",
           "paragraphs": [
-            "Menu ••• folderu zawiera Pokaż w Finderze na Macu lub Pokaż w Eksploratorze plików w Windows. Dla bieżącego folderu Synchronizuj folder odświeża widok. Lokalne ••• → Przeskanuj foldery skanuje źródła katalogu.",
+            "Menu ••• folderu zawiera Pokaż w Finderze na Macu, Pokaż w Eksploratorze plików w Windows lub Pokaż w Menedżerze plików w systemie Linux. Dla bieżącego folderu Synchronizuj folder odświeża widok. Lokalnie ••• → Ponownie skanuj foldery skanuje źródła katalogu.",
             "Usuń z LightTable usuwa dodany katalog główny z listy źródeł aplikacji; nie przenosi oryginalnych plików do Kosza. Akcja jest dostępna, gdy dostępne jest więcej niż jedno źródło."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Wybierz folder lub kolekcję oraz filtry, które definiują zdjęcia, które chcesz przejrzeć.",
             "Sprawdź odrzucone zdjęcia. Sprawdź ustawienia plików sparowanych i rozwiń dowolne stosy, jeśli oczekujesz uwzględnienia ich pozostałych elementów.",
-            "Na Macu wybierz Zdjęcie → Przenieś odrzucone zdjęcia do Kosza…, albo naciśnij Command+Delete.",
+            "Na Macu wybierz Zdjęcie → Przenieś odrzucone zdjęcia do Kosza… albo naciśnij Command+Delete. W aplikacji pulpitu w systemie Linux lub Windows naciśnij Ctrl+Delete.",
             "Odczytaj liczbę zdjęć w potwierdzeniu i potwierdzaj tylko wtedy, gdy odpowiada zamierzonemu zestawowi."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Odzyskaj przypadkowe usunięcie na Macu",
+          "title": "Przywróć omyłkowo usunięty element",
           "paragraphs": [
-            "Użyj Kosza Findera, aby przywrócić oryginał i jego sidecary do poprzedniego folderu, a następnie ponownie przeskanuj folder w LightTable. Aplikacja nie ma wbudowanej przeglądarki Kosza."
+            "Użyj Kosza Findera na Macu, Kosza pulpitu w systemie Linux albo Kosza systemu Windows, aby przywrócić oryginał i jego sidecary do poprzedniego folderu, a następnie ponownie przeskanuj w LightTable. Aplikacja nie ma wbudowanej przeglądarki Kosza."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami."
           ],
           "steps": [
-            "Otwórz zdjęcie źródłowe i kliknij Kopiuj ustawienia edycji albo naciśnij Command-Shift-C na Macu lub Ctrl-Shift-C w Windows.",
+            "Otwórz zdjęcie źródłowe i kliknij Kopiuj ustawienia edycji albo naciśnij Command-Shift-C na Macu lub Ctrl-Shift-C w systemach Linux i Windows.",
             "Zaznacz grupy, które chcesz przenieść, a następnie kliknij Kopiuj ustawienia.",
             "Wybierz zdjęcie docelowe lub zdjęcia w bibliotece i kliknij Wklej ustawienia edycji albo użyj Command-Shift-V / Ctrl-Shift-V.",
             "Przeczytaj komunikat o zakończeniu. W przypadku partii Zatrzymaj kończy przetwarzanie po bieżącym zdjęciu; ukończone zdjęcia zachowują wklejone edycje."
@@ -1763,7 +1764,7 @@
         {
           "title": "Wybierz osoby lub obszary twarzy",
           "paragraphs": [
-            "Osoby obejmują Osoba, skóra twarzy, Oczy, Brwi, Usta, Zęby, Włosy i Wygładź skórę. Maski Osoby wymagają pomocnika Vision w macOS 14 lub nowszym. Skóra twarzy i włosy są estymowane, a tożsamość nie jest wnioskowana."
+            "Osoby oferuje Osoba, Skóra twarzy, Oczy, Brwi, Usta, Zęby, Włosy i Wygładź skórę. Te elementy sterujące wymagają pomocnika Vision w macOS 14 lub nowszym i są ukryte w systemach Linux i Windows. Skóra twarzy i włosy są szacowane, a tożsamość nie jest wnioskowana."
           ],
           "steps": [
             "Wybierz Osoby, a potem część, którą chcesz dostosować.",
@@ -1916,7 +1917,7 @@
             "Sprawdź gotowy podgląd w 1:1."
           ],
           "tips": [
-            "Dostępność zależy od lokalnego modelu, pomocnika i obsługiwanej platformy. Kompilacje rozwojowe mogą nie zawierać modelu, a aplikacja zgłasza to zamiast udawać, że usuwanie szumu się powiodło."
+            "Nauczone usuwanie szumu wymaga pomocnika wnioskowania w macOS i zgodnego lokalnego modelu. Jest niedostępne w systemach Linux i Windows. Zwykła redukcja szumu i wyostrzanie pozostają dostępne. Wydania deweloperskie mogą nie zawierać modelu; przed uruchomieniem przeczytaj komunikat o dostępności."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Cofnij i ponów działają dla każdego zdjęcia podczas bieżącej sesji. W bibliotekach katalogu Historia pozostaje po zamknięciu programu. Bliskie korekty mogą zostać połączone w jeden krok historii, więc lista nie jest zapisem każdej pozycji suwaka."
           ],
           "steps": [
-            "Użyj Command-Z na Macu lub Ctrl-Z w Windows, aby cofnąć. Dodaj Shift, aby ponowić.",
+            "Użyj Command-Z na Macu albo Ctrl-Z w systemach Linux i Windows, aby cofnąć. Dodaj Shift, aby ponowić.",
             "Otwórz Historię na pasku narzędzi edycji, aby zobaczyć zapisane kroki bieżącego zdjęcia, od najnowszego.",
             "Kliknij krok, aby przywrócić jego ustawienia. Przywrócenie kroku jest samo w sobie edytowalnym cofaniem."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Formaty i presety",
           "paragraphs": [
-            "Okno eksportu oferuje JPEG, HEIF, PNG i 16-bitowy TIFF. HEIF to opcja wyjścia 8-bitowego w macOS. Suwak jakości dotyczy JPEG i HEIF.",
+            "Okno eksportu oferuje JPEG, PNG i 16-bitowy TIFF. W macOS oferuje też 8-bitowy HEIF; HEIF jest ukryty w systemach Linux i Windows. Zapisana receptura HEIF nie może tam zostać zastosowana, więc wybierz inny format. Suwak jakości dotyczy JPEG i HEIF.",
             "JPG (Duży) używa pełnowymiarowego JPEG o jakości 92 w sRGB. JPG (Mały) używa dłuższego boku 2048 pikseli przy jakości 90 w sRGB. 16-bitowy TIFF używa pełnego rozmiaru i ProPhoto RGB. Zmiana tych ustawień wybiera Niestandardowy."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Otwórz zewnętrzny edytor",
           "paragraphs": [
-            "Użyj Edytuj w… aby przygotować zdjęcia do innego edytora pikselowego. Skorygowany TIFF jest zapisywany obok oryginału i może zostać z nim umieszczony w stosie w katalogu."
+            "Użyj Edytuj w… , aby przygotować zdjęcia dla innego edytora pikseli. Dostosowany TIFF jest zapisywany obok oryginału i można go z nim zgrupować w stos w katalogu. W systemach Linux i Windows Wybierz aplikację… pozwala wybrać plik wykonywalny edytora; Domyślna aplikacja używa skojarzenia plików z pulpitem."
           ],
           "steps": [
             "Wybierz zdjęcie i naciśnij Command/Ctrl+E, aby otworzyć Edytuj w innej aplikacji.",
@@ -2623,6 +2624,13 @@
             "Wybierz dopasowanie według modelu aparatu, numeru seryjnego albo aparatu i ISO, a następnie kliknij Użyj bieżących ustawień RAW.",
             "Użyj Resetuj w obszarze Bieżący aparat, aby usunąć domyślne ustawienie tego aparatu."
           ]
+        },
+        {
+          "title": "Wygląd w systemie Linux i Omarchy",
+          "paragraphs": [
+            "W systemie Linux elementy sterujące używają jasnego lub ciemnego wyglądu systemu. W Omarchy paski narzędzi, panele boczne, menu i okna dialogowe korzystają z aktywnej palety pulpitu i aktualizują się w ciągu kilku sekund od zmiany motywu. Piksele zdjęcia, preferencja tła podglądu i neutralne zakresy kolorów zachowują własne kolory.",
+            "W wąskim oknie systemu Linux Pokaż lub ukryj bibliotekę otwiera bibliotekę jako szufladę. Rozszerzenie okna przywraca normalny układ obok siebie. W Hyprland użyj skrótów okien menedżera kompozycji, aby przenieść, ułożyć w kafelki, zmienić rozmiar lub zamknąć LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Zbuduj indeks",
           "paragraphs": [
-            "Indeks zdjęć jest domyślnie wyłączony. Analiza pozostaje na tym Macu i nie modyfikuje folderów ze zdjęciami. Apple Vision zapewnia podstawową analizę; bogatsze opisy Foundation Models pojawiają się tylko wtedy, gdy ta funkcja jest dostępna."
+            "Indeks zdjęć jest domyślnie wyłączony i wymaga macOS. W systemach Linux i Windows wyświetla się Niedostępne na tej platformie, a nowego indeksowania nie można włączyć. Na Macu analiza pozostaje na urządzeniu i nie modyfikuje folderów ze zdjęciami. Apple Vision zapewnia podstawową analizę; bogatsze opisy z Modeli podstawowych pojawiają się tylko wtedy, gdy ta funkcja jest dostępna."
           ],
           "steps": [
             "Otwórz Ustawienia → Indeks zdjęć.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Przejrzyj sygnały",
           "paragraphs": [
-            "Wspomagana selekcja korzysta z prywatnego Indeksu zdjęć. Nie oznacza zdjęć, dopóki jej tego nie zlecisz. Zdjęcie pasuje do grupy, jeśli dowolne z wybranych kryteriów zwraca tak; nieocenione oznacza, że dany sygnał nie ma użytecznego werdyktu."
+            "Wspomagana selekcja korzysta z prywatnego Indeksu zdjęć, który wymaga macOS. Nowa analiza jest niedostępna w systemach Linux i Windows. Nie oznacza zdjęć, dopóki jej o to nie poprosisz. Zdjęcie pasuje do grupy, jeśli dowolne z wybranych kryteriów zwróci tak; nie oceniono oznacza, że ten sygnał nie ma użytecznego werdyktu."
           ],
           "steps": [
             "Włącz Indeks zdjęć w Ustawieniach i poczekaj na ocenienie zdjęć.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Preferencje klawiatury",
           "paragraphs": [
-            "Ustawienia → Skróty i sprzęt zawiera schemat skrótów i referencję klawiatury w sekcji Klawiatura i sterowanie MIDI. W menu Pomoc na pulpicie znajduje się też Skróty klawiaturowe.",
+            "Ustawienia → Skróty i sprzęt zawiera schemat skrótów i odnośnik klawiaturowy w sekcji Sterowanie klawiaturą i MIDI. W macOS menu Pomoc pulpitu ma też pozycję Skróty klawiaturowe. Używaj Ctrl dla skrótów Command/Ctrl w systemach Linux i Windows.",
             "Wybierz LightTable lub Classic; schemat zostanie zastosowany po ponownym wczytaniu. Sterowanie suwakiem z klawiszem pozwala przytrzymać przypisany klawisz podczas przewijania lub używania klawiszy strzałek. Zezwalaj na automatyzację określa, czy zatwierdzone narzędzia lokalne mogą sterować oknem z historią i Cofnij."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Po uaktualnieniu pierwsze skanowanie odczytuje lokalne oryginały, aby wzmocnić dopasowywanie plików. Na dużej bibliotece może to zająć więcej czasu. Oryginały, które już były brakujące bez pełnej tożsamości pliku, pozostaną brakujące; zachowaj ich wpisy i przywróć oryginały do poprzednich zarejestrowanych ścieżek przed ponownym skanowaniem.",
             "W systemie Windows sprawdzanie, czy oryginały zostały zmienione, odczytuje każdy lokalny plik w całości. Ponowne skanowanie, otwieranie zdjęć i kontrole podczas eksportu mogą trwać dłużej w przypadku dużych oryginałów. Te kontrole nie pobierają plików przechowywanych wyłącznie w chmurze.",
             "W przypadku uszkodzonego katalogu Stan biblioteki może zaoferować ratowanie, przywrócenie lub nowy katalog. Ratowanie kopiuje czytelne wiersze, ale traci wiersze na uszkodzonych stronach. Rozpoczęcie od nowa nie przenosi ocen, edycji, kolekcji ani historii. Bieżący uszkodzony plik katalogu jest zachowany w Odzyskiwaniu."
+          ]
+        },
+        {
+          "title": "Znajdź dane aplikacji w systemie Linux",
+          "paragraphs": [
+            "System Linux zazwyczaj przechowuje katalog i presety w ~/.local/share/lighttable, preferencje w ~/.config/lighttable, pamięć podręczną renderowania w ~/.cache/lighttable, a logi w ~/.local/state/lighttable/logs. Niestandardowe ustawienia przechowywania systemu lub LightTable mogą zmienić te lokalizacje; Ustawienia pokazują aktywne ścieżki katalogu i pamięci podręcznej.",
+            "Oryginały pozostają w wybranych folderach ze zdjęciami. Kopie zapasowe katalogu nie zawierają tych oryginałów, twoich preferencji ani osobno zapisanych presetów. Wcześniejsze eksperymentalne dane z systemu Linux nie są automatycznie przenoszone ze starszych lokalizacji."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Sprawdź renderowanie w systemie Linux",
+          "paragraphs": [
+            "W systemie Linux Ustawienia → Wydajność pokazuje aktywny renderer Rust i wykryty adapter po uruchomieniu. Wybór GPU · Rust może używać renderowania CPU, gdy niedostępny jest sprzętowy GPU. Programowy Vulkan nie jest akceleracją sprzętową.",
+            "Zdjęcie przekraczające limity GPU używa CPU. Jeśli proces roboczy renderowania przestanie odpowiadać, LightTable ponawia próbę raz na CPU i zachowuje ten proces roboczy na czas sesji. Uruchom LightTable ponownie po naprawie lub aktualizacji sterownika graficznego, aby spróbować renderowania GPU ponownie. Duże zdjęcia i renderowanie programowe mogą trwać dłużej; do zwykłej edycji używaj Autom. szczegółów podglądu."
+          ]
+        },
+        {
           "title": "Odczytaj błąd podglądu",
           "paragraphs": [
             "Jeśli zdjęcia nie można wyrenderować lub wyświetlić, wiadomość w obszarze zdjęcia zawiera zgłoszoną przyczynę, gdy jest dostępna. Może to wskazywać brakujący plik, problem z wczytywaniem obrazu lub awarię grafiki. Jeśli przyczyna nie jest dostępna, wiadomość pozostaje ogólna."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

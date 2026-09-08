@@ -41,8 +41,22 @@ export function installSettings(context) {
   const syncPreviewSummary = () => {
     const value = byId('pw').value;
     byId('settingsPreviewSummary').textContent = value === 'auto'
-      ? 'Automatic · matches the window, display, and zoom.'
-      : `Manual override · ${value} px. Choose Automatic in Advanced to match the view.`;
+      ? tr('Automatic · matches the window, display, and zoom.')
+      : tr('Manual override · {value} px. Choose Automatic in Advanced to match the view.', {value});
+  };
+  const refreshRendererStatus = async () => {
+    const status = byId('rendererStatus');
+    if (!status || window.__LIGHTTABLE_PLATFORM__ !== 'linux') return;
+    status.hidden = false;
+    try {
+      const response = await fetch('/api/health');
+      if (!response.ok) throw new Error('Renderer status unavailable.');
+      const renderer = (await response.json()).renderers?.interactive || {};
+      const adapter = renderer.adapter;
+      const label = renderer.backend || tr('Warming up');
+      status.textContent = tr('Rust renderer: {details}', {details: [label, adapter?.name,
+        adapter?.software ? tr('Software rendering') : '', renderer.fallback_reason].filter(Boolean).join(' · ')});
+    } catch (_) { status.textContent = tr('Renderer status unavailable.'); }
   };
   const showSidecarStatus = (status) => {
     const label = byId('sidecarWriteStatus');
@@ -225,6 +239,7 @@ export function installSettings(context) {
     dialog.setAttribute('aria-hidden', 'false');
     dialog.querySelector(`[data-settings-tab="${CSS.escape(tab)}"]`)?.focus();
     sendNative('listEditors', {});
+    void refreshRendererStatus();
   }
 
   function close() {

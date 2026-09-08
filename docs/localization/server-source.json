@@ -2,6 +2,7 @@
   "version": 1,
   "messages": [
     "A RAW original cannot be edited in place; send an adjusted TIFF",
+    "A damaged local index was preserved and rebuilt.",
     "A denoise is already running",
     "A file path or descriptor is required for Windows identity",
     "A mask batch is already running; finish or cancel it first",
@@ -47,12 +48,15 @@
     "Give this preset a name",
     "HEIF export failed: {detail}",
     "HEIF export requires the bundled macOS ImageIO helper",
+    "High-precision TIFF color conversion needs LittleCMS 2 (liblcms2)",
     "ImageIO did not create an output file",
     "Import at most 100000 photos at once",
     "Import at most 100000 photos at once; narrow the source or folder scope",
+    "Index data stays in LightTable's local data folder.",
     "Keywords changed after this batch. Review the photos before undoing.",
     "Learned denoise requires a RAW original",
     "Leave in place (unrecognized companion)",
+    "Linux shared-memory reservation is unavailable",
     "Missing photo",
     "Move with photo",
     "Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.",
@@ -72,6 +76,7 @@
     "Photo identity changed since preview",
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
     "Preview a bounded selection before applying",
+    "Render worker stopped responding; using CPU for this session",
     "Requested metadata could not be saved.",
     "Richer descriptions require macOS 27 or later",
     "Select between 1 and 5,000 photos for a mask batch",
@@ -81,6 +86,10 @@
     "Source dimensions are unavailable",
     "Starting LightTable…",
     "Starting the local server…",
+    "TIFF color profile could not be read",
+    "TIFF color profile is incompatible with its pixel channels",
+    "TIFF decoder did not return a two-dimensional image",
+    "TIFF decoder returned no pixels",
     "That capture-time history step does not belong to this photo",
     "That import report is not available",
     "That keyword change is no longer available to undo",
@@ -148,6 +157,7 @@
     "could not decode {name}: {error}",
     "could not find a free name for {name}",
     "could not listen: {error}",
+    "could not open TIFF",
     "cross-origin changes are not allowed",
     "decoded viewport source has no pixels",
     "denoise cancelled",
@@ -172,6 +182,7 @@
     "invalid folder name",
     "invalid import selection; scan the source again",
     "invalid native surface",
+    "invalid resident Rust engine response",
     "invalid resident shared surface",
     "job is not cancellable",
     "job not found",
@@ -278,6 +289,7 @@
     "watched file changed before acknowledgement: {path}",
     "watched ingest failed",
     "window automation is disabled",
+    "{backend} {milliseconds} ms render",
     "{mode} failed",
     "{mode} merge needs 2 to {limit} distinct originals",
     "{name} already exists in that folder",
@@ -288,7 +300,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "34eb28600e7b794fdfbc8e41c02e55000807eb2c4fdb5dc7e8ff4f4dd472b126",
+  "sourceDigest": "f8df6d91bfb81decd6c8c4408f6b1dbc4f7f3c10560e1a7f2051d939496c9abc",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -321,6 +333,7 @@
       "Import at most 100000 photos at once; narrow the source or folder scope",
       "Learned denoise requires a RAW original",
       "Leave in place (unrecognized companion)",
+      "Linux shared-memory reservation is unavailable",
       "Missing photo",
       "Move with photo",
       "Opening the catalog…",
@@ -335,6 +348,7 @@
       "Photo identity changed since preview",
       "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
       "Preview a bounded selection before applying",
+      "Render worker stopped responding; using CPU for this session",
       "Requested metadata could not be saved.",
       "Select between 1 and 5,000 photos for a mask batch",
       "Select no more than 5000 photos for a keyword batch",
@@ -392,6 +406,7 @@
       "invalid folder name",
       "invalid import selection; scan the source again",
       "invalid native surface",
+      "invalid resident Rust engine response",
       "invalid resident shared surface",
       "job not found",
       "left the old sidecar {name} in place: {error}",
@@ -472,6 +487,7 @@
       "viewport requires x, y, width and height",
       "virtual copies cannot move originals",
       "window automation is disabled",
+      "{backend} {milliseconds} ms render",
       "{mode} merge needs 2 to {limit} distinct originals",
       "{name} already exists in that folder",
       "{name} already exists; no files were moved",
@@ -557,6 +573,8 @@
       "the local Vision analyzer has not been built"
     ],
     "film_lab_ai/service.py": [
+      "A damaged local index was preserved and rebuilt.",
+      "Index data stays in LightTable's local data folder.",
       "the local Vision analyzer has not been built"
     ],
     "ingest_workflow.py": [
@@ -597,7 +615,13 @@
       "existing XMP is too large to update safely"
     ],
     "platform_image.py": [
+      "High-precision TIFF color conversion needs LittleCMS 2 (liblcms2)",
+      "TIFF color profile could not be read",
+      "TIFF color profile is incompatible with its pixel channels",
+      "TIFF decoder did not return a two-dimensional image",
+      "TIFF decoder returned no pixels",
       "could not decode {name}: {error}",
+      "could not open TIFF",
       "image decoder did not return color pixels"
     ],
     "file_identity.py": [

@@ -44,10 +44,10 @@
         {
           "title": "Een lokale map openen",
           "paragraphs": [
-            "In de desktopapp opent Foto’s toevoegen een selectiehulpmiddel voor foto’s en mappen. LightTable houdt de originelen op hun huidige locatie. Als u één afzonderlijke foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat andere ondersteunde foto’s in die map ook kunnen verschijnen."
+            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruik je de + naast Lokaal om een hele map toe te voegen. LightTable bewaart originelen op hun plek. Als je een afzonderlijke foto selecteert, wordt de bijbehorende map toegevoegd, zodat andere ondersteunde foto's in die map ook kunnen verschijnen."
           ],
           "steps": [
-            "Klik linksboven op Foto's toevoegen en kies een of meer foto's of mappen.",
+            "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Lokaal om een map te kiezen.",
             "Kies de map onder Lokaal in de linkerzijbalk. Schakel Submappen opnemen in om foto's in de onderliggende mappen te bladeren.",
             "Kies bovenaan Fotoraster, Selectieraster of Detail. Klik op een foto om deze actief te maken."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Kiezen wat in beeld is",
           "paragraphs": [
-            "Lokaal → Bladeren toont uw toegevoegde mappen. Submappen opnemen bepaalt of een geselecteerde map ook zijn onderliggende mappen toont. Andere bibliotheekfilters blijven van kracht."
+            "Lokaal → Bladeren toont uw toegevoegde mappen. Submappen opnemen bepaalt of een geselecteerde map ook zijn onderliggende mappen toont. Andere bibliotheekfilters blijven van kracht.",
+            "Gebruik in een smal Linux-venster Weergeven of verbergen bibliotheek linksboven om de bibliotheeklade te openen. Sluit deze na het kiezen van een map met dezelfde knop om meer ruimte voor de foto over te houden."
           ],
           "steps": [
             "Klik op een map onder Lokaal.",
@@ -353,7 +354,7 @@
         {
           "title": "Mapacties",
           "paragraphs": [
-            "Het •••-menu van een map bevat Tonen in Finder op Mac of Tonen in Verkenner op Windows. Voor de huidige map ververst Map synchroniseren de weergave. Lokaal ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
+            "Het •••-menu van een map bevat Weergeven in Finder op Mac, Weergeven in Bestandsverkenner op Windows of Weergeven in Bestandsbeheerder op Linux. Voor de huidige map ververst Map synchroniseren de weergave. Lokaal ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
             "Verwijderen uit LightTable verwijdert een toegevoegde bron uit de bronlijst van de app; het verplaatst de originele bestanden niet naar de Prullenmand. De actie wordt aangeboden wanneer meer dan één bron beschikbaar is."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Kies de map of collectie en filters die de foto's definiëren die je wilt beoordelen.",
             "Controleer de afgewezen foto's. Controleer de instellingen voor gekoppelde bestanden en vouw eventueel stapels uit als u verwacht de andere leden mee te nemen.",
-            "Kies op Mac Foto → Verplaatste afgewezen foto's naar prullenmand…, of druk op Command+Delete.",
+            "Kies op Mac Foto → Afgewezen foto's naar Prullenmand verplaatsen…, of druk op Command+Delete. Druk in de Linux- of Windows-desktopapp op Ctrl+Delete.",
             "Lees het fotoaantal in de bevestiging en bevestig alleen wanneer het overeenkomt met de set die je bedoelt."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Herstel een onbedoelde verwijdering op Mac",
+          "title": "Een foutieve verwijdering herstellen",
           "paragraphs": [
-            "Gebruik de Prullenmand van Finder om het origineel en de sidecars terug te zetten in hun vorige map en scan daarna de map opnieuw in LightTable. De app heeft geen ingebouwde browser voor de Prullenmand."
+            "Gebruik op Mac de Prullenmand van Finder, op Linux de Prullenmand van het bureaublad, of op Windows de Prullenbak om het origineel en de sidecars naar hun vorige map terug te zetten en scan daarna opnieuw in LightTable. De app heeft geen ingebouwde Prullenmand-browser."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen."
           ],
           "steps": [
-            "Open de bronfoto en klik op Bewerkingsinstellingen kopiëren, of druk op Command-Shift-C op Mac of Ctrl-Shift-C op Windows.",
+            "Open de bronfoto en klik op Bewerkingsinstellingen kopiëren, of druk op Command-Shift-C op Mac of Ctrl-Shift-C op Linux en Windows.",
             "Vink de groepen aan die je wilt overzetten en klik vervolgens op Instellingen kopiëren.",
             "Selecteer de doelfoto of foto's in de bibliotheek en klik op Bewerkingsinstellingen plakken, of gebruik Command-Shift-V / Ctrl-Shift-V.",
             "Lees het voltooiingsbericht. Bij een batch beëindigt Stop de verwerking na de huidige foto; voltooide foto's behouden de geplakte bewerkingen."
@@ -1763,7 +1764,7 @@
         {
           "title": "Personen of gezichtsgebieden selecteren",
           "paragraphs": [
-            "Personen biedt Persoon, Huidskleur gezicht, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Personenmaskers vereisen de Vision-helper op macOS 14 of later. Huidskleur gezicht en haar worden geschat en er wordt geen identiteit afgeleid."
+            "Personen biedt Persoon, Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Deze bedieningselementen vereisen de Vision-helper op macOS 14 of nieuwer en zijn verborgen op Linux en Windows. Gezichtshuid en haar worden geschat en er wordt geen identiteit afgeleid."
           ],
           "steps": [
             "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
@@ -1916,7 +1917,7 @@
             "Inspecteer het voltooide voorbeeld op 1:1."
           ],
           "tips": [
-            "Beschikbaarheid hangt af van het lokale model, de helper en het ondersteunde platform. Ontwikkelbuilds kunnen het model missen, en de app meldt dit in plaats van te doen alsof ruis verminderen is geslaagd."
+            "Aangeleerde ruis vermindering vereist de macOS-inferentiehelper en een compatibel lokaal model. Het is niet beschikbaar op Linux en Windows. Gewone ruisvermindering en verscherpen blijven beschikbaar. Ontwikkelbuilds kunnen het model missen; lees de beschikbaarheidsmelding voordat je start."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Ongedaan maken en opnieuw uitvoeren volgen elke foto tijdens de huidige sessie. In catalogusbibliotheken blijft Geschiedenis behouden na afsluiten. Nabijgelegen aanpassingen kunnen worden samengevoegd tot één geschiedenisstap, dus de lijst is geen verslag van elke schuifregelaarpositie."
           ],
           "steps": [
-            "Gebruik Command-Z op Mac of Ctrl-Z op Windows om ongedaan te maken. Voeg Shift toe om opnieuw uit te voeren.",
+            "Gebruik Command-Z op Mac of Ctrl-Z op Linux en Windows om ongedaan te maken. Voeg Shift toe om opnieuw uit te voeren.",
             "Open Geschiedenis in de bewerkingstoolbalk om de opgeslagen stappen van de huidige foto te zien, met de nieuwste eerst.",
             "Klik op een stap om de instellingen ervan terug te zetten. Het terugzetten van een stap is zelf een ongedaan te maken bewerking."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Indelingen en voorinstellingen",
           "paragraphs": [
-            "Het exportdialoogvenster biedt JPEG, HEIF, PNG en 16-bits TIFF. HEIF is een 8-bits uitvoeroptie op macOS. De kwaliteitschuifregelaar geldt voor JPEG en HEIF.",
+            "Het exportdialoogvenster biedt JPEG, PNG en 16-bits TIFF. Op macOS biedt het ook 8-bits HEIF; HEIF is verborgen op Linux en Windows. Een opgeslagen HEIF-recept kan daar niet worden toegepast, dus kies een ander formaat. De kwaliteitschuifregelaar geldt voor JPEG en HEIF.",
             "JPG (Groot) gebruikt JPEG op volledige grootte met kwaliteit 92 in sRGB. JPG (Klein) gebruikt een lange zijde van 2048 pixels met kwaliteit 90 in sRGB. 16-bits TIFF gebruikt volledige grootte en ProPhoto RGB. Door deze instellingen te wijzigen wordt Aangepast geselecteerd."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Een externe editor openen",
           "paragraphs": [
-            "Gebruik Bewerken in… om foto's voor te bereiden voor een andere pixel-editor. De aangepaste TIFF wordt naast het origineel weggeschreven en kan ermee worden gestapeld in de catalogus."
+            "Gebruik Bewerken in… om foto's voor te bereiden voor een andere pixel-editor. De aangepaste TIFF wordt naast het origineel geschreven en kan ermee worden gestapeld in de catalogus. Op Linux en Windows kun je met Kies toepassing… een bewerker-executable selecteren; Standaardapplicatie gebruikt de bestandskoppeling van het bureaublad."
           ],
           "steps": [
             "Selecteer een foto en druk op Command/Ctrl+E om Bewerken in een andere app te openen.",
@@ -2623,6 +2624,13 @@
             "Kies afstemmen op cameramodel, serienummer of camera en ISO en klik daarna op Huidige RAW-instellingen gebruiken.",
             "Gebruik Opnieuw instellen in het gebied Huidige camera om die camera-standaard te verwijderen."
           ]
+        },
+        {
+          "title": "Uiterlijk van Linux en Omarchy",
+          "paragraphs": [
+            "Op Linux volgen bedieningselementen het lichte of donkere uiterlijk van het systeem. Op Omarchy volgen werkbalken, zijbalken, menu's en dialoogvensters het actieve bureaubladpalet en worden ze binnen enkele seconden na een themawijziging bijgewerkt. Fotopixels, de voorkeur voor de achtergrond van de viewer en neutrale kleurscopes behouden hun eigen kleuren.",
+            "In een smal Linux-venster opent Weergeven of verbergen bibliotheek de bibliotheek als een lade. Door het venster groter te maken, wordt de normale zij-aan-zij-indeling hersteld. Gebruik op Hyprland de venstersneltoetsen van de compositor om LightTable te verplaatsen, te tegelen, van grootte te veranderen of te sluiten."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "De index opbouwen",
           "paragraphs": [
-            "De Foto-index staat standaard uit. Analyse blijft op deze Mac en wijzigt geen fotomappen. Apple Vision levert de kernanalyse; uitgebreidere beschrijvingen van Foundation Models verschijnen alleen wanneer die mogelijkheid beschikbaar is."
+            "De Foto-index staat standaard uit en vereist macOS. Linux en Windows tonen Niet beschikbaar op dit platform, en nieuwe indexering kan niet worden ingeschakeld. Op Mac blijft de analyse op het apparaat en wijzigt geen fotomappen. Apple Vision levert de kernanalyse; rijkere Foundation Models-beschrijvingen verschijnen alleen wanneer die mogelijkheid beschikbaar is."
           ],
           "steps": [
             "Open Instellingen → Foto-index.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Signalen beoordelen",
           "paragraphs": [
-            "Geassisteerd selecteren gebruikt de privé Foto-index. Het geeft foto’s niet van een markering totdat u daar om vraagt. Een foto komt overeen met een groep als een van de door u gekozen criteria ja oplevert; niet beoordeeld betekent dat dat signaal geen bruikbaar oordeel heeft."
+            "Ondersteund selecteren gebruikt de privé Foto-index, waarvoor macOS vereist is. Nieuwe analyse is niet beschikbaar op Linux en Windows. Er worden geen foto's gemarkeerd totdat je erom vraagt. Een foto komt overeen met een groep als een van je gekozen criteria ja retourneert; niet beoordeeld betekent dat dat signaal geen bruikbaar oordeel heeft."
           ],
           "steps": [
             "Schakel Foto-index in bij Instellingen en wacht tot foto's zijn gescoord.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Toetsenbordvoorkeuren",
           "paragraphs": [
-            "Instellingen → Snelkoppelingen & hardware bevat het snelkopschema en een toetsenbordreferentie onder Toetsenbord- en MIDI-regelaars. Het Help-menu op het bureaublad bevat ook Toetsenbordsnelkoppelingen.",
+            "Instellingen → Sneltoetsen & hardware bevat het sneltoetsschema en een toetsenbordreferentie onder Toetsenbord- en MIDI-besturing. Op macOS heeft het bureaubladmenu Help ook Sneltoetsen. Gebruik Ctrl voor Command/Ctrl-sneltoetsen op Linux en Windows.",
             "Kies LightTable of Klassiek; het schema wordt toegepast na een herlaadbeurt. De schuifregelaarbediening met de houd-toets laat u een toegewezen toets ingedrukt houden terwijl u scrolt of de pijltjestoetsen gebruikt. Automatisering toestaan bepaalt of goedgekeurde lokale hulpmiddelen het venster met geschiedenis en Ongedaan maken mogen bedienen."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Na het upgraden leest de eerste scan lokale originelen om de bestandskoppeling te versterken. Dit kan langer duren bij een grote bibliotheek. Originelen die al ontbraken zonder volledige bestandsidentiteit blijven ontbreken; bewaar hun vermeldingen en herstel de originelen naar hun eerdere gecatalogiseerde paden voordat u opnieuw scant.",
             "Op Windows leest het controleren of originelen zijn gewijzigd elk lokaal bestand volledig in. Opnieuw scannen, foto’s openen en exportcontroles kunnen langer duren bij grote originelen. Deze controles downloaden geen bestanden die alleen in de cloud zijn opgeslagen.",
             "Voor een beschadigde catalogus kan Bibliotheekgezondheid herstel, terugzetten of een nieuwe catalogus aanbieden. Herstellen kopieert leesbare rijen, maar verliest rijen op beschadigde pagina's. Opnieuw beginnen draagt geen beoordelingen, bewerkingen, collecties of geschiedenis over. Het huidige beschadigde catalogusbestand wordt bewaard in Herstel."
+          ]
+        },
+        {
+          "title": "Linux-toepassingsgegevens zoeken",
+          "paragraphs": [
+            "Linux bewaart de catalogus en voorinstellingen normaal in ~/.local/share/lighttable, voorkeuren in ~/.config/lighttable, rendercaches in ~/.cache/lighttable en logbestanden in ~/.local/state/lighttable/logs. Aangepaste systeem- of LightTable-opslaginstellingen kunnen deze locaties wijzigen; Instellingen toont de actieve catalogus- en cachepaden.",
+            "Originelen blijven in de fotomappen die je kiest. Catalogusback-ups bevatten die originelen, je voorkeuren of afzonderlijk opgeslagen voorinstellingen niet. Eerder experimentele Linux-gegevens worden niet automatisch verplaatst vanuit oudere locaties."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Linux-weergave controleren",
+          "paragraphs": [
+            "Op Linux rapporteert Instellingen → Prestaties na opstarten de actieve Rust-renderer en de gedetecteerde adapter. De keuze GPU · Rust kan CPU-weergave gebruiken wanneer een hardware-GPU niet beschikbaar is. Softwarematige Vulkan is geen hardwareversnelling.",
+            "Een foto die de limieten van de GPU overschrijdt, gebruikt de CPU. Als de renderwerker niet meer reageert, probeert LightTable het één keer opnieuw op de CPU en houdt die worker voor de sessie aan. Open LightTable opnieuw nadat je je grafische stuurprogramma hebt hersteld of bijgewerkt om GPU-weergave opnieuw te proberen. Grote foto's en softwarematige weergave kunnen langer duren; gebruik Automatisch voorbeeldniveau voor normaal bewerken."
+          ]
+        },
+        {
           "title": "Lees een voorbeeldfout",
           "paragraphs": [
             "Als een foto niet kan worden gerenderd of weergegeven, bevat het bericht in het foto-gebied de gerapporteerde reden wanneer die beschikbaar is. Dit kan een ontbrekend bestand, een probleem met het laden van de afbeelding of een grafische fout aangeven. Als er geen reden beschikbaar is, blijft het bericht algemeen."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

@@ -44,10 +44,10 @@
         {
           "title": "Ouvrir un dossier local",
           "paragraphs": [
-            "Dans l’application de bureau, Ajouter des photos ouvre un sélecteur pour les photos et les dossiers. LightTable conserve les originaux à leur emplacement actuel. La sélection d’une photo individuelle ajoute son dossier conteneur, afin que d’autres photos prises en charge dans ce dossier puissent également apparaître."
+            "Ajouter des photos ouvre un sélecteur de photos. Sur Mac, ce sélecteur accepte aussi les dossiers. Sur Linux et Windows, utilisez le + à côté de Local pour ajouter un dossier entier. LightTable conserve les originaux en place. La sélection d’une photo individuelle ajoute son dossier contenant, de sorte que d’autres photos prises en charge dans ce dossier peuvent aussi apparaître."
           ],
           "steps": [
-            "Cliquez sur Ajouter des photos en haut à gauche et choisissez une ou plusieurs photos ou dossiers.",
+            "Cliquez sur Ajouter des photos en haut à gauche et choisissez des photos, ou utilisez le + à côté de Local pour choisir un dossier.",
             "Choisissez le dossier sous Local dans la barre latérale gauche. Activez Inclure les sous-dossiers pour parcourir les photos dans ses dossiers enfants.",
             "Choisissez Grille photo, Grille de tri ou Détail en haut. Cliquez sur une photo pour l’activer."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Choisir ce qui est affiché",
           "paragraphs": [
-            "Local → Parcourir liste vos dossiers ajoutés. Inclure les sous-dossiers détermine si un dossier sélectionné affiche aussi ses descendants. Les autres filtres de la bibliothèque s’appliquent toujours."
+            "Local → Parcourir liste vos dossiers ajoutés. Inclure les sous-dossiers détermine si un dossier sélectionné affiche aussi ses descendants. Les autres filtres de la bibliothèque s’appliquent toujours.",
+            "Dans une fenêtre Linux étroite, utilisez Afficher ou masquer la bibliothèque en haut à gauche pour ouvrir le tiroir de bibliothèque. Fermez-le avec le même bouton après avoir choisi un dossier afin de laisser plus de place à la photo."
           ],
           "steps": [
             "Cliquez sur un dossier sous Local.",
@@ -353,7 +354,7 @@
         {
           "title": "Actions sur le dossier",
           "paragraphs": [
-            "Le menu ••• d’un dossier inclut Afficher dans le Finder sur Mac ou Afficher dans l’Explorateur de fichiers sous Windows. Pour le dossier actuel, Synchroniser le dossier actualise l’affichage. Local ••• → Analyser à nouveau les dossiers examine les sources du catalogue.",
+            "Le menu ••• d’un dossier inclut Afficher dans le Finder sur Mac, Afficher dans l’Explorateur de fichiers sur Windows ou Afficher dans le gestionnaire de fichiers sur Linux. Pour le dossier actuel, Synchroniser le dossier actualise l’affichage. Local ••• → Réanalyser les dossiers analyse les sources du catalogue.",
             "Supprimer de LightTable supprime une racine ajoutée de la liste des sources de l’application ; cela ne déplace pas les fichiers d’origine vers la corbeille. L’action est proposée lorsqu’il y a plus d’une source disponible."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Choisissez le dossier ou la collection ainsi que les filtres qui définissent les photos que vous souhaitez revoir.",
             "Inspectez les photos rejetées. Vérifiez les réglages de fichiers appariés et développez les piles si vous vous attendez à inclure leurs autres membres.",
-            "Sur Mac, choisissez Photo → Déplacer les photos rejetées vers la corbeille…, ou appuyez sur Command+Delete.",
+            "Sur Mac, choisissez Photo → Déplacer les photos rejetées vers la corbeille…, ou appuyez sur Commande+Suppr. Dans l’application de bureau Linux ou Windows, appuyez sur Ctrl+Suppr.",
             "Lisez le nombre de photos dans la confirmation et confirmez uniquement lorsqu’il correspond à l’ensemble que vous souhaitez."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Récupérer une suppression accidentelle sur Mac",
+          "title": "Récupérer une suppression accidentelle",
           "paragraphs": [
-            "Utilisez la corbeille du Finder pour remettre l’original et ses sidecars dans leur dossier précédent, puis rescanner le dossier dans LightTable. L’application ne dispose pas d’un navigateur de corbeille intégré."
+            "Utilisez la corbeille du Finder sur Mac, la corbeille du bureau sur Linux ou la Corbeille sur Windows pour restaurer l’original et ses sidecars dans leur dossier précédent, puis réanalysez dans LightTable. L’application ne dispose pas d’un navigateur de corbeille intégré."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Copier et Coller transfèrent les groupes que vous sélectionnez explicitement. Les réglages des groupes non cochés restent tels quels sur chaque destination. Il s’agit d’un flux de travail explicite de copier/coller : les modifications ultérieures de la source ne se synchronisent pas automatiquement vers les destinations."
           ],
           "steps": [
-            "Ouvrez la photo source et cliquez sur Copier les réglages d’édition, ou appuyez sur Commande-Maj-C sur Mac ou Ctrl-Maj-C sur Windows.",
+            "Ouvrez la photo source et cliquez sur Copier les réglages de modification, ou appuyez sur Commande-Maj-C sur Mac ou Ctrl-Maj-C sur Linux et Windows.",
             "Cochez les groupes que vous souhaitez transférer, puis cliquez sur Copier les réglages.",
             "Sélectionnez la ou les photos de destination dans la bibliothèque et cliquez sur Coller les réglages de retouche, ou utilisez Command-Shift-V / Ctrl-Shift-V.",
             "Lisez le message d’achèvement. Pour un lot, Arrêter met fin au traitement après la photo en cours ; les photos terminées conservent les retouches collées."
@@ -1763,7 +1764,7 @@
         {
           "title": "Sélectionner des personnes ou des régions faciales",
           "paragraphs": [
-            "Personnes propose Personne, peau du visage, Yeux, Sourcils, Lèvres, Dents, Cheveux et Adoucir la peau. Les masques de personnes nécessitent l’assistant Vision sur macOS 14 ou version ultérieure. La peau du visage et les cheveux sont estimés, et aucune identité n’est déduite."
+            "Personnes propose Personne, Peau du visage, Yeux, Sourcils, Lèvres, Dents, Cheveux et Adoucir la peau. Ces commandes nécessitent l’assistant Vision sur macOS 14 ou version ultérieure et sont masquées sur Linux et Windows. La peau du visage et les cheveux sont estimés, et aucune identité n’est déduite."
           ],
           "steps": [
             "Choisir Personnes, puis la partie que vous voulez ajuster.",
@@ -1916,7 +1917,7 @@
             "Inspecter l’aperçu terminé en 1:1."
           ],
           "tips": [
-            "La disponibilité dépend du modèle local, de l’assistant et de la plateforme prise en charge. Les versions de développement peuvent ne pas inclure le modèle, et l’application l’indique au lieu de prétendre que la réduction du bruit a réussi."
+            "La réduction du bruit apprise nécessite l’assistant d’inférence macOS et un modèle local compatible. Elle est indisponible sur Linux et Windows. La réduction du bruit ordinaire et l’accentuation restent disponibles. Les versions de développement peuvent ne pas inclure le modèle ; lisez le message de disponibilité avant de démarrer."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Annuler et rétablir suivent chaque photo pendant la session en cours. Dans les bibliothèques de catalogue, l’Historique persiste après la fermeture. Les ajustements voisins peuvent être regroupés en une étape d’historique, de sorte que la liste n’est pas un enregistrement de chaque position de curseur."
           ],
           "steps": [
-            "Utilisez Commande-Z sur Mac ou Ctrl-Z sur Windows pour annuler. Ajoutez Maj pour rétablir.",
+            "Utilisez Commande-Z sur Mac ou Ctrl-Z sur Linux et Windows pour annuler. Ajoutez Shift pour rétablir.",
             "Ouvrez Historique dans la barre d’outils d’édition pour voir les étapes enregistrées de la photo actuelle, la plus récente en premier.",
             "Cliquez sur une étape pour restaurer ses réglages. La restauration d’une étape est elle-même une modification annulable."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Formats et préréglages",
           "paragraphs": [
-            "La boîte de dialogue d’export propose JPEG, HEIF, PNG et TIFF 16 bits. HEIF est une option de sortie 8 bits sur macOS. Le curseur de qualité s’applique à JPEG et HEIF.",
+            "La boîte de dialogue d’exportation propose JPEG, PNG et TIFF 16 bits. Sur macOS, elle propose aussi HEIF 8 bits ; HEIF est masqué sur Linux et Windows. Une recette HEIF enregistrée ne peut pas y être appliquée, donc choisissez un autre format. Le curseur de qualité s’applique à JPEG et HEIF.",
             "JPG (Grand) utilise un JPEG pleine taille avec une qualité de 92 en sRGB. JPG (Petit) utilise un bord long de 2048 pixels avec une qualité de 90 en sRGB. Le TIFF 16 bits utilise la pleine taille et ProPhoto RGB. La modification de ces réglages sélectionne Personnalisé."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Ouvrir un éditeur externe",
           "paragraphs": [
-            "Utilisez Modifier dans… pour préparer des photos dans un autre éditeur bitmap. Le TIFF ajusté est écrit à côté de l’original et peut être fusionné avec lui dans le catalogue."
+            "Utilisez Modifier dans… pour préparer des photos pour un autre éditeur de pixels. Le TIFF modifié est écrit à côté de l’original et peut être empilé avec lui dans le catalogue. Sur Linux et Windows, Choisir une application… vous permet de sélectionner l’exécutable d’un éditeur ; Application par défaut utilise l’association de fichiers du bureau."
           ],
           "steps": [
             "Sélectionnez une photo et appuyez sur Commande/Ctrl+E pour ouvrir Modifier dans une autre application.",
@@ -2623,6 +2624,13 @@
             "Choisissez la correspondance par modèle d’appareil photo, numéro de série, ou appareil photo et ISO, puis cliquez sur Utiliser les réglages RAW actuels.",
             "Utilisez Réinitialiser dans la zone Appareil photo actuel pour supprimer ce réglage par défaut de l’appareil photo."
           ]
+        },
+        {
+          "title": "Apparence Linux et Omarchy",
+          "paragraphs": [
+            "Sur Linux, les commandes suivent l’apparence claire ou sombre du système. Sur Omarchy, les barres d’outils, barres latérales, menus et boîtes de dialogue suivent la palette active du bureau et se mettent à jour quelques secondes après un changement de thème. Les pixels de la photo, la préférence de fond de l’aperçu et les étendues de couleurs neutres conservent leurs propres couleurs.",
+            "Dans une fenêtre Linux étroite, Afficher ou masquer la bibliothèque ouvre la bibliothèque sous forme de tiroir. L’agrandissement de la fenêtre restaure la disposition normale côte à côte. Sur Hyprland, utilisez les raccourcis de fenêtre du compositeur pour déplacer, tuiler, redimensionner ou fermer LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Construire l'index",
           "paragraphs": [
-            "L’Index photo est désactivé par défaut. L’analyse reste sur ce Mac et ne modifie pas les dossiers photo. Apple Vision fournit l’analyse principale ; des descriptions plus riches des Foundation Models n’apparaissent que lorsque cette fonctionnalité est disponible."
+            "L’Index des photos est désactivé par défaut et nécessite macOS. Linux et Windows affichent Indisponible sur cette plateforme, et la nouvelle indexation ne peut pas être activée. Sur Mac, l’analyse reste sur l’appareil et ne modifie pas les dossiers de photos. Apple Vision fournit l’analyse principale ; des descriptions plus riches des Modèles fondamentaux n’apparaissent que lorsque cette capacité est disponible."
           ],
           "steps": [
             "Ouvrir Réglages → Index des photos.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Signaux de relecture",
           "paragraphs": [
-            "Le tri assisté utilise l’index photo privé. Il ne marque pas les photos avant que vous ne lui demandiez de le faire. Une photo correspond à un groupe si l’un de vos critères choisis renvoie oui ; non évalué signifie que ce signal n’a pas de verdict exploitable."
+            "Le tri assisté utilise l’Index des photos privé, qui nécessite macOS. La nouvelle analyse est indisponible sur Linux et Windows. Il ne marque pas les photos tant que vous ne lui demandez pas de le faire. Une photo correspond à un groupe si l’un de vos critères choisis renvoie oui ; non évalué signifie que ce signal n’a pas de verdict exploitable."
           ],
           "steps": [
             "Activez Index photo dans Réglages et attendez que les photos soient notées.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Préférences du clavier",
           "paragraphs": [
-            "Paramètres → Raccourcis et matériel contient le schéma de raccourcis et une référence clavier sous les contrôles Clavier et MIDI. Le menu Aide du bureau contient aussi les raccourcis clavier.",
+            "Réglages → Raccourcis et matériel contient le schéma des raccourcis et une référence clavier sous Commandes clavier et MIDI. Sur macOS, le menu Aide du bureau propose aussi Raccourcis clavier. Utilisez Ctrl pour les raccourcis Commande/Ctrl sur Linux et Windows.",
             "Choisissez LightTable ou Classique ; le schéma s’applique après un rechargement. Le contrôle du curseur avec touche maintenue vous permet de maintenir une touche mappée tout en faisant défiler ou en utilisant les touches fléchées. Autoriser l’automatisation détermine si les outils locaux approuvés peuvent contrôler la fenêtre avec l’historique et Annuler."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Après une mise à niveau, la première numérisation lit les originaux locaux pour renforcer la correspondance des fichiers. Cela peut prendre plus de temps dans une grande photothèque. Les originaux qui manquaient déjà sans identité de fichier complète restent manquants ; conservez leurs entrées et restaurez les originaux à leurs anciens chemins catalogués avant de rescanner.",
             "Sous Windows, la vérification des modifications des originaux lit chaque fichier local dans son intégralité. Une nouvelle analyse, l’ouverture de photos et les vérifications à l’exportation peuvent prendre plus de temps avec de gros originaux. Ces vérifications ne téléchargent pas les fichiers stockés uniquement dans le cloud.",
             "Pour un catalogue endommagé, État de la bibliothèque peut proposer la récupération, la restauration ou un nouveau catalogue. La récupération copie les lignes lisibles mais perd les lignes situées sur les pages endommagées. Repartir de zéro ne conserve pas les notes, les modifications, les collections ni l’historique. Le fichier du catalogue endommagé actuel est conservé dans Recovery."
+          ]
+        },
+        {
+          "title": "Trouver les données de l’application Linux",
+          "paragraphs": [
+            "Linux conserve normalement le catalogue et les préréglages dans ~/.local/share/lighttable, les préférences dans ~/.config/lighttable, les caches de rendu dans ~/.cache/lighttable, et les journaux dans ~/.local/state/lighttable/logs. Les paramètres personnalisés de stockage du système ou de LightTable peuvent modifier ces emplacements ; Réglages affiche les chemins actifs du catalogue et du cache.",
+            "Les originaux restent dans les dossiers de photos que vous choisissez. Les sauvegardes du catalogue n’incluent pas ces originaux, vos préférences ni les préréglages stockés séparément. Les anciennes données expérimentales Linux ne sont pas déplacées automatiquement depuis les emplacements précédents."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Vérifier le rendu sous Linux",
+          "paragraphs": [
+            "Sur Linux, Réglages → Performance affiche le rendu Rust actif et l’adaptateur détecté après la préparation. Le choix GPU · Rust peut utiliser le rendu CPU lorsqu’aucun GPU matériel n’est disponible. Vulkan logiciel n’est pas une accélération matérielle.",
+            "Une photo qui dépasse les limites du GPU utilise le CPU. Si le worker de rendu cesse de répondre, LightTable réessaie une fois sur le CPU et conserve ce worker pour la session. Rouvrez LightTable après avoir réparé ou mis à jour votre pilote graphique pour réessayer le rendu GPU. Les grandes photos et le rendu logiciel peuvent prendre plus de temps ; utilisez le détail d’aperçu Automatique pour la modification normale."
+          ]
+        },
+        {
           "title": "Lire une erreur d’aperçu",
           "paragraphs": [
             "Si une photo ne peut pas être rendue ou affichée, le message dans la zone photo inclut la raison signalée lorsqu’elle est disponible. Cela peut permettre d’identifier un fichier manquant, un problème de chargement d’image ou une défaillance graphique. Si aucune raison n’est disponible, le message reste général."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

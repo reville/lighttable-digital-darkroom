@@ -44,10 +44,10 @@
         {
           "title": "Mở thư mục cục bộ",
           "paragraphs": [
-            "Trong ứng dụng desktop, Add Photos mở bộ chọn cho ảnh và thư mục. LightTable giữ ảnh gốc ở vị trí hiện tại của chúng. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa nó, vì vậy các ảnh được hỗ trợ khác trong thư mục đó cũng có thể xuất hiện."
+            "Thêm ảnh mở bộ chọn ảnh. Trên Mac, bộ chọn đó cũng chấp nhận thư mục. Trên Linux và Windows, dùng dấu + bên cạnh Cục bộ để thêm cả một thư mục. LightTable giữ bản gốc ở nguyên vị trí. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa nó, vì vậy các ảnh khác được hỗ trợ trong thư mục đó cũng có thể xuất hiện."
           ],
           "steps": [
-            "Nhấp Thêm Ảnh ở góc trên bên trái và chọn một hoặc nhiều ảnh hoặc thư mục.",
+            "Nhấp Thêm ảnh ở góc trên bên trái và chọn ảnh, hoặc dùng dấu + bên cạnh Cục bộ để chọn một thư mục.",
             "Chọn thư mục dưới Local ở thanh bên trái. Bật Include subfolders để duyệt ảnh trong các thư mục con của nó.",
             "Chọn Photo Grid, Culling Grid hoặc Detail ở phía trên. Nhấp vào một ảnh để kích hoạt nó."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Chọn nội dung đang hiển thị",
           "paragraphs": [
-            "Local → Duyệt liệt kê các thư mục bạn đã thêm. Bao gồm thư mục con điều khiển việc một thư mục đã chọn có hiển thị cả các thư mục con của nó hay không. Các bộ lọc thư viện khác vẫn được áp dụng."
+            "Local → Duyệt liệt kê các thư mục bạn đã thêm. Bao gồm thư mục con điều khiển việc một thư mục đã chọn có hiển thị cả các thư mục con của nó hay không. Các bộ lọc thư viện khác vẫn được áp dụng.",
+            "Trong cửa sổ Linux hẹp, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái để mở ngăn thư viện. Đóng nó bằng cùng nút đó sau khi chọn một thư mục để có thêm chỗ cho ảnh."
           ],
           "steps": [
             "Nhấp vào một thư mục trong Local.",
@@ -353,7 +354,7 @@
         {
           "title": "Tác vụ thư mục",
           "paragraphs": [
-            "Menu ••• của một thư mục gồm Show in Finder trên Mac hoặc Show in File Explorer trên Windows. Với thư mục hiện tại, Synchronize Folder làm mới chế độ xem. Local ••• → Rescan folders quét lại các nguồn của danh mục.",
+            "Menu ••• của thư mục bao gồm Hiển thị trong Finder trên Mac, Hiển thị trong File Explorer trên Windows, hoặc Hiển thị trong Trình quản lý tệp trên Linux. Với thư mục hiện tại, Đồng bộ hóa thư mục làm mới chế độ xem. Cục bộ ••• → Quét lại thư mục quét các nguồn của danh mục.",
             "Xóa khỏi LightTable sẽ gỡ một thư mục gốc đã thêm khỏi danh sách nguồn của ứng dụng; nó không di chuyển các tệp gốc vào Thùng rác. Hành động này được cung cấp khi có nhiều hơn một nguồn."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Chọn thư mục hoặc bộ sưu tập và các bộ lọc xác định những ảnh bạn muốn xem lại.",
             "Kiểm tra các ảnh bị từ chối. Kiểm tra cài đặt tệp ghép cặp và mở rộng bất kỳ ngăn xếp nào nếu bạn muốn bao gồm các thành viên khác của chúng.",
-            "Trên Mac, chọn Ảnh → Di chuyển ảnh bị từ chối vào Thùng rác…, hoặc nhấn Command+Delete.",
+            "Trên Mac, chọn Ảnh → Di chuyển Ảnh Đã từ chối vào Thùng rác…, hoặc nhấn Command+Delete. Trong ứng dụng desktop trên Linux hoặc Windows, nhấn Ctrl+Delete.",
             "Đọc số lượng ảnh trong xác nhận và chỉ xác nhận khi nó khớp với tập bạn định chọn."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Khôi phục thao tác xóa nhầm trên Mac",
+          "title": "Khôi phục một lần xóa nhầm",
           "paragraphs": [
-            "Dùng Thùng rác của Finder để đưa ảnh gốc và các sidecar của nó trở lại thư mục trước đó, rồi quét lại thư mục trong LightTable. Ứng dụng không có trình duyệt Thùng rác ngay trong ứng dụng."
+            "Dùng Thùng rác của Finder trên Mac, Thùng rác của desktop trên Linux, hoặc Recycle Bin trên Windows để khôi phục bản gốc và các sidecar của nó về thư mục trước đó, rồi quét lại trong LightTable. Ứng dụng không có trình duyệt Thùng rác ngay trong ứng dụng."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích."
           ],
           "steps": [
-            "Mở ảnh nguồn và nhấp Copy edit settings, hoặc nhấn Command-Shift-C trên Mac hay Ctrl-Shift-C trên Windows.",
+            "Mở ảnh nguồn và nhấp Sao chép cài đặt chỉnh sửa, hoặc nhấn Command-Shift-C trên Mac hoặc Ctrl-Shift-C trên Linux và Windows.",
             "Chọn các nhóm bạn muốn chuyển, rồi nhấp Sao chép cài đặt.",
             "Chọn ảnh đích hoặc các ảnh đích trong thư viện rồi nhấp Paste edit settings, hoặc dùng Command-Shift-V / Ctrl-Shift-V.",
             "Đọc thông báo hoàn tất. Với lô, Stop kết thúc xử lý sau ảnh hiện tại; các ảnh đã hoàn thành giữ nguyên các chỉnh sửa đã dán."
@@ -1763,7 +1764,7 @@
         {
           "title": "Chọn người hoặc vùng khuôn mặt",
           "paragraphs": [
-            "People có Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair và Soften skin. Mặt nạ People cần trợ lý Vision trên macOS 14 trở lên. Face skin và hair được ước tính, và không suy ra danh tính."
+            "Mọi người cung cấp Người, Da mặt, Mắt, Lông mày, Môi, Răng, Tóc và Làm mềm da. Các điều khiển này yêu cầu trình trợ giúp Vision trên macOS 14 trở lên và bị ẩn trên Linux và Windows. Da mặt và tóc được ước tính, và không có nhận dạng danh tính nào được suy ra."
           ],
           "steps": [
             "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
@@ -1916,7 +1917,7 @@
             "Kiểm tra bản xem trước đã hoàn tất ở 1:1."
           ],
           "tips": [
-            "Tính khả dụng phụ thuộc vào mô hình cục bộ, trình trợ giúp, và nền tảng được hỗ trợ. Các bản dựng phát triển có thể thiếu mô hình, và ứng dụng báo điều đó thay vì giả vờ khử nhiễu đã thành công."
+            "Khử nhiễu đã học yêu cầu trình trợ giúp suy luận của macOS và một mô hình cục bộ tương thích. Nó không khả dụng trên Linux và Windows. Khử nhiễu và làm sắc nét thông thường vẫn khả dụng. Bản dựng phát triển có thể thiếu mô hình; hãy đọc thông báo khả dụng trước khi bắt đầu."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Undo và redo đi theo từng ảnh trong suốt phiên làm việc hiện tại. Trong danh mục thư viện, History vẫn còn sau khi thoát. Các điều chỉnh gần nhau có thể được gộp thành một bước lịch sử, nên danh sách này không phải là bản ghi của mọi vị trí thanh trượt."
           ],
           "steps": [
-            "Dùng Command-Z trên Mac hoặc Ctrl-Z trên Windows để hoàn tác. Thêm Shift để làm lại.",
+            "Dùng Command-Z trên Mac hoặc Ctrl-Z trên Linux và Windows để hoàn tác. Thêm Shift để làm lại.",
             "Mở History trong thanh công cụ chỉnh sửa để xem các bước đã lưu của ảnh hiện tại, mới nhất ở trên cùng.",
             "Nhấp vào một bước để khôi phục cài đặt của nó. Khôi phục một bước tự nó là một thao tác có thể hoàn tác."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Định dạng và thiết lập sẵn",
           "paragraphs": [
-            "Hộp thoại xuất cung cấp JPEG, HEIF, PNG, và TIFF 16-bit. HEIF là tùy chọn đầu ra 8-bit trên macOS. Thanh trượt chất lượng áp dụng cho JPEG và HEIF.",
+            "Hộp thoại xuất cung cấp JPEG, PNG và TIFF 16-bit. Trên macOS, nó cũng cung cấp HEIF 8-bit; HEIF bị ẩn trên Linux và Windows. Một quy trình HEIF đã lưu không thể được áp dụng ở đó, vì vậy hãy chọn định dạng khác. Thanh trượt chất lượng áp dụng cho JPEG và HEIF.",
             "JPG (Large) dùng JPEG kích thước đầy đủ ở chất lượng 92 trong sRGB. JPG (Small) dùng cạnh dài 2048 pixel ở chất lượng 90 trong sRGB. TIFF 16-bit dùng kích thước đầy đủ và ProPhoto RGB. Thay đổi các thiết lập này sẽ chọn Custom."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Mở trình chỉnh sửa ngoài",
           "paragraphs": [
-            "Dùng Chỉnh sửa trong… để chuẩn bị ảnh cho một trình chỉnh sửa pixel khác. TIFF đã chỉnh sửa sẽ được ghi bên cạnh ảnh gốc và có thể được xếp ngăn xếp cùng nó trong danh mục."
+            "Dùng Chỉnh sửa trong… để chuẩn bị ảnh cho một trình chỉnh sửa pixel khác. TIFF đã chỉnh sửa được ghi cạnh bản gốc của nó và có thể được xếp ngăn xếp với nó trong danh mục. Trên Linux và Windows, Chọn ứng dụng… cho phép bạn chọn một tệp thực thi trình chỉnh sửa; Ứng dụng mặc định dùng liên kết tệp của desktop."
           ],
           "steps": [
             "Chọn một ảnh và nhấn Command/Ctrl+E để mở Chỉnh sửa trong ứng dụng khác.",
@@ -2623,6 +2624,13 @@
             "Chọn khớp theo kiểu máy ảnh, số sê-ri, hoặc camera and ISO, rồi nhấp Use current RAW settings.",
             "Dùng Đặt lại trong vùng Máy ảnh hiện tại để xóa mặc định của máy ảnh đó."
           ]
+        },
+        {
+          "title": "Giao diện Linux và Omarchy",
+          "paragraphs": [
+            "Trên Linux, các điều khiển theo giao diện sáng hoặc tối của hệ thống. Trên Omarchy, thanh công cụ, thanh bên, menu và hộp thoại theo bảng màu desktop đang hoạt động và cập nhật trong vòng vài giây sau khi đổi giao diện. Pixel ảnh, tùy chọn nền của trình xem và các phạm vi màu trung tính giữ màu riêng của chúng.",
+            "Trong cửa sổ Linux hẹp, Hiện hoặc ẩn thư viện mở thư viện dưới dạng một ngăn kéo. Mở rộng cửa sổ sẽ khôi phục bố cục song song thông thường. Trên Hyprland, dùng các phím tắt cửa sổ của compositor để di chuyển, xếp ô, thay đổi kích thước hoặc đóng LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Xây dựng chỉ mục",
           "paragraphs": [
-            "Photo Index mặc định là tắt. Phân tích chỉ ở trên máy Mac này và không sửa đổi các thư mục ảnh. Apple Vision cung cấp phân tích cốt lõi; mô tả Foundation Models phong phú hơn chỉ xuất hiện khi khả năng đó có sẵn."
+            "Chỉ mục ảnh mặc định tắt và yêu cầu macOS. Linux và Windows hiển thị Không khả dụng trên nền tảng này, và không thể bật lập chỉ mục mới. Trên Mac, phân tích vẫn ở trên thiết bị và không sửa đổi các thư mục ảnh. Apple Vision cung cấp phân tích cốt lõi; mô tả chi tiết hơn của Mô hình nền tảng chỉ xuất hiện khi khả năng đó khả dụng."
           ],
           "steps": [
             "Mở Cài đặt → Chỉ mục ảnh.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Xem lại tín hiệu",
           "paragraphs": [
-            "Lọc ảnh có trợ giúp sử dụng Photo Index riêng tư. Nó không gắn cờ ảnh cho đến khi bạn yêu cầu. Một ảnh khớp với một nhóm nếu bất kỳ tiêu chí nào bạn chọn trả lời có; chưa được đánh giá nghĩa là tín hiệu đó không có phán quyết hữu ích."
+            "Lọc ảnh có hỗ trợ dùng Chỉ mục ảnh riêng tư, yêu cầu macOS. Phân tích mới không khả dụng trên Linux và Windows. Nó không gắn cờ ảnh cho đến khi bạn yêu cầu. Một ảnh khớp với một nhóm nếu bất kỳ tiêu chí nào bạn chọn trả về có; chưa được đánh giá có nghĩa là tín hiệu đó không có kết quả hợp lệ."
           ],
           "steps": [
             "Bật Photo Index trong Cài đặt và chờ ảnh được chấm điểm.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Tùy chọn bàn phím",
           "paragraphs": [
-            "Cài đặt → Phím tắt & Phần cứng chứa sơ đồ phím tắt và tài liệu tham chiếu bàn phím trong phần Điều khiển bàn phím và MIDI. Menu Trợ giúp trên máy tính để bàn cũng có Phím tắt bàn phím.",
+            "Cài đặt → Phím tắt & Phần cứng chứa sơ đồ phím tắt và phần tham chiếu bàn phím trong Điều khiển bàn phím và MIDI. Trên macOS, menu Trợ giúp của desktop cũng có Phím tắt bàn phím. Dùng Ctrl cho các phím tắt Command/Ctrl trên Linux và Windows.",
             "Chọn LightTable hoặc Classic; scheme sẽ áp dụng sau khi tải lại. Điều khiển thanh trượt giữ phím cho phép bạn giữ một phím được ánh xạ trong khi cuộn hoặc dùng phím mũi tên. Allow automation xác định liệu các công cụ cục bộ đã được phê duyệt có thể điều khiển cửa sổ bằng lịch sử và Undo hay không."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Sau khi nâng cấp, lần quét đầu tiên sẽ đọc các bản gốc cục bộ để tăng độ chính xác khớp tệp. Việc này có thể lâu hơn với thư viện lớn. Những bản gốc đã thiếu trước đó mà không có danh tính tệp đầy đủ vẫn sẽ thiếu; hãy giữ các mục của chúng và khôi phục các bản gốc về các đường dẫn danh mục trước đây của chúng trước khi quét lại.",
             "Trên Windows, việc kiểm tra xem bản gốc có thay đổi hay không sẽ đọc toàn bộ từng tệp cục bộ. Quét lại, mở ảnh và kiểm tra khi xuất có thể mất nhiều thời gian hơn với các bản gốc lớn. Những kiểm tra này không tải xuống các tệp chỉ được lưu trên đám mây.",
             "Đối với danh mục bị hư hỏng, Tình trạng thư viện có thể cung cấp salvage, restore hoặc một danh mục mới. Salvage sao chép các hàng đọc được nhưng mất các hàng trên những trang bị hư hỏng. Bắt đầu lại từ đầu sẽ không mang theo xếp hạng, chỉnh sửa, bộ sưu tập hoặc lịch sử. Tệp danh mục bị hư hỏng hiện tại được giữ lại trong Recovery."
+          ]
+        },
+        {
+          "title": "Tìm dữ liệu ứng dụng trên Linux",
+          "paragraphs": [
+            "Linux thường lưu danh mục và thiết lập sẵn trong ~/.local/share/lighttable, tùy chọn trong ~/.config/lighttable, bộ nhớ đệm kết xuất trong ~/.cache/lighttable, và log trong ~/.local/state/lighttable/logs. Các cài đặt lưu trữ hệ thống hoặc LightTable tùy chỉnh có thể thay đổi các vị trí này; Cài đặt hiển thị các đường dẫn danh mục và bộ nhớ đệm đang hoạt động.",
+            "Bản gốc vẫn ở trong các thư mục ảnh bạn chọn. Bản sao lưu danh mục không bao gồm các bản gốc đó, các tùy chọn của bạn, hoặc các thiết lập sẵn được lưu riêng. Dữ liệu Linux thử nghiệm trước đây không được tự động di chuyển từ các vị trí cũ hơn."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Kiểm tra kết xuất trên Linux",
+          "paragraphs": [
+            "Trên Linux, Cài đặt → Hiệu năng báo cáo bộ kết xuất Rust đang hoạt động và bộ điều hợp được phát hiện sau khi khởi động xong. Lựa chọn GPU · Rust có thể dùng kết xuất CPU khi không có GPU phần cứng. Vulkan phần mềm không phải là tăng tốc phần cứng.",
+            "Một ảnh vượt quá giới hạn của GPU sẽ dùng CPU. Nếu tiến trình kết xuất không phản hồi, LightTable sẽ thử lại một lần trên CPU và giữ tiến trình đó cho phiên làm việc. Mở lại LightTable sau khi sửa chữa hoặc cập nhật trình điều khiển đồ họa để thử lại kết xuất GPU. Ảnh lớn và kết xuất bằng phần mềm có thể mất nhiều thời gian hơn; hãy dùng chi tiết xem trước Tự động cho chỉnh sửa thông thường."
+          ]
+        },
+        {
           "title": "Đọc lỗi bản xem trước",
           "paragraphs": [
             "Nếu không thể hiển thị hoặc dựng ảnh, thông báo trong vùng ảnh sẽ bao gồm lý do được báo cáo khi có. Điều này có thể xác định tệp bị thiếu, sự cố tải ảnh hoặc lỗi đồ họa. Nếu không có lý do nào, thông báo sẽ vẫn mang tính chung chung."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

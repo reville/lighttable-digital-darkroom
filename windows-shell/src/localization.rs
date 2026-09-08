@@ -187,16 +187,11 @@ fn substitute(template: &str, arguments: &[(&str, String)]) -> String {
 }
 
 static STORE: OnceLock<RwLock<NativeLocaleStore>> = OnceLock::new();
-pub fn preferences_path(support: &Path) -> PathBuf {
-    env::var_os("LIGHTTABLE_PREFS_FILE")
-        .filter(|p| !p.is_empty())
-        .map(PathBuf::from)
-        .unwrap_or_else(|| support.join("prefs.json"))
-}
-pub fn initialize(project: &Path, support: &Path) {
+/// Use the same resolved preferences file as the server on every desktop.
+pub fn initialize(project: &Path, preferences: &Path) {
     let _ = STORE.set(RwLock::new(NativeLocaleStore::new(
         project.join("web/locales"),
-        preferences_path(support),
+        preferences.to_path_buf(),
     )));
 }
 pub fn reload() -> Result<(), String> {

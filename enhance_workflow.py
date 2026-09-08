@@ -47,6 +47,7 @@ from skimage import transform as image_transform
 
 import color_pipeline
 import durable_io
+import platform_paths
 
 
 MODES = ("denoise", "upscale")
@@ -102,18 +103,8 @@ class EnhanceUnavailable(RuntimeError):
 
 
 def user_model_root() -> Path:
-    """Writable directory for user-installed models.
-
-    ``LIGHTTABLE_MODEL_DIR`` wins; otherwise Application Support on macOS and
-    ``%LOCALAPPDATA%`` on Windows, matching ``catalog.default_catalog_path``.
-    """
-    override = os.environ.get(MODEL_DIR_ENV)
-    if override:
-        return Path(override).expanduser()
-    if os.name == "nt":
-        base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData/Local"))
-        return base / "LightTable" / "Models"
-    return Path.home() / "Library/Application Support/LightTable" / "Models"
+    """Writable models directory, honoring LIGHTTABLE_MODEL_DIR and Linux XDG."""
+    return platform_paths.model_directory()
 
 
 def bundled_model_root() -> Path:

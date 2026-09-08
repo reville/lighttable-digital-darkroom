@@ -1,0 +1,95 @@
+/* Linux chrome follows the active desktop palette. Keep --canvas, --bg and
+   rendering/semantic colors unchanged, and do not theme the photo workspace. */
+:root[data-desktop-theme-mode="dark"] { --desktop-color-scheme:dark; }
+:root[data-desktop-theme-mode="light"] { --desktop-color-scheme:light; }
+:root[data-desktop-theme] { --ui:system-ui,sans-serif; }
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.context-menu,.dd-menu,.setup-window,.help-panel,.view-options-popover,.library-filter-panel) {
+  color-scheme:var(--desktop-color-scheme);
+  --chrome:var(--desktop-chrome);
+  --panel:var(--desktop-panel);
+  --panel-raised:var(--desktop-panel-raised);
+  --inset:var(--desktop-inset);
+  --field:var(--desktop-field);
+  --field-hover:var(--desktop-field-hover);
+  --hover:var(--desktop-hover);
+  --active:var(--desktop-active);
+  --menu:var(--desktop-menu);
+  --ink:var(--desktop-ink);
+  --ink-2:var(--desktop-ink-2);
+  --muted:var(--desktop-muted);
+  --muted-2:var(--desktop-muted-2);
+  --line:var(--desktop-line);
+  --line-soft:var(--desktop-line-soft);
+  --line-strong:var(--desktop-line-strong);
+  --accent:var(--desktop-accent);
+  --accent-strong:var(--desktop-accent-strong);
+  --accent-soft:var(--desktop-accent-soft);
+  --edit-panel:var(--desktop-edit-panel);
+  --edit-line:var(--desktop-edit-line);
+  --edit-line-hi:var(--desktop-edit-line-hi);
+  --slider-accent:var(--desktop-slider-accent);
+  --groove:var(--desktop-groove);
+  --groove-hi:var(--desktop-groove-hi);
+  --groove-lo:var(--desktop-groove-lo);
+  --knob-color:var(--desktop-knob-color);
+  --row-label-ink:var(--desktop-row-label-ink);
+  --row-value-ink:var(--desktop-row-value-ink);
+  --row-value-ink-idle:var(--desktop-row-value-ink-idle);
+  --field-inset:var(--desktop-field-inset);
+  --field-line:var(--desktop-field-line);
+  --field-line-hover:var(--desktop-field-line-hover);
+  --btn-face:var(--desktop-btn-face);
+  --btn-face-hover:var(--desktop-btn-face-hover);
+  --btn-face-active:var(--desktop-btn-face-active);
+  --btn-line:var(--desktop-btn-line);
+  --edge-hi:var(--desktop-edge-hi);
+  --on-soft:var(--desktop-on-soft);
+  --on-ink:var(--desktop-on-ink);
+  color:var(--ink);
+}
+
+/* Existing fixed white labels and dark button faces need matching contrast
+   when the desktop uses a light theme. Preserve semantic color swatches. */
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.context-menu,.dd-menu,.setup-window,.help-panel,.view-options-popover,.library-filter-panel) :is(button:hover:not(:disabled):not(.on),.tool-btn.on,.view-switch .icon-btn.on,.export-preset-pill.on,.settings-nav button.on,.settings-header strong,.settings-pane h2,.dd-option,.dd-option.active,.dd-option[aria-selected="true"],.dd-trigger[aria-expanded="true"],.row.scrubbing .val,a.reset:hover,.edit-item.on) { color:var(--ink); }
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.setup-window,.help-panel) .accent-btn,
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.setup-window,.help-panel) .accent-btn:hover:not(:disabled) {
+  background:var(--accent-strong); border-color:var(--accent-strong); color:var(--desktop-on-accent);
+}
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.setup-window,.help-panel) .primary-btn { background:var(--btn-face); color:var(--ink); }
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.setup-window,.help-panel) .primary-btn:hover:not(:disabled) { background:var(--btn-face-hover); }
+:root[data-desktop-theme] :is(.left-panel,.right-shell,.modal,.view-options-popover,.library-filter-panel) :is(.dd-trigger:hover:not(:disabled),.dd-trigger:active:not(:disabled),.dd-trigger[aria-expanded="true"]) { background:var(--field-hover); }
+:root[data-desktop-theme] .right-shell .toolrail { background:var(--inset); }
+:root[data-desktop-theme] .panel :is(.hint,.row .val) { color:var(--muted); }
+:root[data-desktop-theme] .panel .row:is(.changed,.no-default,.scrubbing) .val { color:var(--ink); }
+:root[data-desktop-theme] :is(.topbar,.left-panel,.right-shell,.modal,.setup-window) input[type=checkbox]:checked::before { border-color:var(--desktop-on-accent); }
+:root[data-desktop-theme] .section-switch.on .switch-track > span { background:var(--desktop-on-accent); }
+:root[data-desktop-theme] .edit-item.on { background:var(--accent-soft); }
+:root[data-desktop-theme] .setup-window { background:var(--panel); }
+:root[data-desktop-theme] .setup-window :is(h1,h2) { color:var(--ink); }
+:root[data-desktop-theme] .setup-window :is(.setup-intro,.setup-option-icon,.setup-option small,.setup-arrow,.setup-footer button,.setup-detail p,.setup-facts) { color:var(--muted); }
+:root[data-desktop-theme] .setup-window .setup-option:hover { background:var(--hover); }
+
+/* Scopes and photo preview cards keep the same neutral viewing surrounds.
+   Never apply filters, opacity, blending or color transforms to image pixels. */
+:root[data-desktop-theme] :is(.histogram-wrap,#curve,.grading-wheels,.film-preview-card,.preset-browser-image,.preset-browser-try) {
+  --inset:#1a1a1a;
+  --ink:#f0f0f0;
+  --ink-2:#cfcfcf;
+  --muted:#9a9a9a;
+  --muted-2:#6e6e6e;
+  --line-strong:#464646;
+  color-scheme:dark;
+  color:var(--ink);
+}
+:root[data-desktop-theme] .grading-wheels { background:#28282e; }
+:root[data-desktop-theme] .film-preview-card,
+:root[data-desktop-theme] .film-preview-card:hover:not(:disabled) { background:#1a1a1a; }
+:root[data-desktop-theme] .preset-browser-favorite { color:#f0f0f0; }
+
+/* Selected folder/list controls and secondary actions were white-on-dark in
+   the original skin; keep their labels readable on light desktop surfaces. */
+:root[data-desktop-theme] :is(.source-row.on,.collection-row.on,.folder-row.on,#gradingGlobal.on,.heal-mode-grid button[aria-pressed="true"],.mask-refine-bar button[aria-pressed="true"],.geometry-flip-actions button[aria-pressed="true"]) { color:var(--ink); }
+:root[data-desktop-theme] :is(.folder-more,.folder-star,.keyword-chip button):hover { background:var(--active); }
+:root[data-desktop-theme] .create-plus { color:var(--desktop-on-accent); }
+:root[data-desktop-theme] .context-menu button.negative:hover { color:#fff; }
+:root[data-desktop-theme] .destructive:hover:not(:disabled) { color:#ffd0cb; }

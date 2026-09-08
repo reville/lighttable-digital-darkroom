@@ -8,7 +8,9 @@ from __future__ import annotations
 import json
 import hashlib
 import math
+import os
 import shutil
+import sys
 from pathlib import Path
 
 APP = Path(__file__).resolve().parent
@@ -341,6 +343,19 @@ def effective_grain_area_um2(p: dict) -> float:
 def output_recipe(p: dict) -> dict:
     ident = clean_params(p)["output_recipe"]
     return OUTPUT_RECIPES.get(ident, OUTPUT_RECIPES["neutral_print_scan"])
+
+
+def rust_cli_environment() -> dict[str, str] | None:
+    """Keep Linux's upstream one-shot fallback within its supported CPU path.
+
+    The resident engine carries our portable GPU workgroups. The separately
+    pinned upstream CLI still assumes 1024 threads, so it must not retry that
+    GPU path when a resident render has fallen back to the one-shot worker.
+    Other platforms retain their inherited backend selection.
+    """
+    if sys.platform.startswith("linux"):
+        return dict(os.environ, SPEKTRAFILM_BACKEND="cpu")
+    return None
 
 
 def rust_params_json(p: dict) -> dict:

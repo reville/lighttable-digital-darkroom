@@ -6,15 +6,11 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+import platform_paths
+
 
 def default_instance_directory() -> Path:
-    configured = os.environ.get("LIGHTTABLE_INSTANCE_DIR")
-    if configured:
-        return Path(configured).expanduser()
-    if os.name == "nt":
-        root = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
-        return root / "LightTable" / "instances"
-    return Path.home() / "Library/Application Support/LightTable/instances"
+    return platform_paths.instance_directory()
 
 
 def process_is_alive(pid: int) -> bool:

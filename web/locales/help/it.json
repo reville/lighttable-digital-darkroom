@@ -44,10 +44,10 @@
         {
           "title": "Apri una cartella locale",
           "paragraphs": [
-            "Nell’app desktop, Aggiungi foto apre un selettore per foto e cartelle. LightTable conserva gli originali nella loro posizione attuale. Selezionare una singola foto aggiunge la cartella che la contiene, così possono comparire anche altre foto supportate in quella cartella."
+            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Locale per aggiungere un'intera cartella. LightTable conserva gli originali al loro posto. Selezionare una foto singola aggiunge la cartella che la contiene, quindi potrebbero apparire anche altre foto supportate in quella cartella."
           ],
           "steps": [
-            "Fai clic su Aggiungi foto in alto a sinistra e scegli una o più foto o cartelle.",
+            "Fai clic su Aggiungi foto in alto a sinistra e scegli le foto, oppure usa il + accanto a Locale per scegliere una cartella.",
             "Scegli la cartella sotto Locale nella barra laterale sinistra. Attiva Includi sottocartelle per sfogliare le foto nelle sue cartelle figlie.",
             "Scegli Griglia foto, Griglia scarto o Dettagli in alto. Fai clic su una foto per renderla attiva."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Scegli ciò che è in vista",
           "paragraphs": [
-            "Locale → Sfoglia elenca le cartelle aggiunte. Includi sottocartelle controlla se una cartella selezionata mostra anche i propri discendenti. Gli altri filtri della libreria continuano ad applicarsi."
+            "Locale → Sfoglia elenca le cartelle aggiunte. Includi sottocartelle controlla se una cartella selezionata mostra anche i propri discendenti. Gli altri filtri della libreria continuano ad applicarsi.",
+            "In una finestra Linux stretta, usa Mostra o nascondi libreria in alto a sinistra per aprire il cassetto della libreria. Chiudilo con lo stesso pulsante dopo aver scelto una cartella per lasciare più spazio alla foto."
           ],
           "steps": [
             "Fai clic su una cartella sotto Locale.",
@@ -353,7 +354,7 @@
         {
           "title": "Azioni cartella",
           "paragraphs": [
-            "Il menu ••• di una cartella include Mostra nel Finder su Mac o Mostra in Esplora file su Windows. Per la cartella corrente, Sincronizza cartella aggiorna la visualizzazione. Locale ••• → Riscansiona cartelle esegue la scansione delle origini del catalogo.",
+            "Il menu ••• di una cartella include Mostra nel Finder su Mac, Mostra in Esplora file su Windows o Mostra in Gestione file su Linux. Per la cartella corrente, Sincronizza cartella aggiorna la vista. Locale ••• → Riscansiona cartelle esegue la scansione delle origini del catalogo.",
             "Rimuovi da LightTable rimuove un'origine aggiunta dall'elenco sorgenti dell'app; non sposta i file originali nel Cestino. L'azione è disponibile quando è presente più di una sorgente."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Scegli la cartella o raccolta e i filtri che definiscono le foto che vuoi rivedere.",
             "Esamina le foto rifiutate. Controlla le impostazioni dei file accoppiati ed espandi eventuali pile se prevedi di includere gli altri elementi.",
-            "Su Mac, scegli Foto → Sposta le foto rifiutate nel Cestino…, oppure premi Command+Delete.",
+            "Su Mac, scegli Foto → Sposta le foto rifiutate nel Cestino…, oppure premi Command+Delete. Nell'app desktop Linux o Windows, premi Ctrl+Delete.",
             "Leggi il numero di foto nella conferma e conferma solo quando corrisponde al set previsto."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Recupera una rimozione errata su Mac",
+          "title": "Recupera una rimozione errata",
           "paragraphs": [
-            "Usa il Cestino di Finder per riportare l'originale e i suoi sidecar nella cartella precedente, quindi riscanisci la cartella in LightTable. L'app non ha un browser del Cestino integrato."
+            "Usa il Cestino del Finder su Mac, il Cestino del desktop su Linux o il Cestino su Windows per ripristinare l'originale e i suoi sidecar nella cartella precedente, quindi riscansiona in LightTable. L'app non dispone di un browser del Cestino integrato."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Copia e Incolla trasferiscono i gruppi che selezioni esplicitamente. Le impostazioni nei gruppi non selezionati restano come sono su ogni destinazione. Questo è un flusso di lavoro esplicito di copia/incolla: le modifiche successive all’origine non si sincronizzano automaticamente con le destinazioni."
           ],
           "steps": [
-            "Apri la foto sorgente e fai clic su Copia impostazioni modifica, oppure premi Command-Shift-C su Mac o Ctrl-Shift-C su Windows.",
+            "Apri la foto sorgente e fai clic su Copia impostazioni di modifica, oppure premi Command-Shift-C su Mac o Ctrl-Shift-C su Linux e Windows.",
             "Seleziona i gruppi che vuoi trasferire, quindi fai clic su Copia impostazioni.",
             "Seleziona la foto o le foto di destinazione nella libreria e fai clic su Incolla impostazioni di modifica, oppure usa Command-Shift-V / Ctrl-Shift-V.",
             "Leggi il messaggio di completamento. Per un lotto, Interrompi termina l'elaborazione dopo la foto corrente; le foto completate mantengono le modifiche incollate."
@@ -1763,7 +1764,7 @@
         {
           "title": "Seleziona persone o regioni facciali",
           "paragraphs": [
-            "Persone offre Persona, incarnato del viso, Occhi, Sopracciglia, Labbra, Denti, Capelli e Ammorbidisci incarnato. Le maschere Persone richiedono l’assistente Vision su macOS 14 o versioni successive. Incarnato del viso e capelli sono stimati, e non viene inferita alcuna identità."
+            "Persone offre Persona, Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti, Capelli e Leviga la pelle. Questi controlli richiedono l'assistente Vision su macOS 14 o successivo e sono nascosti su Linux e Windows. Incarnato del viso e capelli vengono stimati e non viene dedotta alcuna identità."
           ],
           "steps": [
             "Scegli Persone, poi la parte che vuoi regolare.",
@@ -1916,7 +1917,7 @@
             "Ispeziona l'anteprima completata a 1:1."
           ],
           "tips": [
-            "La disponibilità dipende dal modello locale, dall'helper e dalla piattaforma supportata. Le build di sviluppo possono non includere il modello, e l'app lo segnala invece di fingere che la riduzione rumore sia riuscita."
+            "La riduzione rumore appresa richiede l'assistente di inferenza macOS e un modello locale compatibile. Non è disponibile su Linux e Windows. La normale riduzione rumore e la nitidezza restano disponibili. Le build di sviluppo potrebbero non includere il modello; leggi il messaggio di disponibilità prima di avviare."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Annulla e ripeti seguono ogni foto durante la sessione corrente. Nelle librerie catalogo, la Cronologia persiste dopo la chiusura. Regolazioni vicine possono essere combinate in un singolo passaggio di cronologia, quindi l’elenco non è una registrazione di ogni posizione del cursore."
           ],
           "steps": [
-            "Usa Command-Z su Mac o Ctrl-Z su Windows per annullare. Aggiungi Shift per ripetere.",
+            "Usa Command-Z su Mac o Ctrl-Z su Linux e Windows per annullare. Aggiungi Shift per ripetere.",
             "Apri Cronologia nella barra degli strumenti di modifica per vedere le fasi salvate della foto corrente, dalla più recente.",
             "Fai clic su un passaggio per ripristinarne le impostazioni. Ripristinare un passaggio è esso stesso una modifica annullabile."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Formati e predefiniti",
           "paragraphs": [
-            "La finestra di dialogo di esportazione offre JPEG, HEIF, PNG e TIFF a 16 bit. HEIF è un'opzione di output a 8 bit su macOS. Il cursore qualità si applica a JPEG e HEIF.",
+            "La finestra di esportazione offre JPEG, PNG e TIFF a 16 bit. Su macOS offre anche HEIF a 8 bit; HEIF è nascosto su Linux e Windows. Una ricetta HEIF salvata non può essere applicata lì, quindi scegli un altro formato. Il cursore qualità si applica a JPEG e HEIF.",
             "JPG (Grande) usa JPEG a dimensione piena con qualità 92 in sRGB. JPG (Piccolo) usa un lato lungo di 2048 pixel con qualità 90 in sRGB. TIFF a 16 bit usa dimensione piena e ProPhoto RGB. Modificando queste impostazioni si seleziona Personalizzato."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Apri un editor esterno",
           "paragraphs": [
-            "Usa Modifica in… per preparare le foto per un altro editor pixel. Il TIFF regolato viene scritto accanto all'originale e può essere unito a esso nel catalogo."
+            "Usa Modifica in… per preparare le foto per un altro editor di pixel. Il TIFF modificato viene scritto accanto all'originale e può essere inserito nella stessa pila nel catalogo. Su Linux e Windows, Scegli applicazione… ti consente di selezionare un eseguibile dell'editor; Applicazione predefinita usa l'associazione file del desktop."
           ],
           "steps": [
             "Seleziona una foto e premi Command/Ctrl+E per aprire Modifica in un'altra app.",
@@ -2623,6 +2624,13 @@
             "Scegli la corrispondenza per modello fotocamera, numero di serie, oppure fotocamera e ISO, quindi fai clic su Usa impostazioni RAW correnti.",
             "Usa Reimposta nell'area Fotocamera corrente per rimuovere il valore predefinito di quella fotocamera."
           ]
+        },
+        {
+          "title": "Aspetto Linux e Omarchy",
+          "paragraphs": [
+            "Su Linux, i controlli seguono l'aspetto chiaro o scuro del sistema. Su Omarchy, barre degli strumenti, barre laterali, menu e finestre di dialogo seguono la tavolozza attiva del desktop e si aggiornano entro pochi secondi da un cambio di tema. I pixel della foto, la preferenza per lo sfondo del visualizzatore e gli ambiti di colore neutro mantengono i propri colori.",
+            "In una finestra Linux stretta, Mostra o nascondi libreria apre la libreria come cassetto. L'espansione della finestra ripristina il normale layout affiancato. Su Hyprland, usa le scorciatoie della finestra del compositore per spostare, affiancare, ridimensionare o chiudere LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Costruisci l'indice",
           "paragraphs": [
-            "L’Indice foto è disattivato per impostazione predefinita. L’analisi resta su questo Mac e non modifica le cartelle foto. Apple Vision fornisce l’analisi di base; descrizioni più ricche dei Foundation Models compaiono solo quando quella funzionalità è disponibile."
+            "L'Indice foto è disattivato per impostazione predefinita e richiede macOS. Linux e Windows mostrano Non disponibile su questa piattaforma e la nuova indicizzazione non può essere abilitata. Su Mac, l'analisi resta sul dispositivo e non modifica le cartelle foto. Apple Vision fornisce l'analisi di base; descrizioni più ricche di Modelli di base compaiono solo quando tale funzionalità è disponibile."
           ],
           "steps": [
             "Apri Impostazioni → Indice foto.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Segnali revisione",
           "paragraphs": [
-            "Lo scarto assistito usa l’Indice foto privato. Non contrassegna le foto finché non glielo chiedi. Una foto corrisponde a un gruppo se uno qualsiasi dei criteri scelti restituisce sì; non giudicato significa che quel segnale non ha un verdetto utilizzabile."
+            "Scarto assistito usa l'Indice foto privato, che richiede macOS. La nuova analisi non è disponibile su Linux e Windows. Non contrassegna le foto finché non lo chiedi. Una foto corrisponde a un gruppo se uno qualsiasi dei criteri scelti restituisce sì; non giudicato significa che quel segnale non ha un verdetto utilizzabile."
           ],
           "steps": [
             "Abilita Indice foto in Impostazioni e attendi che le foto vengano valutate.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Preferenze tastiera",
           "paragraphs": [
-            "Impostazioni → Scorciatoie e hardware contiene lo schema delle scorciatoie e un riferimento della tastiera sotto i controlli Tastiera e MIDI. Anche il menu Aiuto del desktop include Scorciatoie da tastiera.",
+            "Impostazioni → Scorciatoie e hardware contiene lo schema delle scorciatoie e un riferimento per tastiera in Controlli da tastiera e MIDI. Su macOS, il menu Aiuto del desktop include anche Scelte rapide da tastiera. Usa Ctrl per le scorciatoie Command/Ctrl su Linux e Windows.",
             "Scegli LightTable o Classico; lo schema si applica dopo un ricaricamento. Il controllo del cursore con tasto premuto consente di tenere premuto un tasto mappato mentre scorri o usi i tasti freccia. Consenti automazione determina se gli strumenti locali approvati possono controllare la finestra con cronologia e Annulla."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Dopo l'aggiornamento, la prima scansione legge gli originali locali per rafforzare la corrispondenza dei file. Su una raccolta grande può richiedere più tempo. Gli originali che erano già mancanti senza un'identità completa del file restano mancanti; conserva le loro voci e ripristina gli originali ai loro percorsi catalogati precedenti prima di riscansionare.",
             "Su Windows, il controllo delle modifiche agli originali legge ogni file locale per intero. Una nuova scansione, l’apertura delle foto e i controlli di esportazione possono richiedere più tempo con originali di grandi dimensioni. Questi controlli non scaricano i file archiviati solo nel cloud.",
             "Per un catalogo danneggiato, Salute libreria può offrire salvataggio, ripristino o un catalogo nuovo. Il salvataggio copia le righe leggibili ma perde le righe nelle pagine danneggiate. Ripartire da zero non trasferisce valutazioni, modifiche, collezioni o cronologia. Il file del catalogo danneggiato corrente viene conservato in Recovery."
+          ]
+        },
+        {
+          "title": "Trova i dati dell'applicazione Linux",
+          "paragraphs": [
+            "Linux in genere conserva il catalogo e i predefiniti in ~/.local/share/lighttable, le preferenze in ~/.config/lighttable, le cache di rendering in ~/.cache/lighttable e i log in ~/.local/state/lighttable/logs. Le impostazioni di archiviazione personalizzate del sistema o di LightTable possono cambiare queste posizioni; Impostazioni mostra i percorsi attivi del catalogo e della cache.",
+            "Le foto originali restano nelle cartelle foto che scegli. I backup del catalogo non includono gli originali, le preferenze o i predefiniti salvati separatamente. I dati sperimentali Linux precedenti non vengono spostati automaticamente dalle posizioni più vecchie."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Controlla il rendering Linux",
+          "paragraphs": [
+            "Su Linux, Impostazioni → Prestazioni mostra il renderer Rust attivo e l'adattatore rilevato dopo l'avvio. La scelta GPU · Rust può usare il rendering CPU quando non è disponibile una GPU hardware. Vulkan software non è accelerazione hardware.",
+            "Una foto che supera i limiti della GPU usa la CPU. Se il processo worker di rendering smette di rispondere, LightTable riprova una volta sulla CPU e mantiene quel worker per la sessione. Riavvia LightTable dopo aver riparato o aggiornato il driver grafico per provare di nuovo il rendering GPU. Le foto grandi e il rendering software possono richiedere più tempo; usa Dettaglio anteprima Automatico per la modifica normale."
+          ]
+        },
+        {
           "title": "Leggi un errore dell'anteprima",
           "paragraphs": [
             "Se una foto non può essere renderizzata o visualizzata, il messaggio nell'area della foto include il motivo segnalato quando disponibile. Può identificare un file mancante, un problema di caricamento dell'immagine o un errore della grafica. Se non è disponibile alcun motivo, il messaggio resta generico."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

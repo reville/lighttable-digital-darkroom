@@ -44,10 +44,10 @@
         {
           "title": "Abrir uma pasta local",
           "paragraphs": [
-            "No app desktop, Adicionar fotos abre um seletor de fotos e pastas. O LightTable mantém os originais no local atual. Selecionar uma foto individual adiciona a pasta que a contém, de modo que outras fotos compatíveis nessa pasta também possam aparecer."
+            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e Windows, use o + ao lado de Local para adicionar uma pasta inteira. O LightTable mantém os originais no lugar. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
           ],
           "steps": [
-            "Clique em Adicionar Fotos no canto superior esquerdo e escolha uma ou mais fotos ou pastas.",
+            "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Local para escolher uma pasta.",
             "Escolha a pasta em Local na barra lateral esquerda. Ative Incluir subpastas para navegar pelas fotos nas pastas filhas.",
             "Escolha Photo Grid, Culling Grid ou Detail na parte superior. Clique em uma foto para torná-la ativa."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Escolher o que está à vista",
           "paragraphs": [
-            "Local → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra seus descendentes. Outros filtros da biblioteca ainda se aplicam."
+            "Local → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra seus descendentes. Outros filtros da biblioteca ainda se aplicam.",
+            "Em uma janela estreita do Linux, use Mostrar ou ocultar a biblioteca no canto superior esquerdo para abrir a gaveta da biblioteca. Feche-a com o mesmo botão depois de escolher uma pasta para deixar mais espaço para a foto."
           ],
           "steps": [
             "Clique em uma pasta em Local.",
@@ -353,7 +354,7 @@
         {
           "title": "Ações da pasta",
           "paragraphs": [
-            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac ou Mostrar no Explorador de Arquivos no Windows. Para a pasta atual, Sincronizar pasta atualiza a visualização. Local ••• → Reexaminar pastas faz a varredura das origens do catálogo.",
+            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac, Mostrar no Explorador de Arquivos no Windows ou Mostrar no Gerenciador de Arquivos no Linux. Para a pasta atual, Sincronizar pasta atualiza a visualização. Local ••• → Redigitalizar pastas digitaliza as origens do catálogo.",
             "Remover do LightTable remove uma raiz adicionada da lista de origens do app; isso não move os arquivos originais para o Lixo. A ação é oferecida quando há mais de uma origem disponível."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "Escolha a pasta ou coleção e os filtros que definem as fotos que você deseja revisar.",
             "Inspecione as fotos rejeitadas. Verifique as configurações de arquivo pareado e expanda quaisquer pilhas se você espera incluir os demais membros.",
-            "No Mac, escolha Foto → Mover fotos rejeitadas para o Lixo…, ou pressione Command+Delete.",
+            "No Mac, escolha Foto → Mover Fotos Rejeitadas para o Lixo…, ou pressione Command+Delete. No aplicativo de desktop no Linux ou Windows, pressione Ctrl+Delete.",
             "Leia a contagem de fotos na confirmação e confirme somente quando ela corresponder ao conjunto pretendido."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Recupere uma remoção equivocada no Mac",
+          "title": "Recuperar uma remoção por engano",
           "paragraphs": [
-            "Use o Lixo do Finder para colocar o original e seus sidecars de volta na pasta anterior e, em seguida, reanalise a pasta no LightTable. O app não possui um navegador de Lixo integrado."
+            "Use o Lixo do Finder no Mac, o Lixo da área de trabalho no Linux ou a Lixeira no Windows para restaurar o original e seus sidecars para a pasta anterior; depois, redigitalize no LightTable. O aplicativo não tem um navegador de Lixo integrado."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Copiar e Colar transferem os grupos que você seleciona explicitamente. As configurações em grupos desmarcados permanecem como estão em cada destino. Este é um fluxo explícito de copiar/colar: edições posteriores na origem não sincronizam automaticamente com os destinos."
           ],
           "steps": [
-            "Abra a foto de origem e clique em Copy edit settings ou pressione Command-Shift-C no Mac ou Ctrl-Shift-C no Windows.",
+            "Abra a foto de origem e clique em Copiar configurações de edição, ou pressione Command-Shift-C no Mac ou Ctrl-Shift-C no Linux e Windows.",
             "Marque os grupos que deseja transferir e clique em Copiar configurações.",
             "Selecione a(s) foto(s) de destino na biblioteca e clique em Colar configurações de edição, ou use Command-Shift-V / Ctrl-Shift-V.",
             "Leia a mensagem de conclusão. Para um lote, Parar encerra o processamento após a foto atual; as fotos concluídas mantêm as edições coladas."
@@ -1763,7 +1764,7 @@
         {
           "title": "Selecionar pessoas ou regiões faciais",
           "paragraphs": [
-            "Pessoas oferece Pessoa, pele do Rosto, Olhos, Sobrancelhas, Lábios, Dentes, Cabelo e Suavizar pele. Máscaras de Pessoas exigem o auxiliar Vision no macOS 14 ou posterior. Pele do rosto e cabelo são estimados, e nenhuma identidade é inferida."
+            "Pessoas oferece Pessoa, Pele do rosto, Olhos, Sobrancelhas, Lábios, Dentes, Cabelo e Suavizar pele. Esses controles exigem o auxiliar Vision no macOS 14 ou posterior e ficam ocultos no Linux e Windows. Pele do rosto e cabelo são estimados, e nenhuma identidade é inferida."
           ],
           "steps": [
             "Escolha Pessoas e depois a parte que você quer ajustar.",
@@ -1916,7 +1917,7 @@
             "Inspecione a pré-visualização concluída em 1:1."
           ],
           "tips": [
-            "A disponibilidade depende do modelo local, do auxiliar e da plataforma compatível. Compilações de desenvolvimento podem não ter o modelo, e o app informa isso em vez de fingir que a redução de ruído foi bem-sucedida."
+            "A redução de ruído aprendida requer o auxiliar de inferência do macOS e um modelo local compatível. Ela não está disponível no Linux e Windows. A redução de ruído e a nitidez comuns permanecem disponíveis. Compilações de desenvolvimento podem não ter o modelo; leia a mensagem de disponibilidade antes de iniciar."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Desfazer e refazer acompanham cada foto durante a sessão atual. Em bibliotecas de catálogo, o Histórico persiste após sair. Ajustes próximos podem ser combinados em uma etapa de histórico, então a lista não é um registro de cada posição do controle deslizante."
           ],
           "steps": [
-            "Use Command-Z no Mac ou Ctrl-Z no Windows para desfazer. Adicione Shift para refazer.",
+            "Use Command-Z no Mac ou Ctrl-Z no Linux e Windows para desfazer. Adicione Shift para refazer.",
             "Abra History na barra de ferramentas de edição para ver os passos armazenados da foto atual, do mais recente para o mais antigo.",
             "Clique em uma etapa para restaurar suas configurações. Restaurar uma etapa é, por si só, uma edição que pode ser desfeita."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Formatos e predefinições",
           "paragraphs": [
-            "A caixa de diálogo de exportação oferece JPEG, HEIF, PNG e TIFF de 16 bits. HEIF é uma opção de saída de 8 bits no macOS. O controle deslizante de qualidade se aplica a JPEG e HEIF.",
+            "A caixa de diálogo de exportação oferece JPEG, PNG e TIFF de 16 bits. No macOS, ela também oferece HEIF de 8 bits; HEIF fica oculto no Linux e Windows. Uma receita HEIF salva não pode ser aplicada ali, então escolha outro formato. O controle deslizante de qualidade se aplica a JPEG e HEIF.",
             "JPG (Grande) usa JPEG em tamanho total com qualidade 92 em sRGB. JPG (Pequeno) usa uma borda longa de 2048 pixels com qualidade 90 em sRGB. TIFF de 16 bits usa tamanho total e ProPhoto RGB. Alterar essas configurações seleciona Personalizado."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Abrir um editor externo",
           "paragraphs": [
-            "Use Editar em… para preparar fotos para outro editor de pixels. O TIFF ajustado é gravado ao lado do original e pode ser mesclado com ele no catálogo."
+            "Use Editar em… para preparar fotos para outro editor de pixels. O TIFF ajustado é gravado ao lado do original e pode ser empilhado com ele no catálogo. No Linux e Windows, Escolher aplicativo… permite selecionar um executável de editor; Aplicativo padrão usa a associação de arquivo da área de trabalho."
           ],
           "steps": [
             "Selecione uma foto e pressione Command/Ctrl+E para abrir Editar em outro aplicativo.",
@@ -2623,6 +2624,13 @@
             "Escolha a correspondência por modelo de câmera, número serial ou câmera e ISO e, depois, clique em Use current RAW settings.",
             "Use Redefinir na área Câmera atual para remover esse padrão de câmera."
           ]
+        },
+        {
+          "title": "Aparência do Linux e do Omarchy",
+          "paragraphs": [
+            "No Linux, os controles seguem a aparência clara ou escura do sistema. No Omarchy, barras de ferramentas, barras laterais, menus e diálogos seguem a paleta ativa da área de trabalho e são atualizados poucos segundos após uma mudança de tema. Os pixels da foto, a preferência de fundo do visualizador e os escopos de cor neutra mantêm suas próprias cores.",
+            "Em uma janela estreita do Linux, Mostrar ou ocultar a biblioteca abre a biblioteca como uma gaveta. Expandir a janela restaura o layout normal lado a lado. No Hyprland, use os atalhos de janela do compositor para mover, encaixar, redimensionar ou fechar o LightTable."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Construir o índice",
           "paragraphs": [
-            "O Photo Index vem desativado por padrão. A análise permanece neste Mac e não modifica as pastas de fotos. A Apple Vision fornece a análise central; descrições mais ricas dos Foundation Models aparecem somente quando esse recurso está disponível."
+            "O Índice de fotos vem desativado por padrão e requer macOS. O Linux e o Windows mostram Não disponível nesta plataforma, e a nova indexação não pode ser ativada. No Mac, a análise permanece no dispositivo e não modifica as pastas de fotos. Apple Vision fornece a análise principal; descrições mais ricas de Modelos de Fundação aparecem somente quando esse recurso está disponível."
           ],
           "steps": [
             "Abra Configurações → Índice de fotos.",
@@ -2765,7 +2773,7 @@
         {
           "title": "Sinais de revisão",
           "paragraphs": [
-            "A seleção assistida usa o Photo Index privado. Ela não marca fotos até que você peça. Uma foto corresponde a um grupo se qualquer um dos critérios escolhidos retornar sim; não julgado significa que esse sinal não tem um veredito utilizável."
+            "A seleção assistida usa o Índice de fotos privado, que requer macOS. A nova análise não está disponível no Linux e Windows. Ela não marca fotos até que você solicite isso. Uma foto corresponde a um grupo se qualquer um dos critérios escolhidos retornar sim; não avaliado significa que esse sinal não tem um veredito utilizável."
           ],
           "steps": [
             "Ative Índice de Fotos em Configurações e aguarde as fotos serem pontuadas.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Preferências do teclado",
           "paragraphs": [
-            "Configurações → Atalhos e Hardware contém o esquema de atalhos e uma referência de teclado em Controles de teclado e MIDI. O menu Ajuda da área de trabalho também tem Atalhos de teclado.",
+            "Configurações → Atalhos e hardware contém o esquema de atalhos e uma referência de teclado em Controles de teclado e MIDI. No macOS, o menu Ajuda da área de trabalho também tem Atalhos de teclado. Use Ctrl para atalhos Command/Ctrl no Linux e Windows.",
             "Escolha LightTable ou Classic; o esquema é aplicado após um recarregamento. O controle deslizante com tecla pressionada permite manter uma tecla mapeada enquanto rola ou usa as teclas de seta. Permitir automação controla se ferramentas locais aprovadas podem controlar a janela com histórico e Desfazer."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Após a atualização, a primeira digitalização lê originais locais para fortalecer a correspondência de arquivos. Isso pode demorar mais em uma biblioteca grande. Originais que já estavam ausentes sem uma identidade completa do arquivo continuam ausentes; mantenha suas entradas e restaure os originais para seus caminhos catalogados anteriores antes de digitalizar novamente.",
             "No Windows, a verificação de alterações nos originais lê cada arquivo local na íntegra. Uma nova varredura, a abertura de fotos e as verificações de exportação podem demorar mais com originais grandes. Essas verificações não baixam arquivos armazenados apenas na nuvem.",
             "Para um catálogo danificado, Saúde da Biblioteca pode oferecer salvar, restaurar ou um catálogo novo. Salvar copia linhas legíveis, mas perde linhas em páginas danificadas. Começar do zero não transfere avaliações, edições, coleções ou histórico. O arquivo atual do catálogo danificado é preservado em Recuperação."
+          ]
+        },
+        {
+          "title": "Encontrar dados do aplicativo no Linux",
+          "paragraphs": [
+            "O Linux normalmente mantém o catálogo e as predefinições em ~/.local/share/lighttable, as preferências em ~/.config/lighttable, os caches de renderização em ~/.cache/lighttable e os logs em ~/.local/state/lighttable/logs. Configurações personalizadas do sistema ou de armazenamento do LightTable podem alterar esses locais; Configurações mostra os caminhos ativos do catálogo e do cache.",
+            "Os originais permanecem nas pastas de fotos que você escolher. Os backups do catálogo não incluem esses originais, suas preferências ou predefinições armazenadas separadamente. Dados experimentais anteriores do Linux não são movidos automaticamente de locais antigos."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Verificar renderização no Linux",
+          "paragraphs": [
+            "No Linux, Configurações → Desempenho mostra o renderizador Rust ativo e o adaptador detectado depois do aquecimento. A opção GPU · Rust pode usar renderização por CPU quando não houver uma GPU de hardware disponível. Vulkan por software não é aceleração de hardware.",
+            "Uma foto que excede os limites da GPU usa a CPU. Se o worker de renderização parar de responder, o LightTable tenta novamente uma vez na CPU e mantém esse worker para a sessão. Reabra o LightTable depois de reparar ou atualizar o driver gráfico para tentar a renderização por GPU novamente. Fotos grandes e renderização por software podem demorar mais; use detalhe de pré-visualização Automático para a edição normal."
+          ]
+        },
+        {
           "title": "Ler um erro de pré-visualização",
           "paragraphs": [
             "Se uma foto não puder ser renderizada ou exibida, a mensagem na área da foto inclui o motivo informado, quando houver um disponível. Isso pode identificar um arquivo ausente, um problema ao carregar a imagem ou uma falha gráfica. Se nenhum motivo estiver disponível, a mensagem permanece genérica."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

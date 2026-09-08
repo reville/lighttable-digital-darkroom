@@ -72,6 +72,7 @@ import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
 import platform_image  # noqa: E402
+import platform_paths  # noqa: E402
 from events import EventBroker, encode_sse  # noqa: E402
 from jobs import JobRegistry  # noqa: E402
 from validation import ValidationError, clean_state_patch  # noqa: E402
@@ -107,19 +108,13 @@ class APIError(RuntimeError):
 
 
 def instance_directory() -> Path:
-    configured = os.environ.get("LIGHTTABLE_INSTANCE_DIR")
-    if configured:
-        return Path(configured).expanduser()
-    if IS_WINDOWS:
-        root = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
-        return root / "LightTable" / "instances"
-    return Path.home() / "Library/Application Support/LightTable/instances"
+    return platform_paths.instance_directory()
 
 
 def instance_path(port: int | None = None) -> Path:
     return instance_directory() / f"{int(port if port is not None else PORT)}.json"
 
-CACHE = Path(os.environ.get("LIGHTTABLE_CACHE_DIR", str(APP / "cache"))).expanduser()
+CACHE = platform_paths.cache_directory(APP)
 for sub in ("tiff", "neutral", "render", "edit", "orig", "thumb", "rust",
             "export-film", "semantic"):
     (CACHE / sub).mkdir(parents=True, exist_ok=True)
@@ -541,18 +536,11 @@ def entry_for(st, name):
     }
 
 
-PRESETS_FILE = Path(os.environ.get(
-    "LIGHTTABLE_PRESETS_FILE", str(APP / "presets.json"))).expanduser()
+PRESETS_FILE = platform_paths.presets_file(APP)
 COMMUNITY_PRESETS = preset_library.CommunityCatalog(PRESETS_FILE.parent / "Community Presets")
-PREFS_FILE = Path(os.environ.get(
-    "LIGHTTABLE_PREFS_FILE", str(APP / "prefs.json"))).expanduser()
+PREFS_FILE = platform_paths.preferences_file(APP)
 configure_localization(prefs_file=lambda: PREFS_FILE, root=APP)
-AI_DATA_ROOT = Path(os.environ.get(
-    "LIGHTTABLE_AI_DIR",
-    str((PREFS_FILE.parent / "AI Index")
-        if "LIGHTTABLE_PREFS_FILE" in os.environ
-        else Path.home() / "Library/Application Support/LightTable/AI Index"),
-)).expanduser()
+AI_DATA_ROOT = platform_paths.ai_directory(PREFS_FILE)
 VISION_HELPER = Path(os.environ.get(
     "LIGHTTABLE_VISION_HELPER", str(APP / "build/LightTableVision"),
 )).expanduser()
@@ -2172,7 +2160,8 @@ def orientation_deg(src: Path) -> int:
     return platform_image.orientation_degrees(src)
 
 
-INPUT_CACHE_VERSION = 4  # learned denoise joins capture-stage RAW development
+# Linux v5 replaces quantized/codec-dependent processed TIFF caches.
+INPUT_CACHE_VERSION = 5 if sys.platform.startswith("linux") else 4
 RAW_PREVIEW_CACHE_VERSION = 5  # width-aware half-size accurate demosaic
 RAW_SHARED_MAGIC = b"LTRI"
 RAW_SHARED_HEADER = struct.Struct("<4sIII")
@@ -2209,6 +2198,14 @@ def array_shared_input(rgb: np.ndarray, cache_key: str):
     shared = shared_memory.SharedMemory(create=True, size=total_bytes)
     pixels = None
     try:
+        if sys.platform.startswith("linux"):
+            # ftruncate/mmap succeed even when tmpfs has no backing pages.
+            # Reserve /dev/shm space before touching the mapping: an ENOSPC
+            # then reaches the TIFF fallback instead of killing us with SIGBUS.
+            reserve = getattr(os, "posix_fallocate", None)
+            if reserve is None:
+                raise OSError(T("Linux shared-memory reservation is unavailable"))
+            reserve(shared._fd, 0, total_bytes)
         RAW_SHARED_HEADER.pack_into(
             shared.buf, 0, RAW_SHARED_MAGIC, width, height, row_bytes)
         pixels = np.ndarray(
@@ -3245,15 +3242,23 @@ class RustEngineClient:
         self.reader: PipeLineReader | None = None
         self.lock = lock if lock is not None else RENDER_LOCK
         self.request_id = 0
+        self.cpu_fallback = False
+        self.diagnostics: dict = {}
 
     def _start(self) -> subprocess.Popen:
         if not self.binary:
             raise RuntimeError(T("resident Rust engine is not built"))
         if self.process and self.process.poll() is None:
             return self.process
+        if self.process is not None and sys.platform == "linux":
+            self.cpu_fallback = True
+        if self.process is not None:
+            self.close_unlocked()
         self.process = subprocess.Popen(
             [str(self.binary)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL, text=True, bufsize=1,
+            env=(dict(os.environ, SPEKTRAFILM_BACKEND="cpu")
+                 if self.cpu_fallback else None),
             **subprocess_flags())
         if IS_WINDOWS:
             assert self.process.stdout
@@ -3277,8 +3282,19 @@ class RustEngineClient:
                     self.process.wait(timeout=2)
                 except subprocess.TimeoutExpired:
                     self.process.kill()
+                    self.process.wait(timeout=2)
+            self._close_pipes()
             self.process = None
             self.reader = None
+
+    def _close_pipes(self) -> None:
+        if self.process:
+            for stream in (self.process.stdin, self.process.stdout):
+                if stream is not None:
+                    try:
+                        stream.close()
+                    except (OSError, ValueError):
+                        pass
 
     def render(self, request: dict) -> dict:
         priority = getattr(RENDER_CONTEXT, "priority", "export")
@@ -3306,17 +3322,29 @@ class RustEngineClient:
                     if not line:
                         raise RuntimeError(T("resident Rust engine exited"))
                     result = json.loads(line)
-                    if not result.get("ok"):
-                        raise RuntimeError(result.get("error") or
-                                           T("resident Rust render failed"))
-                    if payload["command"] == "render":
-                        preview_progress.advance(3)
-                    return dict(result, queue_ms=round(queue_ms, 3))
+                    if not isinstance(result, dict) or not isinstance(result.get("ok"), bool):
+                        raise ValueError(T("invalid resident Rust engine response"))
                 except (BrokenPipeError, OSError, ValueError,
                         TimeoutError, RuntimeError):
                     self.close_unlocked()
                     if attempt:
                         raise
+                    # A failing driver must not crash each subsequent request.
+                    # Keep this client's CPU worker warm for the rest of the
+                    # session. A normal request error below leaves it intact.
+                    if sys.platform == "linux":
+                        self.cpu_fallback = True
+                    continue
+                if not result.get("ok"):
+                    raise RuntimeError(result.get("error") or
+                                       T("resident Rust render failed"))
+                if payload["command"] == "render":
+                    preview_progress.advance(3)
+                if self.cpu_fallback:
+                    result.setdefault("fallback_reason", T("Render worker stopped responding; using CPU for this session"))
+                self.diagnostics = {key: result[key] for key in
+                    ("backend", "adapter", "gpu_timings", "fallback_reason") if key in result}
+                return dict(result, queue_ms=round(queue_ms, 3))
             raise RuntimeError(T("resident Rust engine unavailable"))
         finally:
             self.lock.release()
@@ -3325,6 +3353,7 @@ class RustEngineClient:
         if self.process and self.process.poll() is None:
             self.process.kill()
             self.process.wait(timeout=2)
+        self._close_pipes()
         self.process = None
         self.reader = None
 
@@ -3481,6 +3510,7 @@ def render_rust(name: str, params: dict, width: int,
         cmd += ["--scan-film"]
     preview_progress.advance(2)
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
+                       env=fp.rust_cli_environment(),
                        **subprocess_flags())
     if r.returncode != 0 or not out_png.exists():
         raise RuntimeError((r.stderr or r.stdout).strip()[-400:])
@@ -4753,6 +4783,9 @@ def benchmark_export(name: str, job: dict) -> dict:
         "input_transport": metrics.get("input_transport"),
         "phase_ms": metrics.get("phase_ms", {}),
         "backend": metrics.get("backend"),
+        "adapter": metrics.get("adapter"),
+        "gpu_timings": metrics.get("gpu_timings"),
+        "fallback_reason": metrics.get("fallback_reason"),
         "gpu_ms": metrics.get("render_ms"),
         "resident_ms": metrics.get("total_ms"),
         "width": metrics.get("width"),
@@ -4985,8 +5018,9 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         check_source()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
             metrics = export_with_resident_engine(name, staged, job)
-            detail = (f"{metrics.get('backend', 'cache')} "
-                      f"{metrics.get('total_ms', 0):.0f} ms GPU")
+            detail = T("{backend} {milliseconds} ms render",
+                       backend=metrics.get("backend", "cache"),
+                       milliseconds=f"{metrics.get('total_ms', 0):.0f}")
         else:
             # Parallel exports of the same photo may use different recipes.
             # A unique job file prevents one worker from reading or deleting
@@ -5833,6 +5867,8 @@ def health_payload(*, include_token: bool = False) -> dict:
         "rust": RUST_AVAILABLE,
         "engineWarm": bool(RUST_ENGINE.process
                            and RUST_ENGINE.process.poll() is None),
+        "renderers": {"interactive": RUST_ENGINE.diagnostics,
+                      "background": BACKGROUND_ENGINE.diagnostics},
         "models": models,
         "windowConnected": EVENTS.window_connected,
         "headless": os.environ.get("LIGHTTABLE_HEADLESS") == "1",
@@ -6400,6 +6436,12 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_file(200, APP / "build" / "icon-1024.png", "image/png")
             elif u.path == "/api/health":
                 self._json(health_payload())
+            elif u.path == "/api/desktop-theme":
+                if sys.platform == "linux":
+                    from linux_theme import desktop_theme
+                    self._json(desktop_theme())
+                else:
+                    self._json({"source": "system", "mode": None, "colors": {}})
             elif u.path == "/api/events":
                 self._send_events(q.get("client", ""))
             elif u.path == "/api/options":
@@ -6463,6 +6505,7 @@ class Handler(BaseHTTPRequestHandler):
                     "hasExif": True,
                     "gradeDefaults": default_grade,
                     "aiIndex": AI_INDEX.status() if AI_INDEX else None,
+                    "platform": sys.platform,
                 })
             elif u.path == "/api/thumb":
                 payload = (video_thumbnail(q["name"]) if is_video(q["name"])
@@ -6708,7 +6751,7 @@ class Handler(BaseHTTPRequestHandler):
                 ident = q.get("id", "")
                 if not re.fullmatch(r"[a-f0-9]{32}", ident):
                     raise ValueError(T("Choose a completed import report"))
-                report = PREFS_FILE.parent / "ImportReports" / f"{ident}.jsonl"
+                report = platform_paths.generated_data_directory(PREFS_FILE) / "ImportReports" / f"{ident}.jsonl"
                 if not report.is_file():
                     raise ValueError(T("That import report is not available"))
                 self._send(200, report.read_bytes(), "application/x-ndjson",
@@ -8048,7 +8091,7 @@ def start_catalog_import(body: dict) -> dict:
 
     job_id = IMPORT_JOB["jobId"]
     def run() -> None:
-        report_dir = PREFS_FILE.parent / "ImportReports"
+        report_dir = platform_paths.generated_data_directory(PREFS_FILE) / "ImportReports"
         report = report_dir / f"{job_id}.jsonl"
         partial = durable_io.temporary_path(report, "report")
         try:

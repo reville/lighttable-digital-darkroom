@@ -44,10 +44,10 @@
         {
           "title": "Yerel bir klasör aç",
           "paragraphs": [
-            "Masaüstü uygulamasında Fotoğraf Ekle, fotoğraflar ve klasörler için bir seçici açar. LightTable, orijinalleri mevcut konumlarında tutar. Bireysel bir fotoğraf seçmek, onun bulunduğu klasörü de ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
+            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Yerel'in yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
           ],
           "steps": [
-            "Sol üstteki Fotoğraf Ekle’ye tıklayın ve bir ya da daha fazla fotoğraf veya klasör seçin.",
+            "Sol üstte Fotoğraf Ekle'ye tıklayın ve fotoğrafları seçin ya da klasör seçmek için Yerel'in yanındaki + düğmesini kullanın.",
             "Sol kenar çubuğunda Yerel altındaki klasörü seçin. Alt klasörleri dahil et seçeneğini açarak alt klasörlerindeki fotoğraflara gözatın.",
             "Üstte Fotoğraf Izgarası, Ayıklama Izgarası veya Ayrıntı seçin. Etkin yapmak için bir fotoğrafa tıklayın."
           ],
@@ -341,7 +341,8 @@
         {
           "title": "Görünümde ne olduğunu seçin",
           "paragraphs": [
-            "Local → Browse eklediğiniz klasörleri listeler. Include subfolders, seçili bir klasörün alt klasörlerinin de gösterilip gösterilmeyeceğini belirler. Diğer kitaplık filtreleri yine de geçerlidir."
+            "Local → Browse eklediğiniz klasörleri listeler. Include subfolders, seçili bir klasörün alt klasörlerinin de gösterilip gösterilmeyeceğini belirler. Diğer kitaplık filtreleri yine de geçerlidir.",
+            "Dar bir Linux penceresinde, kütüphane çekmecesini açmak için sol üstteki Kütüphaneyi göster veya gizle'yi kullanın. Bir klasör seçtikten sonra fotoğrafa daha fazla alan bırakmak için aynı düğmeyle kapatın."
           ],
           "steps": [
             "Yerel altında bir klasöre tıklayın.",
@@ -353,7 +354,7 @@
         {
           "title": "Klasör eylemleri",
           "paragraphs": [
-            "Bir klasörün ••• menüsü Mac'te Finder'da Göster veya Windows'ta Dosya Gezgini'nde Göster seçeneğini içerir. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Yerel ••• → Klasörleri yeniden tara, katalog kaynaklarını tarar.",
+            "Bir klasörün ••• menüsü, Mac'te Finder'da Göster, Windows'ta Dosya Gezgini'nde Göster veya Linux'ta Dosya Yöneticisi'nde Göster seçeneklerini içerir. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Yerel ••• → Klasörleri yeniden tara katalog kaynaklarını tarar.",
             "Remove from LightTable, eklenmiş bir kök klasörü uygulamanın kaynak listesinden kaldırır; özgün dosyaları Çöp Kutusu’na taşımaz. Bu eylem, birden fazla kaynak mevcut olduğunda sunulur."
           ]
         },
@@ -642,7 +643,7 @@
           "steps": [
             "İncelemek istediğiniz fotoğrafları tanımlayan klasörü veya koleksiyonu ve filtreleri seçin.",
             "Reddedilmiş fotoğrafları inceleyin. Diğer üyelerini de dahil etmeyi bekliyorsanız, eşleştirilmiş dosya ayarlarını kontrol edin ve herhangi bir yığını genişletin.",
-            "Mac’te, Fotoğraf → Reddedilen Fotoğrafları Çöpe Taşı… seçin ya da Command+Delete tuşlarına basın.",
+            "Mac'te Fotoğraf → Reddedilen Fotoğrafları Çöp Sepetine Taşı… seçin ya da Command+Delete tuşlarına basın. Linux veya Windows masaüstü uygulamasında Ctrl+Delete tuşlarına basın.",
             "Onay penceresindeki fotoğraf sayısını okuyun ve yalnızca amaçladığınız kümeyle eşleştiğinde onaylayın."
           ],
           "tips": [
@@ -651,9 +652,9 @@
           ]
         },
         {
-          "title": "Mac’te yanlışlıkla kaldırılan bir öğeyi kurtarın",
+          "title": "Yanlışlıkla kaldırılan öğeyi geri al",
           "paragraphs": [
-            "Özgün dosyayı ve yan dosyalarını önceki klasörlerine geri koymak için Finder’ın Çöp Kutusu’nu kullanın, ardından klasörü LightTable’da yeniden tarayın. Uygulamanın içinde yerleşik bir Çöp Kutusu gezgini yoktur."
+            "Orijinali ve yardımcı dosyalarını önceki klasörüne geri yüklemek için Mac'te Finder'ın Çöp Sepeti'ni, Linux'ta masaüstü Çöp Sepeti'ni veya Windows'ta Geri Dönüşüm Kutusu'nu kullanın, ardından LightTable'da yeniden tarayın. Uygulamanın uygulama içi Çöp Sepeti tarayıcısı yoktur."
           ]
         }
       ],
@@ -1327,7 +1328,7 @@
             "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez."
           ],
           "steps": [
-            "Kaynak fotoğrafı açın ve Copy edit settings’e tıklayın ya da Mac’te Command-Shift-C, Windows’ta Ctrl-Shift-C tuşlarına basın.",
+            "Kaynak fotoğrafı açın ve Düzenleme ayarlarını kopyala'ya tıklayın ya da Mac'te Command-Shift-C, Linux ve Windows'ta Ctrl-Shift-C tuşlarına basın.",
             "Aktarmak istediğiniz grupları işaretleyin, ardından Ayarları kopyala’ya tıklayın.",
             "İstediğiniz hedef fotoğraf ya da fotoğrafları kütüphanede seçin ve Düzenleme ayarlarını yapıştır düğmesine tıklayın veya Command-Shift-V / Ctrl-Shift-V kullanın.",
             "Tamamlanma mesajını okuyun. Bir toplu iş için Durdur, geçerli fotoğraftan sonra işleme son verir; tamamlanan fotoğraflar yapıştırılan düzenlemeleri korur."
@@ -1763,7 +1764,7 @@
         {
           "title": "Kişileri veya yüz bölgelerini seçin",
           "paragraphs": [
-            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cilt yumuşatmayı içerir. Kişiler maskeleri için macOS 14 veya üzerindeki Vision yardımcısı gerekir. Yüz cildi ve saç tahmin edilir ve kimlik çıkarımı yapılmaz."
+            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cildi yumuşat seçeneklerini sunar. Bu kontroller macOS 14 veya sonraki sürümlerde Vision yardımcısını gerektirir ve Linux ile Windows'ta gizlidir. Yüz cildi ve saç tahmin edilir, kimlik çıkarımı yapılmaz."
           ],
           "steps": [
             "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
@@ -1916,7 +1917,7 @@
             "Tamamlanan önizlemeyi 1:1’de inceleyin."
           ],
           "tips": [
-            "Kullanılabilirlik yerel modele, yardımcı bileşene ve desteklenen platforma bağlıdır. Geliştirme sürümlerinde model eksik olabilir ve uygulama bunu, denoise başarılı olmuş gibi davranmak yerine bildirir."
+            "Öğrenilmiş gürültü azaltma, macOS çıkarım yardımcısını ve uyumlu bir yerel modeli gerektirir. Linux ve Windows'ta kullanılamaz. Olağan gürültü azaltma ve keskinleştirme kullanılabilir durumda kalır. Geliştirme sürümlerinde model eksik olabilir; başlamadan önce kullanılabilirlik mesajını okuyun."
           ]
         },
         {
@@ -1964,7 +1965,7 @@
             "Geri Al ve yeniden yap, geçerli oturum sırasında her fotoğrafı izler. Katalog kitaplıklarında Geçmiş, uygulamadan çıktıktan sonra da kalıcıdır. Yakındaki ayarlamalar bir geçmiş adımında birleştirilebilir; bu nedenle liste, her kaydırıcı konumunun kaydı değildir."
           ],
           "steps": [
-            "Geri almak için Mac’te Command-Z veya Windows’ta Ctrl-Z kullanın. Yine yapmak için Shift ekleyin.",
+            "Geri almak için Mac'te Command-Z, Linux ve Windows'ta Ctrl-Z kullanın. Yine yapmak için Shift ekleyin.",
             "Geçerli fotoğrafın kayıtlı adımlarını en yeni olandan başlayarak görmek için düzenleme araç çubuğunda History’yi açın.",
             "Ayarlarını geri yüklemek için bir adıma tıklayın. Bir adımı geri yüklemek, geri alınabilir bir düzenlemedir."
           ],
@@ -2300,7 +2301,7 @@
         {
           "title": "Biçimler ve hazır ayarlar",
           "paragraphs": [
-            "Dışa aktarma iletişim kutusu JPEG, HEIF, PNG ve 16 bit TIFF seçeneklerini sunar. HEIF, macOS'ta 8 bit bir çıktı seçeneğidir. Kalite kaydırıcısı JPEG ve HEIF için geçerlidir.",
+            "Dışa aktarma iletişim kutusu JPEG, PNG ve 16-bit TIFF sunar. macOS'ta ayrıca 8-bit HEIF de sunar; HEIF Linux ve Windows'ta gizlidir. Kaydedilmiş bir HEIF iş akışı orada uygulanamaz, bu yüzden başka bir biçim seçin. Kalite kaydırıcısı JPEG ve HEIF için geçerlidir.",
             "JPG (Büyük), kalite 92 ile sRGB içinde tam boyutlu JPEG kullanır. JPG (Küçük), kalite 90 ile sRGB içinde 2048 piksel uzun kenar kullanır. 16-bit TIFF tam boyutu ve ProPhoto RGB'yi kullanır. Bu ayarları değiştirmek Özel seçimini yapar."
           ],
           "steps": [
@@ -2390,7 +2391,7 @@
         {
           "title": "Harici bir düzenleyici aç",
           "paragraphs": [
-            "Başka bir piksel düzenleyici için fotoğrafları hazırlamak üzere Edit in… kullanın. Düzenlenmiş TIFF, özgün dosyanın yanına yazılır ve katalogda onunla birlikte yığınlanabilir."
+            "Şurada düzenle… seçeneğini, fotoğrafları başka bir piksel düzenleyiciye hazırlamak için kullanın. Düzenlenmiş TIFF, asıl dosyasının yanına yazılır ve katalogda onunla birlikte yığınlanabilir. Linux ve Windows'ta Uygulama seç… bir düzenleyici çalıştırılabilir dosyası seçmenizi sağlar; Varsayılan uygulama masaüstünün dosya ilişkilendirmesini kullanır."
           ],
           "steps": [
             "Bir fotoğraf seçin ve başka bir uygulamada Düzenle’yi açmak için Command/Ctrl+E’ye basın.",
@@ -2623,6 +2624,13 @@
             "Kamera modeli, seri numarası veya kamera ve ISO ile eşleştirmeyi seçin, ardından Use current RAW settings’e tıklayın.",
             "Geçerli kamera alanında Sıfırla’yı kullanarak o kameranın varsayılanını kaldırın."
           ]
+        },
+        {
+          "title": "Linux ve Omarchy görünümü",
+          "paragraphs": [
+            "Linux'ta kontroller sistemin açık veya koyu görünümünü izler. Omarchy'de araç çubukları, kenar çubukları, menüler ve iletişim kutuları etkin masaüstü paletini izler ve tema değişikliğinden sonraki birkaç saniye içinde güncellenir. Fotoğraf pikselleri, görüntüleyici arka plan tercihi ve nötr renk kapsamları kendi renklerini korur.",
+            "Dar bir Linux penceresinde Kütüphaneyi göster veya gizle, kütüphaneyi çekmece olarak açar. Pencereyi genişletmek normal yan yana düzeni geri getirir. Hyprland'da, LightTable'ı taşımak, döşemek, yeniden boyutlandırmak veya kapatmak için derleyicinin pencere kısayollarını kullanın."
+          ]
         }
       ],
       "related": [
@@ -2712,7 +2720,7 @@
         {
           "title": "Dizini oluştur",
           "paragraphs": [
-            "Fotoğraf Dizini varsayılan olarak kapalıdır. Analiz bu Mac'te kalır ve fotoğraf klasörlerini değiştirmez. Apple Vision temel analizi sağlar; daha zengin Foundation Models açıklamaları yalnızca bu yetenek kullanılabildiğinde görünür."
+            "Fotoğraf Dizini varsayılan olarak kapalıdır ve macOS gerektirir. Linux ve Windows'ta Bu platformda kullanılamaz gösterilir ve yeni indeksleme etkinleştirilemez. Mac'te analiz aygıt üzerinde kalır ve fotoğraf klasörlerini değiştirmez. Apple Vision temel analizi sağlar; daha zengin Temel Modeller açıklamaları yalnızca bu özellik kullanılabildiğinde görünür."
           ],
           "steps": [
             "Ayarlar → Fotoğraf Dizini'ni açın.",
@@ -2765,7 +2773,7 @@
         {
           "title": "İnceleme sinyalleri",
           "paragraphs": [
-            "Yardımlı ayıklama özel Fotoğraf Dizinini kullanır. Siz istemedikçe fotoğraflara bayrak eklemez. Seçtiğiniz ölçütlerden herhangi biri evet dönerse bir fotoğraf bir grupla eşleşir; değerlendirilmedi, o sinyalin kullanılabilir bir sonucu olmadığı anlamına gelir."
+            "Yardımlı ayıklama, macOS gerektiren özel Fotoğraf Dizini'ni kullanır. Yeni analiz Linux ve Windows'ta kullanılamaz. Siz istemedikçe fotoğrafları işaretlemez. Seçtiğiniz ölçütlerden herhangi biri evet döndürürse bir fotoğraf bir grupla eşleşir; değerlendirilmedi, o sinyalin kullanılabilir bir sonucu olmadığı anlamına gelir."
           ],
           "steps": [
             "Ayarlar’da Fotoğraf Dizinini etkinleştirin ve fotoğrafların puanlanmasını bekleyin.",
@@ -2811,7 +2819,7 @@
         {
           "title": "Klavye tercihleri",
           "paragraphs": [
-            "Ayarlar → Shortcuts & Hardware, kısayol şemasını ve Keyboard and MIDI controls altında bir klavye başvurusunu içerir. Masaüstü Help menüsünde ayrıca Keyboard Shortcuts bulunur.",
+            "Ayarlar → Kısayollar ve Donanım, Kısayol şemasını ve Klavye ve MIDI kontrolleri altında bir klavye başvurusunu içerir. macOS'ta, masaüstü Yardım menüsünde de Klavye Kısayolları bulunur. Linux ve Windows'ta Command/Ctrl kısayolları için Ctrl kullanın.",
             "LightTable veya Klasik'i seçin; şema bir yeniden yüklemeden sonra uygulanır. Hold-key slider control, eşlenmiş bir tuşu kaydırma yaparken veya ok tuşlarını kullanırken basılı tutmanıza izin verir. Otomasyona izin ver, onaylanmış yerel araçların geçmiş ve Geri Al ile pencereyi denetleyip denetleyemeyeceğini belirler."
           ],
           "tips": [
@@ -2879,6 +2887,13 @@
             "Yükseltmeden sonra, ilk tarama dosya eşleştirmesini güçlendirmek için yerel orijinalleri okur. Bu, büyük bir kitaplıkta daha uzun sürebilir. Tam bir dosya kimliği olmadan zaten eksik olan orijinaller eksik kalır; girdilerini koruyun ve yeniden taramadan önce orijinalleri önceki kataloglanmış yollarına geri yükleyin.",
             "Windows'ta, orijinallerin değişip değişmediğini denetlemek, her yerel dosyanın tamamını okur. Yeniden tarama, fotoğrafları açma ve dışa aktarma denetimleri, büyük orijinallerle daha uzun sürebilir. Bu denetimler, yalnızca bulutta depolanan dosyaları indirmez.",
             "Hasarlı bir katalog için Library Health, kurtarma, geri yükleme veya yeni bir katalog sunabilir. Kurtarma, okunabilir satırları kopyalar ancak hasarlı sayfalardaki satırları kaybeder. Baştan başlamak, derecelendirmeleri, düzenlemeleri, koleksiyonları veya geçmişi taşımaz. Geçerli hasarlı katalog dosyası Recovery içinde korunur."
+          ]
+        },
+        {
+          "title": "Linux uygulama verilerini bul",
+          "paragraphs": [
+            "Linux normalde katalog ve hazır ayarları ~/.local/share/lighttable içinde, tercihleri ~/.config/lighttable içinde, işleme önbelleklerini ~/.cache/lighttable içinde ve günlükleri ~/.local/state/lighttable/logs içinde tutar. Özel sistem veya LightTable depolama ayarları bu konumları değiştirebilir; Ayarlar etkin katalog ve önbellek yollarını gösterir.",
+            "Orijinaller, seçtiğiniz fotoğraf klasörlerinde kalır. Katalog yedekleri bu orijinalleri, tercihlerinizı veya ayrı saklanan hazır ayarları içermez. Linux'taki önceki deneysel veriler eski konumlardan otomatik olarak taşınmaz."
           ]
         },
         {
@@ -2964,6 +2979,13 @@
           ]
         },
         {
+          "title": "Linux işlemesini denetle",
+          "paragraphs": [
+            "Linux'ta, Ayarlar → Performans etkin Rust işlemciyi ve ısınma sonrası algılanan bağdaştırıcıyı bildirir. GPU · Rust seçeneği, donanım GPU'su kullanılamadığında CPU işlemesi kullanabilir. Yazılım Vulkan, donanım hızlandırma değildir.",
+            "GPU'nun sınırlarını aşan bir fotoğraf CPU kullanır. İşleme işçisi yanıt vermeyi durdurursa, LightTable CPU üzerinde bir kez yeniden dener ve o işçiyi oturum boyunca korur. GPU işlemesini yeniden denemek için grafik sürücünüzü onarıp veya güncelledikten sonra LightTable'ı yeniden açın. Büyük fotoğraflar ve yazılım işlemesi daha uzun sürebilir; normal düzenleme için Otomatik önizleme ayrıntısını kullanın."
+          ]
+        },
+        {
           "title": "Bir önizleme hatasını oku",
           "paragraphs": [
             "Bir fotoğraf oluşturulamazsa veya görüntülenemezse, fotoğraf alanındaki mesaj, varsa bildirilen nedeni içerir. Bu, eksik bir dosyayı, bir görüntü yükleme sorununu veya bir grafik hatasını belirleyebilir. Hiçbir neden yoksa, mesaj genel kalır."
@@ -2979,5 +3001,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
 }

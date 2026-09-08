@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+SCRIPT=$(readlink -f -- "$0")
+ROOT=$(CDPATH= cd -- "$(dirname -- "$SCRIPT")/.." && pwd -P)
+export PYTHONNOUSERSITE=1
+exec "$ROOT/bin/lighttable-desktop-shell" "$@"
