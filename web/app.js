@@ -13,6 +13,7 @@ import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
+import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
@@ -10115,7 +10116,7 @@ async function selectPhotoFromPointer(image, event) {
 /* -------------------------------------------------------------- prefs */
 async function savePrefs() {
   const patch = {
-    engine: $('engine').value, pw: $('pw').value,
+    engine: $('engine').value,
     filter: $('filter').value, sort: $('sort').value,
     gridSize: $('gridSize').value, activePane: S.activePane,
     activeFolder: S.activeFolder, includeSubfolders: S.includeSubfolders,
@@ -10144,7 +10145,7 @@ async function savePrefs() {
   Object.assign(APP_PREFS, patch);
   return api('/api/prefs', patch).catch(() => {});
 }
-['engine', 'pw', 'filter', 'sort'].forEach((id) => {
+['engine', 'filter', 'sort'].forEach((id) => {
   $(id).addEventListener('change', savePrefs);
 });
 fetch('/api/prefs').then((r) => r.json()).then((p) => {
@@ -10179,9 +10180,11 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
     }).catch(() => {});
   }
   for (const [k, v] of Object.entries(p)) {
+    if (k === 'pw') continue; // Retired preference; Advanced owns the override.
     const el = $(k);
     if (el && v != null) el.value = v;
   }
+  $('pw').value = previewResolutionPreference(p);
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
