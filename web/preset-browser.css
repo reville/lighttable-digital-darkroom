@@ -3,7 +3,7 @@
 .preset-browser-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .preset-browser-filters { display:flex; gap:4px; }
 .preset-browser-filters button, .preset-browser-manage { min-height:26px; padding:3px 9px; font-size:11px; }
-.preset-browser-filters button[aria-pressed="true"] { border-color:var(--slider-accent); background:var(--on-soft); color:var(--on-ink); }
+.preset-browser-filters button[aria-pressed="true"], .preset-browser-manage[aria-expanded="true"] { border-color:var(--slider-accent); background:var(--on-soft); color:var(--on-ink); }
 .preset-browser-hint, .preset-browser-status { margin:0; color:var(--muted); font-size:11px; line-height:1.5; }
 .preset-browser-status { color:var(--ink-2); }
 .preset-browser-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }

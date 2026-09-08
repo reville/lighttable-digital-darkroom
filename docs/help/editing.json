@@ -519,19 +519,20 @@
     "sections": [
       {
         "title": "Apply an existing recipe",
-        "paragraphs": ["Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."],
+        "paragraphs": ["Open Presets in the editing toolbar. Click Manage… to open or close Manage presets; the button is highlighted while the section is open. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."],
         "steps": ["Choose a preset and review its summary, especially if it came from another editor.", "Use Apply mapped adjustments to apply the settings the preset supplies.", "Use Replace adjustment settings only when you want to reset adjustments, masks, Remove corrections, and geometry before applying the preset.", "Inspect the photo and use Undo if you want to restore the previous edit."],
         "tips": ["Replace keeps your crop. It keeps Film unless the preset includes Film settings or you enable Turn Film off for the actions below.", "Presets from other editors are converted approximately because their processing differs. Read skipped settings and conversion notes; matching controls do not promise identical pixels."]
       },
       {
         "title": "Save or import a preset",
-        "paragraphs": ["Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."],
+        "paragraphs": ["Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles. Manage… is available even when there are no presets, so you can import or save your first one."],
         "steps": ["To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….", "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.", "Review the import result and the new preset’s conversion coverage before applying it.", "To share a selected preset, choose an Export format and click Export…."],
         "tips": ["LightTable export is lossless for its preset format. Lightroom XMP and Capture One style exports are approximate.", "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee that every setting inside can be converted."]
       }
     ],
     "related": ["editing-history-snapshots", "editing-copy-paste-match-exposure", "editing-curves"],
     "sources": [
+      {"path": "web/preset-browser.js", "anchor": "managementSection.open = !managementSection.open;"},
       {"path": "web/index.html", "anchor": "Replacing resets adjustments, masks, Remove corrections, and geometry before applying this preset."},
       {"path": "web/index.html", "anchor": "Your crop is kept. Film is kept unless the preset includes it or you turn it off above."},
       {"path": "web/index.html", "anchor": "accept=\".ltpreset,.xmp,.lrtemplate,.costyle,.costylepack,.zip,.json\""},
