@@ -18,8 +18,8 @@ class PhotosLibraryImportTests(unittest.TestCase):
         if not swiftc:
             raise unittest.SkipTest("swiftc is unavailable")
         source = (ROOT / "app" / "main.swift").read_text()
-        importer = source[source.index("private final class PhotosLibraryImporter"):
-                          source.index("// MARK: - App\n")]
+        importer = source[source.index("private final class PhotosLibraryImporter"):].split(
+            "\n// MARK:", 1)[0]
         initialization = source[source.index("        let defaults = UserDefaults.standard"):
                                 source.index("        var isDir: ObjCBool = false", source.index("func applicationDidFinishLaunching"))]
         launch = source[source.index("    private func launch(folder: String)"):]
