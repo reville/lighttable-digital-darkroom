@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2303,9 +2303,6 @@
     "Reset sharpening and noise reduction adjustments": "重設銳利化與雜訊降低調整",
     "Reset the RAW profile and capture-stage processing settings": "重設 RAW 描述檔與擷取階段處理設定",
     "Reset the combined RGB and individual channel curves": "重設合併的 RGB 與各別色版曲線",
-    "Reset the film profile and physical film stages for this photo": "重設此相片的底片描述檔與實體底片階段",
-    "Reset the film profile, stock, output, and capture settings": "重設底片描述檔、膠卷、輸出與擷取設定",
-    "Reset the physical film stage controls to their defaults": "將實體底片階段控制項重設為預設值",
     "Reset this slider": "重設此滑桿",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "重設白平衡、鮮豔度、飽和度、色彩混合器、點色彩和色彩分級",
     "Reset {value}": "重設 {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛"
+    "☆ Favorites": "☆ 最愛",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「寫實底片模擬」中的「重設」會將所有底片滑桿恢復為預設值。各區段的「重設」僅影響該區段的滑桿。開關和已選選項保持不變。",
+    "Reset sliders to their defaults": "將滑桿恢復為預設值"
   },
   "plurals": {
     " · {count} paired file linked": {

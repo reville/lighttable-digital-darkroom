@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2303,9 +2303,6 @@
     "Reset sharpening and noise reduction adjustments": "선명하게 하기와 노이즈 감소 조정을 초기화합니다",
     "Reset the RAW profile and capture-stage processing settings": "RAW 프로필과 캡처 단계 처리 설정을 초기화합니다",
     "Reset the combined RGB and individual channel curves": "병합된 RGB 및 개별 채널 곡선을 초기화합니다",
-    "Reset the film profile and physical film stages for this photo": "이 사진의 필름 프로필과 물리적 필름 스테이지를 초기화합니다",
-    "Reset the film profile, stock, output, and capture settings": "필름 프로필, 스톡, 출력 및 캡처 설정을 초기화합니다",
-    "Reset the physical film stage controls to their defaults": "물리적 필름 스테이지 컨트롤을 기본값으로 초기화합니다",
     "Reset this slider": "이 슬라이더 초기화",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "화이트 밸런스, 생동감, 채도, 색상 혼합기, 포인트 색상 및 색상 그레이딩 초기화",
     "Reset {value}": "{value} 초기화",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "사실적인 필름 시뮬레이션의 초기화은 모든 필름 슬라이더를 기본값으로 되돌립니다. 각 섹션의 초기화은 해당 섹션의 슬라이더에만 적용됩니다. 스위치와 선택한 옵션은 그대로 유지됩니다.",
+    "Reset sliders to their defaults": "슬라이더를 기본값으로 재설정"
   },
   "plurals": {
     " · {count} paired file linked": {
