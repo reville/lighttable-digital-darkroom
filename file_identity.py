@@ -99,8 +99,10 @@ class _WindowsBindings:
         # position. A dup/seek would disturb a borrowed Python stream's offset.
         # Deny concurrent writers for this fallback read; an actively edited
         # source fails closed instead of hashing a mixture of revisions.
-        handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x5,
-                                  0x08000000 | 0x00100000)
+        # The Windows runtime rejects the optional scan/no-recall flags here
+        # (ERROR_INVALID_PARAMETER). Cloud-only files are excluded before this
+        # call; ordinary buffered reads work with both metadata and read handles.
+        handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x5, 0)
         if handle == self.invalid_handle:
             raise self.ctypes.WinError(self.ctypes.get_last_error())
         try:
