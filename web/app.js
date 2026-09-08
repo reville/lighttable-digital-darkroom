@@ -13,7 +13,7 @@ import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
-import { previewDetailLabel } from '/web/preview-detail.js';
+import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
@@ -477,11 +477,12 @@ window.lightTableNativeEvent = (event) => {
     if (!pending) return;
     nativePreviewPending.delete(event.generation);
     if (event.type === 'nativePreviewFailed') {
-      toast('Native preview unavailable for this photo');
+      const error = event.message || 'Native preview unavailable';
+      if (event.generation === S.seq) toast(error);
       pending.resolve({
         decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
         presentedAt: performance.now(), presentation: 'native-failed',
-        failed: true, error: 'Native preview unavailable',
+        failed: true, error,
       });
       return;
     }
@@ -3445,7 +3446,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = 'error: ' + m.error;
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not render this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not render this photo', m.error));
       }
       return;
     }
@@ -3481,7 +3483,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || 'preview unavailable';
         $('rstat').className = '';
-        setRenderPresentation('error', im.name, 'Could not display this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not display this photo', imageTiming.error));
         return;
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
@@ -3598,7 +3601,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = failure.error || 'Could not finish preview';
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not reach the renderer');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not finish this preview', failure.error));
       }
     }
   }
@@ -3884,7 +3888,7 @@ function setWebGLBaseImage(dataUri, {
           toast('WebGL unavailable: ' + e.message);
           return res({ decodeMs: performance.now() - startedAt, uploadMs: 0,
             uploadedAt: performance.now(), failed: true,
-            error: 'WebGL preview could not be initialized' });
+            error: previewFailureMessage('WebGL preview could not be initialized', e) });
         }
         browserOriginalTextureURL = null;
         browserReferenceTextureURL = null;
@@ -3906,7 +3910,7 @@ function setWebGLBaseImage(dataUri, {
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
-        failed: true, error: 'Preview image could not be decoded' });
+        failed: true, error: 'Preview image could not be loaded or decoded' });
     };
     img.src = dataUri;
   });
