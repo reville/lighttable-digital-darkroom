@@ -2180,7 +2180,8 @@
         {
           "title": "Bir film stoğu ile başla",
           "paragraphs": [
-            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır."
+            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır.",
+            "Gerçekçi Film Simülasyonundaki Sıfırla, tüm Film kaydırıcılarını varsayılan değerlerine döndürür. Bir bölümün Sıfırla düğmesi yalnızca o bölümün kaydırıcılarını etkiler. Anahtarlar ve seçili seçenekler olduğu gibi kalır."
           ],
           "steps": [
             "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

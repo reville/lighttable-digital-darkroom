@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "أعد تعيين تعديلات الحدّة وإزالة الضوضاء",
     "Reset the RAW profile and capture-stage processing settings": "أعد تعيين ملف RAW الشخصي وإعدادات المعالجة في مرحلة الالتقاط",
     "Reset the combined RGB and individual channel curves": "أعد تعيين المنحنيات المشتركة لـ RGB والمنحنيات الخاصة بكل قناة",
-    "Reset the film profile and physical film stages for this photo": "أعد تعيين ملف الفيلم الشخصي ومراحل الفيلم الفيزيائية لهذه الصورة",
-    "Reset the film profile, stock, output, and capture settings": "أعد تعيين ملف الفيلم الشخصي، والفيلم، والمخرجات، وإعدادات الالتقاط",
-    "Reset the physical film stage controls to their defaults": "أعد تعيين عناصر تحكم مرحلة الفيلم الفيزيائية إلى افتراضاتها",
     "Reset this slider": "إعادة تعيين هذا المنزلق",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "إعادة تعيين توازن اللون الأبيض، والحيوية، والتشبع، ومخلط الألوان، ولون النقطة، وتدرج الألوان",
     "Reset {value}": "إعادة تعيين {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ رجوع",
     "← Back to articles": "← العودة إلى المقالات",
     "← People": "← أشخاص",
-    "☆ Favorites": "☆ المفضلات"
+    "☆ Favorites": "☆ المفضلات",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "تعيد «إعادة تعيين» في «محاكاة فيلم واقعية» جميع أشرطة تمرير الفيلم إلى قيمها الافتراضية. تؤثر «إعادة تعيين» داخل قسم على أشرطة تمرير ذلك القسم فقط. تبقى المفاتيح والخيارات المحددة كما هي.",
+    "Reset sliders to their defaults": "إعادة أشرطة التمرير إلى قيمها الافتراضية"
   },
   "plurals": {
     " · {count} paired file linked": {

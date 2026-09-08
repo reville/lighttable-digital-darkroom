@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Keskinleştirme ve gürültü azaltma ayarlarını sıfırla",
     "Reset the RAW profile and capture-stage processing settings": "RAW profilini ve çekim aşaması işleme ayarlarını sıfırla",
     "Reset the combined RGB and individual channel curves": "Birleştirilmiş RGB ve tek tek kanal eğrilerini sıfırla",
-    "Reset the film profile and physical film stages for this photo": "Bu fotoğraf için film profilini ve fiziksel film aşamalarını sıfırla",
-    "Reset the film profile, stock, output, and capture settings": "Film profilini, film stoğunu, çıkışı ve çekim ayarlarını sıfırla",
-    "Reset the physical film stage controls to their defaults": "Fiziksel film aşaması kontrollerini varsayılanlarına sıfırla",
     "Reset this slider": "Bu kaydırıcıyı sıfırla",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Beyaz dengesi, Vibrance, Saturation, Color Mixer, Point Color ve Color Grading'i sıfırla",
     "Reset {value}": "{value} Sıfırla",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Geri",
     "← Back to articles": "← Makalelere geri dön",
     "← People": "← Kişiler",
-    "☆ Favorites": "☆ Sık kullanılanlar"
+    "☆ Favorites": "☆ Sık kullanılanlar",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Gerçekçi Film Simülasyonundaki Sıfırla, tüm Film kaydırıcılarını varsayılan değerlerine döndürür. Bir bölümün Sıfırla düğmesi yalnızca o bölümün kaydırıcılarını etkiler. Anahtarlar ve seçili seçenekler olduğu gibi kalır.",
+    "Reset sliders to their defaults": "Kaydırıcıları varsayılan değerlerine sıfırla"
   },
   "plurals": {
     " · {count} paired file linked": {

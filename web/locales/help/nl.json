@@ -2180,7 +2180,8 @@
         {
           "title": "Begin met een film",
           "paragraphs": [
-            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt."
+            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt.",
+            "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn."
           ],
           "steps": [
             "Open een stilstaande foto en selecteer Film in de gereedschapsbalk om Realistic Film Simulation te openen.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }
