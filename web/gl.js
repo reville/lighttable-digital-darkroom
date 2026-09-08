@@ -516,12 +516,18 @@ export class GradeRenderer {
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-    this.tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, this.tex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    this.tex = null;
+    this.imageTextures = new Map();
+    this.imageTextureBytes = 0;
+    // Count RGB uploads as RGBA: drivers may store four bytes per pixel.
+    // One displayed image may exceed the budget, but then nothing else is kept.
+    this.maxImageTextureBytes = 256 * 1024 * 1024;
+    this.maxImageTextures = 6;
+    canvas.addEventListener('webglcontextlost', () => {
+      this.imageTextures.clear();
+      this.imageTextureBytes = 0;
+      this.ready = false;
+    });
 
     this.originalTex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.originalTex);
@@ -656,30 +662,64 @@ export class GradeRenderer {
     return true;
   }
 
-  setImage(img, { resizeCanvas = true } = {}) {
+  cachedImage(key) {
+    return key ? this.imageTextures.get(key)?.image : null;
+  }
+
+  setImage(img, { resizeCanvas = true, cacheKey = null } = {}) {
     const gl = this.gl;
     const imageWidth = img.naturalWidth || img.width;
     const imageHeight = img.naturalHeight || img.height;
-    if (resizeCanvas) {
-      if (this.canvas.width !== imageWidth || this.canvas.height !== imageHeight) {
-        this.canvas.width = imageWidth;
-        this.canvas.height = imageHeight;
-      }
+    const key = cacheKey || Symbol('uncached preview');
+    let entry = this.imageTextures.get(key);
+    const textureCacheHit = Boolean(entry);
+    if (entry) {
+      this.imageTextures.delete(key);
+    } else {
+      const texture = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+      entry = { texture, image: img, bytes: imageWidth * imageHeight * 4 };
+      this.imageTextureBytes += entry.bytes;
     }
-    gl.bindTexture(gl.TEXTURE_2D, this.tex);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+    this.imageTextures.set(key, entry);
+    this.tex = entry.texture;
+    while (this.imageTextures.size > 1 &&
+        (this.imageTextureBytes > this.maxImageTextureBytes ||
+         this.imageTextures.size > this.maxImageTextures)) {
+      const oldest = this.imageTextures.keys().next().value;
+      const removed = this.imageTextures.get(oldest);
+      this.imageTextures.delete(oldest);
+      this.imageTextureBytes -= removed.bytes;
+      gl.deleteTexture(removed.texture);
+    }
+    if (resizeCanvas &&
+        (this.canvas.width !== imageWidth || this.canvas.height !== imageHeight)) {
+      this.canvas.width = imageWidth;
+      this.canvas.height = imageHeight;
+    }
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.useProgram(this.prog);
     gl.uniform2f(this.uTexel, 1 / imageWidth, 1 / imageHeight);
     const scale = Math.min(1, 128 / Math.max(imageWidth, imageHeight));
-    this.sampleWidth = Math.max(1, Math.round(imageWidth * scale));
-    this.sampleHeight = Math.max(1, Math.round(imageHeight * scale));
-    this.samplePixels = new Uint8Array(this.sampleWidth * this.sampleHeight * 4);
-    gl.bindTexture(gl.TEXTURE_2D, this.sampleTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.sampleWidth,
-      this.sampleHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    const sampleWidth = Math.max(1, Math.round(imageWidth * scale));
+    const sampleHeight = Math.max(1, Math.round(imageHeight * scale));
+    if (this.sampleWidth !== sampleWidth || this.sampleHeight !== sampleHeight) {
+      this.sampleWidth = sampleWidth;
+      this.sampleHeight = sampleHeight;
+      this.samplePixels = new Uint8Array(sampleWidth * sampleHeight * 4);
+      gl.bindTexture(gl.TEXTURE_2D, this.sampleTexture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, sampleWidth,
+        sampleHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    }
     this.ready = true;
+    return { textureCacheHit };
   }
 
   setOriginalImage(img) {

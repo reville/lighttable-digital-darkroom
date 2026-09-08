@@ -123,6 +123,42 @@ class RequestSecurityTests(unittest.TestCase):
                               "Origin": "http://localhost:8321"})
         valid._enforce_security(mutating=True)
 
+    def test_browser_cookie_is_scoped_to_the_receiving_port(self):
+        token = server.INSTANCE_TOKEN
+        headers = {"Host": "127.0.0.1:8321",
+                   "Cookie": f"lighttable_token_9000=other-instance; lighttable_token_8321={token}"}
+        self.handler(headers)._enforce_security(mutating=True)
+        for cookie in (f"lighttable_token_9000={token}",
+                       "lighttable_token_8321=other-instance"):
+            with self.subTest(cookie_name=cookie.partition("=")[0]):
+                with self.assertRaises(server.APIError) as caught:
+                    self.handler({**headers, "Cookie": cookie})._enforce_security(mutating=True)
+                self.assertEqual(caught.exception.status, 401)
+
+    def test_legacy_cookie_is_only_used_without_a_scoped_cookie(self):
+        token = server.INSTANCE_TOKEN
+        for cookie in (f"lighttable_token={token}",
+                       f"lighttable_token=other-instance; lighttable_token_8321={token}"):
+            self.handler({"Host": "localhost:8321", "Cookie": cookie})._enforce_security(mutating=True)
+        for cookie in ("lighttable_token=other-instance",
+                       f"lighttable_token={token}; lighttable_token_8321=other-instance",
+                       f"lighttable_token={token}; lighttable_token_8321="):
+            with self.assertRaises(server.APIError) as caught:
+                self.handler({"Host": "localhost:8321", "Cookie": cookie})._enforce_security(mutating=True)
+            self.assertEqual(caught.exception.status, 401)
+
+    def test_scoped_cookie_does_not_bypass_origin_or_header_validation(self):
+        headers = {"Host": "localhost:8321",
+                   "Cookie": f"lighttable_token_8321={server.INSTANCE_TOKEN}"}
+        with self.assertRaises(server.APIError) as caught:
+            self.handler({**headers, "Origin": "http://localhost:9000"})._enforce_security(mutating=True)
+        self.assertEqual(caught.exception.status, 403)
+        with self.assertRaises(server.APIError) as caught:
+            self.handler({**headers, "X-LightTable-Token": "other-instance"})._enforce_security(mutating=True)
+        self.assertEqual(caught.exception.status, 401)
+        self.handler({**headers, "Cookie": "lighttable_token_8321=other-instance",
+                      "X-LightTable-Token": server.INSTANCE_TOKEN})._enforce_security(mutating=True)
+
     def test_post_body_must_be_json_object(self):
         handler = self.handler({"Content-Type": "text/plain",
                                 "Content-Length": "2"})
