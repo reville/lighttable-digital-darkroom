@@ -224,7 +224,8 @@
           "paragraphs": [
             "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
-            "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana."
+            "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
+            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -2185,7 +2186,7 @@
             "Abre una foto fija y selecciona Película en la barra de herramientas para abrir Simulación realista de película.",
             "Active el interruptor de perfil de película. Etapas físicas de la película se abre automáticamente; después puede contraerlo.",
             "Elige Stock, o haz clic en Previsualizar stocks en esta foto… para comparar ejemplos renderizados.",
-            "Busca un nombre de stock, usa Anterior o Siguiente para explorar y luego elige una vista previa para aplicarlo."
+            "Busca el nombre de una película o desplázate por las vistas previas y elige una para aplicarla. Las vistas previas se amplían y recortan para mostrar más detalle."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }

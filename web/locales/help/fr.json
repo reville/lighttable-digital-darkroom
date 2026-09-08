@@ -224,7 +224,8 @@
           "paragraphs": [
             "La grille Photo présente les photos comme une vue d’ensemble visuelle. La grille de tri ajoute de la place pour la sélection et les informations de notation. Détails ouvre la photo active pour un examen rapproché.",
             "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
-            "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre."
+            "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
+            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -2185,7 +2186,7 @@
             "Ouvrez une photo fixe et sélectionnez Film dans la barre d’outils pour ouvrir Simulation de film réaliste.",
             "Activez l’interrupteur Profil de film. Étapes physiques de la pellicule s’ouvre automatiquement ; vous pourrez ensuite la replier.",
             "Choisissez Pellicule, ou cliquez sur Prévisualiser les pellicules sur cette photo… pour comparer des exemples rendus.",
-            "Recherchez un nom de pellicule, utilisez Précédent ou Suivant pour parcourir, puis choisissez un aperçu pour l’appliquer."
+            "Recherchez le nom d’un film ou faites défiler les aperçus, puis choisissez-en un pour l’appliquer. Les aperçus sont agrandis et recadrés pour montrer davantage de détails."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }

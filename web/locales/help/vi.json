@@ -224,7 +224,8 @@
           "paragraphs": [
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
-            "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ."
+            "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
+            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -2185,7 +2186,7 @@
             "Mở một ảnh tĩnh và chọn Phim trong thanh công cụ để mở Mô phỏng Phim Chân thực.",
             "Bật công tắc hồ sơ Film. Các giai đoạn phim vật lý sẽ mở tự động; sau đó bạn có thể thu gọn nó.",
             "Chọn Phim, hoặc nhấp Xem trước phim trên ảnh này… để so sánh các ví dụ đã kết xuất.",
-            "Tìm một tên phim, dùng Previous hoặc Next để duyệt, rồi chọn một bản xem trước để áp dụng nó."
+            "Tìm tên phim hoặc cuộn qua các bản xem trước, rồi chọn một bản để áp dụng. Các bản xem trước được phóng to và cắt để thấy rõ chi tiết hơn."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }
