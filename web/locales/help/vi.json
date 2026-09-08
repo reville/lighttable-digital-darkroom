@@ -2193,7 +2193,7 @@
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
             "Một film stock mô tả quy trình phim vật lý. Một preset chỉnh sửa có thể chứa các điều chỉnh đã lưu rộng hơn, và cũng có thể bao gồm các thiết lập Film. Menu Output bên trong Film chọn một recipe quét hoặc in; nó không xuất tệp.",
-            "Sau khi bạn bật Phim, một bản xem trước nhanh có thể xuất hiện trước khi chi tiết RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất và biến mất khi bản xem trước hiển thị. Chi tiết RAW chính xác và kết xuất độ phân giải đầy đủ tiếp tục chạy trong nền."
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
           ],
           "tips": [
             "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng."
@@ -3021,7 +3021,8 @@
         {
           "title": "Kiểm tra những gì đã kết xuất xong",
           "paragraphs": [
-            "Thiết lập thu phóng 100% không đảm bảo rằng toàn bộ chi tiết ảnh đã đến. Một bản xem trước nhanh có thể xuất hiện trước trong khi xử lý RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất, với số như 2 / 5. Nó biến mất ngay khi một bản xem trước dùng được được hiển thị; xử lý RAW chính xác và các bản xem trước lớn hơn tiếp tục chạy trong nền mà không có lớp phủ. Con số biểu thị các giai đoạn đã hoàn thành, không phải thời gian còn lại. Chế độ giảm chuyển động vẫn giữ nguyên các cập nhật giai đoạn nhưng không có hoạt ảnh. Ảnh vẫn hiển thị mà không bị làm mờ. Ở 1:1, rê chuột lên nút 1:1 để kiểm tra xem chi tiết nguồn đầy đủ đã sẵn sàng trước khi đánh giá chi tiết nhỏ hay chưa.",
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
+            "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
             "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau.",
             "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
 }

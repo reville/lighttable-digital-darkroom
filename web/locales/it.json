@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 bit",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "Un'impostazione di zoom al 100% non garantisce che sia arrivato il dettaglio completo dell'immagine. Potrebbe apparire prima un'anteprima rapida mentre l'elaborazione RAW accurata e un'anteprima più grande terminano. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano, con un conteggio come 2 / 5. Scompare non appena viene visualizzata un'anteprima utilizzabile; l'elaborazione RAW accurata e le anteprime più grandi continuano in background senza la sovrapposizione. Il conteggio rappresenta le fasi completate, non il tempo rimanente. Il movimento ridotto mantiene gli stessi aggiornamenti di fase senza animazione. La foto rimane visibile senza oscurarsi. A 1:1, passa il mouse sopra il pulsante 1:1 per verificare se il dettaglio completo della sorgente è pronto prima di valutare i dettagli fini.",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "Un originale RAW non può essere modificato in loco; invia un TIFF regolato",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "Un lotto può interessare fino a 5.000 foto, compresi i compagni collegati. La rimozione di una parola chiave gerarchica rimuove quel percorso esatto, non tutti i discendenti. L'albero delle parole chiave e i suggerimenti usano termini già presenti nel catalogo.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "Una preimpostazione integrata è di sola lettura. Salva una copia… inserisce una copia nominata in Tuo. Nascondi preimpostazione la rimuove dalla normale vista Integrato; Mostra nascosti e Ripristina a Integrato la riportano.",
@@ -159,7 +158,6 @@
     "Advanced preview override": "Sovrascrittura avanzata dell'anteprima",
     "After completion, find the new result in the refreshed library and inspect it.": "Dopo il completamento, trova il nuovo risultato nella libreria aggiornata e ispezionalo.",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "Dopo l'aggiornamento, la prima scansione legge gli originali locali per rafforzare la corrispondenza dei file. Su una raccolta grande può richiedere più tempo. Gli originali che erano già mancanti senza un'identità completa del file restano mancanti; conserva le loro voci e ripristina gli originali ai loro percorsi catalogati precedenti prima di riscansionare.",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "Dopo aver attivato Pellicola, può apparire un'anteprima rapida prima che il dettaglio RAW accurato e l'anteprima più grande terminino. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano e scompare una volta che l'anteprima è visibile. Il dettaglio RAW accurato e il rendering a piena risoluzione continuano in background.",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "Allinea una scansione o un altro riferimento, misura la differenza e applica un abbinamento iniziale.",
     "Aligning frames": "Allineamento fotogrammi",
     "All": "Tutti",
@@ -2123,6 +2121,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Gli originali RAW devono essere renderizzati come TIFF regolati. Originale elaborato non è disponibile se la selezione contiene un file RAW. Per le foto elaborate, tale opzione apre l’originale invece di preparare un TIFF regolato.",
     "RAW originals only.": "Solo Originali RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Le foto RAW possono mostrare i controlli Riduzione rumore del sensore e Riduzione rumore appresa. La riduzione rumore appresa viene eseguita in locale quando premi Applica riduzione rumore; spostare Intensità non la esegue in tempo reale.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
     "RAW preview could not finish. Try the photo again.": "L'anteprima RAW non è stata completata. Riprova con la foto.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3151,6 +3150,7 @@
     "Zoom Out": "Riduci zoom",
     "Zoom in": "Ingrandisci",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "Ingrandisci per un posizionamento preciso. I contorni dei cerchi e i pin restano nitidi a ogni livello di zoom; i cerchi continuano a mostrare la stessa area della foto.",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
     "Zoom out": "Riduci zoom",
     "Zoom: {actualPct}%": "Zoom: {actualPct}%",
     "a command-line server": "un server da riga di comando",

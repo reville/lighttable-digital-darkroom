@@ -379,20 +379,23 @@ class ResponsivePreviewTests(unittest.TestCase):
                 server.invalidate_library_cache()
                 self.assertEqual(server.list_images(), ["first.jpg", "second.jpg"])
 
-    def test_develop_mode_refines_raw_preview_to_export_neutral_base(self):
+    def test_develop_mode_opens_raw_with_neutral_pixels_without_camera_flash(self):
         missing = mock.Mock()
         missing.exists.return_value = False
         with (
             mock.patch.object(server, "neutral_preview_path", return_value=missing),
             mock.patch.object(server, "orig_jpeg", return_value=b"preview") as original,
+            mock.patch.object(server, "build_neutral_preview", return_value=missing) as build,
             mock.patch.object(server, "file_key", return_value="source-key"),
             mock.patch.object(server, "guard_local_photo"),
         ):
             response = server.render_preview(
                 "frame.dng", {"profile_enabled": False}, 1100)
-        self.assertTrue(response["refining"])
-        self.assertIn("/api/orig?", response["img"])
-        original.assert_called_once()
+        self.assertFalse(response["refining"])
+        self.assertFalse(response["cached"])
+        self.assertIn("/api/neutral?", response["img"])
+        original.assert_not_called()
+        build.assert_called_once()
 
     def test_develop_mode_uses_accurate_neutral_preview_when_ready(self):
         ready = mock.Mock()
