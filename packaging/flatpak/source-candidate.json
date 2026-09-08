@@ -40,12 +40,12 @@
         {
           "type": "file",
           "path": "../../scripts/flatpak/source-preflight.py",
-          "sha256": "7db4b6dd8c412fea519fe88952b1e23afd0241373dbe8d6fd2218c629221f795"
+          "sha256": "f2fe5d6898fdc6f71e8e42ec66182809d50115cc6d97cda8c34ad739d5777f7d"
         },
         {
           "type": "file",
           "path": "source-status.json",
-          "sha256": "e64c14f65753f1c61c7037cec0aa60f1ec17c7c7b3265aa62fa82c42c898ce45"
+          "sha256": "11fcdf20e7cab88ce3ac81d272c0e694be66d42f05f654d68cf0f6fc6c8f5506"
         }
       ]
     },
