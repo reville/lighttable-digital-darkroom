@@ -209,7 +209,8 @@
         {
           "title": "Pindah antar tampilan",
           "paragraphs": [
-            "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat."
+            "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
+            "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "De vorige sessie is niet correct beëindigd{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "Met de verhoudingvergrendeling kun je de huidige beeldverhouding behouden tijdens het schalen.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "De referentiefoto wordt uitgesloten van de doelupdates. Afstemmen is een startpunt, vooral wanneer de foto's verschillende onderwerpen of kadrering bevatten.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "De rechterzijbalk gebruikt pictogramknoppen voor Bewerken, Film, Bijsnijden, Verwijderen, Maskering, Info, Geschiedenis en Voorinstellingen. Beweeg de aanwijzer over een pictogram om de naam ervan te zien.",
     "The saved language preference could not be read.": "De opgeslagen taalvoorkeur kon niet worden gelezen.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "Het scopemenu biedt ook Waveform, RGB Parade en Vectorscope om toon en kleur te inspecteren.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "Het zoekvak komt overeen met tekst in bestandsnamen, weergavenamen, trefwoorden en beschikbare foto-indexmetadata. Er wordt gezocht binnen de huidige map of verzameling en gecombineerd met de andere actieve filters.",

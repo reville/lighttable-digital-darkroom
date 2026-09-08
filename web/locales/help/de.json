@@ -209,7 +209,8 @@
         {
           "title": "Zwischen Ansichten wechseln",
           "paragraphs": [
-            "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung."
+            "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung.",
+            "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

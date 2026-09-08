@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "পূর্ববর্তী সেশনটি সঠিকভাবে শেষ হয়নি{value}।",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "ratio Lock নিয়ন্ত্রণটি আকার পরিবর্তনের সময় বর্তমান aspect ratio বজায় রাখতে দেয়।",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "reference photo target update থেকে বাদ দেওয়া হয়। Matching একটি শুরু করার পয়েন্ট, বিশেষ করে যখন photo-গুলোতে ভিন্ন subject বা framing থাকে।",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "ডান সাইডবারে Edit, Film, Crop, Remove, Masking, Info, History এবং Presets-এর জন্য আইকন বোতাম রয়েছে। কোনো আইকনের ওপর মাউস রাখলে তার নাম দেখা যাবে।",
     "The saved language preference could not be read.": "সংরক্ষিত ভাষা পছন্দ পড়া যায়নি।",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "টোন এবং রং পরিদর্শনের জন্য scope menu-তেও Waveform, RGB Parade, এবং Vectorscope আছে।",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "অনুসন্ধান বক্সটি ফাইলনাম, প্রদর্শিত নাম, কীওয়ার্ড, এবং উপলব্ধ ফটো-সূচি মেটাডেটার টেক্সটের সঙ্গে মেলে। এটি বর্তমান ফোল্ডার বা সংগ্রহের মধ্যে অনুসন্ধান করে এবং অন্যান্য সক্রিয় ফিল্টারের সঙ্গে একত্রিত হয়।",

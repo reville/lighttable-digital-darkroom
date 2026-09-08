@@ -209,7 +209,8 @@
         {
           "title": "Passa tra le viste",
           "paragraphs": [
-            "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata."
+            "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
+            "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

@@ -209,7 +209,8 @@
         {
           "title": "Przełączaj między widokami",
           "paragraphs": [
-            "Siatka zdjęć prezentuje zdjęcia jako wizualny przegląd. Siatka selekcji dodaje miejsce na informacje o wyborze i ocenie. Szczegóły otwierają aktywne zdjęcie do dokładnej inspekcji."
+            "Siatka zdjęć prezentuje zdjęcia jako wizualny przegląd. Siatka selekcji dodaje miejsce na informacje o wyborze i ocenie. Szczegóły otwierają aktywne zdjęcie do dokładnej inspekcji.",
+            "Prawy panel boczny używa przycisków z ikonami dla Edytuj, Film, Kadruj, Usuń, Maskowanie, Informacje, Historia i Presety. Najedź kursorem na ikonę, aby zobaczyć jej nazwę."
           ],
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

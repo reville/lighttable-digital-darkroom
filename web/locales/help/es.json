@@ -209,7 +209,8 @@
         {
           "title": "Mover entre vistas",
           "paragraphs": [
-            "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana."
+            "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
+            "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

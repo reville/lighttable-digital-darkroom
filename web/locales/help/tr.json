@@ -209,7 +209,8 @@
         {
           "title": "Görünümler arasında geçiş yap",
           "paragraphs": [
-            "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar."
+            "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar.",
+            "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -2907,5 +2908,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
 }

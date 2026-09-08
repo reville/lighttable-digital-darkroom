@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "Предыдущий сеанс завершился некорректно{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "Управление Блокировка соотношения позволяет сохранить текущие пропорции при изменении размера.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "Опорная фотография исключается из целевых обновлений. Совпадение — это отправная точка, особенно когда фотографии содержат разные объекты или кадрирование.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "Правая боковая панель использует кнопки-иконки для Редактировать, Пленка, Обрезка, Удалить, Маскирование, Инфо, История и Пресеты. Наведите указатель на значок, чтобы увидеть его название.",
     "The saved language preference could not be read.": "Не удалось прочитать сохраненные языковые настройки.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "В меню scope также доступны Waveform, RGB Parade и Vectorscope для проверки тона и цвета.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "Поле поиска сопоставляет текст в именах файлов, отображаемых именах, ключевых словах и доступных метаданных фото-индекса. Поиск выполняется в пределах текущей папки или коллекции и комбинируется с другими активными фильтрами.",

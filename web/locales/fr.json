@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
+  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2616,6 +2616,7 @@
     "The previous session did not end cleanly{value}.": "La session précédente ne s’est pas terminée correctement{value}.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.": "Le contrôle Verrouiller du ratio vous permet de conserver le rapport hauteur/largeur actuel pendant le redimensionnement.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.": "La photo de référence est exclue des mises à jour de la cible. La correspondance est un point de départ, surtout lorsque les photos contiennent des sujets ou des cadrages différents.",
+    "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.": "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
     "The saved language preference could not be read.": "La préférence de langue enregistrée n’a pas pu être lue.",
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "Le menu de la portée propose aussi Forme d’onde, Parade RGB et Vectorscope pour inspecter le ton et la couleur.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "Le champ de recherche correspond au texte des noms de fichiers, des noms affichés, des mots-clés et des métadonnées d’index photo disponibles. Il recherche dans le dossier ou la collection actuel(le) et se combine avec les autres filtres actifs.",
