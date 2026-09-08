@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI 映射",
           "paragraphs": [
-            "MIDI 支持取决于当前运行时中的 Web MIDI API。状态可显示为不可用、关、没有设备，或已连接设备数量。不可用表示此运行时无法使用 MIDI 控件。"
+            "MIDI 支持取决于当前运行时中的 Web MIDI API。状态可显示为不可用、关、没有设备，或已连接设备数量。不可用表示此运行时无法使用 MIDI 控件。",
+            "只有在您点击 MIDI 状态按钮或 MIDI 学习时，LightTable 才会请求 MIDI 访问。打开 LightTable 或“设置”、调整滑块以及重置映射都不会请求访问。重新加载后，请点击一个 MIDI 按钮以重新连接。"
           ],
           "steps": [
             "连接一个发送 Control Change 消息的 MIDI 控制器。",
-            "当可用 MIDI 时，打开键盘和 MIDI 控件并选择 MIDI Learn。",
+            "当 MIDI 可用时，打开“键盘和 MIDI 控制”，然后选择“MIDI 学习”。如果浏览器询问，请允许 MIDI 访问。",
             "点击要映射的调整滑块，然后转动旋钮或移动渐变器。",
             "查看映射消息，然后使用硬件控件调整滑块。",
             "使用 重置 MIDI 恢复默认映射。"
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

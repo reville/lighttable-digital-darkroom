@@ -2797,11 +2797,12 @@
         {
           "title": "Mappatura MIDI",
           "paragraphs": [
-            "Il supporto MIDI dipende dalla Web MIDI API nel runtime corrente. Lo stato può mostrare Non disponibile, Disattivato, Nessun dispositivo o il numero di dispositivi collegati. Non disponibile significa che questo runtime non può usare i controlli MIDI."
+            "Il supporto MIDI dipende dalla Web MIDI API nel runtime corrente. Lo stato può mostrare Non disponibile, Disattivato, Nessun dispositivo o il numero di dispositivi collegati. Non disponibile significa che questo runtime non può usare i controlli MIDI.",
+            "LightTable richiede l'accesso MIDI solo quando fai clic sul pulsante di stato MIDI o su Apprendimento MIDI. Aprire LightTable o Impostazioni, regolare i cursori e reimpostare le mappature non richiede l'accesso. Dopo un ricaricamento, fai clic su un pulsante MIDI per riconnetterti."
           ],
           "steps": [
             "Collega un controller MIDI che invii messaggi Control Change.",
-            "Quando MIDI è disponibile, apri i controlli Tastiera e MIDI e scegli Apprendimento MIDI.",
+            "Quando il MIDI è disponibile, apri Controlli da tastiera e MIDI e scegli Apprendimento MIDI. Consenti l'accesso MIDI se il browser lo richiede.",
             "Fai clic sul cursore di regolazione che vuoi mappare, poi ruota una manopola o muovi un fader.",
             "Controlla il messaggio di mappatura, quindi usa il controllo hardware per regolare il cursore.",
             "Usa Reimposta MIDI per ripristinare le mappature predefinite."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

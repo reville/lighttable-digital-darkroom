@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "LightTable 偏好設定",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable 會讀取您的照片資料庫，將原始相片複製到 LightTable 匯入資料夾。您的照片資料庫絕不會被變更。",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "當一個 RAW 與一個 JPEG 在同一來源與資料夾中具有相同的基礎檔名時，LightTable 會將它們識別為一組配對。每個檔案都有自己的編輯；虛擬複本彼此獨立。",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "只有在您點擊 MIDI 狀態按鈕或「MIDI 學習」時，LightTable 才會請求 MIDI 存取。打開 LightTable 或「設定」、調整滑桿，以及重設對應，都不會請求存取。重新載入後，請點擊 MIDI 按鈕以重新連線。",
     "LightTable resources were not found": "找不到 LightTable 資源",
     "LightTable saves separate copies in": "LightTable 會將獨立副本儲存在",
     "LightTable · lossless": "LightTable · 無損",
@@ -2884,7 +2885,7 @@
     "What the number represents": "數字代表什麼",
     "What the previews include": "預覽包含的內容",
     "What to open": "要打開的內容",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "當 MIDI 可用時，打開「鍵盤與 MIDI 控制」，然後選擇 MIDI Learn。",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "當 MIDI 可用時，打開「鍵盤和 MIDI 控制」，然後選擇「MIDI 學習」。如果瀏覽器要求，請允許 MIDI 存取。",
     "When a photo already has edits": "當相片已經有編輯時",
     "When a photo arrives": "當相片進來時",
     "When a photo seems missing": "當相片似乎遺失時",

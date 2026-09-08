@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "LightTable tercihleri",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable, orijinal fotoğrafları LightTable içe aktarma klasörünüze kopyalamak için Photos kütüphanenizi okur. Photos kütüphaneniz asla değiştirilmez.",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "LightTable, aynı kaynak ve klasörde aynı temel dosya adına sahip bir RAW ve bir JPEG olduğunda bunları eş olarak tanır. Her dosya kendi düzenlemelerini korur; sanal kopyalar bağımsız kalır.",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable yalnızca MIDI durum düğmesine veya MIDI Öğren’e tıkladığınızda MIDI erişimi ister. LightTable’ı veya Ayarlar’ı açmak, kaydırıcıları ayarlamak ve eşlemeleri sıfırlamak erişim istemez. Yeniden yükledikten sonra, yeniden bağlanmak için bir MIDI düğmesine tıklayın.",
     "LightTable resources were not found": "LightTable kaynakları bulunamadı",
     "LightTable saves separate copies in": "LightTable ayrı kopyaları şurada kaydeder",
     "LightTable · lossless": "LightTable · kayıpsız",
@@ -2884,7 +2885,7 @@
     "What the number represents": "Numaranın neyi temsil ettiği",
     "What the previews include": "Önizlemelerin neleri içerdiği",
     "What to open": "Neyin açılacağı",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "MIDI kullanılabildiğinde, Klavye ve MIDI denetimlerini açın ve MIDI Öğren’i seçin.",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "MIDI kullanılabilir olduğunda, Klavye ve MIDI kontrolleri’ni açın ve MIDI Öğren’i seçin. Tarayıcınız isterse MIDI erişimine izin verin.",
     "When a photo already has edits": "Bir fotoğrafın zaten düzenlemeleri varsa",
     "When a photo arrives": "Bir fotoğraf geldiğinde",
     "When a photo seems missing": "Bir fotoğraf eksik görünüyorsa",

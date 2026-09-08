@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "Tùy chọn LightTable",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable đọc thư viện Photos của bạn để sao chép ảnh gốc vào thư mục nhập LightTable của bạn. Thư viện Photos của bạn không bao giờ bị thay đổi.",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "LightTable nhận diện một cặp khi một RAW và một JPEG có cùng tên tệp cơ sở trong cùng nguồn và thư mục. Mỗi tệp giữ các chỉnh sửa riêng của nó; các bản sao ảo vẫn độc lập.",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable chỉ yêu cầu truy cập MIDI khi bạn bấm nút trạng thái MIDI hoặc MIDI Learn. Việc mở LightTable hoặc Cài đặt, điều chỉnh thanh trượt và đặt lại ánh xạ không yêu cầu truy cập. Sau khi tải lại, hãy bấm một nút MIDI để kết nối lại.",
     "LightTable resources were not found": "Không tìm thấy tài nguyên LightTable",
     "LightTable saves separate copies in": "LightTable lưu các bản sao riêng trong",
     "LightTable · lossless": "LightTable · không mất dữ liệu",
@@ -2884,7 +2885,7 @@
     "What the number represents": "Con số này biểu thị điều gì",
     "What the previews include": "Nội dung bao gồm trong bản xem trước",
     "What to open": "Điều cần mở",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "Khi MIDI khả dụng, mở các điều khiển Bàn phím và MIDI và chọn MIDI Learn.",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Khi MIDI khả dụng, hãy mở Điều khiển bàn phím và MIDI và chọn MIDI Learn. Cho phép truy cập MIDI nếu trình duyệt của bạn hỏi.",
     "When a photo already has edits": "Khi một ảnh đã có chỉnh sửa",
     "When a photo arrives": "Khi một ảnh được nhập vào",
     "When a photo seems missing": "Khi một ảnh có vẻ bị thiếu",

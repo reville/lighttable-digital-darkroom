@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "LightTable পছন্দসমূহ",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable আপনার Photos লাইব্রেরি পড়ে মূল ফটোগুলোকে আপনার LightTable import folder-এ কপি করে। আপনার Photos লাইব্রেরি কখনোই পরিবর্তিত হয় না।",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "একই source এবং folder-এ একটি RAW ও একটি JPEG একই base filename ভাগ করলে LightTable তাদের pair হিসেবে চিনে। প্রতিটি file-এর edit আলাদা থাকে; virtual copy-গুলো স্বাধীন থাকে।",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "আপনি MIDI স্ট্যাটাস বোতাম বা MIDI শিখুন-এ ক্লিক করলে তবেই LightTable MIDI অ্যাক্সেস অনুরোধ করে। LightTable বা সেটিংস খোলা, স্লাইডার সামঞ্জস্য করা, এবং ম্যাপিং রিসেট করা অ্যাক্সেস অনুরোধ করে না। পুনরায় লোডের পরে, পুনরায় সংযোগ করতে একটি MIDI বোতামে ক্লিক করুন।",
     "LightTable resources were not found": "LightTable সম্পদ পাওয়া যায়নি",
     "LightTable saves separate copies in": "LightTable আলাদা কপি সংরক্ষণ করে",
     "LightTable · lossless": "LightTable · লসলেস",
@@ -2884,7 +2885,7 @@
     "What the number represents": "সংখ্যাটি কী বোঝায়",
     "What the previews include": "পূর্বরূপে কী অন্তর্ভুক্ত আছে",
     "What to open": "কী খুলবেন",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "MIDI উপলভ্য থাকলে, Keyboard এবং MIDI controls খুলুন এবং MIDI Learn বেছে নিন।",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "MIDI উপলভ্য থাকলে, কীবোর্ড এবং MIDI নিয়ন্ত্রণসমূহ খুলুন এবং MIDI শিখুন বেছে নিন। আপনার ব্রাউজার অনুরোধ করলে MIDI অ্যাক্সেস অনুমতি দিন।",
     "When a photo already has edits": "যখন কোনো ফোটোতে ইতিমধ্যে সম্পাদনা আছে",
     "When a photo arrives": "যখন একটি ফটো আসে",
     "When a photo seems missing": "যখন কোনো ফটো অনুপস্থিত মনে হয়",

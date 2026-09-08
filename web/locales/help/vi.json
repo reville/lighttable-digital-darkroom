@@ -2797,11 +2797,12 @@
         {
           "title": "Ánh xạ MIDI",
           "paragraphs": [
-            "Hỗ trợ MIDI phụ thuộc vào Web MIDI API trong runtime hiện tại. Trạng thái có thể hiển thị Unavailable, Off, No devices, hoặc số lượng thiết bị đã kết nối. Unavailable nghĩa là runtime này không thể dùng các điều khiển MIDI."
+            "Hỗ trợ MIDI phụ thuộc vào Web MIDI API trong runtime hiện tại. Trạng thái có thể hiển thị Unavailable, Off, No devices, hoặc số lượng thiết bị đã kết nối. Unavailable nghĩa là runtime này không thể dùng các điều khiển MIDI.",
+            "LightTable chỉ yêu cầu truy cập MIDI khi bạn bấm nút trạng thái MIDI hoặc MIDI Learn. Việc mở LightTable hoặc Cài đặt, điều chỉnh thanh trượt và đặt lại ánh xạ không yêu cầu truy cập. Sau khi tải lại, hãy bấm một nút MIDI để kết nối lại."
           ],
           "steps": [
             "Kết nối một bộ điều khiển MIDI gửi thông điệp Control Change.",
-            "Khi MIDI khả dụng, mở các điều khiển Bàn phím và MIDI và chọn MIDI Learn.",
+            "Khi MIDI khả dụng, hãy mở Điều khiển bàn phím và MIDI và chọn MIDI Learn. Cho phép truy cập MIDI nếu trình duyệt của bạn hỏi.",
             "Nhấp vào thanh trượt điều chỉnh bạn muốn ánh xạ, rồi xoay một núm xoay hoặc di chuyển một thanh trượt.",
             "Kiểm tra thông báo ánh xạ, rồi dùng điều khiển phần cứng để điều chỉnh thanh trượt.",
             "Dùng Đặt lại MIDI để khôi phục các ánh xạ mặc định."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

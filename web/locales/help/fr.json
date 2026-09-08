@@ -2797,11 +2797,12 @@
         {
           "title": "Mappage MIDI",
           "paragraphs": [
-            "La prise en charge MIDI dépend de l’API Web MIDI dans l’environnement d’exécution actuel. L’état peut afficher Indisponible, Désactivé, Aucun périphérique ou un nombre de périphériques connectés. Indisponible signifie que cet environnement ne peut pas utiliser les contrôles MIDI."
+            "La prise en charge MIDI dépend de l’API Web MIDI dans l’environnement d’exécution actuel. L’état peut afficher Indisponible, Désactivé, Aucun périphérique ou un nombre de périphériques connectés. Indisponible signifie que cet environnement ne peut pas utiliser les contrôles MIDI.",
+            "LightTable demande l’accès MIDI uniquement lorsque vous cliquez sur le bouton d’état MIDI ou sur Apprentissage MIDI. Ouvrir LightTable ou Réglages, ajuster les curseurs et réinitialiser les mappages ne demande pas d’accès. Après un rechargement, cliquez sur un bouton MIDI pour vous reconnecter."
           ],
           "steps": [
             "Connectez un contrôleur MIDI qui envoie des messages de changement de contrôle.",
-            "Lorsque MIDI est disponible, ouvrez les contrôles Clavier et MIDI et choisissez Apprentissage MIDI.",
+            "Lorsque le MIDI est disponible, ouvrez Commandes clavier et MIDI et choisissez Apprentissage MIDI. Autorisez l’accès MIDI si votre navigateur le demande.",
             "Cliquez sur le curseur d’ajustement que vous souhaitez mapper, puis tournez un bouton ou déplacez un curseur.",
             "Vérifiez le message de mappage, puis utilisez le contrôle matériel pour ajuster le curseur.",
             "Utiliser Réinitialiser MIDI pour restaurer les mappages par défaut."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI मैपिंग",
           "paragraphs": [
-            "MIDI समर्थन वर्तमान runtime में Web MIDI API पर निर्भर करता है। स्थिति Unavailable, Off, No devices, या connected device count दिखा सकती है। Unavailable का अर्थ है कि यह runtime MIDI नियंत्रणों का उपयोग नहीं कर सकता।"
+            "MIDI समर्थन वर्तमान runtime में Web MIDI API पर निर्भर करता है। स्थिति Unavailable, Off, No devices, या connected device count दिखा सकती है। Unavailable का अर्थ है कि यह runtime MIDI नियंत्रणों का उपयोग नहीं कर सकता।",
+            "LightTable केवल तभी MIDI एक्सेस का अनुरोध करता है जब आप MIDI स्थिति बटन या MIDI सीखें पर क्लिक करते हैं। LightTable या सेटिंग्स खोलना, स्लाइडर समायोजित करना, और मैपिंग रीसेट करना एक्सेस का अनुरोध नहीं करते। पुनः लोड करने के बाद, फिर से कनेक्ट करने के लिए किसी MIDI बटन पर क्लिक करें।"
           ],
           "steps": [
             "Control Change संदेश भेजने वाला MIDI नियंत्रक जोड़ें।",
-            "जब MIDI उपलब्ध हो, Keyboard और MIDI controls खोलें और MIDI Learn चुनें।",
+            "जब MIDI उपलब्ध हो, तो कीबोर्ड और MIDI नियंत्रण खोलें और MIDI सीखें चुनें। अगर आपका ब्राउज़र MIDI एक्सेस मांगे, तो अनुमति दें।",
             "जिस adjustment slider को आप map करना चाहते हैं, उस पर क्लिक करें, फिर कोई knob घुमाएँ या कोई fader चलाएँ।",
             "mapping संदेश जाँचें, फिर slider समायोजित करने के लिए hardware control का उपयोग करें।",
             "डिफ़ॉल्ट मैपिंग बहाल करने के लिए Reset MIDI का उपयोग करें।"
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "hi",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

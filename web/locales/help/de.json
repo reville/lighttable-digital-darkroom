@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI-Zuordnung",
           "paragraphs": [
-            "Die MIDI-Unterstützung hängt von der Web-MIDI-API in der aktuellen Laufzeitumgebung ab. Der Status kann Nicht verfügbar, Aus, Keine Geräte oder eine verbundene Geräteanzahl anzeigen. Nicht verfügbar bedeutet, dass diese Laufzeitumgebung die MIDI-Steuerungen nicht verwenden kann."
+            "Die MIDI-Unterstützung hängt von der Web-MIDI-API in der aktuellen Laufzeitumgebung ab. Der Status kann Nicht verfügbar, Aus, Keine Geräte oder eine verbundene Geräteanzahl anzeigen. Nicht verfügbar bedeutet, dass diese Laufzeitumgebung die MIDI-Steuerungen nicht verwenden kann.",
+            "LightTable fordert MIDI-Zugriff nur an, wenn Sie auf die MIDI-Status-Schaltfläche oder MIDI lernen klicken. Das Öffnen von LightTable oder Einstellungen, das Anpassen von Schiebereglern und das Zurücksetzen von Zuordnungen erfordern keinen Zugriff. Nach einem Neuladen klicken Sie auf eine MIDI-Schaltfläche, um erneut zu verbinden."
           ],
           "steps": [
             "Schließen Sie einen MIDI-Controller an, der Control-Change-Meldungen sendet.",
-            "Wenn MIDI verfügbar ist, öffnen Sie die Steuerelemente für Tastatur und MIDI und wählen Sie MIDI Learn.",
+            "Wenn MIDI verfügbar ist, öffnen Sie Tastatur- und MIDI-Steuerungen und wählen Sie MIDI lernen. Erlauben Sie den MIDI-Zugriff, wenn Ihr Browser Sie dazu auffordert.",
             "Klicken Sie auf den gewünschten Anpassungsregler, den Sie zuordnen möchten, und drehen Sie dann einen Regler oder bewegen Sie einen Schieberegler.",
             "Prüfen Sie die Zuordnungsnachricht und verwenden Sie dann das Hardware-Bedienelement, um den Regler anzupassen.",
             "Reset MIDI verwenden, um die Standardzuordnungen wiederherzustellen."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

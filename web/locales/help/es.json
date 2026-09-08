@@ -2797,11 +2797,12 @@
         {
           "title": "Asignación MIDI",
           "paragraphs": [
-            "La compatibilidad MIDI depende de la API Web MIDI en el entorno de ejecución actual. El estado puede mostrar No disponible, Desactivado, Sin dispositivos o un recuento de dispositivos conectados. No disponible significa que este entorno no puede usar los controles MIDI."
+            "La compatibilidad MIDI depende de la API Web MIDI en el entorno de ejecución actual. El estado puede mostrar No disponible, Desactivado, Sin dispositivos o un recuento de dispositivos conectados. No disponible significa que este entorno no puede usar los controles MIDI.",
+            "LightTable solicita acceso a MIDI solo cuando haces clic en el botón de estado de MIDI o en Aprender MIDI. Abrir LightTable o Configuración, ajustar deslizadores y restablecer asignaciones no solicita acceso. Después de recargar, haz clic en un botón de MIDI para reconectar."
           ],
           "steps": [
             "Conecta un controlador MIDI que envíe mensajes de Cambio de control.",
-            "Cuando MIDI esté disponible, abre los controles de Teclado y MIDI y elige Aprendizaje MIDI.",
+            "Cuando MIDI esté disponible, abre Controles de teclado y MIDI y elige Aprender MIDI. Permite el acceso a MIDI si tu navegador lo solicita.",
             "Haz clic en el deslizador de ajuste que quieras asignar y luego gira una perilla o mueve un atenuador.",
             "Comprueba el mensaje de asignación y luego usa el control de hardware para ajustar el deslizador.",
             "Use Restablecer MIDI para restaurar las asignaciones predeterminadas."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

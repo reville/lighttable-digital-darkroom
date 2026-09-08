@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "LightTable-Einstellungen",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable liest deine Fotos-Mediathek, um Originalfotos in deinen LightTable-Importordner zu kopieren. Deine Fotos-Mediathek wird dabei niemals geändert.",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "LightTable erkennt ein Paar, wenn eine RAW- und eine JPEG-Datei im selben Quellordner denselben Basis-Dateinamen haben. Jede Datei behält ihre eigenen Bearbeitungen; virtuelle Kopien bleiben unabhängig.",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable fordert MIDI-Zugriff nur an, wenn Sie auf die MIDI-Status-Schaltfläche oder MIDI lernen klicken. Das Öffnen von LightTable oder Einstellungen, das Anpassen von Schiebereglern und das Zurücksetzen von Zuordnungen erfordern keinen Zugriff. Nach einem Neuladen klicken Sie auf eine MIDI-Schaltfläche, um erneut zu verbinden.",
     "LightTable resources were not found": "LightTable-Ressourcen wurden nicht gefunden",
     "LightTable saves separate copies in": "LightTable speichert separate Kopien in",
     "LightTable · lossless": "LightTable · verlustfrei",
@@ -2884,7 +2885,7 @@
     "What the number represents": "Wofür die Zahl steht",
     "What the previews include": "Was die Vorschaubilder enthalten",
     "What to open": "Was geöffnet werden soll",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "Wenn MIDI verfügbar ist, öffnen Sie die Steuerelemente für Tastatur und MIDI und wählen Sie MIDI Learn.",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Wenn MIDI verfügbar ist, öffnen Sie Tastatur- und MIDI-Steuerungen und wählen Sie MIDI lernen. Erlauben Sie den MIDI-Zugriff, wenn Ihr Browser Sie dazu auffordert.",
     "When a photo already has edits": "Wenn ein Foto bereits Bearbeitungen hat",
     "When a photo arrives": "Wenn ein Foto eintrifft",
     "When a photo seems missing": "Wenn ein Foto fehlt",
