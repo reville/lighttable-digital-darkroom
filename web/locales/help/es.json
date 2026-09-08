@@ -3027,6 +3027,7 @@
           "title": "Compruebe qué ha terminado de renderizarse",
           "paragraphs": [
             "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
+            "Al cambiar de foto con el zoom ampliado, LightTable muestra inmediatamente una vista previa compatible en caché, si está disponible. Los detalles más nítidos se cargan en segundo plano y las fotos cercanas se precargan para tu nivel de zoom.",
             "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
             "Quitar, Corregir, Clonar y las máscaras con Textura o Claridad necesitan una actualización adicional de la vista previa. Espere a que termine la vista previa antes de juzgar su detalle o el efecto de los ajustes posteriores.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
 }

@@ -3027,6 +3027,7 @@
           "title": "Periksa apa yang telah selesai dirender",
           "paragraphs": [
             "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
+            "Saat beralih foto dalam tampilan diperbesar, LightTable langsung menampilkan pratinjau cache yang sesuai jika tersedia. Detail yang lebih tajam dimuat di latar belakang, dan foto di sekitarnya dimuat terlebih dahulu sesuai tingkat zoom Anda.",
             "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
             "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
 }

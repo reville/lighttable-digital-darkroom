@@ -2970,6 +2970,7 @@
           "title": "Check what has finished rendering",
           "paragraphs": [
             "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.",
+            "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.",
             "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.",
             "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
             "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments.",

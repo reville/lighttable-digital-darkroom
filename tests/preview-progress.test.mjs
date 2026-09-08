@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { gradeBakeRequest, gradeBakeKey } from '../web/preview-processing.js';
 import { previewFailureMessage } from '../web/preview-detail.js';
 import { createFrameScheduler } from '../web/render-scheduler.js';
+import { createPresentationCache, renderRequestKey } from '../web/presentation-cache.js';
 
 import { createPreviewProgress, waitForRawRefinement } from '../web/preview-progress.js';
 import {t as tr, tn as trn} from '../web/i18n.js';
@@ -85,12 +86,12 @@ test('animation defers detail rendering until the final viewport settles', () =>
   assert.equal(renders[0].background, true);
 });
 
-test('navigation opens at requested detail while editing retains its responsive small pass', () => {
+test('navigation chooses its cached first frame while editing retains its responsive small pass', () => {
   const { context: app, timer, renders } = zoomHarness();
   app.S.renderState = 'pending';
   app.scheduleProgressiveRender(0); timer.advance(0);
   assert.equal(renders[0].width, 3000);
-  assert.equal(renders[0].phase, 'settled');
+  assert.equal(renders[0].phase, 'navigation');
   app.S.renderState = 'ready';
   app.scheduleProgressiveRender(0); timer.advance(0);
   assert.equal(renders[1].width, 1100);
@@ -189,7 +190,7 @@ function renderHarness(overrides = {}) {
       setAttribute(key, value) { this[key] = value; } }); return nodes.get(id); },
     readControls: noop, viewFrameScheduler: { flush: noop }, requestedPreviewWidth: () => 2200,
     requestedViewportRegion: () => null, nativePreviewActive: () => false,
-    renderRequestKey: () => 'key', presentationCache: { get: noop, set: noop },
+    renderRequestKey: () => 'key', presentationCache: { get: noop, set: noop, findPreview: noop },
     previewGeometryKey: noop, shouldPreservePresentationGeometry: () => true,
     previewProgress: { start: label => progress.push(label), advance: noop, finish: () => progress.push('done') },
     waitForRawRefinement: options => waitForRawRefinement({ ...options, sleep: async () => {} }),
@@ -375,4 +376,49 @@ test('full-size rendering stays silent after an interactive preview is displayed
   assert.equal(app.progress.filter(value => value !== 'done').length, 1, 'full size is background work');
   app.finishPaint(); await tick();
   assert.equal(app.progress.at(-1), 'done');
+});
+
+test('navigation paints a matching cached preview before its larger background request', async () => {
+  const cache = createPresentationCache(), image = {name: 'photo.dng'};
+  const recipe = {params: {profile_enabled: true}, optics: {}, heals: [], engine: 'rs', native: false};
+  cache.set(renderRequestKey(image, {...recipe, w: 1400}), {img: 'accurate-small'});
+  let app;
+  app = renderHarness({
+    cur: () => image, renderRequestKey, presentationCache: cache,
+    api: async (_path, body) => {app.requests.push(body); return {img: 'accurate-large'};},
+    setBaseImage: async m => {
+      app.displays.push(m.img);
+      return {presentedAt: performance.now(), uploadedAt: performance.now()};
+    },
+  });
+  app.S.renderState = 'pending'; app.S.presentedPhotoName = 'previous.dng';
+  await app.render(0, {width: 2200, requestedWidth: 2200, phase: 'navigation'});
+  assert.deepEqual(app.displays, ['accurate-small']);
+  assert.equal(app.requests.length, 0, 'cached first frame must not wait for HTTP');
+  assert.equal(app.progress.at(-1), 'done');
+  app.runScheduled(); await tick();
+  assert.deepEqual(app.displays, ['accurate-small', 'accurate-large']);
+  assert.equal(app.requests[0].w, 2200);
+  assert.equal(app.requests[0].allow_draft, false);
+  assert.equal(app.progress.filter(value => value !== 'done').length, 1);
+});
+
+test('cold navigation requests accurate small pixels and warm full-size navigation does not downgrade', async () => {
+  for (const cachedWidth of [null, 2200, 3000]) {
+    const cache = createPresentationCache(), image = {name: 'photo.dng'};
+    const recipe = {params: {profile_enabled: true}, optics: {}, heals: [], engine: 'rs', native: false};
+    if (cachedWidth) cache.set(renderRequestKey(image, {...recipe, w: cachedWidth}), {img: 'warm'});
+    let app;
+    app = renderHarness({
+      cur: () => image, renderRequestKey, presentationCache: cache,
+      api: async (_path, body) => {app.requests.push(body); return {};},
+      setBaseImage: async () => ({presentedAt: performance.now(), uploadedAt: performance.now()}),
+    });
+    app.S.renderState = 'pending';
+    await app.render(0, {width: 2200, requestedWidth: 2200, phase: 'navigation'});
+    assert.equal(app.PERF.renders[0].width, cachedWidth || 1100);
+    assert.equal(app.requests.length, cachedWidth ? 0 : 1);
+    if (!cachedWidth) assert.equal(app.requests[0].allow_draft, false);
+    else assert.equal(app.PERF.renders[0].phase, 'settled');
+  }
 });
