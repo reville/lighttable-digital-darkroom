@@ -13,7 +13,7 @@ export function localToolLabel(type) {
 }
 
 export const LOCAL_GRADE_DEFAULTS = Object.freeze({
-  exposure: 0, contrast: 0, highlights: 0, shadows: 0,
+  exposure: 0, contrast: 0, highlights: 0, shadows: 0, whites: 0, blacks: 0,
   temp: 0, tint: 0, saturation: 0, texture: 0, clarity: 0,
 });
 
@@ -45,7 +45,9 @@ export function normalizeMasks(raw) {
       return {
         size: clamp(+(stroke?.size ?? 0.08), 0.005, 0.5),
         feather: clamp(+(stroke?.feather ?? 0.65), 0, 1),
-        flow: clamp(+(stroke?.flow ?? 1), 0.05, 1), points,
+        flow: clamp(+(stroke?.flow ?? 1), 0.01, 1), points,
+        ...(stroke?.buildUp ? {buildUp: true, density: clamp(+(stroke.density ?? 1), 0.01, 1),
+          ...(stroke.edgeMask ? {edgeMask: {...stroke.edgeMask}} : {})} : {}),
       };
     }).filter((stroke) => stroke.points.length);
   return (Array.isArray(raw) ? raw : []).slice(0, MAX_MASKS).map((mask, index) => {
@@ -69,6 +71,9 @@ export function normalizeMasks(raw) {
       } else if (type === 'radial') {
         component.center = Array.isArray(source?.center) ? source.center : [0.5, 0.5];
         component.radius = clamp(+(source?.radius ?? 0.25), 0.01, 1.5);
+        component.radiusX = clamp(+(source?.radiusX ?? component.radius), 0.01, 1.5);
+        component.radiusY = clamp(+(source?.radiusY ?? component.radius), 0.01, 1.5);
+        component.angle = clamp(+(source?.angle ?? 0), -180, 180);
         component.feather = clamp(+(source?.feather ?? 0.65), 0, 1);
       } else {
         component.bitmap = {
@@ -117,6 +122,8 @@ export function normalizeMasks(raw) {
       result.start = primary.start; result.end = primary.end;
     } else if (type === 'radial') {
       result.center = primary.center; result.radius = primary.radius;
+      result.radiusX = primary.radiusX; result.radiusY = primary.radiusY;
+      result.angle = primary.angle;
       result.feather = primary.feather;
     } else {
       result.bitmap = primary.bitmap; result.provider = primary.provider;
