@@ -224,6 +224,7 @@
           "paragraphs": [
             "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
+            "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
             "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
+  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
 }

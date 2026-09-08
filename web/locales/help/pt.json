@@ -224,6 +224,7 @@
           "paragraphs": [
             "A Grade de fotos apresenta as fotos como uma visão geral visual. A Grade de seleção adiciona espaço para informações de seleção e avaliação. Detalhe abre a foto ativa para inspeção de perto.",
             "A barra lateral direita usa botões de ícone para Editar, Filme, Cortar, Remover, Máscaras, Informações, Histórico e Predefinições. Passe o mouse sobre um ícone para ver o nome dele.",
+            "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
             "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
+  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
 }

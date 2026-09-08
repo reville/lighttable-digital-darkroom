@@ -224,6 +224,7 @@
           "paragraphs": [
             "Siatka zdjęć prezentuje zdjęcia jako wizualny przegląd. Siatka selekcji dodaje miejsce na informacje o wyborze i ocenie. Szczegóły otwierają aktywne zdjęcie do dokładnej inspekcji.",
             "Prawy panel boczny używa przycisków z ikonami dla Edytuj, Film, Kadruj, Usuń, Maskowanie, Informacje, Historia i Presety. Najedź kursorem na ikonę, aby zobaczyć jej nazwę.",
+            "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
             "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
+  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
 }
