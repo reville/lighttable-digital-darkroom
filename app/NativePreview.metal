@@ -135,9 +135,18 @@ float3 sampleEditedSource(texture2d<float> image, texture2d<float> fallback, sam
                           float2 texel, float redCyan, float blueYellow) {
     float radiusSquared = 0.0;
     float2 dimensions = float2(image.get_width(), image.get_height()) / grade.sourceRegion.xy;
+    float2 edge = 0.5 / dimensions;
+    // Upscaled display pixels can lie outside the source's outermost centres.
+    // Replicate those output edges before applying the optical mapping.
+    outputCoordinate = clamp(outputCoordinate, edge, 1.0 - edge);
     float2 coordinate = manualSourceCoordinate(
         outputCoordinate, grade, dimensions, radiusSquared);
-    if (any(coordinate < 0.0) || any(coordinate > 1.0)) return 0.0;
+    // scipy's constant-border interpolation accepts pixel centres, not the
+    // half-pixel strip outside them. Allow only floating-point roundoff so
+    // identity mapping keeps its outermost pixels.
+    float2 roundoff = 0.0001 / dimensions;
+    if (any(coordinate < edge - roundoff) ||
+        any(coordinate > 1.0 - edge + roundoff)) return 0.0;
     float3 color = sampleSource(
         image, fallback, linearSampler, coordinate, texel, redCyan, blueYellow, grade.sourceRegion);
     if (grade.optics1.y != 0.0) {

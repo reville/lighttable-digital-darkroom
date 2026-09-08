@@ -1,7 +1,6 @@
 """Check the real application UI against its CPU CLI rendering endpoint."""
 from __future__ import annotations
 import json
-import math
 import os
 from pathlib import Path
 import shutil
@@ -15,6 +14,7 @@ import urllib.request
 import numpy as np
 from PIL import Image
 from processing_support import compare_images, target_rgb8, run_browser
+from processing_edit_cases import edit_sources, edit_cases
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -29,6 +29,8 @@ def run(output_dir):
     photos.mkdir(exist_ok=True)
     Image.fromarray(target_rgb8()).save(photos / 'a.png')
     Image.fromarray(target_rgb8(96, 128)).save(photos / 'b.png')
+    for name, pixels in edit_sources().items():
+        Image.fromarray(pixels).save(photos / f'edit-{name}.png')
     with socket.socket() as listener:
         listener.bind(('127.0.0.1', 0))
         port = listener.getsockname()[1]
@@ -45,10 +47,22 @@ def run(output_dir):
         {'name':'navigate-portrait', 'params':{**params, 'profile_enabled':False}, 'exposure':0.3, 'photo':1},
         {'name':'return-landscape', 'params':{**params, 'profile_enabled':False}, 'exposure':-0.2},
     ]
+    for case in edit_cases():
+        cases.append({**case, 'edits': True, 'photoName': f"edit-{case['fixture']}.png",
+                      'params': {**params, 'profile_enabled': False}})
+    cases.extend([
+        {'name': 'masked-global-slider', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False}, 'grade': {'exposure': .4},
+         'masks': edit_cases()[0]['masks'], 'sliderExposure': .8},
+        {'name': 'clear-last-detail-mask', 'edits': True, 'photoName': 'edit-flat.png',
+         'params': {**params, 'profile_enabled': False}, 'grade': {'exposure': .8},
+         'masks': edit_cases()[0]['masks'], 'clearMasks': True},
+    ])
     for case in cases:
         case.update(raw=str(output / f"{case['name']}.rgba"),
                     reference=str(output / f"{case['name']}-cli.png"),
                     display=str(output / f"{case['name']}-display.png"),
+                    displayReference=str(output / f"{case['name']}-display-reference.png"),
                     screenshot=str(output / f"{case['name']}-app.png"))
     module = find_playwright_module()
     if not module or not shutil.which('node'):
@@ -85,7 +99,7 @@ def run(output_dir):
                     raise RuntimeError('Isolated application server exited; see server.log')
                 try:
                     with urllib.request.urlopen(base + '/api/images', timeout=2) as response:
-                        if len(json.load(response).get('images', [])) == 2:
+                        if len(json.load(response).get('images', [])) == 6:
                             break
                 except (OSError, ValueError):
                     pass
@@ -109,18 +123,11 @@ def run(output_dir):
                       screenshot=case['screenshot'], grade=frame['grade'])
         records.append(record)
         display = np.asarray(Image.open(case['display']).convert('RGB')).astype(float) / 255
-        # CSS canvas presentation scales the rendered RGB8 image bilinearly.
-        bounds = frame['bounds']
-        width, height = round(bounds['width']), round(bounds['height'])
-        # Element screenshots round their clip outward. A fractional canvas
-        # origin can include a row/column of background outside the photo.
-        # Compare the rasterized photo rectangle computed from DOM geometry;
-        # no image registration or data-dependent border trimming is used.
-        x = math.floor(bounds['x'] + 0.5) - math.floor(bounds['x'])
-        y = math.floor(bounds['y'] + 0.5) - math.floor(bounds['y'])
-        display = display[y:y+height, x:x+width]
-        expected_display = np.asarray(Image.fromarray(actual[::-1, :, :3]).resize(
-            (width, height), Image.Resampling.BILINEAR)).astype(float) / 255
+        # The reference page displays the readback bytes at exactly the app's
+        # DOM bounds, including fractional boundary coverage. No image fitting,
+        # border trimming, or per-case tolerance is used. Processing correctness
+        # is independently scored against the CLI before this presentation gate.
+        expected_display = np.asarray(Image.open(case['displayReference']).convert('RGB')).astype(float) / 255
         records.append(compare_images(case['name'] + '-visible-canvas', expected_display,
                                       display, output / 'display'))
     return {'records':records, 'coverage':'Full browser app, server, UI slider/save, navigation, CLI pixel parity'}
