@@ -2665,7 +2665,6 @@ $('editOverlay').addEventListener('pointerleave', () => {
 /* ------------------------------------------------------------ film render */
 const previewProgress = createPreviewProgress((progress) => {
   S.previewProgress = progress;
-  $('zoomwrap').setAttribute('aria-busy', String(progress.active));
   syncPreviewDetailStatus();
 });
 
@@ -2683,8 +2682,15 @@ function syncPreviewDetailStatus() {
   const detailLabel = previewDetailLabel({ ...detail, state: S.renderState,
     source: Math.max(+image?.width || 0, +image?.height || 0), actual: S.zoomMode === '100' });
   const progress = S.previewProgress;
-  const label = progress?.visible ? progress.label : progress?.active ? '' : detailLabel;
-  $('previewDetailStatus').textContent = image ? label : '';
+  const label = progress?.visible ? progress.label : '';
+  $('previewDetailLabel').textContent = image ? label : '';
+  const working = Boolean(progress?.visible && progress?.active);
+  $('previewProgressCount').hidden = !working;
+  $('previewProgressCount').textContent = `${progress?.completed || 0} / 5`;
+  $('previewProgressTrack').hidden = !working;
+  $('previewProgressTrack').setAttribute('aria-valuenow', String(progress?.completed || 0));
+  $('previewProgressTrack').setAttribute('aria-valuetext', `${progress?.completed || 0} of 5 stages complete`);
+  $('previewProgressFill').style.width = `${(progress?.completed || 0) * 20}%`;
   $('previewDetailStatus').hidden = !image || !label;
   $('previewDetailStatus').classList.toggle('working', Boolean(progress?.visible && progress?.active));
   $('zoom1').title = detailLabel || 'View actual pixels (100%) to assess sharpness and noise';
@@ -2693,8 +2699,13 @@ function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
   S.renderState = state;
   S.renderName = name || null;
-  if (state === 'pending') previewProgress.start('Loading preview…');
-  else if (state === 'empty') previewProgress.finish({ immediate: true });
+  if (state === 'pending') {
+    previewProgress.start('Loading preview…');
+    $('zoomwrap').setAttribute('aria-busy', 'true');
+  } else if (state === 'empty') {
+    previewProgress.finish();
+    $('zoomwrap').setAttribute('aria-busy', 'false');
+  }
   syncPreviewDetailStatus();
   if (state === 'ready') {
     S.hasPresentedImage = true;
@@ -3348,9 +3359,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
-  previewProgress.start(phase === 'refinement' ? 'Finishing RAW preview…'
-    : phase === 'settled' && S.presentedPhotoName === im.name ? 'Updating preview detail…'
-    : S.params.profile_enabled ? 'Applying film…' : 'Loading preview…');
+  $('zoomwrap').setAttribute('aria-busy', 'true');
+  if (!options.background) previewProgress.start(
+    S.params.profile_enabled ? 'Applying film…' : 'Loading preview…', my);
   try {
     const request = {
       name: im.name, params: S.params, w, engine: $('engine').value,
@@ -3380,13 +3391,15 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     }
     if (my !== S.seq) return;
     if (m.cancelled) {
-      previewProgress.finish({ immediate: true });
+      previewProgress.finish();
+      $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = '';
       $('rstat').className = '';
       return;
     }
     if (m.error) {
-      previewProgress.finish({ error: 'Could not render preview' });
+      if (!options.background) previewProgress.finish({ error: 'Could not render preview' });
+      $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = 'error: ' + m.error;
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
@@ -3394,6 +3407,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       return;
     }
+    previewProgress.advance(4, my);
     if (Number.isFinite(m.match) && m.match > 0) S.matchFactor = m.match;
     if (Object.prototype.hasOwnProperty.call(m, 'lens_profile')) {
       S.lensProfile = m.lens_profile;
@@ -3422,7 +3436,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         return doRender(scheduledAt, { ...options, skipPresentationCache: true });
       }
       if (imageTiming.failed) {
-        previewProgress.finish({ error: 'Could not display preview' });
+        if (!options.background) previewProgress.finish({ error: 'Could not display preview' });
+        $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || 'preview unavailable';
         $('rstat').className = '';
         setRenderPresentation('error', im.name, 'Could not display this photo');
@@ -3438,6 +3453,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     const paintedAt = keepAccuratePixels ? performance.now()
       : (imageTiming.presentedAt || await afterVisiblePaint());
     if (my !== S.seq) return;
+    // A usable preview is on screen. Higher resolution and RAW refinement are
+    // background work and must not keep or restart the overlay.
+    previewProgress.finish();
     imageTiming ||= {
       decodeMs: 0, uploadMs: 0, uploadedAt: paintedAt, presentation: 'draft-skipped',
     };
@@ -3482,7 +3500,6 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
     $('rstat').className = '';
     if (phase === 'interactive' && w !== requestedWidth) {
-      previewProgress.start(m.refining ? 'Preparing RAW detail…' : 'Updating preview detail…');
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3494,14 +3511,13 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
           doRender(scheduledAt, {
             width: requestedWidth,
             requestedWidth,
-            phase: 'settled',
+            phase: 'settled', background: true,
           });
         }
       };
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
     } else if (m.refining) {
-      previewProgress.start('Refining RAW detail…');
       const refinementRequest = { name: im.name, params: { ...request.params },
         w, client: CLIENT_ID, generation: my };
       const ready = await waitForRawRefinement({
@@ -3509,9 +3525,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         isCurrent: () => my === S.seq && cur()?.name === im.name,
       });
       if (ready) return doRender(scheduledAt, {
-        width: w, requestedWidth, phase: 'refinement',
+        width: w, requestedWidth, phase: 'refinement', background: true,
       });
-    } else previewProgress.finish();
+    } else $('zoomwrap').setAttribute('aria-busy', 'false');
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
     const failedAt = performance.now();
@@ -3533,7 +3549,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my === S.seq) {
-      previewProgress.finish({ error: 'Could not finish preview' });
+      if (!options.background) previewProgress.finish({ error: 'Could not finish preview' });
+      $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = failure.error || 'Could not finish preview';
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
@@ -10914,6 +10931,11 @@ UI_BRIDGE = installUIBridge({
   report: uiStateReport,
   execute: executeUICommand,
   handlers: {
+    'preview.progress': record => {
+      if (record.client === CLIENT_ID && record.generation === S.seq && record.name === cur()?.name) {
+        previewProgress.advance(record.completed, record.generation);
+      }
+    },
     job: record => MASK_BATCH?.update(record),
     state: (event) => applyServerStateEvent(event).catch(() => {}),
     library: () => reloadLibrary(),
