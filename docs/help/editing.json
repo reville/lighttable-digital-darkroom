@@ -127,7 +127,7 @@
     ],
     "related": ["editing-tone", "editing-color-grading", "editing-presets"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<button class=\"curveCh on\" data-ch=\"L\">RGB</button>"},
+      {"path": "web/index.html", "anchor": "<button class=\"curveCh on\" data-ch=\"L\""},
       {"path": "web/app.js", "anchor": "(function curveEvents()"},
       {"path": "web/app.js", "anchor": "if (i > 0 && i < pts.length - 1)"},
       {"path": "web/app.js", "anchor": "handles for editing while drawing the exact table until the first edit."}
@@ -241,7 +241,7 @@
     ],
     "related": ["editing-detail-effects-enhance", "editing-lens-corrections", "editing-masks-brush-gradients", "editing-tone"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<summary><span>Effects</span><a class=\"reset\" href=\"#\" data-reset=\"effects\">Reset</a></summary>"},
+      {"path": "web/index.html", "anchor": "<summary><span>Effects</span><a class=\"reset\" href=\"#\" data-reset=\"effects\""},
       {"path": "grade.py", "anchor": "\"texture\": 0.0,      # -1..1, one-pixel local detail"},
       {"path": "grade.py", "anchor": "\"clarity\": 0.0,      # -1..1, midtone-weighted local contrast"},
       {"path": "grade.py", "anchor": "haze = g[\"dehaze\"] * 0.12"},
