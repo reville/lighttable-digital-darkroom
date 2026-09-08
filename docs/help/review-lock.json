@@ -13,7 +13,7 @@
         "app/main.swift": "ec487fdb0d68017913475c18585f18ad23aa6e074e174b85b34fe43f752e6bfd",
         "web/first-run.js": "d3e3cc68759c3c7634b44c9edf562b2ae163120ae6255c38941222fa33eeebda",
         "web/index.html": "0f8c0b6536da698b76787142ad9ffd5a241fa57550ddd64bd4e212e2413dac13",
-        "windows-shell/src/main.rs": "cf752bd27fe02d1be3aec96fd8b745dbe83be209788d4ef6ab0a40cc0b6a1525"
+        "windows-shell/src/main.rs": "4b25a775c2d4a9bc18f228a385bfc5f23f56f12b186095014e3f5e0be3a71643"
       }
     },
     "assisted-culling": {
@@ -261,7 +261,7 @@
       "sources": {
         "web/app.js": "7219ddb14ecd6b74345dce8e3e7b7f63740b899e79f9e643afe31cf6e6603f91",
         "web/index.html": "0f8c0b6536da698b76787142ad9ffd5a241fa57550ddd64bd4e212e2413dac13",
-        "windows-shell/src/main.rs": "cf752bd27fe02d1be3aec96fd8b745dbe83be209788d4ef6ab0a40cc0b6a1525"
+        "windows-shell/src/main.rs": "4b25a775c2d4a9bc18f228a385bfc5f23f56f12b186095014e3f5e0be3a71643"
       }
     },
     "film-exposure-and-processing": {
@@ -434,7 +434,7 @@
         "web/index.html": "0f8c0b6536da698b76787142ad9ffd5a241fa57550ddd64bd4e212e2413dac13",
         "web/linux-layout.css": "885ae0e7ad37cd2af4feb2d94739c405a498dcd62ee95bf38cf5ff7d39a57ae5",
         "web/settings.js": "39c88aaf28a99972e4d78605a72e6cf4b3c3383d47204df1f625a763adc3c9f8",
-        "windows-shell/src/main.rs": "cf752bd27fe02d1be3aec96fd8b745dbe83be209788d4ef6ab0a40cc0b6a1525"
+        "windows-shell/src/main.rs": "4b25a775c2d4a9bc18f228a385bfc5f23f56f12b186095014e3f5e0be3a71643"
       }
     },
     "settings-language": {
@@ -485,7 +485,7 @@
         "app/main.swift": "ec487fdb0d68017913475c18585f18ad23aa6e074e174b85b34fe43f752e6bfd",
         "server.py": "76d03f6739a3684dff459ebc0aa1e6dd69f6d97544b570a15e225d2244ac00da",
         "web/app.js": "7219ddb14ecd6b74345dce8e3e7b7f63740b899e79f9e643afe31cf6e6603f91",
-        "windows-shell/src/main.rs": "cf752bd27fe02d1be3aec96fd8b745dbe83be209788d4ef6ab0a40cc0b6a1525"
+        "windows-shell/src/main.rs": "4b25a775c2d4a9bc18f228a385bfc5f23f56f12b186095014e3f5e0be3a71643"
       }
     },
     "views-and-selection": {

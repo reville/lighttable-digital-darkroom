@@ -1,7 +1,7 @@
 # Generated from a verified local Linux bundle; no AUR or remote release is assumed.
 pkgname=lighttable-bin
 pkgver=@PKGVER@
-pkgrel=1
+pkgrel=@PKGREL@
 pkgdesc=@DESCRIPTION@
 arch=(@ARCH@)
 url='https://github.com/reville/lighttable-digital-darkroom'
@@ -16,11 +16,11 @@ provides=("lighttable=$pkgver")
 conflicts=('lighttable')
 # Preserve the exact Python and native binaries that passed bundle validation.
 options=('!strip' '!debug')
-source=(@ARCHIVE@ 'org.lighttable.LightTable.desktop')
+source=(@ARCHIVE@ 'app.lighttable.LightTable.desktop')
 sha256sums=(@ARCHIVE_SHA@ @DESKTOP_SHA@)
 
 check() {
-  desktop-file-validate "$srcdir/org.lighttable.LightTable.desktop"
+  desktop-file-validate "$srcdir/app.lighttable.LightTable.desktop"
   test -x "$srcdir/LightTable/bin/lighttable-desktop-shell"
   test -x "$srcdir/LightTable/Python/bin/python3"
 }
@@ -34,10 +34,10 @@ package() {
   chmod -R a+rX "$pkgdir/opt/lighttable"
   ln -s /opt/lighttable/bin/lighttable "$pkgdir/usr/bin/lighttable"
   ln -s /opt/lighttable/bin/lighttable-desktop "$pkgdir/usr/bin/lighttable-desktop"
-  install -Dm644 "$srcdir/org.lighttable.LightTable.desktop" \
-    "$pkgdir/usr/share/applications/org.lighttable.LightTable.desktop"
+  install -Dm644 "$srcdir/app.lighttable.LightTable.desktop" \
+    "$pkgdir/usr/share/applications/app.lighttable.LightTable.desktop"
   install -Dm644 "$srcdir/LightTable/share/icons/lighttable.png" \
-    "$pkgdir/usr/share/icons/hicolor/1024x1024/apps/org.lighttable.LightTable.png"
+    "$pkgdir/usr/share/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png"
   install -Dm644 "$srcdir/LightTable/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 "$srcdir/LightTable/THIRD_PARTY_NOTICES.md" \
     "$pkgdir/usr/share/licenses/$pkgname/THIRD_PARTY_NOTICES.md"
