@@ -1,41 +1,36 @@
-// One visible status spans draft, RAW decode, and final presentation. Quick
-// cache hits stay silent; closely spaced stages never flash the badge off/on.
+// Count completed work for the preview being presented. Background detail
+// renders never start this indicator, and presentation hides it immediately.
 export function createPreviewProgress(publish, {
-  now = () => performance.now(), schedule = setTimeout, cancel = clearTimeout,
-  showDelay = 150, minimumVisible = 400, hideDelay = 140,
+  schedule = setTimeout, cancel = clearTimeout, showDelay = 150,
 } = {}) {
-  let showTimer = null, hideTimer = null, shownAt = 0;
-  let state = { active: false, visible: false, label: '' };
+  let showTimer = null;
+  let state = { active: false, visible: false, label: '', completed: 0, generation: null };
   const emit = () => publish({ ...state });
   return {
-    start(label) {
-      cancel(hideTimer);
-      hideTimer = null;
-      state = { ...state, active: true, label };
+    start(label, generation = null) {
+      state = { ...state, active: true, label, completed: 0, generation };
       if (!state.visible && showTimer === null) {
         showTimer = schedule(() => {
           showTimer = null;
-          shownAt = now();
           state.visible = true;
           emit();
         }, showDelay);
       }
       emit();
     },
-    finish({ immediate = false, error = '' } = {}) {
-      cancel(showTimer);
-      cancel(hideTimer);
-      showTimer = hideTimer = null;
-      state.active = false;
-      const hide = () => {
-        hideTimer = null;
-        state = { active: false, visible: Boolean(error), label: error };
-        emit();
-      };
-      if (error || immediate || !state.visible) return hide();
-      state.label = 'Preview ready';
+    advance(completed, generation) {
+      if (!state.active || generation !== state.generation || !Number.isInteger(completed)) return;
+      completed = Math.min(4, completed);
+      if (completed <= state.completed) return;
+      state.completed = completed;
       emit();
-      hideTimer = schedule(hide, Math.max(hideDelay, minimumVisible - (now() - shownAt)));
+    },
+    finish({ error = '' } = {}) {
+      cancel(showTimer);
+      showTimer = null;
+      state = { active: false, visible: Boolean(error), label: error,
+        completed: 0, generation: null };
+      emit();
     },
   };
 }

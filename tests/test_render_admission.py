@@ -23,6 +23,25 @@ class ResidentAdmissionTests(unittest.TestCase):
         self.stack.enter_context(mock.patch.object(server, "guard_local_photo"))
         self.client = server.RustEngineClient(None)
 
+    def test_progress_reports_worker_stages_and_drops_stale_generations(self):
+        process = mock.Mock(stdin=io.StringIO(), stdout=io.StringIO())
+        with (
+            mock.patch.object(self.client, "_start", return_value=process),
+            mock.patch.object(self.client, "_readline", return_value='{"ok":true}'),
+            mock.patch.object(server, "_render_preview", side_effect=lambda *args: self.client.render({})),
+            mock.patch.object(server.EVENTS, "publish") as publish,
+        ):
+            server.render_preview("photo.jpg", {}, 1100, "rs", "window", 1)
+            self.assertEqual([call.args[1]["completed"] for call in publish.call_args_list], [1, 2, 3])
+            self.assertTrue(all(call.args[0] == "preview.progress" and
+                call.args[1]["generation"] == 1 and call.args[1]["client"] == "window"
+                for call in publish.call_args_list))
+            publish.reset_mock()
+            server.LATEST_GENERATION["window"] = 2
+            server.publish_preview_progress("window", 1, "photo.jpg", 4)
+            server.publish_preview_progress("window", "invalid", "photo.jpg", 4)
+            publish.assert_not_called()
+
     def wait_for_waiters(self, count):
         with self.gate._condition:
             self.assertTrue(self.gate._condition.wait_for(
