@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -25,6 +26,7 @@ CHANNEL_ARTIFACTS = {
     "scoop": "LightTable-{version}-windows-x64.zip",
     "winget": "LightTable-{version}-windows-x64-setup.exe",
     "chocolatey": "LightTable-{version}-windows-x64-setup.exe",
+    "aur": "LightTable-{version}-linux-x86_64.tar.gz",
 }
 
 
@@ -229,7 +231,8 @@ if ($installLocation) {
 
 def generate(version: str, artifacts_dir: Path, channels: list[str] | None = None,
              license_name: str | None = None, license_url: str | None = None,
-             require_license_acceptance: bool = False) -> dict[str, str]:
+             require_license_acceptance: bool = False,
+             source_revision: str | None = None) -> dict[str, str]:
     version = release_version(version)
     validate_license(license_name, license_url)
     if not artifacts_dir.is_dir():
@@ -251,6 +254,8 @@ def generate(version: str, artifacts_dir: Path, channels: list[str] | None = Non
         raise ValueError("Chocolatey requires --license-url")
     if "scoop" in channels:
         validate_portable_archive(artifacts_dir / names["scoop"])
+    if "aur" in channels and not source_revision:
+        raise ValueError("AUR manifests require --source-revision for the exact release commit")
     hashes = {name: digest(artifacts_dir / name) for name in sorted(set(names.values()))
               if (artifacts_dir / name).exists()}
     # Include optional Sparkle release files when CI has placed them beside installers.
@@ -267,8 +272,19 @@ def generate(version: str, artifacts_dir: Path, channels: list[str] | None = Non
             output.update(scoop(*args, license_name, license_url))
         elif channel == "winget":
             output.update(winget(*args, license_name, license_url))
-        else:
+        elif channel == "chocolatey":
             output.update(chocolatey(*args, license_url, require_license_acceptance))
+        elif channel == "aur":
+            spec = importlib.util.spec_from_file_location(
+                "lighttable_aur_package", Path(__file__).parent / "linux/make-aur-package.py")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            with tempfile.TemporaryDirectory(prefix="lighttable-aur-manifest-") as temporary:
+                directory = Path(temporary) / "recipe"
+                module.generate(artifacts_dir / name, directory, version=version,
+                                source_revision=source_revision)
+                for item in sorted(directory.iterdir()):
+                    output["aur/lighttable-bin/" + item.name] = item.read_text(encoding="utf-8")
     output["SHA256SUMS"] = "".join(f"{hashes[name]}  {name}\n" for name in sorted(hashes))
     return output
 
@@ -282,12 +298,13 @@ def main() -> int:
                         help="default: all channels whose release artifact is present")
     parser.add_argument("--license", dest="license_name", help="chosen license name or SPDX identifier")
     parser.add_argument("--license-url", help="public HTTPS page with the chosen license")
+    parser.add_argument("--source-revision", help="exact full source commit required for Linux release manifests")
     parser.add_argument("--require-license-acceptance", action="store_true",
                         help="set the Chocolatey license acceptance metadata")
     args = parser.parse_args()
     try:
         output = generate(args.version, args.artifacts_dir, args.channels, args.license_name,
-                          args.license_url, args.require_license_acceptance)
+                          args.license_url, args.require_license_acceptance, args.source_revision)
         if args.output_dir.exists() and (not args.output_dir.is_dir() or any(args.output_dir.iterdir())):
             raise ValueError("output directory must be new or empty; use a fresh directory for each release")
         if args.output_dir.is_symlink():

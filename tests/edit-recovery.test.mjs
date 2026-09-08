@@ -24,14 +24,18 @@ test('a fresh recovery instance restores the complete draft and isolates catalog
   assert.deepEqual(await createEditRecovery({scope: '/catalog/two', storage}).list(), []);
 });
 
-test('late acknowledgements cannot delete newer changes and failed saves survive restart', async () => {
+test('late acknowledgements cannot delete newer changes and failed saves survive restart', {timeout: 5000}, async () => {
   const storage = memoryStorage();
   const journal = createEditRecovery({scope: '/catalog', storage});
   let complete; let calls = 0;
+  let started;
+  const firstSend = new Promise(resolve => { started = resolve; });
   const queue = createEditSaveQueue({journal, send: () => ++calls === 1
-    ? new Promise(resolve => { complete = resolve; }) : Promise.reject(new Error('server stopped'))});
+    ? new Promise(resolve => { complete = resolve; started(); }) : Promise.reject(new Error('server stopped'))});
   queue.enqueue('a.RAW', payload(1), {immediate: true});
-  for (let i = 0; i < 10 && !complete; i++) await settle();
+  // WebCrypto may finish after many event-loop turns on a busy CI runner.
+  // Wait for the observable send instead of assuming a fixed number of turns.
+  await firstSend;
   queue.enqueue('a.RAW', payload(2)); await settle();
   complete();
   await assert.rejects(queue.flush(), /Could not save/);
