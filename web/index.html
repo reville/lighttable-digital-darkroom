@@ -177,7 +177,10 @@
     <div class="editor" id="editor">
       <div class="stage">
         <div class="zoomwrap" id="zoomwrap">
-          <span class="preview-detail-status" id="previewDetailStatus" role="status" aria-live="polite" hidden></span>
+          <span class="preview-detail-status" id="previewDetailStatus" role="status" aria-live="polite" hidden>
+            <span id="previewDetailLabel"></span><span id="previewProgressCount" hidden></span>
+            <span class="preview-progress-track" id="previewProgressTrack" role="progressbar" aria-label="Preview processing stages" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" hidden><span id="previewProgressFill"></span></span>
+          </span>
           <div class="cmp" id="cmp" style="--pos:0%; --clip:100%">
             <canvas id="cv"></canvas>
             <img id="orig" alt="Original photograph">
