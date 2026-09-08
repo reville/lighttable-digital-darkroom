@@ -2180,7 +2180,8 @@
         {
           "title": "Começar com um filme",
           "paragraphs": [
-            "Filme aplica um processo modelado de filme e saída a uma foto estática. O controle do perfil de Filme controla esse processamento; seus ajustes de Editar permanecem ativos quando você desliga Filme."
+            "Filme aplica um processo modelado de filme e saída a uma foto estática. O controle do perfil de Filme controla esse processamento; seus ajustes de Editar permanecem ativos quando você desliga Filme.",
+            "Redefinir em Simulação realista de filme restaura os valores padrão de todos os controles deslizantes de Filme. Redefinir em uma seção afeta apenas os controles deslizantes dessa seção. Os interruptores e as opções selecionadas permanecem como estão."
           ],
           "steps": [
             "Abra uma foto estática e selecione Filme na barra de ferramentas para abrir a Simulação realista de filme.",
@@ -3077,5 +3078,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2303,9 +2303,6 @@
     "Reset sharpening and noise reduction adjustments": "শার্পেনিং এবং নয়েজ হ্রাস সমন্বয়গুলো রিসেট করুন",
     "Reset the RAW profile and capture-stage processing settings": "RAW প্রোফাইল এবং capture-stage প্রসেসিং সেটিংস রিসেট করুন",
     "Reset the combined RGB and individual channel curves": "সমন্বিত RGB এবং পৃথক চ্যানেল কার্ভসমূহ রিসেট করুন",
-    "Reset the film profile and physical film stages for this photo": "এই ফটোর জন্য ফিল্ম প্রোফাইল এবং ভৌত ফিল্ম স্টেজগুলো রিসেট করুন",
-    "Reset the film profile, stock, output, and capture settings": "ফিল্ম প্রোফাইল, stock, output, এবং capture সেটিংস রিসেট করুন",
-    "Reset the physical film stage controls to their defaults": "ভৌত ফিল্ম স্টেজ নিয়ন্ত্রণগুলো তাদের ডিফল্টে রিসেট করুন",
     "Reset this slider": "এই স্লাইডার রিসেট করুন",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "হোয়াইট ব্যালান্স, Vibrance, Saturation, Color Mixer, Point Color, এবং Color Grading রিসেট করুন",
     "Reset {value}": "{value} রিসেট করুন",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের"
+    "☆ Favorites": "☆ পছন্দের",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "বাস্তবসম্মত ফিল্ম সিমুলেশনে রিসেট করলে সব ফিল্ম স্লাইডার তাদের ডিফল্ট মানে ফিরে যায়। কোনো বিভাগের রিসেট শুধু সেই বিভাগের স্লাইডারগুলিকে বদলায়। সুইচ ও নির্বাচিত বিকল্পগুলি অপরিবর্তিত থাকে।",
+    "Reset sliders to their defaults": "স্লাইডারগুলিকে ডিফল্ট মানে ফিরিয়ে আনুন"
   },
   "plurals": {
     " · {count} paired file linked": {

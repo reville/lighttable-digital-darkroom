@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2303,9 +2303,6 @@
     "Reset sharpening and noise reduction adjustments": "Schärfen und Rauschreduzierung zurücksetzen",
     "Reset the RAW profile and capture-stage processing settings": "RAW-Profil und Verarbeitungs-Einstellungen der Aufnahmestufe zurücksetzen",
     "Reset the combined RGB and individual channel curves": "Die kombinierten RGB- und Einzelkanal-Kurven zurücksetzen",
-    "Reset the film profile and physical film stages for this photo": "Filmprofil und physische Filmstufen für dieses Foto zurücksetzen",
-    "Reset the film profile, stock, output, and capture settings": "Filmprofil, Film, Ausgabe- und Aufnahmeeinstellungen zurücksetzen",
-    "Reset the physical film stage controls to their defaults": "Die physischen Steuerelemente der Filmstufe auf ihre Standardwerte zurücksetzen",
     "Reset this slider": "Diesen Schieberegler zurücksetzen",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Weißabgleich, Dynamik, Sättigung, Farbmischer, Punktfarbe und Color Grading zurücksetzen",
     "Reset {value}": "{value} zurücksetzen",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Zurück",
     "← Back to articles": "← Zurück zu Artikeln",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favoriten"
+    "☆ Favorites": "☆ Favoriten",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Zurücksetzen in Realistische Filmsimulation setzt alle Film-Schieberegler auf ihre Standardwerte zurück. Zurücksetzen in einem Abschnitt betrifft nur dessen Schieberegler. Schalter und ausgewählte Optionen bleiben unverändert.",
+    "Reset sliders to their defaults": "Schieberegler auf Standardwerte zurücksetzen"
   },
   "plurals": {
     " · {count} paired file linked": {

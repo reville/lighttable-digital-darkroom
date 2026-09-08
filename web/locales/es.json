@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2303,9 +2303,6 @@
     "Reset sharpening and noise reduction adjustments": "Restablece los ajustes de enfoque y reducción de ruido",
     "Reset the RAW profile and capture-stage processing settings": "Restablece el perfil RAW y la configuración de procesamiento de la etapa de captura",
     "Reset the combined RGB and individual channel curves": "Restablece las curvas RGB combinadas y las de cada canal",
-    "Reset the film profile and physical film stages for this photo": "Restablece el perfil de película y las etapas físicas de película para esta foto",
-    "Reset the film profile, stock, output, and capture settings": "Restablece el perfil de película, stock, salida y captura",
-    "Reset the physical film stage controls to their defaults": "Restablece los controles físicos de la etapa de película a sus valores predeterminados",
     "Reset this slider": "Restablecer este deslizador",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Restablecer el balance de blancos, Vibrance, Saturación, Mezclador de color, Color puntual y Gradación de color",
     "Reset {value}": "Restablecer {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Atrás",
     "← Back to articles": "← Volver a los artículos",
     "← People": "← Personas",
-    "☆ Favorites": "☆ Favoritos"
+    "☆ Favorites": "☆ Favoritos",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Restablecer en Simulación de película realista devuelve todos los deslizadores de Película a sus valores predeterminados. Restablecer en una sección solo afecta a los deslizadores de esa sección. Los interruptores y las opciones seleccionadas se mantienen.",
+    "Reset sliders to their defaults": "Restablecer los valores predeterminados de los deslizadores"
   },
   "plurals": {
     " · {count} paired file linked": {
