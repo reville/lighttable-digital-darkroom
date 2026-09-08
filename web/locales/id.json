@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Jika pemulihan lokal menemukan perubahan yang belum terselesaikan saat pustaka dibuka, Recover unsaved edits? menampilkan foto yang terpengaruh. Restore edits mengganti pengaturan tersimpan dengan pengaturan yang dipulihkan. Keep saved edits mempertahankan versi katalog dan membuang draf pemulihan tersebut.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Jika masker tidak dapat dipindahkan, salin lagi dengan Local masks tidak dicentang untuk menerapkan grup lainnya.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Jika aplikasi Mac ditutup tanpa keluar yang bersih, laporan diagnostik akan terbuka saat Anda meluncurkannya berikutnya. Jika mesin rendering berhenti tak terduga, laporan dapat terbuka saat mesin pulih. Laporan muncul sekali untuk setiap insiden yang tercatat; Tutup memungkinkan Anda melanjutkan. Menutup aplikasi secara normal atau memulai ulang layanan rendering-nya tidak akan membuat laporan.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Jika pilihan penggunaan pertama di Mac tidak dapat disimpan, Coba Lagi mempertahankan pilihan dan mencoba lagi. Aplikasi hanya dimulai setelah penyimpanan berhasil.",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "Atur ulang semua channel Pencampur Warna",
     "Reset crop, rotation, flips, and perspective": "Atur ulang pangkas, rotasi, balik, dan perspektif",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Atur ulang nada global, warna, kurva, penajaman, pengurangan noise, dan efek",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Atur Ulang di Simulasi Film yang Realistis mengembalikan semua penggeser Film ke nilai bawaannya. Atur Ulang dalam suatu bagian hanya memengaruhi penggeser di bagian tersebut. Sakelar dan opsi yang dipilih tetap seperti semula.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Atur ulang koreksi profil lensa, distorsi, vignetting, dan aberasi kromatik",
     "Reset sharpening and noise reduction adjustments": "Atur ulang penyesuaian penajaman dan pengurangan noise",
-    "Reset sliders to their defaults": "Kembalikan penggeser ke nilai bawaan",
     "Reset the RAW profile and capture-stage processing settings": "Atur ulang profil RAW dan pengaturan pemrosesan tahap tangkap",
     "Reset the combined RGB and individual channel curves": "Atur ulang kurva RGB gabungan dan kurva tiap kanal",
     "Reset this slider": "Atur ulang penggeser ini",
@@ -2435,7 +2432,7 @@
     "Search": "Cari",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Pencarian mencakup judul artikel, nama alat, dan seluruh instruksi. Pilih Semua topik untuk mencari di seluruh aplikasi.",
     "Search film stocks": "Cari stok film",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Cari nama stok, gunakan Previous atau Next untuk menelusuri, lalu pilih pratinjau untuk menerapkannya.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Cari nama film atau gulir pratinjau, lalu pilih salah satu untuk menerapkannya. Pratinjau diperbesar dan dipotong agar detail lebih terlihat.",
     "Search help": "Cari bantuan",
     "Search index: {value}": "Indeks pencarian: {value}",
     "Search objects, scenes, text, and faces": "Cari objek, adegan, teks, dan wajah",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "{value}% dipertahankan",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Nama mencerminkan file yang ada dan dapat berubah sebelum ekspor.",
     "{value}× stock baseline": "{value}× baseline stok",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} dari {stocksLength} stok",
     "— none —": "— tidak ada —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” memiliki penyempurnaan yang dicat. Buat ulang di foto ini atau kecualikan masker.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” memerlukan pemilihan objek baru. Kecualikan masker untuk menempel penyuntingan lain.",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ Kembali",
     "← Back to articles": "← Kembali ke artikel",
     "← People": "← Orang",
-    "☆ Favorites": "☆ Favorit"
+    "☆ Favorites": "☆ Favorit",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi.",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Atur Ulang di Simulasi Film yang Realistis mengembalikan semua penggeser Film ke nilai bawaannya. Atur Ulang dalam suatu bagian hanya memengaruhi penggeser di bagian tersebut. Sakelar dan opsi yang dipilih tetap seperti semula.",
+    "Reset sliders to their defaults": "Kembalikan penggeser ke nilai bawaan"
   },
   "plurals": {
     " · {count} paired file linked": {

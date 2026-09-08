@@ -2186,7 +2186,7 @@
             "Öffnen Sie ein Standbild und wählen Sie Film in der Werkzeugleiste, um Realistic Film Simulation zu öffnen.",
             "Schalten Sie den Filmprofil-Schalter ein. Physische Filmstufen wird automatisch geöffnet; Sie können es danach einklappen.",
             "Wählen Sie Film, oder klicken Sie auf Filmvorschauen auf diesem Foto…, um gerenderte Beispiele zu vergleichen.",
-            "Suchen Sie nach einem Filmnamen, verwenden Sie Previous oder Next zum Durchblättern und wählen Sie dann eine Vorschau zum Anwenden aus."
+            "Suchen Sie nach einem Filmnamen oder scrollen Sie durch die Vorschauen. Wählen Sie eine Vorschau aus, um den Film anzuwenden. Die Vorschauen sind vergrößert und zugeschnitten, damit mehr Details sichtbar sind."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

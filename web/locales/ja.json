@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "ライブラリを開いたときに local recovery が未解決の変更を見つけた場合、Recover unsaved edits? に影響を受ける写真が一覧表示されます。Restore edits は、保存済み設定を復元された設定で置き換えます。Keep saved edits はカタログ版を保持し、それらの復元ドラフトを破棄します。",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "マスクを転送できない場合は、Local masks のチェックを外して再度コピーし、他のグループを適用します。",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "必要に応じて Lens profile の別の項目を選び、補正を元画像と比較します。",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "元画像の寸法を取得できない場合、ズーム率は — と表示され、1:1 は無効になります。Auto は引き続き画面に合わせてプレビューを調整します。フォルダを再スキャンして寸法を更新してください。",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1ボタンのツールチップに、プレビューのピクセルサイズがソースより小さいと表示されている場合、それはより小さく配信されたプレビューを表示しています。自動解像度は表示に合わせて、ズーム表示時の要求を増やします。非常に大きいソースは、プレビュー要求の上限を超えることがあります。",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac アプリが正常に終了せずに閉じた場合、次回起動時に診断レポートが開きます。レンダリングエンジンが予期せず停止した場合は、エンジンの復旧中にレポートが開くことがあります。レポートは記録された各インシデントにつき1回表示されます。「閉じる」で続行できます。通常どおりアプリを閉じた場合やレンダリングサービスを再起動した場合は、レポートは作成されません。",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac の初回使用時の選択が保存できない場合、［再試行］で選択を保持したまま再試行します。アプリは保存が成功してから起動します。",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "すべてのカラーミキサーチャンネルをリセット",
     "Reset crop, rotation, flips, and perspective": "トリミング、回転、反転、パースをリセットします",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "全体のトーン、カラー、カーブ、シャープ化、ノイズ除去、効果をリセットします",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「リアルなフィルムシミュレーション」の「リセット」は、すべてのフィルムスライダーを初期値に戻します。各セクションの「リセット」は、そのセクションのスライダーだけに適用されます。スイッチと選択済みの項目は変更されません。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "レンズプロファイル、歪み、ビネット、色収差の補正をリセット",
     "Reset sharpening and noise reduction adjustments": "シャープ化とノイズ除去の調整をリセットします",
-    "Reset sliders to their defaults": "スライダーを初期値に戻す",
     "Reset the RAW profile and capture-stage processing settings": "RAWプロファイルとキャプチャ段階の処理設定をリセットします",
     "Reset the combined RGB and individual channel curves": "結合RGBカーブと各チャンネルのカーブをリセットします",
     "Reset this slider": "このスライダーをリセット",
@@ -2435,7 +2432,7 @@
     "Search": "検索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "検索は記事タイトル、ツール名、および全手順を対象にします。アプリ全体を検索するには［すべてのトピック］を選択してください。",
     "Search film stocks": "フィルムストックを検索",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ストック名を検索し、Previous または Next で参照してから、適用するプレビューを選びます。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "フィルム名を検索するか、プレビューをスクロールして、適用するものを選びます。細部が見やすいように、プレビューは拡大してトリミングされます。",
     "Search help": "ヘルプを検索",
     "Search index: {value}": "検索インデックス: {value}",
     "Search objects, scenes, text, and faces": "オブジェクト、シーン、テキスト、顔を検索します",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "{value}% を保持",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名前は既存ファイルに基づいており、書き出し前に変更される場合があります。",
     "{value}× stock baseline": "{value}× ストック基準",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} 個のストック中 {value}–{value2}",
     "— none —": "— なし —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "「{value}」には塗りの調整があります。この写真で再作成するか、除外マスクを使ってください。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "「{value}」には新しいオブジェクト選択が必要です。ほかの編集を貼り付けるには除外マスクを使ってください。",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り"
+    "☆ Favorites": "☆ お気に入り",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "元画像の寸法を取得できない場合、ズーム率は — と表示され、1:1 は無効になります。Auto は引き続き画面に合わせてプレビューを調整します。フォルダを再スキャンして寸法を更新してください。",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「リアルなフィルムシミュレーション」の「リセット」は、すべてのフィルムスライダーを初期値に戻します。各セクションの「リセット」は、そのセクションのスライダーだけに適用されます。スイッチと選択済みの項目は変更されません。",
+    "Reset sliders to their defaults": "スライダーを初期値に戻す"
   },
   "plurals": {
     " · {count} paired file linked": {

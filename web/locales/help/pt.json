@@ -2186,7 +2186,7 @@
             "Abra uma foto estática e selecione Filme na barra de ferramentas para abrir a Simulação realista de filme.",
             "Ative o interruptor do perfil de Filme. Etapas físicas do filme abre automaticamente; você pode recolhê-lo depois.",
             "Escolha Filme, ou clique em Visualizar filmes desta foto… para comparar exemplos renderizados.",
-            "Pesquise pelo nome de um stock de filme, use Previous ou Next para navegar e, depois, escolha uma pré-visualização para aplicá-lo."
+            "Pesquise o nome de um filme ou percorra as pré-visualizações e escolha uma para aplicá-la. As pré-visualizações são ampliadas e recortadas para mostrar mais detalhes."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

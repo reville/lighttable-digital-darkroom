@@ -264,17 +264,17 @@
       "content": "7e395ef5e25bfefb2dd6fa21a8cd0be4cf096a07263f501b2d59fd321fa5cb46",
       "sources": {
         "web/app.js": "8eb61bfb048fb452344f00b93c01776535bdc118ee84fd10ad5eb898cd64dd31",
-        "web/film-browser.js": "1d88928077cd76ccd50ab1b6aacd805b497ba3efdcc879aeff46221e01f1b1ee",
+        "web/film-browser.js": "cc629356b6297b1997b39decff0dbf3641c5aaa97e4e9276cb2944b091dbcb6a",
         "web/index.html": "43b416d9fd60b54ec676ff84f9e19965556ad657c59cc8b713126b54564c5f5f"
       }
     },
     "film-getting-started": {
-      "content": "70bd13d24e964d52009e03410300ba5fd467a50900c104edea2af77342329947",
+      "content": "bb9afd4156a69958a54fa6388e60c60e593771424ed63ba01e9878d75be1e576",
       "sources": {
         "web/app.js": "8eb61bfb048fb452344f00b93c01776535bdc118ee84fd10ad5eb898cd64dd31",
-        "web/film-browser.js": "1d88928077cd76ccd50ab1b6aacd805b497ba3efdcc879aeff46221e01f1b1ee",
+        "web/film-browser.js": "cc629356b6297b1997b39decff0dbf3641c5aaa97e4e9276cb2944b091dbcb6a",
         "web/index.html": "43b416d9fd60b54ec676ff84f9e19965556ad657c59cc8b713126b54564c5f5f",
-        "web/style.css": "676f1f7b905c64c8a1fe617ea47f6b74ac767c5dfb22669319b5f0cbd5d6f599"
+        "web/style.css": "bdd83666d3341b9a1a42fd08cae0aa640a9730bcdae33aa9ac26a6bbd04d465d"
       }
     },
     "film-grain-and-format": {
@@ -297,7 +297,7 @@
       "sources": {
         "film_pipeline.py": "be93b10e510c5c185a939df32b4f346b3a426d811fcaf05391afcc8e3c8a0279",
         "web/app.js": "8eb61bfb048fb452344f00b93c01776535bdc118ee84fd10ad5eb898cd64dd31",
-        "web/film-browser.js": "1d88928077cd76ccd50ab1b6aacd805b497ba3efdcc879aeff46221e01f1b1ee",
+        "web/film-browser.js": "cc629356b6297b1997b39decff0dbf3641c5aaa97e4e9276cb2944b091dbcb6a",
         "web/index.html": "43b416d9fd60b54ec676ff84f9e19965556ad657c59cc8b713126b54564c5f5f"
       }
     },
@@ -378,7 +378,7 @@
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "ca6fb45f461c7cf13f6d16b08898fa885f7b428967a92ca2b43c464121104f27",
         "web/settings.js": "39c88aaf28a99972e4d78605a72e6cf4b3c3383d47204df1f625a763adc3c9f8",
-        "web/style.css": "676f1f7b905c64c8a1fe617ea47f6b74ac767c5dfb22669319b5f0cbd5d6f599",
+        "web/style.css": "bdd83666d3341b9a1a42fd08cae0aa640a9730bcdae33aa9ac26a6bbd04d465d",
         "web/view-performance.js": "c0033153f2193e4da08f32bc460772ab79f532367574d47fa24ef86513d465f3"
       }
     },
@@ -391,7 +391,7 @@
         "web/app.js": "8eb61bfb048fb452344f00b93c01776535bdc118ee84fd10ad5eb898cd64dd31",
         "web/index.html": "43b416d9fd60b54ec676ff84f9e19965556ad657c59cc8b713126b54564c5f5f",
         "web/local-ai.js": "63ea7c3f284a620a51c17cae0ec96a7c4764073a9be698090b20cd20731fc786",
-        "web/style.css": "676f1f7b905c64c8a1fe617ea47f6b74ac767c5dfb22669319b5f0cbd5d6f599"
+        "web/style.css": "bdd83666d3341b9a1a42fd08cae0aa640a9730bcdae33aa9ac26a6bbd04d465d"
       }
     },
     "raw-jpeg-pairs": {
@@ -489,7 +489,7 @@
         "web/app.js": "8eb61bfb048fb452344f00b93c01776535bdc118ee84fd10ad5eb898cd64dd31",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
         "web/index.html": "43b416d9fd60b54ec676ff84f9e19965556ad657c59cc8b713126b54564c5f5f",
-        "web/style.css": "676f1f7b905c64c8a1fe617ea47f6b74ac767c5dfb22669319b5f0cbd5d6f599"
+        "web/style.css": "bdd83666d3341b9a1a42fd08cae0aa640a9730bcdae33aa9ac26a6bbd04d465d"
       }
     },
     "virtual-copies-and-stacks": {

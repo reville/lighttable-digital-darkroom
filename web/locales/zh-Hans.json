@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "如果在资料库打开时本地恢复发现未完成的更改，“恢复未保存的编辑？”会列出受影响的照片。“还原编辑”会用恢复的设置替换其已保存的设置。“保留已保存的编辑”会保留目录版本并丢弃这些恢复草稿。",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "如果蒙版无法传输，请在取消勾选局部蒙版后再次复制，以应用其他组。",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "如有必要，请在镜头配置文件中选择不同的条目，并将修正与原图比较。",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原图尺寸不可用，缩放百分比会显示 —，且 1:1 将被禁用。Auto 仍会根据屏幕调整预览。重新扫描文件夹以更新尺寸。",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "如果 1:1 按钮的工具提示显示预览像素大小小于源文件，说明你看到的是较小的已交付预览。自动分辨率会适配显示并在缩放查看时提高请求；非常大的源文件可能会超过预览请求限制。",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "如果 Mac 应用未正常退出而关闭，下次启动时会打开诊断报告。如果其渲染引擎意外停止，报告可能会在引擎恢复时打开。每次记录到的事件只会显示一份报告；“关闭”可让你继续。正常关闭应用或重新启动其渲染服务不会生成报告。",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "如果 Mac 的首次使用选择无法保存，“再试一次”会保留该选择并重试。应用只会在保存成功后启动。",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "重置所有“颜色混合器”通道",
     "Reset crop, rotation, flips, and perspective": "重置裁剪、旋转、翻转和透视",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "重置全局色调、颜色、曲线、锐化、降噪和效果",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "“真实胶片模拟”中的“重置”会将所有胶片滑块恢复为默认值。各分区的“重置”仅影响该分区的滑块。开关和已选选项保持不变。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "重置镜头配置文件、失真、暗角和色差校正",
     "Reset sharpening and noise reduction adjustments": "重置锐化和降噪调整",
-    "Reset sliders to their defaults": "将滑块恢复为默认值",
     "Reset the RAW profile and capture-stage processing settings": "重置 RAW 配置文件和拍摄阶段处理设置",
     "Reset the combined RGB and individual channel curves": "重置合并的 RGB 曲线和各通道曲线",
     "Reset this slider": "重置此滑块",
@@ -2435,7 +2432,7 @@
     "Search": "搜索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "搜索涵盖文章标题、工具名称和完整说明。请选择“全部主题”以在应用中搜索。",
     "Search film stocks": "搜索胶片",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "搜索胶片名称，使用上一张或下一张浏览，然后选择一个预览来应用它。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "搜索胶片名称或滚动浏览预览，然后选择一个预览以应用该胶片。预览会放大并裁剪，以便看清更多细节。",
     "Search help": "搜索帮助",
     "Search index: {value}": "搜索索引：{value}",
     "Search objects, scenes, text, and faces": "搜索对象、场景、文本和面部",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "已保留 {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名称反映现有文件，可能会在导出前更改。",
     "{value}× stock baseline": "{value}× 胶片基准",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} / {stocksLength} 个胶片",
     "— none —": "— 无 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”有绘制过的微调。请在此照片上重新创建，或排除蒙版。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”需要新的对象选择。请排除蒙版以粘贴其他编辑。",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏"
+    "☆ Favorites": "☆ 收藏",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原图尺寸不可用，缩放百分比会显示 —，且 1:1 将被禁用。Auto 仍会根据屏幕调整预览。重新扫描文件夹以更新尺寸。",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "“真实胶片模拟”中的“重置”会将所有胶片滑块恢复为默认值。各分区的“重置”仅影响该分区的滑块。开关和已选选项保持不变。",
+    "Reset sliders to their defaults": "将滑块恢复为默认值"
   },
   "plurals": {
     " · {count} paired file linked": {

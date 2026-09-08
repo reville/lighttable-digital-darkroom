@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "หากการกู้คืนเฉพาะที่พบการเปลี่ยนแปลงที่ยังค้างอยู่เมื่อไลบรารีเปิดขึ้น กู้คืนการแก้ไขที่ยังไม่ได้บันทึก? จะแสดงรายการภาพถ่ายที่ได้รับผลกระทบ คืนค่าการแก้ไขจะแทนที่การตั้งค่าที่บันทึกไว้ด้วยการตั้งค่าที่กู้คืนไว้ เก็บการแก้ไขที่บันทึกไว้จะเก็บเวอร์ชันในแค็ตตาล็อกและทิ้งแบบร่างการกู้คืนเหล่านั้น",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "หากไม่สามารถถ่ายโอนมาสก์ได้ ให้คัดลอกอีกครั้งโดยไม่เลือก Local masks เพื่อใช้กลุ่มอื่นแทน",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "หากจำเป็น ให้เลือกรายการอื่นใน Lens profile และเปรียบเทียบการแก้ไขกับต้นฉบับ",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "หากไม่มีข้อมูลขนาดภาพต้นฉบับ เปอร์เซ็นต์การซูมจะแสดง — และ 1:1 จะถูกปิดใช้งาน Auto ยังคงปรับภาพตัวอย่างให้พอดีกับหน้าจอ สแกนโฟลเดอร์อีกครั้งเพื่ออัปเดตขนาดภาพ",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "ถ้าเคล็ดลับของปุ่ม 1:1 รายงานว่าขนาดพิกเซลของพรีวิวเล็กกว่าต้นฉบับ แสดงว่าคุณกำลังเห็นพรีวิวที่ส่งมาขนาดเล็กกว่า ความละเอียดอัตโนมัติจะพอดีกับจอแสดงผลและเพิ่มคำร้องขอเมื่อซูมดู; แหล่งที่มาขนาดใหญ่มากอาจเกินขีดจำกัดคำร้องขอของพรีวิว",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "หากแอป Mac ปิดลงโดยไม่ออกอย่างถูกต้อง รายงานการวินิจฉัยจะเปิดขึ้นในครั้งถัดไปที่คุณเปิดแอป หากเอนจินเรนเดอร์หยุดทำงานโดยไม่คาดคิด รายงานอาจเปิดขึ้นในขณะที่เอนจินกำลังกู้คืน รายงานจะปรากฏหนึ่งครั้งต่อหนึ่งเหตุการณ์ที่บันทึกไว้; ยกเลิก ช่วยให้คุณทำงานต่อได้ การปิดแอปตามปกติหรือการเริ่มบริการเรนเดอร์ใหม่จะไม่สร้างรายงาน",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "หากตัวเลือกใช้งานครั้งแรกบน Mac ไม่สามารถบันทึกได้ ลองอีกครั้งจะเก็บการเลือกไว้และลองซ้ำ แอปจะเริ่มทำงานหลังจากบันทึกสำเร็จเท่านั้น",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "รีเซ็ตช่องทั้งหมดของตัวผสมสี",
     "Reset crop, rotation, flips, and perspective": "รีเซ็ตครอป การหมุน การพลิก และมุมมอง",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "รีเซ็ตโทนสี, สี, เส้นโค้ง, การเพิ่มความคมชัด, การลดนอยส์ และเอฟเฟ็กต์ทั้งหมด",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "รีเซ็ตในส่วนการจำลองฟิล์มสมจริงจะคืนค่าแถบเลื่อนฟิล์มทั้งหมดเป็นค่าเริ่มต้น รีเซ็ตของแต่ละส่วนจะมีผลเฉพาะแถบเลื่อนในส่วนนั้น สวิตช์และตัวเลือกที่เลือกไว้จะคงเดิม",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "รีเซ็ตการแก้ไขโปรไฟล์เลนส์ ความบิดเบี้ยว ขอบมืด และความคลาดสี",
     "Reset sharpening and noise reduction adjustments": "รีเซ็ตการปรับการเพิ่มความคมชัดและการลดนอยส์",
-    "Reset sliders to their defaults": "รีเซ็ตแถบเลื่อนเป็นค่าเริ่มต้น",
     "Reset the RAW profile and capture-stage processing settings": "รีเซ็ตโปรไฟล์ RAW และการตั้งค่าการประมวลผลขั้นจับภาพ",
     "Reset the combined RGB and individual channel curves": "รีเซ็ตเส้นโค้ง RGB รวมและเส้นโค้งแต่ละช่องสี",
     "Reset this slider": "รีเซ็ตสไลด์นี้",
@@ -2435,7 +2432,7 @@
     "Search": "ค้นหา",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "การค้นหาครอบคลุมชื่อบทความ ชื่อเครื่องมือ และคำสั่งทั้งหมด เลือก หัวข้อทั้งหมด เพื่อค้นหาทั้งแอป",
     "Search film stocks": "ค้นหาสต็อกฟิล์ม",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ค้นหาชื่อสต็อก ใช้ Previous หรือ Next เพื่อเรียกดู จากนั้นเลือกพรีวิวเพื่อใช้งาน",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "ค้นหาชื่อฟิล์มหรือเลื่อนดูภาพตัวอย่าง แล้วเลือกภาพตัวอย่างเพื่อใช้ฟิล์มนั้น ภาพตัวอย่างจะถูกขยายและครอปเพื่อให้เห็นรายละเอียดชัดขึ้น",
     "Search help": "ค้นหาความช่วยเหลือ",
     "Search index: {value}": "ดัชนีค้นหา: {value}",
     "Search objects, scenes, text, and faces": "ค้นหาวัตถุ ฉาก ข้อความ และใบหน้า",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "คงไว้ {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}ชื่ออ้างอิงจากไฟล์ที่มีอยู่ และอาจเปลี่ยนก่อนส่งออก",
     "{value}× stock baseline": "ค่าเริ่มต้นของสต็อก {value}×",
-    "{value}–{value2} of {stocksLength} stocks": "สต็อก {value}–{value2} จาก {stocksLength} สต็อก",
     "— none —": "— ไม่มี —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” มีการปรับแต่งที่วาดไว้แล้ว สร้างใหม่บนภาพถ่ายนี้หรือยกเว้นมาสก์",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” ต้องเลือกวัตถุใหม่อีกครั้ง ยกเว้นมาสก์เพื่อวางการแก้ไขอื่นๆ",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ ย้อนกลับ",
     "← Back to articles": "← กลับไปที่บทความ",
     "← People": "← ผู้คน",
-    "☆ Favorites": "☆ รายการโปรด"
+    "☆ Favorites": "☆ รายการโปรด",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "หากไม่มีข้อมูลขนาดภาพต้นฉบับ เปอร์เซ็นต์การซูมจะแสดง — และ 1:1 จะถูกปิดใช้งาน Auto ยังคงปรับภาพตัวอย่างให้พอดีกับหน้าจอ สแกนโฟลเดอร์อีกครั้งเพื่ออัปเดตขนาดภาพ",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "รีเซ็ตในส่วนการจำลองฟิล์มสมจริงจะคืนค่าแถบเลื่อนฟิล์มทั้งหมดเป็นค่าเริ่มต้น รีเซ็ตของแต่ละส่วนจะมีผลเฉพาะแถบเลื่อนในส่วนนั้น สวิตช์และตัวเลือกที่เลือกไว้จะคงเดิม",
+    "Reset sliders to their defaults": "รีเซ็ตแถบเลื่อนเป็นค่าเริ่มต้น"
   },
   "plurals": {
     " · {count} paired file linked": {
