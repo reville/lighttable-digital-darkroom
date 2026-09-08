@@ -3711,9 +3711,10 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
 function originalPreviewURL(requestedWidth = requestedPreviewWidth()) {
   const im = cur();
   if (!im) return '';
-  const width = Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
+  // Compare must resolve the same detail as the edited preview, including 1:1.
+  const width = requestedWidth;
   return `/api/orig?name=${encodeURIComponent(im.name)}` +
-    `&w=${width}&rot=${S.params.rotate || 0}` +
+    `&w=${width}&rot=${S.params.rotate || 0}&quality=full` +
     `&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
 }
 
