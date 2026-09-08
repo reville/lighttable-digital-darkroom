@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 @unittest.skipUnless(shutil.which("node"), "Node required")
 class PresetAmountTests(unittest.TestCase):
     def run_js(self, script):
+        script = "import {t as tr, tn as trn} from './web/i18n.js';\n" + script
         result = subprocess.run(["node", "--input-type=module", "-e", script],
                                 cwd=ROOT, capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)

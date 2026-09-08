@@ -1,4 +1,10 @@
-import { HELP_CATEGORIES, helpSearch } from '/web/help-search.js';
+import { HELP_CATEGORIES, helpSearch } from './help-search.js';
+import { t, tn, currentLocale } from './i18n.js';
+
+const categoryLabel = name => ({
+  'Getting started': t('Getting started'), Library: t('Library'), Editing: t('Editing'),
+  Film: t('Film'), Export: t('Export'), Settings: t('Settings'), Troubleshooting: t('Troubleshooting'),
+})[name] || name;
 
 const byId = (id) => document.getElementById(id);
 const dialog = byId('helpDialog');
@@ -30,14 +36,14 @@ function button(text, action, className = 'quiet') {
 
 function showArticle(article, focus = false) {
   selectedId = article.id;
-  reader.replaceChildren(element('p', article.category, 'help-eyebrow'));
+  reader.replaceChildren(element('p', article.categoryLabel || categoryLabel(article.category), 'help-eyebrow'));
   const heading = element('h2', article.title);
   heading.tabIndex = -1;
   reader.append(heading, element('p', article.summary, 'help-summary'));
   for (const section of article.sections) {
     const block = element('section');
     if (section.title) block.append(element('h3', section.title));
-    for (const paragraph of section.paragraphs) block.append(element('p', paragraph));
+    for (const paragraph of section.paragraphs || []) block.append(element('p', paragraph));
     if (section.steps?.length) {
       const list = element('ol');
       section.steps.forEach((step) => list.append(element('li', step)));
@@ -49,7 +55,7 @@ function showArticle(article, focus = false) {
   const related = (article.related || []).map((id) => articles.find((item) => item.id === id)).filter(Boolean);
   if (related.length) {
     const links = element('section', null, 'help-related');
-    links.append(element('h3', 'Related help'));
+    links.append(element('h3', t('Related help')));
     related.forEach((item) => links.append(button(item.title, () => showArticle(item, true))));
     reader.append(links);
   }
@@ -65,24 +71,24 @@ function renderResults() {
   if (!articles) return;
   const matches = helpSearch(articles, search.value, category.value);
   results.replaceChildren();
-  byId('helpResultCount').textContent = `${matches.length} ${matches.length === 1 ? 'article' : 'articles'}`;
+  byId('helpResultCount').textContent = tn('{count} article', '{count} articles', matches.length);
   byId('helpClear').hidden = !search.value;
   for (const article of matches) {
     const item = button(null, () => showArticle(article, true), 'help-result');
     item.dataset.helpArticle = article.id;
     item.setAttribute('aria-current', String(article.id === selectedId));
-    item.append(element('span', article.category, 'help-result-category'),
+    item.append(element('span', article.categoryLabel || categoryLabel(article.category), 'help-result-category'),
       element('span', article.title, 'help-result-title'), element('span', article.summary, 'help-result-summary'));
     results.append(item);
   }
   if (!matches.length) {
-    results.append(element('p', 'No matching articles.', 'help-empty-title'),
-      element('p', 'Try a tool name or a shorter phrase, such as “crop”, “missing photos”, or “export”.', 'help-empty'));
-    results.append(button('Browse all help', () => {
+    results.append(element('p', t('No matching articles.'), 'help-empty-title'),
+      element('p', t('Try a tool name or a shorter phrase, such as “crop”, “missing photos”, or “export”.'), 'help-empty'));
+    results.append(button(t('Browse all help'), () => {
       search.value = ''; category.value = ''; renderResults(); search.focus();
     }));
-    reader.replaceChildren(element('h2', 'Let’s find the right help'),
-      element('p', 'Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.'));
+    reader.replaceChildren(element('h2', t('Let’s find the right help')),
+      element('p', t('Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.')));
     selectedId = null;
     return;
   }
@@ -91,11 +97,13 @@ function renderResults() {
 
 async function loadArticles() {
   if (articles) return articles;
-  if (!pendingLoad) pendingLoad = fetch('/web/help-content.json').then(async (response) => {
-    if (!response.ok) throw new Error('Help content is unavailable.');
+  const locale = currentLocale();
+  if (!pendingLoad) pendingLoad = fetch(locale === 'en' ? '/web/help-content.json' : `/web/locales/help/${encodeURIComponent(locale)}.json`).then(async (response) => {
+    if (!response.ok) throw new Error(t('Help content is unavailable.'));
     const content = await response.json();
-    if (content.version !== 1 || !Array.isArray(content.articles) || !content.articles.length) {
-      throw new Error('Help content could not be read.');
+    if (content.version !== 1 || !Array.isArray(content.articles) || !content.articles.length
+      || (locale !== 'en' && content.locale !== locale)) {
+      throw new Error(t('Help content could not be read.'));
     }
     articles = content.articles;
     return articles;
@@ -119,8 +127,8 @@ async function open(options = {}) {
   if (options.article) selectedId = options.article;
   search.focus(); search.select();
   if (!articles) {
-    byId('helpResultCount').textContent = 'Loading help…';
-    reader.replaceChildren(element('p', 'Loading help…'));
+    byId('helpResultCount').textContent = t('Loading help…');
+    reader.replaceChildren(element('p', t('Loading help…')));
   }
   try {
     await loadArticles();
@@ -133,10 +141,10 @@ async function open(options = {}) {
     dialog.classList.toggle('help-reading', Boolean(options.article));
   } catch {
     if (generation !== openGeneration) return;
-    byId('helpResultCount').textContent = 'Help unavailable';
-    reader.replaceChildren(element('h2', 'Help couldn’t be loaded'),
-      element('p', 'Try again. If this continues, reopen LightTable to reload its bundled help.'),
-      button('Try again', () => open(options)));
+    byId('helpResultCount').textContent = t('Help unavailable');
+    reader.replaceChildren(element('h2', t('Help couldn’t be loaded')),
+      element('p', t('Try again. If this continues, reopen LightTable to reload its bundled help.')),
+      button(t('Try again'), () => open(options)));
   }
 }
 
@@ -153,7 +161,7 @@ function close() {
   returnFocus = null;
 }
 
-HELP_CATEGORIES.forEach((name) => category.append(new Option(name, name)));
+HELP_CATEGORIES.forEach((name) => category.append(new Option(categoryLabel(name), name)));
 byId('helpBtn').addEventListener('click', () => open());
 byId('helpClose').onclick = close;
 byId('helpClear').onclick = () => { search.value = ''; renderResults(); search.focus(); };

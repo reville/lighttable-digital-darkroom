@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import { t as tr, tn as trn } from '../web/i18n.js';
 const read = file => readFileSync(new URL(`../web/${file}`, import.meta.url), 'utf8');
 const source = read('app.js');
 const initialize = source.match(/^async function initializeEditRecovery\([^]*?^}/m)[0];
@@ -13,7 +14,7 @@ const reconcile = source.match(/^async function reconcilePeerSave\([^]*?^}/m)[0]
 const retryStart = source.indexOf("$('retryEditSave').onclick = async () => {");
 const retryHandler = source.slice(retryStart, source.indexOf('\n};', retryStart) + 3);
 const refreshRecovery = source.match(/^async function refreshDeferredEditRecovery\([^]*?^}/m)?.[0] || '';
-const moduleFor = async file => import(`data:text/javascript;base64,${Buffer.from(read(file)).toString('base64')}`);
+const moduleFor = async file => import(new URL(`../web/${file}`, import.meta.url));
 const {createEditSaveQueue} = await moduleFor('edit-save-queue.js');
 const {recoveryAcknowledged} = await moduleFor('edit-recovery.js');
 const plain = value => JSON.parse(JSON.stringify(value));
@@ -42,7 +43,7 @@ async function start({catalog = true, savedExposure = 0, history = null, restore
   const S = {catalogEnabled: catalog, idx: 0, seq: 0, images: [{name: state.name, grade: {exposure: 0}, rating: 0,
     keywords: [], stateLoaded: !catalog, hasEdits: false}]};
   const retryButton = {};
-  const context = {window: {localStorage: {}}, nativeBridge: () => null,
+  const context = {tr, trn, window: {localStorage: {}}, nativeBridge: () => null,
     nativeJournalRequest: () => {}, createEditRecovery: () => journal,
     editRecovery: null, editRecoveryReady: false, editRecoveryIssue: null,
     deferredEditRecovery: new Map(), deferredRecoveryRefreshIssue: null,

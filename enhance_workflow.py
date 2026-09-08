@@ -26,6 +26,8 @@ identity, cancellation, and edge handling testable with an injected runner.
 """
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import json
 import math
@@ -83,6 +85,12 @@ DISCLOSURE = (
     "The denoise model may be bundled; any model used is identified in this "
     "manifest. Super-resolution remains unavailable unless installed separately."
 )
+
+
+def enhance_disclosure() -> str:
+    return T("Enhance output is model-generated detail, not measured detail. "
+             "The denoise model may be bundled; any model used is identified in this "
+             "manifest. Super-resolution remains unavailable unless installed separately.")
 
 APP = Path(__file__).resolve().parent
 
@@ -186,18 +194,15 @@ def capabilities() -> dict:
     reason = ""
     if not supported:
         reason = (
-            f"Enhance needs the macOS inference helper; there is no build for "
-            f"{sys.platform} yet"
+            T("Enhance needs the macOS inference helper; there is no build for {platform} yet", platform=f'{sys.platform}')
         )
     elif not state["helper"]:
         reason = (
-            f"The Enhance helper has not been built ({helper}); build it with "
-            "build-app.sh before using Enhance"
+            T("The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance", helper=f'{helper}')
         )
     elif not any(state[mode] for mode in MODES):
         reason = (
-            f"No enhancement model is installed in {model_root()}. Run the "
-            "model fetch and conversion scripts for this development build"
+            T("No enhancement model is installed in {value}. Run the model fetch and conversion scripts for this development build", value=f'{model_root()}')
         )
     return {
         "available": bool(supported and state["helper"]
@@ -214,7 +219,7 @@ def capabilities() -> dict:
         "tile": DEFAULT_TILE,
         "overlap": DEFAULT_OVERLAP,
         "scales": list(SUPPORTED_SCALES),
-        "disclosure": DISCLOSURE,
+        "disclosure": enhance_disclosure(),
     }
 
 
@@ -224,7 +229,7 @@ def capabilities() -> dict:
 def _mode_or_error(mode) -> str:
     value = str(mode or "").strip().lower()
     if value not in MODES:
-        raise ValueError(f"unknown enhance mode: {mode!r}")
+        raise ValueError(T("unknown enhance mode: {mode}", mode=f'{mode!r}'))
     return value
 
 
@@ -361,21 +366,21 @@ def merge_tiles(tiles, shape, overlap: int = DEFAULT_OVERLAP) -> np.ndarray:
     """
     tiles = list(tiles)
     if not tiles:
-        raise ValueError("merge_tiles needs at least one tile")
+        raise ValueError(T("merge_tiles needs at least one tile"))
     height, width = int(shape[0]), int(shape[1])
     if height < 1 or width < 1:
-        raise ValueError("merge_tiles needs a positive source shape")
+        raise ValueError(T("merge_tiles needs a positive source shape"))
 
     scales = {int(tile.get("scale", 1) or 1) for tile in tiles}
     if len(scales) != 1:
-        raise ValueError("all tiles must share one output scale")
+        raise ValueError(T("all tiles must share one output scale"))
     scale = scales.pop()
     if scale < 1:
-        raise ValueError("tile scale must be at least 1")
+        raise ValueError(T("tile scale must be at least 1"))
 
     out_height, out_width = height * scale, width * scale
     if out_height * out_width > MAX_OUTPUT_PIXELS:
-        raise ValueError("the enhanced result is larger than the supported size")
+        raise ValueError(T("the enhanced result is larger than the supported size"))
     channels = int(np.asarray(tiles[0]["image"]).shape[2])
 
     accumulated = np.zeros((out_height, out_width, channels), dtype=np.float32)
@@ -388,7 +393,7 @@ def merge_tiles(tiles, shape, overlap: int = DEFAULT_OVERLAP) -> np.ndarray:
         expected = ((y1 - y0) * scale, (x1 - x0) * scale, channels)
         if patch.shape != expected:
             raise ValueError(
-                f"tile at ({y0},{x0}) is {patch.shape}, expected {expected}")
+                T("tile at ({y0},{x0}) is {shape}, expected {expected}", y0=f'{y0}', x0=f'{x0}', shape=f'{patch.shape}', expected=f'{expected}'))
         window = (_axis_window(expected[0], feather, y0 > 0, y1 < height)[:, None]
                   * _axis_window(expected[1], feather, x0 > 0, x1 < width)[None, :])
         rows = slice(y0 * scale, y1 * scale)
@@ -430,12 +435,12 @@ def write_tile_file(path: Path, tile: np.ndarray) -> None:
 def read_tile_file(path: Path) -> np.ndarray:
     with path.open("rb") as handle:
         if handle.read(4) != TILE_MAGIC:
-            raise RuntimeError(f"{path.name} is not a LightTable tile")
+            raise RuntimeError(T("{name} is not a LightTable tile", name=f'{path.name}'))
         width, height, channels = struct.unpack("<iii", handle.read(12))
         expected = width * height * channels
         data = np.frombuffer(handle.read(), dtype=np.float32)
     if data.size < expected:
-        raise RuntimeError(f"{path.name} is truncated")
+        raise RuntimeError(T("{name} is truncated", name=f'{path.name}'))
     return data[:expected].reshape(channels, height, width).transpose(1, 2, 0)
 
 
@@ -447,11 +452,11 @@ def _run_helper(argv: list[str]) -> subprocess.CompletedProcess:
             env=dict(os.environ, **{MODEL_DIR_ENV: str(model_root())}))
     except subprocess.TimeoutExpired as error:
         raise RuntimeError(
-            f"the Enhance helper timed out after {HELPER_TIMEOUT:.0f}s"
+            T("the Enhance helper timed out after {HELPER_TIMEOUT}s", HELPER_TIMEOUT=f'{HELPER_TIMEOUT:.0f}')
         ) from error
     except OSError as error:
         raise EnhanceUnavailable(
-            f"the Enhance helper could not be run: {error}") from error
+            T("the Enhance helper could not be run: {error}", error=f'{error}')) from error
 
 
 def _require_helper(mode: str) -> str:
@@ -459,10 +464,10 @@ def _require_helper(mode: str) -> str:
     state = available_models()
     if not state["helper"]:
         raise EnhanceUnavailable(
-            f"the Enhance helper has not been built ({helper_path()})")
+            T("the Enhance helper has not been built ({value})", value=f'{helper_path()}'))
     if not state[mode]:
         raise EnhanceUnavailable(
-            f"no {mode} model is installed in {model_root()}")
+            T("no {mode} model is installed in {value}", mode=f'{mode}', value=f'{model_root()}'))
     return mode
 
 
@@ -493,9 +498,9 @@ def helper_runner(tile, mode: str, params: dict):
         completed = _run_helper(argv)
         if completed.returncode:
             detail = (completed.stderr or completed.stdout).strip()
-            raise RuntimeError(detail[-300:] or f"{mode} failed")
+            raise RuntimeError(detail[-300:] or T("{mode} failed", mode=mode))
         if not target.is_file():
-            raise RuntimeError(f"the Enhance helper wrote no {mode} result")
+            raise RuntimeError(T("the Enhance helper wrote no {mode} result", mode=f'{mode}'))
         result = read_tile_file(target)
         if mode == "denoise":
             return result[:original.shape[0], :original.shape[1]].copy()
@@ -507,7 +512,7 @@ def _pad_to_tile(tile: np.ndarray, size: int) -> np.ndarray:
     source = color_pipeline.as_float_rgb(tile)
     height, width = source.shape[:2]
     if height > size or width > size:
-        raise ValueError(f"tile {width}x{height} is larger than {size}")
+        raise ValueError(T("tile {width}x{height} is larger than {size}", width=f'{width}', height=f'{height}', size=f'{size}'))
     if height == size and width == size:
         return source
     mode = "reflect" if height > 1 and width > 1 else "edge"
@@ -545,7 +550,7 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
         return []          # nothing to do cannot fail, model or no model
     mode = _require_helper(mode)
     if mode != "denoise":
-        raise EnhanceUnavailable("batch mode currently covers denoise only")
+        raise EnhanceUnavailable(T("batch mode currently covers denoise only"))
     with tempfile.TemporaryDirectory(prefix="lighttable-enhance-") as folder:
         root = Path(folder)
         manifest = root / "tiles.tsv"
@@ -570,7 +575,7 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
                 env=dict(os.environ, **{MODEL_DIR_ENV: str(model_root())}))
         except OSError as error:
             raise EnhanceUnavailable(
-                f"the Enhance helper could not be run: {error}") from error
+                T("the Enhance helper could not be run: {error}", error=f'{error}')) from error
         output_lines: list[str] = []
         error_lines: list[str] = []
         selector = selectors.DefaultSelector()
@@ -585,12 +590,12 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
                 if _cancel_requested(cancel):
                     process.kill()
                     process.wait()
-                    raise RuntimeError("denoise cancelled")
+                    raise RuntimeError(T("denoise cancelled"))
                 if time.monotonic() - started > HELPER_TIMEOUT:
                     process.kill()
                     process.wait()
                     raise RuntimeError(
-                        f"the Enhance helper timed out after {HELPER_TIMEOUT:.0f}s")
+                        T("the Enhance helper timed out after {HELPER_TIMEOUT}s", HELPER_TIMEOUT=f'{HELPER_TIMEOUT:.0f}'))
                 for key, _ in selector.select(timeout=0.2):
                     line = key.fileobj.readline()
                     if not line:
@@ -625,11 +630,11 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
                 pipe.close()
         if process.returncode:
             detail = ("".join(error_lines) or "".join(output_lines)).strip()
-            raise RuntimeError(detail[-300:] or "denoise failed")
+            raise RuntimeError(detail[-300:] or T("denoise failed"))
         missing = [p.name for p in pairs if not p.is_file()]
         if missing:
             raise RuntimeError(
-                f"the Enhance helper wrote no result for {len(missing)} tiles")
+                T("the Enhance helper wrote no result for {value} tiles", value=f'{len(missing)}'))
         _publish_progress(status, len(pairs), len(pairs))
         return [read_tile_file(target)[:height, :width].copy()
                 for target, (height, width) in zip(pairs, shapes)]
@@ -679,14 +684,13 @@ def run_model(image, mode: str, *, strength: float = 1.0, scale: int = 2,
             status=status, cancel=cancel)
         if len(produced_tiles) != len(tiles):
             raise RuntimeError(
-                f"the denoise runner returned {len(produced_tiles)} tiles "
-                f"for {len(tiles)}")
+                T("the denoise runner returned {value} tiles for {value2}", value=f'{len(produced_tiles)}', value2=f'{len(tiles)}'))
     else:
         produced_tiles = []
         _publish_progress(status, 0, len(tiles))
         for index, patch in enumerate(tiles):
             if _cancel_requested(cancel):
-                raise RuntimeError("denoise cancelled")
+                raise RuntimeError(T("denoise cancelled"))
             produced_tiles.append(runner(patch["image"], mode, dict(params)))
             _publish_progress(status, index + 1, len(tiles))
 
@@ -696,8 +700,7 @@ def run_model(image, mode: str, *, strength: float = 1.0, scale: int = 2,
                     (patch["x1"] - patch["x0"]) * factor)
         if produced.ndim != 3 or produced.shape[:2] != expected:
             raise ValueError(
-                f"the {mode} runner returned {produced.shape}, "
-                f"expected {expected} plus channels")
+                T("the {mode} runner returned {shape}, expected {expected} plus channels", mode=f'{mode}', shape=f'{produced.shape}', expected=f'{expected}'))
         patch["image"] = produced
         patch["scale"] = factor
     return merge_tiles(tiles, source.shape, request["overlap"])
@@ -714,7 +717,7 @@ def preserve_low_frequency_color(source, denoised, *, block: int = 64) -> np.nda
     original = color_pipeline.as_float_rgb(source)
     result = color_pipeline.as_float_rgb(denoised).copy()
     if original.shape != result.shape:
-        raise ValueError("colour preservation needs matching image dimensions")
+        raise ValueError(T("colour preservation needs matching image dimensions"))
     height, width = original.shape[:2]
     block = max(8, int(block))
     rows = max(1, math.ceil(height / block))
@@ -793,7 +796,7 @@ def enhanced_destination(root: Path | str, name: str, mode: str) -> Path:
                     candidate.suffix + ".lighttable.json").exists()):
             return candidate
         candidate = folder / f"{stem}-{index}.tif"
-    raise ValueError("could not choose a free enhanced filename")
+    raise ValueError(T("could not choose a free enhanced filename"))
 
 
 def _file_digest(path: Path) -> str:
@@ -863,7 +866,7 @@ def enhance_file(source, destination, mode: str, *, request: dict | None = None,
         cleaned = clean_request({**(request or {}), "mode": mode})
         source = Path(source)
         if not source.is_file():
-            raise FileNotFoundError(f"cannot read {source}")
+            raise FileNotFoundError(T("cannot read {source}", source=f'{source}'))
         image = color_pipeline.load_float_rgb(source)
         if mode == "denoise":
             enhanced = denoise_display_srgb(

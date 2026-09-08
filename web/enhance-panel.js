@@ -1,3 +1,4 @@
+import {t as tr} from './i18n.js';
 export function createEnhancePanel({ el, getPhoto, getCapabilities, run, onComplete }) {
   const button = el('enhanceRun');
   const select = el('enhanceMode');
@@ -15,13 +16,13 @@ export function createEnhancePanel({ el, getPhoto, getCapabilities, run, onCompl
     select.disabled = ![...select.options].some(option => !option.disabled);
     button.disabled = busy || !getPhoto() || !capabilities?.available
       || !capabilities.modes?.[select.value];
-    if (busy) note.textContent = 'Working…';
-    else if (!capabilities) note.textContent = 'Checking available enhancements…';
-    else if (!capabilities.available) note.textContent = capabilities.reason || 'Not available.';
-    else if (!getPhoto()) note.textContent = 'Select a photo first.';
+    if (busy) note.textContent = tr('Working…');
+    else if (!capabilities) note.textContent = tr('Checking available enhancements…');
+    else if (!capabilities.available) note.textContent = capabilities.reason || tr('Not available.');
+    else if (!getPhoto()) note.textContent = tr('Select a photo first.');
     else if (message) note.textContent = message;
-    else note.textContent = 'Writes a new 16-bit master; the original is untouched.'
-      + (!capabilities.modes?.upscale ? ' Super resolution needs an installed model.' : '');
+    else note.textContent = tr('Writes a new 16-bit master; the original is untouched.')
+      + (!capabilities.modes?.upscale ? ' ' + tr('Super resolution needs an installed model.') : '');
   }
 
   async function refresh() {
@@ -36,7 +37,7 @@ export function createEnhancePanel({ el, getPhoto, getCapabilities, run, onCompl
       capabilities = result?.error ? { available: false, reason: result.error } : result;
     } catch (_) {
       if (request !== generation) return;
-      capabilities = { available: false, reason: 'Could not check available enhancements.' };
+      capabilities = { available: false, reason: tr('Could not check available enhancements.') };
     }
     sync();
   }
@@ -52,9 +53,9 @@ export function createEnhancePanel({ el, getPhoto, getCapabilities, run, onCompl
     try {
       const result = await run({ name: photo.name, mode });
       if (result.ok) await onComplete(result);
-      else message = result.error || 'Enhance failed';
+      else message = result.error || tr('Enhance failed');
     } catch (error) {
-      message = error.message || 'Enhance failed';
+      message = error.message || tr('Enhance failed');
     } finally {
       busy = false;
       sync();

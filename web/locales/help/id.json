@@ -1,0 +1,3005 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Tambahkan foto dan mulai menelusuri",
+      "category": "Getting started",
+      "summary": "Buka foto atau folder di tempat, lalu pilih folder dan mulai meninjau.",
+      "keywords": [
+        "mulai",
+        "buka",
+        "telusuri",
+        "tambahkan folder",
+        "asli",
+        "impor",
+        "perpustakaan baru"
+      ],
+      "sections": [
+        {
+          "title": "Pilih titik awal",
+          "paragraphs": [
+            "Pada pustaka baru, penyiapan menawarkan folder lokal, migrasi Lightroom, atau Apple Photos. Anda bisa melewati penyiapan dan menambahkan foto nanti.",
+            "Impor seluruh pustaka dari Apple Photos memerlukan aplikasi macOS dan izin untuk membaca Photos. Ini menyalin foto asli, termasuk file RAW, ke Pictures / LightTable Imports / Apple Photos. Pustaka Photos Anda tetap tidak berubah. Asli iCloud diunduh selama impor, jadi sediakan waktu dan ruang disk. Album, video, dan suntingan Photos tidak ditransfer.",
+            "Hentikan impor akan mempertahankan salinan yang sudah selesai. Menjalankannya lagi akan melewati salinan tersebut dan mencoba lagi yang belum selesai dari original."
+          ],
+          "steps": [
+            "Pilih folder untuk menelusuri asli di tempat, atau pilih salah satu opsi migrasi.",
+            "Tinjau hasil impor, lalu lanjutkan ke perpustakaan."
+          ]
+        },
+        {
+          "title": "Pilih foto dari Apple Photos",
+          "paragraphs": [
+            "Di aplikasi macOS, gunakan Berkas → Impor dari Apple Photos… atau Pilih beberapa… di penyiapan Foto. Format Saat Ini mempertahankan representasi yang disediakan oleh Foto; Kompatibel meminta format yang dapat dibaca secara luas. Representasi terpilih ini dapat mencakup pengeditan Foto dan terpisah dari impor original seluruh pustaka.",
+            "Pilih foto, lalu klik Tambahkan. LightTable menampilkan progres saat mengunduh dan menyalinnya. Hentikan Impor mempertahankan salinan yang sudah selesai dan menghentikan transfer yang tersisa. Pustaka Foto Anda tetap tidak berubah.",
+            "Salinan disimpan di Pictures / LightTable Imports / Apple Photos. Mengimpor pilihan lagi akan membuat salinan terpisah dengan nama file bernomor; file yang sudah ada tidak pernah ditimpa."
+          ],
+          "steps": [
+            "Pilih Format Saat Ini atau Kompatibel.",
+            "Pilih satu atau beberapa foto di pemilih lalu klik Tambahkan. Gunakan Batal untuk keluar tanpa mengimpor.",
+            "Tunggu hingga impor selesai, lalu tinjau foto di LightTable."
+          ]
+        },
+        {
+          "title": "Buka folder lokal",
+          "paragraphs": [
+            "Tambahkan Foto membuka pemilih foto. Di Mac, pemilih itu juga menerima folder. Di Linux dan Windows, gunakan + di samping Lokal untuk menambahkan seluruh folder. LightTable menyimpan original tetap di tempatnya. Memilih satu foto menambahkan folder yang memuatnya, sehingga foto lain yang didukung di folder itu juga dapat muncul."
+          ],
+          "steps": [
+            "Klik Tambahkan Foto di kiri atas dan pilih foto, atau gunakan + di samping Lokal untuk memilih folder.",
+            "Pilih folder di bawah Lokal pada bilah samping kiri. Aktifkan Sertakan subfolder untuk menelusuri foto di folder anaknya.",
+            "Pilih Photo Grid, Culling Grid, atau Detail di bagian atas. Klik foto untuk menjadikannya aktif."
+          ],
+          "tips": [
+            "Jika sidebar disembunyikan, gunakan Tampilkan atau sembunyikan pustaka di kiri atas."
+          ]
+        },
+        {
+          "title": "Masukkan file baru ke folder yang sudah ada",
+          "paragraphs": [
+            "Gunakan menu Local ••• dan Rescan folders setelah menambahkan file di luar LightTable. Untuk menyalin foto dari kartu ke folder tujuan, gunakan Import from card… di menu itu."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Masukkan katalog Lightroom Classic ke LightTable",
+      "category": "Getting started",
+      "summary": "Impor metadata yang didukung dan edit perkiraan, lalu tinjau laporan konversi.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrasi",
+        "migrasi",
+        "impor katalog",
+        "lrcat",
+        "sidecar",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Siapkan dan periksa",
+          "paragraphs": [
+            "Pengimpor membaca salinan sementara dari katalog Lightroom Classic .lrcat dan membiarkan penyiapan dan katalog Lightroom Anda tidak berubah. Foto tetap berada di folder saat ini dan direferensikan, bukan diduplikasi. Tambahkan folder foto yang digunakan oleh katalog ini memungkinkan impor mencatat original yang direferensikan dan folder induknya. Hapus centang opsi itu untuk mencocokkan hanya foto yang sudah ada di LightTable.",
+            "Pratinjau kompatibilitas melaporkan kecocokan di pustaka saat ini tanpa mengubahnya. Foto yang belum ditambahkan mungkin ditampilkan sebagai tidak cocok di pratinjau; mengimpor dengan Tambahkan folder foto diaktifkan mendaftarkan asli yang tersedia sebelum mencocokkan lagi."
+          ],
+          "steps": [
+            "Buka Lokal ••• → Impor katalog…, atau pilih Impor dari Lightroom di penyiapan.",
+            "Pilih berkas .lrcat dan tinjau jumlah serta peringatannya.",
+            "Pilih kategori yang akan diimpor, kebijakan untuk edit yang sudah ada, dan apakah akan menambahkan folder foto yang dirujuk.",
+            "Klik Kompatibilitas pratinjau dan tinjau setelan yang dipetakan dan yang dilewati. Coba 20 varian membuat edit percobaan terpisah sebelum impor yang lebih besar.",
+            "Klik Impor setelah meninjau kompatibilitas, lalu baca laporan dan hitungan yang cocok, tidak ditemukan, dan dilewati. LightTable membuat cadangan katalog sebelum uji coba atau impor."
+          ]
+        },
+        {
+          "title": "Tinjau penyuntingan yang diterjemahkan",
+          "paragraphs": [
+            "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
+            "Lokal ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang berdekatan. Tindakan itu tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "Pilih pintasan LightTable atau Klasik",
+      "category": "Getting started",
+      "summary": "Pilih tata letak keyboard yang sesuai dengan kebiasaan mengedit Anda.",
+      "keywords": [
+        "keyboard",
+        "pintasan",
+        "klasik",
+        "Lightroom",
+        "tombol pangkas",
+        "kunci detail",
+        "sebelum sesudah"
+      ],
+      "sections": [
+        {
+          "title": "Pilih skema",
+          "paragraphs": [
+            "Buka Settings → Shortcuts & Hardware dan pilih Shortcut scheme. LightTable dan Classic berbagi sebagian besar pintasan seleksi, tetapi berbeda untuk Detail, Crop, dan Compare before/after."
+          ],
+          "steps": [
+            "Pilih LightTable untuk D = Detail, C = Crop, dan backslash (\\) = before/after Compare.",
+            "Pilih Klasik untuk E = Detail, R = Pangkas, dan C = Bandingkan sebelum/sesudah."
+          ],
+          "tips": [
+            "Kedua skema menggunakan G untuk Photo Grid, Shift+G untuk Culling Grid, N untuk Survey, P/X/U untuk bendera, dan 0–5 untuk bintang.",
+            "Tahan B untuk menampilkan original tanpa Film, masker lokal, atau penyesuaian akhir; lepaskan B untuk memulihkan edit. Garis miring (/) memfokuskan pencarian foto.",
+            "Pintasan foto diabaikan saat Anda mengetik di bidang teks, angka, atau seleksi. Keluar dari bidang sebelum menggunakan perintah foto."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "import-from-card",
+      "title": "Impor foto dari kartu",
+      "category": "Getting started",
+      "summary": "Salin foto terpilih ke folder bertanggal, dengan verifikasi dan salinan kedua opsional.",
+      "keywords": [
+        "pemasukan",
+        "kartu memori",
+        "kartu kamera",
+        "salin",
+        "cadangan",
+        "duplikat",
+        "impor foto"
+      ],
+      "sections": [
+        {
+          "title": "Rencanakan salinan",
+          "paragraphs": [
+            "Impor dari kartu menyalin file ke tujuan yang Anda pilih. Asli pada kartu tetap di tempatnya. Lewati duplikat membandingkan isi lengkap file; nama file yang cocok atau header kamera saja tidak cukup."
+          ],
+          "steps": [
+            "Buka Lokal ••• → Impor dari kartu….",
+            "Pilih Sumber dan Tujuan. Atur Folder template dan Rename ke sebelum memindai. Pengaturan bawaan mempertahankan nama file dan mengatur salinan sebagai tahun/tahun-bulan-hari.",
+            "Pilih verifikasi: Full hash, Size only, atau None. Atur Duplikat ke Lewati atau Salin saja, dan secara opsional pilih Salinan kedua ke.",
+            "Klik Pindai. Gunakan Sebelumnya dan Berikutnya untuk meninjau setiap halaman, dan periksa jumlah terpilih serta pratinjau tujuan sebelum mengklik Impor. Impor tidak tersedia jika tidak ada foto yang dipilih.",
+            "Tunggu jumlah yang disalin dan periksa apakah ada file yang gagal. Batal menghentikan setelah file saat ini selesai disalin dan diverifikasi; salinan yang selesai dipertahankan dan file asli di kartu tetap tidak disentuh."
+          ],
+          "tips": [
+            "Token template mencakup {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, dan {dd}. Start at mengontrol urutan empat digit. Bidang template yang panjang dipersingkat; periksa pratinjau tujuan.",
+            "Pratinjau menampilkan 200 file per halaman. Pilihan berlaku lintas halaman; Pilih semua dan Pilih tidak ada berlaku untuk seluruh hasil pemindaian, termasuk halaman yang belum Anda buka.",
+            "Jika file dilaporkan sebagai cloud-only, unduh secara lokal lalu pindai lagi."
+          ]
+        },
+        {
+          "title": "Segarkan rencana saat pengaturan berubah",
+          "paragraphs": [
+            "Mengubah pengaturan sumber, tujuan, penamaan, atau verifikasi akan menghapus rencana yang telah ditinjau. Pindai lagi untuk meninjau file dan jalur baru sebelum mengimpor."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Ganti tampilan dan pilih foto",
+      "category": "Getting started",
+      "summary": "Gunakan kisi untuk memilih set dan Detail untuk memeriksa foto individual.",
+      "keywords": [
+        "kisi",
+        "detail",
+        "strip film",
+        "pilih beberapa",
+        "shift click",
+        "command klik",
+        "control klik",
+        "navigasi",
+        "zoom",
+        "bandingkan",
+        "jepret penggeser ke tampilan"
+      ],
+      "sections": [
+        {
+          "title": "Pindah antar tampilan",
+          "paragraphs": [
+            "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
+            "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya."
+          ],
+          "steps": [
+            "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
+            "Di kisi, gunakan penggeser Ukuran untuk mengubah ukuran thumbnail.",
+            "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus."
+          ]
+        },
+        {
+          "title": "Bandingkan saat zoom masuk",
+          "paragraphs": [
+            "Klik Bandingkan di Detail untuk pisahkan foto asli dan foto yang telah diedit. Setiap kali Anda mengaktifkan Bandingkan, pembatas secara otomatis berada di tengah tampilan saat ini tanpa mengubah zoom atau penggeseran Anda. Seret pembatas untuk memindahkan pisahan; seret di tempat lain pada foto yang diperbesar untuk menggeser. Pembatas dan pegangannya tetap sama ukuran saat Anda melakukan zoom.",
+            "Original menggunakan resolusi pratinjau yang sama seperti foto yang diedit, termasuk pada 1:1. Untuk foto RAW, Original menggunakan konversi netral tanpa edit; biarkan selesai dimuat sebelum menilai detail.",
+            "Tahan B untuk melihat original tanpa Film, masker lokal, atau penyesuaian akhir. Lepaskan B untuk memulihkan tampilan yang diedit.",
+            "Informasi foto, lencana pemrosesan, dan pembacaan penyesuaian saat tombol ditahan tetap pada ukuran layar normal saat Anda melakukan zoom atau menggeser."
+          ],
+          "steps": [
+            "Nyalakan Bandingkan, lalu zoom melebihi Pas.",
+            "Klik tombol cepat pratinjau di kanan atas area foto untuk memusatkan pembagi pada tampilan saat ini. Ini juga membawa kembali pembagi yang di luar layar setelah panning, tanpa mengubah zoom atau pan Anda.",
+            "Tombol disembunyikan saat Anda kembali ke Pas atau mematikan Bandingkan."
+          ]
+        },
+        {
+          "title": "Bangun pilihan",
+          "paragraphs": [
+            "Klik memilih satu foto aktif. Shift-klik memilih rentang berurutan. Command-klik di Mac atau Control-klik menambahkan atau menghapus foto individual.",
+            "Di kisi, aksi bendera, rating, dan label warna diterapkan ke set yang dipilih. Di Detail, aksi penandaan tersebut diterapkan ke foto aktif. Di Survey, aksi tersebut diterapkan ke sel survei aktif. Periksa konteks toolbar penandaan sebelum aksi batch.",
+            "Buka Info di samping salah satu kisi untuk melihat metadata atau memberi tag pada foto terpilih. Kisi menyempit untuk memberi ruang bagi inspector. Pilih alat inspector lain untuk kembali ke kisi yang lebih lebar."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Tambahkan kata kunci, keterangan, dan informasi hak",
+      "category": "Library",
+      "summary": "Buat foto lebih mudah ditemukan dan siapkan metadata deskriptif untuk ekspor.",
+      "keywords": [
+        "metadata",
+        "IPTC",
+        "EXIF",
+        "kata kunci",
+        "keterangan",
+        "judul",
+        "hak cipta",
+        "pembuat",
+        "lokasi",
+        "GPS",
+        "kata kunci batch",
+        "hapus kata kunci",
+        "batalkan kata kunci",
+        "kata kunci hierarkis"
+      ],
+      "sections": [
+        {
+          "title": "Tambahkan kata kunci yang dapat dicari",
+          "paragraphs": [
+            "Buka Info pada foto aktif. Masukkan kata kunci di Tambahkan kata kunci dan klik Tambahkan ke foto atau tekan Enter. Koma memisahkan kata kunci; Pengaturan → File & Metadata juga dapat mengaktifkan pemisah titik koma dan saran kata kunci katalog.",
+            "Gunakan jalur hierarkis seperti Places > Boston untuk menjaga istilah terkait tetap bersama. Pohon Keyword menampilkan istilah katalog; klik suatu istilah untuk mencari, atau klik ganda untuk mengubah nama keyword katalog itu."
+          ],
+          "tips": [
+            "Tambahkan ke foto dan Enter memengaruhi foto aktif. Tombol pilihan terpisah bekerja pada foto kisi yang dipilih. Metadata pasangan tautan juga dapat memperbarui companion RAW atau JPEG mereka."
+          ]
+        },
+        {
+          "title": "Tambahkan atau hapus kata kunci pada pilihan",
+          "steps": [
+            "Pilih foto di salah satu kisi dan buka Info. Periksa jumlah foto terpilih di bawah tombol kata kunci.",
+            "Masukkan satu atau lebih kata kunci, lalu pilih Tambahkan ke pilihan atau Hapus dari pilihan. Setiap foto tetap mempertahankan kata kunci lainnya.",
+            "Gunakan Urungkan perubahan kata kunci untuk memulihkan batch terakhir selama jendela ini tetap terbuka. Urungkan menolak menimpa kata kunci yang diubah setelah batch itu. Riwayat Foto juga menyimpan status kata kunci sebelum dan sesudah."
+          ],
+          "paragraphs": [
+            "Satu batch dapat memengaruhi hingga 5.000 foto, termasuk companion yang tertaut. Menghapus kata kunci hierarkis menghapus jalur itu secara tepat, bukan semua turunannya. Pohon kata kunci dan saran menggunakan istilah yang sudah ada di katalog."
+          ]
+        },
+        {
+          "title": "Jelaskan foto",
+          "paragraphs": [
+            "Di Info, perluas Deskripsi untuk judul, keterangan, dan headline; Hak untuk pembuat, hak cipta, dan kredit; atau Tempat untuk lokasi dan koordinat. Perubahan disimpan ke katalog saat Anda mengetik. Buka di Maps tersedia setelah metadata foto ini dimuat dan garis lintang serta garis bujur valid. Itu membuka lokasi di peramban Anda.",
+            "Apply to selection menyalin formulir metadata saat ini ke foto terpilih, termasuk kolom kosongnya. Tinjau seluruh formulir terlebih dahulu. Metadata disertakan dalam ekspor sesuai dengan resep ekspor; mengedit bidang-bidang ini tidak menulis ulang file gambar asli."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "browse-folders",
+      "title": "Telusuri folder dan simpan favorit",
+      "category": "Library",
+      "summary": "Pilih cakupan folder, sertakan subfolder, dan simpan folder yang sering digunakan tetap dekat.",
+      "keywords": [
+        "favorit",
+        "lokal",
+        "folder",
+        "sidebar",
+        "foto hilang",
+        "pindai ulang",
+        "sinkronkan",
+        "folder pantau",
+        "folder yang dipantau",
+        "tethering"
+      ],
+      "sections": [
+        {
+          "title": "Pilih apa yang terlihat",
+          "paragraphs": [
+            "Local → Browse mencantumkan folder yang Anda tambahkan. Include subfolders mengontrol apakah folder yang dipilih juga menampilkan turunannya. Filter pustaka lain tetap berlaku.",
+            "Di jendela Linux yang sempit, gunakan Tampilkan atau sembunyikan pustaka di kiri atas untuk membuka laci pustaka. Tutup dengan tombol yang sama setelah memilih folder agar ada lebih banyak ruang untuk foto."
+          ],
+          "steps": [
+            "Klik folder di bawah Lokal.",
+            "Aktifkan Include subfolders untuk menyertakan folder anak, atau matikan untuk hanya melihat folder itu.",
+            "Klik bintang di samping folder, atau buka menu •••-nya dan pilih Add as Favorite.",
+            "Gunakan Lokal → Favorit untuk kembali ke folder yang Anda simpan."
+          ]
+        },
+        {
+          "title": "Aksi folder",
+          "paragraphs": [
+            "Menu ••• pada folder mencakup Tampilkan di Finder di Mac, Tampilkan di File Explorer di Windows, atau Tampilkan di Manajer Berkas di Linux. Untuk folder saat ini, Sinkronkan Folder menyegarkan tampilan. Lokal ••• → Pindai ulang folder memindai sumber katalog.",
+            "Remove from LightTable menghapus root yang ditambahkan dari daftar sumber aplikasi; itu tidak memindahkan file asli ke Trash. Tindakan ini tersedia ketika lebih dari satu sumber tersedia."
+          ]
+        },
+        {
+          "title": "Kelola folder yang dipantau",
+          "paragraphs": [
+            "Buka Lokal ••• → Pantau folder… untuk menambahkan folder yang dipantau. Pilih bagaimana foto yang masuk harus ditangani. Simpan tidak tersedia sampai folder ditentukan; menyalin ke dalam pustaka juga memerlukan tujuan.",
+            "Untuk mengedit watch yang sudah ada, pilih di Folder yang dipantau. Setiap watch yang disimpan muncul di daftar ini. Pilih Folder yang dipantau baru untuk folder lain, atau gunakan Hapus watch untuk berhenti memantau folder terpilih. Ini tidak menghapus fotonya.",
+            "Pintasan Watching membuka watch aktif pertama. Kesalahan penyimpanan tetap ada di dialog sehingga Anda dapat memperbaiki pengaturan."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "survey-photos",
+      "title": "Bandingkan beberapa foto di Survey",
+      "category": "Library",
+      "summary": "Tinjau satu grup bersama, tandai frame aktif, dan persempit kumpulan kandidat.",
+      "keywords": [
+        "survei",
+        "bandingkan foto",
+        "bandingkan frame",
+        "burst",
+        "berdampingan",
+        "pilihan terbaik",
+        "buat pilihan"
+      ],
+      "sections": [
+        {
+          "title": "Tinjau sebuah grup",
+          "paragraphs": [
+            "Survey menampilkan pratinjau asli untuk memilih di antara foto. Ini menampilkan hingga 16 foto yang dipilih. Jika tidak ada seleksi eksplisit, ini menggunakan hingga enam foto terdekat dalam tampilan saat ini."
+          ],
+          "steps": [
+            "Pilih kandidat dalam kisi dan tekan N, atau buka Info → Survey selection.",
+            "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel.",
+            "Gunakan toolbar penandaan atau shortcut flag, rating, dan label pada sel aktif.",
+            "Klik × pada sel untuk menghapusnya dari survei tanpa menghapus atau menolaknya. Klik dua kali sel untuk membuka foto tersebut di Detail.",
+            "Klik Tutup atau tekan Escape untuk keluar dari Survey."
+          ]
+        },
+        {
+          "title": "Pilih satu pilihan terbaik",
+          "paragraphs": [
+            "Pilih foto survei aktif sebagai pilihan dan tolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG yang tertaut dapat memperluas perubahan bendera itu ke pasangan.",
+            "Untuk menilai edit terhadap originalnya, gunakan perbandingan sebelum/sesudah di Detail; Survey digunakan untuk memilih di antara bingkai yang berbeda."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "capture-time",
+      "title": "Koreksi jam kamera atau zona waktu",
+      "category": "Library",
+      "summary": "Pratinjau koreksi jam bersama sambil mempertahankan interval antar foto.",
+      "keywords": [
+        "waktu tangkap",
+        "tanggal",
+        "jam kamera",
+        "zona waktu",
+        "zona waktu",
+        "daylight saving",
+        "tanggal urutkan",
+        "stempel waktu"
+      ],
+      "sections": [
+        {
+          "title": "Pratinjau koreksi",
+          "paragraphs": [
+            "Koreksi waktu tangkap mengubah tanggal katalog yang digunakan untuk pengurutan berdasarkan tanggal tangkap dan metadata yang diekspor. File gambar asli dan tanggal sistem berkas tetap tidak berubah."
+          ],
+          "steps": [
+            "Pilih foto yang terpengaruh dan buka Info → Koreksi waktu pengambilan.",
+            "Masukkan Pergeseran jam per jam, misalnya -1 atau 5.5.",
+            "Secara opsional masukkan Tetapkan zona waktu sebagai offset seperti -04:00 atau +05:30. Biarkan kosong untuk mempertahankan zona yang ada, atau masukkan remove untuk menghapusnya.",
+            "Pilih apakah akan menyertakan pendamping RAW + JPEG.",
+            "Klik Preview selection dan tinjau waktu sebelum-dan-sesudah serta foto yang dilewati.",
+            "Klik Apply previewed changes. Jika Anda mengubah pilihan atau kontrol koreksi, pratinjau lagi terlebih dahulu."
+          ]
+        },
+        {
+          "title": "Pulihkan koreksi",
+          "paragraphs": [
+            "Menetapkan zona waktu tidak juga menggeser jam kamera. Gunakan kolom pergeseran saat waktu yang ditampilkan itu sendiri salah.",
+            "Urungkan koreksi terakhir membatalkan koreksi paling baru yang ada di jendela ini. Pulihkan waktu kamera… menampilkan pratinjau penghapusan koreksi katalog; tinjau pratinjau dan terapkan untuk memulihkan waktu kamera asli. Langkah waktu tangkap juga tersedia di Riwayat. Saat penulisan XMP diaktifkan, mengatur ulang koreksi memulihkan tanggal sidecar yang disimpan sebelum LightTable menerapkannya. Tanggal tangkap dalam sidecar lama tanpa tanggal tersimpan itu tetap tidak berubah."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "xmp-interchange",
+      "title": "Tukar metadata melalui sidecar XMP",
+      "category": "Library",
+      "summary": "Baca metadata seleksi dari penyunting lain dan simpan perubahan yang didukung di samping asli Anda.",
+      "keywords": [
+        "XMP",
+        "sidecar",
+        "Photo Mechanic",
+        "digiKam",
+        "interoperabilitas",
+        "konflik sinkronisasi",
+        "metadata portabel"
+      ],
+      "sections": [
+        {
+          "title": "Baca metadata dari penyunting lain",
+          "paragraphs": [
+            "Minta penyunting lain menyimpan metadata-nya ke file XMP di samping, lalu pilih Lokal ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual menyimpan metadata mereka sendiri.",
+            "Metadata yang didukung mencakup rating bintang, tanda pilih/tolak, label warna standar, kata kunci datar dan hierarkis, serta bidang IPTC deskriptif. Nilai kosong yang eksplisit membersihkan bidang itu; nilai yang tidak ada membiarkannya tidak berubah. Label warna kustom yang tidak cocok dengan warna LightTable dilaporkan sebagai dilewati.",
+            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas tidak diterapkan oleh tindakan menu ini."
+          ]
+        },
+        {
+          "title": "Tulis perubahan di samping yang asli",
+          "paragraphs": [
+            "Aktifkan penulisan XMP otomatis di Pengaturan → File & Metadata. LightTable mengantre bidang yang berubah dan menuliskannya di samping asli yang tersedia. Ini mempertahankan metadata yang tidak terkait dan menyimpan cadangan sidecar yang ada sebelum memperbaruinya pertama kali. Penulisan yang offline atau gagal tetap dalam antrean untuk dicoba lagi.",
+            "Jika aplikasi lain mengubah properti XMP yang sama setelah pembacaan atau sinkronisasi terakhir, LightTable melaporkan konflik dan membiarkan sidecar itu tidak berubah. Tinjau metadata eksternal, lalu impor sidecar untuk menerima nilai metadata tersebut sebelum membuat perubahan lebih lanjut di LightTable.",
+            "Gunakan photo.xmp atau photo.RAW.xmp untuk satu original. Jika keduanya ada, impor dan sinkronisasi akan melaporkan ambiguitas alih-alih memilih salah satu. Pertahankan satu konvensi penamaan setelah memeriksa isinya.",
+            "XMP menukar metadata yang didukung; ini bukan cadangan katalog yang lengkap. Simpan cadangan katalog untuk koleksi, riwayat, dan varian, dan aktifkan suntingan LightTable portabel saat Anda perlu resep penyuntingan penuh ikut bersama folder."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Temukan foto dengan pencarian, filter, dan pengurutan",
+      "category": "Library",
+      "summary": "Persempit foto menurut teks, kamera, lensa, eksposur, tanggal tangkap, kata kunci, dan tanda seleksi.",
+      "keywords": [
+        "temukan",
+        "cari",
+        "kata kunci",
+        "filter rating",
+        "urutkan",
+        "tanggal tangkap",
+        "tidak ada hasil",
+        "tanpa nilai",
+        "jenis file",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "belum diedit",
+        "bersihkan filter",
+        "kamera",
+        "lensa",
+        "ISO",
+        "aperture",
+        "kecepatan rana",
+        "panjang fokus",
+        "EXIF"
+      ],
+      "sections": [
+        {
+          "title": "Cari tampilan saat ini",
+          "paragraphs": [
+            "Kotak cari mencocokkan teks dalam nama file, nama tampilan, keyword, dan metadata indeks foto yang tersedia. Pencarian bekerja di dalam folder atau koleksi saat ini dan digabungkan dengan filter aktif lainnya."
+          ],
+          "steps": [
+            "Klik Cari foto dan kata kunci, atau tekan / saat Anda tidak mengetik di suatu field.",
+            "Ketik kata atau frasa dari nama file atau kata kunci.",
+            "Gunakan All Photos, Unflagged, Picked, Rejected, atau Rated di sidebar untuk memilih grup bendera atau rating.",
+            "Klik Filter di samping Urutkan. Pilih satu atau lebih tipe file, lalu kombinasikan dengan Bendera, Rating, label Warna, atau status Edit.",
+            "Pilih Nama file, Rating, Bendera, Tanggal pengambilan, atau Label warna di Urutkan."
+          ]
+        },
+        {
+          "title": "Gabungkan dan bersihkan filter",
+          "paragraphs": [
+            "Pilih RAW, JPEG, HEIC / HEIF, TIFF, atau PNG. Beberapa jenis file mencakup format-format tersebut; bendera, rating, label warna, status edit, dan pencarian mempersempit kumpulan itu lebih lanjut. Jika tidak ada jenis file yang dipilih, berarti semua jenis file.",
+            "Tombol Filter menunjukkan berapa banyak pilihan yang aktif. Setiap pilihan muncul sebagai chip yang dapat dihapus di atas kisi, dan hitungannya menunjukkan berapa banyak foto yang cocok. Hapus chip dengan ×-nya, atau pilih Bersihkan semua untuk mengatur ulang filter. Teks pencarian dan folder atau koleksi terpilih tetap di tempatnya.",
+            "Status Edit menawarkan Diedit, Belum diedit, dan Salinan virtual. Salinan virtual menggunakan tipe file originalnya. Tekan Escape atau klik di luar panel untuk menutupnya tanpa menghapus pilihan Anda."
+          ]
+        },
+        {
+          "title": "Filter kamera, eksposur, dan tanggal tangkap",
+          "paragraphs": [
+            "Perluas Kamera, eksposur & tanggal di Filter. Kamera dan Lens cocok pada sebagian nama. Kata kunci cocok dengan jalur kata kunci katalog lengkap dan turunannya; misalnya, Places mencakup Places > Boston.",
+            "ISO, panjang fokus dalam milimeter, f-number bukaan, dan waktu rana menerima nilai minimum dan maksimum. Masukkan angka yang sama di kedua ujung untuk kecocokan tepat. Waktu rana menerima detik atau pecahan seperti 1/250. Foto tanpa metadata eksposur yang diperlukan tidak cocok.",
+            "Tanggal tangkap mencakup hari pertama dan hari terakhir. Filter ini digabungkan dengan rating dan pilihan lain, tetap ada setelah memuat ulang, dan dapat disimpan dalam koleksi cerdas. Foto yang sudah ada mendapatkan nilai eksposur ketika sumbernya dipindai berikutnya; pindai ulang folder jika nilai hilang."
+          ]
+        },
+        {
+          "title": "Saat sebuah foto tampak hilang",
+          "paragraphs": [
+            "Bersihkan teks pencarian dan pilih Bersihkan semua di atas kisi, lalu periksa folder terpilih, Sertakan subfolder, dan koleksi aktif apa pun. Preferensi file berpasangan dan tumpukan yang diciutkan juga dapat menyembunyikan pendamping atau anggota tumpukan.",
+            "Capture date diurutkan dari lebih awal ke lebih baru; Rating mengurutkan rating lebih tinggi lebih dulu."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "collections",
+      "title": "Kelompokkan foto ke dalam koleksi",
+      "category": "Library",
+      "summary": "Buat grup bernama tanpa memindahkan file asli.",
+      "keywords": [
+        "koleksi",
+        "album",
+        "atur",
+        "grup",
+        "terpilih",
+        "hapus koleksi"
+      ],
+      "sections": [
+        {
+          "title": "Buat dan tambahkan foto",
+          "paragraphs": [
+            "Koleksi biasa menyimpan set foto yang dipilih. Ini terpisah dari susunan folder di disk."
+          ],
+          "steps": [
+            "Pilih foto yang ingin Anda grupkan.",
+            "Klik Create collection atau + di samping Collections, masukkan nama, lalu simpan. Pilihan saat ini disertakan.",
+            "Klik sebuah koleksi untuk melihatnya. Mengklik koleksi aktif lagi akan meninggalkannya.",
+            "Dengan koleksi biasa aktif, pilih foto untuk ditambahkan dan klik Add selected to collection."
+          ]
+        },
+        {
+          "title": "Hapus koleksi",
+          "paragraphs": [
+            "Menu ••• di sebelah koleksi menghapus koleksi. Ini menghapus pengelompokan, bukan memindahkan file asli ke Tempat Sampah. Cari dan filter dapat mempersempit foto yang ditampilkan di dalam koleksi."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Pindahkan foto yang ditolak ke Sampah",
+      "category": "Library",
+      "summary": "Tinjau tampilan saat ini dengan cermat sebelum memindahkan original dan sidecar yang ditolak.",
+      "keywords": [
+        "hapus",
+        "tempat sampah",
+        "ditolak",
+        "pulihkan",
+        "pulihkan",
+        "hapus asli",
+        "tempat sampah"
+      ],
+      "sections": [
+        {
+          "title": "Tinjau dan pindahkan file yang ditolak",
+          "paragraphs": [
+            "Menolak foto hanya mengubah benderanya. Move Rejected Photos to Trash adalah tindakan desktop terpisah yang memengaruhi foto yang ditolak dalam tampilan saat ini, bukan hanya foto aktif."
+          ],
+          "steps": [
+            "Pilih folder atau koleksi dan filter yang menentukan foto yang ingin Anda tinjau.",
+            "Periksa foto yang ditolak. Cek pengaturan file pasangan dan perluas tumpukan apa pun jika Anda berharap menyertakan anggota lainnya.",
+            "Di Mac, pilih Foto → Pindahkan Foto yang Ditolak ke Tempat Sampah…, atau tekan Command+Delete. Di aplikasi desktop Linux atau Windows, tekan Ctrl+Delete.",
+            "Baca jumlah foto di konfirmasi dan konfirmasikan hanya jika sesuai dengan set yang Anda inginkan."
+          ],
+          "tips": [
+            "Sidecar XMP yang bersebelahan ikut berpindah bersama file asli. Pendamping RAW atau JPEG yang tersembunyi tetap ada di pustaka; pilih Both files pada pengaturan pasangan tangkapan untuk menyertakannya.",
+            "Salinan virtual berbagi file aslinya. Menghapus salinan virtual harus menggunakan tindakan Foto → Delete virtual copy; memindahkan sumbernya ke Trash memengaruhi setiap edit yang menggunakan aslinya."
+          ]
+        },
+        {
+          "title": "Memulihkan penghapusan yang keliru",
+          "paragraphs": [
+            "Gunakan Tempat Sampah Finder di Mac, Tempat Sampah desktop di Linux, atau Recycle Bin di Windows untuk memulihkan original dan sidecar-nya ke folder sebelumnya, lalu pindai ulang di LightTable. Aplikasi ini tidak memiliki penjelajah Tempat Sampah bawaan."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "colour-labels",
+      "title": "Atur alur kerja dengan label warna",
+      "category": "Library",
+      "summary": "Gunakan lima warna secara independen dari pilihan dan rating bintang.",
+      "keywords": [
+        "warna",
+        "warna",
+        "label",
+        "merah",
+        "kuning",
+        "hijau",
+        "biru",
+        "ungu",
+        "alur kerja"
+      ],
+      "sections": [
+        {
+          "title": "Terapkan dan filter label",
+          "paragraphs": [
+            "Label warna bebas Anda artikan sendiri—misalnya merah untuk retouching atau hijau untuk pengiriman. Label tersebut tidak mengubah rating bintang atau status pilih/tolak."
+          ],
+          "steps": [
+            "Pilih foto, atau satu set dalam kisi, lalu buka Info.",
+            "Di bawah label Colour, pilih Red, Yellow, Green, Blue, atau Purple. Pilih No label untuk menghapusnya.",
+            "Gunakan 6 untuk Red, 7 untuk Yellow, 8 untuk Green, dan 9 untuk Blue. Purple tersedia dari kontrol warna.",
+            "Klik Filter di samping Urutkan dan gunakan label Warna untuk menemukan warna tertentu, warna apa pun, atau foto tanpa label."
+          ],
+          "tips": [
+            "Menerapkan label yang sama lagi akan membersihkannya. Aksi label warna tidak melakukan auto-advance."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Pilih, tolak, dan beri rating foto",
+      "category": "Library",
+      "summary": "Tandai pilihan terbaik dan tolak, beri rating bintang, dan kendalikan perpindahan otomatis.",
+      "keywords": [
+        "seleksi",
+        "pilih",
+        "tolak",
+        "bendera",
+        "hapus bendera",
+        "bintang",
+        "rating",
+        "otomatis lanjut",
+        "pilihan terbaik"
+      ],
+      "sections": [
+        {
+          "title": "Tandai foto aktif atau seleksi kisi",
+          "paragraphs": [
+            "Bendera dan bintang terpisah: sebuah foto dapat Terpilih dan memiliki rating bintang apa pun. Tolak menandai foto untuk ditinjau; ini tidak menghapusnya."
+          ],
+          "steps": [
+            "Gunakan Pick, Reject, dan Unflag di toolbar marking atau Info. Tombol P, X, dan U melakukan tindakan yang sama.",
+            "Klik bintang atau tekan 1–5 untuk memberi rating. Tekan 0 untuk menghapus rating.",
+            "Untuk membersihkan pilihan, tolak, atau rating yang sudah ada, terapkan tanda yang sama sekali lagi.",
+            "Gunakan tampilan Picked, Rejected, dan Rated di sidebar untuk meninjau keputusan Anda."
+          ]
+        },
+        {
+          "title": "Kontrol apa yang terjadi selanjutnya",
+          "paragraphs": [
+            "Aktifkan Auto-advance untuk berpindah ke foto berikutnya setelah memilih, menolak, atau memberi rating satu foto. Menghapus bendera tidak melakukan advance.",
+            "Saat beberapa foto dipilih dalam kisi, tanda diterapkan ke set tersebut tanpa maju. Jika Link pair metadata aktif, penandaan juga memperbarui pendamping RAW dan JPEG yang dikenali."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "rename-photos",
+      "title": "Ubah nama foto dengan pratinjau",
+      "category": "Library",
+      "summary": "Terapkan template nama file yang konsisten pada original yang dipilih dan sidecar-nya.",
+      "keywords": [
+        "ubah nama",
+        "nama file",
+        "urutan",
+        "batch",
+        "teks kustom",
+        "token tanggal",
+        "sidecar"
+      ],
+      "sections": [
+        {
+          "title": "Pratinjau dan terapkan",
+          "paragraphs": [
+            "Rename mengubah nama file di disk dan menjaga catatan katalog tetap bersama file. Ini juga menangani sidecar XMP yang bersebelahan. Ini berbeda dari memberi nama pada salinan virtual."
+          ],
+          "steps": [
+            "Pilih foto yang akan diubah namanya.",
+            "Buka Info → Ubah Nama… (atau Foto → Ubah Nama… di menu Mac).",
+            "Masukkan Template seperti {custom}_{sequence}. Atur Custom text dan Start at sesuai kebutuhan.",
+            "Tinjau nama file sebelum dan sesudah pada pratinjau.",
+            "Klik Ubah Nama untuk menerapkan."
+          ],
+          "tips": [
+            "Token yang tersedia mencakup {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min}, dan {ss}. Nomor urut menggunakan empat digit.",
+            "Ekstensi original dipertahankan. Bentrokan nama akan mendapat akhiran numerik. Template Ubah Nama tidak dapat membuat folder.",
+            "Salinan virtual berbagi file sumbernya: menyertakan satu salinan virtual dalam penggantian nama menargetkan file asli tersebut. Antarmuka tidak menyediakan tombol khusus untuk membatalkan ubah nama."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "smart-collections",
+      "title": "Simpan pencarian sebagai koleksi pintar",
+      "category": "Library",
+      "summary": "Simpan grup bernama yang diperbarui dari aturan yang didukung saat metadata foto berubah.",
+      "keywords": [
+        "koleksi cerdas",
+        "pencarian tersimpan",
+        "dinamis",
+        "aturan filter",
+        "secara otomatis",
+        "rating minimum"
+      ],
+      "sections": [
+        {
+          "title": "Simpan aturan yang didukung",
+          "paragraphs": [
+            "Koleksi cerdas menemukan foto yang cocok dengan aturan tersimpannya. Aturan yang didukung mencakup bendera, rating, Hanya Tanpa Nilai, jenis file, label warna, status edit, salinan virtual, dan teks pencarian. Rentang kamera, lensa, kata kunci hierarkis, tanggal tangkap, ISO, panjang fokus, bukaan, dan waktu rana juga disimpan."
+          ],
+          "steps": [
+            "Atur teks pencarian dan pilihan yang diinginkan di Filter di samping Urutkan.",
+            "Klik ✦ di samping Collections, berlabel Simpan filter sebagai koleksi pintar.",
+            "Beri nama koleksi dan simpan.",
+            "Klik namanya untuk melihat foto yang cocok. Mengubah metadata relevan foto akan mengubah apakah foto itu cocok."
+          ]
+        },
+        {
+          "title": "Ketahui apa yang disimpan",
+          "paragraphs": [
+            "Folder yang dipilih dan Sertakan subfolder tidak disimpan di aturan koleksi cerdas. Koleksi mencari pustaka menggunakan pilihan filter yang tersimpan.",
+            "Anda tidak dapat menambahkan foto secara manual dengan Tambahkan terpilih ke koleksi saat koleksi cerdas aktif. Pencarian saat ini dan filter pustaka masih dapat mempersempit tampilan koleksi.",
+            "Untuk foto bintang empat yang diambil pada 50mm di 2026, atur Rating ke 4 bintang ke atas, panjang fokus minimum dan maksimum ke 50, dan tanggal tangkap dari 1 Januari hingga 31 Desember 2026. Simpan filter itu sebagai koleksi cerdas."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Coba salinan virtual dan grupkan foto dalam tumpukan",
+      "category": "Library",
+      "summary": "Simpan edit alternatif dari satu original dan lipat foto terkait dalam kisi.",
+      "keywords": [
+        "salinan virtual",
+        "versi",
+        "edit alternatif",
+        "tumpukan",
+        "lepaskan dari tumpukan",
+        "duplikat",
+        "salin"
+      ],
+      "sections": [
+        {
+          "title": "Buat edit alternatif",
+          "paragraphs": [
+            "Salinan virtual mengacu pada file original yang sama dan mempertahankan status edit yang independen. Ini tidak membuat original kedua di disk."
+          ],
+          "steps": [
+            "Buat foto sumber menjadi aktif.",
+            "Buka menu Photo actions ••• di samping Sort dan Size, lalu pilih Create virtual copy.",
+            "Beri nama salinan lalu simpan. Salinan baru menjadi aktif.",
+            "Edit salinannya. Gunakan Filter → Status edit → Salinan virtual untuk menemukan salinan nanti."
+          ],
+          "tips": [
+            "Hapus salinan virtual dalam tindakan Foto menghapus salinan virtual aktif. Untuk file kedua yang nyata di disk, ekspor gambar yang dirender."
+          ]
+        },
+        {
+          "title": "Ciutkan sebuah grup",
+          "paragraphs": [
+            "Pilih setidaknya dua foto, lalu pilih Photo actions ••• → Stack selected photos dan masukkan nama. Badge kisi tumpukan menampilkan jumlah anggota; klik untuk memperluas atau menciutkan. Unstack selected photos menghapus pengelompokan."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "Bekerja dengan pasangan RAW dan JPEG",
+      "category": "Library",
+      "summary": "Pilih companion mana yang akan ditampilkan dan apakah perubahan metadata baru memengaruhi keduanya.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "pasangkan",
+        "pendamping",
+        "metadata tertaut",
+        "jpeg tersembunyi"
+      ],
+      "sections": [
+        {
+          "title": "Pilih pendamping yang terlihat",
+          "paragraphs": [
+            "LightTable mengenali pasangan ketika satu RAW dan satu JPEG berbagi nama file dasar yang sama di sumber dan folder yang sama. Masing-masing file mempertahankan pengeditannya sendiri; salinan virtual tetap independen."
+          ],
+          "steps": [
+            "Buka Pengaturan → Files & Metadata dan aktifkan Pasangkan tangkapan RAW dan JPEG.",
+            "Atur Tampilkan tangkapan berpasangan ke Kedua file, Prioritaskan RAW, atau Prioritaskan JPEG.",
+            "Saat melihat foto berpasangan, gunakan RAW → JPEG atau JPEG → RAW di dekat atas untuk beralih ke pasangannya."
+          ]
+        },
+        {
+          "title": "Tautkan perubahan metadata baru",
+          "paragraphs": [
+            "Aktifkan Tautkan metadata pasangan untuk menautkan rating, bendera, label, dan perubahan kata kunci baru. Fitur ini tidak menggabungkan edit foto.",
+            "Ekspor dan Trash menggunakan file yang Anda pilih atau sertakan dalam tampilan saat ini. Keduanya tidak secara otomatis menyertakan pendamping tersembunyi. Pilih Kedua file dan tinjau pilihan tersebut saat Anda memerlukan kedua file asli. Koreksi waktu pengambilan memiliki kotak centang Include RAW + JPEG companions sendiri."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "editing-effects",
+      "title": "Sesuaikan Tekstur, Kejernihan, Kurangi Kabut, dan Vinyet",
+      "category": "Editing",
+      "summary": "Perhalus detail permukaan, kontras lokal, haze, dan kecerahan tepi dari bagian Effects.",
+      "keywords": [
+        "efek",
+        "tekstur",
+        "kejernihan",
+        "kurangi kabut",
+        "kabut",
+        "vinyet",
+        "lembutkan",
+        "detail",
+        "kontras lokal",
+        "tepi gelap",
+        "tepi terang"
+      ],
+      "sections": [
+        {
+          "title": "Perhalus detail dan kontras",
+          "paragraphs": [
+            "Buka Efek di Edit. Texture mengubah detail lokal halus, sementara Clarity menerapkan kontras lokal dengan penekanan lebih besar pada nada tengah. Nilai positif memperkuat efek ini; nilai negatif melembutkannya."
+          ],
+          "steps": [
+            "Sesuaikan Texture sambil melihat bagian foto yang bertekstur, seperti kain, dedaunan, atau kulit.",
+            "Sesuaikan Kejernihan sambil memeriksa kontras di sekitar subjek dan tepi.",
+            "Periksa pada 1:1 lalu kembali ke Pas untuk menilai hasil keseluruhan."
+          ],
+          "tips": [
+            "Untuk perlakuan lokal, gunakan kontrol Tekstur dan Kejernihan pada masker."
+          ]
+        },
+        {
+          "title": "Ubah kabut dan kecerahan tepi",
+          "paragraphs": [
+            "Dehaze mengubah perlakuan tonal dan warna yang menyerupai kabut pada gambar. Vignette mengubah kecerahan tepi: nilai positif menggelapkan tepi dan nilai negatif mencerahkan tepi."
+          ],
+          "steps": [
+            "Tingkatkan Dehaze untuk memperkuat gambar berkabut, atau coba nilai negatif untuk perlakuan yang lebih lembut. Periksa kontras dan warna saat Anda menyesuaikannya.",
+            "Atur Vinyet untuk perlakuan tepi yang Anda inginkan dan periksa sudutnya.",
+            "Tahan B untuk membandingkan dengan original, atau gunakan Atur Ulang pada Effects untuk mengatur ulang Texture, Clarity, Dehaze, dan Vignette sekaligus."
+          ],
+          "tips": [
+            "Vignette di Effects adalah perlakuan tepi kreatif. Gunakan koreksi lensa saat Anda ingin mengoreksi shading lensa."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-tone",
+      "title": "Sesuaikan eksposur, kontras, dan rentang tonal",
+      "category": "Editing",
+      "summary": "Gunakan kontrol Light dan histogram untuk mengatur kecerahan dan kontras, lalu periksa hasilnya terhadap original.",
+      "keywords": [
+        "eksposur",
+        "kecerahan",
+        "cahaya",
+        "nada",
+        "kontras",
+        "highlight",
+        "bayangan",
+        "putih",
+        "hitam",
+        "otomatis",
+        "histogram",
+        "clipping",
+        "sebelum"
+      ],
+      "sections": [
+        {
+          "title": "Mulai dengan Cahaya",
+          "paragraphs": [
+            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal. Contrast mengubah pemisahan di antaranya."
+          ],
+          "steps": [
+            "Atur Eksposur untuk subjek utama.",
+            "Sesuaikan Highlights dan Shadows untuk menyeimbangkan area terang dan gelap, lalu perhalus Whites, Blacks, dan Contrast.",
+            "Gunakan tombol peringatan clipping di samping histogram untuk memeriksa clipping.",
+            "Bandingkan hasil Anda dengan original menggunakan kontrol before, atau tahan B saat foto aktif."
+          ],
+          "tips": [
+            "Reset pada Light mereset grup itu. Gunakan Undo saat Anda ingin membalik hanya penyesuaian terakhir."
+          ]
+        },
+        {
+          "title": "Gunakan Otomatis sebagai titik awal",
+          "paragraphs": [
+            "Auto di heading Light menganalisis pratinjau gambar yang tersedia dan menetapkan Exposure, Blacks, dan Whites. Fitur ini tidak menetapkan setiap kontrol penyuntingan."
+          ],
+          "steps": [
+            "Tunggu hingga pratinjau foto muncul, lalu klik Otomatis.",
+            "Tinjau hasilnya dan perhalus penggeser untuk foto tersebut."
+          ],
+          "tips": [
+            "Jika Auto mengatakan sedang menunggu pratinjau gambar, biarkan pratinjau dimuat lalu coba lagi.",
+            "Menu scope juga menawarkan Waveform, RGB Parade, dan Vectorscope untuk memeriksa nada dan warna."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Terapkan koreksi lensa dan aberasi kromatik",
+      "category": "Editing",
+      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
+      "keywords": [
+        "lensa",
+        "profil",
+        "distorsi",
+        "vinyet",
+        "pencahayaan",
+        "aberasi kromatik",
+        "fringing",
+        "merah sian",
+        "biru kuning",
+        "optik"
+      ],
+      "sections": [
+        {
+          "title": "Pilih dan verifikasi koreksi",
+          "paragraphs": [
+            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia."
+          ],
+          "steps": [
+            "Baca nama profil dan penjelasan kecocokan.",
+            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi dan Koreksi shading lensa sesuai kebutuhan.",
+            "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
+            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik."
+          ],
+          "tips": [
+            "Tidak ditemukan profil lensa yang tepat; kontrol distorsi dan perspektif manual tetap tersedia.",
+            "Kotak centang distorsi dan shading profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
+            "Profil yang dipilih secara manual perlu diperiksa secara visual; pilihan itu tidak membuktikan bahwa profil tersebut cocok tepat.",
+            "Koreksi lensa dan fringe tetap tidak merusak sepanjang ekspor."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-presets",
+      "title": "Terapkan, sesuaikan, dan bagikan preset pengeditan",
+      "category": "Editing",
+      "summary": "Klik preset untuk menerapkannya, sesuaikan Jumlah, lalu simpan atau bagikan tampilan Anda sendiri.",
+      "keywords": [
+        "preset",
+        "preset",
+        "komunitas",
+        "galeri",
+        "bawaan",
+        "favorit",
+        "sembunyikan prasetel",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "impor preset",
+        "simpan tampilan",
+        "coba prasetel",
+        "jumlah preset",
+        "kekuatan preset",
+        "nonaktifkan preset",
+        "perbarui prasetel",
+        "kirim prasetel",
+        "ganti penyesuaian"
+      ],
+      "sections": [
+        {
+          "title": "Pilih koleksi",
+          "paragraphs": [
+            "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
+          ],
+          "steps": [
+            "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
+            "Gunakan bintang di samping prasetel untuk menjadikannya favorit; Favorit memfilter koleksi saat ini.",
+            "Di Komunitas, pilih Unggulan, Baru, atau Semua dan gunakan Subjek untuk mempersempit koleksi. Pilih preset untuk melihat deskripsi, pembuat, versi, perilaku Film, dan foto contoh yang tersedia."
+          ],
+          "tips": [
+            "Featured adalah koleksi editorial, bukan peringkat popularitas.",
+            "Preset bawaan bersifat hanya-baca. Simpan salinan… menempatkan salinan bernama di Milik Anda. Sembunyikan preset menghapusnya dari tampilan Bawaan biasa; Tampilkan yang tersembunyi dan Pulihkan ke Bawaan akan membawanya kembali."
+          ]
+        },
+        {
+          "title": "Terapkan dan sesuaikan Jumlah",
+          "paragraphs": [
+            "Klik kartu preset untuk langsung menerapkannya pada foto utama. Klik kartu yang sama lagi, atau gunakan tombol Aktif/Mati-nya, untuk menonaktifkannya. Foto Anda tetap berada di komputer ini."
+          ],
+          "steps": [
+            "Pilih foto dan klik kartu preset. Preset terpilih menampilkan Jumlah di bawah namanya.",
+            "Seret Jumlah dari 0% ke 100%. Nol memulihkan pengeditan sebelum preset; 100% menggunakan preset penuh. Klik dua kali Jumlah untuk mengatur ulang ke 100%.",
+            "Klik preset lain untuk mengganti tampilan. Urungkan dan Ulangi memulihkan pilihan preset, status aktif, dan jumlah. Preset terpilih dan jumlahnya disimpan bersama foto."
+          ],
+          "tips": [
+            "Stok film, Film aktif/nonaktif, dan pilihan tetap lainnya beralih pada jumlah apa pun di atas nol. Nada, warna, kurva, dan penyesuaian numerik bervariasi sesuai Jumlah. Contoh pembuat tetap terpisah dari foto Anda.",
+            "Beralih kartu preset menggunakan pengeditan dari sebelum preset pertama sehingga tampilan tidak menumpuk. Perubahan manual di luar preset, seperti eksposur untuk sebuah Tampilan, tetap dipertahankan. Mengubah secara manual pengaturan yang dikendalikan oleh preset akan mengakhiri penyesuaian Jumlah-nya; pengeditan saat ini kemudian menjadi dasar untuk preset berikutnya."
+          ]
+        },
+        {
+          "title": "Apa yang dipertahankan oleh tampilan",
+          "paragraphs": [
+            "Tampilan Bawaan dan komunitas mempertahankan Edit Eksposur, Suhu/Tint, keseimbangan putih tangkapan, koreksi RAW, format film, pangkas, geometri, masker, koreksi Hapus, koreksi lensa, penajaman, dan pengurangan noise. Mereka mengubah pengaturan kreatif yang disertakan dalam resepnya.",
+            "Film aktif mengaktifkan perlakuan film yang disertakan. Film nonaktif melewati Film. Film tidak berubah membiarkan status aktifnya apa adanya. Perlakuan film dapat dengan sengaja mengubah EV Kamera, pengukuran otomatis, pengembangan, cetak, grain, dan kontrol film kreatif lainnya."
+          ],
+          "tips": [
+            "Pelestarian tampilan diterapkan pada tampilan yang disimpan dengan Tampilan · pertahankan koreksi foto. Edit Penuh atau preset impor lama dapat menyertakan koreksi khusus foto; tinjau foto hasilnya dan gunakan Urungkan jika mengubah koreksi yang ingin Anda pertahankan."
+          ]
+        },
+        {
+          "title": "Tambahkan preset dan pembaruan komunitas",
+          "paragraphs": [
+            "Tambahkan ke Milik Anda mengunduh dan menyimpan resep komunitas yang dipilih tanpa menerapkannya. Resep yang diinstal berfungsi secara offline. Edit foto Anda yang sudah ada menyimpan pengaturannya secara terpisah dari preset."
+          ],
+          "steps": [
+            "Klik preset Komunitas untuk menggunakannya pada foto Anda, lalu klik Tambahkan ke Milik Anda untuk menyimpan salinan luring.",
+            "Gunakan nanti dari Milik Anda, atau kembali ke Komunitas untuk meninjau halaman prasetel publik.",
+            "Klik Segarkan untuk memeriksa katalog. Saat versi yang lebih baru tercantum, Perbarui di Milik Anda hanya mengganti resep yang disimpan ketika Anda memilihnya."
+          ],
+          "tips": [
+            "Memperbarui preset tidak mengubah foto yang sudah Anda edit.",
+            "Pesan offline membedakan antara katalog yang di-cache dan unduhan pertama yang tidak tersedia. Resep yang belum di-cache dan gambar contoh pembuat dapat memerlukan koneksi; Resep Bawaan dan yang diinstal tetap tersedia.",
+            "Perbarui LightTable berarti sebuah preset memerlukan fitur yang tidak didukung oleh versi aplikasi ini. Kontrol pemasangan dan penerapannya tetap dinonaktifkan.",
+            "Buka di LightTable pada halaman prasetel publik membuka detailnya di aplikasi yang terinstal; itu tidak menerapkan tampilannya secara otomatis."
+          ]
+        },
+        {
+          "title": "Simpan, impor, dan ekspor",
+          "paragraphs": [
+            "Kelola… membuka atau menutup Kelola preset; tombol disorot saat bagian terbuka. Simpan tampilan saat ini secara default ke Tampilan · pertahankan koreksi foto. Edit penuh · sertakan koreksi foto juga menawarkan Semua pengaturan penyesuaian atau Hanya pengaturan yang berubah."
+          ],
+          "steps": [
+            "Pilih cakupan preset dan apakah akan Menyertakan profil Film dan pengaturan fisik, lalu klik Simpan baru… dan beri nama.",
+            "Untuk impor, klik Import… dan pilih file preset. Aplikasi Mac juga mendukung pemilihan seluruh folder preset.",
+            "Tinjau hasil impor dan cakupan konversi preset baru sebelum menerapkannya.",
+            "Untuk mengekspor, pilih preset Terpilih dan Format ekspor, lalu klik Ekspor…."
+          ],
+          "tips": [
+            "Ekspor LightTable mempertahankan resep asli preset. Ekspor XMP Lightroom dan gaya Capture One bersifat perkiraan.",
+            "Pilihan file yang didukung mencakup .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, dan .json. Ekstensi yang diterima tidak menjamin setiap pengaturan dapat dikonversi.",
+            "Untuk preset edit yang lebih lama atau Penuh, Terapkan penyesuaian yang dipetakan mengubah pengaturan yang disertakannya. Ganti pengaturan penyesuaian juga mengatur ulang penyesuaian, masker, koreksi Hapus, dan geometri terlebih dahulu. Ganti mempertahankan pangkasan dan mempertahankan Film kecuali preset menyertakan Film atau Anda mengaktifkan Matikan Film untuk tindakan di bawah ini."
+          ]
+        },
+        {
+          "title": "Siapkan kiriman komunitas",
+          "paragraphs": [
+            "Publikasi Komunitas ditinjau. Bagian pengiriman menampilkan pengaturan Pengembangan dan Film yang tepat dalam tampilan yang disiapkan, perilaku Filmmya, dan koreksi foto yang dipertahankannya. Tidak ada yang diunggah saat meninjau ringkasan ini atau menyiapkan unduhan."
+          ],
+          "steps": [
+            "Simpan preset di Milik Anda, pilih preset itu, lalu tinjau ringkasan pengaturan yang disertakan di bawah pengiriman Komunitas.",
+            "Klik Siapkan pengiriman komunitas… dan tunggu contoh lokal dirender. Simpan ZIP yang berisi preset, tiga pasang foto sebelum/sesudah berlisensi, kredit foto, dan catatan hak.",
+            "Buka paket dan periksa contohnya. Anda juga dapat memilih foto Anda sendiri dan menggunakan Unduh contoh pada foto ini untuk menyimpan JPEG 960 piksel dari tampilan yang dibagikan tanpa mengubah edit.",
+            "Klik Buka formulir pengiriman, lampirkan paket dan contoh tambahan apa pun yang diizinkan, lalu tambahkan detail pembuat, deskripsi, dan izin publikasi Anda sebelum mengirim."
+          ],
+          "tips": [
+            "Tiga adegan sampel standar disertakan bersama LightTable. Ekspornya tidak menggunakan foto atau katalog Anda, dan JPEG-nya tidak berisi metadata foto tertanam.",
+            "Persiapan pengiriman mengecualikan koreksi khusus foto. Periksa tampilan hasilnya sebelum membagikannya.",
+            "Hanya bagikan foto yang Anda punya izin untuk mempublikasikannya. Kredit pembuat yang sudah ada dan atribusi preset induk tetap dipertahankan; izin penggunaan ulang resep dan izin penayangan foto adalah terpisah."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Ubah warna individual dengan Mixer Warna dan Warna Titik",
+      "category": "Editing",
+      "summary": "Sesuaikan pita warna lebar atau ambil sampel hue tertentu dan perhalus rentang, kecerahan, dan uniformity-nya.",
+      "keywords": [
+        "hsl",
+        "pencampur warna",
+        "pencampur warna",
+        "warna titik",
+        "sampel",
+        "hue",
+        "keseragaman",
+        "luminansi",
+        "saturasi",
+        "rentang"
+      ],
+      "sections": [
+        {
+          "title": "Sesuaikan pita warna",
+          "paragraphs": [
+            "Color Mixer berada di dalam Edit → Color. Ini mengubah warna di dalam pita terpilih di seluruh foto."
+          ],
+          "steps": [
+            "Pilih salah satu tombol pita berwarna di Mixer Warna.",
+            "Sesuaikan Hue untuk menggeser pita itu, Saturation untuk mengubah intensitas warnanya, dan Luminance untuk mengubah kecerahannya.",
+            "Pilih pita lain untuk melanjutkan, atau gunakan Reset Color Mixer untuk menghapus penyesuaian mixer."
+          ]
+        },
+        {
+          "title": "Ambil sampel warna tertentu",
+          "paragraphs": [
+            "Point Color memberi hue sampel kontrolnya sendiri. Ini memengaruhi warna yang cocok di seluruh foto; gunakan masker lokal jika Anda juga perlu membatasi areanya."
+          ],
+          "steps": [
+            "Klik Sample colour di bawah Point Color, lalu klik patch berwarna di foto.",
+            "Sesuaikan Range untuk mempersempit atau memperlebar hue yang terdampak, lalu perhalus pergeseran Hue, Saturation, dan Luminance.",
+            "Gunakan rona Seragam, saturasi Seragam, atau luminansi Seragam agar warna dalam rentang lebih mendekati patch sampel.",
+            "Pilih titik yang disimpan di selector untuk mengeditnya, atau gunakan Delete point untuk menghapusnya."
+          ],
+          "tips": [
+            "Patch abu-abu netral tidak dapat memberikan sampel hue yang berguna; pilih area yang lebih berwarna saat diminta.",
+            "Point Color menyimpan hingga delapan titik sampel. Jika Anda mengambil sampel lagi saat sudah ada delapan, titik kedelapan akan diganti.",
+            "Reset Point Color membersihkan titik yang disampel tanpa memerlukan reset Color penuh."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Gradasi warna bayangan, nada tengah, dan sorotan",
+      "category": "Editing",
+      "summary": "Berikan perlakuan warna yang berbeda pada wilayah tonal dan kendalikan cara perlakuan itu bercampur.",
+      "keywords": [
+        "penilaian warna",
+        "grading warna",
+        "pembagian toning",
+        "bayangan",
+        "nada tengah",
+        "highlight",
+        "penilaian global",
+        "pencampuran",
+        "keseimbangan"
+      ],
+      "sections": [
+        {
+          "title": "Bangun penilaian",
+          "paragraphs": [
+            "Color Grading di Edit menyediakan pilihan terpisah untuk Bayangan, Midtones, dan Highlights, plus grade global. Masing-masing memiliki kontrol Hue, Saturation, dan Luminance."
+          ],
+          "steps": [
+            "Perluas Grading Warna dan pilih Bayangan, Nada tengah, atau Highlight.",
+            "Pilih Hue, lalu tingkatkan Saturation agar perlakuan warna terlihat. Sesuaikan Luminance untuk wilayah tonal tersebut jika diperlukan.",
+            "Ulangi untuk area lainnya, atau klik Edit global grade untuk mengubah perlakuan global.",
+            "Perhalus Pencampuran dan Keseimbangan, sambil membandingkan foto saat Anda menyesuaikannya.",
+            "Gunakan Atur Ulang pada Color Grading untuk menghapus gradasi."
+          ],
+          "tips": [
+            "Mengubah Hue saat Saturation nol tidak menambah warna yang terlihat. Mulailah dengan nilai saturation yang moderat.",
+            "Gunakan Color Mixer atau Point Color saat Anda ingin menargetkan hue yang sudah ada, dan masker saat Anda ingin menargetkan lokasi dalam foto."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Salin edit ke foto terpilih dan cocokkan eksposur",
+      "category": "Editing",
+      "summary": "Pilih pengaturan mana yang akan ditransfer, tinjau batas khusus masker, atau cocokkan satu grup dengan referensi eksposur aktif.",
+      "keywords": [
+        "salin pengaturan",
+        "tempel pengaturan",
+        "edit batch",
+        "sinkronkan",
+        "sinkronisasi otomatis",
+        "sinkronkan",
+        "beberapa foto",
+        "cocokkan eksposur total",
+        "pilihan",
+        "papan klip"
+      ],
+      "sections": [
+        {
+          "title": "Transfer pengaturan terpilih",
+          "paragraphs": [
+            "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan."
+          ],
+          "steps": [
+            "Buka foto sumber dan klik Salin pengaturan edit, atau tekan Command-Shift-C di Mac atau Ctrl-Shift-C di Linux dan Windows.",
+            "Centang grup yang ingin Anda transfer, lalu klik Salin pengaturan.",
+            "Pilih foto tujuan di pustaka lalu klik Tempel pengaturan edit, atau gunakan Command-Shift-V / Ctrl-Shift-V.",
+            "Baca pesan penyelesaian. Untuk batch, Stop mengakhiri pemrosesan setelah foto saat ini; foto yang selesai mempertahankan edit yang ditempel."
+          ],
+          "tips": [
+            "Crop and geometry, Local masks, dan Healing adalah pilihan terpisah dan tidak disertakan secara default.",
+            "Healing menyalin posisi spot dan hanya boleh dipindahkan antar foto dengan framing yang cocok."
+          ]
+        },
+        {
+          "title": "Tinjau masker yang ditransfer",
+          "paragraphs": [
+            "Masker Lokal yang dipilih menggantikan masker tujuan. Seleksi cerdas dideteksi ulang untuk setiap foto yang berbeda. Bentuk masker manual disalin, jadi penempatannya tetap perlu diperiksa."
+          ],
+          "tips": [
+            "Pilihan objek memerlukan pilihan objek baru pada tujuan. Masker cerdas dengan penyempurnaan yang dilukis juga perlu dibuat ulang secara manual; ini menyebabkan paste tujuan ditolak, bukan menyalin diam-diam pilihan yang spesifik untuk sumber.",
+            "Jika masker tidak dapat dipindahkan, salin lagi dengan Local masks tidak dicentang untuk menerapkan grup lainnya.",
+            "Periksa laporan penyelesaian untuk foto yang gagal. Sebuah batch dapat selesai dengan sebagian foto berubah dan yang lain tetap tidak berubah."
+          ]
+        },
+        {
+          "title": "Cocokkan eksposur total",
+          "paragraphs": [
+            "Match total exposure menggunakan foto aktif sebagai referensinya. Saat metadata eksposur tangkap tersedia, ini membandingkan informasi itu; jika tidak, ini kembali ke kecerahan rata-rata gambar. Tinjau hasilnya saat adegan atau pencahayaan berbeda."
+          ],
+          "steps": [
+            "Pilih setidaknya dua foto dan buat foto referensi yang dimaksud menjadi aktif.",
+            "Biarkan edit referensi selesai disimpan.",
+            "Pilih Match total exposure di Photo actions, atau Library → Match Total Exposure di menu Mac.",
+            "Periksa setiap hasil. Operasi ini memperbarui kontrol eksposur yang relevan dan membatasi penyesuaian hasil ke rentang yang didukung."
+          ],
+          "tips": [
+            "Foto referensi dikecualikan dari pembaruan target. Pencocokan adalah titik awal, terutama ketika foto berisi subjek atau framing yang berbeda."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Pangkas, luruskan, putar, dan koreksi perspektif",
+      "category": "Editing",
+      "summary": "Atur frame dan rasio aspek, sesuaikan orientasi dan perspektif, lalu terima atau batalkan sesi crop.",
+      "keywords": [
+        "pangkas",
+        "rasio aspek",
+        "luruskan",
+        "putar",
+        "balik",
+        "perspektif",
+        "geometri",
+        "tegak",
+        "level",
+        "potret",
+        "lanskap",
+        "ubah ukuran"
+      ],
+      "sections": [
+        {
+          "title": "Atur bingkai",
+          "paragraphs": [
+            "Buka Crop di toolbar pengeditan. Rasio aspek menawarkan Free, Original, proporsi standar, dan Kustom. Tampilan crop menunjukkan bingkai dan jumlah yang dipertahankan."
+          ],
+          "steps": [
+            "Pilih rasio aspek. Gunakan Kustom untuk memasukkan perbandingan lebar-terhadap-tinggi Anda sendiri, dan tombol tukar untuk mengubah orientasi.",
+            "Seret pegangan untuk mengubah ukuran crop; foto memperbesar agar bingkai tetap di tengah. Seret di dalam bingkai untuk memindahkan foto di bawahnya, atau di luar untuk menggambar crop baru.",
+            "Gunakan tombol panah untuk menggeser pilihan; tahan Shift untuk langkah yang lebih besar.",
+            "Klik Selesai atau tekan Enter untuk menerima. Klik Batal atau tekan Escape untuk memulihkan bingkai seperti saat Anda membuka Pangkas."
+          ],
+          "tips": [
+            "Kontrol Kunci rasio memungkinkan Anda mempertahankan rasio aspek saat mengubah ukuran."
+          ]
+        },
+        {
+          "title": "Sempurnakan geometri",
+          "paragraphs": [
+            "Pangkas & Putar juga berisi Luruskan, rotasi 90 derajat, balik horizontal dan vertikal, serta kontrol Perspektif."
+          ],
+          "steps": [
+            "Coba level Otomatis untuk horizon yang miring, lalu perhalus Luruskan jika perlu.",
+            "Gunakan Putar kiri, Putar kanan, atau tombol balik untuk perubahan orientasi.",
+            "Buka Perspective dan coba Auto upright, atau sesuaikan Vertical, Horizontal, dan Scale secara manual.",
+            "Periksa tepi dan framing akhir, lalu klik Selesai."
+          ],
+          "tips": [
+            "Level otomatis menggunakan garis yang dapat ditemukannya; periksa hasilnya, jangan langsung menganggap sudut yang terdeteksi sesuai untuk foto.",
+            "Atur Ulang Pangkas mengatur ulang pangkas, rotasi, balik, dan perspektif sekaligus."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Buat penyesuaian lokal dengan masker Kuas, Linear, dan Radial",
+      "category": "Editing",
+      "summary": "Lukis atau gambar masker, periksa lapisannya, dan sesuaikan hanya area yang dipilih.",
+      "keywords": [
+        "masker",
+        "masking",
+        "penyesuaian lokal",
+        "kuas",
+        "gradien linear",
+        "gradien radial",
+        "bulu",
+        "alur",
+        "lapisan",
+        "dodge",
+        "dodge"
+      ],
+      "sections": [
+        {
+          "title": "Buat masker manual",
+          "paragraphs": [
+            "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya dan Warna sendiri.",
+            "Tekstur dan Kejernihan menggunakan gambar setelah penyesuaian global dan masker sebelumnya. Kontrol ini memerlukan pembaruan pratinjau; tunggu hingga selesai sebelum menilai hasilnya."
+          ],
+          "steps": [
+            "Pilih Brush untuk melukis, Linear untuk penyesuaian bertahap, atau Radial untuk penyesuaian melingkar.",
+            "Untuk Kuas, pilih Ukuran, Feather, dan Flow, lalu cat di atas foto. Untuk Linear atau Radial, seret di foto untuk mengatur bentuk.",
+            "Biarkan Show Overlay tetap aktif saat memeriksa area terpilih, lalu matikan untuk menilai foto.",
+            "Sesuaikan slider Light atau Color dari masker terpilih. Gunakan Amount di Range untuk mengurangi kekuatan keseluruhannya.",
+            "Ubah nama masker menggunakan tombol ••• agar tujuannya mudah dikenali nanti."
+          ],
+          "tips": [
+            "Add, Subtract, dan Intersect menempatkan Anda dalam mode penyempurnaan lukisan. Untuk masker Linear atau Radial, pilih Edit Shape untuk kembali memanipulasi bentuknya.",
+            "Enable sementara mematikan atau menghidupkan efek masker. Invert membalik seleksinya.",
+            "Penyunting memungkinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker foto dan tidak tersedia jika tidak ada.",
+            "Pin masker dan garis luar kuas tetap tajam dan memiliki ketebalan yang sama saat Anda melakukan zoom. Garis luar bertambah sesuai area yang dicakupnya di foto."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "Gabungkan braket HDR, panorama, dan tumpukan fokus",
+      "category": "Editing",
+      "summary": "Gabungkan urutan original yang berbeda ke dalam TIFF 16-bit baru, lalu edit hasil gabungannya.",
+      "keywords": [
+        "gabungkan foto",
+        "gabungkan",
+        "hdr",
+        "rentang dinamis tinggi",
+        "fusi eksposur",
+        "braket",
+        "panorama",
+        "pano",
+        "gabungkan",
+        "tumpukan fokus",
+        "tumpukan fokus",
+        "tiff",
+        "penjajaran"
+      ],
+      "sections": [
+        {
+          "title": "Mulai gabungkan di aplikasi Mac",
+          "paragraphs": [
+            "Photo Merge menggunakan render netral dari setiap original dan membuat TIFF 16-bit baru di LightTable Merges. Terapkan tampilan akhir, pangkas, dan penyesuaian lokal Anda pada hasil gabungan. Original sumber tetap tersedia."
+          ],
+          "steps": [
+            "Pilih setidaknya dua original yang berbeda di pustaka. Beberapa salinan virtual dari satu original dihitung sebagai satu sumber.",
+            "Pilih Foto → Gabungkan Foto… di menu Mac.",
+            "Pilih HDR · exposure fusion, Panorama · feature aligned, atau Focus stack · sharpness fused.",
+            "Opsional, masukkan nama Hasil, lalu klik Gabungkan.",
+            "Pantau progres preparation, alignment, blending, dan saving. Saat aplikasi melaporkan penyelesaian dan menyegarkan pustaka, buka TIFF di LightTable Merges dan periksa."
+          ],
+          "tips": [
+            "Hanya satu merge yang dapat berjalan pada satu waktu. Nama file yang sudah ada dipertahankan; merge baru dengan nama sama akan mendapat akhiran bernomor.",
+            "Merge biasanya memproses setiap input hingga 6.000 piksel pada sisi panjangnya. Hasil gabungan karena itu mungkin memiliki detail yang lebih sedikit daripada rangkaian sumber resolusi penuh.",
+            "Jika merge melaporkan error, baca pesan spesifiknya dan perbaiki pilihan input sebelum mencoba lagi."
+          ]
+        },
+        {
+          "title": "Pilih input yang sesuai",
+          "paragraphs": [
+            "HDR menerima 2–9 foto berbraket eksposur dengan dimensi yang cocok. Ini menyelaraskan dan menggabungkan eksposur frame yang dirender untuk menyeimbangkan nada yang berguna. Tinjau subjek yang bergerak dan tepi untuk artefak penggabungan.",
+            "Panorama menerima 2–20 bingkai yang saling tumpang tindih. Pilih bingkai yang berdekatan dalam urutan sehingga input yang bersebelahan berbagi detail visual. Aplikasi menyelaraskan fitur dan menggabungkan area tumpang tindih; area tanpa fitur atau tumpang tindih yang tidak cukup dapat mencegah stitch yang andal. Kanvas Panorama dibatasi hingga 120 megapiksel.",
+            "Focus stack menerima 2–60 foto berbraket fokus dengan dimensi yang cocok. Gunakan tripod atau urutan rel fokus dengan framing yang sama. Aplikasi menyelaraskan frame, menggabungkan area tajam, dan memangkas ke area sejajar bersama mereka."
+          ],
+          "steps": [
+            "Untuk HDR, periksa highlights, shadows, dan apa pun yang bergerak di antara exposure.",
+            "Untuk Panorama, periksa sambungan dan batas luar, lalu pangkas hasilnya bila perlu.",
+            "Untuk Focus stack, periksa transisi antara area tajam, tepi foreground, dan crop akhir pada 1:1."
+          ],
+          "tips": [
+            "HDR di sini adalah exposure fusion ke TIFF yang dirender. Ini tidak menghasilkan master RAW atau DNG scene-linear.",
+            "Kegagalan penyelarasan bisa berarti bingkai tidak memiliki cukup overlap atau area yang sama. Cobalah urutan yang lebih konsisten, bukan menambahkan bingkai yang tidak terkait."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Perhalus masker dengan melukis, rentang, dan pilihan gabungan",
+      "category": "Editing",
+      "summary": "Tambahkan, kurangi, atau iriskan area, lalu batasi penyesuaian berdasarkan luminance atau warna sampel.",
+      "keywords": [
+        "penyempurnaan masker",
+        "tambahkan",
+        "kurangi",
+        "irisan",
+        "komponen",
+        "rentang luminansi",
+        "rentang warna",
+        "rentang warna",
+        "contohkan warna",
+        "opasitas",
+        "jumlah",
+        "balikkan"
+      ],
+      "sections": [
+        {
+          "title": "Perhalus dengan melukis",
+          "paragraphs": [
+            "Pilih masker di daftar masker sebelum menyempurnakannya. Add memperluas seleksi; Subtract menghapus area yang dilukis; Intersect hanya mempertahankan area yang dilukis dari seleksi yang ada."
+          ],
+          "steps": [
+            "Pilih Tambahkan, Kurangi, atau Irisan di bawah Masker Terpilih.",
+            "Atur Ukuran, Bulu, dan Alur, lalu lukis sambil memperhatikan lapisan.",
+            "Saat menggunakan Tambahkan, tahan Option di Mac untuk mengurangi sementara.",
+            "Matikan overlay dan periksa penyesuaian. Gunakan Undo untuk perbaikan yang ingin Anda balik."
+          ]
+        },
+        {
+          "title": "Gabungkan pilihan cerdas",
+          "paragraphs": [
+            "Tindakan seleksi Cerdas mengontrol apakah seleksi cerdas berikutnya menjadi masker baru atau digabung dengan masker yang saat ini dipilih."
+          ],
+          "steps": [
+            "Pilih masker yang sudah ada, lalu perluas Buat Masker Baru.",
+            "Pilih Tambahkan ke masker terpilih, Kurangi dari masker terpilih, atau Iris dengan masker terpilih pada tindakan seleksi Cerdas.",
+            "Pilih alat pintar, seperti Subject atau Sky, lalu periksa hasil gabungannya."
+          ],
+          "tips": [
+            "Atur kembali tindakan seleksi Cerdas ke Buat masker baru saat Anda ingin seleksi cerdas berikutnya memiliki penyesuaian independen.",
+            "Masker memiliki batas komponen; panel melaporkan saat komponen pintar lain tidak dapat ditambahkan."
+          ]
+        },
+        {
+          "title": "Batasi berdasarkan kecerahan atau warna",
+          "paragraphs": [
+            "Range mempersempit masker yang dipilih lebih lanjut. Luminance Low dan High membatasi nilai kecerahan. Rentang warna menargetkan hue, dan Jumlah mengontrol kekuatan seluruh masker."
+          ],
+          "steps": [
+            "Buka Range untuk masker terpilih dan sesuaikan Luminance Low serta Luminance High sambil memeriksa overlay.",
+            "Aktifkan rentang Warna, lalu klik Sampel warna dan ambil sampel titik yang berwarna, atau tahan Shift dan seret pada area untuk merata-ratakannya.",
+            "Perhalus Hue, Range, dan jumlah Colour, lalu gunakan Amount untuk kekuatan penyesuaian keseluruhan."
+          ],
+          "tips": [
+            "Area yang hampir netral tidak memberikan sampel hue yang berguna. Pilih area yang lebih berwarna saat diminta."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Hapus bintik dan perhalus koreksi Heal atau Clone",
+      "category": "Editing",
+      "summary": "Sapu gangguan dengan kuas, periksa visibilitas spot, dan pindahkan source atau target dari koreksi.",
+      "keywords": [
+        "hapus",
+        "perbaiki",
+        "perbaikan",
+        "klon",
+        "retouch",
+        "debu",
+        "penghapusan spot",
+        "visualisasikan spot",
+        "sumber",
+        "target",
+        "gangguan"
+      ],
+      "sections": [
+        {
+          "title": "Buat koreksi",
+          "paragraphs": [
+            "Buka Remove di toolbar pengeditan. Remove, Heal, dan Clone adalah mode terpisah. Heal dan Clone memilih sumber awal secara otomatis; periksa sumber itu alih-alih menganggapnya cocok.",
+            "Koreksi diterapkan berurutan, jadi sumber yang lebih baru dapat menyertakan koreksi sebelumnya. Tunggu pembaruan pratinjau sebelum menilai hasil atau mempertajam di sekitar area yang dikoreksi."
+          ],
+          "steps": [
+            "Pilih Hapus, Heal, atau Klon, lalu atur Ukuran, Bulu, dan Opasitas.",
+            "Klik bintik atau seret melintasi gangguan pada foto.",
+            "Untuk spot debu kecil, aktifkan Visualize Spots dan sesuaikan Threshold agar tepi lebih mudah diperiksa.",
+            "Matikan Visualize Spots dan periksa foto yang sudah dikoreksi."
+          ],
+          "tips": [
+            "Memilih koreksi lalu memilih mode lain mengubah mode koreksi tersebut."
+          ]
+        },
+        {
+          "title": "Perhalus koreksi yang sudah ada",
+          "paragraphs": [
+            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran pada gambar menunjukkan target yang dapat diedit dan, untuk Heal dan Clone, sumbernya.",
+            "Perbesar untuk penempatan yang presisi. Garis luar lingkaran dan pin tetap tajam pada setiap level zoom; lingkaran terus menampilkan area foto yang sama."
+          ],
+          "steps": [
+            "Seret lingkaran target untuk memindahkan koreksi, atau pilih Move Target dan klik posisi barunya.",
+            "Untuk Heal atau Clone, seret source circle ke area yang lebih baik. Refresh Source mencoba posisi source yang berbeda.",
+            "Sesuaikan Feather atau Opacity jika tepi atau kekuatan koreksi perlu disempurnakan.",
+            "Alihkan Enable this correction untuk membandingkan, atau gunakan Delete correction untuk menghapusnya."
+          ],
+          "tips": [
+            "Remove tidak menampilkan source circle atau Refresh Source. Kontrol source tersebut berlaku untuk Heal dan Clone.",
+            "Bersihkan Semua menghapus koreksi Hapus, Perbaiki, dan Klon pada foto dan tidak tersedia jika tidak ada. Gunakan Urungkan untuk membalikkan perubahan pengeditan yang tidak disengaja."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Simpan edit dan pulihkan perubahan yang belum disimpan",
+      "category": "Editing",
+      "summary": "Perubahan disimpan otomatis. Periksa status simpan, coba lagi simpan yang gagal, atau pilih edit mana yang akan dipulihkan setelah membuka kembali.",
+      "keywords": [
+        "simpan",
+        "simpan otomatis",
+        "belum disimpan",
+        "pemulihan",
+        "crash",
+        "asli",
+        "non-destruktif",
+        "coba lagi",
+        "menyimpan"
+      ],
+      "sections": [
+        {
+          "title": "Periksa apakah pekerjaan Anda sudah disimpan",
+          "paragraphs": [
+            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian."
+          ],
+          "steps": [
+            "Lakukan penyesuaian Anda, lalu periksa status simpan di aplikasi.",
+            "Tunggu hingga Saving… berubah menjadi Saved. Penyimpanan juga mencakup penulisan riwayat edit yang tertunda.",
+            "Jika status menunjukkan Edits not saved, gunakan Retry save. Biarkan jendela tetap terbuka saat penyimpanan gagal."
+          ],
+          "tips": [
+            "Saved · recovery needs attention berarti penyimpanan selesai tetapi sistem pemulihan lokal melaporkan masalah. Gunakan kontrol coba lagi yang tersedia dan baca pesan status."
+          ]
+        },
+        {
+          "title": "Pilih edit yang dipulihkan atau disimpan",
+          "paragraphs": [
+            "Jika pemulihan lokal menemukan perubahan yang belum terselesaikan saat pustaka dibuka, Recover unsaved edits? menampilkan foto yang terpengaruh. Restore edits mengganti pengaturan tersimpan dengan pengaturan yang dipulihkan. Keep saved edits mempertahankan versi katalog dan membuang draf pemulihan tersebut."
+          ],
+          "steps": [
+            "Baca nama foto yang terpengaruh lalu pilih Pulihkan edit atau Simpan edit yang disimpan.",
+            "Jika Anda memulihkan, tunggu hingga penyimpanan selesai sebelum menutup aplikasi."
+          ],
+          "tips": [
+            "Recovery mungkin tidak tersedia jika penyimpanan lokal atau jurnal pemulihan desktop gagal. Aplikasi melaporkan kondisi itu; itu bukan jaminan bahwa setiap pengeditan yang belum disimpan dapat dipulihkan.",
+            "Jika asli tidak tersedia atau telah berubah, catatan pemulihannya disimpan alih-alih diterapkan ke foto yang mungkin berbeda. Beberapa draf pemulihan menampilkan pemberitahuan identitas sebagian karena tidak dapat memverifikasi seluruh asli. Ini dapat terjadi pada draf yang lebih lama atau saat menggunakan mode folder. Pulihkan ini hanya jika foto asli belum diganti."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Pilih Subjek, Langit, Objek, Kedalaman, atau Orang",
+      "category": "Editing",
+      "summary": "Buat seleksi lokal di perangkat, periksa ketepatannya, lalu sempurnakan hasilnya sebelum menerapkan penyesuaian.",
+      "keywords": [
+        "masker ai",
+        "subjek",
+        "langit",
+        "objek",
+        "kedalaman",
+        "orang",
+        "orang",
+        "wajah",
+        "kulit",
+        "rambut",
+        "mata",
+        "gigi",
+        "potret",
+        "pilih latar belakang"
+      ],
+      "sections": [
+        {
+          "title": "Buat pilihan cerdas",
+          "paragraphs": [
+            "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform."
+          ],
+          "steps": [
+            "Buka Masker dan luaskan Buat Masker Baru.",
+            "Pilih Subjek atau Langit untuk seleksi otomatis. Untuk Objek, klik Objek lalu klik objek di foto.",
+            "Pilih Depth untuk membuat seleksi dari jarak relatif, lalu buka Rentang dan sesuaikan Batas jauh dan Batas dekat. Depth berjalan dari jauh ke dekat.",
+            "Periksa Show Overlay dan sempurnakan area yang terlewat atau berlebih sebelum menyesuaikan Light atau Color."
+          ],
+          "tips": [
+            "Subject, Sky, dan Object dapat menggunakan estimasi berbasis gambar lokal. Mereka bisa melewatkan tepi atau memilih wilayah yang salah, terutama saat subjek dan latar belakang terlihat mirip.",
+            "Depth menggunakan kedalaman tangkapan tertanam bila tersedia, jika tidak memakai estimasi lokal. Kedalaman yang diperkirakan bersifat relatif dan bisa tidak akurat.",
+            "Gunakan Balikkan jika Anda ingin menyesuaikan area di luar seleksi hasil."
+          ]
+        },
+        {
+          "title": "Pilih orang atau area wajah",
+          "paragraphs": [
+            "Orang menawarkan Orang, Kulit wajah, Mata, Alis, Bibir, Gigi, Rambut, dan Haluskan kulit. Kontrol ini memerlukan helper Vision di macOS 14 atau lebih baru dan disembunyikan di Linux dan Windows. Kulit wajah dan rambut diperkirakan, dan tidak ada identitas yang disimpulkan."
+          ],
+          "steps": [
+            "Pilih Orang, lalu bagian yang ingin Anda sesuaikan.",
+            "Periksa lapisan dan gunakan penyempurnaan yang dilukis di sekitar batas bila diperlukan.",
+            "Untuk Menghaluskan kulit, tinjau pengurangan Texture dan Clarity yang diterapkan otomatis, lalu sesuaikan agar cocok untuk potret."
+          ],
+          "tips": [
+            "Baca setiap error ketersediaan atau deteksi di panel masker. Alat yang muncul di menu tidak menjamin helper yang diperlukan atau seleksi yang dapat digunakan tersedia."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Atur white balance dan warna keseluruhan",
+      "category": "Editing",
+      "summary": "Gunakan Temp dan Tint atau sampel area netral, lalu sesuaikan Vibrance dan Saturation.",
+      "keywords": [
+        "keseimbangan putih",
+        "wb",
+        "temperatur",
+        "suhu",
+        "tint",
+        "netral",
+        "eyedropper",
+        "cast warna",
+        "vibrance",
+        "saturasi"
+      ],
+      "sections": [
+        {
+          "title": "Netralisir cast warna",
+          "paragraphs": [
+            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit."
+          ],
+          "steps": [
+            "Buka Edit dan perluas Warna.",
+            "Klik eyedropper keseimbangan putih di samping Temp, lalu klik area di foto yang seharusnya abu-abu netral.",
+            "Perhalus Temp dan Tint dengan mata jika hasil sampel terlalu hangat, dingin, hijau, atau magenta.",
+            "Sesuaikan Vibrance dan Saturation untuk mengontrol intensitas warna secara keseluruhan."
+          ],
+          "tips": [
+            "Pilih patch netral yang terlihat. Sampel yang hampir hitam menghasilkan Terlalu gelap untuk disampel; pratinjau yang tidak tersedia menghasilkan pesan menunggu.",
+            "Klik eyedropper sekali lagi untuk keluar dari mode sampling tanpa memilih titik.",
+            "Reset pada Color juga mereset penyesuaian warna yang terkait, termasuk Color Mixer, Point Color, dan Color Grading. Gunakan Reset milik alat itu sendiri untuk perubahan yang lebih sempit."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-curves",
+      "title": "Bentuk kontras dan warna dengan kurva",
+      "category": "Editing",
+      "summary": "Tambahkan dan pindahkan titik kurva untuk kanal RGB gabungan atau kanal merah, hijau, dan biru individual.",
+      "keywords": [
+        "kurva",
+        "kurva",
+        "kurva nada",
+        "rgb",
+        "merah",
+        "hijau",
+        "biru",
+        "kontras",
+        "titik kontrol",
+        "kurva S"
+      ],
+      "sections": [
+        {
+          "title": "Edit sebuah kurva",
+          "paragraphs": [
+            "Di grafik Curve, arah horizontal berjalan dari nada input yang lebih gelap ke nada input yang lebih terang. Memindahkan titik ke atas menaikkan output-nya; memindahkannya ke bawah menurunkannya. RGB menyesuaikan kurva gabungan, sedangkan R, G, dan B memengaruhi kanal individual."
+          ],
+          "steps": [
+            "Buka Edit dan perluas Kurva.",
+            "Pilih RGB, R, G, atau B.",
+            "Klik grafik untuk menambahkan titik, lalu seret untuk membentuk kurva. Seret handle yang sudah ada untuk memindahkannya.",
+            "Klik dua kali titik interior untuk menghapusnya. Dua handle titik ujung tetap ada.",
+            "Gunakan Reset pada Curve untuk mengatur ulang kurva, atau Urungkan untuk membalik perubahan terakhir."
+          ],
+          "tips": [
+            "Gunakan beberapa titik dan bandingkan foto saat Anda bekerja; kurva kanal dapat menimbulkan cast warna yang kuat.",
+            "Kurva yang disimpan atau diimpor mempertahankan tabel tersimpan persisnya sampai Anda mengeditnya. Aplikasi membangun ulang pegangan representatif untuk pengeditan, jadi penyesuaian pertama dapat membentuk ulang kurva yang diimpor melampaui titik yang Anda geser."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Pertajam, kurangi noise, dan gunakan Tingkatkan",
+      "category": "Editing",
+      "summary": "Periksa detail pada 1:1, terapkan kontrol detail biasa, atau jalankan local learned denoise saat tersedia.",
+      "keywords": [
+        "detail",
+        "penajaman",
+        "noise",
+        "kurangi noise",
+        "pengurangan noise",
+        "tingkatkan",
+        "resolusi super",
+        "tingkatkan resolusi",
+        "tekstur",
+        "kejernihan",
+        "kurangi kabut",
+        "vinyet",
+        "sensor"
+      ],
+      "sections": [
+        {
+          "title": "Nilai detail pada 1:1",
+          "paragraphs": [
+            "Bagian Detail mencakup Penajaman, Jari-jari, Detail, Masking, Luminance NR, dan Color NR. Efek berisi Texture, Kejernihan, Kurangi Kabut, dan Vignette."
+          ],
+          "steps": [
+            "Buka foto dan gunakan Spasi untuk beralih antara Pas dan 1:1.",
+            "Buka Detail di Edit. Sesuaikan pengurangan noise dan penajaman sambil melihat area bertekstur dan halus.",
+            "Gunakan Effects untuk texture, local contrast, haze, atau edge shading, lalu periksa seluruh foto pada Fit.",
+            "Gunakan Atur Ulang pada bagian yang relevan jika Anda ingin memulai ulang grup itu."
+          ],
+          "tips": [
+            "Kontrol detail bekerja di mode Film dan Develop. Hindari menilai penajaman hanya dari pratinjau kecil Fit."
+          ]
+        },
+        {
+          "title": "Jalankan kurangi noise terlatih pada foto RAW",
+          "paragraphs": [
+            "Foto RAW dapat menampilkan kontrol Sensor noise reduction dan Learned denoise. Learned denoise berjalan secara lokal saat Anda menekan Apply denoise; menggeser Strength tidak menjalankannya secara langsung."
+          ],
+          "steps": [
+            "Pilih foto RAW dan luaskan Detail.",
+            "Periksa bahwa Apply denoise tersedia, pilih Strength, lalu klik Apply denoise.",
+            "Amati pesan progres. Gunakan Batal jika Anda perlu menghentikan tugas.",
+            "Periksa pratinjau yang selesai pada 1:1."
+          ],
+          "tips": [
+            "Kurangi noise terlatih memerlukan helper inferensi macOS dan model lokal yang kompatibel. Fitur ini tidak tersedia di Linux dan Windows. Pengurangan noise dan penajaman biasa tetap tersedia. Build pengembangan mungkin tidak memiliki model; baca pesan ketersediaan sebelum memulai."
+          ]
+        },
+        {
+          "title": "Buat turunan tingkat lanjut di aplikasi Mac",
+          "paragraphs": [
+            "Photo → Enhance Photo… menawarkan Denoise dan Super resolution dan menulis master 16-bit baru ketika operasi yang dipilih berhasil. File asli tetap tidak tersentuh."
+          ],
+          "steps": [
+            "Pilih foto, pilih Photo → Enhance Photo…, lalu baca pesan ketersediaan.",
+            "Pilih peningkatan dan klik Tingkatkan jika tersedia.",
+            "Setelah selesai, temukan hasil baru di library yang dimuat ulang dan periksa."
+          ],
+          "tips": [
+            "Peningkatan yang tidak tersedia dinonaktifkan. Resolusi super tidak memiliki model bawaan dan memerlukan model yang kompatibel terinstal secara lokal.",
+            "Enhancement dapat menghasilkan detail; evaluasi output sebelum menganggapnya sebagai catatan akurat dari tekstur halus."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Urungkan edit, pulihkan Riwayat, dan simpan snapshot",
+      "category": "Editing",
+      "summary": "Gunakan Undo untuk pekerjaan terbaru, History untuk langkah pengeditan tersimpan, dan snapshot bernama untuk tampilan yang ingin Anda buka lagi.",
+      "keywords": [
+        "batalkan",
+        "ulang",
+        "riwayat",
+        "snapshot",
+        "versi",
+        "pulihkan",
+        "kembalikan",
+        "atur ulang"
+      ],
+      "sections": [
+        {
+          "title": "Urungkan atau pulihkan langkah sebelumnya",
+          "paragraphs": [
+            "Urungkan dan ulang mengikuti setiap foto selama sesi saat ini. Di pustaka katalog, History tetap ada setelah keluar. Penyesuaian yang berdekatan dapat digabung menjadi satu langkah history, sehingga daftar ini bukan catatan setiap posisi penggeser."
+          ],
+          "steps": [
+            "Gunakan Command-Z di Mac atau Ctrl-Z di Linux dan Windows untuk membatalkan. Tambahkan Shift untuk mengulang.",
+            "Buka History di toolbar pengeditan untuk melihat langkah tersimpan foto saat ini, terbaru lebih dulu.",
+            "Klik sebuah langkah untuk memulihkan pengaturannya. Memulihkan langkah adalah edit yang bisa di-undo."
+          ],
+          "tips": [
+            "Persistent History memerlukan library katalog. Penggunaan folder saja masih mendukung Undo dan Redo sesi.",
+            "Clear menghapus langkah riwayat foto yang tersimpan; ini bukan perintah reset penyesuaian."
+          ]
+        },
+        {
+          "title": "Simpan tampilan bernama",
+          "paragraphs": [
+            "Snapshot menyimpan pengaturan penyesuaian foto saat ini, pangkas, masker, koreksi Hapus, dan optik. Ini adalah keadaan pengeditan tersimpan untuk foto ini. Buat snapshot tidak tersedia sampai foto dimuat."
+          ],
+          "steps": [
+            "Buka Riwayat, perluas Snapshot, dan klik Buat snapshot.",
+            "Masukkan nama yang berguna, seperti Soft portrait atau Before retouching.",
+            "Klik nama snapshot untuk menerapkannya nanti. Gunakan Undo jika Anda ingin kembali ke keadaan yang baru saja diganti."
+          ],
+          "tips": [
+            "Foto menyimpan hingga 50 snapshot; membuat snapshot lain di atas batas itu akan menghapus snapshot tertua dari daftar.",
+            "Tanda × di samping snapshot menghapus snapshot bernama itu, bukan foto asli."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Sesuaikan grain film dan format",
+      "category": "Film",
+      "summary": "Kontrol grain relatif terhadap stok dan pilih ukuran film simulasi.",
+      "keywords": [
+        "grain",
+        "ukuran",
+        "tekstur",
+        "35mm",
+        "format sedang",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "partikel",
+        "noise"
+      ],
+      "sections": [
+        {
+          "title": "Atur format dan grain",
+          "paragraphs": [
+            "Format film menetapkan sisi panjang fisik yang digunakan simulasi. Pilihannya adalah 35 mm, 645, 6 × 6, 6 × 7, dan 4 × 5; pengaturan ini terpisah dari crop foto.",
+            "Ukuran grain mengalikan luas partikel dasar stok yang dipilih. Tampilan menunjukkan luas yang dihasilkan dalam µm², sehingga pengali yang sama dapat menunjukkan luas berbeda setelah Anda mengubah stok."
+          ],
+          "steps": [
+            "Di profil Film, pilih format Film.",
+            "Gunakan Tahap film fisik, yang terbuka otomatis saat Profil film diaktifkan. Buka kembali jika Anda menciutkannya.",
+            "Aktifkan Grain size dan sesuaikan slidenya, atau kosongkan kotak centangnya untuk menonaktifkan grain.",
+            "Periksa gambar pada 1:1 dan tunggu detail pratinjau selesai sebelum menilai tekstur."
+          ]
+        },
+        {
+          "title": "Apa yang diwakili angka tersebut",
+          "paragraphs": [
+            "Baseline grain per stok diturunkan dari kecepatan film sebagai titik awal visual. Itu bukan pengukuran granularitas laboratorium untuk setiap emulsi.",
+            "Pengaturan ukuran Grain termasuk dalam simulasi film. Penajaman Detail dan pengurangan noise di Edit adalah penyesuaian terpisah."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Sesuaikan halasi, difusi, dan karakter hasil pindai",
+      "category": "Film",
+      "summary": "Perhalus efek fisik film dan resep keluaran yang dipilih.",
+      "keywords": [
+        "halasi",
+        "kilau",
+        "bloom",
+        "difusi",
+        "couplers",
+        "silau",
+        "pindai",
+        "ketajaman",
+        "kelembutan",
+        "pemindai",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Tahap film fisik",
+          "paragraphs": [
+            "Pilih Film di rel alat, lalu aktifkan Profil film. Tahap film fisik terbuka otomatis; Anda dapat menciutkannya setelah itu. Kopler, Halasi, Ukuran butir, dan Silau cetak masing-masing memiliki kotak centang aktifkan dan kontrol jumlah. Mematikan suatu tahap menonaktifkan penggeser jumlahnya.",
+            "Capture diffusion mengubah tahap kamera yang dimodelkan. Print glare dan Print preflash termasuk tahap cetak dan tidak tersedia untuk pemindaian slide langsung."
+          ],
+          "steps": [
+            "Pilih stok dan resep Keluaran sebelum memperhalus kontrol tahap.",
+            "Ubah satu tahap pada satu waktu dan bandingkan hasilnya.",
+            "Gunakan kotak centang tiap tahap untuk membandingkan kontribusinya tanpa mengganti stok yang dipilih."
+          ]
+        },
+        {
+          "title": "Kontrol pindai",
+          "paragraphs": [
+            "Scan softness menambahkan blur lensa ke resep keluaran yang dipilih. Scan sharpness menskalakan penajaman resep tersebut; Scan sharpening mengaktifkan atau menonaktifkannya.",
+            "Ini adalah penyesuaian pada resep keluaran yang dimodelkan, bukan pemilihan merek pemindai yang diukur. Evaluasi tekstur halus dan ketajaman dengan detail pratinjau 1:1 yang selesai."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Pilih dan pratinjau stok film",
+      "category": "Film",
+      "summary": "Aktifkan alur kerja film fisik dan bandingkan stok menggunakan foto Anda sendiri.",
+      "keywords": [
+        "film",
+        "stok",
+        "simulasi",
+        "simulasi film realistis",
+        "negatif",
+        "geser",
+        "telusuri",
+        "pratinjau",
+        "preset",
+        "film off"
+      ],
+      "sections": [
+        {
+          "title": "Mulai dengan stok",
+          "paragraphs": [
+            "Film menerapkan film yang dimodelkan dan proses keluaran pada foto diam. Sakelar profil Film mengontrol pemrosesan ini; penyesuaian Edit Anda tetap aktif saat Anda mematikan Film."
+          ],
+          "steps": [
+            "Buka foto diam dan pilih Film di rel alat untuk membuka Simulasi Film Realistis.",
+            "Nyalakan sakelar Profil film. Tahap film fisik terbuka otomatis; Anda bisa menciutkannya setelah itu.",
+            "Pilih Stock, atau klik Preview stocks on this photo… untuk membandingkan contoh yang dirender.",
+            "Cari nama stok, gunakan Previous atau Next untuk menelusuri, lalu pilih pratinjau untuk menerapkannya."
+          ]
+        },
+        {
+          "title": "Apa yang disertakan dalam pratinjau",
+          "paragraphs": [
+            "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
+            "Film stock menjelaskan proses film fisik. Preset pengeditan dapat berisi penyesuaian tersimpan yang lebih luas, dan juga dapat menyertakan pengaturan Film. Menu Output di dalam Film memilih resep scan atau print; ini tidak mengekspor file.",
+            "Setelah Anda mengaktifkan Film, pratinjau cepat dapat muncul sebelum detail RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai dan menghilang setelah pratinjau terlihat. Detail RAW yang akurat dan rendering resolusi penuh terus berjalan di latar belakang."
+          ],
+          "tips": [
+            "Jika suatu stok tidak tersedia, mungkin diperlukan engine GPU. Ketersediaan engine ditampilkan di Pengaturan → Performa."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-reference-match",
+      "title": "Bandingkan dengan gambar referensi",
+      "category": "Film",
+      "summary": "Sejajarkan hasil scan atau referensi lain, ukur perbedaannya, dan terapkan kecocokan awal.",
+      "keywords": [
+        "referensi",
+        "cocokkan",
+        "pindai",
+        "kalibrasi",
+        "lapisan",
+        "pisahkan",
+        "opasitas",
+        "ukur",
+        "cocokkan warna"
+      ],
+      "sections": [
+        {
+          "title": "Muat dan sejajarkan",
+          "paragraphs": [
+            "Pencocokan Referensi ada di Simulasi Film Realistis, dibuka dengan Film di rel alat. Gunakan referensi dengan konten gambar yang sesuai agar penjajaran dan perbandingan bermakna."
+          ],
+          "steps": [
+            "Perluas Cocokkan Referensi dan pilih gambar Referensi.",
+            "Pilih Lapisan atau Pisahkan, lalu atur Opasitas / pisahkan.",
+            "Gunakan Skala, Horizontal, dan Vertikal untuk menyelaraskan referensi dengan foto Anda.",
+            "Klik Measure untuk memeriksa perbandingan, atau Starting match untuk menerapkan penyesuaian awal."
+          ]
+        },
+        {
+          "title": "Apa yang diubah Starting match",
+          "paragraphs": [
+            "Memulai match mematikan pengukuran adegan otomatis dan menyesuaikan Camera EV. Untuk foto RAW, ini juga menetapkan keseimbangan putih tangkapan kustom; untuk foto yang diproses, ini menyesuaikan filtrasi cetak kuning dan magenta.",
+            "Ini adalah penyesuaian awal berdasarkan statistik gambar terukur, bukan jaminan kecocokan film atau warna yang tepat. Tinjau gambar setelah menerapkannya dan gunakan Urungkan jika perlu. Bersihkan menghapus overlay referensi."
+          ],
+          "tips": [
+            "Tombol target Kalibrasi mengunduh gambar yang dapat Anda gunakan dalam alur kerja referensi."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Atur eksposur film dan pengembangan",
+      "category": "Film",
+      "summary": "Pahami Camera EV, white balance pengambilan, metering, dan kontrol pengembangan.",
+      "keywords": [
+        "eksposur",
+        "ev kamera",
+        "meter",
+        "keseimbangan putih",
+        "temperatur",
+        "tint",
+        "pengembangan",
+        "kontras",
+        "autentik",
+        "kreatif"
+      ],
+      "sections": [
+        {
+          "title": "Kontrol tangkap dan kontrol penyelesaian",
+          "paragraphs": [
+            "Camera EV dan Capture white balance bekerja sebelum eksposur film. Exposure dan Temp/Tint di panel Edit adalah penyesuaian akhir di tahap selanjutnya dalam alur kerja.",
+            "White balance tangkapan memerlukan original RAW. Untuk JPEG, HEIF, TIFF, atau file lain yang telah diproses, gunakan Edit Temp/Tint."
+          ],
+          "steps": [
+            "Aktifkan Film, pilih stok, dan sesuaikan Kamera EV.",
+            "Biarkan Meter scene otomatis tetap aktif untuk pengukuran scene otomatis, atau nonaktifkan untuk mengatur sendiri eksposur tangkapan.",
+            "Perluas Capture & processing untuk memilih As shot, Daylight, Tungsten, atau Custom capture white balance untuk foto RAW.",
+            "Untuk Kustom, sesuaikan Temperature dan tint Capture."
+          ]
+        },
+        {
+          "title": "Pengembangan dan default tertaut",
+          "paragraphs": [
+            "Development hanya muncul saat profil film yang dipilih menyediakan waktu pengembangan. Print development bergantung pada kertas yang dipilih dan disembunyikan untuk film slide. Development contrast adalah kontrol film terpisah.",
+            "Authentic menggunakan default fisik yang tertaut, termasuk kertas yang direkomendasikan stok saat paper tidak dikunci. Creative mempertahankan penggantian paper jika kompatibel. Mengganti stok masih dapat memilih waktu pengembangan dan eksposur default stok tersebut; bandingkan hasilnya setelah mengganti stok."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Bekerja dengan film negatif, kertas, dan slide",
+      "category": "Film",
+      "summary": "Pilih proses cetak untuk negatif dan pahami mengapa kontrol cetak menghilang untuk film slide.",
+      "keywords": [
+        "negatif",
+        "positif",
+        "pembalikan",
+        "geser",
+        "transparansi",
+        "kertas",
+        "cetak",
+        "keluaran",
+        "kunci kertas",
+        "filtrasi",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Film negatif dan kertas",
+          "paragraphs": [
+            "Stok negatif menggunakan proses film-ke-cetak. Pilihan kertas dibatasi pada profil yang kompatibel dengan model kanal warna atau monokrom film yang dipilih.",
+            "Gunakan Print exposure untuk menyesuaikan tahap cetak. Di Capture & processing, pilih Paper dan aktifkan Lock paper when stock changes jika Anda ingin mempertahankan kertas yang kompatibel saat mencoba stok lain. Kertas yang tidak kompatibel tetap harus diganti."
+          ],
+          "steps": [
+            "Pilih stok negatif di Film.",
+            "Pilih resep Keluaran: Clean scan, Neutral print scan, atau Soft optical print.",
+            "Perluas Capture & processing untuk memilih Paper dan waktu pengembangan Print yang tersedia.",
+            "Di Tahap film fisik, sesuaikan Silau cetak, Preflash cetak, Filter kuning, dan Filter magenta. Buka kembali bagian ini jika Anda menciutkannya."
+          ]
+        },
+        {
+          "title": "Film slide dipindai secara langsung",
+          "paragraphs": [
+            "Stok positif atau reversal menggunakan pemindaian transparansi langsung tanpa tahap negatif-ke-kertas. Kertas, eksposur cetak, pengembangan cetak, dan kontrol lain yang khusus untuk cetak disembunyikan untuk stok ini.",
+            "Resep keluaran adalah titik awal yang dimodelkan untuk scan softness, sharpening, dan efek cetak jika berlaku. Itu bukan emulasi terukur dari pemindai komersial tertentu."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Pilih ukuran ekspor, format, dan ruang warna",
+      "category": "Export",
+      "summary": "Gunakan preset ekspor dan pahami kedalaman bit, pengubahan ukuran, serta batas gamut warna saat ini.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bit",
+        "srgb",
+        "p3",
+        "prophoto",
+        "icc",
+        "kualitas",
+        "ukuran penuh",
+        "resolusi",
+        "preset"
+      ],
+      "sections": [
+        {
+          "title": "Format dan preset",
+          "paragraphs": [
+            "Dialog ekspor menawarkan JPEG, PNG, dan TIFF 16-bit. Di macOS juga tersedia HEIF 8-bit; HEIF disembunyikan di Linux dan Windows. Resep HEIF yang disimpan tidak dapat diterapkan di sana, jadi pilih format lain. Penggeser kualitas berlaku untuk JPEG dan HEIF.",
+            "JPG (Large) menggunakan JPEG ukuran penuh pada kualitas 92 dalam sRGB. JPG (Small) menggunakan sisi panjang 2048 piksel pada kualitas 90 dalam sRGB. TIFF 16-bit menggunakan ukuran penuh dan ProPhoto RGB. Mengubah pengaturan ini memilih Kustom."
+          ],
+          "steps": [
+            "Buka Ekspor dan pilih preset di bagian atas.",
+            "Atur Dimensi ke ukuran Penuh atau batas sisi terpanjang.",
+            "Periksa Pratinjau keluaran: ukuran yang diekspor mencerminkan rotasi dan pangkasan, dan batas sisi panjang akan mengecilkan gambar yang lebih besar tanpa memperbesar yang lebih kecil."
+          ]
+        },
+        {
+          "title": "Batas ruang warna",
+          "paragraphs": [
+            "Setiap ekspor menyematkan profil ICC yang dipilih. Pilih sRGB, Display P3, atau ProPhoto RGB di Colour space.",
+            "Ekspor Develop gamut lebar mempertahankan warna sumber ketika color dan local adjustment dimatikan. Perenderan Film dan ekspor Develop yang disesuaikan dibatasi pada warna sRGB. Mengodekan salah satu hasil tersebut ke P3 atau ProPhoto tidak akan memulihkan warna yang sudah dibatasi oleh perenderan."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Kontrol metadata ekspor, sidecar, dan stempel waktu",
+      "category": "Export",
+      "summary": "Pilih privasi metadata, file resep opsional, dan penanganan waktu pengambilan.",
+      "keywords": [
+        "metadata",
+        "privasi",
+        "gps",
+        "lokasi",
+        "hak cipta",
+        "sidecar",
+        "resep",
+        "stempel waktu",
+        "tanggal",
+        "zona waktu",
+        "waktu tangkap"
+      ],
+      "sections": [
+        {
+          "title": "File metadata dan resep",
+          "paragraphs": [
+            "Ekspor → Lanjutan menawarkan Semua kecuali lokasi, Semua metadata, Hanya hak cipta, dan Tanpa metadata. Pilihan metadata awal adalah Semua kecuali lokasi.",
+            "Kontrol sidecar Resep menentukan apakah LightTable menulis resep di samping ekspor yang dirender. Ini terpisah dari preferensi edit portabel dan sidecar XMP untuk original di Pengaturan → Files & Metadata."
+          ],
+          "steps": [
+            "Perluas Lanjutan di Ekspor.",
+            "Pilih kebijakan Metadata yang sesuai untuk file yang akan Anda bagikan.",
+            "Pilih apakah akan menulis sidecar Resep di samping setiap foto yang diekspor."
+          ]
+        },
+        {
+          "title": "Stempel waktu file",
+          "paragraphs": [
+            "Stempel waktu file dapat menggunakan waktu ekspor atau waktu tangkap asli. Jika zona waktu tangkap hilang, default-nya adalah mempertahankan waktu ekspor dan melaporkan peringatan. Anda juga dapat memilih untuk menafsirkannya dalam zona waktu lokal komputer ini.",
+            "Waktu tangkap yang hilang atau tidak valid juga dapat membiarkan stempel waktu ekspor tidak berubah. Periksa Export details untuk peringatan yang dilaporkan. Stempel waktu sistem file suatu file terpisah dari kebijakan metadata yang dipilih di atas."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "external-editor",
+      "title": "Edit foto di aplikasi lain",
+      "category": "Export",
+      "summary": "Kirim TIFF yang sudah disesuaikan ke editor lain dan atur format serta default stacking.",
+      "keywords": [
+        "eksternal",
+        "penyunting",
+        "photoshop",
+        "affinity",
+        "edit di",
+        "tiff",
+        "round trip",
+        "turunan",
+        "tumpukan"
+      ],
+      "sections": [
+        {
+          "title": "Buka penyunting eksternal",
+          "paragraphs": [
+            "Gunakan Edit di… untuk menyiapkan foto bagi penyunting piksel lain. TIFF yang sudah disesuaikan ditulis di samping aslinya, dan dapat ditumpuk dengannya di katalog. Di Linux dan Windows, Pilih aplikasi… memungkinkan Anda memilih eksekutabel penyunting; Aplikasi bawaan menggunakan asosiasi berkas desktop."
+          ],
+          "steps": [
+            "Pilih foto dan tekan Command/Ctrl+E untuk membuka Edit di aplikasi lain.",
+            "Pilih Aplikasi.",
+            "Pilih TIFF dengan penyesuaian saat ini, lalu atur ruang warna TIFF dan bit depth TIFF.",
+            "Pilih apakah akan menumpuk file hasil render dengan aslinya.",
+            "Klik Edit dan tunggu rendering selesai sebelum bekerja di aplikasi lain."
+          ]
+        },
+        {
+          "title": "File RAW dan default",
+          "paragraphs": [
+            "Original RAW harus dirender sebagai TIFF yang disesuaikan. Processed original tidak tersedia jika pilihan berisi file RAW. Untuk foto yang diproses, opsi itu membuka original, bukan menyiapkan TIFF yang disesuaikan.",
+            "Atur aplikasi bawaan, ruang warna, kedalaman bit, dan perilaku tumpukan di Settings → External Editing. TIFF yang disesuaikan dapat menggunakan 16 atau 8 bit dan ProPhoto RGB, Display P3, atau sRGB."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "export-photos",
+      "title": "Ekspor foto terpilih",
+      "category": "Export",
+      "summary": "Pilih dengan tepat foto mana yang akan diekspor, pratinjau keluaran, dan pantau progres.",
+      "keywords": [
+        "ekspor",
+        "simpan",
+        "jpeg",
+        "jpg",
+        "unduh",
+        "pilihan",
+        "terpilih",
+        "dinilai",
+        "batch",
+        "batal",
+        "progres"
+      ],
+      "sections": [
+        {
+          "title": "Buat ekspor",
+          "paragraphs": [
+            "Ekspor membuat file keluaran yang dirender dari edit foto Anda. Gunakan Foto terpilih saat Anda ingin ekspor dibatasi pada pilihan tertentu. Setiap foto yang diantrekan mempertahankan edit, rating, dan koreksi waktu tangkap yang dipilih saat Anda memulai ekspor."
+          ],
+          "steps": [
+            "Pilih foto yang Anda inginkan, lalu klik tombol Ekspor foto di bilah atas. Command/Ctrl+Shift+E juga membuka Ekspor.",
+            "Periksa field Photos. Pilih Selected photos, Picked only, Rated 1+, atau All except rejected.",
+            "Pilih preset ekspor atau atur jenis file, dimensi, kualitas, dan ruang warna.",
+            "Atur tujuan dan periksa pratinjau Keluaran untuk nama file, dimensi, dan jalur.",
+            "Klik Ekspor dan ikuti progresnya di bar atas.",
+            "Saat ekspor selesai, klik Tampilkan di Finder pada baris kedua notifikasi penyelesaian untuk membuka folder yang berisi foto yang diekspor. Notifikasi tetap terlihat selama 2,8 detik."
+          ]
+        },
+        {
+          "title": "Periksa scope dan hasil",
+          "paragraphs": [
+            "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
+            "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "soft-proof",
+      "title": "Pratinjau keluaran dengan soft proofing",
+      "category": "Export",
+      "summary": "Lihat pratinjau display atau modeled paper tanpa menjadikannya bagian dari foto yang diekspor.",
+      "keywords": [
+        "soft proof",
+        "proofing",
+        "gamut",
+        "kertas",
+        "tinta",
+        "matte",
+        "kilap",
+        "cetak",
+        "p3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Aktifkan soft proof",
+          "paragraphs": [
+            "Kontrol soft-proof ada di opsi Tampilan penampil (•••). Fitur ini memungkinkan Anda memeriksa pratinjau keluaran saat menyunting."
+          ],
+          "steps": [
+            "Buka opsi Tampilan (•••) di bawah penampil.",
+            "Aktifkan Profil keluaran pratinjau.",
+            "Pilih tampilan sRGB, tampilan Display P3, kertas Matte, atau kertas Gloss.",
+            "Untuk target kertas, pilih apakah akan Simulate paper and ink. Aktifkan atau nonaktifkan Show out-of-gamut warning sesuai kebutuhan.",
+            "Gunakan tombol Soft Proof on di toolbar penampil untuk mematikan pratinjau."
+          ]
+        },
+        {
+          "title": "Interpretasikan pratinjau",
+          "paragraphs": [
+            "Matte dan Gloss pada antarmuka ini dimodelkan sebagai pratinjau kertas; ini bukan pilihan profil ICC terukur dari printer Anda. Perlakukan pratinjau sebagai panduan saat membandingkan kontras dan warna.",
+            "Soft proof adalah status tampilan. Pilih ruang warna file yang sebenarnya secara terpisah di Export."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Atur folder ekspor dan nama file",
+      "category": "Export",
+      "summary": "Pilih tata letak tujuan dan tentukan apa yang terjadi saat nama file sudah ada.",
+      "keywords": [
+        "tujuan",
+        "folder",
+        "jalur",
+        "nama file",
+        "ubah nama",
+        "timpa",
+        "lewati",
+        "tabrakan",
+        "hierarki",
+        "urutan",
+        "template"
+      ],
+      "sections": [
+        {
+          "title": "Tata letak tujuan",
+          "paragraphs": [
+            "One destination folder mengirim ekspor ke folder yang dipilih. Subfolder beside each original menggunakan nama subfolder relatif untuk setiap foto sumber. Keep source folder hierarchy mempertahankan organisasi folder sumber di bawah tujuan ekspor."
+          ],
+          "steps": [
+            "Buka Ekspor dan pilih tata letak Tujuan.",
+            "Gunakan Pilih… untuk folder tujuan, atau masukkan nama subfolder seperti film-exports untuk Subfolder di samping setiap original.",
+            "Luaskan Lanjutan dan edit template Nama file.",
+            "Periksa nama file dan tujuan yang ditampilkan di pratinjau Keluaran sebelum mengekspor."
+          ]
+        },
+        {
+          "title": "Nama dan file yang sudah ada",
+          "paragraphs": [
+            "Template nama file mendukung {filename}, {stock}, {date}, {rating}, dan {sequence}. Misalnya, {filename}_{stock} menyertakan nama sumber dan stok film. Bidang nama file yang panjang dipersingkat untuk memberi ruang bagi nama keluaran dan sidecar; periksa Pratinjau keluaran.",
+            "Keep both · add a number membuat nama file lain, seperti nama yang diakhiri dengan -2. Skip existing membiarkan nama yang sudah terpakai apa adanya. Overwrite mengganti output yang sudah ada pada path tujuan yang dipilih. Gunakan pratinjau keluaran untuk memastikan tujuan sebelum memilih Overwrite."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Ekspor"
+    },
+    {
+      "id": "about-lighttable",
+      "title": "Tentang LightTable dan sumber terbuka",
+      "category": "Settings",
+      "summary": "Temukan versi aplikasi Mac, situs web, dan kode sumbernya.",
+      "keywords": [
+        "tentang",
+        "versi",
+        "website",
+        "github",
+        "sumber terbuka",
+        "lisensi",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Buka Tentang di macOS",
+          "paragraphs": [
+            "Pilih LightTable → Tentang LightTable di bar menu Mac. Jendela Tentang menampilkan versi aplikasi dan, jika berbeda, nomor build-nya.",
+            "Website membuka lighttable.app di peramban bawaan Anda. GitHub membuka repositori sumber LightTable publik, tempat Anda dapat menjelajahi kode, melaporkan masalah, dan berkontribusi.",
+            "LightTable adalah bebas dan sumber terbuka di bawah GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Ubah preferensi dan default foto baru",
+      "category": "Settings",
+      "summary": "Sesuaikan antarmuka, perilaku seleksi, edit portabel, dan edit awal untuk foto baru.",
+      "keywords": [
+        "pengaturan",
+        "preferensi",
+        "default",
+        "kamera",
+        "raw",
+        "serial",
+        "iso",
+        "font",
+        "latar belakang",
+        "mode redup",
+        "notifikasi",
+        "xmp",
+        "portabel"
+      ],
+      "sections": [
+        {
+          "title": "Antarmuka dan perilaku",
+          "paragraphs": [
+            "Sebagian besar perubahan pengaturan tersimpan secara otomatis. Bahasa menggunakan Terapkan bahasa dan memuat ulang jendela setelah menyimpan suntingan. Umum juga mengontrol Otomatis maju setelah memilih, menolak, atau memberi rating, notifikasi penyelesaian, dan pemeriksaan pembaruan.",
+            "Kontrol antarmuka mengatur latar belakang penampil, skala font, Lights Out, overlay info loupe, dan panduan pangkas. Preferensi ini mengubah tampilan ruang kerja tanpa mengubah piksel yang diekspor.",
+            "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung."
+          ]
+        },
+        {
+          "title": "Default untuk foto tanpa edit",
+          "paragraphs": [
+            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan."
+          ],
+          "steps": [
+            "Buka Pengaturan → Default Develop.",
+            "Pilih Film awal, alur kerja, profil, dan pengaturan preset.",
+            "Untuk mengatur default RAW khusus kamera, buka foto RAW dan sesuaikan pengaturan RAW-nya.",
+            "Pilih pencocokan berdasarkan model kamera, nomor serial, atau kamera dan ISO, lalu klik Use current RAW settings.",
+            "Gunakan Atur Ulang di area Kamera Saat Ini untuk menghapus default kamera tersebut."
+          ]
+        },
+        {
+          "title": "Tampilan Linux dan Omarchy",
+          "paragraphs": [
+            "Di Linux, kontrol mengikuti tampilan terang atau gelap sistem. Di Omarchy, toolbar, sidebar, menu, dan dialog mengikuti palet desktop aktif dan diperbarui dalam beberapa detik setelah perubahan tema. Piksel foto, preferensi latar belakang penampil, dan scope warna netral mempertahankan warnanya sendiri.",
+            "Di jendela Linux yang sempit, Tampilkan atau sembunyikan pustaka membuka pustaka sebagai laci. Memperlebar jendela memulihkan tata letak normal berdampingan. Di Hyprland, gunakan pintasan jendela compositor untuk memindahkan, menata ubin, mengubah ukuran, atau menutup LightTable."
+          ]
+        }
+      ],
+      "related": [
+        "settings-language",
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "settings-language",
+      "title": "Pilih bahasa aplikasi dan bantuan",
+      "category": "Settings",
+      "summary": "Atur satu bahasa untuk antarmuka dan bantuan yang dapat dicari, dengan pilihan Anda diingat untuk peluncuran berikutnya.",
+      "keywords": [
+        "bahasa",
+        "terjemahan",
+        "Inggris",
+        "Spanyol",
+        "Prancis",
+        "Jerman",
+        "Tionghoa",
+        "Arab",
+        "lokalisasi",
+        "pengaturan",
+        "peluncuran pertama"
+      ],
+      "sections": [
+        {
+          "title": "Pilih bahasa saat penggunaan pertama",
+          "paragraphs": [
+            "Antarmuka LightTable dan bantuan yang dapat dicari berbagi satu bahasa. Bahasa yang tersedia adalah Inggris, Spanyol, Prancis, Jerman, Italia, Portugis, Rusia, Tionghoa Sederhana, Tionghoa Tradisional, Jepang, Korea, Arab, Hindi, Bengali, Indonesia, Turki, Vietnam, Thai, Polandia, dan Belanda.",
+            "Pada penggunaan pertama, bahasa sistem utama yang bukan bahasa Inggris akan meminta Anda untuk memilih. Aplikasi Mac meminta sebelum pemilihan folder awal dan saat memulai; jendela aplikasi lain meminta sebelum penyunting terbuka. Bahasa yang didukung akan disarankan, atau Inggris jika bahasa sistem tidak didukung. Bahasa dicantumkan dengan nama aslinya.",
+            "Jika bahasa sistem utama adalah Inggris, Inggris disimpan secara otomatis. Peluncuran berikutnya menggunakan pilihan yang Anda simpan. Di browser, preferensi bahasa browser menyediakan saran awal."
+          ],
+          "steps": [
+            "Pilih bahasa yang Anda inginkan di dialog penggunaan pertama.",
+            "Klik Lanjutkan. Aplikasi melanjutkan setelah pilihan disimpan."
+          ]
+        },
+        {
+          "title": "Ubah bahasa nanti",
+          "paragraphs": [
+            "Mengubah bahasa akan menyimpan edit yang tertunda dan memuat ulang jendela saat ini. Nama file foto, kata kunci Anda, dan konten foto lainnya tetap menggunakan kata-kata yang ada."
+          ],
+          "steps": [
+            "Buka Pengaturan → Umum.",
+            "Pilih bahasa di Bahasa.",
+            "Klik Terapkan bahasa dan tunggu hingga jendela dimuat ulang.",
+            "Buka Bantuan untuk mencari atau menelusuri dalam bahasa yang dipilih."
+          ],
+          "tips": [
+            "Jika pemuatan atau penyimpanan bahasa gagal, jendela dan pilihan bahasa Anda tetap tersedia untuk percobaan lain. Jika edit foto yang tertunda tidak dapat disimpan, gunakan Coba simpan lagi, lalu terapkan bahasa lagi.",
+            "Jika pilihan penggunaan pertama di Mac tidak dapat disimpan, Coba Lagi mempertahankan pilihan dan mencoba lagi. Aplikasi hanya dimulai setelah penyimpanan berhasil."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "photo-index",
+      "title": "Aktifkan pencarian konten foto pribadi",
+      "category": "Settings",
+      "summary": "Bangun indeks di perangkat untuk objek, adegan, teks yang terlihat, dan wajah.",
+      "keywords": [
+        "ai",
+        "cari",
+        "indeks",
+        "konten",
+        "objek",
+        "adegan",
+        "ocr",
+        "teks",
+        "wajah",
+        "privasi",
+        "lokal",
+        "deskripsi"
+      ],
+      "sections": [
+        {
+          "title": "Bangun indeks",
+          "paragraphs": [
+            "Indeks Foto nonaktif secara default dan memerlukan macOS. Linux dan Windows menampilkan Tidak tersedia pada platform ini, dan pengindeksan baru tidak dapat diaktifkan. Di Mac, analisis tetap berada di perangkat dan tidak memodifikasi folder foto. Apple Vision menyediakan analisis inti; deskripsi Model Dasar yang lebih kaya hanya muncul saat kemampuan itu tersedia."
+          ],
+          "steps": [
+            "Buka Pengaturan → Indeks Foto.",
+            "Periksa status kemampuan di perangkat dan aktifkan indeks konten Foto.",
+            "Tunggu hingga progres pengindeksan selesai. Foto dapat memperoleh hasil saat sedang diindeks.",
+            "Gunakan field pencarian pustaka untuk mencari isi foto, teks yang terlihat, atau wajah selain nama file dan keyword.",
+            "Buka Info → On-device description untuk memeriksa tag yang dihasilkan, teks yang terlihat, dan jumlah wajah foto saat ini."
+          ]
+        },
+        {
+          "title": "Foto yang dilewati",
+          "paragraphs": [
+            "File kosong, file yang belum diunduh, dan asli yang tidak tersedia dilewati sebelum analisis. Indeks Foto melaporkan hitungannya secara terpisah dari kesalahan analisis. File kosong tidak berisi data gambar; file itu mungkin perlu diunduh lagi atau dipulihkan dari cadangan.",
+            "Unduh atau pulihkan aslinya, sambungkan kembali sumber yang tidak tersedia, dan gunakan Bangun ulang indeks untuk mencoba lagi. Pengindeksan tidak mengunduh file atau mengubah asli. Metadata pencarian yang sebelumnya dibuat dipertahankan saat file menjadi tidak tersedia, kecuali Anda membangun ulang atau menghapus indeks."
+          ]
+        },
+        {
+          "title": "Jeda, bangun ulang, atau hapus",
+          "paragraphs": [
+            "Mematikan indeks menjeda analisis dan menghapus hasil yang dihasilkan dari tampilan cari aktif; data indeks yang ada tetap lokal sampai dihapus. Rebuild index menjalankan ulang pengindeksan saat fitur diaktifkan.",
+            "Delete index menghapus data indeks yang dihasilkan setelah konfirmasi. Asli dan suntingan yang tersimpan tidak berubah. Jika Apple Vision menampilkan Build required, instalasi saat ini tidak memiliki penganalisis lokal yang diperlukan. Foundation Models mungkin tidak tersedia sementara pengindeksan Vision dasar tetap dapat digunakan."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Tinjau saran seleksi berbantuan",
+      "category": "Settings",
+      "summary": "Tinjau sinyal analisis lokal dan terapkan flag pilih atau tolak hanya saat Anda memilih.",
+      "keywords": [
+        "seleksi",
+        "seleksi",
+        "ai",
+        "pilihan",
+        "tolak",
+        "ketajaman",
+        "mata",
+        "gagal",
+        "dokumen",
+        "tinjau",
+        "bendera"
+      ],
+      "sections": [
+        {
+          "title": "Tinjau sinyal",
+          "paragraphs": [
+            "Seleksi terbantu menggunakan Indeks Foto privat, yang memerlukan macOS. Analisis baru tidak tersedia di Linux dan Windows. Fitur ini tidak menandai foto sampai Anda memintanya. Sebuah foto cocok dengan grup jika salah satu kriteria yang Anda pilih menghasilkan ya; belum dinilai berarti sinyal itu tidak memiliki keputusan yang dapat digunakan."
+          ],
+          "steps": [
+            "Aktifkan Indeks Foto di Pengaturan dan tunggu foto diberi skor.",
+            "Luaskan seleksi berbantuan di sidebar katalog.",
+            "Pilih kriteria Select seperti Ketajaman Subjek, Ketajaman Mata, atau Mata terbuka, atau kriteria Reject seperti Masalah eksposur, Gagal bidik, atau Dokumen.",
+            "Gunakan Pilihan, Tolak, atau Semua untuk meninjau foto yang cocok.",
+            "Periksa saran, lalu gunakan Pick selects atau Reject rejects jika Anda ingin menerapkan bendera itu."
+          ]
+        },
+        {
+          "title": "Menerapkan bendera",
+          "paragraphs": [
+            "Konfirmasi menampilkan jumlah yang terpengaruh dan memperingatkan bahwa bendera yang sudah ada pada foto yang cocok akan diganti. Metadata RAW/JPEG yang tertaut juga dapat menyertakan file pasangan saat preferensi itu diaktifkan.",
+            "Ini adalah sinyal analisis untuk tinjauan Anda, bukan penilaian akhir tentang foto mana yang harus disimpan. Menolak hanya menetapkan bendera; itu sendiri tidak memindahkan file asli ke Trash."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Gunakan pintasan keyboard dan kontrol MIDI",
+      "category": "Settings",
+      "summary": "Temukan pintasan, pilih skema keyboard, dan petakan controller hardware jika Web MIDI tersedia.",
+      "keywords": [
+        "keyboard",
+        "pintasan",
+        "pintasan",
+        "midi",
+        "kenop",
+        "fader",
+        "pengontrol",
+        "tombol pintas",
+        "otomatisasi",
+        "klasik",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Preferensi keyboard",
+          "paragraphs": [
+            "Pengaturan → Pintasan & Perangkat Keras berisi skema pintasan dan referensi keyboard di bawah Kontrol keyboard dan MIDI. Di macOS, menu Bantuan desktop juga memiliki Pintasan Keyboard. Gunakan Ctrl untuk pintasan Command/Ctrl di Linux dan Windows.",
+            "Pilih LightTable atau Classic; skema diterapkan setelah memuat ulang. Hold-key slider control memungkinkan Anda menahan key yang dipetakan sambil menggulir atau menggunakan tombol panah. Allow automation mengatur apakah alat lokal yang disetujui dapat mengontrol jendela dengan history dan Urungkan."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E membuka Export; Command/Ctrl+E membuka pengeditan eksternal. Bidang teks mempertahankan perilaku pengetikan biasa, jadi keluar dari bidang teks sebelum menggunakan pintasan pengeditan tanpa modifikasi."
+          ]
+        },
+        {
+          "title": "Pemetaan MIDI",
+          "paragraphs": [
+            "Dukungan MIDI bergantung pada Web MIDI API di runtime saat ini. Status dapat menampilkan Unavailable, Off, No devices, atau jumlah perangkat yang terhubung. Unavailable berarti runtime ini tidak dapat menggunakan kontrol MIDI.",
+            "LightTable hanya meminta akses MIDI saat Anda mengeklik tombol status MIDI atau Pelajari MIDI. Membuka LightTable atau Pengaturan, menyesuaikan penggeser, dan mengatur ulang pemetaan tidak meminta akses. Setelah memuat ulang, klik tombol MIDI untuk menyambungkan kembali."
+          ],
+          "steps": [
+            "Hubungkan pengendali MIDI yang mengirim pesan Control Change.",
+            "Saat MIDI tersedia, buka Kontrol keyboard dan MIDI, lalu pilih Pelajari MIDI. Izinkan akses MIDI jika browser Anda meminta.",
+            "Klik slider penyesuaian yang ingin Anda petakan, lalu putar kenop atau geser fader.",
+            "Periksa pesan pemetaan, lalu gunakan kontrol perangkat keras untuk menyesuaikan slider.",
+            "Gunakan Reset MIDI untuk memulihkan pemetaan default."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Cadangkan katalog dan pecahkan masalah pemulihan",
+      "category": "Troubleshooting",
+      "summary": "Gunakan backup katalog yang telah diverifikasi, Library Health, dan diagnostik desktop saat ada masalah.",
+      "keywords": [
+        "katalog",
+        "cadangan",
+        "pulihkan",
+        "pemulihan",
+        "rusak",
+        "rusak",
+        "crash",
+        "hilang",
+        "mode aman",
+        "diagnostik",
+        "log",
+        "perbaiki"
+      ],
+      "sections": [
+        {
+          "title": "Cadangkan dan periksa",
+          "paragraphs": [
+            "Pengaturan → Katalog menampilkan lokasi katalog dan preferensi cadangan. Cadangan mencakup pengorganisasian katalog, edit, masker tersimpan, riwayat, dan variasi. Cadangkan foto asli, preset dan profil eksternal, serta preferensi secara terpisah. Lokal ••• → Cadangkan katalog… juga membuat cadangan dan menampilkan jalur tersimpan atau kesalahannya di dialog hasil. Temukan duplikat di menu yang sama menampilkan file yang cocok, atau melaporkan bahwa tidak ada yang ditemukan."
+          ],
+          "steps": [
+            "Pilih interval cadangan Otomatis dan lokasi Cadangan.",
+            "Klik Cadangkan sekarang dan periksa hasil Cadangan terverifikasi.",
+            "Buka Library Health… untuk memeriksa struktur katalog, file yang hilang, dan informasi pemulihan.",
+            "Gunakan Check now untuk menjalankan pemeriksaan katalog yang tersedia. Entri file hilang tetap disimpan bersama editnya."
+          ]
+        },
+        {
+          "title": "Pahami pilihan pemulihan",
+          "paragraphs": [
+            "Memulihkan cadangan mengembalikan data katalog ke keadaan pada cadangan itu, sehingga pengeditan yang lebih baru tidak ada di dalamnya. Saat katalog kerja dipulihkan, katalog saat ini dicadangkan terlebih dahulu.",
+            "Setelah pemutakhiran, pemindaian pertama membaca asli lokal untuk memperkuat pencocokan file. Ini bisa memakan waktu lebih lama pada pustaka yang besar. Asli yang sebelumnya sudah hilang tanpa identitas file lengkap akan tetap hilang; pertahankan entri mereka dan pulihkan asli ke jalur katalog sebelumnya sebelum memindai ulang.",
+            "Di Windows, pemeriksaan apakah file asli telah berubah akan membaca setiap file lokal secara penuh. Pemindaian ulang, pembukaan foto, dan pemeriksaan ekspor dapat memakan waktu lebih lama untuk file asli berukuran besar. Pemeriksaan ini tidak akan mengunduh file yang hanya disimpan di cloud.",
+            "Untuk katalog yang rusak, Library Health mungkin menawarkan salvage, restore, atau katalog baru. Salvage menyalin baris yang masih dapat dibaca tetapi kehilangan baris pada halaman yang rusak. Memulai dari awal tidak memindahkan rating, pengeditan, koleksi, atau riwayat. Berkas katalog rusak saat ini dipertahankan di Recovery."
+          ]
+        },
+        {
+          "title": "Menemukan data aplikasi Linux",
+          "paragraphs": [
+            "Linux biasanya menyimpan katalog dan preset di ~/.local/share/lighttable, preferensi di ~/.config/lighttable, cache render di ~/.cache/lighttable, dan log di ~/.local/state/lighttable/logs. Pengaturan penyimpanan sistem atau LightTable kustom dapat mengubah lokasi ini; Pengaturan menampilkan jalur katalog dan cache aktif.",
+            "Original tetap berada di folder foto yang Anda pilih. Cadangan katalog tidak menyertakan original tersebut, preferensi Anda, atau preset yang disimpan terpisah. Data Linux eksperimental sebelumnya tidak dipindahkan secara otomatis dari lokasi lama."
+          ]
+        },
+        {
+          "title": "Diagnostik desktop",
+          "paragraphs": [
+            "Di macOS, Bantuan → Diagnostics menawarkan Muat Ulang Antarmuka, Mulai Ulang Layanan Rendering, Tampilkan Log Server, Kesehatan Pustaka…, dan Mulai Ulang dalam Mode Aman.",
+            "Mode Aman mematikan pemindaian, folder yang dipantau, AI lokal, dan pemanasan mesin. Gunakan Mulai Ulang Layanan Rendering untuk kembali ke operasi normal."
+          ]
+        },
+        {
+          "title": "Laporkan keluar tak terduga di Mac",
+          "paragraphs": [
+            "Jika aplikasi Mac ditutup tanpa keluar yang bersih, laporan diagnostik akan terbuka saat Anda meluncurkannya berikutnya. Jika mesin rendering berhenti tak terduga, laporan dapat terbuka saat mesin pulih. Laporan muncul sekali untuk setiap insiden yang tercatat; Tutup memungkinkan Anda melanjutkan. Menutup aplikasi secara normal atau memulai ulang layanan rendering-nya tidak akan membuat laporan.",
+            "Bantuan → Laporkan Masalah… membuka laporan terbaru, atau diagnostik saat ini jika tidak ada keluar tak terduga yang tercatat. Laporan mencakup build aplikasi, macOS dan perangkat keras, operasi terakhir yang tercatat jika tersedia, log terbaru yang difilter, dan jejak kesalahan yang tersedia. Laporan crash macOS yang cocok dapat menambahkan informasi stack dan biner. Keluar tak terduga tidak selalu meninggalkan jejak kesalahan atau mengidentifikasi penyebabnya.",
+            "Laporan tetap di Mac Anda sampai Anda memilih untuk membagikannya. Jalur, nama file foto, nilai log yang dikutip, dan bidang kredensial umum difilter; periksa teks sebelum membagikan. Foto dan katalog tidak dilampirkan. Sepuluh laporan terbaru disimpan secara lokal."
+          ],
+          "steps": [
+            "Baca laporan diagnostik. Pilih Salin laporan untuk menempelkannya ke email sendiri.",
+            "Atau pilih Email pengelola. Ini menyalin laporan dan membuka draf yang ditujukan ke team@lighttable.app.",
+            "Jelaskan apa yang sedang Anda lakukan, tempel laporan yang disalin ke draf, dan kirim saat siap. Jika tidak ada aplikasi email yang terbuka, gunakan layanan email yang biasa Anda pakai.",
+            "Pilih Tutup untuk menutup laporan. Tidak ada yang dikirim secara otomatis."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ],
+      "categoryLabel": "Pemecahan masalah"
+    },
+    {
+      "id": "performance-previews",
+      "title": "Tingkatkan kecepatan pratinjau dan periksa detail gambar",
+      "category": "Troubleshooting",
+      "summary": "Biarkan pratinjau menyesuaikan dengan tampilan Anda, periksa detail nyata, dan kelola cache yang dihasilkan.",
+      "keywords": [
+        "performa",
+        "lambat",
+        "buram",
+        "berpiksel",
+        "pratinjau",
+        "resolusi",
+        "100%",
+        "1:1",
+        "gpu",
+        "karat",
+        "python",
+        "cache",
+        "kosongkan"
+      ],
+      "sections": [
+        {
+          "title": "Periksa apa yang telah selesai dirender",
+          "paragraphs": [
+            "Pengaturan zoom 100% tidak menjamin bahwa detail gambar penuh sudah tiba. Pratinjau cepat mungkin muncul terlebih dahulu saat pemrosesan RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai, dengan hitungan seperti 2 / 5. Bilah ini menghilang segera setelah pratinjau yang dapat digunakan ditampilkan; pemrosesan RAW yang akurat dan pratinjau yang lebih besar terus berjalan di latar belakang tanpa lapisan. Hitungan tersebut mewakili tahap yang selesai, bukan sisa waktu. Gerakan yang dikurangi mempertahankan pembaruan tahap yang sama tanpa animasi. Foto tetap terlihat tanpa menjadi redup. Pada 1:1, arahkan kursor ke tombol 1:1 untuk memeriksa apakah detail sumber penuh sudah siap sebelum menilai detail halus.",
+            "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
+            "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya."
+          ],
+          "steps": [
+            "Buka Pengaturan → Performa.",
+            "Pertahankan detail pratinjau otomatis untuk pengeditan normal. Ini mengikuti ukuran jendela, kepadatan tampilan, crop, dan zoom tanpa pilihan ukuran piksel.",
+            "Gunakan GPU · Rust saat tersedia. Compatible · Python adalah engine film alternatif, tetapi beberapa stok memerlukan Rust.",
+            "Nilai sharpening, pengurangan noise, dan film grain pada 1:1 setelah detail stabil."
+          ]
+        },
+        {
+          "title": "Override pratinjau lanjutan",
+          "paragraphs": [
+            "Pengaturan → Performa → Lanjutan berisi Penggantian resolusi pratinjau. Otomatis (disarankan) menyesuaikan pratinjau dengan tampilan Anda. Resolusi tetap dapat mengurangi pemrosesan, tetapi mungkin terlihat lebih lembut; zoom 100% tetap meminta detail sumber, tergantung pada batas pratinjau. Dimensi ekspor diatur terpisah.",
+            "Pilihan lebar pratinjau yang disimpan lebih lama diatur ulang ke Otomatis saat diperbarui ke perilaku ini. Penggantian tetap yang dipilih di Lanjutan disimpan untuk sesi berikutnya. Performa muncul saat penggantian manual aktif."
+          ],
+          "steps": [
+            "Buka Pengaturan → Performa dan perluas Lanjutan.",
+            "Pilih penggantian tetap Resolusi Pratinjau hanya jika diperlukan untuk performa atau pemecahan masalah.",
+            "Pilih Otomatis (disarankan) untuk kembali ke pratinjau yang mengikuti tampilan Anda."
+          ]
+        },
+        {
+          "title": "Kelola penyimpanan cache",
+          "paragraphs": [
+            "Performance menampilkan lokasi cache pratinjau, penggunaan, dan anggaran. Purge cache menghapus pratinjau yang dihasilkan dan cache render setelah konfirmasi; original dan edit tidak terpengaruh. Pratinjau perlu dihasilkan lagi.",
+            "Resolusi pratinjau terpisah dari pengaturan Dimensi yang digunakan untuk file yang diekspor. Penyelesaian Ekspor dan Gabungkan Foto menggunakan akselerasi GPU secara otomatis untuk tahap pemrosesan gambar yang didukung, dengan fallback CPU saat tidak tersedia. Preferensi mesin film mengontrol pratinjau film; ini tidak menonaktifkan akselerasi ini."
+          ]
+        },
+        {
+          "title": "Periksa perenderan Linux",
+          "paragraphs": [
+            "Di Linux, Pengaturan → Performa melaporkan perender Rust aktif dan adapter yang terdeteksi setelah pemanasan. Pilihan GPU · Rust dapat menggunakan perenderan CPU saat GPU perangkat keras tidak tersedia. Vulkan perangkat lunak bukan akselerasi perangkat keras.",
+            "Foto yang melampaui batas GPU menggunakan CPU. Jika pekerja render berhenti merespons, LightTable mencoba sekali lagi di CPU dan mempertahankan pekerja itu untuk sesi tersebut. Buka kembali LightTable setelah memperbaiki atau memperbarui driver grafis Anda untuk mencoba perenderan GPU lagi. Foto besar dan perenderan perangkat lunak dapat memakan waktu lebih lama; gunakan detail pratinjau Otomatis untuk pengeditan normal."
+          ]
+        },
+        {
+          "title": "Baca kesalahan pratinjau",
+          "paragraphs": [
+            "Jika foto tidak dapat dirender atau ditampilkan, pesan di area foto menyertakan alasan yang dilaporkan bila tersedia. Ini dapat mengidentifikasi file yang hilang, masalah pemuatan gambar, atau kegagalan grafis. Jika tidak ada alasan yang tersedia, pesannya tetap umum."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Pemecahan masalah"
+    }
+  ],
+  "locale": "id",
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+}

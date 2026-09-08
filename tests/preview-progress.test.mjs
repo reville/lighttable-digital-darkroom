@@ -4,10 +4,10 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { gradeBakeRequest, gradeBakeKey } from '../web/preview-processing.js';
 import { previewFailureMessage } from '../web/preview-detail.js';
+import { createFrameScheduler } from '../web/render-scheduler.js';
 
-const source = readFileSync(new URL('../web/preview-progress.js', import.meta.url), 'utf8');
-const { createPreviewProgress, waitForRawRefinement } = await import(
-  `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import { createPreviewProgress, waitForRawRefinement } from '../web/preview-progress.js';
+import {t as tr, tn as trn} from '../web/i18n.js';
 const appSource = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
 const renderSource = appSource.match(/^async function doRender\([^]*?^}/m)[0];
 const nativeEventSource = appSource.match(/^window.lightTableNativeEvent = \(event\) => \{[^]*?^};/m)[0];
@@ -97,7 +97,7 @@ function renderHarness(overrides = {}) {
   const requests = [], displays = [], progress = [], presentations = [], scheduled = [], nodes = new Map();
   const noop = () => {};
   let finishDecode, finishPaint;
-  const context = {
+  const context = {tr, trn,
     S, performance, console, setTimeout: fn => scheduled.push(fn), clearTimeout: noop, CLIENT_ID: 'review',
     gradeBakeRequest, gradeBakeKey, previewFailureMessage,
     prefetchTimer: null, refineTimer: null, viewportRegionTimer: null,
@@ -108,7 +108,7 @@ function renderHarness(overrides = {}) {
     cur: () => ({ name: 'photo.dng' }),
     $: id => { if (!nodes.has(id)) nodes.set(id, { value: id === 'pw' ? '2200' : 'rs',
       setAttribute(key, value) { this[key] = value; } }); return nodes.get(id); },
-    readControls: noop, requestedPreviewWidth: () => 2200,
+    readControls: noop, viewFrameScheduler: { flush: noop }, requestedPreviewWidth: () => 2200,
     requestedViewportRegion: () => null, nativePreviewActive: () => false,
     renderRequestKey: () => 'key', presentationCache: { get: noop, set: noop },
     previewGeometryKey: noop, shouldPreservePresentationGeometry: () => true,
@@ -135,6 +135,40 @@ function renderHarness(overrides = {}) {
     finishDecode: () => finishDecode(), finishPaint: () => finishPaint(),
     runScheduled: () => scheduled.shift()() };
 }
+
+test('native 1:1 request applies queued zoom layout before measuring its source region', async () => {
+  const previousRequest = globalThis.requestAnimationFrame;
+  const previousCancel = globalThis.cancelAnimationFrame;
+  globalThis.requestAnimationFrame = () => 1;
+  globalThis.cancelAnimationFrame = () => {};
+  try {
+    let canvasWidth = 600;
+    const scheduler = createFrameScheduler(() => { canvasWidth = 3000; });
+    scheduler.request({ view: true });
+    const pixelWindow = vm.runInNewContext(`(${appSource.match(/^function viewportPixelWindow\([^]*?^}/m)[0]})`);
+    const requests = [];
+    const app = renderHarness({
+      viewFrameScheduler: scheduler,
+      requestedPreviewWidth: () => 3000,
+      nativePreviewActive: () => true,
+      requestedViewportRegion: () => pixelWindow(
+        { left: 0, top: 0, right: canvasWidth, bottom: canvasWidth * 2 / 3,
+          width: canvasWidth, height: canvasWidth * 2 / 3 },
+        { left: 0, top: 0, right: 600, bottom: 400 }, 3000, 2000),
+      api: async (_path, body) => { requests.push(body); return {}; },
+      setBaseImage: async () => ({ presentation: 'native-metal',
+        presentedAt: performance.now(), uploadedAt: performance.now() }),
+    });
+    await app.render();
+    assert.equal(requests.length, 1);
+    assert.ok(requests[0].viewport.width < 900, 'must not request the old fitted full image');
+    assert.ok(requests[0].viewport.height < 700);
+    assert.equal(app.PERF.renders[0].presentation, 'native-metal');
+  } finally {
+    globalThis.requestAnimationFrame = previousRequest;
+    globalThis.cancelAnimationFrame = previousCancel;
+  }
+});
 
 test('actual RAW render waits on one generation, retains accurate pixels, and finishes after paint', async () => {
   const app = renderHarness();

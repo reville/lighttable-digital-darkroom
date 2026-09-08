@@ -17,6 +17,8 @@ import time
 from pathlib import Path
 from typing import Any, Callable
 
+from server_localization import T
+
 
 def backup_path(path: Path | str) -> Path:
     path = Path(path)
@@ -48,7 +50,7 @@ def temporary_path(path: Path | str, label: str = "tmp") -> Path:
     # impossible to save. A UTF-8 byte bound also works on byte-limited volumes.
     budget = 255 - len(tail.encode("utf-8")) - 1
     if budget < 1:
-        raise ValueError("The file extension is too long for a staging filename")
+        raise ValueError(T("The file extension is too long for a staging filename"))
     stem = path.stem.encode("utf-8")[:budget].decode("utf-8", errors="ignore")
     return path.with_name(f".{stem}{tail}")
 

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {t as tr} from '../web/i18n.js';
 
 const midiSource = readFileSync(new URL('../web/midi.js', import.meta.url), 'utf8');
 const appSource = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
@@ -40,7 +41,7 @@ function harness({supported = true} = {}) {
     return new Promise((resolve, reject) => requests.push({options, resolve, reject}));
   }} : {};
   const context = vm.createContext({
-    document, navigator, $: id => buttons.get(id), toast() {},
+    document, navigator, tr, $: id => buttons.get(id), toast() {},
     localStorage: {
       getItem: key => stored.get(key),
       setItem: (key, value) => stored.set(key, value),
@@ -50,7 +51,8 @@ function harness({supported = true} = {}) {
     Event: class {constructor(type) { this.type = type; }},
   });
   // Run the shipped module and its actual startup/button/slider wiring.
-  vm.runInContext(midiSource.replace(/^export /gm, '') + wiring, context);
+  vm.runInContext(midiSource.replace(/^import .*from ['"]\.\/i18n\.js['"];?\n/m, '')
+    .replace(/^export /gm, '') + wiring, context);
   return {requests, events, stored, classes, pill, hud, input, access, slider,
     click: id => buttons.get(id).click(),
     selectSlider: () => document.pointerdown({target: slider})};

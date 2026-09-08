@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { installFirstRunSetup, shouldShowSetup } from '../web/first-run.js';
+import { useCatalog } from '../web/i18n.js';
 
 const empty = { total: 0, images: [], catalog: { sources: [] } };
 test('waits for both responses, respects durable completion, and spares existing installations', () => {
@@ -140,6 +141,46 @@ test('browser folder flow adds source through server before completing', async (
   assert.equal(f.writes.length, 1);
   await f.click('setupDone');
   assert.equal(f.writes[1].body.firstRunSetup.source, 'folder');
+});
+
+test('translated folder setup preserves user paths and persisted source identifiers', async () => {
+  useCatalog('fr', { messages: {
+    'Add folder': 'Ajouter un dossier',
+    'Your folder is ready': 'Votre dossier est prêt',
+    'Photos stay in their current folder. You can add more folders whenever you like.':
+      'Les photos restent dans leur dossier actuel. Vous pouvez en ajouter d’autres.',
+    'Export': 'Exporter',
+  } });
+  try {
+    const f = fixture();
+    assert.equal(f.all.get('setupFolderChoose').textContent, 'Ajouter un dossier');
+    f.all.get('setupFolderPath').value = '/photos/Export {name}';
+    await f.click('setupFolderChoose');
+    assert.deepEqual(f.writes[0], { path: '/api/catalog/sources',
+      body: { action: 'add', path: '/photos/Export {name}' } });
+    assert.equal(f.all.get('setupHeading-result').textContent, 'Votre dossier est prêt');
+    await f.click('setupDone');
+    assert.equal(f.writes[1].body.firstRunSetup.source, 'folder');
+    assert.equal(f.writes[1].body.firstRunSetup.status, 'completed');
+  } finally { useCatalog('en', { messages: {} }); }
+});
+
+test('Photos onboarding uses locale plural categories while preserving native error text', () => {
+  const one = '{count} photo imported.';
+  useCatalog('ar', { messages: { 'Your photos are ready': 'صورك جاهزة', 'Export': 'تصدير' },
+    plurals: { [one]: { one: 'one {count}', two: 'two {count}', few: 'few {count}',
+      many: 'many {count}', other: 'other {count}', zero: 'zero {count}' } } });
+  try {
+    const f = fixture({ native: true });
+    f.controller.nativeEvent({ type: 'sources', firstRun: true });
+    for (const [count, category] of [[1, 'one'], [2, 'two'], [3, 'few'], [11, 'many']]) {
+      f.controller.nativeEvent({ type: 'photosImported', count });
+      assert.equal(f.all.get('setupHeading-result').textContent, 'صورك جاهزة');
+      assert.match(f.all.get('setupResultMessage').textContent, new RegExp(`^${category} `));
+    }
+    f.controller.nativeEvent({ type: 'error', message: 'Export' });
+    assert.equal(f.all.get('setupError').textContent, 'Export');
+  } finally { useCatalog('en', { messages: {} }); }
 });
 
 

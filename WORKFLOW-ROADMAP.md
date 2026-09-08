@@ -1,5 +1,11 @@
 # Workflow and migration milestone
 
+For the September 2026 DAM additions, use the current
+[digital asset management guide](DIGITAL-ASSET-MANAGEMENT.md) and
+[catalog benchmark results](bench/dam-performance.md). The milestone below is
+a historical implementation plan; its proposed behavior and approximate line
+numbers are not the current feature reference.
+
 Status: **built**, 2026-09-03. Written as a plan on 2026-09-02 and implemented
 against it; the measured results are at the end of this document. Phases 0-4
 are complete. Phase 5 is complete apart from Windows parity for the two

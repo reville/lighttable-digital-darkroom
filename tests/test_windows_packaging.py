@@ -242,7 +242,7 @@ class WindowsRuntimeLaunchContractTests(unittest.TestCase):
         self.assertLess(shell.index("previous.stop();", begin),
                         shell.index("ServerController::start(&paths, &folder)", begin))
         self.assertIn("thread::spawn(move || {", shell[begin:])
-        self.assertIn("load_html(LOADING_PAGE)", shell[begin:])
+        self.assertIn("load_html(&loading_page())", shell[begin:])
         self.assertIn("if generation != self.launch_generation {", shell)
         self.assertIn("self.queued = Some(folder);", shell)
 

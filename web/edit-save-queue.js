@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 // A photo's identity and complete JSON edit state travel together. Never read
 // mutable editor state from a timer or after a request has started.
 function copyPayload(payload) {
@@ -32,9 +33,9 @@ export function createEditSaveQueue({
   setTimeout: schedule = globalThis.setTimeout.bind(globalThis),
   clearTimeout: unschedule = globalThis.clearTimeout.bind(globalThis),
 }) {
-  if (typeof send !== 'function') throw new TypeError('An edit save function is required');
+  if (typeof send !== 'function') throw new TypeError(tr("An edit save function is required"));
   if (!Number.isSafeInteger(maxConcurrent) || maxConcurrent < 1) {
-    throw new RangeError('maxConcurrent must be a positive integer');
+    throw new RangeError(tr("maxConcurrent must be a positive integer"));
   }
   const entries = new Map(), ready = new Set();
   let runningCount = 0;  let tokenCounter = 0;
@@ -130,7 +131,7 @@ export function createEditSaveQueue({
   }
 
   function enqueue(name, payload, {immediate = false} = {}) {
-    if (typeof name !== 'string' || !name) throw new TypeError('A photo name is required');
+    if (typeof name !== 'string' || !name) throw new TypeError(tr("A photo name is required"));
     let entry = entries.get(name);
     const previous = entry && (entry.queued || entry.running)?.payload;
     // A rejected recovery must not turn into an unchecked write when the user
@@ -180,7 +181,7 @@ export function createEditSaveQueue({
       ? [{name: selected[index].name, error: result.reason}] : []);
     if (failed.length) {
       const error = new AggregateError(failed.map(item => item.error),
-        `Could not save edits for ${failed.map(item => item.name).join(', ')}`);
+        tr("Could not save edits for {value}", {value: failed.map(item => item.name).join(', ')}));
       error.failedNames = failed.map(item => item.name);
       throw error;
     }

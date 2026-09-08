@@ -1,3 +1,5 @@
+import {tn as trn} from './i18n.js';
+
 export function aiSearchTerms(metadata) {
   if (!metadata) return [];
   const terms = [metadata.caption, ...(metadata.tags || []), ...(metadata.ocr || [])];
@@ -11,14 +13,13 @@ export function aiSkippedSummary(status) {
   if (!status.skipped) return '';
   const reasons = status.skippedReasons || {};
   const counts = [
-    ['empty', 'empty file', 'empty files'],
-    ['cloud-only', 'file not downloaded', 'files not downloaded'],
-    ['unavailable', 'unavailable file', 'unavailable files'],
-  ].filter(([key]) => reasons[key] > 0)
-    .map(([key, one, many]) => `${reasons[key].toLocaleString()} ${reasons[key] === 1 ? one : many}`);
-  return `${status.skipped.toLocaleString()} ${status.skipped === 1 ? 'photo' : 'photos'} skipped`
-    + (counts.length ? ` (${counts.join(', ')})` : '')
-    + '. Download or restore the originals, then rebuild the index.';
+    reasons.empty > 0 ? trn('{count} empty file', '{count} empty files', reasons.empty) : '',
+    reasons['cloud-only'] > 0 ? trn('{count} file not downloaded', '{count} files not downloaded', reasons['cloud-only']) : '',
+    reasons.unavailable > 0 ? trn('{count} unavailable file', '{count} unavailable files', reasons.unavailable) : '',
+  ].filter(Boolean);
+  return trn('{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.',
+    '{count} photos skipped{reasons}. Download or restore the originals, then rebuild the index.', status.skipped,
+    {reasons: counts.length ? ` (${counts.join(', ')})` : ''});
 }
 
 /* Assisted culling ------------------------------------------------------- */

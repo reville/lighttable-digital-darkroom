@@ -1,5 +1,6 @@
 //! Linux desktop conventions, separate from the Windows and macOS hosts.
 use anyhow::{Result, bail};
+use crate::localization::tr;
 use std::{
     collections::BTreeSet,
     ffi::OsString,
@@ -60,7 +61,7 @@ pub fn validate_folder_name(raw: &str) -> Result<String> {
         || raw.chars().any(char::is_control)
         || raw.len() > 255
     {
-        bail!("Enter a valid folder name (up to 255 bytes, without /)")
+        bail!(tr("Enter a valid folder name (up to 255 bytes, without /)"))
     }
     Ok(raw.to_owned())
 }

@@ -1,3 +1,4 @@
+import { t as tr, tn as trn } from './i18n.js';
 /* Library Health: what the window shows about integrity, and the choices it
  * offers when something has gone wrong.
  *
@@ -28,11 +29,11 @@ function whenLabel(seconds) {
 }
 
 function summaryLabel(summary) {
-  if (!summary) return 'contents unknown';
-  const parts = [`${summary.images ?? 0} photos`];
-  if (summary.edited) parts.push(`${summary.edited} edited`);
-  if (summary.history) parts.push(`${summary.history} history steps`);
-  if (summary.collections) parts.push(`${summary.collections} collections`);
+  if (!summary) return tr("contents unknown");
+  const parts = [tr("{value} photos", {value: summary.images ?? 0})];
+  if (summary.edited) parts.push(tr("{summaryEdited} edited", {summaryEdited: summary.edited}));
+  if (summary.history) parts.push(tr("{summaryHistory} history steps", {summaryHistory: summary.history}));
+  if (summary.collections) parts.push(tr("{summaryCollections} collections", {summaryCollections: summary.collections}));
   return parts.join(' · ');
 }
 
@@ -111,14 +112,14 @@ export function installRecovery(ctx) {
       const result = await post('/api/recovery', { action, ...extra });
       if (result?.error) throw new Error(result.error);
       if (result?.restart) {
-        showOverlay('LightTable is restarting to open the recovered catalog…');
+        showOverlay(tr("LightTable is restarting to open the recovered catalog…"));
         watchServer(true);
         return result;
       }
       await load();
       return result;
     } catch (error) {
-      toast(error?.message || String(error));
+      toast(((error?.message || String(error))));
       return null;
     } finally {
       setBusy(false);
@@ -133,50 +134,43 @@ export function installRecovery(ctx) {
     if (!catalog.damaged) { container.hidden = true; return; }
     container.hidden = false;
     const notice = catalog.notice || {};
-    container.appendChild(node('h3', '', 'The catalog is damaged'));
+    container.appendChild(node('h3', '', tr("The catalog is damaged")));
     container.appendChild(node('p', 'health-note',
-      `${notice.message || 'SQLite could not read it.'} Photos are open in `
-      + 'folder mode and nothing has been changed. Choose how to recover; '
-      + 'whatever is at the catalog path now is kept in the Recovery folder.'));
+      tr("{value} Photos are open in folder mode and nothing has been changed. Choose how to recover; whatever is at the catalog path now is kept in the Recovery folder.", {value: (notice.message || tr("SQLite could not read it."))})));
     const choices = node('div', 'health-choices');
     const salvage = status.salvage || {};
     const backups = (status.backups?.items || []);
     const newest = backups[0];
     if (salvage.available) {
       const card = node('div', 'health-choice');
-      card.appendChild(node('strong', '', 'Salvage the damaged catalog'));
+      card.appendChild(node('strong', '', tr("Salvage the damaged catalog")));
       card.appendChild(node('p', '',
-        `Copies every readable row into a fresh file. Readable now: `
-        + `${summaryLabel(salvage.readable)}. Keeps edits made after the last `
-        + 'backup; rows on damaged pages are lost.'));
-      card.appendChild(button('Salvage and restart', () => act('rebuild'),
-        { quiet: false, arm: 'Confirm salvage' }));
+        tr("Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.", {value: summaryLabel(salvage.readable)})));
+      card.appendChild(button(tr("Salvage and restart"), () => act('rebuild'),
+        { quiet: false, arm: tr("Confirm salvage") }));
       choices.appendChild(card);
     }
     if (newest) {
       const card = node('div', 'health-choice');
-      card.appendChild(node('strong', '', 'Restore the newest backup'));
+      card.appendChild(node('strong', '', tr("Restore the newest backup")));
       card.appendChild(node('p', '',
-        `${whenLabel(newest.modified)} · ${summaryLabel(newest.summary)}. `
-        + 'Edits made after that backup are not in it.'));
-      card.appendChild(button('Restore and restart',
+        tr("{value} · {value2}. Edits made after that backup are not in it.", {value: whenLabel(newest.modified), value2: summaryLabel(newest.summary)})));
+      card.appendChild(button(tr("Restore and restart"),
         () => act('restore', { archive: newest.path }),
-        { quiet: false, arm: 'Confirm restore' }));
+        { quiet: false, arm: tr("Confirm restore") }));
       choices.appendChild(card);
     }
     const fresh = node('div', 'health-choice');
-    fresh.appendChild(node('strong', '', 'Start a new catalog'));
+    fresh.appendChild(node('strong', '', tr("Start a new catalog")));
     fresh.appendChild(node('p', '',
-      'An empty catalog that rescans your folders. Ratings, edits, '
-      + 'collections, and history are not carried over.'));
-    fresh.appendChild(button('Start fresh and restart',
-      () => act('reset', { confirm: true }), { arm: 'Confirm new catalog' }));
+      tr("An empty catalog that rescans your folders. Ratings, edits, collections, and history are not carried over.")));
+    fresh.appendChild(button(tr("Start fresh and restart"),
+      () => act('reset', { confirm: true }), { arm: tr("Confirm new catalog") }));
     choices.appendChild(fresh);
     container.appendChild(choices);
     if (!salvage.available && !newest) {
       container.appendChild(node('p', 'health-note',
-        'No backup is available and the file cannot be read at all. Starting '
-        + 'fresh is the remaining option; the damaged file stays in Recovery.'));
+        tr("No backup is available and the file cannot be read at all. Starting fresh is the remaining option; the damaged file stays in Recovery.")));
     }
   }
 
@@ -185,49 +179,41 @@ export function installRecovery(ctx) {
     const catalog = status.catalog || {};
     const verify = status.verify;
     const disk = status.disk || {};
-    let state = 'Healthy';
+    let state = tr("Healthy");
     let stateClass = 'ok';
-    if (catalog.damaged) { state = 'Damaged'; stateClass = 'bad'; }
+    if (catalog.damaged) { state = tr("Damaged"); stateClass = 'bad'; }
     else if (!catalog.enabled && catalog.configured) {
-      state = catalog.notice?.status === 'incompatible'
-        ? 'Newer than this build' : 'Not open';
+      state = (catalog.notice?.status === 'incompatible' ? tr("Newer than this build") : tr("Not open"));
       stateClass = 'warn';
-    } else if (!catalog.configured) { state = 'Folder mode'; stateClass = ''; }
-    else if (verify && !verify.ok) { state = 'Needs attention'; stateClass = 'warn'; }
-    container.appendChild(row('Catalog', state, stateClass));
-    container.appendChild(row('Location', catalog.path || '—', 'mono'));
+    } else if (!catalog.configured) { state = tr("Folder mode"); stateClass = ''; }
+    else if (verify && !verify.ok) { state = tr("Needs attention"); stateClass = 'warn'; }
+    container.appendChild(row(tr("Catalog"), state, stateClass));
+    container.appendChild(row(tr("Location"), ((catalog.path || '—')), 'mono'));
     if (catalog.syncService) {
-      container.appendChild(row('Warning',
-        `The catalog sits inside ${catalog.syncService}. Databases inside a `
-        + 'syncing folder are a common cause of corruption.', 'warn'));
+      container.appendChild(row(tr("Warning"),
+        tr("The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.", {catalogSyncService: catalog.syncService}), 'warn'));
     }
     if (catalog.stats) {
       const s = catalog.stats;
-      container.appendChild(row('Contents',
-        `${s.images ?? 0} photos · ${s.sources ?? 0} sources`
-        + (s.missing ? ` · ${s.missing} missing files` : '')));
+      container.appendChild(row(tr("Contents"),
+        tr("{value} photos · {value2} sources{value3}", {value: (s.images ?? 0), value2: (s.sources ?? 0), value3: s.missing ? tr(" · {sMissing} missing files", {sMissing: s.missing}) : ''})));
     }
-    container.appendChild(row('Last check', verify
-      ? `${whenLabel(verify.checkedAt)} · ${verify.ok ? 'no problems'
-        : (verify.problems || []).join('; ')}`
-      : 'Not checked yet this session', verify && !verify.ok ? 'warn' : ''));
-    container.appendChild(row('Disk',
-      disk.freeBytes !== undefined
-        ? `${bytesLabel(disk.freeBytes)} free of ${bytesLabel(disk.totalBytes)}`
-          + (disk.low ? ' — almost full; backups are paused' : '')
-        : '—', disk.low ? 'bad' : ''));
+    container.appendChild(row(tr("Last check"), verify
+      ? tr('{time} · {result}', {time: whenLabel(verify.checkedAt),
+        result: verify.ok ? tr('no problems') : (verify.problems || []).join('; ')})
+      : tr("Not checked yet this session"), verify && !verify.ok ? 'warn' : ''));
+    container.appendChild(row(tr("Disk"),
+      disk.freeBytes !== undefined ? disk.low ? tr("{value} free of {value2} — almost full; backups are paused", {value: bytesLabel(disk.freeBytes), value2: bytesLabel(disk.totalBytes)}) : tr("{value} free of {value2}", {value: bytesLabel(disk.freeBytes), value2: bytesLabel(disk.totalBytes)}) : '—', disk.low ? 'bad' : ''));
     for (const doc of status.documents || []) {
       if (doc.status === 'ok' || doc.status === 'missing') continue;
       container.appendChild(row(doc.path.split('/').pop(), doc.message, 'warn'));
     }
     if (status.safeMode) {
-      container.appendChild(row('Mode',
-        'Safe Mode: scanning, watched folders, local AI, and engine warm-up '
-        + 'are off. Use Help ▸ Diagnostics ▸ Restart Rendering Service to '
-        + 'return to normal.', 'warn'));
+      container.appendChild(row(tr("Mode"),
+        tr("Safe Mode: scanning, watched folders, local AI, and engine warm-up are off. Use Help ▸ Diagnostics ▸ Restart Rendering Service to return to normal."), 'warn'));
     }
     if (status.launch?.status === 'folder-missing') {
-      container.appendChild(row('Folder', status.launch.message, 'warn'));
+      container.appendChild(row(tr("Folder"), status.launch.message, 'warn'));
     }
   }
 
@@ -236,24 +222,23 @@ export function installRecovery(ctx) {
     const catalog = status.catalog || {};
     const open = !!catalog.enabled;
     const verify = status.verify;
-    container.appendChild(button('Check now', () => act('verify')));
-    const repair = button('Repair', () => act('repair'), { arm: 'Confirm repair' });
-    repair.title = 'Backs up first, then removes orphaned rows, rebuilds the '
-      + 'search index, and checkpoints the log.';
+    container.appendChild(button(tr("Check now"), () => act('verify')));
+    const repair = button(tr("Repair"), () => act('repair'), { arm: tr("Confirm repair") });
+    repair.title = tr("Backs up first, then removes orphaned rows, rebuilds the search index, and checkpoints the log.");
     container.appendChild(repair);
-    container.appendChild(button('Rescan all folders', () => act('rescan')));
-    container.appendChild(button('Rebuild search index', () => act('rebuild-search')));
-    container.appendChild(button('Clear preview caches', () => act('clear-caches'),
-      { arm: 'Confirm clear' }));
+    container.appendChild(button(tr("Rescan all folders"), () => act('rescan')));
+    container.appendChild(button(tr("Rebuild search index"), () => act('rebuild-search')));
+    const clearCaches = button(tr("Clear preview caches"), () => act('clear-caches'),
+      { arm: tr("Confirm clear") });
+    container.appendChild(clearCaches);
     if (open && verify && !verify.ok && !verify.repairable) {
-      const rebuild = button('Rebuild catalog file',
-        () => act('rebuild'), { arm: 'Confirm rebuild' });
-      rebuild.title = 'SQLite reports page-level damage. This salvages every '
-        + 'readable row into a fresh file and restarts.';
+      const rebuild = button(tr("Rebuild catalog file"),
+        () => act('rebuild'), { arm: tr("Confirm rebuild") });
+      rebuild.title = tr("SQLite reports page-level damage. This salvages every readable row into a fresh file and restarts.");
       container.appendChild(rebuild);
     }
     container.querySelectorAll('button').forEach((control) => {
-      if (!open && !['Clear preview caches'].includes(control.textContent)) {
+      if (!open && control !== clearCaches) {
         control.disabled = true;
       }
     });
@@ -264,15 +249,14 @@ export function installRecovery(ctx) {
     const verify = status.verify;
     if (!verify) return;
     const lines = [];
-    lines.push(`Structure: ${verify.integrity === 'ok' ? 'ok'
-      : [].concat(verify.integrity).slice(0, 3).join('; ')}`);
-    if (verify.foreignKeyViolations) lines.push(`Foreign keys: ${verify.foreignKeyViolations} violations`);
+    lines.push(tr("Structure: {value}", {value: (verify.integrity === 'ok' ? tr("ok") : [].concat(verify.integrity).slice(0, 3).join('; '))}));
+    if (verify.foreignKeyViolations) lines.push(tr("Foreign keys: {verifyForeignKeyViolations} violations", {verifyForeignKeyViolations: verify.foreignKeyViolations}));
     const orphans = Object.entries(verify.orphans || {}).filter(([, n]) => n > 0);
-    if (orphans.length) lines.push(`Orphaned rows: ${orphans.map(([t, n]) => `${t} ${n}`).join(', ')}`);
+    if (orphans.length) lines.push(tr("Orphaned rows: {value}", {value: orphans.map(([t, n]) => `${t} ${n}`).join(', ')}));
     const search = verify.searchIndex || {};
-    lines.push(`Search index: ${search.ok ? 'in step' : `${search.stale || 0} stale, ${search.unindexed || 0} missing`}`);
-    if (verify.missingFiles) lines.push(`Missing files: ${verify.missingFiles} (kept with their edits)`);
-    lines.push(`Write-ahead log: ${bytesLabel(verify.walBytes)}`);
+    lines.push(tr("Search index: {value}", {value: (search.ok ? tr("in step") : tr("{value} stale, {value2} missing", {value: search.stale || 0, value2: search.unindexed || 0}))}));
+    if (verify.missingFiles) lines.push(tr("Missing files: {verifyMissingFiles} (kept with their edits)", {verifyMissingFiles: verify.missingFiles}));
+    lines.push(tr("Write-ahead log: {value}", {value: bytesLabel(verify.walBytes)}));
     for (const line of lines) container.appendChild(node('div', 'health-line', line));
   }
 
@@ -280,9 +264,9 @@ export function installRecovery(ctx) {
     container.replaceChildren();
     const backups = status.backups || {};
     const items = backups.items || [];
-    container.appendChild(node('div', 'health-line mono', backups.directory || ''));
+    container.appendChild(node('div', 'health-line mono', ((backups.directory || ''))));
     if (!items.length) {
-      container.appendChild(node('div', 'health-line', 'No backups yet.'));
+      container.appendChild(node('div', 'health-line', tr("No backups yet.")));
       return;
     }
     for (const item of items) {
@@ -292,11 +276,9 @@ export function installRecovery(ctx) {
       text.appendChild(node('span', '',
         `${bytesLabel(item.size)} · ${summaryLabel(item.summary)}`));
       line.appendChild(text);
-      const restore = button('Restore…',
-        () => act('restore', { archive: item.path }), { arm: 'Confirm restore' });
-      restore.title = status.catalog?.enabled
-        ? 'The current catalog is backed up first, then replaced by this one.'
-        : 'Replaces the damaged catalog with this backup.';
+      const restore = button(tr("Restore…"),
+        () => act('restore', { archive: item.path }), { arm: tr("Confirm restore") });
+      restore.title = status.catalog?.enabled ? tr("The current catalog is backed up first, then replaced by this one.") : tr("Replaces the damaged catalog with this backup.");
       line.appendChild(restore);
       container.appendChild(line);
     }
@@ -307,21 +289,20 @@ export function installRecovery(ctx) {
     const entries = status.quarantine || [];
     if (!entries.length) {
       container.appendChild(node('div', 'health-line',
-        'None. A photo is set aside after processing it crashes LightTable '
-        + 'twice.'));
+        tr("None. A photo is set aside after processing it crashes LightTable twice.")));
       return;
     }
     for (const entry of entries) {
       const line = node('div', 'health-item');
       const text = node('div', 'health-item-text');
       text.appendChild(node('strong', '', entry.name));
-      text.appendChild(node('span', '',
-        `${entry.strikes} crash${entry.strikes === 1 ? '' : 'es'} while `
-        + `${entry.stage === 'manual' ? 'set aside by hand' : entry.stage}`
-        + ` · ${whenLabel(entry.lastAt)}`
-        + (entry.quarantined ? ' · set aside' : ' · still open')));
+      const details = {stage: entry.stage === 'manual' ? tr('set aside by hand') : entry.stage,
+        time: whenLabel(entry.lastAt)};
+      text.appendChild(node('span', '', entry.quarantined
+        ? trn('{count} crash while {stage} · {time} · set aside', '{count} crashes while {stage} · {time} · set aside', entry.strikes, details)
+        : trn('{count} crash while {stage} · {time} · still open', '{count} crashes while {stage} · {time} · still open', entry.strikes, details)));
       line.appendChild(text);
-      line.appendChild(button('Release', () => act('release', { name: entry.name })));
+      line.appendChild(button(tr("Release"), () => act('release', { name: entry.name })));
       container.appendChild(line);
     }
   }
@@ -333,12 +314,10 @@ export function installRecovery(ctx) {
     if (session.previousCrash) {
       const inflight = session.previousCrash.inflight;
       container.appendChild(node('div', 'health-line warn',
-        'The previous session did not end cleanly'
-        + (inflight?.name ? ` while ${inflight.stage === 'decode' ? 'decoding' : inflight.stage + 'ing'} ${inflight.name}` : '')
-        + '.'));
+        tr("The previous session did not end cleanly{value}.", {value: inflight?.name ? tr(" while {value} {inflightName}", {value: inflight.stage === 'decode' ? tr("decoding") : tr("{inflightStage}ing", {inflightStage: inflight.stage}), inflightName: inflight.name}) : ''})));
     }
     container.appendChild(node('div', 'health-line',
-      `${session.crashes24h || 0} unexpected exit${session.crashes24h === 1 ? '' : 's'} in the last 24 hours.`));
+      trn("{value} unexpected exit in the last 24 hours.", "{value} unexpected exits in the last 24 hours.", session.crashes24h, {value: (session.crashes24h || 0)})));
     for (const crash of crashes.slice().reverse()) {
       container.appendChild(node('div', 'health-line muted',
         `${whenLabel(crash.detectedAt)}`
@@ -349,8 +328,7 @@ export function installRecovery(ctx) {
 
   function render() {
     if (!status) return;
-    el('healthSubtitle').textContent = status.catalog?.path
-      ? status.catalog.path.split('/').slice(-3, -1).join('/') : '';
+    el('healthSubtitle').textContent = status.catalog?.path ? status.catalog.path.split('/').slice(-3, -1).join('/') : '';
     renderDecision(el('healthDecision'));
     renderStatus(el('healthStatus'));
     renderActions(el('healthActions'));
@@ -372,42 +350,40 @@ export function installRecovery(ctx) {
     const messages = [];
     if (catalog.damaged) {
       messages.push({ kind: 'damaged', tone: 'bad',
-        text: 'The catalog is damaged. Photos are open in folder mode until you choose how to recover.',
-        action: 'Choose…' });
+        text: tr("The catalog is damaged. Photos are open in folder mode until you choose how to recover."),
+        action: tr("Choose…") });
     } else if (catalog.notice?.status === 'recovered') {
       messages.push({ kind: 'recovered', tone: 'warn',
-        text: 'The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.',
-        action: 'Details' });
+        text: tr("The catalog was restored from a verified backup; the damaged copy is in the Recovery folder."),
+        action: tr("Details") });
     } else if (catalog.notice?.status === 'incompatible') {
       messages.push({ kind: 'incompatible', tone: 'warn',
-        text: 'This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.',
-        action: 'Details' });
+        text: tr("This catalog was made by a newer LightTable. It was left unchanged; update the app to open it."),
+        action: tr("Details") });
     }
     if (session.previousCrash) {
       const name = session.previousCrash.inflight?.name;
       const aside = (status.quarantine || []).find((entry) => entry.name === name && entry.quarantined);
       messages.push({ kind: 'crash', tone: 'warn',
-        text: aside
-          ? `LightTable did not shut down cleanly last time. ${name} crashed it repeatedly and has been set aside.`
-          : 'LightTable did not shut down cleanly last time.',
-        action: 'Review' });
+        text: (aside ? tr("LightTable did not shut down cleanly last time. {name} crashed it repeatedly and has been set aside.", {name: name}) : tr("LightTable did not shut down cleanly last time.")),
+        action: tr("Review") });
     }
     if (status.disk?.low) {
       messages.push({ kind: 'disk', tone: 'bad',
-        text: 'The disk holding the catalog is almost full. Backups are paused until space is freed.',
-        action: 'Details' });
+        text: tr("The disk holding the catalog is almost full. Backups are paused until space is freed."),
+        action: tr("Details") });
     }
     if (status.launch?.status === 'folder-missing') {
       messages.push({ kind: 'folder', tone: 'warn',
-        text: 'The folder LightTable last opened is not available right now.', action: 'Details' });
+        text: tr("The folder LightTable last opened is not available right now."), action: tr("Details") });
     }
     if (status.safeMode) {
       messages.push({ kind: 'safe', tone: 'warn',
-        text: 'Safe Mode: background services are off.', action: 'Library Health' });
+        text: tr("Safe Mode: background services are off."), action: tr("Library Health") });
     }
     if (status.verify && !status.verify.ok && !catalog.damaged) {
       messages.push({ kind: 'verify', tone: 'warn',
-        text: 'The last catalog check found problems that Repair can fix.', action: 'Review' });
+        text: tr("The last catalog check found problems that Repair can fix."), action: tr("Review") });
     }
     const visible = messages.filter((item) => !bannerDismissed.has(dismissKey(item.kind)));
     banner.replaceChildren();
@@ -421,7 +397,7 @@ export function installRecovery(ctx) {
     act1.type = 'button'; act1.onclick = () => open();
     banner.appendChild(act1);
     if (first.kind !== 'damaged') {
-      const dismiss = node('button', 'quiet compact', 'Dismiss');
+      const dismiss = node('button', 'quiet compact', tr("Dismiss"));
       dismiss.type = 'button';
       dismiss.onclick = () => {
         bannerDismissed.add(dismissKey(first.kind));
@@ -462,8 +438,7 @@ export function installRecovery(ctx) {
       }
       const elapsed = performance.now() - reconnectStarted;
       if (elapsed > 90000) {
-        showOverlay('LightTable’s engine has not come back. Use Help ▸ '
-          + 'Diagnostics ▸ Restart Rendering Service, or check the server log.');
+        showOverlay(tr("LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log."));
       }
       reconnectTimer = setTimeout(poll, elapsed > 20000 ? 3000 : 1200);
     };
@@ -480,7 +455,7 @@ export function installRecovery(ctx) {
         let health = null;
         try { health = await get('/api/health'); } catch { health = null; }
         if (health?.ok && !health.restarting) return;
-        showOverlay('Reconnecting to LightTable’s engine…');
+        showOverlay(tr("Reconnecting to LightTable’s engine…"));
         watchServer(!!health?.restarting);
       }, 600);
     }
@@ -499,7 +474,7 @@ export function installRecovery(ctx) {
     if (!dialog) return;
     dialog.classList.add('on');
     dialog.setAttribute('aria-hidden', 'false');
-    load().catch((error) => toast(error?.message || 'Library Health is unavailable'));
+    load().catch((error) => toast(((error?.message || tr("Library Health is unavailable")))));
     el('healthClose')?.focus();
   }
 
@@ -518,14 +493,14 @@ export function installRecovery(ctx) {
       if (event.key === 'Escape') { event.stopPropagation(); close(); }
     });
     el('healthBackupNow').onclick = () => act('backup').then((result) => {
-      if (result?.archive) toast('Backup written');
+      if (result?.archive) toast(tr("Backup written"));
     });
     el('healthShowLog').onclick = () => {
-      if (!sendNative('showServerLog')) toast('The server log is available in the desktop app');
+      if (!sendNative('showServerLog')) toast(tr("The server log is available in the desktop app"));
     };
     el('healthRecoveryFolder').onclick = () => {
       if (!sendNative('openRecoveryFolder')) {
-        toast(status?.recoveryFolder || 'Recovery folder is beside the catalog');
+        toast(((status?.recoveryFolder || tr("Recovery folder is beside the catalog"))));
       }
     };
   }

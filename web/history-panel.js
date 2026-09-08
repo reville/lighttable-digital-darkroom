@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /* Persistent editing history.
  *
  * Each committed interaction is stored in the catalog, compressed, so edits
@@ -38,19 +39,19 @@ export function createHistoryPanel(ctx) {
   function render() {
     if (!list) return;
     if (!isAvailable()) {
-      list.textContent = 'Persistent history is available in catalog libraries. Undo and redo still work in this session.';
+      list.textContent = tr("Persistent history is available in catalog libraries. Undo and redo still work in this session.");
       if (clearButton) clearButton.disabled = true;
       return;
     }
     if (clearButton) clearButton.disabled = !currentName || !steps.length;
-    if (!currentName) { list.textContent = 'Select a photo.'; return; }
+    if (!currentName) { list.textContent = tr("Select a photo."); return; }
     if (!steps.length) {
-      list.textContent = 'No steps recorded yet.';
+      list.textContent = tr("No steps recorded yet.");
       return;
     }
     list.innerHTML = steps.map((step) => `
       <button class="history-step" data-id="${escapeHTML(step.id)}" type="button">
-        <span class="history-label">${escapeHTML(step.label || 'Edit')}</span>
+        <span class="history-label">${escapeHTML(step.label || tr('Edit'))}</span>
         <span class="history-meta">${timeText(step.created)}${
           step.origin && step.origin !== 'edit'
             ? ` · ${escapeHTML(step.origin)}` : ''}</span>
@@ -136,14 +137,13 @@ export function createHistoryPanel(ctx) {
         try {
           const response = await post(path, body);
           if (response?.error || response?.ok === false) {
-            throw new Error(response.error || 'History request failed');
+            throw new Error(((response.error || tr("History request failed"))));
           }
         } catch (error) {
           // Keep the failed operation at the head. In particular, neither a
           // later edit nor Clear may overtake a write awaiting Retry save.
           channel.failed = true;
-          channel.error = path === '/api/history/clear'
-            ? 'Could not clear photo history' : 'Could not save photo history';
+          channel.error = (path === '/api/history/clear' ? tr("Could not clear photo history") : tr("Could not save photo history"));
           toast(channel.error);
           notifyStatus();
           return false;
@@ -234,11 +234,11 @@ export function createHistoryPanel(ctx) {
         if (name !== currentName || selection !== selectionSequence) return;
         if (state?.error) throw new Error(state.error);
         if (state?.captureTimeOnly) {
-          if (!ctx.onRestoreCaptureTime) throw new Error('Capture-time restore is unavailable');
+          if (!ctx.onRestoreCaptureTime) throw new Error(tr("Capture-time restore is unavailable"));
           await ctx.onRestoreCaptureTime(name, Number(button.dataset.id));
         } else if (state && ctx.onRestore) await ctx.onRestore(state);
       } catch (error) {
-        toast('Could not restore that step');
+        toast(tr("Could not restore that step"));
       }
     });
   }

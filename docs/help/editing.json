@@ -85,7 +85,7 @@
       {"path": "web/index.html", "anchor": "data-scope=\"vectorscope\""},
       {"path": "web/app.js", "anchor": "S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);"},
       {"path": "web/app.js", "anchor": "Auto tone: waiting for image preview…"},
-      {"path": "web/index.html", "anchor": "<b>B</b><span>Show original</span>"}
+      {"path": "web/index.html", "anchor": "Show original"}
     ]
   },
   {
@@ -106,7 +106,7 @@
     "sources": [
       {"path": "web/index.html", "anchor": "Click a neutral area to set white balance"},
       {"path": "web/index.html", "anchor": "Edit-panel Exposure and Temp/Tint are creative finishing controls."},
-      {"path": "web/app.js", "anchor": "if (rr + gg + bb < 0.06) return toast('Too dark to sample');"},
+      {"path": "web/app.js", "anchor": "if (rr + gg + bb < 0.06) return toast(tr(\"Too dark to sample\"));"},
       {"path": "web/app.js", "anchor": "S.wbPick = !S.wbPick;"},
       {"path": "web/app.js", "anchor": "delete S.grade.pointColor;"}
     ]
@@ -127,7 +127,7 @@
     ],
     "related": ["editing-tone", "editing-color-grading", "editing-presets"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<button class=\"curveCh on\" data-ch=\"L\""},
+      {"path": "web/index.html", "anchor": "data-ch=\"L\""},
       {"path": "web/app.js", "anchor": "(function curveEvents()"},
       {"path": "web/app.js", "anchor": "if (i > 0 && i < pts.length - 1)"},
       {"path": "web/app.js", "anchor": "handles for editing while drawing the exact table until the first edit."}
@@ -157,7 +157,7 @@
       {"path": "web/index.html", "anchor": "<div class=\"hsl-dots\" id=\"hslBands\"></div>"},
       {"path": "web/index.html", "anchor": "Uniformity evens the sampled colour across its range. Sample the patch the rest should match."},
       {"path": "web/app.js", "anchor": "? S.grade.pointColor.slice(0, 7) : [];"},
-      {"path": "web/app.js", "anchor": "toast('Point color sampled');"}
+      {"path": "web/app.js", "anchor": "toast(tr(\"Point color sampled\"));"}
     ]
   },
   {
@@ -211,12 +211,12 @@
     "related": ["editing-tone", "editing-effects", "editing-history-snapshots"],
     "sources": [
       {"path": "web/index.html", "anchor": "Judge sharpening and noise reduction at 1:1. These controls work in both Film and Develop modes."},
-      {"path": "web/index.html", "anchor": "<b>Space</b><span>Toggle Fit / 1:1</span>"},
+      {"path": "web/index.html", "anchor": "Toggle Fit / 1:1"},
       {"path": "web/app.js", "anchor": "Runs locally when Apply is pressed; the slider is not live."},
       {"path": "web/enhance-panel.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
       {"path": "enhance_workflow.py", "anchor": "Super-resolution has no bundled model."},
       {"path": "enhance_workflow.py", "anchor": "Enhance output is model-generated detail, not measured detail."},
-      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: \"Enhance Photo…\","}
+      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: L(\"Enhance Photo…\"),"}
     ]
   },
   {
@@ -241,7 +241,7 @@
     ],
     "related": ["editing-detail-effects-enhance", "editing-lens-corrections", "editing-masks-brush-gradients", "editing-tone"],
     "sources": [
-      {"path": "web/index.html", "anchor": "<summary><span>Effects</span><a class=\"reset\" href=\"#\" data-reset=\"effects\""},
+      {"path": "web/index.html", "anchor": "data-reset=\"effects\""},
       {"path": "grade.py", "anchor": "\"texture\": 0.0,      # -1..1, one-pixel local detail"},
       {"path": "grade.py", "anchor": "\"clarity\": 0.0,      # -1..1, midtone-weighted local contrast"},
       {"path": "grade.py", "anchor": "haze = g[\"dehaze\"] * 0.12"},
@@ -272,14 +272,14 @@
     ],
     "related": ["editing-crop-geometry", "editing-tone", "editing-detail-effects-enhance"],
     "sources": [
-      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: \"Photo Merge…\","},
+      {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: L(\"Photo Merge…\"),"},
       {"path": "web/index.html", "anchor": "HDR · exposure fusion"},
       {"path": "web/app.js", "anchor": "return [...new Set(transferTargets().map((image) => image.sourceName || image.name))];"},
       {"path": "server.py", "anchor": "return neutral_tiff_for(name, entry.get(\"params\") or default_params)"},
       {"path": "server.py", "anchor": "folder = FOLDER / \"LightTable Merges\""},
       {"path": "server.py", "anchor": "\"outputSpace\": \"prophoto\", \"bitDepth\": 16,"},
       {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"6000\"))"},
-      {"path": "server.py", "anchor": "return {\"error\": \"a merge is already running\"}"},
+      {"path": "server.py", "anchor": "return {\"error\": T(\"a merge is already running\")}"},
       {"path": "merge_workflow.py", "anchor": "Align and exposure-fuse 2-9 bracketed, display-referred frames."},
       {"path": "merge_workflow.py", "anchor": "HDR inputs must have matching dimensions"},
       {"path": "merge_workflow.py", "anchor": "Feature-align and feather 2-20 overlapping frames into one panorama."},
@@ -365,7 +365,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "<button class=\"quiet full\" id=\"autoUpright\">Auto upright</button>"
+        "anchor": "id=\"autoUpright\""
       }
     ]
   },
@@ -411,9 +411,9 @@
       {"path": "edits.py", "anchor": "def clean_masks("},
       {"path": "edits.py", "anchor": "def apply_masks("},
       {"path": "web/editor-panels.js", "anchor": "export function normalizeMasks(raw)"},
-      {"path": "web/index.html", "anchor": "<span>Create New Mask</span>"},
+      {"path": "web/index.html", "anchor": "Create New Mask"},
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
-      {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = `Drag on the photo to edit the ${mask.type} mask.`;"},
+      {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = tr('Drag on the photo to edit the {tool} mask.', {tool: localToolLabel(mask.type)});"},
       {"path": "web/app.js", "anchor": "Up to sixteen local masks can be active"},
       {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"},
       {"path": "web/screen-overlay.js", "anchor": "export function prepareScreenOverlay("}
@@ -584,7 +584,7 @@
           "Film on enables the included film treatment. Film off bypasses Film. Film unchanged leaves its enabled state alone. A film treatment may intentionally change Camera EV, automatic metering, development, print, grain, and other creative film controls."
         ],
         "tips": [
-          "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; inspect its details before applying."
+          "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; review the resulting photo and use Undo if it changes corrections you want to keep."
         ]
       },
       {
@@ -751,7 +751,7 @@
       {"path": "web/app.js", "anchor": "Stopping after the current photo…"},
       {"path": "server.py", "anchor": "targets = [t for t in targets if t != ref_name]"},
       {"path": "server.py", "anchor": "delta = float(np.log2(ref_lum / target_lum))"},
-      {"path": "app/main.swift", "anchor": "addEditorItem(libraryMenu, title: \"Match Total Exposure\","}
+      {"path": "app/main.swift", "anchor": "addEditorItem(libraryMenu, title: L(\"Match Total Exposure\"),"}
     ]
   }
 ]

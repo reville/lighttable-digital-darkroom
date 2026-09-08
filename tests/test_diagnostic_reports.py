@@ -97,7 +97,19 @@ class DiagnosticReportsTests(unittest.TestCase):
         cls.build = tempfile.TemporaryDirectory(prefix="lighttable-diagnostics-build-")
         cls.addClassCleanup(cls.build.cleanup)
         main = Path(cls.build.name) / "main.swift"
-        main.write_text(HARNESS)
+        source = (ROOT / "app/main.swift").read_text()
+        locale_core = source.split("// BEGIN NATIVE LOCALIZATION CORE", 1)[1].split(
+            "// END NATIVE LOCALIZATION CORE", 1)[0].split("\n", 1)[1]
+        # Read only the disposable harness directory, never user preferences.
+        locale_setup = locale_core + f'''
+private let nativeLocalization = NativeLocaleStore(
+    directory: URL(fileURLWithPath: {json.dumps(cls.build.name)}),
+    preferencesURL: URL(fileURLWithPath: {json.dumps(str(Path(cls.build.name) / "prefs.json"))}))
+func L(_ source: String, _ arguments: [String: String] = [:]) -> String {{
+    nativeLocalization.text(source, arguments)
+}}
+'''
+        main.write_text(HARNESS.replace("import Foundation", "import Foundation\n" + locale_setup, 1))
         cls.executable = Path(cls.build.name) / "diagnostics-test"
         subprocess.run(["swiftc", "-swift-version", "5", "-module-cache-path",
                         "/tmp/lighttable-crash-report-swift-cache", str(main),

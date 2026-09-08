@@ -1,5 +1,6 @@
 """Execute native import IO and first-run persistence without accessing Photos."""
 
+import json
 import shutil
 import subprocess
 import sys
@@ -18,6 +19,8 @@ class PhotosLibraryImportTests(unittest.TestCase):
         if not swiftc:
             raise unittest.SkipTest("swiftc is unavailable")
         source = (ROOT / "app" / "main.swift").read_text()
+        locale_core = source.split("// BEGIN NATIVE LOCALIZATION CORE", 1)[1].split(
+            "// END NATIVE LOCALIZATION CORE", 1)[0].split("\n", 1)[1]
         importer = source[source.index("private final class PhotosLibraryImporter"):].split(
             "\n// MARK:", 1)[0]
         initialization = source[source.index("        let defaults = UserDefaults.standard"):
@@ -55,7 +58,17 @@ class PhotosLibraryImportTests(unittest.TestCase):
         cls.addClassCleanup(cls.temporary.cleanup)
         directory = Path(cls.temporary.name)
         swift_file = directory / "main.swift"
-        swift_file.write_text(harness)
+        # Use the production locale core with isolated, absent catalogs. Import
+        # IO tests exercise the same English fallback without user preferences.
+        locale_setup = "\n" + locale_core + f'''
+private let nativeLocalization = NativeLocaleStore(
+    directory: URL(fileURLWithPath: {json.dumps(str(directory))}),
+    preferencesURL: URL(fileURLWithPath: {json.dumps(str(directory / "prefs.json"))}))
+private func L(_ source: String, _ arguments: [String: String] = [:]) -> String {{
+    nativeLocalization.text(source, arguments)
+}}
+'''
+        swift_file.write_text(harness.replace("import Foundation", "import Foundation\n" + locale_setup, 1))
         cls.executable = directory / "photos-import-test"
         result = subprocess.run([
             swiftc, "-swift-version", "5", "-module-cache-path",

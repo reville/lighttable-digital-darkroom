@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /* Web MIDI hardware controller integration for Film Lab / LightTable.
  *
  * Connects to physical MIDI controllers (knobs, faders, consoles like Behringer
@@ -9,22 +10,22 @@
 const STORAGE_KEY = 'lighttable-midi-mappings';
 
 const DEFAULT_MAPPINGS = {
-  14: { type: 'grade', control: 'exposure', min: -3, max: 3, label: 'Exposure' },
-  15: { type: 'grade', control: 'contrast', min: -1, max: 1, label: 'Contrast' },
-  16: { type: 'grade', control: 'highlights', min: -1, max: 1, label: 'Highlights' },
-  17: { type: 'grade', control: 'shadows', min: -1, max: 1, label: 'Shadows' },
-  18: { type: 'grade', control: 'whites', min: -1, max: 1, label: 'Whites' },
-  19: { type: 'grade', control: 'blacks', min: -1, max: 1, label: 'Blacks' },
-  20: { type: 'grade', control: 'temp', min: -1, max: 1, label: 'Temp' },
-  21: { type: 'grade', control: 'tint', min: -1, max: 1, label: 'Tint' },
-  22: { type: 'grade', control: 'vibrance', min: -1, max: 1, label: 'Vibrance' },
-  23: { type: 'grade', control: 'saturation', min: -1, max: 1, label: 'Saturation' },
-  24: { type: 'grade', control: 'clarity', min: -1, max: 1, label: 'Clarity' },
-  25: { type: 'grade', control: 'texture', min: -1, max: 1, label: 'Texture' },
-  26: { type: 'params', control: 'grain_amount', min: 0.1, max: 2, label: 'Grain size' },
-  27: { type: 'params', control: 'halation_amount', min: 0, max: 3, label: 'Halation' },
-  28: { type: 'params', control: 'couplers_amount', min: 0, max: 2, label: 'Couplers' },
-  29: { type: 'params', control: 'exposure_ev', min: -3, max: 3, label: 'Camera EV' },
+  14: { type: 'grade', control: 'exposure', min: -3, max: 3, label: tr("Exposure") },
+  15: { type: 'grade', control: 'contrast', min: -1, max: 1, label: tr("Contrast") },
+  16: { type: 'grade', control: 'highlights', min: -1, max: 1, label: tr("Highlights") },
+  17: { type: 'grade', control: 'shadows', min: -1, max: 1, label: tr("Shadows") },
+  18: { type: 'grade', control: 'whites', min: -1, max: 1, label: tr("Whites") },
+  19: { type: 'grade', control: 'blacks', min: -1, max: 1, label: tr("Blacks") },
+  20: { type: 'grade', control: 'temp', min: -1, max: 1, label: tr("Temp") },
+  21: { type: 'grade', control: 'tint', min: -1, max: 1, label: tr("Tint") },
+  22: { type: 'grade', control: 'vibrance', min: -1, max: 1, label: tr("Vibrance") },
+  23: { type: 'grade', control: 'saturation', min: -1, max: 1, label: tr("Saturation") },
+  24: { type: 'grade', control: 'clarity', min: -1, max: 1, label: tr("Clarity") },
+  25: { type: 'grade', control: 'texture', min: -1, max: 1, label: tr("Texture") },
+  26: { type: 'params', control: 'grain_amount', min: 0.1, max: 2, label: tr("Grain size") },
+  27: { type: 'params', control: 'halation_amount', min: 0, max: 3, label: tr("Halation") },
+  28: { type: 'params', control: 'couplers_amount', min: 0, max: 2, label: tr("Couplers") },
+  29: { type: 'params', control: 'exposure_ev', min: -3, max: 3, label: tr("Camera EV") },
 };
 
 let midiAccess = null;
@@ -97,7 +98,7 @@ function handleMidiMessage(event) {
   if (isLearning && learnTarget) {
     mappings[cc] = { ...learnTarget };
     saveMappings();
-    showMidiHud(`Mapped CC ${cc} → ${learnTarget.label || learnTarget.control}`);
+    showMidiHud(tr("Mapped CC {cc} → {value}", {cc: cc, value: (learnTarget.label || learnTarget.control)}));
     isLearning = false;
     learnTarget = null;
     updateMidiStatus();
@@ -125,7 +126,7 @@ function handleMidiMessage(event) {
 
   const row = input.closest('.slider-row') || input.closest('.row');
   const label = row?.querySelector('.name')?.textContent?.trim() || mapping.label || mapping.control;
-  showMidiHud(`MIDI: ${label}  ${Number(input.value).toFixed(decimals)}`);
+  showMidiHud(tr("MIDI: {label}  {value}", {label: label, value: Number(input.value).toFixed(decimals)}));
 
   // Debounce change event to save state
   if (changeDebounceTimers.has(mapping.control)) {
@@ -150,7 +151,7 @@ export function setMidiLearnTarget(target) {
   // Ordinary slider interaction must not opt the user into MIDI Learn.
   if (!isLearning || !midiAccess) return;
   learnTarget = target;
-  showMidiHud(`Turn any knob to map → ${target.label || target.control}`);
+  showMidiHud(tr("Turn any knob to map → {value}", {value: (target.label || target.control)}));
   updateMidiStatus();
 }
 
@@ -175,34 +176,34 @@ export function updateMidiStatus() {
   if (!pill) return;
 
   if (typeof navigator === 'undefined' || !navigator.requestMIDIAccess) {
-    pill.textContent = 'MIDI: Unavailable';
+    pill.textContent = tr("MIDI: Unavailable");
     pill.classList.remove('active', 'learning');
-    pill.title = 'Web MIDI API not supported in this browser';
+    pill.title = tr("Web MIDI API not supported in this browser");
     return;
   }
 
   if (!midiAccess) {
-    pill.textContent = 'MIDI: Off';
+    pill.textContent = tr("MIDI: Off");
     pill.classList.remove('active', 'learning');
     return;
   }
 
   const inputs = Array.from(midiAccess.inputs.values());
   if (isLearning) {
-    pill.textContent = learnTarget ? `MIDI Learn: ${learnTarget.label || learnTarget.control}…` : 'MIDI Learn: Click slider';
+    pill.textContent = learnTarget ? tr("MIDI Learn: {value}…", {value: (learnTarget.label || learnTarget.control)}) : tr("MIDI Learn: Click slider");
     pill.classList.add('learning');
     pill.classList.remove('active');
-    pill.title = 'Move any MIDI knob to map it to the active slider';
+    pill.title = tr("Move any MIDI knob to map it to the active slider");
   } else if (inputs.length > 0) {
     const names = inputs.map((input) => input.name).join(', ');
-    pill.textContent = `MIDI: ${inputs.length} connected`;
+    pill.textContent = tr("MIDI: {inputsLength} connected", {inputsLength: inputs.length});
     pill.classList.add('active');
     pill.classList.remove('learning');
-    pill.title = `Connected: ${names}. Turn knobs to adjust develop and film sliders.`;
+    pill.title = tr("Connected: {names}. Turn knobs to adjust develop and film sliders.", {names: names});
   } else {
-    pill.textContent = 'MIDI: No devices';
+    pill.textContent = tr("MIDI: No devices");
     pill.classList.remove('active', 'learning');
-    pill.title = 'Connect a USB MIDI controller (knobs/faders) to control sliders directly.';
+    pill.title = tr("Connect a USB MIDI controller (knobs/faders) to control sliders directly.");
   }
 }
 

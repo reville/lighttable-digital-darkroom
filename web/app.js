@@ -1,3 +1,5 @@
+import { t as tr, tn as trn } from './i18n.js';
+const i18nHTML = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 import { installKeywordBatch } from '/web/keyword-batch.js';
 import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
 import { close as closeDropdown } from '/web/dropdown.js';
@@ -24,7 +26,7 @@ import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMask
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import {
   LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
-  MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics,
+  MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
 } from '/web/editor-panels.js';
 import {
   photoMatchesQuery as matchesPhotoQuery,
@@ -141,7 +143,7 @@ function toast(msg, action = null, duration = null) {
     const button = document.createElement(action.link ? 'a' : 'button');
     if (action.link) { button.href = '#'; button.className = 'toast-link'; }
     else button.type = 'button';
-    button.textContent = action.label || 'Undo';
+    button.textContent = action.label || tr('Undo');
     button.onclick = (event) => {
       event.preventDefault();
       t.classList.remove('show');
@@ -201,7 +203,7 @@ const selectedHeal = () => S.heals.find((spot) => spot.id === S.selectedHealId) 
 
 function postNative(action, detail = {}, silent = false) {
   if (!sendNative(action, detail)) {
-    if (!silent) toast('Folder actions are available in the LightTable desktop app');
+    if (!silent) toast(tr("Folder actions are available in the LightTable desktop app"));
     return false;
   }
   return true;
@@ -291,7 +293,7 @@ async function revealCurrentPhoto() {
   if (!image) return;
   const result = await api('/api/photos/reveal', { name: image.name });
   if (result.error || !result.path) {
-    toast(result.error || 'That photo is not available in Finder');
+    toast(((result.error || tr("That photo is not available in Finder"))));
     return;
   }
   postNative('revealFolder', { path: result.path });
@@ -424,7 +426,7 @@ window.lightTableNativeEvent = (event) => {
     window.dispatchEvent(new CustomEvent('lighttable-edit-journal', {detail: event}));
     return;
   }
-  if (event?.type === 'error') return toast(event.message || 'Folder action failed');
+  if (event?.type === 'error') return toast(((event.message || tr("Folder action failed"))));
   if (event?.type === 'menuCommand') {
     performNativeMenuCommand(event.command || '');
     return;
@@ -444,14 +446,14 @@ window.lightTableNativeEvent = (event) => {
     EXTERNAL_EDITORS = Array.isArray(event.editors) ? event.editors : [];
     for (const select of [$('externalEditor'), $('settingsExternalEditor')].filter(Boolean)) {
       const saved = APP_PREFS.externalEditor || EXTERNAL_PREFS.externalEditor || {};
-      select.replaceChildren(new Option('Default application', ''),
+      select.replaceChildren(new Option(tr("Default application"), ''),
         ...EXTERNAL_EDITORS.map((editor) => new Option(editor.name, editor.path)));
       if (['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__)) {
-        select.appendChild(new Option('Choose application…', '__choose__'));
+        select.appendChild(new Option(tr("Choose application…"), '__choose__'));
       }
       if (saved.path && !select.querySelector(
         `option[value="${CSS.escape(saved.path)}"]`)) {
-        select.appendChild(new Option(saved.name || saved.path.split('/').pop(), saved.path));
+        select.appendChild(new Option(((saved.name || saved.path.split('/').pop())), saved.path));
       }
       select.value = saved.path || '';
     }
@@ -459,7 +461,7 @@ window.lightTableNativeEvent = (event) => {
   }
   if (event?.type === 'editorChosen') {
     for (const select of [$('externalEditor'), $('settingsExternalEditor')].filter(Boolean)) {
-      const option = new Option(event.name || 'Application', event.path || '');
+      const option = new Option(((event.name || tr("Application"))), event.path || '');
       select.insertBefore(option, select.querySelector('[value="__choose__"]'));
       select.value = event.path || '';
       select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -472,7 +474,7 @@ window.lightTableNativeEvent = (event) => {
     }));
     return;
   }
-  if (event?.type === 'presetSaved') return toast(`Exported ${event.filename}`);
+  if (event?.type === 'presetSaved') return toast(tr("Exported {eventFilename}", {eventFilename: event.filename}));
   if (event?.type === 'presetFilesSelected') {
     importPresetUploads(event.files || [], event.failures || []);
     return;
@@ -480,7 +482,8 @@ window.lightTableNativeEvent = (event) => {
   if (event?.type === 'photosImported') {
     const count = +event.count || 0;
     const failures = +event.failures || 0;
-    toast(`${event.cancelled ? 'Import stopped · ' : ''}Imported ${count} photo${count === 1 ? '' : 's'} from Apple Photos${failures ? ` · ${failures} failed` : ''}`);
+    const message = trn("Imported {count} photo from Apple Photos{value}", "Imported {count} photos from Apple Photos{value}", count, {count: count, value: failures ? tr(" · {failures} failed", {failures: failures}) : ''});
+    toast(event.cancelled ? [tr('Import stopped'), message].join(' · ') : message);
     return;
   }
   if (event?.type === 'nativeInteractionPresented') {
@@ -494,7 +497,7 @@ window.lightTableNativeEvent = (event) => {
     if (!pending) return;
     nativePreviewPending.delete(event.generation);
     if (event.type === 'nativePreviewFailed') {
-      const error = event.message || 'Native preview unavailable';
+      const error = event.message || tr('Native preview unavailable');
       if (event.generation === S.seq) toast(error);
       pending.resolve({
         decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
@@ -585,9 +588,9 @@ function populateDevelopmentTimes() {
   $('development_time').replaceChildren(...times.map((minutes) => {
     const option = document.createElement('option');
     option.value = String(minutes);
-    option.textContent = `${Number(minutes).toLocaleString(undefined, {
+    option.textContent = tr("{value} min", {value: Number(minutes).toLocaleString(undefined, {
       maximumFractionDigits: 2,
-    })} min`;
+    })});
     return option;
   }));
   if (!times.length) {
@@ -611,9 +614,9 @@ function populatePrintDevelopmentTimes() {
   $('print_development_time').replaceChildren(...times.map((minutes) => {
     const option = document.createElement('option');
     option.value = String(minutes);
-    option.textContent = `${Number(minutes).toLocaleString(undefined, {
+    option.textContent = tr("{value} min", {value: Number(minutes).toLocaleString(undefined, {
       maximumFractionDigits: 2,
-    })} min`;
+    })});
     return option;
   }));
   if (positive || !times.length) {
@@ -671,7 +674,7 @@ function syncFilmReadout(id, value) {
   const out = $(id + 'V');
   out.textContent = fmtFilm(id, value);
   if (id === 'grain_amount') {
-    out.title = `${value.toFixed(2)}× stock baseline`;
+    out.title = tr("{value}× stock baseline", {value: value.toFixed(2)});
   } else {
     out.removeAttribute('title');
   }
@@ -744,7 +747,7 @@ function undo() {
   if (previous === null) return;
   restore(previous);
   updateUndoRedoButtons();
-  toast('Undo');
+  toast(tr("Undo"));
   scheduleNativeMenuState();
 }
 function redo() {
@@ -753,7 +756,7 @@ function redo() {
   if (next === null) return;
   restore(next);
   updateUndoRedoButtons();
-  toast('Redo');
+  toast(tr("Redo"));
   scheduleNativeMenuState();
 }
 
@@ -780,9 +783,9 @@ function syncControls() {
   FILM_TOGGLES.forEach((id) => { $(id).checked = !!S.params[id]; });
   $('filmProfileToggle').classList.toggle('on', profileEnabled);
   $('filmProfileToggle').setAttribute('aria-checked', String(profileEnabled));
-  $('filmProfileToggle').setAttribute('aria-label', `Film profile ${profileEnabled ? 'on' : 'off'}`);
-  $('filmProfileToggle').title = `Turn film profile ${profileEnabled ? 'off' : 'on'}`;
-  $('filmProfileState').textContent = profileEnabled ? 'On' : 'Off';
+  $('filmProfileToggle').setAttribute('aria-label', (profileEnabled ? tr("Film profile on") : tr("Film profile off")));
+  $('filmProfileToggle').title = (profileEnabled ? tr("Turn film profile off") : tr("Turn film profile on"));
+  $('filmProfileState').textContent = profileEnabled ? tr("On") : tr("Off");
   $('filmProfileOffNote').hidden = profileEnabled;
   $('filmProfileSection').classList.toggle('profile-off', !profileEnabled);
   const filmStages = $('filmStagesSection');
@@ -817,7 +820,7 @@ function syncControls() {
   $('learned_denoise_strength').value = S.params.learned_denoise_strength ?? 0.6;
   $('learnedDenoiseStrengthV').textContent = Number(
     S.params.learned_denoise_strength ?? 0.6).toFixed(2);
-  if (!rawInput) $('rawCameraDefaultStatus').textContent = 'RAW originals only.';
+  if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
   $('wbProcessedNote').hidden = rawInput;
   $('wbCustom').hidden = !rawInput || S.params.wb_mode !== 'custom';
   $('wb_mode').disabled = !profileEnabled || !rawInput;
@@ -841,9 +844,7 @@ function setDevelopMode(profileEnabled) {
   syncControls();
   saveState();
   renderFilm(0);
-  toast(profileEnabled
-    ? 'Film mode — physical film processing on'
-    : 'Develop mode — editing the neutral source');
+  toast(profileEnabled ? tr("Film mode — physical film processing on") : tr("Develop mode — editing the neutral source"));
 }
 function readControls() {
   S.params.profile_enabled = $('filmProfileToggle').getAttribute('aria-checked') === 'true';
@@ -905,11 +906,7 @@ function applyViewNow() {
   const is1to1 = !isFit && Math.abs(actualScale - 1.0) < 0.02;
 
   $('zoomVal').textContent = `${actualPct}%`;
-  $('zoomVal').title = isFit
-    ? `Fit to window (${actualPct}%)`
-    : is1to1
-      ? 'Actual size (100%)'
-      : `Zoom: ${actualPct}%`;
+  $('zoomVal').title = isFit ? tr("Fit to window ({actualPct}%)", {actualPct: actualPct}) : is1to1 ? tr("Actual size (100%)") : tr("Zoom: {actualPct}%", {actualPct: actualPct});
 
   const fitBtn = $('zoomFit');
   if (fitBtn) {
@@ -1215,7 +1212,7 @@ function drawVectorscope(ctx, cv, sample) {
   }
   drawDensity(ctx, density, cv.width, cv.height, [126, 236, 206]);
   ctx.fillStyle = 'rgba(255,255,255,.48)'; ctx.font = '8px "Space Mono", monospace';
-  ctx.fillText('Cb', cv.width - 15, cy - 3); ctx.fillText('Cr', cx + 4, 9);
+  ctx.fillText(tr("Cb"), cv.width - 15, cy - 3); ctx.fillText(tr("Cr"), cx + 4, 9);
 }
 
 function drawHistogram() {
@@ -1235,8 +1232,8 @@ document.querySelectorAll('[data-scope]').forEach((button) => {
     scopeMode = button.dataset.scope;
     document.querySelectorAll('[data-scope]').forEach((candidate) =>
       candidate.setAttribute('aria-pressed', String(candidate === button)));
-    $('scopeLowLabel').textContent = scopeMode === 'histogram' ? '0' : scopeMode === 'vectorscope' ? '' : '0 IRE';
-    $('scopeHighLabel').textContent = scopeMode === 'histogram' ? '255' : scopeMode === 'vectorscope' ? '' : '100 IRE';
+    $('scopeLowLabel').textContent = scopeMode === 'histogram' ? '0' : scopeMode === 'vectorscope' ? '' : tr("0 IRE");
+    $('scopeHighLabel').textContent = scopeMode === 'histogram' ? '255' : scopeMode === 'vectorscope' ? '' : tr("100 IRE");
     $('scopeMenuLabel').textContent = button.textContent;
     $('scopeMenu').classList.remove('on');
     $('scopeMenu').setAttribute('aria-hidden', 'true');
@@ -1260,15 +1257,20 @@ for (const section of document.querySelectorAll('#editPane .sec, #filmPane .sec'
   const hints = [...section.querySelectorAll('.hint:not([id])')]
     .filter((hint) => hint.closest('.sec') === section);
   const topicCategory = section.closest('#filmPane') ? 'Film' : 'Editing';
-  const topicLabel = summary.querySelector('span')?.textContent.trim() || '';
-  const topicId = HELP_SECTION_TOPICS[topicCategory]?.[topicLabel];
+  const topicSpan = summary.querySelector('span');
+  const topicLabel = topicSpan?.textContent.trim() || '';
+  let topicSource = topicLabel;
+  try {
+    topicSource = Object.values(JSON.parse(topicSpan?.dataset.i18nText || '{}')).join(' ') || topicLabel;
+  } catch { /* Unmarked sections retain their visible label. */ }
+  const topicId = HELP_SECTION_TOPICS[topicCategory]?.[topicSource];
   if (!hints.length && !topicId) continue;
   const help = document.createElement('button');
   help.type = 'button';
   help.className = 'section-help';
   help.textContent = '?';
-  help.title = hints.map((hint) => hint.textContent.trim()).join(' ') || `Read help for ${topicLabel}`;
-  help.setAttribute('aria-label', `Help: ${summary.querySelector('span')?.textContent || 'section'}`);
+  help.title = ((hints.map((hint) => hint.textContent.trim()).join(' ') || tr("Read help for {topicLabel}", {topicLabel: topicLabel})));
+  help.setAttribute('aria-label', tr("Help: {value}", {value: (summary.querySelector('span')?.textContent || tr("section"))}));
   help.onclick = (event) => {
     event.preventDefault(); event.stopPropagation();
     window.LightTableHelp?.open({
@@ -1883,7 +1885,7 @@ function renderEditItems(kind) {
   if (!list.length) {
     const empty = document.createElement('div');
     empty.className = 'version-empty';
-    empty.textContent = isMask ? 'Choose a tool to create your first mask' : 'Click or drag on the photo to make a correction';
+    empty.textContent = isMask ? tr("Choose a tool to create your first mask") : tr("Click or drag on the photo to make a correction");
     host.appendChild(empty);
     return;
   }
@@ -1898,7 +1900,7 @@ function renderEditItems(kind) {
     preview.setAttribute('aria-hidden', 'true');
     const label = document.createElement('span');
     label.className = 'item-label';
-    label.textContent = isMask ? item.name : `${({ remove: 'Remove', clone: 'Clone', heal: 'Heal' })[item.mode]} ${index + 1}`;
+    label.textContent = isMask ? item.name : tr('{tool} {number}', {tool: localToolLabel(item.mode), number: index + 1});
     button.append(preview, label);
     button.onclick = () => {
       if (isMask) {
@@ -1915,8 +1917,10 @@ function renderEditItems(kind) {
     const visibility = document.createElement('button');
     visibility.className = 'item-visibility' + (item.enabled === false ? ' off' : '');
     visibility.type = 'button';
-    visibility.title = item.enabled === false ? 'Show' : 'Hide';
-    visibility.setAttribute('aria-label', `${visibility.title} ${isMask ? item.name : `correction ${index + 1}`}`);
+    visibility.title = item.enabled === false ? tr("Show") : tr("Hide");
+    const itemName = isMask ? item.name : tr('correction {number}', {number: index + 1});
+    visibility.setAttribute('aria-label', item.enabled === false
+      ? tr('Show {name}', {name: itemName}) : tr('Hide {name}', {name: itemName}));
     visibility.textContent = item.enabled === false ? '○' : '◉';
     visibility.onclick = (event) => {
       event.stopPropagation(); pushUndo(); item.enabled = item.enabled === false;
@@ -1927,15 +1931,15 @@ function renderEditItems(kind) {
     const more = document.createElement('button');
     more.className = 'item-more'; more.type = 'button';
     if (isMask) {
-      more.textContent = '•••'; more.title = 'Rename mask'; more.setAttribute('aria-label', `Rename ${item.name}`);
+      more.textContent = '•••'; more.title = tr("Rename mask"); more.setAttribute('aria-label', tr("Rename {itemName}", {itemName: item.name}));
       more.onclick = async (event) => {
         event.stopPropagation();
-        const name = await askName('Rename mask', item.name);
+        const name = await askName(tr("Rename mask"), item.name);
         if (!name || name === item.name) return;
         pushUndo(); item.name = name.slice(0, 60); syncMaskPanel(); saveState();
       };
     } else {
-      more.textContent = '×'; more.title = 'Delete correction'; more.setAttribute('aria-label', `Delete correction ${index + 1}`);
+      more.textContent = '×'; more.title = tr("Delete correction"); more.setAttribute('aria-label', tr("Delete correction {value}", {value: index + 1}));
       more.onclick = (event) => { event.stopPropagation(); deleteHeal(item.id); };
     }
     row.append(button, visibility, more);
@@ -1983,8 +1987,7 @@ function syncMaskPanel() {
   for (const id of ['maskColorHue', 'maskColorRange', 'maskColorAmount']) {
     $(id).disabled = mask.colorHue == null;
   }
-  $('maskColorHueV').textContent = mask.colorHue == null
-    ? '—' : `${Math.round(mask.colorHue)}°`;
+  $('maskColorHueV').textContent = mask.colorHue == null ? '—' : `${Math.round(mask.colorHue)}°`;
   $('maskColorRangeV').textContent = `${Math.round(mask.colorRange)}°`;
   $('maskColorAmountV').textContent = `${Math.round(mask.colorAmount * 100)}%`;
   $('maskBrushSize').value = S.brushSize;
@@ -2006,12 +2009,12 @@ function syncMaskPanel() {
     input.value = mask.grade[key] ?? 0;
     document.querySelector(`[data-localv="${key}"]`).textContent = fmtG(mask.grade[key] ?? 0);
   });
-  if (S.maskRefineMode === 'subtract') $('maskInstruction').textContent = 'Paint over areas to subtract from this mask.';
-  else if (S.maskRefineMode === 'intersect') $('maskInstruction').textContent = 'Paint the only area this mask should retain.';
-  else if (S.maskRefineMode === 'add') $('maskInstruction').textContent = 'Paint over areas to add to this mask. Hold Option to subtract.';
+  if (S.maskRefineMode === 'subtract') $('maskInstruction').textContent = tr("Paint over areas to subtract from this mask.");
+  else if (S.maskRefineMode === 'intersect') $('maskInstruction').textContent = tr("Paint the only area this mask should retain.");
+  else if (S.maskRefineMode === 'add') $('maskInstruction').textContent = tr("Paint over areas to add to this mask. Hold Option to subtract.");
   else if (!['brush', 'linear', 'radial'].includes(mask.type)) {
-    $('maskInstruction').textContent = `${mask.type[0].toUpperCase()}${mask.type.slice(1)} selected on device. Use Add, Subtract, or Intersect to refine it.`;
-  } else $('maskInstruction').textContent = `Drag on the photo to edit the ${mask.type} mask.`;
+    $('maskInstruction').textContent = tr('{tool} selected on device. Use Add, Subtract, or Intersect to refine it.', {tool: localToolLabel(mask.type)});
+  } else $('maskInstruction').textContent = tr('Drag on the photo to edit the {tool} mask.', {tool: localToolLabel(mask.type)});
   syncOverlayCursorClass();
 }
 
@@ -2031,10 +2034,10 @@ function syncHealPanel() {
     $(id + 'V').textContent = `${Math.round(brush[key] * 100)}%`;
   }
   if (!spot) {
-    $('healInstruction').textContent = 'Click or drag over a distraction. Heal and Clone choose a source automatically.';
+    $('healInstruction').textContent = tr("Click or drag over a distraction. Heal and Clone choose a source automatically.");
     syncOverlayCursorClass(); return;
   }
-  $('healSelectedName').textContent = `${({ remove: 'Remove', heal: 'Heal', clone: 'Clone' })[spot.mode]} Correction`;
+  $('healSelectedName').textContent = tr('{tool} Correction', {tool: localToolLabel(spot.mode)});
   $('healVisible').checked = spot.enabled !== false;
   $('healRadius').value = spot.radius;
   $('healFeather').value = spot.feather;
@@ -2044,9 +2047,7 @@ function syncHealPanel() {
   $('healOpacityV').textContent = `${Math.round(spot.opacity * 100)}%`;
   $('healRefresh').hidden = spot.mode === 'remove';
   $('healSourceHint').hidden = spot.mode === 'remove';
-  if (!S.editGesture) $('healInstruction').textContent = spot.mode === 'remove'
-    ? 'Click or drag to add another removal. Drag a circle to reposition it.'
-    : 'Click or drag to add another correction. Drag the target or source circle to refine it.';
+  if (!S.editGesture) $('healInstruction').textContent = spot.mode === 'remove' ? tr("Click or drag to add another removal. Drag a circle to reposition it.") : tr("Click or drag to add another correction. Drag the target or source circle to refine it.");
   syncOverlayCursorClass();
 }
 
@@ -2060,27 +2061,21 @@ function syncOpticsPanel() {
     S.lensProfile = override ? (match.candidates || []).find((profile) =>
       ['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].every((key) => profile[key] === override[key])) || null : match.profile;
     const select = $('lensProfileOverride');
-    select.replaceChildren(new Option('Automatic from photo metadata', ''));
+    select.replaceChildren(new Option(tr("Automatic from photo metadata"), ''));
     for (const candidate of match.candidates || []) {
       const identity = Object.fromEntries(['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'].map((key) => [key, candidate[key]]));
       select.add(new Option(`${candidate.lensMaker} ${candidate.lensModel}`, JSON.stringify(identity)));
     }
-    if (override && !S.lensProfile) select.add(new Option('Saved profile unavailable', overrideKey));
+    if (override && !S.lensProfile) select.add(new Option(tr("Saved profile unavailable"), overrideKey));
     select.value = overrideKey;
     select.disabled = !(match.candidates || []).length && !override;
   }
   const profile = S.lensProfile;
   $('lensProfileCard').classList.toggle('matched', !!profile);
   $('lensProfileCard').classList.toggle('unavailable', !profile);
-  $('lensProfileName').textContent = profile
-    ? `${profile.lensMaker || ''} ${profile.lensModel || 'Matched lens'}`.trim()
-    : 'No exact lens profile found';
-  $('lensProfileDetail').textContent = profile
-    ? `${profile.cameraMaker || ''} ${profile.cameraModel || ''} · ${profile.focal || '—'} mm${profile.aliasedCamera ? ' · compatible camera profile' : ''}`.trim()
-    : (match?.reason || 'Manual distortion and perspective controls remain available.');
-  $('lensProfileReason').textContent = override
-    ? (profile ? 'Profile selected manually. Verify the correction against the original.' : 'Saved profile is unavailable for this photo; choose another profile.')
-    : (match?.reason || '');
+  $('lensProfileName').textContent = profile ? `${profile.lensMaker || ''} ${profile.lensModel || 'Matched lens'}`.trim() : tr("No exact lens profile found");
+  $('lensProfileDetail').textContent = profile ? `${profile.cameraMaker || ''} ${profile.cameraModel || ''} · ${profile.focal || '—'} mm${profile.aliasedCamera ? ' · compatible camera profile' : ''}`.trim() : (match?.reason || tr("Manual distortion and perspective controls remain available."));
+  $('lensProfileReason').textContent = override ? profile ? tr("Profile selected manually. Verify the correction against the original.") : tr("Saved profile is unavailable for this photo; choose another profile.") : (match?.reason || '');
   $('lensProfileEnabled').checked = !!S.optics.profileEnabled;
   $('lensProfileEnabled').disabled = !profile;
   $('lensProfileDistortion').checked = !!S.optics.profileDistortion;
@@ -2098,11 +2093,11 @@ function syncOpticsPanel() {
 
 function addMask(type) {
   if (!cur()) return;
-  if (S.masks.length >= MAX_MASKS) return toast('Up to sixteen local masks can be active');
+  if (S.masks.length >= MAX_MASKS) return toast(tr("Up to sixteen local masks can be active"));
   pushUndo();
   const number = S.masks.length + 1;
   const mask = {
-    id: editId('mask'), name: `Mask ${number}`,
+    id: editId('mask'), name: tr('Mask {number}', {number}),
     type, enabled: true, invert: false, opacity: 1, lumaLow: 0, lumaHigh: 1,
     colorHue: null, colorRange: 30, colorAmount: 1,
     grade: { ...LOCAL_GRADE_DEFAULTS }, addStrokes: [], subtractStrokes: [],
@@ -2128,11 +2123,11 @@ async function createSemanticMask(kind, point = null) {
   if (!cur()) return;
   const combine = $('maskSemanticCombine').value;
   const target = combine === 'new' ? null : selectedMask();
-  if (!target && S.masks.length >= MAX_MASKS) return toast('Up to sixteen local masks can be active');
+  if (!target && S.masks.length >= MAX_MASKS) return toast(tr("Up to sixteen local masks can be active"));
   if (target && maskComponents(target).length >= MAX_MASK_COMPONENTS) {
-    return toast('This mask has reached its component limit');
+    return toast(tr("This mask has reached its component limit"));
   }
-  $('maskInstruction').textContent = `Selecting ${kind} on device…`;
+  $('maskInstruction').textContent = tr('Selecting {tool} on device…', {tool: localToolLabel(kind)});
   const result = await api('/api/mask/semantic', {
     name: cur().name, kind, point, params: S.params,
   });
@@ -2141,7 +2136,7 @@ async function createSemanticMask(kind, point = null) {
     return toast(result.error);
   }
   if (Number.isFinite(+result.faces) && result.faces > 0) {
-    $('peopleFaceCount').textContent = `${result.faces} face${result.faces === 1 ? '' : 's'} found`;
+    $('peopleFaceCount').textContent = trn("{count} face found", "{count} faces found", result.faces, {resultFaces: result.faces});
   }
   pushUndo();
   const component = {
@@ -2161,7 +2156,7 @@ async function createSemanticMask(kind, point = null) {
   } else {
     const number = S.masks.length + 1;
     const mask = normalizeMasks([{
-      id: editId('mask'), name: `${kind[0].toUpperCase()}${kind.slice(1)} ${number}`,
+      id: editId('mask'), name: tr('{tool} {number}', {tool: localToolLabel(kind), number}),
       type: kind, bitmap: result.bitmap, provider: result.provider,
       depthLow: component.depthLow, depthHigh: component.depthHigh,
       components: [component], enabled: true, invert: false, opacity: 1,
@@ -2173,7 +2168,7 @@ async function createSemanticMask(kind, point = null) {
   }
   S.editGesture = null; S.maskCreateOpen = false; S.maskRefineMode = null;
   S.maskTextureDirty = true; syncMaskPanel(); drawGrade(); saveState();
-  toast(`${kind[0].toUpperCase()}${kind.slice(1)} mask ready`);
+  toast(tr('{tool} mask ready', {tool: localToolLabel(kind)}));
   return createdMask;
 }
 $('maskAddSubject').onclick = () => createSemanticMask('subject');
@@ -2182,7 +2177,7 @@ $('maskAddDepth').onclick = () => createSemanticMask('depth');
 $('maskAddObject').onclick = () => {
   if (!cur()) return;
   S.editGesture = { type: 'semantic-object' };
-  $('maskInstruction').textContent = 'Click the object to select.';
+  $('maskInstruction').textContent = tr("Click the object to select.");
 };
 $('maskAddPeople').onclick = () => {
   $('peopleMaskMenu').hidden = !$('peopleMaskMenu').hidden;
@@ -2193,7 +2188,7 @@ document.querySelectorAll('[data-person-part]').forEach((button) => {
 $('maskSoftenSkin').onclick = async () => {
   const mask = await createSemanticMask('face-skin');
   if (!mask) return;
-  mask.name = 'Soften skin';
+  mask.name = tr('Soften skin');
   mask.grade.texture = -0.4;
   mask.grade.clarity = -0.2;
   syncMaskPanel(); drawGrade(); saveState();
@@ -2216,7 +2211,7 @@ function deleteMask(id = S.selectedMaskId) {
 $('maskDelete').onclick = () => deleteMask();
 $('maskRename').onclick = async () => {
   const mask = selectedMask(); if (!mask) return;
-  const name = await askName('Rename mask', mask.name);
+  const name = await askName(tr("Rename mask"), mask.name);
   if (!name || name === mask.name) return;
   pushUndo(); mask.name = name.slice(0, 60); syncMaskPanel(); saveState();
 };
@@ -2308,7 +2303,7 @@ $('maskColorSample').onclick = () => {
   if (S.maskColorPick) {
     S.wbPick = false; S.pointColorPick = false; setCompareActive(false);
     $('wbBtn').classList.remove('on'); syncPointColor();
-    toast('Click a color, or Shift-drag to average an area');
+    toast(tr("Click a color, or Shift-drag to average an area"));
   }
   $('maskColorSample').classList.toggle('on', S.maskColorPick);
   syncCompareControl();
@@ -2316,7 +2311,7 @@ $('maskColorSample').onclick = () => {
 function sampleMaskColorAt(u, v) {
   const mask = selectedMask(); if (!mask) return false;
   if (!S.gl) {
-    toast('Color sampling: waiting for image preview…');
+    toast(tr("Color sampling: waiting for image preview…"));
     return false;
   }
   refreshWebGLSamplingSurface();
@@ -2324,12 +2319,12 @@ function sampleMaskColorAt(u, v) {
   if (!px) return false;
   const [red, green, blue] = [px[0] / 255, px[1] / 255, px[2] / 255];
   if (Math.max(red, green, blue) - Math.min(red, green, blue) < 0.015) {
-    toast('Choose a more colorful area'); return true;
+    toast(tr("Choose a more colorful area")); return true;
   }
   pushUndo(); mask.colorHue = rgbHue(red, green, blue);
   S.maskColorPick = false; $('maskColorSample').classList.remove('on');
   syncMaskPanel(); syncCompareControl(); drawGrade(); drawEditOverlay(); saveState();
-  toast('Mask color range sampled');
+  toast(tr("Mask color range sampled"));
   return true;
 }
 function sampleMaskColorArea(start, end) {
@@ -2358,14 +2353,14 @@ function sampleMaskColorArea(start, end) {
     }
   }
   if (weight < 0.015) {
-    toast('Choose a more colorful area');
+    toast(tr("Choose a more colorful area"));
     return true;
   }
   pushUndo();
   mask.colorHue = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
   S.maskColorPick = false; $('maskColorSample').classList.remove('on');
   syncMaskPanel(); syncCompareControl(); drawGrade(); drawEditOverlay(); saveState();
-  toast('Mask color range sampled from area');
+  toast(tr("Mask color range sampled from area"));
   return true;
 }
 document.querySelectorAll('[data-local]').forEach((input) => {
@@ -2431,7 +2426,7 @@ for (const mode of ['remove', 'heal', 'clone']) {
 $('healReposition').onclick = () => {
   const spot = selectedHeal(); if (!spot) return;
   S.editGesture = { type: 'heal-place-target', id: S.selectedHealId };
-  $('healInstruction').textContent = 'Click the new target position.';
+  $('healInstruction').textContent = tr("Click the new target position.");
   syncOverlayCursorClass();
 };
 function deleteHeal(id = S.selectedHealId) {
@@ -2612,7 +2607,7 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
     }
     const hit = healHandleAt(point, rect);
     if (!hit && S.heals.length >= MAX_HEALS) {
-      return toast('Up to 50 corrections can be active');
+      return toast(tr("Up to 50 corrections can be active"));
     }
     pushUndo();
     $('editOverlay').setPointerCapture(event.pointerId);
@@ -2660,7 +2655,7 @@ $('editOverlay').addEventListener('pointermove', (event) => {
         if (total >= MAX_TOTAL_MASK_POINTS) {
           if (!gesture.pointLimitShown) {
             gesture.pointLimitShown = true;
-            toast('This photo has reached the 20,000-point mask limit');
+            toast(tr("This photo has reached the 20,000-point mask limit"));
           }
         } else gesture.stroke.points.push(point);
       }
@@ -2748,14 +2743,14 @@ function syncPreviewDetailStatus() {
   $('previewProgressFill').style.width = `${(progress?.completed || 0) * 20}%`;
   $('previewDetailStatus').hidden = !image || !label;
   $('previewDetailStatus').classList.toggle('working', Boolean(progress?.visible && progress?.active));
-  $('zoom1').title = detailLabel || 'View actual pixels (100%) to assess sharpness and noise';
+  $('zoom1').title = detailLabel || tr('View actual pixels (100%) to assess sharpness and noise');
 }
 function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
   S.renderState = state;
   S.renderName = name || null;
   if (state === 'pending') {
-    previewProgress.start('Loading preview…');
+    previewProgress.start(tr('Loading preview…'));
     $('zoomwrap').setAttribute('aria-busy', 'true');
   } else if (state === 'empty') {
     previewProgress.finish();
@@ -2980,7 +2975,7 @@ function waitForRenderState(imageName, state, timeoutMs = 180000) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       window.removeEventListener('lighttable-render-state', onState);
-      reject(new Error(`Timed out waiting for ${imageName} to become ${state}`));
+      reject(new Error(tr("Timed out waiting for {imageName} to become {state}", {imageName: imageName, state: state})));
     }, timeoutMs);
     const onState = (event) => {
       const detail = event.detail || {};
@@ -3392,12 +3387,15 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   // generation is bumped, so cancelling here stranded the sampling surface.
   const im = cur();
   if (!im) return;
+  // Zoom/pan state can change before its animation-frame layout is applied.
+  // Measure the current view before choosing the native source-pixel region.
+  viewFrameScheduler.flush();
   readControls();
   const my = ++S.seq;
   const requestedWidth = options.requestedWidth || requestedPreviewWidth();
   const w = options.width || requestedWidth;
   if ($('pw').value === 'auto') automaticPreviewRequest = { name: im.name, width: requestedWidth };
-  const phase = options.phase || 'settled';
+  const phase = (options.phase || 'settled');
   if (window.__LIGHTTABLE_NATIVE_BENCHMARK_ITERATIONS__) {
     postNative('nativeBenchmarkProgress', {
       stage: 'render-start', generation: my, width: w,
@@ -3414,11 +3412,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
   const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
     S.previewDetail?.name === im.name && S.previewDetail.refining === false;
-  $('rstat').textContent = 'rendering…';
+  $('rstat').textContent = tr('rendering…');
   $('rstat').className = 'busy';
   $('zoomwrap').setAttribute('aria-busy', 'true');
   if (!options.background) previewProgress.start(
-    S.params.profile_enabled ? 'Applying film…' : 'Loading preview…', my);
+    S.params.profile_enabled ? tr('Applying film…') : tr('Loading preview…'), my);
   try {
     const request = {
       name: im.name, params: { ...S.params }, w, engine: $('engine').value,
@@ -3463,13 +3461,13 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     if (m.error) {
-      if (!options.background) previewProgress.finish({ error: 'Could not render preview' });
+      if (!options.background) previewProgress.finish({ error: tr('Could not render preview') });
       $('zoomwrap').setAttribute('aria-busy', 'false');
-      $('rstat').textContent = 'error: ' + m.error;
+      $('rstat').textContent = tr('error: {mError}', {mError: m.error});
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
         setRenderPresentation('error', im.name,
-          previewFailureMessage('Could not render this photo', m.error));
+          previewFailureMessage(tr('Could not render this photo'), m.error));
       }
       return;
     }
@@ -3501,12 +3499,12 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         return doRender(scheduledAt, { ...options, skipPresentationCache: true });
       }
       if (imageTiming.failed) {
-        if (!options.background) previewProgress.finish({ error: 'Could not display preview' });
+        if (!options.background) previewProgress.finish({ error: tr('Could not display preview') });
         $('zoomwrap').setAttribute('aria-busy', 'false');
-        $('rstat').textContent = imageTiming.error || 'preview unavailable';
+        $('rstat').textContent = imageTiming.error || tr('preview unavailable');
         $('rstat').className = '';
         setRenderPresentation('error', im.name,
-          previewFailureMessage('Could not display this photo', imageTiming.error));
+          previewFailureMessage(tr('Could not display this photo'), imageTiming.error));
         return;
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
@@ -3560,10 +3558,10 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     window.dispatchEvent(new CustomEvent('lighttable-rendered', { detail: timing }));
     syncBrowserOriginal(requestedWidth);
     const status = m.profile_enabled === false
-      ? 'profile off · source'
-      : (m.cached ? 'cached' : m.ms + ' ms') +
+      ? tr('Profile off · source')
+      : (m.cached ? tr('Cached') : tr('{milliseconds} ms', { milliseconds: m.ms })) +
          ' · ' + (m.engine === 'rs' ? 'rust/gpu' : 'python');
-    $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
+    $('rstat').textContent = [status, m.refining ? tr('Refining RAW…') : ''].filter(Boolean).join(' · ');
     $('rstat').className = '';
     if (m.refining) {
       // Start accurate RAW work immediately after the useful first frame.
@@ -3618,13 +3616,13 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my === S.seq) {
-      if (!options.background) previewProgress.finish({ error: 'Could not finish preview' });
+      if (!options.background) previewProgress.finish({ error: tr('Could not finish preview') });
       $('zoomwrap').setAttribute('aria-busy', 'false');
-      $('rstat').textContent = failure.error || 'Could not finish preview';
+      $('rstat').textContent = failure.error || tr('Could not finish preview');
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
         setRenderPresentation('error', im.name,
-          previewFailureMessage('Could not finish this preview', failure.error));
+          previewFailureMessage(tr('Could not finish this preview'), failure.error));
       }
     }
   }
@@ -3751,7 +3749,7 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   if (!surface) return Promise.resolve({
     decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
     presentedAt: performance.now(), presentation: 'native-missing',
-    failed: true, error: 'Native preview data is missing',
+    failed: true, error: tr('Native preview data is missing'),
   });
 
   S.nativeViewport = surface.viewport || null;
@@ -3907,10 +3905,10 @@ function setWebGLBaseImage(dataUri, {
       if (!S.gl) {
         try { S.gl = new GradeRenderer($('cv')); }
         catch (e) {
-          toast('WebGL unavailable: ' + e.message);
+          toast(tr("WebGL unavailable: {eMessage}", {eMessage: e.message}));
           return res({ decodeMs: performance.now() - startedAt, uploadMs: 0,
             uploadedAt: performance.now(), failed: true,
-            error: previewFailureMessage('WebGL preview could not be initialized', e) });
+            error: previewFailureMessage(tr('WebGL preview could not be initialized'), e) });
         }
         browserOriginalTextureURL = null;
         browserReferenceTextureURL = null;
@@ -3932,7 +3930,7 @@ function setWebGLBaseImage(dataUri, {
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
-        failed: true, error: 'Preview image could not be loaded or decoded' });
+        failed: true, error: tr('Preview image could not be loaded or decoded') });
     };
     img.src = dataUri;
   });
@@ -4060,14 +4058,11 @@ function measureReferenceStats() {
 }
 
 function showReferenceMetrics(stats) {
-  if (!stats) return $('referenceMetrics').textContent = 'Reference could not be measured.';
+  if (!stats) return $('referenceMetrics').textContent = tr("Reference could not be measured.");
   S.referenceStats = stats;
   const rgb = (values) => values.map((value) => Math.round(value)).join(' / ');
   $('referenceMetrics').textContent =
-    `Mean RGB · edit ${rgb(stats.currentMean)} · reference ${rgb(stats.targetMean)}\n` +
-    `Luminance · edit ${stats.currentLuma.toFixed(3)} · reference ${stats.targetLuma.toFixed(3)}\n` +
-    `Mean absolute error · ${stats.mae.toFixed(1)} / 255\n` +
-    `Approx. mean ΔE76 · ${stats.deltaE.toFixed(1)}`;
+    tr("Mean RGB · edit {value} · reference {value2}\nLuminance · edit {value3} · reference {value4}\nMean absolute error · {value5} / 255\nApprox. mean ΔE76 · {value6}", {value: rgb(stats.currentMean), value2: rgb(stats.targetMean), value3: stats.currentLuma.toFixed(3), value4: stats.targetLuma.toFixed(3), value5: stats.mae.toFixed(1), value6: stats.deltaE.toFixed(1)});
 }
 
 $('referenceFile').addEventListener('change', () => {
@@ -4112,11 +4107,11 @@ $('clearReference').onclick = () => {
   postNative('nativeReference', { active: false, clear: true }, true);
   $('referenceFile').value = ''; $('referenceImg').removeAttribute('src');
   $('referenceImg').hidden = true;
-  $('referenceMetrics').textContent = 'Load a scan, align it, then measure.';
+  $('referenceMetrics').textContent = tr("Load a scan, align it, then measure.");
 };
 $('startReferenceMatch').onclick = () => {
   const stats = measureReferenceStats();
-  if (!stats) return toast('Load and align a reference first');
+  if (!stats) return toast(tr("Load and align a reference first"));
   pushUndo();
   const exposureDelta = clamp(Math.log2(
     Math.max(stats.targetLuma, 1e-4) / Math.max(stats.currentLuma, 1e-4)), -2, 2);
@@ -4142,7 +4137,7 @@ $('startReferenceMatch').onclick = () => {
       (stats.currentMean[1] - stats.targetMean[1]) / 16, -20, 20);
   }
   syncControls(); saveState(); renderFilm(0);
-  toast('Physical starting match applied');
+  toast(tr("Physical starting match applied"));
 };
 
 function isStateLoaded(im) {
@@ -4226,9 +4221,9 @@ function prefetch(refining = false) {
  * and recording one would bury the real edits in noise. */
 let _lastHistorySnapshot = '';
 const PANE_STEP_LABELS = {
-  editPane: 'Light and colour', filmPane: 'Film', maskPane: 'Masking',
-  healPane: 'Remove', lensPane: 'Lens and geometry', cropPane: 'Crop',
-  presetsPane: 'Preset', versionsPane: 'Version', matchPane: 'Reference match',
+  editPane: tr("Light and colour"), filmPane: tr("Film"), maskPane: tr("Masking"),
+  healPane: tr("Remove"), lensPane: tr("Lens and geometry"), cropPane: tr("Crop"),
+  presetsPane: tr("Preset"), versionsPane: tr("Version"), matchPane: tr("Reference match"),
 };
 
 function editHistorySnapshot() {
@@ -4253,25 +4248,21 @@ function nativeJournalRequest(body) {
   return new Promise((resolve, reject) => {
     const id = crypto.randomUUID();
     const timer = setTimeout(() => {
-      journalRequests.delete(id); reject(new Error('Edit recovery did not respond'));
+      journalRequests.delete(id); reject(new Error(tr("Edit recovery did not respond")));
     }, 10000);
     journalRequests.set(id, {resolve, reject, timer});
     if (!sendNative('editJournal', {...body, id})) {
       journalRequests.delete(id); clearTimeout(timer);
-      reject(new Error('Desktop edit recovery is unavailable'));
+      reject(new Error(tr("Desktop edit recovery is unavailable")));
     }
   });
 }
 function renderEditSaveStatus(status) {
     const recoveryError = editRecoveryIssue || status.recoveryError;
     const label = $('editSaveStatus');
-    label.textContent = status.state === 'error' ? 'Edits not saved'
-      : status.state === 'saving' ? 'Saving…'
-      : recoveryError ? 'Saved · recovery needs attention' : 'Saved';
+    label.textContent = status.state === 'error' ? tr("Edits not saved") : status.state === 'saving' ? tr("Saving…") : recoveryError ? tr("Saved · recovery needs attention") : tr("Saved");
     label.dataset.state = status.state;
-    label.title = status.state === 'error'
-      ? 'Retry to save your changes. Local recovery is retained when available.'
-      : recoveryError ? recoveryError.message : '';
+    label.title = status.state === 'error' ? tr("Retry to save your changes. Local recovery is retained when available.") : recoveryError ? recoveryError.message : '';
     $('retryEditSave').hidden = status.state !== 'error' && !recoveryError;
 }
 function updateEditRecoveryHealth(error) {
@@ -4281,7 +4272,7 @@ function updateEditRecoveryHealth(error) {
 const editSaveQueue = createEditSaveQueue({
   journal: {
     put(name, token, payload) {
-      if (!editRecoveryReady) throw new Error('Edit recovery is not ready');
+      if (!editRecoveryReady) throw new Error(tr("Edit recovery is not ready"));
       return editRecovery.put(name, token, payload);
     },
     remove(name, token) { return editRecovery?.remove(name, token); },
@@ -4289,12 +4280,12 @@ const editSaveQueue = createEditSaveQueue({
   async send(name, payload) {
     const result = await api('/api/state', {...payload.state, ...(payload.expectedRecoverySourceKey
       ? {expectedRecoverySourceKey: payload.expectedRecoverySourceKey} : {})});
-    if (!result?.ok || result.error) throw new Error(result?.error || 'Could not save edits');
+    if (!result?.ok || result.error) throw new Error(((result?.error || tr("Could not save edits"))));
     const image = S.images.find((item) => item.name === name);
     if (image) invalidateEditedThumbnail(image);
     if (payload.history) {
       HISTORY?.record(name, payload.history.label, payload.history.state);
-      if (await HISTORY?.flush(name) === false) throw new Error('Could not save edit history');
+      if (await HISTORY?.flush(name) === false) throw new Error(tr("Could not save edit history"));
     }
   },
   onStatus: () => updateEditSaveStatus(),
@@ -4311,10 +4302,10 @@ function updateEditSaveStatus() {
 async function flushEditSaves() {
   try {
     await editSaveQueue.flush();
-    if (await HISTORY?.flush() === false) throw new Error('Could not save edit history');
+    if (await HISTORY?.flush() === false) throw new Error(tr("Could not save edit history"));
     return true;
   }
-  catch { toast('Edits could not be saved. Use Retry save before continuing.'); return false; }
+  catch { toast(tr("Edits could not be saved. Use Retry save before continuing.")); return false; }
 
 }
 
@@ -4334,7 +4325,7 @@ async function refreshDeferredEditRecovery() {
     else if (!editSaveQueue.getPending(name)) refreshFailed = true;
   }
   if (refreshFailed) {
-    deferredRecoveryRefreshIssue = new Error('Recovered edits are saved, but their display could not refresh. Retry to reload them.');
+    deferredRecoveryRefreshIssue = new Error(tr('Recovered edits are saved, but their display could not refresh. Retry to reload them.'));
     updateEditRecoveryHealth(deferredRecoveryRefreshIssue);
   } else if (!deferredEditRecovery.size && deferredRecoveryRefreshIssue) {
     if (editRecoveryIssue === deferredRecoveryRefreshIssue) updateEditRecoveryHealth(null);
@@ -4349,13 +4340,13 @@ $('retryEditSave').onclick = async () => {
       catch (error) { updateEditRecoveryHealth(error); }
     }
     if (await (HISTORY?.retry ? HISTORY.retry() : HISTORY?.flush()) === false) {
-      throw new Error('Could not save photo history');
+      throw new Error(tr("Could not save photo history"));
     }
     await editSaveQueue.retry();
     await refreshDeferredEditRecovery();
-    toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
+    toast(editRecoveryIssue ? tr('Edits saved; local recovery still needs attention') : tr('Edits saved'));
   }
-  catch { toast('Still unable to save. Your changes are kept in this window.'); }
+  catch { toast(tr("Still unable to save. Your changes are kept in this window.")); }
 
 };
 window.addEventListener('beforeunload', (event) => {
@@ -4439,13 +4430,11 @@ function syncPairControls() {
   const button = $('switchPair');
   button.hidden = !companion;
   if (companion) {
-    button.textContent = image.raw ? 'RAW → JPEG' : 'JPEG → RAW';
-    button.title = `Open ${displayName(companion)}. Each file keeps its own edits.`;
+    button.textContent = image.raw ? tr("RAW → JPEG") : tr("JPEG → RAW");
+    button.title = tr("Open {value}. Each file keeps its own edits.", {value: displayName(companion)});
   }
   $('pairedMetadataNote').hidden = !companion;
-  $('pairedMetadataNote').textContent = APP_PREFS.linkPairedMetadata === true
-    ? 'RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.'
-    : 'RAW + JPEG · Ratings and edits stay separate. Link metadata in Settings → Library.';
+  $('pairedMetadataNote').textContent = APP_PREFS.linkPairedMetadata === true ? tr("RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.") : tr("RAW + JPEG · Ratings and edits stay separate. Link metadata in Settings → Library.");
 }
 $('switchPair').onclick = async () => {
   const image = cur();
@@ -4579,7 +4568,7 @@ function listKey(list) {
 }
 
 function thumbnailURL(im) {
-  if (im.availability === 'cloud-only') return 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160"><rect width="240" height="160" fill="#262626"/><text x="120" y="85" text-anchor="middle" fill="#aaa" font-size="18">Cloud only</text></svg>');
+  if (im.availability === 'cloud-only') return 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160"><rect width="240" height="160" fill="#262626"/><text x="120" y="85" text-anchor="middle" fill="#aaa" font-size="18">${i18nHTML(tr("Cloud only"))}</text></svg>`);
   return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
 }
 
@@ -4634,7 +4623,7 @@ function pumpEditedThumbnailQueue() {
         retry = true;
         return;
       }
-      if (!response.ok) throw new Error(`thumbnail ${response.status}`);
+      if (!response.ok) throw new Error(tr("thumbnail {responseStatus}", {responseStatus: response.status}));
       const blob = await response.blob();
       if (currentThumbnailIdentity(task.name) === task.identity) {
         cacheEditedThumbnail(task.name, task.identity, blob);
@@ -4799,8 +4788,8 @@ function createStripItem(im) {
 function syncPairBadge(element, im) {
   const badge = element.querySelector('.pair-badge');
   badge.hidden = APP_PREFS.pairRawJPEG === false || !photoPairs().has(im.name);
-  badge.textContent = im.raw ? 'RAW + J' : 'J + RAW';
-  badge.title = 'RAW + JPEG capture. Switch file in the top bar; edits stay separate.';
+  badge.textContent = im.raw ? tr("RAW + J") : tr("J + RAW");
+  badge.title = tr("RAW + JPEG capture. Switch file in the top bar; edits stay separate.");
 }
 function syncStripItem(element, im) {
   element.dataset.name = im.name;
@@ -4936,8 +4925,9 @@ function syncGridCell(element, im) {
     ? `${im.width} / ${im.height}` : 'auto');
   syncThumbnailImage(element, im);
   const name = element.querySelector('.nm');
-  const nextName = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only' : '');
-  element.title = im.availability === 'cloud-only' ? 'Download this photo in Finder, then rescan the source.' : displayName(im);
+  const nextName = im.availability === 'cloud-only'
+    ? tr('{name} · Cloud only', {name: displayName(im)}) : displayName(im);
+  element.title = im.availability === 'cloud-only' ? tr("Download this photo in Finder, then rescan the source.") : displayName(im);
   if (name.textContent !== nextName) name.textContent = nextName;
   recordGridThumbnailGeometry(element);
 }
@@ -5024,7 +5014,7 @@ function renderGrid() {
     badge.hidden = !isCover;
     if (isCover) {
       badge.textContent = stack.members.length;
-      badge.title = stack.collapsed ? 'Expand stack' : 'Collapse stack';
+      badge.title = stack.collapsed ? tr("Expand stack") : tr("Collapse stack");
     }
     const st = d.querySelector('.stars'), want = starStr(im.rating || 0);
     if (st.textContent !== want) st.textContent = want;
@@ -5096,28 +5086,28 @@ function counts() {
   if (_countsPaintKey === paintKey) return;
   _countsPaintKey = paintKey;
   const shown = visible().length;
-  $('counts').textContent = `${shown} of ${scope.length}`;
+  $('counts').textContent = tr("{shown} of {scopeLength}", {shown: shown, scopeLength: scope.length});
   $('sourceAllCount').textContent = scope.length;
   $('sourcePendingCount').textContent = p;
   $('sourceApprovedCount').textContent = a;
   $('sourceSkippedCount').textContent = s;
   $('sourceRatedCount').textContent = rated;
-  $('filmstripCount').textContent = `${shown} photo${shown === 1 ? '' : 's'}`;
-  const labels = { all: 'All Photos', pending: 'Unflagged', approved: 'Picked',
-    skipped: 'Rejected', rated: 'Rated', unrated: 'Unrated', edited: 'Edited', unedited: 'Unedited',
-    virtual: 'Virtual Copies' };
+  $('filmstripCount').textContent = trn('{count} photo', '{count} photos', shown);
+  const labels = { all: tr('All Photos'), pending: tr('Unflagged'), approved: tr('Picked'),
+    skipped: tr('Rejected'), rated: tr('Rated'), unrated: tr('Unrated'), edited: tr('Edited'), unedited: tr('Unedited'),
+    virtual: tr('Virtual Copies') };
   const folder = S.folders.find((item) => item.path === S.activeFolder);
-  const folderLabel = folder?.name || (S.rootFolder.split('/').filter(Boolean).pop() || 'All Photos');
+  const folderLabel = (folder?.name || (S.rootFolder.split('/').filter(Boolean).pop() || tr("All Photos")));
   const collection = activeCollection();
   const scopeLabel = collection?.name || folderLabel;
   $('libraryTitle').textContent = $('filter').value === 'all'
-    ? scopeLabel : `${labels[$('filter').value] || 'All Photos'} — ${scopeLabel}`;
+    ? scopeLabel : `${labels[$('filter').value] || tr('All Photos')} — ${scopeLabel}`;
   const resultCount = shown === scope.length
-    ? `${scope.length} photo${scope.length === 1 ? '' : 's'}`
-    : `${shown} of ${scope.length} photos`;
+    ? trn('{count} photo', '{count} photos', scope.length)
+    : tr('{shown} of {total} photos', {shown, total: scope.length});
   $('searchSummary').textContent = $('search').value.trim()
-    ? `${resultCount} · Results for “${$('search').value.trim()}”`
-    : `${resultCount} · Local`;
+    ? tr('{resultCount} · Results for “{query}”', {resultCount, query: $('search').value.trim()})
+    : tr('{resultCount} · Local', {resultCount});
   document.querySelectorAll('[data-source]').forEach((b) => {
     b.classList.toggle('on', !collection && b.dataset.source === $('filter').value);
   });
@@ -5141,11 +5131,11 @@ function renderCollections() {
     const row = document.createElement('div');
     row.className = 'collection-row' +
       (collection.id === S.activeCollection ? ' on' : '');
-    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${collectionImages(collection).length}</b></button><button class="collection-delete" type="button" title="Delete collection">×</button>`;
+    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${collectionImages(collection).length}</b></button><button class="collection-delete" type="button" title="${i18nHTML(tr("Delete collection"))}">×</button>`;
     row.querySelector('span').textContent =
       `${collection.type === 'smart' ? '✦ ' : ''}${collection.name}`;
     row.querySelector('.collection-delete').setAttribute(
-      'aria-label', `Delete ${collection.name}`);
+      'aria-label', tr("Delete {collectionName}", {collectionName: collection.name}));
     row.querySelector('.collection-main').onclick = () => {
       S.activeCollection = S.activeCollection === collection.id ? '' : collection.id;
       refreshFilteredView(); savePrefs();
@@ -5153,7 +5143,7 @@ function renderCollections() {
     row.querySelector('.collection-delete').onclick = async () => {
       await runLibraryAction({ action: 'delete_collection', id: collection.id });
       if (S.activeCollection === collection.id) S.activeCollection = '';
-      refreshLists(); savePrefs(); toast('Collection deleted');
+      refreshLists(); savePrefs(); toast(tr("Collection deleted"));
     };
     host.appendChild(row);
   }
@@ -5194,8 +5184,8 @@ async function runLibraryAction(body) {
 async function createVirtualCopy() {
   const source = cur(); if (!source) return;
   if (!await saveState(true)) return;
-  const defaultName = `${displayName(source).replace(/\.[^.]+$/, '')} — Copy`;
-  const displayNameValue = await askName('Name virtual copy', defaultName);
+  const defaultName = tr("{value} — Copy", {value: displayName(source).replace(/\.[^.]+$/, '')});
+  const displayNameValue = await askName(tr("Name virtual copy"), defaultName);
   if (!displayNameValue) return;
   const result = await runLibraryAction({
     action: 'create_virtual', name: source.name, displayName: displayNameValue,
@@ -5211,7 +5201,7 @@ async function createVirtualCopy() {
   };
   const index = S.images.indexOf(source) + 1;
   S.images.splice(index, 0, copy);
-  _stripKey = _gridKey = ''; go(index); toast('Virtual copy created');
+  _stripKey = _gridKey = ''; go(index); toast(tr("Virtual copy created"));
 }
 
 $('virtualCopyBtn').onclick = createVirtualCopy;
@@ -5225,27 +5215,27 @@ $('deleteVirtualBtn').onclick = async () => {
   S.msel.delete(image.name);
   _stripKey = _gridKey = '';
   go(Math.min(oldIndex, Math.max(0, S.images.length - 1)));
-  toast('Virtual copy deleted');
+  toast(tr("Virtual copy deleted"));
 };
 $('stackBtn').onclick = async () => {
   const members = transferTargets().map((image) => image.name);
-  if (members.length < 2) return toast('Select at least two photos to stack');
-  const name = await askName('Name stack', 'Photo stack');
+  if (members.length < 2) return toast(tr("Select at least two photos to stack"));
+  const name = await askName(tr("Name stack"), tr('Photo stack'));
   if (!name) return;
   await runLibraryAction({ action: 'create_stack', name, members });
-  S.msel.clear(); refreshLists(); toast('Stack created');
+  S.msel.clear(); refreshLists(); toast(tr("Stack created"));
 };
 $('unstackBtn').onclick = async () => {
   const stack = transferTargets().map((image) => stackForImage(image.name)).find(Boolean);
-  if (!stack) return toast('Select a photo in a stack');
+  if (!stack) return toast(tr("Select a photo in a stack"));
   await runLibraryAction({ action: 'unstack', id: stack.id });
-  toast('Photos unstacked');
+  toast(tr("Photos unstacked"));
 };
 $('matchExposureBtn').onclick = async () => {
   const current = cur();
-  if (!current) return toast('Select an active reference photo first');
+  if (!current) return toast(tr("Select an active reference photo first"));
   const targets = transferTargets().map((image) => image.name);
-  if (targets.length < 2) return toast('Select at least two photos to match exposure');
+  if (targets.length < 2) return toast(tr("Select at least two photos to match exposure"));
   const button = $('matchExposureBtn');
   button.disabled = true;
   try {
@@ -5255,12 +5245,12 @@ $('matchExposureBtn').onclick = async () => {
       body: JSON.stringify({ reference: current.name, targets }),
     });
     const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Failed to match exposure');
-    toast(`Matched exposure on ${data.count} photos`);
+    if (!data.ok) throw new Error(((data.error || tr("Failed to match exposure"))));
+    toast(tr("Matched exposure on {dataCount} photos", {dataCount: data.count}));
     await loadState();
     if (S.images[S.idx]) selectPhoto(S.images[S.idx]);
   } catch (err) {
-    toast(err.message || 'Error matching exposure');
+    toast(((err.message || tr("Error matching exposure"))));
   } finally {
     button.disabled = false;
   }
@@ -5268,7 +5258,7 @@ $('matchExposureBtn').onclick = async () => {
 $('pregenPreviewsBtn').onclick = async () => {
   const selected = transferTargets();
   const targets = selected.map((image) => image.name);
-  if (!targets.length) return toast('Select photos to build previews');
+  if (!targets.length) return toast(tr("Select photos to build previews"));
   const size = Math.max(INTERACTIVE_PREVIEW_WIDTH,
     ...selected.map((image) => sourceLongEdge(image)));
   const button = $('pregenPreviewsBtn');
@@ -5280,29 +5270,29 @@ $('pregenPreviewsBtn').onclick = async () => {
       body: JSON.stringify({ names: targets, size }),
     });
     const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Failed to start preview generation');
-    toast(`Building 1:1 previews for ${data.queued} photos…`);
+    if (!data.ok) throw new Error(((data.error || tr("Failed to start preview generation"))));
+    toast(tr("Building 1:1 previews for {dataQueued} photos…", {dataQueued: data.queued}));
     const poll = async () => {
       try {
         const sres = await fetch('/api/cache/pregenerate/status');
         const sdata = await sres.json();
         if (sdata.active) {
-          toast(`1:1 Previews: ${sdata.completed} / ${sdata.total} done`);
+          toast(tr("1:1 Previews: {sdataCompleted} / {sdataTotal} done", {sdataCompleted: sdata.completed, sdataTotal: sdata.total}));
           setTimeout(poll, 1500);
         } else if (sdata.total > 0 && sdata.completed >= sdata.total) {
-          toast(`1:1 Previews finished: ${sdata.completed} built`);
+          toast(tr("1:1 Previews finished: {sdataCompleted} built", {sdataCompleted: sdata.completed}));
         }
       } catch {}
     };
     setTimeout(poll, 1500);
   } catch (err) {
-    toast(err.message || 'Error starting preview generation');
+    toast(((err.message || tr("Error starting preview generation"))));
   } finally {
     button.disabled = false;
   }
 };
 $('addCollection').onclick = async () => {
-  const name = await askName('New collection');
+  const name = await askName(tr("New collection"));
   if (!name) return;
   const result = await runLibraryAction({
     action: 'create_collection', name,
@@ -5311,10 +5301,10 @@ $('addCollection').onclick = async () => {
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
   if (created) S.activeCollection = created.id;
-  refreshLists(); toast('Collection created');
+  refreshLists(); toast(tr("Collection created"));
 };
 $('addSmartCollection').onclick = async () => {
-  const name = await askName('Save current filters');
+  const name = await askName(tr("Save current filters"));
   if (!name) return;
   const result = await runLibraryAction({
     action: 'create_smart_collection', name,
@@ -5331,14 +5321,14 @@ $('addSmartCollection').onclick = async () => {
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
   if (created) S.activeCollection = created.id;
-  refreshLists(); toast('Smart collection saved');
+  refreshLists(); toast(tr("Smart collection saved"));
 };
 $('addToCollection').onclick = async () => {
   const collection = activeCollection();
   if (!collection || collection.type !== 'regular') return;
   await runLibraryAction({ action: 'add_to_collection', id: collection.id,
     members: transferTargets().map((image) => image.name) });
-  toast('Added to collection');
+  toast(tr("Added to collection"));
 };
 
 /* ------------------------------------------------------------ folders */
@@ -5387,7 +5377,7 @@ function makeFolderRow(source, data, isRoot) {
       : S.favoriteFolders.includes(fullFolderPath(source.path, relative));
     const star = document.createElement('button');
     star.className = 'folder-star' + (favorite ? ' on' : '');
-    star.title = favorite ? 'Remove from Favorites' : 'Add as Favorite';
+    star.title = favorite ? tr("Remove from Favorites") : tr("Add as Favorite");
     star.setAttribute('aria-label', star.title);
     star.textContent = favorite ? '★' : '☆';
     star.onclick = (event) => {
@@ -5414,7 +5404,7 @@ function makeFolderRow(source, data, isRoot) {
   const more = document.createElement('button');
   more.className = 'folder-more';
   more.textContent = '•••';
-  more.title = `Manage ${label.textContent}`;
+  more.title = tr("Manage {labelTextContent}", {labelTextContent: label.textContent});
   more.setAttribute('aria-label', more.title);
   more.onclick = (event) => {
     event.stopPropagation();
@@ -5423,7 +5413,7 @@ function makeFolderRow(source, data, isRoot) {
   row.appendChild(more);
 
   row.onclick = () => {
-    if (!source.available) return toast('That folder is unavailable');
+    if (!source.available) return toast(tr("That folder is unavailable"));
     if (!isCurrentSource) {
       S.activeFolders[source.path] = relative;
       savePrefs().then(() => postNative('selectSource', { path: source.path }));
@@ -5446,7 +5436,7 @@ function makeFolderRow(source, data, isRoot) {
         const names = JSON.parse(event.dataTransfer.getData('application/x-lighttable-photos'));
         await movePhotos(names, relative);
       } catch (_) {
-        toast('Could not read the dragged photos');
+        toast(tr("Could not read the dragged photos"));
       }
     });
   }
@@ -5490,7 +5480,7 @@ function renderFolders() {
   if (!fragment.childNodes.length) {
     const empty = document.createElement('div');
     empty.className = 'folder-empty';
-    empty.textContent = 'Favorite a folder to keep it close at hand.';
+    empty.textContent = tr("Favorite a folder to keep it close at hand.");
     fragment.appendChild(empty);
   }
   host.replaceChildren(fragment);
@@ -5579,28 +5569,28 @@ function openFolderMenu(anchor, context) {
   const current = source.path === S.rootFolder;
   const items = [];
   const favorite = isRoot ? source.favorite : S.favoriteFolders.includes(fullPath);
-  items.push(menuButton(favorite ? 'Remove from Favorites' : 'Add as Favorite',
+  items.push(menuButton((favorite ? tr("Remove from Favorites") : tr("Add as Favorite")),
     () => isRoot
       ? postNative('toggleFavorite', { path: source.path })
       : toggleFolderFavorite(fullPath)));
   if (current) {
-    items.push(menuButton(`Create Folder in ${isRoot ? source.name : data.name}…`,
+    items.push(menuButton(tr("Create Folder in {value}…", {value: isRoot ? source.name : data.name}),
       () => createFolder(relative, isRoot ? source.name : data.name)));
   }
   if (isRoot || current) {
-    items.push(menuButton('Rename Folder…',
+    items.push(menuButton(tr("Rename Folder…"),
       () => renameFolder(source, data, isRoot, relative)));
   }
   const browserName = window.__LIGHTTABLE_PLATFORM__ === 'windows'
-    ? 'File Explorer' : window.__LIGHTTABLE_PLATFORM__ === 'linux' ? 'File Manager' : 'Finder';
-  items.push(menuButton(`Show in ${browserName}`,
+    ? tr('File Explorer') : window.__LIGHTTABLE_PLATFORM__ === 'linux' ? tr('File Manager') : 'Finder';
+  items.push(menuButton(tr("Show in {browserName}", {browserName: browserName}),
     () => postNative('revealFolder', { path: fullPath })));
   if (current) {
-    items.push(menuButton('Synchronize Folder', () => location.reload()));
+    items.push(menuButton(tr("Synchronize Folder"), () => location.reload()));
   }
   if (isRoot && activeSources().length > 1) {
     items.push(menuSeparator());
-    items.push(menuButton('Remove from LightTable', () => removeFolderSource(source.path), 'negative'));
+    items.push(menuButton(tr("Remove from LightTable"), () => removeFolderSource(source.path), 'negative'));
   }
   menu.replaceChildren(...items);
   menu.classList.add('on');
@@ -5621,7 +5611,7 @@ async function removeFolderSource(path) {
 }
 
 async function createFolder(parent, parentName) {
-  const name = await askName(`Create Folder in ${parentName}`);
+  const name = await askName(tr("Create Folder in {parentName}", {parentName: parentName}));
   if (!name) return;
   const result = await api('/api/folders', { action: 'create', parent, name });
   if (result.error) return toast(result.error);
@@ -5630,7 +5620,7 @@ async function createFolder(parent, parentName) {
 
 async function renameFolder(source, data, isRoot, relative) {
   const oldName = isRoot ? source.name : data.name;
-  const name = await askName('Rename Folder', oldName);
+  const name = await askName(tr("Rename Folder"), oldName);
   if (!name || name === oldName) return;
   if (isRoot) {
     postNative('renameRoot', { path: source.path, name });
@@ -5653,7 +5643,7 @@ async function movePhotos(names, destination) {
   const unique = [...new Set((names || []).filter((name) => S.images.some((im) => im.name === name)))];
   if (!unique.length) return;
   if (unique.every((name) => (S.images.find((im) => im.name === name)?.folder || '') === destination)) {
-    return toast('Photos are already in that folder');
+    return toast(tr("Photos are already in that folder"));
   }
   if (!await saveState(true)) return;
   const result = await api('/api/photos/move', { names: unique, destination });
@@ -5786,7 +5776,7 @@ function switchPane(id, { fromCompare = false } = {}) {
   if (!fromCompare) setCompareActive(false, { restoreTool: false });
   if (['editPane', 'filmPane'].includes(id)) lastAdjustmentPane = id;
   document.querySelectorAll('[data-exit-tool]').forEach((button) => {
-    button.textContent = lastAdjustmentPane === 'filmPane' ? 'Back to Film' : 'Back to Edit';
+    button.textContent = lastAdjustmentPane === 'filmPane' ? tr("Back to Film") : tr("Back to Edit");
   });
   PRESET_BROWSER?.setActive(id === 'presetsPane');
   const panel = $('panel');
@@ -5962,9 +5952,9 @@ function syncCropPanel() {
   $('cropRatio').value = S.cropRatio;
   $('cropRatio').disabled = !cur();
   $('cropLock').disabled = !cur();
-  $('cropLock').textContent = S.cropLocked ? 'Locked' : 'Lock';
+  $('cropLock').textContent = S.cropLocked ? tr("Locked") : tr("Lock");
   $('cropLock').setAttribute('aria-pressed', String(!!S.cropLocked));
-  $('cropLock').title = S.cropLocked ? 'Unlock aspect ratio' : 'Lock aspect ratio';
+  $('cropLock').title = S.cropLocked ? tr("Unlock aspect ratio") : tr("Lock aspect ratio");
   $('cropSwap').disabled = !cur() || !cropOutputRatio();
   $('cropSwap').setAttribute('aria-pressed', String(!!S.cropAspectFlipped));
   $('cropCustomRatio').hidden = S.cropRatio !== 'custom';
@@ -5975,18 +5965,18 @@ function syncCropPanel() {
       .some((key) => S.optics?.[key] !== OPTICS_DEFAULTS[key]);
 
   if (!S.crop) {
-    $('cropReadout').textContent = 'Full image';
-    $('cropPercent').textContent = '100% retained';
+    $('cropReadout').textContent = tr("Full image");
+    $('cropPercent').textContent = tr("100% retained");
     return;
   }
   const { width, height } = cropSourceSize();
   const cropWidth = Math.max(1, Math.round(width * S.crop.w));
   const cropHeight = Math.max(1, Math.round(height * S.crop.h));
-  $('cropReadout').textContent = `${cropWidth.toLocaleString()} × ${cropHeight.toLocaleString()} px`;
-  $('cropPercent').textContent = `${Math.round(S.crop.w * S.crop.h * 100)}% retained`;
+  $('cropReadout').textContent = tr("{value} × {value2} px", {value: cropWidth.toLocaleString(), value2: cropHeight.toLocaleString()});
+  $('cropPercent').textContent = tr("{value}% retained", {value: Math.round(S.crop.w * S.crop.h * 100)});
   $('cropRect').setAttribute(
     'aria-label',
-    `Crop selection, ${cropWidth} by ${cropHeight} pixels. Drag to move; use the handles to resize.`,
+    tr("Crop selection, {cropWidth} by {cropHeight} pixels. Drag to move; use the handles to resize.", {cropWidth: cropWidth, cropHeight: cropHeight}),
   );
 }
 
@@ -6362,10 +6352,11 @@ function showCurrentImage(im) {
   browserOriginalTextureURL = null;
   S.gl?.clearOriginalImage();
   $('orig').removeAttribute('src');
-  $('currentName').textContent = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only — download in Finder and rescan' : '');
+  $('currentName').textContent = im.availability === 'cloud-only'
+    ? tr('{name} · Cloud only — download in Finder and rescan', {name: displayName(im)}) : displayName(im);
   syncPairControls();
   $('rawCameraDefaultStatus').textContent = isRawInput()
-    ? 'Checking camera default…' : 'RAW originals only.';
+    ? tr('Checking camera default…') : tr('RAW originals only.');
   updateLoupeInfoOverlay();
   syncAIPhoto();
   loadLensProfile(im.name);
@@ -6491,9 +6482,7 @@ async function loadRawCameraDefault(name, hadSavedParams) {
     }
     if (cur()?.name !== name) return;
     S.rawDefault = result;
-    $('rawCameraDefaultStatus').textContent = result.settings
-      ? `${result.label} default is saved.`
-      : `${result.label} uses the app defaults.`;
+    $('rawCameraDefaultStatus').textContent = result.settings ? tr("{resultLabel} default is saved.", {resultLabel: result.label}) : tr("{resultLabel} uses the app defaults.", {resultLabel: result.label});
     if (!hadSavedParams && result.settings) {
       S.params = normalizeFilmParams({ ...S.params, ...result.settings });
       cur().params = { ...S.params };
@@ -6505,7 +6494,7 @@ async function loadRawCameraDefault(name, hadSavedParams) {
   } catch (_) {
     if (cur()?.name === name) {
       S.rawDefault = null;
-      $('rawCameraDefaultStatus').textContent = 'Camera default unavailable.';
+      $('rawCameraDefaultStatus').textContent = tr("Camera default unavailable.");
       syncControls();
     }
   }
@@ -6572,26 +6561,26 @@ function syncCullBars() {
   const status = commonMarkValue(targets, 'status', 'pending');
   const rating = commonMarkValue(targets, 'rating', 0);
   const multiple = targets.length > 1;
-  let title = 'No photo selected';
-  let detail = 'Select a photo to rate or flag';
+  let title = tr("No photo selected");
+  let detail = tr("Select a photo to rate or flag");
   if (active && multiple) {
-    title = `${targets.length} photos selected`;
-    detail = 'Flags and ratings apply to selection';
+    title = trn('{count} photo selected', '{count} photos selected', targets.length);
+    detail = tr('Flags and ratings apply to selection');
   } else if (active) {
     title = displayName(active);
     if (SURVEY && SURVEY.isOpen) {
       const index = Math.max(0, SURVEY.names.indexOf(active.name));
-      detail = `Survey · ${index + 1} of ${SURVEY.names.length}`;
+      detail = tr("Survey · {value} of {SURVEYNamesLength}", {value: index + 1, SURVEYNamesLength: SURVEY.names.length});
     } else {
       const ordered = visible();
       const index = ordered.indexOf(active);
-      detail = index >= 0 ? `${index + 1} of ${ordered.length}` : 'Current photo';
+      detail = (index >= 0 ? tr("{value} of {orderedLength}", {value: index + 1, orderedLength: ordered.length}) : tr("Current photo"));
     }
   }
   if (SELECTION_REQUEST?.pending) { title = 'Loading the full selection…'; detail = `${S.images.length} of ${S.catalogTotal} photos loaded`; }
   else if (S.catalogLoadError) detail += ' · Catalog loading paused; Select All retries';
   const linkedCount = linkedMetadataTargets(targets).length;
-  if (linkedCount > targets.length) detail += ` · ${linkedCount - targets.length} paired file${linkedCount - targets.length === 1 ? '' : 's'} linked`;
+  if (linkedCount > targets.length) detail += trn(" · {count} paired file linked", " · {count} paired files linked", linkedCount - targets.length, {value: linkedCount - targets.length});
   document.querySelectorAll('[data-cull-context-title]').forEach((element) => {
     element.textContent = title;
   });
@@ -6728,9 +6717,9 @@ function saveStateFor(im, immediate = false) {
  * asked outright, what to flag. Nothing here writes a flag on its own. */
 
 const CULL_LABELS = {
-  subjectSharpness: 'Subject sharpness', eyeSharpness: 'Eye sharpness',
-  eyesOpen: 'Eyes open', exposure: 'Exposure issues',
-  misfire: 'Misfires', document: 'Documents',
+  subjectSharpness: tr("Subject sharpness"), eyeSharpness: tr("Eye sharpness"),
+  eyesOpen: tr("Eyes open"), exposure: tr("Exposure issues"),
+  misfire: tr("Misfires"), document: tr("Documents"),
 };
 
 function chosenCull(group) {
@@ -6769,21 +6758,14 @@ function syncCullPanel() {
     const count = $(`cull${name[0].toUpperCase()}${name.slice(1)}Count`);
     if (count) {
       const entry = tally[name];
-      count.textContent = !ready ? ''
-        : entry.judged ? `${entry.yes}`
-        : 'not judged';
+      count.textContent = !ready ? '' : entry.judged ? `${entry.yes}` : tr("not judged");
     }
   }
 
   $('cullEnableIndex').hidden = !!S.ai.enabled;
-  $('cullIntroText').textContent = !S.ai.enabled
-    ? ' to sort a shoot into selects and rejects.'
-    : !scored
-      ? (S.ai.running
-        ? 'Scoring photos as the index reaches them.'
-        : 'No photos have been scored yet.')
-      : `${scored} of ${scope.length} photos scored. `
-        + 'Nothing is flagged until you ask for it.';
+  $('cullIntroText').textContent = !S.ai.enabled ? '' : !scored
+    ? (S.ai.running ? tr('Scoring photos as the index reaches them.') : tr('No photos have been scored yet.'))
+    : tr('{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.', {scored, scopeLength: scope.length});
 
   for (const button of document.querySelectorAll('.cull-review button')) {
     button.classList.toggle('on', button.dataset.review === S.cull.review);
@@ -6791,22 +6773,12 @@ function syncCullPanel() {
   }
   const selects = cullResults(CULL_SELECT).length;
   const rejects = cullResults(CULL_REJECT).length;
-  $('cullReviewHint').textContent = S.cull.review === 'all'
-    ? 'Reviewing every photo.'
-    : S.cull.review === 'selects'
-      ? (chosenCull(CULL_SELECT).length
-        ? `Reviewing ${selects} photo${selects === 1 ? '' : 's'} that met a select criterion.`
-        : 'Choose a select criterion above.')
-      : (chosenCull(CULL_REJECT).length
-        ? `Reviewing ${rejects} photo${rejects === 1 ? '' : 's'} that met a reject criterion.`
-        : 'Choose a reject criterion above.');
+  $('cullReviewHint').textContent = S.cull.review === 'all' ? tr("Reviewing every photo.") : S.cull.review === 'selects' ? chosenCull(CULL_SELECT).length ? trn("Reviewing {count} photo that met a select criterion.", "Reviewing {count} photos that met a select criterion.", selects, {selects: selects}) : tr("Choose a select criterion above.") : chosenCull(CULL_REJECT).length ? trn("Reviewing {count} photo that met a reject criterion.", "Reviewing {count} photos that met a reject criterion.", rejects, {rejects: rejects}) : tr("Choose a reject criterion above.");
 
   $('cullApplyPicks').disabled = !ready || !selects;
   $('cullApplyRejects').disabled = !ready || !rejects;
-  $('cullApplyPicks').textContent = selects
-    ? `Pick ${selects} select${selects === 1 ? '' : 's'}` : 'Pick the selects';
-  $('cullApplyRejects').textContent = rejects
-    ? `Reject ${rejects} photo${rejects === 1 ? '' : 's'}` : 'Reject the rejects';
+  $('cullApplyPicks').textContent = selects ? trn("Pick {count} select", "Pick {count} selects", selects, {selects: selects}) : tr("Pick the selects");
+  $('cullApplyRejects').textContent = rejects ? trn("Reject {count} photo", "Reject {count} photos", rejects, {rejects: rejects}) : tr("Reject the rejects");
 }
 
 function setCullReview(review) {
@@ -6822,17 +6794,21 @@ async function applyCullFlags(group, status) {
   const targets = linkedMetadataTargets(cullResults(group));
   if (!targets.length) return;
   const criteria = chosenCull(group).map((name) => CULL_LABELS[name]).join(', ');
-  const verb = status === 'approved' ? 'Pick' : 'Reject';
-  if (!window.confirm(
-    `${verb} ${targets.length} photo${targets.length === 1 ? '' : 's'} `
-    + `matching ${criteria}? Existing flags on those photos are replaced.`)) return;
+  const confirmation = status === 'approved'
+    ? trn('Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.',
+      'Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.', targets.length, {criteria})
+    : trn('Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.',
+      'Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.', targets.length, {criteria});
+  if (!window.confirm(confirmation)) return;
   for (const image of targets) enqueuePhotoPatch(image, { status });
   if (!await flushEditSaves()) return;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   refreshLists();
   syncCullPanel();
-  toast(`${verb}ed ${targets.length} photo${targets.length === 1 ? '' : 's'}`);
+  toast(status === 'approved'
+    ? trn('Picked {count} photo', 'Picked {count} photos', targets.length)
+    : trn('Rejected {count} photo', 'Rejected {count} photos', targets.length));
 }
 
 for (const name of [...CULL_SELECT, ...CULL_REJECT]) {
@@ -6862,26 +6838,24 @@ function syncAIPhoto() {
   if (!host) return;
   const metadata = cur()?.ai;
   if (!S.ai.enabled) {
-    host.textContent = 'Enable the index to create searchable metadata.';
+    host.textContent = tr("Enable the index to create searchable metadata.");
     return;
   }
   if (!metadata) {
-    host.textContent = S.ai.running
-      ? 'Waiting for this photo to be indexed.'
-      : 'No index metadata is available for this photo.';
+    host.textContent = S.ai.running ? tr("Waiting for this photo to be indexed.") : tr("No index metadata is available for this photo.");
     return;
   }
   const lines = [];
   if (metadata.caption) lines.push(metadata.caption);
-  if (metadata.tags?.length) lines.push(`Tags · ${metadata.tags.join(', ')}`);
-  if (metadata.ocr?.length) lines.push(`Visible text · ${metadata.ocr.join(' · ')}`);
-  lines.push(`${metadata.faceCount || 0} ${(metadata.faceCount || 0) === 1 ? 'face' : 'faces'} detected`);
+  if (metadata.tags?.length) lines.push(tr("Tags · {value}", {value: metadata.tags.join(', ')}));
+  if (metadata.ocr?.length) lines.push(tr("Visible text · {value}", {value: metadata.ocr.join(' · ')}));
+  lines.push(trn("{count} face detected", "{count} faces detected", metadata.faceCount || 0, {value: metadata.faceCount || 0}));
   const called = [...CULL_SELECT, ...CULL_REJECT]
     .map((name) => [name, cullVerdict(metadata, name)])
     .filter(([, entry]) => entry && entry.verdict !== 'unknown')
-    .map(([name, entry]) => `${CULL_LABELS[name]} · `
-      + `${entry.verdict === 'yes' ? 'yes' : 'no'} — ${entry.detail}`);
-  if (called.length) lines.push('', 'Culling', ...called);
+    .map(([name, entry]) => tr('{criterion} · {verdict} — {detail}',
+      {criterion: CULL_LABELS[name], verdict: entry.verdict === 'yes' ? tr('yes') : tr('no'), detail: entry.detail}));
+  if (called.length) lines.push('', tr("Culling"), ...called);
   host.textContent = lines.join('\n');
 }
 
@@ -6896,18 +6870,12 @@ function syncAI(status = S.ai) {
   const toggle = $('aiToggle');
   toggle.classList.toggle('on', enabled);
   toggle.setAttribute('aria-pressed', String(enabled));
-  toggle.querySelector('.switch-label').textContent = enabled ? 'On' : 'Off';
+  toggle.querySelector('.switch-label').textContent = enabled ? tr("On") : tr("Off");
   toggle.disabled = !vision.available && !enabled;
-  $('aiVisionStatus').textContent = vision.available ? 'Available' : (S.serverPlatform && S.serverPlatform !== 'darwin' ? 'Not available on this platform' : 'Build required');
-  $('aiFoundationStatus').textContent = foundation.available
-    ? 'Rich descriptions on'
-    : (foundation.reason || 'Not available');
-  $('aiToggleDescription').textContent = foundation.available
-    ? 'Descriptions, objects, scenes, text, and faces'
-    : 'Objects, scenes, visible text, and faces';
-  $('search').placeholder = enabled
-    ? 'Search photos, contents, text, and faces'
-    : 'Search photos and keywords';
+  $('aiVisionStatus').textContent = vision.available ? tr("Available") : (S.serverPlatform && S.serverPlatform !== 'darwin' ? tr("Not available on this platform") : tr("Build required"));
+  $('aiFoundationStatus').textContent = foundation.available ? tr("Rich descriptions on") : (foundation.reason || tr("Not available"));
+  $('aiToggleDescription').textContent = foundation.available ? tr("Descriptions, objects, scenes, text, and faces") : tr("Objects, scenes, visible text, and faces");
+  $('search').placeholder = enabled ? tr("Search photos, contents, text, and faces") : tr("Search photos and keywords");
 
   const card = $('aiStatusCard');
   card.classList.toggle('running', running);
@@ -6916,19 +6884,17 @@ function syncAI(status = S.ai) {
   const fraction = S.ai.total ? clamp(S.ai.completed / S.ai.total, 0, 1) : 0;
   $('aiProgress').style.width = `${fraction * 100}%`;
   if (!enabled) {
-    $('aiStatus').textContent = S.ai.indexed ? 'Paused' : 'Off';
-    $('aiStatusDetail').textContent = S.ai.indexed
-      ? `${S.ai.indexed} indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted.`
-      : 'No background analysis is running.';
+    $('aiStatus').textContent = S.ai.indexed ? tr("Paused") : tr("Off");
+    $('aiStatusDetail').textContent = S.ai.indexed ? trn("{count} indexed photo remains local until deleted.", "{count} indexed photos remain local until deleted.", S.ai.indexed, {SAiIndexed: S.ai.indexed}) : tr("No background analysis is running.");
   } else if (running) {
-    $('aiStatus').textContent = `Indexing ${S.ai.completed} of ${S.ai.total}`;
-    $('aiStatusDetail').textContent = S.ai.current || 'Preparing the library…';
+    $('aiStatus').textContent = tr("Indexing {SAiCompleted} of {SAiTotal}", {SAiCompleted: S.ai.completed, SAiTotal: S.ai.total});
+    $('aiStatusDetail').textContent = ((S.ai.current || tr("Preparing the library…")));
   } else if (S.ai.lastError) {
-    $('aiStatus').textContent = `${S.ai.indexed} photos indexed`;
+    $('aiStatus').textContent = tr("{SAiIndexed} photos indexed", {SAiIndexed: S.ai.indexed});
     $('aiStatusDetail').textContent = S.ai.lastError;
   } else {
-    $('aiStatus').textContent = S.ai.skipped ? 'Complete with skipped photos' : 'Ready';
-    $('aiStatusDetail').textContent = `${S.ai.indexed} ${S.ai.indexed === 1 ? 'photo' : 'photos'} indexed on this Mac.`;
+    $('aiStatus').textContent = S.ai.skipped ? tr('Complete with skipped photos') : tr('Ready');
+    $('aiStatusDetail').textContent = trn('{count} photo indexed on this Mac.', '{count} photos indexed on this Mac.', S.ai.indexed);
   }
   if (enabled && !running && S.ai.skipped) {
     $('aiStatusDetail').textContent += ` ${aiSkippedSummary(S.ai)}`;
@@ -6967,7 +6933,7 @@ function scheduleAIStatusPoll(reset = false) {
         await refreshAIResults();
       }
     } catch (error) {
-      toast(`Local index: ${error.message}`);
+      toast(tr("Local index: {errorMessage}", {errorMessage: error.message}));
     }
   }, 1000);
 }
@@ -6990,7 +6956,7 @@ async function runAIAction(action) {
       refreshLists();
     }
   } catch (error) {
-    toast(`Local index: ${error.message}`);
+    toast(tr("Local index: {errorMessage}", {errorMessage: error.message}));
   } finally {
     $('cullEnableIndex').disabled = false;
     syncAI();
@@ -7019,10 +6985,10 @@ function loadRemainingCatalogRows(total) {
     while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
       await catalogIdleTurn();
       const page = await api('/api/catalog/query', {limit: 2000, offset, sort: {field: 'capture', dir: 'desc'}});
-      if (generation !== catalogPageGeneration || images !== S.images) throw new Error('The library changed; select photos again');
+      if (generation !== catalogPageGeneration || images !== S.images) throw new Error(tr('The library changed; select photos again'));
       if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
       total = Number.isFinite(+page.total) ? +page.total : total;
-      if (!page.items.length && offset < total) throw new Error('Catalog loading stopped before all photos arrived');
+      if (!page.items.length && offset < total) throw new Error(tr('Catalog loading stopped before all photos arrived'));
       for (const row of page.items) {
         if (known.has(row.name)) continue;
         known.add(row.name);
@@ -7033,7 +6999,7 @@ function loadRemainingCatalogRows(total) {
       _stripKey = _gridKey = '';
       refreshLists();
     }
-    if (images !== S.images) throw new Error('The library changed; select photos again');
+    if (images !== S.images) throw new Error(tr('The library changed; select photos again'));
   })().catch(error => {
     if (images === S.images) { S.catalogLoadError = error.message; syncCullBars(); }
     throw error;
@@ -7079,19 +7045,20 @@ async function chooseEditRecovery(records) {
   dialog.setAttribute('aria-labelledby', 'editRecoveryTitle');
   dialog.style.color = 'var(--ink)';
   const title = document.createElement('strong'); title.id = 'editRecoveryTitle';
-  title.textContent = 'Recover unsaved edits?';
+  title.textContent = tr("Recover unsaved edits?");
   const description = document.createElement('p');
-  description.textContent = `Local recovery found changes for ${records.length} photo${records.length === 1 ? '' : 's'}. Restoring replaces their saved edits with these recovered changes.`;
+  description.textContent = trn('Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.',
+    'Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes.', records.length);
   if (records.some(item => item.legacyIdentity)) {
-    description.textContent += ' Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.';
+    description.textContent += ' ' + tr('Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.');
   }
   const list = document.createElement('p');
-  list.textContent = records.slice(0, 3).map(item => item.name + (item.legacyIdentity ? ' (partial identity)' : '')).join(' · ')
+  list.textContent = records.slice(0, 3).map(item => item.legacyIdentity ? tr('{name} (partial identity)', {name: item.name}) : item.name).join(' · ')
     + (records.length > 3 ? ' …' : '');
   const actions = document.createElement('div'); actions.className = 'modal-actions';
-  const discard = document.createElement('button'); discard.textContent = 'Keep saved edits';
+  const discard = document.createElement('button'); discard.textContent = tr("Keep saved edits");
   const restore = document.createElement('button'); restore.className = 'accent-btn';
-  restore.textContent = 'Restore edits';
+  restore.textContent = tr("Restore edits");
   actions.append(discard, restore); dialog.append(title, description, list, actions);
   document.body.append(dialog);
   return new Promise(resolve => {
@@ -7114,7 +7081,7 @@ async function initializeEditRecovery(data) {
   try { records = await editRecovery.list(); editRecoveryReady = true; }
   catch (error) {
     updateEditRecoveryHealth(error);
-    toast(`Local edit recovery is unavailable: ${error.message}. Keep this window open if saving fails.`);
+    toast(tr("Local edit recovery is unavailable: {errorMessage}. Keep this window open if saving fails.", {errorMessage: error.message}));
     return;
   }
   const outstanding = [];
@@ -7126,12 +7093,12 @@ async function initializeEditRecovery(data) {
       && record.payload.sourceKey === saved._recoveryLegacySourceKey);
     if (!saved || saved.error || !saved._recoverySourceKey
       || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey && !legacyIdentity)) {
-      toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
+      toast(tr('Recovery kept for {recordName}: its original is unavailable or has changed.', {recordName: record.name}));
       continue;
     }
     if (saved && !saved.error && recoveryAcknowledged(record.payload, saved)) {
       await editRecovery.remove(record.name, record.token).catch(error =>
-        toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
+        toast(tr('Saved edits are safe; recovery cleanup needs attention: {errorMessage}', {errorMessage: error.message})));
     } else outstanding.push({...record, legacyIdentity,
       // A confirmed legacy recovery is guarded against the complete identity
       // seen before the dialog. Changes while the dialog is open still fail.
@@ -7142,7 +7109,7 @@ async function initializeEditRecovery(data) {
     for (const record of outstanding) {
       editSaveQueue.enqueue(record.name, {...record.payload,
         expectedRecoverySourceKey: record.payload.sourceKey,
-        history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
+        history: record.payload.history ? {...record.payload.history, label: tr("Recovered edit")} : null},
       {immediate: true});
     }
     await flushEditSaves();
@@ -7160,7 +7127,7 @@ async function initializeEditRecovery(data) {
     }
   } else {
     for (const record of outstanding) await editRecovery.remove(record.name, record.token)
-      .catch(error => toast(`Saved edits kept; recovery cleanup needs attention: ${error.message}`));
+      .catch(error => toast(tr("Saved edits kept; recovery cleanup needs attention: {errorMessage}", {errorMessage: error.message})));
   }
 }
 
@@ -7208,13 +7175,13 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   $('output_recipe').replaceChildren(...Object.entries(d.outputRecipes || {}).map(([id, recipe]) => {
     const option = document.createElement('option');
     option.value = id; option.textContent = recipe.name;
-    option.title = recipe.description || '';
+    option.title = ((recipe.description || ''));
     return option;
   }));
   const groups = [
-    ['Color negative', (p) => p.type === 'negative' && p.channelModel === 'color'],
-    ['Black & white negative', (p) => p.type === 'negative' && p.channelModel === 'bw'],
-    ['Reversal / slide (scanned)', (p) => p.type === 'positive'],
+    [tr("Color negative"), (p) => p.type === 'negative' && p.channelModel === 'color'],
+    [tr("Black & white negative"), (p) => p.type === 'negative' && p.channelModel === 'bw'],
+    [tr("Reversal / slide (scanned)"), (p) => p.type === 'positive'],
   ];
   for (const [label, matches] of groups) {
     const group = document.createElement('optgroup');
@@ -7326,7 +7293,7 @@ const filmBrowser = createFilmBrowser({
     state: cloneValue({ params: S.params, grade: S.grade, crop: S.crop, optics: S.optics, heals: S.heals, masks: S.masks }),
   } : null,
   apply: (stock, name) => {
-    if (cur()?.name !== name) { toast('Photo changed. Open film previews again.'); return; }
+    if (cur()?.name !== name) { toast(tr("Photo changed. Open film previews again.")); return; }
     $('stock').value = stock;
     $('filmProfileToggle').setAttribute('aria-checked', 'true');
     $('stock').dispatchEvent(new Event('change', { bubbles: true }));
@@ -7363,9 +7330,9 @@ $('rawSaveCameraDefault').onclick = async () => {
   });
   if (result.error) return toast(result.error);
   S.rawDefault = result;
-  $('rawCameraDefaultStatus').textContent = `${result.label} default is saved.`;
+  $('rawCameraDefaultStatus').textContent = tr("{resultLabel} default is saved.", {resultLabel: result.label});
   syncControls();
-  toast('Camera default saved');
+  toast(tr("Camera default saved"));
 };
 $('rawResetCameraDefault').onclick = async () => {
   if (!cur() || !isRawInput()) return;
@@ -7374,9 +7341,9 @@ $('rawResetCameraDefault').onclick = async () => {
   });
   if (result.error) return toast(result.error);
   S.rawDefault = result;
-  $('rawCameraDefaultStatus').textContent = `${result.label} uses the app defaults.`;
+  $('rawCameraDefaultStatus').textContent = tr("{resultLabel} uses the app defaults.", {resultLabel: result.label});
   syncControls();
-  toast('Camera default removed');
+  toast(tr("Camera default removed"));
 };
 $('development_time').onchange = () => {
   pushUndo(); readControls(); saveState(); renderFilm(0);
@@ -7473,7 +7440,7 @@ document.querySelectorAll('[data-source]').forEach((b) => {
 $('addPhotosBtn').onclick = () => postNative('addPhotos');
 $('importPhotosBtn').onclick = () => {
   if (!postNative('importApplePhotos')) {
-    toast('Apple Photos import is available in the macOS app');
+    toast(tr("Apple Photos import is available in the macOS app"));
   }
 };
 $('addFolderBtn').onclick = () => postNative('addFolder');
@@ -7533,7 +7500,7 @@ $('aiToggle').onclick = () => runAIAction(S.ai.enabled ? 'disable' : 'enable');
 $('cullEnableIndex').onclick = () => runAIAction('enable');
 $('aiRebuild').onclick = () => runAIAction('rebuild');
 $('aiClear').onclick = () => {
-  if (window.confirm('Delete the generated local photo index? Your originals and edits will not be changed.')) {
+  if (window.confirm(tr("Delete the generated local photo index? Your originals and edits will not be changed."))) {
     runAIAction('clear');
   }
 };
@@ -7621,7 +7588,7 @@ $('resetEdit').onclick = () => {
   S.grade = { ...GRADE_DEFAULTS };
   syncGrade(); syncCurveFromGrade(); syncHsl();
   drawGrade(); saveState(true);
-  toast('Edit adjustments reset');
+  toast(tr("Edit adjustments reset"));
 };
 
 $('resetFilm').onclick = () => {
@@ -7631,7 +7598,7 @@ $('resetFilm').onclick = () => {
     for (const key of RESET_GROUPS[group]) S.params[key] = S.filmDefaults[key];
   }
   syncControls(); saveState(true); renderFilm(0);
-  toast('Film settings reset');
+  toast(tr("Film settings reset"));
 };
 
 $('zoomIn').onclick = () => { S.zoomMode = 'custom'; zoomCentre(1.25); };
@@ -7660,7 +7627,7 @@ $('cropReset').onclick = () => {
   syncBrowserOriginal(requestedPreviewWidth());
   applyCropVisual(); zoomReset(); saveState();
   if (hadRotate) renderFilm(0); else refreshBaseEdits();
-  toast('Crop & geometry reset');
+  toast(tr("Crop & geometry reset"));
   syncControls();
 };
 
@@ -7693,9 +7660,7 @@ function syncCompareControl() {
   button.disabled = blocked;
   button.classList.toggle('on', S.compareActive);
   button.setAttribute('aria-pressed', String(S.compareActive));
-  button.title = blocked
-    ? 'Select a photo or finish sampling to compare'
-    : 'Toggle split before and after view (\\)';
+  button.title = blocked ? tr("Select a photo or finish sampling to compare") : tr("Toggle split before and after view (\\)");
 }
 
 function syncCompareView() {
@@ -7752,7 +7717,7 @@ function setCompareActive(on, { restoreTool = true } = {}) {
   renderCompare();
   const back = $('compareReturn');
   back.hidden = !next || !compareReturnPane;
-  back.textContent = `Return to ${{ cropPane: 'Crop', maskPane: 'Mask', healPane: 'Remove' }[compareReturnPane] || 'tool'}`;
+  back.textContent = tr("Return to {value}", {value: ({ cropPane: 'Crop', maskPane: 'Mask', healPane: 'Remove' }[compareReturnPane] || tr("tool"))});
   if (!next && restoreTool && returnPane) switchPane(returnPane, { fromCompare: true });
   scheduleNativeMenuState();
 }
@@ -7860,26 +7825,17 @@ function updateTransferActions() {
   $('batchAiMaskBtn').disabled = !targets.length || Boolean(MASK_BATCH?.active);
   const mergeTargets = [...new Set(targets.map((image) => image.sourceName || image.name))];
   $('mergeRun').disabled = mergeTargets.length < 2;
-  $('mergeSelectionSummary').textContent = mergeTargets.length >= 2
-    ? `${mergeTargets.length} distinct originals selected.${
-      $('mergeMode').value === 'focus' ? ' Use a tripod or focus rail sequence.' : ''}`
-    : 'Select two or more photos in the library.';
+  $('mergeSelectionSummary').textContent = mergeTargets.length >= 2 ? $('mergeMode').value === 'focus' ? tr("{mergeTargetsLength} distinct originals selected. Use a tripod or focus rail sequence.", {mergeTargetsLength: mergeTargets.length}) : tr("{mergeTargetsLength} distinct originals selected.", {mergeTargetsLength: mergeTargets.length}) : tr("Select two or more photos in the library.");
   const collection = activeCollection();
   $('addToCollection').disabled = !collection || collection.type !== 'regular' ||
     !targets.length;
-  $('copyBtn').title = cur()
-    ? `Choose edit settings to copy (${primaryKey}+Shift+C)`
-    : 'Select a photo to copy its settings';
-  $('pasteBtn').title = !S.clipboard
-    ? 'Copy settings first'
-    : targets.length > 1
-      ? `Paste edit settings to ${targets.length} selected photos (${primaryKey}+Shift+V)`
-      : `Paste edit settings (${primaryKey}+Shift+V)`;
+  $('copyBtn').title = cur() ? tr("Choose edit settings to copy ({primaryKey}+Shift+C)", {primaryKey: primaryKey}) : tr("Select a photo to copy its settings");
+  $('pasteBtn').title = !S.clipboard ? tr("Copy settings first") : targets.length > 1 ? tr("Paste edit settings to {targetsLength} selected photos ({primaryKey}+Shift+V)", {targetsLength: targets.length, primaryKey: primaryKey}) : tr("Paste edit settings ({primaryKey}+Shift+V)", {primaryKey: primaryKey});
   scheduleNativeMenuState();
 }
 let transferReturnFocus = null, transferSource = null, transferRunning = false, transferCancelled = false;
 function closeTransferDialog() {
-  if (transferRunning) { transferCancelled = true; $('transferStatus').textContent = 'Stopping after the current photo…'; return; }
+  if (transferRunning) { transferCancelled = true; $('transferStatus').textContent = tr("Stopping after the current photo…"); return; }
   $('transferDialog').classList.remove('on'); $('transferDialog').setAttribute('aria-hidden', 'true');
   transferReturnFocus?.focus?.({ preventScroll: true });
 }
@@ -7914,9 +7870,9 @@ $('copyBtn').onclick = () => {
     checkbox.onchange = () => { $('transferCopy').disabled = !host.querySelector('input:checked'); };
   }
   $('transferCopy').hidden = false; $('transferCopy').disabled = !Object.values(selected).some(Boolean);
-  $('transferCancel').textContent = 'Cancel';
-  $('transferStatus').textContent = 'Only selected settings replace the destination. AI masks are detected again; object selections and painted AI refinements require manual review.';
-  showTransferDialog('Copy edit settings');
+  $('transferCancel').textContent = tr("Cancel");
+  $('transferStatus').textContent = tr("Only selected settings replace the destination. AI masks are detected again; object selections and painted AI refinements require manual review.");
+  showTransferDialog(tr("Copy edit settings"));
   requestAnimationFrame(() => host.querySelector('input')?.focus());
 };
 $('transferCopy').onclick = async () => {
@@ -7925,33 +7881,33 @@ $('transferCopy').onclick = async () => {
   APP_PREFS.copySettings = choices;
   const saved = await api('/api/prefs', { copySettings: choices }).catch(() => null);
   updateTransferActions(); closeTransferDialog(); confirmTransfer('copyBtn');
-  toast(saved?.error || !saved ? 'Settings copied; choices could not be remembered' : 'Settings copied');
+  toast(saved?.error || !saved ? tr("Settings copied; choices could not be remembered") : tr("Settings copied"));
 };
 async function pasteSettingsTo(targets) {
-  if (!S.clipboard || transferRunning) return toast('Copy settings first');
+  if (!S.clipboard || transferRunning) return toast(tr("Copy settings first"));
   const items = [...new Set(targets)].filter(Boolean);
   if (!items.length) return;
   // Capture pending controls before opening the blocking transfer dialog.
   saveState();
   const clipboard = cloneValue(S.clipboard), failures = [];
   transferRunning = true; transferCancelled = false;
-  $('transferGroups').hidden = true; $('transferCopy').hidden = true; $('transferCancel').textContent = 'Stop';
-  showTransferDialog('Pasting edit settings');
+  $('transferGroups').hidden = true; $('transferCopy').hidden = true; $('transferCancel').textContent = tr("Stop");
+  showTransferDialog(tr("Pasting edit settings"));
   $('transferCancel').focus();
   let completed = 0;
   for (const [index, target] of items.entries()) {
     let image = target;
     if (transferCancelled) break;
-    $('transferStatus').textContent = `Photo ${index + 1} of ${items.length} · ${displayName(image)}`;
+    $('transferStatus').textContent = tr("Photo {value} of {itemsLength} · {value2}", {value: index + 1, itemsLength: items.length, value2: displayName(image)});
     try {
       // A lean catalog row is not a destination edit state. Load it before
       // merging so unchecked settings can never be replaced with defaults.
       await prefetchState(image);
-      if (!isStateLoaded(image)) throw new Error("Existing settings could not be loaded; this photo was left unchanged");
+      if (!isStateLoaded(image)) throw new Error(tr("Existing settings could not be loaded; this photo was left unchanged"));
       const readDestination = () => {
         image = S.images.find(item => item.name === target.name);
-        if (!image) throw new Error('This photo is no longer in the library; settings were not pasted');
-        if (!isStateLoaded(image)) throw new Error('The latest existing settings are not loaded. Try pasting again; this photo was left unchanged');
+        if (!image) throw new Error(tr("This photo is no longer in the library; settings were not pasted"));
+        if (!isStateLoaded(image)) throw new Error(tr("The latest existing settings are not loaded. Try pasting again; this photo was left unchanged"));
         const pending = editSaveQueue.getPending(image.name)?.state || {};
         const currentEdits = {...image, ...pending};
         return { ...currentEdits, params: normalizeFilmParams(currentEdits.params),
@@ -7980,14 +7936,14 @@ async function pasteSettingsTo(targets) {
         const latest = readDestination();
         const refreshed = transferPatch(clipboard, latest, clipboard.choices);
         if (generatedFor !== maskInput(latest, refreshed)) {
-          throw new Error('The photo or its geometry changed while masks were prepared. Try pasting again; this photo was left unchanged');
+          throw new Error(tr("The photo or its geometry changed while masks were prepared. Try pasting again; this photo was left unchanged"));
         }
         patch = {...refreshed, masks};
       }
       if (transferCancelled) break;
       const { cropChoices, ...entry } = patch;
       if (image === cur() && S.editingName === image.name) pushUndo();
-      enqueuePhotoPatch(image, entry, {historyLabel: 'Paste selected settings'});
+      enqueuePhotoPatch(image, entry, {historyLabel: tr("Paste selected settings")});
       image.cropChoices = cropChoices ?? image.cropChoices;
       image.stateLoaded = true;
       if (image !== cur()) photoUndo.clear(image.name);
@@ -8004,11 +7960,10 @@ async function pasteSettingsTo(targets) {
   }
   transferRunning = false;
   refreshLists(); confirmTransfer('pasteBtn');
-  $('transferCancel').textContent = 'Done';
-  $('transferStatus').textContent = `Pasted to ${completed} of ${items.length} photos${transferCancelled ? ' · stopped' : ''}.`
-    + (failures.length ? `\n${failures.join('\n')}` : '');
+  $('transferCancel').textContent = tr("Done");
+  $('transferStatus').textContent = (transferCancelled ? tr("Pasted to {completed} of {itemsLength} photos · stopped.{value}", {completed: completed, itemsLength: items.length, value: failures.length ? `\n${failures.join('\n')}` : ''}) : tr("Pasted to {completed} of {itemsLength} photos.{value}", {completed: completed, itemsLength: items.length, value: failures.length ? `\n${failures.join('\n')}` : ''}));
   $('transferCancel').focus();
-  if (!failures.length && !transferCancelled) { closeTransferDialog(); toast(`Pasted to ${completed} photo${completed === 1 ? '' : 's'}`); }
+  if (!failures.length && !transferCancelled) { closeTransferDialog(); toast(trn("Pasted to {count} photo", "Pasted to {count} photos", completed, {completed: completed})); }
 
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
@@ -8036,7 +7991,7 @@ function exportExtraOptions(prefix) {
 function syncExportDestination(prefix) {
   const relative = $(prefix + 'DestinationMode').value === 'original-folder-relative';
   $(prefix + 'ChooseDestination').disabled = relative;
-  $(prefix + 'Destination').placeholder = relative ? 'Subfolder name, e.g. film-exports' : 'Choose a destination folder';
+  $(prefix + 'Destination').placeholder = relative ? tr("Subfolder name, e.g. film-exports") : tr("Choose a destination folder");
   if (relative && /^(?:[/\\]|[a-zA-Z]:)/.test($(prefix + 'Destination').value)) {
     $(prefix + 'Destination').value = 'film-exports';
   }
@@ -8046,12 +8001,12 @@ $('exportCancel').onclick = async () => {
   $('exportCancel').disabled = true;
   const result = await api(`/api/jobs/${activeExportJobId}/cancel`, {});
   if (result.error) { $('exportCancel').disabled = false; toast(result.error); }
-  else $('estat').textContent = 'Stopping export…';
+  else $('estat').textContent = tr("Stopping export…");
 };
 $('exportDetails').onclick = () => {
   const status = latestExportStatus || {};
   const lines = [`${status.completed || 0} exported · ${status.skipped || 0} skipped · ${status.cancelledCount || 0} cancelled`];
-  for (const error of status.errors || []) lines.push(`Error: ${error}`);
+  for (const error of status.errors || []) lines.push(tr("Error: {error}", {error: error}));
   for (const item of status.warnings || []) {
     lines.push(`${item.name}${item.path ? ' → ' + item.path : ''}`);
     lines.push(...item.warnings.map((warning) => `  ${warning}`));
@@ -8072,7 +8027,7 @@ $('exportResultDialog').addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeExportResult();
   if (event.key === 'Tab') { event.preventDefault(); $('exportResultClose').focus(); }
 });
-function currentExportRecipe(name = 'Export recipe') {
+function currentExportRecipe(name = tr('Export recipe')) {
   return {
     ...exportExtraOptions('ex'),
     name, format: $('exFormat').value, quality: +$('exQuality').value,
@@ -8085,7 +8040,7 @@ function currentExportRecipe(name = 'Export recipe') {
 }
 function renderExportRecipes(selected = '') {
   const host = $('exRecipe');
-  host.replaceChildren(new Option('Current settings', ''));
+  host.replaceChildren(new Option(tr("Current settings"), ''));
   for (const recipe of EXPORT_RECIPES) {
     const option = new Option(recipe.name, recipe.id);
     option.dataset.builtin = String(!!recipe.builtin);
@@ -8098,7 +8053,7 @@ function renderExportRecipes(selected = '') {
 function applyExportRecipe(recipe) {
   if (!recipe) return;
   if (recipe.format === 'heif' && S.serverPlatform && S.serverPlatform !== 'darwin') {
-    toast('HEIF export requires macOS. Choose JPEG, PNG, or TIFF.');
+    toast(tr('HEIF export requires macOS. Choose JPEG, PNG, or TIFF.'));
     return;
   }
   const { id: _id, name: _name, builtin: _builtin, ...settings } = recipe;
@@ -8128,7 +8083,7 @@ $('exRecipe').onchange = () => {
   $('exRecipeDelete').disabled = !recipe || recipe.builtin;
 };
 $('exRecipeSave').onclick = async () => {
-  const name = await askName('Save export recipe');
+  const name = await askName(tr("Save export recipe"));
   if (!name) return;
   const recipes = await api('/api/export-recipes', {
     action: 'save', recipe: currentExportRecipe(name),
@@ -8137,14 +8092,14 @@ $('exRecipeSave').onclick = async () => {
   EXPORT_RECIPES = recipes;
   const saved = [...recipes].reverse().find((recipe) => recipe.name === name && !recipe.builtin);
   renderExportRecipes(saved?.id || '');
-  toast('Export recipe saved');
+  toast(tr("Export recipe saved"));
 };
 $('exRecipeDelete').onclick = async () => {
   const recipe = EXPORT_RECIPES.find((item) => item.id === $('exRecipe').value);
   if (!recipe || recipe.builtin) return;
   const recipes = await api('/api/export-recipes', { action: 'delete', id: recipe.id });
   if (recipes.error) return toast(recipes.error);
-  EXPORT_RECIPES = recipes; renderExportRecipes(); toast('Export recipe deleted');
+  EXPORT_RECIPES = recipes; renderExportRecipes(); toast(tr("Export recipe deleted"));
 };
 $('exChooseDestination').onclick = () => postNative('chooseExportFolder');
 $('exQuality').addEventListener('input', () => {
@@ -8177,9 +8132,10 @@ async function runExport(customOpts = {}) {
 
   const r = await api('/api/export', payload);
   if (r.error) return toast(r.error);
-  if (!r.queued) return toast('Nothing matches that selection');
-  const destinationLabel = (r.destination || '').split('/').filter(Boolean).at(-1) || 'destination';
-  toast(`Exporting ${r.queued === 1 ? '1 photo' : `${r.queued} photos`} to ${destinationLabel}…`);
+  if (!r.queued) return toast(tr("Nothing matches that selection"));
+  const destinationLabel = (r.destination || '').split('/').filter(Boolean).at(-1) || tr('destination');
+  toast(trn('Exporting {count} photo to {destination}…', 'Exporting {count} photos to {destination}…',
+    r.queued, {destination: destinationLabel}));
   clearInterval(exportTimer);
   const ident = r.jobId;
   activeExportJobId = ident;
@@ -8192,7 +8148,7 @@ async function runExport(customOpts = {}) {
     if (polling) return;
     if (++exportPolls > 7200) {
       clearInterval(exportTimer);
-      $('estat').textContent = 'Export status unavailable; check Jobs.';
+      $('estat').textContent = tr("Export status unavailable; check Jobs.");
       return;
     }
     polling = true;
@@ -8201,7 +8157,7 @@ async function runExport(customOpts = {}) {
       if (activeExportJobId !== ident) return;
       const st = record.result || {};
       latestExportStatus = st;
-      $('estat').textContent = st.cancel_requested ? 'Stopping export…' : `${record.progress}/${record.total}`;
+      $('estat').textContent = st.cancel_requested ? tr("Stopping export…") : `${record.progress}/${record.total}`;
       $('exportDetails').hidden = !(st.errors?.length || st.warnings?.length);
       if (['done', 'failed', 'cancelled'].includes(record.state)) {
         clearInterval(exportTimer);
@@ -8211,17 +8167,20 @@ async function runExport(customOpts = {}) {
         const errors = record.errors?.length || 0;
         latestExportStatus = { ...st, errors: record.errors || [] };
         $('exportDetails').hidden = false;
-        $('estat').textContent = `${st.completed || 0} exported` +
-          (record.state === 'cancelled' ? ' · cancelled' : ' · done') +
-          (warnings ? ` · ${warnings} warning(s)` : '') + (errors ? ` · ${errors} error(s)` : '');
+        $('estat').textContent = [
+          trn('{count} photo exported', '{count} photos exported', st.completed || 0),
+          record.state === 'cancelled' ? tr('Cancelled') : tr('Done'),
+          warnings ? trn('{count} warning', '{count} warnings', warnings) : '',
+          errors ? trn('{count} error', '{count} errors', errors) : '',
+        ].filter(Boolean).join(' · ');
         toast($('estat').textContent, st.completed > 0 && st.revealPath ? {
-          label: 'Show in Finder', link: true,
+          label: tr('Show in Finder'), link: true,
           run: () => postNative('revealFolder', { path: st.revealPath }),
         } : null, 2800);
-        notifyCompletion(record.state === 'cancelled' ? 'Export cancelled' : 'Export complete', $('estat').textContent);
+        notifyCompletion(record.state === 'cancelled' ? tr("Export cancelled") : tr("Export complete"), $('estat').textContent);
       }
     } catch (_error) {
-      if (activeExportJobId === ident) $('estat').textContent = 'Reconnecting to export…';
+      if (activeExportJobId === ident) $('estat').textContent = tr("Reconnecting to export…");
     } finally { polling = false; }
   }, 600);
   return r;
@@ -8271,7 +8230,7 @@ function scheduleExportPreview() {
   clearTimeout(exportPreviewTimer);
   const request = ++exportPreviewGeneration;
   exportPreviewController?.abort();
-  $('exportPreviewFilename').textContent = 'Updating preview…';
+  $('exportPreviewFilename').textContent = tr("Updating preview…");
   $('exportPreviewDimensions').textContent = '';
   $('exportPreviewDestination').textContent = '';
   $('exportPreviewNote').textContent = '';
@@ -8284,24 +8243,18 @@ function scheduleExportPreview() {
       });
       const result = await response.json();
       if (request !== exportPreviewGeneration) return;
-      if (!response.ok || result.error) throw new Error(result.error || 'Preview unavailable');
+      if (!response.ok || result.error) throw new Error(((result.error || tr("Preview unavailable"))));
       const sample = result.sample;
       $('exportModalTitle').textContent = $('exportModalRun').textContent =
-        `Export ${result.total} Photo${result.total === 1 ? '' : 's'}`;
+        trn("Export {count} Photo", "Export {count} Photos", result.total, {resultTotal: result.total});
       $('exportModalRun').disabled = !result.total;
-      $('exportPreviewFilename').textContent = sample?.filename || 'No photos match this selection';
-      $('exportPreviewDimensions').textContent = sample?.dimensionsExact
-        ? `${sample.width.toLocaleString()} × ${sample.height.toLocaleString()} px`
-        : (sample?.dimensionsNote || '');
+      $('exportPreviewFilename').textContent = ((sample?.filename || tr("No photos match this selection")));
+      $('exportPreviewDimensions').textContent = sample?.dimensionsExact ? tr("{value} × {value2} px", {value: sample.width.toLocaleString(), value2: sample.height.toLocaleString()}) : (sample?.dimensionsNote || '');
       $('exportPreviewDestination').textContent = (result.samples || [sample]).filter(Boolean).map((item) => item.path).join('\n');
-      $('exportPreviewNote').textContent = sample?.skipped
-        ? 'This file already exists and will be skipped.'
-        : (result.total > 1 ? `${result.total} photos · first output shown. ` : '') +
-          (result.destinationCount > 1 ? `${result.destinationCount} destination folders. ` : '') +
-          'Names reflect existing files and may change before export.';
+      $('exportPreviewNote').textContent = sample?.skipped ? tr("This file already exists and will be skipped.") : tr("{value}{value2}Names reflect existing files and may change before export.", {value: result.total > 1 ? tr("{resultTotal} photos · first output shown. ", {resultTotal: result.total}) : '', value2: result.destinationCount > 1 ? tr("{resultDestinationCount} destination folders. ", {resultDestinationCount: result.destinationCount}) : ''});
     } catch (error) {
       if (request !== exportPreviewGeneration || error.name === 'AbortError') return;
-      $('exportPreviewFilename').textContent = 'Preview unavailable';
+      $('exportPreviewFilename').textContent = tr("Preview unavailable");
       $('exportPreviewNote').textContent = error.message;
     }
   }, 180);
@@ -8353,21 +8306,19 @@ function updateExportModalScope() {
   let label = '';
   if (which === 'selected') {
     count = targets.length;
-    label = count === 1
-      ? (targets[0]?.displayName || targets[0]?.name || 'Selected photo')
-      : `${count} photos selected`;
+    label = (count === 1 ? (targets[0]?.displayName || targets[0]?.name || tr("Selected photo")) : tr("{count} photos selected", {count: count}));
   } else if (which === 'approved') {
     count = pickedCount;
-    label = `${count} picked ${count === 1 ? 'photo' : 'photos'}`;
+    label = trn("{count} picked photo", "{count} picked photos", count, {count: count});
   } else if (which === 'rated') {
     count = ratedCount;
-    label = `${count} rated ${count === 1 ? 'photo' : 'photos'}`;
+    label = trn("{count} rated photo", "{count} rated photos", count, {count: count});
   } else {
     count = allCount;
-    label = `${count} ${count === 1 ? 'photo' : 'photos'}`;
+    label = trn('{count} photo', '{count} photos', count);
   }
 
-  const titleText = count === 1 ? 'Export 1 Photo' : `Export ${count} Photos`;
+  const titleText = trn('Export {count} Photo', 'Export {count} Photos', count);
   $('exportModalTitle').textContent = titleText;
   $('exportModalRun').textContent = titleText;
   $('exportTargetLabel').textContent = label;
@@ -8412,19 +8363,15 @@ function openExportModal() {
 
   const select = $('modalExWhich');
   select.innerHTML = '';
-  const selLabel = targets.length === 1
-    ? `Selected photo (${activeImage?.displayName || activeImage?.name || '1'})`
-    : `Selected photos (${targets.length})`;
+  const selLabel = (targets.length === 1 ? tr("Selected photo ({value})", {value: activeImage?.displayName || activeImage?.name || '1'}) : tr("Selected photos ({targetsLength})", {targetsLength: targets.length}));
   select.appendChild(new Option(selLabel, 'selected'));
-  select.appendChild(new Option(`Picked only (${pickedCount})`, 'approved'));
-  select.appendChild(new Option(`Rated 1+ (${ratedCount})`, 'rated'));
-  select.appendChild(new Option(`All except rejected (${allCount})`, 'all'));
+  select.appendChild(new Option(tr("Picked only ({pickedCount})", {pickedCount: pickedCount}), 'approved'));
+  select.appendChild(new Option(tr("Rated 1+ ({ratedCount})", {ratedCount: ratedCount}), 'rated'));
+  select.appendChild(new Option(tr("All except rejected ({allCount})", {allCount: allCount}), 'all'));
 
   select.value = targets.length ? 'selected' : (pickedCount ? 'approved' : 'all');
 
-  $('exportModalSubtitle').textContent = activeImage
-    ? (activeImage.displayName || activeImage.name)
-    : (targets.length ? `${targets.length} photos selected` : 'Choose photos to export');
+  $('exportModalSubtitle').textContent = activeImage ? (activeImage.displayName || activeImage.name) : targets.length ? tr("{targetsLength} photos selected", {targetsLength: targets.length}) : tr("Choose photos to export");
 
   updateExportModalScope();
   markExportPreset(matchingExportPreset());
@@ -8545,14 +8492,14 @@ function closeExternalEdit() {
   $('externalEditDialog').setAttribute('aria-hidden', 'true');
 }
 $('editExternalOpen').onclick = async () => {
-  if (!transferTargets().length) return toast('Select a photo to edit');
+  if (!transferTargets().length) return toast(tr("Select a photo to edit"));
   EXTERNAL_PREFS = await getJSON('/api/prefs').catch(() => ({}));
   postNative('listEditors', {}, true);
   const savedPath = EXTERNAL_PREFS.externalEditor?.path || '';
   if (savedPath && !$('externalEditor').querySelector(
       `option[value="${CSS.escape(savedPath)}"]`)) {
     $('externalEditor').appendChild(new Option(
-      EXTERNAL_PREFS.externalEditor?.name || savedPath.split('/').pop(), savedPath));
+      ((EXTERNAL_PREFS.externalEditor?.name || savedPath.split('/').pop())), savedPath));
   }
   $('externalEditor').value = savedPath;
   $('externalEditSpace').value = EXTERNAL_PREFS.externalEditorSpace || 'prophoto';
@@ -8561,9 +8508,7 @@ $('editExternalOpen').onclick = async () => {
   const hasRaw = transferTargets().some((image) => image.raw);
   $('externalEditMode').querySelector('[value="original"]').disabled = hasRaw;
   $('externalEditMode').value = hasRaw ? 'adjusted' : 'adjusted';
-  $('externalEditStatus').textContent = hasRaw
-    ? `RAW originals are rendered to an adjusted ${$('externalEditBitDepth').value}-bit TIFF.`
-    : 'The adjusted TIFF is written beside its original.';
+  $('externalEditStatus').textContent = hasRaw ? tr("RAW originals are rendered to an adjusted {valueValue}-bit TIFF.", {valueValue: $('externalEditBitDepth').value}) : tr("The adjusted TIFF is written beside its original.");
   $('externalEditDialog').classList.add('on');
   $('externalEditDialog').setAttribute('aria-hidden', 'false');
 };
@@ -8603,7 +8548,7 @@ $('externalEditRun').onclick = async () => {
     app: editorPath,
   });
   if (!result.ok) {
-    $('externalEditStatus').textContent = result.error || 'External edit failed.';
+    $('externalEditStatus').textContent = ((result.error || tr("External edit failed.")));
     return;
   }
   const openPaths = async (paths, names = []) => {
@@ -8616,29 +8561,28 @@ $('externalEditRun').onclick = async () => {
   };
   if (!result.running) return openPaths(result.paths, result.names);
   $('externalEditRun').disabled = true;
-  $('externalEditStatus').textContent = `Rendering 0/${result.queued}…`;
+  $('externalEditStatus').textContent = tr("Rendering 0/{resultQueued}…", {resultQueued: result.queued});
   clearInterval(externalEditTimer);
   let polls = 0;
   externalEditTimer = setInterval(async () => {
     if (++polls > 1800) {
       clearInterval(externalEditTimer); externalEditTimer = null;
       $('externalEditRun').disabled = false;
-      $('externalEditStatus').textContent = 'The TIFF is still rendering.';
+      $('externalEditStatus').textContent = tr("The TIFF is still rendering.");
       return;
     }
     const status = await getJSON('/api/edit-external/status').catch(() => null);
     if (!status) return;
-    $('externalEditStatus').textContent = `Rendering ${status.done}/${status.total}`
-      + (status.errors?.length ? ` · ${status.errors.length} error` : '');
+    $('externalEditStatus').textContent = tr("Rendering {statusDone}/{statusTotal}{value}", {statusDone: status.done, statusTotal: status.total, value: status.errors?.length ? tr(" · {statusErrorsLength} error", {statusErrorsLength: status.errors.length}) : ''});
     if (!status.running) {
       clearInterval(externalEditTimer); externalEditTimer = null;
       $('externalEditRun').disabled = false;
       if (status.paths?.length) {
         await openPaths(status.paths, status.names || []);
         const warnings = status.warnings || [];
-        if (warnings.length) toast(`TIFF created with warnings: ${warnings[0].name}: ${warnings[0].warnings.join(' ')}`);
+        if (warnings.length) toast(tr("TIFF created with warnings: {valueName}: {value}", {valueName: warnings[0].name, value: warnings[0].warnings.join(' ')}));
       }
-      else $('externalEditStatus').textContent = status.errors?.[0] || 'No TIFF was created.';
+      else $('externalEditStatus').textContent = ((status.errors?.[0] || tr("No TIFF was created.")));
     }
   }, 900);
 };
@@ -8657,7 +8601,7 @@ function finishMergePolling(message, kind = '') {
 }
 $('mergeRun').onclick = async () => {
   const names = selectedMergeNames();
-  if (names.length < 2) return toast('Select at least two distinct originals');
+  if (names.length < 2) return toast(tr("Select at least two distinct originals"));
   if (!await saveState(true)) return;
   const result = await api('/api/merge', {
     mode: $('mergeMode').value, names, name: $('mergeName').value.trim(),
@@ -8665,40 +8609,41 @@ $('mergeRun').onclick = async () => {
   if (result.error) return finishMergePolling(result.error, 'error');
   $('mergeRun').disabled = true;
   $('mergeStatus').className = 'merge-status running';
-  $('mergeStatus').textContent = `Preparing 0/${result.queued} photos…`;
+  $('mergeStatus').textContent = tr("Preparing 0/{resultQueued} photos…", {resultQueued: result.queued});
   let polls = 0;
   clearInterval(mergeTimer);
   mergeTimer = setInterval(async () => {
     polls += 1;
-    if (polls > 1800) return finishMergePolling('Merge is still running; reopen this panel to check.', 'error');
+    if (polls > 1800) return finishMergePolling(tr("Merge is still running; reopen this panel to check."), 'error');
     try {
       const status = await fetch('/api/merge/status').then((response) => response.json());
       if (status.running) {
         const labels = {
-          preparing: 'Preparing photos', aligning: 'Aligning frames',
-          fusing: 'Fusing exposures', analyzing: 'Measuring sharpness',
-          blending: status.mode === 'panorama' ? 'Blending panorama' : 'Fusing sharp regions',
-          saving: 'Writing 16-bit TIFF',
+          preparing: tr("Preparing photos"), aligning: tr("Aligning frames"),
+          fusing: tr("Fusing exposures"), analyzing: tr("Measuring sharpness"),
+          blending: (status.mode === 'panorama' ? tr("Blending panorama") : tr("Fusing sharp regions")),
+          saving: tr("Writing 16-bit TIFF"),
         };
-        const phase = labels[status.phase] || 'Merging';
+        const phase = (labels[status.phase] || tr("Merging"));
         const count = status.phaseTotal > 1
           ? ` ${status.phaseProgress || 0}/${status.phaseTotal}` : '';
         const elapsed = status.elapsedSeconds >= 1
-          ? ` · ${Math.round(status.elapsedSeconds)}s` : '';
+          ? tr('{seconds}s', { seconds: Math.round(status.elapsedSeconds) }) : '';
         const inliers = status.mode === 'focus' && status.phase === 'aligning'
-          ? ` · ${status.alignmentInliers || 0} minimum alignment inliers` : '';
-        $('mergeStatus').textContent = `${phase}${count}…${elapsed}${inliers}`;
+          ? trn('{count} minimum alignment inlier', '{count} minimum alignment inliers', status.alignmentInliers || 0) : '';
+        $('mergeStatus').textContent = [`${phase}${count}…`, elapsed, inliers].filter(Boolean).join(' · ');
       } else if (status.error) {
         finishMergePolling(status.error, 'error');
-        toast('Merge failed');
+        toast(tr("Merge failed"));
       } else if (status.output) {
-        finishMergePolling(`Created ${status.output}${status.elapsedSeconds
-          ? ` in ${status.elapsedSeconds.toFixed(1)}s` : ''}`);
-        toast('Merge complete');
+        finishMergePolling(status.elapsedSeconds
+          ? tr('Created {name} in {seconds}s', { name: status.output, seconds: status.elapsedSeconds.toFixed(1) })
+          : tr('Created {name}', { name: status.output }));
+        toast(tr("Merge complete"));
         setTimeout(() => location.reload(), 650);
       }
     } catch (error) {
-      finishMergePolling(`Merge status unavailable: ${error.message}`, 'error');
+      finishMergePolling(tr("Merge status unavailable: {errorMessage}", {errorMessage: error.message}), 'error');
     }
   }, 1000);
 };
@@ -8794,7 +8739,7 @@ function runSpeedTapAction(key) {
       (S.activePane === 'maskPane' || S.activePane === 'healPane')) {
     S.localPinsVisible = !S.localPinsVisible;
     drawEditOverlay();
-    toast(S.localPinsVisible ? 'Edit pins shown' : 'Edit pins hidden');
+    toast(S.localPinsVisible ? tr("Edit pins shown") : tr("Edit pins hidden"));
   }
 }
 
@@ -9241,7 +9186,7 @@ document.addEventListener('keydown', (e) => {
   else if (k === 'h' && (S.activePane === 'maskPane' || S.activePane === 'healPane')) {
     S.localPinsVisible = !S.localPinsVisible;
     drawEditOverlay();
-    toast(S.localPinsVisible ? 'Edit pins shown' : 'Edit pins hidden');
+    toast(S.localPinsVisible ? tr("Edit pins shown") : tr("Edit pins hidden"));
   }
   else if ((e.key === '[' || e.key === ']') &&
       (S.activePane === 'maskPane' || S.activePane === 'healPane')) {
@@ -9343,19 +9288,19 @@ async function showExif(name) {
     scheduleAutomaticPreview();
     if (S.zoomMode === '100' && S.viewMode === 'detail') renderFilm(0);
   }
-  const row = (k, v) => v ? `<div class="r"><span>${k}</span><b>${v}</b></div>` : '';
+  const row = (k, v) => v ? `<div class="r"><span>${i18nHTML(k)}</span><b>${i18nHTML(v)}</b></div>` : '';
   const shutter = e.ExposureTime ? e.ExposureTime + ' s' : '';
   box.innerHTML =
-    row('File', name) +
-    row('Camera', e.Model) +
-    row('Lens', e.LensModel || e.LensID) +
-    row('Focal', e.FocalLength) +
-    row('Aperture', e.FNumber ? 'f/' + e.FNumber : '') +
-    row('Shutter', shutter) +
-    row('ISO', e.ISO) +
-    row('Size', (width && height) ? `${width}×${height}` : '') +
-    row('On disk', e.FileSize) +
-    row('Taken', e.DateTimeOriginal) || '—';
+    row(tr("File"), name) +
+    row(tr("Camera"), e.Model) +
+    row(tr("Lens"), e.LensModel || e.LensID) +
+    row(tr("Focal"), e.FocalLength) +
+    row(tr("Aperture"), e.FNumber ? 'f/' + e.FNumber : '') +
+    row(tr("Shutter"), shutter) +
+    row(tr("ISO"), e.ISO) +
+    row(tr("Size"), (width && height) ? `${width}×${height}` : '') +
+    row(tr("On disk"), e.FileSize) +
+    row(tr("Taken"), e.DateTimeOriginal) || '—';
   if (e.DateTimeOriginal) {
     if (im) im.date = e.DateTimeOriginal;
   }
@@ -9384,8 +9329,8 @@ function renderKeywords() {
     label.textContent = keyword;
     const remove = document.createElement('button');
     remove.type = 'button';
-    remove.title = `Remove ${keyword}`;
-    remove.setAttribute('aria-label', `Remove ${keyword}`);
+    remove.title = tr("Remove {keyword}", {keyword: keyword});
+    remove.setAttribute('aria-label', tr("Remove {keyword}", {keyword: keyword}));
     remove.textContent = '×';
     remove.onclick = () => {
       im.keywords = (im.keywords || []).filter(k => k !== keyword);
@@ -9458,7 +9403,7 @@ function renderVersions() {
   if (!versions.length) {
     const empty = document.createElement('div');
     empty.className = 'version-empty';
-    empty.textContent = 'No named versions yet';
+    empty.textContent = tr("No named versions yet");
     box.appendChild(empty);
     return;
   }
@@ -9488,17 +9433,17 @@ function renderVersions() {
       syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
       syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
       drawGrade(); applyCropVisual(); saveState(true); renderFilm(0);
-      toast(`Applied ${version.name}`);
+      toast(tr("Applied {versionName}", {versionName: version.name}));
     };
     const del = document.createElement('button');
     del.className = 'version-delete';
-    del.title = `Delete ${version.name}`;
-    del.setAttribute('aria-label', `Delete ${version.name}`);
+    del.title = tr("Delete {versionName}", {versionName: version.name});
+    del.setAttribute('aria-label', tr("Delete {versionName}", {versionName: version.name}));
     del.textContent = '×';
     del.onclick = () => {
       const im = cur();
       im.versions = im.versions.filter((v) => v.id !== version.id);
-      saveState(true); renderVersions(); toast('Version deleted');
+      saveState(true); renderVersions(); toast(tr("Version deleted"));
     };
     row.append(apply, del);
     box.appendChild(row);
@@ -9508,8 +9453,8 @@ function renderVersions() {
 $('versionCreate').onclick = async () => {
   const im = cur();
   if (!im) return;
-  const proposed = `Version ${(im.versions || []).length + 1}`;
-  const name = await askName('Create version', proposed);
+  const proposed = tr("Version {value}", {value: (im.versions || []).length + 1});
+  const name = await askName(tr("Create version"), proposed);
   if (!name || !name.trim()) return;
   readControls();
   const version = {
@@ -9519,7 +9464,7 @@ $('versionCreate').onclick = async () => {
     masks: cloneValue(serializableMasks()), heals: cloneValue(S.heals), optics: cloneValue(S.optics),
   };
   im.versions = [version, ...(im.versions || [])].slice(0, 50);
-  saveState(true); renderVersions(); toast('Version created');
+  saveState(true); renderVersions(); toast(tr("Version created"));
 };
 
 /* -------------------------------------------------------------- presets */
@@ -9551,7 +9496,7 @@ function renderPresetSummary(resetChoices = false) {
   $('presetDel').disabled = !preset || preset.collection === 'builtin';
   $('presetReplace').hidden = preset?.scope === 'look';
   if (!preset) {
-    box.textContent = 'Choose a preset to see its source and conversion coverage.';
+    box.textContent = tr("Choose a preset to see its source and conversion coverage.");
     return;
   }
   if (resetChoices) {
@@ -9561,28 +9506,30 @@ function renderPresetSummary(resetChoices = false) {
   const mapped = preset.conversion?.mapped ?? (preset.includedGrade || []).length;
   const ignored = preset.conversion?.ignored || [];
   const title = document.createElement('strong');
-  title.textContent = `${source} · ${mapped} mapped setting${mapped === 1 ? '' : 's'}`;
+  title.textContent = trn("{source} · {count} mapped setting", "{source} · {count} mapped settings", mapped, {source: source, mapped: mapped});
   const detail = document.createElement('div');
   detail.textContent = preset.scope === 'look'
-    ? `Film ${preset.filmMode === 'preserve' ? 'unchanged' : preset.filmMode || 'unchanged'}. Keeps exposure, white balance, crop and photo corrections.`
-    : preset.includeFilm ? 'Includes the Film profile and physical stages.'
-      : 'Portable edit preset; Film can be kept on or turned off below.';
+    ? tr('Film {mode}. Keeps exposure, white balance, crop and photo corrections.', {mode: preset.filmMode === 'off' ? tr('off') : preset.filmMode === 'apply' ? tr('applied') : tr('unchanged')})
+    : preset.includeFilm ? tr('Includes the Film profile and physical stages.')
+      : tr('Portable edit preset; Film can be kept on or turned off below.');
   box.append(title, detail);
   if (preset.recommendedFilmOff) {
     const recommendation = document.createElement('div');
-    recommendation.textContent = 'Turning Film off may give a closer match to this imported look.';
+    recommendation.textContent = tr("Turning Film off may give a closer match to this imported look.");
     box.append(recommendation);
   }
   if (!presetHasApplicableSettings(preset)) {
     const warning = document.createElement('div');
     warning.className = 'preset-warning';
-    warning.textContent = 'No compatible adjustments were found; this preset cannot be applied.';
+    warning.textContent = tr("No compatible adjustments were found; this preset cannot be applied.");
     box.appendChild(warning);
   }
   if (ignored.length) {
     const warning = document.createElement('div');
     warning.className = 'preset-warning';
-    warning.textContent = `${ignored.length} unsupported setting${ignored.length === 1 ? '' : 's'} skipped: ${ignored.slice(0, 4).join(', ')}${ignored.length > 4 ? '…' : ''}`;
+    const details = ignored.slice(0, 4).join(', ') + (ignored.length > 4 ? '…' : '');
+    warning.textContent = trn('{count} unsupported setting skipped: {details}',
+      '{count} unsupported settings skipped: {details}', ignored.length, {details});
     box.appendChild(warning);
   }
 }
@@ -9592,9 +9539,9 @@ async function loadPresets(select) {
   try {
     const response = await fetch('/api/presets');
     const result = await response.json();
-    if (!response.ok || !Array.isArray(result)) throw new Error('Presets unavailable');
+    if (!response.ok || !Array.isArray(result)) throw new Error(tr('Presets unavailable'));
     PRESETS = result;
-  } catch { toast('Could not load presets. Your saved presets are kept.'); }
+  } catch { toast(tr('Could not load presets. Your saved presets are kept.')); }
   const migrated = migratePresetFavorites(Array.isArray(APP_PREFS.presetFavorites) ? APP_PREFS.presetFavorites : [], PRESETS);
   if (JSON.stringify(migrated) !== JSON.stringify(APP_PREFS.presetFavorites || [])) {
     APP_PREFS.presetFavorites = migrated; savePrefs();
@@ -9603,12 +9550,12 @@ async function loadPresets(select) {
   const keep = select ?? sel.value;
   sel.replaceChildren();
   const empty = document.createElement('option');
-  empty.value = ''; empty.textContent = '— none —';
+  empty.value = ''; empty.textContent = tr("— none —");
   sel.appendChild(empty);
   for (const preset of PRESETS) {
     const option = document.createElement('option');
     option.value = presetKey(preset);
-    option.textContent = `${preset.name}${preset.collection === 'builtin' ? ' · Built-in' : ''}`;
+    option.textContent = preset.collection === 'builtin' ? tr('{name} · Built-in', {name: preset.name}) : preset.name;
     sel.appendChild(option);
   }
   if (keep) sel.value = presetKey(PRESETS.find((preset) => presetKey(preset) === keep || preset.name === keep) || { name: keep });
@@ -9712,11 +9659,11 @@ function stateWithPreset(state, preset, options = {}, photoName) {
 }
 
 function applyPreset(preset, photo, options = {}) {
-  if (!photo?.name || cur()?.name !== photo.name || S.editingName !== photo.name) return toast('Wait for the photo to finish loading before applying a preset');
-  if (!presetHasApplicableSettings(preset)) return toast('No compatible settings to apply');
+  if (!photo?.name || cur()?.name !== photo.name || S.editingName !== photo.name) return toast(tr("Wait for the photo to finish loading before applying a preset"));
+  if (!presetHasApplicableSettings(preset)) return toast(tr("No compatible settings to apply"));
   readControls();
   const currentState = JSON.parse(snapshot());
-  if (presetApplicationMatches(currentState, preset, options, photo.name)) return toast(`${preset.name} is already applied`);
+  if (presetApplicationMatches(currentState, preset, options, photo.name)) return toast(tr('{presetName} is already applied', {presetName: preset.name}));
   const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
     LAST_PRESET_APPLICATION.name === photo.name && LAST_PRESET_APPLICATION.state === JSON.stringify(currentState)
     ? LAST_PRESET_APPLICATION.base : currentState;
@@ -9736,10 +9683,10 @@ function applyPreset(preset, photo, options = {}) {
     replace: !!options.replace, filmOff: !!options.filmOff,
   };
   PRESET_BROWSER?.refresh();
-  toast(`${options.replace ? 'Replaced adjustments with' : 'Applied'} ${preset.name}`, {
-    label: 'Undo', run() {
+  toast(options.replace ? tr('Replaced adjustments with {name}', {name: preset.name}) : tr('Applied {name}', {name: preset.name}), {
+    label: tr("Undo"), run() {
       if (cur()?.name === photo.name && S.editingName === photo.name) undo();
-      else toast('Return to the edited photo to undo its preset');
+      else toast(tr("Return to the edited photo to undo its preset"));
     },
   });
 }
@@ -9763,7 +9710,7 @@ PRESET_BROWSER = createPresetBrowser({
     try {
       const response = await fetch(`/api/presets/community${refresh ? '?refresh=1' : ''}`);
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Community is unavailable');
+      if (!response.ok) throw new Error(result.error || tr('Community is unavailable'));
       COMMUNITY_PRESETS = result;
     } catch (error) {
       COMMUNITY_PRESETS = { ...COMMUNITY_PRESETS, offline: true, error: error.message };
@@ -9775,7 +9722,7 @@ PRESET_BROWSER = createPresetBrowser({
     if (COMMUNITY_RECIPES.has(key)) return COMMUNITY_RECIPES.get(key);
     const response = await fetch(`/api/presets/community/recipe?id=${encodeURIComponent(preset.id)}&version=${encodeURIComponent(preset.version)}`, { signal });
     const result = await response.json();
-    if (!response.ok || !result.preset) throw new Error(result.error || 'Recipe is unavailable');
+    if (!response.ok || !result.preset) throw new Error(result.error || tr('Recipe is unavailable'));
     COMMUNITY_RECIPES.set(key, result.preset);
     return result.preset;
   },
@@ -9783,10 +9730,10 @@ PRESET_BROWSER = createPresetBrowser({
     const result = await api('/api/presets/community/install', { id: preset.id, version: preset.version });
     if (result.error) throw new Error(result.error);
     await loadPresets(result.installedId);
-    toast('Preset saved to Yours');
+    toast(tr('Preset saved to Yours'));
   },
   async onDuplicate(preset) {
-    const name = await askName('Save a preset copy', `${preset.name} copy`);
+    const name = await askName(tr('Save a preset copy'), tr('{name} copy', {name: preset.name}));
     if (!name?.trim()) return;
     const result = await api('/api/presets', {
       ...preset, action: 'save', id: undefined, collection: undefined,
@@ -9794,7 +9741,7 @@ PRESET_BROWSER = createPresetBrowser({
     });
     if (result.error) throw new Error(result.error);
     await loadPresets(name.trim());
-    toast('Copy saved to Yours');
+    toast(tr('Copy saved to Yours'));
   },
   async getSubmission(preset, { signal } = {}) {
     const response = await fetch('/api/presets/submission', {
@@ -9802,11 +9749,11 @@ PRESET_BROWSER = createPresetBrowser({
       body: JSON.stringify({ id: preset.id }),
     });
     const result = await response.json();
-    if (!response.ok || result.error) throw new Error(result.error || 'Could not inspect submission settings');
+    if (!response.ok || result.error) throw new Error(result.error || tr('Could not inspect submission settings'));
     return result;
   },
   async onDownloadExample(preset, value) {
-    if (!(value instanceof Blob)) throw new Error('Example image is unavailable');
+    if (!(value instanceof Blob)) throw new Error(tr('Example image is unavailable'));
     const stem = preset.name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100) || 'preset';
     downloadPresetFile({ filename: `${stem}-example.jpg`, contentType: 'image/jpeg',
       encoding: 'base64', content: bytesToBase64(await value.arrayBuffer()) });
@@ -9828,7 +9775,7 @@ PRESET_BROWSER = createPresetBrowser({
         w: width, format: 'jpeg', engine: photo.engine, client: 'preset-browser',
       }),
     });
-    if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('Preview unavailable');
+    if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(tr("Preview unavailable"));
     return response.blob();
   },
 });
@@ -9837,8 +9784,8 @@ $('presetSaveScope').onchange = () => { $('presetSaveOptions').hidden = $('prese
 $('presetSaveScope').onchange();
 
 $('presetSave').onclick = async () => {
-  if (!cur()) return toast('Select a photo first');
-  const name = await askName('Save preset');
+  if (!cur()) return toast(tr("Select a photo first"));
+  const name = await askName(tr("Save preset"));
   if (!name) return;
   readControls();
   const result = await api('/api/presets', {
@@ -9852,11 +9799,11 @@ $('presetSave').onclick = async () => {
   if (result.error) return toast(result.error);
   PRESETS = result;
   await loadPresets(name);
-  toast('Saved preset');
+  toast(tr("Saved preset"));
 };
 $('presetApply').onclick = () => {
   const preset = selectedPreset();
-  if (!preset) return toast('Pick a preset');
+  if (!preset) return toast(tr("Pick a preset"));
   applyPreset(preset, presetPhotoSnapshot(), { filmOff: $('presetFilmOff').checked });
 };
 $('presetReplace').onclick = () => {
@@ -9871,12 +9818,12 @@ $('presetDel').onclick = async () => {
   if (result.error) return toast(result.error);
   PRESETS = result;
   await loadPresets('');
-  toast('Deleted');
+  toast(tr("Deleted"));
 };
 
 async function importPresetUploads(uploads, nativeFailures = []) {
   if (!uploads.length) {
-    if (nativeFailures.length) toast(`${nativeFailures.length} preset file${nativeFailures.length === 1 ? '' : 's'} could not be read`);
+    if (nativeFailures.length) toast(trn("{count} preset file could not be read", "{count} preset files could not be read", nativeFailures.length, {nativeFailuresLength: nativeFailures.length}));
     return;
   }
   $('presetImport').disabled = true;
@@ -9885,11 +9832,9 @@ async function importPresetUploads(uploads, nativeFailures = []) {
     PRESETS = result.presets || PRESETS;
     await loadPresets();
     const failed = (result.failures?.length || 0) + nativeFailures.length;
-    toast(failed
-      ? `Imported ${result.imported || 0}; ${failed} could not be converted`
-      : `Imported ${result.imported || 0} preset${result.imported === 1 ? '' : 's'}`);
+    toast(failed ? tr("Imported {value}; {failed} could not be converted", {value: (result.imported || 0), failed: failed}) : trn("Imported {value} preset", "Imported {value} presets", result.imported, {value: (result.imported || 0)}));
   } catch {
-    toast('Preset import failed');
+    toast(tr("Preset import failed"));
   } finally {
     $('presetFiles').value = '';
     $('presetImport').disabled = false;
@@ -9936,13 +9881,13 @@ function downloadPresetFile(result) {
 
 $('presetExport').onclick = async () => {
   const preset = selectedPreset();
-  if (!preset) return toast('Pick a preset');
+  if (!preset) return toast(tr("Pick a preset"));
   const result = await api('/api/presets/export', {
     id: preset.id, name: preset.name, format: $('presetExportFormat').value,
   });
   if (result.error) return toast(result.error);
   const awaitingNativeSave = downloadPresetFile(result);
-  if (!awaitingNativeSave) toast(`Exported ${result.filename}`);
+  if (!awaitingNativeSave) toast(tr("Exported {resultFilename}", {resultFilename: result.filename}));
 };
 
 /* ----------------------------------------------------------- tone curve */
@@ -10044,8 +9989,10 @@ function drawCurve() {
 /* --------------------------------------------------------- colour mixer */
 S.hslBand = 'red';
 (function hslInit() {
+  const bandNames = {red: tr('Red'), orange: tr('Orange'), yellow: tr('Yellow'), green: tr('Green'),
+    aqua: tr('Aqua'), blue: tr('Blue'), purple: tr('Purple'), magenta: tr('Magenta')};
   $('hslBands').innerHTML = HSL_BANDS
-    .map((b) => `<button data-band="${b}"${b === 'red' ? ' class="on"' : ''}>${b.slice(0, 3)}</button>`)
+    .map((b) => `<button data-band="${b}" title="${i18nHTML(bandNames[b])}" aria-label="${i18nHTML(bandNames[b])}"${b === 'red' ? ' class="on"' : ''}>${i18nHTML(Array.from(bandNames[b]).slice(0, 3).join(''))}</button>`)
     .join('');
   $('hslBands').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
@@ -10097,10 +10044,10 @@ function syncPointColor() {
   select.replaceChildren(...(points.length ? points.map((point, index) => {
     const option = document.createElement('option');
     option.value = String(index);
-    option.textContent = `Color ${index + 1} · ${Math.round(point.hue)}°`;
+    option.textContent = tr("Color {value} · {value2}°", {value: index + 1, value2: Math.round(point.hue)});
     return option;
   }) : [Object.assign(document.createElement('option'), {
-    value: '', textContent: 'No sampled colors',
+    value: '', textContent: tr("No sampled colors"),
   })]));
   select.value = points.length ? String(S.pointColorIndex) : '';
   select.disabled = !points.length;
@@ -10115,8 +10062,7 @@ function syncPointColor() {
       (current.refSaturation == null || current.refLuminance == null));
     input.value = current[key] ?? 0;
     const output = document.querySelector(`[data-point-color-value="${key}"]`);
-    if (output) output.textContent = ['range', 'hueShift'].includes(key)
-      ? `${Math.round(current[key])}°` : fmtG(current[key]);
+    if (output) output.textContent = ['range', 'hueShift'].includes(key) ? `${Math.round(current[key])}°` : fmtG(current[key]);
   });
   $('pointColorSample').classList.toggle('on', S.pointColorPick);
   $('cmp').classList.toggle('color-picking', S.pointColorPick);
@@ -10134,7 +10080,7 @@ $('pointColorSample').onclick = () => {
     $('wbBtn').classList.remove('on');
     $('cmp').classList.remove('wb-picking');
     setCompareActive(false);
-    toast('Click a color in the photo');
+    toast(tr("Click a color in the photo"));
   }
   syncPointColor(); syncCompareControl(); syncPreviewBackend();
 };
@@ -10196,8 +10142,7 @@ function syncColorGrading() {
     const key = input.dataset.colorGrade;
     input.value = current[key];
     const output = document.querySelector(`[data-color-grade-value="${key}"]`);
-    if (output) output.textContent = key === 'hue'
-      ? `${Math.round(current[key])}°` : fmtG(current[key]);
+    if (output) output.textContent = key === 'hue' ? `${Math.round(current[key])}°` : fmtG(current[key]);
   });
   document.querySelectorAll('[data-color-grade-master]').forEach((input) => {
     const key = input.dataset.colorGradeMaster;
@@ -10292,7 +10237,7 @@ $('clipBtn').onclick = () => {
   syncPreviewBackend();
   drawGrade();
   drawHistogram();
-  toast(S.clip ? 'Clipping warning active' : 'Clipping warning off');
+  toast(S.clip ? tr("Clipping warning active") : tr("Clipping warning off"));
 };
 
 /* ------------------------------------------------------------ auto tone */
@@ -10302,7 +10247,7 @@ $('autoBtn').onclick = (event) => {
   refreshWebGLSamplingSurface();
   const s = S.gl && S.gl.sample();
   if (!s) {
-    toast('Auto tone: waiting for image preview…');
+    toast(tr("Auto tone: waiting for image preview…"));
     return;
   }
   let sum = 0, n = 0;
@@ -10322,7 +10267,7 @@ $('autoBtn').onclick = (event) => {
   S.grade.blacks = clamp(-(lo / 255) * 1.2, -1, 0.4);
   S.grade.whites = clamp((1 - hi / 255) * 1.2, -0.4, 1);
   syncGrade(); drawGrade(); saveState();
-  toast('Auto tone applied');
+  toast(tr("Auto tone applied"));
 };
 
 /* ---------------------------------------------------------- WB dropper */
@@ -10340,7 +10285,7 @@ $('wbBtn').onclick = (event) => {
   $('cmp').classList.toggle('wb-picking', S.wbPick);
   syncCompareControl();
   syncPreviewBackend();
-  if (S.wbPick) toast('Click a neutral grey area');
+  if (S.wbPick) toast(tr("Click a neutral grey area"));
 };
 function handleCanvasSample(e) {
   if (!S.maskColorPick && !S.pointColorPick && !S.wbPick) return;
@@ -10356,10 +10301,10 @@ function handleCanvasSample(e) {
   if (S.pointColorPick) {
     refreshWebGLSamplingSurface();
     const px = S.gl && S.gl.samplePixel(u, v);
-    if (!px) return toast('Color sampling: waiting for image preview…');
+    if (!px) return toast(tr("Color sampling: waiting for image preview…"));
     const [red, green, blue] = [px[0] / 255, px[1] / 255, px[2] / 255];
     if (Math.max(red, green, blue) - Math.min(red, green, blue) < 0.015) {
-      return toast('Choose a more colorful area');
+      return toast(tr("Choose a more colorful area"));
     }
     pushUndo();
     S.grade.pointColor = Array.isArray(S.grade.pointColor)
@@ -10374,15 +10319,15 @@ function handleCanvasSample(e) {
     S.pointColorIndex = S.grade.pointColor.length - 1;
     S.pointColorPick = false;
     syncPointColor(); syncCompareControl(); syncPreviewBackend(); drawGrade(); saveState();
-    toast('Point color sampled');
+    toast(tr("Point color sampled"));
     return;
   }
   if (!S.wbPick) return;
   refreshWebGLSamplingSurface();
   const px = S.gl && S.gl.samplePixel(u, v);
-  if (!px) return toast('White balance: waiting for image preview…');
+  if (!px) return toast(tr("White balance: waiting for image preview…"));
   const [rr, gg, bb] = [px[0] / 255, px[1] / 255, px[2] / 255];
-  if (rr + gg + bb < 0.06) return toast('Too dark to sample');
+  if (rr + gg + bb < 0.06) return toast(tr("Too dark to sample"));
   pushUndo();
   // Undo the channel gains the temp/tint model applies.
   S.grade.temp = clamp(((bb - rr) / Math.max(rr + bb, 1e-3)) / 0.36, -1, 1);
@@ -10392,7 +10337,7 @@ function handleCanvasSample(e) {
   $('cmp').classList.remove('wb-picking');
   syncCompareControl();
   syncPreviewBackend();
-  toast('White balance set');
+  toast(tr("White balance set"));
 }
 $('cv').addEventListener('click', handleCanvasSample);
 $('cmp').addEventListener('click', handleCanvasSample);
@@ -10426,7 +10371,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
   $(id).addEventListener('change', () => {
     const width = +$('cropCustomWidth').value, height = +$('cropCustomHeight').value;
     if (!(width >= 0.01 && width <= 10000 && height >= 0.01 && height <= 10000)) {
-      toast('Enter a width and height between 0.01 and 10,000'); syncCropPanel(); return;
+      toast(tr("Enter a width and height between 0.01 and 10,000")); syncCropPanel(); return;
     }
     S.cropCustomWidth = width; S.cropCustomHeight = height;
     S.cropLocked = true; applyCropRatioChoice();
@@ -10447,9 +10392,7 @@ function paintSelectionState() {
   document.querySelectorAll('.thumb').forEach((thumb) => {
     thumb.classList.toggle('msel', S.msel.has(thumb.dataset.name));
   });
-  $('counts').textContent = S.msel.size
-    ? `${S.msel.size} selected`
-    : `${S.idx + 1}/${S.images.length}`;
+  $('counts').textContent = S.msel.size ? tr("{SMselSize} selected", {SMselSize: S.msel.size}) : `${S.idx + 1}/${S.images.length}`;
   syncCullBars();
   updateTransferActions();
 }
@@ -10742,15 +10685,15 @@ HISTORY = createHistoryPanel({
   onRestoreCaptureTime: async (name, historyId) => {
     if (!await saveState(true)) return;
     const result = await api('/api/metadata/capture-time', {action:'restore-history',name,historyId});
-    if (!result?.ok || result.error) throw Error(result?.error || 'Could not restore capture time');
+    if (!result?.ok || result.error) throw Error(((result?.error || tr("Could not restore capture time"))));
     _exifCache.clear(); await reloadLibrary();
-    toast('Capture time restored; photo edits are unchanged');
+    toast(tr("Capture time restored; photo edits are unchanged"));
   },
   onRestore: (state) => {
     pushUndo();
     restore(JSON.stringify(state));
     saveState(true);
-    toast('Restored that step');
+    toast(tr("Restored that step"));
   },
 });
 
@@ -10820,7 +10763,7 @@ async function reloadLibrary() {
     renderFolders();
     if (METADATA) METADATA.refreshKeywordTree();
   } catch (error) {
-    toast('Could not refresh the library');
+    toast(tr("Could not refresh the library"));
   }
 }
 
@@ -10856,25 +10799,24 @@ function openSurvey(mode = 'survey') {
     const start = clamp(currentIndex - 2, 0, Math.max(0, list.length - 6));
     chosen = list.slice(start, start + 6).map((image) => image.name);
   }
-  if (!chosen.length) { toast('Select photos to survey'); return; }
-  if (!SURVEY.open(chosen, mode)) toast('Nothing to survey');
+  if (!chosen.length) { toast(tr("Select photos to survey")); return; }
+  if (!SURVEY.open(chosen, mode)) toast(tr("Nothing to survey"));
 }
 
 /* Move every rejected photo in the current view to the Trash, through the
  * host. The server resolves and validates the paths but never unlinks. */
 async function trashRejected() {
   const rejected = visible().filter((image) => image.status === 'skipped');
-  if (!rejected.length) { toast('No rejected photos in this view'); return; }
+  if (!rejected.length) { toast(tr("No rejected photos in this view")); return; }
   if (!window.confirm(
-    `Move ${rejected.length} rejected photo${rejected.length === 1 ? '' : 's'} `
-    + 'to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.')) return;
+    trn("Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", rejected.length, {rejectedLength: rejected.length}))) return;
   const result = await api('/api/photos/trash',
                            { names: rejected.map((image) => image.name) });
   if (!sendNative('trashFiles', { paths: result.paths })) {
-    toast('Moving files to the Trash needs the desktop app');
+    toast(tr("Moving files to the Trash needs the desktop app"));
     return;
   }
-  toast(`Moving ${rejected.length} photos to the Trash`);
+  toast(tr("Moving {rejectedLength} photos to the Trash", {rejectedLength: rejected.length}));
 }
 
 /* ------------------------------------------------------- survey controls */
@@ -10892,7 +10834,7 @@ async function keepSurveySelection() {
   for (const image of others) enqueuePhotoPatch(image, {status: 'skipped'});
   refreshLists();
   if (!await flushEditSaves()) return;
-  toast('Marked the select and rejected the rest');
+  toast(tr("Marked the select and rejected the rest"));
 }
 if ($('surveyKeep')) $('surveyKeep').onclick = keepSurveySelection;
 
@@ -10902,7 +10844,7 @@ if ($('autoLevel')) {
     const im = cur();
     if (!im) return;
     const session = cropSession;
-    $('autoLevelNote').textContent = 'Looking for lines…';
+    $('autoLevelNote').textContent = tr("Looking for lines…");
     try {
       const result = await api('/api/geometry/auto',
                                { name: im.name, mode, rotate: S.params?.rotate || 0 });
@@ -10911,7 +10853,7 @@ if ($('autoLevel')) {
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
         $('autoLevelNote').textContent =
-          (result.notes || []).join(' ') || 'No usable lines found.';
+          (((result.notes || []).join(' ') || tr("No usable lines found.")));
         return;
       }
       pushUndo();
@@ -10921,10 +10863,9 @@ if ($('autoLevel')) {
       refreshBaseEdits();
       const confidence = Math.round((result.confidence || 0) * 100);
       $('autoLevelNote').textContent =
-        `${result.lines || 0} lines · ${confidence}% confidence`
-        + ((result.notes || []).length ? ` · ${result.notes.join(' ')}` : '');
+        tr("{value} lines · {confidence}% confidence{value2}", {value: (result.lines || 0), confidence: confidence, value2: (result.notes || []).length ? ` · ${result.notes.join(' ')}` : ''});
     } catch (error) {
-      $('autoLevelNote').textContent = 'Could not analyse this photo.';
+      $('autoLevelNote').textContent = tr("Could not analyse this photo.");
     }
   };
   $('autoLevel').onclick = () => runGeometry('level');
@@ -10942,11 +10883,9 @@ if ($('learnedDenoiseApply')) {
     const ready = !!capabilities.modes?.denoise;
     $('learnedDenoiseApply').dataset.available = ready ? '1' : '0';
     $('learnedDenoiseApply').disabled = !ready || !isRawInput();
-    $('learnedDenoiseStatus').textContent = ready
-      ? 'Runs locally when Apply is pressed; the slider is not live.'
-      : 'The local denoise model is not installed.';
+    $('learnedDenoiseStatus').textContent = ready ? tr("Runs locally when Apply is pressed; the slider is not live.") : tr("The local denoise model is not installed.");
   }).catch(() => {
-    $('learnedDenoiseStatus').textContent = 'Denoise availability could not be checked.';
+    $('learnedDenoiseStatus').textContent = tr("Denoise availability could not be checked.");
   });
   const finishDenoiseUI = () => {
     clearInterval(denoiseTimer); denoiseTimer = null;
@@ -10957,7 +10896,7 @@ if ($('learnedDenoiseApply')) {
   };
   $('learnedDenoiseCancel').onclick = async () => {
     await api('/api/denoise/cancel', {});
-    $('learnedDenoiseStatus').textContent = 'Cancelling…';
+    $('learnedDenoiseStatus').textContent = tr("Cancelling…");
   };
   $('learnedDenoiseApply').onclick = async () => {
     const im = cur();
@@ -10967,7 +10906,7 @@ if ($('learnedDenoiseApply')) {
       learned_denoise_strength: +$('learned_denoise_strength').value };
     const result = await api('/api/denoise', { name: im.name, params: next });
     if (!result.ok) {
-      $('learnedDenoiseStatus').textContent = result.error || 'Denoise could not start.';
+      $('learnedDenoiseStatus').textContent = ((result.error || tr("Denoise could not start.")));
       return;
     }
     pushUndo();
@@ -10975,30 +10914,27 @@ if ($('learnedDenoiseApply')) {
     if (!await saveState(true)) return;
     $('learnedDenoiseApply').disabled = true;
     $('learnedDenoiseCancel').hidden = false;
-    $('learnedDenoiseStatus').textContent = 'Preparing model…';
-    $('denoiseBadge').textContent = 'Denoising…';
+    $('learnedDenoiseStatus').textContent = tr("Preparing model…");
+    $('denoiseBadge').textContent = tr("Denoising…");
     $('denoiseBadge').hidden = false;
     clearInterval(denoiseTimer);
     let polls = 0;
     denoiseTimer = setInterval(async () => {
       if (++polls > 1800) {
         finishDenoiseUI();
-        $('learnedDenoiseStatus').textContent = 'Denoise is still running; reopen this photo to check.';
+        $('learnedDenoiseStatus').textContent = tr("Denoise is still running; reopen this photo to check.");
         return;
       }
       const status = await getJSON('/api/denoise/status').catch(() => null);
       if (!status) return;
       const percent = status.total
         ? Math.round(status.progress * 100 / status.total) : 0;
-      $('learnedDenoiseStatus').textContent = status.running
-        ? (status.total ? `Denoising… ${percent}%` : 'Preparing model…')
-        : (status.error || 'Denoise applied.');
-      $('denoiseBadge').textContent = status.total
-        ? `Denoising… ${percent}%` : 'Denoising…';
+      $('learnedDenoiseStatus').textContent = status.running ? status.total ? tr("Denoising… {percent}%", {percent: percent}) : tr("Preparing model…") : (status.error || tr("Denoise applied."));
+      $('denoiseBadge').textContent = status.total ? tr("Denoising… {percent}%", {percent: percent}) : tr("Denoising…");
       if (!status.running) {
         finishDenoiseUI();
         if (!status.error && cur()?.name === im.name) renderFilm(0);
-        if (!status.error) notifyCompletion('Denoise complete', displayName(im));
+        if (!status.error) notifyCompletion(tr("Denoise complete"), displayName(im));
       }
     }, 750);
   };
@@ -11060,7 +10996,7 @@ if ($('keySchemeSelect')) {
   $('keySchemeSelect').onchange = (event) => {
     APP_PREFS.keyScheme = event.target.value;
     api('/api/prefs', { keyScheme: event.target.value });
-    toast('Shortcut scheme applies after a reload');
+    toast(tr("Shortcut scheme applies after a reload"));
   };
 }
 if ($('speedKeysEnabled')) {
@@ -11076,7 +11012,7 @@ $('midiPill')?.addEventListener('click', () => toggleMidiLearn());
 $('midiLearnBtn')?.addEventListener('click', () => toggleMidiLearn());
 $('midiResetBtn')?.addEventListener('click', () => {
   resetMidiMappings();
-  toast('MIDI mappings reset to defaults');
+  toast(tr("MIDI mappings reset to defaults"));
 });
 document.addEventListener('pointerdown', (event) => {
   const input = event.target?.closest?.('input[type="range"]');
@@ -11093,7 +11029,7 @@ $('secondaryLoupeBtn')?.addEventListener('click', () => {
   if (postNative('openSecondaryLoupe', {}, true)) return;
   const loupe = window.open('/web/loupe.html', 'LightTableLoupe', 'width=1920,height=1080');
   if (loupe) loupe.focus();
-  else toast('Allow pop-up windows to open the secondary loupe');
+  else toast(tr("Allow pop-up windows to open the secondary loupe"));
 });
 
 for (const eventName of ['click', 'change', 'focusin', 'focusout', 'pointerup']) {
@@ -11152,7 +11088,7 @@ async function reconcilePeerSave(image, recoveredSourceKey = null) {
     const editorBefore = editing ? snapshot() : null;
     const response = await fetch(`/api/state?name=${encodeURIComponent(image.name)}`);
     const state = await response.json();
-    if (!state || state.error) throw new Error(state?.error || 'Could not refresh shared edits');
+    if (!state || state.error) throw new Error(((state?.error || tr("Could not refresh shared edits"))));
     if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
         || before !== JSON.stringify(image)
         || (editing && (cur() !== image || S.editingName !== image.name || editorBefore !== snapshot()))) return;
@@ -11217,8 +11153,8 @@ async function applyServerStateEvent(event) {
     _lastHistorySnapshot = editHistorySnapshot();
     HISTORY?.refresh(current.name, true);
     const label = event.origin && event.origin !== 'window'
-      ? `Updated by ${event.origin}` : 'Photo updated externally';
-    if (event.origin !== 'batch-masks') toast(label, { label: 'Undo', run: undo });
+      ? tr('Updated by {eventOrigin}', {eventOrigin: event.origin}) : tr('Photo updated externally');
+    if (event.origin !== 'batch-masks') toast(label, { label: tr('Undo'), run: undo });
   }
   refreshLists();
   renderKeywords();
@@ -11228,7 +11164,7 @@ async function applyServerStateEvent(event) {
 async function executeUICommand(command, args = {}, event = {}) {
   if (command === 'goto') {
     const index = S.images.findIndex((image) => image.name === args.name);
-    if (index < 0) throw new Error('Photo is not in the current library');
+    if (index < 0) throw new Error(tr("Photo is not in the current library"));
     await go(index);
   } else if (command === 'select') {
     SELECTION_REQUEST?.cancel();
@@ -11238,7 +11174,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     else if (args.action === 'set') S.msel = new Set(names);
     else if (args.action === 'add') names.forEach((name) => S.msel.add(name));
     else if (args.action === 'remove') names.forEach((name) => S.msel.delete(name));
-    else throw new Error('select action must be set, add, remove, or clear');
+    else throw new Error(tr("select action must be set, add, remove, or clear"));
     refreshLists();
   } else if (command === 'filter') {
     const fields = { status: 'filter', rating: 'ratingFilter', kind: 'kindFilter',
@@ -11256,7 +11192,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     const input = document.querySelector(`[data-g="${CSS.escape(String(args.key))}"]`)
       || $(String(args.key));
     if (!input || !['range', 'number'].includes(input.type)) {
-      throw new Error('Unknown slider');
+      throw new Error(tr("Unknown slider"));
     }
     pushUndo();
     input.value = String(args.value);
@@ -11264,7 +11200,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   } else if (command === 'mask.show') {
     const mask = S.masks.find((item) => item.id === args.id);
-    if (!mask) throw new Error('Unknown mask');
+    if (!mask) throw new Error(tr("Unknown mask"));
     S.selectedMaskId = mask.id; switchPane('maskPane'); syncMaskPanel();
   } else if (command === 'overlay') {
     S.localPinsVisible = args.value !== false && args.value !== 'off';
@@ -11275,9 +11211,9 @@ async function executeUICommand(command, args = {}, event = {}) {
     await revealCurrentPhoto();
   } else if (command === 'trash') {
     const paths = Array.isArray(args.paths) ? args.paths : [];
-    if (!paths.length) throw new Error('No files were supplied for Trash');
+    if (!paths.length) throw new Error(tr("No files were supplied for Trash"));
     if (!sendNative('trashFiles', { paths })) {
-      throw new Error('Trash requires the native LightTable window');
+      throw new Error(tr("Trash requires the native LightTable window"));
     }
   } else {
     const mutatesPhoto = /^(flag|rating|label):/.test(command)
@@ -11287,8 +11223,8 @@ async function executeUICommand(command, args = {}, event = {}) {
     if (mutatesPhoto) pushUndo();
     await performNativeMenuCommand(command);
     if (mutatesPhoto) {
-      const label = event.origin ? `Updated by ${event.origin}` : 'Updated by automation';
-      toast(label, { label: 'Undo', run: undo });
+      const label = (event.origin ? tr("Updated by {eventOrigin}", {eventOrigin: event.origin}) : tr("Updated by automation"));
+      toast(label, { label: tr("Undo"), run: undo });
     }
   }
   return uiStateReport();

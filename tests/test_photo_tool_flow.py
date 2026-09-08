@@ -9,8 +9,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 HARNESS = r"""
+import {t as tr, tn as trn} from './web/i18n.js';
 import {createAppState, cloneValue} from './web/state.js';
-import {OPTICS_DEFAULTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics} from './web/editor-panels.js';
+import {OPTICS_DEFAULTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel} from './web/editor-panels.js';
 import {cropGeometry, restoreCropGeometry} from './web/edit-transfer.js';
 import {clampComparePosition, compareViewGeometry, comparePositionAtViewCenter} from './web/compare-view.js';
 const S = createAppState({}, OPTICS_DEFAULTS);

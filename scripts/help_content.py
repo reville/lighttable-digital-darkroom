@@ -6,17 +6,31 @@ record the version reviewed by a maintainer; this is a drift alarm, not a claim
 that hashing can prove prose correct. See docs/help/README.md.
 """
 import argparse
+from collections import Counter
+import copy
 import hashlib
 import json
 from pathlib import Path
 import re
 import sys
+import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORIES = ('Getting started', 'Library', 'Editing', 'Film', 'Export',
               'Settings', 'Troubleshooting')
 LOCK = 'docs/help/review-lock.json'
 BUNDLE = 'web/help-content.json'
+LOCALIZATION_SOURCE = 'docs/localization/source.json'
+LOCALE_MANIFEST = 'web/locales/manifest.json'
+LOCALE_PATTERN = re.compile(r'[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*')
+NAMED_TOKENS = re.compile(r'\{\w+\}')
+# These are literal file names/extensions, not words to translate. Keep the
+# leading dot in hidden portable-state files and extension-only chooser labels.
+FILE_TOKENS = re.compile(
+    r'(?<![A-Za-z0-9_.])\.?[A-Za-z0-9_{}-]*(?:\.[A-Za-z0-9_{}-]+)*\.'
+    r'(?:json|xmp|ltpreset|lrtemplate|costylepack|costyle|zip|tif|tiff|jpe?g|'
+    r'png|heif|heic|dng|arw|cr[23]|nef|orf|raf|rw2|pdf|csv|sqlite3|db|mov|mp4|m4v)'
+    r'(?![A-Za-z0-9_])', re.IGNORECASE)
 
 
 class HelpError(ValueError):
@@ -165,15 +179,249 @@ def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + '\n')
 
 
+def localization_source_digest(messages):
+    """Shared UI/help message identity; compact, sorted, unique UTF-8 JSON."""
+    canonical = json.dumps(sorted(set(messages)), ensure_ascii=False,
+                           separators=(',', ':')).encode('utf-8')
+    return hashlib.sha256(canonical).hexdigest()
+
+
+def load_help_bundle(root=ROOT):
+    """Read the English public bundle without consulting or changing reviews."""
+    bundle = read_json(root / BUNDLE)
+    if not isinstance(bundle, dict) or bundle.get('version') != 1:
+        raise HelpError('Invalid English help bundle version')
+    articles = bundle.get('articles')
+    if not isinstance(articles, list) or not articles:
+        raise HelpError('English help bundle needs articles')
+    ids = set()
+    article_fields = {'id', 'title', 'category', 'summary', 'keywords', 'sections', 'related'}
+    for article in articles:
+        if not isinstance(article, dict) or set(article) - article_fields:
+            raise HelpError('English help article contains unsupported fields')
+        aid = article.get('id', '')
+        if not isinstance(aid, str) or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', aid):
+            raise HelpError('English help article has an invalid ID')
+        if aid in ids:
+            raise HelpError(f'Duplicate English help article ID: {aid}')
+        ids.add(aid)
+        if article.get('category') not in CATEGORIES:
+            raise HelpError(f'{aid}: unknown English help category')
+        for key in ('title', 'summary'):
+            require_text(article.get(key), f'{aid}.{key}')
+        text_list(article.get('keywords'), f'{aid}.keywords', nonempty=True)
+        text_list(article.get('related', []), f'{aid}.related')
+        sections = article.get('sections')
+        if not isinstance(sections, list) or not sections:
+            raise HelpError(f'{aid}: English help needs sections')
+        for section in sections:
+            if not isinstance(section, dict) or set(section) - {'title', 'paragraphs', 'steps', 'tips'}:
+                raise HelpError(f'{aid}: unsupported English help section fields')
+            require_text(section.get('title'), f'{aid}.section.title')
+            for key in ('paragraphs', 'steps', 'tips'):
+                text_list(section.get(key, []), f'{aid}.section.{key}')
+            if not any(section.get(key) for key in ('paragraphs', 'steps', 'tips')):
+                raise HelpError(f'{aid}: English help section is empty')
+    for article in articles:
+        if any(aid not in ids or aid == article['id'] for aid in article.get('related', [])):
+            raise HelpError(f'{article["id"]}: invalid English help related links')
+    return bundle
+
+
+def help_messages(bundle):
+    """Return every translatable help string for the shared source manifest.
+
+    English category values stay as stable filter keys; their translated labels
+    are included as messages and written into categoryLabel in localized help.
+    """
+    messages = set(CATEGORIES)
+    for article in bundle['articles']:
+        messages.update(article[key] for key in ('title', 'category', 'summary'))
+        messages.update(article['keywords'])
+        for section in article['sections']:
+            messages.add(section['title'])
+            for key in ('paragraphs', 'steps', 'tips'):
+                messages.update(section.get(key, []))
+    return sorted(messages)
+
+
+def read_localization_source(root=ROOT):
+    source = read_json(root / LOCALIZATION_SOURCE)
+    if not isinstance(source, dict) or source.get('version') != 1:
+        raise HelpError('Invalid localization source manifest')
+    messages = source.get('messages')
+    text_list(messages, 'localization source messages', nonempty=True)
+    if messages != sorted(set(messages)):
+        raise HelpError('Localization source messages must be sorted and unique')
+    current_digest = localization_source_digest(messages)
+    if source.get('sourceDigest') != current_digest:
+        raise HelpError('Localization source manifest digest is stale')
+    return messages, current_digest
+
+
+def declared_locales(root=ROOT):
+    manifest = read_json(root / LOCALE_MANIFEST)
+    if not isinstance(manifest, dict) or manifest.get('version') != 1:
+        raise HelpError('Invalid locale manifest')
+    entries = manifest.get('locales')
+    if not isinstance(entries, list) or not entries:
+        raise HelpError('Locale manifest needs declared locales')
+    locales = []
+    for entry in entries:
+        locale = entry.get('code') if isinstance(entry, dict) else entry
+        if not isinstance(locale, str) or not LOCALE_PATTERN.fullmatch(locale):
+            raise HelpError(f'Invalid locale code: {locale!r}')
+        if locale in locales:
+            raise HelpError(f'Duplicate locale code: {locale}')
+        locales.append(locale)
+    if 'en' not in locales:
+        raise HelpError('Locale manifest must declare English as en')
+    return locales
+
+
+def literal_inputs(source):
+    # This word is an input command accepted by capture_time.py, not prose.
+    return ('remove',) if 'enter remove to clear it.' in source else ()
+
+
+def locale_script_issue(source, translated, locale):
+    """Catch accidental foreign-script fragments, not translation quality.
+
+    Latin product names and technical terms are valid in every locale. Keep
+    characters already present in the source (for example, a quoted filename),
+    shared combining accents, and the scripts normally used by the target.
+    """
+    scripts = {
+        'ru': ('CYRILLIC',),
+        'zh': ('CJK', 'IDEOGRAPHIC'),
+        'ja': ('CJK', 'IDEOGRAPHIC', 'HIRAGANA', 'KATAKANA'),
+        'ko': ('CJK', 'IDEOGRAPHIC', 'HANGUL'),
+        'ar': ('ARABIC',), 'hi': ('DEVANAGARI',),
+        'bn': ('BENGALI',), 'th': ('THAI',),
+    }.get(locale.split('-')[0], ())
+    allowed = ('LATIN', 'COMBINING', *scripts)
+    unexpected = set()
+    for character in translated:
+        if character in source or not unicodedata.category(character).startswith(('L', 'M')):
+            continue
+        name = unicodedata.name(character, '')
+        # Unicode classifies the ordinary Spanish/Portuguese ordinal indicators
+        # as letters, but their names do not contain LATIN.
+        if character in 'ªº' or any(script in name for script in allowed):
+            continue
+        unexpected.add(character)
+    if unexpected:
+        names = ', '.join(unicodedata.name(character, f'U+{ord(character):04X}')
+                          for character in sorted(unexpected)[:4])
+        return f'unexpected script for {locale}: {names}'
+    return None
+
+
+def validate_translation(source, translated, locale):
+    require_text(translated, f'{locale} translation of {source[:70]!r}')
+    script_issue = locale_script_issue(source, translated, locale)
+    if script_issue:
+        raise HelpError(script_issue)
+    if Counter(NAMED_TOKENS.findall(source)) != Counter(NAMED_TOKENS.findall(translated)):
+        raise HelpError(f'{locale}: named placeholders changed in {source[:90]!r}')
+    if Counter(FILE_TOKENS.findall(source)) != Counter(FILE_TOKENS.findall(translated)):
+        raise HelpError(f'{locale}: literal filenames or extensions changed in {source[:90]!r}')
+    for token in literal_inputs(source):
+        if not re.search(r'(?<!\w)' + re.escape(token) + r'(?!\w)', translated):
+            raise HelpError(f'{locale}: literal input {token!r} must remain unchanged')
+
+
+def localized_help_text(bundle, catalog, locale, source_messages, source_digest):
+    """Validate a complete shared catalog and compile help with stable IDs.
+
+    There is deliberately no get(msgid, msgid) fallback. An explicit identity
+    translation is valid for technical names, but a missing entry is an error.
+    """
+    if not isinstance(catalog, dict) or catalog.get('version') != 1:
+        raise HelpError(f'{locale}: invalid translation catalog version')
+    if catalog.get('locale') != locale:
+        raise HelpError(f'{locale}: translation catalog locale does not match its filename')
+    if catalog.get('sourceDigest') != source_digest:
+        raise HelpError(f'{locale}: stale translation sourceDigest')
+    translations = catalog.get('messages')
+    if not isinstance(translations, dict):
+        raise HelpError(f'{locale}: translation messages must be an object')
+    expected = set(source_messages)
+    missing = expected - translations.keys()
+    extra = translations.keys() - expected
+    if missing:
+        raise HelpError(f'{locale}: {len(missing)} missing translations; first: {sorted(missing)[0]!r}')
+    if extra:
+        raise HelpError(f'{locale}: {len(extra)} obsolete translations; refresh the catalog')
+    missing_help = set(help_messages(bundle)) - expected
+    if missing_help:
+        raise HelpError(f'Localization source manifest is missing {len(missing_help)} help messages; '
+                        f'first: {sorted(missing_help)[0]!r}')
+    for source in source_messages:
+        validate_translation(source, translations[source], locale)
+    localized = copy.deepcopy(bundle)
+    localized.update(locale=locale, sourceDigest=source_digest)
+    for article in localized['articles']:
+        article['categoryLabel'] = translations[article['category']]
+        for key in ('title', 'summary'):
+            article[key] = translations[article[key]]
+        article['keywords'] = [translations[value] for value in article['keywords']]
+        for section in article['sections']:
+            section['title'] = translations[section['title']]
+            for key in ('paragraphs', 'steps', 'tips'):
+                if key in section:
+                    section[key] = [translations[value] for value in section[key]]
+    return json.dumps(localized, ensure_ascii=False, indent=2) + '\n'
+
+
+def run_localization(command, locales=None, root=ROOT):
+    if command not in ('localization-build', 'localization-check'):
+        raise HelpError('Unknown help localization command')
+    bundle = load_help_bundle(root)
+    source_messages, source_digest = read_localization_source(root)
+    declared = declared_locales(root)
+    selected = list(dict.fromkeys(locales)) if locales else [code for code in declared if code != 'en']
+    unknown = set(selected) - set(declared)
+    if unknown:
+        raise HelpError(f'Locales are not declared: {", ".join(sorted(unknown))}')
+    if 'en' in selected:
+        raise HelpError('English uses web/help-content.json; run build/check for English')
+    if not selected:
+        raise HelpError('No translated help locales declared')
+    # Validate all selected locales before writing any bundle. A missing final
+    # language must not leave a partially refreshed set that looks complete.
+    outputs = []
+    for locale in selected:
+        catalog = read_json(root / 'web/locales' / f'{locale}.json')
+        expected = localized_help_text(bundle, catalog, locale, source_messages, source_digest)
+        target = root / 'web/locales/help' / f'{locale}.json'
+        if command == 'localization-check' and (not target.is_file() or target.read_text() != expected):
+            raise HelpError(f'{locale}: localized help is missing or stale; run localization-build')
+        outputs.append((target, expected))
+    if command == 'localization-build':
+        for target, expected in outputs:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(expected, encoding='utf-8')
+    print(f'Help {command}: {len(selected)} locales, {len(bundle["articles"])} articles each; '
+          'complete translations and source versions current.')
+    return 0
+
+
 def run(argv=None, root=ROOT):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('check', 'status', 'build', 'review'))
+    parser.add_argument('command', choices=('check', 'status', 'build', 'review',
+                                          'localization-build', 'localization-check'))
     parser.add_argument('articles', nargs='*', help='Reviewed article IDs (review only)')
     parser.add_argument('--all', action='store_true', help='Acknowledge review of every article')
+    parser.add_argument('--locale', action='append', help='Limit localization commands to a declared locale; repeatable')
     args = parser.parse_args(argv)
     if args.command != 'review' and (args.articles or args.all):
         parser.error('Article IDs and --all are valid only with review')
+    if args.locale and not args.command.startswith('localization-'):
+        parser.error('--locale is valid only with localization-build/localization-check')
     try:
+        if args.command.startswith('localization-'):
+            return run_localization(args.command, args.locale, root)
         articles = load_articles(root)
         current = current_records(articles, root)
         reviewed = read_lock(root)

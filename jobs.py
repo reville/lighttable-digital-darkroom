@@ -1,6 +1,8 @@
 """Uniform records for LightTable background work."""
 from __future__ import annotations
 
+from server_localization import T
+
 import copy
 import threading
 import time
@@ -25,7 +27,7 @@ class JobRegistry:
     def create(self, kind: str, *, total: int = 0, state: str = "queued",
                result=None, cancel: Callable[[], None] | None = None) -> dict:
         if state not in STATES:
-            raise ValueError(f"unknown job state: {state}")
+            raise ValueError(T("unknown job state: {state}", state=f'{state}'))
         now = time.time()
         ident = uuid.uuid4().hex
         record = {
@@ -51,12 +53,12 @@ class JobRegistry:
     def update(self, ident: str, **changes) -> dict:
         with self._lock:
             if ident not in self._records:
-                raise KeyError(f"unknown job: {ident}")
+                raise KeyError(T("unknown job: {ident}", ident=f'{ident}'))
             record = self._records[ident]
             if record["state"] in TERMINAL_STATES:
                 return copy.deepcopy(record)
             if "state" in changes and changes["state"] not in STATES:
-                raise ValueError(f"unknown job state: {changes['state']}")
+                raise ValueError(T("unknown job state: {value}", value=f"{changes['state']}"))
             if changes.get("state") == "running" and not record["started"]:
                 changes["started"] = time.time()
             if changes.get("state") in TERMINAL_STATES:
@@ -101,11 +103,11 @@ class JobRegistry:
             record = self._records.get(ident)
             cancel = self._cancellers.get(ident)
             if not record:
-                raise KeyError(f"unknown job: {ident}")
+                raise KeyError(T("unknown job: {ident}", ident=f'{ident}'))
             if record["state"] in TERMINAL_STATES:
                 return copy.deepcopy(record)
             if cancel is None:
-                raise RuntimeError("job is not cancellable")
+                raise RuntimeError(T("job is not cancellable"))
         # A cooperative worker returns False and owns the terminal transition
         # after its active work and staging files have finished cleaning up.
         if cancel() is False:

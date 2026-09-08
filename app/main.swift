@@ -167,6 +167,161 @@ let defaultPhotoFolder: String = {
         ?? (NSHomeDirectory() as NSString).appendingPathComponent("Pictures")
 }()
 
+// BEGIN NATIVE LOCALIZATION CORE — Foundation only; exercised by native tests.
+struct NativeLanguage: Decodable {
+    let code: String
+    let name: String
+    let nativeName: String
+    let dir: String
+}
+
+final class NativeLocaleStore {
+    private struct Manifest: Decodable {
+        let version: Int
+        let sourceLocale: String
+        let locales: [NativeLanguage]
+    }
+    private struct Catalog: Decodable {
+        let version: Int
+        let locale: String
+        let messages: [String: String]
+    }
+    let directory: URL
+    let preferencesURL: URL
+    let languages: [NativeLanguage]
+    private(set) var locale = "en"
+    private var messages: [String: String] = [:]
+    private let messageLock = NSLock()
+
+    init(directory: URL, preferencesURL: URL) {
+        self.directory = directory
+        self.preferencesURL = preferencesURL
+        let manifest = (try? Data(contentsOf: directory.appendingPathComponent("manifest.json")))
+            .flatMap { try? JSONDecoder().decode(Manifest.self, from: $0) }
+        var seen = Set<String>()
+        let valid = manifest?.version == 1 && manifest?.sourceLocale == "en"
+            ? (manifest?.locales ?? []).filter {
+                Self.safeCode($0.code) && !$0.nativeName.isEmpty &&
+                ["ltr", "rtl"].contains($0.dir) && seen.insert($0.code).inserted
+            } : []
+        languages = valid.contains(where: { $0.code == "en" }) ? valid :
+            [NativeLanguage(code: "en", name: "English", nativeName: "English", dir: "ltr")]
+        try? reload()
+    }
+
+    static func safeCode(_ value: String) -> Bool {
+        value.range(of: "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$", options: .regularExpression) != nil
+    }
+
+    func supported(_ value: String) -> String? {
+        languages.first { $0.code.caseInsensitiveCompare(value) == .orderedSame }?.code
+    }
+
+    func suggested(for language: String) -> String {
+        let tag = language.replacingOccurrences(of: "_", with: "-")
+            .split(separator: ".").first.map(String.init) ?? language
+        if let exact = supported(tag) { return exact }
+        let pieces = tag.lowercased().split(separator: "-").map(String.init)
+        if pieces.first == "zh" {
+            let traditional = pieces.contains("hant") ||
+                (!pieces.contains("hans") && pieces.contains(where: { ["tw", "hk", "mo"].contains($0) }))
+            if let chinese = supported(traditional ? "zh-Hant" : "zh-Hans") { return chinese }
+        }
+        return supported(pieces.first ?? "en") ?? "en"
+    }
+
+    static func isEnglish(_ language: String) -> Bool {
+        language.lowercased().replacingOccurrences(of: "_", with: "-")
+            .split(separator: "-").first == "en"
+    }
+
+    func preferences() throws -> [String: Any] {
+        guard FileManager.default.fileExists(atPath: preferencesURL.path) else { return [:] }
+        let value = try JSONSerialization.jsonObject(with: Data(contentsOf: preferencesURL))
+        guard let object = value as? [String: Any] else {
+            throw NSError(domain: "LightTable.Localization", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey: "The preferences file is not a JSON object."])
+        }
+        return object
+    }
+
+    func reload() throws {
+        let prefs = try preferences()
+        setLocale(supported(prefs["locale"] as? String ?? "") ?? "en")
+    }
+
+    func setLocale(_ code: String) {
+        messageLock.lock()
+        defer { messageLock.unlock() }
+        locale = supported(code) ?? "en"
+        messages = [:]
+        guard locale != "en", Self.safeCode(locale),
+              let data = try? Data(contentsOf: directory.appendingPathComponent(locale + ".json")),
+              let catalog = try? JSONDecoder().decode(Catalog.self, from: data),
+              catalog.version == 1, catalog.locale == locale else { return }
+        messages = catalog.messages.filter {
+            !$0.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+                Self.placeholders($0.key) == Self.placeholders($0.value)
+        }
+    }
+
+    func saveChoice(_ code: String) throws {
+        guard let selected = supported(code) else {
+            throw NSError(domain: "LightTable.Localization", code: 2,
+                          userInfo: [NSLocalizedDescriptionKey: "This language is not available."])
+        }
+        // Read the full object immediately before writing. A malformed or unreadable
+        // file must never be replaced with a locale-only preferences document.
+        var prefs = try preferences()
+        prefs["locale"] = selected
+        prefs["localeChosen"] = true
+        let encoded = try JSONSerialization.data(withJSONObject: prefs, options: [.prettyPrinted, .sortedKeys])
+        try FileManager.default.createDirectory(at: preferencesURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try encoded.write(to: preferencesURL, options: .atomic)
+        setLocale(selected)
+    }
+
+    static func placeholders(_ value: String) -> Set<String> {
+        guard let regex = try? NSRegularExpression(pattern: "\\{[A-Za-z][A-Za-z0-9_]*\\}") else { return [] }
+        return Set(regex.matches(in: value, range: NSRange(value.startIndex..., in: value))
+            .compactMap { Range($0.range, in: value).map { String(value[$0]) } })
+    }
+
+    func text(_ source: String, _ arguments: [String: String] = [:]) -> String {
+        messageLock.lock()
+        let translated = messages[source] ?? source
+        messageLock.unlock()
+        // Replace only placeholders from the template, never text inside an argument.
+        guard let regex = try? NSRegularExpression(pattern: "\\{([A-Za-z][A-Za-z0-9_]*)\\}") else { return translated }
+        var result = translated
+        for match in regex.matches(in: translated, range: NSRange(translated.startIndex..., in: translated)).reversed() {
+            guard let keyRange = Range(match.range(at: 1), in: translated),
+                  let value = arguments[String(translated[keyRange])],
+                  let range = Range(match.range, in: result) else { continue }
+            result.replaceSubrange(range, with: value)
+        }
+        return result
+    }
+}
+// END NATIVE LOCALIZATION CORE
+
+private func lightTableSupportDirectory() -> URL {
+    FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        .appendingPathComponent("LightTable", isDirectory: true)
+}
+private func lightTablePreferencesURL() -> URL {
+    if let path = ProcessInfo.processInfo.environment["LIGHTTABLE_PREFS_FILE"], !path.isEmpty {
+        return URL(fileURLWithPath: path)
+    }
+    return lightTableSupportDirectory().appendingPathComponent("prefs.json")
+}
+private let nativeLocalization = NativeLocaleStore(
+    directory: projectDir.appendingPathComponent("web/locales", isDirectory: true),
+    preferencesURL: lightTablePreferencesURL())
+func L(_ source: String, _ arguments: [String: String] = [:]) -> String {
+    nativeLocalization.text(source, arguments)
+}
+
 struct FolderSource: Codable, Equatable {
     var path: String
     var favorite: Bool
@@ -240,9 +395,7 @@ final class ServerController {
     var script: URL { projectDir.appendingPathComponent("server.py") }
 
     private var supportDirectory: URL {
-        let root = FileManager.default.urls(
-            for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return root.appendingPathComponent("LightTable", isDirectory: true)
+        lightTableSupportDirectory()
     }
 
     private var cacheDirectory: URL {
@@ -515,7 +668,17 @@ final class ServerController {
                     if let moved = report.port, moved > 0 { probePort = moved }
                     if let detail = report.detail, detail != lastDetail {
                         lastDetail = detail
-                        DispatchQueue.main.async { progress(detail) }
+                        DispatchQueue.main.async {
+                            let translated: String
+                            switch detail {
+                            case "Opening the catalog…": translated = L("Opening the catalog…")
+                            case "Checking the catalog…": translated = L("Checking the catalog…")
+                            case "Starting the local server…": translated = L("Starting the local server…")
+                            case "Ready": translated = L("Ready")
+                            default: translated = L(detail)
+                            }
+                            progress(translated)
+                        }
                     }
                 }
                 if let child, !child.isRunning {
@@ -665,10 +828,10 @@ private final class PhotosLibraryImporter {
             lockDescriptor = Darwin.open(directory.appendingPathComponent(
                 ".lighttable-library-import.lock").path, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR)
             guard lockDescriptor >= 0, flock(lockDescriptor, LOCK_EX | LOCK_NB) == 0 else {
-                finish("error", message: "Another LightTable window may be importing this library. Close that import and try again.")
+                finish("error", message: L("Another LightTable window may be importing this library. Close that import and try again."))
                 return
             }
-            emit("running", message: "Reading your Photos library…")
+            emit("running", message: L("Reading your Photos library…"))
             let options = PHFetchOptions()
             options.includeHiddenAssets = true
             options.includeAllBurstAssets = true
@@ -690,7 +853,7 @@ private final class PhotosLibraryImporter {
                 }
             }
             guard !isCancelled else { finish("cancelled"); return }
-            emit("running", message: "Copying original photos…")
+            emit("running", message: L("Copying original photos…"))
             next()
         }
     }
@@ -772,7 +935,7 @@ private final class PhotosLibraryImporter {
                 guard let self, let current else { return }
                 self.queue.async {
                     guard self.transfer === current, !self.finished else { return }
-                    self.emit("running", message: "Downloading an original from iCloud…", progress: progress)
+                    self.emit("running", message: L("Downloading an original from iCloud…"), progress: progress)
                 }
             }
             current.request = PHAssetResourceManager.default().requestData(
@@ -821,7 +984,7 @@ private final class PhotosLibraryImporter {
 
     private func advance() {
         index += 1
-        emit("running", message: "Copying original photos…")
+        emit("running", message: L("Copying original photos…"))
         // Yield between resources so cancellation is handled even when a large
         // rerun consists entirely of already imported files.
         queue.async { [self] in next() }
@@ -844,10 +1007,10 @@ private final class PhotosLibraryImporter {
             lockDescriptor = -1
         }
         emit(state, message: message ?? (state == "cancelled"
-            ? "Import stopped. Completed copies are safe; run it again to continue."
-            : (items.isEmpty ? "No photo originals were found in your Photos library."
-                : (failures > 0 ? "Import finished with some originals unavailable. Run it again to retry."
-                    : "Your photo originals are ready in LightTable."))))
+            ? L("Import stopped. Completed copies are safe; run it again to continue.")
+            : (items.isEmpty ? L("No photo originals were found in your Photos library.")
+                : (failures > 0 ? L("Import finished with some originals unavailable. Run it again to retry.")
+                    : L("Your photo originals are ready in LightTable.")))))
         items.removeAll()
     }
 
@@ -1070,7 +1233,7 @@ private final class AboutWindowController: NSWindowController {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 560, height: 408),
             styleMask: [.titled, .closable], backing: .buffered, defer: false)
-        window.title = "About LightTable"
+        window.title = L("About LightTable")
         window.isReleasedWhenClosed = false
         window.isExcludedFromWindowsMenu = true
         super.init(window: window)
@@ -1089,8 +1252,10 @@ private final class AboutWindowController: NSWindowController {
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
             as? String ?? "1.0"
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
-        let versionText = build.map { $0 != version ? "Version \(version) (\($0))" : "Version \(version)" }
-            ?? "Version \(version)"
+        let versionText = build.map { $0 != version
+            ? L("Version {version} ({build})", ["version": version, "build": $0])
+            : L("Version {version}", ["version": version]) }
+            ?? L("Version {version}", ["version": version])
         let identity = NSStackView(views: [
             title, label(versionText, size: 12, color: .secondaryLabelColor),
         ])
@@ -1105,29 +1270,29 @@ private final class AboutWindowController: NSWindowController {
         divider.boxType = .separator
 
         let description = NSTextField(wrappingLabelWithString:
-            "Photo editing and realistic film simulation. Explore the source, report an issue, or contribute on GitHub.")
+            L("Photo editing and realistic film simulation. Explore the source, report an issue, or contribute on GitHub."))
         description.font = .systemFont(ofSize: 14)
         description.textColor = .secondaryLabelColor
         description.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         let openSource = NSStackView(views: [
-            label("Free and open source", size: 19, weight: .semibold), description,
+            label(L("Free and open source"), size: 19, weight: .semibold), description,
         ])
         openSource.orientation = .vertical
         openSource.alignment = .leading
         openSource.spacing = 8
 
-        let website = linkButton("Website", symbol: "globe", action: #selector(openWebsite(_:)))
-        website.toolTip = "Open lighttable.app in your browser"
-        let github = linkButton("GitHub", symbol: "chevron.left.forwardslash.chevron.right",
+        let website = linkButton(L("Website"), symbol: "globe", action: #selector(openWebsite(_:)))
+        website.toolTip = L("Open lighttable.app in your browser")
+        let github = linkButton(L("GitHub"), symbol: "chevron.left.forwardslash.chevron.right",
                                 action: #selector(openGitHub(_:)))
-        github.toolTip = "View the LightTable source code on GitHub"
+        github.toolTip = L("View the LightTable source code on GitHub")
         let links = NSStackView(views: [website, github])
         links.distribution = .fillEqually
         links.spacing = 16
 
         let layout = NSStackView(views: [
             header, divider, openSource, links,
-            label("Licensed under the GNU GPL v3.", size: 12, color: .secondaryLabelColor),
+            label(L("Licensed under the GNU GPL v3."), size: 12, color: .secondaryLabelColor),
         ])
         layout.orientation = .vertical
         layout.alignment = .leading
@@ -1182,8 +1347,8 @@ private final class AboutWindowController: NSWindowController {
         guard let url = URL(string: address) else { return }
         if !NSWorkspace.shared.open(url), let window {
             let alert = NSAlert()
-            alert.messageText = "Could not open your browser"
-            alert.informativeText = "You can visit \(address) in your browser."
+            alert.messageText = L("Could not open your browser")
+            alert.informativeText = L("You can visit {address} in your browser.", ["address": address])
             alert.beginSheetModal(for: window)
         }
     }
@@ -1206,7 +1371,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var webView: WKWebView!
     private var javaScriptConfirmation: (alert: NSAlert, reply: NativeJavaScriptReply)?
     private var secondaryLoupeWindow: NSWindow?
-    private lazy var aboutWindowController = AboutWindowController()
+    private var aboutWindowController: AboutWindowController?
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
     let server = ServerController()
@@ -1238,6 +1403,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private static let startupTimeout: TimeInterval = 120
 
     func applicationDidFinishLaunching(_ note: Notification) {
+        guard chooseInitialLanguage() else { return }
         diagnostics.begin(log: server.logURL, fault: server.faultLogURL,
                           catalog: server.catalogDirectory)
         buildMenu()
@@ -1245,13 +1411,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         DispatchQueue.main.async { [weak self] in self?.presentPendingDiagnostic() }
 
         guard server.isInstalled else {
-            showFatal("""
-                LightTable's Python runtime was not found at:
-                \(projectDir.path)
-
-                Expected bundled Python and server.py resources, or a project \
-                checkout with .venv/bin/python. Rebuild or restore the app.
-                """)
+            showFatal(L("LightTable's Python runtime was not found at:\n{path}\n\nExpected bundled Python and server.py resources, or a project checkout with .venv/bin/python. Rebuild or restore the app.", ["path": projectDir.path]))
             return
         }
 
@@ -1265,7 +1425,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         sources = firstRun ? [] : loadSources()
         if firstRun {
             do { folder = try gettingStartedFolder().path }
-            catch { showFatal("Could not prepare your library: \(error.localizedDescription)"); return }
+            catch { showFatal(L("Could not prepare your library: {error}", ["error": error.localizedDescription])); return }
         } else {
             folder = (environmentFolder?.isEmpty == false ? environmentFolder : nil)
                 ?? defaults.string(forKey: "photoFolder")
@@ -1274,8 +1434,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: folder, isDirectory: &isDir)
             || !isDir.boolValue {
-            if let picked = pickFolder(title: "Choose a photo folder") { folder = picked } else {
-                showFatal("No photo folder chosen."); return
+            if let picked = pickFolder(title: L("Choose a photo folder")) { folder = picked } else {
+                showFatal(L("No photo folder chosen.")); return
             }
         }
         launch(folder: folder)
@@ -1309,6 +1469,58 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         diagnostics.end()
     }
 
+    /// Complete this before the folder picker or server can write preferences.
+    private func chooseInitialLanguage() -> Bool {
+        do {
+            let preferences = try nativeLocalization.preferences()
+            if preferences["localeChosen"] as? Bool == true {
+                try nativeLocalization.reload()
+                return true
+            }
+        } catch {
+            showFatal(L("Your language preference could not be read. The preferences file was left unchanged.") + "\n\n" + error.localizedDescription)
+            return false
+        }
+        let primary = Locale.preferredLanguages.first ?? "en"
+        var selected = NativeLocaleStore.isEnglish(primary) ? "en" : nativeLocalization.suggested(for: primary)
+        nativeLocalization.setLocale(selected)
+        if !NativeLocaleStore.isEnglish(primary) {
+            NSApp.activate(ignoringOtherApps: true)
+            let alert = NSAlert()
+            alert.messageText = L("Choose your language")
+            alert.informativeText = L("You can change the language later in Settings.")
+            let picker = NSPopUpButton(frame: NSRect(x: 0, y: 0, width: 320, height: 28), pullsDown: false)
+            picker.addItems(withTitles: nativeLocalization.languages.map { $0.nativeName })
+            picker.selectItem(at: nativeLocalization.languages.firstIndex { $0.code == selected } ?? 0)
+            picker.setAccessibilityLabel(L("Language"))
+            alert.accessoryView = picker
+            alert.addButton(withTitle: L("Continue"))
+            alert.addButton(withTitle: L("Quit"))
+            guard alert.runModal() == .alertFirstButtonReturn else { NSApp.terminate(nil); return false }
+            selected = nativeLocalization.languages[max(0, picker.indexOfSelectedItem)].code
+        }
+        // This is a user-driven retry, not a background loop. Keep the choice
+        // selected and never start the server until persistence succeeds.
+        var retry = true
+        while retry {
+            do {
+                try nativeLocalization.saveChoice(selected)
+                return true
+            } catch {
+                nativeLocalization.setLocale(selected)
+                let alert = NSAlert()
+                alert.messageText = L("Your language choice could not be saved")
+                alert.informativeText = L("Your selection is retained. Retry saving or quit; LightTable has not started and your existing preferences were left unchanged.") + "\n\n" + error.localizedDescription
+                alert.addButton(withTitle: L("Try Again"))
+                alert.addButton(withTitle: L("Quit"))
+                retry = alert.runModal() == .alertFirstButtonReturn
+            }
+        }
+        NSApp.terminate(nil)
+        return false
+    }
+
+
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if closeApproved || webView == nil { return .terminateNow }
         prepareToClose { approved in sender.reply(toApplicationShouldTerminate: approved) }
@@ -1339,10 +1551,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 return
             }
             let alert = NSAlert()
-            alert.messageText = "Some edits have not been saved"
-            alert.informativeText = "Keep this window open and retry saving. If you quit, LightTable will offer any available local recovery the next time this catalog opens."
-            alert.addButton(withTitle: "Keep Open")
-            alert.addButton(withTitle: "Quit Anyway")
+            alert.messageText = L("Some edits have not been saved")
+            alert.informativeText = L("Keep this window open and retry saving. If you quit, LightTable will offer any available local recovery the next time this catalog opens.")
+            alert.addButton(withTitle: L("Keep Open"))
+            alert.addButton(withTitle: L("Quit Anyway"))
             let approved = alert.runModal() == .alertSecondButtonReturn
             self.closeApproved = approved
             if !approved { self.sendEvent(["type": "closeCancelled"]) }
@@ -1384,6 +1596,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 '--native-window-controls-w',
                 '\(Int(WindowChrome.trafficLightClearance))px');
             """
+        if let encoded = try? JSONEncoder().encode(Locale.preferredLanguages),
+           let json = String(data: encoded, encoding: .utf8) {
+            nativeBootstrap += "window.__LIGHTTABLE_SYSTEM_LANGUAGES__=\(json);"
+        }
         if nativePreview != nil {
             nativeBootstrap += "window.__LIGHTTABLE_NATIVE_PREVIEW__=true;" +
                 "document.documentElement.classList.add('native-preview-shell');"
@@ -1490,7 +1706,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         window.makeKeyAndOrderFront(nil)
         layoutTrafficLights()
         NSApp.activate(ignoringOtherApps: true)
-        showSplash("Starting LightTable…")
+        showSplash(L("Starting LightTable…"))
     }
 
     private func layoutTrafficLights() {
@@ -1562,7 +1778,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                                 width: width, height: height),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered, defer: false)
-        loupeWindow.title = "LightTable — Secondary Loupe"
+        loupeWindow.title = L("LightTable — Secondary Loupe")
         loupeWindow.minSize = NSSize(width: 480, height: 320)
         loupeWindow.isReleasedWhenClosed = false
         loupeWindow.delegate = self
@@ -1578,13 +1794,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func showSplash(_ message: String) {
+        let message = message.replacingOccurrences(of: "&", with: "&amp;")
+            .replacingOccurrences(of: "<", with: "&lt;")
+            .replacingOccurrences(of: ">", with: "&gt;")
+        let direction = nativeLocalization.languages.first { $0.code == nativeLocalization.locale }?.dir ?? "ltr"
         webView.loadHTMLString("""
-            <html><head><meta charset="utf-8"><style>
+            <html lang="\(nativeLocalization.locale)" dir="\(direction)"><head><meta charset="utf-8"><style>
             html,body{height:100%;margin:0;background:#171717;color:#c8c8c8;
               font:13px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
               display:flex;align-items:center;justify-content:center}
             .b{width:20px;height:20px;border:2px solid #3a3a3a;border-top-color:#4b9cf5;
-              border-radius:50%;animation:s .7s linear infinite;margin-right:12px}
+              border-radius:50%;animation:s .7s linear infinite;margin-inline-end:12px}
             @keyframes s{to{transform:rotate(360deg)}}
             </style></head><body><div class="b"></div>\(message)</body></html>
             """, baseURL: nil)
@@ -1595,7 +1815,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         a.messageText = "LightTable"
         a.informativeText = message
         a.alertStyle = .critical
-        a.addButton(withTitle: "Quit")
+        a.addButton(withTitle: L("Quit"))
         a.runModal()
         NSApp.terminate(nil)
     }
@@ -1603,7 +1823,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private func launch(folder: String) {
         let clean = normalized(folder)
         guard isDirectory(clean) else {
-            sendEvent(["type": "error", "message": "That folder is no longer available."])
+            sendEvent(["type": "error", "message": L("That folder is no longer available.")])
             return
         }
         self.folder = clean
@@ -1614,10 +1834,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             addSource(clean)
             UserDefaults.standard.set(clean, forKey: "photoFolder")
         }
-        window.title = "LightTable — \((clean as NSString).lastPathComponent)"
-            + (server.safeMode ? " (Safe Mode)" : "")
-        showSplash(server.safeMode ? "Starting LightTable in Safe Mode…"
-                                   : "Starting LightTable…")
+        window.title = L("LightTable — {name}", ["name": (clean as NSString).lastPathComponent])
+            + (server.safeMode ? L(" (Safe Mode)") : "")
+        showSplash(server.safeMode ? L("Starting LightTable in Safe Mode…")
+                                   : L("Starting LightTable…"))
         server.onUnexpectedExit = { [weak self] status in
             self?.serverExited(status: status)
         }
@@ -1625,7 +1845,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             try server.start(folder: clean)
         } catch {
             presentStartupFailure(
-                summary: "Could not start the render server.\n\n\(error)",
+                summary: L("Could not start the render server.\n\n{error}", ["error": String(describing: error)]),
                 report: nil)
             return
         }
@@ -1641,18 +1861,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 self.webView.load(URLRequest(url: url))
             case .failed(let report):
                 self.presentStartupFailure(
-                    summary: report?.detail ?? "The server reported a failure.",
+                    summary: report?.detail.map { L($0) } ?? L("The server reported a failure."),
                     report: report)
             case .exited(let status, let report):
                 self.presentStartupFailure(
-                    summary: "The server exited with status \(status) before "
-                        + "it was ready.", report: report)
+                    summary: L("The server exited with status {status} before it was ready.", ["status": String(status)]), report: report)
             case .timedOut(let report):
                 self.presentStartupFailure(
-                    summary: "The server did not answer within "
-                        + "\(Int(Self.startupTimeout)) seconds. It may still be "
-                        + "checking a very large library, or it may be stuck.\n\n"
-                        + "Last reported step: \(report?.detail ?? "unknown").",
+                    summary: L("The server did not answer within {seconds} seconds. It may still be checking a very large library, or it may be stuck.\n\nLast reported step: {step}.", ["seconds": String(Int(Self.startupTimeout)), "step": report?.detail.map { L($0) } ?? L("unknown")]),
                     report: report)
             }
         }
@@ -1661,33 +1877,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     /// Replace the dead splash with a specific reason and real choices.
     private func presentStartupFailure(summary: String,
                                        report: ServerController.StartupReport?) {
-        showSplash("LightTable could not start — "
-                   + "see Help ▸ Diagnostics ▸ Show Server Log")
+        showSplash(L("LightTable could not start — see Help ▸ Diagnostics ▸ Show Server Log"))
         server.removeStartupReport()
         let alert = NSAlert()
         alert.alertStyle = .warning
-        alert.messageText = "LightTable could not start"
+        alert.messageText = L("LightTable could not start")
         var text = summary
         if let hint = report?.hint, !hint.isEmpty { text += "\n\n\(hint)" }
-        text += "\n\nThe server log has the details."
+        text += "\n\n" + L("The server log has the details.")
         alert.informativeText = text
         if report?.code == "catalog-locked", let holder = report?.holder,
            let holderPid = holder["pid"] as? Int32 {
             let place = (holder["headless"] as? Bool == true)
-                ? "a command-line server" : "another LightTable window"
-            alert.informativeText = summary
-                + "\n\nThe library is open in \(place) (process \(holderPid)"
-                + ((holder["port"] as? Int).map { ", port \($0)" } ?? "")
-                + "). Quit it and try again, or let LightTable quit it for you."
-                + "\n\nThe server log has the details."
-            alert.addButton(withTitle: "Quit the Other Copy and Retry")
-            alert.addButton(withTitle: "Try Again")
-            alert.addButton(withTitle: "Show Server Log")
-            alert.addButton(withTitle: "Quit")
+                ? L("a command-line server") : L("another LightTable window")
+            let owner = (holder["port"] as? Int).map {
+                L("process {pid}, port {port}", ["pid": String(holderPid), "port": String($0)])
+            } ?? L("process {pid}", ["pid": String(holderPid)])
+            alert.informativeText = summary + "\n\n" + L("The library is open in {place} ({owner}). Quit it and try again, or let LightTable quit it for you.", ["place": place, "owner": owner]) + "\n\n" + L("The server log has the details.")
+            alert.addButton(withTitle: L("Quit the Other Copy and Retry"))
+            alert.addButton(withTitle: L("Try Again"))
+            alert.addButton(withTitle: L("Show Server Log"))
+            alert.addButton(withTitle: L("Quit"))
             switch alert.runModal() {
             case .alertFirstButtonReturn:
                 kill(holderPid, SIGTERM)
-                showSplash("Waiting for the other copy to quit…")
+                showSplash(L("Waiting for the other copy to quit…"))
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     [weak self] in
                     guard let self else { return }
@@ -1703,11 +1917,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
             return
         }
-        alert.addButton(withTitle: "Try Again")
-        alert.addButton(withTitle: server.safeMode ? "Try Again in Safe Mode"
-                                                   : "Start in Safe Mode")
-        alert.addButton(withTitle: "Show Server Log")
-        alert.addButton(withTitle: "Quit")
+        alert.addButton(withTitle: L("Try Again"))
+        alert.addButton(withTitle: server.safeMode ? L("Try Again in Safe Mode")
+                                                   : L("Start in Safe Mode"))
+        alert.addButton(withTitle: L("Show Server Log"))
+        alert.addButton(withTitle: L("Quit"))
         switch alert.runModal() {
         case .alertFirstButtonReturn:
             launch(folder: folder)
@@ -1727,7 +1941,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         nativePreview?.hide()
         if status == ServerController.restartExitStatus {
             // Asked for: the catalog was replaced, or a restart was requested.
-            showSplash("Restarting LightTable…")
+            showSplash(L("Restarting LightTable…"))
             launch(folder: resolvedLaunchFolder())
             return
         }
@@ -1739,32 +1953,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         crashRestarts += 1
         server.previousExitStatus = status
         if crashRestarts <= Self.crashRestartLimit {
-            showSplash("LightTable's engine stopped unexpectedly "
-                       + "(status \(status)). Restarting…")
+            showSplash(L("LightTable's engine stopped unexpectedly (status {status}). Restarting…", ["status": String(status)]))
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                 guard let self else { return }
                 self.launch(folder: self.resolvedLaunchFolder())
             }
             return
         }
-        showSplash("LightTable's engine keeps stopping — "
-                   + "see Help ▸ Diagnostics ▸ Show Server Log")
+        showSplash(L("LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log"))
         let alert = NSAlert()
         alert.alertStyle = .warning
-        alert.messageText = "LightTable's engine keeps stopping"
-        alert.informativeText = """
-            It has stopped \(crashRestarts) times in a row (last status \
-            \(status)). If the same photo was open each time, the next launch \
-            sets it aside automatically. Safe Mode opens the library with \
-            background services off so you can use Library Health to look \
-            for the cause.
-
-            The server log has the details.
-            """
-        alert.addButton(withTitle: "Start in Safe Mode")
-        alert.addButton(withTitle: "Try Again")
-        alert.addButton(withTitle: "Show Server Log")
-        alert.addButton(withTitle: "Quit")
+        alert.messageText = L("LightTable's engine keeps stopping")
+        alert.informativeText = L("It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.", ["count": String(crashRestarts), "status": String(status)])
+        alert.addButton(withTitle: L("Start in Safe Mode"))
+        alert.addButton(withTitle: L("Try Again"))
+        alert.addButton(withTitle: L("Show Server Log"))
+        alert.addButton(withTitle: L("Quit"))
         switch alert.runModal() {
         case .alertFirstButtonReturn:
             server.safeMode = true
@@ -1824,9 +2028,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private func pickPhotoSources() -> [String] {
         let panel = NSOpenPanel()
-        panel.title = "Add photos to LightTable"
-        panel.prompt = "Add Photos"
-        panel.message = "Choose photos or folders. LightTable keeps originals in place."
+        panel.title = L("Add photos to LightTable")
+        panel.prompt = L("Add Photos")
+        panel.message = L("Choose photos or folders. LightTable keeps originals in place.")
         panel.canChooseDirectories = true
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = true
@@ -1909,7 +2113,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         publishPhotosLibraryEvent([
             "type": "photosLibraryImport", "state": "running", "completed": 0,
             "total": 0, "imported": 0, "existing": 0, "failures": 0,
-            "message": "Waiting for permission to read your Photos library…",
+            "message": L("Waiting for permission to read your Photos library…"),
         ])
         // The OS permission request is only reached by the explicit import
         // action, never by startup, capability checks, or selecting the card.
@@ -1922,8 +2126,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                         "type": "photosLibraryImport", "state": "error", "completed": 0,
                         "total": 0, "imported": 0, "existing": 0, "failures": 0,
                         "message": status == .limited
-                            ? "Importing the entire library needs full Photos access. Allow access in System Settings, or choose individual photos instead."
-                            : "Photos access was not allowed. You can enable it in System Settings → Privacy & Security → Photos, or start with a folder.",
+                            ? L("Importing the entire library needs full Photos access. Allow access in System Settings, or choose individual photos instead.")
+                            : L("Photos access was not allowed. You can enable it in System Settings → Privacy & Security → Photos, or start with a folder."),
                     ])
                     return
                 }
@@ -1947,7 +2151,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                     self.publishPhotosLibraryEvent([
                         "type": "photosLibraryImport", "state": "error", "completed": 0,
                         "total": 0, "imported": 0, "existing": 0, "failures": 0,
-                        "message": "Could not create the Photos import folder: \(error.localizedDescription)",
+                        "message": L("Could not create the Photos import folder: {error}", ["error": error.localizedDescription]),
                     ])
                 }
             }
@@ -1977,16 +2181,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               photosLibraryImporter == nil, photosLibraryAuthorizationID == nil,
               window.attachedSheet == nil else { return }
         let alert = NSAlert()
-        alert.messageText = "Import from Apple Photos"
-        alert.informativeText = """
-            Current format preserves the asset's present representation, including \
-            RAW or embedded depth when available. Compatible creates a broadly \
-            readable image. Selected files are copied into \
-            Pictures/LightTable Imports/Apple Photos.
-            """
-        alert.addButton(withTitle: "Current Format")
-        alert.addButton(withTitle: "Compatible")
-        alert.addButton(withTitle: "Cancel")
+        alert.messageText = L("Import from Apple Photos")
+        alert.informativeText = L("Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.", ["path": "Pictures/LightTable Imports/Apple Photos"])
+        alert.addButton(withTitle: L("Current Format"))
+        alert.addButton(withTitle: L("Compatible"))
+        alert.addButton(withTitle: L("Cancel"))
         let response = alert.runModal()
         guard response == .alertFirstButtonReturn
                 || response == .alertSecondButtonReturn else { return }
@@ -2032,13 +2231,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             directory = try photosImportRoot()
         } catch {
             sendEvent(["type": "error",
-                       "message": "Could not create the Photos import folder: \(error.localizedDescription)"])
+                       "message": L("Could not create the Photos import folder: {error}", ["error": error.localizedDescription])])
             return
         }
         let alert = NSAlert()
-        alert.messageText = "Importing from Apple Photos"
-        alert.informativeText = "Downloading and copying \(results.count) photos. iCloud photos may take a little longer."
-        alert.addButton(withTitle: "Stop Import")
+        alert.messageText = L("Importing from Apple Photos")
+        alert.informativeText = L("Downloading and copying {count} photos. iCloud photos may take a little longer.", ["count": String(results.count)])
+        alert.addButton(withTitle: L("Stop Import"))
         let spinner = NSProgressIndicator(frame: NSRect(x: 0, y: 0, width: 240, height: 16))
         spinner.style = .bar
         spinner.isIndeterminate = true
@@ -2050,7 +2249,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             let state = payload["state"] as? String ?? ""
             let completed = payload["completed"] as? Int ?? 0
             if state == "running" {
-                alert.informativeText = "Copying photo \(completed + 1) of \(results.count). iCloud photos may take a little longer."
+                alert.informativeText = L("Copying photo {current} of {total}. iCloud photos may take a little longer.", ["current": String(completed + 1), "total": String(results.count)])
                 return
             }
             self.selectedPhotosImporter = nil
@@ -2063,8 +2262,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             let failures = payload["failures"] as? Int ?? 0
             guard imported > 0 else {
                 self.sendEvent(["type": "error", "message": state == "cancelled"
-                    ? "Import stopped. No photos were copied."
-                    : "No photos could be imported. Check your connection and available disk space, then try again."])
+                    ? L("Import stopped. No photos were copied.")
+                    : L("No photos could be imported. Check your connection and available disk space, then try again.")])
                 return
             }
             self.pendingPhotosImportEvent = [
@@ -2208,8 +2407,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let alert = NSAlert()
         alert.messageText = "LightTable"
         alert.informativeText = message
-        alert.addButton(withTitle: "OK")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: L("OK"))
+        alert.addButton(withTitle: L("Cancel"))
         let reply = NativeJavaScriptReply(completionHandler)
         javaScriptConfirmation = (alert, reply)
         alert.beginSheetModal(for: parent) { [weak self] response in
@@ -2238,7 +2437,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               isTrustedEditorFrame(navigationAction.sourceFrame, in: webView),
               let url = externalWebURL(navigationAction.request.url) else { return nil }
         if !NSWorkspace.shared.open(url) {
-            sendEvent(["type": "error", "message": "Could not open the link in your browser."])
+            sendEvent(["type": "error", "message": L("Could not open the link in your browser.")])
         }
         return nil
     }
@@ -2246,7 +2445,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     /// A catalog file from another editor, opened read-only by the server.
     func pickCatalogFile() -> String? {
         let panel = NSOpenPanel()
-        panel.title = "Choose a catalog"
+        panel.title = L("Choose a catalog")
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
@@ -2310,7 +2509,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         case "setupCatalogImported":
             completeSetupCatalogImport(body)
         case "setupChooseFolder":
-            if let picked = pickFolder(title: "Choose your first photo folder") {
+            if let picked = pickFolder(title: L("Choose your first photo folder")) {
                 addSource(picked)
                 pendingSetupFolderEvent = ["type": "setupFolderSelected", "path": picked]
                 launch(folder: picked)
@@ -2323,6 +2522,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             cancelEntirePhotosLibraryImport()
         case "showServerLog":
             showLog(nil)
+        case "localizationChanged":
+            // The page sends this only after /api/prefs confirms the write.
+            // Read that same file; never trust a locale passed over the bridge.
+            do {
+                try nativeLocalization.reload()
+                aboutWindowController?.window?.close()
+                aboutWindowController = nil
+                buildMenu()
+                secondaryLoupeWindow?.title = L("LightTable — Secondary Loupe")
+            } catch {
+                sendEvent(["type": "error", "message": L("The saved language preference could not be read.")])
+            }
         case "openRecoveryFolder":
             openRecoveryFolder(nil)
         case "restartServer":
@@ -2336,12 +2547,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         case "importApplePhotos":
             presentPhotosPicker()
         case "addFolder":
-            if let picked = pickFolder(title: "Add a folder to LightTable") {
+            if let picked = pickFolder(title: L("Add a folder to LightTable")) {
                 addSource(picked)
                 launch(folder: picked)
             }
         case "chooseExportFolder":
-            if let picked = pickFolder(title: "Choose an export destination") {
+            if let picked = pickFolder(title: L("Choose an export destination")) {
                 sendEvent(["type": "exportFolderSelected", "path": picked])
             }
         case "chooseCatalogFile":
@@ -2350,13 +2561,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
         case "chooseIngestFolder":
             let field = (body["field"] as? String) ?? "ingestSource"
-            if let picked = pickFolder(title: "Choose a card or folder") {
+            if let picked = pickFolder(title: L("Choose a card or folder")) {
                 sendEvent(["type": "ingestFolderSelected",
                            "field": field, "path": picked])
             }
         case "choosePreferenceFolder":
             let key = (body["key"] as? String) ?? ""
-            if let picked = pickFolder(title: "Choose a settings folder") {
+            if let picked = pickFolder(title: L("Choose a settings folder")) {
                 sendEvent(["type": "preferenceFolderSelected",
                            "key": key, "path": picked])
             }
@@ -2501,7 +2712,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         case "notify":
             let content = UNMutableNotificationContent()
             content.title = (body["title"] as? String) ?? "LightTable"
-            content.body = (body["message"] as? String) ?? "Job complete"
+            content.body = (body["message"] as? String) ?? L("Job complete")
             content.sound = .default
             UNUserNotificationCenter.current().add(
                 UNNotificationRequest(identifier: UUID().uuidString,
@@ -2528,9 +2739,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     private func importPresets() {
         let panel = NSOpenPanel()
-        panel.title = "Import Presets"
-        panel.prompt = "Import"
-        panel.message = "Choose preset files, a ZIP bundle, or a folder of presets."
+        panel.title = L("Import Presets")
+        panel.prompt = L("Import")
+        panel.message = L("Choose preset files, a ZIP bundle, or a folder of presets.")
         panel.canChooseDirectories = true
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = true
@@ -2587,14 +2798,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             var files: [[String: String]] = []
             var failures: [[String: String]] = []
             if urls.count > maxFiles {
-                failures.append(["name": "selection", "error": "more than 250 preset files"])
+                failures.append(["name": "selection", "error": L("more than 250 preset files")])
             }
             for url in urls.prefix(maxFiles) {
                 do {
                     let data = try Data(contentsOf: url, options: [.mappedIfSafe])
                     guard totalBytes + data.count <= maxTotalBytes else {
                         failures.append(["name": url.lastPathComponent,
-                                         "error": "selection is larger than 25 MB"])
+                                         "error": L("selection is larger than 25 MB")])
                         continue
                     }
                     totalBytes += data.count
@@ -2602,7 +2813,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                                   "base64": data.base64EncodedString()])
                 } catch {
                     failures.append(["name": url.lastPathComponent,
-                                     "error": "file could not be read"])
+                                     "error": L("file could not be read")])
                 }
             }
             DispatchQueue.main.async {
@@ -2617,13 +2828,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         do { data = try presetExportData(content: content, encoding: encoding) }
         catch {
             sendEvent(["type": "error",
-                       "message": "Could not export preset: \(error.localizedDescription)"])
+                       "message": L("Could not export preset: {error}", ["error": error.localizedDescription])])
             return
         }
         let cleanName = (filename as NSString).lastPathComponent
         let panel = NSSavePanel()
-        panel.title = "Export Preset"
-        panel.prompt = "Export"
+        panel.title = L("Export Preset")
+        panel.prompt = L("Export")
         panel.nameFieldStringValue = cleanName
         if let type = UTType(filenameExtension: (cleanName as NSString).pathExtension) {
             panel.allowedContentTypes = [type]
@@ -2634,7 +2845,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             sendEvent(["type": "presetSaved", "filename": destination.lastPathComponent])
         } catch {
             sendEvent(["type": "error",
-                       "message": "Could not export preset: \(error.localizedDescription)"])
+                       "message": L("Could not export preset: {error}", ["error": error.localizedDescription])])
         }
     }
 
@@ -2890,7 +3101,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 DispatchQueue.main.async { NSApp.terminate(nil) }
             }
         } catch {
-            sendEvent(["type": "error", "message": "Could not save native benchmark."])
+            sendEvent(["type": "error", "message": L("Could not save native benchmark.")])
         }
     }
 
@@ -2899,13 +3110,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, trimmed != ".", trimmed != "..",
               !trimmed.contains("/"), !trimmed.contains(":"), !trimmed.hasPrefix(".") else {
-            sendEvent(["type": "error", "message": "Enter a valid visible folder name."])
+            sendEvent(["type": "error", "message": L("Enter a valid visible folder name.")])
             return
         }
         let source = URL(fileURLWithPath: clean)
         let destination = source.deletingLastPathComponent().appendingPathComponent(trimmed)
         guard !FileManager.default.fileExists(atPath: destination.path) else {
-            sendEvent(["type": "error", "message": "A folder with that name already exists."])
+            sendEvent(["type": "error", "message": L("A folder with that name already exists.")])
             return
         }
         do {
@@ -2922,7 +3133,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             migrateWebPreferences(from: clean, to: destination.path)
             launch(folder: destination.path)
         } catch {
-            sendEvent(["type": "error", "message": "Could not rename folder: \(error.localizedDescription)"])
+            sendEvent(["type": "error", "message": L("Could not rename folder: {error}", ["error": error.localizedDescription])])
         }
     }
 
@@ -2951,7 +3162,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     // MARK: Actions
 
     @objc func openFolder(_ sender: Any?) {
-        if let picked = pickFolder(title: "Add a folder to LightTable") {
+        if let picked = pickFolder(title: L("Add a folder to LightTable")) {
             addSource(picked)
             launch(folder: picked)
         }
@@ -3245,8 +3456,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     @objc private func showAbout(_ sender: Any?) {
-        aboutWindowController.showWindow(sender)
-        aboutWindowController.window?.makeKeyAndOrderFront(sender)
+        if aboutWindowController == nil { aboutWindowController = AboutWindowController() }
+        aboutWindowController?.showWindow(sender)
+        aboutWindowController?.window?.makeKeyAndOrderFront(sender)
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -3256,138 +3468,138 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         schemeCommandItems.removeAll()
 
         let appMenu = NSMenu(title: "LightTable")
-        let aboutItem = appMenu.addItem(withTitle: "About LightTable",
+        let aboutItem = appMenu.addItem(withTitle: L("About LightTable"),
                                        action: #selector(showAbout(_:)), keyEquivalent: "")
         aboutItem.target = self
 #if canImport(Sparkle)
         let updateItem = appMenu.addItem(
-            withTitle: "Check for Updates…",
+            withTitle: L("Check for Updates…"),
             action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)),
             keyEquivalent: "")
         updateItem.target = updaterController
 #endif
         appMenu.addItem(.separator())
-        addEditorItem(appMenu, title: "Settings…", command: "preferences",
+        addEditorItem(appMenu, title: L("Settings…"), command: "preferences",
                       key: ",")
         let servicesItem = NSMenuItem(
-            title: "Services", action: nil, keyEquivalent: "")
-        let servicesMenu = NSMenu(title: "Services")
+            title: L("Services"), action: nil, keyEquivalent: "")
+        let servicesMenu = NSMenu(title: L("Services"))
         servicesItem.submenu = servicesMenu
         appMenu.addItem(servicesItem)
         NSApp.servicesMenu = servicesMenu
         appMenu.addItem(.separator())
-        addSystemItem(appMenu, title: "Hide LightTable",
+        addSystemItem(appMenu, title: L("Hide LightTable"),
                       action: #selector(NSApplication.hide(_:)), key: "h")
-        addSystemItem(appMenu, title: "Hide Others",
+        addSystemItem(appMenu, title: L("Hide Others"),
                       action: #selector(NSApplication.hideOtherApplications(_:)),
                       key: "h", modifiers: [.command, .option])
-        addSystemItem(appMenu, title: "Show All",
+        addSystemItem(appMenu, title: L("Show All"),
                       action: #selector(NSApplication.unhideAllApplications(_:)))
         appMenu.addItem(.separator())
-        addSystemItem(appMenu, title: "Quit LightTable",
+        addSystemItem(appMenu, title: L("Quit LightTable"),
                       action: #selector(NSApplication.terminate(_:)), key: "q")
         addTopLevelMenu(appMenu, to: main)
 
-        let fileMenu = NSMenu(title: "File")
+        let fileMenu = NSMenu(title: L("File"))
         let addPhotosItem = addSystemItem(
-            fileMenu, title: "Add Photos…", action: #selector(addPhotos(_:)),
+            fileMenu, title: L("Add Photos…"), action: #selector(addPhotos(_:)),
             key: "i", modifiers: [.command, .shift])
         addPhotosItem.target = self
         let importPhotosItem = addSystemItem(
-            fileMenu, title: "Import from Apple Photos…",
+            fileMenu, title: L("Import from Apple Photos…"),
             action: #selector(importApplePhotos(_:)))
         importPhotosItem.target = self
         let addFolderItem = addSystemItem(
-            fileMenu, title: "Add Folder…", action: #selector(openFolder(_:)),
+            fileMenu, title: L("Add Folder…"), action: #selector(openFolder(_:)),
             key: "o")
         addFolderItem.target = self
-        addEditorItem(fileMenu, title: "Import from Card…",
+        addEditorItem(fileMenu, title: L("Import from Card…"),
                       command: "importCard")
         fileMenu.addItem(.separator())
-        addEditorItem(fileMenu, title: "Export Photos…",
+        addEditorItem(fileMenu, title: L("Export Photos…"),
                       command: "exportPhotos", key: "e",
                       modifiers: [.command, .shift])
         let revealExportsItem = addSystemItem(
-            fileMenu, title: "Reveal Export Folder in Finder",
+            fileMenu, title: L("Reveal Export Folder in Finder"),
             action: #selector(revealExports(_:)))
         revealExportsItem.target = self
         fileMenu.addItem(.separator())
-        addSystemItem(fileMenu, title: "Close Window",
+        addSystemItem(fileMenu, title: L("Close Window"),
                       action: #selector(NSWindow.performClose(_:)), key: "w")
         addTopLevelMenu(fileMenu, to: main)
 
-        let editMenu = NSMenu(title: "Edit")
-        addEditorItem(editMenu, title: "Undo", command: "undo", key: "z")
-        addEditorItem(editMenu, title: "Redo", command: "redo", key: "z",
+        let editMenu = NSMenu(title: L("Edit"))
+        addEditorItem(editMenu, title: L("Undo"), command: "undo", key: "z")
+        addEditorItem(editMenu, title: L("Redo"), command: "redo", key: "z",
                       modifiers: [.command, .shift])
         editMenu.addItem(.separator())
-        addSystemItem(editMenu, title: "Cut",
+        addSystemItem(editMenu, title: L("Cut"),
                       action: #selector(NSText.cut(_:)), key: "x")
-        addSystemItem(editMenu, title: "Copy",
+        addSystemItem(editMenu, title: L("Copy"),
                       action: #selector(NSText.copy(_:)), key: "c")
-        addSystemItem(editMenu, title: "Paste",
+        addSystemItem(editMenu, title: L("Paste"),
                       action: #selector(NSText.paste(_:)), key: "v")
         editMenu.addItem(.separator())
-        addEditorItem(editMenu, title: "Select All", command: "selectAll",
+        addEditorItem(editMenu, title: L("Select All"), command: "selectAll",
                       key: "a")
-        addEditorItem(editMenu, title: "Deselect All", command: "deselectAll",
+        addEditorItem(editMenu, title: L("Deselect All"), command: "deselectAll",
                       key: "a", modifiers: [.command, .shift])
         editMenu.addItem(.separator())
-        addEditorItem(editMenu, title: "Search", command: "search", key: "f")
+        addEditorItem(editMenu, title: L("Search"), command: "search", key: "f")
         addTopLevelMenu(editMenu, to: main)
 
-        let libraryMenu = NSMenu(title: "Library")
-        addEditorItem(libraryMenu, title: "New Collection…",
+        let libraryMenu = NSMenu(title: L("Library"))
+        addEditorItem(libraryMenu, title: L("New Collection…"),
                       command: "newCollection", key: "n")
-        addEditorItem(libraryMenu, title: "New Smart Collection…",
+        addEditorItem(libraryMenu, title: L("New Smart Collection…"),
                       command: "newSmartCollection", key: "n",
                       modifiers: [.command, .option])
-        addEditorItem(libraryMenu, title: "Add Selected to Collection",
+        addEditorItem(libraryMenu, title: L("Add Selected to Collection"),
                       command: "addToCollection")
         libraryMenu.addItem(.separator())
-        addEditorItem(libraryMenu, title: "Create Virtual Copy…",
+        addEditorItem(libraryMenu, title: L("Create Virtual Copy…"),
                       command: "virtualCopy", key: "'")
-        addEditorItem(libraryMenu, title: "Delete Virtual Copy",
+        addEditorItem(libraryMenu, title: L("Delete Virtual Copy"),
                       command: "deleteVirtualCopy")
-        addEditorItem(libraryMenu, title: "Stack Selected Photos…",
+        addEditorItem(libraryMenu, title: L("Stack Selected Photos…"),
                       command: "stack")
-        addEditorItem(libraryMenu, title: "Unstack Photos",
+        addEditorItem(libraryMenu, title: L("Unstack Photos"),
                       command: "unstack")
         libraryMenu.addItem(.separator())
-        addEditorItem(libraryMenu, title: "Match Total Exposure",
+        addEditorItem(libraryMenu, title: L("Match Total Exposure"),
                       command: "matchExposure")
-        addEditorItem(libraryMenu, title: "Build 1:1 Previews",
+        addEditorItem(libraryMenu, title: L("Build 1:1 Previews"),
                       command: "buildPreviews")
-        addEditorItem(libraryMenu, title: "Generate Subject Masks",
+        addEditorItem(libraryMenu, title: L("Generate Subject Masks"),
                       command: "batchAiMask")
         libraryMenu.addItem(.separator())
-        addEditorItem(libraryMenu, title: "Import Catalog…",
+        addEditorItem(libraryMenu, title: L("Import Catalog…"),
                       command: "importCatalog")
-        addEditorItem(libraryMenu, title: "Read XMP Sidecars…",
+        addEditorItem(libraryMenu, title: L("Read XMP Sidecars…"),
                       command: "importSidecars")
         libraryMenu.addItem(.separator())
-        addEditorItem(libraryMenu, title: "Back Up Catalog Now",
+        addEditorItem(libraryMenu, title: L("Back Up Catalog Now"),
                       command: "backupCatalog")
-        addEditorItem(libraryMenu, title: "Find Duplicates",
+        addEditorItem(libraryMenu, title: L("Find Duplicates"),
                       command: "findDuplicates")
         addTopLevelMenu(libraryMenu, to: main)
 
-        let photoMenu = NSMenu(title: "Photo")
-        addEditorItem(photoMenu, title: "Previous Photo",
+        let photoMenu = NSMenu(title: L("Photo"))
+        addEditorItem(photoMenu, title: L("Previous Photo"),
                       command: "previousPhoto")
-        addEditorItem(photoMenu, title: "Next Photo", command: "nextPhoto")
+        addEditorItem(photoMenu, title: L("Next Photo"), command: "nextPhoto")
         photoMenu.addItem(.separator())
-        addEditorItem(photoMenu, title: "Flag as Pick",
+        addEditorItem(photoMenu, title: L("Flag as Pick"),
                       command: "flag:approved")
-        addEditorItem(photoMenu, title: "Reject", command: "flag:skipped")
-        addEditorItem(photoMenu, title: "Unflag", command: "flag:pending")
+        addEditorItem(photoMenu, title: L("Reject"), command: "flag:skipped")
+        addEditorItem(photoMenu, title: L("Unflag"), command: "flag:pending")
 
-        let ratingItem = NSMenuItem(title: "Set Rating", action: nil,
+        let ratingItem = NSMenuItem(title: L("Set Rating"), action: nil,
                                     keyEquivalent: "")
-        let ratingMenu = NSMenu(title: "Set Rating")
+        let ratingMenu = NSMenu(title: L("Set Rating"))
         for rating in 0...5 {
             addEditorItem(ratingMenu,
-                          title: rating == 0 ? "No Rating" : String(
+                          title: rating == 0 ? L("No Rating") : String(
                             repeating: "★", count: rating),
                           command: "rating:\(rating)", key: "\(rating)",
                           modifiers: [], schemeShortcut: true)
@@ -3395,14 +3607,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         ratingItem.submenu = ratingMenu
         photoMenu.addItem(ratingItem)
 
-        let labelItem = NSMenuItem(title: "Set Colour Label", action: nil,
+        let labelItem = NSMenuItem(title: L("Set Colour Label"), action: nil,
                                    keyEquivalent: "")
-        let labelMenu = NSMenu(title: "Set Colour Label")
-        addEditorItem(labelMenu, title: "None", command: "label:none")
+        let labelMenu = NSMenu(title: L("Set Colour Label"))
+        addEditorItem(labelMenu, title: L("None"), command: "label:none")
         for (label, title, key) in [
-            ("red", "Red", "6"), ("yellow", "Yellow", "7"),
-            ("green", "Green", "8"), ("blue", "Blue", "9"),
-            ("purple", "Purple", ""),
+            ("red", L("Red"), "6"), ("yellow", L("Yellow"), "7"),
+            ("green", L("Green"), "8"), ("blue", L("Blue"), "9"),
+            ("purple", L("Purple"), ""),
         ] {
             addEditorItem(labelMenu, title: title, command: "label:\(label)",
                           key: key, modifiers: [], schemeShortcut: !key.isEmpty)
@@ -3410,153 +3622,153 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         labelItem.submenu = labelMenu
         photoMenu.addItem(labelItem)
         photoMenu.addItem(.separator())
-        addEditorItem(photoMenu, title: "Rotate Left",
+        addEditorItem(photoMenu, title: L("Rotate Left"),
                       command: "rotateLeft", key: "[")
-        addEditorItem(photoMenu, title: "Rotate Right",
+        addEditorItem(photoMenu, title: L("Rotate Right"),
                       command: "rotateRight", key: "]")
-        addEditorItem(photoMenu, title: "Rename…", command: "renamePhoto")
-        addEditorItem(photoMenu, title: "Show in Finder",
+        addEditorItem(photoMenu, title: L("Rename…"), command: "renamePhoto")
+        addEditorItem(photoMenu, title: L("Show in Finder"),
                       command: "revealPhoto", key: "r")
-        addEditorItem(photoMenu, title: "Edit In…",
+        addEditorItem(photoMenu, title: L("Edit In…"),
                       command: "editExternal", key: "e")
-        addEditorItem(photoMenu, title: "Enhance Photo…",
+        addEditorItem(photoMenu, title: L("Enhance Photo…"),
                       command: "enhancePhoto")
-        addEditorItem(photoMenu, title: "Photo Merge…",
+        addEditorItem(photoMenu, title: L("Photo Merge…"),
                       command: "photoMerge")
         photoMenu.addItem(.separator())
-        addEditorItem(photoMenu, title: "Move Rejected Photos to Trash…",
+        addEditorItem(photoMenu, title: L("Move Rejected Photos to Trash…"),
                       command: "deleteRejected", key: "\u{8}")
         addTopLevelMenu(photoMenu, to: main)
 
-        let developMenu = NSMenu(title: "Develop")
-        addEditorItem(developMenu, title: "Copy Edit Settings",
+        let developMenu = NSMenu(title: L("Develop"))
+        addEditorItem(developMenu, title: L("Copy Edit Settings"),
                       command: "copySettings", key: "c",
                       modifiers: [.command, .shift])
-        addEditorItem(developMenu, title: "Paste Edit Settings",
+        addEditorItem(developMenu, title: L("Paste Edit Settings"),
                       command: "pasteSettings", key: "v",
                       modifiers: [.command, .shift])
-        addEditorItem(developMenu, title: "Paste to All Visible Photos",
+        addEditorItem(developMenu, title: L("Paste to All Visible Photos"),
                       command: "pasteAllVisible")
         developMenu.addItem(.separator())
-        addEditorItem(developMenu, title: "Reset Edit Adjustments",
+        addEditorItem(developMenu, title: L("Reset Edit Adjustments"),
                       command: "resetEdit")
-        addEditorItem(developMenu, title: "Reset Film Settings",
+        addEditorItem(developMenu, title: L("Reset Film Settings"),
                       command: "resetFilm")
-        addEditorItem(developMenu, title: "Reset Crop & Geometry", command: "resetCrop")
-        addEditorItem(developMenu, title: "Clear Masks", command: "resetMasks")
-        addEditorItem(developMenu, title: "Clear Remove Corrections",
+        addEditorItem(developMenu, title: L("Reset Crop & Geometry"), command: "resetCrop")
+        addEditorItem(developMenu, title: L("Clear Masks"), command: "resetMasks")
+        addEditorItem(developMenu, title: L("Clear Remove Corrections"),
                       command: "resetHealing")
-        addEditorItem(developMenu, title: "Reset Lens Corrections",
+        addEditorItem(developMenu, title: L("Reset Lens Corrections"),
                       command: "resetLens")
         developMenu.addItem(.separator())
-        addEditorItem(developMenu, title: "Light & Colour",
+        addEditorItem(developMenu, title: L("Light & Colour"),
                       command: "pane:edit")
-        addEditorItem(developMenu, title: "Film", command: "pane:film")
-        addEditorItem(developMenu, title: "Masking", command: "pane:mask",
+        addEditorItem(developMenu, title: L("Film"), command: "pane:film")
+        addEditorItem(developMenu, title: L("Masking"), command: "pane:mask",
                       schemeShortcut: true)
-        addEditorItem(developMenu, title: "Remove", command: "pane:heal",
+        addEditorItem(developMenu, title: L("Remove"), command: "pane:heal",
                       schemeShortcut: true)
-        addEditorItem(developMenu, title: "Crop", command: "pane:crop",
+        addEditorItem(developMenu, title: L("Crop"), command: "pane:crop",
                       schemeShortcut: true)
         developMenu.addItem(.separator())
-        addEditorItem(developMenu, title: "Enable Film Profile",
+        addEditorItem(developMenu, title: L("Enable Film Profile"),
                       command: "filmToggle")
 
-        let presetItem = NSMenuItem(title: "Presets", action: nil,
+        let presetItem = NSMenuItem(title: L("Presets"), action: nil,
                                     keyEquivalent: "")
-        let presetMenu = NSMenu(title: "Presets")
-        addEditorItem(presetMenu, title: "Show Presets",
+        let presetMenu = NSMenu(title: L("Presets"))
+        addEditorItem(presetMenu, title: L("Show Presets"),
                       command: "pane:presets")
-        addEditorItem(presetMenu, title: "Save Current Settings as Preset…",
+        addEditorItem(presetMenu, title: L("Save Current Settings as Preset…"),
                       command: "savePreset")
-        addEditorItem(presetMenu, title: "Import Presets…",
+        addEditorItem(presetMenu, title: L("Import Presets…"),
                       command: "importPreset")
-        addEditorItem(presetMenu, title: "Export Selected Preset…",
+        addEditorItem(presetMenu, title: L("Export Selected Preset…"),
                       command: "exportPreset")
         presetItem.submenu = presetMenu
         developMenu.addItem(presetItem)
         addTopLevelMenu(developMenu, to: main)
 
-        let viewMenu = NSMenu(title: "View")
-        addEditorItem(viewMenu, title: "Photo Grid", command: "view:photo",
+        let viewMenu = NSMenu(title: L("View"))
+        addEditorItem(viewMenu, title: L("Photo Grid"), command: "view:photo",
                       schemeShortcut: true)
-        addEditorItem(viewMenu, title: "Square Grid", command: "view:square",
+        addEditorItem(viewMenu, title: L("Square Grid"), command: "view:square",
                       schemeShortcut: true)
-        addEditorItem(viewMenu, title: "Detail", command: "view:detail",
+        addEditorItem(viewMenu, title: L("Detail"), command: "view:detail",
                       schemeShortcut: true)
-        addEditorItem(viewMenu, title: "Survey Selection", command: "survey",
+        addEditorItem(viewMenu, title: L("Survey Selection"), command: "survey",
                       schemeShortcut: true)
         viewMenu.addItem(.separator())
-        addEditorItem(viewMenu, title: "Library Panel",
+        addEditorItem(viewMenu, title: L("Library Panel"),
                       command: "toggleLibrary")
-        addEditorItem(viewMenu, title: "Filmstrip", command: "toggleFilmstrip")
+        addEditorItem(viewMenu, title: L("Filmstrip"), command: "toggleFilmstrip")
         viewMenu.addItem(.separator())
-        addEditorItem(viewMenu, title: "Compare Before & After",
+        addEditorItem(viewMenu, title: L("Compare Before & After"),
                       command: "compare", schemeShortcut: true)
-        addEditorItem(viewMenu, title: "Soft Proof", command: "softProof")
+        addEditorItem(viewMenu, title: L("Soft Proof"), command: "softProof")
         viewMenu.addItem(.separator())
-        addEditorItem(viewMenu, title: "Zoom In", command: "zoomIn", key: "=")
-        addEditorItem(viewMenu, title: "Zoom Out", command: "zoomOut", key: "-")
-        addEditorItem(viewMenu, title: "Fit", command: "zoomFit")
-        addEditorItem(viewMenu, title: "Actual Size", command: "zoomActual")
+        addEditorItem(viewMenu, title: L("Zoom In"), command: "zoomIn", key: "=")
+        addEditorItem(viewMenu, title: L("Zoom Out"), command: "zoomOut", key: "-")
+        addEditorItem(viewMenu, title: L("Fit"), command: "zoomFit")
+        addEditorItem(viewMenu, title: L("Actual Size"), command: "zoomActual")
         viewMenu.addItem(.separator())
-        addSystemItem(viewMenu, title: "Enter Full Screen",
+        addSystemItem(viewMenu, title: L("Enter Full Screen"),
                       action: #selector(NSWindow.toggleFullScreen(_:)), key: "f",
                       modifiers: [.command, .control])
         addTopLevelMenu(viewMenu, to: main)
 
-        let winMenu = NSMenu(title: "Window")
-        addSystemItem(winMenu, title: "Minimize",
+        let winMenu = NSMenu(title: L("Window"))
+        addSystemItem(winMenu, title: L("Minimize"),
                       action: #selector(NSWindow.performMiniaturize(_:)), key: "m")
-        addSystemItem(winMenu, title: "Zoom",
+        addSystemItem(winMenu, title: L("Zoom"),
                       action: #selector(NSWindow.performZoom(_:)))
-        addEditorItem(winMenu, title: "Secondary Loupe",
+        addEditorItem(winMenu, title: L("Secondary Loupe"),
                       command: "secondaryLoupe")
         winMenu.addItem(.separator())
-        addSystemItem(winMenu, title: "Bring All to Front",
+        addSystemItem(winMenu, title: L("Bring All to Front"),
                       action: #selector(NSApplication.arrangeInFront(_:)))
         addTopLevelMenu(winMenu, to: main)
 
-        let helpMenu = NSMenu(title: "Help")
+        let helpMenu = NSMenu(title: L("Help"))
         let helpItem = addSystemItem(
-            helpMenu, title: "LightTable Help", action: #selector(openHelp(_:)))
+            helpMenu, title: L("LightTable Help"), action: #selector(openHelp(_:)))
         helpItem.target = self
         let reportItem = addSystemItem(
-            helpMenu, title: "Report a Problem…", action: #selector(reportProblem(_:)))
+            helpMenu, title: L("Report a Problem…"), action: #selector(reportProblem(_:)))
         reportItem.target = self
-        addEditorItem(helpMenu, title: "Keyboard Shortcuts",
+        addEditorItem(helpMenu, title: L("Keyboard Shortcuts"),
                       command: "keyboardShortcuts")
         helpMenu.addItem(.separator())
         let diagnosticsItem = NSMenuItem(
-            title: "Diagnostics", action: nil, keyEquivalent: "")
-        let diagnosticsMenu = NSMenu(title: "Diagnostics")
+            title: L("Diagnostics"), action: nil, keyEquivalent: "")
+        let diagnosticsMenu = NSMenu(title: L("Diagnostics"))
         let reloadItem = addSystemItem(
-            diagnosticsMenu, title: "Reload Interface",
+            diagnosticsMenu, title: L("Reload Interface"),
             action: #selector(reloadUI(_:)))
         reloadItem.target = self
         let restartItem = addSystemItem(
-            diagnosticsMenu, title: "Restart Rendering Service",
+            diagnosticsMenu, title: L("Restart Rendering Service"),
             action: #selector(restartServer(_:)))
         restartItem.target = self
         let browserItem = addSystemItem(
-            diagnosticsMenu, title: "Open Interface in Browser",
+            diagnosticsMenu, title: L("Open Interface in Browser"),
             action: #selector(openInBrowser(_:)))
         browserItem.target = self
         let logItem = addSystemItem(
-            diagnosticsMenu, title: "Show Server Log",
+            diagnosticsMenu, title: L("Show Server Log"),
             action: #selector(showLog(_:)))
         logItem.target = self
         diagnosticsMenu.addItem(.separator())
         let healthItem = addSystemItem(
-            diagnosticsMenu, title: "Library Health…",
+            diagnosticsMenu, title: L("Library Health…"),
             action: #selector(openLibraryHealth(_:)))
         healthItem.target = self
         let safeModeItem = addSystemItem(
-            diagnosticsMenu, title: "Restart in Safe Mode",
+            diagnosticsMenu, title: L("Restart in Safe Mode"),
             action: #selector(restartInSafeMode(_:)))
         safeModeItem.target = self
         let recoveryItem = addSystemItem(
-            diagnosticsMenu, title: "Open Recovery Folder",
+            diagnosticsMenu, title: L("Open Recovery Folder"),
             action: #selector(openRecoveryFolder(_:)))
         recoveryItem.target = self
         diagnosticsItem.submenu = diagnosticsMenu

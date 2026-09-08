@@ -1,0 +1,3005 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Foto's toevoegen en beginnen met bladeren",
+      "category": "Getting started",
+      "summary": "Open foto's of mappen ter plaatse, kies vervolgens een map en begin met beoordelen.",
+      "keywords": [
+        "starten",
+        "openen",
+        "bladeren",
+        "map toevoegen",
+        "originelen",
+        "importeren",
+        "nieuwe bibliotheek"
+      ],
+      "sections": [
+        {
+          "title": "Kies een startpunt",
+          "paragraphs": [
+            "In een nieuwe bibliotheek biedt de installatie een lokale map, Lightroom-migratie of Apple Foto's. Je kunt de installatie overslaan en later foto's toevoegen.",
+            "Voor het importeren van de hele Apple Photos-bibliotheek is de macOS-app vereist en toestemming om Foto's te lezen. Het kopieert originele foto's, inclusief RAW-bestanden, naar Pictures / LightTable Imports / Apple Photos. Je Foto's-bibliotheek blijft ongewijzigd. iCloud-originelen worden tijdens het importeren gedownload, dus houd rekening met tijd en schijfruimte. Albums, video's en bewerkingen in Foto's worden niet overgedragen.",
+            "Stop importeren behoudt voltooide kopieën. Als je het opnieuw uitvoert, worden die kopieën overgeslagen en worden onvoltooide originelen opnieuw geprobeerd."
+          ],
+          "steps": [
+            "Kies een map om originelen op hun plaats te bladeren, of selecteer een van de migratieopties.",
+            "Controleer het importresultaat en ga daarna door naar de bibliotheek."
+          ]
+        },
+        {
+          "title": "Kies foto's uit Apple Foto's",
+          "paragraphs": [
+            "Gebruik in de macOS-app Bestand → Importeren uit Apple Foto's… of Kies er een paar… in de configuratie van Foto. Huidig formaat behoudt de door Foto's aangeleverde weergave; Compatibel vraagt om een breed leesbaar formaat. Deze geselecteerde weergaven kunnen Foto's-bewerkingen bevatten en staan los van de originele import van de hele bibliotheek.",
+            "Selecteer foto's en klik vervolgens op Toevoegen. LightTable toont de voortgang tijdens het downloaden en kopiëren. Importeren stoppen behoudt voltooide kopieën en stopt de resterende overdrachten. Je Foto's-bibliotheek blijft ongewijzigd.",
+            "Kopieën worden opgeslagen in Pictures / LightTable Imports / Apple Photos. Als je een selectie opnieuw importeert, worden afzonderlijke kopieën met genummerde bestandsnamen gemaakt; bestaande bestanden worden nooit overschreven."
+          ],
+          "steps": [
+            "Kies Huidig formaat of Compatibel.",
+            "Selecteer een of meer foto's in de kiezer en klik op Toevoegen. Gebruik Annuleren om te vertrekken zonder te importeren.",
+            "Wacht tot het importeren is voltooid en beoordeel daarna de foto's in LightTable."
+          ]
+        },
+        {
+          "title": "Een lokale map openen",
+          "paragraphs": [
+            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruik je de + naast Lokaal om een hele map toe te voegen. LightTable bewaart originelen op hun plek. Als je een afzonderlijke foto selecteert, wordt de bijbehorende map toegevoegd, zodat andere ondersteunde foto's in die map ook kunnen verschijnen."
+          ],
+          "steps": [
+            "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Lokaal om een map te kiezen.",
+            "Kies de map onder Lokaal in de linkerzijbalk. Schakel Submappen opnemen in om foto's in de onderliggende mappen te bladeren.",
+            "Kies bovenaan Fotoraster, Selectieraster of Detail. Klik op een foto om deze actief te maken."
+          ],
+          "tips": [
+            "Als de zijbalk verborgen is, gebruik dan Bibliotheek tonen of verbergen linksboven."
+          ]
+        },
+        {
+          "title": "Breng nieuwe bestanden naar een bestaande map",
+          "paragraphs": [
+            "Gebruik het menu Lokaal ••• en Mappen opnieuw scannen nadat u bestanden buiten LightTable hebt toegevoegd. Gebruik om foto's van een kaart naar een bestemmingsmap te kopiëren Importeren vanaf kaart… in dat menu."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Breng een Lightroom Classic-catalogus in LightTable",
+      "category": "Getting started",
+      "summary": "Importeer ondersteunde metadata en benaderde bewerkingen en bekijk daarna het conversierapport.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migreren",
+        "migratie",
+        "catalogusimport",
+        "lrcat",
+        "sidecars",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Voorbereiden en inspecteren",
+          "paragraphs": [
+            "De importeerfunctie leest een tijdelijke kopie van een Lightroom Classic .lrcat-catalogus en laat je Lightroom-configuratie en catalogus ongewijzigd. Foto's blijven in hun huidige mappen en worden gerefereerd, niet gedupliceerd. Als je de optie Voeg de fotomappen die door deze catalogus worden gebruikt toe inschakelt, kan de import gerefereerde originelen en hun bovenliggende mappen registreren. Schakel die optie uit om alleen foto's af te stemmen die al in LightTable staan.",
+            "Compatibiliteit in voorbeeld toont overeenkomsten in de huidige bibliotheek zonder deze te wijzigen. Foto's die nog niet zijn toegevoegd, kunnen in het voorbeeld als niet-overeenkomend worden weergegeven; importeren met De fotomappen toevoegen ingeschakeld registreert beschikbare originelen voordat opnieuw wordt afgestemd."
+          ],
+          "steps": [
+            "Open Lokaal ••• → Catalogus importeren…, of kies in de configuratie voor Importeren uit Lightroom.",
+            "Kies het .lrcat-bestand en controleer de aantallen en waarschuwingen.",
+            "Kies de categorieën om te importeren, het beleid voor bestaande bewerkingen en of de gekoppelde fotomappen moeten worden toegevoegd.",
+            "Klik op Voorbeeldcompatibiliteit en bekijk toegewezen en overgeslagen instellingen. Probeer 20 varianten maakt afzonderlijke proefbewerkingen vóór een grotere import.",
+            "Klik op Importeren na het controleren van de compatibiliteit en lees vervolgens het rapport en de aantallen voor overeenkomend, niet gevonden en overgeslagen. LightTable maakt een back-up van de catalogus voordat een proef of import wordt uitgevoerd."
+          ]
+        },
+        {
+          "title": "Vertaalde bewerkingen beoordelen",
+          "paragraphs": [
+            "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
+            "Lokaal ••• → Sidecars importeren… is een afzonderlijke actie voor het lezen van ondersteunde metagegevens uit naastliggende sidecars. Die actie past geen ontwikkelingsinstellingen of bijsnijden toe. Het resultatenvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "Kies LightTable- of Klassiek-sneltoetsen",
+      "category": "Getting started",
+      "summary": "Kies de toetsenbordindeling die past bij je bewerkingsgewoonten.",
+      "keywords": [
+        "toetsenbord",
+        "sneltoetsen",
+        "klassiek",
+        "Lightroom",
+        "bijsnijtoets",
+        "detailsleutel",
+        "Voor en na"
+      ],
+      "sections": [
+        {
+          "title": "Kies een schema",
+          "paragraphs": [
+            "Open Instellingen → Snelkoppelingen & hardware en kies Snelkopschema. LightTable en Klassiek delen de meeste selectiesnelkoppelingen, maar verschillen voor Details, Bijsnijden en Vergelijken voor/na."
+          ],
+          "steps": [
+            "Kies LightTable voor D = Details, C = Bijsnijden en backslash (\\) = voor/na Vergelijken.",
+            "Kies Klassiek voor E = Details, R = Bijsnijden en C = voor/na Vergelijken."
+          ],
+          "tips": [
+            "Beide schema’s gebruiken G voor Fotoraster, Shift+G voor Selectieraster, N voor Overzicht, P/X/U voor markeringen en 0–5 voor sterren.",
+            "Houd B ingedrukt om het origineel weer te geven zonder Film, lokale maskers of afwerkingsaanpassingen; laat B los om de bewerking te herstellen. Slash (/) zet het zoeken naar foto's in focus.",
+            "Sneltoetsen voor foto's worden genegeerd terwijl u typt in tekst-, cijfer- of selectievelden. Verlaat het veld voordat u een foto-opdracht gebruikt."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "import-from-card",
+      "title": "Foto's importeren vanaf een kaart",
+      "category": "Getting started",
+      "summary": "Kopieer geselecteerde foto’s naar mappen op datum, met verificatie en een optionele tweede kopie.",
+      "keywords": [
+        "inlezen",
+        "geheugenkaart",
+        "camerakaart",
+        "kopiëren",
+        "back-up",
+        "duplicaten",
+        "Foto's importeren"
+      ],
+      "sections": [
+        {
+          "title": "De kopie plannen",
+          "paragraphs": [
+            "Van kaart importeren kopieert bestanden naar de bestemming die u kiest. De originelen op de kaart blijven op hun plaats. Het overslaan van duplicaten vergelijkt de volledige bestandsinhoud; alleen een overeenkomende bestandsnaam of camerakop is niet voldoende."
+          ],
+          "steps": [
+            "Open Lokaal ••• → Importeren vanaf kaart….",
+            "Kies de bron en bestemming. Stel Map-sjabloon en Hernoemen in vóór het scannen. De standaardinstellingen behouden bestandsnamen en ordenen kopieën per jaar/jaar-maand-dag.",
+            "Kies verificatie: Volledige hash, Alleen grootte of Geen. Stel Dubbele bestanden in op Overslaan of Toch kopiëren, en kies optioneel Tweede kopie naar.",
+            "Klik op Scannen. Gebruik Vorige en Volgende om elke pagina te controleren en controleer het geselecteerde aantal en de voorvertoning van de bestemming voordat u op Importeren klikt. Importeren is niet beschikbaar wanneer er geen foto's zijn geselecteerd.",
+            "Wacht op het gekopieerde aantal en controleer of er bestanden zijn mislukt. Annuleren stopt nadat het huidige bestand klaar is met kopiëren en verifiëren; voltooide kopieën worden behouden en originelen op de kaart blijven onaangetast."
+          ],
+          "tips": [
+            "Sjabloontokens zijn {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} en {dd}. Beginnen bij regelt de viercijferige reeks. Lange sjabloonvelden worden afgekort; controleer het bestemmingsvoorbeeld.",
+            "Voorvertoningen tonen 200 bestanden per pagina. Selectie loopt door over pagina's; Alles selecteren en Niets selecteren gelden voor de hele scan, inclusief pagina's die u nog niet hebt geopend.",
+            "Als bestanden als alleen in de cloud worden gemeld, download ze dan lokaal en scan opnieuw."
+          ]
+        },
+        {
+          "title": "Werk het plan bij wanneer instellingen veranderen",
+          "paragraphs": [
+            "Als u de instellingen voor bron, bestemming, naamgeving of verificatie wijzigt, wordt het gecontroleerde plan gewist. Scan opnieuw om de nieuwe bestanden en paden te controleren voordat u importeert."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Van weergave wisselen en foto's selecteren",
+      "category": "Getting started",
+      "summary": "Gebruik de rasters om een set te kiezen en Details om een afzonderlijke foto te inspecteren.",
+      "keywords": [
+        "raster",
+        "details",
+        "filmstrip",
+        "meerdere selecteren",
+        "Shift-klik",
+        "Command-klikken",
+        "Control-klikken",
+        "navigatie",
+        "zoomen",
+        "vergelijken",
+        "schuifregelaar op weergave vastzetten"
+      ],
+      "sections": [
+        {
+          "title": "Tussen weergaven schakelen",
+          "paragraphs": [
+            "Foto-raster presenteert foto's als een visueel overzicht. Selectieraster voegt ruimte toe voor selectie- en beoordelingsinformatie. Details opent de actieve foto voor nauwkeurige inspectie.",
+            "De rechterzijbalk gebruikt pictogramknoppen voor Bewerken, Film, Bijsnijden, Verwijderen, Maskering, Info, Geschiedenis en Voorinstellingen. Beweeg de aanwijzer over een pictogram om de naam ervan te zien."
+          ],
+          "steps": [
+            "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
+            "Gebruik in een raster de schuifregelaar Grootte om de miniatuurgrootte te wijzigen.",
+            "Gebruik de pijltoetsen links en rechts om tussen foto's te bewegen. In Details schakelt Spatie tussen Passend maken en 1:1 wanneer het fotogebied focus heeft."
+          ]
+        },
+        {
+          "title": "Vergelijken terwijl ingezoomd",
+          "paragraphs": [
+            "Klik op Vergelijken in Details om de originele en bewerkte foto te splitsen. Elke keer dat u Vergelijken inschakelt, centreert de scheidingslijn automatisch in de huidige weergave zonder uw zoom of verschuiving te wijzigen. Sleep de scheidingslijn om de splitsing te verplaatsen; sleep elders op een ingezoomde foto om te verschuiven. De scheidingslijn en het handvat blijven even groot terwijl u inzoomt.",
+            "Origineel gebruikt dezelfde voorvertoningsresolutie als de bewerkte foto, inclusief op 1:1. Voor RAW-foto's gebruikt Origineel de neutrale, onbewerkte omzetting; laat het laden voltooien voordat je details beoordeelt.",
+            "Houd B ingedrukt om het origineel te bekijken zonder Film, lokale maskers of afwerkingsaanpassingen. Laat B los om de bewerkte weergave te herstellen.",
+            "Foto-informatie, verwerkingsbadges en uitlezingen voor aanpassingen met ingedrukte toets blijven op hun normale schermgrootte terwijl u inzoomt of het beeld verschuift."
+          ],
+          "steps": [
+            "Schakel Vergelijken in en zoom daarna verder dan Passend maken.",
+            "Klik op de schuifbalkknop om rechtsboven in het foto-gebied te bekijken en de scheidingslijn in de huidige weergave te centreren. Hiermee breng je ook een buiten beeld geraakte scheidingslijn terug na het pannen, zonder je zoom of pan te wijzigen.",
+            "De knop wordt verborgen wanneer u teruggaat naar Passend maken of Vergelijken uitschakelt."
+          ]
+        },
+        {
+          "title": "Een selectie opbouwen",
+          "paragraphs": [
+            "Klik selecteert één actieve foto. Shift-klik selecteert een aaneengesloten bereik. Command-klik op Mac of Control-klik voegt afzonderlijke foto's toe of verwijdert ze.",
+            "In een raster gelden markering-, beoordelings- en kleurlabelacties voor de geselecteerde set. In Detail gelden die markeeracties voor de actieve foto. In Overzicht gelden ze voor de actieve overzichtscel. Controleer de context van de markeringstoolbalk vóór een batchactie.",
+            "Open Info naast een van beide rasters om metagegevens te bekijken of geselecteerde foto's te taggen. Het raster wordt smaller om plaats te maken voor de inspecteur. Kies een ander inspectiegereedschap om terug te keren naar het bredere raster."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Voeg trefwoorden, bijschriften en rechteninformatie toe",
+      "category": "Library",
+      "summary": "Maak foto's makkelijker te vinden en bereid beschrijvende metagegevens voor export voor.",
+      "keywords": [
+        "metagegevens",
+        "IPTC",
+        "EXIF",
+        "trefwoorden",
+        "bijschrift",
+        "titel",
+        "copyright",
+        "maker",
+        "locatie",
+        "GPS",
+        "batch-trefwoorden",
+        "trefwoorden verwijderen",
+        "trefwoorden ongedaan maken",
+        "hiërarchische trefwoorden"
+      ],
+      "sections": [
+        {
+          "title": "Doorzoekbare trefwoorden toevoegen",
+          "paragraphs": [
+            "Open Info voor de actieve foto. Voer trefwoorden in bij Trefwoorden toevoegen en klik op Toevoegen aan foto of druk op Enter. Komma's scheiden trefwoorden; Instellingen → Bestanden en metagegevens kan ook scheidingstekens met puntkomma's en trefwoordsuggesties uit de catalogus inschakelen.",
+            "Gebruik een hiërarchisch pad zoals Plaatsen > Boston om verwante termen bij elkaar te houden. De trefboom bevat catalogustermen; klik op een term om te zoeken, of dubbelklik erop om dat catalogustrefwoord te hernoemen."
+          ],
+          "tips": [
+            "Toevoegen aan foto en Enter hebben invloed op de actieve foto. De afzonderlijke selectieknoppen werken op de geselecteerde rasterfoto's. Koppelingsmetagegevens koppelen kan ook hun RAW- of JPEG-metgezellen bijwerken."
+          ]
+        },
+        {
+          "title": "Trefwoorden toevoegen of verwijderen op een selectie",
+          "steps": [
+            "Selecteer foto's in een van beide rasters en open Info. Controleer het aantal geselecteerde foto's onder de trefwoordknoppen.",
+            "Voer een of meer trefwoorden in en kies vervolgens Toevoegen aan selectie of Verwijderen uit selectie. Elke foto behoudt zijn andere trefwoorden.",
+            "Gebruik Trefwoordwijziging ongedaan maken om de laatste batch te herstellen zolang dit venster open blijft. Ongedaan maken weigert trefwoorden te overschrijven die na die batch zijn gewijzigd. Foto-geschiedenis bewaart ook de trefwoordtoestanden voor en na."
+          ],
+          "paragraphs": [
+            "Een batch kan tot 5.000 foto's beïnvloeden, inclusief gekoppelde metgezellen. Als je een hiërarchisch trefwoord verwijdert, verwijder je dat exacte pad, niet elke onderliggende term. De trefwoordboom en suggesties gebruiken termen die al in de catalogus staan."
+          ]
+        },
+        {
+          "title": "Beschrijf de foto",
+          "paragraphs": [
+            "In Info vouwt u Beschrijving uit voor titel, bijschrift en kop; Rechten voor maker, copyright en credit; of Plaats voor locatie en coördinaten. Wijzigingen worden opgeslagen in de catalogus terwijl u typt. Openen in Maps is beschikbaar nadat de metagegevens van deze foto zijn geladen en zowel breedtegraad als lengtegraad geldig zijn. Hiermee wordt de locatie geopend in uw browser.",
+            "Toepassen op selectie kopieert het huidige metagegevensformulier naar geselecteerde foto's, inclusief de lege velden. Controleer eerst het hele formulier. Metagegevens worden in exporten opgenomen volgens het exportrecept; het bewerken van deze velden schrijft het oorspronkelijke afbeeldingsbestand niet opnieuw weg."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "browse-folders",
+      "title": "Blader door mappen en sla favorieten op",
+      "category": "Library",
+      "summary": "Kies de mapreikwijdte, neem submappen op en houd veelgebruikte mappen binnen handbereik.",
+      "keywords": [
+        "favorieten",
+        "lokaal",
+        "mappen",
+        "zijbalk",
+        "ontbrekende foto's",
+        "opnieuw scannen",
+        "synchroniseren",
+        "watchmap",
+        "bewaakte mappen",
+        "tethering"
+      ],
+      "sections": [
+        {
+          "title": "Kiezen wat in beeld is",
+          "paragraphs": [
+            "Lokaal → Bladeren toont uw toegevoegde mappen. Submappen opnemen bepaalt of een geselecteerde map ook zijn onderliggende mappen toont. Andere bibliotheekfilters blijven van kracht.",
+            "Gebruik in een smal Linux-venster Weergeven of verbergen bibliotheek linksboven om de bibliotheeklade te openen. Sluit deze na het kiezen van een map met dezelfde knop om meer ruimte voor de foto over te houden."
+          ],
+          "steps": [
+            "Klik op een map onder Lokaal.",
+            "Schakel Submappen opnemen in om kindmappen op te nemen, of uit om alleen die map te bekijken.",
+            "Klik op de ster naast een map, of open het •••-menu en kies Toevoegen als favoriet.",
+            "Gebruik Lokaal → Favorieten om terug te gaan naar je opgeslagen mappen."
+          ]
+        },
+        {
+          "title": "Mapacties",
+          "paragraphs": [
+            "Het •••-menu van een map bevat Weergeven in Finder op Mac, Weergeven in Bestandsverkenner op Windows of Weergeven in Bestandsbeheerder op Linux. Voor de huidige map ververst Map synchroniseren de weergave. Lokaal ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
+            "Verwijderen uit LightTable verwijdert een toegevoegde bron uit de bronlijst van de app; het verplaatst de originele bestanden niet naar de Prullenmand. De actie wordt aangeboden wanneer meer dan één bron beschikbaar is."
+          ]
+        },
+        {
+          "title": "Bewaakte mappen beheren",
+          "paragraphs": [
+            "Open Lokaal ••• → Watchmap… om een bewaakte map toe te voegen. Kies hoe binnenkomende foto's moeten worden afgehandeld. Opslaan is niet beschikbaar totdat een map is opgegeven; kopiëren naar de bibliotheek vereist ook een bestemming.",
+            "Om een bestaande watch te bewerken, kiest u deze in Bewaakte mappen. Elke opgeslagen watch verschijnt in deze lijst. Kies Nieuwe bewaakte map voor een andere map, of gebruik Watch verwijderen om het bewaken van de geselecteerde map te stoppen. Dit verwijdert de foto's niet.",
+            "De sneltoets voor Bewaken opent de eerste actieve watch. Slaffouten blijven in het dialoogvenster staan zodat u de instellingen kunt corrigeren."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "survey-photos",
+      "title": "Meerdere foto's vergelijken in Overzicht",
+      "category": "Library",
+      "summary": "Beoordeel een groep samen, markeer het actieve frame en beperk een set kandidaten.",
+      "keywords": [
+        "overzicht",
+        "foto's vergelijken",
+        "frames vergelijken",
+        "burst",
+        "Zij aan zij",
+        "bewaker",
+        "selectie maken"
+      ],
+      "sections": [
+        {
+          "title": "Een groep beoordelen",
+          "paragraphs": [
+            "Overzicht toont originele voorvertoningen om tussen foto's te kiezen. Het toont maximaal 16 geselecteerde foto's. Als er geen expliciete selectie is, gebruikt het maximaal zes nabijgelegen foto's in de huidige weergave."
+          ],
+          "steps": [
+            "Selecteer kandidaten in een raster en druk op N, of open Info → Selectie overzicht.",
+            "Klik op een foto om die overzichtscel actief te maken. Gebruik de linker- en rechterpijl om tussen cellen te bewegen.",
+            "Gebruik de markeerwerkbalk of de sneltoetsen voor markering, beoordeling en label op de actieve cel.",
+            "Klik op × op een cel om deze uit het overzicht te verwijderen zonder deze te wissen of af te wijzen. Dubbelklik op een cel om die foto in Details te openen.",
+            "Klik op Sluiten of druk op Escape om Overzicht te verlaten."
+          ]
+        },
+        {
+          "title": "Eén bewaker kiezen",
+          "paragraphs": [
+            "Maak selecteren de actieve overzichtsfoto tot gekozen foto en wijst het de andere foto’s in het overzicht af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metadata kan deze markeringswijzigingen ook uitbreiden naar begeleidende bestanden.",
+            "Om een bewerking te beoordelen tegenover het origineel, gebruikt u voor/na Vergelijken in Details; Overzicht is bedoeld om tussen verschillende frames te kiezen."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "capture-time",
+      "title": "Corrigeer de cameraklok of tijdzone",
+      "category": "Library",
+      "summary": "Bekijk een gedeelde tijdcorrectie terwijl de intervallen tussen foto's behouden blijven.",
+      "keywords": [
+        "Opnametijd",
+        "datum",
+        "Cameraklok",
+        "tijdzone",
+        "tijdzone",
+        "zomertijd",
+        "sorteerdatum",
+        "tijdstempel"
+      ],
+      "sections": [
+        {
+          "title": "De correctie in voorbeeld bekijken",
+          "paragraphs": [
+            "Correcties op opnametijd wijzigen catalogusdatums die worden gebruikt voor sorteren op opnamedatum en geëxporteerde metadata. Oorspronkelijke afbeeldingsbestanden en bestandssysteemdatums blijven ongewijzigd."
+          ],
+          "steps": [
+            "Selecteer de betreffende foto's en open Info → Opnametijd corrigeren.",
+            "Voer de Shift-klok in in uren, bijvoorbeeld -1 of 5,5.",
+            "Voer optioneel Tijdzone toewijzen in als een offset zoals -04:00 of +05:30. Laat het leeg om de bestaande zone te behouden, of voer remove in om deze te wissen.",
+            "Kies of RAW + JPEG-bijlagen moeten worden opgenomen.",
+            "Klik op Voorbeeld selectie en bekijk de tijden voor en na en eventuele overgeslagen foto's.",
+            "Klik op Voorvertoonde wijzigingen toepassen. Als je de selectie of correctiebedieningen wijzigt, maak dan eerst opnieuw een voorbeeld."
+          ]
+        },
+        {
+          "title": "Een correctie herstellen",
+          "paragraphs": [
+            "Het toewijzen van een tijdzone verschuift niet ook de cameraklok. Gebruik het verschuivingsveld wanneer de weergegeven tijd zelf onjuist is.",
+            "Laatste correctie ongedaan maken draait de meest recente correctie terug die in dit venster wordt vastgehouden. Cameratijden herstellen… toont een voorbeeld van het verwijderen van cataloguscorrigeringen; bekijk het voorbeeld en pas het toe om de oorspronkelijke cameratijden te herstellen. Opnamedatumstappen zijn ook beschikbaar in Geschiedenis. Wanneer XMP schrijven is ingeschakeld, herstelt het opnieuw instellen van een correctie de sidecar-datums die zijn opgeslagen voordat LightTable deze toepaste. Opnamedatums in oudere sidecars zonder die opgeslagen datum blijven ongewijzigd."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "xmp-interchange",
+      "title": "Metagegevens uitwisselen via XMP-sidecars",
+      "category": "Library",
+      "summary": "Lees selectiemetagegevens uit andere editors en bewaar ondersteunde wijzigingen naast uw originelen.",
+      "keywords": [
+        "XMP",
+        "sidecars",
+        "Photo Mechanic",
+        "digiKam",
+        "interoperabiliteit",
+        "synchronisatieconflict",
+        "draagbare metagegevens"
+      ],
+      "sections": [
+        {
+          "title": "Metagegevens lezen uit een andere editor",
+          "paragraphs": [
+            "Vraag de andere editor om de metagegevens op te slaan naar naastgelegen XMP-bestanden en kies vervolgens Lokaal ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
+            "Ondersteunde metagegevens zijn onder meer sterbeoordelingen, kies/afwijzen-markeringen, standaard kleurlabels, platte en hiërarchische trefwoorden en beschrijvende IPTC-velden. Een expliciete lege waarde wist dat veld; een ontbrekende waarde laat het ongewijzigd. Aangepaste kleurlabels die niet overeenkomen met een LightTable-kleur worden gerapporteerd als overgeslagen.",
+            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelingsinstellingen en bijsnijden worden niet toegepast door deze menubewerking."
+          ]
+        },
+        {
+          "title": "Wijzigingen naast originelen wegschrijven",
+          "paragraphs": [
+            "Schakel automatisch XMP schrijven in via Instellingen → Bestanden en metagegevens. LightTable zet gewijzigde velden in de wachtrij en schrijft ze naast beschikbare originelen. Het behoudt niet-gerelateerde metagegevens en slaat vóór de eerste update een back-up van de bestaande sidecar op. Offline of mislukte schrijfbewerkingen blijven in de wachtrij staan om opnieuw te proberen.",
+            "Als een andere toepassing na de laatste lees- of synchronisatiebewerking dezelfde XMP-eigenschap wijzigt, meldt LightTable een conflict en laat die sidecar ongewijzigd. Controleer de externe metagegevens en importeer vervolgens sidecars om die metagegevenswaarden te accepteren voordat je verdere wijzigingen in LightTable aanbrengt.",
+            "Gebruik either photo.xmp of photo.RAW.xmp voor één origineel. Als beide aanwezig zijn, melden import en synchronisatie de dubbelzinnigheid in plaats van er één te kiezen. Houd één naamgevingsconventie aan nadat je de inhoud hebt gecontroleerd.",
+            "XMP wisselt ondersteunde metagegevens uit; het is geen volledige back-up van de catalogus. Bewaar catalogusback-ups voor collecties, geschiedenis en varianten, en schakel draagbare LightTable-bewerkingen in wanneer je het volledige bewerkingsrecept samen met een map wilt meenemen."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Zoek foto’s met zoeken, filters en sorteren",
+      "category": "Library",
+      "summary": "Beperk foto's op tekst, camera, lens, belichting, opnamedatum, trefwoorden en selectiemarkeringen.",
+      "keywords": [
+        "zoeken",
+        "zoeken",
+        "trefwoorden",
+        "Beoordelingsfilter",
+        "sorteren",
+        "Opnamedatum",
+        "geen resultaten",
+        "niet beoordeeld",
+        "bestandstype",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "ongemonteerd",
+        "filters wissen",
+        "camera",
+        "lens",
+        "ISO",
+        "diafragma",
+        "sluitertijd",
+        "brandpuntsafstand",
+        "EXIF"
+      ],
+      "sections": [
+        {
+          "title": "Zoeken in de huidige weergave",
+          "paragraphs": [
+            "Het zoekvak komt overeen met tekst in bestandsnamen, weergavenamen, trefwoorden en beschikbare foto-indexmetadata. Er wordt gezocht binnen de huidige map of verzameling en gecombineerd met de andere actieve filters."
+          ],
+          "steps": [
+            "Klik op Foto's en trefwoorden zoeken, of druk op / wanneer je niet in een veld typt.",
+            "Typ een woord of zin uit de bestandsnaam of trefwoorden.",
+            "Gebruik Alle foto’s, Zonder markering, Gekozen, Afgewezen of Beoordeeld in de zijbalk om een markeer- of beoordelingsgroep te kiezen.",
+            "Klik op Filter naast Sorteren. Selecteer een of meer bestandstypen en combineer ze vervolgens met Markering, Beoordeling, Kleurlabel of Bewerkingsstatus.",
+            "Kies Bestandsnaam, Beoordeling, Markering, Opnamedatum of Kleurlabel in Sorteren."
+          ]
+        },
+        {
+          "title": "Filters combineren en wissen",
+          "paragraphs": [
+            "Selecteer RAW, JPEG, HEIC / HEIF, TIFF of PNG. Meerdere bestandstypen omvatten een van die formaten; markering, beoordeling, kleurlabel, bewerkingsstatus en zoeken verfijnen die set verder. Als er geen bestandstypen zijn geselecteerd, worden alle bestandstypen gebruikt.",
+            "De knop Filter toont hoeveel keuzes actief zijn. Elke keuze verschijnt als een verwijderbare chip boven het raster en het aantal toont hoeveel foto's overeenkomen. Verwijder een chip met de ×, of kies Alles wissen om de filters te resetten. Zoektekst en de geselecteerde map of collectie blijven behouden.",
+            "Bewerkingsstatus biedt Bewerkt, Onbewerkt en Virtuele kopieën. Een virtuele kopie gebruikt het type van het oorspronkelijke bestand. Druk op Escape of klik buiten het paneel om het te sluiten zonder je keuzes te wissen."
+          ]
+        },
+        {
+          "title": "Filter camera, belichting en opnamedatum",
+          "paragraphs": [
+            "Vouw Camera, belichting & datum uit in Filter. Camera en Lens komen overeen met een deel van een naam. Trefwoord komt overeen met een volledig catalogus-trefwoordpad en de onderliggende onderdelen; bijvoorbeeld: Plaatsen omvat Plaatsen > Boston.",
+            "ISO, brandpuntsafstand in millimeters, diafragma f-getal en sluitertijd accepteren minimum- en maximumwaarden. Voer aan beide uiteinden hetzelfde getal in voor een exacte overeenkomst. Sluitertijd accepteert seconden of een breuk zoals 1/250. Foto's zonder de vereiste belichtingsmetagegevens komen niet overeen.",
+            "Opnamedata omvatten zowel de eerste als de laatste dag. Deze filters worden gecombineerd met beoordelingen en andere keuzes, blijven behouden na opnieuw laden en kunnen worden opgeslagen in een slimme collectie. Bestaande foto's krijgen belichtingswaarden wanneer hun bron de volgende keer wordt gescand; scan een map opnieuw als waarden ontbreken."
+          ]
+        },
+        {
+          "title": "Wanneer een foto ontbrekend lijkt",
+          "paragraphs": [
+            "Wis de zoektekst en kies Alles wissen boven het raster, en vink vervolgens de geselecteerde map, Submappen opnemen en eventuele actieve collectie aan. Voorkeuren voor gekoppelde bestanden en samengevouwen stapels kunnen ook een metgezel of een lid van een stapel verbergen.",
+            "Opnamedatum sorteert van vroeger naar later; Beoordeling sorteert hogere beoordelingen eerst."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "collections",
+      "title": "Foto's groeperen in collecties",
+      "category": "Library",
+      "summary": "Maak benoemde groepen zonder de oorspronkelijke bestanden te verplaatsen.",
+      "keywords": [
+        "collectie",
+        "album",
+        "ordenen",
+        "groep",
+        "geselecteerd",
+        "collectie verwijderen"
+      ],
+      "sections": [
+        {
+          "title": "Foto's maken en toevoegen",
+          "paragraphs": [
+            "Een gewone verzameling bewaart een gekozen set foto’s. Deze staat los van de mapindeling op de schijf."
+          ],
+          "steps": [
+            "Selecteer de foto’s die u wilt groeperen.",
+            "Klik op Verzameling maken of op de + naast Verzamelingen, voer een naam in en sla op. De huidige selectie wordt opgenomen.",
+            "Klik op een collectie om deze te bekijken. Als je opnieuw op de actieve collectie klikt, verlaat je die.",
+            "Kies met een actieve gewone verzameling foto’s om toe te voegen en klik op Geselecteerde toevoegen aan verzameling."
+          ]
+        },
+        {
+          "title": "Een collectie verwijderen",
+          "paragraphs": [
+            "Het ×-teken naast een verzameling verwijdert de verzameling. Hiermee wordt de groepering verwijderd in plaats van de originele bestanden naar de Prullenbak te verplaatsen. Zoeken en filters kunnen de foto’s die binnen een verzameling worden getoond verder beperken."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Verplaats afgewezen foto's naar de prullenbak",
+      "category": "Library",
+      "summary": "Bekijk de huidige weergave zorgvuldig voordat je afgewezen originelen en sidecars verplaatst.",
+      "keywords": [
+        "verwijderen",
+        "prullenbak",
+        "afgewezen",
+        "terugzetten",
+        "herstellen",
+        "originelen verwijderen",
+        "prullenbak"
+      ],
+      "sections": [
+        {
+          "title": "Afgewezen bestanden beoordelen en verplaatsen",
+          "paragraphs": [
+            "Een foto afwijzen verandert alleen de markering. Afgekeurde foto's naar de Prullenmand verplaatsen is een afzonderlijke desktopactie die afgekeurde foto's in de huidige weergave beïnvloedt, niet alleen de actieve foto."
+          ],
+          "steps": [
+            "Kies de map of collectie en filters die de foto's definiëren die je wilt beoordelen.",
+            "Controleer de afgewezen foto's. Controleer de instellingen voor gekoppelde bestanden en vouw eventueel stapels uit als u verwacht de andere leden mee te nemen.",
+            "Kies op Mac Foto → Afgewezen foto's naar Prullenmand verplaatsen…, of druk op Command+Delete. Druk in de Linux- of Windows-desktopapp op Ctrl+Delete.",
+            "Lees het fotoaantal in de bevestiging en bevestig alleen wanneer het overeenkomt met de set die je bedoelt."
+          ],
+          "tips": [
+            "Aangrenzende XMP-sidecars worden samen met de originelen verplaatst. Verborgen RAW- of JPEG-bijlagen blijven in de bibliotheek; kies Beide bestanden in gekoppelde-opname-instellingen om ze op te nemen.",
+            "Een virtuele kopie deelt zijn originele bestand. Voor het verwijderen van een virtuele kopie moet u Foto-acties → Virtuele kopie verwijderen gebruiken; als u de bron naar de Prullenmand verplaatst, heeft dat invloed op elke bewerking die dat origineel gebruikt."
+          ]
+        },
+        {
+          "title": "Een foutieve verwijdering herstellen",
+          "paragraphs": [
+            "Gebruik op Mac de Prullenmand van Finder, op Linux de Prullenmand van het bureaublad, of op Windows de Prullenbak om het origineel en de sidecars naar hun vorige map terug te zetten en scan daarna opnieuw in LightTable. De app heeft geen ingebouwde Prullenmand-browser."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "colour-labels",
+      "title": "Organiseer een workflow met kleurlabels",
+      "category": "Library",
+      "summary": "Gebruik vijf kleuren onafhankelijk van selecties en sterrenbeoordelingen.",
+      "keywords": [
+        "kleur",
+        "kleur",
+        "labels",
+        "rood",
+        "geel",
+        "groen",
+        "blauw",
+        "paars",
+        "workflow"
+      ],
+      "sections": [
+        {
+          "title": "Een label toepassen en filteren",
+          "paragraphs": [
+            "Kleurlabels mag u zelf betekenis geven — bijvoorbeeld rood voor retoucheren of groen voor oplevering. Ze veranderen geen sterbeoordelingen of kies/afwijs-status."
+          ],
+          "steps": [
+            "Selecteer een foto, of een set in een raster, en open Info.",
+            "Kies onder Kleurlabel Rood, Geel, Groen, Blauw of Paars. Kies Geen label om het te wissen.",
+            "Gebruik 6 voor Rood, 7 voor Geel, 8 voor Groen en 9 voor Blauw. Paars is beschikbaar via de kleurbedieningen.",
+            "Klik op Filter naast Sorteren en gebruik Kleurlabel om een specifieke kleur, elke kleur of foto's zonder label te vinden."
+          ],
+          "tips": [
+            "Als je hetzelfde label opnieuw toepast, wordt het gewist. Acties voor kleurlabels gaan niet automatisch door naar de volgende."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Kiezen, afwijzen en foto's beoordelen",
+      "category": "Library",
+      "summary": "Markeer bewakers en afgewezen foto's, geef sterbeoordelingen en beheer automatisch doorgaan.",
+      "keywords": [
+        "selecteren",
+        "kiezen",
+        "afwijzen",
+        "markering",
+        "markering verwijderen",
+        "sterren",
+        "beoordeling",
+        "Automatisch doorgaan",
+        "bewaker"
+      ],
+      "sections": [
+        {
+          "title": "Markeer de actieve foto of de rasterselectie",
+          "paragraphs": [
+            "Markeringen en sterren zijn gescheiden: een foto kan Gekozen zijn en elke sterbeoordeling hebben. Afwijzen markeert een foto voor beoordeling; het verwijdert deze niet."
+          ],
+          "steps": [
+            "Gebruik Kiezen, Afwijzen en Markering verwijderen in de markeringstoolbalk of Info. De toetsen P, X en U voeren dezelfde acties uit.",
+            "Klik op een ster of druk op 1–5 om te beoordelen. Druk op 0 om de beoordeling te wissen.",
+            "Om een bestaande keuze, afwijzing of beoordeling te wissen, pas je diezelfde markering opnieuw toe.",
+            "Gebruik de weergaven Gekozen, Afgewezen en Beoordeeld in de zijbalk om je beslissingen te bekijken."
+          ]
+        },
+        {
+          "title": "Bepaal wat er daarna gebeurt",
+          "paragraphs": [
+            "Schakel Auto-doorvervolgen in om naar de volgende foto te gaan na het kiezen, afwijzen of beoordelen van één foto. Markering verwijderen gaat niet verder.",
+            "Wanneer meerdere foto's zijn geselecteerd in een raster, gelden markeringen voor die set zonder door te gaan. Als Koppel par metadata is ingeschakeld, werkt markeren ook erkende RAW- en JPEG-bijlagen bij."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "rename-photos",
+      "title": "Foto's hernoemen met een voorbeeld",
+      "category": "Library",
+      "summary": "Pas een consistent bestandnaamsjabloon toe op geselecteerde originelen en hun sidecars.",
+      "keywords": [
+        "naam wijzigen",
+        "bestandsnaam",
+        "reeks",
+        "batch",
+        "aangepaste tekst",
+        "datumtokens",
+        "sidecars"
+      ],
+      "sections": [
+        {
+          "title": "Voorbeeld en toepassen",
+          "paragraphs": [
+            "Hernoemen verandert bestandsnamen op schijf en houdt de catalogusgegevens bij de bestanden. Het verwerkt ook naastliggende XMP-sidecars. Dit is anders dan een virtuele kopie een naam geven."
+          ],
+          "steps": [
+            "Selecteer de foto's die u wilt hernoemen.",
+            "Open Info → Naam wijzigen… (of Foto → Naam wijzigen… in het Mac-menu).",
+            "Voer een sjabloon in zoals {custom}_{sequence}. Stel zo nodig Aangepaste tekst en Beginnen bij in.",
+            "Bekijk in het voorbeeld de bestandsnamen voor en na de wijziging.",
+            "Klik op Naam wijzigen om toe te passen."
+          ],
+          "tips": [
+            "Beschikbare tokens zijn {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min} en {ss}. Volgordenummers gebruiken vier cijfers.",
+            "De oorspronkelijke extensie blijft behouden. Bij een naamconflict krijgt het bestand een numeriek achtervoegsel. Naamgevingssjablonen kunnen geen mappen maken.",
+            "Een virtuele kopie deelt het bronbestand: als u deze in een hernoeming opneemt, wordt dat originele bestand aangepakt. De interface biedt geen speciale knop voor ongedaan maken van hernoemen."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "smart-collections",
+      "title": "Sla een zoekopdracht op als slimme verzameling",
+      "category": "Library",
+      "summary": "Behouden een benoemde groep die wordt bijgewerkt op basis van ondersteunde regels terwijl fotometadata verandert.",
+      "keywords": [
+        "slimme collectie",
+        "Opgeslagen zoekopdracht",
+        "dynamisch",
+        "Filterregels",
+        "automatisch",
+        "minimumbeoordeling"
+      ],
+      "sections": [
+        {
+          "title": "Ondersteunde regels opslaan",
+          "paragraphs": [
+            "Een slimme collectie vindt foto's die aan de opgeslagen regels voldoen. Ondersteunde regels zijn onder meer markering, beoordeling, Alleen niet beoordeeld, bestandstypen, kleurlabel, bewerkingsstatus, virtuele kopieën en zoektekst. Camera, lens, hiërarchisch trefwoord, opnamedatum, ISO, brandpuntsafstand, diafragma en bereik voor sluitertijd worden ook opgeslagen."
+          ],
+          "steps": [
+            "Stel de zoektekst en gewenste keuzes in bij Filter naast Sorteren.",
+            "Klik op de ✦ naast Collecties, gelabeld Filters opslaan als slimme collectie.",
+            "Geef de collectie een naam en sla op.",
+            "Klik op de naam om overeenkomstige foto’s te bekijken. Door relevante metadata van een foto te wijzigen, verandert of deze overeenkomt."
+          ]
+        },
+        {
+          "title": "Weten wat er wordt opgeslagen",
+          "paragraphs": [
+            "De geselecteerde map en Submappen opnemen zijn niet opgeslagen in de regels van de slimme collectie. De collectie doorzoekt de bibliotheek met de opgeslagen filterkeuzes.",
+            "Je kunt geen foto's handmatig toevoegen met Geselecteerde toevoegen aan collectie terwijl een slimme collectie actief is. De huidige zoek- en bibliotheekfilters kunnen de weergave van de collectie nog steeds verfijnen.",
+            "Voor foto's met vier sterren die in 2026 zijn gemaakt en 50 mm hebben, stel je Beoordeling in op 4 sterren en hoger, de minimale en maximale brandpuntsafstand op 50, en de opnamedata van 1 januari tot en met 31 december 2026. Sla die filters op als een slimme collectie."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Probeer virtuele kopieën en groepeer foto’s in stapels",
+      "category": "Library",
+      "summary": "Behouden alternatieve bewerkingen van één origineel en vouw gerelateerde foto's samen in het raster.",
+      "keywords": [
+        "Virtuele kopie",
+        "versie",
+        "alternatieve bewerking",
+        "stapel",
+        "ontstapelen",
+        "duplicaat",
+        "kopiëren"
+      ],
+      "sections": [
+        {
+          "title": "Een alternatieve bewerking maken",
+          "paragraphs": [
+            "Een virtuele kopie verwijst naar hetzelfde oorspronkelijke bestand en behoudt een onafhankelijke bewerkingsstatus. Het maakt geen tweede origineel op schijf."
+          ],
+          "steps": [
+            "Maak de bronfoto actief.",
+            "Open het menu Foto-acties ••• naast Sorteren en Grootte en kies vervolgens Virtuele kopie maken.",
+            "Geef de kopie een naam en sla op. De nieuwe kopie wordt actief.",
+            "Bewerk de kopie. Gebruik Filter → Bewerkingsstatus → Virtuele kopieën om kopieën later te vinden."
+          ],
+          "tips": [
+            "Virtuele kopie verwijderen in Foto-acties verwijdert de actieve virtuele kopie. Voor een echt tweede bestand op schijf exporteert u een gerenderde afbeelding."
+          ]
+        },
+        {
+          "title": "Een groep samenvouwen",
+          "paragraphs": [
+            "Selecteer ten minste twee foto’s en kies vervolgens Foto-acties ••• → Geselecteerde foto’s stapelen en voer een naam in. Het rasterbadge van de stapel toont het aantal leden; klik erop om uit of in te klappen. Geselecteerde foto’s uit stapelen verwijdert de groepering."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "Werken met RAW- en JPEG-koppels",
+      "category": "Library",
+      "summary": "Kies welke begeleidende kopie je wilt tonen en of nieuwe metadatawijzigingen op beide van toepassing zijn.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "koppelen",
+        "metgezel",
+        "gekoppelde metagegevens",
+        "verborgen jpeg"
+      ],
+      "sections": [
+        {
+          "title": "Kies de zichtbare metgezel",
+          "paragraphs": [
+            "LightTable herkent een paar wanneer één RAW en één JPEG dezelfde basisbestandsnaam hebben in dezelfde bron en map. Elk bestand behoudt zijn eigen bewerkingen; virtuele kopieën blijven onafhankelijk."
+          ],
+          "steps": [
+            "Open Instellingen → Bestanden & metagegevens en schakel RAW- en JPEG-opnamen koppelen in.",
+            "Stel Gekoppelde opnamen weergeven in op Beide bestanden, RAW verkiezen of JPEG verkiezen.",
+            "Wanneer je een gekoppelde foto bekijkt, gebruik je RAW → JPEG of JPEG → RAW bovenaan om naar de bijbehorende versie te schakelen."
+          ]
+        },
+        {
+          "title": "Nieuwe metagegevenswijzigingen koppelen",
+          "paragraphs": [
+            "Schakel Metagegevens van paar koppelen in om nieuwe beoordelingen, markeringen, labels en trefwoordwijzigingen te koppelen. Het combineert de foto-bewerkingen niet.",
+            "Exporten en Prullenbak gebruiken de bestanden die u kiest of opneemt in de huidige weergave. Ze nemen niet automatisch een verborgen metgezel op. Kies Beide bestanden en controleer de selectie wanneer u beide originelen nodig hebt. Correctie van opnametijd heeft een eigen selectievakje RAW + JPEG-metgezellen opnemen."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "editing-effects",
+      "title": "Pas Structuur, Helderheid, Nevel verwijderen en Vignettering aan",
+      "category": "Editing",
+      "summary": "Verfijn oppervlakdetails, lokaal contrast, nevel en randhelderheid vanuit de sectie Effecten.",
+      "keywords": [
+        "effecten",
+        "structuur",
+        "helderheid",
+        "nevel verwijderen",
+        "nevel",
+        "vignettering",
+        "verzachten",
+        "details",
+        "lokaal contrast",
+        "donkere randen",
+        "Heldere randen"
+      ],
+      "sections": [
+        {
+          "title": "Details en contrast verfijnen",
+          "paragraphs": [
+            "Vouw Effecten uit in Bewerken. Structuur wijzigt fijne lokale details, terwijl Helderheid lokaal contrast toepast met meer nadruk op middentonen. Positieve waarden versterken deze effecten; negatieve waarden verzachten ze."
+          ],
+          "steps": [
+            "Pas Structuur aan terwijl je naar een gestructureerd deel van de foto kijkt, zoals stof, gebladerte of huid.",
+            "Pas Helderheid aan terwijl je het contrast rond het onderwerp en de randen controleert.",
+            "Inspecteer op 1:1 en keer daarna terug naar Passend maken om het totaalresultaat te beoordelen."
+          ],
+          "tips": [
+            "Gebruik voor een lokale behandeling de bedieningselementen Structuur en Helderheid van een masker."
+          ]
+        },
+        {
+          "title": "Nevel en randhelderheid wijzigen",
+          "paragraphs": [
+            "Nevel verwijderen verandert de nevelachtige toon- en kleurweergave van het beeld. Vignet verandert de helderheid aan de randen: positieve waarden maken de randen donkerder en negatieve waarden maken ze lichter."
+          ],
+          "steps": [
+            "Verhoog Nevel verwijderen om een nevelig beeld te versterken, of probeer een negatieve waarde voor een zachtere behandeling. Controleer zowel contrast als kleur terwijl u dit aanpast.",
+            "Stel Vignettering in voor de gewenste randbehandeling en inspecteer de hoeken.",
+            "Houd B ingedrukt om te vergelijken met het origineel, of gebruik in Effecten Opnieuw instellen om Textuur, Helderheid, Nevel verwijderen en Vignettering samen opnieuw in te stellen."
+          ],
+          "tips": [
+            "Vignet in Effecten is een creatieve randbehandeling. Gebruik lenscorrecties wanneer je lensverdonkering wilt corrigeren."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-tone",
+      "title": "Pas belichting, contrast en toonbereik aan",
+      "category": "Editing",
+      "summary": "Gebruik Lichtbedieningen en het histogram om helderheid en contrast in te stellen en controleer vervolgens het resultaat tegen het origineel.",
+      "keywords": [
+        "belichting",
+        "helderheid",
+        "licht",
+        "toon",
+        "contrast",
+        "hooglichten",
+        "schaduwen",
+        "witten",
+        "zwartwaarden",
+        "automatisch",
+        "histogram",
+        "clipping",
+        "voor"
+      ],
+      "sections": [
+        {
+          "title": "Begin met Licht",
+          "paragraphs": [
+            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan. Contrast wijzigt hun scheiding."
+          ],
+          "steps": [
+            "Stel Belichting in voor het hoofdonderwerp.",
+            "Pas Hooglichten en Schaduwen aan om lichte en donkere gebieden in balans te brengen en verfijn daarna Witten, Zwartwaarden en Contrast.",
+            "Gebruik de knop voor clippingwaarschuwing naast het histogram om clipping te inspecteren.",
+            "Vergelijk je resultaat met het origineel met behulp van de voor-optie, of houd B ingedrukt terwijl de foto actief is."
+          ],
+          "tips": [
+            "Opnieuw instellen van Licht zet die groep terug. Gebruik Ongedaan maken wanneer je alleen je laatste aanpassing wilt terugdraaien."
+          ]
+        },
+        {
+          "title": "Auto als startpunt gebruiken",
+          "paragraphs": [
+            "Automatisch in de sectie Licht analyseert de beschikbare afbeeldingsvoorvertoning en stelt Belichting, Zwartwaarden en Witten in. Het stelt niet elke bewerkingsregeling in."
+          ],
+          "steps": [
+            "Wacht tot het foto-voorbeeld verschijnt en klik dan op Automatisch.",
+            "Controleer het resultaat en verfijn de schuifregelaars voor de foto."
+          ],
+          "tips": [
+            "Als Automatisch zegt dat het wacht op het afbeeldingsvoorbeeld, laat dan het voorbeeld laden en probeer het opnieuw.",
+            "Het scopemenu biedt ook Waveform, RGB Parade en Vectorscope om toon en kleur te inspecteren."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Pas lenscorrecties en correcties voor chromatische aberratie toe",
+      "category": "Editing",
+      "summary": "Gebruik een afgestemd of handmatig geselecteerd lensprofiel, of voer handmatige correcties uit wanneer een exact profiel niet beschikbaar is.",
+      "keywords": [
+        "lens",
+        "profiel",
+        "vervorming",
+        "vignettering",
+        "schaduwen",
+        "chromatische aberratie",
+        "kleurverschuiving aan de randen",
+        "rood cyaan",
+        "blauw geel",
+        "optiek"
+      ],
+      "sections": [
+        {
+          "title": "Kies en controleer een correctie",
+          "paragraphs": [
+            "Vouw Lenscorrecties uit in Bewerken. De profielkaart verklaart de automatische camera/lensmatch en of een bruikbaar profiel beschikbaar is."
+          ],
+          "steps": [
+            "Lees de profielnaam en de uitleg van de overeenkomst.",
+            "Schakel Gebruik afgestemd lensprofiel in wanneer een profiel beschikbaar is, en kies daarna Corrigeer vervorming en Corrigeer lensschaduw indien nodig.",
+            "Kies indien nodig een andere vermelding in Lensprofiel en vergelijk de correctie met het origineel.",
+            "Verfijn de handmatige bedieningselementen voor Vervorming en Vignettering. Voor kleurfranjes past u Rood / Cyaan en Blauw / Geel aan onder Chromatische aberratie."
+          ],
+          "tips": [
+            "Als er geen exact lensprofiel is gevonden, blijven handmatige vervormings- en perspectiefbedieningen beschikbaar.",
+            "De selectievakjes voor profielvervorming en schaduwen zijn alleen ingeschakeld wanneer het geselecteerde profiel die correctie biedt en het profiel is ingeschakeld.",
+            "Een handmatig geselecteerd profiel moet visueel worden gecontroleerd; de selectie bewijst niet dat het een exacte overeenkomst is.",
+            "Lens- en franjecorrecties blijven non-destructief tot aan export."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-presets",
+      "title": "Voorinstellingen toepassen, aanpassen en bewerken delen",
+      "category": "Editing",
+      "summary": "Klik op een voorinstelling om deze toe te passen, pas Hoeveelheid aan en sla je eigen looks op of deel ze.",
+      "keywords": [
+        "voorinstelling",
+        "voorinstellingen",
+        "community",
+        "galerij",
+        "ingebouwd",
+        "favorieten",
+        "voorinstelling verbergen",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "Voorinstelling importeren",
+        "look opslaan",
+        "voorinstelling proberen",
+        "voorinstelling hoeveelheid",
+        "voorinstelling sterkte",
+        "voorinstelling uitschakelen",
+        "voorinstelling bijwerken",
+        "voorinstelling indienen",
+        "Aanpassingen vervangen"
+      ],
+      "sections": [
+        {
+          "title": "Kies een collectie",
+          "paragraphs": [
+            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+          ],
+          "steps": [
+            "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
+            "Gebruik de ster naast een voorinstelling om deze als favoriet te markeren; Favorieten filtert de huidige verzameling.",
+            "Kies in Community Aanbevolen, Nieuw of Alles en gebruik Onderwerp om de verzameling te verfijnen. Selecteer een voorinstelling om de beschrijving, maker, versie, Film-gedrag en beschikbare voorbeeldfoto's te zien."
+          ],
+          "tips": [
+            "Featured is een redactionele collectie, geen populariteitsranglijst.",
+            "Een ingebouwde voorinstelling is alleen-lezen. Kopie opslaan… plaatst een benoemde kopie in Uw. Voorinstelling verbergen verwijdert deze uit de gebruikelijke ingebouwde weergave; Verborgen weergeven en Terugzetten naar Ingebouwd brengen deze terug."
+          ]
+        },
+        {
+          "title": "Toepassen en Hoeveelheid aanpassen",
+          "paragraphs": [
+            "Klik op een voorinstellingskaart om deze direct op de hoofdfoto toe te passen. Klik nogmaals op dezelfde kaart, of gebruik de Aan/Uit-knop, om deze uit te schakelen. Je foto blijft op deze computer."
+          ],
+          "steps": [
+            "Selecteer een foto en klik op een voorinstellingskaart. De geselecteerde voorinstelling toont Hoeveelheid onder de naam.",
+            "Sleep Hoeveelheid van 0% naar 100%. Nul zet de bewerking terug naar vóór de voorinstelling; 100% gebruikt de volledige voorinstelling. Dubbelklik op Hoeveelheid om deze terug te zetten naar 100%.",
+            "Klik op een andere voorinstelling om van look te wisselen. Ongedaan maken en Opnieuw herstellen de selectie van voorinstellingen, de ingeschakelde status en de hoeveelheid. De geselecteerde voorinstelling en hoeveelheid worden met de foto opgeslagen."
+          ],
+          "tips": [
+            "Filmstock, Film aan/uit en andere vaste keuzes schakelen bij elke hoeveelheid boven nul. Toon, kleur, krommen en numerieke aanpassingen variëren met Hoeveelheid. Maker-voorbeelden blijven gescheiden van je foto.",
+            "Door tussen voorinstellingskaarten te wisselen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet opstapelen. Handmatige wijzigingen buiten de voorinstelling, zoals belichting voor een Look, blijven behouden. Het handmatig wijzigen van een instelling die door de voorinstelling wordt beheerd, beëindigt de Hoeveelheid-aanpassing; de huidige bewerking wordt daarna het startpunt voor de volgende voorinstelling."
+          ]
+        },
+        {
+          "title": "Wat een look behoudt",
+          "paragraphs": [
+            "Ingebouwde en community-looks behouden Bewerken Belichting, Temp/Tint, opnamewitbalans, RAW-correcties, filmformaat, bijsnijden, geometrie, maskers, Verwijderen-correcties, lenscorrecties, verscherpen en ruisvermindering. Ze wijzigen de creatieve instellingen die in hun recept zijn opgenomen.",
+            "Film aan schakelt de meegeleverde filmbewerking in. Film uit omzeilt Film. Film ongewijzigd laat de ingeschakelde status ongemoeid. Een filmbewerking kan opzettelijk Camera-EV, automatische meting, ontwikkeling, afdrukken, korrel en andere creatieve filmregelaars wijzigen."
+          ],
+          "tips": [
+            "Lookbehoud is van toepassing op looks die zijn opgeslagen met Look · fotocorrecties behouden. Een Volledig-bewerking of een oudere geïmporteerde voorinstelling kan fotospecifieke correcties bevatten; beoordeel de resulterende foto en gebruik Ongedaan maken als die correcties wijzigt die je wilt behouden."
+          ]
+        },
+        {
+          "title": "Community-voorinstellingen en updates toevoegen",
+          "paragraphs": [
+            "Toevoegen aan Uw downloadt en slaat het geselecteerde communityrecept op zonder het toe te passen. Geïnstalleerde recepten werken offline. Uw bestaande fotobewerkingen slaan hun instellingen afzonderlijk van de voorinstelling op."
+          ],
+          "steps": [
+            "Klik op een Community-voorinstelling om die op je foto te gebruiken en klik daarna op Toevoegen aan Jouw om een offline kopie te bewaren.",
+            "Gebruik het later vanuit Uw, of keer terug naar Community om de openbare voorinstellingspagina te bekijken.",
+            "Klik op Vernieuwen om de catalogus te controleren. Wanneer een nieuwere versie wordt vermeld, vervangt Bijwerken in Uw het opgeslagen recept alleen wanneer u dat kiest."
+          ],
+          "tips": [
+            "Het bijwerken van een voorinstelling verandert geen foto's die je al hebt bewerkt.",
+            "Het offlinebericht onderscheidt een gecachte catalogus van een niet-beschikbare eerste download. Niet-gecachete recepten en voorbeeldafbeeldingen van de maker kunnen een verbinding vereisen; ingebouwde en geïnstalleerde recepten blijven beschikbaar.",
+            "Bijwerken van LightTable betekent dat een voorinstelling functies nodig heeft die deze appversie niet ondersteunt. De installatie- en toepassingsknoppen blijven uitgeschakeld.",
+            "Openen in LightTable op een openbare voorinstellingspagina opent de details in de geïnstalleerde app; de look wordt niet automatisch toegepast."
+          ]
+        },
+        {
+          "title": "Opslaan, importeren en exporteren",
+          "paragraphs": [
+            "Beheren… opent of sluit Voorinstellingen beheren; de knop is gemarkeerd terwijl de sectie open is. Huidige look opslaan gebruikt standaard Look · fotocorrecties behouden. Volledige bewerking · fotocorrecties opnemen biedt ook Alle aanpassingsinstellingen of Alleen gewijzigde instellingen."
+          ],
+          "steps": [
+            "Kies de voorinstelling-scope en of Filmprofiel en fysieke instellingen moeten worden opgenomen, klik vervolgens op Opslaan als nieuw… en geef het een naam.",
+            "Klik om te importeren op Importeren… en kies de voorinstellingsbestanden. De Mac-app ondersteunt ook het kiezen van een volledige voorinstellingenmap.",
+            "Bekijk het importresultaat en de conversiedekking van de nieuwe voorinstelling voordat je deze toepast.",
+            "Kies voor exporteren een Geselecteerde voorinstelling en Exportformaat en klik vervolgens op Exporteren…."
+          ],
+          "tips": [
+            "LightTable-export behoudt het native voorinstellingsrecept. Lightroom XMP- en Capture One-stijlexports zijn bij benadering.",
+            "Ondersteunde bestandskeuzes zijn .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip en .json. Een geaccepteerde extensie garandeert niet dat elke instelling kan worden geconverteerd.",
+            "Voor een ouder voorinstellingsbestand of een Volledige bewerking wijzigt Gemapte aanpassingen toepassen de meegeleverde instellingen. Aanpassingsinstellingen vervangen reset ook eerst aanpassingen, maskers, Verwijderen-correcties en geometrie. Vervangen behoudt het bijsnijden en behoudt Film, tenzij de voorinstelling Film bevat of u Film uitschakelen inschakelt voor de onderstaande acties."
+          ]
+        },
+        {
+          "title": "Een community-inzending voorbereiden",
+          "paragraphs": [
+            "Community-publicatie wordt beoordeeld. De indieningssectie toont de exacte Ontwikkel- en Film-instellingen in de voorbereide look, het Film-gedrag en de fotocorrecties die behouden blijven. Er wordt niets geüpload wanneer u deze samenvatting bekijkt of een download voorbereidt."
+          ],
+          "steps": [
+            "Sla een voorinstelling op in Uw, selecteer deze en bekijk de samenvatting van meegeleverde instellingen onder Community-indiening.",
+            "Klik op Community-indiening voorbereiden… en wacht tot de lokale voorbeelden zijn gerenderd. Sla de ZIP op met de voorinstelling, drie gelicentieerde voor/na-fotoparen, fotocredits en rechtennotities.",
+            "Open het pakket en bekijk de voorbeelden. U kunt ook uw eigen foto selecteren en Voorbeeld downloaden op deze foto gebruiken om een JPEG van 960 pixels van de gedeelde look op te slaan zonder de bewerking te wijzigen.",
+            "Klik op Indieningsformulier openen, voeg het pakket en eventuele toegestane extra voorbeelden toe, en voeg uw makergegevens, beschrijving en publicatierechten toe voordat u indient."
+          ],
+          "tips": [
+            "De drie standaard voorbeelddoelen zijn meegeleverd met LightTable. Hun export gebruikt niet uw foto's of catalogus, en hun JPEG's bevatten geen ingebedde fotometagegevens.",
+            "Bij de voorbereiding van de indiening worden foto-specifieke correcties uitgesloten. Inspecteer de resulterende look voordat u deze deelt.",
+            "Deel alleen foto's die u mag publiceren. Bestaande makerstoeschrijving en toeschrijving aan bovenliggende voorinstelling blijven behouden; toestemming voor hergebruik van het recept en toestemming voor weergave van de foto zijn afzonderlijk."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Wijzig afzonderlijke kleuren met Kleurenmenger en Puntkleur",
+      "category": "Editing",
+      "summary": "Pas een brede kleurband aan of sample een specifieke kleurtoon en verfijn het bereik, de helderheid en de uniformiteit ervan.",
+      "keywords": [
+        "hsl",
+        "kleurenmixer",
+        "Kleurenmixer",
+        "puntkleur",
+        "monster",
+        "kleurtoon",
+        "uniformiteit",
+        "luminantie",
+        "verzadiging",
+        "bereik"
+      ],
+      "sections": [
+        {
+          "title": "Een kleurbereik aanpassen",
+          "paragraphs": [
+            "Kleurenmixer zit in Bewerken → Kleur. Het verandert kleuren binnen de geselecteerde band over de hele foto."
+          ],
+          "steps": [
+            "Kies een van de gekleurde bandknoppen in de Kleurenmenger.",
+            "Pas Kleurtoon aan om die band te verschuiven, Verzadiging om de kleurintensiteit te wijzigen en Luminantie om de helderheid te wijzigen.",
+            "Selecteer een andere band om door te gaan, of gebruik Opnieuw instellen van Kleurenmixer om de mixeraanpassingen te wissen."
+          ]
+        },
+        {
+          "title": "Een specifieke kleur samplen",
+          "paragraphs": [
+            "Puntkleur geeft een bemonsterde kleurtoon eigen regelaars. Dit beïnvloedt overeenkomende kleuren in de hele foto; gebruik een lokaal masker wanneer u het gebied ook wilt begrenzen."
+          ],
+          "steps": [
+            "Klik op Monster kleur onder Puntkleur en klik vervolgens op een kleurrijke plek in de foto.",
+            "Pas Bereik aan om de beïnvloede kleurtonen smaller of breder te maken en verfijn daarna de verschuiving van Kleurtoon, Verzadiging en Luminantie.",
+            "Gebruik Uniforme kleurtoon, Uniforme verzadiging of Uniforme luminantie om kleuren in het bereik meer op het gesamplede vlak te laten lijken.",
+            "Kies een opgeslagen punt in de selector om het te bewerken, of gebruik Punt verwijderen om het te verwijderen."
+          ],
+          "tips": [
+            "Neutrale grijze vlakken kunnen geen bruikbaar kleurtoonmonster leveren; kies wanneer daarom wordt gevraagd een kleurrijker gebied.",
+            "Puntkleur bewaart maximaal acht gesamplede punten. Als u nogmaals samplet terwijl er al acht zijn, wordt het achtste punt vervangen.",
+            "Opnieuw instellen van Puntkleur wist de bemonsterde punten zonder dat een volledige Kleur-reset nodig is."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Kleurgradeer schaduwen, middentonen en hooglichten",
+      "category": "Editing",
+      "summary": "Geef toongebieden verschillende kleurbehandelingen en bepaal hoe die behandelingen mengen.",
+      "keywords": [
+        "Kleurbewerking",
+        "kleurgradatie",
+        "Splitsen in tinten",
+        "schaduwen",
+        "middentonen",
+        "hooglichten",
+        "Globale bewerking",
+        "samensmelting",
+        "balans"
+      ],
+      "sections": [
+        {
+          "title": "Een bewerking opbouwen",
+          "paragraphs": [
+            "Kleurbalancering in Bewerken biedt afzonderlijke selecties voor Schaduwen, Middentonen en Hooglichten, plus een globale balans. Elk heeft regelaars voor Kleurtoon, Verzadiging en Luminantie."
+          ],
+          "steps": [
+            "Vouw Kleurtintverdeling uit en selecteer Schaduwen, Middentonen of Hooglichten.",
+            "Kies een kleurtoon en verhoog vervolgens de verzadiging om de kleurbehandeling zichtbaar te maken. Pas indien nodig de luminantie voor dat tonale gebied aan.",
+            "Herhaal dit voor de andere regio’s, of klik Globale bewerking bewerken om de globale behandeling te wijzigen.",
+            "Verfijn Overvloeiing en Balans en vergelijk de foto terwijl je ze aanpast.",
+            "Gebruik Opnieuw instellen van Kleurafstemming om de afstemming te wissen."
+          ],
+          "tips": [
+            "Als je Kleurtoon wijzigt terwijl Verzadiging op nul staat, wordt er geen zichtbare kleur toegevoegd. Begin met een bescheiden verzadigingswaarde.",
+            "Gebruik Kleurenmenger of Puntkleur wanneer u een bestaande kleurtoon wilt targeten, en een masker wanneer u een locatie in de foto wilt targeten."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Kopieer bewerkingen naar geselecteerde foto’s en stem de belichting af",
+      "category": "Editing",
+      "summary": "Kies welke instellingen u wilt overzetten, bekijk maskerspecifieke beperkingen, of stem een groep af op een actieve referentie voor belichting.",
+      "keywords": [
+        "Instellingen kopiëren",
+        "instellingen plakken",
+        "batchbewerking",
+        "synchroniseren",
+        "automatisch synchroniseren",
+        "synchroniseren",
+        "meerdere foto's",
+        "totale belichting afstemmen",
+        "selectie",
+        "klembord"
+      ],
+      "sections": [
+        {
+          "title": "Geselecteerde instellingen overbrengen",
+          "paragraphs": [
+            "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen."
+          ],
+          "steps": [
+            "Open de bronfoto en klik op Bewerkingsinstellingen kopiëren, of druk op Command-Shift-C op Mac of Ctrl-Shift-C op Linux en Windows.",
+            "Vink de groepen aan die je wilt overzetten en klik vervolgens op Instellingen kopiëren.",
+            "Selecteer de doelfoto of foto's in de bibliotheek en klik op Bewerkingsinstellingen plakken, of gebruik Command-Shift-V / Ctrl-Shift-V.",
+            "Lees het voltooiingsbericht. Bij een batch beëindigt Stop de verwerking na de huidige foto; voltooide foto's behouden de geplakte bewerkingen."
+          ],
+          "tips": [
+            "Bijsnijden en geometrie, Lokale maskers en Retoucheren zijn afzonderlijke keuzes en zijn niet standaard inbegrepen.",
+            "Retoucheren kopieert vlekposities en mag alleen worden overgedragen tussen foto’s met een overeenkomende kadering."
+          ]
+        },
+        {
+          "title": "Overgebrachte maskers beoordelen",
+          "paragraphs": [
+            "Geselecteerde lokale maskers vervangen bestemmingsmaskers. Slimme selecties worden voor elke andere foto opnieuw gedetecteerd. Handmatige maskervormen worden gekopieerd, dus hun plaatsing moet nog steeds worden gecontroleerd."
+          ],
+          "tips": [
+            "Objectselecties hebben een nieuwe objectkeuze op de bestemming nodig. Slimme maskers met geschilderde verfijningen moeten ook handmatig opnieuw worden gemaakt; hierdoor wordt het plakken naar de bestemming geweigerd in plaats van stilzwijgend een bronspecifieke selectie te kopiëren.",
+            "Als maskers niet kunnen worden overgedragen, kopieer dan opnieuw met Lokale maskers uitgeschakeld om de andere groepen toe te passen.",
+            "Controleer het voltooiingsrapport op mislukte foto's. Een batch kan eindigen met sommige foto's gewijzigd en andere ongewijzigd."
+          ]
+        },
+        {
+          "title": "Totale belichting afstemmen",
+          "paragraphs": [
+            "Totale belichting afstemmen gebruikt de actieve foto als referentie. Wanneer metadata over opnamebelichting beschikbaar is, vergelijkt het die informatie; anders valt het terug op gemiddelde helderheid van de afbeelding. Controleer het resultaat wanneer scènes of belichting verschillen."
+          ],
+          "steps": [
+            "Selecteer ten minste twee foto's en maak de gewenste referentiefoto actief.",
+            "Laat het opslaan van de referentiebewerkingen voltooien.",
+            "Kies Totale belichting afstemmen in Foto-acties, of Bibliotheek → Totale belichting afstemmen in het Mac-menu.",
+            "Controleer elk resultaat. De bewerking werkt de relevante belichtingsregeling bij en beperkt de resulterende aanpassing tot het ondersteunde bereik."
+          ],
+          "tips": [
+            "De referentiefoto wordt uitgesloten van de doelupdates. Afstemmen is een startpunt, vooral wanneer de foto's verschillende onderwerpen of kadrering bevatten."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Bijsnijden, rechtzetten, draaien en perspectief corrigeren",
+      "category": "Editing",
+      "summary": "Stel een kader en beeldverhouding in, pas oriëntatie en perspectief aan en bevestig of annuleer daarna de bijsnijsessie.",
+      "keywords": [
+        "bijsnijden",
+        "Beeldverhouding",
+        "rechtzetten",
+        "draaien",
+        "spiegelen",
+        "perspectief",
+        "geometrie",
+        "rechtop",
+        "niveau",
+        "portret",
+        "landschap",
+        "grootte aanpassen"
+      ],
+      "sections": [
+        {
+          "title": "Het kader instellen",
+          "paragraphs": [
+            "Open Bijsnijden in de bewerkingswerkbalk. Beeldverhouding biedt Vrij, Origineel, standaardverhoudingen en Aangepast. De uitsnedeweergave toont het kader en de hoeveelheid die behouden blijft."
+          ],
+          "steps": [
+            "Kies een beeldverhouding. Gebruik Aangepast om uw eigen verhouding tussen breedte en hoogte in te voeren, en de verwisselknop om de oriëntatie te wijzigen.",
+            "Sleep een handgreep om de uitsnede te wijzigen; de foto zoomt zodat het kader gecentreerd blijft. Sleep binnen het kader om de foto eronder te verplaatsen, of buiten het kader om een nieuwe uitsnede te tekenen.",
+            "Gebruik de pijltoetsen om de selectie een stukje te verschuiven; houd Shift ingedrukt voor grotere stappen.",
+            "Klik op Gereed of druk op Enter om te accepteren. Klik op Annuleren of druk op Escape om het frame te herstellen zoals het was toen u Bijsnijden opende."
+          ],
+          "tips": [
+            "Met de verhoudingvergrendeling kun je de huidige beeldverhouding behouden tijdens het schalen."
+          ]
+        },
+        {
+          "title": "Geometrie verfijnen",
+          "paragraphs": [
+            "Bijsnijden & draaien bevat ook Rechtzetten, rotatie van 90 graden, horizontaal en verticaal spiegelen en perspectiefbediening."
+          ],
+          "steps": [
+            "Probeer Automatisch nivelleren voor een scheve horizon en verfijn daarna indien nodig Rechtzetten.",
+            "Gebruik Draai links, Draai rechts of de spiegelknoppen voor oriëntatiewijzigingen.",
+            "Breid Perspectief uit en probeer Automatisch rechtzetten, of pas Verticaal, Horizontaal en Schaal handmatig aan.",
+            "Inspecteer de randen en de uiteindelijke uitsnede en klik vervolgens op Gereed."
+          ],
+          "tips": [
+            "Automatisch niveau gebruikt lijnen die het kan vinden; controleer het resultaat in plaats van aan te nemen dat de gedetecteerde hoek bij de foto past.",
+            "Opnieuw instellen van Bijsnijden zet samen bijsnijden, draaien, spiegelen en perspectief terug."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Breng lokale aanpassingen aan met Penseel-, Lineaire en Radiale maskers",
+      "category": "Editing",
+      "summary": "Schilder of teken een masker, inspecteer de overlay ervan en pas alleen het geselecteerde gebied aan.",
+      "keywords": [
+        "masker",
+        "maskering",
+        "lokale aanpassing",
+        "penseel",
+        "lineair verloop",
+        "radiaal verloop",
+        "vervaging",
+        "verloop",
+        "overlay",
+        "doordrukken",
+        "doordrukken"
+      ],
+      "sections": [
+        {
+          "title": "Een handmatig masker maken",
+          "paragraphs": [
+            "Open Masker in de bewerkingstoolbalk en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen Licht- en Kleur-aanpassingen.",
+            "Structuur en Helderheid gebruiken de afbeelding na globale aanpassingen en eerdere maskers. Deze besturingselementen vereisen een voorvertoningsupdate; wacht tot deze is voltooid voordat je het resultaat beoordeelt."
+          ],
+          "steps": [
+            "Kies Penseel om te schilderen, Lineair voor een geleidelijke aanpassing of Radiaal voor een ronde aanpassing.",
+            "Kies voor Penseel Grootte, Doezelaar en Verloop en schilder vervolgens over de foto. Voor Lineair of Radiaal sleept u op de foto om de vorm in te stellen.",
+            "Laat Overlay tonen ingeschakeld terwijl je het geselecteerde gebied controleert, en schakel het daarna uit om de foto te beoordelen.",
+            "Pas de schuifregelaars Licht of Kleur van het geselecteerde masker aan. Gebruik Hoeveelheid in Bereik om de algehele sterkte te verminderen.",
+            "Hernoem het masker met de •••-knop zodat het doel later gemakkelijk te herkennen is."
+          ],
+          "tips": [
+            "Toevoegen, Verwijderen en Snijden plaatsen u in verfverfijningsmodi. Kies bij een Lineair of Radiaal masker Bewerken van vorm om terug te keren naar het aanpassen van de vorm.",
+            "Inschakelen schakelt het effect van een masker tijdelijk uit of in. Omkeren draait de selectie om.",
+            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto en is niet beschikbaar wanneer er geen zijn.",
+            "Maskerpinnen en penseelcontouren blijven scherp en even dik terwijl u inzoomt. De contour wordt groter naarmate het gebied dat deze in de foto bedekt groter wordt."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "Voeg HDR-brackets, panorama’s en focusstapels samen",
+      "category": "Editing",
+      "summary": "Combineer een reeks verschillende originelen tot een nieuwe 16-bits TIFF en bewerk vervolgens het samengevoegde resultaat.",
+      "keywords": [
+        "foto samenvoegen",
+        "samenvoegen",
+        "hdr",
+        "hoog dynamisch bereik",
+        "belichtingsfusie",
+        "bracket",
+        "panorama",
+        "panorama",
+        "stitchen",
+        "focusstapel",
+        "focusstapeling",
+        "tiff",
+        "uitlijning"
+      ],
+      "sections": [
+        {
+          "title": "Een samenvoeging starten in de Mac-app",
+          "paragraphs": [
+            "Foto samenvoegen gebruikt een neutrale weergave van elk origineel en maakt een nieuwe 16-bits TIFF in LightTable-samenvoegingen. Pas uw uiteindelijke look, bijsnijding en lokale aanpassingen toe op het samengevoegde resultaat. De bronoriginelen blijven beschikbaar."
+          ],
+          "steps": [
+            "Selecteer minstens twee verschillende originelen in de bibliotheek. Meerdere virtuele kopieën van één origineel tellen als één bron.",
+            "Kies Foto → Foto samenvoegen… in het Mac-menu.",
+            "Kies HDR · belichtingsfusie, Panorama · op kenmerken uitgelijnd, of Focusstapel · scherpte gefuseerd.",
+            "Voer optioneel een resultaatnaam in en klik daarna op Samenvoegen.",
+            "Volg de voortgang van voorbereiden, uitlijnen, samenvoegen en opslaan. Wanneer de app voltooiing meldt en de bibliotheek vernieuwt, opent u de TIFF in LightTable Samenvoegen en inspecteert u deze."
+          ],
+          "tips": [
+            "Er kan maar één samenvoeging tegelijk lopen. Een bestaande bestandsnaam blijft behouden; een nieuwe samenvoeging met dezelfde naam krijgt een numeriek achtervoegsel.",
+            "Samenvoegen verwerkt normaal elk invoerbestand tot maximaal 6.000 pixels op de lange zijde. Het samengevoegde resultaat kan daardoor minder detail hebben dan de bronreeks met volledige resolutie.",
+            "Als een samenvoeging een fout meldt, lees dan de specifieke melding en corrigeer de invoerselectie voordat je het opnieuw probeert."
+          ]
+        },
+        {
+          "title": "Geschikte invoer kiezen",
+          "paragraphs": [
+            "HDR accepteert 2–9 belichtingsbracket-foto’s met overeenkomende afmetingen. Het lijnt frames uit en voegt de belichting samen voor display-gerenderde frames om bruikbare tonen in balans te brengen. Controleer bewegende onderwerpen en randen op samenvoegartefacten.",
+            "Panorama accepteert 2–20 overlappende frames. Selecteer aangrenzende frames in reeks, zodat naastliggende invoer visuele details delen. De app lijnt kenmerken uit en mengt overlappingen; gebieden zonder kenmerken of onvoldoende overlap kunnen een betrouwbare stitchen verhinderen. Panorama-doeken zijn beperkt tot 120 megapixels.",
+            "Focusstacking accepteert 2–60 foto’s met focusbracket en overeenkomende afmetingen. Gebruik een statief of een focusrail-sequentie met gedeelde kadrering. De app lijnt de frames uit, combineert scherpe gebieden en snijdt bij tot het gemeenschappelijke uitgelijnde gebied."
+          ],
+          "steps": [
+            "Inspecteer voor HDR hooglichten, schaduwen en alles wat tussen belichtingen is verplaatst.",
+            "Inspecteer voor Panorama de naden en de buitenrand en snijd het resultaat vervolgens indien nodig bij.",
+            "Inspecteer bij Focusstapel overgangen tussen scherpe gebieden, randen op de voorgrond en de uiteindelijke uitsnede op 1:1."
+          ],
+          "tips": [
+            "HDR hier is belichtingsfusie naar een gerenderde TIFF. Het produceert geen scène-lineaire RAW- of DNG-master.",
+            "Een uitlijningsfout kan betekenen dat de frames onvoldoende overlap of een gemeenschappelijk gebied hebben. Probeer een consistentere reeks in plaats van ongerelateerde frames toe te voegen."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Verfijn maskers met schilderen, bereiken en gecombineerde selecties",
+      "category": "Editing",
+      "summary": "Voeg gebieden toe, trek ze af of neem de doorsnede, en beperk vervolgens een aanpassing op luminantie of gesamplede kleur.",
+      "keywords": [
+        "masker verfijnen",
+        "toevoegen",
+        "aftrekken",
+        "snijpunt",
+        "component",
+        "luminantiebereik",
+        "kleurbereik",
+        "Kleurbereik",
+        "Kleurmonster",
+        "dekking",
+        "hoeveelheid",
+        "omkeren"
+      ],
+      "sections": [
+        {
+          "title": "Verfijnen door te schilderen",
+          "paragraphs": [
+            "Selecteer het masker in de maskerlijst voordat u het verfijnt. Toevoegen vergroot de selectie; Verwijderen haalt geschilderde gebieden weg; Snijden behoudt alleen het geschilderde gebied van de bestaande selectie."
+          ],
+          "steps": [
+            "Kies Toevoegen, Aftrekken of Doorsnijden onder Geselecteerd masker.",
+            "Stel Grootte, Vervaging en Verloop in en schilder vervolgens terwijl je de overlay bekijkt.",
+            "Houd tijdens gebruik van Toevoegen Option op Mac ingedrukt om tijdelijk af te trekken.",
+            "Schakel de overlay uit en inspecteer de aanpassing. Gebruik Ongedaan maken voor een verfijning die je wilt terugdraaien."
+          ]
+        },
+        {
+          "title": "Een slimme selectie samenvoegen",
+          "paragraphs": [
+            "De actie van de Slimme selectie bepaalt of de volgende slimme selectie een nieuw masker wordt of wordt gecombineerd met het momenteel geselecteerde masker."
+          ],
+          "steps": [
+            "Selecteer een bestaand masker en vouw vervolgens Nieuw masker maken uit.",
+            "Kies Toevoegen aan geselecteerd masker, Aftrekken van geselecteerd masker, of Snijden met geselecteerd masker in de actie Slimme selectie.",
+            "Kies de slimme tool, zoals Onderwerp of Lucht, en inspecteer het gecombineerde resultaat."
+          ],
+          "tips": [
+            "Stel de actie van de Slimme selectie terug op Nieuw masker maken wanneer u wilt dat de volgende slimme selectie onafhankelijke aanpassingen heeft.",
+            "Een masker heeft een componentlimiet; het paneel meldt wanneer er geen andere slimme component kan worden toegevoegd."
+          ]
+        },
+        {
+          "title": "Beperken op helderheid of kleur",
+          "paragraphs": [
+            "Bereik vernauwt een geselecteerd masker verder. Luminantie Laag en Hoog beperken helderheidswaarden. Kleurbereik richt zich op een kleurtoon, en Hoeveelheid regelt de sterkte van het hele masker."
+          ],
+          "steps": [
+            "Breid Bereik uit voor het geselecteerde masker en pas Luminantie laag en Luminantie hoog aan terwijl je de overlay controleert.",
+            "Schakel Kleurbereik in, klik vervolgens op Steunkleur samplen en sample een kleurrijk punt, of houd Shift ingedrukt en sleep over een gebied om het te middelen.",
+            "Verfijn Kleurtoon, Bereik en Kleurhoeveelheid en gebruik daarna Hoeveelheid voor de algehele sterkte van de aanpassing."
+          ],
+          "tips": [
+            "Een bijna neutraal gebied levert geen bruikbaar kleurtoonmonster op. Kies wanneer daarom wordt gevraagd een kleurrijker gebied."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Verwijder vlekken en verfijn Heal- of Clone-correcties",
+      "category": "Editing",
+      "summary": "Schilder over storende elementen, inspecteer de zichtbaarheid van de retouche en verplaats de bron of het doel van een correctie.",
+      "keywords": [
+        "verwijderen",
+        "retoucheren",
+        "retoucheren",
+        "kloon",
+        "retoucheren",
+        "stof",
+        "Puntverwijdering",
+        "vlekken visualiseren",
+        "bron",
+        "doel",
+        "afleiding"
+      ],
+      "sections": [
+        {
+          "title": "Een correctie maken",
+          "paragraphs": [
+            "Open Verwijderen in de bewerkingswerkbalk. Verwijderen, Retoucheren en Kloon zijn afzonderlijke modi. Retoucheren en Kloon kiezen automatisch een eerste bron; controleer die bron in plaats van ervan uit te gaan dat deze geschikt is.",
+            "Correcties worden in volgorde toegepast, dus een latere bron kan een eerdere correctie bevatten. Wacht op de voorvertoningsupdate voordat je het resultaat beoordeelt of verscherpt rond het gecorrigeerde gebied."
+          ],
+          "steps": [
+            "Kies Verwijderen, Heal of Clone en stel vervolgens Grootte, Vervaging en Dekking in.",
+            "Klik op een vlek of sleep over een afleiding in de foto.",
+            "Voor kleine stofvlekken schakel je Vlekken visualiseren in en pas je Drempel aan om randen makkelijker te inspecteren.",
+            "Schakel Vlekken visualiseren uit en inspecteer de gecorrigeerde foto."
+          ],
+          "tips": [
+            "Als je een correctie selecteert en een andere modus kiest, verandert de modus van die correctie."
+          ]
+        },
+        {
+          "title": "Een bestaande correctie verfijnen",
+          "paragraphs": [
+            "Selecteer een correctie in de lijst om de bedieningselementen weer te geven. De cirkels op de afbeelding geven het bewerkbare doel aan en, voor Retoucheren en Kloon, de bron.",
+            "Zoom in voor nauwkeurige plaatsing. Cirkels en pinnen blijven op elk zoomniveau scherp; de cirkels blijven hetzelfde gebied van de foto tonen."
+          ],
+          "steps": [
+            "Sleep de doelcirkel om de correctie te verplaatsen, of kies Doel verplaatsen en klik op de nieuwe positie.",
+            "Sleep voor Retoucheren of Kloon de broncirkel naar een beter gebied. Bron vernieuwen probeert een andere bronpositie.",
+            "Pas Vervaging of Dekking aan als de rand of sterkte van de correctie verfijning nodig heeft.",
+            "Schakel Inschakelen van deze correctie om te vergelijken, of gebruik Correctie verwijderen om deze te verwijderen."
+          ],
+          "tips": [
+            "Verwijderen toont geen broncirkel of Bron vernieuwen. Die bronbedieningen gelden voor Retoucheren en Kloon.",
+            "Alles wissen verwijdert de correcties Verwijderen, Retoucheren en Kloon van de foto en is niet beschikbaar wanneer er geen zijn. Gebruik Ongedaan maken om een onbedoelde bewerkingswijziging terug te draaien."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Sla bewerkingen op en herstel niet-opgeslagen wijzigingen",
+      "category": "Editing",
+      "summary": "Bewerkingen worden automatisch opgeslagen. Controleer de opslagstatus, probeer een mislukte opslag opnieuw, of kies welke bewerkingen u wilt herstellen na het heropenen.",
+      "keywords": [
+        "opslaan",
+        "automatisch opslaan",
+        "niet opgeslagen",
+        "herstel",
+        "crash",
+        "origineel",
+        "niet-destructief",
+        "opnieuw proberen",
+        "opslaan"
+      ],
+      "sections": [
+        {
+          "title": "Controleer of uw werk is opgeslagen",
+          "paragraphs": [
+            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing."
+          ],
+          "steps": [
+            "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
+            "Wacht tot Opslaan… verandert in Opgeslagen. Opslaan omvat ook openstaande schrijfopdrachten voor de bewerkingsgeschiedenis.",
+            "Als de status Opgeslagen bewerkingen niet toont, gebruik dan Opnieuw proberen opslaan. Houd het venster open terwijl opslaan mislukt."
+          ],
+          "tips": [
+            "Opgeslagen · herstel vereist aandacht betekent dat het opslaan is voltooid, maar dat het lokale herstelsysteem een probleem heeft gemeld. Gebruik de beschikbare knop Opnieuw proberen en lees het statusbericht."
+          ]
+        },
+        {
+          "title": "Herstelde of opgeslagen bewerkingen kiezen",
+          "paragraphs": [
+            "Als lokaal herstel openstaande wijzigingen vindt wanneer de bibliotheek wordt geopend, vermeldt Niet-opgeslagen bewerkingen herstellen? de betreffende foto's. Bewerkingen terugzetten vervangt de opgeslagen instellingen door de herstelde instellingen. Opgeslagen bewerkingen behouden houdt de catalogusversie en verwijdert die herstelconcepten."
+          ],
+          "steps": [
+            "Lees de getroffen fotonamen en kies Bewerkingen terugzetten of Opgeslagen bewerkingen behouden.",
+            "Als je terugzet, wacht dan tot het opslaan is voltooid voordat je de app sluit."
+          ],
+          "tips": [
+            "Herstel kan niet beschikbaar zijn als lokale opslag of het hersteljournaal op het bureaublad mislukt. De app meldt die toestand; het is geen garantie dat elke niet-opgeslagen bewerking kan worden hersteld.",
+            "Als een origineel niet beschikbaar is of is gewijzigd, blijft het herstelrecord behouden in plaats van toegepast te worden op een mogelijk andere foto. Sommige herstelconcepten tonen een melding voor gedeeltelijke identiteit omdat ze het volledige origineel niet kunnen verifiëren. Dit kan gebeuren met oudere concepten of bij gebruik van mapmodus. Herstel deze alleen als de originele foto's niet zijn vervangen."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Selecteer Onderwerp, Lucht, Object, Diepte of Personen",
+      "category": "Editing",
+      "summary": "Maak lokale selecties op het apparaat, controleer hun nauwkeurigheid en verfijn het resultaat voordat u aanpassingen toepast.",
+      "keywords": [
+        "ai-masker",
+        "onderwerp",
+        "lucht",
+        "object",
+        "diepte",
+        "personen",
+        "persoon",
+        "gezicht",
+        "huid",
+        "haar",
+        "ogen",
+        "tanden",
+        "portret",
+        "achtergrond selecteren"
+      ],
+      "sections": [
+        {
+          "title": "Een slimme selectie maken",
+          "paragraphs": [
+            "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze werken lokaal; beschikbare methoden zijn afhankelijk van het selectietype en het platform."
+          ],
+          "steps": [
+            "Open Masker en klap Nieuw masker maken uit.",
+            "Kies Onderwerp of Lucht voor een automatische selectie. Voor Object klikt u op Object en daarna op het object in de foto.",
+            "Kies Diepte om een selectie te maken op basis van relatieve afstand, open vervolgens Bereik en pas Verre limiet en Nabije limiet aan. Diepte loopt van ver naar nabij.",
+            "Inspecteer Overlay tonen en verfijn gemiste of extra gebieden voordat je Licht of Kleur aanpast."
+          ],
+          "tips": [
+            "Onderwerp, Lucht en Object kunnen lokale, op beeld gebaseerde schattingen gebruiken. Ze kunnen randen missen of het verkeerde gebied selecteren, vooral waar onderwerp en achtergrond op elkaar lijken.",
+            "Diepte gebruikt ingebedde opnamediepte wanneer beschikbaar, anders een lokale schatting. Geschatte diepte is relatief en kan onnauwkeurig zijn.",
+            "Gebruik Omkeren als je het gebied buiten de resulterende selectie wilt aanpassen."
+          ]
+        },
+        {
+          "title": "Personen of gezichtsgebieden selecteren",
+          "paragraphs": [
+            "Personen biedt Persoon, Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Deze bedieningselementen vereisen de Vision-helper op macOS 14 of nieuwer en zijn verborgen op Linux en Windows. Gezichtshuid en haar worden geschat en er wordt geen identiteit afgeleid."
+          ],
+          "steps": [
+            "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
+            "Inspecteer de overlay en gebruik waar nodig geschilderde verfijningen rond randen.",
+            "Controleer voor Huid verzachten de automatisch toegepaste vermindering van Textuur en Helderheid en pas die vervolgens aan voor het portret."
+          ],
+          "tips": [
+            "Lees eventuele beschikbaarheids- of detectiefouten in het maskerpaneel. Dat een hulpmiddel in het menu verschijnt, garandeert niet dat de vereiste helper of een bruikbare selectie beschikbaar is."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Stel witbalans en algemene kleur in",
+      "category": "Editing",
+      "summary": "Gebruik Temp en Tint of neem een monster van een neutraal gebied en pas daarna Levendigheid en Verzadiging aan.",
+      "keywords": [
+        "Witbalans",
+        "wb",
+        "temperatuur",
+        "temp",
+        "tint",
+        "neutraal",
+        "pipet",
+        "kleurzweem",
+        "levendigheid",
+        "verzadiging"
+      ],
+      "sections": [
+        {
+          "title": "Een kleurzweem neutraliseren",
+          "paragraphs": [
+            "De sectie Kleur in Bewerken bevat Temp en Tint, plus een witbalans-pipet naast Temp. Dit zijn de afwerkingsbedieningselementen van het Bewerken-paneel."
+          ],
+          "steps": [
+            "Open Bewerken en vouw Kleur uit.",
+            "Klik op de witbalans-pipet naast Temp en klik daarna op een gebied in de foto dat neutraal grijs moet zijn.",
+            "Verfijn Temp en Tint op het oog als het gesamplede resultaat te warm, koel, groen of magenta is.",
+            "Pas Levendigheid en Verzadiging aan om de algehele intensiteit van de kleur te regelen."
+          ],
+          "tips": [
+            "Kies een zichtbaar neutraal vlak. Een bijna zwarte sample geeft Te donker om te samplen; een niet beschikbare voorvertoning geeft een wachtbericht.",
+            "Klik opnieuw op de pipet om de samplemodus te verlaten zonder een punt te kiezen.",
+            "Opnieuw instellen van Kleur zet ook de bijbehorende kleuraanpassingen terug, waaronder Kleurenmixer, Puntkleur en Kleurbalancering. Gebruik Opnieuw instellen van een hulpmiddel voor een beperktere wijziging."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-curves",
+      "title": "Vorm contrast en kleur met krommen",
+      "category": "Editing",
+      "summary": "Voeg krommepunten toe en verplaats ze voor het gecombineerde RGB-kanaal of voor afzonderlijke rode, groene en blauwe kanalen.",
+      "keywords": [
+        "kromme",
+        "krommen",
+        "tooncurve",
+        "rgb",
+        "rood",
+        "groen",
+        "blauw",
+        "contrast",
+        "Controlepunt",
+        "S-kromme"
+      ],
+      "sections": [
+        {
+          "title": "Een kromme bewerken",
+          "paragraphs": [
+            "In de Kromme-grafiek loopt de horizontale richting van donkerdere invoertonenen naar lichtere invoertonenen. Een punt omhoog verplaatsen verhoogt de uitvoer; omlaag verplaatsen verlaagt deze. RGB past de gecombineerde kromme aan, terwijl R, G en B afzonderlijke kanalen beïnvloeden."
+          ],
+          "steps": [
+            "Open Bewerken en vouw Kromme uit.",
+            "Kies RGB, R, G of B.",
+            "Klik op de grafiek om een punt toe te voegen en sleep het vervolgens om de kromme vorm te geven. Sleep een bestaande greep om deze te verplaatsen.",
+            "Dubbelklik op een binnenpunt om het te verwijderen. De twee eindpunthandvatten blijven behouden.",
+            "Gebruik Opnieuw instellen van Kromme om de krommen opnieuw in te stellen, of Ongedaan maken om de laatste wijziging terug te draaien."
+          ],
+          "tips": [
+            "Gebruik een paar punten en vergelijk de foto terwijl je werkt; kanaalkrommen kunnen sterke kleurzweem veroorzaken.",
+            "Een opgeslagen of geïmporteerde kromme behoudt zijn exact opgeslagen tabel totdat u deze bewerkt. De app bouwt representatieve handgrepen opnieuw op voor bewerking, zodat de eerste aanpassing een geïmporteerde kromme kan hervormen voorbij het punt dat u verplaatst."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Verscherp, verminder ruis en gebruik Verbeteren",
+      "category": "Editing",
+      "summary": "Inspecteer details bij 1:1, pas gewone detailbedieningen toe of voer lokale geleerd ruis verminderen uit wanneer beschikbaar.",
+      "keywords": [
+        "details",
+        "verscherpen",
+        "ruis",
+        "ruis verminderen",
+        "ruisvermindering",
+        "verbeteren",
+        "superresolutie",
+        "opschalen",
+        "structuur",
+        "helderheid",
+        "nevel verwijderen",
+        "vignettering",
+        "sensor"
+      ],
+      "sections": [
+        {
+          "title": "Details beoordelen op 1:1",
+          "paragraphs": [
+            "De sectie Details bevat Verscherping, Straal, Details, Maskering, Luminantieruisonderdrukking en Kleurruisonderdrukking. Effecten bevat Textuur, Helderheid, Nevel verwijderen en Vignet."
+          ],
+          "steps": [
+            "Open een foto en gebruik Spatie om te schakelen tussen Passend maken en 1:1.",
+            "Breid Detail uit in Bewerken. Pas ruisonderdrukking en verscherping aan terwijl je naar zowel gestructureerde als gladde gebieden kijkt.",
+            "Gebruik Effecten voor structuur, lokaal contrast, nevel of randverdonkering en bekijk daarna de hele foto op Passend maken.",
+            "Gebruik Opnieuw instellen van de relevante sectie als je die groep opnieuw wilt beginnen."
+          ],
+          "tips": [
+            "Detailbedieningen werken in zowel Film- als Ontwikkelmodi. Beoordeel verscherping niet alleen op basis van een kleine Passend maken-voorvertoning."
+          ]
+        },
+        {
+          "title": "Voer geleerd ruis verminderen uit op een RAW-foto",
+          "paragraphs": [
+            "RAW-foto's kunnen regelaars voor sensorruisonderdrukking en geleerd ruis verminderen tonen. Geleerd ruis verminderen draait lokaal wanneer u op Ruis verminderen toepassen klikt; het verplaatsen van Sterkte voert het niet live uit."
+          ],
+          "steps": [
+            "Selecteer een RAW-foto en klap Details uit.",
+            "Controleer of Ruis verminderen toepassen beschikbaar is, kies Sterkte en klik op Ruis verminderen toepassen.",
+            "Volg het voortgangsbericht. Gebruik Annuleren als je de taak moet stoppen.",
+            "Inspecteer het voltooide voorbeeld op 1:1."
+          ],
+          "tips": [
+            "Aangeleerde ruis vermindering vereist de macOS-inferentiehelper en een compatibel lokaal model. Het is niet beschikbaar op Linux en Windows. Gewone ruisvermindering en verscherpen blijven beschikbaar. Ontwikkelbuilds kunnen het model missen; lees de beschikbaarheidsmelding voordat je start."
+          ]
+        },
+        {
+          "title": "Maak een verbeterde afgeleide in de Mac-app",
+          "paragraphs": [
+            "Foto → Foto verbeteren… biedt Ruis verminderen en Superresolutie en schrijft een nieuwe 16-bits master wanneer de geselecteerde bewerking slaagt. Het origineel blijft onaangetast."
+          ],
+          "steps": [
+            "Selecteer de foto, kies Foto → Foto verbeteren…, en lees het beschikbaarheidsbericht.",
+            "Kies de verbetering en klik op Verbeteren, indien beschikbaar.",
+            "Zoek na voltooiing het nieuwe resultaat in de vernieuwde bibliotheek en inspecteer het."
+          ],
+          "tips": [
+            "Niet-beschikbare verbeteringen zijn uitgeschakeld. Superresolutie heeft geen meegeleverd model en vereist een compatibel model dat lokaal is geïnstalleerd.",
+            "Verbetering kan details genereren; beoordeel de uitvoer voordat je deze als een getrouwe weergave van fijne structuur behandelt."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Maak bewerkingen ongedaan, herstel Geschiedenis en sla momentopnamen op",
+      "category": "Editing",
+      "summary": "Gebruik Ongedaan maken voor recent werk, Geschiedenis voor opgeslagen bewerkingsstappen en benoemde momentopnamen voor looks die je opnieuw wilt bekijken.",
+      "keywords": [
+        "ongedaan maken",
+        "opnieuw uitvoeren",
+        "geschiedenis",
+        "momentopname",
+        "versie",
+        "terugzetten",
+        "terugzetten",
+        "opnieuw instellen"
+      ],
+      "sections": [
+        {
+          "title": "Een eerdere stap ongedaan maken of terugzetten",
+          "paragraphs": [
+            "Ongedaan maken en opnieuw uitvoeren volgen elke foto tijdens de huidige sessie. In catalogusbibliotheken blijft Geschiedenis behouden na afsluiten. Nabijgelegen aanpassingen kunnen worden samengevoegd tot één geschiedenisstap, dus de lijst is geen verslag van elke schuifregelaarpositie."
+          ],
+          "steps": [
+            "Gebruik Command-Z op Mac of Ctrl-Z op Linux en Windows om ongedaan te maken. Voeg Shift toe om opnieuw uit te voeren.",
+            "Open Geschiedenis in de bewerkingstoolbalk om de opgeslagen stappen van de huidige foto te zien, met de nieuwste eerst.",
+            "Klik op een stap om de instellingen ervan terug te zetten. Het terugzetten van een stap is zelf een ongedaan te maken bewerking."
+          ],
+          "tips": [
+            "Persistente geschiedenis vereist een catalogusbibliotheek. Gebruik alleen mappen ondersteunt nog steeds sessie-Ongedaan maken en Opnieuw uitvoeren.",
+            "Wissen verwijdert de opgeslagen geschiedenisstappen van de foto; het is geen opdracht om een aanpassing opnieuw in te stellen."
+          ]
+        },
+        {
+          "title": "Een benoemde look bewaren",
+          "paragraphs": [
+            "Een momentopname slaat de huidige aanpassingsinstellingen, bijsnijden, maskers, Retoucheren-correcties en optiek van de foto op. Het is een opgeslagen bewerkingsstatus voor deze foto. Momentopname maken is niet beschikbaar totdat een foto is geladen."
+          ],
+          "steps": [
+            "Open Geschiedenis, vouw Snapshots uit en klik op Snapshot maken.",
+            "Voer een bruikbare naam in, zoals Zacht portret of Voor retouche.",
+            "Klik op de naam van de momentopname om deze later toe te passen. Gebruik Ongedaan maken als je wilt terugkeren naar de toestand die je net hebt vervangen."
+          ],
+          "tips": [
+            "De foto bewaart maximaal 50 momentopnamen; als je er nog een maakt boven die limiet, wordt de oudste momentopname uit de lijst verwijderd.",
+            "De × naast een momentopname verwijdert die benoemde momentopname, niet de originele foto."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ],
+      "categoryLabel": "Bewerken"
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Filmkorrel en formaat aanpassen",
+      "category": "Film",
+      "summary": "Beheer de korrel in verhouding tot de film en kies de gesimuleerde filmgrootte.",
+      "keywords": [
+        "korrel",
+        "grootte",
+        "structuur",
+        "35mm",
+        "Middenformaat",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "deeltje",
+        "ruis"
+      ],
+      "sections": [
+        {
+          "title": "Stel het formaat en de korrel in",
+          "paragraphs": [
+            "Filmformaat stelt de fysieke lange zijde in die door de simulatie wordt gebruikt. De keuzes zijn 35 mm, 645, 6 × 6, 6 × 7 en 4 × 5; deze instelling staat los van het bijsnijden van de foto.",
+            "Korrelgrootte vermenigvuldigt het basisdeeltjesoppervlak van de gekozen filmsoort. De weergave toont het resulterende oppervlak in µm², zodat dezelfde vermenigvuldigingsfactor een ander oppervlak kan tonen nadat u van filmsoort wisselt."
+          ],
+          "steps": [
+            "Kies in het Film-profiel het Film-formaat.",
+            "Gebruik Fysieke filmstadia, dat automatisch wordt geopend wanneer Filmprofiel is ingeschakeld. Open het opnieuw als je het hebt ingeklapt.",
+            "Schakel Korrelgrootte in en pas de schuifregelaar aan, of schakel het selectievakje uit om korrel uit te schakelen.",
+            "Inspecteer de afbeelding op 1:1 en wacht tot de details van het voorbeeld zijn voltooid voordat je de structuur beoordeelt."
+          ]
+        },
+        {
+          "title": "Wat het getal vertegenwoordigt",
+          "paragraphs": [
+            "De korrelbasislijnen per filmsoort zijn afgeleid van filmsnelheid als visueel startpunt. Het zijn geen laboratoriummeting van de korreligheid voor elke emulsie.",
+            "De instelling voor korrelgrootte hoort bij de filmsimulatie. Verscherping van details en ruisonderdrukking in Bewerken zijn afzonderlijke aanpassingen."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Pas halatie, diffusie en scan-karakter aan",
+      "category": "Film",
+      "summary": "Verfijn de fysieke effecten van de film en het geselecteerde uitvoerrecept.",
+      "keywords": [
+        "halatie",
+        "gloed",
+        "gloed",
+        "diffusie",
+        "koppelaars",
+        "schittering",
+        "scannen",
+        "scherpte",
+        "zachtheid",
+        "scanner",
+        "voorflits"
+      ],
+      "sections": [
+        {
+          "title": "Fysieke filmstadia",
+          "paragraphs": [
+            "Selecteer Film in de gereedschapsbalk en schakel vervolgens Filmprofiel in. Fysieke filmstadia wordt automatisch geopend; je kunt dit daarna samenvouwen. Koppelstoffen, Halatie, Korrelgrootte en Schittering bij afdrukken hebben elk een selectievakje voor inschakelen en een regeling voor de hoeveelheid. Door een stadium uit te schakelen, wordt de schuifregelaar voor de hoeveelheid uitgeschakeld.",
+            "Opnamediffusie verandert de gemodelleerde camerastap. Printschittering en Print voorflits horen bij de printfase en zijn niet beschikbaar voor directe scans van dia's."
+          ],
+          "steps": [
+            "Kies de film en het uitvoerrecept voordat je de fasebedieningen verfijnt.",
+            "Wijzig één stap tegelijk en vergelijk het resultaat.",
+            "Gebruik het selectievakje van elke fase om de bijdrage te vergelijken zonder de gekozen film te vervangen."
+          ]
+        },
+        {
+          "title": "Scanbediening",
+          "paragraphs": [
+            "Scanzachtheid voegt lensonscherpte toe aan het geselecteerde uitvoerrecept. Scan-scherpte schaalt de verscherping van dat recept; Scan-verscherping schakelt deze in of uit.",
+            "Dit zijn aanpassingen aan gemodelleerde uitvoerrecepten, geen selecties van gemeten scannermerken. Beoordeel fijne textuur en scherpte met voltooide 1:1-voorvertoningsdetails."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Een filmtype kiezen en bekijken",
+      "category": "Film",
+      "summary": "Schakel de fysieke filmworkflow in en vergelijk films met je eigen foto.",
+      "keywords": [
+        "film",
+        "film",
+        "simulatie",
+        "realistische filmsimulatie",
+        "negatief",
+        "schuifregelaar",
+        "bladeren",
+        "voorbeeld",
+        "voorinstelling",
+        "film uit"
+      ],
+      "sections": [
+        {
+          "title": "Begin met een film",
+          "paragraphs": [
+            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt."
+          ],
+          "steps": [
+            "Open een stilstaande foto en selecteer Film in de gereedschapsbalk om Realistic Film Simulation te openen.",
+            "Zet de schakelaar voor Filmprofiel aan. Fysieke filmstadia wordt automatisch geopend; je kunt het daarna inklappen.",
+            "Kies Film, of klik op Voorbeeldfilms op deze foto… om gerenderde voorbeelden te vergelijken.",
+            "Zoek op een filmnaam, gebruik Vorige of Volgende om te bladeren en kies daarna een voorbeeld om toe te passen."
+          ]
+        },
+        {
+          "title": "Wat de voorbeelden bevatten",
+          "paragraphs": [
+            "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
+            "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
+            "Nadat je Film hebt ingeschakeld, kan eerst een snel voorbeeld verschijnen voordat nauwkeurige RAW-details en het grotere voorbeeld klaar zijn. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid en verdwijnt zodra het voorbeeld zichtbaar is. Nauwkeurige RAW-details en weergave op volledige resolutie gaan op de achtergrond door."
+          ],
+          "tips": [
+            "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-reference-match",
+      "title": "Vergelijken met een referentieafbeelding",
+      "category": "Film",
+      "summary": "Lijn een scan of andere referentie uit, meet het verschil en pas een eerste afstemming toe.",
+      "keywords": [
+        "referentie",
+        "afstemmen",
+        "scannen",
+        "kalibratie",
+        "overlay",
+        "splitsen",
+        "dekking",
+        "meten",
+        "kleuren afstemmen"
+      ],
+      "sections": [
+        {
+          "title": "Laden en uitlijnen",
+          "paragraphs": [
+            "Referentieafstemming staat in Realistische filmsimulatie, geopend met Film in de gereedschapsrail. Gebruik een referentie met overeenkomstige beeldinhoud zodat uitlijning en vergelijking zinvol zijn."
+          ],
+          "steps": [
+            "Vouw Referentie-afstemming uit en kies een referentieafbeelding.",
+            "Kies Overlay of Splitsen en stel vervolgens Dekking / splitsen in.",
+            "Gebruik Schalen, Horizontaal en Verticaal om de referentie met je foto uit te lijnen.",
+            "Klik op Meten om de vergelijking te inspecteren, of op Startovereenkomst om een eerste aanpassing toe te passen."
+          ]
+        },
+        {
+          "title": "Wat Beginnende afstemming wijzigt",
+          "paragraphs": [
+            "Starten van afstemmen schakelt automatische scènemeting uit en past Camera EV aan. Voor RAW-foto’s stelt het ook aangepaste witbalans bij opname in; voor verwerkte foto’s past het gele en magenta afdrukfiltering aan.",
+            "Dit is een eerste aanpassing op basis van gemeten beeldstatistieken, geen garantie voor een exacte film- of kleurafstemming. Controleer de afbeelding na toepassing en gebruik indien nodig Ongedaan maken. Wissen verwijdert de referentie-overlay."
+          ],
+          "tips": [
+            "De knop Kalibratiedoel downloadt een afbeelding die je kunt gebruiken in een referentieworkflow."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Stel filmbelichting en ontwikkeling in",
+      "category": "Film",
+      "summary": "Begrijp Camera EV, witbalans bij opname, belichtingsmeting en ontwikkelbediening.",
+      "keywords": [
+        "belichting",
+        "camera ev",
+        "lichtmeter",
+        "Witbalans",
+        "temperatuur",
+        "tint",
+        "ontwikkeling",
+        "contrast",
+        "authentiek",
+        "creatief"
+      ],
+      "sections": [
+        {
+          "title": "Opnamebediening en afwerkingsbediening",
+          "paragraphs": [
+            "Camera-EV en opname-witbalans werken vóór filmexposure. Belichting en Temp/Tint in het paneel Bewerken zijn latere afwerkingsaanpassingen in de workflow.",
+            "Opname-witbalans vereist een RAW-origineel. Gebruik voor een JPEG, HEIF, TIFF of een ander bewerkt bestand Bewerken Temp/Tint."
+          ],
+          "steps": [
+            "Schakel Film in, kies een film en pas Camera EV aan.",
+            "Houd Scène automatisch meten ingeschakeld voor automatische scenemeting, of zet het uit om de opnamebelichting zelf in te stellen.",
+            "Vouw Opname & verwerking uit om Voor opname, Daglicht, Kunstlicht of Aangepaste opname-witbalans te kiezen voor een RAW-foto.",
+            "Pas bij Aangepast Temperatuur en Opname-tint aan."
+          ]
+        },
+        {
+          "title": "Ontwikkeling en gekoppelde standaarden",
+          "paragraphs": [
+            "Ontwikkeling verschijnt alleen wanneer het gekozen filmprofiel ontwikkelingstijden levert. Afdrukontwikkeling is afhankelijk van het geselecteerde papier en is verborgen voor diafilm. Ontwikkelingscontrast is een aparte filmregeling.",
+            "Authentiek gebruikt gekoppelde fysieke standaarden, inclusief het aanbevolen papier van de film wanneer papier is ontgrendeld. Creatief behoudt papieroverschrijvingen wanneer ze compatibel zijn. Het wijzigen van film kan nog steeds de standaardontwikkelingstijd en belichting van die film selecteren; vergelijk het resultaat na het wijzigen van een film."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Werk met negatieffilm, papier en dia’s",
+      "category": "Film",
+      "summary": "Kies een afdrukproces voor negatieven en begrijp waarom afdrukbedieningen verdwijnen voor diafilm.",
+      "keywords": [
+        "negatief",
+        "positief",
+        "omkering",
+        "schuifregelaar",
+        "Transparantie",
+        "papier",
+        "afdrukken",
+        "uitvoer",
+        "papier vergrendelen",
+        "filtering",
+        "voorflits"
+      ],
+      "sections": [
+        {
+          "title": "Negatieve film en papier",
+          "paragraphs": [
+            "Negatieve filmsoorten gebruiken een film-naar-afdrukproces. Papierkeuzes zijn beperkt tot profielen die compatibel zijn met het kleur- of monochrome kanaalmodel van de geselecteerde film.",
+            "Gebruik Afdrukbelichting om de afdrukstap aan te passen. Kies bij Opname & verwerking Papier en schakel Papier vergrendelen bij wijziging van film in als u een compatibel papier wilt behouden terwijl u andere films probeert. Een incompatibel papier moet nog steeds worden vervangen."
+          ],
+          "steps": [
+            "Kies een negatieffilm in Film.",
+            "Kies een Uitvoerrecept: Schone scan, Neutrale afdrukscan of Zachte optische afdruk.",
+            "Vouw Opname & verwerking uit om Papier en eventuele beschikbare Ontwikkeltijd voor afdrukken te kiezen.",
+            "Pas in Fysieke filmstadia Printschittering, Afdrukvoorflits, Geelfilter en Magenta filter aan. Open het gedeelte opnieuw als je het hebt ingeklapt."
+          ]
+        },
+        {
+          "title": "Diafilm wordt rechtstreeks gescand",
+          "paragraphs": [
+            "Positieve of omkeerfilms gebruiken een directe transparantiescan zonder een negatief-naar-papierstap. Papier, afdrukbelichting, afdrukontwikkeling en andere alleen-voor-afdrukken-besturingselementen zijn voor deze films verborgen.",
+            "Uitvoerrecepten zijn gemodelleerde startpunten voor scanschattigheid, verscherping en afdrukeffecten waar van toepassing. Het zijn geen gemeten emulaties van specifieke commerciële scanners."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Kies exportgrootte, formaat en kleurruimte",
+      "category": "Export",
+      "summary": "Gebruik exportvoorinstellingen en begrijp bitdiepte, schalen en de huidige beperkingen van het kleurengamut.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bit",
+        "srgb",
+        "p3",
+        "prophoto",
+        "icc",
+        "kwaliteit",
+        "volledige grootte",
+        "resolutie",
+        "voorinstelling"
+      ],
+      "sections": [
+        {
+          "title": "Indelingen en voorinstellingen",
+          "paragraphs": [
+            "Het exportdialoogvenster biedt JPEG, PNG en 16-bits TIFF. Op macOS biedt het ook 8-bits HEIF; HEIF is verborgen op Linux en Windows. Een opgeslagen HEIF-recept kan daar niet worden toegepast, dus kies een ander formaat. De kwaliteitschuifregelaar geldt voor JPEG en HEIF.",
+            "JPG (Groot) gebruikt JPEG op volledige grootte met kwaliteit 92 in sRGB. JPG (Klein) gebruikt een lange zijde van 2048 pixels met kwaliteit 90 in sRGB. 16-bits TIFF gebruikt volledige grootte en ProPhoto RGB. Door deze instellingen te wijzigen wordt Aangepast geselecteerd."
+          ],
+          "steps": [
+            "Open Exporteren en kies bovenaan een voorinstelling.",
+            "Stel Afmetingen in op Volledige grootte of een limiet voor de lange zijde.",
+            "Controleer Uitvoervoorvertoning: de geëxporteerde grootte weerspiegelt rotatie en bijsnijden, en een limiet voor de lange zijde verkleint grotere afbeeldingen zonder kleinere te vergroten."
+          ]
+        },
+        {
+          "title": "Kleurruimtelimieten",
+          "paragraphs": [
+            "Elke export sluit het geselecteerde ICC-profiel in. Kies sRGB, Display P3 of ProPhoto RGB in Kleurruimte.",
+            "Ontwikkel-exporten met breed gamut behouden bronkleuren wanneer kleur en lokale aanpassingen zijn uitgeschakeld. Filmweergave en aangepaste Ontwikkel-exporten zijn beperkt tot sRGB-kleuren. Het coderen van een van deze resultaten in P3 of ProPhoto herstelt geen kleuren die al door weergave zijn beperkt."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Beheer exportmetagegevens, sidecars en tijdstempels",
+      "category": "Export",
+      "summary": "Kies privacy voor metadata, optionele receptbestanden en afhandeling op opnametijd.",
+      "keywords": [
+        "metagegevens",
+        "privacy",
+        "gps",
+        "locatie",
+        "copyright",
+        "sidecar",
+        "recept",
+        "tijdstempel",
+        "datum",
+        "tijdzone",
+        "Opnametijd"
+      ],
+      "sections": [
+        {
+          "title": "Metagegevens- en receptbestanden",
+          "paragraphs": [
+            "Exporteren → Geavanceerd biedt Alles behalve locatie, Alle metadata, Alleen copyright en Geen metadata. De initiële metadata-keuze is Alles behalve locatie.",
+            "Recept-bijbestand bepaalt of LightTable een recept naast de gerenderde export wegschrijft. Dit staat los van de voorkeuren voor draagbare bewerkingen en XMP-bijbestanden voor originelen in Instellingen → Bestanden & metadata."
+          ],
+          "steps": [
+            "Breid Geavanceerd uit in Exporteren.",
+            "Kies het Metadata-beleid dat geschikt is voor de bestanden die je gaat delen.",
+            "Kies of je een sidecar voor Recept naast elke geëxporteerde foto wilt wegschrijven."
+          ]
+        },
+        {
+          "title": "Bestandtijdstempels",
+          "paragraphs": [
+            "De bestandstijdstempel kan de tijd van export of de originele opnametijd gebruiken. Als de tijdzone van opname ontbreekt, is de standaardinstelling de exporttijd behouden en een waarschuwing melden. U kunt er ook voor kiezen dit te interpreteren in de lokale tijdzone van deze computer.",
+            "Ontbrekende of ongeldige opnametijd kan ook de exporttijdstempel ongewijzigd laten. Controleer Exportdetails voor de gerapporteerde waarschuwing. De bestandssysteemtijdstempel van een bestand staat los van het hierboven geselecteerde metadatabeleid."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "external-editor",
+      "title": "Bewerk een foto in een andere toepassing",
+      "category": "Export",
+      "summary": "Stuur een aangepaste TIFF naar een andere editor en stel de standaardinstellingen voor formaat en stapelen in.",
+      "keywords": [
+        "extern",
+        "editor",
+        "photoshop",
+        "affinity",
+        "openen in",
+        "tiff",
+        "roundtrip",
+        "afgeleide",
+        "stapel"
+      ],
+      "sections": [
+        {
+          "title": "Een externe editor openen",
+          "paragraphs": [
+            "Gebruik Bewerken in… om foto's voor te bereiden voor een andere pixel-editor. De aangepaste TIFF wordt naast het origineel geschreven en kan ermee worden gestapeld in de catalogus. Op Linux en Windows kun je met Kies toepassing… een bewerker-executable selecteren; Standaardapplicatie gebruikt de bestandskoppeling van het bureaublad."
+          ],
+          "steps": [
+            "Selecteer een foto en druk op Command/Ctrl+E om Bewerken in een andere app te openen.",
+            "Kies Applicatie.",
+            "Kies TIFF met huidige aanpassingen en stel daarna TIFF-kleurruimte en TIFF-bitdiepte in.",
+            "Kies of het gerenderde bestand moet worden Gestapeld met het origineel.",
+            "Klik op Bewerken en wacht tot het renderen is voltooid voordat je in de andere app werkt."
+          ]
+        },
+        {
+          "title": "RAW-bestanden en standaarden",
+          "paragraphs": [
+            "RAW-originelen moeten worden gerenderd als aangepaste TIFF’s. Bewerkt origineel is niet beschikbaar als de selectie een RAW-bestand bevat. Voor verwerkte foto’s opent die optie het origineel in plaats van een aangepaste TIFF voor te bereiden.",
+            "Stel de standaardtoepassing, kleurruimte, bitdiepte en stapelgedrag in via Instellingen → Extern bewerken. Aangepaste TIFF's kunnen 16 of 8 bits en ProPhoto RGB, Display P3 of sRGB gebruiken."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "export-photos",
+      "title": "Geselecteerde foto's exporteren",
+      "category": "Export",
+      "summary": "Kies precies welke foto's je wilt exporteren, bekijk het uitvoervoorbeeld en bewaak de voortgang.",
+      "keywords": [
+        "exporteren",
+        "opslaan",
+        "jpeg",
+        "jpg",
+        "downloaden",
+        "selectie",
+        "gekozen",
+        "beoordeeld",
+        "batch",
+        "annuleren",
+        "voortgang"
+      ],
+      "sections": [
+        {
+          "title": "Een export maken",
+          "paragraphs": [
+            "Exporteren maakt gerenderde uitvoerbestanden van uw fotobewerkingen. Gebruik Geselecteerde foto's wanneer u wilt dat de export beperkt blijft tot een specifieke selectie. Elke foto in de wachtrij behoudt de bewerkingen, beoordeling en de opnamedatumcorrectie die u hebt gekozen toen u de export startte."
+          ],
+          "steps": [
+            "Selecteer de foto's die u wilt en klik vervolgens op de knop Foto's exporteren in de bovenbalk. Command/Ctrl+Shift+E opent ook Exporteren.",
+            "Controleer het veld Foto’s. Kies Geselecteerde foto’s, Alleen gekozen, Beoordeeld 1+, of Alles behalve afgewezen.",
+            "Kies een exportvoorinstelling of stel bestandstype, afmetingen, kwaliteit en kleurruimte in.",
+            "Stel de bestemming in en inspecteer Uitvoervoorbeeld voor de bestandsnaam, afmetingen en het pad.",
+            "Klik op Exporteren en volg de voortgang in de balk bovenaan.",
+            "Wanneer de export is voltooid, klik je op Weergeven in Finder in de tweede regel van de voltooiingsmelding om de map met de geëxporteerde foto te openen. De melding blijft 2,8 seconden zichtbaar."
+          ]
+        },
+        {
+          "title": "Controleer de scope en het resultaat",
+          "paragraphs": [
+            "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
+            "Als een batch naar meerdere mappen schrijft, toont Weergeven in Finder de eerst succesvol geëxporteerde foto. De koppeling ontbreekt wanneer er geen foto’s zijn geëxporteerd. Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert de aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s. Als een origineel verandert terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet hem opnieuw in de wachtrij nadat je het origineel hebt gecontroleerd."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "soft-proof",
+      "title": "Bekijk een uitvoer met softproofing",
+      "category": "Export",
+      "summary": "Bekijk een display- of gemodelleerd papiervoorbeeld zonder het onderdeel te maken van de geëxporteerde foto.",
+      "keywords": [
+        "soft proof",
+        "softproofing",
+        "gamut",
+        "papier",
+        "inkt",
+        "mat",
+        "glans",
+        "afdrukken",
+        "p3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Soft proof inschakelen",
+          "paragraphs": [
+            "Softproof-bedieningselementen staan in de Weergave-opties van de viewer (•••). Hiermee kunt u tijdens het bewerken een uitvoervoorvertoning controleren."
+          ],
+          "steps": [
+            "Open Weergave-opties (•••) onder de viewer.",
+            "Schakel Voorbeeld-uitvoerprofiel in.",
+            "Kies sRGB-weergave, Display P3-weergave, Mat papier of Glanspapier.",
+            "Kies voor papierdoelen of Papier en inkt simuleren moet worden gebruikt. Schakel Waarschuwing buiten gamut tonen naar behoefte in of uit.",
+            "Gebruik de knop Soft Proof aan in de werkbalk van de viewer om het voorbeeld uit te schakelen."
+          ]
+        },
+        {
+          "title": "De voorbeeldweergave interpreteren",
+          "paragraphs": [
+            "Matte en Gloss in deze interface zijn gemodelleerde papierweergaven; het is geen selectie van het gemeten ICC-profiel van uw printer. Beschouw de voorvertoning als richtlijn bij het vergelijken van contrast en kleur.",
+            "Soft proof is een weergavestand. Kies de werkelijke kleurruimte van het bestand apart in Exporteren."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Exportmappen en bestandsnamen instellen",
+      "category": "Export",
+      "summary": "Kies een bestemmingsindeling en bepaal wat er gebeurt wanneer een bestandsnaam al bestaat.",
+      "keywords": [
+        "bestemming",
+        "map",
+        "pad",
+        "bestandsnaam",
+        "naam wijzigen",
+        "overschrijven",
+        "overslaan",
+        "conflict",
+        "hiërarchie",
+        "reeks",
+        "sjabloon"
+      ],
+      "sections": [
+        {
+          "title": "Bestemmingsindeling",
+          "paragraphs": [
+            "Eén doelmap stuurt exports naar de gekozen map. Submap naast elk origineel gebruikt een relatieve submapnaam voor elke bronfoto. Bronmappenstructuur behouden bewaart de organisatie van de bronmappen onder de exportbestemming."
+          ],
+          "steps": [
+            "Open Exporteren en kies de bestemmingsindeling.",
+            "Gebruik Kiezen… voor een doelmap, of voer een submapnaam in zoals film-exports voor Submap naast elk origineel.",
+            "Klap Geavanceerd uit en bewerk het bestandsnaamsjabloon.",
+            "Controleer de bestandsnaam en bestemming die in Uitvoervoorbeeld worden getoond voordat je exporteert."
+          ]
+        },
+        {
+          "title": "Namen en bestaande bestanden",
+          "paragraphs": [
+            "Bestandssjablonen ondersteunen {filename}, {stock}, {date}, {rating} en {sequence}. Bijvoorbeeld: {filename}_{stock} bevat de bronnaam en de film. Lange bestandsnaamsvelden worden afgekort om ruimte over te laten voor uitvoer- en sidecar-namen; controleer Uitvoervoorbeeld.",
+            "Beide behouden · een nummer toevoegen maakt een extra bestandsnaam aan, zoals een naam die eindigt op -2. Bestaande overslaan laat bezette namen ongemoeid. Overschrijven vervangt bestaande uitvoer op het gekozen pad. Gebruik de uitvoerpreview om de bestemming te bevestigen voordat u Overschrijven kiest."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Exporteren"
+    },
+    {
+      "id": "about-lighttable",
+      "title": "Over LightTable en open source",
+      "category": "Settings",
+      "summary": "Vind de versie van de Mac-app, de website en de broncode.",
+      "keywords": [
+        "over",
+        "versie",
+        "website",
+        "github",
+        "open source",
+        "licentie",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Over Open in macOS",
+          "paragraphs": [
+            "Kies LightTable → Over LightTable in de menubalk van de Mac. Het venster Over toont de app-versie en, wanneer die afwijkt, het buildnummer.",
+            "Website opent lighttable.app in uw standaardbrowser. GitHub opent de openbare bronopslagplaats van LightTable, waar u de code kunt bekijken, problemen kunt melden en kunt bijdragen.",
+            "LightTable is vrij en open source onder de GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Wijzig voorkeuren en standaardinstellingen voor nieuwe foto’s",
+      "category": "Settings",
+      "summary": "Pas de interface, het selectiegedrag, draagbare bewerkingen en startbewerkingen voor nieuwe foto’s aan.",
+      "keywords": [
+        "instellingen",
+        "voorkeuren",
+        "standaarden",
+        "camera",
+        "raw",
+        "serieel",
+        "iso",
+        "lettertype",
+        "achtergrond",
+        "lichten uit",
+        "Meldingen",
+        "xmp",
+        "draagbaar"
+      ],
+      "sections": [
+        {
+          "title": "Interface en gedrag",
+          "paragraphs": [
+            "De meeste wijzigingen in instellingen worden automatisch opgeslagen. Voor Taal wordt Venster toepassen en opnieuw laden gebruikt nadat wijzigingen zijn opgeslagen. Algemeen regelt ook Automatisch doorgaan na kiezen, afwijzen of beoordelen, voltooiingsmeldingen en updatecontroles.",
+            "Interface bestuurt de achtergrond van de viewer, lettergrootte, Lights Out, het overlay met loupe-info en bijsnijdhulplijnen. Deze voorkeuren wijzigen het uiterlijk van de werkruimte zonder de geëxporteerde pixels te wijzigen.",
+            "Bestanden en metagegevens regelt draagbare LightTable-bewerkingen naast originelen, automatisch XMP schrijven, RAW/JPEG-koppeling en invoer van trefwoorden. Volledige draagbare bewerkingen gebruiken .lighttable-state.json; XMP bevat compatibele bewerkingen en metagegevens. XMP-synchronisatie behoudt niet-gerelateerde velden en meldt conflicterende externe wijzigingen; lees Exchange-metagegevens via XMP-sidecars voor de ondersteunde workflow."
+          ]
+        },
+        {
+          "title": "Standaarden voor onbewerkte foto's",
+          "paragraphs": [
+            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen."
+          ],
+          "steps": [
+            "Open Instellingen → Ontwikkel-standaarden.",
+            "Kies de startinstellingen voor Film, workflow, profiel en voorinstelling.",
+            "Om cameraspecifieke raw-standaarden in te stellen, open je een raw-foto en pas je de raw-instellingen aan.",
+            "Kies afstemmen op cameramodel, serienummer of camera en ISO en klik daarna op Huidige RAW-instellingen gebruiken.",
+            "Gebruik Opnieuw instellen in het gebied Huidige camera om die camera-standaard te verwijderen."
+          ]
+        },
+        {
+          "title": "Uiterlijk van Linux en Omarchy",
+          "paragraphs": [
+            "Op Linux volgen bedieningselementen het lichte of donkere uiterlijk van het systeem. Op Omarchy volgen werkbalken, zijbalken, menu's en dialoogvensters het actieve bureaubladpalet en worden ze binnen enkele seconden na een themawijziging bijgewerkt. Fotopixels, de voorkeur voor de achtergrond van de viewer en neutrale kleurscopes behouden hun eigen kleuren.",
+            "In een smal Linux-venster opent Weergeven of verbergen bibliotheek de bibliotheek als een lade. Door het venster groter te maken, wordt de normale zij-aan-zij-indeling hersteld. Gebruik op Hyprland de venstersneltoetsen van de compositor om LightTable te verplaatsen, te tegelen, van grootte te veranderen of te sluiten."
+          ]
+        }
+      ],
+      "related": [
+        "settings-language",
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "settings-language",
+      "title": "Kies de app- en helptaal",
+      "category": "Settings",
+      "summary": "Stel één taal in voor de interface en de doorzoekbare Help, waarbij je keuze wordt onthouden voor toekomstige starts.",
+      "keywords": [
+        "taal",
+        "vertaling",
+        "Engels",
+        "Spaans",
+        "Frans",
+        "Duits",
+        "Chinees",
+        "Arabisch",
+        "lokalisatie",
+        "instellingen",
+        "eerste keer gestart"
+      ],
+      "sections": [
+        {
+          "title": "Kies een taal bij eerste gebruik",
+          "paragraphs": [
+            "De interface van LightTable en de doorzoekbare help delen één taal. Beschikbare talen zijn Engels, Spaans, Frans, Duits, Italiaans, Portugees, Russisch, Vereenvoudigd Chinees, Traditioneel Chinees, Japans, Koreaans, Arabisch, Hindi, Bengaals, Indonesisch, Turks, Vietnamees, Thais, Pools en Nederlands.",
+            "Bij eerste gebruik vraagt een niet-Engelse primaire systeemtaal je om een keuze te maken. De Mac-app vraagt dit vóór de eerste mapkeuze en het opstarten; andere appvensters vragen dit voordat de editor wordt geopend. Een ondersteunde taal wordt voorgesteld, of Engels wanneer de systeemtaal niet wordt ondersteund. Talen worden vermeld onder hun eigen naam.",
+            "Als de primaire systeemtaal Engels is, wordt Engels automatisch opgeslagen. Latere starts gebruiken je opgeslagen keuze. In een browser leveren de taalvoorkeuren van de browser de eerste suggestie."
+          ],
+          "steps": [
+            "Kies je voorkeurstaal in het dialoogvenster voor eerste gebruik.",
+            "Klik op Doorgaan. De app gaat verder nadat de keuze is opgeslagen."
+          ]
+        },
+        {
+          "title": "Je kunt de taal later wijzigen",
+          "paragraphs": [
+            "Als je de taal wijzigt, worden openstaande bewerkingen opgeslagen en wordt het huidige venster opnieuw geladen. Bestandsnamen van foto's, je trefwoorden en andere foto-inhoud behouden hun bestaande formulering."
+          ],
+          "steps": [
+            "Open Instellingen → Algemeen.",
+            "Kies een taal in Taal.",
+            "Klik op Taal toepassen en wacht tot het venster opnieuw wordt geladen.",
+            "Open Help om te zoeken of bladeren in de geselecteerde taal."
+          ],
+          "tips": [
+            "Als taal laden of opslaan mislukt, blijven je venster en taalkeuze beschikbaar voor een nieuwe poging. Als openstaande fotobewerkingen niet konden worden opgeslagen, gebruik dan Opslaan opnieuw proberen en pas daarna de taal opnieuw toe.",
+            "Als de eerste-keuze op de Mac niet kan worden opgeslagen, behoudt Opnieuw proberen de selectie en probeert het opnieuw. De app start pas nadat het opslaan is gelukt."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "photo-index",
+      "title": "Schakel privédetectie van fotocontent in",
+      "category": "Settings",
+      "summary": "Bouw een index op het apparaat van objecten, scènes, zichtbare tekst en gezichten.",
+      "keywords": [
+        "ai",
+        "zoeken",
+        "index",
+        "inhoud",
+        "objecten",
+        "scènes",
+        "ocr",
+        "tekst",
+        "gezichten",
+        "privacy",
+        "lokaal",
+        "beschrijving"
+      ],
+      "sections": [
+        {
+          "title": "De index opbouwen",
+          "paragraphs": [
+            "De Foto-index staat standaard uit en vereist macOS. Linux en Windows tonen Niet beschikbaar op dit platform, en nieuwe indexering kan niet worden ingeschakeld. Op Mac blijft de analyse op het apparaat en wijzigt geen fotomappen. Apple Vision levert de kernanalyse; rijkere Foundation Models-beschrijvingen verschijnen alleen wanneer die mogelijkheid beschikbaar is."
+          ],
+          "steps": [
+            "Open Instellingen → Foto-index.",
+            "Controleer de status van de on-device mogelijkheden en schakel de index van foto-inhoud in.",
+            "Wacht tot de indexeringsvoortgang is voltooid. Foto's kunnen resultaten krijgen terwijl ze worden geïndexeerd.",
+            "Gebruik het zoekveld van de bibliotheek om in foto-inhoud, zichtbare tekst of gezichten te zoeken naast bestandsnamen en trefwoorden.",
+            "Open Info → Beschrijving op apparaat om de gegenereerde tags, zichtbare tekst en het aantal gezichten van de huidige foto te inspecteren."
+          ]
+        },
+        {
+          "title": "Overgeslagen foto's",
+          "paragraphs": [
+            "Lege bestanden, bestanden die niet zijn gedownload en niet-beschikbare originelen worden overgeslagen vóór de analyse. Foto-index rapporteert hun aantallen afzonderlijk van analysefouten. Een leeg bestand bevat geen afbeeldingsgegevens; het moet mogelijk opnieuw worden gedownload of uit een back-up worden hersteld.",
+            "Download of herstel de originelen, maak opnieuw verbinding met een eventuele niet-beschikbare bron en gebruik Index opnieuw opbouwen om het opnieuw te proberen. Indexeren downloadt geen bestanden en wijzigt geen originelen. Eerder gegenereerde zoekmetagegevens blijven behouden wanneer een bestand niet beschikbaar wordt, tenzij u de index opnieuw opbouwt of verwijdert."
+          ]
+        },
+        {
+          "title": "Pauzeren, opnieuw opbouwen of verwijderen",
+          "paragraphs": [
+            "Het uitschakelen van de index pauzeert de analyse en verwijdert gegenereerde resultaten uit de actieve zoekweergave; bestaande indexgegevens blijven lokaal bewaard totdat ze worden verwijderd. Index opnieuw opbouwen voert indexering opnieuw uit wanneer de functie is ingeschakeld.",
+            "Index verwijderen verwijdert gegenereerde indexgegevens na bevestiging. Originelen en opgeslagen bewerkingen blijven ongewijzigd. Als Apple Vision Build vereist aangeeft, mist de huidige installatie de vereiste lokale analyser. Foundation Models kan niet beschikbaar zijn terwijl basis-Vision-indexering nog bruikbaar blijft."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Beoordelingssuggesties voor selecteren bekijken",
+      "category": "Settings",
+      "summary": "Bekijk lokale analysetekens en pas alleen kies- of afwijsmarkeringen toe wanneer je dat wilt.",
+      "keywords": [
+        "selecteren",
+        "selecteren",
+        "ai",
+        "selecties",
+        "afgewezen",
+        "scherpte",
+        "ogen",
+        "misfire",
+        "documenten",
+        "beoordelen",
+        "markeringen"
+      ],
+      "sections": [
+        {
+          "title": "Signalen beoordelen",
+          "paragraphs": [
+            "Ondersteund selecteren gebruikt de privé Foto-index, waarvoor macOS vereist is. Nieuwe analyse is niet beschikbaar op Linux en Windows. Er worden geen foto's gemarkeerd totdat je erom vraagt. Een foto komt overeen met een groep als een van je gekozen criteria ja retourneert; niet beoordeeld betekent dat dat signaal geen bruikbaar oordeel heeft."
+          ],
+          "steps": [
+            "Schakel Foto-index in bij Instellingen en wacht tot foto's zijn gescoord.",
+            "Klap Begeleid selecteren uit in de bibliotheekzijbalk.",
+            "Kies Selecteren-criteria zoals Onderwerp scherpte, Oog scherpte of Ogen open, of Afwijzen-criteria zoals Belichtingsproblemen, Misfires of Documenten.",
+            "Gebruik Selecties, Afgewezen of Alles om de overeenkomende foto's te beoordelen.",
+            "Inspecteer de suggesties en gebruik daarna Kiezen selecteert of Afwijzen wijst af als je die markeringen wilt toepassen."
+          ]
+        },
+        {
+          "title": "Markeringen toepassen",
+          "paragraphs": [
+            "De bevestiging toont het getroffen aantal en waarschuwt dat bestaande markeringen op overeenkomende foto’s zullen worden vervangen. Gekoppelde RAW/JPEG-metadata kan ook het gekoppelde bestand bevatten wanneer die voorkeur is ingeschakeld.",
+            "Dit zijn analysesignalen voor uw beoordeling, geen definitieve oordelen over welke foto's u moet bewaren. Afwijzen zet een markering; het verplaatst originelen op zichzelf niet naar de Prullenmand."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Gebruik sneltoetsen en MIDI-bediening",
+      "category": "Settings",
+      "summary": "Zoek sneltoetsen, kies een toetsenbordindeling en koppel een hardwarecontroller wanneer Web MIDI beschikbaar is.",
+      "keywords": [
+        "toetsenbord",
+        "sneltoets",
+        "sneltoets",
+        "midi",
+        "knop",
+        "fader",
+        "controller",
+        "sneltoetsen",
+        "automatisering",
+        "klassiek",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Toetsenbordvoorkeuren",
+          "paragraphs": [
+            "Instellingen → Sneltoetsen & hardware bevat het sneltoetsschema en een toetsenbordreferentie onder Toetsenbord- en MIDI-besturing. Op macOS heeft het bureaubladmenu Help ook Sneltoetsen. Gebruik Ctrl voor Command/Ctrl-sneltoetsen op Linux en Windows.",
+            "Kies LightTable of Klassiek; het schema wordt toegepast na een herlaadbeurt. De schuifregelaarbediening met de houd-toets laat u een toegewezen toets ingedrukt houden terwijl u scrolt of de pijltjestoetsen gebruikt. Automatisering toestaan bepaalt of goedgekeurde lokale hulpmiddelen het venster met geschiedenis en Ongedaan maken mogen bedienen."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E opent Exporteren; Command/Ctrl+E opent extern bewerken. Tekstvelden behouden normaal typgedrag, dus verlaat een tekstveld voordat u ongewijzigde bewerkingssnelkoppelingen gebruikt."
+          ]
+        },
+        {
+          "title": "MIDI-koppeling",
+          "paragraphs": [
+            "MIDI-ondersteuning is afhankelijk van de Web MIDI API in de huidige runtime. De status kan Niet beschikbaar, Uit, Geen apparaten of een verbonden apparaat-aantal tonen. Niet beschikbaar betekent dat deze runtime de MIDI-bedieningen niet kan gebruiken.",
+            "LightTable vraagt alleen MIDI-toegang wanneer u op de MIDI-statusknop of MIDI leren klikt. LightTable of Instellingen openen, schuifregelaars aanpassen en toewijzingen opnieuw instellen vraagt geen toegang. Klik na opnieuw laden op een MIDI-knop om opnieuw verbinding te maken."
+          ],
+          "steps": [
+            "Sluit een MIDI-controller aan die Control Change-berichten verstuurt.",
+            "Wanneer MIDI beschikbaar is, open Toetsenbord- en MIDI-besturing en kies MIDI leren. Sta MIDI-toegang toe als uw browser daarom vraagt.",
+            "Klik op de aanpassingsschuifregelaar die je wilt toewijzen en draai daarna aan een knop of verplaats een fader.",
+            "Controleer het toewijzingsbericht en gebruik daarna de hardwarebediening om de schuifregelaar aan te passen.",
+            "Gebruik MIDI opnieuw instellen om de standaardtoewijzingen te herstellen."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Maak een back-up van de catalogus en los herstelproblemen op",
+      "category": "Troubleshooting",
+      "summary": "Gebruik geverifieerde catalogusback-ups, Bibliotheekgezondheid en desktopdiagnose wanneer er iets misgaat.",
+      "keywords": [
+        "catalogus",
+        "back-up",
+        "terugzetten",
+        "herstel",
+        "beschadigd",
+        "beschadigd",
+        "crash",
+        "ontbrekend",
+        "veilige modus",
+        "diagnostiek",
+        "log",
+        "herstellen"
+      ],
+      "sections": [
+        {
+          "title": "Back-uppen en inspecteren",
+          "paragraphs": [
+            "Instellingen → Catalogus toont de cataloguslocatie en back-upvoorkeuren. Back-ups bevatten catalogusorganisatie, bewerkingen, opgeslagen maskers, geschiedenis en varianten. Maak originele foto's, externe voorinstellingen en profielen, en voorkeuren apart back-uppen. Lokaal ••• → Catalogus back-uppen… maakt ook een back-up en toont het opgeslagen pad of de fout in een resultatenvenster. Duplicaten zoeken in hetzelfde menu toont overeenkomende bestanden, of meldt dat er geen zijn gevonden."
+          ],
+          "steps": [
+            "Kies een automatisch back-upinterval en een back-uplocatie.",
+            "Klik op Nu back-uppen en controleer op een resultaat met Geverifieerde back-up.",
+            "Open Bibliotheekgezondheid… om de catalogusstructuur, ontbrekende bestanden en herstelinformatie te controleren.",
+            "Gebruik Nu controleren om de beschikbare cataloguscontroles uit te voeren. Invoer voor ontbrekende bestanden blijft behouden met de bewerkingen."
+          ]
+        },
+        {
+          "title": "Begrijp de herstelkeuzes",
+          "paragraphs": [
+            "Het herstellen van een back-up zet catalogusgegevens terug naar de toestand van die back-up, zodat latere bewerkingen daar niet in staan. Wanneer een werkcatalogus wordt hersteld, wordt de huidige catalogus eerst geback-upt.",
+            "Na het upgraden leest de eerste scan lokale originelen om de bestandskoppeling te versterken. Dit kan langer duren bij een grote bibliotheek. Originelen die al ontbraken zonder volledige bestandsidentiteit blijven ontbreken; bewaar hun vermeldingen en herstel de originelen naar hun eerdere gecatalogiseerde paden voordat u opnieuw scant.",
+            "Op Windows leest het controleren of originelen zijn gewijzigd elk lokaal bestand volledig in. Opnieuw scannen, foto’s openen en exportcontroles kunnen langer duren bij grote originelen. Deze controles downloaden geen bestanden die alleen in de cloud zijn opgeslagen.",
+            "Voor een beschadigde catalogus kan Bibliotheekgezondheid herstel, terugzetten of een nieuwe catalogus aanbieden. Herstellen kopieert leesbare rijen, maar verliest rijen op beschadigde pagina's. Opnieuw beginnen draagt geen beoordelingen, bewerkingen, collecties of geschiedenis over. Het huidige beschadigde catalogusbestand wordt bewaard in Herstel."
+          ]
+        },
+        {
+          "title": "Linux-toepassingsgegevens zoeken",
+          "paragraphs": [
+            "Linux bewaart de catalogus en voorinstellingen normaal in ~/.local/share/lighttable, voorkeuren in ~/.config/lighttable, rendercaches in ~/.cache/lighttable en logbestanden in ~/.local/state/lighttable/logs. Aangepaste systeem- of LightTable-opslaginstellingen kunnen deze locaties wijzigen; Instellingen toont de actieve catalogus- en cachepaden.",
+            "Originelen blijven in de fotomappen die je kiest. Catalogusback-ups bevatten die originelen, je voorkeuren of afzonderlijk opgeslagen voorinstellingen niet. Eerder experimentele Linux-gegevens worden niet automatisch verplaatst vanuit oudere locaties."
+          ]
+        },
+        {
+          "title": "Diagnostiek voor desktop",
+          "paragraphs": [
+            "Op macOS biedt Help → Diagnostiek Opnieuw laden interface, Herstart renderingservice, Serverlog tonen, Bibliotheekgezondheid…, en Opnieuw starten in veilige modus.",
+            "Veilige modus schakelt scannen, bewaakte mappen, lokale AI en het opwarmen van de engine uit. Gebruik Renderingsservice opnieuw starten om terug te keren naar de normale werking."
+          ]
+        },
+        {
+          "title": "Onverwacht afsluiten op Mac melden",
+          "paragraphs": [
+            "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
+            "Help → Een probleem melden… opent het nieuwste rapport, of de huidige diagnostiek als er geen onverwacht afsluiten is vastgelegd. Rapporten bevatten de app-build, macOS en hardware, de laatst vastgelegde bewerking indien beschikbaar, gefilterde recente logs en beschikbare fouttraces. Een overeenkomend macOS-crashrapport kan stack- en binaire informatie toevoegen. Een onverwacht afsluiten laat niet altijd een fouttrace achter of wijst de oorzaak aan.",
+            "Rapporten blijven op uw Mac totdat u ervoor kiest ze te delen. Paden, fotobestandsnamen, geciteerde logwaarden en veelvoorkomende referentievelden worden gefilterd; inspecteer de tekst voordat u deelt. Foto's en de catalogus worden niet bijgevoegd. De laatste tien rapporten worden lokaal bewaard."
+          ],
+          "steps": [
+            "Lees het diagnostische rapport. Kies Rapport kopiëren om het zelf in een e-mail te plakken.",
+            "Of kies Beheerder e-mailen. Hiermee wordt het rapport gekopieerd en wordt een concept geopend dat is geadresseerd aan team@lighttable.app.",
+            "Beschrijf wat u aan het doen was, plak het gekopieerde rapport in het concept en verzend het wanneer u klaar bent. Als er geen e-mailapp wordt geopend, gebruik dan uw gebruikelijke e-maildienst.",
+            "Kies Sluiten om het rapport te sluiten. Er wordt niets automatisch verzonden."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ],
+      "categoryLabel": "Probleemoplossing"
+    },
+    {
+      "id": "performance-previews",
+      "title": "Verbeter de voorbeeldsnelheid en controleer beelddetails",
+      "category": "Troubleshooting",
+      "summary": "Laat voorbeelden zich aanpassen aan uw weergave, controleer echte details en beheer gegenereerde caches.",
+      "keywords": [
+        "prestaties",
+        "langzaam",
+        "wazig",
+        "gepixeliseerd",
+        "voorbeeld",
+        "resolutie",
+        "100%",
+        "1:1",
+        "gpu",
+        "rust",
+        "python",
+        "cache",
+        "opschonen"
+      ],
+      "sections": [
+        {
+          "title": "Controleer wat klaar is met renderen",
+          "paragraphs": [
+            "Een zoominstelling van 100% garandeert niet dat alle beelddetails al zijn aangekomen. Eerst kan een snel voorbeeld verschijnen terwijl nauwkeurige RAW-verwerking en een groter voorbeeld worden voltooid. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid, met een telling zoals 2 / 5. Hij verdwijnt zodra een bruikbaar voorbeeld wordt weergegeven; nauwkeurige RAW-verwerking en grotere voorbeelden gaan op de achtergrond door zonder de overlay. De telling staat voor voltooide stadia, niet voor resterende tijd. Verminderde beweging houdt dezelfde stadiumupdates zonder animatie. De foto blijft zichtbaar zonder dimming. Bij 1:1 kun je boven de knop 1:1 zweven om te controleren of volledige bron-details klaar zijn voordat je fijne details beoordeelt.",
+            "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
+            "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt."
+          ],
+          "steps": [
+            "Open Instellingen → Prestaties.",
+            "Behoud automatische voorvertoningsdetails voor normaal bewerken. Het volgt de venstergrootte, schermdichtheid, uitsnede en zoom zonder keuze voor pixelgrootte.",
+            "Gebruik GPU · Rust wanneer beschikbaar. Compatibel · Python is een alternatieve filmengine, maar voor sommige films is Rust vereist.",
+            "Beoordeel verscherping, ruisonderdrukking en filmkorrel op 1:1 nadat details tot rust zijn gekomen."
+          ]
+        },
+        {
+          "title": "Geavanceerde voorbeeldoverschrijving",
+          "paragraphs": [
+            "Instellingen → Prestaties → Geavanceerd bevat Voorbeeldresolutie overschrijven. Automatisch (aanbevolen) past het voorbeeld aan je weergave aan. Een vaste resolutie kan de verwerking verminderen, maar kan zachter ogen; 100% zoomen vraagt nog steeds bron-detail op, binnen de limiet van het voorbeeld. Exportafmetingen worden apart ingesteld.",
+            "Oudere opgeslagen keuzes voor voorvertoningsbreedte worden bij het upgraden naar dit gedrag teruggezet naar Automatisch. Een vaste overschrijving die in Geavanceerd is gekozen, wordt voor latere sessies opgeslagen. Prestaties worden getoond wanneer een handmatige overschrijving actief is."
+          ],
+          "steps": [
+            "Open Instellingen → Prestaties en vouw Geavanceerd uit.",
+            "Kies alleen indien nodig een vaste overschrijving voor de Voorbeeldresolutie voor prestaties of probleemoplossing.",
+            "Kies Automatisch (aanbevolen) om terug te keren naar voorbeelden die uw weergave volgen."
+          ]
+        },
+        {
+          "title": "Cache-opslag beheren",
+          "paragraphs": [
+            "Prestaties tonen de locatie van de previewcache, het gebruik en het budget. Cache legen verwijdert gegenereerde voorvertoningen en rendercaches na bevestiging; originelen en bewerkingen blijven onaangetast. Voorvertoningen moeten opnieuw worden gegenereerd.",
+            "De resolutie van de voorvertoning staat los van de instelling Afmetingen die voor geëxporteerde bestanden wordt gebruikt. Exportafwerking en Foto samenvoegen gebruiken automatisch GPU-versnelling voor ondersteunde beeldverwerkingsstappen, met een CPU-fallback wanneer die niet beschikbaar is. De voorkeur voor de film-engine bepaalt de filmvoorvertoningen; deze schakelt deze versnelling niet uit."
+          ]
+        },
+        {
+          "title": "Linux-weergave controleren",
+          "paragraphs": [
+            "Op Linux rapporteert Instellingen → Prestaties na opstarten de actieve Rust-renderer en de gedetecteerde adapter. De keuze GPU · Rust kan CPU-weergave gebruiken wanneer een hardware-GPU niet beschikbaar is. Softwarematige Vulkan is geen hardwareversnelling.",
+            "Een foto die de limieten van de GPU overschrijdt, gebruikt de CPU. Als de renderwerker niet meer reageert, probeert LightTable het één keer opnieuw op de CPU en houdt die worker voor de sessie aan. Open LightTable opnieuw nadat je je grafische stuurprogramma hebt hersteld of bijgewerkt om GPU-weergave opnieuw te proberen. Grote foto's en softwarematige weergave kunnen langer duren; gebruik Automatisch voorbeeldniveau voor normaal bewerken."
+          ]
+        },
+        {
+          "title": "Lees een voorbeeldfout",
+          "paragraphs": [
+            "Als een foto niet kan worden gerenderd of weergegeven, bevat het bericht in het foto-gebied de gerapporteerde reden wanneer die beschikbaar is. Dit kan een ontbrekend bestand, een probleem met het laden van de afbeelding of een grafische fout aangeven. Als er geen reden beschikbaar is, blijft het bericht algemeen."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Probleemoplossing"
+    }
+  ],
+  "locale": "nl",
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+}

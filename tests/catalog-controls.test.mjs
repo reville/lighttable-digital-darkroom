@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {t as tr, tn as trn, useCatalog} from '../web/i18n.js';
 const source = readFileSync(new URL('../web/catalog-ui.js', import.meta.url), 'utf8');
 const tick = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
 
@@ -39,11 +40,11 @@ function harness(kind, {post: send, get: fetch} = {}) {
     : ['catalogBackup', 'catalogDuplicates', 'importSidecarsBtn', 'catalogResultDialog',
       'catalogResultTitle', 'catalogResultBody', 'catalogResultClose', 'localLibraryMenuBtn'];
   for (const id of ids) nodes.set(id, new Element(id));
-  const context = vm.createContext({document, Event: class {constructor(type) { this.type = type; }},
+  const context = vm.createContext({document, tr, trn, Event: class {constructor(type) { this.type = type; }},
     setTimeout(fn) { const id = ++timer; timers.set(id, fn); return id; },
     clearTimeout(id) { timers.delete(id); }, setInterval() {}, clearInterval() {},
   });
-  vm.runInContext(source.replace('export function', 'function'), context);
+  vm.runInContext(source.replace(/^import .*;$/gm, '').replace('export function', 'function'), context);
   const ui = context.createCatalogUI({el: id => nodes.get(id), toast() {}, sendNative: () => false,
     post: async (path, body) => { calls.push({path, body: JSON.parse(JSON.stringify(body))}); return send ? send(path, body) : {ok: true}; },
     get: async path => fetch ? fetch(path) : path === '/api/presets' ? [] : {watches: []},
@@ -139,7 +140,7 @@ test('backup, duplicate and sidecar outcomes use a visible dialog and preserve f
   assert.equal(h.el('catalogResultDialog').attributes['aria-hidden'], 'false');
   await h.click('catalogDuplicates'); assert.match(h.el('catalogResultBody').textContent, /<img src=x> = copy.jpg/);
   assert.equal(h.el('catalogResultBody').innerHTML, '');
-  await h.click('importSidecarsBtn'); assert.match(h.el('catalogResultBody').textContent, /Read 3 sidecars, applied 2/);
+  await h.click('importSidecarsBtn'); assert.match(h.el('catalogResultBody').textContent, /Sidecars read: 3\. Applied: 2/);
   await h.click('catalogResultClose'); assert.equal(h.el('catalogResultDialog').attributes['aria-hidden'], 'true');
 });
 
@@ -149,6 +150,26 @@ test('catalog API errors appear as errors rather than false success or no duplic
   await h.click('catalogBackup'); assert.equal(h.el('catalogResultBody').textContent, 'Catalog unavailable');
   await h.click('importSidecarsBtn'); assert.equal(h.el('catalogResultBody').textContent, 'Catalog unavailable');
   await h.click('catalogDuplicates'); assert.equal(h.el('catalogResultBody').textContent, 'Could not search');
+});
+
+test('translated result dialogs preserve archive paths and native errors as text', async () => {
+  useCatalog('fr', {messages: {
+    'Back up catalog': 'Sauvegarder le catalogue',
+    'Backed up to {resultArchive}': 'Sauvegarde dans {resultArchive}',
+    'Find duplicates': 'Chercher les doublons',
+    'Export': 'Exporter',
+  }});
+  try {
+    const h = harness('results', {post: async () => ({archive: '/Export/<img src=x> {resultArchive}.zip'}),
+      get: async path => path.endsWith('duplicates') ? {error: 'Export'} : {watches: []}});
+    await h.click('catalogBackup');
+    assert.equal(h.el('catalogResultTitle').textContent, 'Sauvegarder le catalogue');
+    assert.equal(h.el('catalogResultBody').textContent, 'Sauvegarde dans /Export/<img src=x> {resultArchive}.zip');
+    assert.equal(h.el('catalogResultBody').innerHTML, '');
+    await h.click('catalogDuplicates');
+    assert.equal(h.el('catalogResultTitle').textContent, 'Chercher les doublons');
+    assert.equal(h.el('catalogResultBody').textContent, 'Export');
+  } finally { useCatalog('en', {messages: {}}); }
 });
 
 test('blank watched folders and copy destinations cannot be saved; server errors keep the form open', async () => {

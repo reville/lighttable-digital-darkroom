@@ -1,15 +1,17 @@
+import { t as tr } from './i18n.js';
+import { localToolLabel } from './editor-panels.js';
 /** Edit transfer plans preserve every unselected destination setting. */
 const copy = value => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
 export const TRANSFER_GROUPS = [
-  ['film', 'Film look', 'Stock, paper and film effects'],
-  ['raw', 'RAW development', 'Camera profile, capture white balance and denoise'],
-  ['tone', 'Tone', 'Exposure, contrast, highlights, shadows and master curve'],
-  ['color', 'Color', 'White balance, HSL, color curves and grading'],
-  ['detail', 'Detail and effects', 'Sharpening, noise, clarity, texture and vignette'],
-  ['optics', 'Lens corrections', 'Lens profile, distortion and chromatic aberration'],
-  ['crop', 'Crop and geometry', 'Crop, rotation, flips and perspective'],
-  ['masks', 'Local masks', 'Replace local masks; detect AI selections on each photo'],
-  ['heals', 'Healing', 'Copy spot positions; use only with matching framing'],
+  ['film', tr("Film look"), tr("Stock, paper and film effects")],
+  ['raw', tr("RAW development"), tr("Camera profile, capture white balance and denoise")],
+  ['tone', tr("Tone"), tr("Exposure, contrast, highlights, shadows and master curve")],
+  ['color', tr("Color"), tr("White balance, HSL, color curves and grading")],
+  ['detail', tr("Detail and effects"), tr("Sharpening, noise, clarity, texture and vignette")],
+  ['optics', tr("Lens corrections"), tr("Lens profile, distortion and chromatic aberration")],
+  ['crop', tr("Crop and geometry"), tr("Crop, rotation, flips and perspective")],
+  ['masks', tr("Local masks"), tr("Replace local masks; detect AI selections on each photo")],
+  ['heals', tr("Healing"), tr("Copy spot positions; use only with matching framing")],
 ];
 const RAW_KEYS = ['raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
   'learned_denoise', 'learned_denoise_strength', 'developProfile', 'wb_mode',
@@ -75,16 +77,16 @@ export async function regenerateTransferMasks(masks, generate, { samePhoto = fal
     const smart = components.some(component => !MANUAL_MASKS.has(component.type));
     if (smart && (components.some(component => component.type === 'brush') ||
         ['addStrokes', 'subtractStrokes', 'intersectStrokes'].some(key => mask[key]?.length))) {
-      throw new Error(`“${mask.name || 'Mask'}” has painted refinements. Recreate it on this photo or exclude masks.`);
+      throw new Error(tr("“{value}” has painted refinements. Recreate it on this photo or exclude masks.", {value: (mask.name || tr("Mask"))}));
     }
     for (const component of components) {
       if (MANUAL_MASKS.has(component.type)) continue;
       if (component.type === 'object') {
-        throw new Error(`“${mask.name || 'Object mask'}” needs a new object selection. Exclude masks to paste other edits.`);
+        throw new Error(tr("“{value}” needs a new object selection. Exclude masks to paste other edits.", {value: (mask.name || tr("Object mask"))}));
       }
       if (!generated.has(component.type)) {
         const response = await generate(component.type);
-        if (!response?.bitmap || response.error) throw new Error(response?.error || `No ${component.type} selection found`);
+        if (!response?.bitmap || response.error) throw new Error(response?.error || tr('No {tool} selection found', {tool: localToolLabel(component.type)}));
         generated.set(component.type, response);
       }
       const response = generated.get(component.type);

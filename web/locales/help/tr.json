@@ -1,0 +1,3005 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Fotoğraflar ekle ve göz atmaya başlat",
+      "category": "Getting started",
+      "summary": "Fotoğrafları veya klasörleri yerinde açın, ardından bir klasör seçin ve incelemeye başlayın.",
+      "keywords": [
+        "başlat",
+        "aç",
+        "gözat",
+        "klasör ekle",
+        "orijinaller",
+        "içe aktar",
+        "yeni kitaplık"
+      ],
+      "sections": [
+        {
+          "title": "Bir başlangıç noktası seçin",
+          "paragraphs": [
+            "Yeni bir kitaplıkta kurulum, yerel klasör, Lightroom geçişi veya Apple Photos seçeneklerini sunar. Kurulumu atlayabilir ve sonra fotoğraf ekleyebilirsiniz.",
+            "Apple Photos tam kütüphane içe aktarması, macOS uygulamasını ve Fotoğraflar’ı okuma iznini gerektirir. RAW dosyaları dahil orijinal fotoğrafları Pictures / LightTable Imports / Apple Photos içine kopyalar. Fotoğraflar kütüphaneniz değişmeden kalır. iCloud orijinalleri içe aktarma sırasında indirilir; bu nedenle zaman ve disk alanı ayırın. Albümler, videolar ve Fotoğraflar düzenlemeleri aktarılmaz.",
+            "İçe aktarmayı durdur, tamamlanmış kopyaları korur. Tekrar çalıştırmak bu kopyaları atlar ve tamamlanmamış orijinalleri yeniden dener."
+          ],
+          "steps": [
+            "Orijinalleri yerinde gözatmak için bir klasör seçin veya geçiş seçeneklerinden birini seçin.",
+            "İçe aktarma sonucunu inceleyin, ardından kitaplığa devam edin."
+          ]
+        },
+        {
+          "title": "Apple Photos'tan fotoğraflar seçin",
+          "paragraphs": [
+            "macOS uygulamasında, Dosya → Apple Photos'tan içe aktar… seçeneğini veya Fotoğraf kurulumunda Birkaç tane seç… seçeneğini kullanın. Geçerli biçim, Photos tarafından sağlanan temsili korur; Uyumlu ise geniş ölçüde okunabilir bir biçim ister. Bu seçilmiş temsiller Photos düzenlemelerini içerebilir ve tüm kitaplığın orijinal dosyalarını içe aktarma işleminden ayrıdır.",
+            "Fotoğrafları seçin, ardından Ekle'ye tıklayın. LightTable, fotoğraflar indirilirken ve kopyalanırken ilerlemeyi gösterir. İçe Aktarmayı Durdur, tamamlanan kopyaları korur ve kalan aktarımları durdurur. Fotoğraflar kitaplığınız değişmeden kalır.",
+            "Kopyalar Pictures / LightTable Imports / Apple Photos içine kaydedilir. Bir seçimi yeniden içe aktarmak, numaralandırılmış dosya adlarıyla ayrı kopyalar oluşturur; mevcut dosyaların üzerine hiçbir zaman yazılmaz."
+          ],
+          "steps": [
+            "Geçerli biçim veya Uyumlu seçin.",
+            "Seçici içinde bir veya daha fazla fotoğraf seçin ve Ekle'ye tıklayın. İçe aktarmadan çıkmak için İptal'i kullanın.",
+            "İçe aktarımın bitmesini bekleyin, ardından fotoğrafları LightTable'da inceleyin."
+          ]
+        },
+        {
+          "title": "Yerel bir klasör aç",
+          "paragraphs": [
+            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Yerel'in yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
+          ],
+          "steps": [
+            "Sol üstte Fotoğraf Ekle'ye tıklayın ve fotoğrafları seçin ya da klasör seçmek için Yerel'in yanındaki + düğmesini kullanın.",
+            "Sol kenar çubuğunda Yerel altındaki klasörü seçin. Alt klasörleri dahil et seçeneğini açarak alt klasörlerindeki fotoğraflara gözatın.",
+            "Üstte Fotoğraf Izgarası, Ayıklama Izgarası veya Ayrıntı seçin. Etkin yapmak için bir fotoğrafa tıklayın."
+          ],
+          "tips": [
+            "Kenar çubuğu gizliyse, sol üstteki kütüphaneyi göster veya gizle’yi kullanın."
+          ]
+        },
+        {
+          "title": "Yeni dosyaları var olan bir klasöre alın",
+          "paragraphs": [
+            "LightTable dışından dosya ekledikten sonra Local ••• menüsünü ve Rescan folders seçeneğini kullanın. Bir karttaki fotoğrafları bir hedef klasöre kopyalamak için o menüde Import from card… seçeneğini kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Bir Lightroom Classic kataloğunu LightTable’a alın",
+      "category": "Getting started",
+      "summary": "Desteklenen meta verileri ve yaklaşık düzenlemeleri içe aktarın, ardından dönüştürme raporunu gözden geçirin.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "taşı",
+        "geçiş",
+        "katalog içe aktarma",
+        "lrcat",
+        "yardımcı dosyalar",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Hazırla ve incele",
+          "paragraphs": [
+            "İçe aktarıcı, Lightroom Classic .lrcat kataloğunun geçici bir kopyasını okur ve Lightroom kurulumunuzu ve kataloğunuzu değiştirmeden bırakır. Fotoğraflar geçerli klasörlerinde kalır ve çoğaltılmadan, yalnızca referans alınır. Bu katalog tarafından kullanılan fotoğraf klasörlerini ekle, içe aktarmanın referans verilen orijinalleri ve bunların bulunduğu klasörleri kaydetmesini sağlar. Yalnızca LightTable'da zaten bulunan fotoğraflarla eşleştirmek için bu seçeneğin seçimini kaldırın.",
+            "Önizleme uyumluluğu, mevcut kütüphanedeki eşleşmeleri değiştirmeden bildirir. Henüz eklenmemiş fotoğraflar önizlemede eşleşmemiş olarak görünebilir; Fotoğraf klasörlerini ekle etkinleştirilerek içe aktarma, eşleştirmeden önce kullanılabilir orijinalleri kaydeder."
+          ],
+          "steps": [
+            "Yerel ••• → Kataloğu içe aktar… seçin ya da kurulumda Lightroom'dan içe aktar seçeneğini kullanın.",
+            ".lrcat dosyasını seçin ve sayılarını ile uyarılarını inceleyin.",
+            "İçe aktarılacak kategorileri, var olan düzenlemeler için politikayı ve referans verilen fotoğraf klasörlerinin eklenip eklenmeyeceğini seçin.",
+            "Önizleme uyumluluğu’na tıklayın ve eşlenen, atlanan ayarları inceleyin. 20 varyasyon dene, daha büyük bir içe aktarmadan önce ayrı deneme düzenlemeleri oluşturur.",
+            "Uyumluluğu inceledikten sonra İçe Aktar’a tıklayın, ardından raporu ve eşleşen, bulunamayan ve atlanan sayılarını okuyun. LightTable, deneme veya içe aktarma öncesinde bir katalog yedeği oluşturur."
+          ]
+        },
+        {
+          "title": "Çevrilmiş düzenlemeleri incele",
+          "paragraphs": [
+            "Geliştirme ayarları yaklaşık değerlerdir ve Lightroom’un işlenmiş görünümünü garanti edemez. Desteklenmeyen local masks, camera profiles, .lrcat-data AI masks veya LUT yükleri ve desteklenmeyen akıllı koleksiyon kuralları atlandı olarak bildirilir. İçe aktarılan geliştirme ayarları Film’i kapatır.",
+            "Yerel ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstveriyi bitişik yardımcı dosyalardan okumak için kullanılan ayrı bir işlemdir. Bu işlem geliştirme ayarlarını veya kırpmayı uygulamaz. Sonuçlar iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "LightTable veya Klasik kısayollarını seçin",
+      "category": "Getting started",
+      "summary": "Düzenleme alışkanlıklarınıza uyan klavye düzenini seçin.",
+      "keywords": [
+        "klavye",
+        "kısayollar",
+        "klasik",
+        "Lightroom",
+        "kırpma kısayolu",
+        "ayrıntı tuşu",
+        "önce sonra"
+      ],
+      "sections": [
+        {
+          "title": "Bir şema seç",
+          "paragraphs": [
+            "Ayarlar → Shortcuts & Hardware bölümünü açın ve Shortcut scheme’i seçin. LightTable ve Classic, çoğu ayıklama kısayolunu paylaşır; ancak Detail, Crop ve before/after Compare için farklılık gösterir."
+          ],
+          "steps": [
+            "LightTable için D = Ayrıntı, C = Kırp ve ters bölü (\\) = önce/sonra Karşılaştır seçin.",
+            "E = Ayrıntı, R = Kırpma ve C = önce/sonra Karşılaştırma için Klasik’i seçin."
+          ],
+          "tips": [
+            "Her iki şema da Fotoğraf Izgarası için G, Ayıklama Izgarası için Shift+G, İnceleme için N, bayraklar için P/X/U ve yıldızlar için 0–5 kullanır.",
+            "Film, yerel maskeler veya bitirme ayarları olmadan orijinali göstermek için B’ye basılı tutun; düzenlemeyi geri yüklemek için B’yi bırakın. Eğik çizgi (/) fotoğraf aramasına odaklanır.",
+            "Metin, sayı veya seçim alanlarına yazarken fotoğraf kısayolları yok sayılır. Bir fotoğraf komutunu kullanmadan önce alanı terk edin."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "import-from-card",
+      "title": "Bir karttan fotoğrafları içe aktar",
+      "category": "Getting started",
+      "summary": "Seçili fotoğrafları tarihli klasörlere kopyalayın; doğrulama ve isteğe bağlı ikinci bir kopya ile.",
+      "keywords": [
+        "alım yap",
+        "hafıza kartı",
+        "kamera kartı",
+        "kopyala",
+        "yedekleme",
+        "çiftler",
+        "fotoğrafları içe aktar"
+      ],
+      "sections": [
+        {
+          "title": "Kopyayı planla",
+          "paragraphs": [
+            "Karttan içe aktar, dosyaları seçtiğiniz hedefe kopyalar. Karttaki orijinaller yerinde kalır. Yineleneni atlama, dosyanın tam içeriğini karşılaştırır; eşleşen bir dosya adı veya kamera başlığı tek başına yeterli değildir."
+          ],
+          "steps": [
+            "Yerel ••• → Karttan içe aktar….'ı açın",
+            "Kaynak ve Hedef’i seçin. Taramadan önce Klasör şablonu ve Yeniden adlandır’ı ayarlayın. Varsayılanlar dosya adlarını korur ve kopyaları yıl/yıl-ay-gün olarak düzenler.",
+            "Doğrulamayı seçin: Tam karma, Yalnızca Boyut veya Yok. Yinelemeler için Atla veya Yine de kopyala ayarlayın ve isteğe bağlı olarak İkinci kopyayı seçin.",
+            "Tara’ya tıklayın. Her sayfayı gözden geçirmek için Önceki ve Sonraki’yi kullanın ve İçe Aktar’a tıklamadan önce seçili sayısını ve hedef önizlemesini kontrol edin. Hiç fotoğraf seçilmemişse İçe Aktar kullanılamaz.",
+            "Kopyalanan sayının tamamlanmasını bekleyin ve herhangi bir dosyanın başarısız olup olmadığını kontrol edin. İptal, geçerli dosyanın kopyalanması ve doğrulanması tamamlandıktan sonra durur; tamamlanan kopyalar korunur ve karttaki orijinallere dokunulmaz."
+          ],
+          "tips": [
+            "Şablon belirteçleri {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} ve {dd} içerir. Başlangıç noktası, dört haneli diziyi denetler. Uzun şablon alanları kısaltılır; hedef önizlemeyi kontrol edin.",
+            "Önizlemeler sayfa başına 200 dosya gösterir. Seçim sayfalar arasında taşınır; Tümünü Seç ve Hiçbirini Seçme, açmadığınız sayfalar da dahil olmak üzere tüm taramaya uygulanır.",
+            "Dosyalar yalnızca bulutta olarak raporlanıyorsa, onları yerel olarak indirin ve yeniden tarayın."
+          ]
+        },
+        {
+          "title": "Ayarlar değiştiğinde planı yenileyin",
+          "paragraphs": [
+            "Kaynak, hedef, adlandırma veya doğrulama ayarlarını değiştirmek gözden geçirilen planı temizler. Yeni dosya ve yolları içe aktarmadan önce gözden geçirmek için yeniden tarayın."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Görünümler arasında geçiş yapın ve fotoğrafları seçin",
+      "category": "Getting started",
+      "summary": "Bir set seçmek için ızgaraları ve tek bir fotoğrafı incelemek için Ayrıntı’yı kullanın.",
+      "keywords": [
+        "ızgara",
+        "ayrıntı",
+        "film şeridi",
+        "birden fazlasını seç",
+        "shift tıkla",
+        "command tıklama",
+        "control tıklama",
+        "gezinti",
+        "yakınlaştır",
+        "karşılaştır",
+        "kaydırıcıyı görünüme sabitle"
+      ],
+      "sections": [
+        {
+          "title": "Görünümler arasında geçiş yap",
+          "paragraphs": [
+            "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar.",
+            "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin."
+          ],
+          "steps": [
+            "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
+            "Bir ızgarada, küçük resim boyutunu değiştirmek için Boyut kaydırıcısını kullanın.",
+            "Fotoğraflar arasında geçmek için sol ve sağ ok tuşlarını kullanın. Ayrıntı'da, fotoğraf alanında odak varken Boşluk Fit ile 1:1 arasında geçiş yapar."
+          ]
+        },
+        {
+          "title": "Yakınlaştırılmışken karşılaştır",
+          "paragraphs": [
+            "Orijinal ve düzenlenmiş fotoğrafı bölmek için Ayrıntı bölümünde Karşılaştır'a tıklayın. Karşılaştırmayı her açtığınızda, ayırıcı mevcut görünümde yakınlaştırmanızı veya kaydırmanızı değiştirmeden otomatik olarak merkeze gelir. Bölmeyi taşımak için ayırıcıyı sürükleyin; yakınlaştırılmış bir fotoğrafta kaydırmak için başka bir yeri sürükleyin. Ayırıcı ve tutamacı yakınlaştırdıkça aynı boyutta kalır.",
+            "Orijinal, 1:1 dahil olmak üzere düzenlenmiş fotoğrafla aynı önizleme çözünürlüğünü kullanır. RAW fotoğraflar için Orijinal, nötr ve düzenlenmemiş dönüşümü kullanır; ayrıntıyı değerlendirmeden önce yüklenmesinin bitmesine izin verin.",
+            "Film, yerel maskeler veya bitirme ayarları olmadan orijinali görmek için B tuşunu basılı tutun. Düzenlenmiş görünümü geri yüklemek için B’yi bırakın.",
+            "Fotoğraf bilgileri, işleme rozetleri ve basılı tuş ayarı okumaları, yakınlaştırırken veya kaydırırken normal ekran boyutlarında kalır."
+          ],
+          "steps": [
+            "Karşılaştır'ı açın, sonra Sığdır'ın ötesine yakınlaştırın.",
+            "Şu anda görünümde ayırıcıyı ortalamak için fotoğraf alanının sağ üstündeki anlık kaydırıcıya tıklayın. Bu, yakınlaştırma veya kaydırmanızı değiştirmeden, kaydırmadan sonra ekran dışındaki ayırıcıyı da geri getirir.",
+            "Sığına dönünce veya Karşılaştırmayı kapatınca düğme gizlenir."
+          ]
+        },
+        {
+          "title": "Bir seçim oluştur",
+          "paragraphs": [
+            "Tıklama tek bir etkin fotoğraf seçer. Shift+tıklama bitişik bir aralık seçer. Mac’te Command+tıklama ya da Control+tıklama tek tek fotoğrafları ekler veya kaldırır.",
+            "Bir ızgarada bayrak, derecelendirme ve renk etiketi eylemleri seçili kümeye uygulanır. Ayrıntı'da bu işaretleme eylemleri etkin fotoğrafa uygulanır. İncele'de etkin inceleme hücresine uygulanır. Toplu bir işlemden önce işaretleme araç çubuğunun bağlamını kontrol edin.",
+            "Üstveriyi görmek veya seçili fotoğraflara etiket eklemek için her iki ızgaranın yanındaki Bilgi’yi açın. Denetleyiciye yer açmak için ızgara daralır. Daha geniş ızgaraya dönmek için başka bir denetleyici aracı seçin."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Anahtar kelimeler, başlıklar ve hak bilgileri ekleyin",
+      "category": "Library",
+      "summary": "Fotoğrafları bulmayı kolaylaştırın ve dışa aktarma için açıklayıcı üstveri hazırlayın.",
+      "keywords": [
+        "üstveri",
+        "IPTC",
+        "EXIF",
+        "anahtar kelimeler",
+        "başlık",
+        "başlık",
+        "telif hakkı",
+        "oluşturan",
+        "konum",
+        "GPS",
+        "toplu iş anahtar kelimeleri",
+        "anahtar kelimeleri kaldır",
+        "anahtar kelimeleri geri al",
+        "hiyerarşik anahtar kelimeler"
+      ],
+      "sections": [
+        {
+          "title": "Aranabilir anahtar kelimeler ekle",
+          "paragraphs": [
+            "Etkin fotoğrafta Bilgi’yi açın. Anahtar kelimeleri Anahtar kelimeler ekle alanına girin ve Fotoğrafa ekle’ye tıklayın ya da Enter’a basın. Virgüller anahtar kelimeleri ayırır; Ayarlar → Dosyalar ve Üstveri noktalı virgül ayırıcılarını ve katalog anahtar kelime önerilerini de etkinleştirebilir.",
+            "İlgili terimleri bir arada tutmak için Places > Boston gibi hiyerarşik bir yol kullanın. Keyword ağacı katalog terimlerini listeler; bir terimi aramak için tıklayın veya o katalog anahtar sözcüğünü yeniden adlandırmak için çift tıklayın."
+          ],
+          "tips": [
+            "Fotoğrafa ekle ve Enter etkin fotoğrafa uygulanır. Ayrı seçim düğmeleri, seçili ızgara fotoğraflarına uygulanır. Eşleştirme üstverisini bağla, onların RAW veya JPEG eşlikçilerini de güncelleyebilir."
+          ]
+        },
+        {
+          "title": "Bir seçimde anahtar kelime ekle veya kaldır",
+          "steps": [
+            "Her iki ızgarada da fotoğrafları seçin ve Bilgi’yi açın. Anahtar kelime düğmelerinin altındaki seçili fotoğraf sayısını kontrol edin.",
+            "Bir veya daha fazla anahtar kelime girin, ardından Seçime ekle veya Seçimden kaldır’ı seçin. Her fotoğraf diğer anahtar kelimelerini korur.",
+            "Bu pencere açık kaldığı sürece son toplu işlemi geri yüklemek için Anahtar kelime değişikliğini geri al’ı kullanın. Geri Al, o toplu işlemden sonra değiştirilen anahtar kelimelerin üzerine yazmayı reddeder. Fotoğraf Geçmişi ayrıca anahtar kelimelerin önceki ve sonraki durumlarını da korur."
+          ],
+          "paragraphs": [
+            "Bir toplu iş, bağlantılı eşlikçiler dahil en fazla 5.000 fotoğrafı etkileyebilir. Hiyerarşik bir anahtar kelimeyi kaldırmak, onun tam yolunu kaldırır; tüm alt öğelerini değil. Anahtar kelime ağacı ve öneriler, zaten katalogda bulunan terimleri kullanır."
+          ]
+        },
+        {
+          "title": "Fotoğrafı tanımla",
+          "paragraphs": [
+            "Bilgi’de, başlık, altyazı ve manşet için Açıklama’yı; oluşturan, telif hakkı ve kredi için Haklar’ı; ya da konum ve koordinatlar için Yerleştir’i genişletin. Yaptığınız değişiklikler yazdıkça kataloğa kaydedilir. Bu fotoğrafın üstverisi yüklendikten ve enlem ile boylam geçerli olduktan sonra Haritalar’da aç kullanılabilir. Konumu tarayıcınızda açar.",
+            "Apply to selection, boş alanları da dahil olmak üzere geçerli üstveri formunu seçili fotoğraflara kopyalar. Önce formun tamamını inceleyin. Üstveri, dışa aktarma iş akışına göre dışa aktarmalara dahil edilir; bu alanları düzenlemek özgün görüntü dosyasını yeniden yazmaz."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "browse-folders",
+      "title": "Klasörlere göz atın ve favorileri kaydedin",
+      "category": "Library",
+      "summary": "Klasör kapsamını seçin, alt klasörleri dahil edin ve sık kullandığınız klasörleri elinizin altında tutun.",
+      "keywords": [
+        "favoriler",
+        "yerel",
+        "klasörler",
+        "kenar çubuğu",
+        "eksik fotoğraflar",
+        "yeniden tara",
+        "eşitle",
+        "izlenecek klasör",
+        "izlenen klasörler",
+        "tethering"
+      ],
+      "sections": [
+        {
+          "title": "Görünümde ne olduğunu seçin",
+          "paragraphs": [
+            "Local → Browse eklediğiniz klasörleri listeler. Include subfolders, seçili bir klasörün alt klasörlerinin de gösterilip gösterilmeyeceğini belirler. Diğer kitaplık filtreleri yine de geçerlidir.",
+            "Dar bir Linux penceresinde, kütüphane çekmecesini açmak için sol üstteki Kütüphaneyi göster veya gizle'yi kullanın. Bir klasör seçtikten sonra fotoğrafa daha fazla alan bırakmak için aynı düğmeyle kapatın."
+          ],
+          "steps": [
+            "Yerel altında bir klasöre tıklayın.",
+            "Alt klasörleri dahil etmek için Alt klasörleri dahil et’i açın ya da yalnızca o klasörü görüntülemek için kapatın.",
+            "Bir klasörün yanındaki yıldıza tıklayın ya da ••• menüsünü açıp Sık kullanılan olarak ekle’yi seçin.",
+            "Kaydedilmiş klasörlerinize dönmek için Yerel → Favoriler’i kullanın."
+          ]
+        },
+        {
+          "title": "Klasör eylemleri",
+          "paragraphs": [
+            "Bir klasörün ••• menüsü, Mac'te Finder'da Göster, Windows'ta Dosya Gezgini'nde Göster veya Linux'ta Dosya Yöneticisi'nde Göster seçeneklerini içerir. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Yerel ••• → Klasörleri yeniden tara katalog kaynaklarını tarar.",
+            "Remove from LightTable, eklenmiş bir kök klasörü uygulamanın kaynak listesinden kaldırır; özgün dosyaları Çöp Kutusu’na taşımaz. Bu eylem, birden fazla kaynak mevcut olduğunda sunulur."
+          ]
+        },
+        {
+          "title": "İzlenen klasörleri yönet",
+          "paragraphs": [
+            "Bir izlenen klasör eklemek için Yerel ••• → İzlenecek klasör… yolunu açın. Gelen fotoğrafların nasıl ele alınacağını seçin. Bir klasör belirtilene kadar Kaydet kullanılamaz; kitaplığa kopyalama için ayrıca bir hedef gerekir.",
+            "Var olan bir izlemi düzenlemek için onu İzlenen klasörler içinde seçin. Kaydedilmiş her izlem bu listede görünür. Başka bir klasör için Yeni izlenen klasör seçin veya seçili klasörü izlemeyi durdurmak için İzlemeyi sil’i kullanın. Bu işlem fotoğraflarını silmez.",
+            "İzleme kısayolu ilk etkin izlemi açar. Kaydetme hataları, ayarları düzeltebilmeniz için iletişim kutusunda kalır."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "survey-photos",
+      "title": "Survey'de birkaç fotoğrafı karşılaştır",
+      "category": "Library",
+      "summary": "Bir grubu birlikte inceleyin, etkin çerçeveyi işaretleyin ve bir aday kümesini daraltın.",
+      "keywords": [
+        "incele",
+        "fotoğrafları karşılaştır",
+        "kareleri karşılaştır",
+        "seri çekim",
+        "yan yana",
+        "korunan",
+        "seçim yap"
+      ],
+      "sections": [
+        {
+          "title": "Bir grubu incele",
+          "paragraphs": [
+            "Survey, fotoğraflar arasında seçim yapmak için özgün önizlemeleri gösterir. En fazla 16 seçili fotoğraf gösterir. Açık bir seçim yoksa, geçerli görünümdeki en fazla altı yakın fotoğrafı kullanır."
+          ],
+          "steps": [
+            "Adayları bir ızgarada seçin ve N’ye basın ya da Bilgi → İncele seçimini açın.",
+            "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları kullanın.",
+            "Etkin hücredeki işaretleme araç çubuğunu veya bayrak, derecelendirme ve etiket kısayollarını kullanın.",
+            "İncelemeden silmeden veya reddetmeden kaldırmak için bir hücredeki × işaretine tıklayın. O fotoğrafı Ayrıntı'da açmak için bir hücreye çift tıklayın.",
+            "İnceleme’den çıkmak için Kapat’a tıklayın veya Escape tuşuna basın."
+          ]
+        },
+        {
+          "title": "Bir korunan seç",
+          "paragraphs": [
+            "Seçme işlemi, aktif inceleme fotoğrafını seçilmiş yapar ve incelemede kalan diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlantılı RAW ve JPEG meta verileri, bu bayrak değişikliklerini eş fotoğraflara da genişletebilir.",
+            "Bir düzenlemeyi özgünüyle değerlendirmek için Ayrıntı'da önce/sonra Karşılaştırma'yı kullanın; İncele, farklı kareler arasında seçim yapmak içindir."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "capture-time",
+      "title": "Kamera saatini veya zaman dilimini düzeltin",
+      "category": "Library",
+      "summary": "Fotoğraflar arasındaki aralıkları koruyarak paylaşılan saat düzeltmesini önizleyin.",
+      "keywords": [
+        "yakalama zamanı",
+        "tarih",
+        "kamera saati",
+        "zaman dilimi",
+        "zaman dilimi",
+        "Yaz saati uygulaması",
+        "sıralama tarihi",
+        "zaman damgası"
+      ],
+      "sections": [
+        {
+          "title": "Düzeltmeyi önizle",
+          "paragraphs": [
+            "Yakalama zamanı düzeltmeleri, yakalama tarihi sıralaması ve dışa aktarılan meta veriler için kullanılan katalog tarihlerini değiştirir. Özgün görüntü dosyaları ve dosya sistemi tarihleri değişmeden kalır."
+          ],
+          "steps": [
+            "Etkilenmiş fotoğrafları seçin ve Bilgi → Yakalama zamanını düzelt’i açın.",
+            "Shift saatini saat cinsinden girin, örneğin -1 veya 5.5.",
+            "İsteğe bağlı olarak Saat dilimi ata alanına -04:00 veya +05:30 gibi bir sapma girin. Mevcut bölgeyi korumak için boş bırakın veya kaldırmak için remove girin.",
+            "RAW + JPEG eşlerini dahil edip etmeyeceğinizi seçin.",
+            "Önizleme seçimi’ne tıklayın ve önce-sonra zamanlarını ve atlanan fotoğrafları gözden geçirin.",
+            "Apply previewed changes’e tıklayın. Seçimi veya düzeltme kontrollerini değiştirirseniz önce yeniden önizleme yapın."
+          ]
+        },
+        {
+          "title": "Bir düzeltmeyi geri yükle",
+          "paragraphs": [
+            "Bir saat dilimi atamak kamera saatini de kaydırmaz. Gösterilen saatin kendisi yanlış olduğunda kaydırma alanını kullanın.",
+            "Son düzeltmeyi geri al, bu pencerede tutulan en son düzeltmeyi geri çevirir. Kamera zamanlarını geri yükle… katalog düzeltmelerini kaldırmayı önizler; önizlemeyi inceleyin ve orijinal kamera zamanlarını geri yüklemek için uygulayın. Yakalama zamanı adımları Geçmiş'te de bulunur. XMP yazma etkin olduğunda, bir düzeltmeyi sıfırlamak, LightTable onu uygulamadan önce kaydedilen yardımcı dosya tarihlerini geri yükler. Eski yardımcı dosyalardaki, kaydedilmiş bu tarihi içermeyen yakalama tarihleri değişmeden kalır."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "xmp-interchange",
+      "title": "Üstveriyi XMP yardımcı dosyaları üzerinden değiş tokuş et",
+      "category": "Library",
+      "summary": "Diğer düzenleyicilerden ayıklama üstverisini okuyun ve desteklenen değişiklikleri orijinallerinizin yanında tutun.",
+      "keywords": [
+        "XMP",
+        "yardımcı dosyalar",
+        "Photo Mechanic",
+        "digiKam",
+        "birlikte çalışabilirlik",
+        "eşitleme çakışması",
+        "taşınabilir üstveri"
+      ],
+      "sections": [
+        {
+          "title": "Başka bir düzenleyiciden üstveri oku",
+          "paragraphs": [
+            "Diğer düzenleyiciye, üstverisini komşu XMP dosyalarına kaydetmesini isteyin, ardından Yerel ••• → Yardımcı dosyaları içe aktar… seçin. Bu eylem, büyük kütüphanelerin her biri için 100.000 fotoğrafa kadar olan tüm sayfalar dahil, katalogdaki orijinalleri okur. Sanal kopyalar kendi üstverilerine sahip olur.",
+            "Desteklenen üstveri arasında yıldız derecelendirmeleri, seç/reddet işaretleri, standart renk etiketleri, düz ve hiyerarşik anahtar kelimeler ve açıklayıcı IPTC alanları bulunur. Açıkça girilmiş boş bir değer o alanı temizler; olmayan bir değer ise olduğu gibi bırakır. Bir LightTable rengiyle eşleşmeyen özel renk etiketleri atlandı olarak bildirilir.",
+            "İçe aktarıcı, desteklenen Photo Mechanic ve digiKam üstveri kurallarını okur. Her uygulamanın ek kuralları vardır; bu nedenle tüm bir kütüphaneyi değiş tokuş etmeden önce her iki uygulamada da küçük bir örneği inceleyin. İşleme ayarları ve kırpma bu menü eylemiyle uygulanmaz."
+          ]
+        },
+        {
+          "title": "Değişiklikleri orijinallerin yanına yaz",
+          "paragraphs": [
+            "Ayarlar → Dosyalar ve Üstveri içinde otomatik XMP yazmayı açın. LightTable değişen alanları sıraya alır ve bunları kullanılabilir orijinallerin yanına yazar. İlgisiz üstveriyi korur ve ilk güncellemeden önce mevcut yardımcı dosyanın bir yedeğini kaydeder. Çevrimdışı veya başarısız yazmalar yeniden deneme için sırada kalır.",
+            "Başka bir uygulama, son okuma veya eşitlemeden sonra aynı XMP özelliğini değiştirirse, LightTable bir çakışma bildirir ve o yardımcı dosyayı değiştirilmeden bırakır. Harici üstveriyi gözden geçirin, ardından LightTable’da daha fazla değişiklik yapmadan önce bu üstveri değerlerini kabul etmek için yardımcı dosyaları içe aktarın.",
+            "Bir orijinal için photo.xmp veya photo.RAW.xmp dosyalarından birini kullanın. İkisi de varsa, içe aktarma ve eşitleme birini seçmek yerine belirsizliği bildirir. İçeriklerini kontrol ettikten sonra tek bir adlandırma kuralı kullanın.",
+            "XMP, desteklenen üstveriyi değiş tokuş eder; tam bir katalog yedeği değildir. Koleksiyonlar, geçmiş ve varyantlar için katalog yedekleri tutun ve bir klasörle birlikte tam düzenleme iş akışının taşınması gerektiğinde taşınabilir LightTable düzenlemelerini etkinleştirin."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Fotoğrafları arama, filtreler ve sıralama ile bulun",
+      "category": "Library",
+      "summary": "Fotoğrafları metin, kamera, objektif, pozlama, yakalama tarihi, anahtar kelimeler ve ayıklama işaretlerine göre daraltın.",
+      "keywords": [
+        "bul",
+        "ara",
+        "anahtar kelimeler",
+        "derecelendirme filtresi",
+        "sırala",
+        "yakalama tarihi",
+        "sonuç yok",
+        "puanlanmamış",
+        "dosya türü",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "düzenlenmemiş",
+        "filtreleri temizle",
+        "kamera",
+        "objektif",
+        "ISO",
+        "diyafram",
+        "örtücü hızı",
+        "odak uzaklığı",
+        "EXIF"
+      ],
+      "sections": [
+        {
+          "title": "Geçerli görünümde ara",
+          "paragraphs": [
+            "Arama kutusu, dosya adlarındaki, görünen adlardaki, anahtar sözcüklerdeki ve mevcut fotoğraf dizini meta verilerindeki metinle eşleşir. Geçerli klasör veya koleksiyon içinde arama yapar ve diğer etkin filtrelerle birlikte çalışır."
+          ],
+          "steps": [
+            "Fotoğrafları ve anahtar sözcükleri ara’ya tıklayın ya da bir alana yazmıyorken / tuşuna basın.",
+            "Dosya adından veya anahtar sözcüklerden bir kelime ya da ifade yazın.",
+            "Bir bayrak veya derecelendirme grubunu seçmek için kenar çubuğunda All Photos, Unflagged, Picked, Rejected veya Rated kullanın.",
+            "Sırala’nın yanındaki Filtre’ye tıklayın. Bir veya daha fazla dosya türü seçin, ardından bunları Bayrak, Derecelendirme, Renk etiketi veya Düzenleme durumu ile birleştirin.",
+            "Sırala’da Dosya adı, Derecelendirme, Bayrak, Yakalama tarihi veya Renk etiketi seçin."
+          ]
+        },
+        {
+          "title": "Filtreleri birleştir ve temizle",
+          "paragraphs": [
+            "RAW, JPEG, HEIC / HEIF, TIFF veya PNG seçin. Birden fazla dosya türü, bu biçimlerden herhangi birini içerir; bayrak, derecelendirme, renk etiketi, düzenleme durumu ve arama bu kümeyi daha da daraltır. Seçili dosya türü yoksa tüm dosya türleri seçilir.",
+            "Filtre düğmesi, kaç seçeneğin etkin olduğunu gösterir. Her seçenek ızgaranın üstünde kaldırılabilir bir etiket olarak görünür ve sayı kaç fotoğrafın eşleştiğini gösterir. Bir etiketi onun × simgesiyle kaldırın ya da filtreleri sıfırlamak için Tümünü temizle’yi seçin. Arama metni ve seçili klasör veya koleksiyon yerinde kalır.",
+            "Düzenleme durumu; Düzenlendi, Düzenlenmedi ve Sanal kopyalar seçeneklerini sunar. Sanal kopya, özgün dosyasının türünü kullanır. Seçimlerinizi temizlemeden kapatmak için Escape tuşuna basın veya panelin dışına tıklayın."
+          ]
+        },
+        {
+          "title": "Kamera, pozlama ve yakalama tarihine göre filtrele",
+          "paragraphs": [
+            "Filtre’de Kamera, pozlama ve tarih’i genişletin. Kamera ve Lens, bir adın bir kısmıyla eşleşir. Anahtar kelime, tam bir katalog anahtar kelime yoluyla ve alt öğeleriyle eşleşir; örneğin, Yerler, Yerler > Boston’u içerir.",
+            "ISO, milimetre cinsinden odak uzaklığı, diyafram f-değeri ve perde süresi hem minimum hem maksimum değerleri kabul eder. Tam eşleşme için her iki uçta aynı sayıyı girin. Perde süresi saniye ya da 1/250 gibi bir kesir kabul eder. Gerekli pozlama üstverisi olmayan fotoğraflar eşleşmez.",
+            "Yakalama tarihleri hem ilk hem de son günü içerir. Bu filtreler puanlamalar ve diğer seçimlerle birleşir, bir yeniden yüklemeden sonra da korunur ve bir akıllı koleksiyonda kaydedilebilir. Mevcut fotoğraflar, kaynakları bir sonraki tarandığında pozlama değerlerini alır; değerler eksikse bir klasörü yeniden tarayın."
+          ]
+        },
+        {
+          "title": "Bir fotoğraf eksik görünüyorsa",
+          "paragraphs": [
+            "Arama metnini temizleyin ve ızgaranın üstünde Tümünü temizle’yi seçin, ardından seçili klasörü, Alt klasörleri dahil et seçeneğini ve etkin herhangi bir koleksiyonu işaretleyin. Eşleştirilmiş dosya tercihleri ve daraltılmış yığınlar da bir eşlikçi ya da yığın üyesini gizleyebilir.",
+            "Yakalama tarihi daha erkenden daha geçe doğru sıralar; Derecelendirme ise daha yüksek derecelendirmeleri önce sıralar."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "collections",
+      "title": "Fotoğrafları koleksiyonlara gruplandır",
+      "category": "Library",
+      "summary": "Özgün dosyaları taşımadan adlandırılmış gruplar oluşturun.",
+      "keywords": [
+        "koleksiyon",
+        "albüm",
+        "düzenle",
+        "grup",
+        "seçildi",
+        "koleksiyonu sil"
+      ],
+      "sections": [
+        {
+          "title": "Fotoğraflar oluştur ve ekle",
+          "paragraphs": [
+            "Normal bir koleksiyon, seçilmiş bir fotoğraf kümesini saklar. Diskteki klasör düzeninden ayrıdır."
+          ],
+          "steps": [
+            "Gruplamak istediğiniz fotoğrafları seçin.",
+            "Create collection’a veya Collections yanındaki + simgesine tıklayın, bir ad girin ve kaydedin. Geçerli seçim dahil edilir.",
+            "Bir koleksiyonu görmek için ona tıklayın. Etkin koleksiyona yeniden tıklamak onu terk eder.",
+            "Normal bir koleksiyon etkin durumdayken, eklemek istediğiniz fotoğrafları seçin ve Add selected to collection’a tıklayın."
+          ]
+        },
+        {
+          "title": "Bir koleksiyonu sil",
+          "paragraphs": [
+            "Bir koleksiyonun yanındaki × işareti koleksiyonu siler. Bu, orijinal dosyaları Çöp Kutusuna taşımak yerine gruplamayı kaldırır. Arama ve filtreler, bir koleksiyon içinde gösterilen fotoğrafları daha da daraltabilir."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Reddedilen fotoğrafları Çöp Kutusu’na taşıyın",
+      "category": "Library",
+      "summary": "Reddedilen özgün dosyaları ve yardımcı dosyaları taşımadan önce geçerli görünümü dikkatle inceleyin.",
+      "keywords": [
+        "sil",
+        "çöp kutusu",
+        "reddedildi",
+        "geri yükle",
+        "kurtar",
+        "orijinalleri kaldır",
+        "geri dönüşüm kutusu"
+      ],
+      "sections": [
+        {
+          "title": "Reddedilen dosyaları gözden geçir ve taşı",
+          "paragraphs": [
+            "Bir fotoğrafı reddetmek yalnızca bayrağını değiştirir. Move Rejected Photos to Trash, geçerli görünümdeki reddedilen fotoğrafları etkileyen ayrı bir masaüstü işlemidir; yalnızca etkin fotoğrafı değil."
+          ],
+          "steps": [
+            "İncelemek istediğiniz fotoğrafları tanımlayan klasörü veya koleksiyonu ve filtreleri seçin.",
+            "Reddedilmiş fotoğrafları inceleyin. Diğer üyelerini de dahil etmeyi bekliyorsanız, eşleştirilmiş dosya ayarlarını kontrol edin ve herhangi bir yığını genişletin.",
+            "Mac'te Fotoğraf → Reddedilen Fotoğrafları Çöp Sepetine Taşı… seçin ya da Command+Delete tuşlarına basın. Linux veya Windows masaüstü uygulamasında Ctrl+Delete tuşlarına basın.",
+            "Onay penceresindeki fotoğraf sayısını okuyun ve yalnızca amaçladığınız kümeyle eşleştiğinde onaylayın."
+          ],
+          "tips": [
+            "Komşu XMP yan dosyaları özgün dosyalarla birlikte taşınır. Gizli RAW veya JPEG eşleri kitaplıkta kalır; bunları dahil etmek için eşleştirilmiş yakalama ayarlarında Her iki dosya’yı seçin.",
+            "Bir sanal kopya özgün dosyasını paylaşır. Sanal bir kopyayı silmek için Photo actions → Delete virtual copy kullanılmalıdır; kaynağını Çöp Kutusu’na taşımak, o özgünü kullanan her düzenlemeyi etkiler."
+          ]
+        },
+        {
+          "title": "Yanlışlıkla kaldırılan öğeyi geri al",
+          "paragraphs": [
+            "Orijinali ve yardımcı dosyalarını önceki klasörüne geri yüklemek için Mac'te Finder'ın Çöp Sepeti'ni, Linux'ta masaüstü Çöp Sepeti'ni veya Windows'ta Geri Dönüşüm Kutusu'nu kullanın, ardından LightTable'da yeniden tarayın. Uygulamanın uygulama içi Çöp Sepeti tarayıcısı yoktur."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "colour-labels",
+      "title": "Renk etiketleriyle bir iş akışı düzenleyin",
+      "category": "Library",
+      "summary": "Seçimlerden ve yıldız derecelendirmelerinden bağımsız beş renk kullanın.",
+      "keywords": [
+        "renk",
+        "renk",
+        "etiketler",
+        "kırmızı",
+        "sarı",
+        "yeşil",
+        "mavi",
+        "mor",
+        "iş akışı"
+      ],
+      "sections": [
+        {
+          "title": "Bir etiketi uygula ve filtrele",
+          "paragraphs": [
+            "Renk etiketlerini hangi anlamı taşıyacak şekilde atayacağınız size bağlıdır—for example, rötuş için kırmızı veya teslimat için yeşil. Bunlar yıldız derecelendirmelerini ya da seç/reddet durumunu değiştirmez."
+          ],
+          "steps": [
+            "Bir fotoğraf veya ızgaradaki bir seti seçin ve Bilgi’yi açın.",
+            "Colour etiketi altında Red, Yellow, Green, Blue veya Purple seçin. Silmek için No label seçin.",
+            "Red için 6, Yellow için 7, Green için 8 ve Blue için 9 kullanın. Purple, renk kontrollerinden kullanılabilir.",
+            "Sırala’nın yanındaki Filtre’ye tıklayın ve belirli bir rengi, herhangi bir rengi veya etiketsiz fotoğrafları bulmak için Renk etiketi’ni kullanın."
+          ],
+          "tips": [
+            "Aynı etiketi yeniden uygulamak onu temizler. Renk etiketi eylemleri otomatik ilerlemez."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Fotoğrafları seç, reddet ve derecelendir",
+      "category": "Library",
+      "summary": "Korunanları ve reddedilenleri işaretleyin, yıldız derecelendirmeleri verin ve otomatik ilerlemeyi kontrol edin.",
+      "keywords": [
+        "ayıkla",
+        "seç",
+        "reddet",
+        "bayrak",
+        "bayrağı kaldır",
+        "yıldızlar",
+        "derecelendirme",
+        "otomatik ilerle",
+        "korunan"
+      ],
+      "sections": [
+        {
+          "title": "Etkin fotoğrafı veya ızgara seçimini işaretleyin",
+          "paragraphs": [
+            "Bayraklar ve yıldızlar ayrıdır: bir fotoğraf Seçilmiş olabilir ve herhangi bir yıldız derecelendirmesine sahip olabilir. Reddet, fotoğrafı inceleme için işaretler; silmez."
+          ],
+          "steps": [
+            "İşaretleme araç çubuğunda veya Info’da Pick, Reject ve Unflag kullanın. P, X ve U tuşları aynı işlemleri yapar.",
+            "Değerlendirmek için bir yıldıza tıklayın veya 1–5’e basın. Derecelendirmeyi temizlemek için 0’a basın.",
+            "Mevcut bir seçimi, reddi veya derecelendirmeyi temizlemek için aynı işareti yeniden uygulayın.",
+            "Kararlarınızı gözden geçirmek için kenar çubuğundaki Seçilmiş, Reddedildi ve Puanlanmış görünümlerini kullanın."
+          ]
+        },
+        {
+          "title": "Sonraki ne olacağını kontrol edin",
+          "paragraphs": [
+            "Tek bir fotoğrafı seçtikten, reddettikten veya derecelendirdikten sonra bir sonraki fotoğrafa geçmek için Otomatik ilerletmeyi açın. Bayrağı Kaldırma ilerletmez.",
+            "Bir ızgarada birden çok fotoğraf seçiliyken, işaretler ilerleme olmadan o kümeye uygulanır. Link pair metadata açıksa, işaretleme tanınan RAW ve JPEG eşlerini de günceller."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "rename-photos",
+      "title": "Fotoğrafları önizlemeyle yeniden adlandır",
+      "category": "Library",
+      "summary": "Seçili özgün dosyalara ve yardımcı dosyalarına tutarlı bir dosya adı şablonu uygulayın.",
+      "keywords": [
+        "yeniden adlandır",
+        "dosya adı",
+        "dizi",
+        "toplu iş",
+        "özel metin",
+        "tarih belirteçleri",
+        "yardımcı dosyalar"
+      ],
+      "sections": [
+        {
+          "title": "Önizle ve uygula",
+          "paragraphs": [
+            "Yeniden adlandırma, diskteki dosya adlarını değiştirir ve katalog kayıtlarını dosyalarla birlikte tutar. Komşu XMP yan dosyalarını da işler. Bu, sanal bir kopyayı adlandırmaktan farklıdır."
+          ],
+          "steps": [
+            "Yeniden adlandırılacak fotoğrafları seçin.",
+            "Bilgi → Yeniden Adlandır…’ı açın (veya Mac menüsünde Fotoğraf → Yeniden Adlandır…).",
+            "{custom}_{sequence} gibi bir Şablon girin. Gerektiğinde Özel metin ve Başlangıç noktası’nı ayarlayın.",
+            "Önizlemede önceki ve sonraki dosya adlarını gözden geçirin.",
+            "Uygulamak için Yeniden Adlandır'a tıklayın."
+          ],
+          "tips": [
+            "Kullanılabilir belirteçler arasında {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min} ve {ss} bulunur. Sıra numaraları dört basamak kullanır.",
+            "Özgün uzantı korunur. Bir ad çakışması sayısal bir sonek alır. Yeniden adlandırma şablonları klasör oluşturamaz.",
+            "Sanal bir kopya kaynak dosyasını paylaşır: onu yeniden adlandırmaya dahil etmek, o özgün dosyayı hedefler. Arayüzde özel bir yeniden adlandırma-geri al düğmesi yoktur."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "smart-collections",
+      "title": "Bir aramayı akıllı koleksiyon olarak kaydedin",
+      "category": "Library",
+      "summary": "Fotoğraf meta verileri değiştikçe, desteklenen kurallardan güncellenen adlandırılmış bir grup tutun.",
+      "keywords": [
+        "akıllı koleksiyon",
+        "kaydedilmiş arama",
+        "dinamik",
+        "filtre kuralları",
+        "otomatik olarak",
+        "en düşük derecelendirme"
+      ],
+      "sections": [
+        {
+          "title": "Desteklenen kuralları kaydet",
+          "paragraphs": [
+            "Bir akıllı koleksiyon, kaydedilmiş kurallarına uyan fotoğrafları bulur. Desteklenen kurallar arasında bayrak, derecelendirme, Puanlanmamış only, dosya türleri, renk etiketi, düzenleme durumu, sanal kopyalar ve arama metni bulunur. Kamera, objektif, hiyerarşik anahtar kelime, yakalama tarihi, ISO, odak uzaklığı, diyafram ve perde süresi aralıkları da kaydedilir."
+          ],
+          "steps": [
+            "Arama metnini ve istenen seçimleri, Sırala'nın yanındaki Filtre'de belirleyin.",
+            "Koleksiyonlar’ın yanındaki ✦ simgesine tıklayın; bu, Filtreleri akıllı koleksiyon olarak kaydet olarak etiketlenmiştir.",
+            "Koleksiyona ad verin ve kaydedin.",
+            "Eşleşen fotoğrafları görmek için adına tıklayın. Bir fotoğrafın ilgili meta verisini değiştirmek, eşleşip eşleşmeyeceğini değiştirir."
+          ]
+        },
+        {
+          "title": "Nelerin kaydedildiğini bil",
+          "paragraphs": [
+            "Seçili klasör ve Alt klasörleri dahil et akıllı koleksiyon kurallarında kaydedilmez. Koleksiyon, kaydedilmiş filtre seçeneklerini kullanarak kütüphanede arama yapar.",
+            "Akıllı bir koleksiyon etkin durumdayken Seçiliyi koleksiyona ekle ile fotoğrafları elle ekleyemezsiniz. Geçerli arama ve kütüphane filtreleri yine de koleksiyon görünümünü daraltabilir.",
+            "2026’da 50 mm’de çekilmiş dört yıldızlı fotoğraflar için, Derecelendirme’yi 4 yıldız ve üstü, odak uzaklığı minimum ve maksimum değerini 50 ve yakalama tarihlerini 1 Ocak ile 31 Aralık 2026 arası olarak ayarlayın. Bu filtreleri akıllı koleksiyon olarak kaydedin."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Sanal kopyaları deneyin ve fotoğrafları yığınlarda gruplayın",
+      "category": "Library",
+      "summary": "Bir özgün dosyanın alternatif düzenlemelerini saklayın ve ilişkili fotoğrafları ızgarada daraltın.",
+      "keywords": [
+        "sanal kopya",
+        "sürüm",
+        "alternatif düzenleme",
+        "yığın",
+        "yığından çıkar",
+        "çift",
+        "kopyala"
+      ],
+      "sections": [
+        {
+          "title": "Alternatif bir düzenleme oluştur",
+          "paragraphs": [
+            "Sanal kopya aynı özgün dosyayı referans alır ve bağımsız bir düzenleme durumunu korur. Diskte ikinci bir özgün oluşturmaz."
+          ],
+          "steps": [
+            "Kaynak fotoğrafı etkin yap.",
+            "Sırala ve Boyut’un yanındaki Fotoğraf eylemleri ••• menüsünü açın, ardından Sanal kopya oluştur’u seçin.",
+            "Kopyaya bir ad verin ve kaydedin. Yeni kopya etkin olur.",
+            "Kopyayı düzenleyin. Kopyaları daha sonra bulmak için Filtre → Düzenleme durumu → Sanal kopyalar kullanın."
+          ],
+          "tips": [
+            "Fotoğraf eylemlerinde sanal kopyayı sil, etkin sanal kopyayı kaldırır. Diskte gerçek bir ikinci dosya için işlenmiş bir görüntü dışa aktarın."
+          ]
+        },
+        {
+          "title": "Bir grubu daralt",
+          "paragraphs": [
+            "En az iki fotoğraf seçin, ardından Fotoğraf işlemleri ••• → Seçilen fotoğrafları yığınla öğesini seçin ve bir ad girin. Yığının ızgara rozeti üye sayısını gösterir; genişletmek veya daraltmak için ona tıklayın. Seçilen fotoğrafların yığınını kaldır, gruplamayı kaldırır."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "RAW ve JPEG eşleriyle çalış",
+      "category": "Library",
+      "summary": "Hangi yardımcı öğenin gösterileceğini ve yeni meta veri değişikliklerinin ikisini de etkileyip etkilemeyeceğini seçin.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "eşleştir",
+        "eşlikçi",
+        "bağlantılı üstveri",
+        "gizli jpeg"
+      ],
+      "sections": [
+        {
+          "title": "Görünür eşlikçiyi seç",
+          "paragraphs": [
+            "LightTable, aynı kaynak ve klasörde aynı temel dosya adına sahip bir RAW ve bir JPEG olduğunda bunları eş olarak tanır. Her dosya kendi düzenlemelerini korur; sanal kopyalar bağımsız kalır."
+          ],
+          "steps": [
+            "Ayarlar → Dosyalar ve Üstveri’yi açın ve RAW ve JPEG yakalamalarını eşleştir’i etkinleştirin.",
+            "Eşleştirilmiş yakalamaları göster’i Her iki dosya, RAW’ı tercih et veya JPEG’i tercih et olarak ayarlayın.",
+            "Eşleştirilmiş bir fotoğrafı görüntülerken, eşini görmek için üst kısımda RAW → JPEG veya JPEG → RAW kullanın."
+          ]
+        },
+        {
+          "title": "Yeni üstveri değişikliklerini bağla",
+          "paragraphs": [
+            "Yeni derecelendirmeleri, bayrakları, etiketleri ve anahtar kelime değişikliklerini bağlamak için Çift meta verisini bağla seçeneğini açın. Fotoğraf düzenlemelerini birleştirmez.",
+            "Dışa aktarmalar ve Çöp Kutusu, seçtiğiniz veya geçerli görünümde dahil ettiğiniz dosyaları kullanır. Gizli bir eşlikçiyi otomatik olarak içermezler. İkisini de koru · bir numara ekle seçin ve her iki orijinale de ihtiyacınız olduğunda seçimi inceleyin. Yakalama zamanı düzeltmesinin kendi Include RAW + JPEG companions onay kutusu vardır."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "editing-effects",
+      "title": "Doku, Netlik, Pus Gider ve Vinyet’i ayarlayın",
+      "category": "Editing",
+      "summary": "Efektler bölümünden yüzey ayrıntısını, yerel kontrastı, sisi ve kenar parlaklığını ince ayar yapın.",
+      "keywords": [
+        "efektler",
+        "doku",
+        "netlik",
+        "pus gider",
+        "pus",
+        "vinyet",
+        "yumuşat",
+        "ayrıntı",
+        "yerel kontrast",
+        "karanlık kenarlar",
+        "parlak kenarlar"
+      ],
+      "sections": [
+        {
+          "title": "Ayrıntı ve kontrastı ince ayarla",
+          "paragraphs": [
+            "Düzenle içinde Efektler'i genişletin. Doku, ince yerel ayrıntıyı değiştirirken Netlik, orta tonlara daha fazla vurgu yaparak yerel kontrast uygular. Pozitif değerler bu etkileri güçlendirir; negatif değerler onları yumuşatır."
+          ],
+          "steps": [
+            "Fotoğrafın kumaş, yapraklar veya cilt gibi dokulu bir bölümüne bakarken Texture’ı ayarlayın.",
+            "Konu ve kenarlar çevresindeki kontrastı kontrol ederken Netlik’i ayarlayın.",
+            "1:1’de inceleyin ve ardından genel sonucu değerlendirmek için Sığdır’a dönün."
+          ],
+          "tips": [
+            "Yerel bir işlem için, bir maskenin Doku ve Netlik kontrollerini kullanın."
+          ]
+        },
+        {
+          "title": "Pus ve kenar parlaklığını değiştir",
+          "paragraphs": [
+            "Dehaze, görüntünün pus benzeri ton ve renk işlemesini değiştirir. Vinyet, kenar parlaklığını değiştirir: pozitif değerler kenarları koyulaştırır, negatif değerler ise aydınlatır."
+          ],
+          "steps": [
+            "Puslu bir görüntüyü güçlendirmek için Pus Gider'i artırın veya daha yumuşak bir işlem için negatif bir değer deneyin. Ayarlarken hem kontrastı hem de rengi kontrol edin.",
+            "İstediğiniz kenar işlemi için Vinyet’i ayarlayın ve köşeleri inceleyin.",
+            "Özgünle karşılaştırmak için B tuşunu basılı tutun veya Etkiler bölümündeki Sıfırla'yı kullanarak Doku, Netlik, Pus Gider ve Vinyet'i birlikte sıfırlayın."
+          ],
+          "tips": [
+            "Effects’teki Vignette yaratıcı bir kenar işlemesidir. Objektif gölgelemesini düzeltmek istediğinizde Lens corrections kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-tone",
+      "title": "Pozlamayı, kontrastı ve tonal aralığı ayarlayın",
+      "category": "Editing",
+      "summary": "Parlaklık ve kontrastı ayarlamak için Light kontrollerini ve histogramı kullanın, ardından sonucu özgünle karşılaştırın.",
+      "keywords": [
+        "pozlama",
+        "parlaklık",
+        "ışık",
+        "ton",
+        "kontrast",
+        "vurgular",
+        "gölgeler",
+        "beyazlar",
+        "siyahlar",
+        "otomatik",
+        "histogram",
+        "kırpılma",
+        "önce"
+      ],
+      "sections": [
+        {
+          "title": "Işık ile başla",
+          "paragraphs": [
+            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar. Kontrast, bunların ayrımını değiştirir."
+          ],
+          "steps": [
+            "Ana konu için Pozlama’yı ayarlayın.",
+            "Parlak ve karanlık bölgeleri dengelemek için Highlights ve Shadows’u ayarlayın, ardından Whites, Blacks ve Contrast’ı ince ayar yapın.",
+            "Kırpma uyarısını incelemek için histogramın yanındaki Kırpma uyarısı düğmesini kullanın.",
+            "before kontrolünü kullanarak sonucu özgünle karşılaştırın ya da fotoğraf etkin durumdayken B’ye basılı tutun."
+          ],
+          "tips": [
+            "Light’s Reset o grubu sıfırlar. Yalnızca son yaptığınız ayarlamayı geri almak istediğinizde Undo kullanın."
+          ]
+        },
+        {
+          "title": "Başlangıç noktası olarak Otomatik'i kullan",
+          "paragraphs": [
+            "Işık başlığındaki Otomatik, kullanılabilir görüntü önizlemesini analiz eder ve Pozlama, Siyahlar ve Beyazlar'ı ayarlar. Her düzenleme kontrolünü ayarlamaz."
+          ],
+          "steps": [
+            "Fotoğraf önizlemesi görünene kadar bekleyin, ardından Otomatik’e tıklayın.",
+            "Sonucu gözden geçirin ve fotoğraf için kaydırıcıları ince ayarlayın."
+          ],
+          "tips": [
+            "Otomatik, görüntü önizlemesini beklediğini söylüyorsa, önizlemenin yüklenmesine izin verin ve yeniden deneyin.",
+            "Scope menüsü, ton ve rengi incelemek için Waveform, RGB Parade ve Vectorscope seçeneklerini de sunar."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Objektif ve kromatik sapma düzeltmelerini uygulayın",
+      "category": "Editing",
+      "summary": "Eşleşen ya da elle seçilmiş bir objektif profili kullanın veya tam bir profil yoksa elle düzeltmeler yapın.",
+      "keywords": [
+        "objektif",
+        "profil",
+        "bozulma",
+        "vinyet",
+        "gölgelendirme",
+        "kromatik sapma",
+        "saçaklanma",
+        "kırmızı camgöbeği",
+        "mavi sarı",
+        "optik"
+      ],
+      "sections": [
+        {
+          "title": "Bir düzeltme seçin ve doğrulayın",
+          "paragraphs": [
+            "Düzenle bölümünde Objektif düzeltmeleri'ni genişletin. Profil kartı, otomatik kamera/objektif eşleşmesini ve kullanılabilir bir profil olup olmadığını açıklar."
+          ],
+          "steps": [
+            "Profil adını ve eşleştirme açıklamasını okuyun.",
+            "Bir profil mevcut olduğunda Eşleşen objektif profilini kullan seçeneğini etkinleştirin, ardından gerektiğinde Distorsiyonu düzelt ve Objektif gölgelemesini düzelt seçeneklerini belirleyin.",
+            "Gerekirse Lens profile içinde farklı bir giriş seçin ve düzeltmeyi özgünle karşılaştırın.",
+            "Elle yapılan Bozulma ve Vinyet kontrollerini iyileştirin. Renk saçakları için, Kromatik aberasyon altında Kırmızı / Camgöbeği ve Mavi / Sarı ayarlayın."
+          ],
+          "tips": [
+            "Tam eşleşen bir objektif profili bulunmadığında, manuel bozulma ve perspektif kontrolleri kullanılabilir durumda kalır.",
+            "Profil bozulma ve gölgeleme onay kutuları yalnızca seçili profil bu düzeltmeyi sağladığında ve profil etkin olduğunda açılır.",
+            "Elle seçilen bir profilin görsel olarak kontrol edilmesi gerekir; seçim, onun tam eşleşme olduğunu göstermez.",
+            "Objektif ve renk saçılması düzeltmeleri dışa aktarma boyunca yıkıcı olmayan şekilde kalır."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-presets",
+      "title": "Düzenleme hazır ayarlarını uygula, ayarla ve paylaş",
+      "category": "Editing",
+      "summary": "Bir hazır ayara tıklayarak uygulayın, Miktar'ı ayarlayın ve kendi görünümlerinizi kaydedin veya paylaşın.",
+      "keywords": [
+        "hazır ayar",
+        "hazır ayarlar",
+        "topluluk",
+        "galeri",
+        "yerleşik",
+        "favoriler",
+        "hazır ayarı gizle",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "hazır ayarı içe aktar",
+        "görünümü kaydet",
+        "hazır ayarı dene",
+        "hazır ayar miktarı",
+        "hazır ayar gücü",
+        "hazır ayarı devre dışı bırak",
+        "hazır ayarı güncelle",
+        "hazır ayar gönder",
+        "ayarları değiştir"
+      ],
+      "sections": [
+        {
+          "title": "Bir koleksiyon seç",
+          "paragraphs": [
+            "Düzenleme araç çubuğunda Presets'i açın. Built-in, on adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
+          ],
+          "steps": [
+            "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
+            "Bir hazır ayarı favorilere eklemek için yanındaki yıldızı kullanın; Favorites geçerli koleksiyonu filtreler.",
+            "Community içinde Featured, New veya All seçin ve koleksiyonu daraltmak için Subject kullanın. Bir hazır ayarı seçerek açıklamasını, oluşturan kişiyi, sürümünü, Film davranışını ve kullanılabilir örnek fotoğrafları görün."
+          ],
+          "tips": [
+            "Öne çıkanlar, popülerlik sıralaması değil, editoryal bir koleksiyondur.",
+            "Yerleşik bir hazır ayar salt okunurdur. Save a copy… adlı bir kopyayı Yours içine yerleştirir. Hide preset, onu normal Built-in görünümünden kaldırır; Show hidden ve Restore to Built-in onu geri getirir."
+          ]
+        },
+        {
+          "title": "Uygula ve Miktar'ı ayarla",
+          "paragraphs": [
+            "Hazır ayarı hemen ana fotoğrafa uygulamak için bir hazır ayar kartına tıklayın. Kapatmak için aynı karta yeniden tıklayın ya da Aç/Kapat düğmesini kullanın. Fotoğrafınız bu bilgisayarda kalır."
+          ],
+          "steps": [
+            "Bir fotoğraf seçin ve bir hazır ayar kartına tıklayın. Seçilen hazır ayarın adı altında Miktar görünür.",
+            "Miktar'ı %0 ile %100 arasında sürükleyin. Sıfır, hazır ayardan önceki düzenlemeyi geri yükler; %100 tam hazır ayarı kullanır. Miktar'a çift tıklayarak %100'e sıfırlayın.",
+            "Görünümleri değiştirmek için başka bir hazır ayara tıklayın. Geri Al ve Yinele, hazır ayar seçimini, etkin durumunu ve miktarı geri yükler. Seçilen hazır ayar ve miktar fotoğrafla birlikte kaydedilir."
+          ],
+          "tips": [
+            "Film stoğu, Film açık/kapalı ve diğer sabit seçimler, sıfırın üzerindeki herhangi bir miktarda değişir. Ton, renk, eğriler ve sayısal ayarlar Miktar ile değişir. Oluşturan örnekleri fotoğrafınızdan ayrı kalır.",
+            "Hazır ayar kartları arasında geçiş yapmak, görünümlerin birikmemesi için ilk hazır ayardan önceki düzenlemeyi kullanır. Bir Görünüm için pozlama gibi, hazır ayar dışındaki manuel değişiklikler korunur. Hazır ayarın kontrol ettiği bir ayarı elle değiştirmek, onun Miktar ayarlamasını sonlandırır; ardından geçerli düzenleme bir sonraki hazır ayar için başlangıç değeri olur."
+          ]
+        },
+        {
+          "title": "Bir görünümün koruduğu şey",
+          "paragraphs": [
+            "Built-in ve community görünümleri, Edit Exposure, Temp/Tint, capture white balance, RAW düzeltmeleri, film formatı, kırpma, geometri, maskeler, Remove düzeltmeleri, lens düzeltmeleri, keskinleştirme ve gürültü azaltmayı korur. İş akışlarına dahil edilen yaratıcı ayarları değiştirirler.",
+            "Film on, dahil edilen film işlemesini etkinleştirir. Film off, Film'i atlar. Film unchanged, etkin durumunu olduğu gibi bırakır. Bir film işlemesi, Camera EV, otomatik ölçüm, geliştirme, yazdırma, gren ve diğer yaratıcı film kontrollerini bilerek değiştirebilir."
+          ],
+          "tips": [
+            "Görünüm korunması, Look · keep photo corrections ile kaydedilmiş görünümlere uygulanır. Tam düzenleme veya daha eski içe aktarılmış bir hazır ayar, fotoğrafa özgü düzeltmeleri içerebilir; ortaya çıkan fotoğrafı inceleyin ve korumak istediğiniz düzeltmeleri değiştirirse Geri Al'ı kullanın."
+          ]
+        },
+        {
+          "title": "Topluluk hazır ayarları ve güncellemeleri ekle",
+          "paragraphs": [
+            "Add to Yours, seçilen topluluk iş akışını uygulamadan indirir ve kaydeder. Yüklenen iş akışları çevrimdışı çalışır. Mevcut fotoğraf düzenlemeleriniz, ayarlarını hazır ayardan ayrı olarak saklar."
+          ],
+          "steps": [
+            "Fotoğrafınızda kullanmak için bir Topluluk hazır ayarına tıklayın, ardından çevrimdışı bir kopyasını saklamak için Sizin'e ekle'ye tıklayın.",
+            "Daha sonra Yours içinden kullanın ya da genel hazır ayar sayfasını incelemek için Community'e geri dönün.",
+            "Kataloğu kontrol etmek için Yenile'ye tıklayın. Daha yeni bir sürüm listelenirse, Yours içindeki Update saved recipe yalnızca siz seçtiğinizde değiştirir."
+          ],
+          "tips": [
+            "Bir hazır ayarı güncellemek, zaten düzenlediğiniz fotoğrafları değiştirmez.",
+            "Çevrimdışı mesajı, önbelleğe alınmış bir katalog ile kullanılamayan ilk indirme arasındaki farkı belirtir. Önbelleğe alınmamış iş akışları ve oluşturan örnek görselleri bağlantı gerektirebilir; Built-in ve yüklenmiş iş akışları kullanılabilir durumda kalır.",
+            "Update LightTable, bir hazır ayarın bu uygulama sürümünün desteklemediği özelliklere ihtiyaç duyduğu anlamına gelir. Kurulum ve uygulama kontrolleri devre dışı kalır.",
+            "Bir genel hazır ayar sayfasında Open in LightTable, ayrıntıları yüklü uygulamada açar; görünümü otomatik olarak uygulamaz."
+          ]
+        },
+        {
+          "title": "Kaydet, içe aktar ve dışa aktar",
+          "paragraphs": [
+            "Manage…, Manage presets'i açar veya kapatır; bölüm açıkken düğme vurgulanır. Save current look varsayılan olarak Look · keep photo corrections kullanır. Full edit · include photo corrections ayrıca All adjustment settings veya Changed settings only seçeneklerini sunar."
+          ],
+          "steps": [
+            "Hazır ayar kapsamını ve Film profile ile fiziksel ayarları Include edip etmeyeceğinizi seçin, sonra Save new…'e tıklayıp adlandırın.",
+            "İçe aktarmak için Import…’a tıklayın ve hazır ayar dosyalarını seçin. Mac uygulaması ayrıca tüm bir hazır ayar klasörü seçmeyi destekler.",
+            "Uygulamadan önce içe aktarma sonucunu ve yeni hazır ayarın dönüştürme kapsamını gözden geçirin.",
+            "Dışa aktarmak için bir Seçili hazır ayar ve Dışa aktarma biçimi seçin, sonra Dışa Aktar….'e tıklayın."
+          ],
+          "tips": [
+            "LightTable dışa aktarması yerel hazır ayar iş akışını korur. Lightroom XMP ve Capture One stil dışa aktarımları yaklaşık değerdedir.",
+            "Desteklenen dosya seçenekleri .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip ve .json içerir. Kabul edilen bir uzantı, her ayarın dönüştürülebileceğini garanti etmez.",
+            "Daha eski veya Full edit bir hazır ayar için, Apply mapped adjustments dahil edilen ayarlarını değiştirir. Replace adjustment settings ayrıca önce ayarları, maskeleri, Remove düzeltmelerini ve geometrisini sıfırlar. Replace, kırpmayı korur ve hazır ayar Film içeriyorsa ya da aşağıdaki eylemler için Turn Film off'u etkinleştirirseniz Film'i korur."
+          ]
+        },
+        {
+          "title": "Bir topluluk gönderimi hazırlayın",
+          "paragraphs": [
+            "Community yayını incelenir. Gönderim bölümü, hazırlanan görünümdeki tam Develop ve Film ayarlarını, Film davranışını ve koruduğu fotoğraf düzeltmelerini gösterir. Bu özeti incelerken veya bir indirme hazırlarken hiçbir şey yüklenmez."
+          ],
+          "steps": [
+            "Yours içinde bir hazır ayar kaydedin, onu seçin ve Community gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
+            "Prepare community submission…'a tıklayın ve yerel örneklerin oluşturulmasını bekleyin. Hazır ayarı, lisanslı üç önce/sonra fotoğraf çiftini, fotoğraf kredilerini ve hak notlarını içeren ZIP'i kaydedin.",
+            "Paketi açın ve örnekleri inceleyin. Kendi fotoğrafınızı da seçebilir ve düzenlemeyi değiştirmeden paylaşılan görünümün 960 piksellik JPEG'ini kaydetmek için bu fotoğrafta Download example'ı kullanabilirsiniz.",
+            "Open submission form'a tıklayın, paketi ve izin verilen ek örnekleri ekleyin ve göndermeden önce oluşturan bilgilerinizi, açıklamayı ve yayınlama izinlerini ekleyin."
+          ],
+          "tips": [
+            "Üç standart örnek sahne LightTable ile birlikte gelir. Bunların dışa aktarımı fotoğraflarınızı veya kataloğunuzu kullanmaz ve JPEG'leri gömülü fotoğraf üstverisi içermez.",
+            "Gönderim hazırlığı, fotoğrafa özgü düzeltmeleri hariç tutar. Paylaşmadan önce ortaya çıkan görünümü inceleyin.",
+            "Yalnızca yayımlama izniniz olan fotoğrafları paylaşın. Mevcut oluşturan kredisi ve üst hazır ayar atfı korunur; iş akışı yeniden kullanım izni ve fotoğraf gösterme izni ayrıdır."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Renk Karıştırıcı ve Nokta Renk ile tek tek renkleri değiştirin",
+      "category": "Editing",
+      "summary": "Geniş bir renk bandını ayarlayın ya da belirli bir rengi örnekleyin ve onun aralığını, parlaklığını ve uniformity’sini ince ayar yapın.",
+      "keywords": [
+        "hsl",
+        "renk karıştırıcı",
+        "renk karıştırıcı",
+        "nokta rengi",
+        "örnek",
+        "ton",
+        "tekdüzelik",
+        "parlaklık",
+        "doygunluk",
+        "aralık"
+      ],
+      "sections": [
+        {
+          "title": "Bir renk bandını ayarla",
+          "paragraphs": [
+            "Color Mixer, Edit → Color içinde yer alır. Fotoğraf genelinde seçili bant içindeki renkleri değiştirir."
+          ],
+          "steps": [
+            "Renk Karıştırıcı’daki renkli bant düğmelerinden birini seçin.",
+            "O bandı kaydırmak için Hue’yu, renk yoğunluğunu değiştirmek için Saturation’ı ve parlaklığını değiştirmek için Luminance’ı ayarlayın.",
+            "Devam etmek için başka bir band seçin ya da karıştırıcı ayarlarını temizlemek için Color Mixer’daki Reset’i kullanın."
+          ]
+        },
+        {
+          "title": "Belirli bir rengi örnekle",
+          "paragraphs": [
+            "Point Color, örneklenen bir renge kendi kontrollerini verir. Fotoğraf genelinde eşleşen renklere etki eder; alanı da sınırlamanız gerekiyorsa yerel bir maske kullanın."
+          ],
+          "steps": [
+            "Nokta Rengi altında Örnek renk’e tıklayın, ardından fotoğrafta renkli bir yamaya tıklayın.",
+            "Etkilenen tonları daraltmak veya genişletmek için Range’i ayarlayın; ardından Hue shift, Saturation ve Luminance’ı ince ayar yapın.",
+            "Aralıktaki renkleri örneklenen yamaya daha çok benzetmek için Tekdüze ton, Tekdüze doygunluk veya Tekdüze parlaklık kullanın.",
+            "Bir noktayı düzenlemek için seçicide kayıtlı bir noktayı seçin veya kaldırmak için Noktayı sil’i kullanın."
+          ],
+          "tips": [
+            "Nötr gri parçalar yararlı bir renk tonu örneği sağlayamaz; istendiğinde daha renkli bir alan seçin.",
+            "Nokta Rengi en fazla sekiz örneklenmiş nokta tutar. Sekiz nokta zaten varken yeniden örnekleme yaparsanız, sekizinci nokta değiştirilir.",
+            "Nokta Rengi’nin Sıfırla’sı, tam bir Renk sıfırlaması gerektirmeden örneklenen noktaları temizler."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Gölgeleri, orta tonları ve parlak alanları renk derecelendirin",
+      "category": "Editing",
+      "summary": "Ton bölgelerine farklı renk işlemleri uygulayın ve bu işlemlerin nasıl karışacağını kontrol edin.",
+      "keywords": [
+        "renk derecelendirme",
+        "renk derecelendirme",
+        "böl tonlama",
+        "gölgeler",
+        "orta tonlar",
+        "vurgular",
+        "genel dereceleme",
+        "karıştırma",
+        "denge"
+      ],
+      "sections": [
+        {
+          "title": "Bir dereceleme oluştur",
+          "paragraphs": [
+            "Düzenle’deki Color Grading, ayrı Gölgeler, Orta tonlar ve Parlak alanlar seçimlerinin yanı sıra genel bir grade sağlar. Her birinde Renk tonu, Doygunluk ve Luminance kontrolleri bulunur."
+          ],
+          "steps": [
+            "Renk Derecelendirme’yi genişletin ve Gölgeler, Orta tonlar veya Açık tonlar’ı seçin.",
+            "Bir Ton seçin, ardından renk işlemesini görünür kılmak için Doygunluk'u artırın. Gerekirse o ton bölgesi için Parlaklık'ı ayarlayın.",
+            "Diğer bölgeler için tekrarlayın ya da genel işlemi değiştirmek için Edit global grade seçeneğine tıklayın.",
+            "Karıştırma ve Denge’yi, ayarlarken fotoğrafı karşılaştırarak ince ayarlayın.",
+            "Derecelendirmeyi temizlemek için Renk Derecelendirme’nin Sıfırla’sını kullanın."
+          ],
+          "tips": [
+            "Saturation sıfırken Hue’yu değiştirmek görünür renk eklemez. Orta düzey bir saturation değeriyle başlayın.",
+            "Mevcut bir tonu hedeflemek istediğinizde Renk Karıştırıcı veya Nokta Rengi'ni, fotoğraftaki bir konumu hedeflemek istediğinizde ise maske kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Düzenlemeleri seçili fotoğraflara kopyalayın ve pozlamayı eşleştirin",
+      "category": "Editing",
+      "summary": "Aktarılacak ayarları seçin, maskeye özgü sınırlamaları inceleyin veya bir grubu etkin bir pozlama referansıyla eşleştirin.",
+      "keywords": [
+        "ayarları kopyala",
+        "ayarları yapıştır",
+        "toplu iş düzenleme",
+        "eşitle",
+        "otomatik eşitle",
+        "eşitle",
+        "birden çok fotoğraf",
+        "toplam pozlamayı eşleştir",
+        "seçim",
+        "panoya kopyala"
+      ],
+      "sections": [
+        {
+          "title": "Seçili ayarları aktar",
+          "paragraphs": [
+            "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez."
+          ],
+          "steps": [
+            "Kaynak fotoğrafı açın ve Düzenleme ayarlarını kopyala'ya tıklayın ya da Mac'te Command-Shift-C, Linux ve Windows'ta Ctrl-Shift-C tuşlarına basın.",
+            "Aktarmak istediğiniz grupları işaretleyin, ardından Ayarları kopyala’ya tıklayın.",
+            "İstediğiniz hedef fotoğraf ya da fotoğrafları kütüphanede seçin ve Düzenleme ayarlarını yapıştır düğmesine tıklayın veya Command-Shift-V / Ctrl-Shift-V kullanın.",
+            "Tamamlanma mesajını okuyun. Bir toplu iş için Durdur, geçerli fotoğraftan sonra işleme son verir; tamamlanan fotoğraflar yapıştırılan düzenlemeleri korur."
+          ],
+          "tips": [
+            "Crop and geometry, Local masks ve Healing ayrı seçimlerdir ve varsayılan olarak dahil edilmez.",
+            "Healing nokta konumlarını kopyalar ve yalnızca çerçevesi eşleşen fotoğraflar arasında aktarılmalıdır."
+          ]
+        },
+        {
+          "title": "Aktarılan maskeleri gözden geçir",
+          "paragraphs": [
+            "Seçili Local maskeler hedef maskelerin yerini alır. Akıllı seçimler her farklı fotoğraf için yeniden algılanır. Manuel maske şekilleri kopyalanır, bu yüzden yerleşimlerinin yine de kontrol edilmesi gerekir."
+          ],
+          "tips": [
+            "Nesne seçimi, hedefte yeni bir nesne seçimi gerektirir. Boyanmış düzeltmelere sahip akıllı maskelerin de manuel olarak yeniden oluşturulması gerekir; bunlar, kaynağa özgü bir seçimi sessizce kopyalamak yerine hedef yapıştırmanın reddedilmesine neden olur.",
+            "Maskeler aktarılamazsa, diğer grupları uygulamak için Local masks işaretini kaldırarak yeniden kopyalayın.",
+            "Başarısız fotoğraflar için tamamlanma raporunu inceleyin. Bir toplu iş, bazı fotoğraflar değiştirilmiş ve diğerleri değiştirilmeden bırakılmış şekilde tamamlanabilir."
+          ]
+        },
+        {
+          "title": "Toplam pozlamayı eşleştir",
+          "paragraphs": [
+            "Toplam pozlamayı eşleştir, referans olarak etkin fotoğrafı kullanır. Çekim pozlama meta verisi kullanılabildiğinde bu bilgiyi karşılaştırır; aksi halde ortalama görüntü parlaklığına geri döner. Sahne veya ışık farklıysa sonucu gözden geçirin."
+          ],
+          "steps": [
+            "En az iki fotoğraf seçin ve amaçlanan referans fotoğrafı etkinleştirin.",
+            "Referans düzenlemelerin kaydedilmesini bitirmesine izin verin.",
+            "Photo actions içinde Match total exposure seçin ya da Mac menüsünde Library → Match Total Exposure seçin.",
+            "Her sonucu inceleyin. İşlem, ilgili pozlama kontrolünü günceller ve ortaya çıkan ayarı desteklenen aralıkla sınırlar."
+          ],
+          "tips": [
+            "Referans fotoğraf hedef güncellemelerinin dışında bırakılır. Eşleştirme bir başlangıç noktasıdır; özellikle fotoğraflar farklı konular veya kadrajlar içeriyorsa."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Kırpın, düzleştirin, döndürün ve perspektifi düzeltin",
+      "category": "Editing",
+      "summary": "Bir çerçeve ve en-boy oranı ayarlayın, yönlendirme ve perspektifi düzenleyin, ardından kırpma oturumunu kabul edin ya da iptal edin.",
+      "keywords": [
+        "kırp",
+        "en-boy oranı",
+        "düzelt",
+        "döndür",
+        "çevir",
+        "perspektif",
+        "geometri",
+        "düzelt",
+        "seviye",
+        "portre",
+        "manzara",
+        "yeniden boyutlandır"
+      ],
+      "sections": [
+        {
+          "title": "Çerçeveyi ayarla",
+          "paragraphs": [
+            "Düzenleme araç çubuğunda Crop’u açın. En-boy oranı Serbest, Orijinal, standart oranlar ve Özel seçeneklerini sunar. Kırpma göstergesi çerçeveyi ve korunan miktarı gösterir."
+          ],
+          "steps": [
+            "Bir en-boy oranı seçin. Kendi genişlik-yükseklik oranınızı girmek için Özel'i ve yönü değiştirmek için değiştirme düğmesini kullanın.",
+            "Kırpmayı yeniden boyutlandırmak için bir tutamacı sürükleyin; çerçeveyi merkezde tutmak için fotoğraf yakınlaşır. Fotoğrafı altında hareket ettirmek için çerçevenin içinde, yeni bir kırpma çizmek için dışında sürükleyin.",
+            "Seçimi küçük adımlarla taşımak için ok tuşlarını kullanın; daha büyük adımlar için Shift’i basılı tutun.",
+            "Kabul etmek için Bitti'ye tıklayın veya Enter'a basın. Çerçeveyi Kırp'ı açtığınız andaki haline geri yüklemek için İptal'e tıklayın ya da Escape'e basın."
+          ],
+          "tips": [
+            "Oran Kilitle denetimi, yeniden boyutlandırırken geçerli en-boy oranını korumanızı sağlar."
+          ]
+        },
+        {
+          "title": "Geometriyi iyileştir",
+          "paragraphs": [
+            "Kırp ve Döndür ayrıca Düzelt, 90 derece döndürme, yatay ve dikey çevirme ve Perspektif kontrollerini içerir."
+          ],
+          "steps": [
+            "Eğimli bir ufuk için Otomatik seviye’yi deneyin, ardından gerekirse Düzelt’i ince ayarlayın.",
+            "Yön değişiklikleri için sola döndür, sağa döndür veya çevir düğmelerini kullanın.",
+            "Perspective’i genişletin ve Auto upright’ı deneyin ya da Vertical, Horizontal ve Scale’i elle ayarlayın.",
+            "Kenarları ve son kadrajı inceleyin, ardından Bitti’ye tıklayın."
+          ],
+          "tips": [
+            "Otomatik seviye, bulabildiği çizgileri kullanır; algılanan açının fotoğrafa uygun olduğunu varsaymak yerine sonucu inceleyin.",
+            "Kırp’nın Sıfırla’sı kırpma, döndürme, çevirme ve perspektifi birlikte sıfırlar."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Fırça, Doğrusal ve Radyal maskelerle yerel ayarlamalar yapın",
+      "category": "Editing",
+      "summary": "Bir maske boyayın veya çizin, bindirmesini inceleyin ve yalnızca seçili alanı ayarlayın.",
+      "keywords": [
+        "maske",
+        "maskeleme",
+        "yerel ayarlama",
+        "fırça",
+        "doğrusal gradyan",
+        "dairesel gradyan",
+        "yumuşatma",
+        "akış",
+        "bindirme",
+        "karartma",
+        "yak"
+      ],
+      "sections": [
+        {
+          "title": "Elle maske oluştur",
+          "paragraphs": [
+            "Düzenleme araç çubuğunda Maske’yi açın ve Yeni Maske Oluştur altından bir araç seçin. Araçları göstermek veya gizlemek için Yeni Maske Oluştur’a tıklayın. Her maskenin kendi Işık ve Renk ayarları vardır.",
+            "Doku ve Netlik, genel ayarlamalar ve daha önceki maskelerden sonraki görüntüyü kullanır. Bu kontroller bir önizleme güncellemesi gerektirir; sonucu değerlendirmeden önce tamamlanmasını bekleyin."
+          ],
+          "steps": [
+            "Boyamak için Brush, dereceli bir ayarlama için Linear veya dairesel bir ayarlama için Radial seçin.",
+            "Fırça için Boyut, Yumuşak kenar ve Akış'ı seçin, ardından fotoğrafın üzerine boyayın. Doğrusal veya Radyal için, şekli ayarlamak üzere fotoğraf üzerinde sürükleyin.",
+            "Seçili alanı kontrol ederken Show Overlay’i açık tutun, ardından fotoğrafı değerlendirmek için kapatın.",
+            "Seçili maskenin Light veya Color kaydırıcılarını ayarlayın. Genel gücünü azaltmak için Range içindeki Amount’u kullanın.",
+            "Maskenin adını ••• düğmesini kullanarak yeniden adlandırın; böylece amacı daha sonra kolayca anlaşılır."
+          ],
+          "tips": [
+            "Ekle, Çıkar ve Kesiştir sizi boyama iyileştirme modlarına sokar. Doğrusal veya Radyal bir maske için, şekli düzenlemek üzere Edit Shape’i seçin.",
+            "Etkinleştir, bir maskenin etkisini geçici olarak kapatır ya da açar. Tersine Çevir, seçimini tersler.",
+            "Düzenleyici en fazla on altı yerel maskeye izin verir. Maskeyi Sil, seçili maskeyi kaldırır; Tümünü Temizle, fotoğrafın maskelerini kaldırır ve bunların hiçbiri yoksa kullanılamaz.",
+            "Maske sabitleme noktaları ve fırça konturları, yakınlaştırdıkça keskin ve aynı kalınlıkta kalır. Kontur, fotoğrafta kapladığı alanla birlikte büyür."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "HDR braketlerini, panoramaları ve odak yığınlarını birleştirin",
+      "category": "Editing",
+      "summary": "Birbirinden farklı özgünlerden oluşan bir diziyi yeni bir 16-bit TIFF’e birleştirin, ardından birleştirilmiş sonucu düzenleyin.",
+      "keywords": [
+        "fotoğraf birleştirme",
+        "birleştir",
+        "hdr",
+        "yüksek dinamik aralık",
+        "Pozlama birleştirme",
+        "braket",
+        "panorama",
+        "pano",
+        "birleştir",
+        "odak yığını",
+        "odak yığma",
+        "tiff",
+        "hizalama"
+      ],
+      "sections": [
+        {
+          "title": "Mac uygulamasında birleştirmeyi başlat",
+          "paragraphs": [
+            "Fotoğraf Birleştirme, her orijinalin nötr bir renderını kullanır ve LightTable Birleşimleri içinde yeni bir 16-bit TIFF oluşturur. Son görünümünüzü, kırpmanızı ve yerel ayarlamalarınızı birleştirilmiş sonuca uygulayın. Kaynak orijinaller kullanılabilir kalır."
+          ],
+          "steps": [
+            "Kütüphanede en az iki farklı özgün öğe seçin. Bir özgünün birden çok sanal kopyası tek bir kaynak olarak sayılır.",
+            "Mac menüsünde Fotoğraf → Fotoğraf Birleştir… seçin.",
+            "HDR · exposure fusion, Panorama · feature aligned veya Focus stack · sharpness fused seçin.",
+            "İsteğe bağlı olarak bir Sonuç adı girin, ardından Birleştir’e tıklayın.",
+            "Hazırlık, hizalama, birleştirme ve kaydetme ilerlemesini izleyin. Uygulama tamamlandığını bildirip kitaplığı yenilediğinde, TIFF’i LightTable Merges içinde açın ve inceleyin."
+          ],
+          "tips": [
+            "Aynı anda yalnızca bir birleştirme çalışabilir. Var olan bir dosya adı korunur; aynı ada sahip yeni bir birleştirme numaralı bir sonek alır.",
+            "Birleştir, normalde her girdi dosyasını uzun kenarda en fazla 6.000 piksele kadar işler. Bu nedenle birleşik sonuç, tam çözünürlüklü kaynak diziden daha az ayrıntıya sahip olabilir.",
+            "Birleştirme hata bildirirse, özel mesajı okuyun ve yeniden denemeden önce giriş seçimini düzeltin."
+          ]
+        },
+        {
+          "title": "Uygun girdileri seçin",
+          "paragraphs": [
+            "HDR, boyutları eşleşen 2–9 poz braketli fotoğrafı kabul eder. Kullanışlı tonları dengelemek için görüntü olarak işlenen kareleri hizalar ve poz birleştirmesi yapar. Hareket eden nesnelerde ve kenarlarda harmanlama kusurlarını inceleyin.",
+            "Panorama, 2–20 örtüşen kare kabul eder. Komşu kareleri sıralı olarak seçin ki bitişik girişler görsel ayrıntı paylaşsın. Uygulama özellikleri hizalar ve örtüşmeleri birleştirir; özelliksiz alanlar veya yetersiz örtüşme güvenilir bir birleştirmeyi engelleyebilir. Panorama tuvalleri 120 megapiksel ile sınırlıdır.",
+            "Odak yığını, boyutları eşleşen 2–60 odak braketli fotoğrafı kabul eder. Ortak kadrajı paylaşan bir tripod veya focus-rail dizisi kullanın. Uygulama kareleri hizalar, net bölgeleri birleştirir ve onların ortak hizalanmış alanına kırpar."
+          ],
+          "steps": [
+            "HDR için, vurguları, gölgeleri ve pozlamalar arasında hareket eden her şeyi inceleyin.",
+            "Panorama için birleşim yerlerini ve dış sınırı inceleyin, ardından sonucu gerektiği gibi kırpın.",
+            "Focus stack için, keskin bölgeler arasındaki geçişleri, ön plan kenarlarını ve son kırpımı 1:1’de inceleyin."
+          ],
+          "tips": [
+            "Buradaki HDR, işlenmiş bir TIFF’e exposure fusion’dur. Scene-linear RAW veya DNG ana dosyası üretmez.",
+            "Bir hizalama hatası, karelerin yeterli örtüşmeye veya ortak bir alana sahip olmadığını gösterebilir. Alakasız kareler eklemek yerine daha tutarlı bir dizi deneyin."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Maskeleri boyama, aralıklar ve birleştirilmiş seçimlerle ince ayarlayın",
+      "category": "Editing",
+      "summary": "Alan ekleyin, çıkarın veya kesiştirin; ardından bir ayarlamayı parlaklık ya da örneklenmiş renkle sınırlandırın.",
+      "keywords": [
+        "maske iyileştirme",
+        "ekle",
+        "çıkar",
+        "kesiştir",
+        "bileşen",
+        "parlaklık aralığı",
+        "renk aralığı",
+        "renk aralığı",
+        "örnek renk",
+        "opaklık",
+        "miktar",
+        "tersine çevir"
+      ],
+      "sections": [
+        {
+          "title": "Boyayarak iyileştir",
+          "paragraphs": [
+            "İyileştirmeden önce maskeyi maske listesinden seçin. Add seçimi genişletir; Subtract boyanan alanları kaldırır; Intersect, mevcut seçimin yalnızca boyanan alanını korur."
+          ],
+          "steps": [
+            "Seçili Maske altında Ekle, Çıkar veya Kesiştir seçin.",
+            "Boyut, Yumuşatma ve Akış’ı ayarlayın, ardından bindirmeyi izleyerek boyama yapın.",
+            "Ekle kullanırken, Mac’te geçici olarak çıkarmak için Option tuşunu basılı tutun.",
+            "Bindirmeyi kapatın ve ayarlamayı inceleyin. Geri almak istediğiniz bir ince ayar için Undo kullanın."
+          ]
+        },
+        {
+          "title": "Akıllı bir seçimi birleştir",
+          "paragraphs": [
+            "Akıllı seçim eylemi, bir sonraki akıllı seçimin yeni bir maske mi olacağını yoksa şu anda seçili maskeyle mi birleşeceğini kontrol eder."
+          ],
+          "steps": [
+            "Var olan bir maskeyi seçin, ardından Yeni Maske Oluştur’u genişletin.",
+            "Akıllı seçim eyleminde Seçilmiş maskeye ekle, Seçilmiş maskeden çıkar veya Seçilmiş maskeyle kesiştir seçeneğini belirleyin.",
+            "Konu veya Gökyüzü gibi akıllı aracı seçin ve birleşik sonucu inceleyin."
+          ],
+          "tips": [
+            "Bir sonraki akıllı seçimin bağımsız ayarlara sahip olmasını istediğinizde Akıllı seçim eylemini Yeni maske oluştur'a geri ayarlayın.",
+            "Bir maskenin bileşen sınırı vardır; panel, başka bir akıllı bileşenin eklenemediğini bildirir."
+          ]
+        },
+        {
+          "title": "Parlaklık veya renge göre sınırla",
+          "paragraphs": [
+            "Range, seçili bir maskeyi daha da daraltır. Luminance Low ve High parlaklık değerlerini sınırlar. Colour range bir tonu hedefler ve Miktar, tüm maskenin gücünü kontrol eder."
+          ],
+          "steps": [
+            "Seçili maskenin Range’ini genişletin ve bindirmeyi kontrol ederken Luminance Low ile Luminance High’ı ayarlayın.",
+            "Renk aralığını etkinleştirin, ardından Rengi örnekle'ye tıklayıp renkli bir noktayı örnekleyin veya ortalamasını almak için Shift'e basılı tutup bir alan üzerinde sürükleyin.",
+            "Renk tonu, Aralık ve Renk miktarını ince ayar yapın; ardından genel ayar gücü için Miktar’ı kullanın."
+          ],
+          "tips": [
+            "Neredeyse nötr bir alan yararlı bir renk tonu örneği sağlamaz. İstendiğinde daha renkli bir alan seçin."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Lekeleri kaldırın ve İyileştir veya Klonla düzeltmelerini ince ayarlayın",
+      "category": "Editing",
+      "summary": "Dikkat dağıtan unsurların üzerini boyayın, nokta görünürlüğünü inceleyin ve bir düzeltmenin kaynağını veya hedefini taşıyın.",
+      "keywords": [
+        "kaldır",
+        "iyileştir",
+        "iyileştirme",
+        "klonla",
+        "retuş",
+        "toz",
+        "nokta kaldırma",
+        "noktaları görselleştir",
+        "kaynak",
+        "hedef",
+        "dikkat dağıtıcı unsur"
+      ],
+      "sections": [
+        {
+          "title": "Bir düzeltme oluştur",
+          "paragraphs": [
+            "Düzenleme araç çubuğunda Remove’u açın. Remove, Heal ve Clone ayrı modlardır. Heal ve Clone başlangıç kaynağını otomatik olarak seçer; uygun olduğunu varsaymak yerine o kaynağı inceleyin.",
+            "Düzeltmeler sırayla uygulanır, bu yüzden sonraki bir kaynak daha önceki bir düzeltmeyi içerebilir. Sonucu değerlendirmeden veya düzeltilmiş alanın etrafında keskinleştirmeden önce önizleme güncellemesini bekleyin."
+          ],
+          "steps": [
+            "Kaldır, İyileştir veya Klonla seçin, ardından Boyut, Yumuşatma ve Opaklık’ı ayarlayın.",
+            "Fotoğraftaki dikkat dağıtıcı bir noktaya tıklayın veya sürükleyin.",
+            "Küçük toz noktaları için Visualize Spots’u etkinleştirin ve kenarları incelemeyi kolaylaştırmak için Threshold’u ayarlayın.",
+            "Noktaları Görselleştir’i kapatın ve düzeltilmiş fotoğrafı inceleyin."
+          ],
+          "tips": [
+            "Bir düzeltmeyi seçip farklı bir kip seçmek, o düzeltmenin kipini değiştirir."
+          ]
+        },
+        {
+          "title": "Mevcut bir düzeltmeyi ince ayarla",
+          "paragraphs": [
+            "Kontrollerini göstermek için listedeki bir düzeltmeyi seçin. Görüntü üzerindeki daireler, düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
+            "Hassas yerleştirme için yakınlaştırın. Daire konturları ve sabitleme noktaları her yakınlaştırma seviyesinde keskin kalır; daireler fotoğrafın aynı alanını göstermeye devam eder."
+          ],
+          "steps": [
+            "Düzeltmeyi yeniden konumlandırmak için hedef daireyi sürükleyin veya Move Target’ı seçip yeni konumuna tıklayın.",
+            "Heal veya Clone için kaynak dairesini daha iyi bir alana sürükleyin. Refresh Source farklı bir kaynak konumu dener.",
+            "Düzeltmenin kenarı veya gücü iyileştirme gerektiriyorsa Yumuşatma veya Opaklık’ı ayarlayın.",
+            "Karşılaştırmak için Bu düzeltmeyi etkinleştir’i açıp kapatın ya da kaldırmak için Düzeltmeyi sil’i kullanın."
+          ],
+          "tips": [
+            "Remove, bir kaynak dairesi veya Refresh Source göstermez. Bu kaynak kontrolleri Heal ve Clone için geçerlidir.",
+            "Tümünü Temizle, fotoğrafın Kaldır, İyileştir ve Klonla düzeltmelerini kaldırır ve bunların hiçbiri yoksa kullanılamaz. Yanlışlıkla yapılan bir düzenleme değişikliğini geri almak için Geri Al’ı kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Düzenlemeleri kaydedin ve kaydedilmemiş değişiklikleri kurtarın",
+      "category": "Editing",
+      "summary": "Düzenlemeler otomatik olarak kaydedilir. Kaydetme durumunu kontrol edin, başarısız bir kaydetmeyi yeniden deneyin veya yeniden açtıktan sonra hangi düzenlemelerin kurtarılacağını seçin.",
+      "keywords": [
+        "kaydet",
+        "otomatik kaydet",
+        "kaydedilmemiş",
+        "kurtarma",
+        "çökme",
+        "orijinal",
+        "yıkıcı olmayan",
+        "yeniden dene",
+        "kaydetme"
+      ],
+      "sections": [
+        {
+          "title": "Çalışmanızın kaydedildiğini kontrol edin",
+          "paragraphs": [
+            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur."
+          ],
+          "steps": [
+            "Ayarlamanızı yapın, ardından uygulamadaki kaydetme durumunu kontrol edin.",
+            "Kaydetiliyor… ifadesinin Kaydedildi durumuna dönmesini bekleyin. Kaydetme, bekleyen düzenleme geçmişi yazımlarını da içerir.",
+            "Durum Edits not saved diyorsa, Retry save kullanın. Kaydetme başarısız olurken pencereyi açık tutun."
+          ],
+          "tips": [
+            "Saved · recovery needs attention, kaydetme işleminin tamamlandığı ancak yerel kurtarma sisteminin bir sorun bildirdiği anlamına gelir. Kullanılabilen yeniden dene denetimini kullanın ve durum mesajını okuyun."
+          ]
+        },
+        {
+          "title": "Kurtarılan veya kaydedilmiş düzenlemeleri seç",
+          "paragraphs": [
+            "Yerel kurtarma, kitaplık açıldığında bekleyen değişiklikler bulursa, kaydedilmemiş düzenlemeler kurtarılsın mı? etkilenen fotoğrafları listeler. Restore edits, kaydedilmiş ayarlarını kurtarılan ayarlarla değiştirir. Keep saved edits, katalog sürümünü korur ve bu kurtarma taslaklarını atar."
+          ],
+          "steps": [
+            "Etkilenen fotoğraf adlarını okuyun ve Düzenlemeleri geri yükle veya Kaydedilmiş düzenlemeleri koru seçin.",
+            "Geri yüklerseniz, uygulamayı kapatmadan önce kaydetmenin tamamlanmasını bekleyin."
+          ],
+          "tips": [
+            "Yerel depolama veya masaüstü kurtarma günlüğü başarısız olursa kurtarma kullanılamayabilir. Uygulama bu durumu bildirir; bu, kaydedilmemiş her düzenlemenin kurtarılabileceğinin garantisi değildir.",
+            "Bir orijinal kullanılamıyorsa veya değiştiyse, kurtarma kaydı potansiyel olarak farklı bir fotoğrafa uygulanmak yerine korunur. Bazı kurtarma taslaklarında, tüm orijinali doğrulayamadıkları için kısmi kimlik bildirimi görünür. Bu, eski taslaklarda veya klasör modu kullanılırken olabilir. Bunları yalnızca orijinal fotoğraflar değiştirilmemişse geri yükleyin."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Konu, Gökyüzü, Nesne, Derinlik veya Kişiler’i seçin",
+      "category": "Editing",
+      "summary": "Cihazda yerel seçimler oluşturun, doğruluklarını inceleyin ve ayarları uygulamadan önce sonucu iyileştirin.",
+      "keywords": [
+        "ai maske",
+        "konu",
+        "gökyüzü",
+        "nesne",
+        "derinlik",
+        "kişiler",
+        "kişi",
+        "yüz",
+        "cilt",
+        "saç",
+        "gözler",
+        "dişler",
+        "portre",
+        "arka planı seç"
+      ],
+      "sections": [
+        {
+          "title": "Akıllı bir seçim oluştur",
+          "paragraphs": [
+            "Maske, Konu, Gökyüzü, Nesne, Derinlik ve Kişiler seçimlerini sunar. Bunlar yerel olarak çalışır; kullanılabilir yöntemler seçim türüne ve platforma bağlıdır."
+          ],
+          "steps": [
+            "Maske’yi açın ve Yeni Maske Oluştur’u genişletin.",
+            "Otomatik seçim için Konu veya Gökyüzü seçin. Nesne için Nesne'ye tıklayın, ardından fotoğraftaki nesneye tıklayın.",
+            "Göreli mesafeye göre bir seçim yapmak için Derinlik'i seçin, ardından Aralık'ı açıp Uzak sınır ve Yakın sınır'ı ayarlayın. Derinlik uzaktan yakına doğru ilerler.",
+            "Bindirmeyi Göster’i inceleyin ve Işık veya Renk’i ayarlamadan önce kaçırılan ya da fazla alanları düzeltin."
+          ],
+          "tips": [
+            "Subject, Sky ve Object yerel, görüntü tabanlı tahminler kullanabilir. Özellikle konu ve arka plan benzer göründüğünde kenarları kaçırabilir veya yanlış bölgeyi seçebilirler.",
+            "Derinlik, varsa gömülü çekim derinliğini kullanır; aksi halde yerel bir tahmin kullanır. Tahmini derinlik görecelidir ve hatalı olabilir.",
+            "Ortaya çıkan seçimin dışındaki alanı ayarlamak istiyorsanız Tersine Çevir’i kullanın."
+          ]
+        },
+        {
+          "title": "Kişileri veya yüz bölgelerini seçin",
+          "paragraphs": [
+            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cildi yumuşat seçeneklerini sunar. Bu kontroller macOS 14 veya sonraki sürümlerde Vision yardımcısını gerektirir ve Linux ile Windows'ta gizlidir. Yüz cildi ve saç tahmin edilir, kimlik çıkarımı yapılmaz."
+          ],
+          "steps": [
+            "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
+            "Bindirmeyi inceleyin ve gerektiğinde sınırların çevresine boyalı iyileştirmeler uygulayın.",
+            "Cildi Yumuşat için otomatik uygulanan Doku ve Netlik azaltımını inceleyin, ardından portreye uygun olacak şekilde ayarlayın."
+          ],
+          "tips": [
+            "Maske panelindeki kullanılabilirlik veya algılama hatasını okuyun. Bir aracın menüde görünmesi, gerekli yardımcı bileşenin veya kullanılabilir bir seçimin mevcut olduğunu garanti etmez."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Beyaz dengesini ve genel rengi ayarlayın",
+      "category": "Editing",
+      "summary": "Geçici ve Renk tonu’nu kullanın veya nötr bir alan örnekleyin, ardından Canlılık ve Doygunluk’u ayarlayın.",
+      "keywords": [
+        "beyaz dengesi",
+        "wb",
+        "sıcaklık",
+        "sıcaklık",
+        "ton",
+        "nötr",
+        "damlalık",
+        "renk tonu",
+        "canlılık",
+        "doygunluk"
+      ],
+      "sections": [
+        {
+          "title": "Bir renk tonunu nötrleştir",
+          "paragraphs": [
+            "Düzenle bölümündeki Renk kısmı, Sıcaklık ve Renk tonu ile birlikte Sıcaklık yanında bir beyaz dengesi damlalığı içerir. Bunlar Düzenle panelinin sonlandırma kontrolleridir."
+          ],
+          "steps": [
+            "Düzenle'yi açın ve Renk'i genişletin.",
+            "Temp yanındaki beyaz dengesi damlalığına tıklayın, ardından fotoğrafta nötr gri olması gereken bir alana tıklayın.",
+            "Örneklenen sonuç çok sıcak, soğuk, yeşil ya da macenta ise Temp ve Tint’i gözle ince ayar yapın.",
+            "Canlılık ve Doygunluk’u ayarlayarak rengin genel yoğunluğunu kontrol edin."
+          ],
+          "tips": [
+            "Görünür bir nötr yama seçin. Neredeyse siyah bir örnek, Örneklemek için fazla karanlık sonucunu üretir; kullanılamayan bir önizleme bekleme mesajı üretir.",
+            "Bir nokta seçmeden örnekleme modundan çıkmak için damlalığa yeniden tıklayın.",
+            "Color için Reset, Color Mixer, Point Color ve Color Grading dahil olmak üzere ilişkili renk ayarlarını da sıfırlar. Daha dar kapsamlı bir değişiklik için bir aracın kendi Reset’ini kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-curves",
+      "title": "Eğrilerle kontrastı ve rengi şekillendirin",
+      "category": "Editing",
+      "summary": "Birleşik RGB kanalı veya ayrı kırmızı, yeşil ve mavi kanallar için eğri noktaları ekleyin ve taşıyın.",
+      "keywords": [
+        "eğri",
+        "eğriler",
+        "ton eğrisi",
+        "rgb",
+        "kırmızı",
+        "yeşil",
+        "mavi",
+        "kontrast",
+        "kontrol noktası",
+        "s eğrisi"
+      ],
+      "sections": [
+        {
+          "title": "Bir eğriyi düzenle",
+          "paragraphs": [
+            "Eğri grafiğinde yatay yön, daha koyu giriş tonlarından daha parlak giriş tonlarına doğru ilerler. Bir noktayı yukarı taşımak çıkışını yükseltir; aşağı taşımak düşürür. RGB birleşik eğriyi ayarlarken R, G ve B ayrı kanalları etkiler."
+          ],
+          "steps": [
+            "Düzenle'yi açın ve Eğri'yi genişletin.",
+            "RGB, R, G veya B seçin.",
+            "Bir nokta eklemek için grafiğe tıklayın, ardından eğriyi şekillendirmek için sürükleyin. Mevcut bir tutamacı taşımak için sürükleyin.",
+            "Bir iç noktayı kaldırmak için üzerine çift tıklayın. İki uç nokta tutamacı yerinde kalır.",
+            "Eğri’nin Sıfırla’sını kullanarak eğrileri sıfırlayın veya son değişikliği geri almak için Geri Al’ı kullanın."
+          ],
+          "tips": [
+            "Birkaç nokta kullanın ve çalışırken fotoğrafı karşılaştırın; kanal eğrileri güçlü renk kaymaları oluşturabilir.",
+            "Saklanan veya içe aktarılan bir eğri, siz onu düzenleyene kadar tam kaydedilmiş tablosunu korur. Uygulama, düzenleme için temsilî tutamaçları yeniden oluşturur; bu nedenle ilk ayarlama, içe aktarılan bir eğriyi taşıdığınız noktadan öteye yeniden şekillendirebilir."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Keskinleştirin, gürültüyü azaltın ve Geliştir’i kullanın",
+      "category": "Editing",
+      "summary": "Ayrıntıyı 1:1’de inceleyin, sıradan ayrıntı kontrollerini uygulayın veya kullanılabiliyorsa yerel öğrenilmiş gürültü azaltmayı çalıştırın.",
+      "keywords": [
+        "ayrıntı",
+        "keskinleştirme",
+        "gürültü",
+        "gürültü azaltma",
+        "gürültü azaltma",
+        "geliştir",
+        "süper çözünürlük",
+        "yükselt",
+        "doku",
+        "netlik",
+        "pus gider",
+        "vinyet",
+        "sensör"
+      ],
+      "sections": [
+        {
+          "title": "Ayrıntıyı 1:1'de değerlendir",
+          "paragraphs": [
+            "Ayrıntı bölümünde Keskinleştirme, Yarıçap, Ayrıntı, Maskeleme, Luminance NR ve Color NR bulunur. Efektler bölümünde Doku, Netlik, Pus Gider ve Vinyet yer alır."
+          ],
+          "steps": [
+            "Bir fotoğraf açın ve Sığdır ile 1:1 arasında geçiş yapmak için Boşluk’u kullanın.",
+            "Edit içinde Detail bölümünü genişletin. Hem dokulu hem de düz alanlara bakarak gürültü azaltma ve keskinleştirmeyi ayarlayın.",
+            "Doku, yerel kontrast, pus veya kenar gölgeleme için Effects’i kullanın; ardından tüm fotoğrafı Fit’te kontrol edin.",
+            "O grubu yeniden başlatmak istiyorsanız ilgili bölümün Sıfırla’sını kullanın."
+          ],
+          "tips": [
+            "Ayrıntı kontrolleri hem Film hem de Develop modlarında çalışır. Keskinleştirmeyi yalnızca küçük bir Fit önizlemesine bakarak değerlendirmeyin."
+          ]
+        },
+        {
+          "title": "Eğitilmiş gürültü azaltmayı bir RAW fotoğrafta çalıştırın",
+          "paragraphs": [
+            "RAW fotoğraflar Sensor noise reduction ve Learned denoise kontrollerini gösterebilir. Learned denoise, Apply denoise öğesine bastığınızda yerel olarak çalışır; Strength’i oynatmak onu canlı olarak çalıştırmaz."
+          ],
+          "steps": [
+            "Bir RAW fotoğraf seçin ve Ayrıntı’yı genişletin.",
+            "Gürültü azaltma uygula’nın kullanılabilir olduğunu kontrol edin, Güç seçin ve Gürültü azaltma uygula’ya tıklayın.",
+            "İlerleme mesajını izleyin. İşi durdurmanız gerekirse İptal’i kullanın.",
+            "Tamamlanan önizlemeyi 1:1’de inceleyin."
+          ],
+          "tips": [
+            "Öğrenilmiş gürültü azaltma, macOS çıkarım yardımcısını ve uyumlu bir yerel modeli gerektirir. Linux ve Windows'ta kullanılamaz. Olağan gürültü azaltma ve keskinleştirme kullanılabilir durumda kalır. Geliştirme sürümlerinde model eksik olabilir; başlamadan önce kullanılabilirlik mesajını okuyun."
+          ]
+        },
+        {
+          "title": "Mac uygulamasında geliştirilmiş bir türev oluşturun",
+          "paragraphs": [
+            "Fotoğraf → Enhance Photo… seçeneği Denoise ve Super resolution sunar ve seçilen işlem başarılı olduğunda yeni bir 16-bit ana dosya yazar. Özgün dosya değişmeden kalır."
+          ],
+          "steps": [
+            "Fotoğrafı seçin, Fotoğraf → Fotoğrafı Geliştir… seçin ve kullanılabilirlik mesajını okuyun.",
+            "Geliştirmeyi seçin ve kullanılabiliyorsa Geliştir’e tıklayın.",
+            "Tamamlandıktan sonra yeni sonucu yenilenmiş kitaplıkta bulun ve inceleyin."
+          ],
+          "tips": [
+            "Kullanılamayan geliştirmeler devre dışı bırakılır. Süper çözünürlüğün birlikte gelen modeli yoktur ve uyumlu bir modelin yerel olarak yüklü olmasını gerektirir.",
+            "Geliştirme ayrıntı üretebilir; ince dokunun sadık bir kaydı olarak kabul etmeden önce çıktıyı değerlendirin."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Düzenlemeleri geri alın, Geçmiş’i geri yükleyin ve anlık görüntüler kaydedin",
+      "category": "Editing",
+      "summary": "Yakın zamandaki çalışmalar için Undo, kayıtlı düzenleme adımları için History ve yeniden dönmek istediğiniz görünümler için isimli anlık görüntüler kullanın.",
+      "keywords": [
+        "geri al",
+        "yeniden yap",
+        "geçmiş",
+        "anlık görüntü",
+        "sürüm",
+        "geri yükle",
+        "geri al",
+        "sıfırla"
+      ],
+      "sections": [
+        {
+          "title": "Daha önceki bir adımı geri al veya geri yükle",
+          "paragraphs": [
+            "Geri Al ve yeniden yap, geçerli oturum sırasında her fotoğrafı izler. Katalog kitaplıklarında Geçmiş, uygulamadan çıktıktan sonra da kalıcıdır. Yakındaki ayarlamalar bir geçmiş adımında birleştirilebilir; bu nedenle liste, her kaydırıcı konumunun kaydı değildir."
+          ],
+          "steps": [
+            "Geri almak için Mac'te Command-Z, Linux ve Windows'ta Ctrl-Z kullanın. Yine yapmak için Shift ekleyin.",
+            "Geçerli fotoğrafın kayıtlı adımlarını en yeni olandan başlayarak görmek için düzenleme araç çubuğunda History’yi açın.",
+            "Ayarlarını geri yüklemek için bir adıma tıklayın. Bir adımı geri yüklemek, geri alınabilir bir düzenlemedir."
+          ],
+          "tips": [
+            "Kalıcı History bir katalog kütüphanesi gerektirir. Sadece klasör kullanımında yine de oturum Undo ve Redo desteklenir.",
+            "Temizle, fotoğrafın kayıtlı geçmiş adımlarını kaldırır; bu bir ayar sıfırlama komutu değildir."
+          ]
+        },
+        {
+          "title": "Adlandırılmış bir görünümü koru",
+          "paragraphs": [
+            "Bir anlık görüntü, fotoğrafın geçerli ayarlama ayarlarını, kırpmayı, maskeleri, Kaldır düzeltmelerini ve optiği kaydeder. Bu, bu fotoğraf için kaydedilmiş bir düzenleme durumudur. Fotoğraf yüklenene kadar Anlık görüntü oluştur kullanılamaz."
+          ],
+          "steps": [
+            "Geçmiş’i açın, Anlık Görüntüler’i genişletin ve Anlık görüntü oluştur’a tıklayın.",
+            "Yumuşak portre veya Rötuş öncesi gibi anlamlı bir ad girin.",
+            "Daha sonra uygulamak için anlık görüntünün adına tıklayın. Az önce değiştirdiğiniz duruma dönmek istiyorsanız Undo kullanın."
+          ],
+          "tips": [
+            "Fotoğraf en fazla 50 anlık görüntü tutar; bu sınırın ötesinde yeni bir tane oluşturmak listedeki en eski anlık görüntüyü düşürür.",
+            "Bir anlık görüntünün yanındaki ×, orijinal fotoğrafı değil, o adlandırılmış anlık görüntüyü siler."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ],
+      "categoryLabel": "Düzenleme"
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Film grenini ve biçimini ayarla",
+      "category": "Film",
+      "summary": "Greni film stoğuna göre denetleyin ve simüle edilen film boyutunu seçin.",
+      "keywords": [
+        "gren",
+        "boyut",
+        "doku",
+        "35mm",
+        "orta format",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "parçacık",
+        "gürültü"
+      ],
+      "sections": [
+        {
+          "title": "Biçimi ve gren'i ayarla",
+          "paragraphs": [
+            "Film formatı, simülasyon tarafından kullanılan fiziksel uzun kenarı belirler. Seçenekler 35 mm, 645, 6 × 6, 6 × 7 ve 4 × 5’tir; bu ayar fotoğrafı kırpmaktan ayrıdır.",
+            "Gren boyutu, seçilen film stoğunun temel parçacık alanını çarpar. Gösterim, ortaya çıkan alanı µm² olarak gösterir; bu yüzden aynı çarpan, film stoğunu değiştirdikten sonra farklı bir alan gösterebilir."
+          ],
+          "steps": [
+            "Film profilinde, Film formatı’nı seçin.",
+            "Film profil etkin olduğunda otomatik açılan Fiziksel film aşamaları’nı kullanın. Daralttıysanız bölümü yeniden açın.",
+            "Gren boyutunu etkinleştirin ve kaydırıcısını ayarlayın ya da greni devre dışı bırakmak için onay kutusunu temizleyin.",
+            "Görüntüyü 1:1’de inceleyin ve dokuyu değerlendirmeden önce önizleme ayrıntısının tamamlanmasını bekleyin."
+          ]
+        },
+        {
+          "title": "Numaranın neyi temsil ettiği",
+          "paragraphs": [
+            "Her film stoğu için temel gren değerleri, görsel başlangıç noktaları olarak film hızından türetilir. Bunlar, her emülsiyon için laboratuvar tane yapısı ölçümleri değildir.",
+            "Tane boyutu ayarı film simülasyonuna aittir. Düzenle bölümündeki Ayrıntı keskinleştirme ve gürültü azaltma ayrı ayarlardır."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Halasyon, difüzyon ve tarama karakterini ayarlayın",
+      "category": "Film",
+      "summary": "Filmin fiziksel efektlerini ve seçili çıkış iş akışını ince ayarlayın.",
+      "keywords": [
+        "halasyon",
+        "parıltı",
+        "ışıma",
+        "dağıtım",
+        "kuplörler",
+        "parlama",
+        "tara",
+        "keskinlik",
+        "yumuşaklık",
+        "tarayıcı",
+        "ön flaş"
+      ],
+      "sections": [
+        {
+          "title": "Fiziksel film aşamaları",
+          "paragraphs": [
+            "Araç şeridinde Film’i seçin, ardından Film profili’ni etkinleştirin. Fiziksel film aşamaları otomatik olarak açılır; sonradan daraltabilirsiniz. Kuplörler, Halasyon, Gren boyutu ve Parlama yazdırma öğelerinin her birinde bir etkinleştirme onay kutusu ve bir miktar denetimi vardır. Bir aşamayı kapatmak, miktar kaydırıcısını devre dışı bırakır.",
+            "Yakalama difüzyonu, modellenmiş kamera aşamasını değiştirir. Baskı parlaması ve Baskı ön flaşı baskı aşamasına aittir ve doğrudan slayt taramalarında kullanılamaz."
+          ],
+          "steps": [
+            "Aşama kontrollerini ince ayarlamadan önce film stoğunu ve Çıkış iş akışını seçin.",
+            "Bir seferde bir aşamayı değiştirin ve sonucu karşılaştırın.",
+            "Seçili film stoğunu değiştirmeden katkısını karşılaştırmak için her aşamanın onay kutusunu kullanın."
+          ]
+        },
+        {
+          "title": "Tarama kontrolleri",
+          "paragraphs": [
+            "Tara yumuşaklığı, seçili çıkış iş akışına objektif bulanıklığı ekler. Tara keskinliği, o iş akışının keskinleştirmesini ölçekler; Tara keskinleştirme ise bunu etkinleştirir ya da devre dışı bırakır.",
+            "Bunlar, ölçülmüş tarayıcı markalarının seçimleri değil, modellenmiş çıkış iş akışlarına yapılan ayarlardır. Bitmiş 1:1 önizleme ayrıntısıyla ince doku ve keskinliği değerlendirin."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Bir film stoğu seçin ve önizleyin",
+      "category": "Film",
+      "summary": "Fiziksel film iş akışını açın ve kendi fotoğrafınızı kullanarak film stoklarını karşılaştırın.",
+      "keywords": [
+        "film",
+        "film stoğu",
+        "simülasyon",
+        "gerçekçi film simülasyonu",
+        "negatif",
+        "kaydır",
+        "gözat",
+        "önizleme",
+        "hazır ayar",
+        "film kapalı"
+      ],
+      "sections": [
+        {
+          "title": "Bir film stoğu ile başla",
+          "paragraphs": [
+            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır."
+          ],
+          "steps": [
+            "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
+            "Film profil anahtarını açın. Fiziksel film aşamaları otomatik olarak açılır; sonrasında daraltabilirsiniz.",
+            "Film Stoğu seçin veya işlenmiş örnekleri karşılaştırmak için bu fotoğrafta Film stoklarını önizle’ye tıklayın…",
+            "Bir film stoğu adı arayın, gözatmak için Previous veya Next kullanın, ardından uygulamak için bir önizleme seçin."
+          ]
+        },
+        {
+          "title": "Önizlemelerin neleri içerdiği",
+          "paragraphs": [
+            "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
+            "Bir film stoğu, fiziksel film sürecini tanımlar. Bir düzenleme hazır ayarı daha geniş kaydedilmiş ayarlar içerebilir ve Film ayarlarını da içerebilir. Film içindeki Çıkış menüsü bir tarama veya baskı iş akışı seçer; bir dosya dışa aktarmaz.",
+            "Film’i açtıktan sonra, doğru RAW ayrıntısı ve daha büyük önizleme bitmeden önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar ve önizleme görünür hale gelince kaybolur. Doğru RAW ayrıntısı ve tam çözünürlüklü işleme arka planda sürer."
+          ],
+          "tips": [
+            "Bir film stoğu kullanılamıyorsa GPU motoru gerekebilir. Motor kullanılabilirliği Ayarlar → Performans bölümünde gösterilir."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-reference-match",
+      "title": "Bir referans görüntüyle karşılaştır",
+      "category": "Film",
+      "summary": "Bir taramayı veya başka bir referansı hizalayın, farkı ölçün ve başlangıç eşleşmesini uygulayın.",
+      "keywords": [
+        "referans",
+        "eşleştir",
+        "tara",
+        "kalibrasyon",
+        "bindirme",
+        "böl",
+        "opaklık",
+        "ölç",
+        "renk eşleştirme"
+      ],
+      "sections": [
+        {
+          "title": "Yükle ve hizala",
+          "paragraphs": [
+            "Referans Eşleştirme, araç rafındaki Film ile açılan Gerçekçi Film Simülasyonu içindedir. Hizalama ve karşılaştırmanın anlamlı olması için karşılık gelen görüntü içeriğine sahip bir referans kullanın."
+          ],
+          "steps": [
+            "Referans Eşleşmesi’ni genişletin ve bir Referans görüntü seçin.",
+            "Bindirme veya Böl seçin, ardından Opaklık / bölme değerini ayarlayın.",
+            "Referansı fotoğrafınızla hizalamak için Ölçek, Yatay ve Dikey’i kullanın.",
+            "Karşılaştırmayı incelemek için Ölç’e tıklayın ya da ilk bir ayarlamayı uygulamak için Starting match’i seçin."
+          ]
+        },
+        {
+          "title": "Eşleştirmeyi başlat'ın neyi değiştirdiği",
+          "paragraphs": [
+            "Başlatma eşleştirme, otomatik sahne ölçümünü kapatır ve Kamera EV'sini ayarlar. RAW fotoğraflar için ayrıca özel çekim beyaz dengesini ayarlar; işlenmiş fotoğraflar için sarı ve macenta baskı filtrasyonunu ayarlar.",
+            "Bu, ölçülmüş görüntü istatistiklerine dayalı bir başlangıç ayarıdır; tam bir film veya renk eşleşmesi garantisi değildir. Uyguladıktan sonra görüntüyü gözden geçirin ve gerekirse Geri Al'ı kullanın. Temizle, referans katmanını kaldırır."
+          ],
+          "tips": [
+            "Kalibrasyon hedefi düğmesi, bir referans iş akışında kullanabileceğiniz bir görüntü indirir."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Film pozlamasını ve geliştirmeyi ayarlayın",
+      "category": "Film",
+      "summary": "Kamera EV’sini, yakalama beyaz dengesini, ölçümü ve geliştirme denetimlerini anlayın.",
+      "keywords": [
+        "pozlama",
+        "kamera EV",
+        "ölçer",
+        "beyaz dengesi",
+        "sıcaklık",
+        "ton",
+        "geliştirme",
+        "kontrast",
+        "özgün",
+        "yaratıcı"
+      ],
+      "sections": [
+        {
+          "title": "Yakalama kontrolleri ve sonlandırma kontrolleri",
+          "paragraphs": [
+            "Kamera EV ve Yakalama beyaz dengesi, film pozlamasından önce uygulanır. Düzenle panelindeki Pozlama ve Sıcaklık/Renk tonu ise iş akışının ilerleyen aşamalarındaki son düzeltmelerdir.",
+            "Çekim beyaz dengesi için bir RAW özgünü gerekir. JPEG, HEIF, TIFF veya başka bir işlenmiş dosya için Düzenle Sıcaklık/Renk tonu'nu kullanın."
+          ],
+          "steps": [
+            "Film’i açın, bir film stoğu seçin ve Kamera EV’yi ayarlayın.",
+            "Otomatik sahne ölçümü için Sahne ölçümünü otomatik kullan seçeneğini açık tutun veya çekim pozlamasını kendiniz ayarlamak için kapatın.",
+            "Bir RAW fotoğraf için Çekim ve işleme bölümünü genişletip Çekim, Gün ışığı, Tungsten veya Özel çekim beyaz dengesini seçin.",
+            "Özel için, Sıcaklık ve Yakalama tonunu ayarlayın."
+          ]
+        },
+        {
+          "title": "Geliştirme ve bağlı varsayılanlar",
+          "paragraphs": [
+            "Geliştirme yalnızca seçilen film profili geliştirme süreleri sağladığında görünür. Baskı geliştirme, seçilen kağıda bağlıdır ve slayt film için gizlenir. Geliştirme kontrastı ayrı bir film denetimidir.",
+            "Authentic, kağıt kilidi açıkken filmin önerilen kağıdı da dahil olmak üzere bağlı fiziksel varsayılanları kullanır. Creative, uyumlu olduğunda kağıt geçersiz kılmalarını korur. Film stoğunu değiştirmek yine de o film stoğunun varsayılan geliştirme süresini ve pozlamasını seçebilir; bir film stoğunu değiştirdikten sonra sonucu karşılaştırın."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Negatif film, kağıt ve slaytlarla çalışın",
+      "category": "Film",
+      "summary": "Negatifler için bir baskı işlemi seçin ve slayt film için neden print kontrollerinin kaybolduğunu anlayın.",
+      "keywords": [
+        "negatif",
+        "pozitif",
+        "ters çevirme",
+        "kaydır",
+        "saydamlık",
+        "kağıt",
+        "yazdır",
+        "çıkış",
+        "kağıdı kilitle",
+        "filtreleme",
+        "ön flaş"
+      ],
+      "sections": [
+        {
+          "title": "Negatif film ve kağıt",
+          "paragraphs": [
+            "Negatif stoklar filmden baskıya bir süreç kullanır. Kağıt seçenekleri, seçilen filmin renkli veya tek renk kanal modeliyle uyumlu profillerle sınırlıdır.",
+            "Baskı aşamasını ayarlamak için Baskı pozlamasını kullanın. Çekim ve işleme bölümünde, stok değişikliklerinde uyumlu bir kağıdı korumak istiyorsanız Kağıt'ı seçin ve Kağıt'ı kilitle'yi etkinleştirin. Uyumsuz bir kağıdın yine de değiştirilmesi gerekir."
+          ],
+          "steps": [
+            "Film'de bir negatif stok seçin.",
+            "Bir Çıkış iş akışı seçin: Temiz tarama, Nötr baskı taraması veya Yumuşak optik baskı.",
+            "Kağıt ve varsa Yazdır geliştirme süresini seçmek için Yakalama ve işleme’yi genişletin.",
+            "Fiziksel film aşamaları’nda, Baskı parlama, Baskı ön flaşı, Sarı filtre ve Macenta filtresi’ni ayarlayın. Daralttıysanız bölümü yeniden açın."
+          ]
+        },
+        {
+          "title": "Diyapozitif film doğrudan taranır",
+          "paragraphs": [
+            "Pozitif veya ters çevrilmiş film stoğu, negatiften kağıda aşaması olmadan doğrudan bir saydamlık taraması kullanır. Bu stoklar için Kağıt, baskı pozlaması, baskı geliştirme ve yalnızca baskıya özgü diğer denetimler gizlenir.",
+            "Çıkış iş akışları, uygulanabildiği yerlerde tara yumuşaklığı, keskinleştirme ve baskı efektleri için modellenmiş başlangıç noktalarıdır. Bunlar belirli ticari tarayıcıların ölçülmüş emülasyonları değildir."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Dışa aktarma boyutunu, biçimini ve renk uzayını seçin",
+      "category": "Export",
+      "summary": "Dışa aktarım hazır ayarlarını kullanın ve bit derinliğini, yeniden boyutlandırmayı ve geçerli renk gamı sınırlarını anlayın.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bit",
+        "srgb",
+        "p3",
+        "prophoto",
+        "icc",
+        "kalite",
+        "tam boyut",
+        "çözünürlük",
+        "hazır ayar"
+      ],
+      "sections": [
+        {
+          "title": "Biçimler ve hazır ayarlar",
+          "paragraphs": [
+            "Dışa aktarma iletişim kutusu JPEG, PNG ve 16-bit TIFF sunar. macOS'ta ayrıca 8-bit HEIF de sunar; HEIF Linux ve Windows'ta gizlidir. Kaydedilmiş bir HEIF iş akışı orada uygulanamaz, bu yüzden başka bir biçim seçin. Kalite kaydırıcısı JPEG ve HEIF için geçerlidir.",
+            "JPG (Büyük), kalite 92 ile sRGB içinde tam boyutlu JPEG kullanır. JPG (Küçük), kalite 90 ile sRGB içinde 2048 piksel uzun kenar kullanır. 16-bit TIFF tam boyutu ve ProPhoto RGB'yi kullanır. Bu ayarları değiştirmek Özel seçimini yapar."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın ve üst kısımdan bir hazır ayar seçin.",
+            "Boyutları Tam boyut veya uzun kenar sınırı olarak ayarlayın.",
+            "Çıkış önizlemesini kontrol edin: dışa aktarılan boyut döndürme ve kırpma sonucunu yansıtır ve uzun kenar sınırı daha büyük görüntüleri küçültür, daha küçük olanları büyütmez."
+          ]
+        },
+        {
+          "title": "Renk uzayı sınırları",
+          "paragraphs": [
+            "Her dışa aktarma seçili ICC profilini gömer. Colour space içinde sRGB, Display P3 veya ProPhoto RGB seçin.",
+            "Geniş gamutlu geliştirme dışa aktarımları, color ve local adjustments kapalıyken kaynak renkleri korur. Film işleme ve ayarlanmış geliştirme dışa aktarımları sRGB renkleriyle sınırlıdır. Bu sonuçlardan birini P3 veya ProPhoto olarak kodlamak, işleme nedeniyle zaten sınırlanmış renkleri geri getirmez."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Dışa aktarma üstverisini, yardımcı dosyaları ve zaman damgalarını denetleyin",
+      "category": "Export",
+      "summary": "Meta veri gizliliğini, isteğe bağlı iş akışı dosyalarını ve yakalama zamanı işleme şeklini seçin.",
+      "keywords": [
+        "üstveri",
+        "gizlilik",
+        "gps",
+        "konum",
+        "telif hakkı",
+        "yardımcı dosya",
+        "iş akışı",
+        "zaman damgası",
+        "tarih",
+        "zaman dilimi",
+        "yakalama zamanı"
+      ],
+      "sections": [
+        {
+          "title": "Üstveri ve iş akışı dosyaları",
+          "paragraphs": [
+            "Dışa Aktar → Gelişmiş seçenekleri Konum hariç tümü, Tüm meta veriler, Yalnızca telif hakkı ve Meta veri yok seçeneklerini sunar. Başlangıçtaki meta veri seçimi Konum hariç tümü'dür.",
+            "İş akışı yan dosyası, LightTable'ın işlenmiş dışa aktarmanın yanına bir iş akışı yazıp yazmayacağını denetler. Bu, Ayarlar → Dosyalar ve Meta Veriler altındaki orijinaller için taşınabilir düzenlemeler ve XMP yan dosyası tercihlerinden ayrıdır."
+          ],
+          "steps": [
+            "Dışa Aktar'da Gelişmiş'i genişletin.",
+            "Paylaşacağınız dosyalar için uygun Üstveri ilkesini seçin.",
+            "Dışa aktarılan her fotoğrafın yanına bir İş Akışı yardımcı dosyası yazılıp yazılmayacağını seçin."
+          ]
+        },
+        {
+          "title": "Dosya zaman damgaları",
+          "paragraphs": [
+            "Dosya zaman damgası, dışa aktarma zamanı veya özgün çekim zamanı kullanabilir. Çekim saat dilimi eksikse, varsayılan olarak dışa aktarma zamanını korumak ve bir uyarı bildirmektir. Bunun yerine bunu bu bilgisayarın yerel saat diliminde yorumlamayı seçebilirsiniz.",
+            "Eksik veya geçersiz çekim zamanı da dışa aktarma zaman damgasını değiştirmeden bırakabilir. Bildirilen uyarı için Dışa Aktarma ayrıntılarını kontrol edin. Bir dosyanın dosya sistemi zaman damgası, yukarıda seçilen meta veri ilkesinden ayrıdır."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "external-editor",
+      "title": "Bir fotoğrafı başka bir uygulamada düzenleyin",
+      "category": "Export",
+      "summary": "Ayarlanmış bir TIFF’i başka bir düzenleyiciye gönderin ve biçim ile yığınlama varsayılanlarını ayarlayın.",
+      "keywords": [
+        "harici",
+        "düzenleyici",
+        "Photoshop",
+        "affinity",
+        "ile düzenle",
+        "tiff",
+        "gidiş dönüş",
+        "türev",
+        "yığın"
+      ],
+      "sections": [
+        {
+          "title": "Harici bir düzenleyici aç",
+          "paragraphs": [
+            "Şurada düzenle… seçeneğini, fotoğrafları başka bir piksel düzenleyiciye hazırlamak için kullanın. Düzenlenmiş TIFF, asıl dosyasının yanına yazılır ve katalogda onunla birlikte yığınlanabilir. Linux ve Windows'ta Uygulama seç… bir düzenleyici çalıştırılabilir dosyası seçmenizi sağlar; Varsayılan uygulama masaüstünün dosya ilişkilendirmesini kullanır."
+          ],
+          "steps": [
+            "Bir fotoğraf seçin ve başka bir uygulamada Düzenle’yi açmak için Command/Ctrl+E’ye basın.",
+            "Uygulamayı seç.",
+            "Geçerli ayarlarla TIFF’i seçin, ardından TIFF renk uzayını ve TIFF bit derinliğini ayarlayın.",
+            "İşlenmiş dosyayı özgün dosyayla birlikte yığınlayıp yığınlamayacağınızı seçin.",
+            "Düzenle’ye tıklayın ve diğer uygulamada çalışmaya başlamadan önce oluşturmanın bitmesini bekleyin."
+          ]
+        },
+        {
+          "title": "RAW dosyaları ve varsayılanlar",
+          "paragraphs": [
+            "RAW orijinaller düzeltilmiş TIFF olarak işlenmelidir. Seçim bir RAW dosyası içeriyorsa işlenmiş orijinal kullanılamaz. İşlenmiş fotoğraflar için bu seçenek, düzeltilmiş TIFF hazırlamak yerine orijinali açar.",
+            "Varsayılan uygulamayı, renk uzayını, bit derinliğini ve yığınlama davranışını Ayarlar → External Editing içinde belirleyin. Düzenlenmiş TIFF’ler 16 veya 8 bit ve ProPhoto RGB, Display P3 ya da sRGB kullanabilir."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "export-photos",
+      "title": "Seçili fotoğrafları dışa aktar",
+      "category": "Export",
+      "summary": "Dışa aktarılacak fotoğrafları tam olarak seçin, çıkışı önizleyin ve ilerlemeyi izleyin.",
+      "keywords": [
+        "dışa aktar",
+        "kaydet",
+        "jpeg",
+        "jpg",
+        "indir",
+        "seçim",
+        "seçilmiş",
+        "puanlanmış",
+        "toplu iş",
+        "iptal",
+        "ilerleme"
+      ],
+      "sections": [
+        {
+          "title": "Bir dışa aktarma oluştur",
+          "paragraphs": [
+            "Dışa Aktar, fotoğraf düzenlemelerinizden işlenmiş çıkış dosyaları oluşturur. Dışa aktarmayı belirli bir seçimle sınırlamak istediğinizde Seçili fotoğraflar'ı kullanın. Kuyruğa alınan her fotoğraf, dışa aktarmayı başlattığınızda seçilen düzenlemeleri, derecelendirmeyi ve yakalama zamanı düzeltmesini korur."
+          ],
+          "steps": [
+            "İstediğiniz fotoğrafları seçin, ardından üst çubuktaki Fotoğrafları Dışa Aktar düğmesine tıklayın. Command/Ctrl+Shift+E de Dışa Aktar'ı açar.",
+            "Photos alanını kontrol edin. Seçilmiş fotoğraflar, Yalnızca seçilmişler, 1+ puanlı veya reddedilenler hariç tümü seçin.",
+            "Bir dışa aktarma hazır ayarı seçin ya da dosya türünü, boyutları, kaliteyi ve renk uzayını ayarlayın.",
+            "Hedefi ayarlayın ve dosya adı, boyutlar ve yol için Çıkış önizlemesini inceleyin.",
+            "Dışa Aktar’a tıklayın ve ilerlemeyi üst çubukta izleyin.",
+            "Dışa aktarma tamamlandığında, dışa aktarılan fotoğrafın bulunduğu klasörü açmak için tamamlanma bildirimindeki ikinci satırda yer alan Finder'da Göster bağlantısına tıklayın. Bildirim 2,8 saniye boyunca görünür kalır."
+          ]
+        },
+        {
+          "title": "Kapsamı ve sonucu kontrol edin",
+          "paragraphs": [
+            "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
+            "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "soft-proof",
+      "title": "Yumuşak prova ile bir çıkışı önizleyin",
+      "category": "Export",
+      "summary": "Bunu dışa aktarılan fotoğrafın parçası yapmadan bir ekran veya modellenmiş kağıt önizlemesini görün.",
+      "keywords": [
+        "yumuşak prova",
+        "prova",
+        "gamut",
+        "kağıt",
+        "mürekkep",
+        "mat",
+        "parlaklık",
+        "yazdır",
+        "p3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Yumuşak provayı aç",
+          "paragraphs": [
+            "Yumuşak prova kontrolleri, görüntüleyicinin Görünüm seçeneklerinde (•••) bulunur. Düzenleme yaparken bir çıktı önizlemesini incelemenizi sağlarlar."
+          ],
+          "steps": [
+            "Görüntüleyicinin altındaki Görünüm seçeneklerini (•••) açın.",
+            "Önizleme çıkış profilini etkinleştir.",
+            "sRGB ekran, Display P3 ekran, Mat kağıt veya Parlak kağıt seçin.",
+            "Kağıt hedefleri için Simulate paper and ink seçeneğini kullanıp kullanmayacağınıza karar verin. Gerektikçe Show out-of-gamut warning’i açıp kapatın.",
+            "Önizlemeyi kapatmak için görüntüleyici araç çubuğundaki Soft Proof açık düğmesini kullanın."
+          ]
+        },
+        {
+          "title": "Önizlemeyi yorumla",
+          "paragraphs": [
+            "Bu arayüzdeki Matte ve Gloss, kağıt önizlemeleri olarak modellenmiştir; bunlar yazıcınızın ölçülmüş ICC profilinin bir seçimi değildir. Kontrast ve rengi karşılaştırırken önizlemeyi yalnızca bir rehber olarak değerlendirin.",
+            "Soft proof bir görüntüleme durumudur. Dosyanın gerçek Renk alanını Export içinde ayrı olarak seçin."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Dışa aktarma klasörlerini ve dosya adlarını ayarla",
+      "category": "Export",
+      "summary": "Bir hedef yerleşim seçin ve bir dosya adı zaten mevcut olduğunda ne olacağına karar verin.",
+      "keywords": [
+        "hedef",
+        "klasör",
+        "yol",
+        "dosya adı",
+        "yeniden adlandır",
+        "üzerine yaz",
+        "atla",
+        "çakışma",
+        "hiyerarşi",
+        "dizi",
+        "şablon"
+      ],
+      "sections": [
+        {
+          "title": "Hedef düzeni",
+          "paragraphs": [
+            "Tek bir hedef klasör dışa aktarımları seçilen klasöre gönderir. Her orijinalin yanındaki alt klasör, her kaynak fotoğraf için göreli bir alt klasör adı kullanır. Kaynak klasör hiyerarşisini koru, dışa aktarma hedefinin altında kaynak klasör düzenini korur."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın ve Hedef düzeni’ni seçin.",
+            "Bir hedef klasör için Şunu seç... seçeneğini kullanın veya her özgünün yanında bulunan Alt klasör için film-exports gibi bir alt klasör adı girin.",
+            "Gelişmiş’i genişletin ve Dosya adı şablonu’nu düzenleyin.",
+            "Dışa aktarmadan önce Çıkış önizlemesinde gösterilen dosya adını ve hedefi kontrol edin."
+          ]
+        },
+        {
+          "title": "Adlar ve mevcut dosyalar",
+          "paragraphs": [
+            "Dosya adı şablonları {filename}, {stock}, {date}, {rating} ve {sequence} destekler. Örneğin, {filename}_{stock} kaynak adını ve film stoğunu içerir. Uzun dosya adı alanları, çıkış ve yardımcı dosya adları için yer bırakmak üzere kısaltılır; Çıkış önizlemesi'ni kontrol edin.",
+            "Keep both · add a number başka bir dosya adı oluşturur; örneğin -2 ile biten bir ad. Skip existing, dolu adları olduğu gibi bırakır. Overwrite, seçilen yoldaki mevcut çıkışı değiştirir. Overwrite’ı seçmeden önce hedefi doğrulamak için çıkış önizlemesini kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Dışa Aktar"
+    },
+    {
+      "id": "about-lighttable",
+      "title": "LightTable ve açık kaynak hakkında",
+      "category": "Settings",
+      "summary": "Mac uygulama sürümünü, web sitesini ve kaynak kodunu bulun.",
+      "keywords": [
+        "hakkında",
+        "sürüm",
+        "web sitesi",
+        "github",
+        "açık kaynak",
+        "lisans",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "macOS'ta Hakkında'yı aç",
+          "paragraphs": [
+            "Mac menü çubuğunda LightTable → LightTable Hakkında'yı seçin. Hakkında penceresi uygulama sürümünü ve farklıysa derleme numarasını gösterir.",
+            "Web sitesi, lighttable.app'i varsayılan tarayıcınızda açar. GitHub, kodu inceleyebileceğiniz, sorun bildirebileceğiniz ve katkıda bulunabileceğiniz herkese açık LightTable kaynak deposunu açar.",
+            "LightTable, GNU GPL v3 kapsamında serbest ve açık kaynaklıdır."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Tercihleri ve yeni fotoğraf varsayılanlarını değiştirin",
+      "category": "Settings",
+      "summary": "Arayüzü, ayıklama davranışını, taşınabilir düzenlemeleri ve yeni fotoğraflar için başlangıç düzenlemelerini ayarlayın.",
+      "keywords": [
+        "ayarlar",
+        "tercihler",
+        "varsayılanlar",
+        "kamera",
+        "raw",
+        "seri",
+        "iso",
+        "yazı tipi",
+        "arka plan",
+        "ışıklar kapalı",
+        "bildirimler",
+        "xmp",
+        "taşınabilir"
+      ],
+      "sections": [
+        {
+          "title": "Arayüz ve davranış",
+          "paragraphs": [
+            "Çoğu ayar değişikliği otomatik olarak kaydedilir. Dil, düzenlemeleri kaydettikten sonra Uygula dilini kullanır ve pencereyi yeniden yükler. Genel ayrıca seçme, reddetme veya puanlama sonrası Otomatik ilerle’yi, tamamlanma bildirimlerini ve güncelleme denetimlerini de yönetir.",
+            "Arayüz, görüntüleyici arka planını, yazı tipi ölçeğini, Lights Out'u, büyüteç bilgi katmanını ve kırpma kılavuzlarını denetler. Bu tercihler, dışa aktarılan pikselleri değiştirmeden çalışma alanının görünümünü değiştirir.",
+            "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun."
+          ]
+        },
+        {
+          "title": "Düzenlenmemiş fotoğraflar için varsayılanlar",
+          "paragraphs": [
+            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler."
+          ],
+          "steps": [
+            "Ayarlar → Geliştirme Varsayılanları’nı açın.",
+            "Başlangıç Film’i, iş akışını, profili ve hazır ayar ayarlarını seçin.",
+            "Kameraya özgü RAW varsayılanlarını ayarlamak için bir RAW fotoğrafı açın ve RAW ayarlarını düzenleyin.",
+            "Kamera modeli, seri numarası veya kamera ve ISO ile eşleştirmeyi seçin, ardından Use current RAW settings’e tıklayın.",
+            "Geçerli kamera alanında Sıfırla’yı kullanarak o kameranın varsayılanını kaldırın."
+          ]
+        },
+        {
+          "title": "Linux ve Omarchy görünümü",
+          "paragraphs": [
+            "Linux'ta kontroller sistemin açık veya koyu görünümünü izler. Omarchy'de araç çubukları, kenar çubukları, menüler ve iletişim kutuları etkin masaüstü paletini izler ve tema değişikliğinden sonraki birkaç saniye içinde güncellenir. Fotoğraf pikselleri, görüntüleyici arka plan tercihi ve nötr renk kapsamları kendi renklerini korur.",
+            "Dar bir Linux penceresinde Kütüphaneyi göster veya gizle, kütüphaneyi çekmece olarak açar. Pencereyi genişletmek normal yan yana düzeni geri getirir. Hyprland'da, LightTable'ı taşımak, döşemek, yeniden boyutlandırmak veya kapatmak için derleyicinin pencere kısayollarını kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "settings-language",
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "settings-language",
+      "title": "Uygulama ve yardım dilini seçin",
+      "category": "Settings",
+      "summary": "Arayüz ve aranabilir yardım için tek bir dil belirleyin; seçiminiz sonraki açılışlar için hatırlanır.",
+      "keywords": [
+        "dil",
+        "çeviri",
+        "İngilizce",
+        "İspanyolca",
+        "Fransızca",
+        "Almanca",
+        "Çince",
+        "Arapça",
+        "yerelleştirme",
+        "ayarlar",
+        "ilk açılış"
+      ],
+      "sections": [
+        {
+          "title": "İlk kullanımda bir dil seçin",
+          "paragraphs": [
+            "LightTable’ın arayüzü ve aranabilir yardım tek bir dili paylaşır. Kullanılabilir diller İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Portekizce, Rusça, Basitleştirilmiş Çince, Geleneksel Çince, Japonca, Korece, Arapça, Hintçe, Bengalce, Endonezce, Türkçe, Vietnamca, Tayca, Lehçe ve Hollandacadır.",
+            "İlk kullanımda, İngilizce olmayan birincil sistem dili sizden seçim yapmanızı ister. Mac uygulaması ilk klasör seçimi ve başlangıçtan önce sorar; diğer uygulama pencereleri düzenleyici açılmadan önce sorar. Desteklenen bir dil önerilir veya sistem dili desteklenmiyorsa İngilizce seçilir. Diller yerel adlarıyla listelenir.",
+            "Birincil sistem dili İngilizceyse, İngilizce otomatik olarak kaydedilir. Sonraki açılışlar kaydedilmiş seçiminizi kullanır. Bir tarayıcıda, başlangıç önerisini tarayıcının dil tercihleri sağlar."
+          ],
+          "steps": [
+            "İlk kullanım iletişim kutusunda tercih ettiğiniz dili seçin.",
+            "Devam Et'e tıklayın. Seçim kaydedildikten sonra uygulama devam eder."
+          ]
+        },
+        {
+          "title": "Dili daha sonra değiştirebilirsiniz",
+          "paragraphs": [
+            "Dili değiştirmek bekleyen düzenlemeleri kaydeder ve mevcut pencereyi yeniden yükler. Fotoğraf dosya adları, anahtar kelimeleriniz ve diğer fotoğraf içerikleri mevcut ifadelerini korur."
+          ],
+          "steps": [
+            "Ayarlar → Genel bölümünü açın.",
+            "Dil bölümünden bir dil seçin.",
+            "Dili uygula'ya tıklayın ve pencerenin yeniden yüklenmesini bekleyin.",
+            "Seçili dilde aramak veya gözatmak için Yardım'ı açın."
+          ],
+          "tips": [
+            "Dil yükleme veya kaydetme başarısız olursa, pencereniz ve dil seçiminiz başka bir deneme için kullanılabilir durumda kalır. Bekleyen fotoğraf düzenlemeleri kaydedilemediyse, Önce kaydetmeyi yeniden dene’yi kullanın, ardından dili yeniden uygulayın.",
+            "Mac ilk kullanım seçimi kaydedilemiyorsa, Tekrar Dene seçimi korur ve yeniden dener. Uygulama yalnızca kaydetme başarılı olduktan sonra başlar."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "photo-index",
+      "title": "Özel fotoğraf içeriği aramasını etkinleştirin",
+      "category": "Settings",
+      "summary": "Nesnelerin, sahnelerin, görünen metnin ve yüzlerin cihaz üzerinde bir dizinini oluşturun.",
+      "keywords": [
+        "ai",
+        "ara",
+        "dizin",
+        "içerikler",
+        "nesneler",
+        "sahneler",
+        "ocr",
+        "metin",
+        "yüzler",
+        "gizlilik",
+        "yerel",
+        "açıklama"
+      ],
+      "sections": [
+        {
+          "title": "Dizini oluştur",
+          "paragraphs": [
+            "Fotoğraf Dizini varsayılan olarak kapalıdır ve macOS gerektirir. Linux ve Windows'ta Bu platformda kullanılamaz gösterilir ve yeni indeksleme etkinleştirilemez. Mac'te analiz aygıt üzerinde kalır ve fotoğraf klasörlerini değiştirmez. Apple Vision temel analizi sağlar; daha zengin Temel Modeller açıklamaları yalnızca bu özellik kullanılabildiğinde görünür."
+          ],
+          "steps": [
+            "Ayarlar → Fotoğraf Dizini'ni açın.",
+            "Cihaz üzerindeki yetenekler durumunu kontrol edin ve Fotoğraf içeriği dizinini açın.",
+            "Dizinleme ilerlemesinin tamamlanmasını bekleyin. Fotoğraflar dizinlendikçe sonuçlar kazanabilir.",
+            "Dosya adları ve anahtar sözcüklerle birlikte fotoğraf içeriklerini, görünen metni veya yüzleri aramak için kütüphane arama alanını kullanın.",
+            "Geçerli fotoğrafın üretilmiş etiketlerini, görünen metnini ve yüz sayısını incelemek için Info → On-device description’u açın."
+          ]
+        },
+        {
+          "title": "Atlanan fotoğraflar",
+          "paragraphs": [
+            "Boş dosyalar, indirilmeyen dosyalar ve kullanılamayan orijinaller analizden önce atlanır. Fotoğraf Dizini, bu öğelerin sayısını analiz hatalarından ayrı olarak bildirir. Boş bir dosya hiçbir görüntü verisi içermez; yeniden indirilmesi veya yedekten geri yüklenmesi gerekebilir.",
+            "Orijinalleri indirin veya geri yükleyin, kullanılamayan herhangi bir kaynağı yeniden bağlayın ve tekrar denemek için Dizini yeniden oluştur'u kullanın. Dizine ekleme, dosyaları indirmez veya orijinalleri değiştirmez. Bir dosya kullanılamaz hale geldiğinde, daha önce oluşturulmuş arama üstverisi, dizini yeniden oluşturmadığınız veya silmediğiniz sürece korunur."
+          ]
+        },
+        {
+          "title": "Duraklat, yeniden oluştur veya sil",
+          "paragraphs": [
+            "Dizin kapatıldığında analiz duraklatılır ve oluşturulan sonuçlar etkin arama görünümünden kaldırılır; mevcut dizin verileri silinene kadar yerelde kalır. Özellik etkin olduğunda Dizin'i yeniden oluştur, indekslemeyi yeniden çalıştırır.",
+            "Delete index, onaydan sonra oluşturulan dizin verilerini kaldırır. Orijinaller ve kaydedilmiş düzenlemeler değişmez. Apple Vision Build required diyorsa, geçerli kurulum gerekli yerel çözümleyiciyi içermez. Temel Vision dizinleme kullanılabilir kalırken Foundation Models kullanılamayabilir."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Yardımlı ayıklama önerilerini inceleyin",
+      "category": "Settings",
+      "summary": "Yerel analiz sinyallerini gözden geçirin ve yalnızca siz seçtiğinizde seç veya reddet bayrakları uygulayın.",
+      "keywords": [
+        "ayıkla",
+        "ayıklama",
+        "ai",
+        "seçilenler",
+        "reddedilenler",
+        "keskinlik",
+        "gözler",
+        "kaçırma",
+        "belgeler",
+        "incele",
+        "bayraklar"
+      ],
+      "sections": [
+        {
+          "title": "İnceleme sinyalleri",
+          "paragraphs": [
+            "Yardımlı ayıklama, macOS gerektiren özel Fotoğraf Dizini'ni kullanır. Yeni analiz Linux ve Windows'ta kullanılamaz. Siz istemedikçe fotoğrafları işaretlemez. Seçtiğiniz ölçütlerden herhangi biri evet döndürürse bir fotoğraf bir grupla eşleşir; değerlendirilmedi, o sinyalin kullanılabilir bir sonucu olmadığı anlamına gelir."
+          ],
+          "steps": [
+            "Ayarlar’da Fotoğraf Dizinini etkinleştirin ve fotoğrafların puanlanmasını bekleyin.",
+            "Kitaplık kenar çubuğunda Yardımlı ayıklama’yı genişletin.",
+            "Konu keskinliği, Göz keskinliği veya Gözler açık gibi Seç ölçütlerini ya da Pozlama sorunları, Kaçırmalar veya Belgeler gibi Reddet ölçütlerini seçin.",
+            "Eşleşen fotoğrafları gözden geçirmek için Seçilenler, Reddedilenler veya Tümü’nü kullanın.",
+            "Önerileri inceleyin, ardından bu bayrakları uygulamak istiyorsanız Pick selects veya Reject rejects kullanın."
+          ]
+        },
+        {
+          "title": "Bayraklar uygulanıyor",
+          "paragraphs": [
+            "Onay, etkilenen sayıyı gösterir ve eşleşen fotoğraflardaki mevcut bayrakların değiştirileceği konusunda uyarır. Bu tercih etkin olduğunda, bağlantılı RAW/JPEG meta verileri eş fotoğrafı da içerebilir.",
+            "Bunlar incelemeniz için analiz sinyalleridir, hangi fotoğrafların tutulacağına dair nihai kararlar değildir. Reddetmek bir bayrak ayarlar; özgün dosyaları kendiliğinden Çöp Kutusu’na taşımaz."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Klavye kısayollarını ve MIDI kontrollerini kullanın",
+      "category": "Settings",
+      "summary": "Kısayolları bulun, bir klavye şeması seçin ve Web MIDI kullanılabiliyorsa bir donanım denetleyicisini eşleyin.",
+      "keywords": [
+        "klavye",
+        "kısayol",
+        "kısayol tuşu",
+        "midi",
+        "düğme",
+        "kademeli geçiş",
+        "denetleyici",
+        "kısayol tuşları",
+        "otomasyon",
+        "klasik",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Klavye tercihleri",
+          "paragraphs": [
+            "Ayarlar → Kısayollar ve Donanım, Kısayol şemasını ve Klavye ve MIDI kontrolleri altında bir klavye başvurusunu içerir. macOS'ta, masaüstü Yardım menüsünde de Klavye Kısayolları bulunur. Linux ve Windows'ta Command/Ctrl kısayolları için Ctrl kullanın.",
+            "LightTable veya Klasik'i seçin; şema bir yeniden yüklemeden sonra uygulanır. Hold-key slider control, eşlenmiş bir tuşu kaydırma yaparken veya ok tuşlarını kullanırken basılı tutmanıza izin verir. Otomasyona izin ver, onaylanmış yerel araçların geçmiş ve Geri Al ile pencereyi denetleyip denetleyemeyeceğini belirler."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E Export’u açar; Command/Ctrl+E harici düzenlemeyi açar. Metin alanları normal yazma davranışını korur, bu yüzden değiştirilmemiş düzenleme kısayollarını kullanmadan önce metin alanından çıkın."
+          ]
+        },
+        {
+          "title": "MIDI eşlemesi",
+          "paragraphs": [
+            "MIDI desteği, geçerli çalışma zamanındaki Web MIDI API'ye bağlıdır. Durum Kullanılamıyor, Kapalı, Aygıt yok veya bağlı aygıt sayısı olarak görünebilir. Kullanılamıyor, bu çalışma zamanının MIDI denetimlerini kullanamayacağı anlamına gelir.",
+            "LightTable yalnızca MIDI durum düğmesine veya MIDI Öğren’e tıkladığınızda MIDI erişimi ister. LightTable’ı veya Ayarlar’ı açmak, kaydırıcıları ayarlamak ve eşlemeleri sıfırlamak erişim istemez. Yeniden yükledikten sonra, yeniden bağlanmak için bir MIDI düğmesine tıklayın."
+          ],
+          "steps": [
+            "Control Change iletileri gönderen bir MIDI denetleyici bağlayın.",
+            "MIDI kullanılabilir olduğunda, Klavye ve MIDI kontrolleri’ni açın ve MIDI Öğren’i seçin. Tarayıcınız isterse MIDI erişimine izin verin.",
+            "Eşlemek istediğiniz ayarlama kaydırıcısına tıklayın, ardından bir düğmeyi çevirin veya bir kademeli geçişi hareket ettirin.",
+            "Eşleme mesajını kontrol edin, ardından kaydırıcıyı ayarlamak için donanım denetimini kullanın.",
+            "Varsayılan eşlemeleri geri yüklemek için MIDI Sıfırla’yı kullanın."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Kataloğu yedekleyin ve kurtarma sorunlarını giderin",
+      "category": "Troubleshooting",
+      "summary": "Bir şeyler ters gittiğinde doğrulanmış katalog yedeklemelerini, Library Health’i ve masaüstü tanılama araçlarını kullanın.",
+      "keywords": [
+        "katalog",
+        "yedekleme",
+        "geri yükle",
+        "kurtarma",
+        "hasarlı",
+        "bozuk",
+        "çökme",
+        "eksik",
+        "güvenli mod",
+        "tanılama",
+        "log",
+        "onar"
+      ],
+      "sections": [
+        {
+          "title": "Yedekle ve incele",
+          "paragraphs": [
+            "Ayarlar → Katalog, katalog konumunu ve yedekleme tercihlerini gösterir. Yedekler, katalog düzenini, düzenlemeleri, depolanmış maskeleri, geçmişi ve varyantları içerir. Orijinal fotoğrafları, harici hazır ayarları ve profilleri ile tercihleri ayrıca yedekleyin. Yerel ••• → Kataloğu yedekle… de bir yedek oluşturur ve kayıtlı yolunu ya da hatayı bir sonuçlar iletişim kutusunda gösterir. Aynı menüdeki Çiftleri bul, eşleşen dosyaları gösterir veya hiçbiri bulunmadığını bildirir."
+          ],
+          "steps": [
+            "Bir Otomatik yedekleme aralığı ve Yedekleme konumu seçin.",
+            "Şimdi yedekle’ye tıklayın ve Doğrulanmış yedekleme sonucunu kontrol edin.",
+            "Katalog yapısını, eksik dosyaları ve kurtarma bilgilerini denetlemek için Library Health… öğesini açın.",
+            "Mevcut katalog denetimlerini çalıştırmak için Check now kullanın. Eksik dosya girdileri düzenlemeleriyle birlikte tutulur."
+          ]
+        },
+        {
+          "title": "Kurtarma seçeneklerini anlayın",
+          "paragraphs": [
+            "Bir yedeği geri yüklemek, katalog verilerini o yedeğin durumuna döndürür; dolayısıyla daha sonraki düzenlemeler onda yer almaz. Çalışan bir katalog geri yüklendiğinde, geçerli katalog önce yedeklenir.",
+            "Yükseltmeden sonra, ilk tarama dosya eşleştirmesini güçlendirmek için yerel orijinalleri okur. Bu, büyük bir kitaplıkta daha uzun sürebilir. Tam bir dosya kimliği olmadan zaten eksik olan orijinaller eksik kalır; girdilerini koruyun ve yeniden taramadan önce orijinalleri önceki kataloglanmış yollarına geri yükleyin.",
+            "Windows'ta, orijinallerin değişip değişmediğini denetlemek, her yerel dosyanın tamamını okur. Yeniden tarama, fotoğrafları açma ve dışa aktarma denetimleri, büyük orijinallerle daha uzun sürebilir. Bu denetimler, yalnızca bulutta depolanan dosyaları indirmez.",
+            "Hasarlı bir katalog için Library Health, kurtarma, geri yükleme veya yeni bir katalog sunabilir. Kurtarma, okunabilir satırları kopyalar ancak hasarlı sayfalardaki satırları kaybeder. Baştan başlamak, derecelendirmeleri, düzenlemeleri, koleksiyonları veya geçmişi taşımaz. Geçerli hasarlı katalog dosyası Recovery içinde korunur."
+          ]
+        },
+        {
+          "title": "Linux uygulama verilerini bul",
+          "paragraphs": [
+            "Linux normalde katalog ve hazır ayarları ~/.local/share/lighttable içinde, tercihleri ~/.config/lighttable içinde, işleme önbelleklerini ~/.cache/lighttable içinde ve günlükleri ~/.local/state/lighttable/logs içinde tutar. Özel sistem veya LightTable depolama ayarları bu konumları değiştirebilir; Ayarlar etkin katalog ve önbellek yollarını gösterir.",
+            "Orijinaller, seçtiğiniz fotoğraf klasörlerinde kalır. Katalog yedekleri bu orijinalleri, tercihlerinizı veya ayrı saklanan hazır ayarları içermez. Linux'taki önceki deneysel veriler eski konumlardan otomatik olarak taşınmaz."
+          ]
+        },
+        {
+          "title": "Masaüstü tanılama",
+          "paragraphs": [
+            "macOS'ta Yardım → Tanılama, Arayüzü Yeniden Yükle, Oluşturma Hizmetini Yeniden Başlat, Sunucu Günlüğünü Göster, Kitaplık Sağlığı… ve Güvenli Modda Yeniden Başlat seçeneklerini sunar.",
+            "Güvenli Mod, taramayı, izlenen klasörleri, yerel yapay zekayı ve motor ısınmasını kapatır. Normal çalışmaya dönmek için İşleme Hizmetini Yeniden Başlat'ı kullanın."
+          ]
+        },
+        {
+          "title": "Mac'te beklenmeyen bir çıkışı bildir",
+          "paragraphs": [
+            "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
+            "Yardım → Bir Sorun Bildir… en son raporu veya beklenmeyen bir çıkış kaydedilmediyse geçerli tanılamaları açar. Raporlar uygulama sürümünü, macOS ve donanımı, varsa son kaydedilen işlemi, filtrelenmiş son logları ve mevcut hata izlerini içerir. Eşleşen bir macOS çökme raporu yığın ve ikili bilgi ekleyebilir. Beklenmeyen bir çıkış her zaman bir hata izi bırakmaz veya nedenini belirlemez.",
+            "Raporlar, siz paylaşmayı seçene kadar Mac'inizde kalır. Yollar, fotoğraf dosya adları, tırnak içindeki log değerleri ve yaygın kimlik bilgisi alanları filtrelenir; paylaşmadan önce metni inceleyin. Fotoğraflar ve katalog eklenmez. Son on rapor yerel olarak saklanır."
+          ],
+          "steps": [
+            "Tanılama raporunu okuyun. E-postaya kendiniz yapıştırmak için Raporu kopyala'yı seçin.",
+            "Ya da Bakımcıya e-posta gönder'i seçin. Bu, raporu kopyalar ve team@lighttable.app adresine yönelik bir taslak açar.",
+            "Ne yaptığınızı açıklayın, kopyalanan raporu taslağa yapıştırın ve hazır olduğunuzda gönderin. Hiçbir e-posta uygulaması açılmazsa, her zamanki e-posta hizmetinizi kullanın.",
+            "Raporu kapatmak için Kapat'ı seçin. Hiçbir şey otomatik olarak gönderilmez."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ],
+      "categoryLabel": "Sorun giderme"
+    },
+    {
+      "id": "performance-previews",
+      "title": "Önizleme hızını iyileştirin ve görüntü ayrıntısını kontrol edin",
+      "category": "Troubleshooting",
+      "summary": "Önizlemelerin görünümünüze uyum sağlamasına, gerçek ayrıntıyı kontrol etmenize ve oluşturulan önbellekleri yönetmenize izin verin.",
+      "keywords": [
+        "performans",
+        "yavaş",
+        "bulanık",
+        "pikselleşmiş",
+        "önizleme",
+        "çözünürlük",
+        "100%",
+        "1:1",
+        "gpu",
+        "pas",
+        "python",
+        "önbellek",
+        "temizle"
+      ],
+      "sections": [
+        {
+          "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
+          "paragraphs": [
+            "100% yakınlaştırma ayarı, tam görüntü ayrıntısının ulaştığını garanti etmez. Doğru RAW işleme ve daha büyük önizleme tamamlanırken önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar; örneğin 2 / 5 gibi bir sayım gösterir. Kullanılabilir bir önizleme gösterilir gösterilmez kaybolur; doğru RAW işleme ve daha büyük önizlemeler bindirme olmadan arka planda sürer. Sayım, kalan zamanı değil tamamlanan aşamaları temsil eder. Azaltılmış hareket, animasyon olmadan aynı aşama güncellemelerini korur. Fotoğraf karartılmadan görünür kalır. 1:1’de, ince ayrıntıları değerlendirirken tam kaynak ayrıntısının hazır olup olmadığını kontrol etmek için 1:1 düğmesinin üzerine gelin.",
+            "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
+            "Kaldır, İyileştir, Klonla ve Doku ya da Netlik içeren maskeler ek bir önizleme güncellemesi gerektirir. Ayrıntılarını veya sonraki ayarlamaların etkisini değerlendirmeden önce önizlemenin bitmesini bekleyin."
+          ],
+          "steps": [
+            "Ayarlar → Performans'ı açın.",
+            "Normal düzenleme için otomatik önizleme ayrıntısını koruyun. Pencere boyutunu, ekran yoğunluğunu, kırpma ve yakınlaştırmayı piksel boyutu seçimi olmadan izler.",
+            "Mümkün olduğunda GPU · Rust kullanın. Compatible · Python alternatif bir film motorudur, ancak bazı film stokları Rust gerektirir.",
+            "Ayrıntı oturduktan sonra keskinleştirme, gürültü azaltma ve film grenini 1:1’de değerlendirin."
+          ]
+        },
+        {
+          "title": "Gelişmiş önizleme geçersiz kılma",
+          "paragraphs": [
+            "Ayarlar → Performans → Gelişmiş içinde Önizleme çözünürlüğü geçersiz kılma bulunur. Otomatik (önerilen) önizlemeyi görünümünüze uyarlar. Sabit bir çözünürlük işlemeyi azaltabilir, ancak daha yumuşak görünebilir; 100% yakınlaştırma yine de, önizleme sınırına bağlı olarak, kaynak ayrıntısını ister. Dışa aktarma boyutları ayrı olarak ayarlanır.",
+            "Önceki kayıtlı önizleme genişliği seçimleri, bu davranışa yükseltirken Otomatik’e sıfırlanır. Gelişmiş’te seçilen sabit bir geçersiz kılma, sonraki oturumlar için kaydedilir. El ile geçersiz kılma etkin olduğunda Performans görünür."
+          ],
+          "steps": [
+            "Ayarlar → Performans bölümünü açın ve Gelişmiş'i genişletin.",
+            "Yalnızca performans veya sorun giderme için gerekirse sabit bir Önizleme çözünürlüğü geçersiz kılma seçin.",
+            "Görünümünüzü izleyen önizlemelere dönmek için Otomatik (önerilen) seçin."
+          ]
+        },
+        {
+          "title": "Önbellek depolamasını yönet",
+          "paragraphs": [
+            "Performans, önizleme önbelleğinin konumunu, kullanımını ve bütçesini gösterir. Önbelleği temizle, onaydan sonra oluşturulan önizlemeleri ve işleme önbelleklerini kaldırır; orijinaller ve düzenlemeler etkilenmez. Önizlemelerin yeniden oluşturulması gerekir.",
+            "Önizleme çözünürlüğü, dışa aktarılan dosyalar için kullanılan Boyutlar ayarından ayrıdır. Dışa Aktarma bitirme işlemi ve Fotoğraf Birleştirme, desteklenen görüntü işleme aşamaları için GPU hızlandırmasını otomatik olarak kullanır; kullanılamadığında CPU yedekleme devreye girer. Film-motoru tercihi, film önizlemelerini denetler; bu hızlandırmayı devre dışı bırakmaz."
+          ]
+        },
+        {
+          "title": "Linux işlemesini denetle",
+          "paragraphs": [
+            "Linux'ta, Ayarlar → Performans etkin Rust işlemciyi ve ısınma sonrası algılanan bağdaştırıcıyı bildirir. GPU · Rust seçeneği, donanım GPU'su kullanılamadığında CPU işlemesi kullanabilir. Yazılım Vulkan, donanım hızlandırma değildir.",
+            "GPU'nun sınırlarını aşan bir fotoğraf CPU kullanır. İşleme işçisi yanıt vermeyi durdurursa, LightTable CPU üzerinde bir kez yeniden dener ve o işçiyi oturum boyunca korur. GPU işlemesini yeniden denemek için grafik sürücünüzü onarıp veya güncelledikten sonra LightTable'ı yeniden açın. Büyük fotoğraflar ve yazılım işlemesi daha uzun sürebilir; normal düzenleme için Otomatik önizleme ayrıntısını kullanın."
+          ]
+        },
+        {
+          "title": "Bir önizleme hatasını oku",
+          "paragraphs": [
+            "Bir fotoğraf oluşturulamazsa veya görüntülenemezse, fotoğraf alanındaki mesaj, varsa bildirilen nedeni içerir. Bu, eksik bir dosyayı, bir görüntü yükleme sorununu veya bir grafik hatasını belirleyebilir. Hiçbir neden yoksa, mesaj genel kalır."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Sorun giderme"
+    }
+  ],
+  "locale": "tr",
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+}

@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict';
-import {readFileSync, writeFileSync} from 'node:fs';
+import {writeFileSync} from 'node:fs';
 import {test} from 'node:test';
+import {createEditSaveQueue} from '../web/edit-save-queue.js';
 
-const source = readFileSync(new URL('../web/edit-save-queue.js', import.meta.url), 'utf8');
-const {createEditSaveQueue} = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 const settle = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
 
 function actions(seed, count) {

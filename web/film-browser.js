@@ -1,3 +1,6 @@
+import { t as tr } from './i18n.js';
+
+const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
 /* Film previews use the actual pipeline on a snapshot, never saved photo edits. */
 export function filmParamsForStock(params, stock, profiles) {
   const next = { ...params, stock };
@@ -19,11 +22,11 @@ export function createFilmBrowser({ context, apply }) {
   overlay.id = 'filmBrowserDialog';
   overlay.setAttribute('aria-hidden', 'true');
   overlay.innerHTML = `<section class="modal film-browser" role="dialog" aria-modal="true" aria-labelledby="filmBrowserTitle">
-    <div class="film-browser-header"><div><strong id="filmBrowserTitle">Preview film stocks</strong><p id="filmBrowserPhoto"></p></div><button type="button" id="filmBrowserClose" aria-label="Close film previews">Close</button></div>
-    <label class="film-browser-search">Find a stock<input id="filmBrowserSearch" type="search" placeholder="Search film stocks" autocomplete="off"></label>
-    <p class="hint">Previews use this photo’s edits. Choose a stock to apply it.</p>
+    <div class="film-browser-header"><div><strong id="filmBrowserTitle">${i18nHTML(tr("Preview film stocks"))}</strong><p id="filmBrowserPhoto"></p></div><button type="button" id="filmBrowserClose" aria-label="${i18nHTML(tr("Close film previews"))}">${i18nHTML(tr("Close"))}</button></div>
+    <label class="film-browser-search">${i18nHTML(tr("Find a stock"))}<input id="filmBrowserSearch" type="search" placeholder="${i18nHTML(tr("Search film stocks"))}" autocomplete="off"></label>
+    <p class="hint">${i18nHTML(tr("Previews use this photo’s edits. Choose a stock to apply it."))}</p>
     <div class="film-preview-grid" id="filmPreviewGrid"></div>
-    <div class="film-browser-footer"><button type="button" id="filmBrowserPrevious">Previous</button><span id="filmBrowserPage" role="status"></span><button type="button" id="filmBrowserNext">Next</button></div>
+    <div class="film-browser-footer"><button type="button" id="filmBrowserPrevious">${i18nHTML(tr("Previous"))}</button><span id="filmBrowserPage" role="status"></span><button type="button" id="filmBrowserNext">${i18nHTML(tr("Next"))}</button></div>
   </section>`;
   document.body.append(overlay);
   const el = (id) => overlay.querySelector(`#${id}`);
@@ -53,20 +56,20 @@ export function createFilmBrowser({ context, apply }) {
     const shown = stocks.slice(page * 4, page * 4 + 4);
     el('filmBrowserPrevious').disabled = page === 0;
     el('filmBrowserNext').disabled = (page + 1) * 4 >= stocks.length;
-    el('filmBrowserPage').textContent = stocks.length ? `${page * 4 + 1}–${page * 4 + shown.length} of ${stocks.length} stocks` : 'No matching stocks';
+    el('filmBrowserPage').textContent = stocks.length ? tr("{value}–{value2} of {stocksLength} stocks", {value: page * 4 + 1, value2: page * 4 + shown.length, stocksLength: stocks.length}) : tr("No matching stocks");
     const grid = el('filmPreviewGrid');
     grid.replaceChildren();
     const cards = shown.map((stock) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'film-preview-card';
-      button.setAttribute('aria-label', `Apply ${stock.label}`);
+      button.setAttribute('aria-label', tr("Apply {stockLabel}", {stockLabel: stock.label}));
       button.setAttribute('aria-pressed', String(stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false));
       const image = document.createElement('img');
-      image.alt = `${stock.label} preview`;
+      image.alt = tr("{stockLabel} preview", {stockLabel: stock.label});
       image.hidden = true;
       const label = document.createElement('strong'); label.textContent = stock.label;
-      const status = document.createElement('span'); status.textContent = 'Rendering preview…';
+      const status = document.createElement('span'); status.textContent = tr("Rendering preview…");
       button.append(image, label, status);
       button.onclick = () => { close(); apply(stock.id, snapshot.name); };
       grid.append(button);
@@ -83,15 +86,15 @@ export function createFilmBrowser({ context, apply }) {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
           body: JSON.stringify({ name: snapshot.name, state: { ...snapshot.state, params }, w: 360, format: 'jpeg', engine: snapshot.engine, client: 'film-stock-browser' }),
         });
-        if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('Preview unavailable');
+        if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(tr("Preview unavailable"));
         const blob = await response.blob();
         if (request !== generation) return;
         const url = URL.createObjectURL(blob); urls.add(url);
         image.src = url; image.hidden = false;
-        status.textContent = stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false ? 'Current stock' : 'Apply stock';
+        status.textContent = stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false ? tr("Current stock") : tr("Apply stock");
       } catch (error) {
         if (request !== generation || error.name === 'AbortError') return;
-        status.textContent = 'Preview unavailable · select to apply';
+        status.textContent = tr("Preview unavailable · select to apply");
       }
     }
   }

@@ -1,3 +1,4 @@
+import {t as tr, tn as trn} from './i18n.js';
 /* Batch progress follows the immutable job ID. State changes arrive over SSE. */
 export function mergeMaskDelta(masks, delta) {
   const removed = new Set(delta.removed || []);
@@ -18,14 +19,14 @@ export function installMaskBatch({el, post, get, flush, targets, toast}) {
     const running = Boolean(current.active);
     const processed = current.processed || 0;
     el('batchMaskSummary').textContent = running
-      ? `${current.cancel_requested ? 'Stopping mask detection' : 'Generating masks'} · ${processed} of ${current.total} photos processed`
-      : current.undone ? 'Generated masks undone · other edits retained'
-      : `${current.cancel_requested ? 'Mask batch stopped' : 'Mask batch finished'} · ${current.masked || 0} photos masked · ${current.failed || 0} failed`;
+      ? tr('{status} · {processed} of {total} photos processed', {status: current.cancel_requested ? tr('Stopping mask detection') : tr('Generating masks'), processed, total: current.total})
+      : current.undone ? tr('Generated masks undone · other edits retained')
+      : tr('{status} · {masked} photos masked · {failed} failed', {status: current.cancel_requested ? tr('Mask batch stopped') : tr('Mask batch finished'), masked: current.masked || 0, failed: current.failed || 0});
     el('batchMaskCancel').hidden = !running;
     el('batchMaskCancel').disabled = request || current.cancel_requested;
     el('batchMaskUndo').hidden = running || !current.masked || current.undone;
     el('batchMaskUndo').disabled = request;
-    el('batchMaskErrors').textContent = (current.omittedResults ? 'Showing recent results. Earlier failures remain included in the total.\n' : '') + (current.errors || []).join('\n');
+    el('batchMaskErrors').textContent = (current.omittedResults ? tr('Showing recent results. Earlier failures remain included in the total.\n') : '') + (current.errors || []).join('\n');
     el('batchMaskDetails').hidden = !current.errors?.length;
     el('batchMaskDismiss').hidden = running;
     el('batchAiMaskBtn').disabled = running || request || !targets().length;
@@ -33,13 +34,13 @@ export function installMaskBatch({el, post, get, flush, targets, toast}) {
   async function start() {
     if (request || current?.active) return;
     const names = targets().map(image => image.name);
-    if (!names.length) return toast('Select photos for batch AI masking');
+    if (!names.length) return toast(tr('Select photos for batch AI masking'));
     request = true;
     render();
     try {
-      if (!await flush()) throw new Error('Finish saving your edits before generating masks');
+      if (!await flush()) throw new Error(tr('Finish saving your edits before generating masks'));
       const result = await post('/api/batch/semantic-masks', {names, categories: ['subject']});
-      if (!result.ok) throw new Error(result.error || 'Could not start mask detection');
+      if (!result.ok) throw new Error(result.error || tr('Could not start mask detection'));
       const status = await get('/api/batch/semantic-masks/status');
       if (status.jobId === result.jobId) current = status;
     } catch (error) { toast(error.message); }
@@ -51,7 +52,7 @@ export function installMaskBatch({el, post, get, flush, targets, toast}) {
     request = true; render();
     try {
       const result = await post('/api/batch/semantic-masks/cancel', {jobId: current.jobId});
-      if (!result.ok) throw new Error(result.error || 'Could not cancel');
+      if (!result.ok) throw new Error(result.error || tr('Could not cancel'));
       current = await get('/api/batch/semantic-masks/status');
     } catch (error) { toast(error.message); }
     finally { request = false; render(); }
@@ -60,11 +61,11 @@ export function installMaskBatch({el, post, get, flush, targets, toast}) {
     if (!current || request) return;
     request = true; render();
     try {
-      if (!await flush()) throw new Error('Finish saving your edits before undoing the batch');
+      if (!await flush()) throw new Error(tr('Finish saving your edits before undoing the batch'));
       const result = await post('/api/batch/semantic-masks/undo', {jobId: current.jobId});
-      if (!result.ok) throw new Error(result.error || 'Could not undo this batch');
+      if (!result.ok) throw new Error(result.error || tr('Could not undo this batch'));
       current = {...current, masked: 0, undone: true};
-      toast(`Removed generated masks from ${result.count} photos`);
+      toast(trn('Removed generated masks from {count} photo', 'Removed generated masks from {count} photos', result.count));
     } catch (error) { toast(error.message); }
     finally { request = false; render(); }
   };

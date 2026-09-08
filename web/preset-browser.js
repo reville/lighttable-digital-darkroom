@@ -1,7 +1,17 @@
+import { t as tr, tn as trn, currentLocale, formatNumber } from './i18n.js';
+
+const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
 const SOURCE_LABELS = {
   lighttable: 'LightTable', lightroom: 'Lightroom / Camera Raw',
   'capture-one': 'Capture One',
 };
+
+function filmBehaviorLabel(mode) {
+  if (mode === 'preserve') return tr('Film unchanged.');
+  if (mode === 'on') return tr('Film on.');
+  if (mode === 'off') return tr('Film off.');
+  return tr('Film {mode}.', {mode});
+}
 
 /** One preview at a time, including when an old request ignores cancellation. */
 export function createPresetPreviewQueue({ render, onResult, onError }) {
@@ -74,7 +84,7 @@ export function presetWebURL(value) {
 }
 
 /** Calendar dates have no timezone; timestamps retain the viewer's local date. */
-export function formatPresetCatalogDate(value, locale) {
+export function formatPresetCatalogDate(value, locale = currentLocale()) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
   const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -102,18 +112,18 @@ export function createPresetBrowser({
   const pageSize = 6, urls = new Set(), cards = new Map();
   const root = document.createElement('div');
   root.className = 'preset-browser';
-  root.innerHTML = `<div class="preset-browser-tabs" role="tablist" aria-label="Preset collection">
-      <button type="button" role="tab" data-collection="builtin" aria-selected="true">Built-in</button>
-      <button type="button" role="tab" data-collection="yours" aria-selected="false">Yours</button>
-      <button type="button" role="tab" data-collection="community" aria-selected="false">Community</button></div>
-    <label class="preset-browser-search"><span class="sr-only">Find a preset</span><input type="search" placeholder="Search presets" autocomplete="off"></label>
-    <div class="preset-browser-toolbar"><button type="button" data-filter="favorites" aria-pressed="false">☆ Favorites</button><button type="button" data-filter="hidden" aria-pressed="false">Show hidden</button><button type="button" data-action="manage">Manage…</button></div>
-    <div class="preset-browser-community-controls" hidden><label>Collection<select data-order><option value="featured">Featured</option><option value="new">New</option><option value="all">All</option></select></label><label>Subject<select data-tag><option value="">All subjects</option></select></label><button type="button" data-action="refresh" aria-label="Refresh community presets">Refresh</button></div>
+  root.innerHTML = `<div class="preset-browser-tabs" role="tablist" aria-label="${i18nHTML(tr("Preset collection"))}">
+      <button type="button" role="tab" data-collection="builtin" aria-selected="true">${i18nHTML(tr("Built-in"))}</button>
+      <button type="button" role="tab" data-collection="yours" aria-selected="false">${i18nHTML(tr("Yours"))}</button>
+      <button type="button" role="tab" data-collection="community" aria-selected="false">${i18nHTML(tr("Community"))}</button></div>
+    <label class="preset-browser-search"><span class="sr-only">${i18nHTML(tr("Find a preset"))}</span><input type="search" placeholder="${i18nHTML(tr("Search presets"))}" autocomplete="off"></label>
+    <div class="preset-browser-toolbar"><button type="button" data-filter="favorites" aria-pressed="false">${i18nHTML(tr("☆ Favorites"))}</button><button type="button" data-filter="hidden" aria-pressed="false">${i18nHTML(tr("Show hidden"))}</button><button type="button" data-action="manage">${i18nHTML(tr("Manage…"))}</button></div>
+    <div class="preset-browser-community-controls" hidden><label>${i18nHTML(tr("Collection"))}<select data-order><option value="featured">${i18nHTML(tr("Featured"))}</option><option value="new">${i18nHTML(tr("New"))}</option><option value="all">${i18nHTML(tr("All"))}</option></select></label><label>${i18nHTML(tr("Subject"))}<select data-tag><option value="">${i18nHTML(tr("All subjects"))}</option></select></label><button type="button" data-action="refresh" aria-label="${i18nHTML(tr("Refresh community presets"))}">${i18nHTML(tr("Refresh"))}</button></div>
     <p class="preset-browser-network" role="status" hidden></p>
     <p class="preset-browser-status" role="status"></p>
-    <section class="preset-browser-detail" aria-label="Selected preset" hidden></section>
-    <div class="preset-browser-grid" aria-label="Preset previews"></div>
-    <div class="preset-browser-pages"><button type="button" data-page="previous" aria-label="Previous presets">Previous</button><span></span><button type="button" data-page="next" aria-label="Next presets">Next</button></div>`;
+    <section class="preset-browser-detail" aria-label="${i18nHTML(tr("Selected preset"))}" hidden></section>
+    <div class="preset-browser-grid" aria-label="${i18nHTML(tr("Preset previews"))}"></div>
+    <div class="preset-browser-pages"><button type="button" data-page="previous" aria-label="${i18nHTML(tr("Previous presets"))}">${i18nHTML(tr("Previous"))}</button><span></span><button type="button" data-page="next" aria-label="${i18nHTML(tr("Next presets"))}">${i18nHTML(tr("Next"))}</button></div>`;
   container.append(root);
   const search = root.querySelector('input');
   const status = root.querySelector('.preset-browser-status');
@@ -132,7 +142,7 @@ export function createPresetBrowser({
   manage.classList.add('preset-browser-manage');
   let syncManagement;
   if (managementSection) {
-    manage.setAttribute('aria-label', 'Manage presets');
+    manage.setAttribute('aria-label', tr("Manage presets"));
     manage.setAttribute('aria-controls', managementSection.id);
     syncManagement = () => manage.setAttribute('aria-expanded', String(managementSection.open));
     syncManagement();
@@ -149,7 +159,7 @@ export function createPresetBrowser({
     render: (item, options) => getPreview(item.preset, item.photo, { ...options, width: item.width || 320 }),
     onResult: ({ image, previewStatus, after, download, cacheKey }, value) => {
       if (download) { void download(value); return; }
-      if (!value) { previewStatus.textContent = 'Preview unavailable'; return; }
+      if (!value) { previewStatus.textContent = tr('Preview unavailable'); return; }
       if (cacheKey) {
         previewCache.set(cacheKey, value);
         if (previewCache.size > 36) previewCache.delete(previewCache.keys().next().value);
@@ -159,7 +169,7 @@ export function createPresetBrowser({
       image.src = url; image.hidden = false; previewStatus.hidden = true;
       after?.();
     },
-    onError: ({ previewStatus, onError }) => { previewStatus.hidden = false; previewStatus.textContent = 'Preview unavailable. Try again.'; onError?.(); },
+    onError: ({ previewStatus, onError }) => { previewStatus.hidden = false; previewStatus.textContent = tr("Preview unavailable. Try again."); onError?.(); },
   });
   function cancel() {
     clearTimeout(searchTimer); queue.cancel();
@@ -172,15 +182,15 @@ export function createPresetBrowser({
     for (const [key, button] of cards) {
       const enabled = adjustment?.id === key && adjustment.enabled;
       button.setAttribute('aria-pressed', String(!!enabled));
-      button.title = enabled ? 'Click to disable preset' : 'Click to apply preset';
+      button.title = enabled ? tr('Click to disable preset') : tr('Click to apply preset');
     }
   }
   function updateFavoriteButton(button, preset) {
     const favorite = getFavorites().includes(presetKey(preset));
     button.textContent = favorite ? '★' : '☆';
     button.setAttribute('aria-pressed', String(favorite));
-    button.setAttribute('aria-label', `${favorite ? 'Remove' : 'Add'} ${preset.name} ${favorite ? 'from' : 'to'} favorites`);
-    button.title = favorite ? 'Remove from favorites' : 'Add to favorites';
+    button.setAttribute('aria-label', favorite ? tr('Remove {name} from favorites', {name: preset.name}) : tr('Add {name} to favorites', {name: preset.name}));
+    button.title = favorite ? tr("Remove from favorites") : tr("Add to favorites");
   }
   function toggleFavorite(preset) {
     const key = presetKey(preset), ids = [...getFavorites()];
@@ -209,7 +219,7 @@ export function createPresetBrowser({
     communityLoading = true; communityRequested = true; render();
     communityPromise = (async () => {
       try { await loadCommunity(force); }
-      catch (error) { network.textContent = error.message || 'Community is unavailable'; }
+      catch (error) { network.textContent = error.message || tr("Community is unavailable"); }
       finally { communityLoading = false; render(); }
     })();
     return communityPromise;
@@ -238,7 +248,7 @@ export function createPresetBrowser({
       cards.get(presetKey(preset))?.focus({ preventScroll: true });
     } catch (error) {
       if (request === activationGeneration && active && !destroyed && error.name !== 'AbortError') {
-        status.textContent = error.message || 'Could not apply preset. Try again.';
+        status.textContent = error.message || tr('Could not apply preset. Try again.');
       }
     }
   }
@@ -250,14 +260,14 @@ export function createPresetBrowser({
     detail.hidden = false; detail.replaceChildren();
     const heading = element('div', 'preset-browser-detail-heading');
     heading.append(element('strong', '', preset.name), button('×', () => { selected = null; detailDismissed = true; render(); }, 'preset-browser-close'));
-    heading.lastChild.setAttribute('aria-label', 'Close preset details');
+    heading.lastChild.setAttribute('aria-label', tr('Close preset details'));
     const credit = element('p', 'preset-browser-credit');
     credit.append(link(preset.author?.name || 'LightTable', preset.author?.url) || document.createTextNode(preset.author?.name || SOURCE_LABELS[preset.source] || 'LightTable'));
-    const version = preset.version ? `Version ${preset.version}` : '';
+    const version = preset.version ? tr('Version {version}', {version: preset.version}) : '';
     if (version) credit.append(document.createTextNode(` · ${version}`));
-    const description = element('p', 'preset-browser-description', preset.description || 'Click the preset to apply it to your photo.');
+    const description = element('p', 'preset-browser-description', preset.description || tr('Click the preset to apply it to your photo.'));
     const mode = preset.filmMode || (preset.includeFilm ? 'on' : 'preserve');
-    const behavior = element('p', 'preset-browser-hint', `Film ${mode === 'preserve' ? 'unchanged' : mode}. ${preset.scope === 'look' ? 'Exposure, white balance and photo corrections are kept.' : 'Applies the included adjustments.'}`);
+    const behavior = element('p', 'preset-browser-hint', `${filmBehaviorLabel(mode)} ${preset.scope === 'look' ? tr('Exposure, white balance and photo corrections are kept.') : tr('Applies the included adjustments.')}`);
     detail.append(heading, credit, description, behavior);
     if (preset.collection === 'applied') { credit.hidden = true; behavior.hidden = true; }
     const examples = (preset.previews || []).filter((example) => presetWebURL(example.after));
@@ -269,25 +279,25 @@ export function createPresetBrowser({
       const controls = element('div', 'preset-browser-compare');
       const showExample = (example) => {
         figure.hidden = false;
-        img.alt = example.label || `${preset.name} example`;
+        img.alt = example.label || tr('{name} example', {name: preset.name});
         img.src = presetWebURL(example.after);
-        label.textContent = example.label || 'Creator example';
+        label.textContent = example.label || tr("Creator example");
         if (example.credit?.name) {
-          label.append(document.createTextNode(' · Photo: '));
+          label.append(document.createTextNode(` · ${tr('Photo:')} `));
           label.append(link(example.credit.name, example.credit.url) || document.createTextNode(example.credit.name));
           if (example.credit.license) label.append(document.createTextNode(` · ${example.credit.license}`));
         }
         controls.replaceChildren();
         const beforeURL = presetWebURL(example.before);
         if (beforeURL) {
-          controls.append(button('Before', () => { img.src = beforeURL; }), button('With preset', () => { img.src = presetWebURL(example.after); }));
+          controls.append(button(tr("Before"), () => { img.src = beforeURL; }), button(tr("With preset"), () => { img.src = presetWebURL(example.after); }));
         }
       };
       figure.append(img, label, controls);
       if (examples.length > 1) {
         const chooser = element('select', 'preset-browser-example-choice');
-        chooser.setAttribute('aria-label', 'Example photo');
-        examples.forEach((example, index) => chooser.add(new Option(example.label || `Example ${index + 1}`, String(index))));
+        chooser.setAttribute('aria-label', tr("Example photo"));
+        examples.forEach((example, index) => chooser.add(new Option(example.label || tr('Example {number}', {number: formatNumber(index + 1)}), String(index))));
         chooser.onchange = () => showExample(examples[Number(chooser.value)]);
         figure.append(chooser);
       }
@@ -297,21 +307,23 @@ export function createPresetBrowser({
     const message = element('p', 'preset-browser-status'); message.setAttribute('role', 'status');
     let recipe = null, prepareSubmission = null;
     const amountRow = element('div', 'preset-browser-amount');
-    const amountLabel = element('label', '', 'Amount'); amountLabel.htmlFor = 'presetAmount';
+    const amountLabel = element('label', '', tr('Amount')); amountLabel.htmlFor = 'presetAmount';
     const amount = element('input', ''); amount.type = 'range'; amount.id = 'presetAmount';
     amount.min = '0'; amount.max = '100'; amount.step = '1';
     const output = element('output', ''); output.htmlFor = amount.id;
-    const toggle = button('Off', () => void activatePreset(preset), 'preset-browser-toggle');
+    const toggle = button(tr('Off'), () => void activatePreset(preset), 'preset-browser-toggle');
     const updateAmount = () => {
       const adjustment = getAdjustment();
       const matches = adjustment?.id === presetKey(preset);
       amount.disabled = !matches;
       amount.value = String(matches ? adjustment.amount : 100);
-      output.textContent = `${amount.value}%`;
-      amount.setAttribute('aria-valuetext', `${amount.value}%`);
-      toggle.textContent = matches && adjustment.enabled ? 'On' : 'Off';
+      const amountText = formatNumber(Number(amount.value) / 100, {style: 'percent'});
+      output.textContent = amountText;
+      amount.setAttribute('aria-valuetext', amountText);
+      toggle.textContent = matches && adjustment.enabled ? tr('On') : tr('Off');
       toggle.setAttribute('aria-pressed', String(!!(matches && adjustment.enabled)));
-      toggle.setAttribute('aria-label', `${matches && adjustment.enabled ? 'Disable' : 'Enable'} ${preset.name}`);
+      toggle.setAttribute('aria-label', matches && adjustment.enabled
+        ? tr('Disable {name}', {name: preset.name}) : tr('Enable {name}', {name: preset.name}));
     };
     amount.oninput = () => {
       onAmount(presetKey(preset), photo?.name, amount.value, false);
@@ -332,25 +344,25 @@ export function createPresetBrowser({
     if (preset.collection === 'community' && onInstall) {
       const installed = getPresets().find((item) => item.community?.id === preset.id);
       const upToDate = installed?.community?.version === preset.version;
-      const install = button(preset.compatible === false ? 'Update LightTable' : upToDate ? 'Added to Yours' : installed ? 'Update in Yours' : 'Add to Yours', async () => {
+      const install = button(preset.compatible === false ? tr("Update LightTable") : upToDate ? tr("Added to Yours") : installed ? tr("Update in Yours") : tr("Add to Yours"), async () => {
         install.disabled = true;
         try { await onInstall(preset); if (valid()) render(); }
-        catch (error) { if (valid()) { install.disabled = false; message.textContent = error.message || 'Could not install preset'; } }
+        catch (error) { if (valid()) { install.disabled = false; message.textContent = error.message || tr("Could not install preset"); } }
       });
       install.disabled = upToDate || preset.compatible === false; actions.append(install);
     }
     if (preset.collection === 'builtin' && onDuplicate) {
-      const duplicate = button('Save a copy…', async () => {
+      const duplicate = button(tr("Save a copy…"), async () => {
         duplicate.disabled = true;
         try { await onDuplicate(preset); }
-        catch (error) { if (valid()) message.textContent = error.message || 'Could not save a copy'; }
+        catch (error) { if (valid()) message.textContent = error.message || tr("Could not save a copy"); }
         finally { duplicate.disabled = false; }
       });
       actions.append(duplicate);
     }
     if (preset.collection === 'builtin') {
       const isHidden = getHidden().includes(presetKey(preset));
-      actions.append(button(isHidden ? 'Restore to Built-in' : 'Hide preset', () => {
+      actions.append(button(isHidden ? tr("Restore to Built-in") : tr("Hide preset"), () => {
         const ids = getHidden(), id = presetKey(preset);
         onHiddenChange(isHidden ? ids.filter((value) => value !== id) : [...ids, id]);
         if (!isHidden) selected = null;
@@ -359,46 +371,46 @@ export function createPresetBrowser({
     }
     detail.append(actions, message);
     const more = element('div', 'preset-browser-detail-links');
-    const pageLink = link('Preset page ↗', preset.pageUrl);
+    const pageLink = link(tr("Preset page ↗"), preset.pageUrl);
     if (pageLink) more.append(pageLink);
     if (preset.license) more.append(element('span', 'preset-browser-license', preset.license));
     if (preset.parentId) {
       const parentURL = /^[a-z0-9][a-z0-9-]{0,39}\/[a-z0-9][a-z0-9-]{0,59}$/.test(preset.parentId)
         ? `https://lighttable.app/presets/${preset.parentId}/` : null;
-      more.append(link(`From ${preset.parentId}`, parentURL) || element('span', 'preset-browser-license', `From ${preset.parentId}`));
+      more.append(link(tr('From {parentId}', {parentId: preset.parentId}), parentURL) || element('span', 'preset-browser-license', tr('From {parentId}', {parentId: preset.parentId})));
     }
     if (preset.collection !== 'community' && preset.collection !== 'builtin' && preset.collection !== 'applied' && onSubmit) {
       const submission = element('section', 'preset-browser-submission');
-      submission.append(element('strong', '', 'Community submission'));
+      submission.append(element('strong', '', tr("Community submission")));
       const scope = element('div', 'preset-browser-submission-scope');
-      const submissionStatus = element('p', 'preset-browser-status', 'Preparing the included-settings summary…');
+      const submissionStatus = element('p', 'preset-browser-status', tr("Preparing the included-settings summary…"));
       submissionStatus.setAttribute('role', 'status');
-      const rights = element('p', 'preset-browser-hint', 'Only share photos you have permission to publish');
-      const submit = button('Prepare community submission…', async () => {
+      const rights = element('p', 'preset-browser-hint', tr("Only share photos you have permission to publish"));
+      const submit = button(tr("Prepare community submission…"), async () => {
         submit.disabled = true;
-        submissionStatus.textContent = 'Preparing the preset and three licensed example pairs…';
+        submissionStatus.textContent = tr("Preparing the preset and three licensed example pairs…");
         try {
           const result = await onSubmit(preset);
           if (!valid()) return;
-          submissionStatus.textContent = 'Submission package prepared. Review its examples and rights notes, then complete the submission form.';
-          const submissionLink = link('Open submission form ↗', result.submissionUrl);
+          submissionStatus.textContent = tr("Submission package prepared. Review its examples and rights notes, then complete the submission form.");
+          const submissionLink = link(tr("Open submission form ↗"), result.submissionUrl);
           if (submissionLink) submission.append(submissionLink);
-        } catch (error) { if (valid()) submissionStatus.textContent = error.message || 'Could not prepare submission'; }
+        } catch (error) { if (valid()) submissionStatus.textContent = error.message || tr("Could not prepare submission"); }
         finally { if (valid()) submit.disabled = false; }
       });
       submit.disabled = true;
-      const example = button('Download example on this photo', () => {
+      const example = button(tr("Download example on this photo"), () => {
         if (!photoUnchanged(photo)) { render(); return; }
         example.disabled = true;
-        submissionStatus.textContent = 'Rendering a 960-pixel JPEG on this computer…';
+        submissionStatus.textContent = tr('Rendering a 960-pixel JPEG on this computer…');
         queue.replace([{ preset: sharedRecipe, photo, width: 960, previewStatus: submissionStatus,
           onError() { example.disabled = false; },
           async download(value) {
             if (!valid()) return;
             try {
               await onDownloadExample(preset, value);
-              if (valid()) submissionStatus.textContent = 'Example download prepared. Your edit has not changed.';
-            } catch (error) { if (valid()) submissionStatus.textContent = error.message || 'Could not save the example'; }
+              if (valid()) submissionStatus.textContent = tr('Example download prepared. Your edit has not changed.');
+            } catch (error) { if (valid()) submissionStatus.textContent = error.message || tr('Could not save the example'); }
             finally { if (valid()) example.disabled = false; }
           },
         }]);
@@ -410,37 +422,36 @@ export function createPresetBrowser({
           const draft = await getSubmission(preset, { signal });
           if (!valid()) return;
           sharedRecipe = JSON.parse(draft.content).presets?.[0];
-          if (!sharedRecipe || !Array.isArray(sharedRecipe.includedGrade) || !Array.isArray(sharedRecipe.includedFilm)) throw new Error('The submission scope is unavailable');
-          const behavior = sharedRecipe.filmMode === 'preserve' ? 'unchanged' : sharedRecipe.filmMode;
-          scope.replaceChildren(element('p', '', `Film ${behavior}.`));
+          if (!sharedRecipe || !Array.isArray(sharedRecipe.includedGrade) || !Array.isArray(sharedRecipe.includedFilm)) throw new Error(tr("The submission scope is unavailable"));
+          scope.replaceChildren(element('p', '', filmBehaviorLabel(sharedRecipe.filmMode)));
           const fields = element('dl', '');
-          for (const [label, keys] of [['Develop settings', sharedRecipe.includedGrade], ['Film settings', sharedRecipe.includedFilm]]) {
-            fields.append(element('dt', '', label), element('dd', '', keys.length ? keys.join(', ') : 'None'));
+          for (const [label, keys] of [[tr("Develop settings"), sharedRecipe.includedGrade], [tr("Film settings"), sharedRecipe.includedFilm]]) {
+            fields.append(element('dt', '', label), element('dd', '', keys.length ? keys.join(', ') : tr("None")));
           }
-          scope.append(fields, element('p', 'preset-browser-hint', 'Keeps Edit Exposure, Temp/Tint, capture white balance, RAW settings, film format, crop, geometry, masks, Remove, lens corrections, sharpening and noise reduction.'));
+          scope.append(fields, element('p', 'preset-browser-hint', tr("Keeps Edit Exposure, Temp/Tint, capture white balance, RAW settings, film format, crop, geometry, masks, Remove, lens corrections, sharpening and noise reduction.")));
           submit.disabled = false;
           example.disabled = !photo?.name || !getPreview || !onDownloadExample;
-          submissionStatus.textContent = 'The package includes this recipe, three licensed example pairs, and rights notes. Nothing is uploaded.';
-        } catch (error) { if (valid()) submissionStatus.textContent = error.message || 'Could not inspect the submission settings'; }
+          submissionStatus.textContent = tr("The package includes this recipe, three licensed example pairs, and rights notes. Nothing is uploaded.");
+        } catch (error) { if (valid()) submissionStatus.textContent = error.message || tr("Could not inspect the submission settings"); }
       };
       submission.append(scope, submissionStatus, submit, example, rights);
       detail.append(submission);
     }
     detail.append(more);
     if (preset.compatible === false) {
-      message.textContent = 'Update LightTable to use this preset.';
+      message.textContent = tr("Update LightTable to use this preset.");
       return;
     }
-    if (preset.collection === 'community') message.textContent = 'Loading recipe…';
+    if (preset.collection === 'community') message.textContent = tr("Loading recipe…");
     try {
       recipe = await getRecipe(preset, { signal });
       if (!valid()) return;
       const compatible = getAdjustment()?.id === presetKey(preset) || canApply(recipe);
       toggle.disabled = !photo?.name || !compatible;
-      message.textContent = !compatible ? 'No compatible adjustments.' : !photo?.name ? 'Select a photo to apply this preset.' : '';
+      message.textContent = !compatible ? tr('No compatible adjustments.') : !photo?.name ? tr('Select a photo to apply this preset.') : '';
       if (prepareSubmission) await prepareSubmission();
     } catch (error) {
-      if (valid()) message.textContent = error.message || 'Recipe unavailable. Refresh the community catalog and try again.';
+      if (valid()) message.textContent = error.message || tr("Recipe unavailable. Refresh the community catalog and try again.");
     }
   }
   function render() {
@@ -453,7 +464,7 @@ export function createPresetBrowser({
     const adjustment = getAdjustment();
     if (adjustment && ((!selected && !detailDismissed) || adjustment.id !== lastAdjustmentId)) {
       selected = (getPresets() || []).find(item => presetKey(item) === adjustment.id) ||
-        { id: adjustment.id, name: adjustment.name, collection: 'applied', description: 'Saved with this photo.' };
+        { id: adjustment.id, name: adjustment.name, collection: 'applied', description: tr('Saved with this photo.') };
       if (selected.collection !== 'applied') collection = selected.collection || 'yours';
       onSelect(selected);
     }
@@ -465,16 +476,16 @@ export function createPresetBrowser({
     const hiddenIds = getHidden();
     hiddenFilter.hidden = collection !== 'builtin';
     hiddenFilter.disabled = !hiddenIds.length;
-    hiddenFilter.textContent = hiddenIds.length ? `Show hidden (${hiddenIds.length})` : 'Show hidden';
+    hiddenFilter.textContent = hiddenIds.length ? tr('Show hidden ({count})', {count: formatNumber(hiddenIds.length)}) : tr("Show hidden");
     hiddenFilter.setAttribute('aria-pressed', String(showHidden));
     root.querySelector('.preset-browser-community-controls').hidden = !isCommunity;
     network.hidden = !isCommunity;
     refresh.disabled = communityLoading;
-    network.textContent = communityLoading ? 'Refreshing community…' : remote.offline
-      ? (remote.presets?.length ? 'Offline · showing saved catalog' : 'Community is offline. Built-in and saved presets remain available.')
-      : remote.error ? remote.error : remote.updatedAt ? `Catalog updated ${formatPresetCatalogDate(remote.updatedAt)}` : '';
+    network.textContent = communityLoading ? tr("Refreshing community…") : remote.offline
+      ? (remote.presets?.length ? tr("Offline · showing saved catalog") : tr("Community is offline. Built-in and saved presets remain available."))
+      : remote.error ? remote.error : remote.updatedAt ? tr('Catalog updated {date}', {date: formatPresetCatalogDate(remote.updatedAt)}) : '';
     const keptTag = tag.value;
-    tag.replaceChildren(new Option('All subjects', ''));
+    tag.replaceChildren(new Option(tr("All subjects"), ''));
     for (const value of [...new Set(inventory.flatMap((preset) => preset.tags || []))].sort()) tag.add(new Option(value, value));
     tag.value = keptTag;
     if (tag.selectedIndex < 0) tag.value = '';
@@ -486,16 +497,17 @@ export function createPresetBrowser({
     const shown = filtered.slice(page * pageSize, (page + 1) * pageSize);
     previous.disabled = page === 0; next.disabled = (page + 1) * pageSize >= filtered.length;
     pages.hidden = filtered.length <= pageSize;
-    pages.querySelector('span').textContent = `${page * pageSize + 1}–${page * pageSize + shown.length} of ${filtered.length}`;
+    pages.querySelector('span').textContent = tr('{first}–{last} of {total}', {first: formatNumber(page * pageSize + 1), last: formatNumber(page * pageSize + shown.length), total: formatNumber(filtered.length)});
     tabs.forEach((tab) => { const current = tab.dataset.collection === collection; tab.setAttribute('aria-selected', String(current)); tab.tabIndex = current ? 0 : -1; });
     favoriteFilter.setAttribute('aria-pressed', String(favoritesOnly));
     const busy = !isCommunity && loading;
-    status.textContent = busy ? 'Loading presets…' : !filtered.length
-      ? favoritesOnly ? 'No favorites here yet. Star a preset to save it.'
-        : search.value || tag.value ? 'No matching presets.'
-        : collection === 'yours' ? 'Save your current look, import presets, or add one from Community.'
-        : communityLoading ? '' : 'No presets in this collection yet.'
-      : `${filtered.length} preset${filtered.length === 1 ? '' : 's'} · click to apply, click again to turn off`;
+    status.textContent = busy ? tr('Loading presets…') : !filtered.length
+      ? favoritesOnly ? tr('No favorites here yet. Star a preset to save it.')
+        : search.value || tag.value ? tr('No matching presets.')
+        : collection === 'yours' ? tr('Save your current look, import presets, or add one from Community.')
+        : communityLoading ? '' : tr('No presets in this collection yet.')
+      : trn('{count} preset · click to apply, click again to turn off',
+        '{count} presets · click to apply, click again to turn off', filtered.length);
     grid.replaceChildren(); cards.clear(); detail.hidden = !selected;
     if (selected) {
       // Refresh an installed listing after updates while retaining remote identity.
@@ -507,20 +519,20 @@ export function createPresetBrowser({
     for (const preset of shown) {
       const article = element('article', 'preset-browser-card');
       const choose = button('', () => void activatePreset(preset), 'preset-browser-apply');
-      choose.setAttribute('aria-label', `Toggle ${preset.name}`);
+      choose.setAttribute('aria-label', tr('Toggle {name}', {name: preset.name}));
       const frame = element('span', 'preset-browser-image');
-      const img = element('img', ''); img.alt = `${preset.name} preview`; img.hidden = true;
+      const img = element('img', ''); img.alt = tr('{name} preview', {name: preset.name}); img.hidden = true;
       const previewStatus = element('span', 'preset-browser-preview-status');
       const example = (preset.previews || []).find((item) => presetWebURL(item.after));
-      previewStatus.textContent = example ? '' : !snapshot?.name ? 'Select a photo to preview' : 'Click to apply';
+      previewStatus.textContent = example ? '' : !snapshot?.name ? tr('Select a photo to preview') : tr('Click to apply');
       if (example) { img.src = presetWebURL(example.after); img.hidden = false; img.loading = 'lazy'; previewStatus.hidden = true; }
-      img.onerror = () => { img.hidden = true; previewStatus.hidden = false; previewStatus.textContent = 'Preview unavailable'; };
+      img.onerror = () => { img.hidden = true; previewStatus.hidden = false; previewStatus.textContent = tr("Preview unavailable"); };
       frame.append(img, previewStatus);
       choose.append(frame, element('strong', 'preset-browser-name', preset.name),
         element('span', 'preset-browser-source', preset.author?.name || SOURCE_LABELS[preset.source] || 'LightTable'));
-      if (hiddenIds.includes(presetKey(preset))) choose.append(element('span', 'preset-browser-source', 'Hidden'));
+      if (hiddenIds.includes(presetKey(preset))) choose.append(element('span', 'preset-browser-source', tr("Hidden")));
       const ignored = preset.conversion?.ignored || [];
-      if (ignored.length) choose.append(element('span', 'preset-browser-warning', `${ignored.length} unsupported settings skipped`));
+      if (ignored.length) choose.append(element('span', 'preset-browser-warning', trn('{count} unsupported setting skipped', '{count} unsupported settings skipped', ignored.length)));
       const favorite = button('', () => toggleFavorite(preset), 'preset-browser-favorite');
       updateFavoriteButton(favorite, preset);
       article.append(choose, favorite); grid.append(article); cards.set(presetKey(preset), choose);
@@ -534,7 +546,7 @@ export function createPresetBrowser({
           if (cached instanceof Blob) urls.add(img.src);
           img.hidden = false; previewStatus.hidden = true;
         } else {
-          previewStatus.textContent = 'Rendering preview…';
+          previewStatus.textContent = tr('Rendering preview…');
           requests.push({ preset: structuredClone(preset), photo: snapshot, image: img, previewStatus, cacheKey });
         }
       }
@@ -570,7 +582,7 @@ export function createPresetBrowser({
       await ensureCommunity();
       const preset = (getCommunity()?.presets || []).find((item) => item.id === id);
       if (preset) showDetail({ ...preset, collection: 'community' });
-      else { render(); status.textContent = 'This preset is unavailable. Refresh the catalog and try again.'; }
+      else { render(); status.textContent = tr("This preset is unavailable. Refresh the catalog and try again."); }
     },
     destroy() {
       destroyed = true; cancel(); activationGeneration++; activationController?.abort(); previewCache.clear();

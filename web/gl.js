@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 // WebGL grade preview. The fragment shader below mirrors grade.py exactly —
 // same order of operations, same constants. Change one, change the other.
 
@@ -475,7 +476,7 @@ function compile(gl, type, src) {
   gl.shaderSource(sh, src);
   gl.compileShader(sh);
   if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-    throw new Error('shader: ' + gl.getShaderInfoLog(sh));
+    throw new Error(tr("shader: {value}", {value: gl.getShaderInfoLog(sh)}));
   }
   return sh;
 }
@@ -486,14 +487,14 @@ export class GradeRenderer {
     this.gl = canvas.getContext('webgl', {
       preserveDrawingBuffer: false, antialias: false, alpha: false,
     });
-    if (!this.gl) throw new Error('WebGL unavailable');
+    if (!this.gl) throw new Error(tr("WebGL unavailable"));
     const gl = this.gl;
     this.prog = gl.createProgram();
     gl.attachShader(this.prog, compile(gl, gl.VERTEX_SHADER, VERT));
     gl.attachShader(this.prog, compile(gl, gl.FRAGMENT_SHADER, FRAG));
     gl.linkProgram(this.prog);
     if (!gl.getProgramParameter(this.prog, gl.LINK_STATUS)) {
-      throw new Error('link: ' + gl.getProgramInfoLog(this.prog));
+      throw new Error(tr("link: {value}", {value: gl.getProgramInfoLog(this.prog)}));
     }
     gl.useProgram(this.prog);
 
