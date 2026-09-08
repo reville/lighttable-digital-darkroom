@@ -8,6 +8,16 @@ const browser = await chromium.launch({headless: true, executablePath: config.br
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, async () => {await browser.close(); process.exit(1);});
 try {
   const page = await browser.newPage({viewport: {width: 1440, height: 1000}, deviceScaleFactor: 1});
+  let delayedFilmResponses = 0;
+  await page.route('**/api/render', async route => {
+    const request = route.request().postDataJSON();
+    if (request?.params?.print_exposure === 1.6 && request.name.endsWith('a.png')) {
+      const response = await route.fetch();
+      delayedFilmResponses++;
+      await new Promise(resolve => setTimeout(resolve, 750));
+      await route.fulfill({response});
+    } else await route.continue();
+  });
   // A separate reference page sends the captured RGB8 pixels through the same
   // browser compositor. This avoids approximating fractional CSS transforms
   // with an integer-sized Pillow resize. It is a reference, never app proof.
@@ -133,8 +143,23 @@ try {
       continue;
     }
     const filmEnabled = await page.locator('#filmProfileToggle').getAttribute('aria-checked');
-    if (filmEnabled !== String(test.params.profile_enabled)) await post('/api/ui/command', {command:'filmToggle'});
-    await post('/api/ui/command', {command:'slider', args:{key:'print_exposure', value:test.params.print_exposure}});
+    const physicalChange = async command => {
+      const count = await page.evaluate(() => __lightTablePerf.renders.length);
+      await post('/api/ui/command', command);
+      await page.waitForFunction(count => __lightTablePerf.renders.length > count &&
+        !document.querySelector('#rstat').classList.contains('busy'), count, {timeout:120000});
+      await page.evaluate(() => new Promise(resolve =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    };
+    // A finishing slider can draw against the preceding film base while the
+    // physical render is pending. A saved recipe or ready-photo flag alone
+    // does not prove that the new film/print pixels have reached the screen.
+    if (filmEnabled !== String(test.params.profile_enabled)) {
+      await physicalChange({command:'filmToggle'});
+    }
+    if (Number(await page.locator('#print_exposure').inputValue()) !== test.params.print_exposure) {
+      await physicalChange({command:'slider', args:{key:'print_exposure', value:test.params.print_exposure}});
+    }
     // Actual slider event takes the normal app UI -> grade -> preview -> save route.
     const before = await page.evaluate(() => processingFrames);
     await post('/api/ui/command', {command:'slider', args:{key:'exposure', value:test.exposure}});
@@ -171,5 +196,6 @@ try {
     const bounds = await captureDisplay(test, frame);
     results.push({name:test.name, photo:name, bounds, ...frame});
   }
-  fs.writeFileSync(config.result, JSON.stringify({records:results}));
+  if (!delayedFilmResponses) throw Error('Slow physical-render regression was not exercised');
+  fs.writeFileSync(config.result, JSON.stringify({records:results, delayedFilmResponses}));
 } finally { await browser.close(); }
