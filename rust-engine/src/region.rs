@@ -126,6 +126,16 @@ fn kernel_support(p: &RuntimeParams, width: u32, height: u32) -> Option<(u32, u3
     if (p.io.upscale_factor - 1.0).abs() > 1e-6 || p.io.crop {
         return None;
     }
+    // Exact diffusion uses the full-frame sampled PSF rather than the GPU
+    // Gaussian/downsample lattice. Preserve the viewport trim but render the
+    // full frame so the preview has the same halos as export.
+    if [&p.camera.diffusion_filter, &p.enlarger.diffusion_filter]
+        .into_iter()
+        .take(if p.io.scan_film { 1 } else { 2 })
+        .any(|filter| filter.active && filter.strength > 0.0 && filter.spatial_scale > 0.0)
+    {
+        return None;
+    }
     let pixel_um =
         spektrafilm_core::stages::filming::pixel_size_um(p.camera.film_format_mm, width, height);
     let mut margin = 0;
@@ -311,14 +321,12 @@ mod tests {
         }
     }
     #[test]
-    fn diffusion_crops_preserve_both_resampling_lattices() {
+    fn exact_diffusion_keeps_full_frame_and_preserves_requested_trim() {
         let mut p = pointwise();
         p.camera.diffusion_filter.active = true;
         p.camera.diffusion_filter.spatial_scale = 0.15;
         p.enlarger.diffusion_filter.active = true;
         p.enlarger.diffusion_filter.spatial_scale = 0.25;
-        let pixel_um =
-            spektrafilm_core::stages::filming::pixel_size_um(p.camera.film_format_mm, 6000, 4000);
         let region = plan(
             Rect {
                 x: 2711,
@@ -333,14 +341,9 @@ mod tests {
             true,
         )
         .unwrap();
-        assert!(region.accelerated);
-        for filter in [&p.camera.diffusion_filter, &p.enlarger.diffusion_filter] {
-            let diffusion = filter.gpu_plan(pixel_um as f64, 6000, 4000).unwrap();
-            assert_eq!(region.render.x % diffusion.d, 0);
-            assert_eq!(region.render.y % diffusion.d, 0);
-            assert_eq!(region.render.width % diffusion.d, 0);
-            assert_eq!(region.render.height % diffusion.d, 0);
-        }
+        assert!(!region.accelerated);
+        assert_eq!(region.render, Rect { x: 0, y: 0, width: 6000, height: 4000 });
+        assert_eq!(region.trim, Rect { x: 2711, y: 1987, width: 200, height: 150 });
     }
     #[test]
     fn diffusion_with_frame_sized_support_keeps_full_frame() {

@@ -11,6 +11,7 @@ permissions:
 jobs:
   unit:
     runs-on: macos-14
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,11 +41,34 @@ jobs:
           cp -R "$RUNNER_TEMP/spektrafilm-rust/data" engine/data
           cp -R "$RUNNER_TEMP/spektrafilm-python/src/spektrafilm" vendor/spektrafilm/src/spektrafilm
 
-      # The engine-parity script needs the built Rust binary and profile data,
-      # so it stays out of this job; `tests/engine_parity.py` is run from the
-      # release script instead.
       - name: Unit and contract tests
         run: PYTHONPATH=".:vendor/spektrafilm/src" python -m unittest discover -s tests -p 'test_*.py' -t tests --verbose
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/cache@v4
+        with:
+          path: build/processing-cargo
+          key: processing-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-engine/Cargo.lock', 'rust-engine/**/Cargo.toml') }}
+      - name: Prepare the pinned browser test runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/processing-browser" --no-save playwright@1.62.1
+          "$RUNNER_TEMP/processing-browser/node_modules/.bin/playwright" install chromium
+          echo "LIGHTTABLE_PLAYWRIGHT_MODULE=$RUNNER_TEMP/processing-browser/node_modules/playwright/index.mjs" >> "$GITHUB_ENV"
+      - name: Independent film, export, and application pixel gates
+        run: python scripts/check-processing.py --suites film,export,webgl,app
+      # A hosted runner is not evidence of an actual Metal/display session.
+      # The native gate is required by the local full command documented in
+      # PROCESSING-CORRECTNESS.md; unavailable native renderers fail that gate.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: processing-correctness
+          path: build/processing-correctness
+          if-no-files-found: warn
+          retention-days: 14
 
   installers:
     runs-on: ubuntu-latest

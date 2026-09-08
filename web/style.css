@@ -1892,11 +1892,8 @@ body { display:flex; flex-direction:column; }
 .panel .hint { color:#b4b4ba; line-height:1.5; }
 .panel .row .val { color:#b5b5bc; }
 .panel .row .name { font-size:12px; }
-.panel .row-long { grid-template-columns:minmax(0,1fr) var(--row-value-w) 0; height:auto; min-height:52px; row-gap:4px; padding:8px 0; }
-.panel .row-long .name { grid-column:1 / -1; white-space:normal; text-align:left; overflow:visible; }
-.panel .row-long input { grid-column:1; }
-.panel .row-long .val { grid-column:2; }
-.panel .row-long .slider-reset { grid-column:3; }
+.panel .row-long { grid-template-columns:minmax(0,1fr) var(--row-value-w) 0; grid-template-areas:"name name name" "track val reset"; height:auto; min-height:52px; row-gap:4px; padding:8px 0; }
+.panel .row-long .name { white-space:normal; text-align:left; overflow:visible; }
 .stock-preview-open { width:100%; margin-top:8px; min-height:32px; color:var(--ink-2); }
 .film-advanced { margin-top:14px; border-top:1px solid var(--line); }
 .film-advanced > summary, .export-advanced > summary { padding:12px 0; cursor:pointer; color:var(--ink-2); font-size:12px; }

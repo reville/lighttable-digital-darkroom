@@ -130,9 +130,7 @@ fn fir_blur_1d(
                 for x in 0..w {
                     let mut sum = ZERO;
                     for (ki, &kv) in kernel.iter().enumerate() {
-                        let sx = (x as isize + ki as isize - radius as isize)
-                            .max(0)
-                            .min(w as isize - 1) as usize;
+                        let sx = reflect_index(x as isize + ki as isize - radius as isize, w);
                         sum += row_src[sx] * kv;
                     }
                     row_dst[x] = sum;
@@ -145,14 +143,24 @@ fn fir_blur_1d(
                 for x in 0..w {
                     let mut sum = ZERO;
                     for (ki, &kv) in kernel.iter().enumerate() {
-                        let sy = (y as isize + ki as isize - radius as isize)
-                            .max(0)
-                            .min(h as isize - 1) as usize;
+                        let sy = reflect_index(y as isize + ki as isize - radius as isize, h);
                         sum += src[sy * w + x] * kv;
                     }
                     row_dst[x] = sum;
                 }
             });
+    }
+}
+
+/// Half-sample symmetry, scipy.ndimage mode='reflect': d c b a | a b c d.
+/// Repeated reflection also handles a blur wider than a one-pixel image.
+fn reflect_index(index: isize, size: usize) -> usize {
+    let period = 2 * size as isize;
+    let wrapped = index.rem_euclid(period);
+    if wrapped >= size as isize {
+        (period - 1 - wrapped) as usize
+    } else {
+        wrapped as usize
     }
 }
 
@@ -293,6 +301,34 @@ fn make_gaussian_kernel(sigma: Scalar, radius: usize) -> Vec<Scalar> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn corner_impulse_matches_scipy_reflect() {
+        // scipy.ndimage.gaussian_filter(impulse, .8, mode="reflect", truncate=3)
+        // Independent reference locks both edge semantics and kernel support.
+        let mut input = vec![from_f64(0.0); 20];
+        input[0] = from_f64(1.0);
+        let expected = [
+            0.529443326262087, 0.18222860114177347, 0.01595663598688972, 0.0, 0.0,
+            0.18222860114177344, 0.06272109105337778, 0.005492099551709124, 0.0, 0.0,
+            0.01595663598688972, 0.005492099551709125, 0.00048090932379052034, 0.0, 0.0,
+            0.0, 0.0, 0.0, 0.0, 0.0,
+        ];
+        let actual = gaussian_blur_channel(&input, 5, 4, 0.8);
+        for (got, want) in actual.iter().zip(expected) {
+            assert!((*got - from_f64(want)).abs() < from_f64(2e-7), "{got} vs {want}");
+        }
+    }
+
+    #[test]
+    fn reflection_handles_images_smaller_than_kernel() {
+        // Same SciPy reference, shape (1,3), sigma=1.2; reflected samples
+        // must wrap repeatedly rather than index outside the image.
+        let actual = gaussian_blur_channel(&[from_f64(1.0), ZERO, ZERO], 3, 1, 1.2);
+        for (got, want) in actual.iter().zip([0.5674439709005277, 0.3191462543634573, 0.11340977473601502]) {
+            assert!((*got - from_f64(want)).abs() < from_f64(2e-7), "{got} vs {want}");
+        }
+    }
 
     #[test]
     fn test_gaussian_kernel_normalized() {
