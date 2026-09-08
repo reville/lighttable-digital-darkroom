@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Cerca",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "La ricerca copre i titoli degli articoli, i nomi degli strumenti e tutte le istruzioni. Scegli Tutti gli argomenti per cercare in tutta l'app.",
     "Search film stocks": "Cerca pellicole",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Cerca un nome di pellicola, usa Precedente o Successivo per sfogliare, quindi scegli un’anteprima per applicarla.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Cerca il nome di una pellicola o scorri le anteprime, poi scegline una per applicarla. Le anteprime sono ingrandite e ritagliate per mostrare più dettagli.",
     "Search help": "Cerca nella guida",
     "Search index: {value}": "Indice di ricerca: {value}",
     "Search objects, scenes, text, and faces": "Cerca oggetti, scene, testo e volti",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% mantenuto",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}I nomi riflettono i file esistenti e possono cambiare prima dell'esportazione.",
     "{value}× stock baseline": "baseline pellicola {value}×",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} di {stocksLength} pellicole",
     "— none —": "— nessuno —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” ha rifiniture dipinte. Ricreala su questa foto oppure escludi le maschere.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” richiede una nuova selezione dell'oggetto. Escludi le maschere per incollare altre modifiche.",

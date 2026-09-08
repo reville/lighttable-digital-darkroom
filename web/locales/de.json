@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Suchen",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Die Suche umfasst Artikeltitel, Toolnamen und die vollständigen Anweisungen. Wählen Sie Alle Themen, um appweit zu suchen.",
     "Search film stocks": "Film-Filme suchen",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Suchen Sie nach einem Filmnamen, verwenden Sie Previous oder Next zum Durchblättern und wählen Sie dann eine Vorschau zum Anwenden aus.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Suchen Sie nach einem Filmnamen oder scrollen Sie durch die Vorschauen. Wählen Sie eine Vorschau aus, um den Film anzuwenden. Die Vorschauen sind vergrößert und zugeschnitten, damit mehr Details sichtbar sind.",
     "Search help": "Hilfe suchen",
     "Search index: {value}": "Suchindex: {value}",
     "Search objects, scenes, text, and faces": "Objekte, Szenen, Text und Gesichter suchen",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% beibehalten",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Namen beziehen sich auf vorhandene Dateien und können sich vor dem Export ändern.",
     "{value}× stock baseline": "{value}× Film-Basiswert",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} von {stocksLength} Filmtypen",
     "— none —": "— keine —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "„{value}“ hat gemalte Verfeinerungen. Erstellen Sie es auf diesem Foto neu oder schließen Sie Masken aus.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "„{value}“ benötigt eine neue Objektauswahl. Schließen Sie Masken aus, um andere Bearbeitungen einzufügen.",

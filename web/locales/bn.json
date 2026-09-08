@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "অনুসন্ধান",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "অনুসন্ধান নিবন্ধের শিরোনাম, টুলের নাম, এবং পুরো নির্দেশনাগুলো কভার করে। অ্যাপজুড়ে অনুসন্ধানের জন্য সব বিষয় নির্বাচন করুন।",
     "Search film stocks": "ফিল্ম স্টক অনুসন্ধান করুন",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "একটি stock নাম অনুসন্ধান করুন, Previous বা Next ব্যবহার করে ব্রাউজ করুন, তারপর প্রয়োগ করতে একটি preview বেছে নিন।",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "ফিল্মের নাম খুঁজুন অথবা প্রিভিউগুলো স্ক্রল করুন, তারপর প্রয়োগ করতে একটি বেছে নিন। আরও খুঁটিনাটি দেখানোর জন্য প্রিভিউগুলো বড় করে ক্রপ করা হয়।",
     "Search help": "সহায়তা খুঁজুন",
     "Search index: {value}": "অনুসন্ধান সূচি: {value}",
     "Search objects, scenes, text, and faces": "অবজেক্ট, দৃশ্য, টেক্সট, এবং মুখসমূহ খুঁজুন",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% বজায় রাখা হয়েছে",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}নামগুলো বিদ্যমান ফাইলের প্রতিফলন এবং রপ্তানির আগে পরিবর্তিত হতে পারে।",
     "{value}× stock baseline": "{value}× স্টক বেসলাইন",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength}টি stock-এর মধ্যে {value}–{value2}",
     "— none —": "— কিছুই নয় —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”-এ আঁকা সূক্ষ্ম সমন্বয় আছে। এটি এই ফটোতে পুনঃসৃষ্টি করুন বা exclude masks ব্যবহার করুন।",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”-এর জন্য নতুন object selection দরকার। অন্য এডিট পেস্ট করতে exclude mask বাদ দিন।",

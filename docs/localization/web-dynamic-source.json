@@ -1235,7 +1235,6 @@
   "{value}% retained",
   "{value}{value2}Names reflect existing files and may change before export.",
   "{value}× stock baseline",
-  "{value}–{value2} of {stocksLength} stocks",
   "— none —",
   "“{value}” has painted refinements. Recreate it on this photo or exclude masks.",
   "“{value}” needs a new object selection. Exclude masks to paste other edits.",

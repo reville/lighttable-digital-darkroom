@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "بحث",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "يغطي البحث عناوين المقالات وأسماء الأدوات والتعليمات الكاملة. اختر كل الموضوعات للبحث في التطبيق بالكامل.",
     "Search film stocks": "البحث في أفلام التصوير",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ابحث عن اسم stock، واستخدم Previous أو Next للاستعراض، ثم اختر معاينة لتطبيقه.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "ابحث عن اسم فيلم أو مرّر عبر المعاينات، ثم اختر إحداها لتطبيق الفيلم. تُكبَّر المعاينات وتُقتص لإظهار مزيد من التفاصيل.",
     "Search help": "ابحث في المساعدة",
     "Search index: {value}": "فهرس البحث: {value}",
     "Search objects, scenes, text, and faces": "ابحث في العناصر والمشاهد والنص والوجوه",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "تم الاحتفاظ بـ {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}تعكس الأسماء الملفات الموجودة وقد تتغير قبل التصدير.",
     "{value}× stock baseline": "{value}× خط أساس الفيلم",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} من {stocksLength} أفلام",
     "— none —": "— لا شيء —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "\"{value}\" يحتوي على تحسينات مرسومة. أعد إنشاؤه على هذه الصورة أو استبعد الأقنعة.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "\"{value}\" يحتاج إلى تحديد عنصر جديد. استبعد الأقنعة للصق التعديلات الأخرى.",

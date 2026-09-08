@@ -2185,7 +2185,7 @@
             "Mở một ảnh tĩnh và chọn Phim trong thanh công cụ để mở Mô phỏng Phim Chân thực.",
             "Bật công tắc hồ sơ Film. Các giai đoạn phim vật lý sẽ mở tự động; sau đó bạn có thể thu gọn nó.",
             "Chọn Phim, hoặc nhấp Xem trước phim trên ảnh này… để so sánh các ví dụ đã kết xuất.",
-            "Tìm một tên phim, dùng Previous hoặc Next để duyệt, rồi chọn một bản xem trước để áp dụng nó."
+            "Tìm tên phim hoặc cuộn qua các bản xem trước, rồi chọn một bản để áp dụng. Các bản xem trước được phóng to và cắt để thấy rõ chi tiết hơn."
           ]
         },
         {
@@ -3075,5 +3075,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

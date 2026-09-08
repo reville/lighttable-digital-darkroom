@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "搜索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "搜索涵盖文章标题、工具名称和完整说明。请选择“全部主题”以在应用中搜索。",
     "Search film stocks": "搜索胶片",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "搜索胶片名称，使用上一张或下一张浏览，然后选择一个预览来应用它。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "搜索胶片名称或滚动浏览预览，然后选择一个预览以应用该胶片。预览会放大并裁剪，以便看清更多细节。",
     "Search help": "搜索帮助",
     "Search index: {value}": "搜索索引：{value}",
     "Search objects, scenes, text, and faces": "搜索对象、场景、文本和面部",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "已保留 {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名称反映现有文件，可能会在导出前更改。",
     "{value}× stock baseline": "{value}× 胶片基准",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} / {stocksLength} 个胶片",
     "— none —": "— 无 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”有绘制过的微调。请在此照片上重新创建，或排除蒙版。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”需要新的对象选择。请排除蒙版以粘贴其他编辑。",

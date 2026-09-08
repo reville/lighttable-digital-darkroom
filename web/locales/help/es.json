@@ -2185,7 +2185,7 @@
             "Abre una foto fija y selecciona Película en la barra de herramientas para abrir Simulación realista de película.",
             "Active el interruptor de perfil de película. Etapas físicas de la película se abre automáticamente; después puede contraerlo.",
             "Elige Stock, o haz clic en Previsualizar stocks en esta foto… para comparar ejemplos renderizados.",
-            "Busca un nombre de stock, usa Anterior o Siguiente para explorar y luego elige una vista previa para aplicarlo."
+            "Busca el nombre de una película o desplázate por las vistas previas y elige una para aplicarla. Las vistas previas se amplían y recortan para mostrar más detalle."
           ]
         },
         {
@@ -3075,5 +3075,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }
