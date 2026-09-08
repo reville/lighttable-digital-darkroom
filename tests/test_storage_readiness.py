@@ -9,6 +9,19 @@ import media_availability
 
 
 class StorageReadinessTests(TestCase):
+    def test_index_probe_distinguishes_empty_missing_and_cloud_without_reading(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            empty, local = root / 'empty.HIF', root / 'local.jpg'
+            empty.touch()
+            local.write_bytes(b'photo bytes')
+            with mock.patch.object(Path, 'open', side_effect=AssertionError('must not read content')):
+                self.assertEqual(media_availability.index_availability(empty), 'empty')
+                self.assertEqual(media_availability.index_availability(local), 'local')
+                self.assertEqual(media_availability.index_availability(root / 'missing.RAF'), 'unavailable')
+                with mock.patch.object(Path, 'stat', return_value=SimpleNamespace(st_flags=0x40000000, st_size=0)):
+                    self.assertEqual(media_availability.index_availability(empty), 'cloud-only')
+
     def test_stat_only_probe_never_opens_placeholder_and_portable_stat_is_local(self):
         path = Path('/not-a-real-original/photo.RAF')
         with mock.patch.object(Path, 'stat', return_value=SimpleNamespace(st_flags=0x40000000)), \
