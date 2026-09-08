@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Pengaturan zoom 100% tidak menjamin bahwa detail gambar penuh sudah tiba. Pratinjau cepat mungkin muncul terlebih dahulu saat pemrosesan RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai, dengan hitungan seperti 2 / 5. Bilah ini menghilang segera setelah pratinjau yang dapat digunakan ditampilkan; pemrosesan RAW yang akurat dan pratinjau yang lebih besar terus berjalan di latar belakang tanpa lapisan. Hitungan tersebut mewakili tahap yang selesai, bukan sisa waktu. Gerakan yang dikurangi mempertahankan pembaruan tahap yang sama tanpa animasi. Foto tetap terlihat tanpa menjadi redup. Pada 1:1, arahkan kursor ke tombol 1:1 untuk memeriksa apakah detail sumber penuh sudah siap sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
-            "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya."
+            "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
+            "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi."
           ],
           "steps": [
             "Buka Pengaturan → Performa.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

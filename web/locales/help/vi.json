@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Thiết lập thu phóng 100% không đảm bảo rằng toàn bộ chi tiết ảnh đã đến. Một bản xem trước nhanh có thể xuất hiện trước trong khi xử lý RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất, với số như 2 / 5. Nó biến mất ngay khi một bản xem trước dùng được được hiển thị; xử lý RAW chính xác và các bản xem trước lớn hơn tiếp tục chạy trong nền mà không có lớp phủ. Con số biểu thị các giai đoạn đã hoàn thành, không phải thời gian còn lại. Chế độ giảm chuyển động vẫn giữ nguyên các cập nhật giai đoạn nhưng không có hoạt ảnh. Ảnh vẫn hiển thị mà không bị làm mờ. Ở 1:1, rê chuột lên nút 1:1 để kiểm tra xem chi tiết nguồn đầy đủ đã sẵn sàng trước khi đánh giá chi tiết nhỏ hay chưa.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
-            "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau."
+            "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau.",
+            "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
           ],
           "steps": [
             "Mở Cài đặt → Hiệu năng.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

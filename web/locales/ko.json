@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4030,7 +4030,8 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요."
   },
   "plurals": {
     " · {count} paired file linked": {

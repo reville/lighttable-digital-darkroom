@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Eine 100%-Zoom-Einstellung garantiert nicht, dass alle Bilddetails bereits angekommen sind. Möglicherweise erscheint zuerst eine schnelle Vorschau, während die genaue RAW-Verarbeitung und eine größere Vorschau fertig werden. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, mit einer Anzeige wie 2 / 5. Er verschwindet, sobald eine verwendbare Vorschau angezeigt wird; die genaue RAW-Verarbeitung und größere Vorschauen laufen im Hintergrund ohne Überlagerung weiter. Die Anzeige steht für abgeschlossene Schritte, nicht für die verbleibende Zeit. Reduzierte Bewegung behält dieselben Schrittaktualisierungen ohne Animation bei. Das Foto bleibt sichtbar, ohne abgedunkelt zu werden. Bei 1:1 zeigen Sie mit dem Mauszeiger auf den 1:1-Button, um zu prüfen, ob die vollständigen Quellendetails bereit sind, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
-            "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen."
+            "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen.",
+            "Wenn die Abmessungen des Originals fehlen, zeigt die Zoomanzeige — und 1:1 ist deaktiviert. Auto passt sich weiterhin dem Bildschirm an. Scannen Sie den Ordner erneut, um die Abmessungen zu aktualisieren."
           ],
           "steps": [
             "Einstellungen → Leistung öffnen.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

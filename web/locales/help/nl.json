@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Een zoominstelling van 100% garandeert niet dat alle beelddetails al zijn aangekomen. Eerst kan een snel voorbeeld verschijnen terwijl nauwkeurige RAW-verwerking en een groter voorbeeld worden voltooid. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid, met een telling zoals 2 / 5. Hij verdwijnt zodra een bruikbaar voorbeeld wordt weergegeven; nauwkeurige RAW-verwerking en grotere voorbeelden gaan op de achtergrond door zonder de overlay. De telling staat voor voltooide stadia, niet voor resterende tijd. Verminderde beweging houdt dezelfde stadiumupdates zonder animatie. De foto blijft zichtbaar zonder dimming. Bij 1:1 kun je boven de knop 1:1 zweven om te controleren of volledige bron-details klaar zijn voordat je fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
-            "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt."
+            "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt.",
+            "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken."
           ],
           "steps": [
             "Open Instellingen → Prestaties.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

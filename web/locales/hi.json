@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4030,7 +4030,8 @@
     "‹ Back": "‹ पीछे",
     "← Back to articles": "← लेखों पर वापस जाएँ",
     "← People": "← लोग",
-    "☆ Favorites": "☆ पसंदीदा"
+    "☆ Favorites": "☆ पसंदीदा",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "अगर मूल चित्र के आयाम उपलब्ध नहीं हैं, तो ज़ूम प्रतिशत की जगह — दिखता है और 1:1 अक्षम रहता है। Auto फिर भी पूर्वावलोकन को स्क्रीन के अनुसार ढालता है। आयाम अपडेट करने के लिए फ़ोल्डर को फिर से स्कैन करें।"
   },
   "plurals": {
     " · {count} paired file linked": {
