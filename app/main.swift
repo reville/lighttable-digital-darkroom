@@ -197,7 +197,12 @@ final class ServerController {
     /// Called on the main queue when the server exits without being asked.
     var onUnexpectedExit: ((Int32) -> Void)?
     private var stopping = false
-    private var startedAt = Date()
+    private(set) var startedAt = Date()
+    private(set) var sessionID = UUID().uuidString
+    private(set) var lastProcessID: Int32 = 0
+    var faultLogURL: URL {
+        catalogDirectory.appendingPathComponent("Diagnostics/engine-fault-\(getpid()).log")
+    }
 
     /// The server exits with this status when it wants a clean relaunch,
     /// for instance after replacing the catalog file. It is not a crash.
@@ -309,6 +314,7 @@ final class ServerController {
     func start(folder: String) throws {
         stop()
         stopping = false
+        sessionID = UUID().uuidString
         port = choosePort()
         try FileManager.default.createDirectory(
             at: supportDirectory, withIntermediateDirectories: true)
@@ -398,6 +404,7 @@ final class ServerController {
         env["OPENBLAS_NUM_THREADS"] = "4"
         env["PYTHONUNBUFFERED"] = "1"
         env["LIGHTTABLE_LOG_FILE"] = logURL.path
+        env["LIGHTTABLE_FAULT_LOG"] = faultLogURL.path
         p.environment = env
         p.standardOutput = log
         p.standardError = log
@@ -412,6 +419,7 @@ final class ServerController {
         }
         try p.run()
         process = p
+        lastProcessID = p.processIdentifier
         startedAt = Date()
     }
 
@@ -921,6 +929,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
     let server = ServerController()
+    private lazy var diagnostics = DiagnosticStore(
+        root: server.catalogDirectory.appendingPathComponent("Diagnostics"))
+    private var diagnosticWindow: DiagnosticReportWindow?
     var folder: String = ""
     var sources: [FolderSource] = []
     private var editorMenuState: [String: Any] = [:]
@@ -946,8 +957,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private static let startupTimeout: TimeInterval = 120
 
     func applicationDidFinishLaunching(_ note: Notification) {
+        diagnostics.begin(log: server.logURL, fault: server.faultLogURL,
+                          catalog: server.catalogDirectory)
         buildMenu()
         buildWindow()
+        DispatchQueue.main.async { [weak self] in self?.presentPendingDiagnostic() }
 
         guard server.isInstalled else {
             showFatal("""
@@ -1009,6 +1023,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     func applicationWillTerminate(_ note: Notification) {
         photosLibraryImporter?.shutdown()
         server.stop()
+        diagnostics.end()
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
@@ -1225,6 +1240,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     func windowWillClose(_ notification: Notification) {
         if notification.object as? NSWindow === window {
             secondaryLoupeWindow?.close()
+            diagnosticWindow?.close()
         } else if notification.object as? NSWindow === secondaryLoupeWindow {
             secondaryLoupeWindow = nil
         }
@@ -1429,6 +1445,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             launch(folder: resolvedLaunchFolder())
             return
         }
+        diagnostics.captureEngine(id: server.sessionID, pid: server.lastProcessID,
+            executable: server.python.resolvingSymlinksInPath().path,
+            startedAt: server.startedAt, status: status)
+        presentPendingDiagnostic()
         if server.uptime > Self.healthySessionSeconds { crashRestarts = 0 }
         crashRestarts += 1
         server.previousExitStatus = status
@@ -2630,6 +2650,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         NSWorkspace.shared.open(server.logURL)
     }
 
+    private func presentPendingDiagnostic() {
+        guard diagnosticWindow?.window?.isVisible != true,
+              let incident = diagnostics.pending else { return }
+        showDiagnostic(incident)
+        diagnostics.markPresented(incident)
+    }
+
+    private func showDiagnostic(_ incident: DiagnosticIncident?) {
+        diagnosticWindow?.close()
+        let report = incident?.report ?? diagnostics.manualReport(log: server.logURL)
+        diagnosticWindow = DiagnosticReportWindow(report: report, incident: incident)
+        diagnosticWindow?.showWindow(nil)
+        diagnosticWindow?.window?.makeKeyAndOrderFront(nil)
+    }
+
+    @objc func reportProblem(_ sender: Any?) {
+        let incident = diagnostics.incidents().last
+        showDiagnostic(incident)
+        if let incident { diagnostics.markPresented(incident) }
+    }
+
     @objc func revealExports(_ sender: Any?) {
         let dir = URL(fileURLWithPath: folder)
             .appendingPathComponent("film-exports")
@@ -3142,6 +3183,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         let helpItem = addSystemItem(
             helpMenu, title: "LightTable Help", action: #selector(openHelp(_:)))
         helpItem.target = self
+        let reportItem = addSystemItem(
+            helpMenu, title: "Report a Problem…", action: #selector(reportProblem(_:)))
+        reportItem.target = self
         addEditorItem(helpMenu, title: "Keyboard Shortcuts",
                       command: "keyboardShortcuts")
         helpMenu.addItem(.separator())

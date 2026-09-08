@@ -36,6 +36,8 @@ from urllib.parse import parse_qs, quote, urlparse
 if __name__ == "__main__":
     import bounded_logging
     bounded_logging.from_environment()
+    import fatal_diagnostics
+    fatal_diagnostics.install()
 
 import numpy as np
 from PIL import Image, ImageStat
