@@ -57,6 +57,19 @@ UninstPage uninstConfirm
 UninstPage instfiles
 
 Section "Install"
+  ; Resolve the prerequisite before modifying an existing LightTable install.
+  InitPluginsDir
+  SetOutPath "$PLUGINSDIR"
+  File /oname=ensure-webview2.ps1 "ensure-webview2.ps1"
+  DetailPrint "Checking Microsoft Edge WebView2 Runtime…"
+  ClearErrors
+  ExecWait '"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "$PLUGINSDIR\ensure-webview2.ps1"' $0
+  ${If} ${Errors}
+  ${OrIf} $0 != 0
+    MessageBox MB_OK|MB_ICONSTOP "Microsoft Edge WebView2 Runtime could not be installed. Connect to the internet and run setup again, or install the Runtime from https://developer.microsoft.com/microsoft-edge/webview2 first." /SD IDOK
+    SetErrorLevel 1
+    Abort
+  ${EndIf}
   SetOutPath "$INSTDIR"
   File /r "${PAYLOAD}\*"
   WriteUninstaller "$INSTDIR\Uninstall.exe"

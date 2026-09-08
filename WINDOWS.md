@@ -15,6 +15,16 @@ the current user's PATH. Open a new terminal after installation, then run
 checkout, Python installation, or Node.js. The dedicated directory prevents
 Windows from resolving the desktop `LightTable.exe` before the CLI.
 
+Before copying or replacing LightTable, setup checks for the Microsoft Edge
+WebView2 Runtime in both the per-machine and per-user registry locations. If
+it is missing, setup downloads Microsoft's Evergreen bootstrapper, requires a
+valid Microsoft Authenticode signature, and installs the Runtime without
+elevation. Downloads and installation have time limits; failure stops setup
+before changing an existing LightTable installation. Internet access is only
+needed for this prerequisite when the Runtime is missing. For offline setup,
+install Microsoft's [Evergreen Standalone Installer](https://developer.microsoft.com/microsoft-edge/webview2)
+first. LightTable uninstall leaves this shared Microsoft runtime installed.
+
 For unattended installation:
 
 ```powershell
@@ -36,6 +46,7 @@ For the portable ZIP, extract its `LightTable` folder, open `LightTable.exe`, or
 run `LightTable\lighttable.cmd --help`. A package manager can shim
 `LightTable\lighttable.cmd` explicitly. Merely adding the ZIP root to PATH
 would choose the GUI executable instead of the command.
+Portable users must install the WebView2 Runtime separately if it is missing.
 
 ## Build and validation
 
@@ -53,6 +64,14 @@ The installer smoke uses a disposable directory and refuses to run when that
 Windows account already has a registered LightTable installation. A `build-manifest.json`
 records the exact source commit and version. Use `-PortableOnly` explicitly to
 build a ZIP without NSIS or installer testing.
+
+`-RuntimeSmokeOnly` stages the same embedded Python runtime and application
+files, then checks imports, high-precision processed-image conversion, and a
+real server startup with HTTP health, editor, and options requests. It does
+not compile Rust or create an installer. Pull requests run this check in
+addition to the Windows Rust compile checks. Root Python modules are staged
+together, so adding an indirect or optional feature import cannot silently
+leave its local dependency out of the Windows package.
 
 `.github/workflows/windows-build.yml` checks pull requests and produces packages
 on `main`, manual dispatch, or reusable-workflow calls. The reusable workflow
@@ -102,6 +121,16 @@ replacement for the macOS implementation.
 
 This separation is intentional: platform work should not add a conditional to
 the measured render loop unless the operating system genuinely requires one.
+
+Full-resolution portable processed-image conversion decodes through OpenImageIO
+and applies ICC transforms through LittleCMS via the pinned `imagecodecs`
+runtime. 16-bit and floating-point intermediates preserve source detail instead of
+passing it through Pillow's 8-bit RGB conversion. These dependencies are loaded
+only for portable conversion; macOS retains its native image/color path, and
+the bounded preview path is unchanged.
+The portable processed-input cache has its own version so an existing Windows
+installation rebuilds its old 8-bit intermediates. Mac and RAW input cache
+identities remain unchanged.
 
 ## Runtime layout
 
@@ -168,3 +197,31 @@ require another application rewrite or a forked Windows pipeline.
    second launch starts faster than the first, that no command window appears
    while rendering, and that switching folders shows the loading page rather
    than a frozen window.
+6. Check an existing WebView2 runtime and a clean machine without one. Confirm
+   setup handles the missing prerequisite and can be retried after an offline
+   failure without damaging an existing install.
+7. Compare 16-bit TIFF ramps and real RAW/JPEG/TIFF exports against the Mac
+   reference. Check ICC profiles, orientation, and smooth gradients using the
+   exported files, not only the remote desktop stream.
+
+## First Windows GPU session
+
+Use a Windows x64 desktop with a graphics-capable GPU driver. Record the OS,
+driver, GPU, package source revision, and reported WGPU adapter/backend before
+benchmarking. A Windows Server cloud desktop can establish installation,
+rendering, and GPU behavior; a Windows 11 client still needs a separate pass.
+
+Start with a small reproducible set: two JPEGs, one 16-bit TIFF gradient, and
+RAWs from the cameras used for the existing Mac benchmarks. Test install,
+first and second launch, import, film changes, continuous slider movement,
+Compare, Fit/1:1 zoom, export, folder changes, quit/reopen, and edit recovery.
+Repeat at 100%, 150%, and 200% display scaling. Use local render timings to
+separate application delays from remote desktop latency, and download exported
+files for pixel/color inspection. Cloud streaming is not proof of calibrated
+monitor color or local display latency.
+
+Windows currently presents the photo through the webview; the Mac's native
+preview surface is not enabled in the Windows shell. Measure decode, GPU work,
+webview upload, and presentation separately before choosing whether a native
+DirectX viewport is needed. Apple-only AI providers and HEIF export also remain
+separate feature-porting work.

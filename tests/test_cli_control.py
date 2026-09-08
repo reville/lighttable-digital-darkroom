@@ -318,8 +318,14 @@ class CLIContractTests(unittest.TestCase):
         signer = (ROOT / "scripts" / "sign-app.sh").read_text()
         self.assertIn('Contents/MacOS/lighttable-cli', signer)
         self.assertIn('sign_path "$APP_CLI"', signer)
-        for module in ("events.py", "jobs.py", "validation.py"):
-            self.assertIn(module, win)
+        self.assertIn("stage-python-modules.py", win)
+        with tempfile.TemporaryDirectory() as temporary:
+            completed = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/windows/stage-python-modules.py"),
+                 str(ROOT), temporary], capture_output=True, text=True, timeout=10)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            for module in ("events.py", "jobs.py", "validation.py"):
+                self.assertTrue((Path(temporary) / module).is_file(), module)
         self.assertIn("lighttable.cmd", win)
 
     def test_web_client_installs_event_and_ui_bridges(self):
