@@ -27,6 +27,19 @@
         ]
       },
       {
+        "title": "Choose photos from Apple Photos",
+        "paragraphs": [
+          "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.",
+          "Select photos, then click Add. LightTable shows progress while downloading and copying them. Stop Import keeps completed copies and stops the remaining transfers. Your Photos library stays unchanged.",
+          "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten."
+        ],
+        "steps": [
+          "Choose Current Format or Compatible.",
+          "Select one or more photos in the picker and click Add. Use Cancel to leave without importing.",
+          "Wait for the import to finish, then review the photos in LightTable."
+        ]
+      },
+      {
         "title": "Open a local folder",
         "paragraphs": [
           "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
@@ -76,6 +89,10 @@
       {
         "path": "app/main.swift",
         "anchor": "private final class PhotosLibraryImporter {"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "private final class SelectedPhotosImporter {"
       }
     ]
   },
