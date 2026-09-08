@@ -1194,7 +1194,7 @@
     "Finish saving your edits before undoing the batch": "أنهِ حفظ تعديلاتك قبل التراجع عن الدفعة",
     "First file lands at {firstDestination}": "أول ملف يصل إلى {firstDestination}",
     "Fit": "ملاءمة",
-    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "قد يؤدي الاحتواء إلى تكبير الصور الصغيرة. يعرض 1:1 وحدات البكسل الفعلية حتى عندما تصبح الصورة أصغر من وضع الاحتواء، ويحافظ على مقياس البكسل نفسه عند تغيير حجم النافذة.",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "قد يؤدي الملاءمة إلى تكبير الصور الصغيرة. يعرض 1:1 وحدات البكسل الفعلية حتى عندما تصبح الصورة أصغر من وضع الملاءمة، ويحافظ على مقياس البكسل نفسه عند تغيير حجم النافذة.",
     "Fit the whole photo to the available space": "ملاءمة الصورة بالكامل في المساحة المتاحة",
     "Fit to window ({actualPct}%)": "ملاءمة إلى النافذة ({actualPct}%)",
     "Flag": "علامة",

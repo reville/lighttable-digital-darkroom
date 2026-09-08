@@ -1194,7 +1194,7 @@
     "Finish saving your edits before undoing the batch": "Beende das Speichern deiner Bearbeitungen, bevor du den Stapel rückgängig machst",
     "First file lands at {firstDestination}": "Die erste Datei landet bei {firstDestination}",
     "Fit": "Anpassen",
-    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Einpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Einpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
     "Fit the whole photo to the available space": "Das gesamte Foto an den verfügbaren Platz anpassen",
     "Fit to window ({actualPct}%)": "An Fenster anpassen ({actualPct}%)",
     "Flag": "Markierung",

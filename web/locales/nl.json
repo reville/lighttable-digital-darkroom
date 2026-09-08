@@ -1194,7 +1194,7 @@
     "Finish saving your edits before undoing the batch": "Rond het opslaan van je bewerkingen af voordat je de batch ongedaan maakt",
     "First file lands at {firstDestination}": "Eerste bestand komt aan op {firstDestination}",
     "Fit": "Passend maken",
-    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Passend kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
     "Fit the whole photo to the available space": "Maak de hele foto passend in de beschikbare ruimte",
     "Fit to window ({actualPct}%)": "Passend maken in venster ({actualPct}%)",
     "Flag": "Markering",

@@ -1194,7 +1194,7 @@
     "Finish saving your edits before undoing the batch": "バッチを元に戻す前に、編集内容の保存を完了してください",
     "First file lands at {firstDestination}": "最初のファイルは {firstDestination} に保存されます",
     "Fit": "フィット",
-    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "「全体表示」では小さな写真が拡大されることがあります。1:1 は「全体表示」より写真が小さくなる場合でも実際のピクセルを表示し、ウインドウのサイズを変更しても同じピクセル倍率を維持します。",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "「フィット」では小さな写真が拡大されることがあります。1:1 は「フィット」より写真が小さくなる場合でも実際のピクセルを表示し、ウインドウのサイズを変更しても同じピクセル倍率を維持します。",
     "Fit the whole photo to the available space": "写真全体を利用可能なスペースにフィット",
     "Fit to window ({actualPct}%)": "ウィンドウに合わせる ({actualPct}%)",
     "Flag": "フラグ",

@@ -1194,7 +1194,7 @@
     "Finish saving your edits before undoing the batch": "Завершите сохранение изменений, прежде чем отменять пакет",
     "First file lands at {firstDestination}": "Первый файл попадет в {firstDestination}",
     "Fit": "По размеру",
-    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Режим «Вписать» может увеличивать небольшие фотографии. 1:1 показывает реальные пиксели, даже если фотография становится меньше, чем в режиме «Вписать», и сохраняет тот же масштаб пикселей при изменении размера окна.",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Режим «По размеру» может увеличивать небольшие фотографии. 1:1 показывает реальные пиксели, даже если фотография становится меньше, чем в режиме «По размеру», и сохраняет тот же масштаб пикселей при изменении размера окна.",
     "Fit the whole photo to the available space": "Подгоните все фото по размеру доступной области",
     "Fit to window ({actualPct}%)": "По размеру окна ({actualPct}%)",
     "Flag": "Флажок",
