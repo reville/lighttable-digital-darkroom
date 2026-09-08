@@ -2536,6 +2536,36 @@
       "categoryLabel": "Xuất"
     },
     {
+      "id": "about-lighttable",
+      "title": "Giới thiệu về LightTable và mã nguồn mở",
+      "category": "Settings",
+      "summary": "Tìm phiên bản ứng dụng Mac, trang web và mã nguồn.",
+      "keywords": [
+        "giới thiệu",
+        "phiên bản",
+        "trang web",
+        "github",
+        "mã nguồn mở",
+        "giấy phép",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Mở Giới thiệu về LightTable trên macOS",
+          "paragraphs": [
+            "Chọn LightTable → Giới thiệu về LightTable trên thanh menu của Mac. Cửa sổ Giới thiệu sẽ hiển thị phiên bản ứng dụng và, khi khác nhau, cả số bản dựng của nó.",
+            "Trang web sẽ mở lighttable.app trong trình duyệt mặc định của bạn. GitHub sẽ mở kho lưu trữ mã nguồn LightTable công khai, nơi bạn có thể khám phá mã, báo cáo sự cố và đóng góp.",
+            "LightTable là phần mềm tự do và mã nguồn mở theo GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Cài đặt"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Thay đổi tùy chọn và mặc định ảnh mới",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

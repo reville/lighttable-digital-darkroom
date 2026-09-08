@@ -2536,6 +2536,36 @@
       "categoryLabel": "Eksportuj"
     },
     {
+      "id": "about-lighttable",
+      "title": "O LightTable i open source",
+      "category": "Settings",
+      "summary": "Znajdź wersję aplikacji Mac, witrynę i kod źródłowy.",
+      "keywords": [
+        "o programie",
+        "wersja",
+        "witryna",
+        "github",
+        "open source",
+        "licencja",
+        "GPL"
+      ],
+      "sections": [
+        {
+          "title": "Otwórz O programie w macOS",
+          "paragraphs": [
+            "Wybierz LightTable → O programie w pasku menu macOS. Okno O programie pokazuje wersję aplikacji i — jeśli jest inny — numer jej kompilacji.",
+            "Witryna otwiera lighttable.app w domyślnej przeglądarce. GitHub otwiera publiczne repozytorium źródłowe LightTable, gdzie możesz przeglądać kod, zgłaszać problemy i współtworzyć.",
+            "LightTable jest darmowy i open source na licencji GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Zmieniaj preferencje i domyślne ustawienia nowych zdjęć",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

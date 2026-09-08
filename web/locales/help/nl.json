@@ -2536,6 +2536,36 @@
       "categoryLabel": "Exporteren"
     },
     {
+      "id": "about-lighttable",
+      "title": "Over LightTable en open source",
+      "category": "Settings",
+      "summary": "Vind de versie van de Mac-app, de website en de broncode.",
+      "keywords": [
+        "over",
+        "versie",
+        "website",
+        "github",
+        "open source",
+        "licentie",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Over Open in macOS",
+          "paragraphs": [
+            "Kies LightTable → Over LightTable in de menubalk van de Mac. Het venster Over toont de app-versie en, wanneer die afwijkt, het buildnummer.",
+            "Website opent lighttable.app in uw standaardbrowser. GitHub opent de openbare bronopslagplaats van LightTable, waar u de code kunt bekijken, problemen kunt melden en kunt bijdragen.",
+            "LightTable is vrij en open source onder de GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Instellingen"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Wijzig voorkeuren en standaardinstellingen voor nieuwe foto’s",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

@@ -1096,6 +1096,134 @@ func presetExportData(content: String, encoding: String = "utf8") throws -> Data
     }
 }
 
+// MARK: - About
+
+private final class AboutWindowController: NSWindowController {
+    init() {
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 560, height: 408),
+            styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        window.title = L("About LightTable")
+        window.isReleasedWhenClosed = false
+        window.isExcludedFromWindowsMenu = true
+        super.init(window: window)
+
+        guard let content = window.contentView else { return }
+        let icon = NSImageView()
+        icon.image = NSApp.applicationIconImage
+        icon.imageScaling = .scaleProportionallyUpOrDown
+        icon.setAccessibilityElement(false)
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 88),
+            icon.heightAnchor.constraint(equalToConstant: 88),
+        ])
+
+        let title = label("LightTable", size: 32, weight: .bold)
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+            as? String ?? "1.0"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+        let versionText = build.map { $0 != version
+            ? L("Version {version} ({build})", ["version": version, "build": $0])
+            : L("Version {version}", ["version": version]) }
+            ?? L("Version {version}", ["version": version])
+        let identity = NSStackView(views: [
+            title, label(versionText, size: 12, color: .secondaryLabelColor),
+        ])
+        identity.orientation = .vertical
+        identity.alignment = .leading
+        identity.spacing = 6
+        let header = NSStackView(views: [icon, identity])
+        header.alignment = .centerY
+        header.spacing = 24
+
+        let divider = NSBox()
+        divider.boxType = .separator
+
+        let description = NSTextField(wrappingLabelWithString:
+            L("Photo editing and realistic film simulation. Explore the source, report an issue, or contribute on GitHub."))
+        description.font = .systemFont(ofSize: 14)
+        description.textColor = .secondaryLabelColor
+        description.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let openSource = NSStackView(views: [
+            label(L("Free and open source"), size: 19, weight: .semibold), description,
+        ])
+        openSource.orientation = .vertical
+        openSource.alignment = .leading
+        openSource.spacing = 8
+
+        let website = linkButton(L("Website"), symbol: "globe", action: #selector(openWebsite(_:)))
+        website.toolTip = L("Open lighttable.app in your browser")
+        let github = linkButton(L("GitHub"), symbol: "chevron.left.forwardslash.chevron.right",
+                                action: #selector(openGitHub(_:)))
+        github.toolTip = L("View the LightTable source code on GitHub")
+        let links = NSStackView(views: [website, github])
+        links.distribution = .fillEqually
+        links.spacing = 16
+
+        let layout = NSStackView(views: [
+            header, divider, openSource, links,
+            label(L("Licensed under the GNU GPL v3."), size: 12, color: .secondaryLabelColor),
+        ])
+        layout.orientation = .vertical
+        layout.alignment = .leading
+        layout.spacing = 24
+        layout.translatesAutoresizingMaskIntoConstraints = false
+        content.addSubview(layout)
+        NSLayoutConstraint.activate([
+            layout.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: 32),
+            layout.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -32),
+            layout.topAnchor.constraint(equalTo: content.topAnchor, constant: 32),
+            layout.bottomAnchor.constraint(lessThanOrEqualTo: content.bottomAnchor, constant: -32),
+            header.widthAnchor.constraint(equalTo: layout.widthAnchor),
+            identity.trailingAnchor.constraint(equalTo: header.trailingAnchor),
+            divider.widthAnchor.constraint(equalTo: layout.widthAnchor),
+            openSource.widthAnchor.constraint(equalTo: layout.widthAnchor),
+            description.widthAnchor.constraint(equalTo: openSource.widthAnchor),
+            links.widthAnchor.constraint(equalTo: layout.widthAnchor),
+        ])
+        window.center()
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    private func label(_ text: String, size: CGFloat, weight: NSFont.Weight = .regular,
+                       color: NSColor = .labelColor) -> NSTextField {
+        let field = NSTextField(labelWithString: text)
+        field.font = .systemFont(ofSize: size, weight: weight)
+        field.textColor = color
+        return field
+    }
+
+    private func linkButton(_ title: String, symbol: String, action: Selector) -> NSButton {
+        let button = NSButton(title: title, target: self, action: action)
+        button.bezelStyle = .rounded
+        button.controlSize = .large
+        button.font = .systemFont(ofSize: 14, weight: .medium)
+        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)
+        button.imagePosition = .imageLeading
+        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        return button
+    }
+
+    @objc private func openWebsite(_ sender: Any?) {
+        openLink("https://lighttable.app/")
+    }
+
+    @objc private func openGitHub(_ sender: Any?) {
+        openLink("https://github.com/reville/lighttable-digital-darkroom")
+    }
+
+    private func openLink(_ address: String) {
+        guard let url = URL(string: address) else { return }
+        if !NSWorkspace.shared.open(url), let window {
+            let alert = NSAlert()
+            alert.messageText = L("Could not open your browser")
+            alert.informativeText = L("You can visit {address} in your browser.", ["address": address])
+            alert.beginSheetModal(for: window)
+        }
+    }
+}
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate,
@@ -1113,6 +1241,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var webView: WKWebView!
     private var javaScriptConfirmation: (alert: NSAlert, reply: NativeJavaScriptReply)?
     private var secondaryLoupeWindow: NSWindow?
+    private var aboutWindowController: AboutWindowController?
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
     let server = ServerController()
@@ -2271,6 +2400,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             // Read that same file; never trust a locale passed over the bridge.
             do {
                 try nativeLocalization.reload()
+                aboutWindowController?.window?.close()
+                aboutWindowController = nil
                 buildMenu()
                 secondaryLoupeWindow?.title = L("LightTable — Secondary Loupe")
             } catch {
@@ -3176,15 +3307,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
     }
 
+    @objc private func showAbout(_ sender: Any?) {
+        if aboutWindowController == nil { aboutWindowController = AboutWindowController() }
+        aboutWindowController?.showWindow(sender)
+        aboutWindowController?.window?.makeKeyAndOrderFront(sender)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     private func buildMenu() {
         let main = NSMenu()
         editorCommandItems.removeAll()
         schemeCommandItems.removeAll()
 
         let appMenu = NSMenu(title: "LightTable")
-        appMenu.addItem(withTitle: L("About LightTable"),
-                        action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)),
-                        keyEquivalent: "")
+        let aboutItem = appMenu.addItem(withTitle: L("About LightTable"),
+                                       action: #selector(showAbout(_:)), keyEquivalent: "")
+        aboutItem.target = self
 #if canImport(Sparkle)
         let updateItem = appMenu.addItem(
             withTitle: L("Check for Updates…"),

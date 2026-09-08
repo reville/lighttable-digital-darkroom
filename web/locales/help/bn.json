@@ -2536,6 +2536,36 @@
       "categoryLabel": "রপ্তানি করুন"
     },
     {
+      "id": "about-lighttable",
+      "title": "LightTable সম্পর্কে এবং ওপেন সোর্স",
+      "category": "Settings",
+      "summary": "Mac অ্যাপের সংস্করণ, ওয়েবসাইট, এবং সোর্স কোড খুঁজুন।",
+      "keywords": [
+        "সম্পর্কে",
+        "সংস্করণ",
+        "ওয়েবসাইট",
+        "github",
+        "ওপেন সোর্স",
+        "লাইসেন্স",
+        "GPL"
+      ],
+      "sections": [
+        {
+          "title": "macOS-এ About খুলুন",
+          "paragraphs": [
+            "Mac মেনু বারে LightTable → LightTable সম্পর্কে নির্বাচন করুন। About উইন্ডোতে অ্যাপের সংস্করণ এবং, ভিন্ন হলে, তার বিল্ড নম্বর দেখায়।",
+            "ওয়েবসাইট আপনার ডিফল্ট ব্রাউজারে lighttable.app খুলবে। GitHub পাবলিক LightTable সোর্স রিপোজিটরি খুলবে, যেখানে আপনি কোড অন্বেষণ করতে, সমস্যা জানাতে, এবং অবদান রাখতে পারেন।",
+            "LightTable GNU GPL v3-এর অধীনে ফ্রি এবং ওপেন সোর্স।"
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "সেটিংস"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "পছন্দসমূহ এবং নতুন-ফটো ডিফল্ট পরিবর্তন করুন",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "bn",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

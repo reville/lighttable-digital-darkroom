@@ -57,7 +57,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>NSPhotoLibraryUsageDescription</key><string>LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.</string>
   <key>NSHighResolutionCapable</key><true/>
-  <key>NSHumanReadableCopyright</key><string>Local tool. spektrafilm is GPLv3.</string>
+  <key>NSHumanReadableCopyright</key><string>Copyright © 2026 LightTable contributors. Free and open source under GNU GPL v3.</string>
   <key>NSAppTransportSecurity</key><dict>
     <key>NSAllowsLocalNetworking</key><true/>
   </dict>

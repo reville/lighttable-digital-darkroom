@@ -2536,6 +2536,36 @@
       "categoryLabel": "Экспорт"
     },
     {
+      "id": "about-lighttable",
+      "title": "О LightTable и открытом исходном коде",
+      "category": "Settings",
+      "summary": "Найдите версию приложения для Mac, веб-сайт и исходный код.",
+      "keywords": [
+        "о программе",
+        "версия",
+        "веб-сайт",
+        "github",
+        "открытый исходный код",
+        "лицензия",
+        "GPL"
+      ],
+      "sections": [
+        {
+          "title": "Открыть About на macOS",
+          "paragraphs": [
+            "Выберите LightTable → О LightTable в строке меню Mac. В окне «О программе» отображаются версия приложения и, если она отличается, номер сборки.",
+            "Веб-сайт открывает lighttable.app в вашем браузере по умолчанию. GitHub открывает общедоступный репозиторий исходного кода LightTable, где вы можете изучить код, сообщать о проблемах и участвовать в проекте.",
+            "LightTable — свободное ПО с открытым исходным кодом по лицензии GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Настройки"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Изменить параметры и настройки новых фото по умолчанию",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "ru",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

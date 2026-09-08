@@ -2536,6 +2536,36 @@
       "categoryLabel": "निर्यात करें"
     },
     {
+      "id": "about-lighttable",
+      "title": "LightTable के बारे में और ओपन सोर्स",
+      "category": "Settings",
+      "summary": "Mac ऐप का संस्करण, वेबसाइट, और स्रोत कोड खोजें।",
+      "keywords": [
+        "के बारे में",
+        "संस्करण",
+        "वेबसाइट",
+        "github",
+        "ओपन सोर्स",
+        "लाइसेंस",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "macOS पर About खोलें",
+          "paragraphs": [
+            "Mac मेनू बार में LightTable → About LightTable चुनें। About विंडो ऐप का संस्करण और, जब अलग हो, उसका बिल्ड नंबर दिखाती है।",
+            "Website आपके डिफ़ॉल्ट ब्राउज़र में lighttable.app खोलती है। GitHub सार्वजनिक LightTable स्रोत रिपॉज़िटरी खोलती है, जहाँ आप कोड देख सकते हैं, समस्याएँ रिपोर्ट कर सकते हैं, और योगदान दे सकते हैं।",
+            "LightTable GNU GPL v3 के अंतर्गत मुक्त और ओपन सोर्स है।"
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "सेटिंग्स"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "वरीयताएँ और नई-फ़ोटो डिफ़ॉल्ट बदलें",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "hi",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

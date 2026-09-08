@@ -2536,6 +2536,36 @@
       "categoryLabel": "Exportar"
     },
     {
+      "id": "about-lighttable",
+      "title": "Sobre o LightTable e código aberto",
+      "category": "Settings",
+      "summary": "Encontre a versão do app para Mac, o site e o código-fonte.",
+      "keywords": [
+        "sobre",
+        "versão",
+        "site",
+        "github",
+        "código aberto",
+        "licença",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Abrir Sobre no macOS",
+          "paragraphs": [
+            "Escolha LightTable → Sobre o LightTable na barra de menus do Mac. A janela Sobre mostra a versão do app e, quando diferente, o número da compilação.",
+            "O Site abre lighttable.app no seu navegador padrão. O GitHub abre o repositório público de código-fonte do LightTable, onde você pode explorar o código, relatar problemas e contribuir.",
+            "O LightTable é livre e de código aberto sob a GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Configurações"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Altere as preferências e os padrões de novas fotos",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

@@ -2536,6 +2536,36 @@
       "categoryLabel": "导出"
     },
     {
+      "id": "about-lighttable",
+      "title": "关于 LightTable 和开源",
+      "category": "Settings",
+      "summary": "查找 Mac 应用版本、网站和源代码。",
+      "keywords": [
+        "关于",
+        "版本",
+        "网站",
+        "github",
+        "开源",
+        "许可证",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "在 macOS 上打开“关于”",
+          "paragraphs": [
+            "在 Mac 菜单栏中选择 LightTable → 关于 LightTable。关于窗口会显示应用版本，以及在二者不同的情况下显示其构建号。",
+            "“网站”会在您的默认浏览器中打开 lighttable.app。“GitHub”会打开公开的 LightTable 源代码仓库，您可以在其中浏览代码、报告问题并参与贡献。",
+            "LightTable 是根据 GNU GPL v3 许可的自由且开源软件。"
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "设置"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "更改首选项和新照片默认值",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }
