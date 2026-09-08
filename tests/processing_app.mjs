@@ -78,14 +78,14 @@ try {
   await page.evaluate(async () => {
     const {GradeRenderer} = await import('/web/gl.js');
     const draw = GradeRenderer.prototype.draw;
+    const drawCompare = GradeRenderer.prototype.drawCompare;
     const setImage = GradeRenderer.prototype.setImage;
     GradeRenderer.prototype.setImage = function(image, ...args) {
       this.processingSourceURL = image.currentSrc || image.src;
       return setImage.call(this, image, ...args);
     };
     window.processingFrames = 0;
-    GradeRenderer.prototype.draw = function(...args) {
-      draw.apply(this, args);
+    function captureFrame() {
       if (this.canvas.id !== 'cv' || !this.ready) return;
       window.processingRenderer = this;
       const gl = this.gl;
@@ -94,9 +94,21 @@ try {
       gl.readPixels(0, 0, this.canvas.width, this.canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
       if (gl.getError()) throw Error('App framebuffer readback failed');
       window.processingFrame = {width: this.canvas.width, height: this.canvas.height,
-        pixels: Array.from(pixels), grade: structuredClone(args[0]), frame:processingFrames + 1,
+        pixels: Array.from(pixels), grade: structuredClone(this.processingGrade), frame:processingFrames + 1,
         sourceURL: this.processingSourceURL};
       window.processingFrames++;
+    }
+    GradeRenderer.prototype.draw = function(...args) {
+      draw.apply(this, args);
+      this.processingGrade = args[0];
+      captureFrame.call(this);
+    };
+    // An on-demand Original can arrive after the grade frame. Capture the
+    // actual comparison presentation too, without drawing a test-only frame.
+    GradeRenderer.prototype.drawCompare = function(...args) {
+      const result = drawCompare.apply(this, args);
+      captureFrame.call(this);
+      return result;
     };
   });
   const results = [];
@@ -123,10 +135,10 @@ try {
         Math.abs(processingFrame.grade[key] - value) < 0.0001), {source, grade}, {timeout:120000});
   };
   const captureBefore = async (test, frame, name) => {
-    await page.waitForFunction(() => processingRenderer.originalReady, null, {timeout:30000});
     await page.evaluate(() => document.activeElement?.blur());
     const beforeHold = await page.evaluate(() => processingFrames);
     await page.keyboard.down('b');
+    await page.waitForFunction(() => processingRenderer.originalReady, null, {timeout:30000});
     await page.waitForFunction(before => processingFrames > before, beforeHold);
     const held = await page.evaluate(() => processingFrame);
     fs.writeFileSync(test.beforeRaw, Buffer.from(held.pixels));

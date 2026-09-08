@@ -865,12 +865,12 @@ process.stdout.write(JSON.stringify(states.map(nativePreviewCanDraw)));
     def test_native_sampling_helper_preserves_presented_photo_geometry(self):
         renderer = (ROOT / "web" / "gl.js").read_text()
         self.assertIn(
-            "setImage(img, { resizeCanvas = true } = {})", renderer)
+            "setImage(img, { resizeCanvas = true, cacheKey = null } = {})", renderer)
         resize_guard = renderer[
-            renderer.index("setImage(img, { resizeCanvas = true } = {})"):
+            renderer.index("setImage(img, { resizeCanvas = true, cacheKey = null } = {})"):
             renderer.index("setOriginalImage(img)")
         ]
-        self.assertIn("if (resizeCanvas) {", resize_guard)
+        self.assertIn("if (resizeCanvas &&", resize_guard)
         self.assertIn("gl.uniform2f(this.uTexel, 1 / imageWidth, 1 / imageHeight)",
                       resize_guard)
 
@@ -903,7 +903,7 @@ process.stdout.write(JSON.stringify(states.map(nativePreviewCanDraw)));
                 "/* ------------------------------------------------------ reference matching")
         ]
         self.assertIn(
-            "S.gl.setImage(img, { resizeCanvas: !preserveCanvasSize })",
+            "S.gl.setImage(img, { resizeCanvas: !preserveCanvasSize, cacheKey })",
             webgl_loader,
         )
         self.assertIn("generation !== S.seq", webgl_loader)

@@ -20,6 +20,7 @@ for (const native of [false, true]) for (const baked of [false, true]) test(`Bef
     gradeBakeRequest, gradeBakeKey,
     renderPhysicalPreview:() => assert.fail('Holding Before must not rebuild the edited surface'),
     scheduleViewportRegionRender:noop, syncPreviewBackend:noop, packedMaskData:{},
+    syncBrowserOriginal:() => calls.push({originalRequested:true}),
     nativePreviewActive:() => native, scheduleHistogram:noop, GRADE_PERF:{take:() => null},
     nativeGradePayload:grade => ({grade}), postNative:(action,detail) => calls.push({action,...detail}),
     previewSourceX:position => position, syncCompareView:noop, syncCompareControl:noop,
@@ -31,6 +32,7 @@ for (const native of [false, true]) for (const baked of [false, true]) test(`Bef
     '\nfunction drawGrade(){drawGradeNow();} globalThis.before=setBefore;';
   vm.runInNewContext(code, context);
   context.before(true);
+  assert.equal(calls.filter(c => c.originalRequested).length, 1);
   assert.equal(calls.findLast(c => 'position' in c)?.position, 1, 'Before must select the original texture');
   assert.equal(calls.findLast(c => c.grade)?.grade, baked ? context.GRADE_DEFAULTS : S.grade, 'Keep finishing adjustments ready for release without applying baked grade twice');
   if (!native) assert.deepEqual(Array.from(calls.findLast(c => c.masks)?.masks), baked ? [] : S.masks, 'Keep the edited mask uniforms while holding Before');
