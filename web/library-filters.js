@@ -1,4 +1,7 @@
+import { OPTICS_DEFAULTS } from './editor-panels.js';
+
 export const FILE_TYPES = { raw: 'RAW', jpeg: 'JPEG', heic: 'HEIC / HEIF', tiff: 'TIFF', png: 'PNG' };
+const OPTICS_KEYS = Object.keys(OPTICS_DEFAULTS);
 
 export function normalizeFileTypes(value) {
   return Array.isArray(value) ? Object.keys(FILE_TYPES).filter(type => value.includes(type)) : [];
@@ -15,7 +18,13 @@ export function photoFileType(image) {
 
 export function photoHasEdits(image) {
   return !!(image.hasEdits || (image.params && Object.keys(image.params).length)
-    || (image.grade && Object.keys(image.grade).length) || image.crop);
+    || (image.grade && Object.keys(image.grade).length) || image.crop
+    || (Array.isArray(image.masks) && image.masks.length)
+    || (Array.isArray(image.heals) && image.heals.length)
+    // Normalization adds neutral optics to every library row. Only a change
+    // from those defaults counts when no persisted edit flag is available.
+    || (image.optics && OPTICS_KEYS.some(key =>
+      (image.optics[key] ?? OPTICS_DEFAULTS[key]) !== OPTICS_DEFAULTS[key])));
 }
 
 export function matchesLibraryFilters(image, types, editState) {

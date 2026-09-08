@@ -155,7 +155,7 @@
         {
           "title": "Plan the copy",
           "paragraphs": [
-            "Import from card copies files into the destination you choose. The card originals stay in place."
+            "Import from card copies files into the destination you choose. The card originals stay in place. Duplicate skipping compares complete file contents; a matching filename or camera header alone is not enough."
           ],
           "steps": [
             "Open Local ••• → Import from card….",
@@ -165,7 +165,7 @@
             "Wait for the copied count and check whether any files failed."
           ],
           "tips": [
-            "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
+            "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence. Long template fields are shortened; check the destination preview.",
             "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
             "If files are reported as cloud-only, download them locally and scan again."
           ]
@@ -399,7 +399,7 @@
           "title": "Restore a correction",
           "paragraphs": [
             "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
-            "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History."
+            "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged."
           ]
         }
       ],
@@ -1508,7 +1508,7 @@
           ],
           "tips": [
             "Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.",
-            "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo."
+            "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo. Some recovery drafts show a partial identity notice because they cannot verify the whole original. This can happen with older drafts or when using folder mode. Restore these only if the original photos have not been replaced."
           ]
         }
       ],
@@ -2217,7 +2217,7 @@
         {
           "title": "Make an export",
           "paragraphs": [
-            "Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."
+            "Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."
           ],
           "steps": [
             "Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.",
@@ -2231,7 +2231,7 @@
           "title": "Check the scope and result",
           "paragraphs": [
             "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.",
-            "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."
+            "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."
           ]
         }
       ],
@@ -2319,7 +2319,7 @@
         {
           "title": "Names and existing files",
           "paragraphs": [
-            "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.",
+            "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.",
             "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."
           ]
         }
@@ -2555,6 +2555,7 @@
           "title": "Understand recovery choices",
           "paragraphs": [
             "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+            "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
             "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
           ]
         },

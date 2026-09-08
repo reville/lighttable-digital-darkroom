@@ -499,7 +499,7 @@ class ExportMetadataTests(CatalogServerTestCase):
         self.assertEqual(candidates[first]["rating"], 5)
         self.assertEqual(candidates[third]["rating"], 4)
 
-    def test_queueing_export_defers_metadata_and_lens_work_to_worker(self):
+    def test_queueing_export_snapshots_catalog_metadata_and_defers_exif_and_lens_work(self):
         name = self.qualified("a.jpg")
         entry = {
             "status": "approved", "rating": 5, "params": None,
@@ -537,7 +537,8 @@ class ExportMetadataTests(CatalogServerTestCase):
             queued_job = pool.calls[0][2]
             self.assertFalse(queued_job["params"]["profile_enabled"])
             self.assertEqual(queued_job["grade"]["exposure"], 0.25)
-            self.assertNotIn("metadataFields", queued_job)
+            self.assertEqual(queued_job["metadataFields"]["rating"], 5)
+            self.assertIsNone(queued_job["captureTimeOverride"])
             self.assertNotIn("lensProfile", queued_job)
         finally:
             with server.EXPORT_LOCK:
