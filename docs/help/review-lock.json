@@ -241,7 +241,7 @@
         "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
         "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
-        "web/style.css": "a0388361871a669100767c3486fe880e50e2d16666ea58e5e8c3bcd33885be44"
+        "web/style.css": "d424fd1d1ee31646dc5ea06e713e7b092e5897070962e0672bb3e6efcf91a133"
       }
     },
     "film-grain-and-format": {
@@ -324,7 +324,7 @@
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "f379882d2234db258fa8f3491c5f0829913083012874dd417bb8bea8264dd4bd",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb",
-        "web/style.css": "a0388361871a669100767c3486fe880e50e2d16666ea58e5e8c3bcd33885be44",
+        "web/style.css": "d424fd1d1ee31646dc5ea06e713e7b092e5897070962e0672bb3e6efcf91a133",
         "web/view-performance.js": "8284cb871f75d1774996af75f78a434af92d33a001e647ab64a2fac0fa88fb6c"
       }
     },
