@@ -16,7 +16,7 @@ import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
-import { createZoomMotion } from '/web/zoom-motion.js';
+import { createZoomMotion, smoothZoomEnabled } from '/web/zoom-motion.js';
 import { createPhotoPanMemory } from '/web/photo-pan.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
@@ -971,6 +971,7 @@ function requestZoomDetail() {
   }
 }
 const zoomMotion = createZoomMotion({
+  reducedMotion: () => !smoothZoomEnabled(APP_PREFS),
   paint(view) {
     Object.assign(S, view);
     markContinuousInput();

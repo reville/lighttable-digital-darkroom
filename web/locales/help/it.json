@@ -226,7 +226,7 @@
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
-            "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento.",
+            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
             "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro."
           ],
           "steps": [
@@ -2731,6 +2731,7 @@
           "paragraphs": [
             "La maggior parte delle modifiche alle impostazioni viene salvata automaticamente. La lingua usa Applica lingua e ricarica la finestra dopo il salvataggio delle modifiche. Generale controlla anche Avanzamento automatico dopo selezione, rifiuto o valutazione, le notifiche di completamento e i controlli degli aggiornamenti.",
             "I controlli dell’interfaccia regolano lo sfondo del visualizzatore, la scala del carattere, Lights Out, la sovrapposizione informativa della lente e le guide di ritaglio. Queste preferenze modificano l’aspetto dell’area di lavoro senza cambiare i pixel esportati.",
+            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
             "File e metadati controlla le modifiche portatili di LightTable accanto agli originali, la scrittura automatica XMP, l'abbinamento RAW/JPEG e l'inserimento di parole chiave. Le modifiche portatili complete usano .lighttable-state.json; XMP trasporta le modifiche e i metadati compatibili. La sincronizzazione XMP conserva i campi non correlati e segnala i conflitti delle modifiche esterne; leggi i metadati di Exchange tramite i sidecar XMP per il flusso di lavoro supportato."
           ]
         },
@@ -3128,5 +3129,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "561c3ae537cbb9892237cda530441873f75dded77b6fefb3bfa0031db764e392"
+  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
 }
