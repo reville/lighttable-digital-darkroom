@@ -159,7 +159,7 @@
         {
           "title": "Zaplanuj kopiowanie",
           "paragraphs": [
-            "Import z karty kopiuje pliki do wybranego miejsca docelowego. Oryginały na karcie pozostają na miejscu."
+            "Import z karty kopiuje pliki do wybranego miejsca docelowego. Oryginały na karcie pozostają na miejscu. Pomijanie duplikatów porównuje pełną zawartość plików; sama zgodna nazwa pliku lub nagłówek aparatu nie wystarcza."
           ],
           "steps": [
             "Otwórz Local ••• → Importuj z karty….",
@@ -169,7 +169,7 @@
             "Poczekaj na liczbę skopiowanych i sprawdź, czy jakieś pliki się nie powiodły. Anuluj zatrzymuje po zakończeniu kopiowania i weryfikacji bieżącego pliku; ukończone kopie są zachowywane, a oryginały na karcie pozostają nienaruszone."
           ],
           "tips": [
-            "Tokeny szablonu obejmują {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} i {dd}. Start at kontroluje czterocyfrową sekwencję.",
+            "Tokeny szablonu obejmują {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} i {dd}. Start at steruje czterocyfrową sekwencją. Długie pola szablonu są skracane; sprawdź podgląd miejsca docelowego.",
             "Podglądy pokazują 200 plików na stronę. Zaznaczenie przenosi się między stronami; Zaznacz wszystko i Odznacz wszystko dotyczą całego skanu, w tym stron, których jeszcze nie otwarto.",
             "Jeśli pliki są raportowane jako tylko w chmurze, pobierz je lokalnie i przeskanuj ponownie."
           ]
@@ -438,7 +438,7 @@
           "title": "Przywróć korektę",
           "paragraphs": [
             "Przypisanie strefy czasowej nie przesuwa też zegara aparatu. Użyj pola przesunięcia, gdy sam wyświetlany czas jest nieprawidłowy.",
-            "„Cofnij ostatnią korektę” odwraca najnowszą korektę przechowywaną w tym oknie. „Przywróć czasy aparatu…” pokazuje podgląd usuwania korekt z katalogu; przejrzyj podgląd i zastosuj go, aby przywrócić oryginalne czasy aparatu. Kroki czasu przechwycenia są również dostępne w Historii."
+            "Cofnij ostatnią korektę odwraca najnowszą korektę przechowywaną w tym oknie. Przywróć czasy aparatu… pokazuje podgląd usunięcia korekt katalogu; przejrzyj podgląd i zastosuj go, aby przywrócić oryginalne czasy aparatu. Kroki czasu wykonania są także dostępne w Historii. Gdy zapis XMP jest włączony, zresetowanie korekty przywraca daty sidecarów zapisane przed jej zastosowaniem przez LightTable. Daty wykonania w starszych sidecarach bez tej zapisanej daty pozostają bez zmian."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Odzyskiwanie może być niedostępne, jeśli lokalna pamięć lub dziennik odzyskiwania pulpitu zawiedzie. Aplikacja zgłasza ten stan; nie jest to gwarancja, że każda niezapisana edycja może zostać odzyskana.",
-            "Jeśli oryginał jest niedostępny lub uległ zmianie, jego rekord odzyskiwania jest zachowywany zamiast być stosowany do potencjalnie innego zdjęcia."
+            "Jeśli oryginał jest niedostępny lub się zmienił, jego rekord odzyskiwania jest zachowywany zamiast być stosowany do potencjalnie innego zdjęcia. Niektóre wersje robocze odzyskiwania pokazują informację o częściowej tożsamości, ponieważ nie mogą zweryfikować całego oryginału. Może to się zdarzyć w przypadku starszych wersji roboczych lub podczas używania trybu folderu. Przywracaj je tylko wtedy, gdy oryginalne zdjęcia nie zostały zastąpione."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Wykonaj eksport",
           "paragraphs": [
-            "Eksport tworzy renderowane pliki wyjściowe na podstawie edycji zdjęć. Użyj Wybrane zdjęcia, gdy chcesz ograniczyć eksport do konkretnego zaznaczenia."
+            "Eksport tworzy renderowane pliki wyjściowe na podstawie edycji zdjęć. Użyj Wybrane zdjęcia, gdy chcesz ograniczyć eksport do określonego zaznaczenia. Każde zdjęcie dodane do kolejki zachowuje edycje, ocenę i korektę czasu wykonania wybrane w chwili rozpoczęcia eksportu."
           ],
           "steps": [
             "Wybierz zdjęcia, które chcesz wyeksportować, a następnie kliknij przycisk Eksportuj zdjęcia na górnym pasku. Command/Ctrl+Shift+E także otwiera Eksportuj.",
@@ -2437,7 +2437,7 @@
           "title": "Sprawdź zakres i wynik",
           "paragraphs": [
             "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
-            "Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu raportują liczby ukończonych, pominiętych i anulowanych, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ eksportu zdjęć nieruchomych."
+            "Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu pokazują liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć statycznych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub renderowany, to zdjęcie zakończy się błędem; dodaj je do kolejki ponownie po sprawdzeniu oryginału."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Nazwy i istniejące pliki",
           "paragraphs": [
-            "Szablony nazw plików obsługują {filename}, {stock}, {date}, {rating} i {sequence}. Na przykład {filename}_{stock} zawiera nazwę źródłową i nośnik filmu.",
+            "Szablony nazw plików obsługują {filename}, {stock}, {date}, {rating} i {sequence}. Na przykład {filename}_{stock} zawiera nazwę źródłową i nośnik filmu. Długie pola nazwy pliku są skracane, aby zostawić miejsce na nazwy wyjściowe i sidecarów; sprawdź Podgląd wyjścia.",
             "„Zachowaj oba · dodaj numer” tworzy inną nazwę pliku, na przykład nazwę kończącą się na -2. „Pomiń istniejące” pozostawia zajęte nazwy bez zmian. „Zastąp” zastępuje istniejące wyjście w wybranej ścieżce. Użyj podglądu wyjścia, aby potwierdzić miejsce docelowe przed wybraniem „Zastąp”."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Pominięte zdjęcia",
+          "paragraphs": [
+            "Puste pliki, pliki, które nie zostały pobrane, oraz niedostępne oryginały są pomijane przed analizą. Indeks zdjęć raportuje ich liczbę osobno od błędów analizy. Pusty plik nie zawiera danych obrazu; może wymagać ponownego pobrania lub przywrócenia z kopii zapasowej.",
+            "Pobierz lub przywróć oryginały, ponownie połącz wszelkie niedostępne źródło i użyj Odbuduj indeks, aby spróbować ponownie. Indeksowanie nie pobiera plików ani nie zmienia oryginałów. Wcześniej wygenerowane metadane wyszukiwania są zachowywane, gdy plik staje się niedostępny, chyba że odbudujesz lub usuniesz indeks."
+          ]
+        },
+        {
           "title": "Wstrzymaj, odbuduj lub usuń",
           "paragraphs": [
             "Wyłączenie indeksu wstrzymuje analizę i usuwa wygenerowane wyniki z aktywnego widoku wyszukiwania; istniejące dane indeksu pozostają lokalnie do czasu usunięcia. Przebuduj indeks ponownie uruchamia indeksowanie, gdy funkcja jest włączona.",
@@ -2855,6 +2862,7 @@
           "title": "Zrozum wybory odzyskiwania",
           "paragraphs": [
             "Przywracanie kopii zapasowej zwraca dane katalogu do stanu z tej kopii, więc późniejszych edycji w niej nie ma. Gdy przywracany jest katalog roboczy, bieżący katalog jest najpierw kopiowany zapasowo.",
+            "Po uaktualnieniu pierwsze skanowanie odczytuje lokalne oryginały, aby wzmocnić dopasowywanie plików. Na dużej bibliotece może to zająć więcej czasu. Oryginały, które już były brakujące bez pełnej tożsamości pliku, pozostaną brakujące; zachowaj ich wpisy i przywróć oryginały do poprzednich zarejestrowanych ścieżek przed ponownym skanowaniem.",
             "W przypadku uszkodzonego katalogu Stan biblioteki może zaoferować ratowanie, przywrócenie lub nowy katalog. Ratowanie kopiuje czytelne wiersze, ale traci wiersze na uszkodzonych stronach. Rozpoczęcie od nowa nie przenosi ocen, edycji, kolekcji ani historii. Bieżący uszkodzony plik katalogu jest zachowany w Odzyskiwaniu."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnostyka pulpitu",
           "paragraphs": [
             "W macOS Help → Diagnostics oferuje Przeładuj interfejs, Uruchom ponownie usługę renderowania, Pokaż dziennik serwera, Stan biblioteki… oraz Uruchom ponownie w trybie awaryjnym.",
-            "Tryb awaryjny wyłącza skanowanie, monitorowane foldery, lokalne AI i rozgrzewanie silnika. Użyj Uruchom ponownie usługę renderowania, aby powrócić do normalnej pracy. Jeśli problem nadal występuje, dołącz widoczny błąd i odpowiednie szczegóły z dziennika serwera podczas zgłaszania go."
+            "Tryb awaryjny wyłącza skanowanie, obserwowane foldery, lokalne AI i rozgrzewanie silnika. Użyj Uruchom ponownie usługę renderowania, aby wrócić do normalnej pracy."
+          ]
+        },
+        {
+          "title": "Zgłoś nieoczekiwane zamknięcie na Macu",
+          "paragraphs": [
+            "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
+            "Pomoc → Zgłoś problem… otwiera najnowszy raport lub bieżące dane diagnostyczne, jeśli nie zarejestrowano nieoczekiwanego zamknięcia. Raporty zawierają wersję aplikacji, macOS i sprzęt, ostatnią zarejestrowaną operację, gdy jest dostępna, filtrowane ostatnie logi oraz dostępne ślady błędów. Pasujący raport o awarii macOS może dodać informacje o stosie wywołań i plikach binarnych. Nieoczekiwane zamknięcie nie zawsze pozostawia ślad błędu ani wskazuje swoją przyczynę.",
+            "Raporty pozostają na Twoim Macu, dopóki nie zdecydujesz się ich udostępnić. Ścieżki, nazwy plików zdjęć, cytowane wartości logów i typowe pola poświadczeń są filtrowane; przed udostępnieniem sprawdź tekst. Zdjęcia i katalog nie są dołączane. Lokalnie przechowywanych jest ostatnich dziesięć raportów."
+          ],
+          "steps": [
+            "Przeczytaj raport diagnostyczny. Wybierz Kopiuj raport, aby wkleić go samodzielnie do wiadomości e-mail.",
+            "Albo wybierz Wyślij e-mail do opiekuna. To kopiuje raport i otwiera wersję roboczą zaadresowaną do team@lighttable.app.",
+            "Opisz, co robiłeś, wklej skopiowany raport do wersji roboczej i wyślij go, gdy będziesz gotowy. Jeśli nie otworzy się żadna aplikacja pocztowa, użyj swojego zwykłego serwisu poczty e-mail.",
+            "Wybierz Odrzuć, aby zamknąć raport. Nic nie jest wysyłane automatycznie."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

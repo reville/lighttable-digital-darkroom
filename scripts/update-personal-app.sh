@@ -53,7 +53,7 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
   exit 2
 fi
 
-for TOOL in cargo codesign git plutil rsync shasum swiftc xcodebuild; do
+for TOOL in cargo codesign git plutil rsync shasum swiftc; do
   if ! command -v "$TOOL" >/dev/null 2>&1; then
     echo "$TOOL is required for a personal app update" >&2
     exit 1
@@ -215,7 +215,8 @@ hash_sources() {
 }
 
 NATIVE_HASH="$(hash_sources \
-  "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift")"
+  "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift" \
+  "$ROOT/scripts/update-personal-app.sh")"
 XCODE_CONFIG_HASH="$(hash_sources \
   "$ROOT/app/Info.plist" "$ROOT/LightTable.xcodeproj/project.pbxproj" \
   "$PACKAGE_RESOLVED")"
@@ -231,7 +232,7 @@ SOURCE_TREE_HASH="$(hash_sources \
   "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
   "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
   "$ROOT/film_lab_ai" "$ROOT/app/main.swift" \
-  "$ROOT/app/NativePreview.swift" "$ROOT/app/NativePreview.metal" \
+  "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift" "$ROOT/app/NativePreview.metal" \
   "$ROOT/rust-engine/Cargo.toml" "$ROOT/rust-engine/Cargo.lock" \
   "$ROOT/rust-engine/src")"
 SOURCE_REVISION="$(git rev-parse HEAD)"
@@ -284,23 +285,16 @@ PREVIOUS_ENGINE_HASH="$(manifest_value ENGINE_HASH)"
 PREVIOUS_MODEL_HASH="$(manifest_value MODEL_HASH)"
 
 if [[ -z "$PREVIOUS_NATIVE_HASH" || "$PREVIOUS_NATIVE_HASH" != "$NATIVE_HASH" ]]; then
-  echo "Building the native shell (incremental)..."
-  DERIVED_DATA="$ROOT/.build/release/DerivedData"
-  xcodebuild \
-    -project LightTable.xcodeproj \
-    -scheme LightTable \
-    -configuration Release \
-    -derivedDataPath "$DERIVED_DATA" \
-    -destination 'generic/platform=macOS' \
-    CODE_SIGNING_ALLOWED=NO \
-    CODE_SIGNING_REQUIRED=NO \
-    MARKETING_VERSION="$VERSION" \
-    CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
-    build
-  BUILT_APP="$DERIVED_DATA/Build/Products/Release/LightTable.app"
-  require_file "$BUILT_APP/Contents/MacOS/LightTable"
-  /usr/bin/ditto "$BUILT_APP/Contents/MacOS/LightTable" \
-    "$STAGE_CONTENTS/MacOS/LightTable"
+  echo "Building the native shell with the verified Sparkle framework..."
+  # Match the Xcode Release target while reusing its already-validated package.
+  # Direct compilation avoids the build service's compiler-probe pipe stalls.
+  swiftc -O -whole-module-optimization -swift-version 5 -module-name LightTable \
+    -target arm64-apple-macos13.0 \
+    -F "$BASE_CONTENTS/Frameworks" -framework Sparkle \
+    -Xlinker -rpath -Xlinker @executable_path/../Frameworks \
+    -o "$STAGE_CONTENTS/MacOS/LightTable" \
+    "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift" \
+    "$ROOT/app/DiagnosticReports.swift"
 else
   echo "Native shell unchanged; reusing it."
 fi

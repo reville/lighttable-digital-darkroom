@@ -125,6 +125,10 @@
       "other": "{count} duplicate groups covering {files}."
     },
     {
+      "one": "{count} empty file",
+      "other": "{count} empty files"
+    },
+    {
       "one": "{count} error",
       "other": "{count} errors"
     },
@@ -143,6 +147,10 @@
     {
       "one": "{count} file",
       "other": "{count} files"
+    },
+    {
+      "one": "{count} file not downloaded",
+      "other": "{count} files not downloaded"
     },
     {
       "one": "{count} indexed photo remains local until deleted.",
@@ -197,6 +205,10 @@
       "other": "{count} photos selected"
     },
     {
+      "one": "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.",
+      "other": "{count} photos skipped{reasons}. Download or restore the originals, then rebuild the index."
+    },
+    {
       "one": "{count} photo updated",
       "other": "{count} photos updated"
     },
@@ -231,6 +243,10 @@
     {
       "one": "{count} source",
       "other": "{count} sources"
+    },
+    {
+      "one": "{count} unavailable file",
+      "other": "{count} unavailable files"
     },
     {
       "one": "{count} unsupported setting skipped",

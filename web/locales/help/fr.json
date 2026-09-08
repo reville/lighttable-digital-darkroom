@@ -159,7 +159,7 @@
         {
           "title": "Planifier la copie",
           "paragraphs": [
-            "Importer depuis la carte copie les fichiers vers la destination que vous choisissez. Les originaux de la carte restent en place."
+            "Importer depuis une carte copie les fichiers vers la destination de votre choix. Les originaux de la carte restent en place. L’ignorance des doublons compare le contenu complet des fichiers ; un nom de fichier correspondant ou un en-tête d’appareil photo ne suffit pas à lui seul."
           ],
           "steps": [
             "Ouvrir Local ••• → Importer depuis la carte….",
@@ -169,7 +169,7 @@
             "Attendez le nombre copié et vérifiez si certains fichiers ont échoué. Annuler s’arrête après la fin de la copie et de la vérification du fichier en cours ; les copies terminées sont conservées et les originaux de la carte ne sont pas touchés."
           ],
           "tips": [
-            "Les jetons de modèle incluent {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} et {dd}. Démarrer à contrôle la séquence à quatre chiffres.",
+            "Les jetons de modèle incluent {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} et {dd}. Démarrer à contrôle la séquence à quatre chiffres. Les champs de modèle longs sont raccourcis ; vérifiez l’aperçu de destination.",
             "Les aperçus affichent 200 fichiers par page. La sélection s’étend sur plusieurs pages ; Tout sélectionner et Tout désélectionner s’appliquent à toute la numérisation, y compris aux pages que vous n’avez pas ouvertes.",
             "Si des fichiers sont signalés comme disponibles uniquement dans le cloud, téléchargez-les localement et lancez une nouvelle numérisation."
           ]
@@ -438,7 +438,7 @@
           "title": "Restaurer une correction",
           "paragraphs": [
             "Attribuer un fuseau horaire ne décale pas non plus l’horloge de l’appareil photo. Utilisez le champ de décalage lorsque l’heure affichée elle-même est incorrecte.",
-            "Annuler la dernière correction annule la correction la plus récente conservée dans cette fenêtre. Restaurer les heures de l’appareil photo… prévisualise la suppression des corrections du catalogue ; examinez l’aperçu et appliquez-le pour restaurer les heures d’origine de l’appareil photo. Les étapes à l’heure de prise de vue sont également disponibles dans Historique."
+            "Annuler la dernière correction annule la correction la plus récente conservée dans cette fenêtre. Restaurer les heures de l’appareil photo… prévisualise la suppression des corrections du catalogue ; examinez l’aperçu et appliquez-le pour restaurer les heures d’origine de l’appareil photo. Les étapes de l’heure de capture sont également disponibles dans l’Historique. Lorsque l’écriture XMP est activée, la réinitialisation d’une correction restaure les dates du sidecar enregistrées avant que LightTable ne l’applique. Les dates de capture dans les anciens sidecars sans cette date enregistrée restent inchangées."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "La récupération peut être indisponible si le stockage local ou le journal de récupération du bureau échoue. L’application signale cet état ; ce n’est pas une garantie que chaque modification non enregistrée puisse être récupérée.",
-            "Si un original est indisponible ou a changé, son enregistrement de récupération est conservé au lieu d’être appliqué à une photo potentiellement différente."
+            "Si un original est indisponible ou a changé, son enregistrement de récupération est conservé au lieu d’être appliqué à une photo potentiellement différente. Certains brouillons de récupération affichent un avis d’identité partielle parce qu’ils ne peuvent pas vérifier l’original complet. Cela peut se produire avec d’anciens brouillons ou lors de l’utilisation du mode dossier. Ne restaurez ceux-ci que si les photos originales n’ont pas été remplacées."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Créer un export",
           "paragraphs": [
-            "Exporter crée des fichiers de sortie rendus à partir de vos retouches photo. Utilisez Photos sélectionnées lorsque vous voulez limiter l’export à une sélection précise."
+            "Exporter crée des fichiers de sortie rendus à partir de vos modifications photo. Utilisez Photos sélectionnées lorsque vous voulez limiter l’exportation à une sélection précise. Chaque photo mise en file d’attente conserve les modifications, la note et la correction de l’heure de capture choisies lorsque vous avez démarré l’exportation."
           ],
           "steps": [
             "Sélectionnez les photos souhaitées, puis cliquez sur le bouton Exporter les photos dans la barre du haut. Command/Ctrl+Shift+E ouvre également Exporter.",
@@ -2437,7 +2437,7 @@
           "title": "Vérifier la portée et le résultat",
           "paragraphs": [
             "Sélectionné uniquement, Noté 1+ et Tout sauf rejeté sélectionnent les photos fixes correspondantes du catalogue actif et peuvent inclure des photos en dehors de la collection ou du filtre affichés. Photos sélectionnées offre un contrôle explicite sur l’ensemble.",
-            "Choisissez Annuler l’export pour demander l’arrêt. Les détails d’export indiquent les comptes terminés, ignorés et annulés, ainsi que les avertissements et erreurs ; un avertissement peut se produire après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’export de photos fixes."
+            "Utilisez Annuler l’exportation pour demander un arrêt. Détails de l'export indique les nombres terminés, ignorés et annulés, ainsi que les avertissements et les erreurs ; un avertissement peut survenir après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’exportation des photos fixes. Si un original change pendant que son exportation est en file d’attente ou en cours de rendu, cette photo échoue avec une erreur ; remettez-la en file d’attente après avoir vérifié l’original."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Noms et fichiers existants",
           "paragraphs": [
-            "Les modèles de nom de fichier prennent en charge {filename}, {stock}, {date}, {rating} et {sequence}. Par exemple, {filename}_{stock} inclut le nom source et la pellicule.",
+            "Les modèles de nom de fichier prennent en charge {filename}, {stock}, {date}, {rating} et {sequence}. Par exemple, {filename}_{stock} inclut le nom source et la pellicule. Les champs de nom de fichier longs sont raccourcis pour laisser de la place aux noms de sortie et de sidecar ; vérifiez l’Aperçu de sortie.",
             "Conserver les deux · ajouter un numéro crée un autre nom de fichier, par exemple un nom se terminant par -2. Ignorer les éléments existants laisse les noms occupés tels quels. Écraser remplace la sortie existante au chemin choisi. Utilisez l’aperçu de sortie pour confirmer la destination avant de choisir Écraser."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Photos ignorées",
+          "paragraphs": [
+            "Les fichiers vides, les fichiers non téléchargés et les originaux indisponibles sont ignorés avant l’analyse. L’Index des photos indique leurs comptes séparément des erreurs d’analyse. Un fichier vide ne contient aucune donnée d’image ; il peut devoir être retéléchargé ou restauré depuis une sauvegarde.",
+            "Téléchargez ou restaurez les originaux, reconnectez toute source indisponible, puis utilisez Reconstruire l’index pour réessayer. L’indexation ne télécharge pas les fichiers et ne modifie pas les originaux. Les métadonnées de recherche générées précédemment sont conservées lorsqu’un fichier devient indisponible, sauf si vous reconstruisez ou supprimez l’index."
+          ]
+        },
+        {
           "title": "Suspendre, reconstruire ou supprimer",
           "paragraphs": [
             "Désactiver l’index met en pause l’analyse et retire les résultats générés de la vue de recherche active ; les données d’index existantes restent locales jusqu’à leur suppression. Reconstruire l’index relance l’indexation lorsque la fonctionnalité est activée.",
@@ -2855,6 +2862,7 @@
           "title": "Comprendre les choix de récupération",
           "paragraphs": [
             "La restauration d’une sauvegarde ramène les données du catalogue à l’état de cette sauvegarde, donc les modifications ultérieures n’y figurent pas. Lorsqu’un catalogue de travail est restauré, le catalogue actuel est d’abord sauvegardé.",
+            "Après une mise à niveau, la première numérisation lit les originaux locaux pour renforcer la correspondance des fichiers. Cela peut prendre plus de temps dans une grande photothèque. Les originaux qui manquaient déjà sans identité de fichier complète restent manquants ; conservez leurs entrées et restaurez les originaux à leurs anciens chemins catalogués avant de rescanner.",
             "Pour un catalogue endommagé, État de la bibliothèque peut proposer la récupération, la restauration ou un nouveau catalogue. La récupération copie les lignes lisibles mais perd les lignes situées sur les pages endommagées. Repartir de zéro ne conserve pas les notes, les modifications, les collections ni l’historique. Le fichier du catalogue endommagé actuel est conservé dans Recovery."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnostics de bureau",
           "paragraphs": [
             "Sur macOS, Aide → Diagnostics propose Recharger l’interface, Redémarrer le service de rendu, Afficher le journal du serveur, Santé de la bibliothèque…, et Redémarrer en mode sans échec.",
-            "Le mode sans échec désactive l’analyse, les dossiers surveillés, l’IA locale et le préchauffage du moteur. Utilisez Redémarrer le service de rendu pour revenir au fonctionnement normal. Si un problème persiste, incluez l’erreur visible et les détails pertinents du journal du serveur lors du signalement."
+            "Le mode sans échec désactive la numérisation, les dossiers surveillés, l’IA locale et le préchauffage du moteur. Utilisez Redémarrer le service de rendu pour revenir au fonctionnement normal."
+          ]
+        },
+        {
+          "title": "Signaler une fermeture inattendue sur Mac",
+          "paragraphs": [
+            "Si l’application Mac se ferme sans quitter proprement, un rapport de diagnostic s’ouvre au prochain lancement. Si son moteur de rendu s’arrête de manière inattendue, le rapport peut s’ouvrir pendant que le moteur se rétablit. Le rapport apparaît une fois pour chaque incident enregistré ; Ignorer vous permet de continuer. Fermer normalement l’application ou redémarrer son service de rendu ne crée pas de rapport.",
+            "Aide → Signaler un problème… ouvre le dernier rapport, ou les diagnostics actuels si aucune fermeture inattendue n’a été enregistrée. Les rapports incluent la version de l’application, macOS et le matériel, la dernière opération enregistrée lorsqu’elle est disponible, les logs récents filtrés et les traces d’erreur disponibles. Un rapport de plantage macOS correspondant peut ajouter des informations de pile et de binaire. Une fermeture inattendue ne laisse pas toujours de trace d’erreur ni n’identifie sa cause.",
+            "Les rapports restent sur votre Mac jusqu’à ce que vous choisissiez de les partager. Les chemins, les noms de fichier des photos, les valeurs de log entre guillemets et les champs d’identifiants courants sont filtrés ; inspectez le texte avant de le partager. Les photos et le catalogue ne sont pas joints. Les dix rapports les plus récents sont conservés localement."
+          ],
+          "steps": [
+            "Lisez le rapport de diagnostic. Choisissez Copier le rapport pour le coller vous-même dans un e-mail.",
+            "Ou choisissez Envoyer un e-mail au mainteneur. Cela copie le rapport et ouvre un brouillon adressé à team@lighttable.app.",
+            "Décrivez ce que vous faisiez, collez le rapport copié dans le brouillon et envoyez-le quand vous êtes prêt. Si aucune application de messagerie ne s’ouvre, utilisez votre service de messagerie habituel.",
+            "Choisissez Ignorer pour fermer le rapport. Rien n’est envoyé automatiquement."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

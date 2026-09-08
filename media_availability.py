@@ -27,6 +27,22 @@ def availability(path: Path | str, *, stat=None) -> str:
         return "unavailable"
 
 
+def index_availability(path: Path | str) -> str:
+    """Check for image bytes before indexing, without opening a cloud file.
+
+    Older sync placeholders can be zero bytes without the macOS dataless
+    flag. An empty file is not evidence that a downloadable original exists.
+    """
+    try:
+        stat = Path(path).stat()
+    except OSError:
+        return "unavailable"
+    state = from_stat(stat)
+    if state != "local":
+        return state
+    return "empty" if stat.st_size == 0 else "local"
+
+
 def require_local(path: Path | str, *, stat=None) -> None:
     state = availability(path, stat=stat)
     if state != "local":

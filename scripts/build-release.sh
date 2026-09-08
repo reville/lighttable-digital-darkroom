@@ -85,6 +85,7 @@ fi
 
 rm -rf "$APP"
 /usr/bin/ditto "$BUILT_APP" "$APP"
+/usr/libexec/PlistBuddy -c "Add :LightTableSourceRevision string $(git -C "$ROOT" rev-parse HEAD)" "$APP/Contents/Info.plist"
 /usr/bin/ditto "$ROOT/build/LightTable.icns" \
   "$APP/Contents/Resources/LightTable.icns"
 # The app compiles this source through Metal at runtime. Keeping it outside the

@@ -159,7 +159,7 @@
         {
           "title": "Kopyayı planla",
           "paragraphs": [
-            "Import from card dosyaları seçtiğiniz hedefe kopyalar. Karttaki özgünler yerinde kalır."
+            "Karttan içe aktar, dosyaları seçtiğiniz hedefe kopyalar. Karttaki orijinaller yerinde kalır. Yineleneni atlama, dosyanın tam içeriğini karşılaştırır; eşleşen bir dosya adı veya kamera başlığı tek başına yeterli değildir."
           ],
           "steps": [
             "Yerel ••• → Karttan içe aktar….'ı açın",
@@ -169,7 +169,7 @@
             "Kopyalanan sayının tamamlanmasını bekleyin ve herhangi bir dosyanın başarısız olup olmadığını kontrol edin. İptal, geçerli dosyanın kopyalanması ve doğrulanması tamamlandıktan sonra durur; tamamlanan kopyalar korunur ve karttaki orijinallere dokunulmaz."
           ],
           "tips": [
-            "Şablon belirteçleri {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} ve {dd} içerir. Başlangıç, dört haneli diziyi kontrol eder.",
+            "Şablon belirteçleri {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} ve {dd} içerir. Başlangıç noktası, dört haneli diziyi denetler. Uzun şablon alanları kısaltılır; hedef önizlemeyi kontrol edin.",
             "Önizlemeler sayfa başına 200 dosya gösterir. Seçim sayfalar arasında taşınır; Tümünü Seç ve Hiçbirini Seçme, açmadığınız sayfalar da dahil olmak üzere tüm taramaya uygulanır.",
             "Dosyalar yalnızca bulutta olarak raporlanıyorsa, onları yerel olarak indirin ve yeniden tarayın."
           ]
@@ -438,7 +438,7 @@
           "title": "Bir düzeltmeyi geri yükle",
           "paragraphs": [
             "Bir saat dilimi atamak kamera saatini de kaydırmaz. Gösterilen saatin kendisi yanlış olduğunda kaydırma alanını kullanın.",
-            "Undo last correction, bu pencerede tutulan en son düzeltmeyi geri alır. Restore camera times… katalog düzeltmelerini kaldırmayı önizler; önizlemeyi inceleyin ve orijinal kamera zamanlarını geri yüklemek için uygulayın. Yakalama zamanı adımları History içinde de kullanılabilir."
+            "Son düzeltmeyi geri al, bu pencerede tutulan en son düzeltmeyi geri çevirir. Kamera zamanlarını geri yükle… katalog düzeltmelerini kaldırmayı önizler; önizlemeyi inceleyin ve orijinal kamera zamanlarını geri yüklemek için uygulayın. Yakalama zamanı adımları Geçmiş'te de bulunur. XMP yazma etkin olduğunda, bir düzeltmeyi sıfırlamak, LightTable onu uygulamadan önce kaydedilen yardımcı dosya tarihlerini geri yükler. Eski yardımcı dosyalardaki, kaydedilmiş bu tarihi içermeyen yakalama tarihleri değişmeden kalır."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Yerel depolama veya masaüstü kurtarma günlüğü başarısız olursa kurtarma kullanılamayabilir. Uygulama bu durumu bildirir; bu, kaydedilmemiş her düzenlemenin kurtarılabileceğinin garantisi değildir.",
-            "Bir özgün kullanılamıyorsa veya değiştiyse, kurtarma kaydı potansiyel olarak farklı bir fotoğrafa uygulanmak yerine korunur."
+            "Bir orijinal kullanılamıyorsa veya değiştiyse, kurtarma kaydı potansiyel olarak farklı bir fotoğrafa uygulanmak yerine korunur. Bazı kurtarma taslaklarında, tüm orijinali doğrulayamadıkları için kısmi kimlik bildirimi görünür. Bu, eski taslaklarda veya klasör modu kullanılırken olabilir. Bunları yalnızca orijinal fotoğraflar değiştirilmemişse geri yükleyin."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Bir dışa aktarma oluştur",
           "paragraphs": [
-            "Dışa aktarma, fotoğraf düzenlemelerinizden işlenmiş çıktı dosyaları oluşturur. Dışa aktarmayı belirli bir seçimle sınırlamak istediğinizde Seçili fotoğraflar'ı kullanın."
+            "Dışa Aktar, fotoğraf düzenlemelerinizden işlenmiş çıkış dosyaları oluşturur. Dışa aktarmayı belirli bir seçimle sınırlamak istediğinizde Seçili fotoğraflar'ı kullanın. Kuyruğa alınan her fotoğraf, dışa aktarmayı başlattığınızda seçilen düzenlemeleri, derecelendirmeyi ve yakalama zamanı düzeltmesini korur."
           ],
           "steps": [
             "İstediğiniz fotoğrafları seçin, ardından üst çubuktaki Fotoğrafları Dışa Aktar düğmesine tıklayın. Command/Ctrl+Shift+E de Dışa Aktar'ı açar.",
@@ -2437,7 +2437,7 @@
           "title": "Kapsamı ve sonucu kontrol edin",
           "paragraphs": [
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
-            "Bir durdurma istemek için Dışa aktarmayı iptal et'i kullanın. Dışa aktarma ayrıntıları, tamamlanan, atlanan ve iptal edilen sayıları ile uyarıları ve hataları bildirir; bir fotoğraf başarıyla yazıldıktan sonra da bir uyarı oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışı tarafından işlenmez."
+            "Bir durdurma isteği göndermek için Dışa aktarmayı iptal et'i kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları, ayrıca uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışıyla işlenmez. Bir orijinal, dışa aktarımı kuyruğa alındığında veya işlenirken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden kuyruğa alın."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Adlar ve mevcut dosyalar",
           "paragraphs": [
-            "Dosya adı şablonları {filename}, {stock}, {date}, {rating} ve {sequence} destekler. Örneğin, {filename}_{stock} kaynak adını ve film stoğunu içerir.",
+            "Dosya adı şablonları {filename}, {stock}, {date}, {rating} ve {sequence} destekler. Örneğin, {filename}_{stock} kaynak adını ve film stoğunu içerir. Uzun dosya adı alanları, çıkış ve yardımcı dosya adları için yer bırakmak üzere kısaltılır; Çıkış önizlemesi'ni kontrol edin.",
             "Keep both · add a number başka bir dosya adı oluşturur; örneğin -2 ile biten bir ad. Skip existing, dolu adları olduğu gibi bırakır. Overwrite, seçilen yoldaki mevcut çıkışı değiştirir. Overwrite’ı seçmeden önce hedefi doğrulamak için çıkış önizlemesini kullanın."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Atlanan fotoğraflar",
+          "paragraphs": [
+            "Boş dosyalar, indirilmeyen dosyalar ve kullanılamayan orijinaller analizden önce atlanır. Fotoğraf Dizini, bu öğelerin sayısını analiz hatalarından ayrı olarak bildirir. Boş bir dosya hiçbir görüntü verisi içermez; yeniden indirilmesi veya yedekten geri yüklenmesi gerekebilir.",
+            "Orijinalleri indirin veya geri yükleyin, kullanılamayan herhangi bir kaynağı yeniden bağlayın ve tekrar denemek için Dizini yeniden oluştur'u kullanın. Dizine ekleme, dosyaları indirmez veya orijinalleri değiştirmez. Bir dosya kullanılamaz hale geldiğinde, daha önce oluşturulmuş arama üstverisi, dizini yeniden oluşturmadığınız veya silmediğiniz sürece korunur."
+          ]
+        },
+        {
           "title": "Duraklat, yeniden oluştur veya sil",
           "paragraphs": [
             "Dizin kapatıldığında analiz duraklatılır ve oluşturulan sonuçlar etkin arama görünümünden kaldırılır; mevcut dizin verileri silinene kadar yerelde kalır. Özellik etkin olduğunda Dizin'i yeniden oluştur, indekslemeyi yeniden çalıştırır.",
@@ -2855,6 +2862,7 @@
           "title": "Kurtarma seçeneklerini anlayın",
           "paragraphs": [
             "Bir yedeği geri yüklemek, katalog verilerini o yedeğin durumuna döndürür; dolayısıyla daha sonraki düzenlemeler onda yer almaz. Çalışan bir katalog geri yüklendiğinde, geçerli katalog önce yedeklenir.",
+            "Yükseltmeden sonra, ilk tarama dosya eşleştirmesini güçlendirmek için yerel orijinalleri okur. Bu, büyük bir kitaplıkta daha uzun sürebilir. Tam bir dosya kimliği olmadan zaten eksik olan orijinaller eksik kalır; girdilerini koruyun ve yeniden taramadan önce orijinalleri önceki kataloglanmış yollarına geri yükleyin.",
             "Hasarlı bir katalog için Library Health, kurtarma, geri yükleme veya yeni bir katalog sunabilir. Kurtarma, okunabilir satırları kopyalar ancak hasarlı sayfalardaki satırları kaybeder. Baştan başlamak, derecelendirmeleri, düzenlemeleri, koleksiyonları veya geçmişi taşımaz. Geçerli hasarlı katalog dosyası Recovery içinde korunur."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Masaüstü tanılama",
           "paragraphs": [
             "macOS'ta Yardım → Tanılama, Arayüzü Yeniden Yükle, Oluşturma Hizmetini Yeniden Başlat, Sunucu Günlüğünü Göster, Kitaplık Sağlığı… ve Güvenli Modda Yeniden Başlat seçeneklerini sunar.",
-            "Güvenli Mod, taramayı, izlenen klasörleri, yerel yapay zekâyı ve motor ön ısınmasını kapatır. Normal çalışmaya dönmek için İşleme Hizmetini Yeniden Başlat'ı kullanın. Sorun devam ederse, bildirirken görünen hatayı ve ilgili sunucu günlüğü ayrıntılarını ekleyin."
+            "Güvenli Mod, taramayı, izlenen klasörleri, yerel yapay zekayı ve motor ısınmasını kapatır. Normal çalışmaya dönmek için İşleme Hizmetini Yeniden Başlat'ı kullanın."
+          ]
+        },
+        {
+          "title": "Mac'te beklenmeyen bir çıkışı bildir",
+          "paragraphs": [
+            "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
+            "Yardım → Bir Sorun Bildir… en son raporu veya beklenmeyen bir çıkış kaydedilmediyse geçerli tanılamaları açar. Raporlar uygulama sürümünü, macOS ve donanımı, varsa son kaydedilen işlemi, filtrelenmiş son logları ve mevcut hata izlerini içerir. Eşleşen bir macOS çökme raporu yığın ve ikili bilgi ekleyebilir. Beklenmeyen bir çıkış her zaman bir hata izi bırakmaz veya nedenini belirlemez.",
+            "Raporlar, siz paylaşmayı seçene kadar Mac'inizde kalır. Yollar, fotoğraf dosya adları, tırnak içindeki log değerleri ve yaygın kimlik bilgisi alanları filtrelenir; paylaşmadan önce metni inceleyin. Fotoğraflar ve katalog eklenmez. Son on rapor yerel olarak saklanır."
+          ],
+          "steps": [
+            "Tanılama raporunu okuyun. E-postaya kendiniz yapıştırmak için Raporu kopyala'yı seçin.",
+            "Ya da Bakımcıya e-posta gönder'i seçin. Bu, raporu kopyalar ve team@lighttable.app adresine yönelik bir taslak açar.",
+            "Ne yaptığınızı açıklayın, kopyalanan raporu taslağa yapıştırın ve hazır olduğunuzda gönderin. Hiçbir e-posta uygulaması açılmazsa, her zamanki e-posta hizmetinizi kullanın.",
+            "Raporu kapatmak için Kapat'ı seçin. Hiçbir şey otomatik olarak gönderilmez."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

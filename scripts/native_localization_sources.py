@@ -11,7 +11,7 @@ import re
 import plistlib
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ('app/main.swift', 'windows-shell/src/main.rs', 'windows-shell/src/localization.rs', 'app/Info.plist')
+FILES = ('app/main.swift', 'app/DiagnosticReports.swift', 'windows-shell/src/main.rs', 'windows-shell/src/localization.rs', 'app/Info.plist')
 PLIST_KEYS = ('NSPhotoLibraryUsageDescription',)
 LITERAL = r'"(?:[^"\\]|\\.)*"'
 CALL = re.compile(r'\b(?:L|tr|tr_args)\(\s*(' + LITERAL + r')')

@@ -159,7 +159,7 @@
         {
           "title": "Die Kopie planen",
           "paragraphs": [
-            "Import from card kopiert Dateien an den von Ihnen gewählten Zielort. Die Originale auf der Karte bleiben unverändert."
+            "Von Karte importieren kopiert Dateien in das von Ihnen gewählte Ziel. Die Originale auf der Karte bleiben an ihrem Platz. Das Überspringen von Duplikaten vergleicht den vollständigen Dateiinhalt; ein übereinstimmender Dateiname oder Kamerakopf reicht allein nicht aus."
           ],
           "steps": [
             "Local ••• → Von Karte importieren…. öffnen",
@@ -169,7 +169,7 @@
             "Warten Sie auf die kopierte Anzahl und prüfen Sie, ob Dateien fehlgeschlagen sind. Abbrechen stoppt, nachdem die aktuelle Datei mit Kopieren und Überprüfung fertig ist; bereits kopierte Dateien bleiben erhalten und die Originale auf der Karte werden nicht verändert."
           ],
           "tips": [
-            "Vorlagen-Tokens umfassen {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} und {dd}. Start bei steuert die vierstellige Sequenz.",
+            "Vorlagen-Tokens umfassen {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} und {dd}. Starten bei steuert die vierstellige Sequenz. Lange Vorlagenfelder werden gekürzt; prüfen Sie die Zielvorschau.",
             "Vorschauen zeigen 200 Dateien pro Seite. Die Auswahl bleibt seitenübergreifend erhalten; Alle auswählen und Keine auswählen gelten für den gesamten Scan, einschließlich der Seiten, die Sie noch nicht geöffnet haben.",
             "Wenn Dateien als nur in der Cloud vorhanden gemeldet werden, laden Sie sie lokal herunter und scannen Sie erneut."
           ]
@@ -438,7 +438,7 @@
           "title": "Eine Korrektur wiederherstellen",
           "paragraphs": [
             "Das Zuweisen einer Zeitzone verschiebt die Kamerauhr nicht ebenfalls. Verwenden Sie das Verschiebungsfeld, wenn die angezeigte Uhrzeit selbst falsch ist.",
-            "Undo last correction macht die jüngste Korrektur rückgängig, die in diesem Fenster gespeichert ist. Restore camera times… zeigt eine Vorschau auf das Entfernen von Katalogkorrekturen; prüfen Sie die Vorschau und wenden Sie sie an, um die ursprünglichen Kamerazeiten wiederherzustellen. Schritte zur Aufnahmezeit sind auch im Verlauf verfügbar."
+            "Letzte Korrektur rückgängig machen kehrt die jüngste in diesem Fenster enthaltene Korrektur um. Kamerazeiten wiederherstellen… zeigt eine Vorschau zum Entfernen von Katalogkorrekturen an; prüfen Sie die Vorschau und wenden Sie sie an, um die ursprünglichen Kamerazeiten wiederherzustellen. Schritte der Aufnahmezeit sind auch im Verlauf verfügbar. Wenn das Schreiben von XMP aktiviert ist, stellt das Zurücksetzen einer Korrektur die vor dem Anwenden durch LightTable gespeicherten Sidecar-Daten wieder her. Aufnahmedaten in älteren Sidecars ohne diese gespeicherten Daten bleiben unverändert."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "Die Wiederherstellung kann nicht verfügbar sein, wenn der lokale Speicher oder das Desktop-Wiederherstellungsjournal fehlschlägt. Die App meldet diesen Zustand; es ist keine Garantie, dass jede ungespeicherte Bearbeitung wiederhergestellt werden kann.",
-            "Wenn ein Original nicht verfügbar ist oder sich geändert hat, wird sein Wiederherstellungsdatensatz beibehalten, statt auf ein möglicherweise anderes Foto angewendet zu werden."
+            "Wenn ein Original nicht verfügbar ist oder sich geändert hat, wird der Wiederherstellungseintrag beibehalten, statt auf ein möglicherweise anderes Foto angewendet zu werden. Einige Wiederherstellungsentwürfe zeigen einen Hinweis auf eine teilweise Identität, weil sie nicht das gesamte Original verifizieren können. Das kann bei älteren Entwürfen oder bei Verwendung des Ordnermodus passieren. Stellen Sie diese nur wieder her, wenn die Originalfotos nicht ersetzt wurden."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Einen Export erstellen",
           "paragraphs": [
-            "Exportieren erstellt gerenderte Ausgabedateien aus Ihren Fotobearbeitungen. Verwenden Sie Ausgewählte Fotos, wenn der Export auf eine bestimmte Auswahl beschränkt sein soll."
+            "Export erstellt gerenderte Ausgabedateien aus Ihren Fotobearbeitungen. Verwenden Sie Ausgewählte Fotos, wenn der Export auf eine bestimmte Auswahl beschränkt sein soll. Jedes eingereihte Foto behält die Bearbeitungen, Bewertung und die beim Start des Exports gewählte Aufnahmezeitkorrektur."
           ],
           "steps": [
             "Wählen Sie die gewünschten Fotos aus und klicken Sie dann in der oberen Leiste auf die Schaltfläche Fotos exportieren. Command/Ctrl+Shift+E öffnet ebenfalls Exportieren.",
@@ -2437,7 +2437,7 @@
           "title": "Bereich und Ergebnis prüfen",
           "paragraphs": [
             "Nur Ausgewählt, Bewertet 1+ und Alle außer abgelehnt wählen passende Standfotos aus dem aktiven Katalog aus und können Fotos außerhalb der angezeigten Sammlung oder des Filters einschließen. Ausgewählte Fotos bietet eine explizite Kontrolle über die Auswahl.",
-            "Wählen Sie Export abbrechen, um ein Stoppsignal anzufordern. Exportdetails meldet abgeschlossene, übersprungene und abgebrochene Zählungen sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standfotos nicht gerendert."
+            "Verwenden Sie Export abbrechen, um ein Stoppen anzufordern. Exportdetails meldet abgeschlossene, übersprungene und abgebrochene Anzahl sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standfotos nicht gerendert. Wenn sich ein Original ändert, während sein Export eingereiht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; reihen Sie es nach dem Prüfen des Originals erneut ein."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Namen und vorhandene Dateien",
           "paragraphs": [
-            "Dateinamenvorlagen unterstützen {filename}, {stock}, {date}, {rating} und {sequence}. Zum Beispiel enthält {filename}_{stock} den Quellnamen und den Film.",
+            "Dateinamenvorlagen unterstützen {filename}, {stock}, {date}, {rating} und {sequence}. Zum Beispiel enthält {filename}_{stock} den Quellnamen und den Film. Lange Dateinamensfelder werden gekürzt, damit Platz für Ausgabe- und Sidecar-Namen bleibt; prüfen Sie die Ausgabevorschau.",
             "Keep both · add a number erstellt einen weiteren Dateinamen, etwa einen Namen mit der Endung -2. Skip existing lässt belegte Namen unverändert. Overwrite ersetzt die vorhandene Ausgabe am gewählten Pfad. Verwenden Sie die Ausgabevorschau, um das Ziel zu bestätigen, bevor Sie Overwrite wählen."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Übersprungene Fotos",
+          "paragraphs": [
+            "Leere Dateien, nicht heruntergeladene Dateien und nicht verfügbare Originale werden vor der Analyse übersprungen. Der Fotoindex meldet ihre Anzahl getrennt von Analysefehlern. Eine leere Datei enthält keine Bilddaten; sie muss möglicherweise erneut heruntergeladen oder aus einer Sicherungskopie wiederhergestellt werden.",
+            "Laden Sie die Originale herunter oder stellen Sie sie wieder her, verbinden Sie eine nicht verfügbare Quelle erneut, und verwenden Sie Index neu aufbauen, um es erneut zu versuchen. Das Indizieren lädt keine Dateien herunter und ändert keine Originale. Zuvor erzeugte Suchmetadaten bleiben erhalten, wenn eine Datei nicht verfügbar wird, es sei denn, Sie bauen den Index neu auf oder löschen ihn."
+          ]
+        },
+        {
           "title": "Pausieren, neu aufbauen oder löschen",
           "paragraphs": [
             "Wenn Sie den Index ausschalten, wird die Analyse angehalten und erzeugte Ergebnisse aus der aktiven Suchansicht entfernt; vorhandene Indexdaten bleiben lokal, bis sie gelöscht werden. Index neu aufbauen führt die Indizierung erneut aus, wenn die Funktion aktiviert ist.",
@@ -2855,6 +2862,7 @@
           "title": "Wiederherstellungsoptionen verstehen",
           "paragraphs": [
             "Das Wiederherstellen einer Sicherungskopie setzt die Katalogdaten auf den Stand dieser Sicherung zurück, spätere Bearbeitungen sind dann nicht enthalten. Wenn ein Arbeitskatalog wiederhergestellt wird, wird der aktuelle Katalog zuvor gesichert.",
+            "Nach dem Upgrade liest der erste Scan lokale Originale, um die Dateizuordnung zu verbessern. Das kann bei einer großen Mediathek länger dauern. Originale, die bereits ohne vollständige Dateidentität fehlten, bleiben fehlend; behalten Sie ihre Einträge und stellen Sie die Originale vor dem erneuten Scannen an ihre zuvor erfassten Pfade wieder her.",
             "Bei einem beschädigten Katalog kann Library Health Wiederherstellung, Wiederherstellen oder einen neuen Katalog anbieten. Salvage kopiert lesbare Zeilen, verliert jedoch Zeilen auf beschädigten Seiten. Ein Neustart übernimmt keine Bewertungen, Bearbeitungen, Sammlungen oder Verlaufseinträge. Die aktuelle beschädigte Katalogdatei wird in Recovery aufbewahrt."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Desktop-Diagnose",
           "paragraphs": [
             "Unter macOS bietet Hilfe → Diagnose die Optionen Benutzeroberfläche neu laden, Rendering-Dienst neu starten, Serverprotokoll anzeigen, Bibliothekszustand… und Im sicheren Modus neu starten.",
-            "Der sichere Modus schaltet Scannen, überwachte Ordner, lokale KI und das Hochfahren der Engine aus. Verwenden Sie Rendering-Dienst neu starten, um zum Normalbetrieb zurückzukehren. Wenn ein Problem bestehen bleibt, fügen Sie bei der Meldung den sichtbaren Fehler und die relevanten Details aus dem Server-Protokoll hinzu."
+            "Der abgesicherte Modus schaltet Scannen, beobachtete Ordner, lokale KI und das Aufwärmen der Engine aus. Verwenden Sie Renderdienst neu starten, um zum normalen Betrieb zurückzukehren."
+          ]
+        },
+        {
+          "title": "Unerwartetes Beenden unter Mac melden",
+          "paragraphs": [
+            "Wenn die Mac-App ohne sauberes Beenden geschlossen wird, öffnet sich beim nächsten Start ein Diagnosebericht. Wenn ihre Render-Engine unerwartet stoppt, kann der Bericht geöffnet werden, während die Engine sich erholt. Der Bericht erscheint einmal für jedes aufgezeichnete Ereignis; Schließen lässt Sie fortfahren. Das normale Schließen der App oder ein Neustart ihres Renderdienstes erzeugt keinen Bericht.",
+            "Hilfe → Problem melden… öffnet den neuesten Bericht oder die aktuellen Diagnosedaten, wenn kein unerwartetes Beenden aufgezeichnet wurde. Berichte enthalten den App-Build, macOS und die Hardware, die zuletzt aufgezeichnete Aktion, sofern verfügbar, gefilterte aktuelle Protokolle und verfügbare Fehler-Stacks. Ein passender macOS-Absturzbericht kann Stack- und Binärinformationen hinzufügen. Ein unerwartetes Beenden hinterlässt nicht immer einen Fehler-Stack oder identifiziert seine Ursache.",
+            "Berichte bleiben auf Ihrem Mac, bis Sie entscheiden, sie zu teilen. Pfade, Fotodateinamen, zitierte Protokollwerte und gängige Anmeldefelder werden herausgefiltert; prüfen Sie den Text vor dem Teilen. Fotos und der Katalog werden nicht angehängt. Die neuesten zehn Berichte werden lokal aufbewahrt."
+          ],
+          "steps": [
+            "Lesen Sie den Diagnosebericht. Wählen Sie Bericht kopieren, um ihn selbst in eine E-Mail einzufügen.",
+            "Oder wählen Sie E-Mail an den Maintainer. Dadurch wird der Bericht kopiert und ein Entwurf an team@lighttable.app geöffnet.",
+            "Beschreiben Sie, was Sie getan haben, fügen Sie den kopierten Bericht in den Entwurf ein, und senden Sie ihn, wenn Sie fertig sind. Wenn keine E-Mail-App geöffnet wird, verwenden Sie Ihren üblichen E-Mail-Dienst.",
+            "Wählen Sie Schließen, um den Bericht zu schließen. Es wird nichts automatisch gesendet."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }

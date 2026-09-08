@@ -159,7 +159,7 @@
         {
           "title": "Planejar a cópia",
           "paragraphs": [
-            "Import from card copia arquivos para o destino que você escolher. Os originais do cartão permanecem no lugar."
+            "Importar do cartão copia arquivos para o destino que você escolher. Os originais do cartão permanecem no lugar. A opção de ignorar duplicados compara o conteúdo completo dos arquivos; um nome de arquivo correspondente ou um cabeçalho da câmera sozinho não é suficiente."
           ],
           "steps": [
             "Abra Local ••• → Importar do cartão….",
@@ -169,7 +169,7 @@
             "Aguarde a contagem de copiadas e verifique se algum arquivo falhou. Cancelar interrompe após o arquivo atual terminar de copiar e verificar; as cópias concluídas são mantidas e os originais do cartão permanecem intocados."
           ],
           "tips": [
-            "Os tokens de modelo incluem {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Iniciar em controla a sequência de quatro dígitos.",
+            "Os tokens do modelo incluem {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Iniciar em controla a sequência de quatro dígitos. Campos longos do modelo são abreviados; verifique a pré-visualização do destino.",
             "As pré-visualizações mostram 200 arquivos por página. A seleção é mantida entre páginas; Selecionar todos e Selecionar nenhum se aplicam à digitalização inteira, incluindo páginas que você não abriu.",
             "Se os arquivos forem informados como apenas na nuvem, baixe-os localmente e digitalize novamente."
           ]
@@ -438,7 +438,7 @@
           "title": "Restaurar uma correção",
           "paragraphs": [
             "Atribuir um fuso horário não altera também o relógio da câmera. Use o campo de deslocamento quando a hora exibida em si estiver incorreta.",
-            "Desfazer a última correção reverte a correção mais recente mantida nesta janela. Restaurar horários da câmera… mostra uma prévia da remoção das correções do catálogo; revise a prévia e aplique-a para restaurar os horários originais da câmera. As etapas do tempo de captura também estão disponíveis em Histórico."
+            "Desfazer a última correção reverte a correção mais recente mantida nesta janela. Restaurar horários da câmera… visualiza a remoção das correções do catálogo; revise a pré-visualização e aplique-a para restaurar os horários originais da câmera. As etapas de horário de captura também estão disponíveis em Histórico. Quando a gravação de XMP está ativada, redefinir uma correção restaura as datas do sidecar salvas antes de o LightTable aplicá-la. As datas de captura em sidecars mais antigos sem essa data salva permanecem inalteradas."
           ]
         }
       ],
@@ -1699,7 +1699,7 @@
           ],
           "tips": [
             "A recuperação pode não estar disponível se o armazenamento local ou o diário de recuperação da área de trabalho falhar. O app informa essa condição; isso não garante que toda edição não salva possa ser recuperada.",
-            "Se um original estiver indisponível ou tiver mudado, seu registro de recuperação é mantido em vez de ser aplicado a uma foto potencialmente diferente."
+            "Se um original estiver indisponível ou tiver sido alterado, seu registro de recuperação será mantido em vez de ser aplicado a uma foto potencialmente diferente. Alguns rascunhos de recuperação mostram um aviso de identidade parcial porque não conseguem verificar o original inteiro. Isso pode acontecer com rascunhos mais antigos ou ao usar o modo de pasta. Restaure estes somente se as fotos originais não tiverem sido substituídas."
           ]
         }
       ],
@@ -2423,7 +2423,7 @@
         {
           "title": "Criar uma exportação",
           "paragraphs": [
-            "Exportar cria arquivos de saída renderizados a partir das edições da sua foto. Use Fotos selecionadas quando quiser limitar a exportação a uma seleção específica."
+            "Exportar cria arquivos de saída renderizados a partir das edições da sua foto. Use Fotos selecionadas quando quiser limitar a exportação a uma seleção específica. Cada foto colocada na fila mantém as edições, a avaliação e a correção do horário de captura escolhidas quando você iniciou a exportação."
           ],
           "steps": [
             "Selecione as fotos desejadas e clique no botão Exportar fotos na barra superior. Command/Ctrl+Shift+E também abre Exportar.",
@@ -2437,7 +2437,7 @@
           "title": "Verificar o escopo e o resultado",
           "paragraphs": [
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
-            "Escolha Cancelar exportação para solicitar uma parada. Detalhes da exportação informa contagens concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas."
+            "Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, ignoradas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original mudar enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falhará com um erro; coloque-a na fila novamente depois de verificar o original."
           ]
         }
       ],
@@ -2527,7 +2527,7 @@
         {
           "title": "Nomes e arquivos existentes",
           "paragraphs": [
-            "Os modelos de nome de arquivo suportam {filename}, {stock}, {date}, {rating} e {sequence}. Por exemplo, {filename}_{stock} inclui o nome da origem e o filme.",
+            "Os modelos de nome de arquivo aceitam {filename}, {stock}, {date}, {rating} e {sequence}. Por exemplo, {filename}_{stock} inclui o nome da origem e o filme. Campos longos de nome de arquivo são abreviados para deixar espaço para nomes de saída e sidecar; verifique a Pré-visualização da saída.",
             "Manter ambos · adicionar um número cria outro nome de arquivo, como um nome terminando em -2. Ignorar existentes deixa os nomes ocupados como estão. Sobrescrever substitui a saída existente no caminho escolhido. Use a pré-visualização da saída para confirmar o destino antes de escolher Sobrescrever."
           ]
         }
@@ -2709,6 +2709,13 @@
           ]
         },
         {
+          "title": "Fotos ignoradas",
+          "paragraphs": [
+            "Arquivos vazios, arquivos que não foram baixados e originais indisponíveis são ignorados antes da análise. O Índice de fotos informa suas contagens separadamente dos erros de análise. Um arquivo vazio não contém dados de imagem; talvez seja necessário baixá-lo novamente ou restaurá-lo de um backup.",
+            "Baixe ou restaure os originais, reconecte qualquer origem indisponível e use Reconstruir índice para tentar novamente. A indexação não baixa arquivos nem altera os originais. Metadados de pesquisa gerados anteriormente são mantidos quando um arquivo se torna indisponível, a menos que você reconstrua ou exclua o índice."
+          ]
+        },
+        {
           "title": "Pausar, reconstruir ou excluir",
           "paragraphs": [
             "Desligar o índice pausa a análise e remove os resultados gerados da visualização de pesquisa ativa; os dados de índice existentes permanecem locais até serem excluídos. Recriar índice executa novamente a indexação quando o recurso está ativado.",
@@ -2855,6 +2862,7 @@
           "title": "Entender as opções de recuperação",
           "paragraphs": [
             "Restaurar um backup devolve os dados do catálogo ao estado desse backup, portanto edições posteriores não estão nele. Quando um catálogo de trabalho é restaurado, o catálogo atual é salvo em backup primeiro.",
+            "Após a atualização, a primeira digitalização lê originais locais para fortalecer a correspondência de arquivos. Isso pode demorar mais em uma biblioteca grande. Originais que já estavam ausentes sem uma identidade completa do arquivo continuam ausentes; mantenha suas entradas e restaure os originais para seus caminhos catalogados anteriores antes de digitalizar novamente.",
             "Para um catálogo danificado, Saúde da Biblioteca pode oferecer salvar, restaurar ou um catálogo novo. Salvar copia linhas legíveis, mas perde linhas em páginas danificadas. Começar do zero não transfere avaliações, edições, coleções ou histórico. O arquivo atual do catálogo danificado é preservado em Recuperação."
           ]
         },
@@ -2862,7 +2870,21 @@
           "title": "Diagnósticos da área de trabalho",
           "paragraphs": [
             "No macOS, Ajuda → Diagnósticos oferece Recarregar interface, Reiniciar serviço de renderização, Mostrar log do servidor, Saúde da biblioteca…, e Reiniciar em modo de segurança.",
-            "O Modo seguro desativa a digitalização, pastas monitoradas, IA local e aquecimento do mecanismo. Use Reiniciar serviço de renderização para voltar à operação normal. Se um problema persistir, inclua o erro visível e os detalhes relevantes do log do servidor ao relatar."
+            "O Modo seguro desativa a digitalização, as pastas observadas, a IA local e o aquecimento do mecanismo. Use Reiniciar serviço de renderização para voltar à operação normal."
+          ]
+        },
+        {
+          "title": "Relatar encerramento inesperado no Mac",
+          "paragraphs": [
+            "Se o aplicativo do Mac for encerrado sem uma saída limpa, um relatório de diagnóstico será aberto na próxima vez que você o iniciar. Se o mecanismo de renderização parar inesperadamente, o relatório pode ser aberto enquanto o mecanismo se recupera. O relatório aparece uma vez para cada incidente registrado; Fechar permite que você continue. Fechar o aplicativo normalmente ou reiniciar seu serviço de renderização não cria um relatório.",
+            "Ajuda → Relatar um problema… abre o relatório mais recente, ou os diagnósticos atuais se nenhum encerramento inesperado tiver sido registrado. Os relatórios incluem a compilação do aplicativo, o macOS e o hardware, a última operação registrada quando disponível, logs recentes filtrados e rastreamentos de erro disponíveis. Um relatório de falha correspondente do macOS pode adicionar informações de pilha e binário. Um encerramento inesperado nem sempre deixa um rastreamento de erro ou identifica sua causa.",
+            "Os relatórios permanecem no seu Mac até você escolher compartilhá-los. Caminhos, nomes de arquivo de fotos, valores de log entre aspas e campos comuns de credenciais são filtrados; inspecione o texto antes de compartilhar. Fotos e o catálogo não são anexados. Os dez relatórios mais recentes são mantidos localmente."
+          ],
+          "steps": [
+            "Leia o relatório de diagnóstico. Escolha Copiar relatório para colá-lo você mesmo em um e-mail.",
+            "Ou escolha Enviar e-mail ao mantenedor. Isso copia o relatório e abre um rascunho endereçado a team@lighttable.app.",
+            "Descreva o que você estava fazendo, cole o relatório copiado no rascunho e envie-o quando estiver pronto. Se nenhum aplicativo de e-mail abrir, use seu serviço de e-mail habitual.",
+            "Escolha Fechar para fechar o relatório. Nada é enviado automaticamente."
           ]
         }
       ],
@@ -2942,5 +2964,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
+  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
 }
