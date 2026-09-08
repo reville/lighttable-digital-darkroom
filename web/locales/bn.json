@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "ISO, মিলিমিটারে focal length, aperture f-number, এবং shutter time সর্বনিম্ন ও সর্বোচ্চ মান গ্রহণ করে। সঠিক মিলের জন্য উভয় প্রান্তে একই সংখ্যা লিখুন। Shutter time সেকেন্ড বা 1/250-এর মতো ভগ্নাংশ গ্রহণ করে। প্রয়োজনীয় exposure metadata নেই এমন ফটো মেলে না।",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "যদি Auto বলে যে এটি image preview-এর জন্য অপেক্ষা করছে, তবে preview লোড হতে দিন এবং আবার চেষ্টা করুন।",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "যদি কোনো ব্যাচ একাধিক ফোল্ডারে লেখে, তাহলে Finder-এ দেখান প্রথম সফলভাবে রপ্তানিকৃত ছবিটি প্রদর্শন করে। যখন কোনো ছবি রপ্তানি করা হয়নি, তখন লিংকটি অনুপস্থিত থাকে। থামানোর অনুরোধ জানাতে রপ্তানি বাতিল করুন ব্যবহার করুন। রপ্তানির বিস্তারিত সম্পন্ন, এড়িয়ে যাওয়া, এবং বাতিলকৃত সংখ্যার পাশাপাশি সতর্কতা ও ত্রুটির তথ্য জানায়; একটি ছবি সফলভাবে লেখা হওয়ার পরও একটি সতর্কতা ঘটতে পারে। স্থির-ছবি রপ্তানি ওয়ার্কফ্লোতে ভিডিও ক্লিপ রেন্ডার করা হয় না। কোনো মূল ফাইল তার রপ্তানি কিউতে থাকা বা রেন্ডারিং চলাকালীন পরিবর্তিত হলে, সেই ছবিটি ত্রুটিসহ ব্যর্থ হয়; মূল ফাইলটি পরীক্ষা করার পর আবার সেটিকে কিউ করুন।",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "কোনো merge ত্রুটি জানালে, নির্দিষ্ট বার্তাটি পড়ুন এবং আবার চেষ্টা করার আগে input selection ঠিক করুন।",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "যদি কোনো ফটো রেন্ডার বা প্রদর্শন করা না যায়, তবে ফটো এলাকার বার্তায় সম্ভাব্য কারণ অন্তর্ভুক্ত থাকবে, যদি একটি উপলব্ধ থাকে। এটি একটি অনুপস্থিত ফাইল, ছবি-লোডিং সমস্যা, বা গ্রাফিক্স ব্যর্থতা শনাক্ত করতে পারে। যদি কোনো কারণ উপলব্ধ না থাকে, বার্তাটি সাধারণই থাকে।",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "কোনো স্টক অনুপলব্ধ থাকলে, GPU ইঞ্জিনের প্রয়োজন হতে পারে। Settings → Performance-এ ইঞ্জিনের উপলব্ধতা দেখানো হয়।",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "Red-এর জন্য 6, Yellow-এর জন্য 7, Green-এর জন্য 8, এবং Blue-এর জন্য 9 ব্যবহার করুন। Purple রঙ নিয়ন্ত্রণ থেকে পাওয়া যায়।",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "একটি flag বা rating group বেছে নিতে sidebar-এ All Photos, Unflagged, Picked, Rejected, বা Rated ব্যবহার করুন।",
     "Use Auto as a starting point": "শুরুর বিন্দু হিসেবে Auto ব্যবহার করুন",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "একটি থামার অনুরোধ করতে Cancel export ব্যবহার করুন। Export details সম্পন্ন, এড়িয়ে যাওয়া, এবং বাতিল হওয়া গণনা, পাশাপাশি সতর্কতা ও ত্রুটি জানায়; একটি ফটো সফলভাবে লেখা হওয়ার পরও সতর্কতা ঘটতে পারে। ভিডিও ক্লিপ still-photo export workflow দ্বারা রেন্ডার করা হয় না। কোনো মূল ফাইল তার এক্সপোর্ট কিউ করা বা রেন্ডারিং চলাকালে পরিবর্তিত হলে, সেই ফটোটি ত্রুটিসহ ব্যর্থ হয়; মূল ফাইলটি পরীক্ষা করার পরে এটি আবার কিউ করুন।",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "উপলভ্য catalog checks চালাতে Check now ব্যবহার করুন। Missing-file এন্ট্রিগুলো তাদের সম্পাদনাসহ রাখা হয়।",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "গন্তব্য ফোল্ডারের জন্য Choose… ব্যবহার করুন, অথবা প্রতিটি মূল ছবির পাশে Subfolder-এর জন্য film-exports-এর মতো একটি সাবফোল্ডার নাম লিখুন।",
     "Use Color Grading’s Reset to clear the grade.": "গ্রেড মুছে ফেলতে Color Grading-এর Reset ব্যবহার করুন।",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "যখন একটি ফটো আসে",
     "When a photo seems missing": "যখন কোনো ফটো অনুপস্থিত মনে হয়",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "গ্রিডে একাধিক photo নির্বাচিত থাকলে, mark সেই সেটের ওপরই প্রয়োগ হয়, পরেরটিতে যায় না। Link pair metadata চালু থাকলে mark করা recognized RAW এবং JPEG companion-ও আপডেট করে।",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "যখন রপ্তানি শেষ হয়, তখন সমাপ্তির বিজ্ঞপ্তির দ্বিতীয় লাইনে থাকা Finder-এ দেখান-এ ক্লিক করুন, যাতে রপ্তানিকৃত ছবির ধারণকারী ফোল্ডার খুলে যায়। বিজ্ঞপ্তিটি 2.8 সেকেন্ড ধরে দৃশ্যমান থাকে।",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "জোড়া ফটো দেখার সময়, তার সঙ্গীটিতে যেতে উপরের কাছে RAW → JPEG বা JPEG → RAW ব্যবহার করুন।",
     "Where are your photos?": "আপনার ফটোগুলি কোথায়?",
     "While using Add, hold Option on Mac to subtract temporarily.": "Add ব্যবহার করার সময়, সাময়িকভাবে subtract করতে Mac-এ Option ধরে রাখুন।",

@@ -2430,14 +2430,15 @@
             "Controleer het veld Foto’s. Kies Geselecteerde foto’s, Alleen gekozen, Beoordeeld 1+, of Alles behalve afgewezen.",
             "Kies een exportvoorinstelling of stel bestandstype, afmetingen, kwaliteit en kleurruimte in.",
             "Stel de bestemming in en inspecteer Uitvoervoorbeeld voor de bestandsnaam, afmetingen en het pad.",
-            "Klik op Exporteren en volg de voortgang in de balk bovenaan."
+            "Klik op Exporteren en volg de voortgang in de balk bovenaan.",
+            "Wanneer de export is voltooid, klik je op Weergeven in Finder in de tweede regel van de voltooiingsmelding om de map met de geëxporteerde foto te openen. De melding blijft 2,8 seconden zichtbaar."
           ]
         },
         {
           "title": "Controleer de scope en het resultaat",
           "paragraphs": [
             "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
-            "Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de workflow voor export van stilstaande foto's. Als een origineel wijzigt terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet deze opnieuw in de wachtrij nadat u het origineel hebt gecontroleerd."
+            "Als een batch naar meerdere mappen schrijft, toont Weergeven in Finder de eerst succesvol geëxporteerde foto. De koppeling ontbreekt wanneer er geen foto’s zijn geëxporteerd. Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert de aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s. Als een origineel verandert terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet hem opnieuw in de wachtrij nadat je het origineel hebt gecontroleerd."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

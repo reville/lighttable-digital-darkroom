@@ -796,6 +796,7 @@
   "Show",
   "Show hidden",
   "Show hidden ({count})",
+  "Show in Finder",
   "Show in {browserName}",
   "Show {name}",
   "Showing recent results. Earlier failures remain included in the total.\n",

@@ -2430,14 +2430,15 @@
             "Prüfen Sie das Feld Photos. Wählen Sie Selected photos, Picked only, Rated 1+ oder All except rejected.",
             "Wählen Sie eine Exportvorgabe oder legen Sie Dateityp, Abmessungen, Qualität und Farbraum fest.",
             "Legen Sie das Ziel fest und prüfen Sie in der Ausgabevorschau Dateiname, Abmessungen und Pfad.",
-            "Klicken Sie auf Exportieren und verfolgen Sie den Fortschritt in der oberen Leiste."
+            "Klicken Sie auf Exportieren und verfolgen Sie den Fortschritt in der oberen Leiste.",
+            "Wenn der Export abgeschlossen ist, klicken Sie in der zweiten Zeile der Abschlussbenachrichtigung auf Im Finder anzeigen, um den Ordner zu öffnen, der das exportierte Foto enthält. Die Benachrichtigung bleibt 2,8 Sekunden lang sichtbar."
           ]
         },
         {
           "title": "Bereich und Ergebnis prüfen",
           "paragraphs": [
             "Nur Ausgewählt, Bewertet 1+ und Alle außer abgelehnt wählen passende Standfotos aus dem aktiven Katalog aus und können Fotos außerhalb der angezeigten Sammlung oder des Filters einschließen. Ausgewählte Fotos bietet eine explizite Kontrolle über die Auswahl.",
-            "Verwenden Sie Export abbrechen, um ein Stoppen anzufordern. Exportdetails meldet abgeschlossene, übersprungene und abgebrochene Anzahl sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standfotos nicht gerendert. Wenn sich ein Original ändert, während sein Export eingereiht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; reihen Sie es nach dem Prüfen des Originals erneut ein."
+            "Wenn ein Stapel in mehrere Ordner schreibt, zeigt Im Finder anzeigen das zuerst erfolgreich exportierte Foto an. Der Link ist nicht vorhanden, wenn keine Fotos exportiert wurden. Verwenden Sie Export abbrechen, um das Stoppen anzufordern. Exportdetails meldet die Anzahl der abgeschlossenen, übersprungenen und abgebrochenen Vorgänge sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standbilder nicht gerendert. Wenn sich ein Original ändert, während sein Export in der Warteschlange steht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; stellen Sie es nach der Überprüfung des Originals erneut in die Warteschlange."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271",
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1280,6 +1280,7 @@
     "ISO ≥": "ISO ≥",
     "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.": "يقبل ISO والطول البؤري بالمليمترات وفتحة العدسة F-number ووقت الغالق قيمًا دنيا وقصوى. أدخل الرقم نفسه في الطرفين لمطابقة دقيقة. يقبل وقت الغالق الثواني أو كسرًا مثل 1/250. الصور التي تفتقر إلى البيانات الوصفية المطلوبة للتعريض لا تتطابق.",
     "If Auto says it is waiting for the image preview, let the preview load and try again.": "إذا قال Auto إنه ينتظر معاينة الصورة، فاسمح بتحميل المعاينة ثم حاول مرة أخرى.",
+    "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "إذا كانت الدفعة تكتب إلى عدة مجلدات، فإن إظهار في Finder يعرض أول صورة تم تصديرها بنجاح. لا يظهر الرابط عندما لا تكون قد تم تصدير أي صور. استخدم إلغاء التصدير لطلب الإيقاف. تعرض تفاصيل التصدير أعداد العناصر المكتملة والمتخطاة والملغاة، بالإضافة إلى التحذيرات والأخطاء؛ ويمكن أن يحدث تحذير بعد كتابة صورة بنجاح. لا يتم عرض مقاطع الفيديو ضمن سير عمل تصدير الصور الثابتة. إذا تغيّر الأصل أثناء وضعه في قائمة انتظار التصدير أو أثناء العرض، فستفشل تلك الصورة مع ظهور خطأ؛ أعد وضعها في قائمة الانتظار بعد التحقق من الأصل.",
     "If a merge reports an error, read the specific message and correct the input selection before trying again.": "إذا أبلغ الدمج عن خطأ، فاقرأ الرسالة المحددة وصحح التحديد المدخل قبل المحاولة مرة أخرى.",
     "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general.": "إذا تعذّر عرض صورة أو إظهارها، تتضمن الرسالة في منطقة الصورة السبب المُبلّغ عنه عندما يكون متاحًا. قد يحدد ذلك ملفًا مفقودًا أو مشكلة في تحميل الصورة أو عطلًا في الرسوميات. وإذا لم يكن أي سبب متاحًا، فستبقى الرسالة عامة.",
     "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance.": "إذا كان أحد الأفلام غير متاح، فقد يتطلب ذلك محرك GPU. يُعرض توفر المحرك في الإعدادات → الأداء.",
@@ -2808,7 +2809,6 @@
     "Use 6 for Red, 7 for Yellow, 8 for Green, and 9 for Blue. Purple is available from the colour controls.": "استخدم 6 لـ Red و7 لـ Yellow و8 لـ Green و9 لـ Blue. يتوفر Purple من عناصر الألوان.",
     "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.": "استخدم All Photos أو Unflagged أو Picked أو Rejected أو Rated في الشريط الجانبي لاختيار مجموعة علامات أو تقييم.",
     "Use Auto as a starting point": "استخدم تلقائي كنقطة بداية",
-    "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original.": "استخدم Cancel export لطلب الإيقاف. يعرض Export details الأعداد المكتملة والمتخطاة والملغاة، بالإضافة إلى التحذيرات والأخطاء؛ يمكن أن يظهر تحذير بعد كتابة صورة بنجاح. لا يتم تصيير مقاطع الفيديو ضمن سير عمل تصدير الصور الثابتة. إذا تغيّر ملف أصلي أثناء وضع التصدير في قائمة الانتظار أو أثناء التصيير، فستفشل تلك الصورة مع خطأ؛ أضفها إلى قائمة الانتظار مرة أخرى بعد التحقق من الملف الأصلي.",
     "Use Check now to run the available catalog checks. Missing-file entries are kept with their edits.": "استخدم Check now لتشغيل فحوصات الكتالوج المتاحة. تبقى إدخالات الملفات المفقودة مع تعديلاتِها.",
     "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.": "استخدم اختر… لاختيار مجلد وجهة، أو أدخل اسم مجلد فرعي مثل film-exports لـ مجلد فرعي بجانب كل أصل.",
     "Use Color Grading’s Reset to clear the grade.": "استخدم إعادة تعيين Color Grading لمسح التصحيح.",
@@ -2929,6 +2929,7 @@
     "When a photo arrives": "عندما تصل صورة",
     "When a photo seems missing": "عندما تبدو الصورة مفقودة",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.": "عند تحديد صور متعددة في شبكة، تُطبَّق العلامات على تلك المجموعة دون انتقال. إذا كان ربط بيانات الزوج مفعلاً، فإن وضع العلامات يحدّث أيضًا ملفات RAW وJPEG المقترنة المعروفة.",
+    "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "عند انتهاء التصدير، انقر إظهار في Finder في السطر الثاني من إشعار الاكتمال لفتح المجلد الذي يحتوي على الصورة المصدَّرة. يظل الإشعار ظاهرًا لمدة 2.8 ثانية.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "عند عرض صورة مقترنة، استخدم RAW → JPEG أو JPEG → RAW قرب الأعلى للتبديل إلى النظير.",
     "Where are your photos?": "أين صورك؟",
     "While using Add, hold Option on Mac to subtract temporarily.": "أثناء استخدام Add، اضغط Option على Mac للطرح مؤقتًا.",

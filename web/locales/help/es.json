@@ -2430,14 +2430,15 @@
             "Comprueba el campo Fotos. Elige Fotos seleccionadas, Solo seleccionadas, Calificadas 1+ o Todos excepto rechazados.",
             "Elige un ajuste preestablecido de exportación o define tipo de archivo, dimensiones, calidad y espacio de color.",
             "Define el destino e inspecciona la Vista previa de salida para el nombre de archivo, las dimensiones y la ruta.",
-            "Haz clic en Exportar y sigue el progreso en la barra superior."
+            "Haz clic en Exportar y sigue el progreso en la barra superior.",
+            "Cuando termine la exportación, haga clic en Mostrar en Finder en la segunda línea de la notificación de finalización para abrir la carpeta que contiene la foto exportada. La notificación permanece visible durante 2.8 segundos."
           ]
         },
         {
           "title": "Verificar el alcance y el resultado",
           "paragraphs": [
             "Seleccionadas solo, Calificadas 1+ y Todas excepto rechazadas seleccionan fotos fijas coincidentes del catálogo activo, y pueden incluir fotos fuera de la colección o filtro mostrado. Fotos seleccionadas proporciona control explícito sobre el conjunto.",
-            "Use Cancelar exportación para solicitar una detención. Detalles de exportación informa los recuentos completados, omitidos y cancelados, además de advertencias y errores; una advertencia puede ocurrir después de que una foto se haya escrito correctamente. Los clips de vídeo no se renderizan en el flujo de trabajo de exportación de fotos estáticas. Si un original cambia mientras su exportación está en cola o se renderiza, esa foto falla con un error; vuelva a ponerla en cola después de comprobar el original."
+            "Si un lote escribe en varias carpetas, Mostrar en Finder revela la primera foto exportada correctamente. El vínculo no aparece cuando no se exportó ninguna foto. Use Cancelar exportación para solicitar la detención. Detalles de exportación informa los recuentos de completadas, omitidas y canceladas, además de advertencias y errores; puede producirse una advertencia después de que una foto se haya escrito correctamente. Los clips de video no se renderizan mediante el flujo de trabajo de exportación de fotos fijas. Si un original cambia mientras su exportación está en cola o se está renderizando, esa foto falla con un error; vuelva a ponerla en cola después de comprobar el original."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }

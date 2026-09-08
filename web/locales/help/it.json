@@ -2430,14 +2430,15 @@
             "Controlla il campo Foto. Scegli Foto selezionate, Solo selezionati, Classificate 1+ o Tutte tranne rifiutate.",
             "Scegli un predefinito di esportazione oppure imposta tipo file, dimensioni, qualità e spazio colore.",
             "Imposta la destinazione e ispeziona Anteprima output per nome file, dimensioni e percorso.",
-            "Fai clic su Esporta e segui l'avanzamento nella barra superiore."
+            "Fai clic su Esporta e segui l'avanzamento nella barra superiore.",
+            "Al termine dell’esportazione, fai clic su Mostra nel Finder nella seconda riga della notifica di completamento per aprire la cartella contenente la foto esportata. La notifica rimane visibile per 2,8 secondi."
           ]
         },
         {
           "title": "Controlla l'ambito e il risultato",
           "paragraphs": [
             "Solo selezionati, Classificate 1+ e Tutti eccetto rifiutati selezionano le foto fisse corrispondenti dal catalogo attivo e possono includere foto al di fuori della raccolta o del filtro visualizzati. Foto selezionate offre un controllo esplicito sull’insieme.",
-            "Usa Annulla esportazione per richiedere l'arresto. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre ad avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta con successo. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in rendering, quella foto fallisce con un errore; accodala di nuovo dopo aver controllato l'originale."
+            "Se un lotto scrive in più cartelle, Mostra nel Finder mostra la prima foto esportata correttamente. Il collegamento è assente quando non è stata esportata alcuna foto. Usa Annulla esportazione per richiedere l’interruzione. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre a avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta correttamente. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in fase di rendering, quella foto non riesce con un errore; inseriscila di nuovo in coda dopo aver verificato l’originale."
           ]
         }
       ],
@@ -2964,5 +2965,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "33e573c5dbc65273fa8bae432ef1a1c44cc16fc8ca7d176360d0e1ffce310271"
+  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
 }
