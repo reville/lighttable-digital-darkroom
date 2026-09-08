@@ -2182,7 +2182,8 @@
         {
           "title": "Begin met een film",
           "paragraphs": [
-            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt."
+            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt.",
+            "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn."
           ],
           "steps": [
             "Open een stilstaande foto en selecteer Film in de gereedschapsbalk om Realistic Film Simulation te openen.",
@@ -2196,7 +2197,7 @@
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
             "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
-            "Nadat je Film hebt ingeschakeld, kan eerst een snel voorbeeld verschijnen voordat nauwkeurige RAW-details en het grotere voorbeeld klaar zijn. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid en verdwijnt zodra het voorbeeld zichtbaar is. Nauwkeurige RAW-details en weergave op volledige resolutie gaan op de achtergrond door."
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
           ],
           "tips": [
             "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
@@ -3024,7 +3025,8 @@
         {
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
-            "Een zoominstelling van 100% garandeert niet dat alle beelddetails al zijn aangekomen. Eerst kan een snel voorbeeld verschijnen terwijl nauwkeurige RAW-verwerking en een groter voorbeeld worden voltooid. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid, met een telling zoals 2 / 5. Hij verdwijnt zodra een bruikbaar voorbeeld wordt weergegeven; nauwkeurige RAW-verwerking en grotere voorbeelden gaan op de achtergrond door zonder de overlay. De telling staat voor voltooide stadia, niet voor resterende tijd. Verminderde beweging houdt dezelfde stadiumupdates zonder animatie. De foto blijft zichtbaar zonder dimming. Bij 1:1 kun je boven de knop 1:1 zweven om te controleren of volledige bron-details klaar zijn voordat je fijne details beoordeelt.",
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
             "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt.",
             "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken."
@@ -3078,5 +3080,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "e072fd7068da9eb195e46b4849b77a0b5a2a2a99a586bcb9c10a79972c4cdf8c"
+  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd"
 }
