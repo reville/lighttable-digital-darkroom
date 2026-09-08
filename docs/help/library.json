@@ -356,7 +356,7 @@
       },
       {
         "path": "catalog_scan.py",
-        "anchor": "METADATA_VERSION = 4"
+        "anchor": "METADATA_VERSION = 5"
       }
     ]
   },

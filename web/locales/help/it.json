@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Un'impostazione di zoom al 100% non garantisce che sia arrivato il dettaglio completo dell'immagine. Potrebbe apparire prima un'anteprima rapida mentre l'elaborazione RAW accurata e un'anteprima più grande terminano. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano, con un conteggio come 2 / 5. Scompare non appena viene visualizzata un'anteprima utilizzabile; l'elaborazione RAW accurata e le anteprime più grandi continuano in background senza la sovrapposizione. Il conteggio rappresenta le fasi completate, non il tempo rimanente. Il movimento ridotto mantiene gli stessi aggiornamenti di fase senza animazione. La foto rimane visibile senza oscurarsi. A 1:1, passa il mouse sopra il pulsante 1:1 per verificare se il dettaglio completo della sorgente è pronto prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
-            "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive."
+            "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive.",
+            "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
           ],
           "steps": [
             "Apri Impostazioni → Prestazioni.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }
