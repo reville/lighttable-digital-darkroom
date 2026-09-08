@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "Tiến trình mặt nạ lô",
     "Before": "Trước",
     "Black": "Đen",
-    "Black & white negative": "âm bản đen trắng",
     "Blacks": "Đen",
     "Blend channels": "Trộn kênh",
     "Blend detail from a source area with the target’s color and brightness": "Trộn chi tiết từ một vùng nguồn với màu sắc và độ sáng của mục tiêu",
@@ -650,7 +649,6 @@
     "Color NR": "NR màu",
     "Color grade shadows, midtones, and highlights": "Phân màu bóng tối, tông trung và vùng sáng",
     "Color label": "Nhãn màu sắc",
-    "Color negative": "Âm bản màu",
     "Color sampling: waiting for image preview…": "Lấy mẫu màu: đang chờ bản xem trước ảnh…",
     "Color space limits": "Giới hạn không gian màu",
     "Color {value} · {value2}°": "Màu {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Nếu khôi phục cục bộ tìm thấy các thay đổi chưa xử lý khi thư viện mở, Khôi phục chỉnh sửa chưa lưu? sẽ liệt kê các ảnh bị ảnh hưởng. Khôi phục chỉnh sửa sẽ thay thế các cài đặt đã lưu của chúng bằng các cài đặt đã khôi phục. Giữ các chỉnh sửa đã lưu sẽ giữ phiên bản danh mục và loại bỏ các bản nháp khôi phục đó.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Nếu mặt nạ không thể chuyển, hãy sao chép lại với Local masks bỏ chọn để áp dụng các nhóm khác.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Nếu cần, chọn một mục khác trong Lens profile và so sánh chỉnh sửa với bản gốc.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Nếu ứng dụng Mac đóng mà không thoát sạch, báo cáo chẩn đoán sẽ mở vào lần tiếp theo bạn khởi chạy. Nếu công cụ kết xuất dừng đột ngột, báo cáo có thể mở trong khi công cụ đang phục hồi. Báo cáo xuất hiện một lần cho mỗi sự cố đã ghi nhận; Bỏ qua cho phép bạn tiếp tục. Đóng ứng dụng bình thường hoặc khởi động lại dịch vụ kết xuất của nó sẽ không tạo báo cáo.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Nếu lựa chọn dùng lần đầu trên Mac không thể lưu, Thử lại sẽ giữ nguyên lựa chọn và thử lại. Ứng dụng chỉ khởi chạy sau khi lưu thành công.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable chỉ yêu cầu truy cập MIDI khi bạn bấm nút trạng thái MIDI hoặc MIDI Learn. Việc mở LightTable hoặc Cài đặt, điều chỉnh thanh trượt và đặt lại ánh xạ không yêu cầu truy cập. Sau khi tải lại, hãy bấm một nút MIDI để kết nối lại.",
     "LightTable resources were not found": "Không tìm thấy tài nguyên LightTable",
     "LightTable saves separate copies in": "LightTable lưu các bản sao riêng trong",
+    "LightTable tuned": "LightTable tinh chỉnh",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "LightTable tinh chỉnh đưa Portra 160, 400 và 800 lên đầu danh sách. Các phiên bản này giảm hiện tượng lá xanh vàng bị ngả sang vàng. Các điều khiển giấy và đầu ra vẫn dùng được.",
     "LightTable · lossless": "LightTable · không mất dữ liệu",
     "LightTable — Loupe View": "LightTable — Chế độ Loupe",
     "LightTable — Secondary Loupe": "LightTable — Kính lúp phụ",
@@ -2330,7 +2331,6 @@
     "Return to tool": "Quay lại công cụ",
     "Return to {value}": "Trở về {value}",
     "Reveal Export Folder in Finder": "Hiển thị Thư mục Xuất trong Finder",
-    "Reversal / slide (scanned)": "Phục chế / phim dương bản (đã quét)",
     "Review": "Xem xét",
     "Review a group": "Xem lại một nhóm",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Xem lại một nhóm cùng nhau, đánh dấu khung đang hoạt động và thu hẹp một tập ảnh ứng viên.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "Không có kích thước nguồn",
     "Space": "Khoảng trắng",
     "Spanish": "Tiếng Tây Ban Nha",
+    "Spektrafilm original": "Spektrafilm gốc",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm gốc giữ nguyên mọi cách kết xuất ban đầu và vẫn là mặc định cho ảnh mới, các chỉnh sửa cũ và các thiết lập sẵn phim cũ.",
     "Split": "Tách",
     "Square Grid": "Lưới vuông",
     "Stack Selected Photos…": "Xếp chồng các ảnh đã chọn…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "Đây là các điều chỉnh đối với quy trình đầu ra được mô phỏng, không phải lựa chọn của các thương hiệu máy quét đã đo. Hãy đánh giá kết cấu mịn và độ sắc nét bằng chi tiết xem trước 1:1 hoàn chỉnh.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "Đây là các tín hiệu phân tích cho việc xem lại của bạn, không phải phán quyết cuối cùng về ảnh nào nên giữ. Từ chối chỉ đặt một cờ; bản thân nó không di chuyển ảnh gốc vào Thùng rác.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "Các điều khiển này sửa đổi quy trình đầu ra đã chọn. Tên thương hiệu của máy quét được cố ý bỏ qua cho đến khi có các bản quét tham chiếu đã đo.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "Các phiên bản tinh chỉnh này là cách diễn giải thị giác dựa trên ảnh tham chiếu và kiểm tra màu bằng số liệu, không phải bản mô phỏng phim được hiệu chuẩn bằng phép đo. Các chỉnh sửa và thiết lập sẵn ở định dạng gốc lưu phiên bản bạn đã chọn.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "Danh mục này không có ảnh nào. Chọn một danh mục khác hoặc bắt đầu với một thư mục.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "Danh mục này được tạo bởi một bản dựng LightTable mới hơn. Nó đã được giữ nguyên; hãy cập nhật ứng dụng để mở lại.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "Danh mục này được tạo bởi một LightTable mới hơn. Nó đã được để nguyên; hãy cập nhật ứng dụng để mở nó.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "Thử cắt xén, mặt nạ hoặc xuất…",
     "Try virtual copies and group photos in stacks": "Thử bản sao ảo và nhóm ảnh trong ngăn xếp",
     "Tune the editing canvas without changing exported pixels.": "Tinh chỉnh vùng làm việc chỉnh sửa mà không làm thay đổi các điểm ảnh đã xuất.",
+    "Tuned and original stocks": "Phim tinh chỉnh và phim gốc",
     "Tungsten · 3200 K": "Đèn tungsten · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "Bật Auto-advance để chuyển sang ảnh tiếp theo sau khi chọn, từ chối, hoặc xếp hạng một ảnh đơn lẻ. Bỏ cờ không tự chuyển tiếp.",
     "Turn Film off for the actions below": "Tắt Film cho các hành động bên dưới",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ Quay lại",
     "← Back to articles": "← Quay lại bài viết",
     "← People": "← Mọi người",
-    "☆ Favorites": "☆ Mục yêu thích",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
+    "☆ Favorites": "☆ Mục yêu thích"
   },
   "plurals": {
     " · {count} paired file linked": {

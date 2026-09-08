@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "Toplu maske ilerlemesi",
     "Before": "Önce",
     "Black": "Siyah",
-    "Black & white negative": "Siyah beyaz negatif",
     "Blacks": "Siyahlar",
     "Blend channels": "Kanalları harmanla",
     "Blend detail from a source area with the target’s color and brightness": "Ayrıntıyı bir kaynak bölgeden hedefin rengi ve parlaklığıyla harmanla",
@@ -650,7 +649,6 @@
     "Color NR": "Renkli Gürültü Azaltma",
     "Color grade shadows, midtones, and highlights": "Gölgeleri, orta tonları ve parlak alanları renk derecelendirin",
     "Color label": "Renk etiketi",
-    "Color negative": "Renkli negatif",
     "Color sampling: waiting for image preview…": "Renk örnekleme: görüntü önizlemesi bekleniyor…",
     "Color space limits": "Renk uzayı sınırları",
     "Color {value} · {value2}°": "Renk {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Yerel kurtarma, kitaplık açıldığında bekleyen değişiklikler bulursa, kaydedilmemiş düzenlemeler kurtarılsın mı? etkilenen fotoğrafları listeler. Restore edits, kaydedilmiş ayarlarını kurtarılan ayarlarla değiştirir. Keep saved edits, katalog sürümünü korur ve bu kurtarma taslaklarını atar.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Maskeler aktarılamazsa, diğer grupları uygulamak için Local masks işaretini kaldırarak yeniden kopyalayın.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Gerekirse Lens profile içinde farklı bir giriş seçin ve düzeltmeyi özgünle karşılaştırın.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac ilk kullanım seçimi kaydedilemiyorsa, Tekrar Dene seçimi korur ve yeniden dener. Uygulama yalnızca kaydetme başarılı olduktan sonra başlar.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable yalnızca MIDI durum düğmesine veya MIDI Öğren’e tıkladığınızda MIDI erişimi ister. LightTable’ı veya Ayarlar’ı açmak, kaydırıcıları ayarlamak ve eşlemeleri sıfırlamak erişim istemez. Yeniden yükledikten sonra, yeniden bağlanmak için bir MIDI düğmesine tıklayın.",
     "LightTable resources were not found": "LightTable kaynakları bulunamadı",
     "LightTable saves separate copies in": "LightTable ayrı kopyaları şurada kaydeder",
+    "LightTable tuned": "LightTable ayarlı",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "LightTable ayarlı grubunda Portra 160, 400 ve 800 ilk sırada gösterilir. Bu sürümler sarı-yeşil yaprakların sarıya kaymasını azaltır. Kâğıt ve çıktı denetimleri kullanılabilir durumda kalır.",
     "LightTable · lossless": "LightTable · kayıpsız",
     "LightTable — Loupe View": "LightTable — Büyüteç Görünümü",
     "LightTable — Secondary Loupe": "LightTable — İkincil Büyüteç",
@@ -2330,7 +2331,6 @@
     "Return to tool": "Araca dön",
     "Return to {value}": "{value} değerine dön",
     "Reveal Export Folder in Finder": "Dışa Aktarma Klasörünü Finder'da Göster",
-    "Reversal / slide (scanned)": "Negatif / slayt (taranmış)",
     "Review": "İncele",
     "Review a group": "Bir grubu incele",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Bir grubu birlikte inceleyin, etkin çerçeveyi işaretleyin ve bir aday kümesini daraltın.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "Kaynak boyutlar kullanılamıyor",
     "Space": "Boşluk",
     "Spanish": "İspanyolca",
+    "Spektrafilm original": "Spektrafilm özgün",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm özgün, tüm özgün görüntü oluşturma seçeneklerini korur ve yeni fotoğraflar, eski düzenlemeler ve eski film ön ayarları için varsayılan olmaya devam eder.",
     "Split": "Böl",
     "Square Grid": "Kare Izgara",
     "Stack Selected Photos…": "Seçili Fotoğrafları Yığına Al…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "Bunlar, ölçülmüş tarayıcı markalarının seçimleri değil, modellenmiş çıkış iş akışlarına yapılan ayarlardır. Bitmiş 1:1 önizleme ayrıntısıyla ince doku ve keskinliği değerlendirin.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "Bunlar incelemeniz için analiz sinyalleridir, hangi fotoğrafların tutulacağına dair nihai kararlar değildir. Reddetmek bir bayrak ayarlar; özgün dosyaları kendiliğinden Çöp Kutusu’na taşımaz.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "Bu kontroller seçili çıktı iş akışını değiştirir. Ölçülmüş referans taramalar mevcut olana kadar tarayıcı marka adları kasıtlı olarak atlanır.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "Bu ayarlı sürümler, referans fotoğraflar ve sayısal renk kontrollerine dayanan görsel yorumlardır; ölçümlerle kalibre edilmiş film eşleşmeleri değildir. Düzenlemeler ve uygulamanın kendi biçimindeki ön ayarlar seçtiğiniz sürümü kaydeder.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "Bu katalogda fotoğraf yok. Başka bir katalog seçin veya bir klasörle başlayın.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "Bu katalog daha yeni bir LightTable derlemesiyle oluşturulmuş. Değiştirilmeden bırakıldı; yeniden açmak için uygulamayı güncelleyin.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "Bu katalog daha yeni bir LightTable sürümüyle oluşturuldu. Değiştirilmeden bırakıldı; açmak için uygulamayı güncelleyin.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "Kırp, maskeler veya dışa aktarmayı deneyin…",
     "Try virtual copies and group photos in stacks": "Sanal kopyaları deneyin ve fotoğrafları yığınlarda gruplayın",
     "Tune the editing canvas without changing exported pixels.": "Dışa aktarılan pikselleri değiştirmeden düzenleme tuvalini ince ayarlayın.",
+    "Tuned and original stocks": "Ayarlı ve özgün filmler",
     "Tungsten · 3200 K": "Tungsten · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "Tek bir fotoğrafı seçtikten, reddettikten veya derecelendirdikten sonra bir sonraki fotoğrafa geçmek için Otomatik ilerletmeyi açın. Bayrağı Kaldırma ilerletmez.",
     "Turn Film off for the actions below": "Aşağıdaki işlemler için Film’i kapatın",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ Geri",
     "← Back to articles": "← Makalelere geri dön",
     "← People": "← Kişiler",
-    "☆ Favorites": "☆ Sık kullanılanlar",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
+    "☆ Favorites": "☆ Sık kullanılanlar"
   },
   "plurals": {
     " · {count} paired file linked": {

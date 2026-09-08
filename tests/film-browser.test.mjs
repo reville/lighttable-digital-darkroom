@@ -6,7 +6,7 @@ import {t as tr} from '../web/i18n.js';
 
 const source = readFileSync(new URL('../web/film-browser.js', import.meta.url), 'utf8');
 const tick = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
-function harness() {
+function harness(options = {}) {
   const nodes = new Map(), observers = [], requests = [], created = [], revoked = [], applied = [], timers = new Map();
   const document = {activeElement: {focus() {}}, body: {append() {}}};
   class Element {
@@ -36,9 +36,10 @@ function harness() {
       this.callback(this.targets.map((target, index) => ({target, isIntersecting: indices.includes(index)})));
     }
   }
-  const state = {params: {stock: 'stock-1', profile_enabled: true}, grade: {exposure: 0.5}};
+  const state = options.state || {params: {stock: 'stock-1', profile_enabled: true}, grade: {exposure: 0.5}};
   const snapshot = {name: 'test.jpg', label: 'test.jpg', engine: 'rs', state,
-    stocks: Array.from({length: 23}, (_, i) => ({id: `stock-${i}`, label: `Film ${i}`})), profiles: []};
+    stocks: options.stocks || Array.from({length: 23}, (_, i) => ({id: `stock-${i}`, label: `Film ${i}`})),
+    profiles: options.profiles || []};
   const runtime = vm.createContext({document, tr, AbortController, IntersectionObserver: Observer,
     window: {devicePixelRatio: 2},
     URL: {createObjectURL(blob) { const url = `blob:${created.length}`; created.push({url, blob}); return url; },
@@ -112,5 +113,43 @@ test('failed previews do not block other stocks, and an empty search can be clea
   h.search('');
   assert.equal(h.cards().length, 23);
   assert.equal(h.nodes.get('filmBrowserEmpty').hidden, true);
+  h.ui.close();
+});
+
+test('variant cards render distinct payloads, mark only the selected variant, and apply their exact choice', async () => {
+  const h = harness({
+    state: {params: {stock: 'portra160', profile_enabled: true, film_tuning: 'lighttable', film_tuning_version: '1'}},
+    profiles: [{id: 'portra160', tunings: [{id: 'lighttable', version: '1'}]}],
+    stocks: [
+      {id: 'portra160::lighttable::1', label: 'Portra 160 · LightTable tuned'},
+      {id: 'portra160', label: 'Portra 160 · Spektrafilm original'},
+    ],
+  });
+  h.ui.open();
+  assert.deepEqual(h.cards().map(card => card.getAttribute('aria-pressed')), ['true', 'false']);
+  h.observers[0].visible(0, 1);
+  assert.equal(h.requests[0].body.state.params.stock, 'portra160');
+  assert.equal(h.requests[0].body.state.params.film_tuning, 'lighttable');
+  assert.equal(h.requests[0].body.state.params.film_tuning_version, '1');
+  h.requests[0].finish(); await tick();
+  assert.equal(h.cards()[0].children[2].textContent, 'Current stock');
+  assert.equal(h.requests[1].body.state.params.stock, 'portra160');
+  assert.equal(h.requests[1].body.state.params.film_tuning, 'original');
+  h.requests[1].finish(); await tick();
+  assert.equal(h.cards()[1].children[2].textContent, 'Apply stock');
+  h.search('lighttable');
+  assert.equal(h.cards().length, 1);
+  h.cards()[0].onclick();
+  assert.deepEqual(h.applied, [['portra160::lighttable::1', 'test.jpg']]);
+  assert.equal(h.state.params.film_tuning, 'lighttable', 'previewing original must not overwrite the active edit');
+});
+
+test('legacy edits mark the original card current', () => {
+  const h = harness({
+    state: {params: {stock: 'portra160'}},
+    stocks: [{id: 'portra160::lighttable::1', label: 'Tuned'}, {id: 'portra160', label: 'Original'}],
+  });
+  h.ui.open();
+  assert.deepEqual(h.cards().map(card => card.getAttribute('aria-pressed')), ['false', 'true']);
   h.ui.close();
 });

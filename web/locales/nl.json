@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "Voortgang van maskerbatch",
     "Before": "Voor",
     "Black": "Zwart",
-    "Black & white negative": "Zwart-witnegatief",
     "Blacks": "Zwartwaarden",
     "Blend channels": "Kanalen mengen",
     "Blend detail from a source area with the target’s color and brightness": "Meng details uit een brongebied met de kleur en helderheid van het doel",
@@ -650,7 +649,6 @@
     "Color NR": "Kleur-ruisvermindering",
     "Color grade shadows, midtones, and highlights": "Kleurgradeer schaduwen, middentonen en hooglichten",
     "Color label": "Kleurlabel",
-    "Color negative": "Kleurnegatief",
     "Color sampling: waiting for image preview…": "Kleurmonstername: wachten op beeldvoorvertoning…",
     "Color space limits": "Kleurruimtelimieten",
     "Color {value} · {value2}°": "Kleur {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Als lokaal herstel openstaande wijzigingen vindt wanneer de bibliotheek wordt geopend, vermeldt Niet-opgeslagen bewerkingen herstellen? de betreffende foto's. Bewerkingen terugzetten vervangt de opgeslagen instellingen door de herstelde instellingen. Opgeslagen bewerkingen behouden houdt de catalogusversie en verwijdert die herstelconcepten.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Als maskers niet kunnen worden overgedragen, kopieer dan opnieuw met Lokale maskers uitgeschakeld om de andere groepen toe te passen.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Kies indien nodig een andere vermelding in Lensprofiel en vergelijk de correctie met het origineel.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Als de eerste-keuze op de Mac niet kan worden opgeslagen, behoudt Opnieuw proberen de selectie en probeert het opnieuw. De app start pas nadat het opslaan is gelukt.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable vraagt alleen MIDI-toegang wanneer u op de MIDI-statusknop of MIDI leren klikt. LightTable of Instellingen openen, schuifregelaars aanpassen en toewijzingen opnieuw instellen vraagt geen toegang. Klik na opnieuw laden op een MIDI-knop om opnieuw verbinding te maken.",
     "LightTable resources were not found": "LightTable-hulpbronnen zijn niet gevonden",
     "LightTable saves separate copies in": "LightTable slaat afzonderlijke kopieën op in",
+    "LightTable tuned": "Door LightTable afgestemd",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "Door LightTable afgestemd zet Portra 160, 400 en 800 bovenaan. Deze versies verminderen de verschuiving naar geel in geelgroen gebladerte. De instellingen voor papier en uitvoer blijven beschikbaar.",
     "LightTable · lossless": "LightTable · verliesloos",
     "LightTable — Loupe View": "LightTable — Loupe-weergave",
     "LightTable — Secondary Loupe": "LightTable — Secundaire loep",
@@ -2330,7 +2331,6 @@
     "Return to tool": "Terugkeren naar gereedschap",
     "Return to {value}": "Terugkeren naar {value}",
     "Reveal Export Folder in Finder": "Exportmap tonen in Finder",
-    "Reversal / slide (scanned)": "Omkeerfilm / dia (gescand)",
     "Review": "Controleren",
     "Review a group": "Een groep beoordelen",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Beoordeel een groep samen, markeer het actieve frame en beperk een set kandidaten.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "Bronafmetingen zijn niet beschikbaar",
     "Space": "Spatie",
     "Spanish": "Spaans",
+    "Spektrafilm original": "Spektrafilm origineel",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm origineel behoudt alle oorspronkelijke weergaven en blijft de standaard voor nieuwe foto’s, oudere bewerkingen en oudere filmvoorinstellingen.",
     "Split": "Splitsen",
     "Square Grid": "Vierkante rasterweergave",
     "Stack Selected Photos…": "Geselecteerde foto's stapelen…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "Dit zijn aanpassingen aan gemodelleerde uitvoerrecepten, geen selecties van gemeten scannermerken. Beoordeel fijne textuur en scherpte met voltooide 1:1-voorvertoningsdetails.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "Dit zijn analysesignalen voor uw beoordeling, geen definitieve oordelen over welke foto's u moet bewaren. Afwijzen zet een markering; het verplaatst originelen op zichzelf niet naar de Prullenmand.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "Deze bedieningselementen wijzigen het geselecteerde uitvoerrecept. Merknamen van scanners worden bewust weggelaten totdat gemeten referentiescans bestaan.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "Deze afgestemde versies zijn visuele interpretaties op basis van referentiefoto’s en numerieke kleurcontroles, geen op metingen gekalibreerde filmreproducties. Bewerkingen en voorinstellingen in het eigen formaat slaan de gekozen versie op.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "Deze catalogus bevat geen foto's. Kies een andere catalogus of begin met een map.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "Deze catalogus is gemaakt door een nieuwere LightTable-build. Hij is ongewijzigd gelaten; werk de app bij om hem opnieuw te openen.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "Deze catalogus is gemaakt door een nieuwere LightTable. Hij is ongewijzigd gelaten; werk de app bij om hem te openen.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "Probeer bijsnijden, maskers of exporteren…",
     "Try virtual copies and group photos in stacks": "Probeer virtuele kopieën en groepeer foto’s in stapels",
     "Tune the editing canvas without changing exported pixels.": "Stem het bewerkingscanvas af zonder de geëxporteerde pixels te wijzigen.",
+    "Tuned and original stocks": "Afgestemde en originele films",
     "Tungsten · 3200 K": "Wolfraam · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "Schakel Auto-doorvervolgen in om naar de volgende foto te gaan na het kiezen, afwijzen of beoordelen van één foto. Markering verwijderen gaat niet verder.",
     "Turn Film off for the actions below": "Zet Film uit voor de onderstaande acties",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken."
+    "☆ Favorites": "☆ Favorieten"
   },
   "plurals": {
     " · {count} paired file linked": {
