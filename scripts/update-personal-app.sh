@@ -479,7 +479,9 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$STAGE_PAYLOAD" \
   'import catalog, film_pipeline, server; print("Packaged Python import smoke: OK")'
 /usr/bin/codesign --verify --deep --strict "$STAGE_APP"
 "$STAGE_CONTENTS/Resources/Python/bin/python3.13" \
-  "$ROOT/scripts/native-app-smoke.py" --app "$STAGE_APP" --layer package
+  "$ROOT/scripts/native-app-smoke.py" --app "$STAGE_APP" --layer package \
+  --output "$BUILD_ROOT/native-package.json" \
+  --screenshot "$BUILD_ROOT/native-package.png"
 
 if [[ "$MODE" == "build-only" ]]; then
   OUTPUT_APP="$BUILD_ROOT/$PRODUCT_NAME.app"
