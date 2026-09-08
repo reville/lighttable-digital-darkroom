@@ -35,6 +35,20 @@ one quiet workspace. Catalog originals in place, keep edits separate, and use
 ratings, flags, collections, stacks, and virtual copies to organize your work.
 Film can be switched off for conventional RAW development.
 
+### Find and curate a shoot
+
+Combine camera, lens, ISO, focal length, aperture, shutter time, capture date,
+and hierarchical keyword filters with ratings and flags. Save the combination
+as a smart collection. Open Info beside either grid to add or remove keywords
+across a selection while keeping each photo's other tags, with batch undo.
+
+Optional XMP writing preserves unrelated sidecar metadata, detects conflicting
+external changes, and keeps failed writes queued for retry. Supported Photo
+Mechanic and digiKam metadata conventions have representative fixture coverage;
+this does not establish complete compatibility with either application. See
+[Digital asset management](DIGITAL-ASSET-MANAGEMENT.md) for the workflow and
+[catalog measurements](bench/dam-performance.md) for the performance evidence.
+
 ### Film is a complete image pipeline
 
 Choose from **23 film stocks**, each with its own spectral response, density

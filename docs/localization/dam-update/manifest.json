@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "sourceLocale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "name": "English",
+      "nativeName": "English",
+      "dir": "ltr"
+    },
+    {
+      "code": "es",
+      "name": "Spanish",
+      "nativeName": "Español",
+      "dir": "ltr"
+    },
+    {
+      "code": "fr",
+      "name": "French",
+      "nativeName": "Français",
+      "dir": "ltr"
+    },
+    {
+      "code": "de",
+      "name": "German",
+      "nativeName": "Deutsch",
+      "dir": "ltr"
+    },
+    {
+      "code": "it",
+      "name": "Italian",
+      "nativeName": "Italiano",
+      "dir": "ltr"
+    },
+    {
+      "code": "pt",
+      "name": "Portuguese",
+      "nativeName": "Português",
+      "dir": "ltr"
+    },
+    {
+      "code": "ru",
+      "name": "Russian",
+      "nativeName": "Русский",
+      "dir": "ltr"
+    },
+    {
+      "code": "zh-Hans",
+      "name": "Chinese (Simplified)",
+      "nativeName": "简体中文",
+      "dir": "ltr"
+    },
+    {
+      "code": "zh-Hant",
+      "name": "Chinese (Traditional)",
+      "nativeName": "繁體中文",
+      "dir": "ltr"
+    },
+    {
+      "code": "ja",
+      "name": "Japanese",
+      "nativeName": "日本語",
+      "dir": "ltr"
+    },
+    {
+      "code": "ko",
+      "name": "Korean",
+      "nativeName": "한국어",
+      "dir": "ltr"
+    },
+    {
+      "code": "ar",
+      "name": "Arabic",
+      "nativeName": "العربية",
+      "dir": "rtl"
+    },
+    {
+      "code": "hi",
+      "name": "Hindi",
+      "nativeName": "हिन्दी",
+      "dir": "ltr"
+    },
+    {
+      "code": "bn",
+      "name": "Bengali",
+      "nativeName": "বাংলা",
+      "dir": "ltr"
+    },
+    {
+      "code": "id",
+      "name": "Indonesian",
+      "nativeName": "Bahasa Indonesia",
+      "dir": "ltr"
+    },
+    {
+      "code": "tr",
+      "name": "Turkish",
+      "nativeName": "Türkçe",
+      "dir": "ltr"
+    },
+    {
+      "code": "vi",
+      "name": "Vietnamese",
+      "nativeName": "Tiếng Việt",
+      "dir": "ltr"
+    },
+    {
+      "code": "th",
+      "name": "Thai",
+      "nativeName": "ไทย",
+      "dir": "ltr"
+    },
+    {
+      "code": "pl",
+      "name": "Polish",
+      "nativeName": "Polski",
+      "dir": "ltr"
+    },
+    {
+      "code": "nl",
+      "name": "Dutch",
+      "nativeName": "Nederlands",
+      "dir": "ltr"
+    }
+  ],
+  "sourceDigest": "a6a39827c3da4fad71f5c0ad4344fd02eeae170ce1b3568769c7504f02843382",
+  "helpSourceDigest": "0c6d58701a27b93ffa65d6084e9b14ae8084c86fe24b66219360b282f98bec5c",
+  "runtimeIntegration": "pending"
+}

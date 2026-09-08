@@ -1,0 +1,2767 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Thêm ảnh và bắt đầu duyệt",
+      "category": "Getting started",
+      "summary": "Mở ảnh hoặc thư mục tại chỗ, rồi chọn một thư mục và bắt đầu xem lại.",
+      "keywords": [
+        "bắt đầu",
+        "mở",
+        "duyệt",
+        "thêm thư mục",
+        "bản gốc",
+        "nhập",
+        "thư viện mới"
+      ],
+      "sections": [
+        {
+          "title": "Chọn điểm bắt đầu",
+          "paragraphs": [
+            "Trong một thư viện mới, phần thiết lập cung cấp thư mục cục bộ, di chuyển từ Lightroom, hoặc Apple Photos. Bạn có thể bỏ qua thiết lập và thêm ảnh sau.",
+            "Nhập toàn bộ thư viện từ Apple Photos yêu cầu ứng dụng macOS và quyền đọc Photos. Nó sao chép ảnh gốc, bao gồm các tệp RAW, vào Pictures / LightTable Imports / Apple Photos. Thư viện Photos của bạn không thay đổi. Ảnh gốc iCloud sẽ tải xuống trong quá trình nhập, vì vậy hãy dành thời gian và dung lượng đĩa. Album, video và các chỉnh sửa trong Photos không được chuyển.",
+            "Dừng nhập sẽ giữ lại các bản sao đã hoàn tất. Chạy lại sẽ bỏ qua các bản sao đó và thử lại các ảnh gốc chưa hoàn tất."
+          ],
+          "steps": [
+            "Chọn một thư mục để duyệt ảnh gốc tại chỗ, hoặc chọn một trong các tùy chọn di chuyển dữ liệu.",
+            "Xem lại kết quả nhập, rồi tiếp tục vào thư viện."
+          ]
+        },
+        {
+          "title": "Mở thư mục cục bộ",
+          "paragraphs": [
+            "Trong ứng dụng desktop, Add Photos mở bộ chọn cho ảnh và thư mục. LightTable giữ ảnh gốc ở vị trí hiện tại của chúng. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa nó, vì vậy các ảnh được hỗ trợ khác trong thư mục đó cũng có thể xuất hiện."
+          ],
+          "steps": [
+            "Nhấp Thêm Ảnh ở góc trên bên trái và chọn một hoặc nhiều ảnh hoặc thư mục.",
+            "Chọn thư mục dưới Local ở thanh bên trái. Bật Include subfolders để duyệt ảnh trong các thư mục con của nó.",
+            "Chọn Photo Grid, Culling Grid hoặc Detail ở phía trên. Nhấp vào một ảnh để kích hoạt nó."
+          ],
+          "tips": [
+            "Nếu thanh bên bị ẩn, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái."
+          ]
+        },
+        {
+          "title": "Đưa tệp mới vào một thư mục hiện có",
+          "paragraphs": [
+            "Dùng menu Local ••• và Quét lại thư mục sau khi thêm tệp ngoài LightTable. Để sao chép ảnh từ thẻ vào thư mục đích, hãy dùng Nhập từ thẻ… trong menu đó."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Đưa một danh mục Lightroom Classic vào LightTable",
+      "category": "Getting started",
+      "summary": "Nhập siêu dữ liệu được hỗ trợ và các chỉnh sửa gần đúng, rồi xem lại báo cáo chuyển đổi.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "di chuyển",
+        "di chuyển dữ liệu",
+        "nhập danh mục",
+        "lrcat",
+        "sidecar",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Chuẩn bị và kiểm tra",
+          "paragraphs": [
+            "Trình nhập đọc một bản sao tạm thời của danh mục .lrcat của Lightroom Classic. Thêm các thư mục ảnh được dùng bởi danh mục này cho phép nhập đăng ký các ảnh gốc được tham chiếu và các thư mục chứa chúng. Nó không di chuyển ảnh gốc. Bỏ chọn tùy chọn đó để chỉ khớp các ảnh đã có trong LightTable.",
+            "Tương thích bản xem trước báo cáo các ảnh khớp trong thư viện hiện tại mà không thay đổi nó. Ảnh chưa được thêm có thể hiển thị là không khớp trong bản xem trước; nhập với bật Thêm các thư mục ảnh sẽ ghi nhận các ảnh gốc hiện có trước khi khớp lại."
+          ],
+          "steps": [
+            "Mở Cục bộ ••• → Nhập danh mục…, hoặc chọn tùy chọn danh mục Lightroom Classic trong phần thiết lập.",
+            "Chọn tệp .lrcat và xem lại số lượng cùng các cảnh báo của nó.",
+            "Chọn các danh mục để nhập, chính sách cho các chỉnh sửa hiện có, và có thêm các thư mục ảnh được tham chiếu hay không.",
+            "Nhấp Tương thích bản xem trước và xem lại các cài đặt đã ánh xạ và bị bỏ qua. Thử 20 biến thể sẽ tạo các chỉnh sửa thử riêng trước một lần nhập lớn hơn.",
+            "Nhấp Nhập sau khi xem xét tính tương thích, rồi đọc báo cáo và các số lượng khớp, không tìm thấy, và bị bỏ qua. LightTable tạo một bản sao lưu danh mục trước khi thử hoặc nhập."
+          ]
+        },
+        {
+          "title": "Xem lại các chỉnh sửa đã dịch",
+          "paragraphs": [
+            "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
+            "Local ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác đó không áp dụng cài đặt phát triển hay cắt xén."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "Chọn phím tắt LightTable hoặc Cổ điển",
+      "category": "Getting started",
+      "summary": "Chọn bố cục bàn phím phù hợp với thói quen chỉnh sửa của bạn.",
+      "keywords": [
+        "bàn phím",
+        "phím tắt",
+        "cổ điển",
+        "Lightroom",
+        "phím cắt xén",
+        "phím chi tiết",
+        "trước sau"
+      ],
+      "sections": [
+        {
+          "title": "Chọn một sơ đồ",
+          "paragraphs": [
+            "Mở Cài đặt → Phím tắt & Phần cứng và chọn Sơ đồ phím tắt. LightTable và Classic dùng chung hầu hết phím tắt lọc, nhưng khác nhau ở Chi tiết, Cắt xén, và So sánh trước/sau."
+          ],
+          "steps": [
+            "Chọn LightTable cho D = Chi tiết, C = Cắt xén, và dấu gạch chéo ngược (\\) = So sánh trước/sau.",
+            "Chọn Cổ điển cho E = Chi tiết, R = Cắt xén, và C = So sánh trước/sau."
+          ],
+          "tips": [
+            "Cả hai sơ đồ đều dùng G cho Photo Grid, Shift+G cho Culling Grid, N cho Survey, P/X/U cho cờ và 0–5 cho sao.",
+            "Giữ B để hiển thị bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện; thả B để khôi phục chỉnh sửa. Dấu gạch chéo (/) đưa tiêu điểm vào tìm kiếm ảnh.",
+            "Phím tắt ảnh bị bỏ qua khi đang nhập trong các trường văn bản, số, hoặc lựa chọn. Rời khỏi trường trước khi dùng lệnh ảnh."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "import-from-card",
+      "title": "Nhập ảnh từ thẻ",
+      "category": "Getting started",
+      "summary": "Sao chép ảnh đã chọn vào các thư mục theo ngày, với xác minh và một bản sao thứ hai tùy chọn.",
+      "keywords": [
+        "nhập ảnh",
+        "thẻ nhớ",
+        "thẻ máy ảnh",
+        "sao chép",
+        "sao lưu",
+        "bản sao",
+        "nhập ảnh"
+      ],
+      "sections": [
+        {
+          "title": "Lập kế hoạch sao chép",
+          "paragraphs": [
+            "Import from card sao chép tệp vào đích bạn chọn. Bản gốc trên thẻ vẫn ở nguyên vị trí."
+          ],
+          "steps": [
+            "Mở Local ••• → Nhập từ thẻ….",
+            "Chọn Nguồn và Đích. Đặt mẫu Thư mục và Đổi tên thành trước khi quét. Mặc định giữ nguyên tên tệp và sắp xếp bản sao theo năm/năm-tháng-ngày.",
+            "Chọn xác minh: Full hash, Size only, hoặc None. Đặt Duplicates thành Skip hoặc Copy anyway, và tùy chọn chọn Second copy to.",
+            "Nhấp Quét. Xem lại bản xem trước đích và các tệp đã được chọn, rồi nhấp Nhập.",
+            "Chờ số lượng đã sao chép và kiểm tra xem có tệp nào thất bại không."
+          ],
+          "tips": [
+            "Các mã mẫu bao gồm {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, và {dd}. Start at điều khiển chuỗi bốn chữ số.",
+            "Danh sách chọn hiện hiển thị tối đa 200 tệp mỗi lần quét. Chỉ các mục được đánh dấu trong danh sách đó mới được gửi đi. Hãy kiểm tra số lượng đã hoàn tất khi làm việc với thẻ lớn hơn.",
+            "Nếu tệp được báo là chỉ có trên đám mây, hãy tải chúng về cục bộ rồi quét lại."
+          ]
+        },
+        {
+          "title": "Làm mới kế hoạch khi cài đặt thay đổi",
+          "paragraphs": [
+            "Quét lại sau khi thay đổi đích đến hoặc mẫu đặt tên để bạn có thể xem lại các đường dẫn đã cập nhật trước khi nhập."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Chuyển đổi chế độ xem và chọn ảnh",
+      "category": "Getting started",
+      "summary": "Dùng các lưới để chọn một tập và Chi tiết để kiểm tra một ảnh riêng lẻ.",
+      "keywords": [
+        "lưới",
+        "chi tiết",
+        "dải phim",
+        "chọn nhiều",
+        "Shift+nhấp",
+        "nhấn Command",
+        "nhấn Control",
+        "điều hướng",
+        "thu phóng",
+        "so sánh",
+        "gắn thanh trượt vào khung nhìn"
+      ],
+      "sections": [
+        {
+          "title": "Di chuyển giữa các chế độ xem",
+          "paragraphs": [
+            "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh."
+          ],
+          "steps": [
+            "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
+            "Trong lưới, dùng thanh trượt Kích thước để thay đổi kích thước hình thu nhỏ.",
+            "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm."
+          ]
+        },
+        {
+          "title": "So sánh khi đã phóng to",
+          "paragraphs": [
+            "Nhấp So sánh trong Chi tiết để chia đôi ảnh gốc và ảnh đã chỉnh sửa. Kéo đường chia để di chuyển phần tách; kéo ở chỗ khác trên ảnh đã phóng to để pan. Đường chia và tay cầm của nó giữ nguyên kích thước khi bạn zoom.",
+            "Bản gốc dùng cùng độ phân giải bản xem trước như ảnh đã chỉnh sửa, kể cả ở 1:1. Với ảnh RAW, Bản gốc dùng bản chuyển đổi trung tính, chưa chỉnh sửa; hãy để nó tải xong trước khi đánh giá chi tiết.",
+            "Giữ B để xem bản gốc không có Film, mặt nạ cục bộ hoặc các điều chỉnh hoàn thiện. Thả B để khôi phục chế độ xem đã chỉnh sửa."
+          ],
+          "steps": [
+            "Bật So sánh, rồi thu phóng vượt quá Vừa khung.",
+            "Nhấp nút trượt snap để xem ở góc trên bên phải của vùng ảnh và căn giữa đường chia trong chế độ xem hiện tại. Thao tác này cũng đưa đường chia ra khỏi màn hình trở lại sau khi pan, mà không thay đổi zoom hoặc pan của bạn.",
+            "Nút sẽ ẩn khi bạn quay lại Vừa khung hoặc tắt So sánh."
+          ]
+        },
+        {
+          "title": "Tạo vùng chọn",
+          "paragraphs": [
+            "Nhấp chọn một ảnh đang hoạt động duy nhất. Shift-nhấp chọn một phạm vi liên tiếp. Command-nhấp trên Mac hoặc Control-nhấp sẽ thêm hoặc bỏ từng ảnh riêng lẻ.",
+            "Trong lưới, các hành động cờ, xếp hạng và nhãn màu áp dụng cho tập hợp đã chọn. Trong Detail, các hành động đánh dấu đó áp dụng cho ảnh đang hoạt động. Trong Survey, chúng áp dụng cho ô xem nhanh đang hoạt động. Kiểm tra ngữ cảnh của thanh công cụ đánh dấu trước khi thực hiện thao tác lô.",
+            "Mở Thông tin bên cạnh một trong hai lưới để xem siêu dữ liệu hoặc gắn thẻ các ảnh đã chọn. Lưới thu hẹp lại để dành chỗ cho bảng kiểm tra. Chọn một công cụ bảng kiểm tra khác để quay lại lưới rộng hơn."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Thêm từ khóa, chú thích và thông tin quyền",
+      "category": "Library",
+      "summary": "Giúp ảnh dễ tìm hơn và chuẩn bị siêu dữ liệu mô tả cho việc xuất.",
+      "keywords": [
+        "siêu dữ liệu",
+        "IPTC",
+        "EXIF",
+        "từ khóa",
+        "chú thích",
+        "tiêu đề",
+        "bản quyền",
+        "người tạo",
+        "vị trí",
+        "GPS",
+        "từ khóa lô",
+        "xóa từ khóa",
+        "hoàn tác từ khóa",
+        "từ khóa phân cấp"
+      ],
+      "sections": [
+        {
+          "title": "Thêm từ khóa có thể tìm kiếm",
+          "paragraphs": [
+            "Mở Thông tin trên ảnh đang hoạt động. Nhập từ khóa vào Thêm từ khóa rồi bấm Thêm vào ảnh hoặc nhấn Enter. Dấu phẩy phân tách từ khóa; Cài đặt → Tệp & siêu dữ liệu cũng có thể bật dấu phân tách bằng dấu chấm phẩy và gợi ý từ khóa của danh mục.",
+            "Dùng đường dẫn phân cấp như Places > Boston để giữ các thuật ngữ liên quan ở cùng nhau. Cây Keyword liệt kê các thuật ngữ của danh mục; bấm một thuật ngữ để tìm kiếm, hoặc bấm đúp để đổi tên từ khóa của danh mục đó."
+          ],
+          "tips": [
+            "Thêm vào ảnh và Enter tác động lên ảnh đang hoạt động. Các nút chọn riêng biệt tác động lên các ảnh lưới đã chọn. Liên kết siêu dữ liệu ghép cặp cũng có thể cập nhật các bạn đồng hành RAW hoặc JPEG của chúng."
+          ]
+        },
+        {
+          "title": "Thêm hoặc xóa từ khóa trên vùng chọn",
+          "steps": [
+            "Chọn ảnh trong một trong hai lưới và mở Thông tin. Kiểm tra số ảnh đã chọn bên dưới các nút từ khóa.",
+            "Nhập một hoặc nhiều từ khóa, rồi chọn Thêm vào lựa chọn hoặc Xóa khỏi lựa chọn. Mỗi ảnh vẫn giữ các từ khóa khác của nó.",
+            "Dùng Hoàn tác thay đổi từ khóa để khôi phục lô cuối cùng trong khi cửa sổ này vẫn mở. Hoàn tác từ chối ghi đè các từ khóa đã thay đổi sau lô đó. Lịch sử Ảnh cũng giữ lại trạng thái từ khóa trước và sau."
+          ],
+          "paragraphs": [
+            "Một lô có thể ảnh hưởng tới 5.000 ảnh, bao gồm cả các bạn đồng hành được liên kết. Xóa một từ khóa phân cấp sẽ xóa đúng đường dẫn đó, không phải mọi mục con. Cây từ khóa và gợi ý dùng các thuật ngữ đã có trong danh mục."
+          ]
+        },
+        {
+          "title": "Mô tả ảnh",
+          "paragraphs": [
+            "Trong Thông tin, mở rộng Mô tả cho tiêu đề, chú thích, và đầu đề; Quyền cho tác giả, bản quyền, và ghi công; hoặc Địa điểm cho vị trí và tọa độ. Các thay đổi được lưu vào danh mục khi bạn gõ.",
+            "Áp dụng cho vùng chọn sẽ sao chép biểu mẫu siêu dữ liệu hiện tại sang các ảnh đã chọn, kể cả các trường trống của nó. Hãy xem lại toàn bộ biểu mẫu trước. Siêu dữ liệu được bao gồm trong các lần xuất theo quy trình xuất; việc chỉnh sửa các trường này không ghi lại tệp ảnh gốc."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "browse-folders",
+      "title": "Duyệt thư mục và lưu mục yêu thích",
+      "category": "Library",
+      "summary": "Chọn phạm vi thư mục, bao gồm thư mục con, và giữ các thư mục thường dùng trong tầm tay.",
+      "keywords": [
+        "mục yêu thích",
+        "cục bộ",
+        "thư mục",
+        "thanh bên",
+        "ảnh bị thiếu",
+        "quét lại",
+        "đồng bộ hóa"
+      ],
+      "sections": [
+        {
+          "title": "Chọn nội dung đang hiển thị",
+          "paragraphs": [
+            "Local → Duyệt liệt kê các thư mục bạn đã thêm. Bao gồm thư mục con điều khiển việc một thư mục đã chọn có hiển thị cả các thư mục con của nó hay không. Các bộ lọc thư viện khác vẫn được áp dụng."
+          ],
+          "steps": [
+            "Nhấp vào một thư mục trong Local.",
+            "Bật Bao gồm thư mục con để bao gồm các thư mục con, hoặc tắt để chỉ xem thư mục đó.",
+            "Nhấp vào ngôi sao bên cạnh một thư mục, hoặc mở menu ••• của nó và chọn Thêm vào Mục ưa thích.",
+            "Dùng Cục bộ → Yêu thích để quay lại các thư mục đã lưu."
+          ]
+        },
+        {
+          "title": "Tác vụ thư mục",
+          "paragraphs": [
+            "Menu ••• của một thư mục gồm Show in Finder trên Mac hoặc Show in File Explorer trên Windows. Với thư mục hiện tại, Synchronize Folder làm mới chế độ xem. Local ••• → Rescan folders quét lại các nguồn của danh mục.",
+            "Xóa khỏi LightTable sẽ gỡ một thư mục gốc đã thêm khỏi danh sách nguồn của ứng dụng; nó không di chuyển các tệp gốc vào Thùng rác. Hành động này được cung cấp khi có nhiều hơn một nguồn."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "survey-photos",
+      "title": "So sánh nhiều ảnh trong Xem nhanh",
+      "category": "Library",
+      "summary": "Xem lại một nhóm cùng nhau, đánh dấu khung đang hoạt động và thu hẹp một tập ảnh ứng viên.",
+      "keywords": [
+        "xem nhanh",
+        "so sánh ảnh",
+        "so sánh khung hình",
+        "chụp liên tiếp",
+        "song song",
+        "giữ lại",
+        "tạo vùng chọn"
+      ],
+      "sections": [
+        {
+          "title": "Xem lại một nhóm",
+          "paragraphs": [
+            "Xem nhanh hiển thị các bản xem trước gốc để chọn giữa các ảnh. Nó hiển thị tối đa 16 ảnh đã chọn. Nếu không có lựa chọn rõ ràng, nó dùng tối đa sáu ảnh gần đó trong chế độ xem hiện tại."
+          ],
+          "steps": [
+            "Chọn các ảnh ứng viên trong lưới và nhấn N, hoặc mở Thông tin → Xem nhanh lựa chọn.",
+            "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô.",
+            "Dùng thanh công cụ đánh dấu hoặc các phím tắt cờ, xếp hạng và nhãn trên ô đang hoạt động.",
+            "Nhấp × trên một ô để xóa nó khỏi survey mà không xóa hoặc từ chối nó. Nhấp đúp một ô để mở ảnh đó trong Detail.",
+            "Nhấp Đóng hoặc nhấn Escape để rời khỏi Xem nhanh."
+          ]
+        },
+        {
+          "title": "Chọn một ảnh giữ lại",
+          "paragraphs": [
+            "Lệnh chọn sẽ chọn ảnh xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong xem nhanh. Điều này thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang ảnh đi kèm.",
+            "Để đánh giá một chỉnh sửa so với bản gốc, dùng so sánh trước/sau trong Detail; Survey dùng để chọn giữa các khung hình khác nhau."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "capture-time",
+      "title": "Sửa đồng hồ máy ảnh hoặc múi giờ",
+      "category": "Library",
+      "summary": "Xem trước một hiệu chỉnh thời gian chung trong khi giữ nguyên các khoảng giữa các ảnh.",
+      "keywords": [
+        "thời gian chụp",
+        "ngày",
+        "đồng hồ máy ảnh",
+        "múi giờ",
+        "múi giờ",
+        "giờ tiết kiệm ánh sáng ban ngày",
+        "sắp xếp theo ngày",
+        "dấu thời gian"
+      ],
+      "sections": [
+        {
+          "title": "Xem trước chỉnh sửa",
+          "paragraphs": [
+            "Các chỉnh sửa thời điểm chụp thay đổi ngày trong danh mục dùng cho sắp xếp theo ngày chụp và siêu dữ liệu đã xuất. Tệp ảnh gốc và ngày hệ thống tệp không thay đổi."
+          ],
+          "steps": [
+            "Chọn các ảnh bị ảnh hưởng và mở Thông tin → Sửa thời gian chụp.",
+            "Nhập độ lệch giờ Shift theo số giờ, như -1 hoặc 5.5.",
+            "Tùy chọn nhập Assign time zone dưới dạng độ lệch như -04:00 hoặc +05:30. Để trống để giữ múi giờ hiện có, hoặc nhập remove để xóa nó.",
+            "Chọn có bao gồm ảnh RAW + JPEG đi kèm hay không.",
+            "Nhấp Xem trước lựa chọn và xem lại thời gian trước-sau cùng bất kỳ ảnh nào bị bỏ qua.",
+            "Nhấp Apply previewed changes. Nếu bạn đổi vùng chọn hoặc các điều khiển chỉnh sửa, hãy xem trước lại trước tiên."
+          ]
+        },
+        {
+          "title": "Khôi phục một chỉnh sửa",
+          "paragraphs": [
+            "Gán múi giờ không đồng thời làm lệch đồng hồ máy ảnh. Dùng trường dịch chuyển khi chính thời gian hiển thị là sai.",
+            "Hoàn tác chỉnh sửa gần nhất sẽ đảo ngược chỉnh sửa gần đây nhất đang được giữ trong cửa sổ này. Khôi phục thời gian của máy ảnh… xem trước việc xóa các chỉnh sửa trong danh mục; hãy xem lại bản xem trước và áp dụng nó để khôi phục thời gian gốc của máy ảnh. Các bước tại thời điểm chụp cũng có sẵn trong Lịch sử."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "xmp-interchange",
+      "title": "Trao đổi siêu dữ liệu qua sidecar XMP",
+      "category": "Library",
+      "summary": "Đọc siêu dữ liệu lọc từ các trình chỉnh sửa khác và giữ các thay đổi được hỗ trợ bên cạnh ảnh gốc của bạn.",
+      "keywords": [
+        "XMP",
+        "sidecar",
+        "Photo Mechanic",
+        "digiKam",
+        "khả năng tương thích lẫn nhau",
+        "xung đột đồng bộ",
+        "siêu dữ liệu di động"
+      ],
+      "sections": [
+        {
+          "title": "Đọc siêu dữ liệu từ trình chỉnh sửa khác",
+          "paragraphs": [
+            "Yêu cầu ứng dụng khác lưu siêu dữ liệu của nó vào các tệp XMP đi kèm, rồi chọn Cục bộ ••• → Nhập sidecar…. Hành động này đọc các ảnh gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100.000 ảnh mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
+            "Siêu dữ liệu được hỗ trợ gồm xếp hạng sao, cờ chọn/từ chối, nhãn màu chuẩn, từ khóa phẳng và phân cấp, cùng các trường IPTC mô tả. Một giá trị rỗng rõ ràng sẽ xóa trường đó; một giá trị không có sẽ giữ nguyên không đổi. Các nhãn màu tùy chỉnh không khớp với màu của LightTable sẽ được báo là bị bỏ qua.",
+            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Cài đặt phát triển và cắt xén không được áp dụng bởi thao tác menu này."
+          ]
+        },
+        {
+          "title": "Ghi thay đổi bên cạnh bản gốc",
+          "paragraphs": [
+            "Bật ghi XMP tự động trong Cài đặt → Tệp & siêu dữ liệu. LightTable xếp hàng các trường đã thay đổi và ghi chúng cạnh các ảnh gốc hiện có. Nó giữ nguyên siêu dữ liệu không liên quan và lưu một bản sao lưu của sidecar hiện có trước khi cập nhật lần đầu. Các lần ghi ngoại tuyến hoặc thất bại sẽ vẫn ở hàng đợi để thử lại.",
+            "Nếu ứng dụng khác thay đổi cùng một thuộc tính XMP sau lần đọc hoặc đồng bộ gần nhất, LightTable báo xung đột và giữ nguyên sidecar đó. Xem lại siêu dữ liệu bên ngoài, rồi nhập sidecar để chấp nhận các giá trị siêu dữ liệu đó trước khi thực hiện thêm thay đổi trong LightTable.",
+            "Dùng hoặc photo.xmp hoặc photo.RAW.xmp cho một ảnh gốc. Nếu cả hai đều có mặt, nhập và đồng bộ sẽ báo mơ hồ thay vì chọn một. Hãy giữ một quy ước đặt tên sau khi kiểm tra nội dung của chúng.",
+            "XMP trao đổi siêu dữ liệu được hỗ trợ; đây không phải là bản sao lưu đầy đủ của danh mục. Hãy giữ bản sao lưu danh mục cho bộ sưu tập, lịch sử và các biến thể, và bật các chỉnh sửa LightTable di động khi bạn cần toàn bộ quy trình chỉnh sửa đi cùng một thư mục."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Tìm ảnh bằng tìm kiếm, bộ lọc và sắp xếp",
+      "category": "Library",
+      "summary": "Thu hẹp ảnh theo văn bản, máy ảnh, ống kính, phơi sáng, ngày chụp, từ khóa và dấu lọc.",
+      "keywords": [
+        "tìm",
+        "tìm kiếm",
+        "từ khóa",
+        "bộ lọc xếp hạng",
+        "sắp xếp",
+        "ngày chụp",
+        "không có kết quả",
+        "chưa được gắn sao",
+        "loại tệp",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "chưa chỉnh sửa",
+        "xóa bộ lọc",
+        "máy ảnh",
+        "ống kính",
+        "ISO",
+        "khẩu độ",
+        "tốc độ màn trập",
+        "tiêu cự",
+        "EXIF"
+      ],
+      "sections": [
+        {
+          "title": "Tìm kiếm trong chế độ xem hiện tại",
+          "paragraphs": [
+            "Ô tìm kiếm khớp văn bản trong tên tệp, tên hiển thị, từ khóa và siêu dữ liệu chỉ mục ảnh hiện có. Nó tìm trong thư mục hoặc bộ sưu tập hiện tại và kết hợp với các bộ lọc đang hoạt động khác."
+          ],
+          "steps": [
+            "Nhấp Tìm kiếm ảnh và từ khóa, hoặc nhấn / khi bạn không đang nhập trong một trường.",
+            "Nhập một từ hoặc cụm từ từ tên tệp hoặc từ khóa.",
+            "Dùng All Photos, Unflagged, Picked, Rejected hoặc Rated trong thanh bên để chọn một nhóm cờ hoặc xếp hạng.",
+            "Nhấp Bộ lọc bên cạnh Sắp xếp. Chọn một hoặc nhiều loại tệp, rồi kết hợp chúng với Cờ, Xếp hạng, nhãn Màu sắc hoặc trạng thái Chỉnh sửa.",
+            "Chọn Tên tệp, Xếp hạng, Cờ, ngày chụp, hoặc nhãn Màu sắc trong Sắp xếp."
+          ]
+        },
+        {
+          "title": "Kết hợp và xóa bộ lọc",
+          "paragraphs": [
+            "Chọn RAW, JPEG, HEIC / HEIF, TIFF hoặc PNG. Nhiều loại tệp bao gồm bất kỳ định dạng nào trong số đó; cờ, xếp hạng, nhãn màu, trạng thái chỉnh sửa và tìm kiếm sẽ thu hẹp tập đó thêm. Nếu không chọn loại tệp nào thì là tất cả các loại tệp.",
+            "Nút Bộ lọc cho biết có bao nhiêu lựa chọn đang hoạt động. Mỗi lựa chọn xuất hiện dưới dạng một thẻ có thể xóa phía trên lưới, và số lượng cho biết có bao nhiêu ảnh khớp. Xóa một thẻ bằng nút × của nó, hoặc chọn Xóa tất cả để đặt lại bộ lọc. Văn bản tìm kiếm và thư mục hoặc bộ sưu tập đã chọn vẫn giữ nguyên.",
+            "Trạng thái Chỉnh sửa có Đã chỉnh sửa, Chưa chỉnh sửa, và Bản sao ảo. Một bản sao ảo dùng loại của tệp gốc của nó. Nhấn Escape hoặc nhấp ra ngoài bảng để đóng mà không xóa các lựa chọn của bạn."
+          ]
+        },
+        {
+          "title": "Lọc máy ảnh, phơi sáng và ngày chụp",
+          "paragraphs": [
+            "Mở rộng Camera, phơi sáng & ngày trong Bộ lọc. Camera và Ống kính khớp một phần của tên. Từ khóa khớp một đường dẫn từ khóa đầy đủ trong danh mục và các mục con của nó; ví dụ, Places bao gồm Places > Boston.",
+            "ISO, tiêu cự tính bằng milimét, khẩu độ f-number và thời gian màn trập chấp nhận giá trị tối thiểu và tối đa. Nhập cùng một số ở cả hai đầu để khớp chính xác. Thời gian màn trập chấp nhận giây hoặc phân số như 1/250. Ảnh không có siêu dữ liệu phơi sáng bắt buộc sẽ không khớp.",
+            "Ngày chụp bao gồm cả ngày đầu và ngày cuối. Các bộ lọc này kết hợp với xếp hạng và các lựa chọn khác, vẫn giữ nguyên sau khi tải lại, và có thể được lưu trong bộ sưu tập thông minh. Ảnh hiện có nhận giá trị phơi sáng khi nguồn của chúng được quét lần tiếp theo; hãy quét lại một thư mục nếu thiếu giá trị."
+          ]
+        },
+        {
+          "title": "Khi một ảnh có vẻ bị thiếu",
+          "paragraphs": [
+            "Xóa văn bản tìm kiếm và chọn Xóa tất cả phía trên lưới, rồi kiểm tra thư mục đã chọn, Bao gồm thư mục con và mọi bộ sưu tập đang hoạt động. Tùy chọn tệp ghép cặp và các ngăn xếp đã thu gọn cũng có thể ẩn một ứng dụng đi kèm hoặc thành viên của ngăn xếp.",
+            "Ngày chụp sắp xếp từ sớm đến muộn; Xếp hạng sắp xếp xếp hạng cao trước."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "collections",
+      "title": "Nhóm ảnh vào các bộ sưu tập",
+      "category": "Library",
+      "summary": "Tạo các nhóm có tên mà không di chuyển các tệp gốc.",
+      "keywords": [
+        "bộ sưu tập",
+        "album",
+        "tổ chức",
+        "nhóm",
+        "đã chọn",
+        "xóa bộ sưu tập"
+      ],
+      "sections": [
+        {
+          "title": "Tạo và thêm ảnh",
+          "paragraphs": [
+            "Một bộ sưu tập thông thường lưu trữ một tập ảnh đã chọn. Nó tách biệt với cách sắp xếp thư mục trên đĩa."
+          ],
+          "steps": [
+            "Chọn các ảnh bạn muốn nhóm.",
+            "Nhấp Create collection hoặc dấu + bên cạnh Collections, nhập tên và lưu. Vùng chọn hiện tại sẽ được bao gồm.",
+            "Nhấp vào một bộ sưu tập để xem. Nhấp lại vào bộ sưu tập đang hoạt động sẽ rời khỏi nó.",
+            "Khi một bộ sưu tập thông thường đang hoạt động, chọn ảnh để thêm và nhấp Add selected to collection."
+          ]
+        },
+        {
+          "title": "Xóa một bộ sưu tập",
+          "paragraphs": [
+            "Menu ••• bên cạnh một thư mục sẽ xóa thư mục đó. Thao tác này xóa nhóm thay vì chuyển tệp gốc vào Thùng rác. Tìm kiếm và bộ lọc có thể thu hẹp thêm các ảnh hiển thị bên trong một bộ sưu tập."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Di chuyển ảnh đã từ chối vào Thùng rác",
+      "category": "Library",
+      "summary": "Xem xét kỹ chế độ xem hiện tại trước khi di chuyển các ảnh gốc và sidecar bị từ chối.",
+      "keywords": [
+        "xóa",
+        "thùng rác",
+        "đã từ chối",
+        "khôi phục",
+        "khôi phục",
+        "xóa bản gốc",
+        "thùng rác"
+      ],
+      "sections": [
+        {
+          "title": "Xem lại và di chuyển các tệp đã từ chối",
+          "paragraphs": [
+            "Từ chối một ảnh chỉ thay đổi cờ của nó. Chuyển Ảnh bị từ chối vào Thùng rác là một thao tác desktop riêng, ảnh hưởng đến các ảnh bị từ chối trong chế độ xem hiện tại, không chỉ ảnh đang hoạt động."
+          ],
+          "steps": [
+            "Chọn thư mục hoặc bộ sưu tập và các bộ lọc xác định những ảnh bạn muốn xem lại.",
+            "Kiểm tra các ảnh bị từ chối. Kiểm tra cài đặt tệp ghép cặp và mở rộng bất kỳ ngăn xếp nào nếu bạn muốn bao gồm các thành viên khác của chúng.",
+            "Trên Mac, chọn Ảnh → Di chuyển ảnh bị từ chối vào Thùng rác…, hoặc nhấn Command+Delete.",
+            "Đọc số lượng ảnh trong xác nhận và chỉ xác nhận khi nó khớp với tập bạn định chọn."
+          ],
+          "tips": [
+            "Các sidecar XMP liền kề sẽ đi cùng tệp gốc. Các tệp RAW hoặc JPEG ẩn đi kèm vẫn nằm trong thư viện; chọn Cả hai tệp trong cài đặt ghép cặp để bao gồm chúng.",
+            "Một bản sao ảo dùng chung tệp gốc của nó. Xóa một bản sao ảo nên dùng thao tác Ảnh → Xóa bản sao ảo; chuyển tệp nguồn của nó vào Thùng rác sẽ ảnh hưởng đến mọi chỉnh sửa dùng cùng tệp gốc đó."
+          ]
+        },
+        {
+          "title": "Khôi phục thao tác xóa nhầm trên Mac",
+          "paragraphs": [
+            "Dùng Thùng rác của Finder để đưa ảnh gốc và các sidecar của nó trở lại thư mục trước đó, rồi quét lại thư mục trong LightTable. Ứng dụng không có trình duyệt Thùng rác ngay trong ứng dụng."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "colour-labels",
+      "title": "Tổ chức quy trình làm việc bằng nhãn màu sắc",
+      "category": "Library",
+      "summary": "Dùng năm màu độc lập với các lựa chọn và xếp hạng sao.",
+      "keywords": [
+        "màu sắc",
+        "màu sắc",
+        "nhãn",
+        "đỏ",
+        "vàng",
+        "xanh lá",
+        "xanh dương",
+        "tím",
+        "quy trình làm việc"
+      ],
+      "sections": [
+        {
+          "title": "Áp dụng và lọc một nhãn",
+          "paragraphs": [
+            "Nhãn màu do bạn tự gán ý nghĩa—for example, đỏ cho chỉnh sửa lại hoặc xanh lá cho giao hàng. Chúng không thay đổi xếp hạng sao hay trạng thái chọn/từ chối."
+          ],
+          "steps": [
+            "Chọn một ảnh, hoặc một tập trong lưới, và mở Thông tin.",
+            "Trong Colour label, chọn Red, Yellow, Green, Blue hoặc Purple. Chọn No label để xóa nó.",
+            "Dùng 6 cho Red, 7 cho Yellow, 8 cho Green và 9 cho Blue. Purple có sẵn từ các điều khiển màu sắc.",
+            "Nhấp Bộ lọc bên cạnh Sắp xếp và dùng nhãn Màu sắc để tìm một màu cụ thể, bất kỳ màu nào, hoặc ảnh không có nhãn."
+          ],
+          "tips": [
+            "Áp dụng lại cùng một nhãn sẽ xóa nó. Các hành động gắn nhãn màu không tự động chuyển tiếp."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Chọn, từ chối và xếp hạng ảnh",
+      "category": "Library",
+      "summary": "Đánh dấu ảnh giữ lại và ảnh từ chối, gán xếp hạng sao và kiểm soát tự động chuyển tiếp.",
+      "keywords": [
+        "lọc",
+        "chọn",
+        "từ chối",
+        "cờ",
+        "bỏ cờ",
+        "sao",
+        "xếp hạng",
+        "tự động chuyển ảnh",
+        "giữ lại"
+      ],
+      "sections": [
+        {
+          "title": "Đánh dấu ảnh đang hoạt động hoặc vùng chọn lưới",
+          "paragraphs": [
+            "Cờ và sao là riêng biệt: một ảnh có thể được Picked và có bất kỳ mức sao nào. Reject đánh dấu ảnh để xem lại; nó không xóa ảnh."
+          ],
+          "steps": [
+            "Dùng Pick, Reject và Unflag trong thanh công cụ đánh dấu hoặc Info. Các phím P, X và U thực hiện cùng các hành động đó.",
+            "Nhấp vào một ngôi sao hoặc nhấn 1–5 để xếp hạng. Nhấn 0 để xóa xếp hạng.",
+            "Để xóa một cờ chọn, từ chối hoặc xếp hạng hiện có, hãy áp dụng lại chính dấu đó.",
+            "Dùng các chế độ xem Đã chọn, Đã từ chối và Đã gắn sao ở thanh bên để xem lại quyết định của bạn."
+          ]
+        },
+        {
+          "title": "Kiểm soát điều gì xảy ra tiếp theo",
+          "paragraphs": [
+            "Bật Auto-advance để chuyển sang ảnh tiếp theo sau khi chọn, từ chối, hoặc xếp hạng một ảnh đơn lẻ. Bỏ cờ không tự chuyển tiếp.",
+            "Khi nhiều ảnh được chọn trong một lưới, các đánh dấu sẽ áp dụng cho tập đó mà không chuyển sang ảnh tiếp theo. Nếu Liên kết siêu dữ liệu cặp đang bật, việc đánh dấu cũng cập nhật các bạn đồng hành RAW và JPEG đã nhận diện."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "rename-photos",
+      "title": "Đổi tên ảnh với bản xem trước",
+      "category": "Library",
+      "summary": "Áp dụng một mẫu tên tệp nhất quán cho các ảnh gốc đã chọn và sidecar của chúng.",
+      "keywords": [
+        "đổi tên",
+        "tên tệp",
+        "chuỗi",
+        "lô",
+        "văn bản tùy chỉnh",
+        "mã ngày",
+        "sidecar"
+      ],
+      "sections": [
+        {
+          "title": "Xem trước và áp dụng",
+          "paragraphs": [
+            "Đổi tên thay đổi tên tệp trên đĩa và giữ các bản ghi trong danh mục đi cùng tệp. Nó cũng xử lý các sidecar XMP liền kề. Việc này khác với đặt tên cho một bản sao ảo."
+          ],
+          "steps": [
+            "Chọn các ảnh cần đổi tên.",
+            "Mở Thông tin → Đổi tên… (hoặc Ảnh → Đổi tên… trong menu Mac).",
+            "Nhập một Mẫu như {custom}_{sequence}. Đặt văn bản Tùy chỉnh và Bắt đầu tại khi cần.",
+            "Xem lại tên tệp trước và sau trong bản xem trước.",
+            "Nhấp Đổi tên để áp dụng."
+          ],
+          "tips": [
+            "Các token có sẵn gồm {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min}, và {ss}. Số thứ tự dùng bốn chữ số.",
+            "Phần mở rộng gốc được giữ nguyên. Nếu trùng tên, sẽ có hậu tố số. Mẫu đổi tên không thể tạo thư mục.",
+            "Một bản sao ảo dùng chung tệp nguồn của nó: bao gồm nó trong thao tác đổi tên sẽ nhắm vào tệp gốc đó. Giao diện không có nút hoàn tác đổi tên chuyên dụng."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "smart-collections",
+      "title": "Lưu một tìm kiếm thành bộ sưu tập thông minh",
+      "category": "Library",
+      "summary": "Giữ một nhóm có tên được cập nhật từ các quy tắc được hỗ trợ khi siêu dữ liệu ảnh thay đổi.",
+      "keywords": [
+        "bộ sưu tập thông minh",
+        "tìm kiếm đã lưu",
+        "động",
+        "quy tắc lọc",
+        "tự động",
+        "xếp hạng tối thiểu"
+      ],
+      "sections": [
+        {
+          "title": "Lưu các quy tắc được hỗ trợ",
+          "paragraphs": [
+            "Một bộ sưu tập thông minh tìm các ảnh khớp với các quy tắc đã lưu của nó. Các quy tắc được hỗ trợ gồm cờ, xếp hạng, Chỉ ảnh chưa gắn sao, loại tệp, nhãn màu, trạng thái chỉnh sửa, bản sao ảo và văn bản tìm kiếm. Phạm vi cho máy ảnh, ống kính, từ khóa phân cấp, ngày chụp, ISO, tiêu cự, khẩu độ và thời gian màn trập cũng được lưu."
+          ],
+          "steps": [
+            "Đặt văn bản tìm kiếm và các lựa chọn mong muốn trong Bộ lọc bên cạnh Sắp xếp.",
+            "Nhấp vào ✦ bên cạnh Bộ sưu tập, được gắn nhãn Lưu bộ lọc thành bộ sưu tập thông minh.",
+            "Đặt tên cho bộ sưu tập và lưu.",
+            "Nhấp vào tên của nó để xem các ảnh khớp. Thay đổi metadata liên quan của một ảnh sẽ làm thay đổi việc nó có khớp hay không."
+          ]
+        },
+        {
+          "title": "Biết những gì được lưu",
+          "paragraphs": [
+            "Thư mục đã chọn và Bao gồm thư mục con không được lưu trong quy tắc bộ sưu tập thông minh. Bộ sưu tập tìm kiếm thư viện bằng các lựa chọn bộ lọc đã lưu.",
+            "Bạn không thể thêm ảnh thủ công bằng Thêm mục đã chọn vào bộ sưu tập khi một bộ sưu tập thông minh đang hoạt động. Tìm kiếm hiện tại và bộ lọc thư viện vẫn có thể thu hẹp chế độ xem bộ sưu tập.",
+            "Với ảnh 4 sao chụp ở 50mm trong năm 2026, đặt Xếp hạng thành 4 sao trở lên, tiêu cự tối thiểu và tối đa là 50, và ngày chụp từ 1 tháng 1 đến 31 tháng 12 năm 2026. Lưu các bộ lọc đó làm một bộ sưu tập thông minh."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Thử bản sao ảo và nhóm ảnh trong ngăn xếp",
+      "category": "Library",
+      "summary": "Giữ các chỉnh sửa thay thế của một ảnh gốc và thu gọn các ảnh liên quan trong lưới.",
+      "keywords": [
+        "bản sao ảo",
+        "phiên bản",
+        "chỉnh sửa thay thế",
+        "ngăn xếp",
+        "bỏ ngăn xếp",
+        "bản sao",
+        "sao chép"
+      ],
+      "sections": [
+        {
+          "title": "Tạo một chỉnh sửa thay thế",
+          "paragraphs": [
+            "Một bản sao ảo tham chiếu cùng một tệp gốc và giữ trạng thái chỉnh sửa độc lập. Nó không tạo ra một bản gốc thứ hai trên đĩa."
+          ],
+          "steps": [
+            "Đặt ảnh nguồn thành hoạt động.",
+            "Mở menu hành động ảnh ••• bên cạnh Sắp xếp và Kích thước, rồi chọn Tạo bản sao ảo.",
+            "Đặt tên cho bản sao và lưu. Bản sao mới sẽ trở thành đang hoạt động.",
+            "Chỉnh sửa bản sao. Dùng Bộ lọc → Trạng thái chỉnh sửa → Bản sao ảo để tìm lại các bản sao sau này."
+          ],
+          "tips": [
+            "Xóa bản sao ảo trong thao tác Photo sẽ xóa bản sao ảo đang hoạt động. Để có một tệp thứ hai thực sự trên đĩa, hãy xuất ảnh đã dựng."
+          ]
+        },
+        {
+          "title": "Thu gọn một nhóm",
+          "paragraphs": [
+            "Chọn ít nhất hai ảnh, rồi chọn Photo actions ••• → Stack selected photos và nhập tên. Huy hiệu lưới của ngăn xếp hiển thị số lượng thành viên; bấm vào đó để mở rộng hoặc thu gọn. Unstack selected photos sẽ xóa nhóm."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "Làm việc với các cặp RAW và JPEG",
+      "category": "Library",
+      "summary": "Chọn bản phụ nào sẽ hiển thị và liệu các thay đổi siêu dữ liệu mới có ảnh hưởng đến cả hai hay không.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "ghép cặp",
+        "ứng dụng đi kèm",
+        "siêu dữ liệu được liên kết",
+        "JPEG ẩn"
+      ],
+      "sections": [
+        {
+          "title": "Chọn ứng dụng đi kèm đang hiển thị",
+          "paragraphs": [
+            "LightTable nhận diện một cặp khi một RAW và một JPEG có cùng tên tệp cơ sở trong cùng nguồn và thư mục. Mỗi tệp giữ các chỉnh sửa riêng của nó; các bản sao ảo vẫn độc lập."
+          ],
+          "steps": [
+            "Mở Cài đặt → Tệp & Siêu dữ liệu và bật Ghép cặp ảnh chụp RAW và JPEG.",
+            "Đặt Hiển thị ảnh ghép cặp thành Cả hai tệp, Ưu tiên RAW, hoặc Ưu tiên JPEG.",
+            "Khi xem một ảnh ghép đôi, dùng RAW → JPEG hoặc JPEG → RAW gần phía trên để chuyển sang ảnh đi kèm của nó."
+          ]
+        },
+        {
+          "title": "Liên kết các thay đổi siêu dữ liệu mới",
+          "paragraphs": [
+            "Bật Link pair metadata để liên kết các thay đổi mới về xếp hạng, cờ, nhãn và từ khóa. Nó không hợp nhất các chỉnh sửa ảnh.",
+            "Xuất và Thùng rác dùng các tệp bạn chọn hoặc bao gồm trong chế độ xem hiện tại. Chúng không tự động bao gồm một ứng dụng đi kèm bị ẩn. Hãy chọn Cả hai tệp và xem lại vùng chọn khi bạn cần cả hai bản gốc. Tính năng sửa tại thời điểm chụp có hộp kiểm Bao gồm các ứng dụng đi kèm RAW + JPEG riêng."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "editing-effects",
+      "title": "Điều chỉnh Kết cấu, Độ rõ nét, Khử sương mù và Tối góc",
+      "category": "Editing",
+      "summary": "Tinh chỉnh chi tiết bề mặt, tương phản cục bộ, sương mù và độ sáng cạnh từ phần Effects.",
+      "keywords": [
+        "hiệu ứng",
+        "kết cấu",
+        "độ rõ nét",
+        "khử sương mù",
+        "sương mù",
+        "tối góc",
+        "làm mềm",
+        "chi tiết",
+        "tương phản cục bộ",
+        "viền tối",
+        "viền sáng"
+      ],
+      "sections": [
+        {
+          "title": "Tinh chỉnh chi tiết và tương phản",
+          "paragraphs": [
+            "Mở rộng Effects trong Edit. Texture thay đổi chi tiết cục bộ tinh, còn Clarity áp dụng độ tương phản cục bộ với trọng tâm lớn hơn vào vùng trung tính. Giá trị dương tăng cường các hiệu ứng này; giá trị âm làm mềm chúng."
+          ],
+          "steps": [
+            "Chỉnh Texture khi nhìn vào một phần có kết cấu của ảnh, như vải, tán lá hoặc da.",
+            "Điều chỉnh Độ rõ nét trong khi kiểm tra tương phản quanh đối tượng và các mép.",
+            "Kiểm tra ở 1:1 rồi quay lại Vừa khung để đánh giá kết quả tổng thể."
+          ],
+          "tips": [
+            "Đối với xử lý cục bộ, hãy dùng các điều khiển Kết cấu và Độ rõ nét của mặt nạ."
+          ]
+        },
+        {
+          "title": "Thay đổi sương mù và độ sáng mép",
+          "paragraphs": [
+            "Khử sương mù thay đổi xử lý tông màu và màu sắc kiểu sương mù của ảnh. Viền tối thay đổi độ sáng ở rìa: giá trị dương làm tối rìa và giá trị âm làm sáng rìa."
+          ],
+          "steps": [
+            "Tăng Dehaze để tăng cường một ảnh có sương mù, hoặc thử giá trị âm cho một xử lý mềm hơn. Kiểm tra cả tương phản lẫn màu sắc khi bạn điều chỉnh.",
+            "Đặt Tối góc cho kiểu xử lý viền bạn muốn và kiểm tra các góc.",
+            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Effects để đặt lại Texture, Clarity, Dehaze và Vignette cùng lúc."
+          ],
+          "tips": [
+            "Vignette của Effects là một hiệu ứng sáng tạo ở rìa ảnh. Dùng Lens corrections khi bạn muốn sửa shading của ống kính."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-tone",
+      "title": "Điều chỉnh phơi sáng, tương phản và dải tông",
+      "category": "Editing",
+      "summary": "Dùng các điều khiển Light và histogram để đặt độ sáng và độ tương phản, rồi kiểm tra kết quả so với bản gốc.",
+      "keywords": [
+        "phơi sáng",
+        "độ sáng",
+        "sáng",
+        "tông",
+        "tương phản",
+        "vùng sáng",
+        "bóng tối",
+        "trắng",
+        "đen",
+        "tự động",
+        "biểu đồ histogram",
+        "cắt xén",
+        "trước khi"
+      ],
+      "sections": [
+        {
+          "title": "Bắt đầu với Sáng",
+          "paragraphs": [
+            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông. Contrast thay đổi độ tách biệt của chúng."
+          ],
+          "steps": [
+            "Đặt Phơi sáng cho đối tượng chính.",
+            "Chỉnh Highlights và Shadows để cân bằng vùng sáng và vùng tối, rồi tinh chỉnh Whites, Blacks và Contrast.",
+            "Dùng nút cảnh báo clipping bên cạnh biểu đồ histogram để kiểm tra clipping.",
+            "So sánh kết quả của bạn với bản gốc bằng điều khiển before, hoặc giữ B khi ảnh đang hoạt động."
+          ],
+          "tips": [
+            "Reset của Light sẽ đặt lại nhóm đó. Dùng Undo khi bạn chỉ muốn đảo ngược điều chỉnh gần nhất."
+          ]
+        },
+        {
+          "title": "Dùng Tự động làm điểm bắt đầu",
+          "paragraphs": [
+            "Auto trong tiêu đề Light phân tích bản xem trước ảnh sẵn có và đặt Exposure, Blacks, và Whites. Nó không đặt mọi điều khiển chỉnh sửa."
+          ],
+          "steps": [
+            "Chờ cho đến khi bản xem trước ảnh xuất hiện, rồi nhấp Tự động.",
+            "Xem lại kết quả và tinh chỉnh các thanh trượt cho bức ảnh."
+          ],
+          "tips": [
+            "Nếu Tự động báo đang chờ bản xem trước hình ảnh, hãy để bản xem trước tải xong rồi thử lại.",
+            "Menu scope cũng cung cấp Waveform, RGB Parade và Vectorscope để kiểm tra tông và màu."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Áp dụng các hiệu chỉnh ống kính và quang sai màu",
+      "category": "Editing",
+      "summary": "Dùng hồ sơ ống kính đã khớp hoặc chọn thủ công, hoặc thực hiện hiệu chỉnh thủ công khi không có hồ sơ chính xác.",
+      "keywords": [
+        "ống kính",
+        "hồ sơ",
+        "Biến dạng",
+        "tối góc",
+        "đổ bóng",
+        "quang sai màu",
+        "viền màu",
+        "đỏ lục lam",
+        "xanh dương vàng",
+        "quang học"
+      ],
+      "sections": [
+        {
+          "title": "Chọn và xác minh một hiệu chỉnh",
+          "paragraphs": [
+            "Mở rộng Lens corrections trong Chỉnh sửa. Thẻ hồ sơ giải thích sự khớp tự động giữa máy ảnh/ống kính và việc có sẵn một hồ sơ dùng được hay không."
+          ],
+          "steps": [
+            "Đọc tên hồ sơ và phần giải thích khớp.",
+            "Bật Use matched lens profile khi có hồ sơ, rồi chọn Correct distortion và Correct lens shading khi cần.",
+            "Nếu cần, chọn một mục khác trong Lens profile và so sánh chỉnh sửa với bản gốc.",
+            "Tinh chỉnh các điều khiển thủ công Distortion và Vignette. Với viền màu, điều chỉnh Red / Cyan và Blue / Yellow trong Chromatic aberration."
+          ],
+          "tips": [
+            "Không tìm thấy hồ sơ ống kính khớp chính xác thì các điều khiển méo hình và phối cảnh thủ công vẫn khả dụng.",
+            "Các ô chọn profile distortion và shading chỉ được bật khi hồ sơ đã chọn cung cấp hiệu chỉnh đó và hồ sơ đang được bật.",
+            "Một hồ sơ được chọn thủ công cần được kiểm tra bằng mắt; việc chọn không xác lập rằng nó là khớp chính xác.",
+            "Hiệu chỉnh ống kính và quang sai viền vẫn không phá hủy qua quá trình xuất."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-presets",
+      "title": "Áp dụng, lưu và nhập các thiết lập sẵn chỉnh sửa",
+      "category": "Editing",
+      "summary": "Tái sử dụng các quy trình chỉnh sửa và kiểm tra phạm vi chuyển đổi khi nhập các preset của Lightroom, Camera Raw hoặc Capture One.",
+      "keywords": [
+        "thiết lập sẵn",
+        "thiết lập sẵn",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "mẫu LR",
+        "costyle",
+        "ltpreset",
+        "nhập thiết lập sẵn",
+        "lưu giao diện",
+        "thay thế các điều chỉnh"
+      ],
+      "sections": [
+        {
+          "title": "Áp dụng một quy trình hiện có",
+          "paragraphs": [
+            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Quản lý thiết lập sẵn cung cấp nguồn của thiết lập sẵn đã chọn và phạm vi chuyển đổi, cùng các điều khiển áp dụng rõ ràng."
+          ],
+          "steps": [
+            "Chọn một thiết lập sẵn và xem lại tóm tắt của nó, đặc biệt nếu nó đến từ một trình chỉnh sửa khác.",
+            "Dùng Áp dụng các chỉnh sửa được ánh xạ để áp dụng các cài đặt mà thiết lập sẵn cung cấp.",
+            "Chỉ dùng Replace adjustment settings khi bạn muốn đặt lại các điều chỉnh, mặt nạ, hiệu chỉnh Remove và hình học trước khi áp dụng preset.",
+            "Kiểm tra ảnh và dùng Hoàn tác nếu bạn muốn khôi phục chỉnh sửa trước đó."
+          ],
+          "tips": [
+            "Replace giữ nguyên vùng cắt xén của bạn. Nó giữ Film trừ khi preset bao gồm các thiết lập Film hoặc bạn bật Turn Film off cho các hành động bên dưới.",
+            "Các thiết lập sẵn từ trình chỉnh sửa khác được chuyển đổi gần đúng vì cách xử lý của chúng khác nhau. Hãy đọc các cài đặt bị bỏ qua và ghi chú chuyển đổi; các điều khiển khớp không hứa hẹn pixel giống hệt."
+          ]
+        },
+        {
+          "title": "Lưu hoặc nhập một thiết lập sẵn",
+          "paragraphs": [
+            "Manage presets có thể lưu giao diện hiện tại hoặc nhập quy trình LightTable, preset Lightroom/Camera Raw, và style Capture One."
+          ],
+          "steps": [
+            "Để lưu, chọn Tất cả cài đặt điều chỉnh hoặc Chỉ các cài đặt đã thay đổi trong Lưu giao diện hiện tại, chọn có bao gồm cài đặt Phim hay không, rồi nhấp Lưu mới….",
+            "Để nhập, nhấp Import… và chọn các tệp thiết lập sẵn. Ứng dụng Mac cũng hỗ trợ chọn toàn bộ một thư mục thiết lập sẵn.",
+            "Xem lại kết quả nhập và phạm vi chuyển đổi của thiết lập sẵn mới trước khi áp dụng nó.",
+            "Để chia sẻ một thiết lập sẵn đã chọn, hãy chọn định dạng Xuất và nhấp Xuất…."
+          ],
+          "tips": [
+            "Xuất của LightTable là không mất dữ liệu đối với định dạng thiết lập sẵn của nó. Xuất kiểu Lightroom XMP và Capture One là gần đúng.",
+            "Các lựa chọn tệp được hỗ trợ gồm .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, và .json. Một phần mở rộng được chấp nhận không đảm bảo rằng mọi cài đặt bên trong đều có thể chuyển đổi."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "editing-curves"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Thay đổi từng màu riêng lẻ bằng Bộ trộn Màu và Màu điểm",
+      "category": "Editing",
+      "summary": "Chỉnh một dải màu rộng hoặc lấy mẫu một sắc độ cụ thể và tinh chỉnh phạm vi, độ sáng và độ đồng đều của nó.",
+      "keywords": [
+        "hsl",
+        "bộ trộn màu",
+        "bộ trộn màu sắc",
+        "màu sắc điểm",
+        "mẫu",
+        "sắc độ",
+        "đồng nhất",
+        "độ chói",
+        "độ bão hòa",
+        "phạm vi"
+      ],
+      "sections": [
+        {
+          "title": "Điều chỉnh một dải màu",
+          "paragraphs": [
+            "Color Mixer nằm trong Edit → Color. Nó thay đổi màu trong dải đã chọn trên toàn bộ ảnh."
+          ],
+          "steps": [
+            "Chọn một trong các nút dải màu trong Bộ trộn Màu.",
+            "Chỉnh Hue để dịch dải đó, Saturation để thay đổi cường độ màu của nó, và Luminance để thay đổi độ sáng của nó.",
+            "Chọn một dải khác để tiếp tục, hoặc dùng Reset của Color Mixer để xóa các điều chỉnh trộn màu."
+          ]
+        },
+        {
+          "title": "Lấy mẫu một màu cụ thể",
+          "paragraphs": [
+            "Màu điểm cho một sắc độ được lấy mẫu có các điều khiển riêng. Nó ảnh hưởng đến các màu khớp trong toàn ảnh; hãy dùng mặt nạ cục bộ khi bạn cũng cần giới hạn vùng."
+          ],
+          "steps": [
+            "Nhấp Mẫu màu dưới Màu sắc điểm, rồi nhấp vào một vùng màu nổi bật trong ảnh.",
+            "Chỉnh Range để thu hẹp hoặc mở rộng các sắc độ bị ảnh hưởng, rồi tinh chỉnh chuyển Hue, Saturation và Luminance.",
+            "Dùng Sắc độ đồng nhất, Bão hòa đồng nhất, hoặc Độ chói đồng nhất để làm cho màu trong phạm vi giống hơn với mảng mẫu.",
+            "Chọn một điểm đã lưu trong bộ chọn để chỉnh sửa nó, hoặc dùng Xóa điểm để loại bỏ nó."
+          ],
+          "tips": [
+            "Các vùng xám trung tính không thể cung cấp mẫu hue hữu ích; hãy chọn một vùng có màu sắc hơn khi được nhắc.",
+            "Point Color giữ tối đa tám điểm đã lấy mẫu. Nếu bạn lấy mẫu lại khi đã có tám điểm, điểm thứ tám sẽ bị thay thế.",
+            "Đặt lại của Màu sắc điểm sẽ xóa các điểm đã lấy mẫu mà không cần đặt lại toàn bộ Màu sắc."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Phân màu bóng tối, tông trung và vùng sáng",
+      "category": "Editing",
+      "summary": "Áp dụng các xử lý màu khác nhau cho từng vùng tông và kiểm soát cách các xử lý đó hòa trộn.",
+      "keywords": [
+        "chỉnh màu",
+        "phân cấp màu sắc",
+        "tách tông màu",
+        "bóng tối",
+        "tông trung",
+        "vùng sáng",
+        "mức chỉnh tổng thể",
+        "trộn",
+        "cân bằng"
+      ],
+      "sections": [
+        {
+          "title": "Xây dựng mức chỉnh",
+          "paragraphs": [
+            "Tông màu trong Chỉnh sửa cung cấp các lựa chọn riêng cho Bóng tối, Trung tông, và Vùng sáng, cùng với một tông màu tổng thể. Mỗi mục có các điều khiển Sắc độ, Bão hòa, và Độ chói."
+          ],
+          "steps": [
+            "Mở rộng Phân loại màu và chọn Bóng tối, Tông trung, hoặc Vùng sáng.",
+            "Chọn một Sắc độ, rồi tăng Bão hòa để làm hiển thị rõ xử lý màu. Điều chỉnh Độ chói cho vùng tông đó nếu cần.",
+            "Lặp lại cho các vùng khác, hoặc nhấp Edit global grade để thay đổi xử lý toàn cục.",
+            "Tinh chỉnh Trộn và Cân bằng, so sánh bức ảnh khi bạn điều chỉnh chúng.",
+            "Dùng Đặt lại của Phân màu để xóa phân màu."
+          ],
+          "tips": [
+            "Thay đổi Hue với Saturation bằng 0 sẽ không thêm màu nhìn thấy được. Hãy bắt đầu với giá trị saturation vừa phải.",
+            "Dùng Color Mixer hoặc Point Color khi bạn muốn nhắm tới một sắc độ sẵn có, và dùng mặt nạ khi bạn muốn nhắm tới một vị trí trong ảnh."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Sao chép chỉnh sửa sang các ảnh đã chọn và khớp phơi sáng",
+      "category": "Editing",
+      "summary": "Chọn các thiết lập nào sẽ được chuyển, xem lại các giới hạn riêng cho mặt nạ, hoặc khớp một nhóm với một tham chiếu phơi sáng đang hoạt động.",
+      "keywords": [
+        "sao chép cài đặt",
+        "dán cài đặt",
+        "chỉnh sửa hàng loạt",
+        "đồng bộ",
+        "tự động đồng bộ",
+        "đồng bộ hóa",
+        "nhiều ảnh",
+        "khớp tổng phơi sáng",
+        "vùng chọn",
+        "khay nhớ tạm"
+      ],
+      "sections": [
+        {
+          "title": "Chuyển các cài đặt đã chọn",
+          "paragraphs": [
+            "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích."
+          ],
+          "steps": [
+            "Mở ảnh nguồn và nhấp Copy edit settings, hoặc nhấn Command-Shift-C trên Mac hay Ctrl-Shift-C trên Windows.",
+            "Chọn các nhóm bạn muốn chuyển, rồi nhấp Sao chép cài đặt.",
+            "Chọn ảnh đích hoặc các ảnh đích trong thư viện rồi nhấp Paste edit settings, hoặc dùng Command-Shift-V / Ctrl-Shift-V.",
+            "Đọc thông báo hoàn tất. Với lô, Stop kết thúc xử lý sau ảnh hiện tại; các ảnh đã hoàn thành giữ nguyên các chỉnh sửa đã dán."
+          ],
+          "tips": [
+            "Crop and geometry, Local masks và Healing là các lựa chọn riêng biệt và không được bao gồm theo mặc định.",
+            "Healing sao chép vị trí vết và chỉ nên được chuyển giữa các ảnh có khung hình khớp nhau."
+          ]
+        },
+        {
+          "title": "Xem lại các mặt nạ đã chuyển",
+          "paragraphs": [
+            "Các mặt nạ Local đã chọn sẽ thay thế các mặt nạ đích. Các vùng chọn thông minh được phát hiện lại cho mỗi ảnh khác nhau. Hình dạng mặt nạ thủ công được sao chép, nên vị trí của chúng vẫn cần được kiểm tra."
+          ],
+          "tips": [
+            "Chọn đối tượng yêu cầu một lựa chọn đối tượng mới trên đích. Mặt nạ thông minh với tinh chỉnh tô vẽ cũng cần tạo lại thủ công; các trường hợp này sẽ khiến việc dán vào đích bị từ chối thay vì âm thầm sao chép một vùng chọn cụ thể cho nguồn.",
+            "Nếu mặt nạ không thể chuyển, hãy sao chép lại với Local masks bỏ chọn để áp dụng các nhóm khác.",
+            "Kiểm tra báo cáo hoàn tất đối với các ảnh thất bại. Một lô có thể kết thúc với một số ảnh đã thay đổi và những ảnh khác không đổi."
+          ]
+        },
+        {
+          "title": "Khớp tổng phơi sáng",
+          "paragraphs": [
+            "Match total exposure dùng ảnh đang hoạt động làm tham chiếu. Khi siêu dữ liệu phơi sáng chụp có sẵn, nó so sánh thông tin đó; nếu không, nó chuyển sang độ sáng trung bình của ảnh. Xem lại kết quả khi cảnh hoặc ánh sáng khác nhau."
+          ],
+          "steps": [
+            "Chọn ít nhất hai ảnh và đặt ảnh tham chiếu mong muốn thành đang hoạt động.",
+            "Chờ cho các chỉnh sửa tham chiếu lưu xong.",
+            "Chọn Match total exposure trong Photo actions, hoặc Library → Match Total Exposure trong menu Mac.",
+            "Kiểm tra từng kết quả. Thao tác cập nhật điều khiển phơi sáng liên quan và giới hạn điều chỉnh kết quả trong phạm vi được hỗ trợ."
+          ],
+          "tips": [
+            "Ảnh tham chiếu bị loại trừ khỏi các cập nhật mục tiêu. Việc khớp chỉ là điểm khởi đầu, nhất là khi ảnh có chủ thể hoặc bố cục khung hình khác nhau."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Cắt xén, làm thẳng, xoay và chỉnh phối cảnh",
+      "category": "Editing",
+      "summary": "Đặt khung và tỷ lệ khung hình, chỉnh hướng và phối cảnh, rồi chấp nhận hoặc hủy phiên crop.",
+      "keywords": [
+        "cắt xén",
+        "tỷ lệ khung hình",
+        "chỉnh thẳng",
+        "xoay",
+        "lật",
+        "phối cảnh",
+        "hình học",
+        "thẳng đứng",
+        "mức",
+        "chân dung",
+        "phong cảnh",
+        "thay đổi kích thước"
+      ],
+      "sections": [
+        {
+          "title": "Đặt khung",
+          "paragraphs": [
+            "Mở Cắt xén trong thanh công cụ chỉnh sửa. Tỷ lệ khung hình cung cấp Tự do, Gốc, các tỷ lệ chuẩn, và Tùy chỉnh. Phần hiển thị cắt xén cho biết khung và lượng được giữ lại."
+          ],
+          "steps": [
+            "Chọn một tỷ lệ khung hình. Dùng Custom để nhập tỷ lệ rộng/cao của riêng bạn, và dùng nút hoán đổi để đổi hướng.",
+            "Kéo một tay cầm để thay đổi kích thước khung cắt; ảnh sẽ thu phóng để giữ khung ở giữa. Kéo bên trong khung để di chuyển ảnh bên dưới nó, hoặc kéo bên ngoài để tạo khung cắt mới.",
+            "Dùng các phím mũi tên để nắn nhẹ vùng chọn; giữ Shift để bước lớn hơn.",
+            "Nhấp Xong hoặc nhấn Enter để chấp nhận. Nhấp Hủy hoặc nhấn Escape để khôi phục khung về trạng thái khi bạn đã mở Cắt xén."
+          ],
+          "tips": [
+            "Điều khiển Khóa tỷ lệ cho phép bạn giữ nguyên tỷ lệ khung hình hiện tại khi đổi kích thước."
+          ]
+        },
+        {
+          "title": "Tinh chỉnh hình học",
+          "paragraphs": [
+            "Cắt xén & Xoay cũng chứa Làm thẳng, xoay 90 độ, lật ngang và dọc, cùng các điều khiển Phối cảnh."
+          ],
+          "steps": [
+            "Thử mức Tự động cho đường chân trời bị nghiêng, rồi tinh chỉnh Làm thẳng nếu cần.",
+            "Dùng Xoay trái, Xoay phải hoặc các nút lật để thay đổi hướng.",
+            "Mở rộng Perspective và thử Auto upright, hoặc chỉnh Vertical, Horizontal và Scale thủ công.",
+            "Kiểm tra các mép và khung hình cuối cùng, rồi nhấp Xong."
+          ],
+          "tips": [
+            "Mức tự động dùng các đường mà nó có thể tìm thấy; hãy kiểm tra kết quả thay vì cho rằng góc được phát hiện phù hợp với bức ảnh.",
+            "Đặt lại của Cắt xén sẽ đặt lại cùng lúc cắt xén, xoay, lật, và phối cảnh."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Thực hiện điều chỉnh cục bộ bằng Cọ, mặt nạ Tuyến tính, và Hình tròn",
+      "category": "Editing",
+      "summary": "Tô hoặc vẽ mặt nạ, kiểm tra lớp phủ của nó và chỉ điều chỉnh vùng đã chọn.",
+      "keywords": [
+        "mặt nạ",
+        "mặt nạ",
+        "điều chỉnh cục bộ",
+        "cọ",
+        "dốc tuyến tính",
+        "dốc xuyên tâm",
+        "làm mềm mép",
+        "luồng",
+        "lớp phủ",
+        "né sáng",
+        "đốt cháy"
+      ],
+      "sections": [
+        {
+          "title": "Tạo mặt nạ thủ công",
+          "paragraphs": [
+            "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ dưới Create New Mask. Mỗi mặt nạ có các điều chỉnh Sáng và Màu sắc riêng.",
+            "Texture và Độ rõ nét dùng hình ảnh sau các điều chỉnh toàn cục và các mặt nạ trước đó. Các điều khiển này cần cập nhật bản xem trước; hãy đợi nó hoàn tất trước khi đánh giá kết quả."
+          ],
+          "steps": [
+            "Chọn Brush để vẽ, Linear cho điều chỉnh chuyển sắc, hoặc Radial cho điều chỉnh hình tròn.",
+            "Với Brush, chọn Kích thước, Lông cọ, và Luồng, rồi tô lên ảnh. Với Linear hoặc Radial, kéo trên ảnh để đặt hình dạng.",
+            "Giữ Show Overlay bật khi kiểm tra vùng đã chọn, rồi tắt nó để đánh giá ảnh.",
+            "Chỉnh các thanh trượt Light hoặc Color của mặt nạ đã chọn. Dùng Amount trong Range để giảm cường độ tổng thể của nó.",
+            "Đổi tên mặt nạ bằng nút ••• của nó để mục đích của nó dễ nhận ra sau này."
+          ],
+          "tips": [
+            "Thêm, Trừ, và Giao nhau đưa bạn vào các chế độ tinh chỉnh bằng tô vẽ. Với mặt nạ Tuyến tính hoặc Hình tròn, chọn Chỉnh sửa hình dạng để quay lại thao tác với hình dạng của nó.",
+            "Bật tạm thời sẽ tắt hoặc bật hiệu ứng của một mặt nạ. Đảo ngược sẽ đảo vùng chọn của nó.",
+            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa Mặt nạ sẽ xóa mặt nạ đã chọn; Clear All sẽ xóa các mặt nạ của ảnh."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "Hợp nhất các ngoặc nhịp HDR, ảnh toàn cảnh và ngăn xếp lấy nét",
+      "category": "Editing",
+      "summary": "Kết hợp một chuỗi ảnh gốc khác nhau thành một TIFF 16 bit mới, rồi chỉnh sửa kết quả đã hợp nhất.",
+      "keywords": [
+        "hợp nhất ảnh",
+        "hợp nhất",
+        "hdr",
+        "dải tương phản động cao",
+        "hợp nhất phơi sáng",
+        "ngoặc nhịp",
+        "ảnh toàn cảnh",
+        "ảnh toàn cảnh",
+        "ghép ảnh",
+        "ngăn xếp lấy nét",
+        "ngăn xếp lấy nét",
+        "tiff",
+        "căn chỉnh"
+      ],
+      "sections": [
+        {
+          "title": "Bắt đầu hợp nhất trong ứng dụng Mac",
+          "paragraphs": [
+            "Photo Merge dùng một bản render trung tính của từng ảnh gốc và tạo một TIFF 16-bit mới trong LightTable Merges. Áp dụng giao diện cuối cùng, cắt xén và các điều chỉnh cục bộ cho kết quả đã hợp nhất. Các ảnh gốc nguồn vẫn khả dụng."
+          ],
+          "steps": [
+            "Chọn ít nhất hai bản gốc khác nhau trong thư viện. Nhiều bản sao ảo của một bản gốc chỉ được tính là một nguồn.",
+            "Chọn Ảnh → Hợp nhất ảnh… trong menu Mac.",
+            "Chọn HDR · exposure fusion, Panorama · feature aligned, hoặc Focus stack · sharpness fused.",
+            "Tùy chọn nhập tên Kết quả, rồi nhấp Hợp nhất.",
+            "Theo dõi tiến trình chuẩn bị, căn chỉnh, hòa trộn, và lưu. Khi ứng dụng báo hoàn tất và làm mới thư viện, hãy mở TIFF trong LightTable Merges và kiểm tra nó."
+          ],
+          "tips": [
+            "Chỉ một thao tác hợp nhất có thể chạy tại một thời điểm. Tên tệp hiện có được giữ nguyên; một lần hợp nhất mới cùng tên sẽ nhận hậu tố số.",
+            "Hợp nhất thường xử lý mỗi đầu vào tối đa ở cạnh dài 6.000 pixel. Do đó, kết quả hợp nhất có thể có ít chi tiết hơn chuỗi nguồn độ phân giải đầy đủ.",
+            "Nếu một lần hợp nhất báo lỗi, hãy đọc thông báo cụ thể và sửa vùng chọn đầu vào trước khi thử lại."
+          ]
+        },
+        {
+          "title": "Chọn đầu vào phù hợp",
+          "paragraphs": [
+            "HDR chấp nhận 2–9 ảnh được ngoặc phơi sáng có cùng kích thước. Nó căn chỉnh và ghép phơi sáng các khung hình đã render trên màn hình để cân bằng các tông hữu ích. Xem lại các chủ thể chuyển động và mép ảnh để phát hiện lỗi ghép.",
+            "Panorama chấp nhận 2–20 khung hình chồng lấp. Chọn các khung hình lân cận theo chuỗi để đầu vào liền kề chia sẻ chi tiết hình ảnh. Ứng dụng căn chỉnh các đặc trưng và ghép các vùng chồng lấp; các vùng thiếu đặc trưng hoặc chồng lấp không đủ có thể ngăn việc ghép ảnh tin cậy. Khung vẽ Panorama bị giới hạn ở 120 megapixel.",
+            "Focus stack chấp nhận 2–60 ảnh được ngoặc lấy nét có cùng kích thước. Dùng chân máy hoặc chuỗi ray lấy nét với khung hình chung. Ứng dụng căn chỉnh các khung, kết hợp các vùng nét, và cắt xén theo vùng đã căn chỉnh chung của chúng."
+          ],
+          "steps": [
+            "Với HDR, kiểm tra vùng sáng, bóng tối và mọi thứ đã dịch chuyển giữa các lần phơi sáng.",
+            "Với Panorama, kiểm tra các đường ghép và ranh giới ngoài, rồi cắt xén kết quả nếu cần.",
+            "Với Focus stack, kiểm tra chuyển tiếp giữa các vùng sắc nét, mép tiền cảnh và crop cuối cùng ở 1:1."
+          ],
+          "tips": [
+            "HDR ở đây là exposure fusion thành một TIFF đã dựng. Nó không tạo ra master RAW hoặc DNG tuyến tính theo cảnh.",
+            "Lỗi căn chỉnh có thể có nghĩa là các khung hình không đủ chồng lấp hoặc không có vùng chung. Hãy thử một chuỗi nhất quán hơn thay vì thêm các khung hình không liên quan."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Tinh chỉnh mặt nạ bằng tô vẽ, phạm vi, và các lựa chọn kết hợp",
+      "category": "Editing",
+      "summary": "Thêm, trừ bớt hoặc giao nhau các vùng, rồi giới hạn một điều chỉnh theo độ chói hoặc màu sắc đã lấy mẫu.",
+      "keywords": [
+        "tinh chỉnh mặt nạ",
+        "thêm",
+        "trừ",
+        "giao nhau",
+        "thành phần",
+        "phạm vi độ chói",
+        "phạm vi màu",
+        "phạm vi màu sắc",
+        "màu sắc mẫu",
+        "độ mờ",
+        "lượng",
+        "đảo ngược"
+      ],
+      "sections": [
+        {
+          "title": "Tinh chỉnh bằng cách tô vẽ",
+          "paragraphs": [
+            "Chọn mặt nạ trong danh sách mặt nạ trước khi tinh chỉnh nó. Thêm mở rộng vùng chọn; Trừ xóa các vùng đã tô; Giao nhau chỉ giữ vùng đã tô của vùng chọn hiện có."
+          ],
+          "steps": [
+            "Chọn Thêm, Trừ, hoặc Giao phía dưới Mặt nạ Đã chọn.",
+            "Đặt Kích thước, Làm mềm mép, và Luồng, rồi tô vẽ trong khi quan sát lớp phủ.",
+            "Khi đang dùng Thêm, giữ Option trên Mac để tạm thời trừ.",
+            "Tắt overlay và kiểm tra điều chỉnh. Dùng Undo cho một tinh chỉnh mà bạn muốn đảo ngược."
+          ]
+        },
+        {
+          "title": "Kết hợp một vùng chọn thông minh",
+          "paragraphs": [
+            "Smart selection action điều khiển việc lựa chọn thông minh tiếp theo sẽ trở thành mặt nạ mới hay kết hợp với mặt nạ hiện đang được chọn."
+          ],
+          "steps": [
+            "Chọn một mặt nạ hiện có, rồi mở rộng Tạo Mặt nạ Mới.",
+            "Chọn Thêm vào mặt nạ đã chọn, Trừ khỏi mặt nạ đã chọn, hoặc Giao với mặt nạ đã chọn trong hành động chọn thông minh.",
+            "Chọn công cụ thông minh, như Đối tượng hoặc Bầu trời, và kiểm tra kết quả kết hợp."
+          ],
+          "tips": [
+            "Đặt lại Smart selection action về Create new mask khi bạn muốn lựa chọn thông minh tiếp theo có các điều chỉnh độc lập.",
+            "Một mặt nạ có giới hạn thành phần; bảng sẽ báo khi không thể thêm một thành phần thông minh khác."
+          ]
+        },
+        {
+          "title": "Giới hạn theo độ sáng hoặc màu sắc",
+          "paragraphs": [
+            "Phạm vi thu hẹp thêm một mặt nạ đã chọn. Luminance Low và High giới hạn các giá trị độ sáng. Phạm vi màu nhắm vào một sắc độ, và Lượng điều khiển độ mạnh của toàn bộ mặt nạ."
+          ],
+          "steps": [
+            "Mở rộng Range cho mặt nạ đã chọn và chỉnh Luminance Low cùng Luminance High trong khi kiểm tra overlay.",
+            "Bật Colour range, rồi nhấp Sample colour và lấy mẫu một điểm có màu sắc rõ, hoặc giữ Shift và kéo qua một vùng để lấy giá trị trung bình.",
+            "Tinh chỉnh Hue, Range và Colour amount, sau đó dùng Amount cho cường độ điều chỉnh tổng thể."
+          ],
+          "tips": [
+            "Một vùng gần trung tính không cung cấp mẫu hue hữu ích. Hãy chọn một vùng có màu sắc hơn khi được nhắc."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Xóa các vết bẩn và tinh chỉnh các chỉnh sửa bằng Heal hoặc Clone",
+      "category": "Editing",
+      "summary": "Sơn lên các chi tiết gây xao lãng, kiểm tra độ hiện rõ của vết sửa, và di chuyển nguồn hoặc mục tiêu của một chỉnh sửa.",
+      "keywords": [
+        "xóa bỏ",
+        "chữa",
+        "chữa",
+        "nhân bản",
+        "chỉnh sửa ảnh",
+        "bụi",
+        "xóa điểm",
+        "hiển thị điểm bụi",
+        "nguồn",
+        "mục tiêu",
+        "làm xao nhãng"
+      ],
+      "sections": [
+        {
+          "title": "Tạo một hiệu chỉnh",
+          "paragraphs": [
+            "Mở Xóa bỏ trong thanh công cụ chỉnh sửa. Xóa bỏ, Chữa, và Nhân bản là các chế độ riêng biệt. Chữa và Nhân bản tự động chọn một nguồn ban đầu; hãy kiểm tra nguồn đó thay vì cho rằng nó phù hợp.",
+            "Các hiệu chỉnh được áp dụng theo thứ tự, vì vậy nguồn sau có thể bao gồm một hiệu chỉnh trước đó. Hãy đợi cập nhật bản xem trước trước khi đánh giá kết quả hoặc tăng độ sắc nét quanh vùng đã hiệu chỉnh."
+          ],
+          "steps": [
+            "Chọn Remove, Heal, hoặc Clone, rồi đặt Kích thước, Làm mềm mép, và Độ mờ.",
+            "Nhấp vào một vết hoặc kéo qua một chi tiết gây phân tâm trong ảnh.",
+            "Với các đốm bụi nhỏ, bật Visualize Spots và chỉnh Threshold để làm cho biên dễ kiểm tra hơn.",
+            "Tắt Visualize Spots và kiểm tra bức ảnh đã được sửa."
+          ],
+          "tips": [
+            "Chọn một hiệu chỉnh và chọn một chế độ khác sẽ thay đổi chế độ của hiệu chỉnh đó."
+          ]
+        },
+        {
+          "title": "Tinh chỉnh một hiệu chỉnh hiện có",
+          "paragraphs": [
+            "Chọn một hiệu chỉnh trong danh sách để hiện các điều khiển của nó. Các vòng tròn trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Heal và Clone, nguồn."
+          ],
+          "steps": [
+            "Kéo vòng tròn mục tiêu để đổi vị trí chỉnh sửa, hoặc chọn Move Target và nhấp vào vị trí mới của nó.",
+            "Với Heal hoặc Clone, kéo vòng tròn nguồn đến một vùng tốt hơn. Refresh Source thử một vị trí nguồn khác.",
+            "Điều chỉnh Làm mềm mép hoặc Độ mờ nếu mép hoặc cường độ của hiệu chỉnh cần tinh chỉnh.",
+            "Chuyển Bật hiệu chỉnh này để so sánh, hoặc dùng Xóa hiệu chỉnh để loại bỏ nó."
+          ],
+          "tips": [
+            "Remove không hiển thị vòng tròn nguồn hoặc Refresh Source. Các điều khiển nguồn đó áp dụng cho Heal và Clone.",
+            "Clear All sẽ xóa các chỉnh sửa Remove, Heal và Clone của ảnh. Dùng Hoàn tác để đảo ngược một thay đổi chỉnh sửa vô tình."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Lưu chỉnh sửa và khôi phục thay đổi chưa lưu",
+      "category": "Editing",
+      "summary": "Các chỉnh sửa được lưu tự động. Kiểm tra trạng thái lưu, thử lại khi lưu thất bại, hoặc chọn những chỉnh sửa nào cần khôi phục sau khi mở lại.",
+      "keywords": [
+        "lưu",
+        "tự động lưu",
+        "chưa lưu",
+        "khôi phục",
+        "crash",
+        "bản gốc",
+        "không phá hủy",
+        "thử lại",
+        "đang lưu"
+      ],
+      "sections": [
+        {
+          "title": "Kiểm tra công việc của bạn đã được lưu",
+          "paragraphs": [
+            "Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh."
+          ],
+          "steps": [
+            "Thực hiện điều chỉnh của bạn, rồi kiểm tra trạng thái lưu trong ứng dụng.",
+            "Chờ Saving… chuyển thành Saved. Việc lưu cũng bao gồm các ghi chép lịch sử chỉnh sửa đang chờ.",
+            "Nếu trạng thái báo Edits not saved, hãy dùng Retry save. Giữ cửa sổ mở trong khi việc lưu đang thất bại."
+          ],
+          "tips": [
+            "Đã lưu · cần chú ý khôi phục có nghĩa là lưu đã hoàn tất nhưng hệ thống khôi phục cục bộ báo có vấn đề. Hãy dùng điều khiển thử lại hiện có và đọc thông báo trạng thái."
+          ]
+        },
+        {
+          "title": "Chọn các chỉnh sửa đã khôi phục hoặc đã lưu",
+          "paragraphs": [
+            "Nếu khôi phục cục bộ tìm thấy các thay đổi chưa xử lý khi thư viện mở, Khôi phục chỉnh sửa chưa lưu? sẽ liệt kê các ảnh bị ảnh hưởng. Khôi phục chỉnh sửa sẽ thay thế các cài đặt đã lưu của chúng bằng các cài đặt đã khôi phục. Giữ các chỉnh sửa đã lưu sẽ giữ phiên bản danh mục và loại bỏ các bản nháp khôi phục đó."
+          ],
+          "steps": [
+            "Đọc tên các ảnh bị ảnh hưởng và chọn Khôi phục chỉnh sửa hoặc Giữ chỉnh sửa đã lưu.",
+            "Nếu bạn khôi phục, hãy chờ cho việc lưu hoàn tất trước khi đóng ứng dụng."
+          ],
+          "tips": [
+            "Khôi phục có thể không khả dụng nếu bộ nhớ cục bộ hoặc nhật ký khôi phục trên máy tính để bàn gặp lỗi. Ứng dụng báo trạng thái đó; đó không phải là đảm bảo rằng mọi chỉnh sửa chưa lưu đều có thể được khôi phục.",
+            "Nếu một bản gốc không khả dụng hoặc đã thay đổi, bản ghi khôi phục của nó sẽ được giữ lại thay vì áp dụng cho một ảnh có thể khác."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Chọn Đối tượng, Bầu trời, Đối tượng, Độ sâu hoặc Mọi người",
+      "category": "Editing",
+      "summary": "Tạo các vùng chọn cục bộ trên thiết bị, kiểm tra độ chính xác của chúng và tinh chỉnh kết quả trước khi áp dụng các điều chỉnh.",
+      "keywords": [
+        "mặt nạ ai",
+        "đối tượng",
+        "bầu trời",
+        "đối tượng",
+        "độ sâu",
+        "mọi người",
+        "người",
+        "khuôn mặt",
+        "da",
+        "tóc",
+        "mắt",
+        "răng",
+        "chân dung",
+        "chọn nền"
+      ],
+      "sections": [
+        {
+          "title": "Tạo một vùng chọn thông minh",
+          "paragraphs": [
+            "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng."
+          ],
+          "steps": [
+            "Mở Mặt nạ và mở rộng Tạo Mặt nạ Mới.",
+            "Chọn Subject hoặc Sky để tự động chọn. Với Object, nhấp Object rồi nhấp vào đối tượng trong ảnh.",
+            "Chọn Depth để tạo lựa chọn từ khoảng cách tương đối, rồi mở Range và điều chỉnh Far limit cùng Near limit. Depth chạy từ xa đến gần.",
+            "Kiểm tra Hiển thị lớp phủ và tinh chỉnh các vùng bị thiếu hoặc thừa trước khi điều chỉnh Sáng hoặc Màu sắc."
+          ],
+          "tips": [
+            "Đối tượng, Bầu trời, và Đối tượng có thể dùng các ước tính cục bộ dựa trên hình ảnh. Chúng có thể bỏ sót mép hoặc chọn sai vùng, đặc biệt ở những nơi chủ thể và nền trông giống nhau.",
+            "Depth dùng độ sâu chụp nhúng khi có, nếu không thì dùng ước tính cục bộ. Độ sâu ước tính là tương đối và có thể không chính xác.",
+            "Dùng Đảo ngược nếu bạn muốn điều chỉnh vùng nằm ngoài vùng chọn kết quả."
+          ]
+        },
+        {
+          "title": "Chọn người hoặc vùng khuôn mặt",
+          "paragraphs": [
+            "People có Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair và Soften skin. Mặt nạ People cần trợ lý Vision trên macOS 14 trở lên. Face skin và hair được ước tính, và không suy ra danh tính."
+          ],
+          "steps": [
+            "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
+            "Kiểm tra lớp phủ và dùng các tinh chỉnh tô vẽ quanh ranh giới khi cần.",
+            "Với Làm mềm da, xem lại việc giảm Texture và Clarity được áp dụng tự động, rồi điều chỉnh cho phù hợp với chân dung."
+          ],
+          "tips": [
+            "Đọc mọi lỗi sẵn có hoặc phát hiện trong bảng mặt nạ. Một công cụ xuất hiện trong menu không đảm bảo rằng trợ lý cần thiết hoặc một vùng chọn dùng được là có sẵn."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Đặt cân bằng trắng và màu sắc tổng thể",
+      "category": "Editing",
+      "summary": "Dùng Tạm thời và Sắc thái hoặc lấy mẫu một vùng trung tính, rồi điều chỉnh Độ rực và Độ bão hòa.",
+      "keywords": [
+        "cân bằng trắng",
+        "WB",
+        "nhiệt độ",
+        "nhiệt độ",
+        "sắc thái",
+        "trung tính",
+        "ống nhỏ giọt",
+        "ám màu",
+        "độ rực",
+        "độ bão hòa"
+      ],
+      "sections": [
+        {
+          "title": "Trung hòa ám màu",
+          "paragraphs": [
+            "Mục Color trong Chỉnh sửa chứa Temp và Tint, cùng một ống nhỏ giọt cân bằng trắng bên cạnh Temp. Đây là các điều khiển hoàn thiện của bảng Chỉnh sửa."
+          ],
+          "steps": [
+            "Mở Chỉnh sửa và mở rộng Màu sắc.",
+            "Nhấp ống hút cân bằng trắng bên cạnh Temp, rồi nhấp một vùng trong ảnh đáng lẽ phải là xám trung tính.",
+            "Tinh chỉnh Temp và Tint bằng mắt nếu kết quả lấy mẫu quá ấm, quá lạnh, ngả xanh lá hoặc ngả tím.",
+            "Điều chỉnh Độ rực và Độ bão hòa để kiểm soát cường độ màu tổng thể."
+          ],
+          "tips": [
+            "Chọn một mảng trung tính nhìn thấy được. Một mẫu gần như đen sẽ tạo ra Quá tối để lấy mẫu; phần xem trước không khả dụng sẽ tạo ra thông báo chờ.",
+            "Nhấp lại vào ống nhỏ giọt để thoát chế độ lấy mẫu mà không chọn điểm nào.",
+            "Đặt lại của Màu sắc cũng đặt lại các điều chỉnh màu sắc liên quan, bao gồm Bộ trộn màu, Màu điểm, và Tông màu. Dùng Đặt lại riêng của một công cụ để thay đổi hẹp hơn."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-curves",
+      "title": "Định hình tương phản và màu sắc bằng đường cong",
+      "category": "Editing",
+      "summary": "Thêm và di chuyển các điểm đường cong cho kênh RGB kết hợp hoặc các kênh đỏ, xanh lá và xanh dương riêng lẻ.",
+      "keywords": [
+        "đường cong",
+        "đường cong",
+        "đường cong tông",
+        "rgb",
+        "đỏ",
+        "xanh lá",
+        "xanh dương",
+        "tương phản",
+        "điểm điều khiển",
+        "đường cong s"
+      ],
+      "sections": [
+        {
+          "title": "Chỉnh sửa một đường cong",
+          "paragraphs": [
+            "Trong đồ thị Curve, hướng ngang đi từ tông đầu vào tối hơn đến tông đầu vào sáng hơn. Di chuyển một điểm lên sẽ tăng đầu ra của nó; di chuyển xuống sẽ giảm nó. RGB điều chỉnh đường cong kết hợp, còn R, G và B ảnh hưởng đến từng kênh riêng lẻ."
+          ],
+          "steps": [
+            "Mở Chỉnh sửa và mở rộng Đường cong.",
+            "Chọn RGB, R, G, hoặc B.",
+            "Nhấp vào biểu đồ để thêm một điểm, rồi kéo nó để tạo hình đường cong. Kéo một tay nắm hiện có để di chuyển nó.",
+            "Nhấp đúp vào một điểm bên trong để xóa nó. Hai tay nắm ở hai đầu vẫn được giữ nguyên.",
+            "Dùng Đặt lại của Đường cong để đặt lại các đường cong, hoặc Hoàn tác để đảo ngược thay đổi mới nhất."
+          ],
+          "tips": [
+            "Dùng vài điểm và so sánh ảnh trong khi làm; các đường cong kênh có thể tạo ra ám màu mạnh.",
+            "Đường cong đã lưu hoặc đã nhập sẽ giữ nguyên bảng đã lưu chính xác cho đến khi bạn chỉnh sửa nó. Ứng dụng dựng lại các tay nắm đại diện để chỉnh sửa, vì vậy điều chỉnh đầu tiên có thể làm thay đổi một đường cong đã nhập vượt quá điểm bạn kéo."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Làm sắc nét, giảm nhiễu và dùng Tăng cường",
+      "category": "Editing",
+      "summary": "Kiểm tra chi tiết ở 1:1, áp dụng các điều khiển chi tiết thông thường, hoặc chạy local learned denoise khi có sẵn.",
+      "keywords": [
+        "chi tiết",
+        "làm sắc nét",
+        "nhiễu",
+        "khử nhiễu",
+        "khử nhiễu",
+        "tăng cường",
+        "độ phân giải siêu cao",
+        "nâng độ phân giải",
+        "kết cấu",
+        "độ rõ nét",
+        "khử sương mù",
+        "tối góc",
+        "cảm biến"
+      ],
+      "sections": [
+        {
+          "title": "Đánh giá chi tiết ở 1:1",
+          "paragraphs": [
+            "Phần Chi tiết bao gồm Tăng độ sắc nét, Bán kính, Chi tiết, Mặt nạ, NR độ chói, và NR màu sắc. Hiệu ứng chứa Kết cấu, Độ rõ nét, Khử sương mù, và Viền tối."
+          ],
+          "steps": [
+            "Mở một ảnh và dùng Khoảng trắng để chuyển giữa Vừa khung và 1:1.",
+            "Mở rộng Detail trong Edit. Chỉnh khử nhiễu và tăng độ nét trong khi nhìn cả vùng có kết cấu lẫn vùng mịn.",
+            "Dùng Effects cho texture, local contrast, haze hoặc edge shading, rồi kiểm tra toàn bộ ảnh ở Fit.",
+            "Dùng Đặt lại của phần tương ứng nếu bạn muốn bắt đầu lại nhóm đó."
+          ],
+          "tips": [
+            "Các điều khiển Detail hoạt động trong cả chế độ Film và Develop. Đừng chỉ đánh giá độ nét từ một bản xem trước Fit nhỏ."
+          ]
+        },
+        {
+          "title": "Chạy khử nhiễu đã học trên ảnh RAW",
+          "paragraphs": [
+            "Ảnh RAW có thể hiển thị các điều khiển Giảm nhiễu cảm biến và Khử nhiễu học máy. Khử nhiễu học máy chạy cục bộ khi bạn nhấn Áp dụng khử nhiễu; di chuyển Mức không chạy nó trực tiếp."
+          ],
+          "steps": [
+            "Chọn một ảnh RAW và mở rộng Chi tiết.",
+            "Kiểm tra rằng Áp dụng khử nhiễu khả dụng, chọn Cường độ, rồi nhấp Áp dụng khử nhiễu.",
+            "Theo dõi thông báo tiến trình. Dùng Hủy nếu bạn cần dừng tác vụ.",
+            "Kiểm tra bản xem trước đã hoàn tất ở 1:1."
+          ],
+          "tips": [
+            "Tính khả dụng phụ thuộc vào mô hình cục bộ, trình trợ giúp, và nền tảng được hỗ trợ. Các bản dựng phát triển có thể thiếu mô hình, và ứng dụng báo điều đó thay vì giả vờ khử nhiễu đã thành công."
+          ]
+        },
+        {
+          "title": "Tạo một biến thể tăng cường trong ứng dụng Mac",
+          "paragraphs": [
+            "Ảnh → Tăng cường ảnh… cung cấp Khử nhiễu và Siêu phân giải và ghi một master 16 bit mới khi thao tác đã chọn thành công. Ảnh gốc vẫn không bị thay đổi."
+          ],
+          "steps": [
+            "Chọn ảnh, chọn Ảnh → Tăng cường Ảnh…, và đọc thông báo về tính khả dụng.",
+            "Chọn tăng cường và nhấp Tăng cường nếu có.",
+            "Sau khi hoàn tất, hãy tìm kết quả mới trong thư viện đã làm mới và kiểm tra nó."
+          ],
+          "tips": [
+            "Siêu phân giải không có mô hình đi kèm và yêu cầu một mô hình cục bộ tương thích. Một tùy chọn được liệt kê đơn lẻ không có nghĩa là thao tác đó khả dụng.",
+            "Enhancement có thể tạo ra chi tiết; hãy đánh giá đầu ra trước khi xem nó như một bản ghi trung thực của kết cấu mịn."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Hoàn tác chỉnh sửa, khôi phục Lịch sử và lưu ảnh chụp nhanh",
+      "category": "Editing",
+      "summary": "Dùng Undo cho công việc gần đây, History cho các bước chỉnh sửa đã lưu, và snapshots có tên cho những kiểu bạn muốn xem lại.",
+      "keywords": [
+        "hoàn tác",
+        "làm lại",
+        "lịch sử",
+        "ảnh chụp nhanh",
+        "phiên bản",
+        "khôi phục",
+        "hoàn nguyên",
+        "đặt lại"
+      ],
+      "sections": [
+        {
+          "title": "Hoàn tác hoặc khôi phục một bước trước đó",
+          "paragraphs": [
+            "Undo và redo đi theo từng ảnh trong suốt phiên làm việc hiện tại. Trong danh mục thư viện, History vẫn còn sau khi thoát. Các điều chỉnh gần nhau có thể được gộp thành một bước lịch sử, nên danh sách này không phải là bản ghi của mọi vị trí thanh trượt."
+          ],
+          "steps": [
+            "Dùng Command-Z trên Mac hoặc Ctrl-Z trên Windows để hoàn tác. Thêm Shift để làm lại.",
+            "Mở History trong thanh công cụ chỉnh sửa để xem các bước đã lưu của ảnh hiện tại, mới nhất ở trên cùng.",
+            "Nhấp vào một bước để khôi phục cài đặt của nó. Khôi phục một bước tự nó là một thao tác có thể hoàn tác."
+          ],
+          "tips": [
+            "Persistent History yêu cầu một thư viện danh mục. Việc chỉ dùng thư mục vẫn hỗ trợ Undo và Redo theo phiên.",
+            "Xóa sẽ xóa các bước lịch sử đã lưu của ảnh; đây không phải là lệnh đặt lại chỉnh sửa."
+          ]
+        },
+        {
+          "title": "Giữ lại một giao diện có tên",
+          "paragraphs": [
+            "Một snapshot lưu lại các thiết lập điều chỉnh hiện tại của ảnh, vùng cắt xén, mặt nạ, hiệu chỉnh Remove, và optics. Đây là một trạng thái chỉnh sửa đã lưu cho ảnh này."
+          ],
+          "steps": [
+            "Mở Lịch sử, mở rộng Ảnh chụp nhanh, và nhấp Tạo ảnh chụp nhanh.",
+            "Nhập một tên hữu ích, chẳng hạn Chân dung mềm hoặc Trước khi chỉnh sửa ảnh.",
+            "Nhấp tên của snapshot để áp dụng lại nó sau. Dùng Undo nếu bạn muốn quay về trạng thái vừa bị thay thế."
+          ],
+          "tips": [
+            "Ảnh giữ tối đa 50 snapshot; khi tạo thêm vượt quá giới hạn đó, snapshot cũ nhất sẽ bị loại khỏi danh sách.",
+            "Dấu × bên cạnh một ảnh chụp nhanh sẽ xóa ảnh chụp nhanh có tên đó, không phải ảnh gốc."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Điều chỉnh hạt phim và định dạng",
+      "category": "Film",
+      "summary": "Kiểm soát hạt theo phim và chọn kích thước phim mô phỏng.",
+      "keywords": [
+        "hạt",
+        "kích thước",
+        "kết cấu",
+        "35mm",
+        "định dạng trung bình",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "hạt",
+        "nhiễu"
+      ],
+      "sections": [
+        {
+          "title": "Đặt định dạng và hạt",
+          "paragraphs": [
+            "Định dạng phim đặt cạnh dài vật lý được mô phỏng sử dụng. Các lựa chọn là 35 mm, 645, 6 × 6, 6 × 7, và 4 × 5; cài đặt này tách biệt với việc cắt xén ảnh.",
+            "Kích thước hạt nhân với diện tích hạt nền của phim đã chọn. Phần hiển thị cho biết diện tích kết quả bằng µm², vì vậy cùng một hệ số nhân có thể cho diện tích khác sau khi bạn đổi phim."
+          ],
+          "steps": [
+            "Trong hồ sơ Film, chọn định dạng Film.",
+            "Dùng Các giai đoạn phim vật lý, mục này sẽ mở tự động khi Film profile được bật. Mở lại nếu bạn đã thu gọn nó.",
+            "Bật Kích thước hạt và điều chỉnh thanh trượt của nó, hoặc bỏ chọn ô đó để tắt hạt.",
+            "Kiểm tra ảnh ở mức 1:1 và chờ chi tiết bản xem trước hoàn tất trước khi đánh giá kết cấu."
+          ]
+        },
+        {
+          "title": "Con số này biểu thị điều gì",
+          "paragraphs": [
+            "Các mức nền hạt theo từng phim được suy ra từ tốc độ phim như các điểm bắt đầu trực quan. Chúng không phải là phép đo độ hạt trong phòng thí nghiệm cho từng nhũ tương.",
+            "Thiết lập kích thước Grain thuộc mô phỏng phim. Làm sắc nét chi tiết và giảm nhiễu trong Chỉnh sửa là các điều chỉnh riêng biệt."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Điều chỉnh quầng sáng film, khuếch tán và đặc tính quét",
+      "category": "Film",
+      "summary": "Tinh chỉnh các hiệu ứng vật lý của phim và quy trình đầu ra đã chọn.",
+      "keywords": [
+        "quầng sáng film",
+        "phát sáng",
+        "bloom",
+        "tán xạ",
+        "chất ghép màu",
+        "lóe sáng",
+        "quét",
+        "độ sắc nét",
+        "độ mềm",
+        "máy quét",
+        "tiền chớp"
+      ],
+      "sections": [
+        {
+          "title": "Các giai đoạn phim vật lý",
+          "paragraphs": [
+            "Chọn Phim trong thanh công cụ, rồi bật Hồ sơ phim. Các giai đoạn phim vật lý sẽ mở tự động; bạn có thể thu gọn sau đó. Chất tạo màu, Quầng sáng film, Kích thước hạt và Lóe sáng khi in mỗi mục đều có hộp kiểm bật và điều khiển lượng. Tắt một giai đoạn sẽ vô hiệu hóa thanh trượt lượng của nó.",
+            "Khuếch tán Chụp thay đổi giai đoạn máy ảnh được mô phỏng. Lóa sáng in và Tiền chớp in thuộc giai đoạn in và không có sẵn cho quét slide trực tiếp."
+          ],
+          "steps": [
+            "Chọn phim và quy trình Đầu ra trước khi tinh chỉnh các điều khiển của giai đoạn.",
+            "Thay đổi từng bước một và so sánh kết quả.",
+            "Dùng hộp kiểm của từng giai đoạn để so sánh phần đóng góp của nó mà không thay thế phim đã chọn."
+          ]
+        },
+        {
+          "title": "Điều khiển quét",
+          "paragraphs": [
+            "Độ mềm của quét thêm độ mờ ống kính cho quy trình đầu ra đã chọn. Độ sắc của quét điều chỉnh tỷ lệ tăng độ sắc nét của quy trình đó; tính năng tăng độ sắc của quét bật hoặc tắt nó.",
+            "Đây là các điều chỉnh đối với quy trình đầu ra được mô phỏng, không phải lựa chọn của các thương hiệu máy quét đã đo. Hãy đánh giá kết cấu mịn và độ sắc nét bằng chi tiết xem trước 1:1 hoàn chỉnh."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Chọn và xem trước một phim",
+      "category": "Film",
+      "summary": "Bật quy trình làm việc phim vật lý và so sánh các phim bằng chính ảnh của bạn.",
+      "keywords": [
+        "phim",
+        "phim",
+        "mô phỏng",
+        "mô phỏng phim chân thực",
+        "âm bản",
+        "trượt",
+        "duyệt",
+        "bản xem trước",
+        "thiết lập sẵn",
+        "tắt film"
+      ],
+      "sections": [
+        {
+          "title": "Bắt đầu với một phim",
+          "paragraphs": [
+            "Phim áp dụng một quy trình phim và đầu ra được mô phỏng cho một ảnh tĩnh. Công tắc profile Phim điều khiển quá trình xử lý này; các điều chỉnh Chỉnh sửa của bạn vẫn hoạt động khi bạn tắt Phim."
+          ],
+          "steps": [
+            "Mở một ảnh tĩnh và chọn Phim trong thanh công cụ để mở Mô phỏng Phim Chân thực.",
+            "Bật công tắc hồ sơ Film. Các giai đoạn phim vật lý sẽ mở tự động; sau đó bạn có thể thu gọn nó.",
+            "Chọn Phim, hoặc nhấp Xem trước phim trên ảnh này… để so sánh các ví dụ đã kết xuất.",
+            "Tìm một tên phim, dùng Previous hoặc Next để duyệt, rồi chọn một bản xem trước để áp dụng nó."
+          ]
+        },
+        {
+          "title": "Nội dung bao gồm trong bản xem trước",
+          "paragraphs": [
+            "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
+            "Một film stock mô tả quy trình phim vật lý. Một preset chỉnh sửa có thể chứa các điều chỉnh đã lưu rộng hơn, và cũng có thể bao gồm các thiết lập Film. Menu Output bên trong Film chọn một recipe quét hoặc in; nó không xuất tệp.",
+            "Sau khi bạn bật Phim, một bản xem trước nhanh có thể xuất hiện trước khi chi tiết RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất và biến mất khi bản xem trước hiển thị. Chi tiết RAW chính xác và kết xuất độ phân giải đầy đủ tiếp tục chạy trong nền."
+          ],
+          "tips": [
+            "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "film-reference-match",
+      "title": "So sánh với một ảnh tham chiếu",
+      "category": "Film",
+      "summary": "Căn chỉnh bản quét hoặc ảnh tham chiếu khác, đo độ khác biệt, và áp dụng một khớp ban đầu.",
+      "keywords": [
+        "tham chiếu",
+        "khớp",
+        "quét",
+        "hiệu chỉnh",
+        "lớp phủ",
+        "tách",
+        "độ mờ",
+        "đo lường",
+        "khớp màu"
+      ],
+      "sections": [
+        {
+          "title": "Tải và căn chỉnh",
+          "paragraphs": [
+            "Khớp tham chiếu nằm trong Mô phỏng phim chân thực, được mở bằng Film trong thanh công cụ. Hãy dùng một ảnh tham chiếu có nội dung hình ảnh tương ứng để việc căn chỉnh và so sánh có ý nghĩa."
+          ],
+          "steps": [
+            "Mở rộng Khớp tham chiếu và chọn một ảnh tham chiếu.",
+            "Chọn Lớp phủ hoặc Tách, rồi đặt Độ mờ / tách.",
+            "Dùng Tỷ lệ, Ngang và Dọc để căn chỉnh ảnh tham chiếu với ảnh của bạn.",
+            "Nhấp Measure để xem xét phép so sánh, hoặc Starting match để áp dụng một điều chỉnh ban đầu."
+          ]
+        },
+        {
+          "title": "Starting match thay đổi điều gì",
+          "paragraphs": [
+            "Bắt đầu khớp sẽ tắt đo sáng cảnh tự động và điều chỉnh Camera EV. Với ảnh RAW, nó cũng đặt cân bằng trắng chụp tùy chỉnh; với ảnh đã xử lý, nó điều chỉnh lọc in vàng và đỏ tươi.",
+            "Đây là một điều chỉnh ban đầu dựa trên thống kê ảnh đã đo, không phải là sự bảo đảm khớp chính xác với phim hay màu sắc. Xem lại ảnh sau khi áp dụng và dùng Undo nếu cần. Clear xóa lớp phủ tham chiếu."
+          ],
+          "tips": [
+            "Nút mục tiêu hiệu chỉnh tải xuống một hình ảnh bạn có thể dùng trong quy trình tham chiếu."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Đặt phơi sáng phim và xử lý ảnh",
+      "category": "Film",
+      "summary": "Hiểu EV của máy ảnh, cân bằng trắng khi chụp, đo sáng và các điều khiển phát triển.",
+      "keywords": [
+        "phơi sáng",
+        "EV của máy ảnh",
+        "đo sáng",
+        "cân bằng trắng",
+        "nhiệt độ",
+        "sắc thái",
+        "phát triển",
+        "tương phản",
+        "xác thực",
+        "sáng tạo"
+      ],
+      "sections": [
+        {
+          "title": "Các điều khiển chụp và điều khiển hoàn thiện",
+          "paragraphs": [
+            "EV của Máy ảnh và cân bằng trắng Chụp tác động trước phơi sáng phim. Phơi sáng và Temp/Tint trong bảng Chỉnh sửa là các điều chỉnh hoàn thiện ở giai đoạn sau của quy trình.",
+            "Cân bằng trắng chụp yêu cầu một bản gốc RAW. Với JPEG, HEIF, TIFF hoặc tệp đã xử lý khác, dùng Chỉnh sửa Temp/Tint."
+          ],
+          "steps": [
+            "Bật Phim, chọn một phim, và điều chỉnh EV Máy ảnh.",
+            "Giữ bật Meter scene automatically để đo sáng cảnh tự động, hoặc tắt nó để tự đặt phơi sáng chụp.",
+            "Mở rộng Capture & processing để chọn As shot, Daylight, Tungsten, hoặc Custom cho cân bằng trắng chụp của một ảnh RAW.",
+            "Với Tùy chỉnh, điều chỉnh Nhiệt độ và Sắc thái chụp."
+          ]
+        },
+        {
+          "title": "Phát triển và các mặc định được liên kết",
+          "paragraphs": [
+            "Development chỉ xuất hiện khi hồ sơ phim được chọn cung cấp thời gian phát triển. Print development phụ thuộc vào giấy đã chọn và bị ẩn đối với phim slide. Development contrast là một điều khiển phim riêng.",
+            "Authentic dùng các mặc định vật lý được liên kết, bao gồm giấy được khuyến nghị của phim khi giấy đang mở khóa. Creative giữ các ghi đè giấy khi tương thích. Việc thay đổi phim vẫn có thể chọn thời gian phát triển và phơi sáng mặc định của phim đó; hãy so sánh kết quả sau khi thay đổi một phim."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Làm việc với âm bản phim, giấy và slide",
+      "category": "Film",
+      "summary": "Chọn một quy trình in cho phim âm bản và hiểu vì sao các điều khiển in biến mất đối với phim slide.",
+      "keywords": [
+        "âm bản",
+        "dương bản",
+        "đảo ngược",
+        "trượt",
+        "độ trong suốt",
+        "giấy",
+        "in",
+        "đầu ra",
+        "khóa giấy",
+        "lọc",
+        "tiền chớp"
+      ],
+      "sections": [
+        {
+          "title": "Phim âm bản và giấy",
+          "paragraphs": [
+            "Phim âm dùng quy trình từ phim sang bản in. Các lựa chọn Giấy bị giới hạn ở những profile tương thích với mô hình kênh màu hoặc đơn sắc của phim đã chọn.",
+            "Dùng Print exposure để điều chỉnh giai đoạn in. Trong Capture & processing, hãy chọn Paper và bật Lock paper when stock changes nếu bạn muốn giữ một giấy tương thích khi thử các phim khác. Một giấy không tương thích vẫn phải được thay thế."
+          ],
+          "steps": [
+            "Chọn một phim âm bản trong Film.",
+            "Chọn một quy trình đầu ra: Quét sạch, Quét in trung tính hoặc Bản in quang học mềm.",
+            "Mở rộng Chụp & xử lý để chọn Giấy và bất kỳ thời gian phát triển In nào khả dụng.",
+            "Trong Các giai đoạn phim vật lý, điều chỉnh Lóe sáng khi in, Tiền chớp in, Bộ lọc Vàng và Bộ lọc tím hồng. Mở lại phần này nếu bạn đã thu gọn nó."
+          ]
+        },
+        {
+          "title": "Phim trượt được quét trực tiếp",
+          "paragraphs": [
+            "Phim dương bản hoặc phim đảo màu dùng quét ảnh trong suốt trực tiếp, không có giai đoạn âm bản sang giấy. Paper, print exposure, print development, và các điều khiển chỉ dành cho in khác đều bị ẩn đối với các phim này.",
+            "Các quy trình đầu ra là các điểm bắt đầu được mô phỏng cho độ mềm của quét, tăng độ sắc nét, và hiệu ứng in nếu có áp dụng. Chúng không phải là các mô phỏng đã đo của những máy quét thương mại cụ thể."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ],
+      "categoryLabel": "Phim"
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Chọn kích thước, định dạng và không gian màu xuất",
+      "category": "Export",
+      "summary": "Dùng các thiết lập sẵn xuất và hiểu độ sâu bit, thay đổi kích thước, cùng các giới hạn gamut màu hiện tại.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bit",
+        "srgb",
+        "P3",
+        "prophoto",
+        "icc",
+        "chất lượng",
+        "kích thước đầy đủ",
+        "độ phân giải",
+        "thiết lập sẵn"
+      ],
+      "sections": [
+        {
+          "title": "Định dạng và thiết lập sẵn",
+          "paragraphs": [
+            "Hộp thoại xuất cung cấp JPEG, HEIF, PNG, và TIFF 16-bit. HEIF là tùy chọn đầu ra 8-bit trên macOS. Thanh trượt chất lượng áp dụng cho JPEG và HEIF.",
+            "JPG (Large) dùng JPEG kích thước đầy đủ ở chất lượng 92 trong sRGB. JPG (Small) dùng cạnh dài 2048 pixel ở chất lượng 90 trong sRGB. TIFF 16-bit dùng kích thước đầy đủ và ProPhoto RGB. Thay đổi các thiết lập này sẽ chọn Custom."
+          ],
+          "steps": [
+            "Mở Xuất và chọn một thiết lập sẵn ở phía trên.",
+            "Đặt Kích thước thành cỡ Đầy đủ hoặc giới hạn cạnh dài.",
+            "Kiểm tra Output preview: kích thước xuất phản ánh xoay và cắt xén, và giới hạn cạnh dài sẽ giảm kích thước ảnh lớn hơn mà không phóng to ảnh nhỏ hơn."
+          ]
+        },
+        {
+          "title": "Giới hạn không gian màu",
+          "paragraphs": [
+            "Mỗi lần xuất đều nhúng hồ sơ ICC đã chọn. Chọn sRGB, Display P3 hoặc ProPhoto RGB trong Colour space.",
+            "Các lần xuất Phát triển gamut rộng giữ nguyên màu sắc nguồn khi màu sắc và điều chỉnh cục bộ đang tắt. Kết xuất Phim và các lần xuất Phát triển đã điều chỉnh bị giới hạn ở màu sắc sRGB. Mã hóa một trong các kết quả đó trong P3 hoặc ProPhoto không khôi phục được các màu đã bị giới hạn bởi kết xuất."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Kiểm soát siêu dữ liệu xuất, sidecar và dấu thời gian",
+      "category": "Export",
+      "summary": "Chọn quyền riêng tư của siêu dữ liệu, các tệp quy trình tùy chọn và cách xử lý thời điểm chụp.",
+      "keywords": [
+        "siêu dữ liệu",
+        "quyền riêng tư",
+        "gps",
+        "vị trí",
+        "bản quyền",
+        "sidecar",
+        "quy trình",
+        "dấu thời gian",
+        "ngày",
+        "múi giờ",
+        "thời gian chụp"
+      ],
+      "sections": [
+        {
+          "title": "Siêu dữ liệu và tệp quy trình",
+          "paragraphs": [
+            "Export → Advanced cung cấp All except location, All metadata, Copyright only, và No metadata. Lựa chọn metadata ban đầu là All except location.",
+            "Điều khiển recipe sidecar xác định việc LightTable có ghi recipe bên cạnh bản xuất đã render hay không. Tùy chọn này tách biệt với các tùy chọn chỉnh sửa di động và XMP sidecar cho ảnh gốc trong Settings → Files & Metadata."
+          ],
+          "steps": [
+            "Mở Nâng cao trong Xuất.",
+            "Chọn chính sách Siêu dữ liệu phù hợp với các tệp bạn sẽ chia sẻ.",
+            "Chọn có ghi một sidecar Quy trình bên cạnh mỗi ảnh đã xuất hay không."
+          ]
+        },
+        {
+          "title": "Dấu thời gian của tệp",
+          "paragraphs": [
+            "Dấu thời gian của tệp có thể dùng thời điểm xuất hoặc thời điểm chụp ban đầu. Nếu thiếu múi giờ chụp, mặc định là giữ thời gian xuất và báo cảnh báo. Bạn cũng có thể chọn diễn giải nó theo múi giờ địa phương của máy tính này.",
+            "Thiếu hoặc không hợp lệ thời gian chụp cũng có thể khiến dấu thời gian xuất không thay đổi. Kiểm tra Export details để xem cảnh báo được báo. Dấu thời gian của hệ thống tệp của một tệp tách biệt với chính sách siêu dữ liệu đã chọn ở trên."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "external-editor",
+      "title": "Chỉnh sửa ảnh trong ứng dụng khác",
+      "category": "Export",
+      "summary": "Gửi một TIFF đã điều chỉnh sang trình chỉnh sửa khác và đặt kiểu mặc định cùng xếp chồng.",
+      "keywords": [
+        "ngoài",
+        "trình chỉnh sửa",
+        "photoshop",
+        "độ tương hợp",
+        "chỉnh sửa trong",
+        "tiff",
+        "chuyển qua lại",
+        "biến thể",
+        "ngăn xếp"
+      ],
+      "sections": [
+        {
+          "title": "Mở trình chỉnh sửa ngoài",
+          "paragraphs": [
+            "Dùng Chỉnh sửa trong… để chuẩn bị ảnh cho một trình chỉnh sửa pixel khác. TIFF đã chỉnh sửa sẽ được ghi bên cạnh ảnh gốc và có thể được xếp ngăn xếp cùng nó trong danh mục."
+          ],
+          "steps": [
+            "Chọn một ảnh và nhấn Command/Ctrl+E để mở Chỉnh sửa trong ứng dụng khác.",
+            "Chọn Ứng dụng.",
+            "Chọn TIFF với các điều chỉnh hiện tại, rồi đặt không gian màu TIFF và độ sâu bit TIFF.",
+            "Chọn có ghép file đã render với bản gốc hay không.",
+            "Nhấp Chỉnh sửa và chờ kết xuất hoàn tất trước khi làm việc trong ứng dụng khác."
+          ]
+        },
+        {
+          "title": "Tệp RAW và mặc định",
+          "paragraphs": [
+            "Ảnh gốc RAW phải được render thành TIFF đã chỉnh sửa. Original đã xử lý không khả dụng nếu vùng chọn chứa một tệp RAW. Với ảnh đã xử lý, tùy chọn đó sẽ mở ảnh gốc thay vì chuẩn bị một TIFF đã chỉnh sửa.",
+            "Đặt ứng dụng mặc định, không gian màu, độ sâu bit, và hành vi xếp ngăn xếp trong Cài đặt → Chỉnh sửa ngoài. TIFF đã chỉnh sửa có thể dùng 16 hoặc 8 bit và ProPhoto RGB, Display P3, hoặc sRGB."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "export-photos",
+      "title": "Xuất các ảnh đã chọn",
+      "category": "Export",
+      "summary": "Chọn chính xác những ảnh nào sẽ xuất, xem trước đầu ra và theo dõi tiến trình.",
+      "keywords": [
+        "xuất",
+        "lưu",
+        "jpeg",
+        "jpg",
+        "tải xuống",
+        "vùng chọn",
+        "đã chọn",
+        "đã gắn sao",
+        "lô",
+        "hủy",
+        "tiến trình"
+      ],
+      "sections": [
+        {
+          "title": "Tạo một lần xuất",
+          "paragraphs": [
+            "Xuất tạo các tệp đầu ra đã dựng từ các chỉnh sửa ảnh của bạn. Dùng Selected photos khi bạn muốn giới hạn xuất cho một lựa chọn cụ thể."
+          ],
+          "steps": [
+            "Chọn các ảnh bạn muốn, rồi nhấp nút Xuất ảnh ở thanh trên cùng. Command/Ctrl+Shift+E cũng mở Xuất.",
+            "Kiểm tra trường Photos. Chọn Selected photos, Picked only, Rated 1+ hoặc All except rejected.",
+            "Chọn một thiết lập sẵn xuất hoặc đặt kiểu tệp, kích thước, chất lượng và không gian màu.",
+            "Đặt đích đến và kiểm tra bản xem trước đầu ra cho tên tệp, kích thước và đường dẫn.",
+            "Nhấp Xuất và theo dõi tiến trình trong thanh trên cùng."
+          ]
+        },
+        {
+          "title": "Kiểm tra biểu đồ và kết quả",
+          "paragraphs": [
+            "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
+            "Dùng Cancel export để yêu cầu dừng. Export details báo số lượng hoàn thành, bỏ qua và đã hủy, cùng với cảnh báo và lỗi; một cảnh báo có thể xuất hiện sau khi một ảnh đã được ghi thành công. Clip video không được render bởi quy trình xuất ảnh tĩnh."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "soft-proof",
+      "title": "Xem trước đầu ra với kiểm thử in mềm",
+      "category": "Export",
+      "summary": "Xem bản xem trước giấy mô phỏng hoặc màn hình mà không đưa nó vào ảnh đã xuất.",
+      "keywords": [
+        "hiệu chỉnh mềm",
+        "kiểm thử in",
+        "gamut",
+        "giấy",
+        "mực",
+        "mờ",
+        "bóng bẩy",
+        "in",
+        "P3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Bật hiệu chỉnh mềm",
+          "paragraphs": [
+            "Các điều khiển soft-proof nằm trong tùy chọn Xem của trình xem (•••). Chúng cho phép bạn kiểm tra bản xem trước đầu ra trong khi chỉnh sửa."
+          ],
+          "steps": [
+            "Mở tùy chọn Xem (•••) bên dưới trình xem.",
+            "Bật hồ sơ đầu ra xem trước.",
+            "Chọn hiển thị sRGB, hiển thị Display P3, giấy mờ, hoặc giấy bóng.",
+            "Với mục tiêu in trên giấy, chọn có Simulate paper and ink hay không. Bật Show out-of-gamut warning khi cần.",
+            "Dùng nút Bật Soft Proof trên thanh công cụ trình xem để tắt bản xem trước."
+          ]
+        },
+        {
+          "title": "Diễn giải bản xem trước",
+          "paragraphs": [
+            "Matte và Gloss trong giao diện này là bản xem trước giấy được mô phỏng; chúng không phải là lựa chọn cho hồ sơ ICC đã đo của máy in. Hãy xem bản xem trước như hướng dẫn khi so sánh độ tương phản và màu sắc.",
+            "Soft proof là một trạng thái xem. Chọn riêng không gian Colour thực tế của tệp trong Export."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Đặt thư mục xuất và tên tệp",
+      "category": "Export",
+      "summary": "Chọn bố cục đích và quyết định điều gì xảy ra khi tên tệp đã tồn tại.",
+      "keywords": [
+        "đích đến",
+        "thư mục",
+        "đường dẫn",
+        "tên tệp",
+        "đổi tên",
+        "ghi đè",
+        "bỏ qua",
+        "xung đột",
+        "phân cấp",
+        "chuỗi",
+        "mẫu"
+      ],
+      "sections": [
+        {
+          "title": "Bố cục đích đến",
+          "paragraphs": [
+            "Một thư mục đích duy nhất sẽ gửi bản xuất đến thư mục đã chọn. Subfolder beside each original sử dụng tên thư mục con tương đối cho từng ảnh nguồn. Keep source folder hierarchy giữ nguyên tổ chức thư mục nguồn bên dưới đích xuất."
+          ],
+          "steps": [
+            "Mở Xuất và chọn bố cục Đích.",
+            "Dùng Choose… cho thư mục đích, hoặc nhập tên thư mục con như film-exports cho Subfolder bên cạnh mỗi bản gốc.",
+            "Mở rộng Nâng cao và chỉnh sửa mẫu Tên tệp.",
+            "Kiểm tra tên tệp và đích đến hiển thị trong bản xem trước đầu ra trước khi xuất."
+          ]
+        },
+        {
+          "title": "Tên và tệp hiện có",
+          "paragraphs": [
+            "Mẫu tên tệp hỗ trợ {filename}, {stock}, {date}, {rating}, và {sequence}. Ví dụ, {filename}_{stock} bao gồm tên nguồn và phim.",
+            "Giữ cả hai · thêm một số sẽ tạo một tên tệp khác, chẳng hạn như một tên kết thúc bằng -2. Bỏ qua mục đã tồn tại sẽ để nguyên các tên đang bị chiếm. Ghi đè thay thế đầu ra hiện có tại đường dẫn đã chọn. Hãy dùng bản xem trước đầu ra để xác nhận đích đến trước khi chọn Ghi đè."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Xuất"
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Thay đổi tùy chọn và mặc định ảnh mới",
+      "category": "Settings",
+      "summary": "Điều chỉnh giao diện, hành vi lọc ảnh, chỉnh sửa di động và các chỉnh sửa khởi đầu cho ảnh mới.",
+      "keywords": [
+        "cài đặt",
+        "tùy chọn",
+        "mặc định",
+        "máy ảnh",
+        "raw",
+        "số sê-ri",
+        "iso",
+        "phông chữ",
+        "nền",
+        "tắt đèn",
+        "thông báo",
+        "xmp",
+        "di động"
+      ],
+      "sections": [
+        {
+          "title": "Giao diện và hành vi",
+          "paragraphs": [
+            "Các thay đổi trong cài đặt được lưu tự động. Mục Chung điều khiển tự động chuyển ảnh sau khi chọn, từ chối hoặc xếp hạng, thông báo hoàn tất và kiểm tra cập nhật.",
+            "Các điều khiển giao diện gồm nền trình xem, thang phông chữ, Lights Out, lớp phủ thông tin loupe và hướng dẫn cắt xén. Các tùy chọn này thay đổi giao diện không gian làm việc mà không làm thay đổi pixel đã xuất.",
+            "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ."
+          ]
+        },
+        {
+          "title": "Mặc định cho ảnh chưa chỉnh sửa",
+          "paragraphs": [
+            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định."
+          ],
+          "steps": [
+            "Mở Cài đặt → Mặc định chỉnh sửa.",
+            "Chọn Phim, quy trình, hồ sơ, và thiết lập sẵn bắt đầu.",
+            "Để đặt mặc định RAW theo từng máy ảnh, hãy mở một ảnh RAW và điều chỉnh cài đặt RAW của nó.",
+            "Chọn khớp theo kiểu máy ảnh, số sê-ri, hoặc camera and ISO, rồi nhấp Use current RAW settings.",
+            "Dùng Đặt lại trong vùng Máy ảnh hiện tại để xóa mặc định của máy ảnh đó."
+          ]
+        }
+      ],
+      "related": [
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Cài đặt"
+    },
+    {
+      "id": "photo-index",
+      "title": "Bật tìm kiếm nội dung ảnh riêng tư",
+      "category": "Settings",
+      "summary": "Xây dựng chỉ mục trên thiết bị cho đối tượng, cảnh, văn bản hiển thị, và khuôn mặt.",
+      "keywords": [
+        "ai",
+        "tìm kiếm",
+        "chỉ mục",
+        "nội dung",
+        "đối tượng",
+        "cảnh",
+        "ocr",
+        "văn bản",
+        "khuôn mặt",
+        "quyền riêng tư",
+        "cục bộ",
+        "mô tả"
+      ],
+      "sections": [
+        {
+          "title": "Xây dựng chỉ mục",
+          "paragraphs": [
+            "Photo Index mặc định là tắt. Phân tích chỉ ở trên máy Mac này và không sửa đổi các thư mục ảnh. Apple Vision cung cấp phân tích cốt lõi; mô tả Foundation Models phong phú hơn chỉ xuất hiện khi khả năng đó có sẵn."
+          ],
+          "steps": [
+            "Mở Cài đặt → Chỉ mục ảnh.",
+            "Kiểm tra trạng thái khả năng trên thiết bị và bật chỉ mục nội dung ảnh.",
+            "Chờ tiến trình lập chỉ mục hoàn tất. Ảnh có thể có thêm kết quả khi chúng được lập chỉ mục.",
+            "Dùng trường tìm kiếm của thư viện để tìm nội dung ảnh, văn bản hiển thị hoặc khuôn mặt bên cạnh tên tệp và từ khóa.",
+            "Mở Info → On-device description để kiểm tra các thẻ đã tạo, văn bản hiển thị và số lượng khuôn mặt của ảnh hiện tại."
+          ]
+        },
+        {
+          "title": "Tạm dừng, xây dựng lại hoặc xóa",
+          "paragraphs": [
+            "Tắt index sẽ tạm dừng phân tích và xóa kết quả được tạo ra khỏi chế độ xem tìm kiếm đang hoạt động; dữ liệu chỉ mục hiện có vẫn ở cục bộ cho đến khi bị xóa. Rebuild index chạy lại lập chỉ mục khi tính năng được bật.",
+            "Xóa chỉ mục sẽ xóa dữ liệu chỉ mục đã tạo sau khi xác nhận. Bản gốc và các chỉnh sửa đã lưu không thay đổi. Nếu Apple Vision báo Cần xây dựng, bản cài đặt hiện tại không có trình phân tích cục bộ cần thiết. Mô hình nền tảng có thể không khả dụng trong khi việc lập chỉ mục Vision cơ bản vẫn dùng được."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Cài đặt"
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Xem lại các gợi ý lọc ảnh có hỗ trợ",
+      "category": "Settings",
+      "summary": "Xem xét các tín hiệu phân tích cục bộ và chỉ áp dụng cờ chọn hoặc từ chối khi bạn muốn.",
+      "keywords": [
+        "lọc",
+        "lọc ảnh",
+        "ai",
+        "đã chọn",
+        "đã từ chối",
+        "độ sắc nét",
+        "mắt",
+        "chụp lỗi",
+        "tài liệu",
+        "xem lại",
+        "cờ"
+      ],
+      "sections": [
+        {
+          "title": "Xem lại tín hiệu",
+          "paragraphs": [
+            "Lọc ảnh có trợ giúp sử dụng Photo Index riêng tư. Nó không gắn cờ ảnh cho đến khi bạn yêu cầu. Một ảnh khớp với một nhóm nếu bất kỳ tiêu chí nào bạn chọn trả lời có; chưa được đánh giá nghĩa là tín hiệu đó không có phán quyết hữu ích."
+          ],
+          "steps": [
+            "Bật Photo Index trong Cài đặt và chờ ảnh được chấm điểm.",
+            "Mở rộng Lọc ảnh có hỗ trợ trong thanh bên thư viện.",
+            "Chọn tiêu chí Select như độ sắc nét Subject, độ sắc nét Eye, hoặc Eyes open, hoặc tiêu chí Reject như sự cố phơi sáng, bắn hụt, hoặc Documents.",
+            "Dùng Đã chọn, Đã từ chối, hoặc Tất cả để xem lại các ảnh khớp.",
+            "Kiểm tra các gợi ý, rồi dùng Pick selects hoặc Reject rejects nếu bạn muốn áp dụng các cờ đó."
+          ]
+        },
+        {
+          "title": "Đang áp dụng cờ",
+          "paragraphs": [
+            "Hộp xác nhận hiển thị số lượng bị ảnh hưởng và cảnh báo rằng các cờ hiện có trên ảnh khớp sẽ bị thay thế. Siêu dữ liệu RAW/JPEG được liên kết cũng có thể bao gồm tệp ghép cặp khi tùy chọn đó được bật.",
+            "Đây là các tín hiệu phân tích cho việc xem lại của bạn, không phải phán quyết cuối cùng về ảnh nào nên giữ. Từ chối chỉ đặt một cờ; bản thân nó không di chuyển ảnh gốc vào Thùng rác."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Cài đặt"
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Sử dụng phím tắt và điều khiển MIDI",
+      "category": "Settings",
+      "summary": "Tìm phím tắt, chọn một sơ đồ bàn phím và ánh xạ bộ điều khiển phần cứng ở nơi Web MIDI khả dụng.",
+      "keywords": [
+        "bàn phím",
+        "phím tắt",
+        "phím tắt",
+        "MIDI",
+        "núm xoay",
+        "thanh trượt",
+        "bộ điều khiển",
+        "phím tắt",
+        "tự động hóa",
+        "cổ điển",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Tùy chọn bàn phím",
+          "paragraphs": [
+            "Cài đặt → Phím tắt & Phần cứng chứa sơ đồ phím tắt và tài liệu tham chiếu bàn phím trong phần Điều khiển bàn phím và MIDI. Menu Trợ giúp trên máy tính để bàn cũng có Phím tắt bàn phím.",
+            "Chọn LightTable hoặc Classic; scheme sẽ áp dụng sau khi tải lại. Điều khiển thanh trượt giữ phím cho phép bạn giữ một phím được ánh xạ trong khi cuộn hoặc dùng phím mũi tên. Allow automation xác định liệu các công cụ cục bộ đã được phê duyệt có thể điều khiển cửa sổ bằng lịch sử và Undo hay không."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E mở Xuất; Command/Ctrl+E mở chỉnh sửa ngoài. Các trường văn bản giữ hành vi gõ thông thường, vì vậy hãy rời khỏi một trường văn bản trước khi dùng các phím tắt chỉnh sửa không sửa đổi."
+          ]
+        },
+        {
+          "title": "Ánh xạ MIDI",
+          "paragraphs": [
+            "Hỗ trợ MIDI phụ thuộc vào Web MIDI API trong runtime hiện tại. Trạng thái có thể hiển thị Unavailable, Off, No devices, hoặc số lượng thiết bị đã kết nối. Unavailable nghĩa là runtime này không thể dùng các điều khiển MIDI."
+          ],
+          "steps": [
+            "Kết nối một bộ điều khiển MIDI gửi thông điệp Control Change.",
+            "Khi MIDI khả dụng, mở các điều khiển Bàn phím và MIDI và chọn MIDI Learn.",
+            "Nhấp vào thanh trượt điều chỉnh bạn muốn ánh xạ, rồi xoay một núm xoay hoặc di chuyển một thanh trượt.",
+            "Kiểm tra thông báo ánh xạ, rồi dùng điều khiển phần cứng để điều chỉnh thanh trượt.",
+            "Dùng Đặt lại MIDI để khôi phục các ánh xạ mặc định."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ],
+      "categoryLabel": "Cài đặt"
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Sao lưu danh mục và khắc phục sự cố khôi phục",
+      "category": "Troubleshooting",
+      "summary": "Dùng các bản sao lưu danh mục đã xác minh, Library Health và chẩn đoán máy tính để bàn khi có sự cố.",
+      "keywords": [
+        "danh mục",
+        "sao lưu",
+        "khôi phục",
+        "khôi phục",
+        "bị hư hỏng",
+        "bị hỏng",
+        "crash",
+        "thiếu",
+        "chế độ an toàn",
+        "chẩn đoán",
+        "log",
+        "sửa chữa"
+      ],
+      "sections": [
+        {
+          "title": "Sao lưu và kiểm tra",
+          "paragraphs": [
+            "Cài đặt → Danh mục hiển thị vị trí danh mục và tùy chọn sao lưu. Bản sao lưu bao gồm tổ chức danh mục, chỉnh sửa, mặt nạ đã lưu, lịch sử và các biến thể. Hãy sao lưu riêng ảnh gốc, thiết lập sẵn và hồ sơ bên ngoài, cùng với tùy chọn."
+          ],
+          "steps": [
+            "Chọn khoảng thời gian sao lưu Tự động và vị trí Sao lưu.",
+            "Nhấp Sao lưu ngay và kiểm tra kết quả bản sao lưu Đã xác minh.",
+            "Mở Library Health… để kiểm tra cấu trúc danh mục, tệp bị thiếu và thông tin khôi phục.",
+            "Dùng Check now để chạy các kiểm tra danh mục có sẵn. Các mục tệp bị thiếu vẫn được giữ cùng các chỉnh sửa của chúng."
+          ]
+        },
+        {
+          "title": "Hiểu các lựa chọn khôi phục",
+          "paragraphs": [
+            "Khôi phục một bản sao lưu sẽ trả dữ liệu danh mục về trạng thái của bản sao lưu đó, nên các chỉnh sửa sau đó sẽ không có trong đó. Khi một danh mục đang làm việc được khôi phục, danh mục hiện tại sẽ được sao lưu trước.",
+            "Đối với danh mục bị hư hỏng, Tình trạng thư viện có thể cung cấp salvage, restore hoặc một danh mục mới. Salvage sao chép các hàng đọc được nhưng mất các hàng trên những trang bị hư hỏng. Bắt đầu lại từ đầu sẽ không mang theo xếp hạng, chỉnh sửa, bộ sưu tập hoặc lịch sử. Tệp danh mục bị hư hỏng hiện tại được giữ lại trong Recovery."
+          ]
+        },
+        {
+          "title": "Chẩn đoán máy tính để bàn",
+          "paragraphs": [
+            "Trên macOS, Help → Diagnostics cung cấp Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, và Restart in Safe Mode.",
+            "Safe Mode tắt quét, thư mục được theo dõi, AI cục bộ và khởi động công cụ. Dùng Restart Rendering Service để quay lại hoạt động bình thường. Nếu vấn đề vẫn còn, hãy đính kèm lỗi hiển thị và các chi tiết nhật ký máy chủ liên quan khi báo cáo."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ],
+      "categoryLabel": "Khắc phục sự cố"
+    },
+    {
+      "id": "performance-previews",
+      "title": "Cải thiện tốc độ xem trước và kiểm tra chi tiết ảnh",
+      "category": "Troubleshooting",
+      "summary": "Hãy để các bản xem trước thích ứng với chế độ xem của bạn, kiểm tra chi tiết thực, và quản lý các bộ nhớ đệm đã tạo.",
+      "keywords": [
+        "hiệu năng",
+        "chậm",
+        "mờ nhòe",
+        "bị vỡ điểm ảnh",
+        "bản xem trước",
+        "độ phân giải",
+        "100%",
+        "1:1",
+        "gpu",
+        "gỉ sét",
+        "python",
+        "bộ nhớ đệm",
+        "dọn sạch"
+      ],
+      "sections": [
+        {
+          "title": "Kiểm tra những gì đã kết xuất xong",
+          "paragraphs": [
+            "Thiết lập thu phóng 100% không đảm bảo rằng toàn bộ chi tiết ảnh đã đến. Một bản xem trước nhanh có thể xuất hiện trước trong khi xử lý RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất, với số như 2 / 5. Nó biến mất ngay khi một bản xem trước dùng được được hiển thị; xử lý RAW chính xác và các bản xem trước lớn hơn tiếp tục chạy trong nền mà không có lớp phủ. Con số biểu thị các giai đoạn đã hoàn thành, không phải thời gian còn lại. Chế độ giảm chuyển động vẫn giữ nguyên các cập nhật giai đoạn nhưng không có hoạt ảnh. Ảnh vẫn hiển thị mà không bị làm mờ. Ở 1:1, rê chuột lên nút 1:1 để kiểm tra xem chi tiết nguồn đầy đủ đã sẵn sàng trước khi đánh giá chi tiết nhỏ hay chưa.",
+            "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
+            "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau."
+          ],
+          "steps": [
+            "Mở Cài đặt → Hiệu năng.",
+            "Giữ chi tiết bản xem trước tự động cho chỉnh sửa bình thường. Nó theo kích thước cửa sổ, mật độ hiển thị, cắt xén và thu phóng mà không cần chọn kích thước pixel.",
+            "Dùng GPU · Rust khi có sẵn. Compatible · Python là một công cụ phim thay thế, nhưng một số phim yêu cầu Rust.",
+            "Đánh giá độ sắc nét, khử nhiễu và hạt phim ở 1:1 sau khi chi tiết đã ổn định."
+          ]
+        },
+        {
+          "title": "Ghi đè bản xem trước Nâng cao",
+          "paragraphs": [
+            "Cài đặt → Hiệu năng → Nâng cao chứa Ghi đè độ phân giải bản xem trước. Tự động (khuyến nghị) điều chỉnh bản xem trước theo chế độ xem của bạn. Một độ phân giải cố định có thể giảm xử lý, nhưng có thể trông mềm hơn; thu phóng 100% vẫn yêu cầu chi tiết nguồn, tùy thuộc vào giới hạn bản xem trước. Kích thước xuất được đặt riêng.",
+            "Các lựa chọn chiều rộng bản xem trước đã lưu cũ sẽ được đặt lại thành Tự động khi nâng cấp lên hành vi này. Một ghi đè cố định được chọn trong Nâng cao sẽ được lưu cho các phiên sau. Hiệu năng sẽ hiển thị khi một ghi đè thủ công đang hoạt động."
+          ],
+          "steps": [
+            "Mở Cài đặt → Hiệu năng và mở rộng Nâng cao.",
+            "Chỉ chọn ghi đè Độ phân giải bản xem trước cố định nếu cần cho hiệu năng hoặc khắc phục sự cố.",
+            "Chọn Tự động (khuyến nghị) để quay lại các bản xem trước bám theo chế độ xem của bạn."
+          ]
+        },
+        {
+          "title": "Quản lý dung lượng bộ nhớ đệm",
+          "paragraphs": [
+            "Performance hiển thị vị trí bộ nhớ đệm xem trước, mức sử dụng và dung lượng cho phép. Purge cache xóa các bản xem trước đã tạo và bộ nhớ đệm render sau khi xác nhận; ảnh gốc và các chỉnh sửa không bị ảnh hưởng. Bản xem trước sẽ cần được tạo lại.",
+            "Độ phân giải bản xem trước tách biệt với cài đặt Kích thước được dùng cho các tệp đã xuất."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Khắc phục sự cố"
+    }
+  ],
+  "locale": "vi"
+}

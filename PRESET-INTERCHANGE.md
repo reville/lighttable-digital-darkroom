@@ -217,6 +217,21 @@ against a different renderer. Sidecars can also be written back, opt-in, so a
 folder carries its own ratings, keywords, and rights to another machine or
 another editor.
 
+The library's **Import sidecars…** action reads metadata only, including
+supported pick/reject conventions. Flat keywords and hierarchical paths are
+retained together. An explicit empty field clears that value; an absent field
+does not. Custom color labels outside LightTable's palette are reported as
+skipped. If both sidecar naming conventions exist for one original, import and
+write-back report the ambiguity.
+
+Write-back merges changed fields, preserves unrelated metadata, retains the
+first sidecar backup, and checks for conflicting external changes since the
+last read or sync. Offline or failed writes remain queued. Representative
+Photo Mechanic and digiKam fixtures exercise these conventions; live round
+trips through those applications remain unverified. See the
+[XMP workflow](DIGITAL-ASSET-MANAGEMENT.md#exchange-metadata-through-xmp) and
+[fixture provenance](tests/fixtures/xmp/README.md).
+
 **Lightroom Classic catalogs.** A `.lrcat` is copied and opened read-only, so
 it can be imported while Lightroom is running, and every table and column is
 checked before it is read: a version that stores something differently produces
