@@ -183,6 +183,11 @@ The render order is **RAW decode → film (optional) → optical/healing correct
 The resident engine keeps its GPU device, image buffers, and pipelines warm;
 ordinary grade changes run in the live Metal preview or WebGL fallback.
 
+When switching photos while zoomed in, LightTable reuses an accurate cached
+preview with matching edits, then loads sharper detail in the background.
+Neighboring photos preload a small accurate preview before detail for the
+retained zoom level. A first uncached RAW conversion can still take a moment.
+
 On the [documented benchmark Mac](bench/results/responsiveness-2026-09-01.md),
 a warmed 1100 px film render had a median of **50.5 ms across 30 runs**.
 That measures the film stage for that workload, not total application latency.

@@ -3083,6 +3083,7 @@
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
             "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Als je ingezoomd van foto wisselt, toont LightTable direct een overeenkomend voorbeeld uit de cache, als dat beschikbaar is. Scherpere details worden op de achtergrond geladen en nabijgelegen foto’s worden vooraf geladen voor je zoomniveau.",
             "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
             "Verwijderen, Retoucheren, Kloon en maskers met aanpassingen voor Structuur, Helderheid, Witten, Zwartwaarden of Tooncurve hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat u hun details of het effect van latere aanpassingen beoordeelt.",
@@ -3137,5 +3138,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

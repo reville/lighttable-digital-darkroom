@@ -3083,6 +3083,7 @@
           "title": "Sprawdź, co zakończyło renderowanie",
           "paragraphs": [
             "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
+            "Podczas przełączania zdjęć w powiększeniu LightTable od razu pokazuje pasujący podgląd z pamięci podręcznej, jeśli jest dostępny. Ostrzejsze szczegóły wczytują się w tle, a sąsiednie zdjęcia są wstępnie wczytywane zgodnie z poziomem powiększenia.",
             "Powiększanie zachowuje najostrzejszy dostępny podgląd podczas wczytywania dodatkowych szczegółów. Przy pomniejszaniu ten podgląd jest używany ponownie. W skali 1:1 sprawdź podpowiedź przycisku przed oceną drobnych szczegółów.",
             "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
             "Usuń, Napraw, Klon i maski z korektami Tekstura, Przejrzystość, Światła, Cienie lub Krzywa tonalna wymagają dodatkowego odświeżenia podglądu. Poczekaj, aż podgląd się zakończy, zanim ocenisz szczegóły lub wpływ późniejszych korekt.",
@@ -3137,5 +3138,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

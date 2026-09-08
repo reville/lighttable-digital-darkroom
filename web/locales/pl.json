@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4084,7 +4084,8 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione"
+    "☆ Favorites": "☆ Ulubione",
+    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "Podczas przełączania zdjęć w powiększeniu LightTable od razu pokazuje pasujący podgląd z pamięci podręcznej, jeśli jest dostępny. Ostrzejsze szczegóły wczytują się w tle, a sąsiednie zdjęcia są wstępnie wczytywane zgodnie z poziomem powiększenia."
   },
   "plurals": {
     " · {count} paired file linked": {

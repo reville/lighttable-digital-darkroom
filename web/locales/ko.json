@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4084,7 +4084,8 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "확대한 상태에서 사진을 전환하면 LightTable은 일치하는 캐시 미리보기가 있을 경우 즉시 표시합니다. 더 선명한 디테일은 백그라운드에서 불러오며, 인접한 사진도 확대 수준에 맞춰 미리 불러옵니다."
   },
   "plurals": {
     " · {count} paired file linked": {
