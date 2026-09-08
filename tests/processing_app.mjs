@@ -73,6 +73,11 @@ try {
   await page.evaluate(async () => {
     const {GradeRenderer} = await import('/web/gl.js');
     const draw = GradeRenderer.prototype.draw;
+    const setImage = GradeRenderer.prototype.setImage;
+    GradeRenderer.prototype.setImage = function(image, ...args) {
+      this.processingSourceURL = image.currentSrc || image.src;
+      return setImage.call(this, image, ...args);
+    };
     window.processingFrames = 0;
     GradeRenderer.prototype.draw = function(...args) {
       draw.apply(this, args);
@@ -83,7 +88,8 @@ try {
       gl.readPixels(0, 0, this.canvas.width, this.canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
       if (gl.getError()) throw Error('App framebuffer readback failed');
       window.processingFrame = {width: this.canvas.width, height: this.canvas.height,
-        pixels: Array.from(pixels), grade: structuredClone(args[0]), frame:processingFrames + 1};
+        pixels: Array.from(pixels), grade: structuredClone(args[0]), frame:processingFrames + 1,
+        sourceURL: this.processingSourceURL};
       window.processingFrames++;
     };
   });
@@ -96,8 +102,12 @@ try {
   }, {path, body});
   for (const [index, test] of config.cases.entries()) {
     process.stdout.write(JSON.stringify({event:'case', name:test.name}) + '\n');
-    const name = test.photoName ? images.find(image => image.name.endsWith(test.photoName))?.name
-      : images[test.photo || 0].name;
+    // Catalog enumeration order varies with metadata availability. Select the
+    // named fixtures so the baseline always covers color detail and portrait
+    // navigation, and the delayed render targets the intended photo.
+    const filename = test.photoName || (test.photo === 1 ? 'b.png' : 'a.png');
+    const name = images.find(image => image.name === filename ||
+      image.name.endsWith(':' + filename))?.name;
     if (!name) throw Error('Missing fixture photo');
     await post('/api/ui/command', {command:'goto', args:{name}});
     await page.waitForFunction(name => __lightTablePerf.renders.at(-1)?.image === name &&
@@ -179,6 +189,18 @@ try {
     for (const [key, value] of Object.entries(test.params)) {
       if (JSON.stringify(saved.params[key]) !== JSON.stringify(value)) throw Error(`Recipe drift: ${key} expected ${JSON.stringify(value)}, got ${JSON.stringify(saved.params[key])}`);
     }
+    const render = await page.evaluate(() => __lightTablePerf.renders.at(-1));
+    const baseResponse = await page.request.post(config.baseUrl + '/api/render', {
+      data:{name, params:test.params, w:render.width, engine:render.engine, native:false}, timeout:120000});
+    if (!baseResponse.ok()) throw Error(await baseResponse.text());
+    const base = await baseResponse.json();
+    if (!base.img) throw Error('Expected browser source surface');
+    const expectedSource = new URL(base.img, config.baseUrl).href;
+    // Match the texture actually uploaded by the app to the requested film
+    // recipe, not just any completed navigation/render on this same photo.
+    await page.waitForFunction(({source, exposure}) => processingFrame.sourceURL === source &&
+      Math.abs(processingFrame.grade.exposure - exposure) < 0.0001,
+      {source:expectedSource, exposure:test.exposure}, {timeout:120000});
     const state = await post('/api/ui/command', {command:'slider', args:{key:'exposure', value:test.exposure}});
     const ui = state.result?.result || state.result || state;
     if (ui.current !== name || ui.render?.name !== name || ui.render?.state !== 'ready' || ui.render?.backend !== 'webgl') {
