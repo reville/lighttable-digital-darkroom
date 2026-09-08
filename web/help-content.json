@@ -87,11 +87,11 @@
         {
           "title": "Prepare and inspect",
           "paragraphs": [
-            "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog. Add the photo folders used by this catalog lets the import register referenced originals and their containing folders. It leaves originals in place. Clear that option to match only photos already in LightTable.",
+            "The importer reads a temporary copy of a Lightroom Classic .lrcat catalog and leaves your Lightroom setup and catalog unchanged. Photos stay in their current folders and are referenced, not duplicated. Add the photo folders used by this catalog lets the import register referenced originals and their containing folders. Clear that option to match only photos already in LightTable.",
             "Preview compatibility reports matches in the current library without changing it. Photos not yet added may show as unmatched in the preview; importing with Add the photo folders enabled registers available originals before matching again."
           ],
           "steps": [
-            "Open Local ••• → Import catalog…, or choose the Lightroom Classic catalog option in setup.",
+            "Open Local ••• → Import catalog…, or choose Import from Lightroom in setup.",
             "Choose the .lrcat file and review its counts and warnings.",
             "Choose the categories to import, the policy for existing edits, and whether to add the referenced photo folders.",
             "Click Preview compatibility and review mapped and skipped settings. Try 20 variants creates separate trial edits before a larger import.",
