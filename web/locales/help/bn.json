@@ -2179,7 +2179,8 @@
         {
           "title": "একটি স্টক দিয়ে শুরু করুন",
           "paragraphs": [
-            "Film একটি model করা film এবং output process স্থির photo-তে প্রয়োগ করে। Film profile switch এই processing নিয়ন্ত্রণ করে; Film বন্ধ করলে আপনার Edit adjustment সক্রিয় থাকে।"
+            "Film একটি model করা film এবং output process স্থির photo-তে প্রয়োগ করে। Film profile switch এই processing নিয়ন্ত্রণ করে; Film বন্ধ করলে আপনার Edit adjustment সক্রিয় থাকে।",
+            "বাস্তবসম্মত ফিল্ম সিমুলেশনে রিসেট করলে সব ফিল্ম স্লাইডার তাদের ডিফল্ট মানে ফিরে যায়। কোনো বিভাগের রিসেট শুধু সেই বিভাগের স্লাইডারগুলিকে বদলায়। সুইচ ও নির্বাচিত বিকল্পগুলি অপরিবর্তিত থাকে।"
           ],
           "steps": [
             "একটি স্থির ফটো খুলুন এবং Realistic Film Simulation খুলতে টুল রেলে Film নির্বাচন করুন।",
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "bn",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
 }

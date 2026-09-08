@@ -2139,7 +2139,8 @@
         {
           "title": "Start with a stock",
           "paragraphs": [
-            "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off."
+            "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off.",
+            "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are."
           ],
           "steps": [
             "Open a still photo and select Film in the tool rail to open Realistic Film Simulation.",

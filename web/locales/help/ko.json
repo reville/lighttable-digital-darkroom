@@ -2179,7 +2179,8 @@
         {
           "title": "스톡부터 시작",
           "paragraphs": [
-            "Film은 정지 사진에 모델링된 필름과 출력 과정을 적용합니다. Film profile 스위치가 이 처리를 제어하며, Film을 끄더라도 Edit 조정은 활성 상태로 유지됩니다."
+            "Film은 정지 사진에 모델링된 필름과 출력 과정을 적용합니다. Film profile 스위치가 이 처리를 제어하며, Film을 끄더라도 Edit 조정은 활성 상태로 유지됩니다.",
+            "사실적인 필름 시뮬레이션의 초기화은 모든 필름 슬라이더를 기본값으로 되돌립니다. 각 섹션의 초기화은 해당 섹션의 슬라이더에만 적용됩니다. 스위치와 선택한 옵션은 그대로 유지됩니다."
           ],
           "steps": [
             "정지 사진을 열고 도구 막대에서 필름을 선택하여 Realistic Film Simulation을 여세요.",
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "ko",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
 }

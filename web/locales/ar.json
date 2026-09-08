@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "إذا عثر الاستعادة المحلية على تغييرات معلّقة عند فتح المكتبة، فإن Recover unsaved edits? يعرض الصور المتأثرة. يستبدل Restore edits الإعدادات المحفوظة بإعدادات الاستعادة. يحافظ Keep saved edits على إصدار الكتالوج ويتجاهل مسودات الاستعادة تلك.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "إذا تعذّر نقل الأقنعة، فانسخ مرة أخرى مع إلغاء تحديد Local masks لتطبيق المجموعات الأخرى.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "إذا لزم الأمر، اختر إدخالًا آخر في Lens profile وقارن التصحيح بالأصل.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "إذا لم تتوفر أبعاد الصورة الأصلية، تظهر — بدلاً من نسبة التكبير ويُعطّل 1:1. يظل Auto يضبط المعاينة لتناسب الشاشة. أعد فحص المجلد لتحديث الأبعاد.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "إذا أظهرت أداة التلميح لزر 1:1 أن حجم بكسل المعاينة أصغر من المصدر، فأنت ترى معاينة مُسلَّمة أصغر. يطابق «الدقة التلقائية» العرض ويزيد طلبه عند العرض المكبَّر؛ وقد تتجاوز المصادر الكبيرة جدًا حد طلب المعاينة.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "إذا أُغلق تطبيق Mac من دون إنهاء سليم، فسيُفتح تقرير تشخيص في المرة التالية التي تشغّله فيها. وإذا توقفت محرك التصيير فيه بشكل غير متوقع، فقد يُفتح التقرير أثناء استعادة المحرك. يظهر التقرير مرة واحدة لكل حادثة مسجلة؛ يتيح لك إغلاق الاستمرار. لا يؤدي إغلاق التطبيق بشكل طبيعي أو إعادة تشغيل خدمة التصيير إلى إنشاء تقرير.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "إذا تعذر حفظ اختيار الاستخدام الأول على Mac، فإن حاول مرة أخرى يحتفظ بالتحديد ويعيد المحاولة. يبدأ التطبيق فقط بعد نجاح الحفظ.",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "إعادة تعيين جميع قنوات مخلط الألوان",
     "Reset crop, rotation, flips, and perspective": "أعد تعيين الاقتصاص، والتدوير، والقلب، والمنظور",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "أعد تعيين النغمة العامة واللون والمنحنيات والحدّة وإزالة الضوضاء والتأثيرات",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "تعيد «إعادة تعيين» في «محاكاة فيلم واقعية» جميع أشرطة تمرير الفيلم إلى قيمها الافتراضية. تؤثر «إعادة تعيين» داخل قسم على أشرطة تمرير ذلك القسم فقط. تبقى المفاتيح والخيارات المحددة كما هي.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "إعادة تعيين تصحيحات ملف العدسة، والتشوه، والتظليل، والانحراف اللوني",
     "Reset sharpening and noise reduction adjustments": "أعد تعيين تعديلات الحدّة وإزالة الضوضاء",
+    "Reset sliders to their defaults": "إعادة أشرطة التمرير إلى قيمها الافتراضية",
     "Reset the RAW profile and capture-stage processing settings": "أعد تعيين ملف RAW الشخصي وإعدادات المعالجة في مرحلة الالتقاط",
     "Reset the combined RGB and individual channel curves": "أعد تعيين المنحنيات المشتركة لـ RGB والمنحنيات الخاصة بكل قناة",
-    "Reset the film profile and physical film stages for this photo": "أعد تعيين ملف الفيلم الشخصي ومراحل الفيلم الفيزيائية لهذه الصورة",
-    "Reset the film profile, stock, output, and capture settings": "أعد تعيين ملف الفيلم الشخصي، والفيلم، والمخرجات، وإعدادات الالتقاط",
-    "Reset the physical film stage controls to their defaults": "أعد تعيين عناصر تحكم مرحلة الفيلم الفيزيائية إلى افتراضاتها",
     "Reset this slider": "إعادة تعيين هذا المنزلق",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "إعادة تعيين توازن اللون الأبيض، والحيوية، والتشبع، ومخلط الألوان، ولون النقطة، وتدرج الألوان",
     "Reset {value}": "إعادة تعيين {value}",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ رجوع",
     "← Back to articles": "← العودة إلى المقالات",
     "← People": "← أشخاص",
-    "☆ Favorites": "☆ المفضلات",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "إذا لم تتوفر أبعاد الصورة الأصلية، تظهر — بدلاً من نسبة التكبير ويُعطّل 1:1. يظل Auto يضبط المعاينة لتناسب الشاشة. أعد فحص المجلد لتحديث الأبعاد."
+    "☆ Favorites": "☆ المفضلات"
   },
   "plurals": {
     " · {count} paired file linked": {

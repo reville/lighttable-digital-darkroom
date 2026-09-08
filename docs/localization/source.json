@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "pluralPairs": [
     {
@@ -2589,13 +2589,12 @@
     "Reset all Color Mixer channels",
     "Reset crop, rotation, flips, and perspective",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections",
     "Reset sharpening and noise reduction adjustments",
+    "Reset sliders to their defaults",
     "Reset the RAW profile and capture-stage processing settings",
     "Reset the combined RGB and individual channel curves",
-    "Reset the film profile and physical film stages for this photo",
-    "Reset the film profile, stock, output, and capture settings",
-    "Reset the physical film stage controls to their defaults",
     "Reset this slider",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading",
     "Reset {value}",
