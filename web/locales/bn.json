@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc",
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "একটি রপ্তানি ক্যাটালগে থাকা মূল বা তার ক্যাপচার সহচরকে প্রতিস্থাপন করতে পারে না",
     "An external edit is already rendering": "একটি বহিরাগত সম্পাদনা ইতিমধ্যেই রেন্ডার হচ্ছে",
     "Analysis stays on this Mac and never modifies photo folders.": "বিশ্লেষণ এই Mac-এই থাকে এবং কখনও ফটো ফোল্ডার পরিবর্তন করে না।",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "ছবির জুম অ্যানিমেট করুন। আপনার পছন্দ সিস্টেমের গতি কমানোর সেটিংকে অগ্রাহ্য করে।",
     "Another LightTable window may be importing this library. Close that import and try again.": "LightTable-এর আরেকটি উইন্ডো সম্ভবত এই লাইব্রেরি আমদানি করছে। সেই আমদানি বন্ধ করে আবার চেষ্টা করুন।",
     "Another application changed the XMP file. Retry to merge its latest changes.": "অন্য একটি অ্যাপ্লিকেশন XMP ফাইলটি পরিবর্তন করেছে। এর সর্বশেষ পরিবর্তনগুলো মার্জ করতে আবার চেষ্টা করুন।",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "LightTable-এর আরেকটি কপি ইতিমধ্যেই এই লাইব্রেরিটি খোলা রেখেছে। সেই উইন্ডোটি ব্যবহার করুন বা সেটি বন্ধ করুন, তারপর আবার চেষ্টা করুন।",
@@ -1208,7 +1209,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "ফিট ছোট ছবি বড় করতে পারে। 1:1 প্রকৃত পিক্সেল দেখায়, এমনকি ছবি ফিটের চেয়েও ছোট হয়ে গেলেও, এবং উইন্ডোর আকার পরিবর্তন করলে একই পিক্সেল স্কেল বজায় রাখে।",
     "Fit the whole photo to the available space": "সম্পূর্ণ ফটোটি উপলব্ধ স্থানে ফিট করুন",
     "Fit to window ({actualPct}%)": "উইন্ডোতে ফিট করুন ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "ফিট, 1:1, জুম বোতাম ও জুম শর্টকাট মসৃণ অ্যানিমেশন দেখায়। স্ক্রল, পিঞ্চ ও টেনে সরানো সরাসরি সাড়া দেয়। সিস্টেমের গতিবিধি কমানোর সেটিং চালু থাকলে জুম অ্যানিমেশন বন্ধ থাকে।",
     "Flag": "ফ্ল্যাগ",
     "Flag and rate survey photo": "সার্ভে ফটোতে ফ্ল্যাগ এবং রেটিং দিন",
     "Flag and rating filters": "ফ্ল্যাগ ও রেটিং ফিল্টার",
@@ -2650,6 +2650,8 @@
     "Smart selection action": "স্মার্ট নির্বাচন অ্যাকশন",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Smart selection action নিয়ন্ত্রণ করে পরবর্তী smart selection নতুন মাস্ক হবে নাকি বর্তমানে নির্বাচিত মাস্কের সাথে যুক্ত হবে।",
     "Smooth color": "নরম রং",
+    "Smooth zoom": "মসৃণ জুম",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "সেটিংস → ইন্টারফেস-এ মসৃণ জুম দিয়ে ফিট, 1:1, জুম বোতাম ও শর্টকাটের অ্যানিমেশন চালু বা বন্ধ করা যায়। আপনার পছন্দ গতি কমানোর সেটিংকে অগ্রাহ্য করে; পছন্দ না করা পর্যন্ত LightTable সিস্টেমের সেটিং অনুসরণ করে। স্ক্রল, পিঞ্চ ও টেনে সরানো সরাসরি সাড়া দেয়।",
     "Snapshots": "স্ন্যাপশট",
     "Soft Filmic": "সফট ফিলমিক",
     "Soft Proof": "সফট প্রুফ",

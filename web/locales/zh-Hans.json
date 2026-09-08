@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc",
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "导出不能替换已编目原始文件或其拍摄伴侣",
     "An external edit is already rendering": "外部编辑已在渲染中",
     "Analysis stays on this Mac and never modifies photo folders.": "分析仅保留在此 Mac 上，绝不会修改照片文件夹。",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "为照片缩放添加动画。你的选择优先于系统的“减少动态效果”设置。",
     "Another LightTable window may be importing this library. Close that import and try again.": "另一个 LightTable 窗口可能正在导入此资源库。请关闭该导入后重试。",
     "Another application changed the XMP file. Retry to merge its latest changes.": "另一个应用已更改 XMP 文件。请重试以合并其最新更改。",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "LightTable 的另一个副本已经打开了此资料库。请使用那个窗口，或先退出它，然后重试。",
@@ -1208,7 +1209,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "适合窗口可能会放大小照片。1:1 显示实际像素，即使照片因此比适合窗口时更小，也会在调整窗口大小时保持相同的像素比例。",
     "Fit the whole photo to the available space": "将整张照片适配到可用空间",
     "Fit to window ({actualPct}%)": "适合窗口（{actualPct}%）",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "适合、1:1、缩放按钮和缩放快捷键会平滑过渡。滚动、双指缩放和拖动会直接响应。启用系统的“减弱动态效果”设置后，将停用缩放动画。",
     "Flag": "标记",
     "Flag and rate survey photo": "为概览照片标记和评分",
     "Flag and rating filters": "标记和评分筛选",
@@ -2650,6 +2650,8 @@
     "Smart selection action": "智能选择操作",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "“智能选区操作”控制下一次智能选区是成为新蒙版，还是与当前选中的蒙版合并。",
     "Smooth color": "平滑颜色",
+    "Smooth zoom": "平滑缩放",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "设置 → 界面 中的“平滑缩放”可开启或关闭适合、1:1、缩放按钮和快捷键的动画。你的选择优先于“减少动态效果”；在你选择之前，LightTable 遵循系统设置。滚动、双指捏合和拖动会直接响应操作。",
     "Snapshots": "快照",
     "Soft Filmic": "柔和胶片风格",
     "Soft Proof": "软打样",

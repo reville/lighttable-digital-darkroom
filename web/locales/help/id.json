@@ -226,7 +226,7 @@
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
             "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
-            "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan."
+            "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -2738,6 +2738,7 @@
           "paragraphs": [
             "Sebagian besar perubahan pengaturan tersimpan secara otomatis. Bahasa menggunakan Terapkan bahasa dan memuat ulang jendela setelah menyimpan suntingan. Umum juga mengontrol Otomatis maju setelah memilih, menolak, atau memberi rating, notifikasi penyelesaian, dan pemeriksaan pembaruan.",
             "Kontrol antarmuka mengatur latar belakang penampil, skala font, Lights Out, overlay info loupe, dan panduan pangkas. Preferensi ini mengubah tampilan ruang kerja tanpa mengubah piksel yang diekspor.",
+            "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
             "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung."
           ]
         },
@@ -3135,5 +3136,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc"
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
 }
