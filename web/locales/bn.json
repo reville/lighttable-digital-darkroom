@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "পুরোনো সংরক্ষিত preview-width পছন্দগুলো এই আচরণে আপগ্রেড করার সময় Automatic-এ রিসেট হয়। Advanced-এ বেছে নেওয়া একটি নির্দিষ্ট override পরে সেশনের জন্য সংরক্ষিত হয়। একটি ম্যানুয়াল override সক্রিয় থাকলে Performance দেখায়।",
     "On": "চালু",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Mac-এ, Photo → Move Rejected Photos to Trash…, বেছে নিন, অথবা Command+Delete চাপুন।",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Windows-এ, মূল ফাইলগুলো পরিবর্তিত হয়েছে কি না তা পরীক্ষা করতে প্রতিটি স্থানীয় ফাইল সম্পূর্ণভাবে পড়া হয়। বড় মূল ফাইলের ক্ষেত্রে পুনরায় স্ক্যান, ছবি খোলা এবং রপ্তানির সময় যাচাই করতে বেশি সময় লাগতে পারে। এই যাচাইগুলো কেবল ক্লাউডে সংরক্ষিত ফাইল ডাউনলোড করে না।",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "নতুন লাইব্রেরিতে, সেটআপে একটি স্থানীয় ফোল্ডার, Lightroom মাইগ্রেশন, বা Apple Photos বেছে নেওয়া যায়। আপনি সেটআপ এড়িয়ে পরে ফটো যোগ করতে পারেন।",
     "On disk": "ডিস্কে",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "প্রথম ব্যবহারের সময়, ইংরেজি নয় এমন primary system language আপনাকে নির্বাচন করতে বলে। Mac অ্যাপ তার প্রাথমিক folder choice এবং startup-এর আগে জিজ্ঞেস করে; অন্য অ্যাপ উইন্ডোগুলো editor খোলার আগে জিজ্ঞেস করে। সমর্থিত ভাষা প্রস্তাব করা হয়, অথবা system language সমর্থিত না হলে English। ভাষাগুলো তাদের নিজস্ব নাম অনুযায়ী তালিকাভুক্ত থাকে।",

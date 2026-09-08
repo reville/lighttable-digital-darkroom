@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "इस व्यवहार में अपग्रेड करते समय पहले की सहेजी गई पूर्वावलोकन-चौड़ाई पसंदें Automatic पर रीसेट हो जाती हैं। Advanced में चुना गया एक निश्चित override आगे के सत्रों के लिए सहेजा जाता है। Performance तब दिखता है जब मैन्युअल override सक्रिय हो।",
     "On": "चालू",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Mac पर, Photo → Move Rejected Photos to Trash…, चुनें, या Command+Delete दबाएँ।",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Windows पर, मूल फ़ाइलों में बदलाव हुआ है या नहीं, यह जाँचने के लिए प्रत्येक स्थानीय फ़ाइल को पूरा पढ़ा जाता है। बड़ी मूल फ़ाइलों के साथ फिर से स्कैन करने, फ़ोटो खोलने और निर्यात के दौरान जाँच करने में अधिक समय लग सकता है। ये जाँचें केवल क्लाउड में संग्रहीत फ़ाइलों को डाउनलोड नहीं करतीं।",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "नई लाइब्रेरी पर, सेटअप स्थानीय फ़ोल्डर, Lightroom माइग्रेशन, या Apple Photos प्रदान करता है। आप सेटअप छोड़कर बाद में फ़ोटो जोड़ सकते हैं।",
     "On disk": "डिस्क पर",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "पहली बार उपयोग पर, गैर-अंग्रेज़ी प्राथमिक सिस्टम भाषा आपको चुनने के लिए कहती है। Mac ऐप अपने शुरुआती फ़ोल्डर चयन और आरंभ से पहले पूछती है; अन्य ऐप विंडो संपादक खुलने से पहले पूछती हैं। एक समर्थित भाषा सुझाई जाती है, या जब सिस्टम भाषा समर्थित नहीं होती तो English। भाषाएँ उनके मूल नामों से सूचीबद्ध होती हैं।",

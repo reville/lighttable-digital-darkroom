@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Memulihkan cadangan mengembalikan data katalog ke keadaan pada cadangan itu, sehingga pengeditan yang lebih baru tidak ada di dalamnya. Saat katalog kerja dipulihkan, katalog saat ini dicadangkan terlebih dahulu.",
             "Setelah pemutakhiran, pemindaian pertama membaca asli lokal untuk memperkuat pencocokan file. Ini bisa memakan waktu lebih lama pada pustaka yang besar. Asli yang sebelumnya sudah hilang tanpa identitas file lengkap akan tetap hilang; pertahankan entri mereka dan pulihkan asli ke jalur katalog sebelumnya sebelum memindai ulang.",
+            "Di Windows, pemeriksaan apakah file asli telah berubah akan membaca setiap file lokal secara penuh. Pemindaian ulang, pembukaan foto, dan pemeriksaan ekspor dapat memakan waktu lebih lama untuk file asli berukuran besar. Pemeriksaan ini tidak akan mengunduh file yang hanya disimpan di cloud.",
             "Untuk katalog yang rusak, Library Health mungkin menawarkan salvage, restore, atau katalog baru. Salvage menyalin baris yang masih dapat dibaca tetapi kehilangan baris pada halaman yang rusak. Memulai dari awal tidak memindahkan rating, pengeditan, koleksi, atau riwayat. Berkas katalog rusak saat ini dipertahankan di Recovery."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

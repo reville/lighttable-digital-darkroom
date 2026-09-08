@@ -391,6 +391,7 @@
         "paragraphs": [
           "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
           "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
+          "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.",
           "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
         ]
       },
@@ -422,6 +423,7 @@
     ],
     "sources": [
       {"path": "catalog_scan.py", "anchor": "def scan_source("},
+      {"path": "file_identity.py", "anchor": "def stat_signature(stat, *, path=None, fd=None)"},
       {
         "path": "web/index.html",
         "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."

@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Restaurar una copia de seguridad devuelve los datos del catálogo al estado de esa copia, por lo que las ediciones posteriores no están incluidas. Cuando se restaura un catálogo de trabajo, primero se hace una copia de seguridad del catálogo actual.",
             "Después de la actualización, el primer escaneo lee los originales locales para reforzar la coincidencia de archivos. Esto puede tardar más en una biblioteca grande. Los originales que ya faltaban sin una identidad de archivo completa seguirán faltando; conserve sus entradas y restaure los originales a sus rutas catalogadas anteriores antes de volver a escanear.",
+            "En Windows, para comprobar si los originales han cambiado, se lee cada archivo local completo. Volver a escanear, abrir fotos y comprobar las exportaciones puede tardar más con archivos originales grandes. Estas comprobaciones no descargan archivos almacenados solo en la nube.",
             "Para un catálogo dañado, Library Health puede ofrecer salvar, restaurar o un catálogo nuevo. Salvar copia filas legibles pero pierde las filas en páginas dañadas. Empezar de cero no transfiere calificaciones, ediciones, colecciones ni historial. El archivo del catálogo dañado actual se conserva en Recovery."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

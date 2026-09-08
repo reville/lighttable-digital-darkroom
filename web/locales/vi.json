@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Các lựa chọn chiều rộng bản xem trước đã lưu cũ sẽ được đặt lại thành Tự động khi nâng cấp lên hành vi này. Một ghi đè cố định được chọn trong Nâng cao sẽ được lưu cho các phiên sau. Hiệu năng sẽ hiển thị khi một ghi đè thủ công đang hoạt động.",
     "On": "Bật",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Trên Mac, chọn Ảnh → Di chuyển ảnh bị từ chối vào Thùng rác…, hoặc nhấn Command+Delete.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Trên Windows, việc kiểm tra xem bản gốc có thay đổi hay không sẽ đọc toàn bộ từng tệp cục bộ. Quét lại, mở ảnh và kiểm tra khi xuất có thể mất nhiều thời gian hơn với các bản gốc lớn. Những kiểm tra này không tải xuống các tệp chỉ được lưu trên đám mây.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "Trong một thư viện mới, phần thiết lập cung cấp thư mục cục bộ, di chuyển từ Lightroom, hoặc Apple Photos. Bạn có thể bỏ qua thiết lập và thêm ảnh sau.",
     "On disk": "Trên đĩa",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Khi dùng lần đầu, ngôn ngữ hệ thống chính không phải tiếng Anh sẽ nhắc bạn chọn. Ứng dụng Mac sẽ hỏi trước khi chọn thư mục ban đầu và khi khởi động; các cửa sổ ứng dụng khác sẽ hỏi trước khi trình chỉnh sửa mở. Một ngôn ngữ được hỗ trợ sẽ được đề xuất, hoặc tiếng Anh khi ngôn ngữ hệ thống không được hỗ trợ. Các ngôn ngữ được liệt kê bằng tên bản địa của chúng.",

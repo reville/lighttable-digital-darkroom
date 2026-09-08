@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "以前の保存済みプレビュー幅の選択は、この仕様へ更新すると自動にリセットされます。［詳細］で選んだ固定の上書き設定は、以後のセッション用に保存されます。手動の上書きが有効な場合は［パフォーマンス］が表示されます。",
     "On": "オン",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Mac では、写真 → 却下した写真をゴミ箱に移動… を選ぶか、Command+Delete を押します。",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Windowsでは、オリジナルが変更されているかどうかを確認する際に、各ローカルファイル全体を読み込みます。再スキャン、写真を開く処理、および書き出し時の確認は、サイズの大きいオリジナルでは時間がかかる場合があります。これらの確認では、クラウドのみに保存されているファイルはダウンロードされません。",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "新しいライブラリでは、セットアップでローカルフォルダー、Lightroom の移行、または Apple Photos を選べます。セットアップを省略して後で写真を追加することもできます。",
     "On disk": "ディスク上",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "初回使用時、システムの主要言語が英語以外の場合は選択を求められます。Macアプリは、最初のフォルダー選択と起動の前に確認を求めます。ほかのアプリウィンドウは、エディターが開く前に確認を求めます。対応言語が提案され、システム言語が未対応の場合は英語が提案されます。言語は各言語の自国語名で一覧表示されます。",

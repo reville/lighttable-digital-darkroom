@@ -41,12 +41,13 @@
       }
     },
     "catalog-health-recovery": {
-      "content": "a17d61bec98884af0d099904fb3855588554cc0b9bfdb96808d54202a18089e5",
+      "content": "37c0754145019b15e52153a2a0313df865a4bd5d41b43b49820f44d1b770965d",
       "sources": {
         "app/DiagnosticReports.swift": "f658b768399f0b1da70cd1158812c4bd726cafd032155398b266434882054c02",
         "app/main.swift": "88c77c8bf44d00cabb9b63a1945bb82d1f3a764d450bb86044f6ff01d0be5321",
         "catalog_scan.py": "ea05a597c61c66a2f7b317f32c789cabaeed2b906390e8c0a5e26f8be8de61e8",
         "fatal_diagnostics.py": "56b1deacd97f83a19f3d41e0d77ac46e3f3d6b75cb815c043fafec5f443ef2f9",
+        "file_identity.py": "12ec0bad7b191717903c19b68589b15443f3c98552709235bf690b2d28e360ae",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54",
         "web/recovery.js": "fa5646aae6fdc5bc95dd317f08c9c3f78985a1c36d89785152d9cc55df1f0921",

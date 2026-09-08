@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "舊的已儲存預覽寬度選項在升級到此行為時會重設為自動。在進階中選取的固定覆寫會儲存在之後的工作階段。當手動覆寫啟用時，效能會顯示。",
     "On": "開啟",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "在 Mac 上，選擇「相片」→「將已拒絕相片移到垃圾桶…」，或按 Command+Delete。",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "在 Windows 上，檢查原始檔是否已變更會完整讀取每個本機檔案。對大型原始檔進行重新掃描、打開相片和匯出檢查時，可能會花費更長時間。這些檢查不會下載僅儲存在雲端中的檔案。",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "在新資料庫中，設定會提供本機資料夾、Lightroom 移轉或 Apple Photos。您也可以略過設定，稍後再新增相片。",
     "On disk": "在磁碟上",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "首次使用時，非英文的主要系統語言會提示您進行選擇。Mac 應用程式會在初次選擇資料夾與啟動前詢問；其他應用程式視窗則會在編輯器打開前詢問。系統會建議一種支援的語言，若系統語言不受支援則建議 English。語言會以其母語名稱列出。",
