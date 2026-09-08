@@ -226,7 +226,7 @@
             "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
             "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
             "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
-            "Ajuster, 1:1, les boutons et les raccourcis de zoom offrent une animation fluide. Le défilement, le pincement et le déplacement répondent directement. L’animation du zoom est désactivée lorsque l’option Réduire les animations de votre système est activée."
+            "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -2730,6 +2730,7 @@
           "paragraphs": [
             "La plupart des modifications des réglages sont enregistrées automatiquement. La langue utilise Appliquer la langue et recharge la fenêtre après l'enregistrement des modifications. Général contrôle aussi le Passage automatique après choix, rejet ou notation, les notifications de fin et les vérifications de mise à jour.",
             "Les contrôles de l’interface définissent l’arrière-plan du visualiseur, l’échelle de police, Lights Out, l’overlay d’informations de la loupe et les guides de recadrage. Ces préférences modifient l’apparence de l’espace de travail sans modifier les pixels exportés.",
+            "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement.",
             "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge."
           ]
         },
@@ -3127,5 +3128,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1"
+  "sourceDigest": "f3f453df3604c11abf3f8c65808feb7d991f7da6973fb414f46a08776c140d41"
 }

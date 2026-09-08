@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1",
+  "sourceDigest": "f3f453df3604c11abf3f8c65808feb7d991f7da6973fb414f46a08776c140d41",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Экспорт не может заменить каталогизированный оригинал или его сопутствующее фото при съемке",
     "An external edit is already rendering": "Внешнее редактирование уже рендерится",
     "Analysis stays on this Mac and never modifies photo folders.": "Анализ остается на этом Mac и никогда не изменяет папки с фото.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Анимировать масштабирование фото. Ваш выбор имеет приоритет над системной настройкой «Уменьшение движения».",
     "Another LightTable window may be importing this library. Close that import and try again.": "Возможно, другое окно LightTable импортирует эту библиотеку. Закройте этот импорт и попробуйте снова.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Другое приложение изменило файл XMP. Повторите попытку, чтобы объединить его последние изменения.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Другая копия LightTable уже открыла эту библиотеку. Используйте то окно или закройте его и попробуйте снова.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Режим «По размеру» может увеличивать небольшие фотографии. 1:1 показывает реальные пиксели, даже если фотография становится меньше, чем в режиме «По размеру», и сохраняет тот же масштаб пикселей при изменении размера окна.",
     "Fit the whole photo to the available space": "Подгоните все фото по размеру доступной области",
     "Fit to window ({actualPct}%)": "По размеру окна ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "«По размеру», 1:1, кнопки и сочетания клавиш масштабирования работают с плавной анимацией. Прокрутка, жесты сведения и разведения пальцев и перетаскивание реагируют напрямую. Анимация масштабирования отключается, если в системе включено уменьшение движения.",
     "Flag": "Флажок",
     "Flag and rate survey photo": "Пометить флажком и оценить обзорное фото",
     "Flag and rating filters": "Фильтры флажков и рейтинга",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "Действие интеллектуального выделения",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Действие умного выделения определяет, станет ли следующее умное выделение новой маской или объединится с текущей выбранной маской.",
     "Smooth color": "Сгладить цвет",
+    "Smooth zoom": "Плавное масштабирование",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Параметр «Плавное масштабирование» в Настройки → Интерфейс включает или отключает анимацию для По размеру, 1:1, кнопок масштабирования и сочетаний клавиш. Ваш выбор имеет приоритет над «Уменьшением движения»; пока вы не выбрали, LightTable следует системной настройке. Прокрутка, сведение пальцев и перетаскивание реагируют напрямую.",
     "Snapshots": "Снимки",
     "Soft Filmic": "Мягкий пленочный",
     "Soft Proof": "Мягкая цветопроба",
