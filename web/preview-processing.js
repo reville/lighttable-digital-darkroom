@@ -3,7 +3,8 @@
 export function gradeBakeRequest(grade, masks, holdBefore = false) {
   const required = !holdBefore && (masks || []).some((mask) =>
     mask.enabled !== false && (mask.opacity ?? 1) > 0 &&
-    ((+mask.grade?.texture || 0) !== 0 || (+mask.grade?.clarity || 0) !== 0));
+    (['texture', 'clarity', 'whites', 'blacks'].some(key => (+mask.grade?.[key] || 0) !== 0) ||
+      ['curveL', 'curveR', 'curveG', 'curveB'].some(key => mask.grade?.[key]?.length === 256)));
   return required ? { grade, masks } : {};
 }
 
