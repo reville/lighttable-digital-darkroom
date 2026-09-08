@@ -142,6 +142,13 @@ class GpuGradeDeviceTests(unittest.TestCase):
             with self.subTest(settings=list(settings)):
                 self.compare(image, settings)
 
+    def test_vignette_shape_matches_reference(self):
+        for settings in [dict(vignette=.65, vignetteSize=.2, vignetteFeather=.8),
+                         dict(vignette=-.65, vignetteSize=.3, vignetteFeather=0),
+                         dict(vignette=.65, vignetteSize=.8, vignetteFeather=1)]:
+            with self.subTest(settings=settings):
+                self.compare(fixture(), settings)
+
     def test_odd_single_pixel_axes_and_noncontiguous_input(self):
         for image in [fixture(1, 73), fixture(71, 1), fixture(97, 101)[::2, ::3]]:
             with self.subTest(shape=image.shape):

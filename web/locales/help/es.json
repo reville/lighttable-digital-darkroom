@@ -225,7 +225,8 @@
             "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
-            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números."
+            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
+            "Ajustar, 1:1, los botones y los atajos de zoom se animan suavemente. El desplazamiento, el gesto de pellizco y el arrastre responden directamente. La animación del zoom se desactiva cuando está activada la opción Reducir movimiento del sistema."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Aumente Quitar bruma para intensificar una imagen con neblina, o pruebe un valor negativo para un tratamiento más suave. Compruebe contraste y color mientras lo ajusta.",
             "Configura Viñeta para el tratamiento de borde que quieras e inspecciona las esquinas.",
-            "Mantenga pulsado B para comparar con el original, o use Restablecer de Efectos para restablecer juntos Textura, Claridad, Quitar bruma y Viñeta."
+            "Aumente Tamaño para mantener una mayor parte del centro sin efecto; redúzcalo para que la viñeta llegue más hacia dentro.",
+            "Aumente Desvanecer para suavizar la transición, o redúzcalo para obtener un borde más definido.",
+            "Mantenga pulsado B para comparar con el original, o use Restablecer en Efectos para restablecer todos los deslizadores de Efectos a la vez."
           ],
           "tips": [
             "Viñeta de Efectos es un tratamiento creativo de bordes. Usa Correcciones de lente cuando quieras corregir el sombreado de la lente."
@@ -2226,7 +2229,8 @@
         {
           "title": "Empezar con un stock",
           "paragraphs": [
-            "Película aplica una película modelada y un proceso de salida a una foto fija. El interruptor de perfil de película controla este procesamiento; tus ajustes de Editar permanecen activos cuando desactivas Película."
+            "Película aplica una película modelada y un proceso de salida a una foto fija. El interruptor de perfil de película controla este procesamiento; tus ajustes de Editar permanecen activos cuando desactivas Película.",
+            "Restablecer en Simulación de película realista devuelve todos los deslizadores de Película a sus valores predeterminados. Restablecer en una sección solo afecta a los deslizadores de esa sección. Los interruptores y las opciones seleccionadas se mantienen."
           ],
           "steps": [
             "Abre una foto fija y selecciona Película en la barra de herramientas para abrir Simulación realista de película.",
@@ -2240,7 +2244,7 @@
           "paragraphs": [
             "Las vistas previas de stock incluyen las ediciones de la foto actual. Explorar y cerrar la ventana de vista previa no aplica un stock; elegir una vista previa sí.",
             "Un stock de película describe el proceso físico de la película. Un ajuste preestablecido de edición puede contener ajustes guardados más amplios y también puede incluir ajustes de Película. El menú Salida dentro de Película elige una receta de escaneo o impresión; no exporta un archivo.",
-            "Después de activar Película, puede aparecer una vista previa rápida antes de que terminen el detalle RAW preciso y la vista previa más grande. La barra de progreso se llena a medida que finalizan las etapas del procesamiento de la vista previa y desaparece una vez que la vista previa es visible. El detalle RAW preciso y la renderización a resolución completa continúan en segundo plano."
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible."
           ],
           "tips": [
             "Si un stock no está disponible, puede requerir el motor GPU. La disponibilidad del motor se muestra en Ajustes → Rendimiento."
@@ -3068,7 +3072,8 @@
         {
           "title": "Compruebe qué ha terminado de renderizarse",
           "paragraphs": [
-            "Una configuración de zoom al 100% no garantiza que haya llegado el detalle completo de la imagen. Es posible que aparezca primero una vista previa rápida mientras terminan el procesamiento RAW preciso y una vista previa más grande. La barra de progreso se llena a medida que finalizan las etapas del procesamiento de la vista previa, con un recuento como 2 / 5. Desaparece en cuanto se muestra una vista previa utilizable; el procesamiento RAW preciso y las vistas previas más grandes continúan en segundo plano sin la superposición. El recuento representa las etapas completadas, no el tiempo restante. El movimiento reducido conserva las mismas actualizaciones de etapa sin animación. La foto permanece visible sin oscurecerse. En 1:1, pase el cursor sobre el botón 1:1 para comprobar si el detalle completo de la fuente está listo antes de evaluar el detalle fino.",
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
+            "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
             "Quitar, Corregir, Clonar y las máscaras con ajustes de Textura, Claridad, Blancos, Negros o Curva de tono necesitan una actualización adicional de la vista previa. Espere a que la vista previa termine antes de juzgar su detalle o el efecto de ajustes posteriores.",
             "Si las dimensiones del original no están disponibles, el porcentaje de zoom muestra — y 1:1 está desactivado. Auto sigue ajustándose a la pantalla. Vuelve a escanear la carpeta para actualizar las dimensiones."
@@ -3122,5 +3127,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "ab7b9e8b5fc89244bf01f9c666f9a4e2566e17e56656fb537c4ddd94366ef81e"
+  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1"
 }

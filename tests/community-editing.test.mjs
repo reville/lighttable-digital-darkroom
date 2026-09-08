@@ -12,6 +12,18 @@ const {indexPairs, pairViewPreference, collapsePairs, pairedTargets} = await mod
 const only = (...selected) => Object.fromEntries(Object.keys(transferChoices()).map(key => [key, selected.includes(key)]));
 const source = {params: {stock: 'source', rotate: 90, wb_temperature: 5600}, grade: {exposure: 2, temp: .3, curveL: [.1,.9], clarity: .4}, optics: {rotate: 2, distortion: .1}, crop: {x:.2,y:.1,w:.5,h:.5}, masks: [], heals: [{source:[.1,.1],target:[.2,.2]}]};
 const destination = {params:{stock:'dest',rotate:0,wb_temperature:3200}, grade:{exposure:-1,temp:-.2,curveR:[0,.8],clarity:.1,hsl:{red:[.1,0,0]}}, optics:{rotate:-3,distortion:.6},crop:null,masks:[{type:'radial'}]};
+test('detail paste carries vignette shape and clears absent legacy shape', () => {
+  const shaped = {grade:{vignette:.6,vignetteSize:.2,vignetteFeather:.4}};
+  const target = {...destination,grade:{...destination.grade,vignetteSize:.9,vignetteFeather:.1}};
+  const patch = transferPatch(shaped,target,only('detail'));
+  assert.equal(patch.grade.vignette,.6);
+  assert.equal(patch.grade.vignetteSize,.2);
+  assert.equal(patch.grade.vignetteFeather,.4);
+  assert.equal(patch.grade.exposure,-1);
+  const legacy = transferPatch({grade:{vignette:.6}},target,only('detail'));
+  assert.equal(Object.hasOwn(legacy.grade,'vignetteSize'),false);
+  assert.equal(Object.hasOwn(legacy.grade,'vignetteFeather'),false);
+});
 test('tone-only paste preserves destination color, film, crop, masks and detail', () => {
   const before = structuredClone(destination);
   const patch = transferPatch(source,destination,only('tone'));
@@ -164,6 +176,8 @@ test('preview status distinguishes refining, incomplete detail and true 100% rea
   assert.equal(previewDetailLabel({state:'ready',refining:true,actual:true}),'Refining RAW detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:1100,requested:6000,source:6000,actual:true}),'Updating preview detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:6000,requested:6000,source:6000,actual:true}),'100% detail ready');
+  assert.equal(previewDetailLabel({state:'ready',delivered:6024,renderedWidth:6048,requested:6048,source:6048,actual:true}),'Preview 6024 px · source 6048 px');
+  assert.equal(previewDetailLabel({state:'ready',delivered:1100,renderedWidth:1100,requested:6048,source:6048,actual:true}),'Updating preview detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:8000,requested:8000,source:12000,actual:true}),'Preview 8000 px · source 12000 px');
   assert.equal(previewDetailLabel({state:'ready',delivered:1400,requested:1400,source:6000,actual:false}),'');
   assert.equal(previewDetailLabel({state:'error',actual:true}),'');

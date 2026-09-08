@@ -225,7 +225,8 @@
             "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung.",
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
-            "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten."
+            "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
+            "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Erhöhen Sie Dunst entfernen, um ein diesiges Bild zu verstärken, oder versuchen Sie einen negativen Wert für eine weichere Wirkung. Prüfen Sie dabei sowohl Kontrast als auch Farbe.",
             "Legen Sie Vignette für die gewünschte Randbehandlung fest und prüfen Sie die Ecken.",
-            "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen bei Effekte, um Textur, Klarheit, Dunst entfernen und Vignette gemeinsam zurückzusetzen."
+            "Erhöhen Sie Größe, um mehr von der Mitte unbeeinflusst zu lassen; verringern Sie den Wert, damit die Vignette weiter nach innen reicht.",
+            "Erhöhen Sie Weiche Kante für einen weicheren Übergang oder verringern Sie den Wert für einen deutlicheren Rand.",
+            "Halten Sie B gedrückt, um mit dem Original zu vergleichen, oder verwenden Sie Zurücksetzen unter Effekte, um alle Effekte-Regler gemeinsam zurückzusetzen."
           ],
           "tips": [
             "Effects’ Vignette ist eine kreative Randgestaltung. Verwenden Sie Lens corrections, wenn Sie die Objektivabschattung korrigieren möchten."
@@ -2226,7 +2229,8 @@
         {
           "title": "Mit einem Film beginnen",
           "paragraphs": [
-            "Film wendet auf ein Standbild einen modellierten Film- und Ausgabeprozess an. Der Filmprofil-Schalter steuert diese Verarbeitung; Ihre Bearbeiten-Anpassungen bleiben aktiv, wenn Sie Film ausschalten."
+            "Film wendet auf ein Standbild einen modellierten Film- und Ausgabeprozess an. Der Filmprofil-Schalter steuert diese Verarbeitung; Ihre Bearbeiten-Anpassungen bleiben aktiv, wenn Sie Film ausschalten.",
+            "Zurücksetzen in Realistische Filmsimulation setzt alle Film-Schieberegler auf ihre Standardwerte zurück. Zurücksetzen in einem Abschnitt betrifft nur dessen Schieberegler. Schalter und ausgewählte Optionen bleiben unverändert."
           ],
           "steps": [
             "Öffnen Sie ein Standbild und wählen Sie Film in der Werkzeugleiste, um Realistic Film Simulation zu öffnen.",
@@ -2240,7 +2244,7 @@
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
             "Ein Filmstock beschreibt den physischen Filmprozess. Eine Bearbeitungsvorgabe kann breitere gespeicherte Anpassungen enthalten und möglicherweise auch Film-Einstellungen. Das Ausgabe-Menü innerhalb von Film wählt ein Scan- oder Druckrezept; es exportiert keine Datei.",
-            "Nachdem Sie Film eingeschaltet haben, kann eine schnelle Vorschau erscheinen, bevor genaue RAW-Details und die größere Vorschau fertig sind. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, und verschwindet, sobald die Vorschau sichtbar ist. Genaue RAW-Details und die Darstellung in voller Auflösung laufen im Hintergrund weiter."
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
           ],
           "tips": [
             "Wenn ein Film nicht verfügbar ist, kann die GPU-Engine erforderlich sein. Die Verfügbarkeit der Engine wird in Einstellungen → Leistung angezeigt."
@@ -3068,7 +3072,8 @@
         {
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
-            "Eine 100%-Zoom-Einstellung garantiert nicht, dass alle Bilddetails bereits angekommen sind. Möglicherweise erscheint zuerst eine schnelle Vorschau, während die genaue RAW-Verarbeitung und eine größere Vorschau fertig werden. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, mit einer Anzeige wie 2 / 5. Er verschwindet, sobald eine verwendbare Vorschau angezeigt wird; die genaue RAW-Verarbeitung und größere Vorschauen laufen im Hintergrund ohne Überlagerung weiter. Die Anzeige steht für abgeschlossene Schritte, nicht für die verbleibende Zeit. Reduzierte Bewegung behält dieselben Schrittaktualisierungen ohne Animation bei. Das Foto bleibt sichtbar, ohne abgedunkelt zu werden. Bei 1:1 zeigen Sie mit dem Mauszeiger auf den 1:1-Button, um zu prüfen, ob die vollständigen Quellendetails bereit sind, bevor Sie feine Details beurteilen.",
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+            "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
             "Entfernen, Reparieren, Klonen und Masken mit Anpassungen für Textur, Klarheit, Weißtöne, Schwarztöne oder Tonkurve benötigen eine zusätzliche Vorschauaktualisierung. Warte, bis die Vorschau fertig ist, bevor du ihre Details oder die Wirkung späterer Anpassungen beurteilst.",
             "Wenn die Abmessungen des Originals fehlen, zeigt die Zoomanzeige — und 1:1 ist deaktiviert. Auto passt sich weiterhin dem Bildschirm an. Scannen Sie den Ordner erneut, um die Abmessungen zu aktualisieren."
@@ -3122,5 +3127,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ab7b9e8b5fc89244bf01f9c666f9a4e2566e17e56656fb537c4ddd94366ef81e"
+  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1"
 }

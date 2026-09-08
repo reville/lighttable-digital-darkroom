@@ -97,6 +97,11 @@ curves. Subject, Sky, and Object selections retain up to 1,024 pixels along
 their longest edge, with edges refined against the source image. Automatic
 selections remain starting points that need inspection and painted refinement.
 
+In Effects, Vignette darkens or brightens the edges. Size controls how much of
+the center stays clear, and Feather controls how softly the effect blends in.
+Existing edits keep their original vignette appearance with the default Size
+and Feather values; setting Vignette to zero turns the effect off.
+
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
 before film; processing stays floating point until the final encoder. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,
