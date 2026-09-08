@@ -2797,11 +2797,12 @@
         {
           "title": "Pemetaan MIDI",
           "paragraphs": [
-            "Dukungan MIDI bergantung pada Web MIDI API di runtime saat ini. Status dapat menampilkan Unavailable, Off, No devices, atau jumlah perangkat yang terhubung. Unavailable berarti runtime ini tidak dapat menggunakan kontrol MIDI."
+            "Dukungan MIDI bergantung pada Web MIDI API di runtime saat ini. Status dapat menampilkan Unavailable, Off, No devices, atau jumlah perangkat yang terhubung. Unavailable berarti runtime ini tidak dapat menggunakan kontrol MIDI.",
+            "LightTable hanya meminta akses MIDI saat Anda mengeklik tombol status MIDI atau Pelajari MIDI. Membuka LightTable atau Pengaturan, menyesuaikan penggeser, dan mengatur ulang pemetaan tidak meminta akses. Setelah memuat ulang, klik tombol MIDI untuk menyambungkan kembali."
           ],
           "steps": [
             "Hubungkan pengendali MIDI yang mengirim pesan Control Change.",
-            "Saat MIDI tersedia, buka kontrol Keyboard dan MIDI lalu pilih MIDI Learn.",
+            "Saat MIDI tersedia, buka Kontrol keyboard dan MIDI, lalu pilih Pelajari MIDI. Izinkan akses MIDI jika browser Anda meminta.",
             "Klik slider penyesuaian yang ingin Anda petakan, lalu putar kenop atau geser fader.",
             "Periksa pesan pemetaan, lalu gunakan kontrol perangkat keras untuk menyesuaikan slider.",
             "Gunakan Reset MIDI untuk memulihkan pemetaan default."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

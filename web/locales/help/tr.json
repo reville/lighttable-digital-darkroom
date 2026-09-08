@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI eşlemesi",
           "paragraphs": [
-            "MIDI desteği, geçerli çalışma zamanındaki Web MIDI API'ye bağlıdır. Durum Kullanılamıyor, Kapalı, Aygıt yok veya bağlı aygıt sayısı olarak görünebilir. Kullanılamıyor, bu çalışma zamanının MIDI denetimlerini kullanamayacağı anlamına gelir."
+            "MIDI desteği, geçerli çalışma zamanındaki Web MIDI API'ye bağlıdır. Durum Kullanılamıyor, Kapalı, Aygıt yok veya bağlı aygıt sayısı olarak görünebilir. Kullanılamıyor, bu çalışma zamanının MIDI denetimlerini kullanamayacağı anlamına gelir.",
+            "LightTable yalnızca MIDI durum düğmesine veya MIDI Öğren’e tıkladığınızda MIDI erişimi ister. LightTable’ı veya Ayarlar’ı açmak, kaydırıcıları ayarlamak ve eşlemeleri sıfırlamak erişim istemez. Yeniden yükledikten sonra, yeniden bağlanmak için bir MIDI düğmesine tıklayın."
           ],
           "steps": [
             "Control Change iletileri gönderen bir MIDI denetleyici bağlayın.",
-            "MIDI kullanılabildiğinde, Klavye ve MIDI denetimlerini açın ve MIDI Öğren’i seçin.",
+            "MIDI kullanılabilir olduğunda, Klavye ve MIDI kontrolleri’ni açın ve MIDI Öğren’i seçin. Tarayıcınız isterse MIDI erişimine izin verin.",
             "Eşlemek istediğiniz ayarlama kaydırıcısına tıklayın, ardından bir düğmeyi çevirin veya bir kademeli geçişi hareket ettirin.",
             "Eşleme mesajını kontrol edin, ardından kaydırıcıyı ayarlamak için donanım denetimini kullanın.",
             "Varsayılan eşlemeleri geri yüklemek için MIDI Sıfırla’yı kullanın."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

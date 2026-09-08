@@ -2797,11 +2797,12 @@
         {
           "title": "Mapowanie MIDI",
           "paragraphs": [
-            "Obsługa MIDI zależy od Web MIDI API w bieżącym środowisku uruchomieniowym. Status może pokazywać Niewybrane, Wył., Brak urządzeń albo liczbę podłączonych urządzeń. Niewybrane oznacza, że to środowisko nie może używać kontrolek MIDI."
+            "Obsługa MIDI zależy od Web MIDI API w bieżącym środowisku uruchomieniowym. Status może pokazywać Niewybrane, Wył., Brak urządzeń albo liczbę podłączonych urządzeń. Niewybrane oznacza, że to środowisko nie może używać kontrolek MIDI.",
+            "LightTable prosi o dostęp do MIDI tylko wtedy, gdy klikniesz przycisk stanu MIDI lub MIDI Learn. Otwarcie LightTable lub Ustawienia, regulowanie suwaków i resetowanie mapowań nie wymagają dostępu. Po przeładowaniu kliknij przycisk MIDI, aby ponownie się połączyć."
           ],
           "steps": [
             "Podłącz kontroler MIDI wysyłający komunikaty Control Change.",
-            "Gdy MIDI jest dostępne, otwórz sterowanie klawiaturą i MIDI oraz wybierz MIDI Learn.",
+            "Gdy MIDI jest dostępne, otwórz Sterowanie klawiaturą i MIDI i wybierz MIDI Learn. Zezwól na dostęp do MIDI, jeśli przeglądarka o to poprosi.",
             "Kliknij suwak dostosowania, który chcesz zmapować, a następnie przekręć pokrętło lub przesuń suwak.",
             "Sprawdź komunikat o mapowaniu, a następnie użyj sterowania sprzętowego, aby dostosować suwak.",
             "Użyj Resetuj MIDI, aby przywrócić domyślne mapowania."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

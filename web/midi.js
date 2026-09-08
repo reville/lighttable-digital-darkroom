@@ -29,6 +29,7 @@ const DEFAULT_MAPPINGS = {
 };
 
 let midiAccess = null;
+let isConnecting = false;
 let mappings = { ...DEFAULT_MAPPINGS };
 let isLearning = false;
 let learnTarget = null;
@@ -147,13 +148,24 @@ export function setMidiLearnTarget(target) {
     updateMidiStatus();
     return;
   }
-  isLearning = true;
+  // Ordinary slider interaction must not opt the user into MIDI Learn.
+  if (!isLearning || !midiAccess) return;
   learnTarget = target;
   showMidiHud(tr("Turn any knob to map → {value}", {value: (target.label || target.control)}));
   updateMidiStatus();
 }
 
-export function toggleMidiLearn() {
+export async function toggleMidiLearn() {
+  // Only the MIDI buttons call this; startup and slider use stay permission-free.
+  if (isConnecting) return;
+  if (!midiAccess) {
+    isConnecting = true;
+    try {
+      if (!await connectMidi()) return;
+    } finally {
+      isConnecting = false;
+    }
+  }
   isLearning = !isLearning;
   if (!isLearning) learnTarget = null;
   updateMidiStatus();
@@ -163,7 +175,7 @@ export function updateMidiStatus() {
   const pill = document.getElementById('midiPill');
   if (!pill) return;
 
-  if (!navigator.requestMIDIAccess) {
+  if (typeof navigator === 'undefined' || !navigator.requestMIDIAccess) {
     pill.textContent = tr("MIDI: Unavailable");
     pill.classList.remove('active', 'learning');
     pill.title = tr("Web MIDI API not supported in this browser");
@@ -203,8 +215,12 @@ function attachInputs() {
   updateMidiStatus();
 }
 
-export async function initMidi() {
+export function initMidi() {
   loadStoredMappings();
+  updateMidiStatus();
+}
+
+async function connectMidi() {
   if (typeof navigator === 'undefined' || !navigator.requestMIDIAccess) {
     updateMidiStatus();
     return false;

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "LightTable-voorkeuren",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "LightTable leest uw Foto's-bibliotheek om originele foto's naar uw LightTable-importmap te kopiëren. Uw Foto's-bibliotheek wordt nooit gewijzigd.",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "LightTable herkent een paar wanneer één RAW en één JPEG dezelfde basisbestandsnaam hebben in dezelfde bron en map. Elk bestand behoudt zijn eigen bewerkingen; virtuele kopieën blijven onafhankelijk.",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable vraagt alleen MIDI-toegang wanneer u op de MIDI-statusknop of MIDI leren klikt. LightTable of Instellingen openen, schuifregelaars aanpassen en toewijzingen opnieuw instellen vraagt geen toegang. Klik na opnieuw laden op een MIDI-knop om opnieuw verbinding te maken.",
     "LightTable resources were not found": "LightTable-hulpbronnen zijn niet gevonden",
     "LightTable saves separate copies in": "LightTable slaat afzonderlijke kopieën op in",
     "LightTable · lossless": "LightTable · verliesloos",
@@ -2884,7 +2885,7 @@
     "What the number represents": "Wat het getal vertegenwoordigt",
     "What the previews include": "Wat de voorbeelden bevatten",
     "What to open": "Wat openen",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "Wanneer MIDI beschikbaar is, open je de bediening voor Toetsenbord en MIDI en kies je MIDI Learn.",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Wanneer MIDI beschikbaar is, open Toetsenbord- en MIDI-besturing en kies MIDI leren. Sta MIDI-toegang toe als uw browser daarom vraagt.",
     "When a photo already has edits": "Wanneer een foto al bewerkingen heeft",
     "When a photo arrives": "Wanneer een foto binnenkomt",
     "When a photo seems missing": "Wanneer een foto ontbrekend lijkt",

@@ -2797,11 +2797,12 @@
         {
           "title": "Mapeamento MIDI",
           "paragraphs": [
-            "O suporte a MIDI depende da Web MIDI API no runtime atual. O status pode mostrar Indisponível, Desligado, Sem dispositivos ou uma contagem de dispositivos conectados. Indisponível significa que este runtime não pode usar os controles MIDI."
+            "O suporte a MIDI depende da Web MIDI API no runtime atual. O status pode mostrar Indisponível, Desligado, Sem dispositivos ou uma contagem de dispositivos conectados. Indisponível significa que este runtime não pode usar os controles MIDI.",
+            "O LightTable solicita acesso ao MIDI apenas quando você clica no botão de status do MIDI ou em Aprender MIDI. Abrir o LightTable ou Configurações, ajustar deslizadores e redefinir mapeamentos não solicita acesso. Após recarregar, clique em um botão de MIDI para reconectar."
           ],
           "steps": [
             "Conecte um controlador MIDI que envie mensagens de Control Change.",
-            "Quando MIDI estiver disponível, abra os controles de Teclado e MIDI e escolha Aprendizagem MIDI.",
+            "Quando o MIDI estiver disponível, abra Controles de teclado e MIDI e escolha Aprender MIDI. Permita o acesso ao MIDI se o seu navegador pedir.",
             "Clique no controle deslizante de ajuste que deseja mapear e, em seguida, gire um botão ou mova um controle deslizante.",
             "Verifique a mensagem de mapeamento e, em seguida, use o controle de hardware para ajustar o controle deslizante.",
             "Use Redefinir MIDI para restaurar os mapeamentos padrão."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

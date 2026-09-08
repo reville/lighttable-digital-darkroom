@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI 對應",
           "paragraphs": [
-            "MIDI 支援取決於目前執行環境中的 Web MIDI API。狀態可能顯示 Unavailable、Off、No devices，或已連接的裝置數量。Unavailable 表示此執行環境無法使用 MIDI 控制。"
+            "MIDI 支援取決於目前執行環境中的 Web MIDI API。狀態可能顯示 Unavailable、Off、No devices，或已連接的裝置數量。Unavailable 表示此執行環境無法使用 MIDI 控制。",
+            "只有在您點擊 MIDI 狀態按鈕或「MIDI 學習」時，LightTable 才會請求 MIDI 存取。打開 LightTable 或「設定」、調整滑桿，以及重設對應，都不會請求存取。重新載入後，請點擊 MIDI 按鈕以重新連線。"
           ],
           "steps": [
             "連接可傳送 Control Change 訊息的 MIDI 控制器。",
-            "當 MIDI 可用時，打開「鍵盤與 MIDI 控制」，然後選擇 MIDI Learn。",
+            "當 MIDI 可用時，打開「鍵盤和 MIDI 控制」，然後選擇「MIDI 學習」。如果瀏覽器要求，請允許 MIDI 存取。",
             "按一下要對應的調整滑桿，然後轉動旋鈕或移動淡化器。",
             "檢查對應訊息，然後使用硬體控制來調整滑桿。",
             "使用重設 MIDI 來還原預設對應。"
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

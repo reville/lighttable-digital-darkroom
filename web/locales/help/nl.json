@@ -2797,11 +2797,12 @@
         {
           "title": "MIDI-koppeling",
           "paragraphs": [
-            "MIDI-ondersteuning is afhankelijk van de Web MIDI API in de huidige runtime. De status kan Niet beschikbaar, Uit, Geen apparaten of een verbonden apparaat-aantal tonen. Niet beschikbaar betekent dat deze runtime de MIDI-bedieningen niet kan gebruiken."
+            "MIDI-ondersteuning is afhankelijk van de Web MIDI API in de huidige runtime. De status kan Niet beschikbaar, Uit, Geen apparaten of een verbonden apparaat-aantal tonen. Niet beschikbaar betekent dat deze runtime de MIDI-bedieningen niet kan gebruiken.",
+            "LightTable vraagt alleen MIDI-toegang wanneer u op de MIDI-statusknop of MIDI leren klikt. LightTable of Instellingen openen, schuifregelaars aanpassen en toewijzingen opnieuw instellen vraagt geen toegang. Klik na opnieuw laden op een MIDI-knop om opnieuw verbinding te maken."
           ],
           "steps": [
             "Sluit een MIDI-controller aan die Control Change-berichten verstuurt.",
-            "Wanneer MIDI beschikbaar is, open je de bediening voor Toetsenbord en MIDI en kies je MIDI Learn.",
+            "Wanneer MIDI beschikbaar is, open Toetsenbord- en MIDI-besturing en kies MIDI leren. Sta MIDI-toegang toe als uw browser daarom vraagt.",
             "Klik op de aanpassingsschuifregelaar die je wilt toewijzen en draai daarna aan een knop of verplaats een fader.",
             "Controleer het toewijzingsbericht en gebruik daarna de hardwarebediening om de schuifregelaar aan te passen.",
             "Gebruik MIDI opnieuw instellen om de standaardtoewijzingen te herstellen."
@@ -2938,5 +2939,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
 }

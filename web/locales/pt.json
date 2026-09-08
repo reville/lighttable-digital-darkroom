@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b",
+  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1439,6 +1439,7 @@
     "LightTable preferences": "Preferências do LightTable",
     "LightTable reads your Photos library to copy original photos into your LightTable import folder. Your Photos library is never changed.": "O LightTable lê sua biblioteca Fotos para copiar fotos originais para sua pasta de importação do LightTable. Sua biblioteca Fotos nunca é alterada.",
     "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent.": "O LightTable reconhece um par quando um RAW e um JPEG compartilham o mesmo nome de arquivo base na mesma origem e pasta. Cada arquivo mantém suas próprias edições; cópias virtuais permanecem independentes.",
+    "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "O LightTable solicita acesso ao MIDI apenas quando você clica no botão de status do MIDI ou em Aprender MIDI. Abrir o LightTable ou Configurações, ajustar deslizadores e redefinir mapeamentos não solicita acesso. Após recarregar, clique em um botão de MIDI para reconectar.",
     "LightTable resources were not found": "Os recursos do LightTable não foram encontrados",
     "LightTable saves separate copies in": "O LightTable salva cópias separadas em",
     "LightTable · lossless": "LightTable · sem perdas",
@@ -2884,7 +2885,7 @@
     "What the number represents": "O que o número representa",
     "What the previews include": "O que as pré-visualizações incluem",
     "What to open": "O que abrir",
-    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.": "Quando MIDI estiver disponível, abra os controles de Teclado e MIDI e escolha Aprendizagem MIDI.",
+    "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Quando o MIDI estiver disponível, abra Controles de teclado e MIDI e escolha Aprender MIDI. Permita o acesso ao MIDI se o seu navegador pedir.",
     "When a photo already has edits": "Quando uma foto já tem edições",
     "When a photo arrives": "Quando uma foto chega",
     "When a photo seems missing": "Quando uma foto parece ausente",
