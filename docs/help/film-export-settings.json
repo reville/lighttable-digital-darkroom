@@ -371,7 +371,7 @@
       {
         "title": "Back up and inspect",
         "paragraphs": [
-          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Local ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found."
         ],
         "steps": [
           "Choose an Automatic backup interval and Backup location.",
@@ -431,6 +431,14 @@
       {
         "path": "app/main.swift",
         "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Back up catalog'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Find duplicates'"
       }
     ]
   }

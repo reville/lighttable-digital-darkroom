@@ -1297,6 +1297,8 @@ a.reset:hover { color:#fff; }
 
 /* -------------------------------------------------------------- video */
 
+.panel-pane[inert] { opacity:.45; }
+
 .video-stage {
   position:absolute; inset:0; z-index:20; display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:12px; padding:16px;
@@ -1558,6 +1560,7 @@ a.reset:hover { color:#fff; }
   padding-top: 14px;
   border-top: 1px solid var(--line-soft);
 }
+.catalog-result-body { white-space:pre-wrap; overflow:auto; max-height:55vh; margin:12px 0; font-size:12px; line-height:1.6; overflow-wrap:anywhere; }
 .ingest-body { display:flex; flex-direction:column; gap:8px; }
 .ingest-row { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
 .ingest-row > .field { min-width:120px; flex:1 1 auto; }
