@@ -74,10 +74,13 @@ Poisson/binomial expectations. With GPU enabled it also checks CPU/GPU scan
 noise moments. Statistical regions exclude the known blur support between
 flat fields; ordinary preview image comparisons retain image edges.
 
-Browser element screenshots can include background outside a canvas whose CSS
-origin is fractional. The app check computes the photo rectangle from DOM
-geometry and compares bilinear presentation there; it does not align images by
-their contents or trim mismatched pixels to obtain a pass.
+Browser element screenshots include fractional CSS boundary coverage. The app
+check independently scores the framebuffer against the CLI, then compares the
+visible app canvas with a separate reference canvas containing those readback
+bytes at identical DOM bounds. Both use the browser's compositor, including its
+fractional scaling, rather than approximating it with an integer-sized resize.
+The reference page is labeled as a reference artifact, never an app screenshot.
+No image registration or border trimming is used.
 
 These are software-equivalence tests for the declared model and fixtures, not
 proof that a simulation matches a particular physical negative, chemical bath,

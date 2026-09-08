@@ -8,6 +8,39 @@ const browser = await chromium.launch({headless: true, executablePath: config.br
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, async () => {await browser.close(); process.exit(1);});
 try {
   const page = await browser.newPage({viewport: {width: 1440, height: 1000}, deviceScaleFactor: 1});
+  // A separate reference page sends the captured RGB8 pixels through the same
+  // browser compositor. This avoids approximating fractional CSS transforms
+  // with an integer-sized Pillow resize. It is a reference, never app proof.
+  const displayReference = await browser.newPage({viewport: {width: 1440, height: 1000}, deviceScaleFactor: 1});
+  await displayReference.setContent('<style>body{margin:0}canvas{position:absolute;display:block}</style><canvas></canvas>');
+  const captureDisplay = async (test, frame) => {
+    await page.screenshot({path:test.screenshot});
+    const canvas = page.locator('#cv');
+    if (!await canvas.isVisible()) throw Error('App preview canvas is hidden');
+    const bounds = await canvas.boundingBox();
+    await canvas.screenshot({path:test.display, timeout:15000});
+    const background = await canvas.evaluate(element => {
+      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        const color = getComputedStyle(parent).backgroundColor;
+        if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') return color;
+      }
+      return 'white';
+    });
+    await displayReference.evaluate(({width, height, pixels, bounds, background}) => {
+      const canvas = document.querySelector('canvas');
+      canvas.width = width; canvas.height = height;
+      Object.assign(canvas.style, {left:bounds.x+'px', top:bounds.y+'px',
+        width:bounds.width+'px', height:bounds.height+'px'});
+      document.body.style.background = background;
+      const rgba = new Uint8ClampedArray(pixels.length);
+      for (let y = 0; y < height; y++) {
+        rgba.set(pixels.slice((height-y-1)*width*4, (height-y)*width*4), y*width*4);
+      }
+      canvas.getContext('2d', {alpha:false}).putImageData(new ImageData(rgba, width, height), 0, 0);
+    }, {width:frame.width, height:frame.height, pixels:Array.from(fs.readFileSync(test.raw)), bounds, background});
+    await displayReference.locator('canvas').screenshot({path:test.displayReference, timeout:15000});
+    return bounds;
+  };
   page.on('request', request => {
     if (request.method() === 'POST' && new URL(request.url()).pathname === '/api/state') {
       const state = request.postDataJSON();
@@ -95,11 +128,7 @@ try {
         {data:{name, w:frame.width, format:'png', state:recipe}, timeout:120000});
       if (!reference.ok()) throw Error(await reference.text());
       fs.writeFileSync(test.reference, await reference.body());
-      await page.screenshot({path:test.screenshot});
-      const canvas = page.locator('#cv');
-      if (!await canvas.isVisible()) throw Error('App preview canvas is hidden');
-      const bounds = await canvas.boundingBox();
-      await canvas.screenshot({path:test.display, timeout:15000});
+      const bounds = await captureDisplay(test, frame);
       results.push({name:test.name, photo:name, bounds, ...frame});
       continue;
     }
@@ -139,11 +168,7 @@ try {
         grade:{exposure:test.exposure}, masks:[], heals:[], optics:{}, crop:null}}, timeout:120000});
     if (!reference.ok()) throw Error(`CLI reference: ${await reference.text()}`);
     fs.writeFileSync(test.reference, await reference.body());
-    await page.screenshot({path:test.screenshot});
-    const canvas = page.locator('#cv');
-    if (!await canvas.isVisible()) throw Error('App preview canvas is hidden');
-    const bounds = await canvas.boundingBox();
-    await canvas.screenshot({path:test.display, timeout:15000});
+    const bounds = await captureDisplay(test, frame);
     results.push({name:test.name, photo:name, bounds, ...frame});
   }
   fs.writeFileSync(config.result, JSON.stringify({records:results}));

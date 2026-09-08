@@ -1,7 +1,6 @@
 """Check the real application UI against its CPU CLI rendering endpoint."""
 from __future__ import annotations
 import json
-import math
 import os
 from pathlib import Path
 import shutil
@@ -63,6 +62,7 @@ def run(output_dir):
         case.update(raw=str(output / f"{case['name']}.rgba"),
                     reference=str(output / f"{case['name']}-cli.png"),
                     display=str(output / f"{case['name']}-display.png"),
+                    displayReference=str(output / f"{case['name']}-display-reference.png"),
                     screenshot=str(output / f"{case['name']}-app.png"))
     module = find_playwright_module()
     if not module or not shutil.which('node'):
@@ -123,18 +123,11 @@ def run(output_dir):
                       screenshot=case['screenshot'], grade=frame['grade'])
         records.append(record)
         display = np.asarray(Image.open(case['display']).convert('RGB')).astype(float) / 255
-        # CSS canvas presentation scales the rendered RGB8 image bilinearly.
-        bounds = frame['bounds']
-        width, height = round(bounds['width']), round(bounds['height'])
-        # Element screenshots round their clip outward. A fractional canvas
-        # origin can include a row/column of background outside the photo.
-        # Compare the rasterized photo rectangle computed from DOM geometry;
-        # no image registration or data-dependent border trimming is used.
-        x = math.floor(bounds['x'] + 0.5) - math.floor(bounds['x'])
-        y = math.floor(bounds['y'] + 0.5) - math.floor(bounds['y'])
-        display = display[y:y+height, x:x+width]
-        expected_display = np.asarray(Image.fromarray(actual[::-1, :, :3]).resize(
-            (width, height), Image.Resampling.BILINEAR)).astype(float) / 255
+        # The reference page displays the readback bytes at exactly the app's
+        # DOM bounds, including fractional boundary coverage. No image fitting,
+        # border trimming, or per-case tolerance is used. Processing correctness
+        # is independently scored against the CLI before this presentation gate.
+        expected_display = np.asarray(Image.open(case['displayReference']).convert('RGB')).astype(float) / 255
         records.append(compare_images(case['name'] + '-visible-canvas', expected_display,
                                       display, output / 'display'))
     return {'records':records, 'coverage':'Full browser app, server, UI slider/save, navigation, CLI pixel parity'}
