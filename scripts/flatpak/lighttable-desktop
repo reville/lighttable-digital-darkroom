@@ -9,4 +9,3 @@ export LIGHTTABLE_INSTANCE_DIR="$XDG_RUNTIME_DIR/app/app.lighttable.LightTable/i
 export GTK_USE_PORTAL=1
 export PYTHONNOUSERSITE=1
 exec /app/LightTable/bin/lighttable-desktop "$@"
-
