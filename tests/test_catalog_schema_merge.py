@@ -1,4 +1,4 @@
-"""The two independently developed schema-6 layouts converge without data loss."""
+"""Independently developed catalog layouts converge without losing photo state."""
 from contextlib import closing
 from pathlib import Path
 import sqlite3
@@ -71,6 +71,40 @@ class SchemaMergeTests(unittest.TestCase):
                 with mock.patch.object(catalog, "_rebuild_search_index", side_effect=AssertionError("repeat rebuild")):
                     reopened = catalog.Catalog(path)
                     reopened.close()
+
+    def test_schema_seven_presets_and_identity_layouts_preserve_existing_state(self):
+        for variant in ("identity", "dam"):
+            with self.subTest(variant=variant):
+                path = self.legacy_catalog(variant)
+                with closing(sqlite3.connect(path)) as conn:
+                    conn.execute("UPDATE meta SET value='7' WHERE key='schema_version'")
+                    if variant == "identity":
+                        conn.execute("ALTER TABLE image_state DROP COLUMN preset_json")
+                    else:
+                        conn.execute("UPDATE image_state SET preset_json=? WHERE image_id=20",
+                                     ('{"id":"saved-preset","amount":37}',))
+                    conn.commit()
+                migrated = catalog.Catalog(path)
+                try:
+                    row = migrated.connection.execute("SELECT * FROM files WHERE id=10").fetchone()
+                    state = migrated.state_for(20)
+                    self.assertEqual(state["rating"], 5)
+                    self.assertEqual(migrated.keywords_for(20), ["Birds > Heron"])
+                    self.assertEqual(migrated.stats()["schema"], 8)
+                    self.assertEqual(migrated.query({"filter":{"query":"Heron"}})["total"], 1)
+                    if variant == "identity":
+                        self.assertEqual(row["content_hash"], "verified-digest")
+                        self.assertIsNone(state.get("preset"))
+                    else:
+                        self.assertEqual(row["iso"], 400)
+                        self.assertEqual(state["preset"]["amount"], 37)
+                        self.assertIsNone(row["content_hash"])
+                    self.assertTrue(migrated.integrity_ok())
+                    self.assertEqual(len(list((self.root / "Backups").glob("*.zip"))), 1)
+                finally:
+                    migrated.close()
+                for backup in (self.root / "Backups").glob("*.zip"):
+                    backup.unlink()
 
     def test_failed_combined_migration_rolls_back_columns_and_schema_marker(self):
         path = self.legacy_catalog("identity")
