@@ -23,9 +23,13 @@ def install(source: Path, prefix: Path) -> None:
         shutil.copy2(source / name, destination)
     for name in ("lighttable-desktop", "lighttable-cli"):
         (prefix / "bin" / name).chmod(0o755)
-    icon = prefix / f"share/icons/hicolor/1024x1024/apps/{app_id}.png"
-    icon.parent.mkdir(parents=True)
-    shutil.copy2(bundle / "Resources/LightTable/build/icon-1024.png", icon)
+    # AppStream composes catalog icons from standard theme sizes; a lone
+    # 1024px macOS source icon is not sufficient for the catalog composer.
+    for size in (64, 128, 256, 1024):
+        icon = prefix / f"share/icons/hicolor/{size}x{size}/apps/{app_id}.png"
+        icon.parent.mkdir(parents=True, exist_ok=True)
+        origin = bundle / "Resources/LightTable/build/icon-1024.png" if size == 1024 else source / f"icon-{size}.png"
+        shutil.copy2(origin, icon)
     licenses = prefix / f"share/licenses/{app_id}/lighttable"
     licenses.mkdir(parents=True)
     for name in ("LICENSE", "THIRD_PARTY_NOTICES.md"):

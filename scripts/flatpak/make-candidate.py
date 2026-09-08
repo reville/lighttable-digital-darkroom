@@ -16,6 +16,7 @@ SPEC = importlib.util.spec_from_file_location("lighttable_archive", ROOT / "scri
 ARCHIVE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ARCHIVE)
 APP_ID = "app.lighttable.LightTable"
+ICONS = {64: "icon_32x32@2x.png", 128: "icon_128x128.png", 256: "icon_256x256.png"}
 
 
 def generate(archive: Path, output: Path, *, version: str, source_revision: str, sha256: str) -> Path:
@@ -30,6 +31,10 @@ def generate(archive: Path, output: Path, *, version: str, source_revision: str,
     files = ["install-candidate.py", "lighttable-desktop", "lighttable-cli", "sandbox-smoke.py"]
     for name in files:
         shutil.copy2(ROOT / "scripts/flatpak" / name, output / name)
+    for size, name in ICONS.items():
+        staged = f"icon-{size}.png"
+        shutil.copy2(ROOT / "build/LightTable.iconset" / name, output / staged)
+        files.append(staged)
     shutil.copy2(ROOT / "scripts/linux/desktop-smoke.py", output / "desktop-smoke.py")
     for name in (APP_ID + ".desktop", APP_ID + ".metainfo.xml"):
         shutil.copy2(ROOT / "packaging/flatpak" / name, output / name)
