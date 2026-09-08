@@ -61,6 +61,7 @@ import catalog_scan  # noqa: E402
 import watch_workflow  # noqa: E402
 import media_formats  # noqa: E402
 import media_availability  # noqa: E402
+import file_identity  # noqa: E402
 import durable_io  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
@@ -1100,6 +1101,10 @@ def write_pending_sidecars() -> int:
                     if pending_record.get("snapshotError"):
                         raise ValueError(pending_record["snapshotError"])
                     record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
+                    # This is a complete catalog snapshot. Explicitly clear a
+                    # previous LightTable correction when the override is gone;
+                    # the XMP ownership marker preserves foreign camera dates.
+                    record.setdefault("captureTimeOverride", None)
                     fields = pending_record.get("fields")
                     if fields is not None:
                         iptc = {key: value for key, value in record["iptc"].items()
@@ -1173,9 +1178,21 @@ def catalog_entry_for(name: str) -> dict:
 def recovery_state_for(name: str) -> dict:
     state = dict(catalog_entry_for(name))
     try:
+        path = src_path(name)
+        before = path.stat()
+        before_signature = file_identity.stat_signature(before, path=path)
         state["_recoverySourceKey"] = file_key(name)
+        # Journals written before complete-file identities were introduced
+        # contain this weaker revision. It is only a candidate for explicit
+        # legacy recovery, never a substitute for the current write guard.
+        legacy_hash = catalog_scan.header_hash(path)
+        if file_identity.stat_signature(path.stat(), path=path) != before_signature:
+            raise OSError("Original changed while reading recovery identity")
+        state["_recoveryLegacySourceKey"] = catalog_module.source_revision(
+            legacy_hash, before.st_size, before.st_mtime_ns)
     except (ValueError, OSError):
         state["_recoverySourceKey"] = None
+        state["_recoveryLegacySourceKey"] = None
     cat = catalog_handle()
     state["_recoveryHistoryAvailable"] = cat is not None
     if cat is not None:
@@ -1850,17 +1867,45 @@ def src_path(name: str) -> Path:
     return resolve_name(name)[0]
 
 
-_HEADER_HASH_CACHE: dict[tuple[str, int, int], str] = {}
+_HEADER_HASH_CACHE: dict[tuple, str] = {}
+
+
+def _catalog_content_hash(path: Path, stat) -> str | None:
+    """Reuse a scan's complete digest only for this exact, unchanged file."""
+    cat = catalog_handle()
+    if cat is None:
+        return None
+    resolved = path.resolve()
+    for source in cat.connection.execute(
+            "SELECT id, path FROM sources WHERE active=1").fetchall():
+        try:
+            relpath = resolved.relative_to(Path(source["path"]).resolve()).as_posix()
+        except ValueError:
+            continue
+        row = cat.connection.execute(
+            "SELECT content_hash FROM files WHERE source_id=? AND relpath=?"
+            " AND missing=0 AND size=? AND mtime_ns=? AND content_signature=?",
+            (source["id"], relpath, stat.st_size, stat.st_mtime_ns,
+             file_identity.signature_key(stat, path=path))).fetchone()
+        if row and row["content_hash"]:
+            return row["content_hash"]
+    return None
 
 
 def content_hash(path: Path) -> str:
     """Cached content identity for a file, keyed by its stat signature."""
     stat = path.stat()
     media_availability.require_local(path, stat=stat)
-    key = (str(path), stat.st_size, stat.st_mtime_ns)
+    signature = file_identity.stat_signature(stat, path=path)
+    key = (str(path), *signature)
     cached = _HEADER_HASH_CACHE.get(key)
     if cached is None:
-        cached = catalog_scan.header_hash(path)
+        cached = _catalog_content_hash(path, stat)
+        if cached is None:
+            cached = file_identity.content_hash(
+                path, expected_signature=":".join(map(str, signature)))
+        if file_identity.stat_signature(path.stat(), path=path) != signature:
+            raise OSError(f"Original changed while identifying it: {path}")
         if len(_HEADER_HASH_CACHE) > 20000:
             _HEADER_HASH_CACHE.clear()
         _HEADER_HASH_CACHE[key] = cached
@@ -1877,7 +1922,31 @@ def file_key(name: str) -> str:
     """
     src = src_path(name)
     stat = src.stat()
-    return catalog_module.source_revision(content_hash(src), stat.st_size, stat.st_mtime_ns)
+    signature = file_identity.stat_signature(stat, path=src)
+    digest = content_hash(src)
+    if file_identity.stat_signature(src.stat(), path=src) != signature:
+        raise OSError(f"Original changed while identifying it: {src}")
+    return catalog_module.source_revision(digest, stat.st_size, stat.st_mtime_ns)
+
+
+def folder_listing_file_key(name: str) -> str:
+    """Cheap display/recovery identity while folder mode enumerates originals.
+
+    A complete identity already verified in this session takes precedence.
+    Otherwise retain the older prefix revision, which recovery treats as a
+    partial-identity candidate requiring explicit confirmation. Rendering and
+    source-write guards must continue to call file_key instead.
+    """
+    path = src_path(name)
+    stat = path.stat()
+    media_availability.require_local(path, stat=stat)
+    signature = file_identity.stat_signature(stat, path=path)
+    digest = _HEADER_HASH_CACHE.get((str(path), *signature))
+    if digest is None:
+        digest = catalog_scan.header_hash(path)
+    if file_identity.stat_signature(path.stat(), path=path) != signature:
+        raise OSError(f"Original changed while identifying it: {path}")
+    return catalog_module.source_revision(digest, stat.st_size, stat.st_mtime_ns)
 
 
 _TIFF_CACHE_MAX_BYTES = int(os.environ.get(
@@ -2600,17 +2669,39 @@ def video_thumbnail(name: str) -> bytes:
 
 
 _EXIF_CACHE: dict[str, dict] = {}
-def exif_for(name: str) -> dict:
+_EXIF_CACHE_SIGNATURES: dict[str, tuple] = {}
+_EXIF_CACHE_LOCK = threading.Lock()
+_LIVE_CAPTURE_TIME = object()
+
+
+def exif_for(name: str, *, capture_override=_LIVE_CAPTURE_TIME) -> dict:
     """Camera metadata for the info panel. Cached; exiftool costs ~50 ms."""
     guard_local_photo(name)
-    if name not in _EXIF_CACHE:
-        _EXIF_CACHE[name] = platform_image.metadata(src_path(name))
-    out = dict(_EXIF_CACHE[name])
-    cat = catalog_handle()
-    image_id = catalog_image_id(name) if cat is not None else None
-    info = cat.capture_details(image_id) if image_id is not None else None
-    if info and info["override"]:
-        out.update(capture_clock.exif_fields(info["override"]))
+    source = src_path(name)
+    stat = source.stat()
+    media_availability.require_local(source, stat=stat)
+    signature = (str(source), *file_identity.stat_signature(stat, path=source))
+    with _EXIF_CACHE_LOCK:
+        cached = (_EXIF_CACHE.get(name)
+                  if _EXIF_CACHE_SIGNATURES.get(name) == signature else None)
+    if cached is None:
+        cached = platform_image.metadata(source)
+        if (str(source), *file_identity.stat_signature(source.stat(), path=source)) != signature:
+            raise OSError(f"Original changed while reading its metadata: {source}")
+        with _EXIF_CACHE_LOCK:
+            if len(_EXIF_CACHE) >= 20000:
+                _EXIF_CACHE.clear()
+                _EXIF_CACHE_SIGNATURES.clear()
+            _EXIF_CACHE[name] = cached
+            _EXIF_CACHE_SIGNATURES[name] = signature
+    out = dict(cached)
+    if capture_override is _LIVE_CAPTURE_TIME:
+        cat = catalog_handle()
+        image_id = catalog_image_id(name) if cat is not None else None
+        info = cat.capture_details(image_id) if image_id is not None else None
+        capture_override = info["override"] if info else None
+    if capture_override:
+        out.update(capture_clock.exif_fields(capture_override))
         out["CaptureTimeCorrection"] = "Catalog override · original unchanged"
     return out
 
@@ -4214,7 +4305,7 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
     return size
 
 
-def export_metadata_fields(name: str) -> dict:
+def export_metadata_fields(name: str, *, state: dict | None = None) -> dict:
     """Catalog metadata for one image, in the shape write_metadata expects."""
     cat = catalog_handle()
     if cat is None:
@@ -4223,7 +4314,8 @@ def export_metadata_fields(name: str) -> dict:
     if image_id is None:
         return {}
     iptc = cat.iptc_for(image_id)
-    state = cat.state_for(image_id)
+    if state is None:
+        state = cat.state_for(image_id)
     fields = {key: iptc.get(key) for key in
               ("title", "caption", "creator", "copyright")
               if iptc.get(key)}
@@ -4717,6 +4809,8 @@ class ExportBatch:
             self.status["cancelledCount"] += self.remaining
             self.status["done"] += self.remaining
             self.remaining = 0
+            if not self.active:
+                self.status.update(running=False, cancelled=True)
             self.publish_status()
         return False
 
@@ -4834,6 +4928,18 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         check()
         guard_photo(name)
         guard_local_photo(name)
+        if "sourceSignature" in job and job["sourceSignature"] is None:
+            raise ValueError("Original was unavailable when export was queued; queue this photo again")
+        source_path = src_path(name)
+        expected_source = tuple(job["sourceSignature"]) if "sourceSignature" in job else \
+            file_identity.stat_signature(source_path.stat(), path=source_path)
+
+        def check_source():
+            current_source = src_path(name)
+            if file_identity.stat_signature(current_source.stat(), path=current_source) != expected_source:
+                raise ValueError("Original changed after export was queued; queue this photo again")
+
+        check_source()
         edits.require_saved_mask_assets(job.get("masks"))
         started = time.perf_counter()
         job = dict(job)
@@ -4847,10 +4953,12 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
         metadata_started = time.perf_counter()
-        metadata = exif_for(name)
+        metadata = (exif_for(name, capture_override=job["captureTimeOverride"])
+                    if "captureTimeOverride" in job else exif_for(name))
         job["lensProfile"] = edits.lens_profile_for(metadata,
             edits.clean_optics(job.get("optics")).get("profileOverride"))
-        job["metadataFields"] = export_metadata_fields(name)
+        if "metadataFields" not in job:
+            job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
         job["phase_ms"]["prepare_metadata"] = (time.perf_counter() - metadata_started) * 1000
         check()
@@ -4869,6 +4977,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             raise ValueError("An export cannot replace a cataloged original or its capture companion")
         staged = durable_io.temporary_path(dst, "export")
         check()
+        check_source()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
             metrics = export_with_resident_engine(name, staged, job)
             detail = (f"{metrics.get('backend', 'cache')} "
@@ -4944,6 +5053,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
         with export_phase(job, "publish"), publish_lock:
             check()
+            check_source()
             if dst.parent.resolve() != out_dir:
                 raise ValueError("The export destination moved while rendering; nothing was published")
             if export_would_replace_original(dst, name):
@@ -5016,6 +5126,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
             entry = {
                 "status": item.get("status", "pending"),
                 "rating": int(item.get("rating", 0) or 0),
+                "captureTimeOverride": item.get("captureTimeOverride"),
                 "label": clean_label(item.get("label")),
                 "params": item.get("params"),
                 "grade": item.get("grade"),
@@ -5070,6 +5181,13 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             root = source_root(source_id) if source_id is not None else FOLDER
             item_destination = export_workflow.photo_destination(
                 recipe, library_root=FOLDER, source=source, source_root=root)
+        try:
+            source_path = src_path(n)
+            source_signature = list(file_identity.stat_signature(source_path.stat(), path=source_path))
+        except (OSError, ValueError):
+            # Preview still reports missing originals. A queued worker must
+            # not silently adopt a file that arrives after this snapshot.
+            source_signature = None
         items.append((n, {
             "params": e["params"] or default_params,
             "grade": e["grade"] or default_grade,
@@ -5090,6 +5208,8 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "filenameTemplate": recipe["filenameTemplate"],
             "collision": recipe["collision"],
             "rating": e["rating"],
+            "captureTimeOverride": e.get("captureTimeOverride"),
+            "metadataFields": copy.deepcopy(export_metadata_fields(n, state=e)),
             "exportBaseName": export_base_name,
             "sequence": len(items) + 1,
             "provenance": renderer_provenance(),
@@ -5097,6 +5217,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "sidecar": recipe.get("sidecar", True),
             "watermark": recipe.get("watermark"),
             "sourceName": n,
+            "sourceSignature": source_signature,
         }))
     if target_names is None and opts.get("pairView") in ("raw", "jpeg"):
         groups = {}
@@ -7963,13 +8084,9 @@ def scan_ingest_source(body: dict) -> dict:
         raise ValueError("that folder does not exist")
     items = ingest_workflow.scan_source(root)
     cat = catalog_handle()
-    known: set[str] = set()
-    if cat is not None:
-        known = {row["header_hash"] for row in cat.connection.execute(
-            "SELECT DISTINCT header_hash FROM files"
-            " WHERE header_hash IS NOT NULL").fetchall()}
+    known = cat.ingest_content_hashes(items) if cat is not None else {}
     request = ingest_workflow.clean_plan_request(body.get("request"))
-    plan = ingest_workflow.build_plan(items, request, existing_hashes=known)
+    plan = ingest_workflow.build_plan(items, request, existing_content_hashes=known)
     return {"plan": plan, "scanned": len(items)}
 
 
@@ -8383,7 +8500,8 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 displayName=(copy["displayName"] if copy
                              else Path(source).name),
                 availability=(availability := media_availability.availability(src_path(name))),
-                fileKey=(revision := file_key(name) if availability == "local" else ""),
+                fileKey=(revision := folder_listing_file_key(name)
+                         if availability == "local" else ""),
                 recoverySourceKey=revision,
 
                 mtime=snapshot["mtimes"].get(source, 0.0),

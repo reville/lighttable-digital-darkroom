@@ -126,8 +126,8 @@
     "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
     "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress"],
     "sections": [
-      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
-      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."]}
+      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
+      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."]}
     ],
     "related": ["export-format-color-space", "export-filenames-and-folders", "export-metadata-sidecars"],
     "sources": [
@@ -166,10 +166,11 @@
     "keywords": ["destination", "folder", "path", "filename", "rename", "overwrite", "skip", "collision", "hierarchy", "sequence", "template"],
     "sections": [
       {"title": "Destination layout", "paragraphs": ["One destination folder sends exports to the chosen folder. Subfolder beside each original uses a relative subfolder name for each source photo. Keep source folder hierarchy preserves source-folder organization beneath the export destination."], "steps": ["Open Export and choose Destination layout.", "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.", "Expand Advanced and edit Filename template.", "Check the filename and destination shown in Output preview before exporting."]},
-      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
+      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
     ],
     "related": ["export-photos", "export-metadata-sidecars"],
     "sources": [
+      {"path": "export_workflow.py", "anchor": "def _safe_piece("},
       {"path": "web/index.html", "anchor": "Keep source folder hierarchy"},
       {"path": "web/app.js", "anchor": "'Subfolder name, e.g. film-exports'"},
       {"path": "web/index.html", "anchor": "Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}."},
@@ -384,6 +385,7 @@
         "title": "Understand recovery choices",
         "paragraphs": [
           "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+          "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
           "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
         ]
       },
@@ -400,6 +402,7 @@
       "performance-previews"
     ],
     "sources": [
+      {"path": "catalog_scan.py", "anchor": "def scan_source("},
       {
         "path": "web/index.html",
         "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."

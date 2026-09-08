@@ -7,10 +7,9 @@ a file moved in Finder lost its edits and every cached render.
 
 This module owns the replacement. Three ideas carry the design:
 
-* **Identity is content, not location.** `files.header_hash` is derived from the
-  size and first 64 KiB of a file, so a move, a rename, or a touch keeps the
-  same row, and a file that reappears anywhere in any source relinks to its
-  edits automatically.
+* **Identity is content, not location.** `files.header_hash` narrows candidates;
+  the complete `files.content_hash` confirms them. A move, rename, or touch
+  keeps the same row and edits without confusing files with matching headers.
 * **Queryable fields are columns; edits stay JSON.** Rating, flag, label, and
   capture time are indexed columns because they drive every filter and sort.
   The edit blobs keep their existing shapes so the `clean_*` functions in
@@ -44,8 +43,10 @@ from typing import Any, Iterable, Sequence
 
 import durable_io
 import dam_filters
+import file_identity
+import media_availability
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 
 
 class CatalogVersionError(RuntimeError):
@@ -110,6 +111,8 @@ CREATE TABLE IF NOT EXISTS files (
     mtime_ns     INTEGER NOT NULL DEFAULT 0,
     mtime_iso    TEXT,
     header_hash  TEXT,
+    content_hash TEXT,
+    content_signature TEXT,
     capture_time TEXT,
     camera_make  TEXT,
     camera_model TEXT,
@@ -970,13 +973,25 @@ class Catalog:
                 if "availability" not in file_columns:
                     conn.execute("ALTER TABLE files ADD COLUMN availability "
                                  "TEXT NOT NULL DEFAULT 'local'")
-            if from_version < 6:
-                file_columns = {row[1] for row in conn.execute("PRAGMA table_info(files)")}
+            if from_version < 8:
+                # Two earlier schema-6 builds added different fields: DAM
+                # exposure metadata or complete source identities. Accept
+                # either layout, preserving all existing values and edits.
+                file_columns = {row[1] for row in conn.execute(
+                    "PRAGMA table_info(files)").fetchall()}
+                needs_search_rebuild = from_version < 6 or any(
+                    column not in file_columns for _, column, _ in dam_filters.EXPOSURE_FIELDS)
+                if "content_hash" not in file_columns:
+                    conn.execute("ALTER TABLE files ADD COLUMN content_hash TEXT")
+                if "content_signature" not in file_columns:
+                    conn.execute("ALTER TABLE files ADD COLUMN content_signature TEXT")
                 for _, column, _ in dam_filters.EXPOSURE_FIELDS:
                     if column not in file_columns:
                         conn.execute(f"ALTER TABLE files ADD COLUMN {column} REAL")
-                _rebuild_search_index(conn)
-            if from_version < 7:
+                if needs_search_rebuild:
+                    _rebuild_search_index(conn)
+
+            if from_version < 8:
                 state_columns = {row[1] for row in conn.execute("PRAGMA table_info(image_state)")}
                 if "preset_json" not in state_columns:
                     conn.execute("ALTER TABLE image_state ADD COLUMN preset_json TEXT")
@@ -1247,13 +1262,20 @@ class Catalog:
         parent = relpath.rsplit("/", 1)[0] if "/" in relpath else ""
         folder = self.folder_id(conn, source_id, parent)
         existing = conn.execute(
-            "SELECT id FROM files WHERE source_id=? AND relpath=?",
+            "SELECT id, size, mtime_ns, content_hash, content_signature FROM files WHERE source_id=? AND relpath=?",
             (source_id, relpath)).fetchone()
+        content_digest = record.get("content_hash")
+        content_signature = record.get("content_signature")
+        if ("content_hash" not in record and existing
+                and existing["size"] == record.get("size", 0)
+                and existing["mtime_ns"] == record.get("mtime_ns", 0)):
+            content_digest = existing["content_hash"]
+            content_signature = existing["content_signature"]
         values = (
             folder, record["filename"], record["ext"],
             record.get("kind", "processed"), record.get("size", 0),
             record.get("mtime_ns", 0), record.get("mtime_iso"),
-            record.get("header_hash"), record.get("capture_time"),
+            record.get("header_hash"), content_digest, content_signature, record.get("capture_time"),
             record.get("camera_make"), record.get("camera_model"),
             record.get("lens"),
             *(dam_filters.positive_number(record.get(column))
@@ -1266,7 +1288,7 @@ class Catalog:
             file_id = int(existing["id"])
             conn.execute(
                 "UPDATE files SET folder_id=?, filename=?, ext=?, kind=?,"
-                " size=?, mtime_ns=?, mtime_iso=?, header_hash=?,"
+                " size=?, mtime_ns=?, mtime_iso=?, header_hash=?, content_hash=?, content_signature=?,"
                 " capture_time=?, camera_make=?, camera_model=?, lens=?,"
                 " iso=?, focal_length=?, aperture=?, shutter_seconds=?,"
                 " width=?, height=?, orientation=?, metadata_version=?, availability=?, missing=?"
@@ -1274,11 +1296,11 @@ class Catalog:
         else:
             cur = conn.execute(
                 "INSERT INTO files(source_id, folder_id, filename, ext, kind,"
-                " size, mtime_ns, mtime_iso, header_hash, capture_time,"
+                " size, mtime_ns, mtime_iso, header_hash, content_hash, content_signature, capture_time,"
                 " camera_make, camera_model, lens, iso, focal_length, aperture, shutter_seconds,"
                 " width, height, orientation,"
                 " metadata_version, availability, missing, relpath, added_at)"
-                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (source_id, *values, relpath, _now()))
             file_id = int(cur.lastrowid)
         self._ensure_image(conn, file_id, record["filename"])
@@ -1350,8 +1372,11 @@ class Catalog:
         the same hash stay warm.
         """
         digest = record.get("header_hash")
-        if not digest:
+        content_digest = record.get("content_hash")
+        if not digest or not content_digest:
             return None
+        # A legacy missing row has no full digest to compare and no original
+        # bytes to recover one from. Keep it missing instead of guessing.
         # Prefer missing rows, but verify both groups against the filesystem.
         # A missing flag may be stale after a restore; an unavailable source
         # does not prove a move. Bound each group so duplicate-heavy libraries
@@ -1361,9 +1386,9 @@ class Catalog:
             candidates = conn.execute(
                 "SELECT f.id, f.relpath, s.path AS source_path"
                 " FROM files f JOIN sources s ON s.id=f.source_id"
-                " WHERE f.header_hash=? AND f.missing=?"
+                " WHERE f.header_hash=? AND f.content_hash=? AND f.missing=?"
                 " ORDER BY (f.source_id=?) DESC LIMIT ?",
-                (digest, missing, source_id, RELINK_CANDIDATE_LIMIT)).fetchall()
+                (digest, content_digest, missing, source_id, RELINK_CANDIDATE_LIMIT)).fetchall()
             for candidate in candidates:
                 old = Path(candidate["source_path"]) / candidate["relpath"]
                 try:
@@ -1386,10 +1411,10 @@ class Catalog:
         parent = relpath.rsplit("/", 1)[0] if "/" in relpath else ""
         conn.execute(
             "UPDATE files SET source_id=?, folder_id=?, relpath=?, filename=?,"
-            " ext=?, size=?, mtime_ns=?, mtime_iso=?, missing=0 WHERE id=?",
+            " ext=?, size=?, mtime_ns=?, mtime_iso=?, content_signature=?, missing=0 WHERE id=?",
             (source_id, self.folder_id(conn, source_id, parent), relpath,
              record["filename"], record["ext"], record.get("size", 0),
-             record.get("mtime_ns", 0), record.get("mtime_iso"),
+             record.get("mtime_ns", 0), record.get("mtime_iso"), record.get("content_signature"),
              int(row["id"])))
         self._refresh_file_images(conn, int(row["id"]), record["filename"])
         return int(row["id"])
@@ -1505,7 +1530,7 @@ class Catalog:
         return [dict(row) for row in rows]
 
     def duplicates(self) -> list[dict]:
-        """Groups of present files that share a header hash."""
+        """Group byte-identical local files, using headers to narrow candidates."""
         rows = self.connection.execute(
             "SELECT header_hash, COUNT(*) AS n FROM files"
             " WHERE missing=0 AND header_hash IS NOT NULL"
@@ -1514,13 +1539,67 @@ class Catalog:
         out = []
         for row in rows:
             members = self.connection.execute(
-                "SELECT f.id, f.relpath, s.path AS source_path, f.size"
+                "SELECT f.id, f.relpath, s.path AS source_path, f.size,"
+                " f.mtime_ns, f.content_hash, f.content_signature"
                 " FROM files f JOIN sources s ON s.id=f.source_id"
                 " WHERE f.header_hash=? AND f.missing=0 AND s.active=1",
                 (row["header_hash"],)).fetchall()
-            out.append({"hash": row["header_hash"],
-                        "files": [dict(m) for m in members]})
+            groups: dict[str, list[dict]] = {}
+            for member in members:
+                digest = self._present_content_hash(member)
+                if digest:
+                    groups.setdefault(digest, []).append({key: member[key]
+                        for key in ("id", "relpath", "source_path", "size")})
+            out.extend({"hash": digest, "files": files}
+                       for digest, files in groups.items() if len(files) > 1)
         return out
+
+    @staticmethod
+    def _present_content_hash(row) -> str | None:
+        """Verify availability/revision before trusting a saved full digest."""
+        path = Path(row["source_path"]) / row["relpath"]
+        try:
+            stat = path.stat()
+            media_availability.require_local(path, stat=stat)
+            if (row["content_hash"] and row["content_signature"] == file_identity.signature_key(stat, path=path)
+                    and stat.st_size == row["size"]
+                    and stat.st_mtime_ns == row["mtime_ns"]):
+                return row["content_hash"]
+            return file_identity.content_hash(path)
+        except OSError:
+            return None
+
+    def ingest_content_hashes(self, items) -> dict[str, set[str]]:
+        """Full identities of existing candidates, keyed by the ingest prefix.
+
+        Catalog and ingest historically used different prefix recipes. Compute
+        the catalog prefix for each incoming file, then inspect only matching
+        rows. Never reread a whole library to plan a card import.
+        """
+        import catalog_scan
+
+        known: dict[str, set[str]] = {}
+        for item in items:
+            ingest_digest = str(item.get("hash") or "")
+            if not ingest_digest or item.get("availability", "local") != "local":
+                continue
+            if ingest_digest in known:
+                continue
+            digest = catalog_scan.header_hash(Path(item["path"]))
+            if not digest:
+                continue
+            rows = self.connection.execute(
+                "SELECT f.relpath, s.path AS source_path, f.size,"
+                " f.mtime_ns, f.content_hash, f.content_signature FROM files f"
+                " JOIN sources s ON s.id=f.source_id"
+                " WHERE f.header_hash=? AND f.missing=0 AND s.active=1",
+                (digest,)).fetchall()
+            candidates = known.setdefault(ingest_digest, set())
+            for row in rows:
+                content_digest = self._present_content_hash(row)
+                if content_digest:
+                    candidates.add(content_digest)
+        return known
 
     # -------------------------------------------------------------- images
 
@@ -2188,7 +2267,8 @@ class Catalog:
         # Fetching them per image turned one page of the grid into hundreds of
         # round trips, which is what made a large library feel unopenable.
         blobs = (", s.params_json, s.grade_json, s.crop_json, s.masks_json,"
-                 " s.heals_json, s.optics_json, s.provenance_json, s.preset_json"
+                 " s.heals_json, s.optics_json, s.provenance_json, s.preset_json,"
+                 " ct.capture_time AS capture_time_override"
                  if include_state else "")
         # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
         # through SQLite's temporary sort made the last page grow with the library.
@@ -2198,7 +2278,7 @@ class Catalog:
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
             " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
-            " f.mtime_iso, f.header_hash,"
+            " f.mtime_iso, f.header_hash, f.content_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
             " f.iso, f.focal_length, f.aperture, f.shutter_seconds,"
             " f.orientation, f.availability, f.source_id, src.path AS source_path,"
@@ -2228,6 +2308,7 @@ class Catalog:
                     raw = row[column]
                     item[key] = _json_or(raw)
                 item["keywords"] = keywords.get(row["id"], [])
+                item["captureTimeOverride"] = row["capture_time_override"]
         return {"total": int(total), "offset": offset, "limit": limit,
                 "items": items}
 
@@ -2743,7 +2824,7 @@ def _item(row: sqlite3.Row) -> dict:
             row["capture_time"] or row["mtime_iso"], None),
         "mtime": mtime_ns / 1e9,
         "fileKey": _text_or(row["header_hash"]),
-        "recoverySourceKey": source_revision(_text_or(row["header_hash"]),
+        "recoverySourceKey": source_revision(_text_or(row["content_hash"] or row["header_hash"]),
             _int_or(row["size"], 0, minimum=0), mtime_ns),
         "availability": _text_or(row["availability"], "local"),
         "width": width,
