@@ -76,11 +76,36 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
         server.read_native_surface(surface)
 
     def test_live_supported_edits_stay_unbaked(self):
-        response = self.render({"distortion": 0.2}, [{"enabled": True}] * 16)
+        response = self.render({"distortion": 0.2}, [{"enabled": False}] * 16)
         self.assertFalse(response["baseEditsBaked"])
         self.assertEqual(response["native"], self.result["native"])
         self.assertFalse(server.native_base_edits_required({}, [{"enabled": False}] * 17))
         self.assertTrue(server.native_base_edits_required({}, [{}] * 17))
+
+    def test_each_retouch_mode_uses_ordered_export_pixels(self):
+        for mode in ("clone", "heal", "remove"):
+            with self.subTest(mode=mode):
+                heals = [{"mode": mode, "target": [.35, .5], "source": [.7, .5],
+                          "radius": .14, "feather": .4}]
+                result = self.render({}, heals)
+                self.assertTrue(result["baseEditsBaked"])
+                rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")
+                expected = edits.apply_base(self.pixels.astype(np.float32) / 255, {}, heals)
+                np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
+
+    def test_local_detail_bakes_grade_and_invalidates_on_prior_mask_or_grade(self):
+        from processing_edit_cases import full_mask
+        masks = [full_mask({"exposure": 1}), full_mask({"texture": 1})]
+        def render(values, local_masks=masks):
+            return server.apply_preview_edits(self.result, "frame.jpg", 48, {},
+                native=True, grade_values=values, masks=local_masks)
+        first = render({"exposure": .4})
+        self.assertTrue(first["gradeEditsBaked"])
+        with mock.patch.object(server.edits, "apply_masks", side_effect=AssertionError("cache missed")):
+            self.assertEqual(render({"exposure": .4})["key"], first["key"])
+        self.assertNotEqual(render({"exposure": .7})["key"], first["key"])
+        self.assertNotEqual(render({"exposure": .4}, masks[::-1])["key"], first["key"])
+        self.assertFalse(render({}, [full_mask({"texture": 0})]).get("gradeEditsBaked", False))
 
     def test_more_than_sixteen_heals_use_the_complete_reference_result(self):
         heals = [{"mode": "clone", "target": [0.7, 0.5],
@@ -93,7 +118,7 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
         np.testing.assert_array_equal(rgba[..., :3], (np.clip(expected, 0, 1) * 255 + 0.5).astype(np.uint8))
         self.assertFalse(np.array_equal(rgba[..., :3], self.pixels))
 
-    def test_develop_image_base_can_be_baked_and_jpeg_browser_fallback_remains(self):
+    def test_develop_image_base_is_baked_for_native_and_lossless_browser(self):
         encoded = io.BytesIO()
         Image.fromarray(self.pixels).save(encoded, "JPEG")
         with mock.patch.object(server, "_preview_source_bytes", return_value=encoded.getvalue()):
@@ -102,8 +127,8 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
             browser = server.apply_preview_edits(self.result, "frame.jpg", 48, {}, self.optics, [])
         self.assertTrue(native["baseEditsBaked"])
         self.assertEqual(native["native"]["format"], "rgba8")
-        self.assertNotIn("native", browser)
-        self.assertTrue(browser["img"].startswith("/api/edit/image?key="))
+        self.assertEqual(browser["key"], native["key"])
+        self.assertTrue(browser["img"].startswith("/api/render/png?key="))
 
     def test_cancelled_render_does_not_decode_or_correct(self):
         self.result = {"cancelled": True}

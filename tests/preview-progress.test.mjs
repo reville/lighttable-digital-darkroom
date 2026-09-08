@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import { gradeBakeRequest, gradeBakeKey } from '../web/preview-processing.js';
 
 const source = readFileSync(new URL('../web/preview-progress.js', import.meta.url), 'utf8');
 const { createPreviewProgress, waitForRawRefinement } = await import(
@@ -82,6 +83,7 @@ function renderHarness() {
   let finishDecode, finishPaint;
   const context = {
     S, performance, console, setTimeout, clearTimeout, CLIENT_ID: 'review',
+    gradeBakeRequest, gradeBakeKey,
     prefetchTimer: null, refineTimer: null, viewportRegionTimer: null,
     interactiveRenderPhoto: 'photo.dng', lastContinuousInputAt: -Infinity,
     INTERACTIVE_PREVIEW_WIDTH: 1100, FULL_RESOLUTION_SETTLE_MS: 200,

@@ -35,6 +35,11 @@ BASE_PARAMS = {
 }
 CASES = {
     "negative_baseline": {},
+    "tungsten_200t_manual": {"stock": "kodak_vision3_200t", "auto_exposure": False},
+    "tungsten_200t_auto": {"stock": "kodak_vision3_200t", "auto_exposure": True},
+    "tungsten_500t_manual": {"stock": "kodak_vision3_500t", "auto_exposure": False},
+    "tungsten_500t_auto": {"stock": "kodak_vision3_500t", "auto_exposure": True},
+
     "exposure_plus_one": {"exposure_ev": 1.0},
     "density_gamma": {"gamma": 1.2},
     "dye_couplers": {"couplers_on": True},
