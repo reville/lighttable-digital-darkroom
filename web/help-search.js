@@ -21,7 +21,7 @@ export const HELP_SECTION_TOPICS = {
 
 export function normalizeHelpText(value) {
   return String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    .toLowerCase().replace(/[^\p{L}\p{N}\p{M}]+/gu, ' ').trim();
 }
 
 export function helpSearch(articles, query = '', category = '') {
@@ -33,8 +33,8 @@ export function helpSearch(articles, query = '', category = '') {
     const keywords = normalizeHelpText(article.keywords.join(' '));
     const summary = normalizeHelpText(article.summary);
     const body = normalizeHelpText(article.sections.map((section) =>
-      [section.title, ...section.paragraphs, ...(section.steps || []), ...(section.tips || [])].join(' ')).join(' '));
-    const fields = [title, keywords, summary, body, normalizeHelpText(article.category)];
+      [section.title, ...(section.paragraphs || []), ...(section.steps || []), ...(section.tips || [])].join(' ')).join(' '));
+    const fields = [title, keywords, summary, body, normalizeHelpText(article.categoryLabel || article.category)];
     if (!terms.every((term) => fields.some((field) => field.includes(term)))) return [];
     const score = terms.reduce((sum, term) => sum + (title.includes(term) ? 12 : 0)
       + (keywords.includes(term) ? 7 : 0) + (summary.includes(term) ? 4 : 0)

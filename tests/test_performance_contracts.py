@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+from html import unescape
 import json
 import os
 import re
@@ -772,7 +773,7 @@ process.stdout.write(JSON.stringify({
         html = (ROOT / "web" / "index.html").read_text()
         for title in ("File", "Edit", "Library", "Photo", "Develop",
                       "View", "Window", "Help"):
-            self.assertIn(f'NSMenu(title: "{title}")', shell)
+            self.assertIn(f'NSMenu(title: L("{title}"))', shell)
         self.assertIn('case "menuState"', shell)
         self.assertIn('"type": "menuCommand"', shell)
         self.assertIn("func validateMenuItem", shell)
@@ -1119,8 +1120,19 @@ process.stdout.write(JSON.stringify({
         self.assertIn("if (s === 'name')", self.javascript)
         self.assertIn("$('search').addEventListener('search', refreshSearch);", self.javascript)
         markup = (ROOT / "web" / "index.html").read_text()
-        self.assertIn('<option value="edited">Edited</option>', markup)
-        self.assertIn('<option value="unrated">Unrated only</option>', markup)
+        for selector, value, label in (
+                ("editFilter", "edited", "Edited"),
+                ("ratingFilter", "unrated", "Unrated only")):
+            select = re.search(rf'<select\b[^>]*\bid="{selector}"[^>]*>(.*?)</select>',
+                               markup, re.DOTALL)
+            self.assertIsNotNone(select, f"Missing {selector} control")
+            option = re.search(rf'<option\b([^>]*\bvalue="{value}"[^>]*)>([^<]*)</option>',
+                               select.group(1))
+            self.assertIsNotNone(option, f"Missing {selector} option {value}")
+            self.assertEqual(unescape(option.group(2)), label)
+            template = re.search(r'data-i18n-text="([^"]+)"', option.group(1))
+            self.assertIsNotNone(template, f"Missing translation template for {label}")
+            self.assertEqual(json.loads(unescape(template.group(1))), {"0": label})
 
     def test_export_modal_uses_real_thumbnail_route_and_keyboard_focus(self):
         self.assertIn("thumbEl.style.backgroundImage = `url('/api/thumb?name=", self.javascript)

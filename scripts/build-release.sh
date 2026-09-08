@@ -216,6 +216,10 @@ PYTHONPATH="$PAYLOAD" \
   "$APP/Contents/Resources/Python/bin/python3.13" \
   "$ROOT/scripts/smoke-denoise.py"
 
+"$APP/Contents/Resources/Python/bin/python3.13" \
+  "$ROOT/scripts/native_localization_sources.py" --bundle "$APP" \
+  --catalogs "$PAYLOAD/web/locales"
+
 "$ROOT/scripts/sign-app.sh" "$APP" "$SIGN_IDENTITY"
 
 echo "Built self-contained application: $APP"

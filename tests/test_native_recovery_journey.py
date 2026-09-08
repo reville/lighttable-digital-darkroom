@@ -15,10 +15,16 @@ ROOT = Path(__file__).resolve().parents[1]
 JOURNEY = r"""
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {pathToFileURL} from 'node:url';
 import vm from 'node:vm';
 const [root, url, name] = process.argv.slice(1);
 const read = file => readFileSync(`${root}/web/${file}`, 'utf8');
-const moduleFor = file => import(`data:text/javascript;base64,${Buffer.from(read(file)).toString('base64')}`);
+// Keep real module URLs so dependencies share the production locale instance.
+const moduleFor = file => import(pathToFileURL(`${root}/web/${file}`).href);
+const {useCatalog} = await moduleFor('i18n.js');
+useCatalog('fr', {messages: {
+  'Could not save edits for {value}': 'Impossible d’enregistrer les réglages de {value}',
+}});
 const {createEditSaveQueue} = await moduleFor('edit-save-queue.js');
 const {createEditRecovery, recoveryPayloadMatches} = await moduleFor('edit-recovery.js');
 const {createCloseBarrier} = await moduleFor('close-barrier.js');
@@ -37,6 +43,7 @@ const data = await getJSON('/api/images');
 const createJournal = options => createEditRecovery({...options, storage});
 const editRecovery = createJournal({scope: data.catalog?.path || `folder:${data.folder}`});
 const writes = [];
+const saveErrors = [];
 const editSaveQueue = createEditSaveQueue({journal: editRecovery, send: async (_, payload) => {
   const response = await window.fetch('/api/state', {method: 'POST',
     headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload.state)});
@@ -45,7 +52,7 @@ const editSaveQueue = createEditSaveQueue({journal: editRecovery, send: async (_
   writes.push(await getJSON(`/api/state?name=${encodeURIComponent(name)}`));
 }});
 const closeBarrier = createCloseBarrier({capture: () => {}, setBlocked: () => {},
-  flush: async () => {try {await editSaveQueue.flush(); return true;} catch {return false;}}});
+  flush: async () => {try {await editSaveQueue.flush(); return true;} catch (error) {saveErrors.push(error.message); return false;}}});
 window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
 const source = read('app.js').match(/^async function runEditRecoveryJourney\([^]*?^}/m)[0];
@@ -55,6 +62,7 @@ const context = {window, cur: () => ({name}), getJSON, GRADE_DEFAULTS, editSaveQ
 vm.runInNewContext(source + '\nglobalThis.run = runEditRecoveryJourney;', context);
 try {
   const result = await context.run();
+  assert.deepEqual(saveErrors, [`Impossible d’enregistrer les réglages de ${name}`]);
   console.log(JSON.stringify({result, writes, remainingDrafts: (await editRecovery.list()).length}));
 } catch (error) {
   console.log(JSON.stringify({error: error.message, writes}));

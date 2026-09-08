@@ -466,6 +466,9 @@ PYTHON_SOURCE_REV=$PYTHON_SOURCE_REV
 RUST_SOURCE_REV=$RUST_SOURCE_REV
 MANIFEST
 
+"$BASE_PYTHON" "$ROOT/scripts/native_localization_sources.py" \
+  --bundle "$STAGE_APP" --catalogs "$STAGE_PAYLOAD/web/locales"
+
 echo "Signing and verifying the staged app..."
 if [[ -z "$PREVIOUS_HELPER_HASH" || "$PREVIOUS_HELPER_HASH" != "$HELPER_HASH" ]]; then
   /usr/bin/codesign --force --sign - "$STAGE_PAYLOAD/build/LightTableVision"

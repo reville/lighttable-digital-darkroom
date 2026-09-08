@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /** Session undo stacks keyed by qualified catalog photo name.
  *
  * activate() returns stable arrays for the UI's undo/redo availability checks.
@@ -12,7 +13,7 @@ export function createPhotoUndoHistory({
     ['maxPhotos', maxPhotos, 1], ['maxSteps', maxSteps, 0], ['maxBytes', maxBytes, 0],
   ]) {
     if (!Number.isSafeInteger(value) || value < minimum) {
-      throw new RangeError(`${name} must be an integer of at least ${minimum}`);
+      throw new RangeError(tr("{name} must be an integer of at least {minimum}", {name: name, minimum: minimum}));
     }
   }
 
@@ -20,7 +21,7 @@ export function createPhotoUndoHistory({
   let activeName = null;
 
   function checkSnapshot(state) {
-    if (typeof state !== 'string') throw new TypeError('Undo snapshots must be strings');
+    if (typeof state !== 'string') throw new TypeError(tr("Undo snapshots must be strings"));
     return state.length * 2;
   }
 
@@ -68,7 +69,7 @@ export function createPhotoUndoHistory({
 
   return {
     activate(name) {
-      if (typeof name !== 'string' || !name) throw new TypeError('A photo name is required');
+      if (typeof name !== 'string' || !name) throw new TypeError(tr("A photo name is required"));
       const entry = photos.get(name) || { undo: [], redo: [] };
       photos.delete(name);
       photos.set(name, entry);

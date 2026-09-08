@@ -1,8 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import test from 'node:test';
-const source=readFileSync(new URL('../web/capture-time.js',import.meta.url),'utf8');
-const {installCaptureTime,captureSortValue}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import {installCaptureTime,captureSortValue} from '../web/capture-time.js';
 const change={name:'a.jpg',fileId:1,original:'2026-01-01T12:00:00',before:'2026-01-01T12:00:00',beforeOverride:null,after:'2026-01-01T13:00:00'};
 function harness(flush=async()=>true) {
   const nodes=new Map(),calls=[],notifications=[];

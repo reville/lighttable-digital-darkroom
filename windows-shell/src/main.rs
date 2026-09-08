@@ -3,6 +3,7 @@
 use lighttable_desktop_shell::{
     CloseAttempts,
     preset_links::{self, PresetLinkInbox},
+    localization::{self, tr, tr_args},
 };
 
 use std::{
@@ -74,8 +75,14 @@ main { height: 100%; display: flex; flex-direction: column; align-items: center;
   border-radius: 50%; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 </style></head>
-<body><main><div class="spin"></div><div>Starting LightTable…</div></main></body></html>
+<body><main><div class="spin"></div><div>{{STARTING_MESSAGE}}</div></main></body></html>
 "#;
+
+fn loading_page() -> String {
+    let message = tr("Starting LightTable…").replace('&', "&amp;")
+        .replace('<', "&lt;").replace('>', "&gt;");
+    LOADING_PAGE.replace("{{STARTING_MESSAGE}}", &message)
+}
 
 const DEFAULT_WINDOW: (f64, f64) = (1500.0, 950.0);
 const MINIMUM_WINDOW: (f64, f64) = (1100.0, 700.0);
@@ -109,7 +116,7 @@ struct RuntimePaths {
 impl RuntimePaths {
     fn discover() -> Result<Self> {
         let executable = env::current_exe()?;
-        let executable_dir = executable.parent().context("executable has no parent")?;
+        let executable_dir = executable.parent().context(tr("executable has no parent"))?;
         let project = env::var_os("LIGHTTABLE_PROJECT_DIR")
             .map(PathBuf::from)
             .or_else(|| {
@@ -120,7 +127,11 @@ impl RuntimePaths {
                 let current = env::current_dir().ok()?;
                 current.join("server.py").is_file().then_some(current)
             })
-            .context("LightTable resources were not found")?;
+            .context(tr("LightTable resources were not found"))?;
+        let base = BaseDirs::new().context(tr("the local application-data folder is unavailable"))?;
+        let support = base.data_local_dir().join("LightTable");
+        let cache = base.cache_dir().join("LightTable");
+        localization::initialize(&project, &support);
         let python = [
             executable_dir.join("Python").join("python.exe"),
             project.join(".venv").join("Scripts").join("python.exe"),
@@ -128,10 +139,8 @@ impl RuntimePaths {
         ]
         .into_iter()
         .find(|candidate| candidate.is_file())
-        .context("the bundled Python runtime was not found")?;
-        let base = BaseDirs::new().context("the local application-data folder is unavailable")?;
-        let support = base.data_local_dir().join("LightTable");
-        let cache = base.cache_dir().join("LightTable");
+        .context(tr("the bundled Python runtime was not found"))?;
+
         Ok(Self {
             project,
             python,
@@ -178,7 +187,7 @@ impl ServerController {
             .env("LIGHTTABLE_WATCH_PARENT", "1")
             .env("LIGHTTABLE_PARENT_PID", std::process::id().to_string())
             .env("LIGHTTABLE_CACHE_DIR", &paths.cache)
-            .env("LIGHTTABLE_PREFS_FILE", paths.support.join("prefs.json"))
+            .env("LIGHTTABLE_PREFS_FILE", localization::preferences_path(&paths.support))
             .env(
                 "LIGHTTABLE_PRESETS_FILE",
                 paths.support.join("presets.json"),
@@ -213,7 +222,7 @@ impl ServerController {
 
         let child = command
             .spawn()
-            .context("could not start the render server")?;
+            .context(tr("could not start the render server"))?;
         let mut controller = Self { child, port };
         if let Err(error) = wait_until_ready(port, SERVER_READY_TIMEOUT) {
             controller.stop();
@@ -302,10 +311,14 @@ impl AppState {
     fn finish_close(&mut self, saved: bool) {
         self.close_deadline = None;
         self.close_attempts.cancel();
+        let mut keep_open = tr("Keep Open");
+        let mut quit = tr("Quit Anyway");
+        if keep_open == quit { keep_open = "Keep Open".into(); quit = "Quit Anyway".into(); }
         self.close_approved = saved || MessageDialog::new()
-            .set_level(MessageLevel::Warning).set_title("Edits have not been saved")
-            .set_description("Quit anyway? Keep the window open to retry saving. Available local recovery will be offered next time this catalog opens.")
-            .set_buttons(MessageButtons::YesNo).show() == rfd::MessageDialogResult::Yes;
+            .set_level(MessageLevel::Warning).set_title(tr("Edits have not been saved"))
+            .set_description(tr("Quit anyway? Keep the window open to retry saving. Available local recovery will be offered next time this catalog opens."))
+            .set_buttons(MessageButtons::OkCancelCustom(quit.clone(), keep_open)).show()
+                == rfd::MessageDialogResult::Custom(quit);
         if !self.close_approved {
             let _ = self.send_event(json!({"type": "closeCancelled"}));
         }
@@ -320,16 +333,13 @@ impl AppState {
     }
 
     fn set_title(&self, folder: &Path) {
-        self.window.set_title(&format!(
-            "LightTable — {}",
-            folder.file_name().unwrap_or_default().to_string_lossy()
-        ));
+        self.window.set_title(&tr_args("LightTable — {name}", &[("name", folder.file_name().unwrap_or_default().to_string_lossy().into_owned())]));
     }
 
     fn launch(&mut self, folder: PathBuf) -> Result<()> {
         let folder = normalise(folder);
         if !folder.is_dir() {
-            bail!("That folder is no longer available")
+            bail!(tr("That folder is no longer available"))
         }
         self.settings
             .add_source(folder.clone(), self.settings.sources.is_empty());
@@ -359,7 +369,7 @@ impl AppState {
         self.preset_links_ready = false;
         self.fallback = fallback;
         self.set_title(&folder);
-        let _ = self.webview.load_html(LOADING_PAGE);
+        let _ = self.webview.load_html(&loading_page());
         self.launch_generation += 1;
         self.pending = true;
         let generation = self.launch_generation;
@@ -411,10 +421,10 @@ impl AppState {
                 {
                     Some(previous) => {
                         // Return to the folder that was open, and say why.
-                        self.pending_error = Some(format!(
-                            "Could not open {}: {message}",
-                            folder.file_name().unwrap_or_default().to_string_lossy()
-                        ));
+                        self.pending_error = Some(tr_args("Could not open {name}: {message}", &[
+                            ("name", folder.file_name().unwrap_or_default().to_string_lossy().into_owned()),
+                            ("message", message),
+                        ]));
                         self.settings.active = Some(previous.clone());
                         let _ = self.save_settings();
                         self.begin_server(previous, None);
@@ -460,7 +470,7 @@ impl AppState {
     }
 
     fn handle_command(&mut self, raw: &str) -> Result<()> {
-        let message: Value = serde_json::from_str(raw).context("invalid desktop message")?;
+        let message: Value = serde_json::from_str(raw).context(tr("invalid desktop message"))?;
         let action = message
             .get("action")
             .and_then(Value::as_str)
@@ -469,7 +479,7 @@ impl AppState {
             "editJournal" => {
                 self.journal
                     .send(message.clone())
-                    .context("edit recovery worker stopped")?;
+                    .context(tr("edit recovery worker stopped"))?;
             }
             "closeReady" => {
                 if self.close_deadline.is_some()
@@ -477,6 +487,10 @@ impl AppState {
                 {
                     self.finish_close(message["ok"].as_bool() == Some(true));
                 }
+            }
+            "localizationChanged" => {
+                localization::reload().map_err(|error| anyhow!(tr(&error)))?;
+                self.set_title(&self.folder);
             }
             "requestSources" => self.send_sources()?,
             "requestPresetLinks" => {
@@ -486,8 +500,9 @@ impl AppState {
             "addPhotos" => {
                 let extensions = photo_extensions();
                 if let Some(files) = FileDialog::new()
+                    .set_title(tr("Add Photos"))
                     .set_directory(&self.folder)
-                    .add_filter("Photos", &extensions)
+                    .add_filter(&tr("Photos"), &extensions)
                     .pick_files()
                 {
                     let folders = source_folders(files);
@@ -500,14 +515,15 @@ impl AppState {
                 }
             }
             "addFolder" => {
-                if let Some(folder) = FileDialog::new().set_directory(&self.folder).pick_folder() {
+                if let Some(folder) = FileDialog::new().set_title(tr("Add a folder to LightTable")).set_directory(&self.folder).pick_folder() {
                     self.launch(folder)?;
                 }
             }
             "chooseCatalogFile" => {
                 if let Some(file) = FileDialog::new()
+                    .set_title(tr("Choose a catalog"))
                     .set_directory(&self.folder)
-                    .add_filter("Catalogs", &["lrcat", "cocatalog"])
+                    .add_filter(&tr("Catalogs"), &["lrcat", "cocatalog"])
                     .pick_file()
                 {
                     self.send_event(json!({
@@ -522,7 +538,7 @@ impl AppState {
                     .and_then(Value::as_str)
                     .unwrap_or("ingestSource")
                     .to_string();
-                if let Some(folder) = FileDialog::new().pick_folder() {
+                if let Some(folder) = FileDialog::new().set_title(tr("Choose a folder")).pick_folder() {
                     self.send_event(json!({
                         "type": "ingestFolderSelected",
                         "field": field,
@@ -541,7 +557,8 @@ impl AppState {
             }
             "chooseExternalEditor" => {
                 if let Some(application) = FileDialog::new()
-                    .add_filter("Applications", &["exe"])
+                    .set_title(tr("Choose an external editor"))
+                    .add_filter(&tr("Applications"), &["exe"])
                     .pick_file()
                 {
                     let name = application
@@ -634,7 +651,7 @@ impl AppState {
                     let new_root = rename_root(&old_root, name)?;
                     self.settings.remap_root(&old_root, &new_root);
                     migrate_web_preferences(
-                        &self.paths.support.join("prefs.json"),
+                        &localization::preferences_path(&self.paths.support),
                         &old_root,
                         &new_root,
                     )?;
@@ -653,7 +670,7 @@ impl AppState {
                     .unwrap_or_default();
                 let data = lighttable_desktop_shell::preset_export_data(
                     content, message.get("encoding").and_then(Value::as_str))?;
-                if let Some(destination) = FileDialog::new().set_file_name(filename).save_file() {
+                if let Some(destination) = FileDialog::new().set_title(tr("Export Preset")).set_file_name(filename).save_file() {
                     fs::write(&destination, data)?;
                     self.send_event(json!({
                         "type": "presetSaved",
@@ -693,7 +710,7 @@ fn wait_until_ready(port: u16, timeout: Duration) -> Result<()> {
         }
         thread::sleep(Duration::from_millis(200));
     }
-    Err(anyhow!("the render server did not become ready"))
+    Err(anyhow!(tr("the render server did not become ready")))
 }
 
 /// Removable drives, for the ingest dialog. Windows exposes these as drive
@@ -794,16 +811,13 @@ fn recycle(path: &Path) -> Result<()> {
     if status == 0 {
         Ok(())
     } else {
-        Err(anyhow!(
-            "could not move {} to the Recycle Bin",
-            path.display()
-        ))
+        Err(anyhow!(tr_args("Could not move {path} to the Recycle Bin", &[("path", path.display().to_string())])))
     }
 }
 
 #[cfg(not(windows))]
 fn recycle(_path: &Path) -> Result<()> {
-    Err(anyhow!("the Recycle Bin is only available on Windows"))
+    Err(anyhow!(tr("the Recycle Bin is only available on Windows")))
 }
 
 /// Open a file with the application registered for it.
@@ -843,7 +857,7 @@ fn reveal(path: &Path) -> Result<()> {
     let status = Command::new("xdg-open").arg(path).status()?;
     #[cfg(not(target_os = "windows"))]
     if !status.success() {
-        bail!("the file browser could not open that location")
+        bail!(tr("the file browser could not open that location"))
     }
     #[cfg(not(target_os = "windows"))]
     Ok(())
@@ -902,7 +916,7 @@ fn show_fatal(message: &str) {
         .set_level(MessageLevel::Error)
         .set_title("LightTable")
         .set_description(message)
-        .set_buttons(MessageButtons::Ok)
+        .set_buttons(MessageButtons::OkCustom(tr("OK")))
         .show();
 }
 
@@ -939,10 +953,10 @@ fn run() -> Result<()> {
     let folder = initial_folder(&settings)
         .or_else(|| {
             FileDialog::new()
-                .set_title("Choose a photo folder")
+                .set_title(tr("Choose a photo folder"))
                 .pick_folder()
         })
-        .context("no photo folder was chosen")?;
+        .context(tr("no photo folder was chosen"))?;
     let folder = normalise(folder);
     settings.add_source(folder.clone(), settings.sources.is_empty());
     settings.active = Some(folder.clone());
@@ -964,10 +978,7 @@ fn run() -> Result<()> {
         available,
     );
     let window = WindowBuilder::new()
-        .with_title(format!(
-            "LightTable — {}",
-            folder.file_name().unwrap_or_default().to_string_lossy()
-        ))
+        .with_title(tr_args("LightTable — {name}", &[("name", folder.file_name().unwrap_or_default().to_string_lossy().into_owned())]))
         .with_inner_size(LogicalSize::new(width, height))
         .with_min_inner_size(LogicalSize::new(MINIMUM_WINDOW.0, MINIMUM_WINDOW.1))
         .with_maximized(remembered.is_some_and(|state| state.maximized))
@@ -980,10 +991,12 @@ fn run() -> Result<()> {
     let mut web_context = WebContext::new(Some(paths.support.join("WebView2")));
     let command_proxy = proxy.clone();
     let load_proxy = proxy.clone();
+    let system_languages = serde_json::to_string(&localization::system_languages())?;
+    let bridge_script = format!("{BRIDGE_SCRIPT}\nwindow.__LIGHTTABLE_SYSTEM_LANGUAGES__={system_languages};");
     let builder = WebViewBuilder::new_with_web_context(&mut web_context)
-        .with_html(LOADING_PAGE)
+        .with_html(loading_page())
         .with_background_color(BACKGROUND)
-        .with_initialization_script(BRIDGE_SCRIPT)
+        .with_initialization_script(&bridge_script)
         .with_clipboard(true)
         .with_ipc_handler(move |request| {
             let _ = command_proxy.send_event(UserEvent::NativeMessage(request.body().clone()));

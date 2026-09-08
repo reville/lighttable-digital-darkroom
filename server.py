@@ -7,6 +7,8 @@ exports run as subprocesses.
 """
 from __future__ import annotations
 
+from server_localization import T, configure as configure_localization, source_message
+
 import atexit
 import copy
 import capture_time as capture_clock
@@ -259,8 +261,7 @@ def acquire_catalog_process_lock() -> None:
         handle.close()
         holder = _catalog_lease_holder(catalog_path)
         raise CatalogLockedError(
-            f"the catalog is already open by another LightTable server: "
-            f"{catalog_path}", holder) from error
+            T("the catalog is already open by another LightTable server: {catalog_path}", catalog_path=f'{catalog_path}'), holder) from error
     CATALOG_PROCESS_LOCK = handle
 
 
@@ -277,7 +278,7 @@ def _damaged_catalog_notice(catalog_path: Path, error: Exception) -> dict:
         "message": str(error),
         "path": str(catalog_path),
         "backups": len(backups),
-        "recovery": (
+        "recovery": T(
             "Photos are open in folder mode and the damaged catalog has not "
             "been changed. Open Library Health to salvage it, restore a "
             "backup, or start a new catalog."),
@@ -308,12 +309,12 @@ def open_catalog() -> "catalog_module.Catalog | None":
     PRIMARY_SOURCE_ID = None
     CATALOG_NOTICE = None
     catalog_path = catalog_module.default_catalog_path()
-    STARTUP.phase("catalog", "Opening the catalog…")
+    STARTUP.phase("catalog", T("Opening the catalog…"))
     try:
         CATALOG = catalog_module.Catalog(catalog_path)
-        STARTUP.phase("catalog", "Checking the catalog…")
+        STARTUP.phase("catalog", T("Checking the catalog…"))
         if not CATALOG.quick_check_ok():
-            raise RuntimeError("catalog failed its integrity check")
+            raise RuntimeError(T("catalog failed its integrity check"))
     except Exception as error:
         if CATALOG is not None:
             try:
@@ -327,7 +328,7 @@ def open_catalog() -> "catalog_module.Catalog | None":
             CATALOG_NOTICE = {
                 "status": "incompatible",
                 "message": str(error),
-                "recovery": "The catalog was left unchanged.",
+                "recovery": T("The catalog was left unchanged."),
             }
             print(f"LightTable: {error}; falling back to folder mode")
             return None
@@ -341,12 +342,12 @@ def open_catalog() -> "catalog_module.Catalog | None":
             if recovered:
                 CATALOG = catalog_module.Catalog(catalog_path)
                 if not CATALOG.integrity_ok():
-                    raise RuntimeError("restored catalog failed its integrity check")
+                    raise RuntimeError(T("restored catalog failed its integrity check"))
                 CATALOG_NOTICE = {"status": "recovered", **recovered}
                 print("LightTable: restored the catalog from a verified backup; "
                       f"the damaged files are in {recovered['quarantine']}")
             else:
-                raise RuntimeError("no valid catalog backup is available")
+                raise RuntimeError(T("no valid catalog backup is available"))
         except Exception as recovery_error:
             # A damaged catalog must not stop the app from opening photographs.
             CATALOG_NOTICE = {
@@ -370,16 +371,15 @@ def guard_photo(name: str) -> None:
     source = library_workflow.source_name(name)
     if PHOTO_QUARANTINE.is_quarantined(source):
         raise APIError(
-            423, "this photo was set aside after it crashed LightTable "
-                 "repeatedly; release it from Library Health to try again",
+            423, T("this photo was set aside after it crashed LightTable repeatedly; release it from Library Health to try again"),
             "quarantined", details={"name": source})
 
 
 def guard_local_photo(name: str) -> None:
     availability = media_availability.availability(src_path(name))
     if availability != "local":
-        raise APIError(409, media_availability.CLOUD_MESSAGE if availability == "cloud-only"
-                       else "This photo is unavailable. Reconnect its source and rescan.",
+        raise APIError(409, media_availability.cloud_message() if availability == "cloud-only"
+                       else T("This photo is unavailable. Reconnect its source and rescan."),
                        availability, details={"name": name, "availability": availability})
 
 
@@ -426,14 +426,14 @@ def resolve_name(name: str) -> tuple[Path, int | None, str, str | None]:
     if source_id is not None:
         root = source_root(source_id)
         if root is None:
-            raise ValueError(f"unknown source in name: {name}")
+            raise ValueError(T("unknown source in name: {name}", name=f'{name}'))
     else:
         root = FOLDER
     resolved = (root / relpath).resolve()
     root = root.resolve()
     if root not in resolved.parents or not resolved.is_file() \
             or resolved.suffix.lower() not in EXTS:
-        raise ValueError(f"bad image name: {name}")
+        raise ValueError(T("bad image name: {name}", name=f'{name}'))
     return resolved, source_id, relpath, copy_ident
 
 
@@ -542,6 +542,7 @@ PRESETS_FILE = Path(os.environ.get(
 COMMUNITY_PRESETS = preset_library.CommunityCatalog(PRESETS_FILE.parent / "Community Presets")
 PREFS_FILE = Path(os.environ.get(
     "LIGHTTABLE_PREFS_FILE", str(APP / "prefs.json"))).expanduser()
+configure_localization(prefs_file=lambda: PREFS_FILE, root=APP)
 AI_DATA_ROOT = Path(os.environ.get(
     "LIGHTTABLE_AI_DIR",
     str((PREFS_FILE.parent / "AI Index")
@@ -632,14 +633,14 @@ def watch_action(body: dict) -> dict:
         if action == "save":
             watch = watch_workflow.clean_watch(body.get("watch"))
             if not watch["path"]:
-                raise ValueError("choose a folder to watch")
+                raise ValueError(T("choose a folder to watch"))
             watches = [item for item in watches if item["id"] != watch["id"]]
             watches.append(watch)
         elif action == "delete":
             ident = str(body.get("id", ""))
             watches = [item for item in watches if item["id"] != ident]
         elif action != "list":
-            raise ValueError("unknown watch action")
+            raise ValueError(T("unknown watch action"))
         if action != "list":
             prefs["watches"] = watches
             durable_io.atomic_write_json(PREFS_FILE, prefs)
@@ -669,7 +670,7 @@ def update_export_recipes(body: dict) -> list[dict]:
             ident = str(body.get("id", ""))
             custom = [item for item in custom if item["id"] != ident]
         else:
-            raise ValueError("unknown export-recipe action")
+            raise ValueError(T("unknown export-recipe action"))
         prefs["exportRecipes"] = custom
         durable_io.atomic_write_json(PREFS_FILE, prefs)
         return export_workflow.all_recipes(custom)
@@ -795,7 +796,7 @@ def install_community_preset(body: dict) -> dict:
 def export_preset_submission(body: dict) -> dict:
     selected = next((p for p in load_presets() if p["id"] == body.get("id")), None)
     if not selected:
-        raise ValueError("Choose a saved preset to submit")
+        raise ValueError(T("Choose a saved preset to submit"))
     exported = preset_library.prepare_look(selected)
     exported["parentId"] = selected.get("community", {}).get("id", selected["id"])
     exported["id"] = "submission/" + secrets.token_hex(8)
@@ -853,7 +854,7 @@ def load_state() -> dict:
             try:
                 loaded = durable_io.load_json(path, None)
                 if not isinstance(loaded, dict):
-                    raise ValueError("state root must be an object")
+                    raise ValueError(T("state root must be an object"))
                 loaded.setdefault("images", {})
                 _STATE_CACHE = loaded
             except Exception:
@@ -959,7 +960,7 @@ def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
             target = expanded.setdefault(companion, {})
             for key, value in metadata.items():
                 if key in target and target[key] != value:
-                    raise ValueError("Paired RAW and JPEG received conflicting metadata; choose one capture decision")
+                    raise ValueError(T("Paired RAW and JPEG received conflicting metadata; choose one capture decision"))
                 target[key] = copy.deepcopy(value)
     return expanded
 
@@ -1064,7 +1065,7 @@ def sidecar_sync_status() -> dict:
         record = json.loads(row["value"])
         if record.get("error"):
             image = cat.image_row(int(row["key"][len(_SIDECAR_PREFIX):]))
-            errors.append({"name": image["relpath"] if image else "Missing photo",
+            errors.append({"name": image["relpath"] if image else T("Missing photo"),
                            "error": record["error"]})
     return {"pending": len(rows), "failed": len(errors), "errors": errors[:100]}
 
@@ -1094,7 +1095,7 @@ def write_pending_sidecars() -> int:
                         image["source_id"], image["relpath"])
                     path = src_path(name)
                     if not path.is_file():
-                        raise OSError("Original is unavailable. Reconnect its folder and retry.")
+                        raise OSError(T("Original is unavailable. Reconnect its folder and retry."))
                     pending_record = json.loads(pending["value"])
                     if pending_record.get("snapshotError"):
                         raise ValueError(pending_record["snapshotError"])
@@ -1134,7 +1135,7 @@ def write_pending_sidecars() -> int:
                                          (json.dumps(queued), pending["key"]))
                 else:
                     updated = dict(json.loads(pending["value"]),
-                                   error="; ".join(errors) or "XMP could not be written.")
+                                   error="; ".join(errors) or T("XMP could not be written."))
                     conn.execute("UPDATE meta SET value=? WHERE key=? AND value=?",
                                  (json.dumps(updated), pending["key"], pending["value"]))
         EVENTS.publish("sidecars", sidecar_sync_status())
@@ -1194,7 +1195,7 @@ def clean_label(value) -> str:
 def require_catalog() -> "catalog_module.Catalog":
     cat = catalog_handle()
     if cat is None:
-        raise ValueError("the catalog is not available in folder mode")
+        raise ValueError(T("the catalog is not available in folder mode"))
     return cat
 
 
@@ -1304,10 +1305,10 @@ def update_catalog_library(body: dict) -> dict:
         selected_id = catalog_image_id(str(body.get("name", "")))
         row = cat.image_row(selected_id) if selected_id is not None else None
         if not row:
-            raise ValueError("unknown image")
+            raise ValueError(T("unknown image"))
         base_id = cat.image_id_for(int(row["source_id"]), row["relpath"])
         if base_id is None:
-            raise ValueError("unknown source image")
+            raise ValueError(T("unknown source image"))
         ident = "copy-" + hashlib.sha256(
             str(time.time_ns()).encode()).hexdigest()[:14]
         display = " ".join(str(body.get(
@@ -1328,11 +1329,11 @@ def update_catalog_library(body: dict) -> dict:
     elif action == "delete_virtual":
         image_id = catalog_image_id(str(body.get("name", "")))
         if image_id is None:
-            raise ValueError("unknown virtual copy")
+            raise ValueError(T("unknown virtual copy"))
         cat.delete_virtual_copy(image_id)
         result["ok"] = True
     else:
-        raise ValueError("unknown library action")
+        raise ValueError(T("unknown library action"))
     _queue_mirror()
     result["library"] = current_library_state()
     return result
@@ -1404,7 +1405,7 @@ def update_library(body: dict) -> dict:
         elif action == "delete_virtual":
             name = str(body.get("name", ""))
             if not library_workflow.is_virtual(name):
-                raise ValueError("not a virtual copy")
+                raise ValueError(T("not a virtual copy"))
             copies = [item for item in copies if item["name"] != name]
             st["images"].pop(name, None)
             for item in collections:
@@ -1413,7 +1414,7 @@ def update_library(body: dict) -> dict:
                 item["members"] = [member for member in item["members"] if member != name]
             stacks = library_workflow.clean_stacks(stacks)
         else:
-            raise ValueError("unknown library action")
+            raise ValueError(T("unknown library action"))
         st["collections"] = collections
         st["stacks"] = stacks
         st["virtualCopies"] = copies
@@ -1581,30 +1582,30 @@ def folder_path(relative: str, *, allow_root: bool = True) -> Path:
     if raw in ("", "."):
         if allow_root:
             return FOLDER.resolve()
-        raise ValueError("the source root cannot be changed here")
+        raise ValueError(T("the source root cannot be changed here"))
     candidate = (FOLDER / raw).resolve()
     root = FOLDER.resolve()
     if candidate == root or root not in candidate.parents:
-        raise ValueError("bad folder path")
+        raise ValueError(T("bad folder path"))
     if not candidate.is_dir():
-        raise ValueError("folder not found")
+        raise ValueError(T("folder not found"))
     return candidate
 
 
 def clean_folder_name(value) -> str:
     name = " ".join(str(value or "").split()).strip()
     if not name or name in (".", "..") or "/" in name or "\\" in name:
-        raise ValueError("invalid folder name")
+        raise ValueError(T("invalid folder name"))
     if name.startswith("."):
-        raise ValueError("hidden folder names are not supported")
+        raise ValueError(T("hidden folder names are not supported"))
     if IS_WINDOWS:
         if any(ord(character) < 32 or character in '<>:"|?*'
                for character in name):
-            raise ValueError("invalid folder name")
+            raise ValueError(T("invalid folder name"))
         if name.rstrip(". ") != name:
-            raise ValueError("folder names cannot end with a dot or space")
+            raise ValueError(T("folder names cannot end with a dot or space"))
         if name.split(".", 1)[0].upper() in WINDOWS_RESERVED_NAMES:
-            raise ValueError("that folder name is reserved by Windows")
+            raise ValueError(T("that folder name is reserved by Windows"))
     return name[:120]
 
 
@@ -1675,14 +1676,14 @@ def photo_companion_inventory(source: Path, target: Path, index=None) -> list[di
         elif folded in {(source.name + suffix).casefold() for suffix in (".xmp", ".lighttable.json")}:
             destination = target.with_name(target.name + path.name[len(source.name):])
         elif folded.startswith(source.name.casefold() + ".") or folded.startswith(source.stem.casefold() + "."):
-            items.append({"source": str(path), "target": None, "action": "Leave in place (unrecognized companion)"})
+            items.append({"source": str(path), "target": None, "action": T("Leave in place (unrecognized companion)")})
             continue
         else:
             continue
         paired = [str(photo) for photo in index["photos"].get(source.stem.casefold(), [])
                   if photo != source] if folded == (source.stem + ".xmp").casefold() else []
         items.append({"source": str(path), "target": str(destination), "sharedWith": paired,
-                      "action": "Carry metadata; retain beside paired captures" if paired else "Move with photo"})
+                      "action": T("Carry metadata; retain beside paired captures") if paired else T("Move with photo")})
     return items
 
 
@@ -1692,16 +1693,17 @@ def _photo_move_plan(source: Path, target: Path, *, index=None) -> dict:
     if source == target:
         return {"source": source, "target": target, "sidecars": []}
     if not source.is_file():
-        raise ValueError(f"source photo is missing: {source.name}")
+        raise ValueError(T("source photo is missing: {name}", name=f'{source.name}'))
     if target.exists():
-        raise ValueError(f"{target.name} already exists in that folder")
+        raise ValueError(T("{name} already exists in that folder", name=target.name))
     pairs, shared = [], {}
     for item in photo_companion_inventory(source, target, index):
         if item["target"] is None:
             continue
         sidecar, sidecar_target = Path(item["source"]), Path(item["target"])
         if sidecar_target.exists():
-            raise ValueError(f"{sidecar_target.name} already exists; no files were moved")
+            raise ValueError(
+                T("{name} already exists; no files were moved", name=sidecar_target.name))
         pairs.append((sidecar, sidecar_target))
         shared[str(sidecar)] = item.get("sharedWith") or []
     return {"source": source, "target": target, "sidecars": pairs, "shared": shared}
@@ -1754,7 +1756,7 @@ def _finish_photo_moves(plans: list[dict]) -> list[str]:
                 sidecar.unlink(missing_ok=True)
             except OSError as error:
                 warnings.append(
-                    f"left the old sidecar {sidecar.name} in place: {error}")
+                    T("left the old sidecar {name} in place: {error}", name=f'{sidecar.name}', error=f'{error}'))
     return warnings
 
 
@@ -1762,7 +1764,7 @@ def create_subfolder(parent: str, name) -> str:
     base = folder_path(parent)
     destination = base / clean_folder_name(name)
     if destination.exists():
-        raise ValueError("a folder with that name already exists")
+        raise ValueError(T("a folder with that name already exists"))
     destination.mkdir()
     invalidate_library_cache()
     return destination.relative_to(FOLDER.resolve()).as_posix()
@@ -1772,7 +1774,7 @@ def rename_subfolder(relative: str, name) -> str:
     source = folder_path(relative, allow_root=False)
     destination = source.with_name(clean_folder_name(name))
     if destination.exists():
-        raise ValueError("a folder with that name already exists")
+        raise ValueError(T("a folder with that name already exists"))
     old_rel = source.relative_to(FOLDER.resolve()).as_posix()
     source.rename(destination)
     new_rel = destination.relative_to(FOLDER.resolve()).as_posix()
@@ -1788,8 +1790,7 @@ def rename_subfolder(relative: str, name) -> str:
             destination.rename(source)
         except OSError as rollback_error:
             raise RuntimeError(
-                "folder moved but catalog update and filesystem rollback failed; "
-                f"it remains at {destination}: {rollback_error}")
+                T("folder moved but catalog update and filesystem rollback failed; it remains at {destination}: {rollback_error}", destination=f'{destination}', rollback_error=f'{rollback_error}'))
         raise
     invalidate_library_cache()
     return new_rel
@@ -1799,12 +1800,12 @@ def move_images(names: list[str], destination: str) -> list[str]:
     """Move local originals (and adjacent XMP sidecars) into a source folder."""
     dest = folder_path(destination)
     if any(library_workflow.is_virtual(name) for name in names):
-        raise ValueError("virtual copies cannot move originals")
+        raise ValueError(T("virtual copies cannot move originals"))
     resolved = [resolve_name(name) for name in names]
     sources = [item[0] for item in resolved]
     targets = [dest / src.name for src in sources]
     if len({str(path) for path in targets}) != len(targets):
-        raise ValueError("the selection contains duplicate file names")
+        raise ValueError(T("the selection contains duplicate file names"))
     indexes = {folder: index_photo_companions(folder) for folder in {source.parent for source in sources}}
     plans = [_photo_move_plan(source, target, index=indexes[source.parent])
              for source, target in zip(sources, targets)]
@@ -1818,7 +1819,7 @@ def move_images(names: list[str], destination: str) -> list[str]:
         cat = catalog_handle()
         if cat is not None:
             if PRIMARY_SOURCE_ID is None:
-                raise RuntimeError("the primary catalog source is unavailable")
+                raise RuntimeError(T("the primary catalog source is unavailable"))
             records = []
             for item, new_rel in zip(resolved, new_rels):
                 _, source_id, old_rel, _ = item
@@ -2126,7 +2127,7 @@ def array_shared_input(rgb: np.ndarray, cache_key: str):
     from multiprocessing import shared_memory
 
     if rgb.dtype != np.uint16 or rgb.ndim != 3 or rgb.shape[2] != 3:
-        raise ValueError("shared array must be packed RGB16 pixels")
+        raise ValueError(T("shared array must be packed RGB16 pixels"))
     height, width = rgb.shape[:2]
     row_bytes = width * 3 * np.dtype("<u2").itemsize
     total_bytes = RAW_SHARED_HEADER.size + row_bytes * height
@@ -2186,11 +2187,11 @@ def valid_tiff_cache(path: Path) -> bool:
         size = path.stat().st_size
         with tf.TiffFile(path) as image:
             if not image.pages:
-                raise ValueError("empty TIFF")
+                raise ValueError(T("empty TIFF"))
             for page in image.pages:
                 if not page.dataoffsets or any(offset < 0 or count <= 0 or offset + count > size
                        for offset, count in zip(page.dataoffsets, page.databytecounts)):
-                    raise ValueError("truncated TIFF")
+                    raise ValueError(T("truncated TIFF"))
         return True
     except (OSError, ValueError, IndexError):
         path.unlink(missing_ok=True)
@@ -2376,10 +2377,10 @@ def valid_jpeg_cache(path: Path) -> bool:
     try:
         with path.open("rb") as handle:
             if handle.read(2) != b"\xff\xd8":
-                raise ValueError("invalid JPEG header")
+                raise ValueError(T("invalid JPEG header"))
             handle.seek(-2, os.SEEK_END)
             if handle.read(2) != b"\xff\xd9":
-                raise ValueError("truncated JPEG")
+                raise ValueError(T("truncated JPEG"))
         with Image.open(path) as image:
             image.verify()
         return True
@@ -2530,7 +2531,7 @@ def edited_thumbnail(name: str) -> tuple[Path, str] | None:
                 "engine": "rs",
             }, priority="prefetch")
         except RuntimeError as error:
-            reason = str(error).casefold()
+            reason = source_message(error).casefold()
             if "cancelled" in reason or "interactive render active" in reason:
                 return None
             raise
@@ -2631,21 +2632,21 @@ def capture_time_action(body: dict) -> dict:
         state = cat.history_state(history_id)
         if (not row or row["image_id"] != image_id or row["origin"] != "capture-time"
                 or not state or state.get("captureTimeOnly") is not True):
-            raise ValueError("That capture-time history step does not belong to this photo")
+            raise ValueError(T("That capture-time history step does not belong to this photo"))
         info = cat.capture_details(image_id)
         changes = [{"name": name, "fileId": info["fileId"], "original": info["original"],
                     "beforeOverride": info["override"], "after": state.get("captureTimeOverride")}]
     elif action == "apply":
         changes = body.get("changes")
         if not isinstance(changes, list) or not changes or len(changes) > capture_clock.MAX_BATCH * 2:
-            raise ValueError("Preview a bounded selection before applying")
+            raise ValueError(T("Preview a bounded selection before applying"))
         for change in changes:
             image_id = catalog_image_id(str(change.get("name", "")))
             info = cat.capture_details(image_id) if image_id is not None else None
             if not info or info["fileId"] != change.get("fileId"):
-                raise ValueError("Photo identity changed since preview")
+                raise ValueError(T("Photo identity changed since preview"))
     else:
-        raise ValueError("Unknown capture-time action")
+        raise ValueError(T("Unknown capture-time action"))
     names = cat.apply_capture_changes(changes,
         label="Capture time restored" if action == "restore-history" else "Capture time corrected")
     for name in names:
@@ -2780,11 +2781,11 @@ def semantic_mask_payload(name: str, kind: str,
     import semantic_masks
     if kind not in ("subject", "sky", "object", "depth",
                     *semantic_masks.PERSON_PARTS):
-        raise ValueError("unknown semantic mask type")
+        raise ValueError(T("unknown semantic mask type"))
     normalized_point = None
     if kind == "object":
         if not isinstance(point, (list, tuple)) or len(point) < 2:
-            raise ValueError("object selection requires a point")
+            raise ValueError(T("object selection requires a point"))
         normalized_point = (
             max(0.0, min(1.0, float(point[0]))),
             max(0.0, min(1.0, float(point[1]))),
@@ -2802,7 +2803,7 @@ def semantic_mask_payload(name: str, kind: str,
         parts_cache=parts_cache,
     )
     if not np.any(mask):
-        raise ValueError(f"no {kind} selection found")
+        raise ValueError(T("no {kind} selection found", kind=kind))
     faces = 0
     if kind in semantic_masks.PERSON_PARTS:
         try:
@@ -3126,7 +3127,7 @@ class PipeLineReader:
         try:
             line = self.lines.get(timeout=timeout)
         except queue.Empty as error:
-            raise TimeoutError("resident Rust engine timed out") from error
+            raise TimeoutError(T("resident Rust engine timed out")) from error
         return line or ""
 
 
@@ -3142,7 +3143,7 @@ class RustEngineClient:
 
     def _start(self) -> subprocess.Popen:
         if not self.binary:
-            raise RuntimeError("resident Rust engine is not built")
+            raise RuntimeError(T("resident Rust engine is not built"))
         if self.process and self.process.poll() is None:
             return self.process
         self.process = subprocess.Popen(
@@ -3160,7 +3161,7 @@ class RustEngineClient:
             return self.reader.readline(timeout)
         ready, _, _ = select.select([process.stdout], [], [], timeout)
         if not ready:
-            raise TimeoutError("resident Rust engine timed out")
+            raise TimeoutError(T("resident Rust engine timed out"))
         return process.stdout.readline()
 
     def close(self) -> None:
@@ -3198,11 +3199,11 @@ class RustEngineClient:
                     process.stdin.flush()
                     line = self._readline(process, 300)
                     if not line:
-                        raise RuntimeError("resident Rust engine exited")
+                        raise RuntimeError(T("resident Rust engine exited"))
                     result = json.loads(line)
                     if not result.get("ok"):
                         raise RuntimeError(result.get("error") or
-                                           "resident Rust render failed")
+                                           T("resident Rust render failed"))
                     if payload["command"] == "render":
                         preview_progress.advance(3)
                     return dict(result, queue_ms=round(queue_ms, 3))
@@ -3211,7 +3212,7 @@ class RustEngineClient:
                     self.close_unlocked()
                     if attempt:
                         raise
-            raise RuntimeError("resident Rust engine unavailable")
+            raise RuntimeError(T("resident Rust engine unavailable"))
         finally:
             self.lock.release()
 
@@ -3399,13 +3400,13 @@ def clean_viewport(value) -> dict | None:
     if value is None:
         return None
     if not isinstance(value, dict) or set(value) != {"x", "y", "width", "height"}:
-        raise ValueError("viewport requires x, y, width and height")
+        raise ValueError(T("viewport requires x, y, width and height"))
     if any(type(value[key]) is not int for key in value):
-        raise ValueError("viewport coordinates must be integer pixels")
+        raise ValueError(T("viewport coordinates must be integer pixels"))
     if (value["x"] < 0 or value["y"] < 0 or value["width"] < 1 or value["height"] < 1
             or value["width"] * value["height"] > 32_000_000
             or max(value.values()) > 100_000):
-        raise ValueError("viewport is outside the supported pixel bounds")
+        raise ValueError(T("viewport is outside the supported pixel bounds"))
     return dict(value)
 
 
@@ -3417,7 +3418,7 @@ def clamp_decoded_viewport(viewport: dict, width: int, height: int,
     the original pixel origin wherever it is valid, trimming just the edges.
     """
     if width < 1 or height < 1:
-        raise ValueError("decoded viewport source has no pixels")
+        raise ValueError(T("decoded viewport source has no pixels"))
     if quarters_ccw % 2:
         width, height = height, width
     x = min(viewport["x"], width - 1)
@@ -3502,7 +3503,7 @@ def _shared_pixels(descriptor):
     try:
         length = int(descriptor["length"])
         if os.fstat(fd).st_size < length:
-            raise ValueError("truncated shared surface")
+            raise ValueError(T("truncated shared surface"))
         with mmap.mmap(fd, length, access=mmap.ACCESS_READ) as mapping:
             width, height = int(descriptor["width"]), int(descriptor["height"])
             return np.ndarray((height, width, 4), dtype=np.uint8, buffer=mapping,
@@ -3526,7 +3527,7 @@ def retain_native_shared(path: Path, descriptor: dict):
     length = int(descriptor.get("length", 0))
     if (not re.fullmatch(r"/lt-[0-9a-f-]+", name) or width <= 0 or height <= 0
             or row < width * 4 or length < row * height or length > 512 * 1024 * 1024):
-        raise ValueError("invalid resident shared surface")
+        raise ValueError(T("invalid resident shared surface"))
     with _NATIVE_SHARED_LOCK:
         old = _NATIVE_SHARED.pop(str(path), None)
         if old and old["name"] != name:
@@ -3562,7 +3563,7 @@ def write_native_surface(path: Path, rgb: np.ndarray) -> dict:
     if image.dtype != np.uint8:
         image = (np.clip(image, 0, 1) * 255 + 0.5).astype(np.uint8)
     if image.ndim != 3 or image.shape[2] not in (3, 4):
-        raise ValueError("native surface must be HxWxRGB(A)")
+        raise ValueError(T("native surface must be HxWxRGB(A)"))
     height, width = image.shape[:2]
     rgba = np.empty((height, width, 4), dtype=np.uint8)
     rgba[..., :3] = image[..., :3]
@@ -3592,11 +3593,11 @@ def read_native_surface(path: Path) -> tuple[np.ndarray, dict]:
         header = handle.read(NATIVE_SURFACE_HEADER.size)
         magic, width, height, row_bytes = NATIVE_SURFACE_HEADER.unpack(header)
         if magic != NATIVE_SURFACE_MAGIC or row_bytes != width * 4:
-            raise ValueError("invalid native surface")
+            raise ValueError(T("invalid native surface"))
         pixels = handle.read()
     expected = row_bytes * height
     if len(pixels) != expected:
-        raise ValueError("truncated native surface")
+        raise ValueError(T("truncated native surface"))
     rgba = np.frombuffer(pixels, dtype=np.uint8).reshape(height, width, 4)
     return rgba, {"width": width, "height": height, "rowBytes": row_bytes}
 
@@ -3614,9 +3615,9 @@ def native_surface_payload(key: str, path: Path) -> dict:
         magic, width, height, row_bytes = NATIVE_SURFACE_HEADER.unpack(
             handle.read(NATIVE_SURFACE_HEADER.size))
     if magic != NATIVE_SURFACE_MAGIC or row_bytes != width * 4:
-        raise ValueError("invalid native surface")
+        raise ValueError(T("invalid native surface"))
     if path.stat().st_size != NATIVE_SURFACE_HEADER.size + row_bytes * height:
-        raise ValueError("truncated native surface")
+        raise ValueError(T("truncated native surface"))
     return {
         "url": f"/api/render/native?key={key}",
         "format": "rgba8",
@@ -3661,7 +3662,7 @@ def _render_bundle_metadata(meta: Path, jpg: Path, native: Path) -> dict | None:
     try:
         value = json.loads(meta.read_text(encoding="utf-8"))
         if not isinstance(value, dict):
-            raise ValueError("render metadata is not an object")
+            raise ValueError(T("render metadata is not an object"))
     except (OSError, UnicodeDecodeError, ValueError):
         meta.unlink(missing_ok=True)
         return None
@@ -3780,12 +3781,12 @@ def _render_preview(name: str, params: dict, width: int,
         return response
     if fp.profile_requires_rust(cp["stock"]):
         if not RUST_AVAILABLE:
-            raise RuntimeError(f"{cp['stock']} requires the Rust film engine")
+            raise RuntimeError(T("{value} requires the Rust film engine", value=f"{cp['stock']}"))
         engine = "rs"
     elif engine == "rs" and not RUST_AVAILABLE:
         engine = "py"
     if viewport is not None and (engine != "rs" or not native):
-        raise ValueError("viewport rendering requires the resident native preview")
+        raise ValueError(T("viewport rendering requires the resident native preview"))
     variant = "full" if viewport else preview_variant(name, width, params)
 
     def response_refining() -> bool:
@@ -4117,7 +4118,7 @@ def _export_metadata_payload(job: dict) -> tuple[str, Path | None, dict]:
         source = None
         if policy in ("all", "all-except-location"):
             job.setdefault("warnings", []).append(
-                "Source camera metadata could not be located.")
+                T("Source camera metadata could not be located."))
     return policy, source, job.get("metadataFields") or {}
 
 
@@ -4129,7 +4130,7 @@ def export_input_color_space(job: dict) -> str:
             and color_pipeline.wide_develop_edits_supported(job))
     job["inputColorSpace"] = output_space if wide else "srgb"
     if output_space != "srgb" and not wide:
-        warning = color_pipeline.SRGB_LIMITED_EXPORT_WARNING
+        warning = color_pipeline.srgb_limited_export_warning()
         warnings = job.setdefault("warnings", [])
         if warning not in warnings:
             warnings.append(warning)
@@ -4232,7 +4233,7 @@ def embed_export_metadata(dst: Path, job: dict) -> bool:
     succeeded = platform_image.write_metadata(
         dst, source, policy, fields, warnings=warnings)
     if not succeeded and len(warnings) == before:
-        warnings.append("Requested metadata could not be saved.")
+        warnings.append(T("Requested metadata could not be saved."))
     return succeeded
 
 
@@ -4530,11 +4531,11 @@ def _run_external_edits(names: list[str], output_space: str,
                 parent = source.parent
                 mode_bits = parent.stat().st_mode & 0o222
                 if not mode_bits or not os.access(parent, os.W_OK):
-                    raise PermissionError(f"Cannot write to {parent}")
+                    raise PermissionError(T("Cannot write to {parent}", parent=f'{parent}'))
                 destination = export_workflow.collision_path(
                     parent / f"{source.stem}-Edit.tif", "rename")
                 if destination is None:
-                    raise FileExistsError("Could not choose an edit filename")
+                    raise FileExistsError(T("Could not choose an edit filename"))
                 job = _external_job(name, output_space, bit_depth)
                 _render_external_job(name, destination, job)
                 derivative_name = destination.name
@@ -4583,18 +4584,18 @@ def start_external_edit(body: dict) -> dict:
     names = list(dict.fromkeys(str(value) for value in
                               (body.get("names") or []) if value))[:100]
     if not names:
-        return {"ok": False, "error": "Choose a photo to edit"}
+        return {"ok": False, "error": T("Choose a photo to edit")}
     mode = str(body.get("mode", "adjusted"))
     if mode not in ("adjusted", "original"):
-        return {"ok": False, "error": "Unknown external edit mode"}
+        return {"ok": False, "error": T("Unknown external edit mode")}
     paths = []
     for name in names:
         if is_video(name):
-            return {"ok": False, "error": "Video cannot be sent to a pixel editor"}
+            return {"ok": False, "error": T("Video cannot be sent to a pixel editor")}
         if mode == "original":
             if is_raw(name):
                 return {"ok": False, "error":
-                        "A RAW original cannot be edited in place; send an adjusted TIFF"}
+                        T("A RAW original cannot be edited in place; send an adjusted TIFF")}
             paths.append(str(src_path(name)))
     if mode == "original":
         return {"ok": True, "running": False, "paths": paths, "names": names}
@@ -4605,7 +4606,7 @@ def start_external_edit(body: dict) -> dict:
     stack_with_original = body.get("stackWithOriginal", True) is not False
     with EXTERNAL_EDIT_LOCK:
         if EXTERNAL_EDIT["running"]:
-            return {"ok": False, "error": "An external edit is already rendering"}
+            return {"ok": False, "error": T("An external edit is already rendering")}
         EXTERNAL_EDIT.update(running=True, total=len(names), done=0,
                              paths=[], names=[], errors=[], warnings=[])
         EXTERNAL_EDIT["jobId"] = JOBS.create(
@@ -4752,7 +4753,7 @@ def _run_export_process(command, env, batch):
                     return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
                 except subprocess.TimeoutExpired:
                     pass
-            raise TimeoutError("Export renderer exceeded 30 minutes")
+            raise TimeoutError(T("Export renderer exceeded 30 minutes"))
         except BaseException:
             if process.poll() is None:
                 process.terminate()
@@ -4816,7 +4817,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         job["warnings"] = list(job.get("warnings") or [])
         out_dir = Path(job["destination"])
         if "destinationMode" in job and out_dir.resolve() != out_dir:
-            raise ValueError("The export destination changed after planning; preview it again")
+            raise ValueError(T("The export destination changed after planning; preview it again"))
         out_dir = out_dir.resolve()
         out_dir.mkdir(parents=True, exist_ok=True)
         cp = fp.clean_params(job["params"])
@@ -4841,7 +4842,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             outcome = {"skipped": 1, "log": f"{name} skipped (file already exists)"}
             return outcome
         if export_would_replace_original(dst, name):
-            raise ValueError("An export cannot replace a cataloged original or its capture companion")
+            raise ValueError(T("An export cannot replace a cataloged original or its capture companion"))
         staged = durable_io.temporary_path(dst, "export")
         check()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
@@ -4920,9 +4921,9 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         with export_phase(job, "publish"), publish_lock:
             check()
             if dst.parent.resolve() != out_dir:
-                raise ValueError("The export destination moved while rendering; nothing was published")
+                raise ValueError(T("The export destination moved while rendering; nothing was published"))
             if export_would_replace_original(dst, name):
-                raise ValueError("The destination is an original photo; export was not published")
+                raise ValueError(T("The destination is an original photo; export was not published"))
             if job.get("collision", "rename") == "overwrite":
                 durable_io.publish_file(staged, dst)
             else:
@@ -4936,7 +4937,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
                     else:
                         durable_io.publish_file_no_replace(staged_sidecar, sidecar)
                 except OSError as error:
-                    job["warnings"].append(f"Photo exported, but its recipe sidecar could not be saved: {error}")
+                    job["warnings"].append(T("Photo exported, but its recipe sidecar could not be saved: {error}", error=f'{error}'))
         elapsed = time.perf_counter() - started
         job["phase_ms"]["total"] = round(elapsed * 1000, 3)
         outcome = {"completed": 1, "path": str(dst), "phase_ms": job["phase_ms"], "warnings": list(dict.fromkeys(job["warnings"])),
@@ -5125,7 +5126,7 @@ def export_source_dimensions(name: str) -> tuple[int, int]:
             raw.open_file(str(source))
             size = raw.sizes
             if size.pixel_aspect != 1.0:
-                raise ValueError("Decoder adjusts non-square source pixels")
+                raise ValueError(T("Decoder adjusts non-square source pixels"))
             width, height = size.iwidth, size.iheight
             if size.flip in (5, 6):
                 width, height = height, width
@@ -5136,7 +5137,7 @@ def export_source_dimensions(name: str) -> tuple[int, int]:
             if image.getexif().get(274, 1) in (5, 6, 7, 8):
                 width, height = height, width
     if not width or not height:
-        raise ValueError("Source dimensions are unavailable")
+        raise ValueError(T("Source dimensions are unavailable"))
     return int(width), int(height)
 
 
@@ -5198,7 +5199,7 @@ def start_export(opts: dict) -> dict:
     batch = ExportBatch(items, destination)
     with EXPORT_LOCK:
         if EXPORT["running"]:
-            return {"error": "export already running", "jobId": EXPORT.get("jobId")}
+            return {"error": T("export already running"), "jobId": EXPORT.get("jobId")}
         record = JOBS.create("export", total=len(items),
                              state="running" if items else "done",
                              result={"destination": str(destination)}, cancel=batch.cancel)
@@ -5326,17 +5327,17 @@ def start_merge(body: dict) -> dict:
 
     mode = str(body.get("mode", ""))
     if mode not in ("hdr", "panorama", "focus"):
-        raise ValueError("unknown merge mode")
+        raise ValueError(T("unknown merge mode"))
     limit = {"hdr": 9, "panorama": 20, "focus": 60}[mode]
     names = list(dict.fromkeys(
         library_workflow.source_name(str(name)) for name in body.get("names", [])))
     if not 2 <= len(names) <= limit:
-        raise ValueError(f"{mode} merge needs 2 to {limit} distinct originals")
+        raise ValueError(T("{mode} merge needs 2 to {limit} distinct originals", mode=f'{mode}', limit=f'{limit}'))
     for name in names:
         src_path(name)
     with MERGE_LOCK:
         if MERGE["running"]:
-            return {"error": "a merge is already running"}
+            return {"error": T("a merge is already running")}
         folder = FOLDER / "LightTable Merges"
         default_name = {"hdr": "HDR", "panorama": "Panorama",
                         "focus": "Focus"}[mode] + \
@@ -5456,24 +5457,24 @@ def append_generated_masks(name: str, generated: list[dict], *, source_key: str,
                            rotate: int, batch_id: str) -> list[dict]:
     def merge(current):
         if file_key(name) != source_key:
-            raise ValueError("The original changed during detection; retry this photo")
+            raise ValueError(T("The original changed during detection; retry this photo"))
         if rot90k((current.get("params") or {}).get("rotate", 0)) != rotate:
-            raise ValueError("The photo was rotated during detection; retry this photo")
+            raise ValueError(T("The photo was rotated during detection; retry this photo"))
         existing = current.get("masks") or []
         if len(existing) + len(generated) > edits.MAX_MASKS:
-            raise ValueError(f"A photo supports {edits.MAX_MASKS} masks; existing masks were preserved")
+                    raise ValueError(T("A photo supports {limit} masks; existing masks were preserved", limit=edits.MAX_MASKS))
         # Validate only additions. Re-cleaning an existing document here could
         # silently discard older or more complex accepted mask data.
         additions = edits.clean_masks(generated)
         if len(additions) != len(generated):
-            raise ValueError("Detection produced an invalid mask; existing masks were preserved")
+            raise ValueError(T("Detection produced an invalid mask; existing masks were preserved"))
         return [*existing, *additions]
 
     cat = catalog_handle()
     if cat is not None:
         image_id = catalog_image_id(name)
         if image_id is None:
-            raise ValueError("The photo is no longer in this catalog")
+            raise ValueError(T("The photo is no longer in this catalog"))
         state = cat.mutate_masks(image_id, merge, label="Generate masks",
                                  batch_id=batch_id, name=name)
         masks = state["masks"]
@@ -5493,10 +5494,10 @@ def append_generated_masks(name: str, generated: list[dict], *, source_key: str,
 def undo_mask_batch(body: dict) -> dict:
     batch_id = str(body.get("jobId", ""))
     if not re.fullmatch(r"[a-f0-9]{32}", batch_id):
-        raise ValueError("Choose a completed mask batch to undo")
+        raise ValueError(T("Choose a completed mask batch to undo"))
     record = JOBS.get(batch_id)
     if record and record["state"] not in {"done", "failed", "cancelled"}:
-        raise ValueError("Cancel the batch and wait for detection to stop before undoing it")
+        raise ValueError(T("Cancel the batch and wait for detection to stop before undoing it"))
     cat = catalog_handle()
     if cat is not None:
         changes = cat.undo_mask_batch(batch_id)
@@ -5505,7 +5506,7 @@ def undo_mask_batch(body: dict) -> dict:
             state = load_state()
             affected = state.get("maskBatches", {}).pop(batch_id, None)
             if affected is None:
-                raise ValueError("There are no saved masks to undo for this batch")
+                raise ValueError(T("There are no saved masks to undo for this batch"))
             changes = []
             for name, ids in affected.items():
                 entry = state["images"].get(name)
@@ -5541,12 +5542,12 @@ class BatchSemanticMaskQueue:
         names = list(dict.fromkeys(str(n) for n in names if n))
         cats = list(dict.fromkeys(str(c) for c in categories if c)) or ["subject"]
         if not names or len(names) > 5000:
-            raise ValueError("Select between 1 and 5,000 photos for a mask batch")
+            raise ValueError(T("Select between 1 and 5,000 photos for a mask batch"))
         if any(c not in {"subject", "sky", "depth", *semantic_masks.PERSON_PARTS} for c in cats):
-            raise ValueError("Choose subject, sky, depth, or a person part for batch detection")
+            raise ValueError(T("Choose subject, sky, depth, or a person part for batch detection"))
         with self.lock:
             if self.active:
-                raise ValueError("A mask batch is already running; finish or cancel it first")
+                raise ValueError(T("A mask batch is already running; finish or cancel it first"))
             self.queue = deque((n, tuple(cats)) for n in names)
             self.cancel_requested = False
             self.total = len(names)
@@ -5781,12 +5782,12 @@ def resolve_filesystem_path(value: str) -> dict:
             continue
         image_id = cat.image_id_for(int(source["id"]), relpath)
         if image_id is None:
-            raise FileNotFoundError("the path is not in the catalog")
+            raise FileNotFoundError(T("the path is not in the catalog"))
         return {"name": catalog_module.qualified_name(
                     int(source["id"]), relpath),
                 "id": image_id, "sourceId": int(source["id"]),
                 "path": str(path)}
-    raise FileNotFoundError("the path is outside the catalog")
+    raise FileNotFoundError(T("the path is outside the catalog"))
 
 
 def clean_program_grade(value) -> dict:
@@ -5875,7 +5876,7 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
             name, params, width, str(body.get("engine", "rs")),
             str(body.get("client", "cli"))[:80], None, False, priority)
         if result.get("refining"):
-            raise RuntimeError("Accurate RAW preview is unavailable")
+            raise RuntimeError(T("Accurate RAW preview is unavailable"))
     if result.get("cancelled"):
         raise RuntimeError(result.get("reason") or "render cancelled")
     base = Image.open(io.BytesIO(_preview_source_bytes(
@@ -5908,7 +5909,7 @@ def encode_program_image(image: Image.Image, fmt: str = "png") -> tuple[bytes, s
         image.save(output, "JPEG", quality=92)
         return output.getvalue(), "image/jpeg"
     if requested != "png":
-        raise ValueError("format must be png or jpeg")
+        raise ValueError(T("format must be png or jpeg"))
     image.save(output, "PNG")
     return output.getvalue(), "image/png"
 
@@ -5955,7 +5956,7 @@ def analyze_program_image(body: dict) -> dict:
     regions = []
     for index, raw in enumerate(body.get("regions") or []):
         if not isinstance(raw, (list, tuple)) or len(raw) != 4:
-            raise ValueError(f"regions[{index}] must be x,y,w,h")
+            raise ValueError(T("regions[{index}] must be x,y,w,h", index=f'{index}'))
         x, y, w, h = (float(value) for value in raw)
         x0 = max(0, min(image.width - 1, round(x * image.width)))
         y0 = max(0, min(image.height - 1, round(y * image.height)))
@@ -6072,7 +6073,7 @@ class Handler(BaseHTTPRequestHandler):
         """
         path = src_path(name)
         if path.suffix.lower() not in VIDEO_EXTS:
-            raise ValueError("not a video")
+            raise ValueError(T("not a video"))
         size = path.stat().st_size
         content_type = {
             ".mov": "video/quicktime", ".mp4": "video/mp4",
@@ -6115,12 +6116,12 @@ class Handler(BaseHTTPRequestHandler):
     def _body(self) -> dict:
         content_type = str(self.headers.get("Content-Type", ""))
         if content_type.split(";", 1)[0].strip().lower() != "application/json":
-            raise APIError(415, "requests must use application/json",
+            raise APIError(415, T("requests must use application/json"),
                            "unsupported-media-type")
         n = int(self.headers.get("Content-Length", 0))
         value = json.loads(self.rfile.read(n) or b"{}")
         if not isinstance(value, dict):
-            raise ValueError("request body must be a JSON object")
+            raise ValueError(T("request body must be a JSON object"))
         return value
 
     def _enforce_security(self, *, mutating: bool) -> None:
@@ -6132,13 +6133,13 @@ class Handler(BaseHTTPRequestHandler):
         host = str(self.headers.get("Host", ""))
         accepted_hosts = {f"{BOUND_HOST}:{port}", f"localhost:{port}"}
         if host not in accepted_hosts:
-            raise APIError(403, "request Host is not this LightTable instance",
+            raise APIError(403, T("request Host is not this LightTable instance"),
                            "invalid-host")
         if not mutating:
             return
         origin = str(self.headers.get("Origin", ""))
         if origin and origin not in {f"http://{value}" for value in accepted_hosts}:
-            raise APIError(403, "cross-origin changes are not allowed",
+            raise APIError(403, T("cross-origin changes are not allowed"),
                            "invalid-origin")
         supplied = str(self.headers.get("X-LightTable-Token", ""))
         if not supplied:
@@ -6149,10 +6150,11 @@ class Handler(BaseHTTPRequestHandler):
                     supplied = value
                     break
         if not supplied or not secrets.compare_digest(supplied, INSTANCE_TOKEN):
-            raise APIError(401, "this change needs the instance token",
+            raise APIError(401, T("this change needs the instance token"),
                            "unauthorized")
 
     def _handle_exception(self, error: Exception) -> None:
+        original_message = source_message(error).casefold()
         if isinstance(error, APIError):
             status, code = error.status, error.code
             field, details = error.field, error.details
@@ -6167,11 +6169,11 @@ class Handler(BaseHTTPRequestHandler):
                                 json.JSONDecodeError)):
             status, code, field, details = 400, "bad-request", None, None
         elif isinstance(error, RuntimeError) and any(
-                word in str(error).casefold()
+                word in original_message
                 for word in ("already running", "busy", "not cancellable")):
             status, code, field, details = 409, "busy", None, None
         elif isinstance(error, RuntimeError) and any(
-                word in str(error).casefold()
+                word in original_message
                 for word in ("not ready", "unavailable")):
             status, code, field, details = 503, "not-ready", None, None
         else:
@@ -6258,7 +6260,7 @@ class Handler(BaseHTTPRequestHandler):
                 ident = u.path.removeprefix("/api/jobs/")
                 record = JOBS.get(ident)
                 if record is None:
-                    raise FileNotFoundError("job not found")
+                    raise FileNotFoundError(T("job not found"))
                 self._json(record)
             elif u.path == "/api/ui/state":
                 with UI_STATE_LOCK:
@@ -6270,7 +6272,7 @@ class Handler(BaseHTTPRequestHandler):
                 rel = u.path[len("/web/"):]
                 f = (APP / "web" / rel).resolve()
                 if (APP / "web").resolve() not in f.parents or not f.is_file():
-                    self._json({"error": "not found"}, 404)
+                    self._json({"error": T("not found")}, 404)
                 else:
                     ctype = {
                         ".js": "text/javascript; charset=utf-8",
@@ -6338,21 +6340,21 @@ class Handler(BaseHTTPRequestHandler):
                 raw_key = q.get("rk")
                 if raw_key and (len(raw_key) != 12 or
                                 any(c not in "0123456789abcdef" for c in raw_key)):
-                    raise ValueError("bad RAW development key")
+                    raise ValueError(T("bad RAW development key"))
                 path = neutral_preview_path(
                     q["name"], int(q.get("w", 1100)), float(q.get("rot", 0)),
                     raw_key=raw_key)
                 if not path.exists():
-                    raise FileNotFoundError("neutral preview is still rendering")
+                    raise FileNotFoundError(T("neutral preview is still rendering"))
                 self._send(200, path.read_bytes(), "image/jpeg",
                            "public, max-age=31536000, immutable")
             elif u.path == "/api/render/image":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
-                    raise ValueError("bad render key")
+                    raise ValueError(T("bad render key"))
                 image = CACHE / "render" / f"{key}.jpg"
                 if not image.exists():
-                    self._json({"error": "render not found"}, 404)
+                    self._json({"error": T("render not found")}, 404)
                 else:
                     self._send(
                         200, image.read_bytes(), "image/jpeg",
@@ -6360,10 +6362,10 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/edit/image":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
-                    raise ValueError("bad edit render key")
+                    raise ValueError(T("bad edit render key"))
                 image = CACHE / "edit" / f"{key}.jpg"
                 if not image.exists():
-                    self._json({"error": "edit render not found"}, 404)
+                    self._json({"error": T("edit render not found")}, 404)
                 else:
                     self._send(
                         200, image.read_bytes(), "image/jpeg",
@@ -6371,7 +6373,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/render/png":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
-                    raise ValueError("bad render key")
+                    raise ValueError(T("bad render key"))
                 surface = CACHE / "render" / f"{key}.rgba"
                 if not native_surface_exists(surface):
                     self._json({"error": "render not found"}, 404)
@@ -6384,11 +6386,11 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/render/native":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
-                    raise ValueError("bad render key")
+                    raise ValueError(T("bad render key"))
                 surface = CACHE / "render" / f"{key}.rgba"
                 materialize_native_surface(surface)
                 if not surface.exists():
-                    self._json({"error": "native render not found"}, 404)
+                    self._json({"error": T("native render not found")}, 404)
                 else:
                     self._send_file(
                         200, surface, "application/x-lighttable-rgba",
@@ -6396,7 +6398,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/render/helper":
                 key = q.get("key", "")
                 if len(key) != 32 or any(c not in "0123456789abcdef" for c in key):
-                    raise ValueError("bad render key")
+                    raise ValueError(T("bad render key"))
                 image = browser_helper_path(key)
                 surface = CACHE / "render" / f"{key}.rgba"
                 with HELPER_LOCK:
@@ -6405,7 +6407,7 @@ class Handler(BaseHTTPRequestHandler):
                     prune_cache(
                         image.parent, "*.jpg", _NATIVE_SURFACE_CACHE_MAX_BYTES // 8)
                 if not image.exists():
-                    self._json({"error": "render helper not found"}, 404)
+                    self._json({"error": T("render helper not found")}, 404)
                 else:
                     self._send_file(
                         200, image, "image/jpeg",
@@ -6443,12 +6445,12 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({"profiles": soft_proof.list_system_icc_profiles()})
             elif u.path == "/api/ai-index/status":
                 if not AI_INDEX:
-                    self._json({"error": "local index is not ready"}, 503)
+                    self._json({"error": T("local index is not ready")}, 503)
                 else:
                     self._json(AI_INDEX.status())
             elif u.path == "/api/ai-index/results":
                 if not AI_INDEX:
-                    self._json({"error": "local index is not ready"}, 503)
+                    self._json({"error": T("local index is not ready")}, 503)
                 else:
                     # The same name source the indexer enumerates with. In
                     # catalog mode `list_images` returns filesystem paths
@@ -6526,20 +6528,20 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 image_id = catalog_image_id(q["name"])
                 if image_id is None:
-                    raise ValueError("unknown image")
+                    raise ValueError(T("unknown image"))
                 self._json({"iptc": cat.iptc_for(image_id),
                             "exif": exif_for(q["name"])})
             elif u.path == "/api/history":
                 cat = require_catalog()
                 image_id = catalog_image_id(q["name"])
                 if image_id is None:
-                    raise ValueError("unknown image")
+                    raise ValueError(T("unknown image"))
                 self._json({"steps": cat.history_for(image_id)})
             elif u.path == "/api/history/state":
                 cat = require_catalog()
                 state = cat.history_state(int(q["id"]))
                 if state is None:
-                    raise ValueError("unknown history step")
+                    raise ValueError(T("unknown history step"))
                 self._json(state)
             elif u.path == "/api/enhance/capabilities":
                 import enhance_workflow
@@ -6553,10 +6555,10 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/import/report":
                 ident = q.get("id", "")
                 if not re.fullmatch(r"[a-f0-9]{32}", ident):
-                    raise ValueError("Choose a completed import report")
+                    raise ValueError(T("Choose a completed import report"))
                 report = PREFS_FILE.parent / "ImportReports" / f"{ident}.jsonl"
                 if not report.is_file():
-                    raise ValueError("That import report is not available")
+                    raise ValueError(T("That import report is not available"))
                 self._send(200, report.read_bytes(), "application/x-ndjson",
                     headers={"Content-Disposition": 'attachment; filename="LightTable-import-report.jsonl"'})
             elif u.path == "/api/import/status":
@@ -6564,7 +6566,7 @@ class Handler(BaseHTTPRequestHandler):
                     sync_job_status(dict(IMPORT_JOB))
                     self._json(dict(IMPORT_JOB))
             else:
-                self._json({"error": "not found"}, 404)
+                self._json({"error": T("not found")}, 404)
         except Exception as e:  # noqa: BLE001
             self._handle_exception(e)
         finally:
@@ -6597,7 +6599,7 @@ class Handler(BaseHTTPRequestHandler):
                             generation, LATEST_GENERATION.get(client, generation))
                 if b.get("viewport") and (not edits.base_edits_are_identity(b.get("optics"), b.get("heals"))
                                            or preview_grade_requires_bake(b.get("masks"))):
-                    raise ValueError("viewport rendering requires unwarped source geometry")
+                    raise ValueError(T("viewport rendering requires unwarped source geometry"))
                 result = render_preview(
                     b["name"], b.get("params", {}), int(b.get("w", 1100)),
                     b.get("engine", "py"), client,
@@ -6661,7 +6663,7 @@ class Handler(BaseHTTPRequestHandler):
                 b = self._body()
                 expected_revision = b.pop("expectedRecoverySourceKey", None)
                 if expected_revision is not None and expected_revision != file_key(b["name"]):
-                    raise ValueError("The original changed since these edits were recovered; the draft was kept")
+                    raise ValueError(T("The original changed since these edits were recovered; the draft was kept"))
                 strict = str(self.headers.get("X-LightTable-Strict", "")) == "1"
                 entry, warnings = cleaned_state_request(b, strict=strict)
                 if "params" in entry:
@@ -6752,10 +6754,10 @@ class Handler(BaseHTTPRequestHandler):
                 with UI_STATE_LOCK:
                     target = dict(UI_STATE)
                 if not target or time.time() - target.get("reportedAt", 0) > 10:
-                    raise APIError(409, "no live LightTable window is connected",
+                    raise APIError(409, T("no live LightTable window is connected"),
                                    "no-window")
                 if target.get("allowAutomation") is False:
-                    raise APIError(403, "window automation is disabled",
+                    raise APIError(403, T("window automation is disabled"),
                                    "automation-disabled")
                 ident = secrets.token_hex(12)
                 pending = {"event": threading.Event(), "result": None}
@@ -6772,10 +6774,10 @@ class Handler(BaseHTTPRequestHandler):
                 with UI_PENDING_LOCK:
                     UI_PENDING.pop(ident, None)
                 if not completed:
-                    raise APIError(504, "the window did not answer the command",
+                    raise APIError(504, T("the window did not answer the command"),
                                    "ui-timeout")
                 result = pending["result"] or {"ok": False,
-                                                "error": "empty UI result"}
+                                                "error": T("empty UI result")}
                 self._json(result, 200 if result.get("ok") else 409)
             elif u.path.startswith("/api/jobs/") and u.path.endswith("/cancel"):
                 ident = u.path.removeprefix("/api/jobs/").removesuffix("/cancel")
@@ -6789,7 +6791,7 @@ class Handler(BaseHTTPRequestHandler):
                     targets = targets[1:]
                 targets = [t for t in targets if t != ref_name]
                 if not ref_name or not targets:
-                    self._json({"ok": False, "error": "reference and target image names required"}, 400)
+                    self._json({"ok": False, "error": T("reference and target image names required")}, 400)
                     return
 
                 ref_exif = exif_for(ref_name)
@@ -6884,7 +6886,7 @@ class Handler(BaseHTTPRequestHandler):
                     act = b.get("action")
                     ident = str(b.get("id") or "")
                     if ident and any(p["id"] == ident for p in preset_library.builtin_presets()):
-                        raise ValueError("Built-in presets are read-only. Save a copy to edit one.")
+                        raise ValueError(T("Built-in presets are read-only. Save a copy to edit one."))
                     if act == "save":
                         selected = next((p for p in items if (p["id"] == ident if ident else p["name"] == b.get("name"))), None)
                         raw = {**(selected or {}), **b, "id": ident or (selected or {}).get("id") or secrets.token_hex(16),
@@ -6901,14 +6903,14 @@ class Handler(BaseHTTPRequestHandler):
                             raw = preset_library.prepare_look(raw)
                         cleaned = clean_preset(raw)
                         if not cleaned:
-                            raise ValueError("Give this preset a name")
+                            raise ValueError(T("Give this preset a name"))
                         replaced_id = (selected or {}).get("id", cleaned["id"])
                         items = [p for p in items if p["id"] not in {cleaned["id"], replaced_id}]
                         items.append(cleaned)
                     elif act == "delete":
                         items = [p for p in items if not (p["id"] == ident if ident else p["name"] == b.get("name"))]
                     else:
-                        raise ValueError("Unknown preset action")
+                        raise ValueError(T("Unknown preset action"))
                     saved = save_presets(items)
                 EVENTS.publish("library", {"reason": "presets"})
                 self._json(saved)
@@ -6930,7 +6932,7 @@ class Handler(BaseHTTPRequestHandler):
                 selected = next((item for item in load_presets()
                                  if (item["id"] == b["id"] if b.get("id") else item["name"] == b.get("name"))), None)
                 if not selected:
-                    self._json({"error": "preset not found"}, 404)
+                    self._json({"error": T("preset not found")}, 404)
                 else:
                     filename, content_type, content = preset_io.export_preset(
                         selected, str(b.get("format", "lighttable")))
@@ -6963,17 +6965,17 @@ class Handler(BaseHTTPRequestHandler):
                 b = self._body()
                 name = b["name"]
                 if not is_raw(name):
-                    self._json({"error": "camera defaults require a RAW photo"}, 400)
+                    self._json({"error": T("camera defaults require a RAW photo")}, 400)
                 elif b.get("action") == "delete":
                     self._json(update_raw_camera_default(name, None))
                 elif b.get("action") == "save":
                     self._json(update_raw_camera_default(
                         name, b.get("settings", {})))
                 else:
-                    self._json({"error": "unknown camera-default action"}, 400)
+                    self._json({"error": T("unknown camera-default action")}, 400)
             elif u.path == "/api/ai-index":
                 if not AI_INDEX:
-                    self._json({"error": "local index is not ready"}, 503)
+                    self._json({"error": T("local index is not ready")}, 503)
                 else:
                     action = self._body().get("action")
                     if action == "enable":
@@ -6985,7 +6987,7 @@ class Handler(BaseHTTPRequestHandler):
                     elif action == "clear":
                         self._json(AI_INDEX.clear())
                     else:
-                        self._json({"error": "unknown local index action"}, 400)
+                        self._json({"error": T("unknown local index action")}, 400)
             elif u.path == "/api/folders":
                 b = self._body()
                 action = b.get("action")
@@ -6998,12 +7000,12 @@ class Handler(BaseHTTPRequestHandler):
                     EVENTS.publish("library", {"reason": "folder"})
                     self._json({"ok": True, "path": path})
                 else:
-                    self._json({"error": "unknown folder action"}, 400)
+                    self._json({"error": T("unknown folder action")}, 400)
             elif u.path == "/api/photos/move":
                 b = self._body()
                 names = [str(name) for name in b.get("names", [])]
                 if not names:
-                    raise ValueError("no photos selected")
+                    raise ValueError(T("no photos selected"))
                 moved = move_images(names, b.get("destination", ""))
                 EVENTS.publish("library", {"reason": "move"})
                 self._json({"ok": True, "moved": moved})
@@ -7030,7 +7032,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/catalog/scan":
                 body = self._body()
                 if SCANNER is None:
-                    raise ValueError("the catalog is not available")
+                    raise ValueError(T("the catalog is not available"))
                 SCANNER.request(int(body["sourceId"])
                                 if body.get("sourceId") else None)
                 EVENTS.publish("library", {"reason": "scan"})
@@ -7059,7 +7061,7 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 image_id = catalog_image_id(body["name"])
                 if image_id is None:
-                    raise ValueError("unknown image")
+                    raise ValueError(T("unknown image"))
                 save_catalog_metadata(body["name"], image_id, body.get("fields") or {})
                 _queue_mirror()
                 EVENTS.publish("state", {"names": [body["name"]],
@@ -7088,7 +7090,7 @@ class Handler(BaseHTTPRequestHandler):
                 cat = require_catalog()
                 image_id = catalog_image_id(body["name"])
                 if image_id is None:
-                    raise ValueError("unknown image")
+                    raise ValueError(T("unknown image"))
                 seq = cat.add_history(image_id, str(body.get("label", "Edit")),
                                       body.get("state") or {},
                                       origin=str(body.get("origin", "edit")))
@@ -7161,7 +7163,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/watch":
                 self._json(watch_action(self._body()))
             else:
-                self._json({"error": "not found"}, 404)
+                self._json({"error": T("not found")}, 404)
         except Exception as e:  # noqa: BLE001
             self._handle_exception(e)
         finally:
@@ -7239,7 +7241,7 @@ class LightTableServer(ThreadingHTTPServer):
 def main() -> None:
     global AI_INDEX, WATCH_SERVICE, PORT, HTTPD, LAUNCH_NOTICE
     STARTUP.path = recovery.startup_report_path(instance_directory())
-    STARTUP.phase("starting", "Starting LightTable…")
+    STARTUP.phase("starting", T("Starting LightTable…"))
     if os.environ.get("LIGHTTABLE_WATCH_PARENT"):
         threading.Thread(target=_watch_parent, daemon=True).start()
     if not FOLDER.is_dir():
@@ -7247,13 +7249,12 @@ def main() -> None:
         # an unmounted drive or a renamed folder must not stop the app.
         if not CATALOG_ENABLED:
             STARTUP.failed(
-                "folder-missing", f"The photo folder is not available: {FOLDER}",
-                hint="Choose another folder from the File menu.")
+                "folder-missing", T("The photo folder is not available: {FOLDER}", FOLDER=f'{FOLDER}'),
+                hint=T("Choose another folder from the File menu."))
             sys.exit(f"LIGHTTABLE_DIR is not a folder: {FOLDER!r}")
         LAUNCH_NOTICE = {
             "status": "folder-missing", "folder": str(FOLDER),
-            "message": "The folder LightTable last opened is not available. "
-                       "Its photos will return when the volume is mounted.",
+            "message": T("The folder LightTable last opened is not available. Its photos will return when the volume is mounted."),
         }
         print(f"LightTable: launch folder unavailable: {FOLDER}")
     try:
@@ -7262,11 +7263,10 @@ def main() -> None:
         holder = error.holder or {}
         STARTUP.failed(
             "catalog-locked", str(error), holder=holder or None,
-            hint=("Another copy of LightTable already has this library open. "
-                  "Use that window or quit it, then try again."))
+            hint=(T("Another copy of LightTable already has this library open. Use that window or quit it, then try again.")))
         sys.exit(f"LightTable: {error}")
     cat = open_catalog()
-    STARTUP.phase("listening", "Starting the local server…")
+    STARTUP.phase("listening", T("Starting the local server…"))
     try:
         httpd = LightTableServer((BOUND_HOST, PORT), Handler)
     except OSError as error:
@@ -7274,7 +7274,7 @@ def main() -> None:
         # that probe and this bind. Any free port is better than no window;
         # the launcher reads the real one from the startup report.
         if PORT == 0:
-            STARTUP.failed("port", f"could not listen: {error}")
+            STARTUP.failed("port", T("could not listen: {error}", error=f'{error}'))
             raise
         print(f"LightTable: port {PORT} is busy ({error}); choosing another")
         httpd = LightTableServer((BOUND_HOST, 0), Handler)
@@ -7504,7 +7504,7 @@ def _retire_catalog_for_replacement() -> None:
     CATALOG = None
     SCANNER = None
     CATALOG_NOTICE = {"status": "restarting",
-                      "message": "The catalog is being replaced."}
+                      "message": T("The catalog is being replaced.")}
     if WATCH_SERVICE is not None:
         try:
             WATCH_SERVICE.shutdown()
@@ -7551,7 +7551,7 @@ def recovery_action(body: dict) -> dict:
             cat, force_verify=True)}
     if action == "rescan":
         if SCANNER is None:
-            raise ValueError("the catalog is not available")
+            raise ValueError(T("the catalog is not available"))
         SCANNER.request(None)
         EVENTS.publish("library", {"reason": "scan"})
         return {"ok": True, "status": SCANNER.status}
@@ -7561,13 +7561,13 @@ def recovery_action(body: dict) -> dict:
     if action == "release":
         name = str(body.get("name", ""))
         if not name:
-            raise ValueError("a photo name is required")
+            raise ValueError(T("a photo name is required"))
         return {"ok": True, "released": PHOTO_QUARANTINE.release(name),
                 "quarantine": PHOTO_QUARANTINE.entries()}
     if action == "set-aside":
         name = str(body.get("name", ""))
         if not name:
-            raise ValueError("a photo name is required")
+            raise ValueError(T("a photo name is required"))
         for _ in range(recovery.QUARANTINE_STRIKES):
             entry = PHOTO_QUARANTINE.strike(name, "manual")
         return {"ok": True, "entry": entry,
@@ -7581,7 +7581,7 @@ def recovery_action(body: dict) -> dict:
         backup_dir = (configured_backup_directory(cat) if cat is not None
                       else _backup_directory_for(catalog_path))
         if archive.parent.resolve() != backup_dir.resolve():
-            raise ValueError("the archive must come from the backup folder")
+            raise ValueError(T("the archive must come from the backup folder"))
         if cat is not None:
             # The live catalog is healthy enough to run; keep a copy of the
             # edits it holds before an older backup replaces them.
@@ -7599,7 +7599,7 @@ def recovery_action(body: dict) -> dict:
         return {"ok": True, "restart": True, **result}
     if action == "reset":
         if not body.get("confirm"):
-            raise ValueError("reset needs confirm: true")
+            raise ValueError(T("reset needs confirm: true"))
         if cat is not None:
             cat.backup(configured_backup_directory(cat))
             _retire_catalog_for_replacement()
@@ -7609,7 +7609,7 @@ def recovery_action(body: dict) -> dict:
     if action == "restart":
         request_restart("requested")
         return {"ok": True, "restart": True}
-    raise ValueError(f"unknown recovery action: {action}")
+    raise ValueError(T("unknown recovery action: {action}", action=f'{action}'))
 
 
 
@@ -7629,7 +7629,7 @@ def catalog_sources_action(body: dict) -> dict:
     if action == "add":
         path = Path(str(body["path"])).expanduser()
         if not path.is_dir():
-            raise ValueError("that folder does not exist")
+            raise ValueError(T("that folder does not exist"))
         source_id = cat.add_source(path, favorite=bool(body.get("favorite")))
         imported = None
         if body.get("importState", True):
@@ -7651,7 +7651,7 @@ def catalog_sources_action(body: dict) -> dict:
         if SCANNER is not None:
             SCANNER.request(int(body["id"]) if body.get("id") else None)
     elif action != "list":
-        raise ValueError(f"unknown source action: {action}")
+        raise ValueError(T("unknown source action: {action}", action=f'{action}'))
     return {"ok": True, "sources": cat.sources()}
 
 
@@ -7680,7 +7680,7 @@ def catalog_collections_action(body: dict) -> dict:
         cat.set_collection_members(int(body["id"]),
                                    [int(i) for i in body.get("imageIds", [])])
     elif action != "list":
-        raise ValueError(f"unknown collection action: {action}")
+        raise ValueError(T("unknown collection action: {action}", action=f'{action}'))
     if action != "list":
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
@@ -7694,13 +7694,13 @@ def keyword_batch_action(body: dict) -> dict:
     action = str(body.get("action", ""))
     names = body.get("names", [])
     if not isinstance(names, list) or len(names) > keyword_workflow.MAX_BATCH:
-        raise ValueError("Select no more than 5000 photos for a keyword batch")
+        raise ValueError(T("Select no more than 5000 photos for a keyword batch"))
     names = list(dict.fromkeys(str(name) for name in names))
     ids = []
     for name in names:
         image_id = catalog_image_id(name)
         if image_id is None:
-            raise ValueError("A selected photo is no longer in the catalog")
+            raise ValueError(T("A selected photo is no longer in the catalog"))
         ids.append(image_id)
         if load_preferences().get("linkPairedMetadata"):
             for companion in cat.paired_image_names(image_id):
@@ -7758,12 +7758,12 @@ def import_sidecars(body: dict) -> dict:
             page = cat.query({**(body.get("scope") or {}), "limit": 5000,
                               "offset": offset})
             if page["total"] > 100000:
-                raise ValueError("Import at most 100000 photos at once; narrow the source or folder scope")
+                raise ValueError(T("Import at most 100000 photos at once; narrow the source or folder scope"))
             names.extend(item["name"] for item in page["items"])
             if len(names) >= page["total"] or not page["items"]:
                 break
     if not isinstance(names, list) or len(names) > 100000:
-        raise ValueError("Import at most 100000 photos at once")
+        raise ValueError(T("Import at most 100000 photos at once"))
     names = list(dict.fromkeys(str(name) for name in names))
 
     report = {"read": 0, "applied": 0, "skipped": 0, "missing": 0,
@@ -7779,7 +7779,7 @@ def import_sidecars(body: dict) -> dict:
             continue
         parsed = xmp_sidecar.read_for(path)
         if parsed and parsed.get("sidecarConflicts"):
-            report["errors"].append(f"{path.name}: multiple XMP sidecars; keep one naming convention before importing")
+            report["errors"].append(T("{name}: multiple XMP sidecars; keep one naming convention before importing", name=path.name))
             report["skipped"] += 1
             continue
         if not parsed:
@@ -7876,12 +7876,12 @@ def start_catalog_import(body: dict) -> dict:
     cat = require_catalog()
     path = Path(str(body["path"])).expanduser()
     if not path.is_file():
-        raise ValueError("that catalog file does not exist")
+        raise ValueError(T("that catalog file does not exist"))
     if body.get("inspectOnly"):
         return catalog_import.inspect(path)
     with IMPORT_LOCK:
         if IMPORT_JOB["running"]:
-            return {"error": "an import is already running"}
+            return {"error": T("an import is already running")}
         IMPORT_JOB.update(running=True, stage="starting", done=0, total=0,
                           result=None, error=None)
         IMPORT_JOB["jobId"] = JOBS.create(
@@ -7934,7 +7934,7 @@ def scan_ingest_source(body: dict) -> dict:
 
     root = Path(str(body["path"])).expanduser()
     if not root.is_dir():
-        raise ValueError("that folder does not exist")
+        raise ValueError(T("that folder does not exist"))
     items = ingest_workflow.scan_source(root)
     cat = catalog_handle()
     known: set[str] = set()
@@ -7965,7 +7965,7 @@ def start_ingest(body: dict) -> dict:
     items = plan["items"]
     with INGEST_LOCK:
         if INGEST["running"]:
-            return {"error": "an ingest is already running"}
+            return {"error": T("an ingest is already running")}
         INGEST.update(running=True, done=0, total=len(items), errors=[],
                       copied=0, bytes=0, cancelled=False)
         INGEST["jobId"] = JOBS.create(
@@ -8050,7 +8050,7 @@ def rename_photos(body: dict) -> dict:
             item, start + len(planned), custom)
         stem = ingest_workflow.render_path(template, context)
         if "/" in stem:
-            raise ValueError("a rename template cannot create folders")
+            raise ValueError(T("a rename template cannot create folders"))
         # A template whose tokens are all empty must keep the current name:
         # ".jpg" would be a hidden file the library never shows again.
         target = path.with_name(f"{stem or path.stem}{path.suffix}")
@@ -8085,7 +8085,7 @@ def rename_photos(body: dict) -> dict:
                 continue
             actual_source = source_id if source_id is not None else PRIMARY_SOURCE_ID
             if actual_source is None:
-                raise RuntimeError("the catalog source is unavailable")
+                raise RuntimeError(T("the catalog source is unavailable"))
             new_relpath = (relpath.rsplit("/", 1)[0] + "/" + target.name
                            if "/" in relpath else target.name)
             plans.append(_photo_move_plan(path, target, index=indexes[path.parent]))
@@ -8138,7 +8138,7 @@ def reveal_photo(body: dict) -> dict:
     """Resolve one catalog name for the native host's Finder command."""
     name = str(body.get("name", ""))
     if not name:
-        raise ValueError("no photo selected")
+        raise ValueError(T("no photo selected"))
     return {"ok": True, "path": str(src_path(name))}
 
 
@@ -8198,7 +8198,7 @@ def _run_denoise(name: str, params: dict) -> None:
         with DENOISE_LOCK:
             cancelled = DENOISE.get("cancelled", False)
             DENOISE.update(running=False, done=False,
-                            error=("Denoise cancelled" if cancelled
+                            error=(T("Denoise cancelled") if cancelled
                                    else str(error)))
             sync_job_status(dict(DENOISE), progress_key="progress")
     finally:
@@ -8212,7 +8212,7 @@ def start_denoise(body: dict) -> dict:
 
     name = str(body.get("name", ""))
     if not is_raw(name):
-        return {"ok": False, "error": "Learned denoise requires a RAW original"}
+        return {"ok": False, "error": T("Learned denoise requires a RAW original")}
     capabilities = enhance_workflow.capabilities()
     if not capabilities.get("modes", {}).get("denoise"):
         return {"ok": False, "error": capabilities.get(
@@ -8221,7 +8221,7 @@ def start_denoise(body: dict) -> dict:
     params["learned_denoise"] = True
     with DENOISE_LOCK:
         if DENOISE["running"]:
-            return {"ok": False, "error": "A denoise is already running"}
+            return {"ok": False, "error": T("A denoise is already running")}
         DENOISE.update(running=True, name=name, progress=0, total=0,
                        error="", cancelled=False, done=False)
         DENOISE["jobId"] = JOBS.create(

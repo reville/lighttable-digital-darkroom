@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from server_localization import T, refresh
+
 import asyncio
 import importlib.util
 import json
@@ -28,10 +30,10 @@ class VisionProvider:
 
     def analyze(self, image: Path) -> dict:
         if not self.available:
-            raise RuntimeError("the local Vision analyzer has not been built")
+            raise RuntimeError(T("the local Vision analyzer has not been built"))
         result = self._request("analyze", input=str(image))
         if not isinstance(result, dict):
-            raise RuntimeError("Vision returned an invalid result")
+            raise RuntimeError(T("Vision returned an invalid result"))
         result["provider"] = "vision"
         return result
 
@@ -56,7 +58,7 @@ class VisionProvider:
     def person_parts(self, image: Path, output_dir: Path) -> dict:
         """Generate the complete person-part set in one Vision request."""
         if not self.available:
-            raise RuntimeError("People masks need the Vision helper (macOS 14 or later)")
+            raise RuntimeError(T("People masks need the Vision helper (macOS 14 or later)"))
         output_dir.mkdir(parents=True, exist_ok=True)
         result = self._request(
             "person-parts", input=str(image), outputDir=str(output_dir))
@@ -83,21 +85,21 @@ class VisionProvider:
                 process = self._start()
                 try:
                     if process.stdin is None or process.stdout is None:
-                        raise RuntimeError("Vision server has no pipes")
+                        raise RuntimeError(T("Vision server has no pipes"))
                     process.stdin.write(json.dumps(request, separators=(",", ":")) + "\n")
                     process.stdin.flush()
                     ready, _, _ = select.select([process.stdout], [], [], 90)
                     if not ready:
-                        raise TimeoutError("Vision analysis timed out")
+                        raise TimeoutError(T("Vision analysis timed out"))
                     line = process.stdout.readline()
                     if not line:
-                        raise RuntimeError("Vision server stopped")
+                        raise RuntimeError(T("Vision server stopped"))
                     result = json.loads(line)
                     if not isinstance(result, dict) or result.get("id") != request_id:
-                        raise RuntimeError("Vision returned an invalid result")
+                        raise RuntimeError(T("Vision returned an invalid result"))
                     if not result.get("ok"):
-                        raise RuntimeError(str(result.get("error") or
-                                               "Vision analysis failed"))
+                        raise RuntimeError(str(result["error"]) if result.get("error") else
+                                           T("Vision analysis failed"))
                     result.pop("id", None)
                     return result
                 except (BrokenPipeError, OSError, ValueError,
@@ -106,7 +108,7 @@ class VisionProvider:
                     self._stop()
                     if attempt:
                         break
-            raise RuntimeError(str(last_error or "Vision analysis failed"))
+            raise RuntimeError(str(last_error) if last_error else T("Vision analysis failed"))
 
     def _stop(self) -> None:
         process, self._process = self._process, None
@@ -138,18 +140,18 @@ class FoundationModelsProvider:
 
     def status(self) -> dict:
         if self._status is not None:
-            return dict(self._status)
+            return {**self._status, "reason": refresh(self._status.get("reason", ""))}
         major = _macos_major()
         if major < 27:
             self._status = {
                 "available": False,
-                "reason": "Richer descriptions require macOS 27 or later",
+                "reason": T("Richer descriptions require macOS 27 or later"),
             }
             return dict(self._status)
         if importlib.util.find_spec("apple_fm_sdk") is None:
             self._status = {
                 "available": False,
-                "reason": "The optional Apple Foundation Models bridge is not installed",
+                "reason": T("The optional Apple Foundation Models bridge is not installed"),
             }
             return dict(self._status)
         try:
@@ -160,7 +162,7 @@ class FoundationModelsProvider:
             ).is_available()
             self._status = {
                 "available": bool(available),
-                "reason": "" if available else str(reason or "Apple Intelligence unavailable"),
+                "reason": "" if available else (str(reason) if reason else T("Apple Intelligence unavailable")),
             }
         except Exception as error:  # optional capability must never break Vision
             self._status = {"available": False, "reason": str(error)[:180]}
@@ -216,7 +218,7 @@ class LocalPhotoAnalyzer:
         return {
             "vision": {
                 "available": self.vision.available,
-                "description": "Objects, scenes, visible text, and face detection",
+                "description": T("Objects, scenes, visible text, and face detection"),
             },
             "foundationModels": foundation,
             "contentMode": (

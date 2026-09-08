@@ -1,3 +1,17 @@
+import { t as tr } from './i18n.js';
+
+/** Display names are separate from the stable mask/removal protocol keys. */
+export function localToolLabel(type) {
+  const labels = {
+    brush: tr('Brush'), linear: tr('Linear'), radial: tr('Radial'),
+    subject: tr('Subject'), sky: tr('Sky'), object: tr('Object'), depth: tr('Depth'),
+    person: tr('Person'), 'face-skin': tr('Face skin'), eyes: tr('Eyes'),
+    eyebrows: tr('Eyebrows'), lips: tr('Lips'), teeth: tr('Teeth'), hair: tr('Hair'),
+    remove: tr('Remove'), heal: tr('Heal'), clone: tr('Clone'),
+  };
+  return labels[type] || String(type || '');
+}
+
 export const LOCAL_GRADE_DEFAULTS = Object.freeze({
   exposure: 0, contrast: 0, highlights: 0, shadows: 0,
   temp: 0, tint: 0, saturation: 0, texture: 0, clarity: 0,
@@ -80,7 +94,7 @@ export function normalizeMasks(raw) {
     const type = primary.type;
     const result = {
       id: String(mask?.id || editId('mask')),
-      name: String(mask?.name || `Mask ${index + 1}`),
+      name: String(mask?.name || tr('Mask {number}', {number: index + 1})),
       type, enabled: mask?.enabled !== false, invert: !!mask?.invert,
       opacity: clamp(+(mask?.opacity ?? 1), 0, 1),
       lumaLow: clamp(+(mask?.lumaLow ?? 0), 0, 1),

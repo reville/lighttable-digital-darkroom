@@ -93,6 +93,7 @@ try {
     # so a new module cannot ship on macOS and be missing here.
     foreach ($File in @(
         "server.py",
+        "server_localization.py",
         "bounded_logging.py",
         "events.py",
         "jobs.py",
@@ -114,6 +115,7 @@ try {
         "export_workflow.py",
         "export_surface.py",
         "library_workflow.py",
+        "keyword_workflow.py",
         "merge_workflow.py",
         "soft_proof.py",
         "catalog.py",

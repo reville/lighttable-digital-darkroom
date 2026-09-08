@@ -1,3 +1,4 @@
+import {t as tr, tn as trn} from './i18n.js';
 // Count completed work for the preview being presented. Background detail
 // renders never start this indicator, and presentation hides it immediately.
 export function createPreviewProgress(publish, {
@@ -48,6 +49,6 @@ export async function waitForRawRefinement({ request, isCurrent,
     if (result.ready) return true;
     if (attempt + 1 < maxAttempts) await sleep(interval);
   }
-  if (isCurrent()) throw new Error('RAW preview could not finish. Try the photo again.');
+  if (isCurrent()) throw new Error(tr('RAW preview could not finish. Try the photo again.'));
   return false;
 }

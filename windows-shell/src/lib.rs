@@ -1,4 +1,5 @@
 pub mod preset_links;
+pub mod localization;
 
 use std::{
     collections::HashSet,

@@ -7,6 +7,8 @@ profile that describes the selected output colour space.
 """
 from __future__ import annotations
 
+from server_localization import T
+
 import io
 import os
 import subprocess
@@ -47,6 +49,12 @@ SRGB_LIMITED_EXPORT_WARNING = (
     "This export uses sRGB-limited colors: film rendering and adjusted "
     "Develop images do not yet retain colors outside sRGB. "
     "The requested output profile is embedded.")
+
+
+def srgb_limited_export_warning() -> str:
+    return T("This export uses sRGB-limited colors: film rendering and adjusted "
+             "Develop images do not yet retain colors outside sRGB. "
+             "The requested output profile is embedded.")
 
 RAW_WB_MODES = {"as_shot", "daylight", "tungsten", "custom"}
 RAW_PROFILES = {"camera", "detail", "smooth"}
@@ -98,7 +106,7 @@ def as_float_rgb(image: np.ndarray) -> np.ndarray:
     """Normalise an RGB integer/float array to float32 in 0..1."""
     array = np.asarray(image)
     if array.ndim != 3 or array.shape[2] < 3:
-        raise ValueError("expected an HxWx3 RGB image")
+        raise ValueError(T("expected an HxWx3 RGB image"))
     array = array[..., :3]
     if np.issubdtype(array.dtype, np.integer):
         maximum = float(np.iinfo(array.dtype).max)
@@ -667,8 +675,8 @@ def required_icc_bytes(output_space: str) -> bytes:
     profile = icc_bytes(output_space)
     if not profile:
         raise RuntimeError(
-            f"The {normalise_output_space(output_space)} output color profile is missing. "
-            "Repair the installation before exporting.")
+            T("The {space} output color profile is missing. Repair the installation before exporting.",
+              space=normalise_output_space(output_space)))
     return profile
 
 
@@ -709,7 +717,7 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
             str(Path(__file__).resolve().parent / "build" / "LightTableVision")))
         if sys.platform != "darwin" or not os.access(helper, os.X_OK):
             raise RuntimeError(
-                "HEIF export requires the bundled macOS ImageIO helper")
+                T("HEIF export requires the bundled macOS ImageIO helper"))
         encoded = (converted * 255.0 + 0.5).astype(np.uint8)
         temporary = None
         try:
@@ -731,15 +739,15 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
                     temporary, metadata_source, metadata_policy,
                     metadata_fields or {}, warnings=warnings)
                 if not succeeded and warnings is not None and len(warnings) == before:
-                    warnings.append("Requested metadata could not be saved.")
+                    warnings.append(T("Requested metadata could not be saved."))
             completed = subprocess.run(
                 [str(helper), "--encode-heif", str(temporary),
                  str(destination), str(int(quality))],
                 capture_output=True, text=True, timeout=90, check=False)
             if completed.returncode or not destination.is_file():
                 detail = (completed.stderr or completed.stdout or
-                          "ImageIO did not create an output file").strip()
-                raise RuntimeError(f"HEIF export failed: {detail}")
+                          T("ImageIO did not create an output file")).strip()
+                raise RuntimeError(T("HEIF export failed: {detail}", detail=detail))
         finally:
             if temporary is not None:
                 temporary.unlink(missing_ok=True)

@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /* IPTC, location, and the keyword tree.
  *
  * Exports used to carry no rights information at all, which ruled out client
@@ -55,7 +56,7 @@ export function createMetadataPanel(ctx) {
         .then((result) => {
           if (result?.error) throw new Error(result.error);
         })
-        .catch(() => toast('Could not save photo metadata'));
+        .catch(() => toast(tr("Could not save photo metadata")));
     }
     return saveChain;
   }
@@ -137,7 +138,7 @@ export function createMetadataPanel(ctx) {
           .map((keyword) => new Option(keyword.path, keyword.path)));
       }
       if (!keywords.length) {
-        container.textContent = 'No keywords yet.';
+        container.textContent = tr("No keywords yet.");
         return;
       }
       container.innerHTML = keywords.map((keyword) => {
@@ -151,7 +152,7 @@ export function createMetadataPanel(ctx) {
                 </button>`;
       }).join('');
     } catch (error) {
-      container.textContent = 'Keywords need the catalog.';
+      container.textContent = tr("Keywords need the catalog.");
     }
   }
 
@@ -171,7 +172,7 @@ export function createMetadataPanel(ctx) {
         const lat = Number(el('iptcLat') && el('iptcLat').value);
         const lon = Number(el('iptcLon') && el('iptcLon').value);
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-          toast('Add a latitude and longitude first');
+          toast(tr("Add a latitude and longitude first"));
           return;
         }
         window.open(`https://maps.apple.com/?ll=${lat},${lon}&q=Photo`,
@@ -183,10 +184,10 @@ export function createMetadataPanel(ctx) {
     if (applyAll) {
       applyAll.addEventListener('click', async () => {
         const names = ctx.selection();
-        if (!names.length) { toast('Select photos first'); return; }
+        if (!names.length) { toast(tr("Select photos first")); return; }
         const response = await post('/api/metadata/bulk',
                                     { names, fields: collect() });
-        toast(`Metadata applied to ${response.count || 0} photos`);
+        toast(tr("Metadata applied to {value} photos", {value: (response.count || 0)}));
       });
     }
 
@@ -202,7 +203,7 @@ export function createMetadataPanel(ctx) {
       tree.addEventListener('dblclick', async (event) => {
         const node = event.target.closest('.keyword-node');
         if (!node) return;
-        const name = await ctx.askName('Rename keyword',
+        const name = await ctx.askName(tr("Rename keyword"),
                                        node.querySelector('span').textContent);
         if (!name) return;
         await post('/api/catalog/keywords',

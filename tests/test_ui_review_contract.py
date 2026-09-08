@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import re
+import json
+from html import unescape
 import unittest
 from pathlib import Path
 
@@ -35,8 +37,14 @@ class UIReviewContractTests(unittest.TestCase):
             "Light", "Color", "Curve", "Color Grading", "Effects",
             "Detail", "Lens corrections", "Profile",
         ]
-        positions = [pane.index(f"<span>{label}</span>") for label in ordered_labels]
-        self.assertEqual(positions, sorted(positions))
+        headings = list(re.finditer(
+            r'<summary>\s*<span\b([^>]*)>([^<]*)</span>', pane))
+        labels = [unescape(heading.group(2)) for heading in headings]
+        self.assertEqual(labels, ordered_labels)
+        for heading, label in zip(headings, ordered_labels):
+            template = re.search(r'data-i18n-text="([^"]+)"', heading.group(1))
+            self.assertIsNotNone(template, f"Missing translation template for {label}")
+            self.assertEqual(json.loads(unescape(template.group(1))), {"0": label})
         self.assertIn('id="rawDetailControls" hidden', pane)
         self.assertIn('id="scopeMenuButton"', pane)
 
