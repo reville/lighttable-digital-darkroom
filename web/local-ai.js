@@ -7,6 +7,20 @@ export function aiSearchTerms(metadata) {
   return terms;
 }
 
+export function aiSkippedSummary(status) {
+  if (!status.skipped) return '';
+  const reasons = status.skippedReasons || {};
+  const counts = [
+    ['empty', 'empty file', 'empty files'],
+    ['cloud-only', 'file not downloaded', 'files not downloaded'],
+    ['unavailable', 'unavailable file', 'unavailable files'],
+  ].filter(([key]) => reasons[key] > 0)
+    .map(([key, one, many]) => `${reasons[key].toLocaleString()} ${reasons[key] === 1 ? one : many}`);
+  return `${status.skipped.toLocaleString()} ${status.skipped === 1 ? 'photo' : 'photos'} skipped`
+    + (counts.length ? ` (${counts.join(', ')})` : '')
+    + '. Download or restore the originals, then rebuild the index.';
+}
+
 /* Assisted culling ------------------------------------------------------- */
 
 export const CULL_SELECT = ['subjectSharpness', 'eyeSharpness', 'eyesOpen'];

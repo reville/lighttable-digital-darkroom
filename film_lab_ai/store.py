@@ -171,6 +171,14 @@ class IndexStore:
             )
             connection.execute("DELETE FROM photo_search WHERE name = ?", (name,))
 
+    def clear_error(self, name: str) -> None:
+        """Retire an unavailable input's old failure, preserving valid metadata."""
+        if not self.exists:
+            return
+        with self._lock, self._connection() as connection:
+            connection.execute(
+                "DELETE FROM photos WHERE name = ? AND error != ''", (name,))
+
     def remove_missing(self, names: list[str]) -> None:
         if not self.exists:
             return
