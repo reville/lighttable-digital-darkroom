@@ -2186,7 +2186,7 @@
             "Ouvrez une photo fixe et sélectionnez Film dans la barre d’outils pour ouvrir Simulation de film réaliste.",
             "Activez l’interrupteur Profil de film. Étapes physiques de la pellicule s’ouvre automatiquement ; vous pourrez ensuite la replier.",
             "Choisissez Pellicule, ou cliquez sur Prévisualiser les pellicules sur cette photo… pour comparer des exemples rendus.",
-            "Recherchez un nom de pellicule, utilisez Précédent ou Suivant pour parcourir, puis choisissez un aperçu pour l’appliquer."
+            "Recherchez le nom d’un film ou faites défiler les aperçus, puis choisissez-en un pour l’appliquer. Les aperçus sont agrandis et recadrés pour montrer davantage de détails."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

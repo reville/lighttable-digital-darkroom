@@ -2186,7 +2186,7 @@
             "Buka foto diam dan pilih Film di rel alat untuk membuka Simulasi Film Realistis.",
             "Nyalakan sakelar Profil film. Tahap film fisik terbuka otomatis; Anda bisa menciutkannya setelah itu.",
             "Pilih Stock, atau klik Preview stocks on this photo… untuk membandingkan contoh yang dirender.",
-            "Cari nama stok, gunakan Previous atau Next untuk menelusuri, lalu pilih pratinjau untuk menerapkannya."
+            "Cari nama film atau gulir pratinjau, lalu pilih salah satu untuk menerapkannya. Pratinjau diperbesar dan dipotong agar detail lebih terlihat."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

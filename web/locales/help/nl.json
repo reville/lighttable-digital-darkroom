@@ -2186,7 +2186,7 @@
             "Open een stilstaande foto en selecteer Film in de gereedschapsbalk om Realistic Film Simulation te openen.",
             "Zet de schakelaar voor Filmprofiel aan. Fysieke filmstadia wordt automatisch geopend; je kunt het daarna inklappen.",
             "Kies Film, of klik op Voorbeeldfilms op deze foto… om gerenderde voorbeelden te vergelijken.",
-            "Zoek op een filmnaam, gebruik Vorige of Volgende om te bladeren en kies daarna een voorbeeld om toe te passen."
+            "Zoek op filmnaam of scrol door de voorbeelden en kies er een om toe te passen. De voorbeelden zijn vergroot en bijgesneden om meer detail te tonen."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Als lokaal herstel openstaande wijzigingen vindt wanneer de bibliotheek wordt geopend, vermeldt Niet-opgeslagen bewerkingen herstellen? de betreffende foto's. Bewerkingen terugzetten vervangt de opgeslagen instellingen door de herstelde instellingen. Opgeslagen bewerkingen behouden houdt de catalogusversie en verwijdert die herstelconcepten.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Als maskers niet kunnen worden overgedragen, kopieer dan opnieuw met Lokale maskers uitgeschakeld om de andere groepen toe te passen.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Kies indien nodig een andere vermelding in Lensprofiel en vergelijk de correctie met het origineel.",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Als de eerste-keuze op de Mac niet kan worden opgeslagen, behoudt Opnieuw proberen de selectie en probeert het opnieuw. De app start pas nadat het opslaan is gelukt.",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "Alle kanalen van de Kleurenmixer opnieuw instellen",
     "Reset crop, rotation, flips, and perspective": "Stel bijsnijden, draaien, spiegelen en perspectief opnieuw in",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Stel globale toon, kleur, krommen, verscherpen, ruisvermindering en effecten opnieuw in",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Lensprofiel, vervorming, vignettering en chromatische aberratie opnieuw instellen",
     "Reset sharpening and noise reduction adjustments": "Stel verscherping en ruisvermindering opnieuw in",
-    "Reset sliders to their defaults": "Schuifregelaars terugzetten naar de standaardwaarden",
     "Reset the RAW profile and capture-stage processing settings": "Stel het RAW-profiel en de verwerkingsinstellingen van de opnamefase opnieuw in",
     "Reset the combined RGB and individual channel curves": "Stel de gecombineerde RGB-krommen en de afzonderlijke kanaalkrommen opnieuw in",
     "Reset this slider": "Deze schuifregelaar opnieuw instellen",
@@ -2435,7 +2432,7 @@
     "Search": "Zoeken",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Zoeken omvat artikeltitels, toolnamen en de volledige instructies. Kies Alle onderwerpen om in de hele app te zoeken.",
     "Search film stocks": "Filmstocks zoeken",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Zoek op een filmnaam, gebruik Vorige of Volgende om te bladeren en kies daarna een voorbeeld om toe te passen.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Zoek op filmnaam of scrol door de voorbeelden en kies er een om toe te passen. De voorbeelden zijn vergroot en bijgesneden om meer detail te tonen.",
     "Search help": "Help zoeken",
     "Search index: {value}": "Zoekindex: {value}",
     "Search objects, scenes, text, and faces": "Zoek op objecten, scènes, tekst en gezichten",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "{value}% behouden",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Namen weerspiegelen bestaande bestanden en kunnen veranderen vóór export.",
     "{value}× stock baseline": "{value}× film-basislijn",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} van {stocksLength} films",
     "— none —": "— geen —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” heeft geschilderde verfijningen. Maak het opnieuw aan op deze foto of sluit maskers uit.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” heeft een nieuwe objectselectie nodig. Sluit maskers uit om andere bewerkingen te plakken.",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten"
+    "☆ Favorites": "☆ Favorieten",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken.",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn.",
+    "Reset sliders to their defaults": "Schuifregelaars terugzetten naar de standaardwaarden"
   },
   "plurals": {
     " · {count} paired file linked": {

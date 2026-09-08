@@ -2186,7 +2186,7 @@
             "Apri una foto fissa e seleziona Pellicola nella barra strumenti per aprire Simulazione pellicola realistica.",
             "Attiva l'interruttore del profilo Pellicola. Fasi fisiche della pellicola si apre automaticamente; puoi comprimerlo in seguito.",
             "Scegli Pellicola, oppure fai clic su Visualizza pellicole su questa foto… per confrontare esempi renderizzati.",
-            "Cerca un nome di pellicola, usa Precedente o Successivo per sfogliare, quindi scegli un’anteprima per applicarla."
+            "Cerca il nome di una pellicola o scorri le anteprime, poi scegline una per applicarla. Le anteprime sono ingrandite e ritagliate per mostrare più dettagli."
           ]
         },
         {
@@ -3076,5 +3076,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
 }

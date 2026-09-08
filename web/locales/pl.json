@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
+  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,7 +1352,6 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Jeśli lokalne odzyskiwanie znajdzie nierozwiązane zmiany podczas otwierania biblioteki, „Odzyskaj niezapisane edycje?” wyświetla listę dotkniętych zdjęć. „Przywróć edycje” zastępuje ich zapisane ustawienia odzyskanymi ustawieniami. „Zachowaj zapisane edycje” pozostawia wersję katalogu i odrzuca te szkice odzyskiwania.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Jeśli maski nie mogą zostać przeniesione, skopiuj ponownie z odznaczonymi Lokalnymi maskami, aby zastosować pozostałe grupy.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "W razie potrzeby wybierz inną pozycję w Profil obiektywu i porównaj korektę z oryginałem.",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Jeśli nie można zapisać pierwszego wyboru na Macu, Spróbuj ponownie zachowuje wybór i ponawia próbę. Aplikacja uruchamia się dopiero po pomyślnym zapisie.",
@@ -2299,10 +2298,8 @@
     "Reset all Color Mixer channels": "Resetuj wszystkie kanały Mieszacza kolorów",
     "Reset crop, rotation, flips, and perspective": "Resetuj kadrowanie, obrót, odbicia i perspektywę",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Zresetuj ton globalny, kolor, krzywe, wyostrzanie, redukcję szumu i efekty",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Zresetuj korekcje profilu obiektywu, zniekształcenia, winietowania i aberracji chromatycznej",
     "Reset sharpening and noise reduction adjustments": "Zresetuj regulacje wyostrzania i redukcji szumu",
-    "Reset sliders to their defaults": "Przywróć domyślne wartości suwaków",
     "Reset the RAW profile and capture-stage processing settings": "Zresetuj profil RAW i ustawienia przetwarzania na etapie aparatu",
     "Reset the combined RGB and individual channel curves": "Zresetuj połączone krzywe RGB i krzywe poszczególnych kanałów",
     "Reset this slider": "Resetuj ten suwak",
@@ -2435,7 +2432,7 @@
     "Search": "Szukaj",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Wyszukiwanie obejmuje tytuły artykułów, nazwy narzędzi i pełną treść instrukcji. Wybierz Wszystkie tematy, aby przeszukiwać całą aplikację.",
     "Search film stocks": "Szukaj nośników filmu",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Wyszukaj nazwę nośnika, użyj Previous lub Next, aby przeglądać, a następnie wybierz podgląd, aby go zastosować.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Wyszukaj nazwę filmu lub przewiń podglądy, a następnie wybierz jeden, aby go zastosować. Podglądy są powiększone i przycięte, aby lepiej pokazać szczegóły.",
     "Search help": "Szukaj w pomocy",
     "Search index: {value}": "Indeks wyszukiwania: {value}",
     "Search objects, scenes, text, and faces": "Wyszukuj obiekty, sceny, tekst i twarze",
@@ -4025,7 +4022,6 @@
     "{value}% retained": "zachowano {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Nazwy odzwierciedlają istniejące pliki i mogą się zmienić przed eksportem.",
     "{value}× stock baseline": "{value}× baza nośnika",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} z {stocksLength} nośników",
     "— none —": "— brak —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "„{value}” ma ręcznie malowane dopracowania. Odtwórz je na tym zdjęciu lub wyklucz maski.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "„{value}” wymaga nowego zaznaczenia obiektu. Wyklucz maski, aby wkleić inne edycje.",
@@ -4033,7 +4029,10 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione"
+    "☆ Favorites": "☆ Ulubione",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary.",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian.",
+    "Reset sliders to their defaults": "Przywróć domyślne wartości suwaków"
   },
   "plurals": {
     " · {count} paired file linked": {
