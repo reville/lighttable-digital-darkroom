@@ -41,6 +41,7 @@ function zoomHarness() {
       previewDetail: { name: 'photo.dng', refining: false, renderedWidth: 2200 } },
     automaticPreviewRequest: { name: 'photo.dng', width: 2200 },
     automaticPreviewTimer: null, renderTimer: null, settleRenderTimer: null,
+    zoomMotion: {active: false},
     lastInteractiveRenderAt: 0, INTERACTIVE_PREVIEW_WIDTH: 1100,
     performance: { now: timer.now }, setTimeout: timer.schedule, clearTimeout: timer.cancel,
     $: () => ({ value: 'auto' }), cur: () => ({ name: 'photo.dng' }),
@@ -70,6 +71,18 @@ test('zoom asks once for larger detail, keeps it on zoom out, and coalesces rapi
   assert.equal(renders.length, 1, 'reuse the sharp surface in both directions');
   app.width = 5000; app.scheduleAutomaticPreview(); timer.advance(200);
   assert.deepEqual(renders.map(r => r.width), [4000, 5000]);
+});
+
+test('animation defers detail rendering until the final viewport settles', () => {
+  const { context: app, timer, renders } = zoomHarness();
+  app.scheduleAutomaticPreview(); timer.advance(100);
+  app.zoomMotion.active = true;
+  app.scheduleAutomaticPreview(); timer.advance(500);
+  assert.equal(renders.length, 0);
+  app.width = 5000; app.zoomMotion.active = false;
+  app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.deepEqual(renders.map(r => r.width), [5000]);
+  assert.equal(renders[0].background, true);
 });
 
 test('navigation opens at requested detail while editing retains its responsive small pass', () => {

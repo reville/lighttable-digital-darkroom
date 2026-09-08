@@ -225,7 +225,8 @@
             "A Grade de fotos apresenta as fotos como uma visão geral visual. A Grade de seleção adiciona espaço para informações de seleção e avaliação. Detalhe abre a foto ativa para inspeção de perto.",
             "A barra lateral direita usa botões de ícone para Editar, Filme, Cortar, Remover, Máscaras, Informações, Histórico e Predefinições. Passe o mouse sobre um ícone para ver o nome dele.",
             "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
-            "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números."
+            "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
+            "Ajustar, 1:1, os botões e os atalhos de zoom têm animações suaves. Rolar, pinçar e arrastar respondem diretamente. A animação de zoom é desativada quando a opção Reduzir movimento do sistema está ativada."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -3080,5 +3081,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd"
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
 }
