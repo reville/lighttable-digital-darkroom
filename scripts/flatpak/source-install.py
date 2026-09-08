@@ -45,7 +45,6 @@ def main() -> None:
         (64, 'LightTable.iconset/icon_32x32@2x.png'),
         (128, 'LightTable.iconset/icon_128x128.png'),
         (256, 'LightTable.iconset/icon_256x256.png'),
-        (1024, 'icon-1024.png'),
     ):
         icon = Path(f'/app/share/icons/hicolor/{size}x{size}/apps/{app_id}.png')
         icon.parent.mkdir(parents=True, exist_ok=True)
