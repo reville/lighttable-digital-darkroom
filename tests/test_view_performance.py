@@ -70,8 +70,25 @@ cached('revision:2|folder',[...rows],compute);
 assert.equal(visits,40000);
 ''')
 
+    def test_preview_preferences_start_automatic_and_only_retain_explicit_overrides(self):
+        self.run_js('''
+assert.equal(previewResolutionPreference(), 'auto');
+assert.equal(previewResolutionPreference(null), 'auto');
+assert.equal(previewResolutionPreference({pw: '900'}), 'auto');
+assert.equal(previewResolutionPreference({pw: '5000'}), 'auto');
+for (const value of ['auto', '900', '2600', '5000']) {
+  const saved = JSON.parse(JSON.stringify({pw: '1100', previewResolution: value}));
+  assert.equal(previewResolutionPreference(saved), value);
+}
+assert.equal(previewResolutionPreference({previewResolution: 2600}), '2600');
+for (const value of ['', 'full', '999999', {}, -1]) {
+  assert.equal(previewResolutionPreference({previewResolution: value}), 'auto');
+}
+''')
+
     def run_js(self, program):
         helper = (ROOT / 'web/view-performance.js').read_text()
+        helper += '\n' + (ROOT / 'web/preview-preferences.js').read_text()
         script = "import assert from 'node:assert/strict';\n" + helper + '\n' + program
         result = subprocess.run(['node','--input-type=module','-e',script], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
