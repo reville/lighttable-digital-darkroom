@@ -17,7 +17,7 @@ export const LOOK_GRADE_KEYS = new Set([
   'hsl', 'pointColor', 'colorGrading',
 ]);
 export const CREATIVE_FILM_KEYS = new Set([
-  'stock', 'paper', 'workflow_mode', 'paper_locked', 'output_recipe',
+  'stock', 'film_tuning', 'film_tuning_version', 'paper', 'workflow_mode', 'paper_locked', 'output_recipe',
   'development_time', 'print_development_time', 'exposure_ev', 'print_exposure',
   'gamma', 'auto_exposure', 'scan_sharpen', 'couplers_on', 'couplers_amount',
   'halation_on', 'halation_amount', 'grain_on', 'grain_amount', 'glare_on',
