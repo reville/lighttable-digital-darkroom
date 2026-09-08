@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Ripristinare un backup riporta i dati del catalogo allo stato di quel backup, quindi le modifiche successive non sono incluse. Quando viene ripristinato un catalogo di lavoro, il catalogo corrente viene prima salvato in backup.",
             "Dopo l'aggiornamento, la prima scansione legge gli originali locali per rafforzare la corrispondenza dei file. Su una raccolta grande può richiedere più tempo. Gli originali che erano già mancanti senza un'identità completa del file restano mancanti; conserva le loro voci e ripristina gli originali ai loro percorsi catalogati precedenti prima di riscansionare.",
+            "Su Windows, il controllo delle modifiche agli originali legge ogni file locale per intero. Una nuova scansione, l’apertura delle foto e i controlli di esportazione possono richiedere più tempo con originali di grandi dimensioni. Questi controlli non scaricano i file archiviati solo nel cloud.",
             "Per un catalogo danneggiato, Salute libreria può offrire salvataggio, ripristino o un catalogo nuovo. Il salvataggio copia le righe leggibili ma perde le righe nelle pagine danneggiate. Ripartire da zero non trasferisce valutazioni, modifiche, collezioni o cronologia. Il file del catalogo danneggiato corrente viene conservato in Recovery."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

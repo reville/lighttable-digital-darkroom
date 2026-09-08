@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "이 동작으로 업그레이드할 때 이전에 저장된 미리보기 너비 선택은 자동으로 재설정됩니다. 고급에서 선택한 고정 재정의 값은 이후 세션을 위해 저장됩니다. 수동 재정의가 활성화되면 성능에 표시됩니다.",
     "On": "켜짐",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Mac에서는 사진 → 거부된 사진을 휴지통으로 이동…을 선택하거나 Command+Delete를 누르세요.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Windows에서는 원본이 변경되었는지 확인할 때 각 로컬 파일의 전체 내용을 읽습니다. 원본 파일이 크면 다시 스캔하거나 사진을 열거나 내보내기 검사를 수행하는 데 더 오래 걸릴 수 있습니다. 이러한 검사에서는 클라우드에만 저장된 파일을 다운로드하지 않습니다.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "새 라이브러리에서는 설정 시 로컬 폴더, Lightroom 마이그레이션 또는 Apple Photos를 제공합니다. 설정을 건너뛰고 나중에 사진을 추가할 수 있습니다.",
     "On disk": "디스크에 있음",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "처음 사용할 때 기본 시스템 언어가 영어가 아니면 선택하라는 메시지가 표시됩니다. Mac 앱은 초기 폴더 선택과 시작 전에 묻습니다. 다른 앱 창은 편집기가 열리기 전에 묻습니다. 지원되는 언어가 제안되며, 시스템 언어가 지원되지 않으면 영어가 제안됩니다. 언어는 고유 이름으로 표시됩니다.",

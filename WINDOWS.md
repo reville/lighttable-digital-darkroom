@@ -163,6 +163,10 @@ eight, instead of the fixed four the macOS host uses.
 
 ## Performance path
 
+On Windows, checking whether originals have changed reads each local file in
+full. Rescanning, opening photos, and export checks can take longer with large
+originals. These checks do not download files stored only in the cloud.
+
 The resident renderer remains a separate long-lived process on both platforms,
 so GPU device creation, pipeline compilation, profile loading, and decoded
 inputs stay warm. Adding Windows therefore does not force the Mac through a

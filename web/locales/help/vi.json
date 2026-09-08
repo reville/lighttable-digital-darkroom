@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Khôi phục một bản sao lưu sẽ trả dữ liệu danh mục về trạng thái của bản sao lưu đó, nên các chỉnh sửa sau đó sẽ không có trong đó. Khi một danh mục đang làm việc được khôi phục, danh mục hiện tại sẽ được sao lưu trước.",
             "Sau khi nâng cấp, lần quét đầu tiên sẽ đọc các bản gốc cục bộ để tăng độ chính xác khớp tệp. Việc này có thể lâu hơn với thư viện lớn. Những bản gốc đã thiếu trước đó mà không có danh tính tệp đầy đủ vẫn sẽ thiếu; hãy giữ các mục của chúng và khôi phục các bản gốc về các đường dẫn danh mục trước đây của chúng trước khi quét lại.",
+            "Trên Windows, việc kiểm tra xem bản gốc có thay đổi hay không sẽ đọc toàn bộ từng tệp cục bộ. Quét lại, mở ảnh và kiểm tra khi xuất có thể mất nhiều thời gian hơn với các bản gốc lớn. Những kiểm tra này không tải xuống các tệp chỉ được lưu trên đám mây.",
             "Đối với danh mục bị hư hỏng, Tình trạng thư viện có thể cung cấp salvage, restore hoặc một danh mục mới. Salvage sao chép các hàng đọc được nhưng mất các hàng trên những trang bị hư hỏng. Bắt đầu lại từ đầu sẽ không mang theo xếp hạng, chỉnh sửa, bộ sưu tập hoặc lịch sử. Tệp danh mục bị hư hỏng hiện tại được giữ lại trong Recovery."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

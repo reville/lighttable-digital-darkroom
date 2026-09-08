@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Das Wiederherstellen einer Sicherungskopie setzt die Katalogdaten auf den Stand dieser Sicherung zurück, spätere Bearbeitungen sind dann nicht enthalten. Wenn ein Arbeitskatalog wiederhergestellt wird, wird der aktuelle Katalog zuvor gesichert.",
             "Nach dem Upgrade liest der erste Scan lokale Originale, um die Dateizuordnung zu verbessern. Das kann bei einer großen Mediathek länger dauern. Originale, die bereits ohne vollständige Dateidentität fehlten, bleiben fehlend; behalten Sie ihre Einträge und stellen Sie die Originale vor dem erneuten Scannen an ihre zuvor erfassten Pfade wieder her.",
+            "Unter Windows liest die Prüfung, ob sich Originale geändert haben, jede lokale Datei vollständig ein. Erneutes Scannen, das Öffnen von Fotos und Exportprüfungen können bei großen Originalen länger dauern. Diese Prüfungen laden keine Dateien herunter, die nur in der Cloud gespeichert sind.",
             "Bei einem beschädigten Katalog kann Library Health Wiederherstellung, Wiederherstellen oder einen neuen Katalog anbieten. Salvage kopiert lesbare Zeilen, verliert jedoch Zeilen auf beschädigten Seiten. Ein Neustart übernimmt keine Bewertungen, Bearbeitungen, Sammlungen oder Verlaufseinträge. Die aktuelle beschädigte Katalogdatei wird in Recovery aufbewahrt."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

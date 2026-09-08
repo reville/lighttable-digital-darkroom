@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "ตัวเลือกความกว้างตัวอย่างที่บันทึกไว้แบบเก่าจะรีเซ็ตเป็น อัตโนมัติ เมื่ออัปเกรดเป็นพฤติกรรมนี้ การแทนที่แบบคงที่ที่เลือกใน ขั้นสูง จะถูกบันทึกสำหรับเซสชันถัดไป Performance จะแสดงเมื่อมีการใช้การแทนที่แบบกำหนดเอง",
     "On": "เปิด",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "บน Mac ให้เลือก Photo → ย้ายภาพถ่ายที่ปฏิเสธไปยังถังขยะ…, หรือกด Command+Delete",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "บน Windows การตรวจสอบว่าต้นฉบับมีการเปลี่ยนแปลงหรือไม่จะอ่านไฟล์เฉพาะที่แต่ละไฟล์แบบเต็ม การสแกนใหม่ การเปิดรูปภาพ และการตรวจสอบขณะส่งออกอาจใช้เวลานานขึ้นสำหรับต้นฉบับขนาดใหญ่ การตรวจสอบเหล่านี้จะไม่ดาวน์โหลดไฟล์ที่จัดเก็บไว้ในคลาวด์เท่านั้น",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "ในไลบรารีใหม่ การตั้งค่าจะเสนอโฟลเดอร์เฉพาะที่ การย้ายข้อมูลจาก Lightroom หรือ Apple Photos คุณสามารถข้ามการตั้งค่าและเพิ่มรูปถ่ายภายหลังได้",
     "On disk": "บนดิสก์",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "เมื่อใช้ครั้งแรก หากภาษาระบบหลักไม่ใช่ภาษาอังกฤษ ระบบจะให้คุณเลือก แอปบน Mac จะถามก่อนการเลือกโฟลเดอร์เริ่มต้นและการเริ่มต้นครั้งแรก; หน้าต่างของแอปอื่นๆ จะถามก่อนที่ตัวแก้ไขจะเปิดขึ้น จะมีการแนะนำภาษาที่รองรับ หรือภาษาอังกฤษเมื่อภาษาระบบไม่รองรับ ภาษาจะถูกแสดงตามชื่อในภาษาแม่ของตน",

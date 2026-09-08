@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Het herstellen van een back-up zet catalogusgegevens terug naar de toestand van die back-up, zodat latere bewerkingen daar niet in staan. Wanneer een werkcatalogus wordt hersteld, wordt de huidige catalogus eerst geback-upt.",
             "Na het upgraden leest de eerste scan lokale originelen om de bestandskoppeling te versterken. Dit kan langer duren bij een grote bibliotheek. Originelen die al ontbraken zonder volledige bestandsidentiteit blijven ontbreken; bewaar hun vermeldingen en herstel de originelen naar hun eerdere gecatalogiseerde paden voordat u opnieuw scant.",
+            "Op Windows leest het controleren of originelen zijn gewijzigd elk lokaal bestand volledig in. Opnieuw scannen, foto’s openen en exportcontroles kunnen langer duren bij grote originelen. Deze controles downloaden geen bestanden die alleen in de cloud zijn opgeslagen.",
             "Voor een beschadigde catalogus kan Bibliotheekgezondheid herstel, terugzetten of een nieuwe catalogus aanbieden. Herstellen kopieert leesbare rijen, maar verliest rijen op beschadigde pagina's. Opnieuw beginnen draagt geen beoordelingen, bewerkingen, collecties of geschiedenis over. Het huidige beschadigde catalogusbestand wordt bewaard in Herstel."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

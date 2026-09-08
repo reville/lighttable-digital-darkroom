@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Restaurar um backup devolve os dados do catálogo ao estado desse backup, portanto edições posteriores não estão nele. Quando um catálogo de trabalho é restaurado, o catálogo atual é salvo em backup primeiro.",
             "Após a atualização, a primeira digitalização lê originais locais para fortalecer a correspondência de arquivos. Isso pode demorar mais em uma biblioteca grande. Originais que já estavam ausentes sem uma identidade completa do arquivo continuam ausentes; mantenha suas entradas e restaure os originais para seus caminhos catalogados anteriores antes de digitalizar novamente.",
+            "No Windows, a verificação de alterações nos originais lê cada arquivo local na íntegra. Uma nova varredura, a abertura de fotos e as verificações de exportação podem demorar mais com originais grandes. Essas verificações não baixam arquivos armazenados apenas na nuvem.",
             "Para um catálogo danificado, Saúde da Biblioteca pode oferecer salvar, restaurar ou um catálogo novo. Salvar copia linhas legíveis, mas perde linhas em páginas danificadas. Começar do zero não transfere avaliações, edições, coleções ou histórico. O arquivo atual do catálogo danificado é preservado em Recuperação."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

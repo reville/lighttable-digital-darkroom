@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Pilihan lebar pratinjau yang disimpan lebih lama diatur ulang ke Otomatis saat diperbarui ke perilaku ini. Penggantian tetap yang dipilih di Lanjutan disimpan untuk sesi berikutnya. Performa muncul saat penggantian manual aktif.",
     "On": "Aktif",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Di Mac, pilih Photo → Move Rejected Photos to Trash…, atau tekan Command+Delete.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Di Windows, pemeriksaan apakah file asli telah berubah akan membaca setiap file lokal secara penuh. Pemindaian ulang, pembukaan foto, dan pemeriksaan ekspor dapat memakan waktu lebih lama untuk file asli berukuran besar. Pemeriksaan ini tidak akan mengunduh file yang hanya disimpan di cloud.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "Pada pustaka baru, penyiapan menawarkan folder lokal, migrasi Lightroom, atau Apple Photos. Anda bisa melewati penyiapan dan menambahkan foto nanti.",
     "On disk": "Di disk",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Pada penggunaan pertama, bahasa sistem utama yang bukan bahasa Inggris akan meminta Anda untuk memilih. Aplikasi Mac meminta sebelum pemilihan folder awal dan saat memulai; jendela aplikasi lain meminta sebelum penyunting terbuka. Bahasa yang didukung akan disarankan, atau Inggris jika bahasa sistem tidak didukung. Bahasa dicantumkan dengan nama aslinya.",

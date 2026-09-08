@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Starsze zapisane wybory szerokości podglądu resetują się do Autom. po aktualizacji do tego zachowania. Stałe wymuszenie wybrane w Zaawansowane jest zapisywane na późniejsze sesje. Wydajność pojawia się, gdy aktywne jest ręczne wymuszenie.",
     "On": "Włączone",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Na Macu wybierz Zdjęcie → Przenieś odrzucone zdjęcia do Kosza…, albo naciśnij Command+Delete.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "W systemie Windows sprawdzanie, czy oryginały zostały zmienione, odczytuje każdy lokalny plik w całości. Ponowne skanowanie, otwieranie zdjęć i kontrole podczas eksportu mogą trwać dłużej w przypadku dużych oryginałów. Te kontrole nie pobierają plików przechowywanych wyłącznie w chmurze.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "W nowej bibliotece konfiguracja oferuje folder lokalny, migrację z Lightrooma lub Apple Photos. Możesz pominąć konfigurację i dodać zdjęcia później.",
     "On disk": "Na dysku",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Przy pierwszym użyciu główny język systemu inny niż angielski spowoduje wyświetlenie prośby o wybór. Aplikacja Mac pyta przed pierwszym wyborem folderu i uruchomieniem; inne okna aplikacji pytają przed otwarciem edytora. Sugerowany jest obsługiwany język, a jeśli język systemu nie jest obsługiwany, angielski. Języki są podane pod ich natywnymi nazwami.",

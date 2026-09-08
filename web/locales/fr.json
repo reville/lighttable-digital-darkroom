@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Les anciens choix de largeur d’aperçu enregistrés sont réinitialisés sur Automatique lors de la mise à niveau vers ce comportement. Un remplacement fixe choisi dans Avancé est enregistré pour les sessions ultérieures. Performance s’affiche lorsqu’un remplacement manuel est actif.",
     "On": "Activé",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "Sur Mac, choisissez Photo → Déplacer les photos rejetées vers la corbeille…, ou appuyez sur Command+Delete.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "Sous Windows, la vérification des modifications des originaux lit chaque fichier local dans son intégralité. Une nouvelle analyse, l’ouverture de photos et les vérifications à l’exportation peuvent prendre plus de temps avec de gros originaux. Ces vérifications ne téléchargent pas les fichiers stockés uniquement dans le cloud.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "Dans une nouvelle bibliothèque, la configuration propose un dossier local, une migration depuis Lightroom ou Apple Photos. Vous pouvez ignorer la configuration et ajouter des photos plus tard.",
     "On disk": "Sur le disque",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Lors de la première utilisation, une langue système principale non anglaise vous invite à choisir. L'application Mac demande avant son premier choix de dossier et au démarrage ; les autres fenêtres de l'application demandent avant l'ouverture de l'éditeur. Une langue prise en charge est suggérée, ou l'anglais lorsque la langue système n'est pas prise en charge. Les langues sont listées par leurs noms natifs.",

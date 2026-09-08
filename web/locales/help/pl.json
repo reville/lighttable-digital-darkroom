@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Przywracanie kopii zapasowej zwraca dane katalogu do stanu z tej kopii, więc późniejszych edycji w niej nie ma. Gdy przywracany jest katalog roboczy, bieżący katalog jest najpierw kopiowany zapasowo.",
             "Po uaktualnieniu pierwsze skanowanie odczytuje lokalne oryginały, aby wzmocnić dopasowywanie plików. Na dużej bibliotece może to zająć więcej czasu. Oryginały, które już były brakujące bez pełnej tożsamości pliku, pozostaną brakujące; zachowaj ich wpisy i przywróć oryginały do poprzednich zarejestrowanych ścieżek przed ponownym skanowaniem.",
+            "W systemie Windows sprawdzanie, czy oryginały zostały zmienione, odczytuje każdy lokalny plik w całości. Ponowne skanowanie, otwieranie zdjęć i kontrole podczas eksportu mogą trwać dłużej w przypadku dużych oryginałów. Te kontrole nie pobierają plików przechowywanych wyłącznie w chmurze.",
             "W przypadku uszkodzonego katalogu Stan biblioteki może zaoferować ratowanie, przywrócenie lub nowy katalog. Ratowanie kopiuje czytelne wiersze, ale traci wiersze na uszkodzonych stronach. Rozpoczęcie od nowa nie przenosi ocen, edycji, kolekcji ani historii. Bieżący uszkodzony plik katalogu jest zachowany w Odzyskiwaniu."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }

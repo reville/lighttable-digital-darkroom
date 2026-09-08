@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30",
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1731,6 +1731,7 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "تُعاد تعيين خيارات عرض المعاينة القديمة المحفوظة إلى تلقائي عند الترقية إلى هذا السلوك. يُحفظ التجاوز الثابت المختار في متقدم للجلسات اللاحقة. يظهر الأداء عند تفعيل تجاوز يدوي.",
     "On": "تشغيل",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.": "على Mac، اختر صورة → نقل الصور المرفوضة إلى سلة المهملات…، أو اضغط Command+Delete.",
+    "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.": "في Windows، تتم قراءة كل ملف محلي بالكامل للتحقق مما إذا كانت الملفات الأصلية قد تغيّرت. قد تستغرق إعادة الفحص وفتح الصور وعمليات التحقق عند التصدير وقتًا أطول مع الملفات الأصلية الكبيرة. لا تؤدي عمليات التحقق هذه إلى تنزيل الملفات المخزنة في السحابة فقط.",
     "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.": "في مكتبة جديدة، يعرض الإعداد مجلدًا محليًا، أو ترحيل Lightroom، أو Apple Photos. يمكنك تخطي الإعداد وإضافة الصور لاحقًا.",
     "On disk": "على القرص",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "عند الاستخدام الأول، تدفعك لغة نظام أساسية غير الإنجليزية إلى الاختيار. يطلب تطبيق Mac ذلك قبل اختياره الأول للمجلد وعند بدء التشغيل؛ بينما تطلب نوافذ التطبيق الأخرى ذلك قبل فتح المحرر. يُقترح استخدام لغة مدعومة، أو الإنجليزية عندما لا تكون لغة النظام مدعومة. تُدرَج اللغات بأسمائها الأصلية.",

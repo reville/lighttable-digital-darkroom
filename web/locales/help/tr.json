@@ -2864,6 +2864,7 @@
           "paragraphs": [
             "Bir yedeği geri yüklemek, katalog verilerini o yedeğin durumuna döndürür; dolayısıyla daha sonraki düzenlemeler onda yer almaz. Çalışan bir katalog geri yüklendiğinde, geçerli katalog önce yedeklenir.",
             "Yükseltmeden sonra, ilk tarama dosya eşleştirmesini güçlendirmek için yerel orijinalleri okur. Bu, büyük bir kitaplıkta daha uzun sürebilir. Tam bir dosya kimliği olmadan zaten eksik olan orijinaller eksik kalır; girdilerini koruyun ve yeniden taramadan önce orijinalleri önceki kataloglanmış yollarına geri yükleyin.",
+            "Windows'ta, orijinallerin değişip değişmediğini denetlemek, her yerel dosyanın tamamını okur. Yeniden tarama, fotoğrafları açma ve dışa aktarma denetimleri, büyük orijinallerle daha uzun sürebilir. Bu denetimler, yalnızca bulutta depolanan dosyaları indirmez.",
             "Hasarlı bir katalog için Library Health, kurtarma, geri yükleme veya yeni bir katalog sunabilir. Kurtarma, okunabilir satırları kopyalar ancak hasarlı sayfalardaki satırları kaybeder. Baştan başlamak, derecelendirmeleri, düzenlemeleri, koleksiyonları veya geçmişi taşımaz. Geçerli hasarlı katalog dosyası Recovery içinde korunur."
           ]
         },
@@ -2965,5 +2966,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "62e6a9808f3be71dcf7c9a7bd84198e656cddddc3e951b8a25eb6f378828ed30"
+  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
 }
