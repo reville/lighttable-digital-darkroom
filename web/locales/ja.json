@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "現在のカメラ",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "現在の形式は、利用可能な場合 RAW や埋め込み深度を含め、アセットの現在の表現を保持します。［互換］は広く読み取れる画像を作成します。選択されたファイルは {path} にコピーされます。",
     "Current photo": "現在の写真",
+    "Current photo / total photos": "現在の写真 / 写真の総数",
     "Current settings": "現在の設定",
     "Current stock": "現在のストック",
     "Curve": "カーブ",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "ホールドキー式スライダーコントロール",
     "Horizontal": "横方向",
     "Hourly": "時間ごと",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "上部バーの写真カウンターにポインターを合わせると、数字の意味を確認できます。",
     "Hue": "色相",
     "Hue shift": "色相シフト",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "写真はフォルダーモードで開かれており、損傷したカタログは変更されていません。［ライブラリの健全性］を開いて救出するか、バックアップを復元するか、新しいカタログを開始してください。",
     "Photos could not be imported. Try again or choose a folder.": "写真を読み込めませんでした。再試行するか、フォルダーを選択してください。",
     "Photos set aside": "写真を取り分ける",
+    "Photos shown / total photos in this folder or collection": "表示中の写真数 / このフォルダーまたはコレクション内の写真の総数",
     "Photos stay in their current folder. No moving or copying required.": "写真は現在のフォルダーに残ります。移動やコピーは不要です。",
     "Photos stay in their current folder. You can add more folders whenever you like.": "写真は現在のフォルダーに残ります。必要なときにいつでもフォルダーを追加できます。",
     "Photos unstacked": "写真のスタックを解除しました",

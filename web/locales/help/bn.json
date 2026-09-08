@@ -223,7 +223,8 @@
           "title": "ভিউগুলির মধ্যে সরান",
           "paragraphs": [
             "Photo Grid photo-গুলোকে ভিজ্যুয়াল overview হিসেবে উপস্থাপন করে। Culling Grid-এ selection এবং rating information-এর জন্য জায়গা থাকে। Detail সক্রিয় photo-টিকে কাছ থেকে পর্যবেক্ষণের জন্য খোলে।",
-            "ডান সাইডবারে Edit, Film, Crop, Remove, Masking, Info, History এবং Presets-এর জন্য আইকন বোতাম রয়েছে। কোনো আইকনের ওপর মাউস রাখলে তার নাম দেখা যাবে।"
+            "ডান সাইডবারে Edit, Film, Crop, Remove, Masking, Info, History এবং Presets-এর জন্য আইকন বোতাম রয়েছে। কোনো আইকনের ওপর মাউস রাখলে তার নাম দেখা যাবে।",
+            "সংখ্যাগুলোর অর্থ জানতে ওপরের বারে ছবির কাউন্টারের ওপর মাউস পয়েন্টার রাখুন।"
           ],
           "steps": [
             "উপরে থাকা তিনটি Photo view বোতাম ব্যবহার করুন। LightTable shortcut scheme-এ, G Photo Grid খুলে, Shift+G Culling Grid খুলে, এবং D Detail খুলে।",
@@ -3074,5 +3075,5 @@
     }
   ],
   "locale": "bn",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
 }

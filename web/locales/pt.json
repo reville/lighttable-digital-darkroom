@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Câmera atual",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Formato atual preserva a representação presente do arquivo, incluindo RAW ou profundidade incorporada quando disponível. Compatível cria uma imagem amplamente legível. Os arquivos selecionados são copiados para {path}.",
     "Current photo": "Foto atual",
+    "Current photo / total photos": "Foto atual / total de fotos",
     "Current settings": "Configurações atuais",
     "Current stock": "Filme atual",
     "Curve": "Curva",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Controle deslizante com tecla pressionada",
     "Horizontal": "Horizontal",
     "Hourly": "Por hora",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
     "Hue": "Matiz",
     "Hue shift": "Deslocamento de matiz",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "As fotos estão abertas no modo de pasta e o catálogo danificado não foi alterado. Abra a Saúde da Biblioteca para salvá-lo, restaurar um backup ou iniciar um novo catálogo.",
     "Photos could not be imported. Try again or choose a folder.": "Não foi possível importar as fotos. Tente novamente ou escolha uma pasta.",
     "Photos set aside": "Fotos separadas",
+    "Photos shown / total photos in this folder or collection": "Fotos exibidas / total de fotos nesta pasta ou coleção",
     "Photos stay in their current folder. No moving or copying required.": "As fotos permanecem na pasta atual. Não é necessário mover nem copiar.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "As fotos permanecem na pasta atual. Você pode adicionar mais pastas quando quiser.",
     "Photos unstacked": "Fotos desagrupadas",
