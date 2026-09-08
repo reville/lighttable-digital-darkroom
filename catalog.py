@@ -43,6 +43,7 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 import durable_io
+import platform_paths
 
 SCHEMA_VERSION = 5
 
@@ -256,15 +257,8 @@ CREATE VIRTUAL TABLE IF NOT EXISTS image_search USING fts5(
 
 
 def default_catalog_path() -> Path:
-    """Application Support on macOS, LOCALAPPDATA on Windows."""
-    override = os.environ.get("LIGHTTABLE_CATALOG_FILE")
-    if override:
-        return Path(override).expanduser()
-    if os.name == "nt":
-        base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData/Local"))
-        return base / "LightTable" / "Catalog" / "library.sqlite3"
-    return (Path.home() / "Library/Application Support/LightTable"
-            / "Catalog" / "library.sqlite3")
+    """The platform's persistent catalog, or LIGHTTABLE_CATALOG_FILE."""
+    return platform_paths.catalog_file()
 
 
 def _now() -> float:

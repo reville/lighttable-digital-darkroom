@@ -29,10 +29,10 @@
       {
         "title": "Open a local folder",
         "paragraphs": [
-          "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+          "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Local to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
         ],
         "steps": [
-          "Click Add Photos at the upper left and choose one or more photos or folders.",
+          "Click Add Photos at the upper left and choose photos, or use the + beside Local to choose a folder.",
           "Choose the folder under Local in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
           "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active."
         ],
@@ -53,6 +53,8 @@
       "views-and-selection"
     ],
     "sources": [
+      {"path": "web/index.html", "anchor": "id=\"addFolderBtn\""},
+      {"path": "windows-shell/src/main.rs", "anchor": "\"addPhotos\" => {"},
       {
         "path": "app/main.swift",
         "anchor": "panel.message = \"Choose photos or folders. LightTable keeps originals in place.\""
@@ -164,7 +166,8 @@
       {
         "title": "Choose what is in view",
         "paragraphs": [
-          "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply."
+          "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
+          "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo."
         ],
         "steps": [
           "Click a folder under Local.",
@@ -176,7 +179,7 @@
       {
         "title": "Folder actions",
         "paragraphs": [
-          "A folder’s ••• menu includes Show in Finder on Mac or Show in File Explorer on Windows. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
+          "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
           "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
         ]
       }
@@ -954,7 +957,7 @@
         "steps": [
           "Choose the folder or collection and filters that define the photos you want to review.",
           "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
-          "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.",
+          "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
           "Read the photo count in the confirmation and confirm only when it matches your intended set."
         ],
         "tips": [
@@ -963,9 +966,9 @@
         ]
       },
       {
-        "title": "Recover a mistaken removal on Mac",
+        "title": "Recover a mistaken removal",
         "paragraphs": [
-          "Use Finder’s Trash to put the original and its sidecars back in their previous folder, then rescan the folder in LightTable. The app does not have an in-app Trash browser."
+          "Use Finder’s Trash on Mac, the desktop Trash on Linux, or the Recycle Bin on Windows to restore the original and its sidecars to their previous folder, then rescan in LightTable. The app does not have an in-app Trash browser."
         ]
       }
     ],
@@ -976,6 +979,7 @@
       "virtual-copies-and-stacks"
     ],
     "sources": [
+      {"path": "windows-shell/src/main.rs", "anchor": ".args([\"trash\", \"--\"])"},
       {
         "path": "web/app.js",
         "anchor": "const rejected = visible().filter((image) => image.status === 'skipped');"

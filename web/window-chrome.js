@@ -22,7 +22,7 @@ function blocksWindowDrag(element, rect) {
 }
 
 export function installNativeWindowChrome() {
-  if (!nativeBridge() || window.__LIGHTTABLE_PLATFORM__ === 'windows') return;
+  if (!nativeBridge() || ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__)) return;
   const topBar = document.querySelector('.topbar');
   if (!topBar) return;
 

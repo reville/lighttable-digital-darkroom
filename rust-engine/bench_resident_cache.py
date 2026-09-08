@@ -92,6 +92,8 @@ def main():
     parser.add_argument('--input-cache-bytes', type=int, default=256 * 1024 * 1024)
     parser.add_argument('--fresh-pipeline-check', action='store_true', help='also compare against independently rebuilt spectral pipelines')
     parser.add_argument('--budget-check', action='store_true', help='four-case large-image cache bypass check')
+    parser.add_argument('--require-hardware', action='store_true',
+                        help='reject CPU/software adapters when measuring hardware performance')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='lighttable-film-cache-') as temp:
@@ -191,8 +193,19 @@ def main():
                 and (r['film_stage_cache_hit'] != expected_checkpoint or not r['pipeline_cache_hit'])]
             assert not unexpected_misses, unexpected_misses
         summary = {'width': args.width, 'cases': len(requests), 'backend': cached[0]['backend'],
+                   'adapter': cached[0].get('adapter'),
                    'bit_identical': not mismatches, 'mismatches': mismatches,
                    'fresh_pipeline_checked': args.fresh_pipeline_check}
+        software = bool((summary['adapter'] or {}).get('software'))
+        summary['performance_scope'] = ('software GPU execution only' if software
+                                        else 'reported local adapter')
+        transfers = [r['gpu_timings'] for r in cached if r['case'] == 'print_drag'
+                     and r.get('gpu_timings')]
+        if transfers:
+            summary['gpu_timings'] = {key: statistics.median(row[key] for row in transfers)
+                                     for key in ('cpu_setup_ms', 'submit_to_map_ms',
+                                                 'cpu_readback_ms', 'upload_bytes', 'readback_bytes')}
+            summary['readback_reuse_fraction'] = sum(row['readback_buffer_reused'] for row in transfers) / len(transfers)
         for metric in ('render_ms', 'total_ms'):
             before = [r[metric] for r in baseline if r['case'] == 'print_drag']
             after = [r[metric] for r in cached if r['case'] == 'print_drag']
@@ -207,6 +220,8 @@ def main():
             raise SystemExit('Float32 parity failed')
         if 'wgpu' not in summary['backend'].lower():
             raise SystemExit('GPU path NOT DONE: backend was ' + summary['backend'])
+        if args.require_hardware and (software or not summary['adapter']):
+            raise SystemExit('Hardware performance NOT DONE: no identified hardware adapter')
 
 
 if __name__ == '__main__':

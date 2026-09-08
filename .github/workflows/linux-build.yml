@@ -1,0 +1,160 @@
+name: Linux build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version (leave blank for a CI build)
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      source_ref:
+        description: Exact source commit selected by the release workflow
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CARGO_TARGET_DIR: ${{ github.workspace }}/.build/linux/cargo
+      UV_CACHE_DIR: ${{ github.workspace }}/.build/linux/uv-cache
+      SPEKTRAFILM_BACKEND: cpu
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.sha }}
+
+      - name: Install Node.js for shared interface tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential pkg-config cmake gfortran libssl-dev libopenblas-dev \
+            libgtk-3-dev libwebkit2gtk-4.1-dev libxdo-dev libdbus-1-dev libvulkan1 mesa-vulkan-drivers \
+            libgl1 libegl1 libgomp1 liblcms2-2 desktop-file-utils xdg-utils libglib2.0-bin gvfs zenity \
+            xdg-desktop-portal xdg-desktop-portal-gtk python3-venv xvfb xauth dbus-x11 weston
+          rustup toolchain install 1.88.0 --profile minimal --target x86_64-unknown-linux-gnu
+          python3 -m venv .build/linux/build-tools
+          .build/linux/build-tools/bin/pip install uv==0.11.28
+          echo "$PWD/.build/linux/build-tools/bin" >> "$GITHUB_PATH"
+
+      - name: Restore build caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            .build/linux/cargo
+            .build/linux/uv-cache
+          key: linux-package-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock', 'requirements-runtime.lock', 'packaging/linux/runtime.json') }}
+          restore-keys: linux-package-v1-
+
+      - name: Validate packaging and Linux targets
+        run: |
+          python3 -m unittest discover -s tests -p test_linux_packaging.py -v
+          python3 -m unittest discover -s tests -p test_linux_arch_packaging.py -v
+          cargo +1.88.0 test --locked --manifest-path rust-engine/Cargo.toml
+          cargo +1.88.0 test --locked --manifest-path windows-shell/Cargo.toml
+          SPEKTRAFILM_BACKEND=wgpu cargo +1.88.0 test \
+            --manifest-path rust-engine/vendor/spektrafilm/Cargo.toml \
+            -p spektrafilm-gpu portability_tests -- --include-ignored
+
+      - name: Prepare pinned Linux test runtime
+        run: |
+          python3 scripts/linux/prepare-test-runtime.py
+          # The source CLI resolves its colocated .venv, as development users do.
+          ln -s .build/linux/test-runtime .venv
+
+      - name: Test Linux storage, shared memory, decoding and portable color
+        env:
+          PYTHONPATH: ${{ github.workspace }}/vendor/spektrafilm/src
+        run: |
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_platform_paths.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_theme.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_shared_input.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_raw_decode_cache.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_platform_image.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_tiff_precision.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_one_shot.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_engine_recovery.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_cli_control.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_cli_installation.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_first_run.py -v
+
+      - name: Test shared interface and first-run behavior
+        # These tests use Node's built-in runner and local modules; no npm dependencies.
+        run: node --test tests/*.test.mjs
+
+      - name: Build and smoke-test relocated package
+        if: github.event_name != 'pull_request'
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+        run: ./scripts/linux/build-release.sh --version "$PACKAGE_VERSION"
+
+      - name: Open native GTK desktop and require a rendered photo
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 3
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+        run: |
+          mkdir -p ".build/linux/native desktop smoke"
+          tar -xzf "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" -C ".build/linux/native desktop smoke"
+          BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
+          timeout 120s xvfb-run -a --server-args="-screen 0 1280x900x24" dbus-run-session -- \
+            "$BUNDLE/Python/bin/python3" -B scripts/linux/desktop-smoke.py "$BUNDLE"
+
+      - name: Require native Wayland startup on a headless compositor
+        if: github.event_name != 'pull_request'
+        timeout-minutes: 3
+        run: |
+          BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
+          timeout 125s dbus-run-session -- "$BUNDLE/Python/bin/python3" -B \
+            scripts/linux/wayland-smoke.py "$BUNDLE"
+
+      - name: Prepare local pacman package recipe
+        if: github.event_name != 'pull_request'
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+        run: |
+          python3 scripts/linux/make-arch-package.py \
+            "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" --output-dir .build/linux/arch-package
+
+      - name: Upload portable bundle and checksum
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: |
+            dist/LightTable-*-linux-x86_64.tar.gz
+            dist/LightTable-*-linux-x86_64.tar.gz.sha256
+          if-no-files-found: error
+
+      - name: Upload matching local pacman recipe
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-arch-recipe
+          path: |
+            .build/linux/arch-package/PKGBUILD
+            .build/linux/arch-package/org.lighttable.LightTable.desktop
+          if-no-files-found: error

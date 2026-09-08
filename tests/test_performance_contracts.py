@@ -1170,8 +1170,12 @@ class PlatformProcessTests(unittest.TestCase):
         with mock.patch.object(server, "IS_WINDOWS", False):
             self.assertEqual(server.subprocess_flags(), {})
         source = (ROOT / "server.py").read_text()
-        self.assertIn("stderr=subprocess.DEVNULL, text=True, bufsize=1,\n"
-                      "            **subprocess_flags())", source)
+        with mock.patch.object(server, "IS_WINDOWS", True), \
+                mock.patch.object(server, "PipeLineReader"), \
+                mock.patch.object(server.subprocess, "Popen") as popen:
+            client = server.RustEngineClient(Path("resident-worker"))
+            client._start()
+            self.assertEqual(popen.call_args.kwargs["creationflags"], 0x08000000)
         with mock.patch.object(server, "IS_WINDOWS", True), \
                 mock.patch.object(server.subprocess, "run") as run, \
                 mock.patch.object(server.subprocess, "Popen") as popen:

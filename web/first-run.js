@@ -59,7 +59,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
   function maybeShow() {
     // The Mac shell knows whether this is a new installation, even before a
     // large existing catalog has completed its first background scan.
-    if (nativeBridge() && window.__LIGHTTABLE_PLATFORM__ !== 'windows'
+    if (nativeBridge() && !['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__)
         && nativeFirstRun === null) return;
     if (shouldShowSetup(prefs, library, nativeFirstRun) && !catalogPending) show(true);
   }
@@ -67,7 +67,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
   function capabilities() {
     el('setupPhotosAll').disabled = !photosAvailable;
     el('setupPhotosSelected').hidden = !nativeBridge()
-      || window.__LIGHTTABLE_PLATFORM__ === 'windows';
+      || ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__);
     el('setupPhotosAvailability').hidden = photosAvailable;
     el('setupFolderPathField').hidden = nativeSetup;
     el('setupFolderChoose').textContent = nativeSetup ? 'Choose folder…' : 'Add folder';
@@ -231,7 +231,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     nativeEvent(event) {
       if (event?.type === 'sources') {
         if (typeof event.firstRun === 'boolean') nativeFirstRun = event.firstRun;
-        else if (nativeFirstRun === null) nativeFirstRun = false;
+        else if (nativeFirstRun === null && window.__LIGHTTABLE_PLATFORM__ !== 'linux') nativeFirstRun = false;
         nativeSetup = typeof event.firstRun === 'boolean';
         photosAvailable = event.photosLibraryImportAvailable === true;
         capabilities();

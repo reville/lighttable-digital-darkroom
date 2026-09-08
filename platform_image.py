@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ctypes
+import ctypes.util
 import io
 import os
 import shutil
@@ -365,6 +366,137 @@ def _convert_profile(
     return converted, target_bytes
 
 
+@lru_cache(maxsize=1)
+def _littlecms():
+    """The stable LittleCMS 2 float-pixel ABI used by Linux TIFF imports."""
+    library = ctypes.util.find_library("lcms2")
+    if not library:
+        raise RuntimeError("High-precision TIFF color conversion needs LittleCMS 2 (liblcms2)")
+    cms = ctypes.CDLL(library)
+    pointer, uint = ctypes.c_void_p, ctypes.c_uint32
+    cms.cmsOpenProfileFromMem.argtypes = [pointer, uint]
+    cms.cmsOpenProfileFromMem.restype = pointer
+    cms.cmsCloseProfile.argtypes = [pointer]
+    cms.cmsCloseProfile.restype = ctypes.c_int
+    cms.cmsCreateTransform.argtypes = [pointer, uint, pointer, uint, uint, uint]
+    cms.cmsCreateTransform.restype = pointer
+    cms.cmsDoTransform.argtypes = [pointer, pointer, pointer, uint]
+    cms.cmsDoTransform.restype = None
+    cms.cmsDeleteTransform.argtypes = [pointer]
+    cms.cmsDeleteTransform.restype = None
+    return cms
+
+
+def _open_linux_tiff_float(source: Path) -> tuple[np.ndarray, bytes | None]:
+    """Decode TIFF samples without Pillow's RGB8 conversion, including LZW."""
+    import OpenImageIO as oiio
+
+    config = oiio.ImageSpec()
+    config.attribute("oiio:UnassociatedAlpha", 1)
+    config.attribute("oiio:reorient", 0)
+    reader = oiio.ImageInput.open(str(source), config)
+    if reader is None:
+        raise ValueError(oiio.geterror() or "could not open TIFF")
+    try:
+        spec = reader.spec()
+        pixels = reader.read_image(format=oiio.FLOAT)
+        if pixels is None or spec.width <= 0 or spec.height <= 0:
+            raise ValueError(reader.geterror() or "TIFF decoder returned no pixels")
+        pixels = np.asarray(pixels, dtype=np.float32)
+        if pixels.ndim != 3 or pixels.shape[2] < 1:
+            raise ValueError("TIFF decoder did not return a two-dimensional image")
+        channels = 1 if spec.nchannels <= 2 else 3
+        rgb = pixels[..., :channels]
+        # Match dropping alpha from an unassociated image. OIIO leaves an
+        # associated TIFF associated, so recover its color channels first.
+        if spec.alpha_channel >= 0 and not spec.get_int_attribute("oiio:UnassociatedAlpha", 0):
+            alpha = pixels[..., spec.alpha_channel:spec.alpha_channel + 1]
+            rgb = np.divide(rgb, alpha, out=np.zeros_like(rgb), where=alpha > 0)
+        orientation = spec.get_int_attribute("Orientation", 1)
+        if orientation == 2:
+            rgb = rgb[:, ::-1]
+        elif orientation == 3:
+            rgb = rgb[::-1, ::-1]
+        elif orientation == 4:
+            rgb = rgb[::-1]
+        elif orientation == 5:
+            rgb = rgb.transpose(1, 0, 2)
+        elif orientation == 6:
+            rgb = np.rot90(rgb, -1)
+        elif orientation == 7:
+            rgb = rgb[::-1, ::-1].transpose(1, 0, 2)
+        elif orientation == 8:
+            rgb = np.rot90(rgb, 1)
+        # ICCProfile is a uint8 array; get_bytes_attribute stringifies arrays.
+        profile_attribute = spec.getattribute("ICCProfile")
+        embedded = bytes(profile_attribute) if profile_attribute is not None else None
+        return np.ascontiguousarray(rgb), embedded
+    finally:
+        reader.close()
+
+
+def _convert_float_profile(pixels: np.ndarray, embedded: bytes | None,
+                           app_root: Path, output_space: str) -> tuple[np.ndarray, bytes | None]:
+    """Convert normalized float RGB/gray through ICC without an RGB8 round-trip."""
+    try:
+        target = profile_path(app_root, output_space).read_bytes()
+    except OSError:
+        # Retain the existing missing-profile behavior, without losing samples.
+        return (np.repeat(pixels, 3, axis=2) if pixels.shape[2] == 1 else pixels), None
+    source = embedded
+    if not source:
+        try:
+            source = profile_path(app_root, "srgb").read_bytes()
+        except OSError:
+            source = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
+        if pixels.shape[2] == 1:
+            pixels = np.repeat(pixels, 3, axis=2)
+    if source == target and pixels.shape[2] == 3:
+        return pixels, target
+    cms = _littlecms()
+    # lcms2.h: FLOAT_SH(1) | COLORSPACE_SH(PT_RGB=4 / PT_GRAY=3)
+    #          | CHANNELS_SH(n) | BYTES_SH(4). Perceptual matches Pillow's path.
+    rgb_float = (1 << 22) | (4 << 16) | (3 << 3) | 4
+    input_float = (1 << 22) | ((3 if pixels.shape[2] == 1 else 4) << 16) | (pixels.shape[2] << 3) | 4
+    source_buffer = ctypes.create_string_buffer(source)
+    target_buffer = ctypes.create_string_buffer(target)
+    input_profile = output_profile = transform = None
+    try:
+        input_profile = cms.cmsOpenProfileFromMem(source_buffer, len(source))
+        output_profile = cms.cmsOpenProfileFromMem(target_buffer, len(target))
+        if not input_profile or not output_profile:
+            raise ValueError("TIFF color profile could not be read")
+        transform = cms.cmsCreateTransform(input_profile, input_float, output_profile,
+                                           rgb_float, 0, 0)
+        if not transform:
+            raise ValueError("TIFF color profile is incompatible with its pixel channels")
+        pixels = np.ascontiguousarray(pixels, dtype=np.float32)
+        output = np.empty((*pixels.shape[:2], 3), dtype=np.float32)
+        # The ABI count is uint32; chunks also bound each native call.
+        flat_input, flat_output = pixels.reshape(-1, pixels.shape[2]), output.reshape(-1, 3)
+        for start in range(0, len(flat_input), 1_000_000):
+            chunk = flat_input[start:start + 1_000_000]
+            cms.cmsDoTransform(transform, chunk.ctypes.data,
+                               flat_output[start:].ctypes.data, len(chunk))
+        return output, target
+    finally:
+        if transform:
+            cms.cmsDeleteTransform(transform)
+        if input_profile:
+            cms.cmsCloseProfile(input_profile)
+        if output_profile:
+            cms.cmsCloseProfile(output_profile)
+
+
+def _write_linux_tiff(destination: Path, pixels: np.ndarray,
+                      profile: bytes | None) -> None:
+    import tifffile
+    # Uncompressed cache TIFFs are readable without optional imagecodecs.
+    tags = [(34675, "B", len(profile), profile, False)] if profile else []
+    tifffile.imwrite(destination, pixels, photometric="rgb", metadata=None,
+                     compression=None, extratags=tags)
+
+
 def convert_processed_to_tiff(
     source: Path,
     destination: Path,
@@ -392,8 +524,17 @@ def convert_processed_to_tiff(
             )
         return
 
+    if sys.platform.startswith("linux") and source.suffix.lower() in {".tif", ".tiff"}:
+        pixels, embedded = _open_linux_tiff_float(source)
+        pixels, profile = _convert_float_profile(pixels, embedded, app_root, output_space)
+        _write_linux_tiff(destination, pixels, profile)
+        return
+
     image, embedded = _open_portable(source)
     image, profile = _convert_profile(image, embedded, app_root, output_space)
+    if sys.platform.startswith("linux"):
+        _write_linux_tiff(destination, np.asarray(image), profile)
+        return
     options = {"icc_profile": profile} if profile else {}
     image.save(destination, "TIFF", compression="tiff_lzw", **options)
 
@@ -403,6 +544,14 @@ def processed_preview(source: Path, max_width: int, *, app_root: Path,
     """Decode/convert at preview size; keep full-precision TIFFs for export."""
     source = Path(source)
     max_width = max(1, int(max_width))
+    if sys.platform.startswith("linux") and source.suffix.lower() in {".tif", ".tiff"}:
+        pixels, embedded = _open_linux_tiff_float(source)
+        if pixels.shape[1] > max_width:
+            size = (max_width, max(1, round(pixels.shape[0] * max_width / pixels.shape[1])))
+            pixels = np.stack([np.asarray(Image.fromarray(pixels[..., channel]).resize(
+                size, Image.Resampling.LANCZOS), dtype=np.float32)
+                for channel in range(pixels.shape[2])], axis=2)
+        return _convert_float_profile(pixels, embedded, app_root, output_space)[0]
     try:
         with Image.open(source) as opened:
             embedded = opened.info.get("icc_profile")

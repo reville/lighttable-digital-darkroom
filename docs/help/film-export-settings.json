@@ -146,7 +146,7 @@
     "summary": "Use export presets and understand bit depth, resizing, and the current color-gamut limits.",
     "keywords": ["jpeg", "jpg", "png", "heif", "heic", "tiff", "16 bit", "srgb", "p3", "prophoto", "icc", "quality", "full size", "resolution", "preset"],
     "sections": [
-      {"title": "Formats and presets", "paragraphs": ["The export dialog offers JPEG, HEIF, PNG, and 16-bit TIFF. HEIF is an 8-bit output option on macOS. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."], "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]},
+      {"title": "Formats and presets", "paragraphs": ["The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."], "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]},
       {"title": "Color space limits", "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]}
     ],
     "related": ["export-photos", "soft-proof", "external-editor"],
@@ -223,11 +223,12 @@
     "summary": "Send an adjusted TIFF to another editor and set the format and stacking defaults.",
     "keywords": ["external", "editor", "photoshop", "affinity", "edit in", "tiff", "round trip", "derivative", "stack"],
     "sections": [
-      {"title": "Open an external editor", "paragraphs": ["Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog."], "steps": ["Select a photo and press Command/Ctrl+E to open Edit in another app.", "Choose Application.", "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.", "Choose whether to Stack rendered file with original.", "Click Edit and wait for rendering to finish before working in the other app."]},
+      {"title": "Open an external editor", "paragraphs": ["Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog. On Linux and Windows, Choose application… lets you select an editor executable; Default application uses the desktop’s file association."], "steps": ["Select a photo and press Command/Ctrl+E to open Edit in another app.", "Choose Application.", "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.", "Choose whether to Stack rendered file with original.", "Click Edit and wait for rendering to finish before working in the other app."]},
       {"title": "RAW files and defaults", "paragraphs": ["RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.", "Set the default application, color space, bit depth, and stacking behavior in Settings → External Editing. Adjusted TIFFs can use 16 or 8 bits and ProPhoto RGB, Display P3, or sRGB."]}
     ],
     "related": ["export-format-color-space", "settings-and-defaults"],
     "sources": [
+      {"path": "windows-shell/src/main.rs", "anchor": "\"chooseExternalEditor\" => {"},
       {"path": "web/index.html", "anchor": "<strong id=\"externalEditTitle\">Edit in another app</strong>"},
       {"path": "web/index.html", "anchor": "The adjusted TIFF is written beside its original."},
       {"path": "web/app.js", "anchor": "$('externalEditMode').querySelector('[value=\"original\"]').disabled = hasRaw;"},
@@ -243,11 +244,16 @@
     "keywords": ["settings", "preferences", "defaults", "camera", "raw", "serial", "iso", "font", "background", "lights out", "notifications", "xmp", "portable"],
     "sections": [
       {"title": "Interface and behavior", "paragraphs": ["Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata."]},
-      {"title": "Defaults for unedited photos", "paragraphs": ["Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."], "steps": ["Open Settings → Develop Defaults.", "Choose the starting Film, workflow, profile, and preset settings.", "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.", "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.", "Use Reset in the Current camera area to remove that camera default."]}
+      {"title": "Defaults for unedited photos", "paragraphs": ["Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."], "steps": ["Open Settings → Develop Defaults.", "Choose the starting Film, workflow, profile, and preset settings.", "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.", "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.", "Use Reset in the Current camera area to remove that camera default."]},
+      {"title": "Linux and Omarchy appearance", "paragraphs": ["On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.", "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable."]}
     ],
     "related": ["keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery"],
     "sources": [
       {"path": "web/index.html", "anchor": "Changes save automatically."},
+      {"path": "linux_theme.py", "anchor": "def desktop_theme("},
+      {"path": "web/desktop-theme.js", "anchor": "export function installDesktopTheme("},
+      {"path": "web/linux-layout.css", "anchor": "@media (max-width:1100px)"},
+      {"path": "windows-shell/src/main.rs", "anchor": ".with_decorations(!hyprland)"},
       {"path": "web/index.html", "anchor": "Applied only to photos that do not already have saved edits."},
       {"path": "web/index.html", "anchor": "Tune the editing canvas without changing exported pixels."},
       {"path": "web/index.html", "anchor": "Complete edits travel in .lighttable-state.json when you copy the folder."},
@@ -262,7 +268,7 @@
     "summary": "Find shortcuts, choose a keyboard scheme, and map a hardware controller where Web MIDI is available.",
     "keywords": ["keyboard", "shortcut", "hotkey", "midi", "knob", "fader", "controller", "speed keys", "automation", "classic", "lighttable"],
     "sections": [
-      {"title": "Keyboard preferences", "paragraphs": ["Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. The desktop Help menu also has Keyboard Shortcuts.", "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."], "tips": ["Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts."]},
+      {"title": "Keyboard preferences", "paragraphs": ["Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. On macOS, the desktop Help menu also has Keyboard Shortcuts. Use Ctrl for Command/Ctrl shortcuts on Linux and Windows.", "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."], "tips": ["Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts."]},
       {"title": "MIDI mapping", "paragraphs": ["MIDI support depends on the Web MIDI API in the current runtime. The status can show Unavailable, Off, No devices, or a connected device count. Unavailable means this runtime cannot use the MIDI controls."], "steps": ["Connect a MIDI controller that sends Control Change messages.", "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.", "Click the adjustment slider you want to map, then turn a knob or move a fader.", "Check the mapping message, then use the hardware control to adjust the slider.", "Use Reset MIDI to restore the default mappings."]}
     ],
     "related": ["settings-and-defaults", "export-photos", "external-editor"],
@@ -283,7 +289,7 @@
     "summary": "Build an on-device index of objects, scenes, visible text, and faces.",
     "keywords": ["ai", "search", "index", "contents", "objects", "scenes", "ocr", "text", "faces", "privacy", "local", "description"],
     "sections": [
-      {"title": "Build the index", "paragraphs": ["The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."], "steps": ["Open Settings → Photo Index.", "Check the On-device capabilities status and turn on Photo contents index.", "Wait for indexing progress to complete. Photos can gain results as they are indexed.", "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.", "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."]},
+      {"title": "Build the index", "paragraphs": ["The Photo Index is off by default and requires macOS. Linux and Windows show Not available on this platform, and new indexing cannot be enabled. On Mac, analysis stays on the device and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."], "steps": ["Open Settings → Photo Index.", "Check the On-device capabilities status and turn on Photo contents index.", "Wait for indexing progress to complete. Photos can gain results as they are indexed.", "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.", "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."]},
       {"title": "Pause, rebuild, or delete", "paragraphs": ["Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.", "Delete index removes generated index data after confirmation. Originals and saved edits are unchanged. If Apple Vision says Build required, the current installation lacks the required local analyzer. Foundation Models may be unavailable while basic Vision indexing remains usable."]}
     ],
     "related": ["assisted-culling", "settings-and-defaults"],
@@ -303,11 +309,12 @@
     "summary": "Review local analysis signals and apply pick or reject flags only when you choose.",
     "keywords": ["cull", "culling", "ai", "selects", "rejects", "sharpness", "eyes", "misfire", "documents", "review", "flags"],
     "sections": [
-      {"title": "Review signals", "paragraphs": ["Assisted culling uses the private Photo Index. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."], "steps": ["Enable Photo Index in Settings and wait for photos to be scored.", "Expand Assisted culling in the library sidebar.", "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.", "Use Selects, Rejects, or All to review the matching photos.", "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."]},
+      {"title": "Review signals", "paragraphs": ["Assisted culling uses the private Photo Index, which requires macOS. New analysis is unavailable on Linux and Windows. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."], "steps": ["Enable Photo Index in Settings and wait for photos to be scored.", "Expand Assisted culling in the library sidebar.", "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.", "Use Selects, Rejects, or All to review the matching photos.", "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."]},
       {"title": "Applying flags", "paragraphs": ["The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.", "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."]}
     ],
     "related": ["photo-index", "settings-and-defaults"],
     "sources": [
+      {"path": "film_lab_ai/providers.py", "anchor": "platform.system() == \"Darwin\""},
       {"path": "web/app.js", "anchor": "Nothing is flagged until you ask for it."},
       {"path": "web/local-ai.js", "anchor": "True when any of the chosen criteria answered yes for this photo."},
       {"path": "web/index.html", "anchor": "<summary>Assisted culling</summary>"},
@@ -325,11 +332,14 @@
     "sections": [
       {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.", "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.", "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."], "steps": ["Open Settings → Performance.", "Keep automatic preview detail for normal editing. It follows the window size, display density, crop, and zoom without a pixel-size choice.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
       {"title": "Advanced preview override", "paragraphs": ["Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.", "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active."], "steps": ["Open Settings → Performance and expand Advanced.", "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.", "Choose Automatic (recommended) to return to previews that follow your view."]},
-      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files."]}
+      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files."]},
+      {"title": "Check Linux rendering", "paragraphs": ["On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.", "A photo that exceeds the GPU's limits uses the CPU. If the rendering worker stops responding, LightTable retries once on the CPU and keeps that worker for the session. Reopen LightTable after repairing or updating your graphics driver to try GPU rendering again. Large photos and software rendering can take longer; use Automatic preview detail for normal editing."]}
     ],
     "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
     "sources": [
       {"path": "web/preview-preferences.js", "anchor": "export function previewResolutionPreference"},
+      {"path": "web/settings.js", "anchor": "const refreshRendererStatus = async () =>"},
+      {"path": "server.py", "anchor": "self.cpu_fallback = True"},
       {"path": "web/index.html", "anchor": "Preview resolution override"},
       {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return '100% detail ready';"},
       {"path": "web/preview-detail.js", "anchor": "if (refining) return 'Refining RAW detail…';"},
@@ -383,6 +393,13 @@
         ]
       },
       {
+        "title": "Find Linux application data",
+        "paragraphs": [
+          "Linux normally keeps the catalog and presets in ~/.local/share/lighttable, preferences in ~/.config/lighttable, render caches in ~/.cache/lighttable, and logs in ~/.local/state/lighttable/logs. Custom system or LightTable storage settings can change these locations; Settings shows the active catalog and cache paths.",
+          "Originals stay in the photo folders you choose. Catalog backups do not include those originals, your preferences, or separately stored presets. Earlier experimental Linux data is not moved automatically from older locations."
+        ]
+      },
+      {
         "title": "Desktop diagnostics",
         "paragraphs": [
           "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
@@ -395,6 +412,8 @@
       "performance-previews"
     ],
     "sources": [
+      {"path": "platform_paths.py", "anchor": "def server_log_file("},
+      {"path": "platform_paths.py", "anchor": "def data_directory("},
       {
         "path": "web/index.html",
         "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."

@@ -2,6 +2,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from film_lab_ai.providers import VisionProvider
 from film_lab_ai.service import AIIndexService
@@ -31,7 +32,8 @@ class FakeAnalyzer:
 
 
 class VisionProviderTests(unittest.TestCase):
-    def test_multiple_requests_share_one_json_lines_process(self):
+    @mock.patch("film_lab_ai.providers.platform.system", return_value="Darwin")
+    def test_multiple_requests_share_one_json_lines_process(self, _system):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             helper = root / "fake-vision"
@@ -58,6 +60,18 @@ for line in sys.stdin:
             finally:
                 provider.shutdown()
             self.assertIsNone(provider._process)
+
+    def test_executable_macos_helper_is_unavailable_on_linux(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            helper = Path(temporary) / "LightTableVision"
+            helper.write_text("not a Linux executable")
+            helper.chmod(0o755)
+            with mock.patch("film_lab_ai.providers.platform.system", return_value="Linux"):
+                provider = VisionProvider(helper)
+                self.assertFalse(provider.available)
+                with self.assertRaises(RuntimeError):
+                    provider.analyze(Path(temporary) / "photo.jpg")
+                self.assertIsNone(provider._process)
 
 
 class AIIndexServiceTests(unittest.TestCase):

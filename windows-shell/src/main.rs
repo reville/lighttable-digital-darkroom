@@ -6,9 +6,8 @@ use lighttable_desktop_shell::{
 };
 
 use std::{
-    env,
-    fs,
-    io::{Read, Write},
+    env, fs,
+    io::Write,
     net::{TcpListener, TcpStream},
     path::{Path, PathBuf},
     process::{Child, Command, Stdio},
@@ -19,24 +18,29 @@ use std::{
 use anyhow::{Context, Result, anyhow, bail};
 use directories::{BaseDirs, UserDirs};
 use lighttable_desktop_shell::{
-    Settings, WindowState, edit_recovery, fit_window, normalise, rename_root, source_folders, worker_threads,
+    Settings, WindowState, edit_recovery, fit_window, normalise, rename_root, source_folders,
+    worker_threads,
 };
 use rfd::{FileDialog, MessageButtons, MessageDialog, MessageLevel};
 use serde_json::{Value, json};
+#[cfg(target_os = "linux")]
+use tao::platform::unix::{EventLoopBuilderExtUnix, WindowExtUnix};
 use tao::{
     dpi::LogicalSize,
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoopBuilder, EventLoopProxy},
     window::{Theme, Window, WindowBuilder},
 };
+#[cfg(target_os = "linux")]
+use wry::WebViewBuilderExtUnix;
+use wry::{PageLoadEvent, WebContext, WebView, WebViewBuilder};
 #[cfg(target_os = "windows")]
 use wry::{Theme as WebViewTheme, WebViewBuilderExtWindows};
-use wry::{PageLoadEvent, WebContext, WebView, WebViewBuilder};
 
 fn photo_extensions() -> Vec<String> {
     let groups: Value = serde_json::from_str(include_str!("../../media-formats.json"))
         .expect("valid media-formats.json");
-    ["raw", "processed", "video"]
+    let extensions: Vec<String> = ["raw", "processed", "video"]
         .into_iter()
         .flat_map(|group| {
             groups[group]
@@ -46,15 +50,37 @@ fn photo_extensions() -> Vec<String> {
                 .filter_map(Value::as_str)
                 .map(str::to_owned)
         })
-        .collect()
+        .collect();
+    #[cfg(target_os = "linux")]
+    {
+        // Portal globs are case-sensitive; cameras commonly write .NEF/.ARW.
+        // Bracket patterns also cover mixed-case extensions such as .Jpeg.
+        return extensions
+            .iter()
+            .map(|extension| {
+                extension
+                    .chars()
+                    .map(|c| {
+                        if c.is_ascii_alphabetic() {
+                            format!("[{c}{}]", c.to_ascii_uppercase())
+                        } else {
+                            c.to_string()
+                        }
+                    })
+                    .collect()
+            })
+            .collect();
+    }
+    #[cfg(not(target_os = "linux"))]
+    extensions
 }
 
 const BRIDGE_SCRIPT: &str = r#"
-window.__LIGHTTABLE_PLATFORM__ = 'windows';
+window.__LIGHTTABLE_PLATFORM__ = '__PLATFORM__';
 window.lightTableNativeBridge = {
   postMessage(message) { window.ipc.postMessage(JSON.stringify(message)); }
 };
-document.documentElement.classList.add('native-shell', 'windows-shell');
+document.documentElement.classList.add('native-shell', '__PLATFORM__-shell');
 document.documentElement.style.setProperty('--native-window-controls-w', '0px');
 "#;
 
@@ -78,7 +104,10 @@ main { height: 100%; display: flex; flex-direction: column; align-items: center;
 "#;
 
 const DEFAULT_WINDOW: (f64, f64) = (1500.0, 950.0);
+#[cfg(not(target_os = "linux"))]
 const MINIMUM_WINDOW: (f64, f64) = (1100.0, 700.0);
+#[cfg(target_os = "linux")]
+const MINIMUM_WINDOW: (f64, f64) = (800.0, 480.0);
 const SERVER_READY_TIMEOUT: Duration = Duration::from_secs(45);
 #[cfg(target_os = "windows")]
 const CREATE_NO_WINDOW: u32 = 0x0800_0000;
@@ -103,6 +132,7 @@ struct RuntimePaths {
     support: PathBuf,
     cache: PathBuf,
     settings: PathBuf,
+    prefs: PathBuf,
     log: PathBuf,
 }
 
@@ -117,12 +147,17 @@ impl RuntimePaths {
                 bundled.join("server.py").is_file().then_some(bundled)
             })
             .or_else(|| {
+                let bundled = executable_dir.parent()?.join("Resources/LightTable");
+                bundled.join("server.py").is_file().then_some(bundled)
+            })
+            .or_else(|| {
                 let current = env::current_dir().ok()?;
                 current.join("server.py").is_file().then_some(current)
             })
             .context("LightTable resources were not found")?;
         let python = [
             executable_dir.join("Python").join("python.exe"),
+            executable_dir.join("../Python/bin/python3"),
             project.join(".venv").join("Scripts").join("python.exe"),
             project.join(".venv").join("bin").join("python"),
         ]
@@ -130,13 +165,50 @@ impl RuntimePaths {
         .find(|candidate| candidate.is_file())
         .context("the bundled Python runtime was not found")?;
         let base = BaseDirs::new().context("the local application-data folder is unavailable")?;
-        let support = base.data_local_dir().join("LightTable");
-        let cache = base.cache_dir().join("LightTable");
+        #[cfg(not(target_os = "linux"))]
+        let (support, config, cache, log) = {
+            let support = base.data_local_dir().join("LightTable");
+            (
+                support.clone(),
+                support.clone(),
+                base.cache_dir().join("LightTable"),
+                support.join("server.log"),
+            )
+        };
+        #[cfg(target_os = "linux")]
+        let (support, config, cache, log) = {
+            let dirs =
+                lighttable_desktop_shell::linux::Directories::resolve(base.home_dir(), |key| {
+                    env::var_os(key)
+                });
+            (
+                dirs.data,
+                dirs.config,
+                dirs.cache,
+                dirs.state.join("logs/server.log"),
+            )
+        };
+        let override_path = |key| {
+            #[cfg(target_os = "linux")]
+            return lighttable_desktop_shell::linux::override_path(
+                base.home_dir(),
+                env::var_os(key),
+            );
+            #[cfg(not(target_os = "linux"))]
+            env::var_os(key).map(PathBuf::from)
+        };
+        let cache = override_path("LIGHTTABLE_CACHE_DIR").unwrap_or(cache);
+        let log = override_path("LIGHTTABLE_SERVER_LOG")
+            .or_else(|| override_path("LIGHTTABLE_LOG_FILE"))
+            .unwrap_or(log);
+        let prefs =
+            override_path("LIGHTTABLE_PREFS_FILE").unwrap_or_else(|| config.join("prefs.json"));
         Ok(Self {
             project,
             python,
-            settings: support.join("desktop-settings.json"),
-            log: support.join("server.log"),
+            settings: config.join("desktop-settings.json"),
+            prefs,
+            log,
             support,
             cache,
         })
@@ -153,7 +225,13 @@ impl ServerController {
         fs::create_dir_all(&paths.support)?;
         fs::create_dir_all(&paths.cache)?;
         let port = choose_port()?;
-        let log = std::fs::OpenOptions::new().create(true).append(true).open(&paths.log)?;
+        if let Some(parent) = paths.log.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let log = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&paths.log)?;
         let bytecode = paths.cache.join("python-bytecode");
         let threads = worker_threads(
             thread::available_parallelism()
@@ -178,11 +256,6 @@ impl ServerController {
             .env("LIGHTTABLE_WATCH_PARENT", "1")
             .env("LIGHTTABLE_PARENT_PID", std::process::id().to_string())
             .env("LIGHTTABLE_CACHE_DIR", &paths.cache)
-            .env("LIGHTTABLE_PREFS_FILE", paths.support.join("prefs.json"))
-            .env(
-                "LIGHTTABLE_PRESETS_FILE",
-                paths.support.join("presets.json"),
-            )
             .env("LIGHTTABLE_SERVER_LOG", &paths.log)
             .env("PYTHONPYCACHEPREFIX", &bytecode)
             .env("OMP_NUM_THREADS", &threads)
@@ -192,6 +265,13 @@ impl ServerController {
             .env("LIGHTTABLE_LOG_FILE", &paths.log)
             .stdout(Stdio::from(log.try_clone()?))
             .stderr(Stdio::from(log));
+        #[cfg(not(target_os = "linux"))]
+        {
+            command.env("LIGHTTABLE_PREFS_FILE", &paths.prefs).env(
+                "LIGHTTABLE_PRESETS_FILE",
+                paths.support.join("presets.json"),
+            );
+        }
         if env::var_os("NUMBA_CACHE_DIR").is_none() {
             // Compiled kernels otherwise land beside the shipped sources,
             // which the uninstaller never removes and a read-only install
@@ -224,6 +304,20 @@ impl ServerController {
 
     fn stop(&mut self) {
         if self.child.try_wait().ok().flatten().is_none() {
+            #[cfg(target_os = "linux")]
+            {
+                // Let Python checkpoint the catalog and record a clean exit.
+                // Child::kill sends SIGKILL on Unix and skips both steps.
+                // This child has not been reaped, so its PID cannot be reused.
+                unsafe { libc::kill(self.child.id() as libc::pid_t, libc::SIGTERM) };
+                let deadline = Instant::now() + Duration::from_secs(5);
+                while Instant::now() < deadline {
+                    if self.child.try_wait().ok().flatten().is_some() {
+                        return;
+                    }
+                    thread::sleep(Duration::from_millis(25));
+                }
+            }
             let _ = self.child.kill();
             let _ = self.child.wait();
         }
@@ -486,6 +580,7 @@ impl AppState {
             "addPhotos" => {
                 let extensions = photo_extensions();
                 if let Some(files) = FileDialog::new()
+                    .set_parent(&self.window)
                     .set_directory(&self.folder)
                     .add_filter("Photos", &extensions)
                     .pick_files()
@@ -500,12 +595,17 @@ impl AppState {
                 }
             }
             "addFolder" => {
-                if let Some(folder) = FileDialog::new().set_directory(&self.folder).pick_folder() {
+                if let Some(folder) = FileDialog::new()
+                    .set_parent(&self.window)
+                    .set_directory(&self.folder)
+                    .pick_folder()
+                {
                     self.launch(folder)?;
                 }
             }
             "chooseCatalogFile" => {
                 if let Some(file) = FileDialog::new()
+                    .set_parent(&self.window)
                     .set_directory(&self.folder)
                     .add_filter("Catalogs", &["lrcat", "cocatalog"])
                     .pick_file()
@@ -522,7 +622,7 @@ impl AppState {
                     .and_then(Value::as_str)
                     .unwrap_or("ingestSource")
                     .to_string();
-                if let Some(folder) = FileDialog::new().pick_folder() {
+                if let Some(folder) = FileDialog::new().set_parent(&self.window).pick_folder() {
                     self.send_event(json!({
                         "type": "ingestFolderSelected",
                         "field": field,
@@ -540,10 +640,10 @@ impl AppState {
                 self.send_event(json!({"type": "editors", "editors": []}))?;
             }
             "chooseExternalEditor" => {
-                if let Some(application) = FileDialog::new()
-                    .add_filter("Applications", &["exe"])
-                    .pick_file()
-                {
+                let dialog = FileDialog::new().set_parent(&self.window);
+                #[cfg(target_os = "windows")]
+                let dialog = dialog.add_filter("Applications", &["exe"]);
+                if let Some(application) = dialog.pick_file() {
                     let name = application
                         .file_stem()
                         .unwrap_or_default()
@@ -575,6 +675,18 @@ impl AppState {
                         open_with_default_application(&path)?;
                     }
                 } else if !paths.is_empty() {
+                    #[cfg(target_os = "linux")]
+                    if Path::new(application)
+                        .extension()
+                        .is_some_and(|ext| ext == "desktop")
+                    {
+                        Command::new("gio")
+                            .arg("launch")
+                            .arg(application)
+                            .args(paths)
+                            .spawn()?;
+                        return Ok(());
+                    }
                     Command::new(application).args(paths).spawn()?;
                 }
             }
@@ -633,11 +745,7 @@ impl AppState {
                     let old_root = normalise(PathBuf::from(path));
                     let new_root = rename_root(&old_root, name)?;
                     self.settings.remap_root(&old_root, &new_root);
-                    migrate_web_preferences(
-                        &self.paths.support.join("prefs.json"),
-                        &old_root,
-                        &new_root,
-                    )?;
+                    migrate_web_preferences(&self.paths.prefs, &old_root, &new_root)?;
                     self.launch(new_root)?;
                 }
             }
@@ -652,8 +760,14 @@ impl AppState {
                     .and_then(Value::as_str)
                     .unwrap_or_default();
                 let data = lighttable_desktop_shell::preset_export_data(
-                    content, message.get("encoding").and_then(Value::as_str))?;
-                if let Some(destination) = FileDialog::new().set_file_name(filename).save_file() {
+                    content,
+                    message.get("encoding").and_then(Value::as_str),
+                )?;
+                if let Some(destination) = FileDialog::new()
+                    .set_parent(&self.window)
+                    .set_file_name(filename)
+                    .save_file()
+                {
                     fs::write(&destination, data)?;
                     self.send_event(json!({
                         "type": "presetSaved",
@@ -684,10 +798,11 @@ fn wait_until_ready(port: u16, timeout: Duration) -> Result<()> {
             Duration::from_secs(2),
         ) {
             stream.set_read_timeout(Some(Duration::from_secs(2)))?;
-            stream.write_all(b"GET /api/images HTTP/1.0\r\nHost: 127.0.0.1\r\n\r\n")?;
-            let mut response = [0_u8; 32];
-            if stream.read(&mut response).unwrap_or(0) > 0 && response.starts_with(b"HTTP/1.0 200")
-            {
+            write!(
+                stream,
+                "GET /api/health HTTP/1.0\r\nHost: 127.0.0.1:{port}\r\nConnection: close\r\n\r\n"
+            )?;
+            if lighttable_desktop_shell::successful_health_response(&mut stream) {
                 return Ok(());
             }
         }
@@ -717,7 +832,20 @@ fn removable_volumes() -> Vec<Value> {
             }
         }
     }
-    #[cfg(not(windows))]
+    #[cfg(target_os = "linux")]
+    {
+        if let Ok(mountinfo) = fs::read_to_string("/proc/self/mountinfo") {
+            for path in lighttable_desktop_shell::linux::media_mounts(&mountinfo) {
+                if path.is_dir() {
+                    volumes.push(json!({
+                        "path": path.to_string_lossy(),
+                        "name": path.file_name().unwrap_or_default().to_string_lossy(),
+                    }));
+                }
+            }
+        }
+    }
+    #[cfg(not(any(windows, target_os = "linux")))]
     {
         for base in ["/Volumes", "/media", "/mnt"] {
             if let Ok(entries) = std::fs::read_dir(base) {
@@ -801,7 +929,29 @@ fn recycle(path: &Path) -> Result<()> {
     }
 }
 
-#[cfg(not(windows))]
+#[cfg(target_os = "linux")]
+fn recycle(path: &Path) -> Result<()> {
+    if !path.is_absolute() {
+        bail!("Trash requires an absolute photo path")
+    }
+    // GIO implements the freedesktop Trash specification, including metadata
+    // required for Restore. Failure never falls through to permanent deletion.
+    let result = Command::new("gio")
+        .args(["trash", "--"])
+        .arg(path)
+        .output()
+        .context("The desktop Trash service (gio) is unavailable")?;
+    if !result.status.success() {
+        bail!(
+            "Could not move {} to Trash: {}",
+            path.display(),
+            String::from_utf8_lossy(&result.stderr).trim()
+        )
+    }
+    Ok(())
+}
+
+#[cfg(not(any(windows, target_os = "linux")))]
 fn recycle(_path: &Path) -> Result<()> {
     Err(anyhow!("the Recycle Bin is only available on Windows"))
 }
@@ -840,7 +990,13 @@ fn reveal(path: &Path) -> Result<()> {
     #[cfg(target_os = "macos")]
     let status = Command::new("open").arg("-R").arg(path).status()?;
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
-    let status = Command::new("xdg-open").arg(path).status()?;
+    let status = Command::new("xdg-open")
+        .arg(if path.is_dir() {
+            path
+        } else {
+            path.parent().context("the file has no parent folder")?
+        })
+        .status()?;
     #[cfg(not(target_os = "windows"))]
     if !status.success() {
         bail!("the file browser could not open that location")
@@ -881,6 +1037,12 @@ fn migrate_web_preferences(path: &Path, old_root: &Path, new_root: &Path) -> Res
 }
 
 fn initial_folder(settings: &Settings) -> Option<PathBuf> {
+    if let Some(folder) = env::var_os("LIGHTTABLE_DIR")
+        .map(PathBuf::from)
+        .filter(|p| p.is_dir())
+    {
+        return Some(folder);
+    }
     settings
         .active
         .as_ref()
@@ -929,7 +1091,16 @@ fn run() -> Result<()> {
     {
         return Ok(());
     }
-    let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
+    let mut event_builder = EventLoopBuilder::<UserEvent>::with_user_event();
+    #[cfg(target_os = "linux")]
+    {
+        // GTK derives its X11 WM_CLASS from the program name. Keep it aligned
+        // with the Wayland app ID and installed desktop entry for launch/focus.
+        gtk::glib::set_prgname(Some("org.lighttable.LightTable"));
+        gtk::glib::set_application_name("LightTable");
+        event_builder.with_app_id("org.lighttable.LightTable");
+    }
+    let event_loop = event_builder.build();
     let proxy = event_loop.create_proxy();
     let link_proxy = proxy.clone();
     let preset_link_inbox = PresetLinkInbox::start(&paths.support, move |id| {
@@ -963,6 +1134,12 @@ fn run() -> Result<()> {
         MINIMUM_WINDOW,
         available,
     );
+    // Hyprland manages tiling, borders and window actions. Retain normal GTK
+    // decorations elsewhere and let GTK follow the desktop's light/dark theme.
+    #[cfg(target_os = "linux")]
+    let hyprland = lighttable_desktop_shell::linux::is_hyprland(|key| env::var_os(key));
+    #[cfg(not(target_os = "linux"))]
+    let hyprland = false;
     let window = WindowBuilder::new()
         .with_title(format!(
             "LightTable — {}",
@@ -970,20 +1147,36 @@ fn run() -> Result<()> {
         ))
         .with_inner_size(LogicalSize::new(width, height))
         .with_min_inner_size(LogicalSize::new(MINIMUM_WINDOW.0, MINIMUM_WINDOW.1))
-        .with_maximized(remembered.is_some_and(|state| state.maximized))
-        .with_theme(Some(Theme::Dark))
+        .with_maximized(!hyprland && remembered.is_some_and(|state| state.maximized))
+        .with_decorations(!hyprland)
+        .with_theme(if cfg!(target_os = "linux") {
+            None
+        } else {
+            Some(Theme::Dark)
+        })
         .with_background_color(BACKGROUND)
         .build(&event_loop)?;
 
     // WebView2 otherwise keeps its profile beside the executable, which the
     // uninstaller never removes and a read-only location cannot hold.
-    let mut web_context = WebContext::new(Some(paths.support.join("WebView2")));
+    let profile_name = if cfg!(target_os = "linux") {
+        "WebKitGTK"
+    } else {
+        "WebView2"
+    };
+    let mut web_context = WebContext::new(Some(paths.support.join(profile_name)));
+    let platform = if cfg!(target_os = "linux") {
+        "linux"
+    } else {
+        "windows"
+    };
+    let bridge_script = BRIDGE_SCRIPT.replace("__PLATFORM__", platform);
     let command_proxy = proxy.clone();
     let load_proxy = proxy.clone();
     let builder = WebViewBuilder::new_with_web_context(&mut web_context)
         .with_html(LOADING_PAGE)
         .with_background_color(BACKGROUND)
-        .with_initialization_script(BRIDGE_SCRIPT)
+        .with_initialization_script(&bridge_script)
         .with_clipboard(true)
         .with_ipc_handler(move |request| {
             let _ = command_proxy.send_event(UserEvent::NativeMessage(request.body().clone()));
@@ -996,6 +1189,13 @@ fn run() -> Result<()> {
         });
     #[cfg(target_os = "windows")]
     let builder = builder.with_theme(WebViewTheme::Dark);
+    #[cfg(target_os = "linux")]
+    let webview = builder.build_gtk(
+        window
+            .default_vbox()
+            .context("the GTK window container is unavailable")?,
+    )?;
+    #[cfg(not(target_os = "linux"))]
     let webview = builder.build(&window)?;
 
     let (journal_tx, journal_rx) = std::sync::mpsc::channel::<Value>();

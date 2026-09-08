@@ -12,9 +12,7 @@ struct Params {
 @group(0) @binding(1) var<storage, read> max_raw_buf: array<f32>;
 @group(0) @binding(2) var<storage, read_write> data: array<f32>;
 
-@compute @workgroup_size(1024)
-fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
-    let idx = gid.x;
+fn boost_value(idx: u32) {
     if idx >= params.n_values {
         return;
     }
@@ -46,4 +44,14 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
         let dx = (xv - raw_x0) / max_raw;
         data[idx] = xv + boost_scale * (exp(a * dx) - a * dx - 1.0);
     }
+}
+
+// One invocation covers one RGB pixel, preserving each channel's arithmetic
+// while avoiding three times as many workgroups on high-resolution photos.
+@compute @workgroup_size(1024)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let base = gid.x * 3u;
+    boost_value(base);
+    boost_value(base + 1u);
+    boost_value(base + 2u);
 }

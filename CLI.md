@@ -100,6 +100,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 
 Internal browser/native routes are declared rather than hidden:
 
+- `/api/desktop-theme` — read-only Linux desktop palette for interface chrome.
 - `/api/export/preview` — read-only export dialog delivery example.
 - `/api/thumb/rendered` — edit-aware browser thumbnail replacement.
 - `/api/render/native` — native surface transport.
