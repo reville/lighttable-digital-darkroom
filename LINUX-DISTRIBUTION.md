@@ -44,7 +44,10 @@ AMD, Intel and NVIDIA remain a separate release acceptance item; see `LINUX.md`.
 ## Publishing the chosen revision
 
 The **Release** workflow accepts `all`, `linux`, `macos`, `windows` and legacy
-`both` (macOS + Windows). Tag-triggered runs default to all three platforms.
+`both` (macOS + Windows). Tag-triggered runs use the repository variable
+`LIGHTTABLE_RELEASE_PLATFORMS`, defaulting to `all` when unset. For a Linux-only
+first release, set that variable to `linux` before pushing the tag; this avoids
+starting macOS and Windows signing jobs. Manual platform input takes precedence.
 Manual runs require an existing immutable tag; they never create a tag from a
 moving branch. The workflow serializes publication and refuses to overwrite an
 already-public release.
