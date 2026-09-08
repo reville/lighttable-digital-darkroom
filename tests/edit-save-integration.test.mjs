@@ -92,7 +92,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     'syncControls', 'syncGrade', 'syncCurveFromGrade', 'syncHsl', 'syncMaskPanel',
     'syncHealPanel', 'syncOpticsPanel', 'renderKeywords', 'renderVersions',
     'refreshLists', 'drawGrade', 'applyCropVisual', 'renderFilm', 'refreshBaseEdits',
-    'stopZoomMotion', 'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
+    'stopZoomMotion', 'rememberPhotoPan', 'restorePhotoPan', 'setRenderPresentation', 'scheduleNativeViewportLayout', 'applyView', 'setCropMode',
     'setCompareActive', 'updateLoupeInfoOverlay', 'syncAIPhoto', 'loadLensProfile',
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
     'setEditorLoading', 'syncPairControls', 'beginCropSession', 'syncPreviewDetailStatus',
