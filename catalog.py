@@ -45,7 +45,7 @@ from typing import Any, Iterable, Sequence
 import durable_io
 import dam_filters
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 
 
 class CatalogVersionError(RuntimeError):
@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS image_state (
     heals_json  TEXT,
     optics_json TEXT,
     provenance_json TEXT,
+    preset_json TEXT,
     updated_at  REAL NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS state_rating ON image_state(rating);
@@ -975,6 +976,10 @@ class Catalog:
                     if column not in file_columns:
                         conn.execute(f"ALTER TABLE files ADD COLUMN {column} REAL")
                 _rebuild_search_index(conn)
+            if from_version < 7:
+                state_columns = {row[1] for row in conn.execute("PRAGMA table_info(image_state)")}
+                if "preset_json" not in state_columns:
+                    conn.execute("ALTER TABLE image_state ADD COLUMN preset_json TEXT")
             conn.execute(
                 "UPDATE meta SET value=? WHERE key='schema_version'",
                 (str(SCHEMA_VERSION),),
@@ -1618,7 +1623,7 @@ class Catalog:
         for key, column in (("params", "params_json"), ("grade", "grade_json"),
                             ("crop", "crop_json"), ("masks", "masks_json"),
                             ("heals", "heals_json"), ("optics", "optics_json"),
-                            ("provenance", "provenance_json")):
+                            ("provenance", "provenance_json"), ("preset", "preset_json")):
             raw = row[column]
             out[key] = _json_or(raw)
         out["keywords"] = self.keywords_for(image_id)
@@ -1712,7 +1717,7 @@ class Catalog:
         blobs = {"params": "params_json", "grade": "grade_json",
                  "crop": "crop_json", "masks": "masks_json",
                  "heals": "heals_json", "optics": "optics_json",
-                 "provenance": "provenance_json"}
+                 "provenance": "provenance_json", "preset": "preset_json"}
         for key, column in blobs.items():
             if key in entry:
                 assignments.append(f"{column}=?")
@@ -2183,7 +2188,7 @@ class Catalog:
         # Fetching them per image turned one page of the grid into hundreds of
         # round trips, which is what made a large library feel unopenable.
         blobs = (", s.params_json, s.grade_json, s.crop_json, s.masks_json,"
-                 " s.heals_json, s.optics_json, s.provenance_json"
+                 " s.heals_json, s.optics_json, s.provenance_json, s.preset_json"
                  if include_state else "")
         # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
         # through SQLite's temporary sort made the last page grow with the library.
@@ -2219,7 +2224,7 @@ class Catalog:
                                     ("masks", "masks_json"),
                                     ("heals", "heals_json"),
                                     ("optics", "optics_json"),
-                                    ("provenance", "provenance_json")):
+                                    ("provenance", "provenance_json"), ("preset", "preset_json")):
                     raw = row[column]
                     item[key] = _json_or(raw)
                 item["keywords"] = keywords.get(row["id"], [])

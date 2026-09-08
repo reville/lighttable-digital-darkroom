@@ -1064,6 +1064,137 @@
       "categoryLabel": "Modifica"
     },
     {
+      "id": "editing-presets",
+      "title": "Applica, regola e condividi i predefiniti di modifica",
+      "category": "Editing",
+      "summary": "Fai clic su un predefinito per applicarlo, regola la Quantità e salva o condividi i tuoi aspetti.",
+      "keywords": [
+        "predefinito",
+        "predefiniti",
+        "community",
+        "galleria",
+        "integrato",
+        "preferiti",
+        "nascondi preimpostazione",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "importa predefinito",
+        "salva aspetto",
+        "prova preimpostazione",
+        "quantità del predefinito",
+        "intensità del predefinito",
+        "disabilita predefinito",
+        "aggiorna preimpostazione",
+        "invia preimpostazione",
+        "sostituisci regolazioni"
+      ],
+      "sections": [
+        {
+          "title": "Scegli una collezione",
+          "paragraphs": [
+            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene dieci aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
+          ],
+          "steps": [
+            "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
+            "Usa la stella accanto a una preimpostazione per aggiungerla ai preferiti; Preferiti filtra la raccolta corrente.",
+            "In Community, scegli In evidenza, Nuovo o Tutti e usa Soggetto per restringere la raccolta. Seleziona una preimpostazione per vedere la sua descrizione, autore, versione, comportamento Pellicola e foto di esempio disponibili."
+          ],
+          "tips": [
+            "In evidenza è una collezione editoriale, non una classifica di popolarità.",
+            "Una preimpostazione integrata è di sola lettura. Salva una copia… inserisce una copia nominata in Tuo. Nascondi preimpostazione la rimuove dalla normale vista Integrato; Mostra nascosti e Ripristina a Integrato la riportano."
+          ]
+        },
+        {
+          "title": "Applica e regola la Quantità",
+          "paragraphs": [
+            "Fai clic su una scheda predefinita per applicarla immediatamente alla foto principale. Fai clic di nuovo sulla stessa scheda, oppure usa il suo pulsante Attivo/Disattivato, per disattivarla. La tua foto rimane su questo computer."
+          ],
+          "steps": [
+            "Seleziona una foto e fai clic su una scheda predefinita. Il predefinito selezionato mostra la Quantità sotto il nome.",
+            "Trascina la Quantità da 0% a 100%. Zero ripristina la modifica prima del predefinito; 100% usa il predefinito completo. Fai doppio clic su Quantità per reimpostarla a 100%.",
+            "Fai clic su un altro predefinito per cambiare aspetto. Annulla e Ripristina ripristinano la selezione del predefinito, lo stato attivo e la quantità. Il predefinito selezionato e la quantità vengono salvati con la foto."
+          ],
+          "tips": [
+            "Pellicola, Pellicola attiva/disattivata e altre scelte fisse cambiano a qualsiasi quantità superiore a zero. Tono, colore, curve e regolazioni numeriche variano con la Quantità. Gli esempi dell'autore restano separati dalla tua foto.",
+            "Il passaggio tra le schede predefinite usa la modifica precedente al primo predefinito, così gli aspetti non si accumulano. Le modifiche manuali al di fuori del predefinito, come l'esposizione per un Aspetto, vengono mantenute. Modificare manualmente un'impostazione controllata dal predefinito termina la regolazione della sua Quantità; la modifica attuale diventa quindi la base per il predefinito successivo."
+          ]
+        },
+        {
+          "title": "Cosa mantiene un aspetto",
+          "paragraphs": [
+            "Gli aspetti Integrato e della community conservano Modifica esposizione, Temp/Tinta, bilanciamento del bianco in acquisizione, correzioni RAW, formato pellicola, ritaglio, geometria, maschere, correzioni Rimuovi, correzioni obiettivo, nitidezza e riduzione rumore. Cambiano le impostazioni creative incluse nella loro ricetta.",
+            "Pellicola attiva abilita il trattamento Pellicola incluso. Pellicola disattiva bypassa Pellicola. Pellicola invariata lascia invariato il suo stato abilitato. Un trattamento Pellicola può modificare intenzionalmente EV fotocamera, misurazione automatica, sviluppo, stampa, grana e altri controlli creativi di pellicola."
+          ],
+          "tips": [
+            "La conservazione dell'aspetto si applica agli aspetti salvati con Aspetto · mantieni le correzioni della foto. Una modifica Pieno o un predefinito importato più vecchio può includere correzioni specifiche della foto; controlla la foto risultante e usa Annulla se modifica correzioni che vuoi mantenere."
+          ]
+        },
+        {
+          "title": "Aggiungi predefiniti e aggiornamenti della community",
+          "paragraphs": [
+            "Aggiungi a Tuo scarica e salva la ricetta della community selezionata senza applicarla. Le ricette installate funzionano offline. Le modifiche alle tue foto esistenti memorizzano le impostazioni separatamente dalla preimpostazione."
+          ],
+          "steps": [
+            "Fai clic su un predefinito Community per usarlo sulla tua foto, quindi fai clic su Aggiungi a Tuo per conservare una copia offline.",
+            "Usalo più tardi da Tuo, oppure torna a Community per ispezionare la pagina pubblica della preimpostazione.",
+            "Fai clic su Aggiorna per controllare il catalogo. Quando è elencata una versione più recente, Aggiorna in Tuo sostituisce la ricetta salvata solo quando lo scegli."
+          ],
+          "tips": [
+            "L'aggiornamento di un predefinito non modifica le foto che hai già modificato.",
+            "Il messaggio offline distingue un catalogo nella cache da un primo download non disponibile. Le ricette non memorizzate nella cache e le immagini di esempio dell'autore possono richiedere una connessione; le ricette Integrato e installate restano disponibili.",
+            "Aggiorna LightTable significa che una preimpostazione richiede funzionalità che questa versione dell'app non supporta. I controlli di installazione e applicazione restano disattivati.",
+            "Apri in LightTable in una pagina pubblica della preimpostazione apre i dettagli nell'app installata; non applica automaticamente l'aspetto."
+          ]
+        },
+        {
+          "title": "Salva, importa ed esporta",
+          "paragraphs": [
+            "Gestisci… apre o chiude Gestisci predefiniti; il pulsante è evidenziato mentre la sezione è aperta. Salva aspetto corrente usa per impostazione predefinita Aspetto · conserva le correzioni foto. Edit completo · includi correzioni foto offre anche Tutte le impostazioni di regolazione o Solo impostazioni modificate."
+          ],
+          "steps": [
+            "Scegli l'ambito della preimpostazione e se includere il profilo Pellicola e le impostazioni fisiche, quindi fai clic su Salva nuovo… e assegnale un nome.",
+            "Per importare, fai clic su Importa… e scegli i file predefiniti. L’app Mac supporta anche la selezione di un’intera cartella di predefiniti.",
+            "Rivedi il risultato dell'importazione e la copertura di conversione del nuovo predefinito prima di applicarlo.",
+            "Per esportare, scegli un predefinito Selezionato e un Formato di esportazione, poi fai clic su Esporta…."
+          ],
+          "tips": [
+            "L'esportazione di LightTable preserva la ricetta nativa della preimpostazione. Le esportazioni XMP di Lightroom e gli stili di Capture One sono approssimativi.",
+            "Le scelte di file supportate includono .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip e .json. Un'estensione accettata non garantisce che ogni impostazione possa essere convertita.",
+            "Per una preimpostazione di edit più vecchia o Pieno, Applica regolazioni mappate modifica le impostazioni incluse. Sostituisci le impostazioni di regolazione reimposta anche prima regolazioni, maschere, correzioni Rimuovi e geometria. Sostituisci mantiene il ritaglio e mantiene Pellicola a meno che la preimpostazione includa Pellicola o tu attivi Disattiva Pellicola per le azioni qui sotto."
+          ]
+        },
+        {
+          "title": "Prepara un invio per la community",
+          "paragraphs": [
+            "La pubblicazione su Community è revisionata. La sezione di invio mostra le esatte impostazioni Sviluppa e Pellicola nell'aspetto preparato, il suo comportamento Pellicola e le correzioni foto che conserva. Non viene caricato nulla quando si ispeziona questo riepilogo o si prepara un download."
+          ],
+          "steps": [
+            "Salva una preimpostazione in Tuo, selezionala e rivedi il riepilogo delle impostazioni incluse sotto Invio a Community.",
+            "Fai clic su Prepara invio a Community… e attendi il rendering degli esempi locali. Salva il file ZIP contenente la preimpostazione, tre coppie di foto prima/dopo con licenza, crediti foto e note sui diritti.",
+            "Apri il pacchetto e ispeziona gli esempi. Puoi anche selezionare una tua foto e usare Scarica esempio su questa foto per salvare un JPEG a 960 pixel dell'aspetto condiviso senza modificare l'edit.",
+            "Fai clic su Apri modulo di invio, allega il pacchetto ed eventuali esempi aggiuntivi consentiti, e aggiungi i dettagli dell'autore, la descrizione e le autorizzazioni di pubblicazione prima di inviare."
+          ],
+          "tips": [
+            "Le tre scene campione standard sono incluse con LightTable. La loro esportazione non utilizza le tue fotografie o il tuo catalogo, e i loro JPEG non contengono metadati foto incorporati.",
+            "La preparazione dell'invio esclude le correzioni specifiche della foto. Ispeziona l'aspetto risultante prima di condividerlo.",
+            "Condividi solo foto che hai il permesso di pubblicare. I crediti autore esistenti e l'attribuzione della preimpostazione padre vengono mantenuti; il permesso di riutilizzo della ricetta e il permesso di visualizzazione della foto sono separati."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Modifica"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Cambia i colori singoli con Mixer Colore e Colore punto",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Modifica"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Trova, prova e condividi predefiniti di modifica",
-      "category": "Editing",
-      "summary": "Sfoglia gli aspetti integrati e della community, visualizzali in anteprima sulla tua foto e salva o condividi le tue preimpostazioni.",
-      "keywords": [
-        "predefinito",
-        "predefiniti",
-        "community",
-        "galleria",
-        "integrato",
-        "preferiti",
-        "nascondi preimpostazione",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "importa predefinito",
-        "salva aspetto",
-        "prova preimpostazione",
-        "aggiorna preimpostazione",
-        "invia preimpostazione",
-        "sostituisci regolazioni"
-      ],
-      "sections": [
-        {
-          "title": "Scegli una collezione",
-          "paragraphs": [
-            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene dieci aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
-          ],
-          "steps": [
-            "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
-            "Usa la stella accanto a una preimpostazione per aggiungerla ai preferiti; Preferiti filtra la raccolta corrente.",
-            "In Community, scegli In evidenza, Nuovo o Tutti e usa Soggetto per restringere la raccolta. Seleziona una preimpostazione per vedere la sua descrizione, autore, versione, comportamento Pellicola e foto di esempio disponibili."
-          ],
-          "tips": [
-            "In evidenza è una collezione editoriale, non una classifica di popolarità.",
-            "Una preimpostazione integrata è di sola lettura. Salva una copia… inserisce una copia nominata in Tuo. Nascondi preimpostazione la rimuove dalla normale vista Integrato; Mostra nascosti e Ripristina a Integrato la riportano."
-          ]
-        },
-        {
-          "title": "Prova prima di applicare",
-          "paragraphs": [
-            "Prova su questa foto esegue un'anteprima localmente all'interno dei dettagli della preimpostazione. Non modifica né salva la tua modifica e la tua foto non viene caricata nella galleria della community."
-          ],
-          "steps": [
-            "Seleziona una foto e un predefinito, poi fai clic su Prova su questa foto.",
-            "Attendi l'anteprima, quindi usa Prima e Con preimpostazione per confrontare. Gli esempi dell'autore hanno controlli prima/dopo propri e, quando disponibile, un selettore Foto di esempio.",
-            "Fai clic su Applica per confermare la preimpostazione sulla foto attiva. Usa Annulla nei dettagli oppure l'azione Annulla nel messaggio di completamento per ripristinare la modifica precedente."
-          ],
-          "tips": [
-            "Selezionare una scheda, sfogliare un'altra preimpostazione o chiudere i dettagli non la applica.",
-            "Applicazioni successive di aspetti usano la modifica precedente al primo aspetto, quindi le impostazioni di un aspetto non si accumulano nel successivo. Una modifica manuale successiva avvia una nuova base di confronto. Se cambi foto o impostazioni di modifica mentre un dettaglio è aperto, seleziona di nuovo la preimpostazione prima di applicarla."
-          ]
-        },
-        {
-          "title": "Cosa mantiene un aspetto",
-          "paragraphs": [
-            "Gli aspetti Integrato e della community conservano Modifica esposizione, Temp/Tinta, bilanciamento del bianco in acquisizione, correzioni RAW, formato pellicola, ritaglio, geometria, maschere, correzioni Rimuovi, correzioni obiettivo, nitidezza e riduzione rumore. Cambiano le impostazioni creative incluse nella loro ricetta.",
-            "Pellicola attiva abilita il trattamento Pellicola incluso. Pellicola disattiva bypassa Pellicola. Pellicola invariata lascia invariato il suo stato abilitato. Un trattamento Pellicola può modificare intenzionalmente EV fotocamera, misurazione automatica, sviluppo, stampa, grana e altri controlli creativi di pellicola."
-          ],
-          "tips": [
-            "La conservazione dell'aspetto si applica agli aspetti salvati con Aspetto · conserva le correzioni foto. Un edit Pieno o una preimpostazione importata più vecchia può includere correzioni specifiche della foto; ispeziona i dettagli prima di applicarla."
-          ]
-        },
-        {
-          "title": "Aggiungi predefiniti e aggiornamenti della community",
-          "paragraphs": [
-            "Aggiungi a Tuo scarica e salva la ricetta della community selezionata senza applicarla. Le ricette installate funzionano offline. Le modifiche alle tue foto esistenti memorizzano le impostazioni separatamente dalla preimpostazione."
-          ],
-          "steps": [
-            "Seleziona un predefinito Community e fai clic su Aggiungi a Tuo.",
-            "Usalo più tardi da Tuo, oppure torna a Community per ispezionare la pagina pubblica della preimpostazione.",
-            "Fai clic su Aggiorna per controllare il catalogo. Quando è elencata una versione più recente, Aggiorna in Tuo sostituisce la ricetta salvata solo quando lo scegli."
-          ],
-          "tips": [
-            "L'aggiornamento di un predefinito non modifica le foto che hai già modificato.",
-            "Il messaggio offline distingue un catalogo nella cache da un primo download non disponibile. Le ricette non memorizzate nella cache e le immagini di esempio dell'autore possono richiedere una connessione; le ricette Integrato e installate restano disponibili.",
-            "Aggiorna LightTable significa che una preimpostazione richiede funzionalità che questa versione dell'app non supporta. I controlli di installazione e applicazione restano disattivati.",
-            "Apri in LightTable in una pagina pubblica della preimpostazione apre i dettagli nell'app installata; non applica automaticamente l'aspetto."
-          ]
-        },
-        {
-          "title": "Salva, importa ed esporta",
-          "paragraphs": [
-            "Gestisci… apre o chiude Gestisci predefiniti; il pulsante è evidenziato mentre la sezione è aperta. Salva aspetto corrente usa per impostazione predefinita Aspetto · conserva le correzioni foto. Edit completo · includi correzioni foto offre anche Tutte le impostazioni di regolazione o Solo impostazioni modificate."
-          ],
-          "steps": [
-            "Scegli l'ambito della preimpostazione e se includere il profilo Pellicola e le impostazioni fisiche, quindi fai clic su Salva nuovo… e assegnale un nome.",
-            "Per importare, fai clic su Importa… e scegli i file predefiniti. L’app Mac supporta anche la selezione di un’intera cartella di predefiniti.",
-            "Rivedi il risultato dell'importazione e la copertura di conversione del nuovo predefinito prima di applicarlo.",
-            "Per esportare, scegli un predefinito Selezionato e un Formato di esportazione, poi fai clic su Esporta…."
-          ],
-          "tips": [
-            "L'esportazione di LightTable preserva la ricetta nativa della preimpostazione. Le esportazioni XMP di Lightroom e gli stili di Capture One sono approssimativi.",
-            "Le scelte di file supportate includono .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip e .json. Un'estensione accettata non garantisce che ogni impostazione possa essere convertita.",
-            "Per una preimpostazione di edit più vecchia o Pieno, Applica regolazioni mappate modifica le impostazioni incluse. Sostituisci le impostazioni di regolazione reimposta anche prima regolazioni, maschere, correzioni Rimuovi e geometria. Sostituisci mantiene il ritaglio e mantiene Pellicola a meno che la preimpostazione includa Pellicola o tu attivi Disattiva Pellicola per le azioni qui sotto."
-          ]
-        },
-        {
-          "title": "Prepara un invio per la community",
-          "paragraphs": [
-            "La pubblicazione su Community è revisionata. La sezione di invio mostra le esatte impostazioni Sviluppa e Pellicola nell'aspetto preparato, il suo comportamento Pellicola e le correzioni foto che conserva. Non viene caricato nulla quando si ispeziona questo riepilogo o si prepara un download."
-          ],
-          "steps": [
-            "Salva una preimpostazione in Tuo, selezionala e rivedi il riepilogo delle impostazioni incluse sotto Invio a Community.",
-            "Fai clic su Prepara invio a Community… e attendi il rendering degli esempi locali. Salva il file ZIP contenente la preimpostazione, tre coppie di foto prima/dopo con licenza, crediti foto e note sui diritti.",
-            "Apri il pacchetto e ispeziona gli esempi. Puoi anche selezionare una tua foto e usare Scarica esempio su questa foto per salvare un JPEG a 960 pixel dell'aspetto condiviso senza modificare l'edit.",
-            "Fai clic su Apri modulo di invio, allega il pacchetto ed eventuali esempi aggiuntivi consentiti, e aggiungi i dettagli dell'autore, la descrizione e le autorizzazioni di pubblicazione prima di inviare."
-          ],
-          "tips": [
-            "Le tre scene campione standard sono incluse con LightTable. La loro esportazione non utilizza le tue fotografie o il tuo catalogo, e i loro JPEG non contengono metadati foto incorporati.",
-            "La preparazione dell'invio esclude le correzioni specifiche della foto. Ispeziona l'aspetto risultante prima di condividerlo.",
-            "Condividi solo foto che hai il permesso di pubblicare. I crediti autore esistenti e l'attribuzione della preimpostazione padre vengono mantenuti; il permesso di riutilizzo della ricetta e il permesso di visualizzazione della foto sono separati."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Modifica"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

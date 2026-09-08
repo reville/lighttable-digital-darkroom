@@ -4,6 +4,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import { t as tr, tn as trn } from '../web/i18n.js';
 import { localToolLabel } from '../web/editor-panels.js';
+import {presetEditState, reconcilePresetAdjustment} from '../web/preset-amount.js';
 
 const read = file => readFileSync(new URL(`../web/${file}`, import.meta.url), 'utf8');
 const appSource = read('app.js');
@@ -46,6 +47,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
   };
   const context = {
     console, structuredClone, Promise, AggregateError, S, tr, trn, localToolLabel,
+    presetEditState, reconcilePresetAdjustment,
     transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
     window: {addEventListener: noop, confirm: () => true},
@@ -107,6 +109,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
     'let navigationGeneration = 0, lastNavigationDirection = 1, cropSession = null;',
+    'let presetAmountGesture = null;',
     "let _stripKey = '', _gridKey = '';",
 
     'let renderTimer, refineTimer, settleRenderTimer, browserOriginal, browserOriginalTextureURL;',

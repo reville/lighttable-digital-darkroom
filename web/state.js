@@ -5,7 +5,7 @@ export function createAppState(gradeDefaults, opticsDefaults) {
   return {
     images: [], idx: -1, defaults: null, filmDefaults: null,
     newPhotoGradeDefaults: null,
-    params: null, grade: { ...gradeDefaults }, crop: null,
+    params: null, preset: null, grade: { ...gradeDefaults }, crop: null,
     masks: [], heals: [], optics: { ...opticsDefaults }, lensProfile: null,
     selectedMaskId: null, selectedHealId: null, editGesture: null,
     maskTextureDirty: true, maskCreateOpen: true, maskRefineMode: null,

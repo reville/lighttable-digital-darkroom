@@ -19,7 +19,7 @@ class NativePresetLinkTests(unittest.TestCase):
         cls.addClassCleanup(cls.temporary.cleanup)
         directory = Path(cls.temporary.name)
         source = (ROOT / "app/main.swift").read_text()
-        parser = source.split("// MARK: - Preset links", 1)[1].split("// MARK: - About", 1)[0]
+        parser = source.split("// MARK: - Preset links", 1)[1].split("\n// MARK:", 1)[0]
         methods = source.split("    func application(_ application: NSApplication, open urls: [URL])", 1)[1].split(
             "    func applicationWillTerminate", 1)[0]
         methods = "    func application(_ application: StubApplication, open urls: [URL])" + methods

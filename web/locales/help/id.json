@@ -1064,6 +1064,137 @@
       "categoryLabel": "Pengeditan"
     },
     {
+      "id": "editing-presets",
+      "title": "Terapkan, sesuaikan, dan bagikan preset pengeditan",
+      "category": "Editing",
+      "summary": "Klik preset untuk menerapkannya, sesuaikan Jumlah, lalu simpan atau bagikan tampilan Anda sendiri.",
+      "keywords": [
+        "preset",
+        "preset",
+        "komunitas",
+        "galeri",
+        "bawaan",
+        "favorit",
+        "sembunyikan prasetel",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "impor preset",
+        "simpan tampilan",
+        "coba prasetel",
+        "jumlah preset",
+        "kekuatan preset",
+        "nonaktifkan preset",
+        "perbarui prasetel",
+        "kirim prasetel",
+        "ganti penyesuaian"
+      ],
+      "sections": [
+        {
+          "title": "Pilih koleksi",
+          "paragraphs": [
+            "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
+          ],
+          "steps": [
+            "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
+            "Gunakan bintang di samping prasetel untuk menjadikannya favorit; Favorit memfilter koleksi saat ini.",
+            "Di Komunitas, pilih Unggulan, Baru, atau Semua dan gunakan Subjek untuk mempersempit koleksi. Pilih preset untuk melihat deskripsi, pembuat, versi, perilaku Film, dan foto contoh yang tersedia."
+          ],
+          "tips": [
+            "Featured adalah koleksi editorial, bukan peringkat popularitas.",
+            "Preset bawaan bersifat hanya-baca. Simpan salinan… menempatkan salinan bernama di Milik Anda. Sembunyikan preset menghapusnya dari tampilan Bawaan biasa; Tampilkan yang tersembunyi dan Pulihkan ke Bawaan akan membawanya kembali."
+          ]
+        },
+        {
+          "title": "Terapkan dan sesuaikan Jumlah",
+          "paragraphs": [
+            "Klik kartu preset untuk langsung menerapkannya pada foto utama. Klik kartu yang sama lagi, atau gunakan tombol Aktif/Mati-nya, untuk menonaktifkannya. Foto Anda tetap berada di komputer ini."
+          ],
+          "steps": [
+            "Pilih foto dan klik kartu preset. Preset terpilih menampilkan Jumlah di bawah namanya.",
+            "Seret Jumlah dari 0% ke 100%. Nol memulihkan pengeditan sebelum preset; 100% menggunakan preset penuh. Klik dua kali Jumlah untuk mengatur ulang ke 100%.",
+            "Klik preset lain untuk mengganti tampilan. Urungkan dan Ulangi memulihkan pilihan preset, status aktif, dan jumlah. Preset terpilih dan jumlahnya disimpan bersama foto."
+          ],
+          "tips": [
+            "Stok film, Film aktif/nonaktif, dan pilihan tetap lainnya beralih pada jumlah apa pun di atas nol. Nada, warna, kurva, dan penyesuaian numerik bervariasi sesuai Jumlah. Contoh pembuat tetap terpisah dari foto Anda.",
+            "Beralih kartu preset menggunakan pengeditan dari sebelum preset pertama sehingga tampilan tidak menumpuk. Perubahan manual di luar preset, seperti eksposur untuk sebuah Tampilan, tetap dipertahankan. Mengubah secara manual pengaturan yang dikendalikan oleh preset akan mengakhiri penyesuaian Jumlah-nya; pengeditan saat ini kemudian menjadi dasar untuk preset berikutnya."
+          ]
+        },
+        {
+          "title": "Apa yang dipertahankan oleh tampilan",
+          "paragraphs": [
+            "Tampilan Bawaan dan komunitas mempertahankan Edit Eksposur, Suhu/Tint, keseimbangan putih tangkapan, koreksi RAW, format film, pangkas, geometri, masker, koreksi Hapus, koreksi lensa, penajaman, dan pengurangan noise. Mereka mengubah pengaturan kreatif yang disertakan dalam resepnya.",
+            "Film aktif mengaktifkan perlakuan film yang disertakan. Film nonaktif melewati Film. Film tidak berubah membiarkan status aktifnya apa adanya. Perlakuan film dapat dengan sengaja mengubah EV Kamera, pengukuran otomatis, pengembangan, cetak, grain, dan kontrol film kreatif lainnya."
+          ],
+          "tips": [
+            "Pelestarian tampilan diterapkan pada tampilan yang disimpan dengan Tampilan · pertahankan koreksi foto. Edit Penuh atau preset impor lama dapat menyertakan koreksi khusus foto; tinjau foto hasilnya dan gunakan Urungkan jika mengubah koreksi yang ingin Anda pertahankan."
+          ]
+        },
+        {
+          "title": "Tambahkan preset dan pembaruan komunitas",
+          "paragraphs": [
+            "Tambahkan ke Milik Anda mengunduh dan menyimpan resep komunitas yang dipilih tanpa menerapkannya. Resep yang diinstal berfungsi secara offline. Edit foto Anda yang sudah ada menyimpan pengaturannya secara terpisah dari preset."
+          ],
+          "steps": [
+            "Klik preset Komunitas untuk menggunakannya pada foto Anda, lalu klik Tambahkan ke Milik Anda untuk menyimpan salinan luring.",
+            "Gunakan nanti dari Milik Anda, atau kembali ke Komunitas untuk meninjau halaman prasetel publik.",
+            "Klik Segarkan untuk memeriksa katalog. Saat versi yang lebih baru tercantum, Perbarui di Milik Anda hanya mengganti resep yang disimpan ketika Anda memilihnya."
+          ],
+          "tips": [
+            "Memperbarui preset tidak mengubah foto yang sudah Anda edit.",
+            "Pesan offline membedakan antara katalog yang di-cache dan unduhan pertama yang tidak tersedia. Resep yang belum di-cache dan gambar contoh pembuat dapat memerlukan koneksi; Resep Bawaan dan yang diinstal tetap tersedia.",
+            "Perbarui LightTable berarti sebuah preset memerlukan fitur yang tidak didukung oleh versi aplikasi ini. Kontrol pemasangan dan penerapannya tetap dinonaktifkan.",
+            "Buka di LightTable pada halaman prasetel publik membuka detailnya di aplikasi yang terinstal; itu tidak menerapkan tampilannya secara otomatis."
+          ]
+        },
+        {
+          "title": "Simpan, impor, dan ekspor",
+          "paragraphs": [
+            "Kelola… membuka atau menutup Kelola preset; tombol disorot saat bagian terbuka. Simpan tampilan saat ini secara default ke Tampilan · pertahankan koreksi foto. Edit penuh · sertakan koreksi foto juga menawarkan Semua pengaturan penyesuaian atau Hanya pengaturan yang berubah."
+          ],
+          "steps": [
+            "Pilih cakupan preset dan apakah akan Menyertakan profil Film dan pengaturan fisik, lalu klik Simpan baru… dan beri nama.",
+            "Untuk impor, klik Import… dan pilih file preset. Aplikasi Mac juga mendukung pemilihan seluruh folder preset.",
+            "Tinjau hasil impor dan cakupan konversi preset baru sebelum menerapkannya.",
+            "Untuk mengekspor, pilih preset Terpilih dan Format ekspor, lalu klik Ekspor…."
+          ],
+          "tips": [
+            "Ekspor LightTable mempertahankan resep asli preset. Ekspor XMP Lightroom dan gaya Capture One bersifat perkiraan.",
+            "Pilihan file yang didukung mencakup .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, dan .json. Ekstensi yang diterima tidak menjamin setiap pengaturan dapat dikonversi.",
+            "Untuk preset edit yang lebih lama atau Penuh, Terapkan penyesuaian yang dipetakan mengubah pengaturan yang disertakannya. Ganti pengaturan penyesuaian juga mengatur ulang penyesuaian, masker, koreksi Hapus, dan geometri terlebih dahulu. Ganti mempertahankan pangkasan dan mempertahankan Film kecuali preset menyertakan Film atau Anda mengaktifkan Matikan Film untuk tindakan di bawah ini."
+          ]
+        },
+        {
+          "title": "Siapkan kiriman komunitas",
+          "paragraphs": [
+            "Publikasi Komunitas ditinjau. Bagian pengiriman menampilkan pengaturan Pengembangan dan Film yang tepat dalam tampilan yang disiapkan, perilaku Filmmya, dan koreksi foto yang dipertahankannya. Tidak ada yang diunggah saat meninjau ringkasan ini atau menyiapkan unduhan."
+          ],
+          "steps": [
+            "Simpan preset di Milik Anda, pilih preset itu, lalu tinjau ringkasan pengaturan yang disertakan di bawah pengiriman Komunitas.",
+            "Klik Siapkan pengiriman komunitas… dan tunggu contoh lokal dirender. Simpan ZIP yang berisi preset, tiga pasang foto sebelum/sesudah berlisensi, kredit foto, dan catatan hak.",
+            "Buka paket dan periksa contohnya. Anda juga dapat memilih foto Anda sendiri dan menggunakan Unduh contoh pada foto ini untuk menyimpan JPEG 960 piksel dari tampilan yang dibagikan tanpa mengubah edit.",
+            "Klik Buka formulir pengiriman, lampirkan paket dan contoh tambahan apa pun yang diizinkan, lalu tambahkan detail pembuat, deskripsi, dan izin publikasi Anda sebelum mengirim."
+          ],
+          "tips": [
+            "Tiga adegan sampel standar disertakan bersama LightTable. Ekspornya tidak menggunakan foto atau katalog Anda, dan JPEG-nya tidak berisi metadata foto tertanam.",
+            "Persiapan pengiriman mengecualikan koreksi khusus foto. Periksa tampilan hasilnya sebelum membagikannya.",
+            "Hanya bagikan foto yang Anda punya izin untuk mempublikasikannya. Kredit pembuat yang sudah ada dan atribusi preset induk tetap dipertahankan; izin penggunaan ulang resep dan izin penayangan foto adalah terpisah."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Pengeditan"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Ubah warna individual dengan Mixer Warna dan Warna Titik",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Pengeditan"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Temukan, coba, dan bagikan preset edit",
-      "category": "Editing",
-      "summary": "Telusuri tampilan bawaan dan komunitas, pratinjau pada foto Anda, lalu simpan atau bagikan preset Anda sendiri.",
-      "keywords": [
-        "preset",
-        "preset",
-        "komunitas",
-        "galeri",
-        "bawaan",
-        "favorit",
-        "sembunyikan prasetel",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "impor preset",
-        "simpan tampilan",
-        "coba prasetel",
-        "perbarui prasetel",
-        "kirim prasetel",
-        "ganti penyesuaian"
-      ],
-      "sections": [
-        {
-          "title": "Pilih koleksi",
-          "paragraphs": [
-            "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
-          ],
-          "steps": [
-            "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
-            "Gunakan bintang di samping prasetel untuk menjadikannya favorit; Favorit memfilter koleksi saat ini.",
-            "Di Komunitas, pilih Unggulan, Baru, atau Semua dan gunakan Subjek untuk mempersempit koleksi. Pilih preset untuk melihat deskripsi, pembuat, versi, perilaku Film, dan foto contoh yang tersedia."
-          ],
-          "tips": [
-            "Featured adalah koleksi editorial, bukan peringkat popularitas.",
-            "Preset bawaan bersifat hanya-baca. Simpan salinan… menempatkan salinan bernama di Milik Anda. Sembunyikan preset menghapusnya dari tampilan Bawaan biasa; Tampilkan yang tersembunyi dan Pulihkan ke Bawaan akan membawanya kembali."
-          ]
-        },
-        {
-          "title": "Coba sebelum menerapkan",
-          "paragraphs": [
-            "Coba pada foto ini merender pratinjau secara lokal di dalam detail preset. Ini tidak mengubah atau menyimpan edit Anda, dan foto Anda tidak diunggah ke galeri komunitas."
-          ],
-          "steps": [
-            "Pilih sebuah foto dan preset, lalu klik Coba pada foto ini.",
-            "Tunggu pratinjau, lalu gunakan Sebelum dan Dengan preset untuk membandingkan. Contoh pembuat memiliki kontrol sebelum/sesudah sendiri dan, jika tersedia, pemilih foto Contoh.",
-            "Klik Terapkan untuk menerapkan preset ke foto aktif. Gunakan Urungkan di detail atau tindakan Urungkan pada pesan penyelesaian untuk memulihkan edit sebelumnya."
-          ],
-          "tips": [
-            "Memilih kartu, menelusuri prasetel lain, atau menutup detail tidak akan menerapkannya.",
-            "Penerapan tampilan berturut-turut menggunakan edit dari sebelum tampilan pertama, sehingga pengaturan dari satu tampilan tidak terakumulasi ke tampilan berikutnya. Edit manual berikutnya memulai dasar perbandingan baru. Jika Anda mengubah foto atau pengaturan edit saat detail terbuka, pilih lagi preset sebelum menerapkan."
-          ]
-        },
-        {
-          "title": "Apa yang dipertahankan oleh tampilan",
-          "paragraphs": [
-            "Tampilan Bawaan dan komunitas mempertahankan Edit Eksposur, Suhu/Tint, keseimbangan putih tangkapan, koreksi RAW, format film, pangkas, geometri, masker, koreksi Hapus, koreksi lensa, penajaman, dan pengurangan noise. Mereka mengubah pengaturan kreatif yang disertakan dalam resepnya.",
-            "Film aktif mengaktifkan perlakuan film yang disertakan. Film nonaktif melewati Film. Film tidak berubah membiarkan status aktifnya apa adanya. Perlakuan film dapat dengan sengaja mengubah EV Kamera, pengukuran otomatis, pengembangan, cetak, grain, dan kontrol film kreatif lainnya."
-          ],
-          "tips": [
-            "Pelestarian tampilan berlaku untuk tampilan yang disimpan dengan Tampilan · pertahankan koreksi foto. Edit Penuh atau preset impor yang lebih lama dapat menyertakan koreksi khusus foto; periksa detailnya sebelum menerapkannya."
-          ]
-        },
-        {
-          "title": "Tambahkan preset dan pembaruan komunitas",
-          "paragraphs": [
-            "Tambahkan ke Milik Anda mengunduh dan menyimpan resep komunitas yang dipilih tanpa menerapkannya. Resep yang diinstal berfungsi secara offline. Edit foto Anda yang sudah ada menyimpan pengaturannya secara terpisah dari preset."
-          ],
-          "steps": [
-            "Pilih preset Komunitas dan klik Tambahkan ke Milik Anda.",
-            "Gunakan nanti dari Milik Anda, atau kembali ke Komunitas untuk meninjau halaman prasetel publik.",
-            "Klik Segarkan untuk memeriksa katalog. Saat versi yang lebih baru tercantum, Perbarui di Milik Anda hanya mengganti resep yang disimpan ketika Anda memilihnya."
-          ],
-          "tips": [
-            "Memperbarui preset tidak mengubah foto yang sudah Anda edit.",
-            "Pesan offline membedakan antara katalog yang di-cache dan unduhan pertama yang tidak tersedia. Resep yang belum di-cache dan gambar contoh pembuat dapat memerlukan koneksi; Resep Bawaan dan yang diinstal tetap tersedia.",
-            "Perbarui LightTable berarti sebuah preset memerlukan fitur yang tidak didukung oleh versi aplikasi ini. Kontrol pemasangan dan penerapannya tetap dinonaktifkan.",
-            "Buka di LightTable pada halaman prasetel publik membuka detailnya di aplikasi yang terinstal; itu tidak menerapkan tampilannya secara otomatis."
-          ]
-        },
-        {
-          "title": "Simpan, impor, dan ekspor",
-          "paragraphs": [
-            "Kelola… membuka atau menutup Kelola preset; tombol disorot saat bagian terbuka. Simpan tampilan saat ini secara default ke Tampilan · pertahankan koreksi foto. Edit penuh · sertakan koreksi foto juga menawarkan Semua pengaturan penyesuaian atau Hanya pengaturan yang berubah."
-          ],
-          "steps": [
-            "Pilih cakupan preset dan apakah akan Menyertakan profil Film dan pengaturan fisik, lalu klik Simpan baru… dan beri nama.",
-            "Untuk impor, klik Import… dan pilih file preset. Aplikasi Mac juga mendukung pemilihan seluruh folder preset.",
-            "Tinjau hasil impor dan cakupan konversi preset baru sebelum menerapkannya.",
-            "Untuk mengekspor, pilih preset Terpilih dan Format ekspor, lalu klik Ekspor…."
-          ],
-          "tips": [
-            "Ekspor LightTable mempertahankan resep asli preset. Ekspor XMP Lightroom dan gaya Capture One bersifat perkiraan.",
-            "Pilihan file yang didukung mencakup .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, dan .json. Ekstensi yang diterima tidak menjamin setiap pengaturan dapat dikonversi.",
-            "Untuk preset edit yang lebih lama atau Penuh, Terapkan penyesuaian yang dipetakan mengubah pengaturan yang disertakannya. Ganti pengaturan penyesuaian juga mengatur ulang penyesuaian, masker, koreksi Hapus, dan geometri terlebih dahulu. Ganti mempertahankan pangkasan dan mempertahankan Film kecuali preset menyertakan Film atau Anda mengaktifkan Matikan Film untuk tindakan di bawah ini."
-          ]
-        },
-        {
-          "title": "Siapkan kiriman komunitas",
-          "paragraphs": [
-            "Publikasi Komunitas ditinjau. Bagian pengiriman menampilkan pengaturan Pengembangan dan Film yang tepat dalam tampilan yang disiapkan, perilaku Filmmya, dan koreksi foto yang dipertahankannya. Tidak ada yang diunggah saat meninjau ringkasan ini atau menyiapkan unduhan."
-          ],
-          "steps": [
-            "Simpan preset di Milik Anda, pilih preset itu, lalu tinjau ringkasan pengaturan yang disertakan di bawah pengiriman Komunitas.",
-            "Klik Siapkan pengiriman komunitas… dan tunggu contoh lokal dirender. Simpan ZIP yang berisi preset, tiga pasang foto sebelum/sesudah berlisensi, kredit foto, dan catatan hak.",
-            "Buka paket dan periksa contohnya. Anda juga dapat memilih foto Anda sendiri dan menggunakan Unduh contoh pada foto ini untuk menyimpan JPEG 960 piksel dari tampilan yang dibagikan tanpa mengubah edit.",
-            "Klik Buka formulir pengiriman, lampirkan paket dan contoh tambahan apa pun yang diizinkan, lalu tambahkan detail pembuat, deskripsi, dan izin publikasi Anda sebelum mengirim."
-          ],
-          "tips": [
-            "Tiga adegan sampel standar disertakan bersama LightTable. Ekspornya tidak menggunakan foto atau katalog Anda, dan JPEG-nya tidak berisi metadata foto tertanam.",
-            "Persiapan pengiriman mengecualikan koreksi khusus foto. Periksa tampilan hasilnya sebelum membagikannya.",
-            "Hanya bagikan foto yang Anda punya izin untuk mempublikasikannya. Kredit pembuat yang sudah ada dan atribusi preset induk tetap dipertahankan; izin penggunaan ulang resep dan izin penayangan foto adalah terpisah."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

@@ -1064,6 +1064,137 @@
       "categoryLabel": "Chỉnh sửa"
     },
     {
+      "id": "editing-presets",
+      "title": "Áp dụng, điều chỉnh và chia sẻ các thiết lập sẵn chỉnh sửa",
+      "category": "Editing",
+      "summary": "Nhấp vào một thiết lập sẵn để áp dụng, điều chỉnh Lượng, và lưu hoặc chia sẻ giao diện của riêng bạn.",
+      "keywords": [
+        "thiết lập sẵn",
+        "thiết lập sẵn",
+        "cộng đồng",
+        "thư viện ảnh",
+        "tích hợp sẵn",
+        "mục yêu thích",
+        "ẩn sẵn đặt",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "mẫu LR",
+        "costyle",
+        "ltpreset",
+        "nhập thiết lập sẵn",
+        "lưu giao diện",
+        "thử sẵn đặt",
+        "lượng thiết lập sẵn",
+        "cường độ thiết lập sẵn",
+        "tắt thiết lập sẵn",
+        "cập nhật sẵn đặt",
+        "gửi sẵn đặt",
+        "thay thế các điều chỉnh"
+      ],
+      "sections": [
+        {
+          "title": "Chọn một bộ sưu tập",
+          "paragraphs": [
+            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa mười giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
+          ],
+          "steps": [
+            "Chọn Tích hợp sẵn, Mục của bạn, hoặc Cộng đồng. Tìm theo tên, mô tả, người tạo, hoặc đối tượng.",
+            "Dùng ngôi sao bên cạnh một thiết lập sẵn để đánh dấu yêu thích; Mục yêu thích lọc bộ sưu tập hiện tại.",
+            "Trong Cộng đồng, chọn Nổi bật, Mới, hoặc Tất cả và dùng Đối tượng để thu hẹp bộ sưu tập. Chọn một thiết lập sẵn để xem mô tả, người tạo, phiên bản, hành vi Phim và các ảnh ví dụ sẵn có."
+          ],
+          "tips": [
+            "Featured là một bộ sưu tập biên tập, không phải bảng xếp hạng độ phổ biến.",
+            "Một thiết lập sẵn tích hợp sẵn là chỉ đọc. Lưu một bản sao… sẽ đặt một bản sao có tên trong Mục của bạn. Ẩn thiết lập sẵn sẽ xóa nó khỏi chế độ xem Tích hợp sẵn thông thường; Hiển thị ẩn và Khôi phục về Tích hợp sẵn sẽ đưa nó trở lại."
+          ]
+        },
+        {
+          "title": "Áp dụng và điều chỉnh Lượng",
+          "paragraphs": [
+            "Nhấp vào một thẻ thiết lập sẵn để áp dụng ngay cho ảnh chính. Nhấp lại cùng một thẻ, hoặc dùng nút Bật/Tắt của nó, để tắt nó. Ảnh của bạn vẫn ở trên máy tính này."
+          ],
+          "steps": [
+            "Chọn một ảnh và nhấp vào thẻ thiết lập sẵn. Thiết lập sẵn đã chọn sẽ hiển thị Lượng bên dưới tên của nó.",
+            "Kéo Lượng từ 0% đến 100%. Mức 0 khôi phục phần chỉnh sửa trước thiết lập sẵn; 100% dùng đầy đủ thiết lập sẵn. Nhấp đúp vào Lượng để đặt lại về 100%.",
+            "Nhấp vào một thiết lập sẵn khác để chuyển đổi giao diện. Hoàn tác và Làm lại khôi phục việc chọn thiết lập sẵn, trạng thái bật, và lượng. Thiết lập sẵn và lượng đã chọn được lưu cùng với ảnh."
+          ],
+          "tips": [
+            "Phim, Bật/Tắt Phim, và các lựa chọn cố định khác sẽ chuyển đổi ở mọi lượng lớn hơn 0. Tông màu, màu sắc, đường cong, và các điều chỉnh số thay đổi theo Lượng. Các ví dụ của người tạo vẫn tách biệt với ảnh của bạn.",
+            "Chuyển đổi các thẻ thiết lập sẵn sẽ dùng phần chỉnh sửa từ trước thiết lập sẵn đầu tiên để các giao diện không bị cộng dồn. Các thay đổi thủ công bên ngoài thiết lập sẵn, như phơi sáng cho một Giao diện, vẫn được giữ. Việc thay đổi thủ công một thiết lập do thiết lập sẵn điều khiển sẽ kết thúc điều chỉnh Lượng của nó; khi đó phần chỉnh sửa hiện tại sẽ trở thành nền cho thiết lập sẵn tiếp theo."
+          ]
+        },
+        {
+          "title": "Điều mà một giao diện giữ lại",
+          "paragraphs": [
+            "Các giao diện Tích hợp sẵn và cộng đồng giữ lại Chỉnh sửa Phơi sáng, Temp/Sắc thái, cân bằng trắng khi chụp, hiệu chỉnh RAW, định dạng phim, cắt xén, hình học, mặt nạ, hiệu chỉnh Xóa bỏ, hiệu chỉnh ống kính, làm sắc nét và khử nhiễu. Chúng thay đổi các cài đặt sáng tạo được bao gồm trong quy trình của chúng.",
+            "Phim bật sẽ dùng hiệu ứng phim đi kèm. Phim tắt sẽ bỏ qua Phim. Phim không thay đổi sẽ giữ nguyên trạng thái bật của nó. Một hiệu ứng phim có thể cố ý thay đổi EV của Máy ảnh, đo sáng tự động, phát triển, in, hạt, và các điều khiển phim sáng tạo khác."
+          ],
+          "tips": [
+            "Việc giữ nguyên giao diện được áp dụng cho các giao diện đã lưu bằng Giao diện · giữ nguyên các chỉnh sửa ảnh. Một chỉnh sửa Đầy đủ hoặc một thiết lập sẵn đã nhập cũ hơn có thể bao gồm các chỉnh sửa riêng cho ảnh; xem lại ảnh kết quả và dùng Hoàn tác nếu nó thay đổi các chỉnh sửa bạn muốn giữ."
+          ]
+        },
+        {
+          "title": "Thêm các thiết lập sẵn và bản cập nhật từ cộng đồng",
+          "paragraphs": [
+            "Thêm vào Mục của bạn sẽ tải xuống và lưu quy trình cộng đồng đã chọn mà không áp dụng nó. Các quy trình đã cài đặt hoạt động ngoại tuyến. Các chỉnh sửa ảnh hiện có của bạn lưu cài đặt của chúng tách biệt với thiết lập sẵn."
+          ],
+          "steps": [
+            "Nhấp vào một thiết lập sẵn Cộng đồng để dùng nó trên ảnh của bạn, rồi nhấp Thêm vào Của bạn để giữ một bản sao ngoại tuyến.",
+            "Dùng sau từ Mục của bạn, hoặc quay lại Cộng đồng để xem trang thiết lập sẵn công khai.",
+            "Nhấp Tải lại để kiểm tra danh mục. Khi có phiên bản mới hơn, Cập nhật trong Mục của bạn chỉ thay thế quy trình đã lưu khi bạn chọn nó."
+          ],
+          "tips": [
+            "Cập nhật một thiết lập sẵn không làm thay đổi các ảnh bạn đã chỉnh sửa.",
+            "Thông báo ngoại tuyến phân biệt giữa một danh mục đã được lưu trong bộ nhớ đệm và một lần tải xuống ban đầu không khả dụng. Các quy trình chưa được lưu vào bộ nhớ đệm và ảnh ví dụ của người tạo có thể cần kết nối; Tích hợp sẵn và các quy trình đã cài đặt vẫn khả dụng.",
+            "Cập nhật LightTable có nghĩa là một thiết lập sẵn cần các tính năng mà phiên bản ứng dụng này không hỗ trợ. Các điều khiển cài đặt và áp dụng của nó vẫn bị vô hiệu hóa.",
+            "Mở trong LightTable trên trang thiết lập sẵn công khai sẽ mở phần chi tiết của nó trong ứng dụng đã cài đặt; nó không tự động áp dụng giao diện."
+          ]
+        },
+        {
+          "title": "Lưu, nhập và xuất",
+          "paragraphs": [
+            "Quản lý… mở hoặc đóng Quản lý thiết lập sẵn; nút được tô sáng khi phần này đang mở. Lưu giao diện hiện tại mặc định là Giao diện · giữ các chỉnh sửa ảnh. Chỉnh sửa Đầy đủ · bao gồm các chỉnh sửa ảnh cũng cung cấp Tất cả cài đặt điều chỉnh hoặc Chỉ các cài đặt đã thay đổi."
+          ],
+          "steps": [
+            "Chọn phạm vi của thiết lập sẵn và có bao gồm Hồ sơ phim cùng các cài đặt vật lý hay không, rồi nhấp Lưu mới… và đặt tên cho nó.",
+            "Để nhập, nhấp Import… và chọn các tệp thiết lập sẵn. Ứng dụng Mac cũng hỗ trợ chọn toàn bộ một thư mục thiết lập sẵn.",
+            "Xem lại kết quả nhập và phạm vi chuyển đổi của thiết lập sẵn mới trước khi áp dụng nó.",
+            "Để xuất, hãy chọn một thiết lập sẵn Đã chọn và Định dạng xuất, rồi bấm Xuất…."
+          ],
+          "tips": [
+            "Xuất LightTable giữ nguyên quy trình thiết lập sẵn gốc. Lightroom XMP và xuất kiểu Capture One chỉ mang tính xấp xỉ.",
+            "Các lựa chọn tệp được hỗ trợ bao gồm .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip và .json. Một phần mở rộng được chấp nhận không đảm bảo mọi cài đặt đều có thể được chuyển đổi.",
+            "Đối với một thiết lập sẵn Chỉnh sửa cũ hơn hoặc Đầy đủ, Áp dụng các điều chỉnh đã ánh xạ sẽ thay đổi các cài đặt được bao gồm của nó. Thay thế cài đặt điều chỉnh cũng sẽ đặt lại các điều chỉnh, mặt nạ, hiệu chỉnh Xóa bỏ và hình học trước. Thay thế giữ nguyên cắt xén và giữ Phim trừ khi thiết lập sẵn bao gồm Phim hoặc bạn bật Tắt Phim cho các hành động bên dưới."
+          ]
+        },
+        {
+          "title": "Chuẩn bị bài nộp cho cộng đồng",
+          "paragraphs": [
+            "Việc xuất bản Cộng đồng được xem xét. Phần gửi hiển thị chính xác các cài đặt Phát triển và Phim trong giao diện đã chuẩn bị, hành vi Phim của nó, và các hiệu chỉnh ảnh mà nó giữ lại. Không có gì được tải lên khi xem phần tóm tắt này hoặc chuẩn bị tải xuống."
+          ],
+          "steps": [
+            "Lưu một thiết lập sẵn trong Mục của bạn, chọn nó, rồi xem lại phần tóm tắt cài đặt được bao gồm trong gửi lên Cộng đồng.",
+            "Nhấp Chuẩn bị gửi lên cộng đồng… và chờ các ví dụ cục bộ được dựng. Lưu tệp ZIP chứa thiết lập sẵn, ba cặp ảnh trước/sau có giấy phép, tín dụng ảnh và ghi chú quyền.",
+            "Mở gói và xem xét các ví dụ. Bạn cũng có thể chọn ảnh của riêng mình và dùng Tải xuống ví dụ trên ảnh này để lưu một JPEG 960 pixel của giao diện được chia sẻ mà không thay đổi chỉnh sửa.",
+            "Nhấp Mở biểu mẫu gửi, đính kèm gói và mọi ví dụ bổ sung được phép, rồi thêm thông tin người tạo, mô tả và quyền xuất bản của bạn trước khi gửi."
+          ],
+          "tips": [
+            "Ba cảnh mẫu tiêu chuẩn được đóng gói cùng LightTable. Việc xuất của chúng không dùng ảnh hoặc danh mục của bạn, và các JPEG của chúng không chứa siêu dữ liệu ảnh nhúng.",
+            "Chuẩn bị gửi loại trừ các hiệu chỉnh dành riêng cho ảnh. Hãy kiểm tra giao diện kết quả trước khi chia sẻ.",
+            "Chỉ chia sẻ ảnh mà bạn có quyền xuất bản. Tín dụng người tạo và ghi công thiết lập sẵn gốc hiện có sẽ được giữ lại; quyền tái sử dụng quy trình và quyền hiển thị ảnh là tách biệt."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Chỉnh sửa"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Thay đổi từng màu riêng lẻ bằng Bộ trộn Màu và Màu điểm",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Chỉnh sửa"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Tìm, thử và chia sẻ các thiết lập sẵn chỉnh sửa",
-      "category": "Editing",
-      "summary": "Duyệt các giao diện tích hợp sẵn và từ cộng đồng, xem trước chúng trên ảnh của bạn, và lưu hoặc chia sẻ thiết lập sẵn của riêng bạn.",
-      "keywords": [
-        "thiết lập sẵn",
-        "thiết lập sẵn",
-        "cộng đồng",
-        "thư viện ảnh",
-        "tích hợp sẵn",
-        "mục yêu thích",
-        "ẩn sẵn đặt",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "mẫu LR",
-        "costyle",
-        "ltpreset",
-        "nhập thiết lập sẵn",
-        "lưu giao diện",
-        "thử sẵn đặt",
-        "cập nhật sẵn đặt",
-        "gửi sẵn đặt",
-        "thay thế các điều chỉnh"
-      ],
-      "sections": [
-        {
-          "title": "Chọn một bộ sưu tập",
-          "paragraphs": [
-            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa mười giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
-          ],
-          "steps": [
-            "Chọn Tích hợp sẵn, Mục của bạn, hoặc Cộng đồng. Tìm theo tên, mô tả, người tạo, hoặc đối tượng.",
-            "Dùng ngôi sao bên cạnh một thiết lập sẵn để đánh dấu yêu thích; Mục yêu thích lọc bộ sưu tập hiện tại.",
-            "Trong Cộng đồng, chọn Nổi bật, Mới, hoặc Tất cả và dùng Đối tượng để thu hẹp bộ sưu tập. Chọn một thiết lập sẵn để xem mô tả, người tạo, phiên bản, hành vi Phim và các ảnh ví dụ sẵn có."
-          ],
-          "tips": [
-            "Featured là một bộ sưu tập biên tập, không phải bảng xếp hạng độ phổ biến.",
-            "Một thiết lập sẵn tích hợp sẵn là chỉ đọc. Lưu một bản sao… sẽ đặt một bản sao có tên trong Mục của bạn. Ẩn thiết lập sẵn sẽ xóa nó khỏi chế độ xem Tích hợp sẵn thông thường; Hiển thị ẩn và Khôi phục về Tích hợp sẵn sẽ đưa nó trở lại."
-          ]
-        },
-        {
-          "title": "Thử trước khi áp dụng",
-          "paragraphs": [
-            "Thử trên ảnh này hiển thị bản xem trước cục bộ ngay trong phần chi tiết của thiết lập sẵn. Nó không thay đổi hay lưu chỉnh sửa của bạn, và ảnh của bạn không được tải lên thư viện cộng đồng."
-          ],
-          "steps": [
-            "Chọn một ảnh và một thiết lập sẵn, rồi bấm Thử trên ảnh này.",
-            "Hãy chờ bản xem trước, rồi dùng Trước khi và Cùng thiết lập sẵn để so sánh. Các ví dụ của Người tạo có các điều khiển trước/sau riêng và, khi có, một bộ chọn ảnh Ví dụ.",
-            "Nhấp Áp dụng để xác nhận thiết lập sẵn vào ảnh đang hoạt động. Dùng Hoàn tác trong phần chi tiết hoặc hành động Hoàn tác trong thông báo hoàn tất để khôi phục chỉnh sửa trước đó."
-          ],
-          "tips": [
-            "Chọn một thẻ, duyệt một thiết lập sẵn khác, hoặc đóng phần chi tiết sẽ không áp dụng nó.",
-            "Các lần áp dụng giao diện liên tiếp sẽ dùng chỉnh sửa từ trước giao diện đầu tiên, vì vậy cài đặt của một giao diện sẽ không cộng dồn sang giao diện tiếp theo. Một chỉnh sửa thủ công sau đó sẽ bắt đầu một điểm so sánh mới. Nếu bạn thay đổi ảnh hoặc cài đặt chỉnh sửa trong khi một phần chi tiết đang mở, hãy chọn lại thiết lập sẵn trước khi áp dụng."
-          ]
-        },
-        {
-          "title": "Điều mà một giao diện giữ lại",
-          "paragraphs": [
-            "Các giao diện Tích hợp sẵn và cộng đồng giữ lại Chỉnh sửa Phơi sáng, Temp/Sắc thái, cân bằng trắng khi chụp, hiệu chỉnh RAW, định dạng phim, cắt xén, hình học, mặt nạ, hiệu chỉnh Xóa bỏ, hiệu chỉnh ống kính, làm sắc nét và khử nhiễu. Chúng thay đổi các cài đặt sáng tạo được bao gồm trong quy trình của chúng.",
-            "Phim bật sẽ dùng hiệu ứng phim đi kèm. Phim tắt sẽ bỏ qua Phim. Phim không thay đổi sẽ giữ nguyên trạng thái bật của nó. Một hiệu ứng phim có thể cố ý thay đổi EV của Máy ảnh, đo sáng tự động, phát triển, in, hạt, và các điều khiển phim sáng tạo khác."
-          ],
-          "tips": [
-            "Giữ giao diện áp dụng cho các giao diện đã lưu với Look · giữ các chỉnh sửa ảnh. Một Chỉnh sửa Đầy đủ hoặc một thiết lập sẵn đã nhập cũ hơn có thể bao gồm các hiệu chỉnh dành riêng cho ảnh; hãy kiểm tra chi tiết của nó trước khi áp dụng."
-          ]
-        },
-        {
-          "title": "Thêm các thiết lập sẵn và bản cập nhật từ cộng đồng",
-          "paragraphs": [
-            "Thêm vào Mục của bạn sẽ tải xuống và lưu quy trình cộng đồng đã chọn mà không áp dụng nó. Các quy trình đã cài đặt hoạt động ngoại tuyến. Các chỉnh sửa ảnh hiện có của bạn lưu cài đặt của chúng tách biệt với thiết lập sẵn."
-          ],
-          "steps": [
-            "Chọn một thiết lập sẵn Community và bấm Thêm vào Của bạn.",
-            "Dùng sau từ Mục của bạn, hoặc quay lại Cộng đồng để xem trang thiết lập sẵn công khai.",
-            "Nhấp Tải lại để kiểm tra danh mục. Khi có phiên bản mới hơn, Cập nhật trong Mục của bạn chỉ thay thế quy trình đã lưu khi bạn chọn nó."
-          ],
-          "tips": [
-            "Cập nhật một thiết lập sẵn không làm thay đổi các ảnh bạn đã chỉnh sửa.",
-            "Thông báo ngoại tuyến phân biệt giữa một danh mục đã được lưu trong bộ nhớ đệm và một lần tải xuống ban đầu không khả dụng. Các quy trình chưa được lưu vào bộ nhớ đệm và ảnh ví dụ của người tạo có thể cần kết nối; Tích hợp sẵn và các quy trình đã cài đặt vẫn khả dụng.",
-            "Cập nhật LightTable có nghĩa là một thiết lập sẵn cần các tính năng mà phiên bản ứng dụng này không hỗ trợ. Các điều khiển cài đặt và áp dụng của nó vẫn bị vô hiệu hóa.",
-            "Mở trong LightTable trên trang thiết lập sẵn công khai sẽ mở phần chi tiết của nó trong ứng dụng đã cài đặt; nó không tự động áp dụng giao diện."
-          ]
-        },
-        {
-          "title": "Lưu, nhập và xuất",
-          "paragraphs": [
-            "Quản lý… mở hoặc đóng Quản lý thiết lập sẵn; nút được tô sáng khi phần này đang mở. Lưu giao diện hiện tại mặc định là Giao diện · giữ các chỉnh sửa ảnh. Chỉnh sửa Đầy đủ · bao gồm các chỉnh sửa ảnh cũng cung cấp Tất cả cài đặt điều chỉnh hoặc Chỉ các cài đặt đã thay đổi."
-          ],
-          "steps": [
-            "Chọn phạm vi của thiết lập sẵn và có bao gồm Hồ sơ phim cùng các cài đặt vật lý hay không, rồi nhấp Lưu mới… và đặt tên cho nó.",
-            "Để nhập, nhấp Import… và chọn các tệp thiết lập sẵn. Ứng dụng Mac cũng hỗ trợ chọn toàn bộ một thư mục thiết lập sẵn.",
-            "Xem lại kết quả nhập và phạm vi chuyển đổi của thiết lập sẵn mới trước khi áp dụng nó.",
-            "Để xuất, hãy chọn một thiết lập sẵn Đã chọn và Định dạng xuất, rồi bấm Xuất…."
-          ],
-          "tips": [
-            "Xuất LightTable giữ nguyên quy trình thiết lập sẵn gốc. Lightroom XMP và xuất kiểu Capture One chỉ mang tính xấp xỉ.",
-            "Các lựa chọn tệp được hỗ trợ bao gồm .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip và .json. Một phần mở rộng được chấp nhận không đảm bảo mọi cài đặt đều có thể được chuyển đổi.",
-            "Đối với một thiết lập sẵn Chỉnh sửa cũ hơn hoặc Đầy đủ, Áp dụng các điều chỉnh đã ánh xạ sẽ thay đổi các cài đặt được bao gồm của nó. Thay thế cài đặt điều chỉnh cũng sẽ đặt lại các điều chỉnh, mặt nạ, hiệu chỉnh Xóa bỏ và hình học trước. Thay thế giữ nguyên cắt xén và giữ Phim trừ khi thiết lập sẵn bao gồm Phim hoặc bạn bật Tắt Phim cho các hành động bên dưới."
-          ]
-        },
-        {
-          "title": "Chuẩn bị bài nộp cho cộng đồng",
-          "paragraphs": [
-            "Việc xuất bản Cộng đồng được xem xét. Phần gửi hiển thị chính xác các cài đặt Phát triển và Phim trong giao diện đã chuẩn bị, hành vi Phim của nó, và các hiệu chỉnh ảnh mà nó giữ lại. Không có gì được tải lên khi xem phần tóm tắt này hoặc chuẩn bị tải xuống."
-          ],
-          "steps": [
-            "Lưu một thiết lập sẵn trong Mục của bạn, chọn nó, rồi xem lại phần tóm tắt cài đặt được bao gồm trong gửi lên Cộng đồng.",
-            "Nhấp Chuẩn bị gửi lên cộng đồng… và chờ các ví dụ cục bộ được dựng. Lưu tệp ZIP chứa thiết lập sẵn, ba cặp ảnh trước/sau có giấy phép, tín dụng ảnh và ghi chú quyền.",
-            "Mở gói và xem xét các ví dụ. Bạn cũng có thể chọn ảnh của riêng mình và dùng Tải xuống ví dụ trên ảnh này để lưu một JPEG 960 pixel của giao diện được chia sẻ mà không thay đổi chỉnh sửa.",
-            "Nhấp Mở biểu mẫu gửi, đính kèm gói và mọi ví dụ bổ sung được phép, rồi thêm thông tin người tạo, mô tả và quyền xuất bản của bạn trước khi gửi."
-          ],
-          "tips": [
-            "Ba cảnh mẫu tiêu chuẩn được đóng gói cùng LightTable. Việc xuất của chúng không dùng ảnh hoặc danh mục của bạn, và các JPEG của chúng không chứa siêu dữ liệu ảnh nhúng.",
-            "Chuẩn bị gửi loại trừ các hiệu chỉnh dành riêng cho ảnh. Hãy kiểm tra giao diện kết quả trước khi chia sẻ.",
-            "Chỉ chia sẻ ảnh mà bạn có quyền xuất bản. Tín dụng người tạo và ghi công thiết lập sẵn gốc hiện có sẽ được giữ lại; quyền tái sử dụng quy trình và quyền hiển thị ảnh là tách biệt."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

@@ -109,6 +109,7 @@ console.log(JSON.stringify({
     def test_one_click_preserves_unmapped_edits_and_both_inputs(self):
         result = self.run_js("""
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const state = {
   params:{profile_enabled:true,stock:'existing'},
   grade:{exposure:1,contrast:0.4,hsl:{red:{h:0.2,s:0.3,l:0.1},blue:{s:0.2}}},
@@ -140,6 +141,7 @@ console.log(JSON.stringify({next,unchanged:before===JSON.stringify([state,preset
     def test_only_explicit_replacement_resets_unspecified_adjustments(self):
         result = self.run_js("""
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const state = {params:{profile_enabled:true,stock:'existing'},
   grade:{exposure:1,contrast:0.4,curveL:[0,1]},crop:{x:0.1,y:0.1,w:0.8,h:0.8},
   optics:{vertical:0.3},masks:[{id:'mask',type:'radial'}],heals:[{id:'heal'}],
@@ -163,6 +165,7 @@ console.log(JSON.stringify({next,filmOff:filmOff.params.profile_enabled}));
     def test_film_changes_require_inclusion_and_replace_only_when_requested(self):
         result = self.run_js("""
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const state = {params:{profile_enabled:false,stock:'base',grain_amount:0.4},
   grade:{exposure:0.2},optics:{},masks:[],heals:[]};
 const preset={includeFilm:true,params:{stock:'new',profile_enabled:true},grade:{contrast:0.3}};
@@ -186,6 +189,7 @@ console.log(JSON.stringify({included:included.params,excluded:excluded.params,re
     def test_look_preserves_photo_corrections_even_with_malformed_recipe(self):
         result = self.run_js("""
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const state={params:{stock:'base',profile_enabled:true,wb_mode:'custom',wb_temperature:5100,
   raw_profile:'camera',film_format:'120',linear_input:true,input_color_space:'camera',rotate:90},
   grade:{exposure:1.2,temp:0.2,tint:-0.1,sharpness:0.6,luminanceNoise:0.3,
@@ -246,6 +250,7 @@ console.log(JSON.stringify({ids,
         result = self.run_js("""
 import {readFileSync} from 'node:fs';
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const source=readFileSync('./web/app.js','utf8');
 const section=(first,last)=>source.slice(source.indexOf(first),source.indexOf(last));
 let LAST_PRESET_APPLICATION=null;
@@ -363,6 +368,7 @@ console.log(JSON.stringify({pending,beforeReady,ready}));
         result = self.run_js("""
 import {readFileSync} from 'node:fs';
 import {composePresetState} from './web/presets.js';
+import {presetEditState, reconcilePresetAdjustment} from './web/preset-amount.js';
 const source=readFileSync('./web/app.js','utf8');
 const section=(first,last)=>source.slice(source.indexOf(first),source.indexOf(last));
 let LAST_PRESET_APPLICATION=null;

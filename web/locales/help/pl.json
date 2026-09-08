@@ -1064,6 +1064,137 @@
       "categoryLabel": "Edycja"
     },
     {
+      "id": "editing-presets",
+      "title": "Zastosuj, dostosuj i udostępniaj presety edycji",
+      "category": "Editing",
+      "summary": "Kliknij preset, aby go zastosować, dostosuj Ilość i zapisz lub udostępnij własne wyglądy.",
+      "keywords": [
+        "preset",
+        "presety",
+        "społeczność",
+        "galeria",
+        "wbudowane",
+        "ulubione",
+        "ukryj ustawienie wstępne",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "importuj preset",
+        "zapisz wygląd",
+        "wypróbuj ustawienie wstępne",
+        "ilość presetu",
+        "siła presetu",
+        "wyłącz preset",
+        "zaktualizuj ustawienie wstępne",
+        "prześlij ustawienie wstępne",
+        "Zastąp korekty"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz kolekcję",
+          "paragraphs": [
+            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera dziesięć dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+          ],
+          "steps": [
+            "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
+            "Użyj gwiazdki obok ustawienia wstępnego, aby dodać je do ulubionych; Ulubione filtruje bieżącą kolekcję.",
+            "W Community wybierz Featured, New lub All i użyj Subject, aby zawęzić kolekcję. Wybierz preset, aby zobaczyć jego opis, twórcę, wersję, zachowanie filmu oraz dostępne zdjęcia przykładowe."
+          ],
+          "tips": [
+            "Polecane to kolekcja redakcyjna, a nie ranking popularności.",
+            "Wbudowany preset jest tylko do odczytu. Save a copy… umieszcza nazwaną kopię w Yours. Hide preset usuwa go ze zwykłego widoku Built-in; Show hidden i Restore to Built-in przywracają go."
+          ]
+        },
+        {
+          "title": "Zastosuj i dostosuj Ilość",
+          "paragraphs": [
+            "Kliknij kartę presetu, aby od razu zastosować go do głównego zdjęcia. Kliknij tę samą kartę ponownie albo użyj przycisku Włączone/Wył., aby go wyłączyć. Twoje zdjęcie pozostaje na tym komputerze."
+          ],
+          "steps": [
+            "Wybierz zdjęcie i kliknij kartę presetu. Wybrany preset pokazuje Ilość pod swoją nazwą.",
+            "Przeciągnij Ilość od 0% do 100%. Zero przywraca edycję sprzed presetu; 100% używa pełnego presetu. Kliknij dwukrotnie Ilość, aby zresetować ją do 100%.",
+            "Kliknięcie innego presetu zmienia wygląd. Cofnij i Ponów przywracają wybór presetu, stan włączenia i ilość. Wybrany preset i ilość są zapisywane z zdjęciem."
+          ],
+          "tips": [
+            "Nośnik filmowy, Film włącz/wył. oraz inne stałe opcje przełączają się przy każdej ilości powyżej zera. Ton, kolor, krzywe i regulacje liczbowe zmieniają się wraz z Ilością. Przykłady twórcy pozostają oddzielone od Twojego zdjęcia.",
+            "Przełączanie kart presetu używa edycji sprzed pierwszego presetu, aby wyglądy się nie kumulowały. Ręczne zmiany poza presetem, takie jak ekspozycja dla Wygląd, są zachowywane. Ręczna zmiana ustawienia kontrolowanego przez preset kończy jego dostosowanie Ilości; bieżąca edycja staje się wtedy punktem wyjścia dla następnego presetu."
+          ]
+        },
+        {
+          "title": "Co zachowuje wygląd",
+          "paragraphs": [
+            "Built-in i community looks zachowują Edycję Ekspozycji, Temp/Odcień, balans bieli z aparatu, korekcje RAW, format filmu, kadrowanie, geometrię, maski, korekcje Remove, korekcje obiektywu, wyostrzanie i redukcję szumu. Zmieniają ustawienia kreatywne zawarte w ich recepturze.",
+            "Film on włącza dołączone traktowanie filmu. Film off omija Film. Film unchanged pozostawia stan jego włączenia bez zmian. Traktowanie filmu może celowo zmieniać Camera EV, automatyczny pomiar, wywoływanie, drukowanie, ziarno i inne kreatywne kontrolki filmu."
+          ],
+          "tips": [
+            "Zachowanie wyglądu dotyczy wyglądów zapisanych z opcją Wygląd · zachowaj korekty zdjęcia. Edycja Pełny lub starszy zaimportowany preset może zawierać korekty specyficzne dla zdjęcia; przejrzyj wynikowe zdjęcie i użyj Cofnij, jeśli zmienia korekty, które chcesz zachować."
+          ]
+        },
+        {
+          "title": "Dodaj presety i aktualizacje społeczności",
+          "paragraphs": [
+            "Add to Yours pobiera i zapisuje wybraną recepturę społeczności bez jej stosowania. Zainstalowane receptury działają offline. Istniejące edycje zdjęć zapisują swoje ustawienia oddzielnie od presetu."
+          ],
+          "steps": [
+            "Kliknij preset Społeczność, aby użyć go na zdjęciu, a następnie kliknij Dodaj do Twoje, aby zachować kopię offline.",
+            "Możesz użyć tego później z Yours albo wrócić do Community, aby sprawdzić publiczną stronę ustawienia wstępnego.",
+            "Kliknij Odśwież, aby sprawdzić katalog. Gdy widoczna jest nowsza wersja, Update in Yours zastępuje zapisaną recepturę tylko wtedy, gdy ją wybierzesz."
+          ],
+          "tips": [
+            "Aktualizacja presetu nie zmienia zdjęć, które już edytowano.",
+            "Komunikat offline rozróżnia katalog z pamięci podręcznej od niedostępnego pierwszego pobrania. Niezbuforowane receptury i obrazy przykładów twórców mogą wymagać połączenia; Built-in i zainstalowane receptury pozostają dostępne.",
+            "Update LightTable oznacza, że preset wymaga funkcji, których ta wersja aplikacji nie obsługuje. Jego instalacja i sterowanie zastosowaniem pozostają wyłączone.",
+            "Open in LightTable na publicznej stronie presetu otwiera jego szczegóły w zainstalowanej aplikacji; nie stosuje wyglądu automatycznie."
+          ]
+        },
+        {
+          "title": "Zapisz, importuj i eksportuj",
+          "paragraphs": [
+            "Manage… otwiera lub zamyka Zarządzaj presetami; przycisk jest podświetlony, gdy sekcja jest otwarta. Save current look domyślnie ustawia Look · keep photo corrections. Full edit · include photo corrections oferuje też All adjustment settings lub Changed settings only."
+          ],
+          "steps": [
+            "Wybierz zakres presetu oraz to, czy uwzględnić profil filmu i ustawienia fizyczne, a następnie kliknij Zapisz jako nowe… i nadaj nazwę.",
+            "Aby importować, kliknij Importuj… i wybierz pliki presetów. Aplikacja na Macu obsługuje też wybór całego folderu presetów.",
+            "Sprawdź wynik importu i pokrycie konwersji nowego presetu, zanim go zastosujesz.",
+            "Aby wyeksportować, wybierz Wybrany preset i Format eksportu, a następnie kliknij Eksportuj…."
+          ],
+          "tips": [
+            "Eksport LightTable zachowuje natywną recepturę presetu. Eksporty Lightroom XMP i Capture One Style są przybliżone.",
+            "Obsługiwane wybory plików obejmują .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip i .json. Akceptowane rozszerzenie nie gwarantuje, że każde ustawienie da się przekonwertować.",
+            "W przypadku starszego lub Full edit presetu Apply mapped adjustments zmienia jego uwzględnione ustawienia. Replace adjustment settings najpierw resetuje też korekty, maski, korekcje Remove i geometrię. Replace zachowuje kadrowanie i zachowuje Film, chyba że preset zawiera Film albo włączysz Turn Film off dla działań poniżej."
+          ]
+        },
+        {
+          "title": "Przygotuj zgłoszenie do społeczności",
+          "paragraphs": [
+            "Publikacja w Community jest sprawdzana. Sekcja zgłoszenia pokazuje dokładne ustawienia Develop i Film w przygotowanym wyglądzie, jego zachowanie filmu oraz korekcje zdjęcia, które zachowuje. Nic nie jest przesyłane podczas sprawdzania tego podsumowania ani przygotowywania pobierania."
+          ],
+          "steps": [
+            "Zapisz preset w Yours, wybierz go i przejrzyj podsumowanie uwzględnionych ustawień w sekcji zgłoszenia do Community.",
+            "Kliknij Prepare community submission… i poczekaj na lokalne renderowanie przykładów. Zapisz plik ZIP zawierający preset, trzy licencjonowane pary zdjęć przed/po, informacje o prawach do zdjęć i uwagi dotyczące praw.",
+            "Otwórz pakiet i sprawdź przykłady. Możesz też wybrać własne zdjęcie i użyć Download example on this photo, aby zapisać plik JPEG 960 pikseli z udostępnionym wyglądem bez zmiany edycji.",
+            "Kliknij Otwórz formularz zgłoszeniowy, dołącz pakiet i wszelkie dodatkowe dozwolone przykłady, a przed wysłaniem dodaj dane twórcy, opis i uprawnienia do publikacji."
+          ],
+          "tips": [
+            "Trzy standardowe sceny przykładowe są dołączone do LightTable. Ich eksport nie używa Twoich fotografii ani katalogu, a ich pliki JPEG nie zawierają osadzonych metadanych zdjęć.",
+            "Przygotowanie zgłoszenia wyklucza korekcje specyficzne dla zdjęcia. Sprawdź wynikowy wygląd przed udostępnieniem go.",
+            "Udostępniaj tylko zdjęcia, które masz prawo publikować. Istniejące oznaczenie twórcy i atrybucja nadrzędnego presetu są zachowane; zgoda na ponowne użycie receptury i zgoda na wyświetlanie zdjęcia to osobne kwestie."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
       "id": "editing-color-mixer-point-color",
       "title": "Zmienia pojedyncze kolory za pomocą Mieszania kolorów i Punktowego koloru",
       "category": "Editing",
@@ -1283,134 +1414,6 @@
       "related": [
         "editing-lens-corrections",
         "editing-history-snapshots"
-      ],
-      "categoryLabel": "Edycja"
-    },
-    {
-      "id": "editing-presets",
-      "title": "Znajdź, wypróbuj i udostępniaj presety edycji",
-      "category": "Editing",
-      "summary": "Przeglądaj wbudowane i społecznościowe wyglądy, podglądaj je na swoim zdjęciu oraz zapisuj lub udostępniaj własne presety.",
-      "keywords": [
-        "preset",
-        "presety",
-        "społeczność",
-        "galeria",
-        "wbudowane",
-        "ulubione",
-        "ukryj ustawienie wstępne",
-        "Lightroom",
-        "Camera Raw",
-        "Capture One",
-        "xmp",
-        "lrtemplate",
-        "costyle",
-        "ltpreset",
-        "importuj preset",
-        "zapisz wygląd",
-        "wypróbuj ustawienie wstępne",
-        "zaktualizuj ustawienie wstępne",
-        "prześlij ustawienie wstępne",
-        "Zastąp korekty"
-      ],
-      "sections": [
-        {
-          "title": "Wybierz kolekcję",
-          "paragraphs": [
-            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera dziesięć dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
-          ],
-          "steps": [
-            "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
-            "Użyj gwiazdki obok ustawienia wstępnego, aby dodać je do ulubionych; Ulubione filtruje bieżącą kolekcję.",
-            "W Community wybierz Featured, New lub All i użyj Subject, aby zawęzić kolekcję. Wybierz preset, aby zobaczyć jego opis, twórcę, wersję, zachowanie filmu oraz dostępne zdjęcia przykładowe."
-          ],
-          "tips": [
-            "Polecane to kolekcja redakcyjna, a nie ranking popularności.",
-            "Wbudowany preset jest tylko do odczytu. Save a copy… umieszcza nazwaną kopię w Yours. Hide preset usuwa go ze zwykłego widoku Built-in; Show hidden i Restore to Built-in przywracają go."
-          ]
-        },
-        {
-          "title": "Wypróbuj przed zastosowaniem",
-          "paragraphs": [
-            "Try on this photo renderuje lokalny podgląd wewnątrz szczegółów presetu. Nie zmienia ani nie zapisuje edycji, a Twoje zdjęcie nie jest przesyłane do galerii społeczności."
-          ],
-          "steps": [
-            "Wybierz zdjęcie i preset, a następnie kliknij Wypróbuj na tym zdjęciu.",
-            "Poczekaj na podgląd, a następnie użyj Before i With preset, aby porównać. Przykłady twórców mają własne elementy sterujące przed/po oraz, gdy dostępne, selektor Example photo.",
-            "Kliknij Zastosuj, aby zatwierdzić preset dla aktywnego zdjęcia. Użyj Cofnij w szczegółach lub akcji Cofnij w komunikacie o zakończeniu, aby przywrócić poprzednią edycję."
-          ],
-          "tips": [
-            "Wybranie karty, przejrzenie innego ustawienia wstępnego lub zamknięcie szczegółów nie powoduje jego zastosowania.",
-            "Kolejne zastosowania wyglądu używają edycji sprzed pierwszego wyglądu, więc ustawienia jednego wyglądu nie kumulują się w następnym. Późniejsza ręczna edycja rozpoczyna nową podstawę porównania. Jeśli zmienisz zdjęcia lub ustawienia edycji, gdy szczegóły są otwarte, wybierz preset ponownie przed zastosowaniem."
-          ]
-        },
-        {
-          "title": "Co zachowuje wygląd",
-          "paragraphs": [
-            "Built-in i community looks zachowują Edycję Ekspozycji, Temp/Odcień, balans bieli z aparatu, korekcje RAW, format filmu, kadrowanie, geometrię, maski, korekcje Remove, korekcje obiektywu, wyostrzanie i redukcję szumu. Zmieniają ustawienia kreatywne zawarte w ich recepturze.",
-            "Film on włącza dołączone traktowanie filmu. Film off omija Film. Film unchanged pozostawia stan jego włączenia bez zmian. Traktowanie filmu może celowo zmieniać Camera EV, automatyczny pomiar, wywoływanie, drukowanie, ziarno i inne kreatywne kontrolki filmu."
-          ],
-          "tips": [
-            "Zachowanie wyglądu dotyczy wyglądów zapisanych z opcją Look · keep photo corrections. Full edit lub starszy importowany preset może zawierać korekcje specyficzne dla zdjęcia; sprawdź jego szczegóły przed zastosowaniem."
-          ]
-        },
-        {
-          "title": "Dodaj presety i aktualizacje społeczności",
-          "paragraphs": [
-            "Add to Yours pobiera i zapisuje wybraną recepturę społeczności bez jej stosowania. Zainstalowane receptury działają offline. Istniejące edycje zdjęć zapisują swoje ustawienia oddzielnie od presetu."
-          ],
-          "steps": [
-            "Wybierz preset Społeczności i kliknij Dodaj do Twoje.",
-            "Możesz użyć tego później z Yours albo wrócić do Community, aby sprawdzić publiczną stronę ustawienia wstępnego.",
-            "Kliknij Odśwież, aby sprawdzić katalog. Gdy widoczna jest nowsza wersja, Update in Yours zastępuje zapisaną recepturę tylko wtedy, gdy ją wybierzesz."
-          ],
-          "tips": [
-            "Aktualizacja presetu nie zmienia zdjęć, które już edytowano.",
-            "Komunikat offline rozróżnia katalog z pamięci podręcznej od niedostępnego pierwszego pobrania. Niezbuforowane receptury i obrazy przykładów twórców mogą wymagać połączenia; Built-in i zainstalowane receptury pozostają dostępne.",
-            "Update LightTable oznacza, że preset wymaga funkcji, których ta wersja aplikacji nie obsługuje. Jego instalacja i sterowanie zastosowaniem pozostają wyłączone.",
-            "Open in LightTable na publicznej stronie presetu otwiera jego szczegóły w zainstalowanej aplikacji; nie stosuje wyglądu automatycznie."
-          ]
-        },
-        {
-          "title": "Zapisz, importuj i eksportuj",
-          "paragraphs": [
-            "Manage… otwiera lub zamyka Zarządzaj presetami; przycisk jest podświetlony, gdy sekcja jest otwarta. Save current look domyślnie ustawia Look · keep photo corrections. Full edit · include photo corrections oferuje też All adjustment settings lub Changed settings only."
-          ],
-          "steps": [
-            "Wybierz zakres presetu oraz to, czy uwzględnić profil filmu i ustawienia fizyczne, a następnie kliknij Zapisz jako nowe… i nadaj nazwę.",
-            "Aby importować, kliknij Importuj… i wybierz pliki presetów. Aplikacja na Macu obsługuje też wybór całego folderu presetów.",
-            "Sprawdź wynik importu i pokrycie konwersji nowego presetu, zanim go zastosujesz.",
-            "Aby wyeksportować, wybierz Wybrany preset i Format eksportu, a następnie kliknij Eksportuj…."
-          ],
-          "tips": [
-            "Eksport LightTable zachowuje natywną recepturę presetu. Eksporty Lightroom XMP i Capture One Style są przybliżone.",
-            "Obsługiwane wybory plików obejmują .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip i .json. Akceptowane rozszerzenie nie gwarantuje, że każde ustawienie da się przekonwertować.",
-            "W przypadku starszego lub Full edit presetu Apply mapped adjustments zmienia jego uwzględnione ustawienia. Replace adjustment settings najpierw resetuje też korekty, maski, korekcje Remove i geometrię. Replace zachowuje kadrowanie i zachowuje Film, chyba że preset zawiera Film albo włączysz Turn Film off dla działań poniżej."
-          ]
-        },
-        {
-          "title": "Przygotuj zgłoszenie do społeczności",
-          "paragraphs": [
-            "Publikacja w Community jest sprawdzana. Sekcja zgłoszenia pokazuje dokładne ustawienia Develop i Film w przygotowanym wyglądzie, jego zachowanie filmu oraz korekcje zdjęcia, które zachowuje. Nic nie jest przesyłane podczas sprawdzania tego podsumowania ani przygotowywania pobierania."
-          ],
-          "steps": [
-            "Zapisz preset w Yours, wybierz go i przejrzyj podsumowanie uwzględnionych ustawień w sekcji zgłoszenia do Community.",
-            "Kliknij Prepare community submission… i poczekaj na lokalne renderowanie przykładów. Zapisz plik ZIP zawierający preset, trzy licencjonowane pary zdjęć przed/po, informacje o prawach do zdjęć i uwagi dotyczące praw.",
-            "Otwórz pakiet i sprawdź przykłady. Możesz też wybrać własne zdjęcie i użyć Download example on this photo, aby zapisać plik JPEG 960 pikseli z udostępnionym wyglądem bez zmiany edycji.",
-            "Kliknij Otwórz formularz zgłoszeniowy, dołącz pakiet i wszelkie dodatkowe dozwolone przykłady, a przed wysłaniem dodaj dane twórcy, opis i uprawnienia do publikacji."
-          ],
-          "tips": [
-            "Trzy standardowe sceny przykładowe są dołączone do LightTable. Ich eksport nie używa Twoich fotografii ani katalogu, a ich pliki JPEG nie zawierają osadzonych metadanych zdjęć.",
-            "Przygotowanie zgłoszenia wyklucza korekcje specyficzne dla zdjęcia. Sprawdź wynikowy wygląd przed udostępnieniem go.",
-            "Udostępniaj tylko zdjęcia, które masz prawo publikować. Istniejące oznaczenie twórcy i atrybucja nadrzędnego presetu są zachowane; zgoda na ponowne użycie receptury i zgoda na wyświetlanie zdjęcia to osobne kwestie."
-          ]
-        }
-      ],
-      "related": [
-        "editing-history-snapshots",
-        "editing-copy-paste-match-exposure",
-        "film-getting-started",
-        "editing-curves"
       ],
       "categoryLabel": "Edycja"
     },
@@ -2939,5 +2942,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "195906f684ddf24e03e1d3cdb015ec0c81597b765d99d5d371bc34371d2418f8"
+  "sourceDigest": "237637ceb3d5d2fbc75ff273198b761d8c9b990c0f607647de0fc9c222b839cf"
 }

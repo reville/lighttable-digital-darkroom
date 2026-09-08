@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import json
 
 
 class ValidationError(ValueError):
@@ -62,7 +63,7 @@ def clean_state_patch(raw: dict, *, params_cleaner, grade_cleaner,
     allowed = {
         "name", "origin", "historyLabel", "status", "rating", "label",
         "params", "grade", "crop", "masks", "heals", "optics",
-        "keywords", "versions",
+        "keywords", "versions", "preset",
     }
     issues: list[dict] = []
     for key in raw:
@@ -97,6 +98,30 @@ def clean_state_patch(raw: dict, *, params_cleaner, grade_cleaner,
             continue
         cleaned[key] = cleaner(raw[key])
         _compare(raw[key], cleaned[key], key, issues, allowed=known)
+    if "preset" in raw:
+        value = raw["preset"]
+        cleaned["preset"] = None
+        valid = isinstance(value, dict) and isinstance(value.get("id"), str) and \
+            0 < len(value["id"]) <= 200 and isinstance(value.get("name"), str) and \
+            len(value["name"]) <= 200 and isinstance(value.get("enabled"), bool) and \
+            type(value.get("amount")) in (int, float) and \
+            math.isfinite(value["amount"]) and 0 <= value["amount"] <= 100
+        if valid and len(json.dumps(value)) <= 2_000_000:
+            states = {}
+            for side in ("base", "target"):
+                state = value.get(side)
+                if not isinstance(state, dict) or not all(
+                        isinstance(state.get(key), dict) for key in ("params", "grade", "optics")) or not all(
+                        isinstance(state.get(key), list) for key in ("masks", "heals")):
+                    valid = False
+                    break
+                states[side] = {key: cleaners[key][0](state[key]) for key in
+                                ("params", "grade", "masks", "heals", "optics")}
+            if valid:
+                cleaned["preset"] = {key: value[key] for key in ("id", "name", "amount", "enabled")}
+                cleaned["preset"].update(states)
+        if value is not None and cleaned["preset"] is None:
+            issues.append({"path": "preset", "kind": "invalid"})
     if strict and issues:
         raise ValidationError(issues)
     return cleaned, issues
