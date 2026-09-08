@@ -141,3 +141,13 @@ test('browser folder flow adds source through server before completing', async (
   await f.click('setupDone');
   assert.equal(f.writes[1].body.firstRunSetup.source, 'folder');
 });
+
+test('stopped selected import keeps successful photos and reports the stop', () => {
+  const f = fixture({ native: true });
+  f.controller.nativeEvent({ type: 'sources', firstRun: true, photosLibraryImportAvailable: true });
+  f.controller.nativeEvent({ type: 'photosImported', count: 2, failures: 1, cancelled: true });
+  assert.equal(f.all.get('setupHeading-result').textContent, 'Import stopped');
+  assert.match(f.all.get('setupResultMessage').textContent, /2 photos imported/);
+  assert.match(f.all.get('setupResultMessage').textContent, /1 could not be imported/);
+  assert.equal(f.open(), true);
+});

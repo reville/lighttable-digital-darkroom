@@ -973,21 +973,20 @@
 
 <div class="modal-backdrop setup-backdrop" id="firstRunDialog" aria-hidden="true">
   <section class="setup-window" id="setupPanel" role="dialog" aria-modal="true" aria-labelledby="setupWelcome">
-    <div class="setup-brand"><svg class="setup-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10v12h12M10 17h12M17 10v12" stroke="currentColor" stroke-width="1.5"/></svg><span>LightTable</span></div>
+    <div class="setup-brand"><img class="setup-mark" src="/app-icon.png" width="30" height="30" alt=""><span>LightTable</span></div>
     <div data-setup-page="choices">
       <h1 id="setupWelcome" tabindex="-1">Where are your photos?</h1>
-      <p class="setup-intro">Choose a place to start. Make yourself at home.</p>
       <div class="setup-options">
-        <button class="setup-option" id="setupLightroom"><span class="setup-option-icon setup-lr" aria-hidden="true">Lr</span><span><strong>Move from Lightroom</strong><small>Bring your catalog, ratings, and collections.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
+        <button class="setup-option" id="setupLightroom"><span class="setup-option-icon setup-lr" aria-hidden="true">Lr</span><span><strong>Import from Lightroom</strong><small>Bring in your catalog, ratings, and collections. Won’t disrupt or edit your Lightroom setup or library in any way. Photos stay in their current folders and are referenced, not duplicated.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
         <button class="setup-option" id="setupPhotos"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="16" cy="16" rx="5" ry="13"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(45 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(90 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(135 16 16)"/></svg></span><span><strong>Apple Photos</strong><small>Start with the photos in your Mac’s library.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
         <button class="setup-option" id="setupFolder"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10V7a2 2 0 0 1 2-2h7l3 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10Z"/><path d="M3 12h26"/></svg></span><span><strong>Choose a folder</strong><small>Browse photos right where they are.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
       </div>
       <p class="setup-caption">You can add more sources any time.</p>
     </div>
     <div class="setup-detail" data-setup-page="lightroom" hidden>
-      <h2 id="setupHeading-lightroom" tabindex="-1">Bring your Lightroom library</h2>
+      <h2 id="setupHeading-lightroom" tabindex="-1">Import from Lightroom</h2>
       <p class="setup-intro">Start with a Lightroom Classic catalog.</p>
-      <ul class="setup-facts"><li>Your originals stay where they are. Your Lightroom catalog stays unchanged.</li><li>Bring ratings, keywords, collections, and supported edits. Develop settings are approximate.</li><li>Close Lightroom Classic, then choose its <strong>.lrcat</strong> file. You’ll review what to import before starting.</li></ul>
+      <ul class="setup-facts"><li>Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.</li><li>Bring ratings, keywords, collections, and supported edits. Develop settings are approximate.</li><li>Close Lightroom Classic, then choose its <strong>.lrcat</strong> file. You’ll review what to import before starting.</li></ul>
       <button class="accent-btn" id="setupCatalogChoose">Choose catalog…</button>
       <p class="setup-availability">Using cloud-based Lightroom? Export your originals to a folder, then choose that folder here.</p>
     </div>

@@ -479,7 +479,7 @@ window.lightTableNativeEvent = (event) => {
   if (event?.type === 'photosImported') {
     const count = +event.count || 0;
     const failures = +event.failures || 0;
-    toast(`Imported ${count} photo${count === 1 ? '' : 's'} from Apple Photos${failures ? ` · ${failures} failed` : ''}`);
+    toast(`${event.cancelled ? 'Import stopped · ' : ''}Imported ${count} photo${count === 1 ? '' : 's'} from Apple Photos${failures ? ` · ${failures} failed` : ''}`);
     return;
   }
   if (event?.type === 'nativeInteractionPresented') {
