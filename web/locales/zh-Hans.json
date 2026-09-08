@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "当导出完成后，点击完成通知第二行中的“在 Finder 中显示”，即可打开已导出照片所在的文件夹。通知会持续显示 2.8 秒。",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "查看配对照片时，可在顶部附近使用 RAW → JPEG 或 JPEG → RAW 切换到其伴侣文件。",
     "Where are your photos?": "你的照片在哪里？",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "窗口打开期间，LightTable 会记住每张照片的平移位置，并在切换照片时保持当前缩放比例。新照片默认居中显示。",
     "While using Add, hold Option on Mac to subtract temporarily.": "在使用 添加 时，按住 Mac 上的 Option 可暂时减去。",
     "White": "白色",
     "White balance eyedropper": "白平衡吸管",

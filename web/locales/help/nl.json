@@ -226,7 +226,8 @@
             "De rechterzijbalk gebruikt pictogramknoppen voor Bewerken, Film, Bijsnijden, Verwijderen, Maskering, Info, Geschiedenis en Voorinstellingen. Beweeg de aanwijzer over een pictogram om de naam ervan te zien.",
             "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
             "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen.",
-            "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct."
+            "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
+            "Zolang het venster open is, onthoudt LightTable de verschoven positie van elke foto en behoudt het huidige zoomniveau wanneer je van foto wisselt. Nieuwe foto’s worden gecentreerd weergegeven."
           ],
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
@@ -3136,5 +3137,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

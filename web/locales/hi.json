@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "जब निर्यात पूरा हो जाए, तो पूर्णता सूचना की दूसरी पंक्ति पर Finder में दिखाएँ पर क्लिक करके निर्यात की गई फ़ोटो वाला फ़ोल्डर खोलें। यह सूचना 2.8 सेकंड तक दिखाई रहती है।",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "paired फ़ोटो देखते समय, उसके साथी पर स्विच करने के लिए ऊपर RAW → JPEG या JPEG → RAW का उपयोग करें।",
     "Where are your photos?": "आपकी फ़ोटो कहाँ हैं?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "जब तक विंडो खुली रहती है, LightTable हर फ़ोटो की पैन स्थिति याद रखता है और फ़ोटो बदलने पर मौजूदा ज़ूम स्तर बनाए रखता है। नई फ़ोटो बीच में दिखाई देती हैं।",
     "While using Add, hold Option on Mac to subtract temporarily.": "Add का उपयोग करते समय, Mac पर अस्थायी रूप से घटाने के लिए Option दबाए रखें।",
     "White": "सफ़ेद",
     "White balance eyedropper": "White balance eyedropper",

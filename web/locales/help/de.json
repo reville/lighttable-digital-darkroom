@@ -226,7 +226,8 @@
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
-            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt."
+            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
+            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -3136,5 +3137,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

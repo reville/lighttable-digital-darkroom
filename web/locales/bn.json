@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "যখন রপ্তানি শেষ হয়, তখন সমাপ্তির বিজ্ঞপ্তির দ্বিতীয় লাইনে থাকা Finder-এ দেখান-এ ক্লিক করুন, যাতে রপ্তানিকৃত ছবির ধারণকারী ফোল্ডার খুলে যায়। বিজ্ঞপ্তিটি 2.8 সেকেন্ড ধরে দৃশ্যমান থাকে।",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "জোড়া ফটো দেখার সময়, তার সঙ্গীটিতে যেতে উপরের কাছে RAW → JPEG বা JPEG → RAW ব্যবহার করুন।",
     "Where are your photos?": "আপনার ফটোগুলি কোথায়?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "উইন্ডো খোলা থাকা অবস্থায় LightTable প্রতিটি ছবির প্যান অবস্থান মনে রাখে এবং ছবি বদলানোর সময় বর্তমান জুমের মাত্রা বজায় রাখে। নতুন ছবিগুলো মাঝখানে দেখানো হয়।",
     "While using Add, hold Option on Mac to subtract temporarily.": "Add ব্যবহার করার সময়, সাময়িকভাবে subtract করতে Mac-এ Option ধরে রাখুন।",
     "White": "সাদা",
     "White balance eyedropper": "White balance আইড্রপার",

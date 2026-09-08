@@ -92,6 +92,9 @@ skipped, and labels converted settings as approximate:
 different render engines produce different results. See
 [preset interchange](PRESET-INTERCHANGE.md) for compatibility details.
 
+In Detail, switching photos keeps the current zoom level and restores each
+photo’s pan position for the current window session. New photos start centered.
+
 ### A full editing workflow
 
 RGB curves, Point Color, four-way Color Grading, local masks, heal and clone,

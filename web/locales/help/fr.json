@@ -226,7 +226,8 @@
             "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
             "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
             "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
-            "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement."
+            "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement.",
+            "Tant que la fenêtre reste ouverte, LightTable mémorise la position de chaque photo dans la vue et conserve le niveau de zoom actuel lorsque vous changez de photo. Les nouvelles photos s’affichent centrées."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -3136,5 +3137,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

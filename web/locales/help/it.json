@@ -226,7 +226,8 @@
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
-            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente."
+            "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
+            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -3136,5 +3137,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

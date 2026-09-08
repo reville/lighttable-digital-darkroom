@@ -226,7 +226,8 @@
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
-            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente."
+            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
+            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -3136,5 +3137,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }
