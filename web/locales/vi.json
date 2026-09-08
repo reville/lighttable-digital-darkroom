@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Máy ảnh hiện tại",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Định dạng hiện tại giữ nguyên biểu diễn hiện tại của tài sản, bao gồm RAW hoặc độ sâu nhúng khi có. Tương thích tạo ra một hình ảnh có thể đọc rộng rãi. Các tệp đã chọn được sao chép vào {path}.",
     "Current photo": "Ảnh hiện tại",
+    "Current photo / total photos": "Ảnh hiện tại / tổng số ảnh",
     "Current settings": "Cài đặt hiện tại",
     "Current stock": "Phim hiện tại",
     "Curve": "Đường cong",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Điều khiển trượt khi giữ phím",
     "Horizontal": "Ngang",
     "Hourly": "Hàng giờ",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
     "Hue": "Sắc độ",
     "Hue shift": "Dịch chuyển sắc độ",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Ảnh đang được mở ở chế độ thư mục và danh mục bị hư hỏng chưa bị thay đổi. Mở Tình trạng thư viện để cứu dữ liệu, khôi phục từ bản sao lưu, hoặc bắt đầu một danh mục mới.",
     "Photos could not be imported. Try again or choose a folder.": "Không thể nhập ảnh. Hãy thử lại hoặc chọn một thư mục.",
     "Photos set aside": "Ảnh được để riêng",
+    "Photos shown / total photos in this folder or collection": "Số ảnh hiển thị / tổng số ảnh trong thư mục hoặc bộ sưu tập này",
     "Photos stay in their current folder. No moving or copying required.": "Ảnh vẫn ở trong thư mục hiện tại của chúng. Không cần di chuyển hay sao chép.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Ảnh vẫn ở trong thư mục hiện tại của chúng. Bạn có thể thêm thêm thư mục bất cứ lúc nào.",
     "Photos unstacked": "Ảnh đã bỏ ngăn xếp",
@@ -2432,7 +2435,7 @@
     "Search": "Tìm kiếm",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Tìm kiếm bao gồm tiêu đề bài viết, tên công cụ và toàn bộ hướng dẫn. Chọn Tất cả chủ đề để tìm kiếm trong toàn bộ ứng dụng.",
     "Search film stocks": "Tìm kiếm phim",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Tìm một tên phim, dùng Previous hoặc Next để duyệt, rồi chọn một bản xem trước để áp dụng nó.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Tìm tên phim hoặc cuộn qua các bản xem trước, rồi chọn một bản để áp dụng. Các bản xem trước được phóng to và cắt để thấy rõ chi tiết hơn.",
     "Search help": "Tìm trợ giúp",
     "Search index: {value}": "Chỉ mục tìm kiếm: {value}",
     "Search objects, scenes, text, and faces": "Tìm đối tượng, cảnh, văn bản và khuôn mặt",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "đã giữ lại {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Tên phản ánh các tệp hiện có và có thể thay đổi trước khi xuất.",
     "{value}× stock baseline": "mốc phim cơ sở {value}×",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} trong {stocksLength} phim",
     "— none —": "— không —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” có các tinh chỉnh được sơn. Hãy tạo lại nó trên ảnh này hoặc loại trừ các mặt nạ.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” cần một vùng chọn đối tượng mới. Loại trừ các mặt nạ để dán các chỉnh sửa khác.",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ Quay lại",
     "← Back to articles": "← Quay lại bài viết",
     "← People": "← Mọi người",
-    "☆ Favorites": "☆ Mục yêu thích"
+    "☆ Favorites": "☆ Mục yêu thích",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
   },
   "plurals": {
     " · {count} paired file linked": {

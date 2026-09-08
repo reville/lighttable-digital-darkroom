@@ -223,7 +223,8 @@
           "title": "Zwischen Ansichten wechseln",
           "paragraphs": [
             "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung.",
-            "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen."
+            "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
+            "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -2184,7 +2185,7 @@
             "Öffnen Sie ein Standbild und wählen Sie Film in der Werkzeugleiste, um Realistic Film Simulation zu öffnen.",
             "Schalten Sie den Filmprofil-Schalter ein. Physische Filmstufen wird automatisch geöffnet; Sie können es danach einklappen.",
             "Wählen Sie Film, oder klicken Sie auf Filmvorschauen auf diesem Foto…, um gerenderte Beispiele zu vergleichen.",
-            "Suchen Sie nach einem Filmnamen, verwenden Sie Previous oder Next zum Durchblättern und wählen Sie dann eine Vorschau zum Anwenden aus."
+            "Suchen Sie nach einem Filmnamen oder scrollen Sie durch die Vorschauen. Wählen Sie eine Vorschau aus, um den Film anzuwenden. Die Vorschauen sind vergrößert und zugeschnitten, damit mehr Details sichtbar sind."
           ]
         },
         {
@@ -3022,7 +3023,8 @@
           "paragraphs": [
             "Eine 100%-Zoom-Einstellung garantiert nicht, dass alle Bilddetails bereits angekommen sind. Möglicherweise erscheint zuerst eine schnelle Vorschau, während die genaue RAW-Verarbeitung und eine größere Vorschau fertig werden. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, mit einer Anzeige wie 2 / 5. Er verschwindet, sobald eine verwendbare Vorschau angezeigt wird; die genaue RAW-Verarbeitung und größere Vorschauen laufen im Hintergrund ohne Überlagerung weiter. Die Anzeige steht für abgeschlossene Schritte, nicht für die verbleibende Zeit. Reduzierte Bewegung behält dieselben Schrittaktualisierungen ohne Animation bei. Das Foto bleibt sichtbar, ohne abgedunkelt zu werden. Bei 1:1 zeigen Sie mit dem Mauszeiger auf den 1:1-Button, um zu prüfen, ob die vollständigen Quellendetails bereit sind, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
-            "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen."
+            "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen.",
+            "Wenn die Abmessungen des Originals fehlen, zeigt die Zoomanzeige — und 1:1 ist deaktiviert. Auto passt sich weiterhin dem Bildschirm an. Scannen Sie den Ordner erneut, um die Abmessungen zu aktualisieren."
           ],
           "steps": [
             "Einstellungen → Leistung öffnen.",
@@ -3073,5 +3075,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

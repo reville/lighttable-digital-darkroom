@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Fotocamera corrente",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Il formato corrente conserva la rappresentazione attuale dell'asset, inclusi RAW o profondità incorporata quando disponibile. Compatibile crea un'immagine ampiamente leggibile. I file selezionati vengono copiati in {path}.",
     "Current photo": "Foto corrente",
+    "Current photo / total photos": "Foto attuale / totale delle foto",
     "Current settings": "Impostazioni correnti",
     "Current stock": "Pellicola corrente",
     "Curve": "Curva",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Controllo cursore con tasto premuto",
     "Horizontal": "Orizzontale",
     "Hourly": "Oraria",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
     "Hue": "Tonalità",
     "Hue shift": "Spostamento tonalità",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Le foto sono aperte in modalità cartella e il catalogo danneggiato non è stato modificato. Apri Salute libreria per recuperarlo, ripristinare un backup o avviare un nuovo catalogo.",
     "Photos could not be imported. Try again or choose a folder.": "Impossibile importare le foto. Riprova o scegli una cartella.",
     "Photos set aside": "Foto messe da parte",
+    "Photos shown / total photos in this folder or collection": "Foto mostrate / totale delle foto in questa cartella o raccolta",
     "Photos stay in their current folder. No moving or copying required.": "Le foto restano nella loro cartella attuale. Non è necessario spostarle o copiarle.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Le foto restano nella loro cartella attuale. Puoi aggiungere altre cartelle quando vuoi.",
     "Photos unstacked": "Foto separate dalla pila",
@@ -2432,7 +2435,7 @@
     "Search": "Cerca",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "La ricerca copre i titoli degli articoli, i nomi degli strumenti e tutte le istruzioni. Scegli Tutti gli argomenti per cercare in tutta l'app.",
     "Search film stocks": "Cerca pellicole",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Cerca un nome di pellicola, usa Precedente o Successivo per sfogliare, quindi scegli un’anteprima per applicarla.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Cerca il nome di una pellicola o scorri le anteprime, poi scegline una per applicarla. Le anteprime sono ingrandite e ritagliate per mostrare più dettagli.",
     "Search help": "Cerca nella guida",
     "Search index: {value}": "Indice di ricerca: {value}",
     "Search objects, scenes, text, and faces": "Cerca oggetti, scene, testo e volti",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "{value}% mantenuto",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}I nomi riflettono i file esistenti e possono cambiare prima dell'esportazione.",
     "{value}× stock baseline": "baseline pellicola {value}×",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} di {stocksLength} pellicole",
     "— none —": "— nessuno —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” ha rifiniture dipinte. Ricreala su questa foto oppure escludi le maschere.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” richiede una nuova selezione dell'oggetto. Escludi le maschere per incollare altre modifiche.",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti"
+    "☆ Favorites": "☆ Preferiti",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
   },
   "plurals": {
     " · {count} paired file linked": {

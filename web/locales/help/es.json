@@ -223,7 +223,8 @@
           "title": "Mover entre vistas",
           "paragraphs": [
             "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
-            "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre."
+            "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
+            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -2184,7 +2185,7 @@
             "Abre una foto fija y selecciona Película en la barra de herramientas para abrir Simulación realista de película.",
             "Active el interruptor de perfil de película. Etapas físicas de la película se abre automáticamente; después puede contraerlo.",
             "Elige Stock, o haz clic en Previsualizar stocks en esta foto… para comparar ejemplos renderizados.",
-            "Busca un nombre de stock, usa Anterior o Siguiente para explorar y luego elige una vista previa para aplicarlo."
+            "Busca el nombre de una película o desplázate por las vistas previas y elige una para aplicarla. Las vistas previas se amplían y recortan para mostrar más detalle."
           ]
         },
         {
@@ -3022,7 +3023,8 @@
           "paragraphs": [
             "Una configuración de zoom al 100% no garantiza que haya llegado el detalle completo de la imagen. Es posible que aparezca primero una vista previa rápida mientras terminan el procesamiento RAW preciso y una vista previa más grande. La barra de progreso se llena a medida que finalizan las etapas del procesamiento de la vista previa, con un recuento como 2 / 5. Desaparece en cuanto se muestra una vista previa utilizable; el procesamiento RAW preciso y las vistas previas más grandes continúan en segundo plano sin la superposición. El recuento representa las etapas completadas, no el tiempo restante. El movimiento reducido conserva las mismas actualizaciones de etapa sin animación. La foto permanece visible sin oscurecerse. En 1:1, pase el cursor sobre el botón 1:1 para comprobar si el detalle completo de la fuente está listo antes de evaluar el detalle fino.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
-            "Quitar, Corregir, Clonar y las máscaras con Textura o Claridad necesitan una actualización adicional de la vista previa. Espere a que termine la vista previa antes de juzgar su detalle o el efecto de los ajustes posteriores."
+            "Quitar, Corregir, Clonar y las máscaras con Textura o Claridad necesitan una actualización adicional de la vista previa. Espere a que termine la vista previa antes de juzgar su detalle o el efecto de los ajustes posteriores.",
+            "Si las dimensiones del original no están disponibles, el porcentaje de zoom muestra — y 1:1 está desactivado. Auto sigue ajustándose a la pantalla. Vuelve a escanear la carpeta para actualizar las dimensiones."
           ],
           "steps": [
             "Abrir Configuración → Rendimiento.",
@@ -3073,5 +3075,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

@@ -223,7 +223,8 @@
           "title": "Passa tra le viste",
           "paragraphs": [
             "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
-            "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome."
+            "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
+            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -2184,7 +2185,7 @@
             "Apri una foto fissa e seleziona Pellicola nella barra strumenti per aprire Simulazione pellicola realistica.",
             "Attiva l'interruttore del profilo Pellicola. Fasi fisiche della pellicola si apre automaticamente; puoi comprimerlo in seguito.",
             "Scegli Pellicola, oppure fai clic su Visualizza pellicole su questa foto… per confrontare esempi renderizzati.",
-            "Cerca un nome di pellicola, usa Precedente o Successivo per sfogliare, quindi scegli un’anteprima per applicarla."
+            "Cerca il nome di una pellicola o scorri le anteprime, poi scegline una per applicarla. Le anteprime sono ingrandite e ritagliate per mostrare più dettagli."
           ]
         },
         {
@@ -3022,7 +3023,8 @@
           "paragraphs": [
             "Un'impostazione di zoom al 100% non garantisce che sia arrivato il dettaglio completo dell'immagine. Potrebbe apparire prima un'anteprima rapida mentre l'elaborazione RAW accurata e un'anteprima più grande terminano. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano, con un conteggio come 2 / 5. Scompare non appena viene visualizzata un'anteprima utilizzabile; l'elaborazione RAW accurata e le anteprime più grandi continuano in background senza la sovrapposizione. Il conteggio rappresenta le fasi completate, non il tempo rimanente. Il movimento ridotto mantiene gli stessi aggiornamenti di fase senza animazione. La foto rimane visibile senza oscurarsi. A 1:1, passa il mouse sopra il pulsante 1:1 per verificare se il dettaglio completo della sorgente è pronto prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
-            "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive."
+            "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive.",
+            "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
           ],
           "steps": [
             "Apri Impostazioni → Prestazioni.",
@@ -3073,5 +3075,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

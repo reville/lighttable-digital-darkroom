@@ -43,7 +43,7 @@ MERGE_DIR_NAME = "LightTable Merges"
 SKIP_DIRS = {EXPORT_DIR_NAME, "__pycache__"}
 
 HEADER_CHUNK = 65536
-METADATA_VERSION = 4
+METADATA_VERSION = 5
 
 
 class _ChangedScanSource(OSError):
@@ -251,12 +251,22 @@ def read_metadata(path: Path) -> dict:
         for item in data:
             key = item.key()
             if key.endswith((".PixelXDimension", ".PixelYDimension",
-                             ".ImageWidth", ".ImageLength")):
+                             ".ImageWidth", ".ImageHeight", ".ImageLength")):
                 dimension_fields[key] = item.toString()
     except Exception:
         dimension_fields = {}
     out["width"], out["height"] = _largest_image_dimensions(
         dimension_fields)
+    if out["width"] is None or out["height"] is None:
+        # JPEG/PNG files without EXIF still have dimensions in their header.
+        # Prefer the complete metadata pair above for RAW active-image sizes.
+        try:
+            width = _positive_int(image.pixelWidth())
+            height = _positive_int(image.pixelHeight())
+            if width is not None and height is not None:
+                out["width"], out["height"] = width, height
+        except Exception:
+            pass
     text = value("Exif.Image.Orientation")
     try:
         out["orientation"] = int(text) if text else None

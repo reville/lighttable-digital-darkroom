@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Câmera atual",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Formato atual preserva a representação presente do arquivo, incluindo RAW ou profundidade incorporada quando disponível. Compatível cria uma imagem amplamente legível. Os arquivos selecionados são copiados para {path}.",
     "Current photo": "Foto atual",
+    "Current photo / total photos": "Foto atual / total de fotos",
     "Current settings": "Configurações atuais",
     "Current stock": "Filme atual",
     "Curve": "Curva",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Controle deslizante com tecla pressionada",
     "Horizontal": "Horizontal",
     "Hourly": "Por hora",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
     "Hue": "Matiz",
     "Hue shift": "Deslocamento de matiz",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "As fotos estão abertas no modo de pasta e o catálogo danificado não foi alterado. Abra a Saúde da Biblioteca para salvá-lo, restaurar um backup ou iniciar um novo catálogo.",
     "Photos could not be imported. Try again or choose a folder.": "Não foi possível importar as fotos. Tente novamente ou escolha uma pasta.",
     "Photos set aside": "Fotos separadas",
+    "Photos shown / total photos in this folder or collection": "Fotos exibidas / total de fotos nesta pasta ou coleção",
     "Photos stay in their current folder. No moving or copying required.": "As fotos permanecem na pasta atual. Não é necessário mover nem copiar.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "As fotos permanecem na pasta atual. Você pode adicionar mais pastas quando quiser.",
     "Photos unstacked": "Fotos desagrupadas",
@@ -2432,7 +2435,7 @@
     "Search": "Pesquisar",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "A pesquisa abrange títulos de artigos, nomes de ferramentas e todas as instruções. Escolha Todos os tópicos para pesquisar em todo o app.",
     "Search film stocks": "Pesquisar filmes",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Pesquise pelo nome de um stock de filme, use Previous ou Next para navegar e, depois, escolha uma pré-visualização para aplicá-lo.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Pesquise o nome de um filme ou percorra as pré-visualizações e escolha uma para aplicá-la. As pré-visualizações são ampliadas e recortadas para mostrar mais detalhes.",
     "Search help": "Pesquisar ajuda",
     "Search index: {value}": "Índice de pesquisa: {value}",
     "Search objects, scenes, text, and faces": "Pesquise objetos, cenas, texto e rostos",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "{value}% retidos",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Os nomes refletem arquivos existentes e podem mudar antes da exportação.",
     "{value}× stock baseline": "{value}× linha de base do filme",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} de {stocksLength} filmes",
     "— none —": "— nenhum —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” tem refinamentos pintados. Recrie-os nesta foto ou exclua as máscaras.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” precisa de uma nova seleção de objeto. Exclua máscaras para colar outras edições.",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ Voltar",
     "← Back to articles": "← Voltar para os artigos",
     "← People": "← Pessoas",
-    "☆ Favorites": "☆ Favoritos"
+    "☆ Favorites": "☆ Favoritos",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Se as dimensões do original não estiverem disponíveis, a percentagem de zoom mostra — e 1:1 fica desativado. Auto continua a adaptar-se ao ecrã. Volte a analisar a pasta para atualizar as dimensões."
   },
   "plurals": {
     " · {count} paired file linked": {
