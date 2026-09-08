@@ -43,7 +43,7 @@ class LinuxDesktopIntegrationTests(unittest.TestCase):
         self.patch.start()
         self.addCleanup(self.patch.stop)
         self.bundle = self.make_bundle("bundle with spaces")
-        self.desktop = self.data / "applications/org.lighttable.LightTable.desktop"
+        self.desktop = self.data / "applications/app.lighttable.LightTable.desktop"
         self.record = self.state / "lighttable/desktop-integration.json"
 
     def make_bundle(self, name):
@@ -87,6 +87,86 @@ class LinuxDesktopIntegrationTests(unittest.TestCase):
             self.act("uninstall")
         self.act("uninstall", upgraded)
         self.assertFalse(self.desktop.exists())
+
+    def install_legacy(self):
+        with patch.object(installer, "APP_ID", installer.LEGACY_APP_ID):
+            self.act()
+        return (self.data / "applications" / (installer.LEGACY_APP_ID + ".desktop"),
+                self.data / "icons/hicolor/1024x1024/apps" / (installer.LEGACY_APP_ID + ".png"))
+
+    def test_upgrade_migrates_only_recorded_legacy_launchers_and_keeps_user_data(self):
+        legacy_desktop, legacy_icon = self.install_legacy()
+        catalog = self.data / "lighttable/Catalog/library.sqlite3"
+        catalog.parent.mkdir(parents=True)
+        catalog.write_bytes(b"keep catalog")
+        upgraded = self.make_bundle("release 0.5")
+        self.act(bundle=upgraded)
+        self.assertFalse(os.path.lexists(legacy_desktop))
+        self.assertFalse(os.path.lexists(legacy_icon))
+        self.assertIn("StartupWMClass=app.lighttable.LightTable\n", self.desktop.read_text())
+        self.assertEqual((self.commands / "lighttable").resolve(), upgraded / "bin/lighttable")
+        self.assertEqual(catalog.read_bytes(), b"keep catalog")
+        with self.assertRaisesRegex(ValueError, "different LightTable bundle"):
+            self.act("uninstall")
+        self.act("uninstall", upgraded)
+        self.assertEqual(catalog.read_bytes(), b"keep catalog")
+
+    def test_new_installer_can_uninstall_recorded_legacy_entries(self):
+        legacy_desktop, legacy_icon = self.install_legacy()
+        self.act("uninstall")
+        self.assertFalse(os.path.lexists(legacy_desktop))
+        self.assertFalse(os.path.lexists(legacy_icon))
+        self.assertFalse(self.record.exists())
+
+    def test_modified_legacy_launcher_stops_migration_before_any_changes(self):
+        legacy_desktop, legacy_icon = self.install_legacy()
+        legacy_desktop.write_text("my custom launcher")
+        record_before = self.record.read_bytes()
+        with self.assertRaisesRegex(ValueError, "unowned or modified"):
+            self.act(bundle=self.make_bundle("upgrade"))
+        self.assertEqual(legacy_desktop.read_text(), "my custom launcher")
+        self.assertTrue(legacy_icon.is_symlink())
+        self.assertEqual(self.record.read_bytes(), record_before)
+        self.assertFalse(self.desktop.exists())
+        self.assertEqual((self.commands / "lighttable").resolve(), self.bundle / "bin/lighttable")
+
+    def test_unrecorded_legacy_files_are_left_alone(self):
+        legacy_desktop = self.data / "applications" / (installer.LEGACY_APP_ID + ".desktop")
+        legacy_desktop.parent.mkdir(parents=True)
+        legacy_desktop.write_text("unrelated application")
+        self.act()
+        self.act("uninstall")
+        self.assertEqual(legacy_desktop.read_text(), "unrelated application")
+
+    def test_record_cannot_authorize_migration_outside_expected_integration_paths(self):
+        legacy_desktop, _ = self.install_legacy()
+        unrelated = self.root / "personal.txt"
+        unrelated.write_text("preserve personal file")
+        record = json.loads(self.record.read_text())
+        record["files"][str(unrelated)] = installer.signature(unrelated)
+        self.record.write_text(json.dumps(record))
+        for action in ("install", "uninstall"):
+            with self.subTest(action=action), self.assertRaisesRegex(ValueError, "directories changed"):
+                self.act(action)
+        self.assertTrue(legacy_desktop.exists())
+        self.assertFalse(self.desktop.exists())
+        self.assertEqual(unrelated.read_text(), "preserve personal file")
+
+    def test_new_id_collision_preserves_old_owned_installation(self):
+        legacy_desktop, legacy_icon = self.install_legacy()
+        self.desktop.write_text("unrelated new-ID launcher")
+        record_before = self.record.read_bytes()
+        with self.assertRaisesRegex(ValueError, "unowned or modified"):
+            self.act(bundle=self.make_bundle("upgrade"))
+        self.assertTrue(legacy_desktop.exists())
+        self.assertTrue(legacy_icon.is_symlink())
+        self.assertEqual(self.record.read_bytes(), record_before)
+        self.assertEqual(self.desktop.read_text(), "unrelated new-ID launcher")
+
+    def test_native_shell_and_desktop_entry_share_application_identity(self):
+        source = (ROOT / "windows-shell/src/main.rs").read_text()
+        self.assertIn(f'set_prgname(Some("{installer.APP_ID}"))', source)
+        self.assertIn(f'with_app_id("{installer.APP_ID}")', source)
 
     def test_moving_bundle_and_reinstalling_repairs_broken_owned_symlinks(self):
         self.act()
@@ -137,7 +217,7 @@ class LinuxDesktopIntegrationTests(unittest.TestCase):
         with patch.dict(os.environ, {"XDG_DATA_HOME": "relative", "XDG_STATE_HOME": ""}), \
                 patch.object(Path, "home", return_value=self.root / "home"):
             self.act()
-        expected = self.root / "home/.local/share/applications/org.lighttable.LightTable.desktop"
+        expected = self.root / "home/.local/share/applications/app.lighttable.LightTable.desktop"
         self.assertTrue(expected.is_file())
         self.assertFalse(self.desktop.exists())
 

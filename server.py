@@ -73,11 +73,13 @@ from film_lab_ai import AIIndexService  # noqa: E402
 from film_lab_ai.face_service import FaceService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
 import platform_image  # noqa: E402
+import source_geometry  # noqa: E402
 import platform_paths  # noqa: E402
 from events import EventBroker, encode_sse  # noqa: E402
 from jobs import JobRegistry  # noqa: E402
 from validation import ValidationError, clean_state_patch  # noqa: E402
 from render_scheduling import LatestWorkQueue, PriorityGate, RenderCancelled  # noqa: E402
+from raw_decode_cache import DecodedRawCache, source_identity  # noqa: E402
 
 FOLDER = Path(os.environ.get("LIGHTTABLE_DIR", "")).expanduser()
 PORT = int(os.environ.get("LIGHTTABLE_PORT", "8321"))
@@ -2035,6 +2037,7 @@ def cache_status() -> dict:
 def purge_generated_cache() -> dict:
     """Delete only generated files below this instance's exact cache root."""
     color_pipeline.RAW_DEMOSAIC_CACHE.clear()
+    NEUTRAL_DISPLAY_CACHE.clear()
     EXPORT_SHARED_CACHE.clear()
     removed, bytes_removed = 0, 0
     root = CACHE.resolve()
@@ -2350,7 +2353,10 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
     return t
 
 
-NEUTRAL_PREVIEW_CACHE_VERSION = 3
+NEUTRAL_PREVIEW_CACHE_VERSION = 4
+# Retain the developed pixels independently of the requested JPEG size. RGB16
+# keeps rounding below preview precision and halves the float32 memory cost.
+NEUTRAL_DISPLAY_CACHE = DecodedRawCache(256 * 1024 * 1024)
 
 
 def neutral_preview_path(name: str, width: int, rotate: float = 0,
@@ -2374,9 +2380,17 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
         if learned:
             image = color_pipeline.load_float_rgb(neutral_tiff_for(name, params))
         else:
+            import raw_decode_runtime
+            identity = source_identity(src_path(name))
             linear = color_pipeline.decode_raw(
                 src_path(name), params, max_width=width)
-            image = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+            key = (identity, color_pipeline.raw_decode_fingerprint(params),
+                   linear.shape) if identity is not None else None
+            def develop():
+                display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+                return (display * 65535.0 + 0.5).astype(np.uint16)
+            image = NEUTRAL_DISPLAY_CACHE.get_or_build(
+                key, develop, raw_decode_runtime.check_cancel)
     else:
         image = platform_image.processed_preview(
             src_path(name), width, app_root=APP, output_space="srgb")
@@ -2688,6 +2702,11 @@ def exif_for(name: str, *, capture_override=_LIVE_CAPTURE_TIME) -> dict:
                   if _EXIF_CACHE_SIGNATURES.get(name) == signature else None)
     if cached is None:
         cached = platform_image.metadata(source)
+        try:
+            width, height = source_geometry.dimensions(source)
+            cached.update(SourceWidth=width, SourceHeight=height)
+        except Exception:
+            pass
         if (str(source), *file_identity.stat_signature(source.stat(), path=source)) != signature:
             raise OSError(T("Original changed while reading its metadata: {source}", source=source))
         with _EXIF_CACHE_LOCK:
@@ -3900,23 +3919,20 @@ def _render_preview(name: str, params: dict, width: int,
     # Once accurate pixels are visible, an embedded-camera film pass would
     # only be discarded by the window. Prepare the accurate input first and
     # spend the film render on pixels the window can actually present.
-    if is_raw(name) and not allow_draft:
+    if is_raw(name) and cp["profile_enabled"] and not allow_draft:
         if render_is_stale(client, generation):
             return {"cancelled": True, "reason": "superseded"}
-        if cp["profile_enabled"]:
-            build_raw_preview(name, width, "full", params)
-        else:
-            build_neutral_preview(name, width, cp["rotate"], cp)
+        build_raw_preview(name, width, "full", params)
     if not cp["profile_enabled"]:
         t0 = time.time()
         accurate = neutral_preview_path(name, width, cp["rotate"], cp)
-        refining = bool(is_raw(name) and not accurate.exists())
-        if refining:
-            preview_image = orig_jpeg(name, width, cp["rotate"])
-            image_url = (f"/api/orig?name={quote(name, safe='')}&w={width}"
-                         f"&rot={cp['rotate']}&key={file_key(name)}"
-                         f"&v={ORIGINAL_PREVIEW_CACHE_VERSION}")
-        elif is_raw(name):
+        cached = not is_raw(name) or accurate.exists()
+        if is_raw(name):
+            # The embedded JPEG has the camera's tone curve and brightness.
+            # Showing it before Develop produces a visible exposure change.
+            # Use the actual RAW conversion from the first displayed frame.
+            if not cached:
+                accurate = build_neutral_preview(name, width, cp["rotate"], cp)
             preview_image = accurate
             image_url = (f"/api/neutral?name={quote(name, safe='')}&w={width}"
                          f"&rot={cp['rotate']}&rk="
@@ -3933,7 +3949,7 @@ def _render_preview(name: str, params: dict, width: int,
         response = {
             "ms": int((time.time() - t0) * 1000), "match": 1.0,
             "engine": "source", "profile_enabled": False,
-            "cached": not refining, "refining": refining,
+            "cached": cached, "refining": False,
             "img": image_url, "key": source_key,
         }
         if native:
@@ -5319,26 +5335,12 @@ def export_requested_path(name: str, job: dict, metadata: dict) -> Path:
 
 def export_source_dimensions(name: str) -> tuple[int, int]:
     """Read the oriented source geometry without demosaicing or rendering."""
-    source = src_path(name)
-    if is_raw(name):
-        import rawpy
-        with rawpy.RawPy() as raw:
-            raw.open_file(str(source))
-            size = raw.sizes
-            if size.pixel_aspect != 1.0:
-                raise ValueError(T("Decoder adjusts non-square source pixels"))
-            width, height = size.iwidth, size.iheight
-            if size.flip in (5, 6):
-                width, height = height, width
-    else:
-        from PIL import Image
-        with Image.open(source) as image:
-            width, height = image.size
-            if image.getexif().get(274, 1) in (5, 6, 7, 8):
-                width, height = height, width
-    if not width or not height:
-        raise ValueError(T("Source dimensions are unavailable"))
-    return int(width), int(height)
+    try:
+        return source_geometry.dimensions(src_path(name))
+    except ValueError as error:
+        if str(error) == "Decoder adjusts non-square source pixels":
+            raise ValueError(T("Decoder adjusts non-square source pixels")) from error
+        raise ValueError(T("Source dimensions are unavailable")) from error
 
 
 def preview_export(opts: dict) -> dict:

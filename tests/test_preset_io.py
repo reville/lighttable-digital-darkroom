@@ -146,6 +146,10 @@ class PresetExportTests(unittest.TestCase):
 
     def test_lighttable_export_round_trip_preserves_native_fields(self):
         native = dict(self.preset, includeFilm=True,
+                      grade={**self.preset["grade"], "vignette": .6,
+                             "vignetteSize": .2, "vignetteFeather": .4},
+                      includedGrade=[*self.preset["includedGrade"], "vignette",
+                                     "vignetteSize", "vignetteFeather"],
                       params={"profile_enabled": True, "stock": "test-stock"},
                       masks=[{"type": "radial", "grade": {"exposure": 1}}],
                       heals=[{"mode": "remove", "target": [0.5, 0.5]}],

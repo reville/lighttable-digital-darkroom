@@ -1,0 +1,263 @@
+name: Linux sandbox candidates
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version for local candidate artifacts; this does not publish a release
+        required: true
+        default: '0.5.0'
+        type: string
+      bundle_run_id:
+        description: 'Optional: retest only Flatpak using this run’s existing Linux archive'
+        default: ''
+        type: string
+      bundle_source_revision:
+        description: 'Required when reusing an archive: its exact build-manifest source revision'
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-sandbox-candidates-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  bundle:
+    if: inputs.bundle_run_id == ''
+    uses: ./.github/workflows/linux-build.yml
+    with:
+      version: ${{ inputs.version || '0.5.0' }}
+      source_ref: ${{ github.sha }}
+      build_package: true
+
+  flatpak:
+    name: Build and test upstream Flatpak candidate
+    needs: bundle
+    if: >-
+      !cancelled() && (needs.bundle.result == 'success' ||
+      (needs.bundle.result == 'skipped' && inputs.bundle_run_id != ''))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+    env:
+      PACKAGE_VERSION: ${{ inputs.version || '0.5.0' }}
+      APP_ID: app.lighttable.LightTable
+      REUSED_BUNDLE_RUN_ID: ${{ inputs.bundle_run_id }}
+      REUSED_BUNDLE_SOURCE_REVISION: ${{ inputs.bundle_source_revision }}
+      BUNDLE_SOURCE_REVISION: ${{ inputs.bundle_source_revision || github.sha }}
+    steps:
+      - name: Validate optional archive reuse
+        run: |
+          if [[ -n "$REUSED_BUNDLE_RUN_ID" ]]; then
+            [[ "$REUSED_BUNDLE_RUN_ID" =~ ^[1-9][0-9]*$ ]] || { echo 'Use a numeric Actions run ID'; exit 1; }
+            [[ "$REUSED_BUNDLE_SOURCE_REVISION" =~ ^[0-9a-f]{40}$ ]] || { echo 'The reused archive requires its exact source commit'; exit 1; }
+          elif [[ -n "$REUSED_BUNDLE_SOURCE_REVISION" ]]; then
+            echo 'A source override requires an existing archive run ID' >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: dist
+          run-id: ${{ inputs.bundle_run_id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Install Flatpak build and display tools
+        id: runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder \
+            appstream desktop-file-utils xvfb xauth dbus-x11 xdg-desktop-portal xdg-desktop-portal-gtk
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user --noninteractive flathub org.gnome.Platform//50 org.gnome.Sdk//50
+          echo "sdk_commit=$(flatpak info --user --show-commit org.gnome.Sdk//50)" >> "$GITHUB_OUTPUT"
+      - name: Restore compiled Flatpak dependency stages
+        uses: actions/cache/restore@v4
+        id: flatpak-cache
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: flatpak-x86_64-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/direct-bundle.json.in') }}
+      - name: Validate sources, metadata and exact bundle identity
+        run: |
+          python3 -m unittest discover -s tests -p test_flatpak_packaging.py -v
+          python3 scripts/flatpak/audit-python-sources.py
+          appstreamcli validate --no-net packaging/flatpak/app.lighttable.LightTable.metainfo.xml
+          desktop-file-validate packaging/flatpak/app.lighttable.LightTable.desktop
+          read -r ARCHIVE_SHA _ < "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz.sha256"
+          python3 scripts/flatpak/make-candidate.py \
+            --bundle "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" \
+            --sha256 "$ARCHIVE_SHA" --version "$PACKAGE_VERSION" --source-revision "$BUNDLE_SOURCE_REVISION" \
+            --output-dir .build/flatpak/candidate
+      - name: Fetch pinned sources, then build without downloads
+        run: |
+          flatpak-builder --user --download-only --disable-rofiles-fuse \
+            .build/flatpak/build .build/flatpak/candidate/app.lighttable.LightTable.json
+          flatpak-builder --user --force-clean --disable-download --disable-rofiles-fuse \
+            --default-branch=candidate --repo=.build/flatpak/repo --install \
+            .build/flatpak/build .build/flatpak/candidate/app.lighttable.LightTable.json
+          mkdir -p .build/flatpak/evidence
+          flatpak info --user "$APP_ID//candidate" > .build/flatpak/evidence/app-info.txt
+          flatpak info --user --show-permissions "$APP_ID//candidate" > .build/flatpak/evidence/permissions.txt
+          flatpak info --user org.gnome.Platform//50 > .build/flatpak/evidence/runtime.txt
+          flatpak info --user org.gnome.Sdk//50 > .build/flatpak/evidence/sdk.txt
+      - name: Exercise the installed sandbox and native window
+        timeout-minutes: 10
+        run: |
+          set -o pipefail
+          DENIED_FILE="$HOME/lighttable-flatpak-ungranted.txt"
+          printf 'Flatpak must not be able to read this host fixture\n' > "$DENIED_FILE"
+          trap 'rm -f "$DENIED_FILE"' EXIT
+          timeout 360s dbus-run-session -- flatpak run --user \
+            --command=/app/LightTable/Python/bin/python3 "$APP_ID//candidate" \
+            -B /app/share/lighttable/flatpak/sandbox-smoke.py --denied-host-file "$DENIED_FILE" \
+            | tee .build/flatpak/evidence/runtime-smoke.txt
+          timeout 125s xvfb-run -a --server-args="-screen 0 1280x900x24" dbus-run-session -- \
+            flatpak run --user --command=/app/LightTable/Python/bin/python3 "$APP_ID//candidate" \
+            -B /app/share/lighttable/flatpak/desktop-smoke.py /app/LightTable \
+            | tee .build/flatpak/evidence/native-smoke.txt
+      - name: Assemble candidate artifact without publishing
+        run: |
+          flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo \
+            .build/flatpak/repo "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.flatpak" "$APP_ID" candidate
+          sha256sum "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.flatpak" \
+            > "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.flatpak.sha256"
+      - name: Upload candidate and validation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-flatpak-candidate-x86_64
+          path: |
+            dist/*.flatpak
+            dist/*.flatpak.sha256
+            .build/flatpak/evidence
+            .build/flatpak/candidate/app.lighttable.LightTable.json
+            .build/flatpak/candidate/candidate-provenance.json
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Preserve completed dependency stages even if app validation fails
+        if: always() && steps.flatpak-cache.outcome == 'success' && steps.flatpak-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: ${{ steps.flatpak-cache.outputs.cache-primary-key }}
+
+  arch:
+    name: Build and install the Arch package
+    needs: bundle
+    runs-on: ubuntu-24.04
+    container: archlinux:base-devel
+    timeout-minutes: 30
+    env:
+      PACKAGE_VERSION: ${{ inputs.version || '0.5.0' }}
+    steps:
+      - name: Prepare Arch tools and isolated package builder
+        run: |
+          pacman -Syu --noconfirm git python sudo desktop-file-utils xorg-server-xvfb xorg-xauth
+          useradd --create-home builder
+          printf 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman\n' > /etc/sudoers.d/lighttable-builder
+          chmod 440 /etc/sudoers.d/lighttable-builder
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: dist
+      - name: Generate the exact AUR recipe and test native package metadata
+        run: |
+          python scripts/linux/make-aur-package.py "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" \
+            --version "$PACKAGE_VERSION" --source-revision "$GITHUB_SHA" --output-dir .build/aur
+          cp "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" .build/aur/
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+          runuser -u builder -- python -m unittest discover -s tests -p test_linux_aur_packaging.py -v
+      - name: Build and install with pacman
+        working-directory: .build/aur
+        run: |
+          runuser -u builder -- makepkg --syncdeps --noconfirm
+          pacman -U --noconfirm lighttable-bin-*.pkg.tar.zst
+          pacman -Qkk lighttable-bin
+          desktop-file-validate /usr/share/applications/app.lighttable.LightTable.desktop
+      - name: Exercise the installed application and native desktop
+        run: |
+          mkdir -p .build/arch-evidence
+          chown builder:builder .build/arch-evidence
+          runuser -u builder -- /opt/lighttable/Python/bin/python3 -B \
+            /opt/lighttable/runtime-smoke.py /opt/lighttable > .build/arch-evidence/runtime-smoke.txt
+          timeout 125s runuser -u builder -- xvfb-run -a --server-args="-screen 0 1280x900x24" \
+            dbus-run-session -- /opt/lighttable/Python/bin/python3 -B \
+            scripts/linux/desktop-smoke.py /opt/lighttable > .build/arch-evidence/native-smoke.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-arch-candidate-x86_64
+          path: |
+            .build/aur/*.pkg.tar.zst
+            .build/aur/PKGBUILD
+            .build/aur/.SRCINFO
+            .build/arch-evidence
+          include-hidden-files: true
+          if-no-files-found: error
+
+  snap:
+    name: Build and test strict Snap candidate
+    needs: bundle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PACKAGE_VERSION: ${{ inputs.version || '0.5.0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: dist
+      - name: Prepare verified candidate
+        run: |
+          python3 -m unittest discover -s tests -p test_linux_snap_packaging.py -v
+          python3 scripts/linux/make-snap-package.py "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" \
+            --version "$PACKAGE_VERSION" --source-revision "$GITHUB_SHA" --output-dir .build/snap
+          sudo snap install snapcraft --classic
+      - name: Build on the matching Ubuntu baseline
+        working-directory: .build/snap
+        run: sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap"
+      - name: Install candidate with strict confinement and exercise the runtime
+        run: |
+          sudo snap install --dangerous "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap"
+          mkdir -p .build/snap/evidence
+          snap connections lighttable > .build/snap/evidence/connections.txt
+          timeout 30s snap run lighttable.cli --help > .build/snap/evidence/cli-help.txt
+          timeout 30s snap run lighttable.cli instances --json > .build/snap/evidence/instances.json
+          python3 -c 'import json; assert json.load(open(".build/snap/evidence/instances.json")) == []'
+          # --shell preserves the confinement and command-chain environment.
+          # The existing runtime smoke owns an isolated server and cleans it up;
+          # it also renders through both native engines, catching missing libraries.
+          timeout 360s snap run --shell lighttable.cli -c \
+            'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP/LightTable/runtime-smoke.py" "$SNAP/LightTable"' \
+            > .build/snap/evidence/runtime-smoke.txt
+          sha256sum "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap" \
+            > "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap.sha256"
+      - name: Upload candidate and limited validation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-snap-candidate-x86_64
+          path: |
+            dist/*.snap
+            dist/*.snap.sha256
+            .build/snap/candidate.json
+            .build/snap/snapcraft.yaml
+            .build/snap/evidence
+          include-hidden-files: true
+          if-no-files-found: error
+      - name: Remove ephemeral installed candidate
+        if: always()
+        run: |
+          if snap list lighttable >/dev/null 2>&1; then sudo snap remove --purge lighttable; fi

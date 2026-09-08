@@ -17,6 +17,7 @@ import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
+import { createZoomMotion } from '/web/zoom-motion.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
@@ -100,19 +101,15 @@ const RESET_GROUPS = {
   raw: ['raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
         'learned_denoise', 'learned_denoise_strength',
         'developProfile'],
-  film: ['profile_enabled', 'workflow_mode', 'wb_mode', 'wb_temperature',
-         'wb_tint', 'stock', 'film_tuning', 'film_tuning_version', 'film_format', 'output_recipe', 'paper',
-         'paper_locked', 'development_time',
-         'print_development_time',
-         'exposure_ev', 'print_exposure', 'gamma', 'auto_exposure'],
-  stages: ['couplers_on', 'couplers_amount', 'halation_on', 'halation_amount',
-           'grain_on', 'grain_amount', 'glare_on', 'glare_amount',
+  // Film resets restore sliders while keeping switches and selected options.
+  film: ['wb_temperature', 'wb_tint', 'exposure_ev', 'print_exposure', 'gamma'],
+  stages: ['couplers_amount', 'halation_amount', 'grain_amount', 'glare_amount',
            'camera_diffusion_strength', 'print_preflash',
            'print_y_filter_shift', 'print_m_filter_shift',
-           'scan_softness', 'scan_sharpness', 'scan_sharpen'],
+           'scan_softness', 'scan_sharpness'],
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks'],
   colour: ['temp', 'tint', 'vibrance', 'saturation'],
-  effects: ['texture', 'clarity', 'dehaze', 'vignette'],
+  effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],
   detail: ['sharpness', 'sharpenRadius', 'sharpenDetail', 'sharpenMasking',
            'luminanceNoise', 'colorNoise'],
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],
@@ -413,7 +410,7 @@ function performNativeMenuCommand(command) {
         break;
       case 'zoomIn': zoomCentre(1.25); break;
       case 'zoomOut': zoomCentre(1 / 1.25); break;
-      case 'zoomFit': zoomReset(); break;
+      case 'zoomFit': zoomReset({animate: true}); break;
       case 'zoomActual': $('zoom1').click(); break;
       default: return;
     }
@@ -887,7 +884,6 @@ function clampPan() {
   S.panY = clamp(S.panY, -maxY, maxY);
 }
 function applyViewNow() {
-  clampPan();
   syncPreviewDetailStatus();
   const cmp = $('cmp');
   const fit = cropViewState().fit;
@@ -901,6 +897,13 @@ function applyViewNow() {
       `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
   }
 
+  // Clamp against this frame's scale, not the preceding frame's smaller bounds.
+  const oldPanX = S.panX, oldPanY = S.panY;
+  clampPan();
+  if (oldPanX !== S.panX || oldPanY !== S.panY) {
+    cmp.style.transform = `translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  }
+
   const cv = $('cv');
   const naturalW = displaySourcePixelWidth();
   const rect = cv?.getBoundingClientRect();
@@ -908,7 +911,7 @@ function applyViewNow() {
   const actualScale = naturalW > 0 ? (displayedW / naturalW) : null;
   const actualPct = actualScale === null ? null : Math.round(actualScale * 100);
 
-  const isFit = S.zoomMode === 'fit' || S.zoom <= 1;
+  const isFit = S.zoomMode === 'fit';
   const is1to1 = !isFit && Math.abs(actualScale - 1.0) < 0.02;
 
   $('zoomVal').textContent = actualPct === null ? '—' : `${actualPct}%`;
@@ -941,14 +944,61 @@ function applyView() {
   viewFrameScheduler.request({ view: true });
   scheduleAutomaticPreview();
 }
-function zoomAt(factor, sx, sy) {
+function zoomView() {
+  return {zoom: S.zoom, panX: S.panX, panY: S.panY};
+}
+function requestZoomDetail() {
+  applyView();
+  const cv = $('cv');
+  if (!viewportRegionEnabled() && S.zoomMode === '100' &&
+      sourceLongEdge() > Math.max(cv.width, cv.height) + 1) {
+    doRender(performance.now(), {width: requestedPreviewWidth(), phase: 'settled',
+      background: S.presentedPhotoName === cur()?.name && S.renderState === 'ready'});
+  }
+}
+const zoomMotion = createZoomMotion({
+  paint(view) {
+    Object.assign(S, view);
+    markContinuousInput();
+    applyViewNow();
+  },
+  settled: requestZoomDetail,
+});
+function stopZoomMotion({finish = false} = {}) {
+  const target = zoomMotion.target;
+  zoomMotion.cancel();
+  if (!target) return;
+  if (finish) {
+    Object.assign(S, target);
+    applyViewNow();
+  } else {
+    const sourceWidth = displaySourcePixelWidth();
+    S.targetPixelScale = sourceWidth > 0 ? $('cv').getBoundingClientRect().width / sourceWidth : null;
+    S.zoomMode = 'custom';
+  }
+}
+function presentZoomChange(from, animate) {
+  if (animate && S.viewMode === 'detail' && !S.cropping && !S.cropTransition &&
+      S.presentedPhotoName === cur()?.name && !document.hidden) {
+    clearTimeout(automaticPreviewTimer);
+    clearTimeout(viewportRegionTimer);
+    zoomMotion.start(from, zoomView());
+  } else requestZoomDetail();
+}
+function zoomAt(factor, sx, sy, { actual = false, animate = false } = {}) {
+  if (animate && !actual && zoomMotion.target) factor *= zoomMotion.target.zoom / S.zoom;
+  zoomMotion.cancel();
+  const from = zoomView();
   const currentZoom = S.zoom;
-  const next = clamp(currentZoom * factor, 1, 32);
-  if (next <= 1.001) {
-    zoomReset();
+  const r = $('cmp').getBoundingClientRect();
+  const actualZoom = r.width > 0 ? displaySourcePixelWidth() * currentZoom / r.width : 0;
+  const next = actual ? currentZoom * factor : clamp(currentZoom * factor,
+    Math.min(1, actualZoom || 1), Math.max(32, currentZoom));
+  if (!(next > 0 && Number.isFinite(next))) return;
+  if (!actual && Math.abs(next - 1) < 0.001) {
+    zoomReset({animate});
     return;
   }
-  const r = $('cmp').getBoundingClientRect();
   const c0x = r.left + r.width / 2 - S.panX;
   const c0y = r.top + r.height / 2 - S.panY;
   const dx = sx - c0x, dy = sy - c0y, k = next / currentZoom;
@@ -974,13 +1024,15 @@ function zoomAt(factor, sx, sy) {
       S.targetPixelScale = nextActualScale;
     }
   }
-  applyView();
+  presentZoomChange(from, animate);
 }
 function zoomCentre(f) {
   const w = $('zoomwrap').getBoundingClientRect();
-  zoomAt(f, w.left + w.width / 2, w.top + w.height / 2);
+  zoomAt(f, w.left + w.width / 2, w.top + w.height / 2, {animate: true});
 }
-function zoomReset() {
+function zoomReset({animate = false} = {}) {
+  zoomMotion.cancel();
+  const from = zoomView();
   if (S.cropping && !S.cropTransition) {
     // Fit means the cropping view itself while the crop tool is open.
     const target = cropViewTarget(S.crop);
@@ -991,7 +1043,7 @@ function zoomReset() {
   S.panX = 0;
   S.panY = 0;
   S.targetPixelScale = null;
-  applyView();
+  presentZoomChange(from, animate);
 }
 
 function toggleActualZoomAt(x, y) {
@@ -1000,16 +1052,14 @@ function toggleActualZoomAt(x, y) {
   const sourceWidth = displaySourcePixelWidth();
   if (!sourceWidth || !rect?.width) return;
   if (S.zoomMode === '100' || Math.abs(rect.width - sourceWidth) < 2) {
-    zoomReset();
+    zoomReset({animate: true});
     return;
   }
   S.zoomMode = '100';
   S.targetPixelScale = 1;
-  zoomAt(sourceWidth / rect.width, x, y);
+  zoomAt(sourceWidth / rect.width, x, y, { actual: true, animate: true });
   S.zoomMode = '100';
   S.targetPixelScale = 1;
-  applyView();
-  if (sourceLongEdge() > Math.max(cv.width, cv.height) + 1) renderFilm(0);
 }
 
 function toggleActualZoom() {
@@ -1055,8 +1105,8 @@ function viewportPixelWindow(canvas, clip, width, height, margin = 96) {
 }
 
 function viewportSourceGeometryKey() {
-  return JSON.stringify([cur()?.name, cur()?.fileKey || cur()?.mtime || null,
-    Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2]);
+  return JSON.stringify([cur()?.name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null,
+    Math.abs(Math.round((+S.params?.rotate || 0) / 90)) % 2]);
 }
 
 function requestedViewportRegion() {
@@ -1066,7 +1116,7 @@ function requestedViewportRegion() {
   let width = decoded?.width || +cur()?.width || 0;
   let height = decoded?.height || +cur()?.height || 0;
   if (!(width > 0 && height > 0)) return null;
-  if (!decoded && Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) [width, height] = [height, width];
+  if (!decoded && Math.abs(Math.round((+S.params?.rotate || 0) / 90)) % 2) [width, height] = [height, width];
   return viewportPixelWindow($('cv').getBoundingClientRect(),
     $('zoomwrap').getBoundingClientRect(), width, height);
 }
@@ -1074,6 +1124,7 @@ function requestedViewportRegion() {
 let viewportRegionTimer = null;
 let lastViewportRenderKey = null;
 function scheduleViewportRegionRender() {
+  if (zoomMotion.active) return;
   const region = requestedViewportRegion();
   if (!region && !S.nativeViewport) return;
   const key = JSON.stringify([cur()?.name, region]);
@@ -1090,7 +1141,7 @@ function requestedPreviewWidth() {
     // outgoing canvas's orientation while the next photo is still loading.
     const source = { width: +cur()?.width || 0,
       height: +cur()?.height || 0 };
-    if (Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) {
+    if (Math.abs(Math.round((+S.params?.rotate || 0) / 90)) % 2) {
       [source.width, source.height] = [source.height, source.width];
     }
     const viewport = $('zoomwrap');
@@ -3366,7 +3417,10 @@ async function runNativeRawJourney(width, layer) {
 function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
   clearTimeout(renderTimer);
   const requestedWidth = requestedPreviewWidth();
-  const width = viewportRegionEnabled() ? requestedWidth
+  // Navigation needs one consistent first image. Small interactive renders
+  // are useful for changing a recipe, not for opening or magnifying a photo.
+  const opening = S.presentedPhotoName !== cur()?.name || S.renderState !== 'ready';
+  const width = opening || viewportRegionEnabled() ? requestedWidth
     : Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
   renderTimer = setTimeout(() => {
     lastInteractiveRenderAt = performance.now();
@@ -3435,7 +3489,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
-      allow_draft: !hasAccuratePixels,
+      allow_draft: false,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3466,6 +3520,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     if (m.cancelled) {
+      automaticPreviewRequest = null;
       previewProgress.finish();
       $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = '';
@@ -3473,6 +3528,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       return;
     }
     if (m.error) {
+      automaticPreviewRequest = null;
       if (!options.background) previewProgress.finish({ error: tr('Could not render preview') });
       $('zoomwrap').setAttribute('aria-busy', 'false');
       $('rstat').textContent = tr('error: {mError}', {mError: m.error});
@@ -3511,6 +3567,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         return doRender(scheduledAt, { ...options, skipPresentationCache: true });
       }
       if (imageTiming.failed) {
+        automaticPreviewRequest = null;
         if (!options.background) previewProgress.finish({ error: tr('Could not display preview') });
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || tr('preview unavailable');
@@ -3521,6 +3578,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
       S.previewDetail = { name: im.name, refining: Boolean(m.refining), requested: requestedWidth,
+        renderedWidth: w,
+        native: m.native || null,
         delivered: Math.max(+(m.native?.width || S.baseImg?.naturalWidth || w),
           +(m.native?.height || S.baseImg?.naturalHeight || 0)) };
       setRenderPresentation('ready', im.name);
@@ -3610,6 +3669,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
     const failedAt = performance.now();
+    if (my === S.seq) automaticPreviewRequest = null;
     const failure = {
       image: im?.name || null,
       width: w,
@@ -3712,17 +3772,24 @@ function syncPreviewBackend() {
   }
 }
 
+function flushNativeViewportLayout() {
+  nativeLayoutFrame = null;
+  const payload = nativeViewportPayload();
+  const key = JSON.stringify(payload);
+  if (key !== lastNativeViewportKey) {
+    lastNativeViewportKey = key;
+    postNative('nativeViewportLayout', payload);
+  }
+}
 function scheduleNativeViewportLayout() {
-  if (!NATIVE_PREVIEW || nativeLayoutFrame !== null) return;
-  nativeLayoutFrame = requestAnimationFrame(() => {
-    nativeLayoutFrame = null;
-    const payload = nativeViewportPayload();
-    const key = JSON.stringify(payload);
-    if (key !== lastNativeViewportKey) {
-      lastNativeViewportKey = key;
-      postNative('nativeViewportLayout', payload);
-    }
-  });
+  if (!NATIVE_PREVIEW) return;
+  if (zoomMotion.active) {
+    // Keep Metal on this animation frame rather than one RAF behind overlays.
+    if (nativeLayoutFrame !== null) cancelAnimationFrame(nativeLayoutFrame);
+    flushNativeViewportLayout();
+  } else if (nativeLayoutFrame === null) {
+    nativeLayoutFrame = requestAnimationFrame(flushNativeViewportLayout);
+  }
 }
 
 function scheduleNativeHelper(url, generation) {
@@ -4197,6 +4264,7 @@ function prefetchImage(target, epoch = navigationGeneration) {
         : Math.min(requestedPreviewWidth(), INTERACTIVE_PREVIEW_WIDTH),
       engine: $('engine').value,
       client: CLIENT_ID, generation: S.seq, priority: 'prefetch',
+      allow_draft: false,
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
@@ -5721,6 +5789,7 @@ function refreshFilteredView() {
 
 function setViewMode(mode, persist = true) {
   if (!['photo', 'square', 'detail'].includes(mode)) return;
+  stopZoomMotion({finish: true});
   const gridMode = mode !== 'detail';
   LIBRARY_FILTERS.close();
   S.viewMode = mode;
@@ -5842,7 +5911,7 @@ function cropSourceSize() {
   if (width > 0 && height > 0) {
     // Catalog dimensions already include EXIF orientation. Apply the requested
     // rotation now: the canvas may still show the previous render or photo.
-    if (Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) {
+    if (Math.abs(Math.round((+S.params?.rotate || 0) / 90)) % 2) {
       [width, height] = [height, width];
     }
     return { width, height };
@@ -6027,6 +6096,7 @@ const cropFrameScheduler = createFrameScheduler(() => applyCropVisualNow());
 function applyCropVisual() { cropFrameScheduler.request({ crop: true }); }
 function setCropMode(on) {
   if (on && !cur()) return;
+  stopZoomMotion({finish: true});
   if (on) setCompareActive(false);
   const next = Boolean(on);
   const changed = S.cropping !== next;
@@ -6311,6 +6381,7 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
 }
 
 function showCurrentImage(im) {
+  stopZoomMotion({finish: true});
   S.editingName = im.name;
   $('panel').inert = false;
   $('cmp').inert = false;
@@ -7614,11 +7685,8 @@ $('resetFilm').onclick = () => {
 };
 
 $('zoomIn').onclick = () => { S.zoomMode = 'custom'; zoomCentre(1.25); };
-$('zoomOut').onclick = () => {
-  if (S.zoom <= 1.05) zoomReset();
-  else { S.zoomMode = 'custom'; zoomCentre(1 / 1.25); }
-};
-$('zoomFit').onclick = zoomReset;
+$('zoomOut').onclick = () => { S.zoomMode = 'custom'; zoomCentre(1 / 1.25); };
+$('zoomFit').onclick = () => zoomReset({animate: true});
 document.querySelectorAll('[data-exit-tool]').forEach((button) => { button.onclick = exitPhotoTool; });
 $('cropDone').onclick = exitPhotoTool;
 $('cropCancel').onclick = cancelCropSession;
@@ -8796,6 +8864,7 @@ function finishSpeedKey(key) {
     if (wheelScale !== 1) {
       zoomAt(wheelScale, wheelPoint[0], wheelPoint[1]);
     } else if (wheelPanX || wheelPanY) {
+      stopZoomMotion();
       S.panX -= wheelPanX; S.panY -= wheelPanY; applyView();
     }
     wheelScale = 1; wheelPanX = 0; wheelPanY = 0;
@@ -8818,14 +8887,14 @@ function finishSpeedKey(key) {
   let gStart = 1;
   let gestureFrame = 0;
   let gestureEvent = null;
-  wrap.addEventListener('gesturestart', (e) => { e.preventDefault(); gStart = S.zoom; });
+  wrap.addEventListener('gesturestart', (e) => { e.preventDefault(); stopZoomMotion(); gStart = S.zoom; });
   wrap.addEventListener('gesturechange', (e) => {
     e.preventDefault();
     gestureEvent = { scale: e.scale, x: e.clientX, y: e.clientY };
     if (!gestureFrame) gestureFrame = requestAnimationFrame(() => {
       gestureFrame = 0;
       const latest = gestureEvent;
-      zoomAt(clamp(gStart * latest.scale, 1, 16) / S.zoom,
+      zoomAt(clamp(gStart * latest.scale, Math.min(1, gStart), Math.max(16, gStart)) / S.zoom,
         latest.x, latest.y);
     });
   });
@@ -9051,6 +9120,7 @@ function finishSpeedKey(key) {
     if (S.wbPick || S.pointColorPick || S.maskColorPick) return;
     if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar, #compareSnap')) return;
     if (S.zoom <= 1 && S.zoomMode === 'fit') return;
+    stopZoomMotion();
     isPanning = true;
     panStartX = e.clientX;
     panStartY = e.clientY;
@@ -9243,7 +9313,7 @@ document.addEventListener('keydown', (e) => {
   else if (LABEL_KEYS[e.key]) setLabel(LABEL_KEYS[e.key]);
   else if (e.key === '=' || e.key === '+') zoomCentre(1.25);
   else if (e.key === '-') zoomCentre(1 / 1.25);
-  else if (k === 'f') zoomReset();
+  else if (k === 'f') zoomReset({animate: true});
   else if (e.key === '[') rotate(-90);
   else if (e.key === ']') rotate(90);
   else return;
@@ -9277,26 +9347,30 @@ function updateLoupeInfoOverlay() {
 }
 async function showExif(name) {
   const box = $('exif');
-  if (!_exifCache.has(name)) {
+  const imageKey = JSON.stringify([name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null]);
+  if (!_exifCache.has(imageKey)) {
     try {
-      _exifCache.set(name, await fetch(
+      _exifCache.set(imageKey, await fetch(
         '/api/exif?name=' + encodeURIComponent(name)).then((r) => r.json()));
-    } catch { _exifCache.set(name, {}); }
+    } catch { _exifCache.set(imageKey, {}); }
   }
-  const e = _exifCache.get(name) || {};
+  const e = _exifCache.get(imageKey) || {};
   if (cur()?.name !== name) return;
+  if (imageKey !== JSON.stringify([name, cur()?.recoverySourceKey || null, cur()?.fileKey || null, cur()?.mtime || null])) return;
   S.exif = e;
   updateLoupeInfoOverlay();
   const im = cur();
-  const width = +(e.ImageWidth || e.ExifImageWidth || e.PixelXDimension || 0);
-  const height = +(e.ImageHeight || e.ImageLength || e.ExifImageHeight ||
-    e.PixelYDimension || 0);
-  if (im && width > 0 && height > 0 && (!im.width || !im.height)) {
+  // These fields include camera orientation and describe decoded pixels. EXIF
+  // ImageWidth/ImageHeight may instead describe a RAW's embedded JPEG.
+  const width = +(e.SourceWidth || 0);
+  const height = +(e.SourceHeight || 0);
+  if (im && width > 0 && height > 0 && (im.width !== width || im.height !== height)) {
     im.width = width;
     im.height = height;
     const gridCell = _gridEls.get(im.name);
     if (gridCell) gridCell.style.setProperty('--photo-aspect-ratio', `${width} / ${height}`);
     layoutPhotoGrid();
+    onViewportResize();
     scheduleAutomaticPreview();
     if (S.zoomMode === '100' && S.viewMode === 'detail') renderFilm(0);
   }
@@ -10593,15 +10667,29 @@ renderVersions();
 
 function scheduleAutomaticPreview() {
   clearTimeout(automaticPreviewTimer);
+  if (zoomMotion.active) return;
   if ($('pw').value !== 'auto' || S.viewMode !== 'detail' || !cur()) return;
   automaticPreviewTimer = setTimeout(() => {
+    viewFrameScheduler.flush();
     const width = requestedPreviewWidth();
-    if (automaticPreviewRequest?.name !== cur()?.name ||
-        automaticPreviewRequest?.width !== width) renderFilm(0);
+    const detail = S.previewDetail;
+    // Keep the largest useful surface while zooming out or back in. A view
+    // change does not invalidate the recipe, and must not install a small
+    // interactive texture over a sharper, already-presented result.
+    if (!S.nativeViewport && S.presentedPhotoName === cur()?.name &&
+        S.renderState === 'ready' && detail?.name === cur()?.name &&
+        detail.refining === false && detail.renderedWidth >= width) return;
+    if (automaticPreviewRequest?.name === cur()?.name &&
+        automaticPreviewRequest?.width >= width) return;
+    clearTimeout(renderTimer);
+    clearTimeout(settleRenderTimer);
+    doRender(performance.now(), { width, requestedWidth: width, phase: 'settled',
+      background: S.presentedPhotoName === cur()?.name && S.renderState === 'ready' });
   }, 200);
 }
 
 function onViewportResize() {
+  zoomMotion.cancel();
   const cv = $('cv');
   if (!cv || !cv.width) {
     scheduleNativeViewportLayout();
@@ -10631,12 +10719,13 @@ function onViewportResize() {
     return;
   }
   if (S.zoomMode === '100') {
-    S.zoom = clamp(displaySourcePixelWidth() / baseW, 1, 32);
+    const sourceWidth = displaySourcePixelWidth();
+    if (sourceWidth > 0) S.zoom = displaySourcePixelWidth() / baseW;
     S.targetPixelScale = 1;
     clampPan();
   } else if (S.zoomMode === 'custom' && S.targetPixelScale) {
-    S.zoom = clamp(
-      (S.targetPixelScale * displaySourcePixelWidth()) / baseW, 1, 32);
+    const sourceWidth = displaySourcePixelWidth();
+    if (sourceWidth > 0) S.zoom = (S.targetPixelScale * sourceWidth) / baseW;
     clampPan();
   } else if (S.zoomMode !== 'custom') {
     S.zoom = 1;

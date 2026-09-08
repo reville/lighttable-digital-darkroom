@@ -99,6 +99,11 @@ lens correction, crop and perspective, versions, and reusable export recipes
 sit alongside the film controls. HDR, panorama, and focus merge create new
 masters. Soft proofing covers sRGB, Display P3, matte paper, and gloss paper.
 
+In Effects, Vignette darkens or brightens the edges. Size controls how much of
+the center stays clear, and Feather controls how softly the effect blends in.
+Existing edits keep their original vignette appearance with the default Size
+and Feather values; setting Vignette to zero turns the effect off.
+
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
 before film; processing stays floating point until the final encoder. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,

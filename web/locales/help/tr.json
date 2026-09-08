@@ -224,7 +224,9 @@
           "paragraphs": [
             "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar.",
             "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin.",
-            "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin."
+            "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
+            "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
+            "Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayolları akıcı biçimde canlandırılır. Kaydırma, iki parmakla yakınlaştırma ve sürükleme doğrudan tepki verir. Sisteminizde Hareketi Azalt ayarı etkinleştirildiğinde yakınlaştırma animasyonu devre dışı kalır."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -1031,7 +1033,9 @@
           "steps": [
             "Puslu bir görüntüyü güçlendirmek için Pus Gider'i artırın veya daha yumuşak bir işlem için negatif bir değer deneyin. Ayarlarken hem kontrastı hem de rengi kontrol edin.",
             "İstediğiniz kenar işlemi için Vinyet’i ayarlayın ve köşeleri inceleyin.",
-            "Özgünle karşılaştırmak için B tuşunu basılı tutun veya Etkiler bölümündeki Sıfırla'yı kullanarak Doku, Netlik, Pus Gider ve Vinyet'i birlikte sıfırlayın."
+            "Merkezin daha büyük bir bölümünü etkilenmeden bırakmak için Boyut değerini artırın; vinyetin daha içeriye uzanması için azaltın.",
+            "Daha yumuşak bir geçiş için Yumuşatma değerini artırın veya daha belirgin bir kenar için azaltın.",
+            "Özgünle karşılaştırmak için B tuşunu basılı tutun veya tüm Efektler kaydırıcılarını birlikte sıfırlamak için Efektler bölümündeki Sıfırla seçeneğini kullanın."
           ],
           "tips": [
             "Effects’teki Vignette yaratıcı bir kenar işlemesidir. Objektif gölgelemesini düzeltmek istediğinizde Lens corrections kullanın."
@@ -2179,7 +2183,8 @@
         {
           "title": "Bir film stoğu ile başla",
           "paragraphs": [
-            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır."
+            "Film, modellenmiş bir filmi ve çıkış sürecini sabit bir fotoğrafa uygular. Film profile anahtarı bu işlemi kontrol eder; Film’i kapattığınızda Edit ayarlarınız etkin kalır.",
+            "Gerçekçi Film Simülasyonundaki Sıfırla, tüm Film kaydırıcılarını varsayılan değerlerine döndürür. Bir bölümün Sıfırla düğmesi yalnızca o bölümün kaydırıcılarını etkiler. Anahtarlar ve seçili seçenekler olduğu gibi kalır."
           ],
           "steps": [
             "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
@@ -2201,7 +2206,7 @@
           "paragraphs": [
             "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
             "Bir film stoğu, fiziksel film sürecini tanımlar. Bir düzenleme hazır ayarı daha geniş kaydedilmiş ayarlar içerebilir ve Film ayarlarını da içerebilir. Film içindeki Çıkış menüsü bir tarama veya baskı iş akışı seçer; bir dosya dışa aktarmaz.",
-            "Film’i açtıktan sonra, doğru RAW ayrıntısı ve daha büyük önizleme bitmeden önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar ve önizleme görünür hale gelince kaybolur. Doğru RAW ayrıntısı ve tam çözünürlüklü işleme arka planda sürer."
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
           ],
           "tips": [
             "Bir film stoğu kullanılamıyorsa GPU motoru gerekebilir. Motor kullanılabilirliği Ayarlar → Performans bölümünde gösterilir."
@@ -3029,7 +3034,8 @@
         {
           "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
           "paragraphs": [
-            "100% yakınlaştırma ayarı, tam görüntü ayrıntısının ulaştığını garanti etmez. Doğru RAW işleme ve daha büyük önizleme tamamlanırken önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar; örneğin 2 / 5 gibi bir sayım gösterir. Kullanılabilir bir önizleme gösterilir gösterilmez kaybolur; doğru RAW işleme ve daha büyük önizlemeler bindirme olmadan arka planda sürer. Sayım, kalan zamanı değil tamamlanan aşamaları temsil eder. Azaltılmış hareket, animasyon olmadan aynı aşama güncellemelerini korur. Fotoğraf karartılmadan görünür kalır. 1:1’de, ince ayrıntıları değerlendirirken tam kaynak ayrıntısının hazır olup olmadığını kontrol etmek için 1:1 düğmesinin üzerine gelin.",
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
+            "Yakınlaştırma, daha fazla ayrıntı yüklenirken mevcut en keskin önizlemeyi korur. Uzaklaştırmada aynı önizleme yeniden kullanılır. 1:1 görünümde, ince ayrıntıları değerlendirmeden önce düğmenin araç ipucunu kontrol edin.",
             "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
             "Kaldır, İyileştir, Klonla ve Doku ya da Netlik içeren maskeler ek bir önizleme güncellemesi gerektirir. Ayrıntılarını veya sonraki ayarlamaların etkisini değerlendirmeden önce önizlemenin bitmesini bekleyin.",
             "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
@@ -3083,5 +3089,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
+  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
 }
