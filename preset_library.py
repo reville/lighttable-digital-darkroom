@@ -30,7 +30,7 @@ CREATIVE_GRADE_KEYS = frozenset({
     "curveR", "curveG", "curveB", "hsl", "pointColor", "colorGrading",
 })
 CREATIVE_FILM_KEYS = frozenset({
-    "stock", "paper", "workflow_mode", "paper_locked", "output_recipe",
+    "stock", "film_tuning", "film_tuning_version", "paper", "workflow_mode", "paper_locked", "output_recipe",
     "development_time", "print_development_time", "exposure_ev",
     "print_exposure", "gamma", "auto_exposure", "scan_sharpen",
     "couplers_on", "couplers_amount", "halation_on", "halation_amount",
@@ -190,6 +190,10 @@ def look_patch(preset):
                         if k in g and k in CREATIVE_GRADE_KEYS}}
     params = {k: p[k] for k in preset.get("includedFilm", p)
               if k in p and k in CREATIVE_FILM_KEYS}
+    if "stock" in params and "film_tuning" not in params:
+        params.update(film_tuning="original", film_tuning_version="1")
+    elif "film_tuning" in params and "film_tuning_version" not in params:
+        params["film_tuning_version"] = "1"
     if preset.get("filmMode") in {"on", "off"}:
         params["profile_enabled"] = preset["filmMode"] == "on"
     if params:

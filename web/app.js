@@ -6,7 +6,8 @@ import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
 import {installMaskBatch, mergeMaskDelta} from '/web/batch-masks.js';
 import {createSelectionRequest} from '/web/selection-request.js';
-import { createFilmBrowser, filmParamsForStock } from '/web/film-browser.js';
+import { createFilmBrowser, filmParamsForStock, filmChoiceValue, filmSelectionForChoice,
+  normalizeFilmTuning, mergeFilmTuning, filmStockGroups } from '/web/film-browser.js';
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
@@ -535,7 +536,7 @@ function fmtFilm(id, v) {
   if (id === 'exposure_ev') return (v >= 0 ? '+' : '') + v.toFixed(1);
   if (id === 'halation_amount') return v.toFixed(1);
   if (id === 'grain_amount') {
-    const stock = $('stock')?.value || S.params?.stock;
+    const stock = selectedFilmProfile()?.id || S.params?.stock;
     return (grainBaseline(stock) * v).toFixed(2) + ' µm²';
   }
   if (id === 'wb_temperature') return Math.round(v) + ' K';
@@ -561,7 +562,8 @@ function profileFor(id) {
 }
 
 function selectedFilmProfile() {
-  return profileFor($('stock')?.value || S.params?.stock);
+  const choice = $('stock')?.value;
+  return profileFor(choice ? filmSelectionForChoice(choice, S.profiles).stock : S.params?.stock);
 }
 
 function selectedPaperProfile() {
@@ -651,7 +653,9 @@ function syncEngineForProfile() {
 
 function normalizeFilmParams(raw = {}) {
   const source = raw && typeof raw === 'object' ? { ...raw } : {};
-  const params = { ...S.filmDefaults, ...source };
+  const params = normalizeFilmTuning({ ...S.filmDefaults, ...source,
+    film_tuning: source.film_tuning || 'original',
+    film_tuning_version: source.film_tuning_version || '1' }, S.profiles);
   if (!Object.prototype.hasOwnProperty.call(source, 'grain_amount')) {
     const legacyArea = +source.grain_um2;
     params.grain_amount = Number.isFinite(legacyArea)
@@ -663,7 +667,7 @@ function normalizeFilmParams(raw = {}) {
 }
 
 function mergeFilmParams(base, overlay = {}) {
-  const merged = { ...base, ...overlay };
+  const merged = mergeFilmTuning(base, overlay, S.profiles);
   // A legacy preset carries absolute grain_um2 but no grain_amount. Remove
   // the base multiplier so normalizeFilmParams converts the preset value.
   if (Object.prototype.hasOwnProperty.call(overlay, 'grain_um2') &&
@@ -766,7 +770,7 @@ function redo() {
 /* ------------------------------------------------------------- controls */
 function syncControls() {
   const profileEnabled = S.params.profile_enabled !== false;
-  $('stock').value = S.params.stock;
+  $('stock').value = filmChoiceValue(S.params);
   populatePaperOptions();
   populateDevelopmentTimes();
   populatePrintDevelopmentTimes();
@@ -851,7 +855,7 @@ function setDevelopMode(profileEnabled) {
 }
 function readControls() {
   S.params.profile_enabled = $('filmProfileToggle').getAttribute('aria-checked') === 'true';
-  S.params.stock = $('stock').value;
+  Object.assign(S.params, filmSelectionForChoice($('stock').value, S.profiles));
   S.params.paper = $('paper').value;
   S.params.development_time = +$('development_time').value || 0;
   S.params.print_development_time = +$('print_development_time').value || 0;
@@ -7369,16 +7373,15 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
     option.title = ((recipe.description || ''));
     return option;
   }));
-  const groups = [
-    [tr("Color negative"), (p) => p.type === 'negative' && p.channelModel === 'color'],
-    [tr("Black & white negative"), (p) => p.type === 'negative' && p.channelModel === 'bw'],
-    [tr("Reversal / slide (scanned)"), (p) => p.type === 'positive'],
-  ];
-  for (const [label, matches] of groups) {
+  $('stock').replaceChildren();
+  for (const { label, options } of filmStockGroups(S.profiles)) {
     const group = document.createElement('optgroup');
     group.label = label;
-    S.profiles.filter((p) => p.stage === 'filming' && matches(p))
-      .forEach((profile) => group.appendChild(profileOption(profile)));
+    options.forEach((choice) => {
+      const option = profileOption({ ...choice, name: choice.label });
+      option.title = choice.label;
+      group.appendChild(option);
+    });
     if (group.children.length) $('stock').appendChild(group);
   }
   populatePaperOptions();
