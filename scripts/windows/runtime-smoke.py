@@ -133,7 +133,7 @@ def check_file_identity(temp_path: Path) -> None:
     if os.name == "nt":
         api = file_identity._windows_bindings()
         with source.open("rb") as stream:
-            locked_fd = api.reopen_content_fd(stream.fileno())
+            locked_fd = api.open_content_fd(api.path_for_fd(stream.fileno()))
             try:
                 try:
                     with source.open("r+b"):
