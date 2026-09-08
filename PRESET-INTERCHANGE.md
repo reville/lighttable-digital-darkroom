@@ -45,12 +45,18 @@ control is equivalent.
 
 ## Application behavior
 
-- **Try on this photo** renders locally in preset details. It does not modify the
-  active edit or upload the photo. **Apply** commits one undoable edit.
-- Consecutive look applications use the state before the first look. Trying or
-  applying a different look does not accumulate the earlier look's settings.
-  A manual edit establishes a new baseline. Older tool presets retain their
-  existing layering behavior.
+- Click a preset card to apply it immediately to the main photo. Click it again
+  to disable it; re-enabling restores the chosen amount. All rendering is local.
+- **Amount** runs from 0% (the edit before the preset) to 100% (the full preset).
+  Double-click the slider to reset it to 100%. Numeric adjustments, curves,
+  color corrections, and added local-edit opacity scale with Amount. Film
+  stock, on/off switches, and other fixed choices use the preset at any nonzero
+  amount. This adjusts settings; it is not an opacity blend of two rendered images.
+- Switching cards uses the edit before the first preset. Manual changes outside
+  the preset are retained. Changing a preset-controlled setting retires its
+  Amount adjustment and starts a new baseline for the next application.
+- Selection, enabled state, amount, and baseline are stored with the photo and
+  included in Undo/Redo and persistent History. Closing details only hides them.
 - **Look · keep photo corrections** protects Edit Exposure and Temp/Tint, capture
   white balance, RAW settings, film format, crop, geometry, masks, healing,
   sharpening, noise reduction, and lens corrections.
