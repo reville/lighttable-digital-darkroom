@@ -224,6 +224,7 @@
           "paragraphs": [
             "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
+            "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
+  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
 }

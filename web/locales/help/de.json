@@ -224,6 +224,7 @@
           "paragraphs": [
             "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung.",
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
+            "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
+  "sourceDigest": "93024b8edab67d33bd104d0b8de928cee0ade072aab26410f87ca3b3ef0bc8c7"
 }

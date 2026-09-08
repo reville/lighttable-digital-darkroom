@@ -1097,7 +1097,8 @@ process.stdout.write(JSON.stringify({
     def test_exif_updates_are_bound_to_the_current_photo(self):
         self.assertIn("if (cur()?.name !== name) return;", self.javascript)
         self.assertIn("S.exif = e;", self.javascript)
-        self.assertIn("e.ImageHeight || e.ImageLength", self.javascript)
+        self.assertIn("e.SourceWidth", self.javascript)
+        self.assertIn("e.SourceHeight", self.javascript)
         self.assertIn("S.zoomMode === '100' && S.viewMode === 'detail'",
                       self.javascript)
 
