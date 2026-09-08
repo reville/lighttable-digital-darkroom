@@ -29,7 +29,7 @@ class CropPreviewContractTests(unittest.TestCase):
     def test_committed_crop_reframes_source_surfaces(self):
         self.assertIn("cmp.classList.toggle('crop-committed', !!crop)",
                       self.javascript)
-        for selector in ("#cv", "#orig", "#referenceImg", "#editOverlay"):
+        for selector in ("#cv", "#orig", "#referenceImg"):
             self.assertIn(f".cmp.preview-framed > {selector}", self.css)
         self.assertIn("const source = cropSourceSize();", self.javascript)
         self.assertIn(

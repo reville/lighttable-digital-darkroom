@@ -105,9 +105,9 @@ def main():
         out.astype(np.float32), job.get("optics"), job.get("heals"),
         job.get("lensProfile"))
     if not grade_mod.is_identity(g):
-        out = np.clip(grade_mod.apply(out.astype(np.float32), g),
+        out = np.clip(grade_mod.apply_accelerated(out.astype(np.float32), g),
                       0, 1).astype(np.float32)
-    out = edits_mod.apply_masks(out, job.get("masks"))
+    out = edits_mod.apply_masks(out, job.get("masks"), accelerated=True)
 
     if crop:
         h, w = out.shape[:2]

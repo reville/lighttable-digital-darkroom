@@ -180,10 +180,13 @@ class SidecarWritingTests(unittest.TestCase):
 
     def test_defaults_produce_a_minimal_document(self):
         document = xmp_sidecar.build_sidecar({"rating": 0, "label": "none"})
-        self.assertNotIn("xmp:Rating", document)
-        self.assertNotIn("xmp:Label", document)
+        self.assertIn('xmp:Rating="0"', document)
+        self.assertIn('xmp:Label=""', document)
         self.assertNotIn("crs:HasCrop", document)
-        self.assertIsNotNone(xmp_sidecar.parse(document))
+        parsed = xmp_sidecar.parse(document)
+        self.assertEqual(parsed["rating"], 0)
+        self.assertIn("rating", parsed["metadataPresent"])
+        self.assertIn("label", parsed["metadataPresent"])
 
     def test_write_sidecar_creates_the_file_beside_the_original(self):
         with tempfile.TemporaryDirectory() as directory:

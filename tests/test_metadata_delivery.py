@@ -72,13 +72,14 @@ class SidecarPreservationTests(unittest.TestCase):
             second = sidecar.read_text()
             self.assertIn("mask two", second)
             self.assertNotIn('crs:Exposure2012=', second)
-            self.assertNotIn('dc:subject', second)
+            self.assertEqual(xmp_sidecar.parse(second)["metadataKeywords"], [])
+            self.assertIn("keywords", xmp_sidecar.parse(second)["metadataPresent"])
             descriptions = ET.fromstring(second).findall(
                 ".//{" + xmp_sidecar.RDF_NS + "}Description")
             own = [node for node in descriptions if not node.get(
                 "{" + xmp_sidecar.RDF_NS + "}about")]
-            self.assertFalse(any("{" + xmp_sidecar.NAMESPACES["xmp"] + "}Rating"
-                                 in node.attrib for node in own))
+            self.assertTrue(any(node.get("{" + xmp_sidecar.NAMESPACES["xmp"] + "}Rating")
+                                == "0" for node in own))
             self.assertEqual(durable_io.backup_path(sidecar).read_text(), FOREIGN_XMP)
             self.assertFalse(original.with_suffix(".xmp").exists())
 

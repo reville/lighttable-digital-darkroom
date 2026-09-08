@@ -1305,28 +1305,17 @@ class ExtensionListContractTests(unittest.TestCase):
 
 
 class WindowsPackagingContractTests(unittest.TestCase):
-    """The Windows payload is an explicit allowlist, not a glob.
+    """Exercise the same module staging helper used by release and PR builds."""
 
-    A module that ships on macOS but is missing from that list fails at import
-    on Windows, which the macOS test suite cannot notice.
-    """
-
-    def test_every_top_level_import_is_packaged(self):
-        script = (ROOT / "scripts" / "windows" / "build-release.ps1").read_text()
-        packaged = set(re.findall(r'"([A-Za-z0-9_]+\.py)"', script))
-        source = (ROOT / "server.py").read_text()
-        imported = set()
-        for match in re.findall(r"^import ([a-z_][a-z0-9_]*)",
-                                source, flags=re.MULTILINE):
-            if (ROOT / f"{match}.py").is_file():
-                imported.add(f"{match}.py")
-        for match in re.findall(r"^import ([a-z_][a-z0-9_]*) as ",
-                                source, flags=re.MULTILINE):
-            if (ROOT / f"{match}.py").is_file():
-                imported.add(f"{match}.py")
-        missing = sorted(imported - packaged)
-        self.assertEqual(missing, [],
-                         f"modules missing from the Windows payload: {missing}")
+    def test_every_root_runtime_module_is_packaged(self):
+        import runpy
+        stage = runpy.run_path(str(ROOT / "scripts/windows/stage-python-modules.py"))["stage_modules"]
+        with tempfile.TemporaryDirectory() as temporary:
+            staged = stage(ROOT, Path(temporary))
+            packaged = {path.name for path in staged}
+            expected = {path.name for path in ROOT.glob("*.py")}
+            self.assertEqual(packaged, expected)
+            self.assertTrue({"render_scheduling.py", "camera_profile.py"} <= packaged)
 
     def test_optional_ai_package_is_packaged(self):
         script = (ROOT / "scripts" / "windows" / "build-release.ps1").read_text()

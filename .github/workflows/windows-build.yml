@@ -46,7 +46,9 @@ jobs:
   quick-check:
     if: github.event_name == 'pull_request'
     runs-on: windows-2022
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}\.build\uv-cache
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,8 +68,10 @@ jobs:
             ~/.cargo/git
             rust-engine/target
             windows-shell/target
-          key: windows-cargo-check-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock') }}
+            .build/uv-cache
+          key: windows-cargo-check-v2-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock', 'packaging/runtime-windows.lock') }}
           restore-keys: |
+            windows-cargo-check-v2-
             windows-cargo-check-v1-
             windows-cargo-
 
@@ -87,6 +91,15 @@ jobs:
           }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_webview2_runtime.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Smoke-test the staged Windows runtime
+        shell: pwsh
+        run: |
+          python -m pip install uv==0.11.28
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./scripts/windows/build-release.ps1 -RuntimeSmokeOnly
 
       - name: Check Windows Rust targets
         shell: pwsh
@@ -149,6 +162,8 @@ jobs:
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: |
           python -m unittest discover -s tests -p test_windows_packaging.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_webview2_runtime.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
