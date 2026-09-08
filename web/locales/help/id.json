@@ -2180,7 +2180,8 @@
         {
           "title": "Mulai dengan stok",
           "paragraphs": [
-            "Film menerapkan film yang dimodelkan dan proses keluaran pada foto diam. Sakelar profil Film mengontrol pemrosesan ini; penyesuaian Edit Anda tetap aktif saat Anda mematikan Film."
+            "Film menerapkan film yang dimodelkan dan proses keluaran pada foto diam. Sakelar profil Film mengontrol pemrosesan ini; penyesuaian Edit Anda tetap aktif saat Anda mematikan Film.",
+            "Atur Ulang di Simulasi Film yang Realistis mengembalikan semua penggeser Film ke nilai bawaannya. Atur Ulang dalam suatu bagian hanya memengaruhi penggeser di bagian tersebut. Sakelar dan opsi yang dipilih tetap seperti semula."
           ],
           "steps": [
             "Buka foto diam dan pilih Film di rel alat untuk membuka Simulasi Film Realistis.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

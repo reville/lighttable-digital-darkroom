@@ -2180,7 +2180,8 @@
         {
           "title": "Inizia con una pellicola",
           "paragraphs": [
-            "Pellicola applica una pellicola modellata e un processo di output a una foto ancora. L'interruttore del profilo Pellicola controlla questa elaborazione; le regolazioni di Modifica restano attive quando disattivi Pellicola."
+            "Pellicola applica una pellicola modellata e un processo di output a una foto ancora. L'interruttore del profilo Pellicola controlla questa elaborazione; le regolazioni di Modifica restano attive quando disattivi Pellicola.",
+            "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati."
           ],
           "steps": [
             "Apri una foto fissa e seleziona Pellicola nella barra strumenti per aprire Simulazione pellicola realistica.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

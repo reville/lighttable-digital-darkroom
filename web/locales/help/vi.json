@@ -2180,7 +2180,8 @@
         {
           "title": "Bắt đầu với một phim",
           "paragraphs": [
-            "Phim áp dụng một quy trình phim và đầu ra được mô phỏng cho một ảnh tĩnh. Công tắc profile Phim điều khiển quá trình xử lý này; các điều chỉnh Chỉnh sửa của bạn vẫn hoạt động khi bạn tắt Phim."
+            "Phim áp dụng một quy trình phim và đầu ra được mô phỏng cho một ảnh tĩnh. Công tắc profile Phim điều khiển quá trình xử lý này; các điều chỉnh Chỉnh sửa của bạn vẫn hoạt động khi bạn tắt Phim.",
+            "Đặt lại trong Mô phỏng phim chân thực đưa tất cả thanh trượt Phim về giá trị mặc định. Đặt lại trong một phần chỉ ảnh hưởng đến các thanh trượt của phần đó. Các công tắc và tùy chọn đã chọn được giữ nguyên."
           ],
           "steps": [
             "Mở một ảnh tĩnh và chọn Phim trong thanh công cụ để mở Mô phỏng Phim Chân thực.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

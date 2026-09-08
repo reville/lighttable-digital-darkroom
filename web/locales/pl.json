@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Zresetuj regulacje wyostrzania i redukcji szumu",
     "Reset the RAW profile and capture-stage processing settings": "Zresetuj profil RAW i ustawienia przetwarzania na etapie aparatu",
     "Reset the combined RGB and individual channel curves": "Zresetuj połączone krzywe RGB i krzywe poszczególnych kanałów",
-    "Reset the film profile and physical film stages for this photo": "Zresetuj profil filmu i fizyczne etapy filmu dla tego zdjęcia",
-    "Reset the film profile, stock, output, and capture settings": "Zresetuj profil filmu, nośnik, wyjście i ustawienia przechwytywania",
-    "Reset the physical film stage controls to their defaults": "Zresetuj fizyczne ustawienia etapu filmu do wartości domyślnych",
     "Reset this slider": "Resetuj ten suwak",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Zresetuj balans bieli, Jaskrawość, Nasycenie, Mieszacz kolorów, Kolor punktowy i Korekcję kolorów",
     "Reset {value}": "Resetuj {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione"
+    "☆ Favorites": "☆ Ulubione",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian.",
+    "Reset sliders to their defaults": "Przywróć domyślne wartości suwaków"
   },
   "plurals": {
     " · {count} paired file linked": {
