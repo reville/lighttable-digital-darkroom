@@ -6,6 +6,8 @@ and the file is registered or copied through the verified ingest path.
 """
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import os
 import threading
@@ -175,11 +177,11 @@ class WatchService:
             plan = ingest_workflow.build_plan([item], request,
                                               existing_hashes=())
             if not plan["items"]:
-                raise ValueError("the watched file did not produce an ingest copy")
+                raise ValueError(T("the watched file did not produce an ingest copy"))
             copied = ingest_workflow.copy_item(
                 plan["items"][0], verify=str(request.get("verify", "hash")))
             if not copied.get("ok"):
-                raise RuntimeError(copied.get("error") or "watched ingest failed")
+                raise RuntimeError(copied.get("error") or T("watched ingest failed"))
             catalog_scan._validate_scan_identity(original)
             path = Path(copied["destination"])
             image_id = catalog_scan.register_file(self.catalog, path,
@@ -194,7 +196,7 @@ class WatchService:
                 "SELECT f.content_hash, f.content_signature FROM files f"
                 " JOIN images i ON i.file_id=f.id WHERE i.id=?", (image_id,)).fetchone()
             if not stored or stored["content_hash"] != content_digest:
-                raise OSError(f"watched file changed before acknowledgement: {path}")
+                raise OSError(T("watched file changed before acknowledgement: {path}", path=path))
             registered = {"path": str(path), "content_signature": stored["content_signature"]}
             catalog_scan._validate_scan_identity(original)
             catalog_scan._validate_scan_identity(registered)
@@ -216,7 +218,7 @@ class WatchService:
             return False
         if media_availability.from_stat(stat) != "local":
             self._candidates.pop(key, None)
-            raise OSError(media_availability.CLOUD_MESSAGE)
+            raise OSError(media_availability.cloud_message())
         signature = file_identity.stat_signature(stat, path=path)
         signature_key = ":".join(map(str, signature))
         if self._handled_revisions.get(key) == signature:

@@ -1,3 +1,4 @@
+import {t as tr, tn as trn} from '../web/i18n.js';
 /* Behavioural cover for the scope panel and the sampling texture it reads.
  *
  * The scopes draw from a small WebGL "helper" surface. When the render
@@ -74,7 +75,7 @@ function sampleOf(width, height, pixel) {
 
 function scopes({ canvas, sample = null } = {}) {
   const refreshes = [];
-  const context = vm.createContext({
+  const context = vm.createContext({tr, trn,
     S: { clip: false, gl: sample === null ? null : { sample: () => sample } },
     $: () => ({ ...(canvas ? canvas.cv : {}),
       getContext: () => (canvas ? canvas.ctx : null) }),
@@ -194,7 +195,7 @@ function helperHarness() {
   let nextTimer = 0;
   const timers = new Map();
   const loaded = [];
-  const context = vm.createContext({
+  const context = vm.createContext({tr, trn,
     record(url, options) { loaded.push({ url, options: { ...options } }); },
     performance: { now: () => now },
     setTimeout(fn, ms) {

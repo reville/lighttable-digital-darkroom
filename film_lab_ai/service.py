@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import tempfile
 import threading
@@ -81,11 +83,11 @@ class AIIndexService:
                 "lastError": self._last_error,
                 "scanComplete": self._scan_complete,
                 "indexRecovery": (
-                    "A damaged local index was preserved and rebuilt."
+                    T("A damaged local index was preserved and rebuilt.")
                     if self.store.last_recovery else ""
                 ),
                 "capabilities": self.analyzer.capabilities(),
-                "privacy": "Index data stays in LightTable's local data folder.",
+                "privacy": T("Index data stays in LightTable's local data folder."),
             }
 
     def results(self, names: list[str]) -> dict[str, dict]:
@@ -149,7 +151,7 @@ class AIIndexService:
         try:
             capabilities = self.analyzer.capabilities()
             if not capabilities.get("vision", {}).get("available"):
-                raise RuntimeError("the local Vision analyzer has not been built")
+                raise RuntimeError(T("the local Vision analyzer has not been built"))
             names = self._list_images()
             with self._lock:
                 self._total = len(names)

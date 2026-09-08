@@ -72,8 +72,8 @@ enum DiagnosticReport {
         url.scheme = "mailto"
         url.path = recipient
         url.queryItems = [
-            URLQueryItem(name: "subject", value: "LightTable diagnostic report"),
-            URLQueryItem(name: "body", value: "What I was doing when the problem happened:\n\n\nDiagnostic report (paste the copied report below):\n\n")
+            URLQueryItem(name: "subject", value: L("LightTable diagnostic report")),
+            URLQueryItem(name: "body", value: L("What I was doing when the problem happened:\n\n\nDiagnostic report (paste the copied report below):\n\n"))
         ]
         return url.url!
     }
@@ -308,17 +308,17 @@ final class DiagnosticReportWindow: NSWindowController {
         self.openEmail = openEmail
         let panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 680, height: 560),
                             styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
-        panel.title = "LightTable Diagnostic Report"
+        panel.title = L("LightTable Diagnostic Report")
         panel.minSize = NSSize(width: 600, height: 440)
         panel.isReleasedWhenClosed = false
         super.init(window: panel)
-        let title = NSTextField(labelWithString: incident == nil ? "Report a problem" :
-            (incident?.kind == "app" ? "LightTable closed unexpectedly last time." : "LightTable’s rendering engine stopped unexpectedly."))
+        let title = NSTextField(labelWithString: incident == nil ? L("Report a problem") :
+            (incident?.kind == "app" ? L("LightTable closed unexpectedly last time.") : L("LightTable’s rendering engine stopped unexpectedly.")))
         title.font = .boldSystemFont(ofSize: 16)
         title.lineBreakMode = .byWordWrapping
         title.maximumNumberOfLines = 0
         let explanation = NSTextField(wrappingLabelWithString:
-            "You can help fix the problem by emailing this report to \(DiagnosticReport.recipient). Nothing is sent automatically. Review the report before sharing; paths and photo filenames are filtered out.")
+            L("You can help fix the problem by emailing this report to {recipient}. Nothing is sent automatically. Review the report before sharing; paths and photo filenames are filtered out.", ["recipient": DiagnosticReport.recipient]))
         let scroll = NSScrollView()
         scroll.hasVerticalScroller = true
         scroll.borderType = .bezelBorder
@@ -331,14 +331,14 @@ final class DiagnosticReportWindow: NSWindowController {
         reportView.textContainer?.widthTracksTextView = true
         reportView.string = report
         scroll.documentView = reportView
-        let copy = NSButton(title: "Copy report", target: self, action: #selector(copyReport))
-        let email = NSButton(title: "Email maintainer", target: self, action: #selector(emailReport))
-        let dismiss = NSButton(title: "Dismiss", target: self, action: #selector(dismissReport))
+        let copy = NSButton(title: L("Copy report"), target: self, action: #selector(copyReport))
+        let email = NSButton(title: L("Email maintainer"), target: self, action: #selector(emailReport))
+        let dismiss = NSButton(title: L("Dismiss"), target: self, action: #selector(dismissReport))
         dismiss.keyEquivalent = "\u{1b}"
         let buttons = NSStackView(views: [copy, email, dismiss])
         buttons.orientation = .horizontal
         buttons.spacing = 10
-        status.stringValue = "Email maintainer copies the report and opens a draft. Paste the report into the email before sending."
+        status.stringValue = L("Email maintainer copies the report and opens a draft. Paste the report into the email before sending.")
         status.font = .systemFont(ofSize: 11)
         status.textColor = .secondaryLabelColor
         let content = NSStackView(views: [title, explanation, scroll, status, buttons])
@@ -362,14 +362,14 @@ final class DiagnosticReportWindow: NSWindowController {
         if let incident {
             copy.isEnabled = false
             email.isEnabled = false
-            status.stringValue = "Checking for a matching macOS crash report…"
+            status.stringValue = L("Checking for a matching macOS crash report…")
             DispatchQueue.global(qos: .utility).async { [weak self] in
                 let native = MacCrashReport.collect(for: incident)
                 DispatchQueue.main.async {
                     self?.reportView.string += "\nmacOS crash report:\n" + (native ?? "No matching macOS crash report was available.") + "\n"
                     copy.isEnabled = true
                     email.isEnabled = true
-                    self?.status.stringValue = "Email maintainer copies the report and opens a draft. Paste the report into the email before sending."
+                    self?.status.stringValue = L("Email maintainer copies the report and opens a draft. Paste the report into the email before sending.")
                 }
             }
         }
@@ -378,17 +378,17 @@ final class DiagnosticReportWindow: NSWindowController {
     private func copyToClipboard() -> Bool {
         pasteboard.clearContents()
         if pasteboard.setString(reportView.string, forType: .string) {
-            status.stringValue = "Report copied. Paste it into an email to \(DiagnosticReport.recipient)."
+            status.stringValue = L("Report copied. Paste it into an email to {recipient}.", ["recipient": DiagnosticReport.recipient])
             return true
         }
-        status.stringValue = "The report could not be copied. Select the text and copy it manually."
+        status.stringValue = L("The report could not be copied. Select the text and copy it manually.")
         return false
     }
     @objc private func copyReport() { _ = copyToClipboard() }
     @objc private func emailReport() {
         guard copyToClipboard() else { return }
         if !openEmail(DiagnosticReport.emailURL()) {
-            status.stringValue = "No email app opened. Paste the copied report into an email to \(DiagnosticReport.recipient)."
+            status.stringValue = L("No email app opened. Paste the copied report into an email to {recipient}.", ["recipient": DiagnosticReport.recipient])
         }
     }
     @objc private func dismissReport() { close() }

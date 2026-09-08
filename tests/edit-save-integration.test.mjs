@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import { t as tr, tn as trn } from '../web/i18n.js';
+import { localToolLabel } from '../web/editor-panels.js';
 import {presetEditState, reconcilePresetAdjustment} from '../web/preset-amount.js';
 
 const read = file => readFileSync(new URL(`../web/${file}`, import.meta.url), 'utf8');
@@ -44,7 +46,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     idx: 0, seq: 0, activePane: 'editPane', viewMode: 'detail', catalogEnabled: true,
   };
   const context = {
-    console, structuredClone, Promise, AggregateError, S,
+    console, structuredClone, Promise, AggregateError, S, tr, trn, localToolLabel,
     presetEditState, reconcilePresetAdjustment,
     transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
@@ -119,7 +121,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
       'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',
-  ].join('\n');
+  ].join('\n').replace(/^import .*;\r?\n/gm, '');
   vm.runInNewContext(code + '\neditRecoveryReady = true; editRecovery = {put: async () => true, remove: async () => true};', context, {filename: 'actual-app-save-functions.js'});
   context.app.showCurrentImage(S.images[0]);
   return {...context.app, context, S, requests, stateReads, history, historyFlushes, nodes, timers, toasts};

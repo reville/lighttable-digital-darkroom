@@ -1123,7 +1123,7 @@
             "Film on enables the included film treatment. Film off bypasses Film. Film unchanged leaves its enabled state alone. A film treatment may intentionally change Camera EV, automatic metering, development, print, grain, and other creative film controls."
           ],
           "tips": [
-            "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; inspect its details before applying."
+            "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; review the resulting photo and use Undo if it changes corrections you want to keep."
           ]
         },
         {
@@ -2557,7 +2557,7 @@
         {
           "title": "Interface and behavior",
           "paragraphs": [
-            "Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.",
+            "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.",
             "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
             "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow."
           ]
@@ -2584,11 +2584,65 @@
         }
       ],
       "related": [
+        "settings-language",
         "keyboard-midi",
         "photo-index",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
+      ]
+    },
+    {
+      "id": "settings-language",
+      "title": "Choose the app and help language",
+      "category": "Settings",
+      "summary": "Set one language for the interface and searchable help, with your choice remembered for future launches.",
+      "keywords": [
+        "language",
+        "translation",
+        "English",
+        "Spanish",
+        "French",
+        "German",
+        "Chinese",
+        "Arabic",
+        "localization",
+        "settings",
+        "first launch"
+      ],
+      "sections": [
+        {
+          "title": "Choose a language on first use",
+          "paragraphs": [
+            "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.",
+            "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.",
+            "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion."
+          ],
+          "steps": [
+            "Choose your preferred language in the first-use dialog.",
+            "Click Continue. The app proceeds after the choice is saved."
+          ]
+        },
+        {
+          "title": "Change the language later",
+          "paragraphs": [
+            "Changing language saves pending edits and reloads the current window. Photo filenames, your keywords, and other photo content keep their existing wording."
+          ],
+          "steps": [
+            "Open Settings → General.",
+            "Choose a language in Language.",
+            "Click Apply language and wait for the window to reload.",
+            "Open Help to search or browse in the selected language."
+          ],
+          "tips": [
+            "If language loading or saving fails, your window and language selection stay available for another attempt. If pending photo edits could not save, use Retry save, then apply the language again.",
+            "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "shortcut-schemes"
       ]
     },
     {
@@ -2776,6 +2830,7 @@
           "paragraphs": [
             "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
             "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
+            "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.",
             "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
           ]
         },

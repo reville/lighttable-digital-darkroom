@@ -16,6 +16,8 @@ identical grades.
 """
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import json
 import math
@@ -856,9 +858,9 @@ def merge_sidecar(existing: str, record: dict) -> str:
     Refuse malformed files instead of replacing work we cannot understand.
     """
     if len(existing.encode("utf-8")) > MAX_XMP_BYTES:
-        raise ValueError("existing XMP is too large to update safely")
+        raise ValueError(T("existing XMP is too large to update safely"))
     if re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", existing, re.I):
-        raise ValueError("XMP declarations cannot be updated safely")
+        raise ValueError(T("XMP declarations cannot be updated safely"))
     document = minidom.parseString(existing)
     scalars, _, _ = _collect(ET.fromstring(existing))
     supplied = record
@@ -874,7 +876,7 @@ def merge_sidecar(existing: str, record: dict) -> str:
     generated = minidom.parseString(build_sidecar(record))
     rdf_nodes = document.getElementsByTagNameNS(RDF_NS, "RDF")
     if not rdf_nodes:
-        raise ValueError("existing XMP has no RDF metadata document")
+        raise ValueError(T("existing XMP has no RDF metadata document"))
     rdf = rdf_nodes[0]
     holders = [node for node in rdf.childNodes
                if node.nodeType == Node.ELEMENT_NODE
@@ -929,9 +931,9 @@ def merge_sidecar(existing: str, record: dict) -> str:
         try:
             native = json.loads(payload)
         except (TypeError, ValueError) as error:
-            raise ValueError("Existing LightTable edits could not be merged safely") from error
+            raise ValueError(T("Existing LightTable edits could not be merged safely")) from error
         if not isinstance(native, dict):
-            raise ValueError("Existing LightTable edits could not be merged safely")
+            raise ValueError(T("Existing LightTable edits could not be merged safely"))
         # Keep unknown future keys and explicit clears. Do not feed these
         # inherited fields to build_sidecar, which would also export them to
         # Camera Raw properties the user did not request to change.
@@ -946,7 +948,7 @@ def merge_sidecar(existing: str, record: dict) -> str:
     if prefs and ("rating" in record or "status" in record):
         values = prefs.split(":", 3)
         if len(values) != 4 or not all(value.strip().isdigit() for value in values[:3]):
-            raise ValueError("Photo Mechanic preferences could not be updated safely")
+            raise ValueError(T("Photo Mechanic preferences could not be updated safely"))
         if "status" in record:
             values[0] = "1" if record["status"] == "approved" else "0"
         if "rating" in record:
@@ -979,11 +981,11 @@ def _property_signatures(text: str) -> dict[str, str]:
     """Fingerprint RDF values without depending on the writer's prefixes."""
     if (len(text.encode("utf-8")) > MAX_XMP_BYTES
             or re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", text, re.I)):
-        raise ValueError("XMP cannot be checked safely")
+        raise ValueError(T("XMP cannot be checked safely"))
     root = ET.fromstring(text)
     rdfs = list(root.iter(f"{{{RDF_NS}}}RDF"))
     if not rdfs:
-        raise ValueError("existing XMP has no RDF metadata document")
+        raise ValueError(T("existing XMP has no RDF metadata document"))
 
     def value(node):
         # Attribute and simple element property forms have equal values.
@@ -1015,19 +1017,19 @@ def sidecar_snapshot(source: Path) -> dict:
     """
     paths = find_sidecars(source)
     if len(paths) > 1:
-        raise ValueError("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.")
+        raise ValueError(T("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing."))
     if not paths:
         return {"path": None, "properties": {}}
     target = paths[0]
     if target.stat().st_size > MAX_XMP_BYTES:
-        raise ValueError("existing XMP is too large to update safely")
+        raise ValueError(T("existing XMP is too large to update safely"))
     return {"path": str(target),
             "properties": _property_signatures(_decode(target.read_bytes()))}
 
 
 def _check_snapshot(target, original, document, record, expected):
     if expected.get("path") != (str(target) if original is not None else None):
-        raise OSError("The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again.")
+        raise OSError(T("The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again."))
     before = expected.get("properties") or {}
     current = _property_signatures(_decode(original)) if original is not None else {}
     proposed = _property_signatures(document)
@@ -1039,9 +1041,8 @@ def _check_snapshot(target, original, document, record, expected):
         if current.get(key) != before.get(key) and current.get(key) != proposed.get(key):
             conflicts.append(f"{_PREFIX_BY_URI.get(uri, 'lighttable')}:{name}")
     if conflicts:
-        raise OSError("External XMP changes conflict with pending edits ("
-                      + ", ".join(sorted(conflicts))
-                      + "). Read the sidecar metadata before syncing again.")
+        raise OSError(T("External XMP changes conflict with pending edits ({properties}). Read the sidecar metadata before syncing again.",
+                        properties=", ".join(sorted(conflicts))))
 
 
 def write_sidecar(source: Path, record: dict,
@@ -1057,18 +1058,18 @@ def write_sidecar(source: Path, record: dict,
     try:
         existing = find_sidecars(source)
         if len(existing) > 1:
-            raise ValueError("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.")
+            raise ValueError(T("Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing."))
         if existing:
             target = existing[0]
         if target.exists() and target.stat().st_size > MAX_XMP_BYTES:
-            raise ValueError("existing XMP is too large to update safely")
+            raise ValueError(T("existing XMP is too large to update safely"))
         original = target.read_bytes() if target.exists() else None
         document = (merge_sidecar(_decode(original), record)
                     if original is not None else build_sidecar(record))
         if expected_snapshot is not None:
             _check_snapshot(target, original, document, record, expected_snapshot)
         if ((target.read_bytes() if target.exists() else None) != original):
-            raise OSError("Another application changed the XMP file. Retry to merge its latest changes.")
+            raise OSError(T("Another application changed the XMP file. Retry to merge its latest changes."))
         # Retain the first pre-LightTable sidecar. Other editors may carry
         # settings we cannot round-trip, and an opt-in mirror must never make
         # those bytes unrecoverable.

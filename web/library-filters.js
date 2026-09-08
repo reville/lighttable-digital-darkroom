@@ -1,5 +1,5 @@
+import {t as tr, tn as trn} from './i18n.js';
 import { OPTICS_DEFAULTS } from './editor-panels.js';
-
 export const FILE_TYPES = { raw: 'RAW', jpeg: 'JPEG', heic: 'HEIC / HEIF', tiff: 'TIFF', png: 'PNG' };
 const OPTICS_KEYS = Object.keys(OPTICS_DEFAULTS);
 
@@ -37,9 +37,9 @@ export function matchesLibraryFilters(image, types, editState, metadata = {}) {
 }
 
 export const METADATA_FIELDS = {
-  camera: 'Camera', lens: 'Lens', keyword: 'Keyword', dateFrom: 'From', dateTo: 'Through',
-  isoMin: 'ISO ≥', isoMax: 'ISO ≤', focalLengthMin: 'Focal length ≥', focalLengthMax: 'Focal length ≤',
-  apertureMin: 'Aperture ≥', apertureMax: 'Aperture ≤', shutterMin: 'Exposure ≥', shutterMax: 'Exposure ≤',
+  camera: tr('Camera'), lens: tr('Lens'), keyword: tr('Keyword'), dateFrom: tr('From'), dateTo: tr('Through'),
+  isoMin: tr('ISO ≥'), isoMax: tr('ISO ≤'), focalLengthMin: tr('Focal length ≥'), focalLengthMax: tr('Focal length ≤'),
+  apertureMin: tr('Aperture ≥'), apertureMax: tr('Aperture ≤'), shutterMin: tr('Exposure ≥'), shutterMax: tr('Exposure ≤'),
 };
 const EXPOSURE = {iso:'iso', focalLength:'focalLength', aperture:'aperture', shutter:'shutterSeconds'};
 export function positiveNumber(value) {
@@ -54,16 +54,16 @@ export function cleanMetadataFilters(values) {
     if (values[key] == null || String(values[key]).trim() === '') continue;
     if (key.endsWith('Min') || key.endsWith('Max')) {
       const value = positiveNumber(values[key]);
-      if (value == null) throw new Error(`${METADATA_FIELDS[key]} needs a positive number.`);
+      if (value == null) throw new Error(tr('{field} needs a positive number.', {field: METADATA_FIELDS[key]}));
       rules[key] = value;
     } else rules[key] = String(values[key]).trim().replace(/\s+/g, ' ').slice(0, 200);
   }
   for (const key of Object.keys(EXPOSURE)) {
     if (rules[key + 'Min'] != null && rules[key + 'Max'] != null && rules[key + 'Min'] > rules[key + 'Max']) {
-      throw new Error(`${METADATA_FIELDS[key + 'Min'].replace(' ≥', '')}: minimum must not exceed maximum.`);
+      throw new Error(tr('{field}: minimum must not exceed maximum.', {field: METADATA_FIELDS[key + 'Min'].replace(' ≥', '')}));
     }
   }
-  if (rules.dateFrom && rules.dateTo && rules.dateFrom > rules.dateTo) throw new Error('Capture date start must not follow end.');
+  if (rules.dateFrom && rules.dateTo && rules.dateFrom > rules.dateTo) throw new Error(tr('Capture date start must not follow end.'));
   return rules;
 }
 export function matchesMetadataFilters(image, rules) {
@@ -89,19 +89,19 @@ export function matchesMetadataFilters(image, rules) {
 // active restriction, including a legacy one, gets a removable chip.
 export function filterChips(values, types) {
   const chips = types.map(type => ({ id: `type:${type}`, label: FILE_TYPES[type] }));
-  const flags = { pending: 'Unflagged', approved: 'Picked', skipped: 'Rejected',
-    rated: '1★ and up', unrated: 'Unrated', edited: 'Edited', unedited: 'Unedited', virtual: 'Virtual copies' };
+  const flags = { pending: tr('Unflagged'), approved: tr('Picked'), skipped: tr('Rejected'),
+    rated: tr('1★ and up'), unrated: tr('Unrated'), edited: tr('Edited'), unedited: tr('Unedited'), virtual: tr('Virtual copies') };
   if (flags[values.filter]) chips.push({ id: 'filter', label: flags[values.filter] });
-  if (values.ratingFilter === 'unrated') chips.push({ id: 'ratingFilter', label: 'Unrated' });
-  else if (+values.ratingFilter > 0) chips.push({ id: 'ratingFilter', label: `${values.ratingFilter}★${+values.ratingFilter < 5 ? ' and up' : ''}` });
+  if (values.ratingFilter === 'unrated') chips.push({ id: 'ratingFilter', label: tr('Unrated') });
+  else if (+values.ratingFilter > 0) chips.push({ id: 'ratingFilter', label: +values.ratingFilter < 5 ? tr('{rating}★ and up', {rating: values.ratingFilter}) : `${values.ratingFilter}★` });
   if (values.labelFilter && values.labelFilter !== 'all') {
     const label = values.labelFilter;
-    chips.push({ id: 'labelFilter', label: label === 'any' ? 'Any color label'
-      : label === 'none' ? 'No color label' : `${label[0].toUpperCase()}${label.slice(1)} label` });
+    chips.push({ id: 'labelFilter', label: label === 'any' ? tr('Any color label')
+      : label === 'none' ? tr('No color label') : ({red: tr('Red label'), yellow: tr('Yellow label'), green: tr('Green label'), blue: tr('Blue label'), purple: tr('Purple label')})[label] || label });
   }
-  const edits = { edited: 'Edited', unedited: 'Unedited', virtual: 'Virtual copies' };
+  const edits = { edited: tr('Edited'), unedited: tr('Unedited'), virtual: tr('Virtual copies') };
   if (edits[values.editFilter]) chips.push({ id: 'editFilter', label: edits[values.editFilter] });
-  const kinds = { raw: 'RAW originals', processed: 'Processed files', virtual: 'Virtual copies' };
+  const kinds = { raw: tr('RAW originals'), processed: tr('Processed files'), virtual: tr('Virtual copies') };
   if (kinds[values.kindFilter]) chips.push({ id: 'kindFilter', label: kinds[values.kindFilter] });
   for (const [key, value] of Object.entries(values.metadata || {})) {
     if (METADATA_FIELDS[key]) chips.push({id: `metadata:${key}`, label: `${METADATA_FIELDS[key]} ${value}${key.startsWith('focalLength') ? ' mm' : key.startsWith('shutter') ? ' s' : ''}`});
@@ -131,7 +131,7 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
     const chips = filterChips({...values(), metadata: metadataRules}, types), key = JSON.stringify(chips);
     if (paintKey === key) return;
     paintKey = key;
-    el('libraryFilterLabel').textContent = chips.length ? `Filter · ${chips.length}` : 'Filter';
+    el('libraryFilterLabel').textContent = chips.length ? tr('Filter · {count}', {count: chips.length}) : tr('Filter');
     trigger.classList.toggle('on', chips.length > 0);
     row.hidden = !chips.length;
     el('clearLibraryFilters').disabled = !chips.length;
@@ -139,8 +139,8 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
       const button = document.createElement('button');
       button.type = 'button'; button.className = 'filter-chip';
       button.dataset.filterChip = chip.id;
-      button.setAttribute('aria-label', `Remove ${chip.label} filter`);
-      button.title = `Remove ${chip.label} filter`;
+      button.setAttribute('aria-label', tr('Remove {label} filter', {label: chip.label}));
+      button.title = tr('Remove {label} filter', {label: chip.label});
       button.textContent = `${chip.label} ×`;
       button.onclick = () => {
         const index = [...chipsHost.children].indexOf(button);

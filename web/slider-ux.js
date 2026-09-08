@@ -1,3 +1,4 @@
+import { t as tr } from './i18n.js';
 /* Slider interaction upgrades for the edit panel.
  *
  * These apply to every range input inside #panel whatever skin the panel wears:
@@ -308,8 +309,8 @@ function prepare(input) {
     button.type = 'button';
     button.className = 'row-reset';
     button.tabIndex = -1;
-    button.title = 'Reset this slider';
-    button.setAttribute('aria-label', `Reset ${info.row.querySelector('.name')?.textContent?.trim() || 'slider'}`);
+    button.title = tr("Reset this slider");
+    button.setAttribute('aria-label', tr("Reset {value}", {value: (info.row.querySelector('.name')?.textContent?.trim() || tr("slider"))}));
     button.textContent = '↺';
     button.addEventListener('click', (event) => {
       event.preventDefault();

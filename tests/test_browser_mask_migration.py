@@ -10,9 +10,8 @@ class BrowserMaskMigrationTests(unittest.TestCase):
     def test_legacy_and_canonical_inversion_survive_repeated_normalization(self):
         script = r'''
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-const source = readFileSync(process.argv[1], 'utf8');
-const {normalizeMasks} = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import {pathToFileURL} from 'node:url';
+const {normalizeMasks} = await import(pathToFileURL(process.argv[1]));
 for (const type of ['radial', 'linear', 'brush']) {
   let mask = normalizeMasks([{id:'legacy', type, invert:true}])[0];
   for (let pass=0; pass<3; pass++) {

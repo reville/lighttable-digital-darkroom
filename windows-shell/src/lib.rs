@@ -1,5 +1,6 @@
 pub mod linux;
 pub mod preset_links;
+pub mod localization;
 
 /// Read a bounded HTTP status line, including responses split across TCP reads.
 pub fn successful_health_response(stream: impl std::io::Read) -> bool {

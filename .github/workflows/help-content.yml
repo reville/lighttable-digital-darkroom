@@ -25,3 +25,17 @@ jobs:
           python3 scripts/help_content.py check
           python3 -m unittest discover -s tests -p 'test_help_content.py' -v
           node --test tests/help-search.test.mjs
+      - name: Translation sources, catalogs, and localized Help
+        run: |
+          python3 -m pip install --constraint requirements-runtime.lock numpy pillow
+          python3 scripts/localization.py check
+          python3 scripts/extract-web-i18n.py --check
+          python3 scripts/native_localization_sources.py
+          python3 server_localization.py check
+          python3 scripts/help_content.py localization-check
+          python3 -m unittest discover -s tests -p 'test_help_localization.py' -v
+          python3 -m unittest discover -s tests -p 'test_web_i18n_extraction.py' -v
+          python3 -m unittest discover -s tests -p 'test_native_localization.py' -v
+          python3 -m unittest discover -s tests -p 'test_server_localization.py' -v
+      - name: Web behavior
+        run: node --test tests/*.test.mjs

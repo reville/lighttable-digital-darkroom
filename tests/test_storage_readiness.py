@@ -24,8 +24,22 @@ class StorageReadinessTests(TestCase):
 
     def test_stat_only_probe_never_opens_placeholder_and_portable_stat_is_local(self):
         path = Path('/not-a-real-original/photo.RAF')
-        with mock.patch.object(Path, 'stat', return_value=SimpleNamespace(st_flags=0x40000000)), \
-             mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')):
+        real_stat, real_open = Path.stat, Path.open
+
+        def stat(candidate, *args, **kwargs):
+            if candidate == path:
+                return SimpleNamespace(st_flags=0x40000000)
+            return real_stat(candidate, *args, **kwargs)
+
+        def open_file(candidate, *args, **kwargs):
+            if candidate == path:
+                raise AssertionError('must not hydrate')
+            return real_open(candidate, *args, **kwargs)
+
+        # Simulate only the original: localization may read preferences and
+        # catalogs while constructing the message explaining its availability.
+        with mock.patch.object(Path, 'stat', stat), \
+             mock.patch.object(Path, 'open', open_file):
             self.assertEqual(media_availability.availability(path), 'cloud-only')
             self.assertEqual(catalog_scan.header_hash(path), '')
             self.assertEqual(catalog_scan.read_metadata(path), {})

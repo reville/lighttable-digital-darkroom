@@ -1,3 +1,6 @@
+
+const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
+import { t as tr, tn as trn } from './i18n.js';
 /* The catalog pane: sources, migration, ingest, rename, and maintenance.
  *
  * This is where a library that spans several folders is managed, and where
@@ -62,44 +65,40 @@ export function createCatalogUI(ctx) {
     const maintenance = el('catalogMaintenance');
     if (!container) return;
     if (!catalog || !catalog.enabled) {
-      container.textContent = 'Running on a single folder.';
-      if (summary) summary.textContent = 'Folder mode';
+      container.textContent = tr("Running on a single folder.");
+      if (summary) summary.textContent = tr("Folder mode");
       if (maintenance && catalog?.recovery?.status === 'damaged') {
-        maintenance.textContent = 'The catalog is damaged. Photos are open in '
-          + 'folder mode and nothing has been changed. Open Library Health to '
-          + 'salvage it, restore a backup, or start a new catalog.';
+        maintenance.textContent = tr("The catalog is damaged. Photos are open in folder mode and nothing has been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.");
       } else if (maintenance && catalog?.recovery?.status === 'unavailable') {
-        maintenance.textContent = 'The catalog could not be opened and no valid '
-          + 'backup was available. Photos are open in safe folder mode; the '
-          + 'damaged catalog has not been overwritten.';
+        maintenance.textContent = tr("The catalog could not be opened and no valid backup was available. Photos are open in safe folder mode; the damaged catalog has not been overwritten.");
       } else if (maintenance && catalog?.recovery?.status === 'incompatible') {
-        maintenance.textContent = 'This catalog was created by a newer '
-          + 'LightTable build. It was left unchanged; update the app to reopen it.';
+        maintenance.textContent = tr("This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.");
       }
       return;
     }
     const sources = catalog.sources || [];
     const stats = catalog.stats || {};
     if (summary) {
-      summary.textContent = `${stats.files || 0} photos · ${sources.length} `
-        + `source${sources.length === 1 ? '' : 's'}`
-        + (stats.missing ? ` · ${stats.missing} missing` : '');
+      summary.textContent = [
+        trn('{count} photo', '{count} photos', stats.files || 0, {count: stats.files || 0}),
+        trn('{count} source', '{count} sources', sources.length, {count: sources.length}),
+        stats.missing ? tr('{count} missing', {count: stats.missing}) : '',
+      ].filter(Boolean).join(' · ');
     }
     container.innerHTML = sources.map((source) => `
       <div class="source-row${source.available ? '' : ' unavailable'}"
            data-id="${escapeHTML(source.id)}">
         <button class="source-star${source.favorite ? ' on' : ''}"
-                data-act="favorite" title="Favourite">★</button>
+                data-act="favorite" title="${i18nHTML(tr("Favourite"))}">★</button>
         <span class="source-name" title="${escapeHTML(source.path)}">${escapeHTML(source.name)}</span>
         <span class="source-count">${Number(source.count) || 0}</span>
-        <button class="source-act" data-act="rescan" title="Rescan">⟳</button>
-        <button class="source-act" data-act="remove" title="Remove from catalog">×</button>
-      </div>`).join('') || 'No sources yet.';
+        <button class="source-act" data-act="rescan" title="${i18nHTML(tr("Rescan"))}">⟳</button>
+        <button class="source-act" data-act="remove" title="${i18nHTML(tr("Remove from catalog"))}">×</button>
+      </div>`).join('') || i18nHTML(tr('No sources yet.'));
     if (maintenance && catalog.recovery?.status === 'recovered') {
-      maintenance.textContent = 'Recovered the catalog from a verified backup. '
-        + 'The damaged database was preserved in the Recovery folder.';
+      maintenance.textContent = tr("Recovered the catalog from a verified backup. The damaged database was preserved in the Recovery folder.");
       if (!recoveryShown) {
-        toast('Catalog recovered from a verified backup');
+        toast(tr("Catalog recovered from a verified backup"));
         recoveryShown = true;
       }
     }
@@ -127,9 +126,7 @@ export function createCatalogUI(ctx) {
         if (action === 'remove') {
           const source = (catalog.sources || []).find((s) => s.id === id);
           if (!window.confirm(
-            `Remove “${source ? source.name : 'this folder'}” from the `
-            + 'catalog? Photos and edits stay recoverable; adding the same '
-            + 'folder again restores them.')) {
+            tr("Remove “{value}” from the catalog? Photos and edits stay recoverable; adding the same folder again restores them.", {value: source ? source.name : tr("this folder")}))) {
             return;
           }
           await post('/api/catalog/sources', { action: 'remove', id });
@@ -139,7 +136,7 @@ export function createCatalogUI(ctx) {
                      { action: 'favorite', id, favorite: !(source && source.favorite) });
         } else if (action === 'rescan') {
           await post('/api/catalog/scan', { sourceId: id });
-          toast('Scanning…');
+          toast(tr("Scanning…"));
         }
         await refresh();
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
@@ -151,7 +148,7 @@ export function createCatalogUI(ctx) {
       add.addEventListener('click', () => {
         /* The host owns the folder picker; it answers with `addFolder`. */
         if (!sendNative('addFolder', {})) {
-          toast('Adding folders needs the desktop app');
+          toast(tr("Adding folders needs the desktop app"));
         }
       });
     }
@@ -160,7 +157,7 @@ export function createCatalogUI(ctx) {
     if (rescan) {
       rescan.addEventListener('click', async () => {
         await post('/api/catalog/scan', {});
-        toast('Rescanning every source…');
+        toast(tr("Rescanning every source…"));
       });
     }
 
@@ -168,11 +165,11 @@ export function createCatalogUI(ctx) {
     if (backup) {
       backup.addEventListener('click', async () => {
         backup.disabled = true;
-        const report = showCatalogResult('Back up catalog', 'Creating backup…');
+        const report = showCatalogResult(tr('Back up catalog'), tr('Creating backup…'));
         try {
           const result = await post('/api/catalog/backup', {});
-          if (result.error || !result.archive) throw new Error(result.error || 'Could not create backup');
-          report(`Backed up to ${result.archive}`);
+          if (result.error || !result.archive) throw new Error(result.error || tr('Could not create backup'));
+          report(tr('Backed up to {resultArchive}', {resultArchive: result.archive}));
         } catch (error) { report(String(error.message || error)); }
         finally { backup.disabled = false; }
       });
@@ -182,14 +179,15 @@ export function createCatalogUI(ctx) {
     if (duplicates) {
       duplicates.addEventListener('click', async () => {
         duplicates.disabled = true;
-        const report = showCatalogResult('Find duplicates', 'Looking for duplicate files…');
+        const report = showCatalogResult(tr('Find duplicates'), tr('Looking for duplicate files…'));
         try {
           const result = await get('/api/catalog/duplicates');
           if (result.error) throw new Error(result.error);
           const groups = result.groups || [];
           const total = groups.reduce((sum, group) => sum + group.files.length, 0);
-          report(!groups.length ? 'No duplicate files found.'
-            : `${groups.length} duplicate group${groups.length === 1 ? '' : 's'} covering ${total} files.\n\n`
+          report(!groups.length ? tr('No duplicate files found.')
+            : trn('{count} duplicate group covering {files}.', '{count} duplicate groups covering {files}.',
+              groups.length, {files: trn('{count} file', '{count} files', total)}) + '\n\n'
               + groups.map(group => group.files.map(file => file.relpath).join(' = ')).join('\n'));
         } catch (error) { report(String(error.message || error)); }
         finally { duplicates.disabled = false; }
@@ -204,17 +202,17 @@ export function createCatalogUI(ctx) {
     if (!button) return;
     button.addEventListener('click', async () => {
       button.disabled = true;
-      const report = showCatalogResult('Import sidecars', 'Reading sidecars…');
+      const report = showCatalogResult(tr('Import sidecars'), tr('Reading sidecars…'));
       try {
         const result = await post('/api/import/sidecars', {
           apply: { metadata: true, develop: false, crop: false },
         });
         if (result.error) throw new Error(result.error);
         const ignored = Object.entries(result.ignored || {});
-        report(`Read ${result.read} sidecars, applied `
-          + `${result.applied}. ${result.missing} photos had none.`
-          + (ignored.length ? `\nSkipped: ${ignored.map(([key, count]) => `${key} (${count})`).join(', ')}` : '')
-          + (result.errors?.length ? `\nErrors: ${result.errors.map(error => error.error || error).join('; ')}` : ''));
+        report(tr('Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.',
+          {read: result.read, applied: result.applied, missing: result.missing})
+          + (ignored.length ? '\n' + tr('Skipped: {items}.', {items: ignored.map(([key, count]) => `${key} (${count})`).join(', ')}) : '')
+          + (result.errors?.length ? '\n' + tr('Errors: {details}', {details: result.errors.map(error => error.error || error).join('; ')}) : ''));
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
       } catch (error) { report(String(error.message || error)); }
       finally { button.disabled = false; }
@@ -292,7 +290,7 @@ export function createCatalogUI(ctx) {
     if (choose) {
       choose.addEventListener('click', () => {
         if (!sendNative('chooseCatalogFile', {})) {
-          toast('Choosing a file needs the desktop app; paste a path instead');
+          toast(tr("Choosing a file needs the desktop app; paste a path instead"));
         }
       });
     }
@@ -305,12 +303,12 @@ export function createCatalogUI(ctx) {
       controls();
       el('importCoverage').hidden = true;
       if (!path) return;
-      summary.textContent = 'Reading catalog…';
+      summary.textContent = tr('Reading catalog…');
       try {
         const result = await post('/api/import/catalog', {path, inspectOnly: true});
         if (ticket !== inspection || path !== pathInput.value.trim()) return;
         if (result.error) throw new Error(result.error);
-        summary.textContent = `${result.images || 0} photos · ${result.collections || 0} collections. `
+        summary.textContent = tr('{photos} photos · {collections} collections. ', {photos: result.images || 0, collections: result.collections || 0})
           + (result.warnings || []).join('; ');
         inspected = path;
         options.hidden = false;
@@ -325,18 +323,17 @@ export function createCatalogUI(ctx) {
     });
     options.addEventListener('change', controls);
     function showReport(result) {
-      const prefix = result.previewOnly ? 'Compatibility preview' : result.trial ? 'Trial variants created' : 'Import complete';
-      summary.textContent = `${prefix}: ${result.matched || 0} matched, ${result.unmatched || 0} not found. `
-        + `${result.collections || 0} collections; ${result.history || 0} history steps. `
+      const prefix = result.previewOnly ? tr('Compatibility preview') : result.trial ? tr('Trial variants created') : tr('Import complete');
+      summary.textContent = tr('{prefix}: {matched} matched, {unmatched} not found. {collections} collections; {history} history steps. ', {prefix, matched: result.matched || 0, unmatched: result.unmatched || 0, collections: result.collections || 0, history: result.history || 0})
         + (result.warnings || []).join('; ')
-        + (result.beforeBackup ? ` Backup before import: ${result.beforeBackup}` : '');
+        + (result.beforeBackup ? ' ' + tr('Backup before import: {path}', {path: result.beforeBackup}) : '');
       el('importCoverage').hidden = false;
       el('importCoverageRows').replaceChildren(...(result.photos || []).map(photo => {
         const row = document.createElement('p');
-        row.textContent = `${photo.sourcePath || photo.sourceId} → ${photo.targetName || 'No match'} · ${photo.outcome}. `
-          + `Mapped: ${(photo.mapped || []).join(', ') || 'none'}. `
-          + (photo.skipped?.length ? `Skipped: ${photo.skipped.join(', ')}. ` : '')
-          + (photo.reference ? `Reference: ${photo.reference.path || photo.reference.note}. ` : '')
+        row.textContent = `${photo.sourcePath || photo.sourceId} → ${photo.targetName || tr('No match')} · ${photo.outcome}. `
+          + tr('Mapped: {items}. ', {items: (photo.mapped || []).join(', ') || tr('none')})
+          + (photo.skipped?.length ? tr('Skipped: {items}. ', {items: photo.skipped.join(', ')}) : '')
+          + (photo.reference ? tr('Reference: {reference}. ', {reference: photo.reference.path || photo.reference.note}) : '')
           + (photo.appearance || '');
         return row;
       }));
@@ -350,14 +347,14 @@ export function createCatalogUI(ctx) {
       if (mode === 'import' && signature !== previewed) return;
       body.previewOnly = mode === 'preview';
       body.options.trial = mode === 'trial';
-      busy = true; controls(); summary.textContent = 'Preparing…';
+      busy = true; controls(); summary.textContent = tr('Preparing…');
       try {
         const started = await post('/api/import/catalog', body);
-        if (started.error || !started.jobId) throw new Error(started.error || 'Could not start import');
+        if (started.error || !started.jobId) throw new Error(started.error || tr('Could not start import'));
         for (let attempt = 0; attempt < 7200; attempt++) {
           const record = await get(`/api/jobs/${started.jobId}`);
           if (record.error) throw new Error(record.error);
-          if (record.state === 'failed') throw new Error(record.errors?.join('; ') || 'Import failed');
+          if (record.state === 'failed') throw new Error(record.errors?.join('; ') || tr('Import failed'));
           if (record.state === 'done') {
             const result = record.result || {};
             if (mode === 'preview') previewed = signature;
@@ -370,10 +367,10 @@ export function createCatalogUI(ctx) {
             return;
           }
           const status = record.result || {};
-          summary.textContent = `${status.stage || 'Working'}… ${status.done || 0}/${status.total || 0}`;
+          summary.textContent = `${status.stage || tr('Working')}… ${status.done || 0}/${status.total || 0}`;
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        throw new Error('The import is still running. Check its job status before starting another import.');
+        throw new Error(tr('The import is still running. Check its job status before starting another import.'));
       } catch (error) { summary.textContent = error.message; }
       finally { busy = false; controls(); }
     }
@@ -432,18 +429,20 @@ export function createCatalogUI(ctx) {
       const selectedItems = chosen();
       const bytes = selectedItems.reduce((sum, item) => sum + (Number(item.size) || 0), 0);
       const cloud = (ingestPlan?.skipped || []).filter(item => item.reason === 'cloud-only').length;
-      el('ingestStatus').textContent = `${selectedItems.length} of ${items().length} photos selected`
-        + `, ${(bytes / 1e9).toFixed(2)} GB`
-        + (ingestPlan?.duplicates ? ` · ${ingestPlan.duplicates} already in the catalog` : '')
-        + (cloud ? `. ${cloud} cloud-only photos skipped; download them in Finder and scan again.` : '');
+      el('ingestStatus').textContent = trn('{selected} of {count} photo selected, {size} GB',
+        '{selected} of {count} photos selected, {size} GB', items().length,
+        {selected: selectedItems.length, size: (bytes / 1e9).toFixed(2)})
+        + (ingestPlan?.duplicates ? ' · ' + trn('{count} already in the catalog', '{count} already in the catalog', ingestPlan.duplicates) : '')
+        + (cloud ? '. ' + trn('{count} cloud-only photo skipped; download it in Finder and scan again.',
+          '{count} cloud-only photos skipped; download them in Finder and scan again.', cloud) : '');
       el('ingestExample').textContent = selectedItems[0]
-        ? `First file lands at ${selectedItems[0].destination}` : '';
+        ? tr('First file lands at {firstDestination}', {firstDestination: selectedItems[0].destination}) : '';
       controls();
     }
     function renderPage() {
       el('ingestSelection').hidden = !items().length;
       el('ingestPage').textContent = items().length
-        ? `Page ${page + 1} of ${Math.ceil(items().length / pageSize)}` : '';
+        ? tr('Page {page} of {pages}', {page: page + 1, pages: Math.ceil(items().length / pageSize)}) : '';
       el('ingestGrid').innerHTML = items().slice(page * pageSize, (page + 1) * pageSize)
         .map(item => `<label class="ingest-cell">`
           + `<input type="checkbox" ${selected.has(item.source) ? 'checked' : ''} data-source="${encodeURIComponent(item.source)}">`
@@ -456,7 +455,7 @@ export function createCatalogUI(ctx) {
       ingestPlan = null; selected.clear(); page = 0;
       renderPage();
       el('ingestExample').textContent = '';
-      el('ingestStatus').textContent = 'Scan the source to review photos and destinations.';
+      el('ingestStatus').textContent = tr('Scan the source to review photos and destinations.');
     }
     for (const id of fields) {
       el(id).addEventListener('input', invalidate);
@@ -488,13 +487,13 @@ export function createCatalogUI(ctx) {
       if (!busy) { show(false); return; }
       if (!jobId || cancelling) return;
       cancelling = true; controls();
-      el('ingestStatus').textContent = 'Stopping after the current file finishes copying and verification…';
+      el('ingestStatus').textContent = tr('Stopping after the current file finishes copying and verification…');
       try {
         const result = await post(`/api/jobs/${jobId}/cancel`, {});
         if (result.error) throw new Error(result.error);
       } catch (error) {
         cancelling = false; controls();
-        el('ingestStatus').textContent = `Could not cancel import: ${error.message || error}`;
+        el('ingestStatus').textContent = tr('Could not cancel import: {error}', {error: error.message || error});
       }
     });
     ['ingestChoose', 'ingestChooseDest', 'ingestChooseBackup'].forEach(id => {
@@ -502,7 +501,7 @@ export function createCatalogUI(ctx) {
         const field = { ingestChoose: 'ingestSource', ingestChooseDest: 'ingestDest',
           ingestChooseBackup: 'ingestBackup' }[id];
         if (!sendNative('chooseIngestFolder', { field })) {
-          toast('Choosing a folder needs the desktop app; paste a path instead');
+          toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
         }
       });
     });
@@ -510,14 +509,14 @@ export function createCatalogUI(ctx) {
       if (busy || scanning) return;
       const path = el('ingestSource').value.trim();
       if (!path || !el('ingestDest').value.trim()) {
-        el('ingestStatus').textContent = 'Choose a source and destination first.'; return;
+        el('ingestStatus').textContent = tr('Choose a source and destination first.'); return;
       }
       invalidate(); scanning = true; controls();
-      el('ingestStatus').textContent = 'Scanning…';
+      el('ingestStatus').textContent = tr('Scanning…');
       try {
         const result = await post('/api/ingest/scan', { path, request: ingestRequest() });
         if (result.error || !Array.isArray(result.plan?.items)) {
-          throw new Error(result.error || 'Could not scan the source');
+          throw new Error(result.error || tr('Could not scan the source'));
         }
         ingestPlan = result.plan;
         items().forEach(item => selected.add(item.source));
@@ -533,11 +532,11 @@ export function createCatalogUI(ctx) {
       const plan = { ...ingestPlan, items: selectedItems, total: selectedItems.length,
         bytes: selectedItems.reduce((sum, item) => sum + (Number(item.size) || 0), 0) };
       busy = true; cancelling = false; controls();
-      el('ingestStatus').textContent = 'Starting import…';
+      el('ingestStatus').textContent = tr('Starting import…');
       try {
         const result = await post('/api/ingest', { plan, request: ingestRequest(),
           path: el('ingestSource').value.trim() });
-        if (result.error || !result.jobId) throw new Error(result.error || 'Could not start import');
+        if (result.error || !result.jobId) throw new Error(result.error || tr('Could not start import'));
         jobId = result.jobId; controls();
       } catch (error) {
         busy = false; controls();
@@ -551,27 +550,28 @@ export function createCatalogUI(ctx) {
           if (record.error) throw new Error(record.error);
           const status = record.result || {};
           const terminal = ['done', 'failed', 'cancelled'].includes(record.state);
+          const copied = tr('Copied {copied}/{total}', {copied: status.copied || 0, total: record.total});
           el('ingestStatus').textContent =
-            (record.state === 'cancelled' ? 'Import cancelled. ' : cancelling && !terminal ? 'Stopping after the current file… ' : '')
-            + `Copied ${status.copied || 0}/${record.total}`
-            + (record.errors?.length ? ` · ${record.errors.length} failed` : '');
+            (record.state === 'cancelled' ? tr('Import cancelled. {progress}', {progress: copied})
+              : cancelling && !terminal ? tr('Stopping after the current file… {progress}', {progress: copied}) : copied)
+            + (record.errors?.length ? ' · ' + trn('{count} failed', '{count} failed', record.errors.length) : '');
           if (terminal) {
             busy = false; jobId = null; cancelling = false;
             ingestPlan = null; selected.clear(); page = 0; renderPage();
             el('ingestExample').textContent = '';
-            if (record.state !== 'done') el('ingestStatus').textContent += ' — the originals on the card were not touched.';
+            if (record.state !== 'done') el('ingestStatus').textContent = tr('{progress} — the originals on the card were not touched.', {progress: el('ingestStatus').textContent});
             await refresh();
             if (ctx.onLibraryChanged) ctx.onLibraryChanged();
-            notifyCompletion(record.state === 'cancelled' ? 'Import cancelled' : record.state === 'failed' ? 'Import finished with errors' : 'Import complete',
-              `${status.copied || 0} photo${status.copied === 1 ? '' : 's'} copied`
-              + (record.errors?.length ? ` · ${record.errors.length} failed` : ''));
+            notifyCompletion(record.state === 'cancelled' ? tr('Import cancelled') : record.state === 'failed' ? tr('Import finished with errors') : tr('Import complete'),
+              trn('{count} photo copied', '{count} photos copied', status.copied || 0)
+              + (record.errors?.length ? ' · ' + trn('{count} failed', '{count} failed', record.errors.length) : ''));
             return;
           }
         } catch (error) {
-          el('ingestStatus').textContent = `Could not read import progress: ${error.message || error}`;
+          el('ingestStatus').textContent = tr('Could not read import progress: {error}', {error: error.message || error});
         }
         if (++attempts < 7200) ingestPoll = setTimeout(poll, 1000);
-        else el('ingestStatus').textContent = 'Import is still running. Use Jobs to check its progress or cancel it.';
+        else el('ingestStatus').textContent = tr('Import is still running. Use Jobs to check its progress or cancel it.');
       };
       await poll();
     });
@@ -590,8 +590,8 @@ export function createCatalogUI(ctx) {
     if (existing) {
       const selectedId = el('watchId').value;
       el('watchExistingRow').hidden = !watches.length;
-      const options = '<option value="">New watched folder</option>'
-        + watches.map(watch => `<option value="${escapeHTML(watch.id)}">${escapeHTML(watch.name)}${watch.enabled ? '' : ' · Paused'}</option>`).join('');
+      const options = `<option value="">${i18nHTML(tr('New watched folder'))}</option>`
+        + watches.map(watch => `<option value="${escapeHTML(watch.id)}">${escapeHTML(watch.enabled ? watch.name : tr('{name} · Paused', {name: watch.name}))}</option>`).join('');
       if (existing.innerHTML !== options) existing.innerHTML = options;
       if (existing.value !== selectedId) existing.value = selectedId;
     }
@@ -603,7 +603,7 @@ export function createCatalogUI(ctx) {
     const first = byId.get(enabled[0].id) || {};
     const handled = statuses.reduce(
       (sum, status) => sum + (status.handled || 0), 0);
-    pill.textContent = `Watching ${enabled[0].name} · ${handled} new`;
+    pill.textContent = tr("Watching {valueName} · {handled} new", {valueName: enabled[0].name, handled: handled});
     pill.classList.toggle('unavailable', first.available === false);
   }
 
@@ -666,7 +666,7 @@ export function createCatalogUI(ctx) {
     const populatePreset = async (selected = '') => {
       const presets = await get('/api/presets').catch(() => []);
       const select = el('watchPreset');
-      select.innerHTML = '<option value="">None</option>'
+      select.innerHTML = `<option value="">${i18nHTML(tr("None"))}</option>`
         + presets.map((preset) => `<option value="${escapeHTML(preset.id)}">`
           + `${escapeHTML(preset.name)}</option>`).join('');
       select.value = selected;
@@ -685,7 +685,7 @@ export function createCatalogUI(ctx) {
       el('watchFollow').checked = !!current.follow;
       el('watchDelete').hidden = !current.id;
       el('watchStatus').textContent =
-        'The watched folder is never changed, moved, or emptied.';
+        tr("The watched folder is never changed, moved, or emptied.");
       syncMode();
       populatePreset(current.presetId || '');
       show(true);
@@ -702,7 +702,7 @@ export function createCatalogUI(ctx) {
     [['watchChoose', 'watchPath'], ['watchChooseDest', 'watchDest']]
       .forEach(([buttonId, field]) => el(buttonId)?.addEventListener('click', () => {
         if (!sendNative('chooseIngestFolder', { field })) {
-          toast('Choosing a folder needs the desktop app; paste a path instead');
+          toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
         }
       }));
     el('watchSave')?.addEventListener('click', async () => {
@@ -710,7 +710,7 @@ export function createCatalogUI(ctx) {
       const mode = el('watchMode').value;
       if (!el('watchPath').value.trim() || (mode === 'ingest' && !el('watchDest').value.trim())) {
         el('watchStatus').textContent = mode === 'ingest'
-          ? 'Choose a watched folder and library destination first.' : 'Choose a folder to watch first.';
+          ? tr('Choose a watched folder and library destination first.') : tr('Choose a folder to watch first.');
         syncMode(); return;
       }
       const watch = {
@@ -727,7 +727,7 @@ export function createCatalogUI(ctx) {
       saving = true; syncMode();
       try {
         const result = await post('/api/watch', { action: 'save', watch });
-        if (result.error || !result.ok) throw new Error(result.error || 'Could not save watched folder');
+        if (result.error || !result.ok) throw new Error(result.error || tr('Could not save watched folder'));
         watches = result.watches || [];
         show(false);
         startWatchPolling();
@@ -740,7 +740,7 @@ export function createCatalogUI(ctx) {
       saving = true; syncMode();
       try {
         const result = await post('/api/watch', { action: 'delete', id: el('watchId').value });
-        if (result.error || !result.ok) throw new Error(result.error || 'Could not delete watched folder');
+        if (result.error || !result.ok) throw new Error(result.error || tr('Could not delete watched folder'));
         watches = result.watches || [];
         show(false); startWatchPolling();
       } catch (error) { el('watchStatus').textContent = String(error.message || error); }
@@ -792,7 +792,7 @@ export function createCatalogUI(ctx) {
           line.textContent = `${row.sourcePath || row.from} → ${row.destinationPath || row.to}`;
           for (const companion of row.companions || []) {
             const detail = document.createElement('small');
-            detail.textContent = `${companion.source} → ${companion.target || companion.action}${companion.sharedWith?.length ? " (shared metadata retained)" : ""}`;
+            detail.textContent = `${companion.source} → ${companion.target || companion.action}${companion.sharedWith?.length ? tr(' (shared metadata retained)') : ''}`;
             detail.style.display = 'block'; line.append(detail);
           }
           return line;
@@ -802,7 +802,7 @@ export function createCatalogUI(ctx) {
         el('renamePreview').replaceChildren(policy, ...rows);
         apply.disabled = Boolean(result.error);
       } catch (error) {
-        if (request === previewSequence) toast('Could not preview the rename');
+        if (request === previewSequence) toast(tr("Could not preview the rename"));
       }
     }
 
@@ -840,18 +840,17 @@ export function createCatalogUI(ctx) {
             start: Number(el('renameStart').value) || 1,
           });
           show(false);
-          toast(result.ok ? `Renamed ${result.renamed} photos`
-            : `Rename stopped: ${result.error}`);
+          toast(result.ok ? tr("Renamed {resultRenamed} photos", {resultRenamed: result.renamed}) : tr("Rename stopped: {resultError}", {resultError: result.error}));
           if (ctx.onLibraryChanged) ctx.onLibraryChanged();
         } catch (error) {
-          toast('Could not rename photos');
+          toast(tr("Could not rename photos"));
           apply.disabled = false;
         }
       });
     }
     return { open() {
       names = [...ctx.selection()];
-      if (!names.length) { toast('Select photos first'); return; }
+      if (!names.length) { toast(tr("Select photos first")); return; }
       show(true); preview();
     } };
   }

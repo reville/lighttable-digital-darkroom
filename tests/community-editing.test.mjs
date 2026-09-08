@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
-const moduleFrom = async file => import(`data:text/javascript;base64,${Buffer.from(readFileSync(new URL(file, import.meta.url))).toString('base64')}`);
+import { t as tr, tn as trn } from '../web/i18n.js';
+import { localToolLabel } from '../web/editor-panels.js';
+const moduleFrom = async file => import(new URL(file, import.meta.url));
 const {transferChoices, transferPatch, regenerateTransferMasks, cropGeometry, restoreCropGeometry} = await moduleFrom('../web/edit-transfer.js');
 const {createEditSaveQueue} = await moduleFrom('../web/edit-save-queue.js');
 const {previewDetailLabel} = await moduleFrom('../web/preview-detail.js');
@@ -89,7 +91,7 @@ const enqueueSource=app.match(/^function enqueuePhotoPatch\([^]*?^}/m)[0];
 const pasteSource=app.slice(app.indexOf('async function pasteSettingsTo('),app.indexOf("$('pasteBtn').onclick =",app.indexOf('async function pasteSettingsTo(')));
 function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choices:only('tone')}, failLoad=false, semanticError=false, saveError=false}={}) {
   const calls=[], notices=[], nodes=new Map();
-  const context={S:{images,clipboard,editingName:''},transferRunning:false,transferCancelled:false,
+  const context={tr,trn,localToolLabel,S:{images,clipboard,editingName:''},transferRunning:false,transferCancelled:false,
     cloneValue:structuredClone,transferPatch,regenerateTransferMasks,
     $:id=> {if(!nodes.has(id))nodes.set(id,{focus(){}});return nodes.get(id);},
     saveState:async()=>true,prefetchState:async image=>{image.stateLoaded=!failLoad;},isStateLoaded:image=>image.stateLoaded,

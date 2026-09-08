@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 @unittest.skipUnless(shutil.which("node"), "Node required")
 class PresetBrowserTests(unittest.TestCase):
     def run_js(self, script):
+        # App functions exercised below share the live localization dependency.
+        script = "import {t as tr, tn as trn} from './web/i18n.js';\n" + script
         result = subprocess.run(
             ["node", "--input-type=module", "-e", script], cwd=ROOT,
             text=True, capture_output=True, check=True, timeout=10,

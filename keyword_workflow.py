@@ -5,13 +5,15 @@ import json
 import time
 import uuid
 
+from server_localization import T
+
 MAX_BATCH = 5000
 
 
 def change(cat, image_ids: list[int], values: list[str], action: str,
            *, undo_id: str = "") -> dict:
     if action not in {"add", "remove", "undo"}:
-        raise ValueError("Choose add, remove, or undo keywords")
+        raise ValueError(T("Choose add, remove, or undo keywords"))
     incoming = {value.casefold(): value for value in values}
     changes = []
     with cat.write() as conn:
@@ -19,24 +21,24 @@ def change(cat, image_ids: list[int], values: list[str], action: str,
             key = "keywords.undo:" + undo_id
             record = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
             if not record:
-                raise ValueError("That keyword change is no longer available to undo")
+                raise ValueError(T("That keyword change is no longer available to undo"))
             batch = json.loads(record[0])
             for item in batch["changes"]:
                 if not cat.image_row(item["id"]):
-                    raise ValueError("A photo in this keyword change is no longer available")
+                    raise ValueError(T("A photo in this keyword change is no longer available"))
                 current = cat.keywords_for(item["id"])
                 if current != item["after"]:
-                    raise ValueError("Keywords changed after this batch. Review the photos before undoing.")
+                    raise ValueError(T("Keywords changed after this batch. Review the photos before undoing."))
                 changes.append({"id": item["id"], "before": current, "after": item["before"]})
         else:
             ids = list(dict.fromkeys(image_ids))
             if not ids or len(ids) > MAX_BATCH:
-                raise ValueError(f"Select between 1 and {MAX_BATCH} photos")
+                raise ValueError(T("Select between 1 and {limit} photos", limit=MAX_BATCH))
             if not incoming:
-                raise ValueError("Enter one or more keywords")
+                raise ValueError(T("Enter one or more keywords"))
             for image_id in ids:
                 if not cat.image_row(image_id):
-                    raise ValueError("A selected photo is no longer in the catalog")
+                    raise ValueError(T("A selected photo is no longer in the catalog"))
                 before = cat.keywords_for(image_id)
                 existing = {value.casefold(): value for value in before}
                 if action == "add":
@@ -45,7 +47,7 @@ def change(cat, image_ids: list[int], values: list[str], action: str,
                     after = [value for value in before if value.casefold() not in incoming]
                 after = sorted(after)
                 if len(after) > 100:
-                    raise ValueError("A photo would exceed the limit of 100 keywords")
+                    raise ValueError(T("A photo would exceed the limit of 100 keywords"))
                 if before != after:
                     changes.append({"id": image_id, "before": before, "after": after})
         for item in changes:

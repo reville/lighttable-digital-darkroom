@@ -16,6 +16,7 @@ import numpy as np
 from PIL import Image, ImageCms, ImageOps
 
 import durable_io
+from server_localization import T
 
 
 PROFILE_FILENAMES = {
@@ -380,7 +381,7 @@ def _littlecms():
     """The stable LittleCMS 2 float-pixel ABI used by Linux TIFF imports."""
     library = ctypes.util.find_library("lcms2")
     if not library:
-        raise RuntimeError("High-precision TIFF color conversion needs LittleCMS 2 (liblcms2)")
+        raise RuntimeError(T("High-precision TIFF color conversion needs LittleCMS 2 (liblcms2)"))
     cms = ctypes.CDLL(library)
     pointer, uint = ctypes.c_void_p, ctypes.c_uint32
     cms.cmsOpenProfileFromMem.argtypes = [pointer, uint]
@@ -405,15 +406,15 @@ def _open_linux_tiff_float(source: Path) -> tuple[np.ndarray, bytes | None]:
     config.attribute("oiio:reorient", 0)
     reader = oiio.ImageInput.open(str(source), config)
     if reader is None:
-        raise ValueError(oiio.geterror() or "could not open TIFF")
+        raise ValueError(oiio.geterror() or T("could not open TIFF"))
     try:
         spec = reader.spec()
         pixels = reader.read_image(format=oiio.FLOAT)
         if pixels is None or spec.width <= 0 or spec.height <= 0:
-            raise ValueError(reader.geterror() or "TIFF decoder returned no pixels")
+            raise ValueError(reader.geterror() or T("TIFF decoder returned no pixels"))
         pixels = np.asarray(pixels, dtype=np.float32)
         if pixels.ndim != 3 or pixels.shape[2] < 1:
-            raise ValueError("TIFF decoder did not return a two-dimensional image")
+            raise ValueError(T("TIFF decoder did not return a two-dimensional image"))
         channels = 1 if spec.nchannels <= 2 else 3
         rgb = pixels[..., :channels]
         # Match dropping alpha from an unassociated image. OIIO leaves an
@@ -474,11 +475,11 @@ def _convert_float_profile(pixels: np.ndarray, embedded: bytes | None,
         input_profile = cms.cmsOpenProfileFromMem(source_buffer, len(source))
         output_profile = cms.cmsOpenProfileFromMem(target_buffer, len(target))
         if not input_profile or not output_profile:
-            raise ValueError("TIFF color profile could not be read")
+            raise ValueError(T("TIFF color profile could not be read"))
         transform = cms.cmsCreateTransform(input_profile, input_float, output_profile,
                                            rgb_float, 0, 0)
         if not transform:
-            raise ValueError("TIFF color profile is incompatible with its pixel channels")
+            raise ValueError(T("TIFF color profile is incompatible with its pixel channels"))
         pixels = np.ascontiguousarray(pixels, dtype=np.float32)
         output = np.empty((*pixels.shape[:2], 3), dtype=np.float32)
         # The ABI count is uint32; chunks also bound each native call.
@@ -517,7 +518,7 @@ def _open_portable_full_precision(source: Path) -> tuple[np.ndarray, bytes | Non
     buffer = oiio.ImageBuf(str(source), 0, 0, config)
     spec = buffer.spec()
     if spec.width <= 0 or spec.height <= 0:
-        raise RuntimeError(f"could not decode {source.name}: {buffer.geterror()}")
+        raise RuntimeError(T("could not decode {name}: {error}", name=source.name, error=buffer.geterror()))
     attribute = spec.getattribute("ICCProfile")
     embedded = bytes(attribute) if attribute is not None else None
     # Integer sources get at least 16-bit precision through the ICC transform;
@@ -526,10 +527,10 @@ def _open_portable_full_precision(source: Path) -> tuple[np.ndarray, bytes | Non
                   else oiio.FLOAT)
     pixels = buffer.get_pixels(pixel_type)
     if pixels is None or buffer.has_error:
-        raise RuntimeError(f"could not decode {source.name}: {buffer.geterror()}")
+        raise RuntimeError(T("could not decode {name}: {error}", name=source.name, error=buffer.geterror()))
     pixels = np.asarray(pixels)
     if pixels.ndim != 3 or pixels.shape[2] == 0:
-        raise ValueError("image decoder did not return color pixels")
+        raise ValueError(T("image decoder did not return color pixels"))
     # Match EXIF/Pillow orientation, including mirrored orientations 5 and 7.
     orientation = spec.get_int_attribute("Orientation", 1)
     if orientation == 2:

@@ -1,0 +1,3005 @@
+{
+  "version": 1,
+  "articles": [
+    {
+      "id": "add-photos",
+      "title": "Dodaj zdjęcia i zacznij przeglądanie",
+      "category": "Getting started",
+      "summary": "Otwórz zdjęcia lub foldery na miejscu, a następnie wybierz folder i rozpocznij przeglądanie.",
+      "keywords": [
+        "start",
+        "otwórz",
+        "przeglądaj",
+        "dodaj folder",
+        "oryginały",
+        "import",
+        "nowa biblioteka"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz punkt początkowy",
+          "paragraphs": [
+            "W nowej bibliotece konfiguracja oferuje folder lokalny, migrację z Lightrooma lub Apple Photos. Możesz pominąć konfigurację i dodać zdjęcia później.",
+            "Import całej biblioteki z Apple Photos wymaga aplikacji macOS i uprawnienia do odczytu Zdjęć. Kopiuje oryginalne zdjęcia, w tym pliki RAW, do Obrazy / LightTable Imports / Apple Photos. Twoja biblioteka Zdjęcia pozostaje bez zmian. Oryginały iCloud pobierają się podczas importu, więc uwzględnij czas i miejsce na dysku. Albumy, filmy i edycje Zdjęć nie są przenoszone.",
+            "Stop import zachowuje ukończone kopie. Ponowne uruchomienie pomija te kopie i ponawia próbę dla niedokończonych oryginałów."
+          ],
+          "steps": [
+            "Wybierz folder, aby przeglądać oryginały na miejscu, albo wybierz jedną z opcji migracji.",
+            "Sprawdź wynik importu, a następnie przejdź dalej do biblioteki."
+          ]
+        },
+        {
+          "title": "Wybierz zdjęcia z Apple Photos",
+          "paragraphs": [
+            "W aplikacji macOS użyj Plik → Importuj z Apple Photos… albo Wybierz kilka… w konfiguracji Zdjęcie. Bieżący format zachowuje reprezentację dostarczoną przez Photos; Zgodny żąda formatu możliwego do szerokiego odczytu. Te wybrane reprezentacje mogą zawierać edycje z Photos i są oddzielne od importu oryginałów z całej biblioteki.",
+            "Wybierz zdjęcia, a następnie kliknij Dodaj. LightTable pokazuje postęp podczas ich pobierania i kopiowania. Zatrzymaj import zachowuje ukończone kopie i zatrzymuje pozostałe transfery. Twoja biblioteka Zdjęcia pozostaje bez zmian.",
+            "Kopie są zapisywane w Pictures / LightTable Imports / Apple Photos. Ponowny import zaznaczenia tworzy oddzielne kopie z numerowanymi nazwami plików; istniejące pliki nigdy nie są nadpisywane."
+          ],
+          "steps": [
+            "Wybierz Bieżący format lub Zgodny.",
+            "Wybierz jedno lub więcej zdjęć w selektorze i kliknij Dodaj. Użyj Anuluj, aby wyjść bez importowania.",
+            "Poczekaj, aż import się zakończy, a następnie przejrzyj zdjęcia w LightTable."
+          ]
+        },
+        {
+          "title": "Otwórz lokalny folder",
+          "paragraphs": [
+            "Dodaj zdjęcia otwiera wybór zdjęć. Na Macu ten wybór akceptuje też foldery. W systemach Linux i Windows użyj + obok Lokalne, aby dodać cały folder. LightTable zachowuje oryginały na miejscu. Wybranie pojedynczego zdjęcia dodaje jego folder nadrzędny, więc mogą pojawić się też inne obsługiwane zdjęcia z tego folderu."
+          ],
+          "steps": [
+            "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz zdjęcia albo użyj + obok Lokalne, aby wybrać folder.",
+            "Wybierz folder w sekcji Lokalne na lewym pasku bocznym. Włącz Uwzględnij podfoldery, aby przeglądać zdjęcia w folderach podrzędnych.",
+            "Na górze wybierz Photo Grid, Culling Grid lub Detail. Kliknij zdjęcie, aby je uaktywnić."
+          ],
+          "tips": [
+            "Jeśli panel boczny jest ukryty, użyj Pokaż lub ukryj bibliotekę w lewym górnym rogu."
+          ]
+        },
+        {
+          "title": "Dodawaj nowe pliki do istniejącego folderu",
+          "paragraphs": [
+            "Użyj menu Lokalne ••• i opcji Skanuj ponownie foldery po dodaniu plików spoza LightTable. Aby skopiować zdjęcia z karty do folderu docelowego, użyj w tym menu Importuj z karty…."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "import-from-card",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "import-lightroom-catalog",
+      "title": "Przenieś katalog Lightroom Classic do LightTable",
+      "category": "Getting started",
+      "summary": "Zaimportuj obsługiwane metadane i przybliżone edycje, a następnie przejrzyj raport konwersji.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migruj",
+        "migracja",
+        "import katalogu",
+        "lrcat",
+        "sidecary",
+        "XMP"
+      ],
+      "sections": [
+        {
+          "title": "Przygotuj i sprawdź",
+          "paragraphs": [
+            "Importer odczytuje tymczasową kopię katalogu Lightroom Classic .lrcat i pozostawia Twoją konfigurację Lightroom oraz katalog bez zmian. Zdjęcia pozostają w swoich bieżących folderach i są tylko referencjami, a nie duplikatami. Dodanie folderów zdjęć używanych przez ten katalog pozwala importowi zarejestrować oryginały, do których istnieją odwołania, oraz ich foldery nadrzędne. Wyłącz tę opcję, aby dopasować tylko zdjęcia już znajdujące się w LightTable.",
+            "Zgodność podglądu pokazuje dopasowania w bieżącej bibliotece bez jej zmieniania. Zdjęcia jeszcze nie dodane mogą w podglądzie wyglądać na niedopasowane; import z włączoną opcją Dodaj foldery zdjęć rejestruje dostępne oryginały przed ponownym dopasowaniem."
+          ],
+          "steps": [
+            "Otwórz Lokalne ••• → Importuj katalog… albo w konfiguracji wybierz Importuj z Lightroom.",
+            "Wybierz plik .lrcat i sprawdź jego liczby oraz ostrzeżenia.",
+            "Wybierz kategorie do importu, zasady dotyczące istniejących edycji oraz to, czy dodać wskazane foldery zdjęć.",
+            "Kliknij Podgląd zgodności i przejrzyj zmapowane oraz pominięte ustawienia. Wypróbuj 20 wariantów, aby utworzyć osobne wersje próbne przed większym importem.",
+            "Kliknij Importuj po sprawdzeniu zgodności, a następnie przeczytaj raport oraz liczbę dopasowanych, nieznalezionych i pominiętych elementów. LightTable tworzy kopię zapasową katalogu przed próbą lub importem."
+          ]
+        },
+        {
+          "title": "Przeglądaj przetłumaczone edycje",
+          "paragraphs": [
+            "Ustawienia wywoływania są przybliżone i nie mogą zagwarantować wyrenderowanego wyglądu Lightroom. Nieobsługiwane lokalne maski, profile aparatu, maski ai .lrcat-data lub pakiety LUT oraz nieobsługiwane reguły inteligentnej kolekcji są zgłaszane jako pominięte. Zaimportowane ustawienia wywoływania wyłączają Film.",
+            "Lokalne ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Jej okno wyników pokazuje postęp, liczbę zastosowanych elementów, pominięte ustawienia i błędy."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "collections",
+        "metadata-and-keywords",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "shortcut-schemes",
+      "title": "Wybierz skróty LightTable lub Klasyczny",
+      "category": "Getting started",
+      "summary": "Wybierz układ klawiatury, który pasuje do Twoich nawyków edycji.",
+      "keywords": [
+        "klawiatura",
+        "skróty",
+        "klasyczny",
+        "Lightroom",
+        "klawisz kadrowania",
+        "klawisz szczegółów",
+        "przed po"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz schemat",
+          "paragraphs": [
+            "Otwórz Ustawienia → Skróty i sprzęt i wybierz Schemat skrótów. LightTable i Classic mają większość skrótów selekcji wspólnych, ale różnią się dla Szczegóły, Kadruj oraz Porównaj przed/po."
+          ],
+          "steps": [
+            "Wybierz LightTable dla D = Szczegóły, C = Kadruj oraz backslash (\\) = przed/po Porównaj.",
+            "Wybierz Klasyczny dla E = Szczegóły, R = Kadruj i C = porównanie przed/po."
+          ],
+          "tips": [
+            "Oba schematy używają G dla Photo Grid, Shift+G dla Culling Grid, N dla Survey, P/X/U dla flag i 0–5 dla gwiazdek.",
+            "Przytrzymaj B, aby pokazać oryginał bez filmu, lokalnych masek ani końcowych korekt; puść B, aby przywrócić edycję. Kreska ukośna (/) ustawia fokus na wyszukiwanie zdjęć.",
+            "Skróty zdjęć są ignorowane podczas wpisywania w polach tekstowych, liczbowych lub wyboru. Opuść pole, zanim użyjesz polecenia zdjęcia."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "colour-labels",
+        "survey-photos"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "import-from-card",
+      "title": "Importuj zdjęcia z karty",
+      "category": "Getting started",
+      "summary": "Skopiuj wybrane zdjęcia do folderów z datą, z weryfikacją i opcjonalną drugą kopią.",
+      "keywords": [
+        "wczytywanie",
+        "karta pamięci",
+        "karta aparatu",
+        "kopiuj",
+        "kopia zapasowa",
+        "duplikaty",
+        "importuj zdjęcia"
+      ],
+      "sections": [
+        {
+          "title": "Zaplanuj kopiowanie",
+          "paragraphs": [
+            "Import z karty kopiuje pliki do wybranego miejsca docelowego. Oryginały na karcie pozostają na miejscu. Pomijanie duplikatów porównuje pełną zawartość plików; sama zgodna nazwa pliku lub nagłówek aparatu nie wystarcza."
+          ],
+          "steps": [
+            "Otwórz Local ••• → Importuj z karty….",
+            "Wybierz Źródło i Cel. Ustaw szablon folderu oraz Zmień nazwę na przed skanowaniem. Domyślne ustawienia zachowują nazwy plików i porządkują kopie jako rok/rok-miesiąc-dzień.",
+            "Wybierz weryfikację: Pełny hash, Tylko rozmiar lub Brak. Ustaw Duplicates na Pomiń lub Kopiuj mimo to i opcjonalnie wybierz Second copy to.",
+            "Kliknij Skanuj. Użyj Poprzedni i Następny, aby przejrzeć każdą stronę, i sprawdź liczbę zaznaczonych oraz podgląd miejsca docelowego przed kliknięciem Importuj. Import jest niedostępny, gdy nie zaznaczono żadnych zdjęć.",
+            "Poczekaj na liczbę skopiowanych i sprawdź, czy jakieś pliki się nie powiodły. Anuluj zatrzymuje po zakończeniu kopiowania i weryfikacji bieżącego pliku; ukończone kopie są zachowywane, a oryginały na karcie pozostają nienaruszone."
+          ],
+          "tips": [
+            "Tokeny szablonu obejmują {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} i {dd}. Start at steruje czterocyfrową sekwencją. Długie pola szablonu są skracane; sprawdź podgląd miejsca docelowego.",
+            "Podglądy pokazują 200 plików na stronę. Zaznaczenie przenosi się między stronami; Zaznacz wszystko i Odznacz wszystko dotyczą całego skanu, w tym stron, których jeszcze nie otwarto.",
+            "Jeśli pliki są raportowane jako tylko w chmurze, pobierz je lokalnie i przeskanuj ponownie."
+          ]
+        },
+        {
+          "title": "Odśwież plan po zmianie ustawień",
+          "paragraphs": [
+            "Zmiana źródła, miejsca docelowego, nazewnictwa lub ustawień weryfikacji czyści przejrzany plan. Przeskanuj ponownie, aby przejrzeć nowe pliki i ścieżki przed importem."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "rename-photos"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "views-and-selection",
+      "title": "Przełącz widoki i wybierz zdjęcia",
+      "category": "Getting started",
+      "summary": "Użyj siatek, aby wybrać zestaw, oraz Szczegóły, aby sprawdzić pojedyncze zdjęcie.",
+      "keywords": [
+        "siatka",
+        "szczegóły",
+        "taśma filmowa",
+        "wybierz wiele",
+        "kliknij z wciśniętym Shift",
+        "kliknięcie z Command",
+        "kliknięcie z Control",
+        "nawigacja",
+        "powiększenie",
+        "porównaj",
+        "przypnij suwak do widoku"
+      ],
+      "sections": [
+        {
+          "title": "Przełączaj między widokami",
+          "paragraphs": [
+            "Siatka zdjęć prezentuje zdjęcia jako wizualny przegląd. Siatka selekcji dodaje miejsce na informacje o wyborze i ocenie. Szczegóły otwierają aktywne zdjęcie do dokładnej inspekcji.",
+            "Prawy panel boczny używa przycisków z ikonami dla Edytuj, Film, Kadruj, Usuń, Maskowanie, Informacje, Historia i Presety. Najedź kursorem na ikonę, aby zobaczyć jej nazwę."
+          ],
+          "steps": [
+            "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
+            "W siatce użyj suwaka Rozmiar, aby zmienić rozmiar miniatur.",
+            "Użyj klawiszy strzałek w lewo i w prawo, aby przechodzić między zdjęciami. W Szczegóły Spacja przełącza Dopasuj i 1:1, gdy obszar zdjęcia ma fokus."
+          ]
+        },
+        {
+          "title": "Porównuj przy powiększeniu",
+          "paragraphs": [
+            "Kliknij Porównaj w Szczegóły, aby podzielić oryginalne i edytowane zdjęcie. Za każdym razem, gdy włączasz Porównaj, separator automatycznie centruje się w bieżącym widoku bez zmiany powiększenia ani przesunięcia. Przeciągnij separator, aby przesunąć podział; przeciągnij w innym miejscu na powiększonym zdjęciu, aby przesunąć widok. Separator i jego uchwyt pozostają tego samego rozmiaru podczas powiększania.",
+            "Oryginalny używa tej samej rozdzielczości podglądu co edytowane zdjęcie, także w 1:1. Dla zdjęć RAW Oryginalny używa neutralnej, nieedytowanej konwersji; pozwól jej zakończyć wczytywanie, zanim ocenisz szczegóły.",
+            "Przytrzymaj B, aby zobaczyć oryginał bez filmu, lokalnych masek ani końcowych korekt. Puść B, aby przywrócić widok po edycji.",
+            "Informacje o zdjęciu, znaczniki przetwarzania oraz odczyty regulacji po naciśnięciu klawisza pozostają w normalnym rozmiarze ekranu podczas powiększania lub przesuwania obrazu."
+          ],
+          "steps": [
+            "Włącz Porównaj, a potem powiększ poza Dopasuj.",
+            "Kliknij przycisk do ustawiania suwaka widoku w prawym górnym rogu obszaru zdjęcia, aby wyśrodkować podział w bieżącym widoku. Spowoduje to też przywrócenie niewidocznego poza ekranem podziału po przesunięciu, bez zmiany powiększenia ani przesunięcia.",
+            "Przycisk znika po powrocie do Dopasuj lub wyłączeniu Porównaj."
+          ]
+        },
+        {
+          "title": "Zbuduj zaznaczenie",
+          "paragraphs": [
+            "Kliknięcie wybiera pojedyncze aktywne zdjęcie. Shift+klik wybiera ciągły zakres. Command+klik na Macu lub Control+klik dodaje albo usuwa poszczególne zdjęcia.",
+            "W siatce działania flag, oceny i etykiety kolorystycznej dotyczą zaznaczonego zestawu. W Szczegóły te działania oznaczania dotyczą aktywnego zdjęcia. W Przeglądzie dotyczą aktywnej komórki przeglądu. Przed działaniem wsadowym sprawdź kontekst paska narzędzi oznaczania.",
+            "Otwórz Informacje obok dowolnej siatki, aby wyświetlić metadane lub oznaczyć wybrane zdjęcia. Siatka zwęża się, aby zrobić miejsce dla inspektora. Wybierz inne narzędzie inspektora, aby wrócić do szerszej siatki."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "survey-photos",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "metadata-and-keywords",
+      "title": "Dodaj słowa kluczowe, opisy i informacje o prawach",
+      "category": "Library",
+      "summary": "Ułatw wyszukiwanie zdjęć i przygotuj opisowe metadane do eksportu.",
+      "keywords": [
+        "metadane",
+        "IPTC",
+        "EXIF",
+        "słowa kluczowe",
+        "opis",
+        "tytuł",
+        "prawa autorskie",
+        "twórca",
+        "lokalizacja",
+        "GPS",
+        "wsadowe słowa kluczowe",
+        "usuń słowa kluczowe",
+        "cofnij słowa kluczowe",
+        "hierarchiczne słowa kluczowe"
+      ],
+      "sections": [
+        {
+          "title": "Dodaj przeszukiwalne słowa kluczowe",
+          "paragraphs": [
+            "Otwórz Informacje dla aktywnego zdjęcia. Wpisz słowa kluczowe w polu Dodaj słowa kluczowe i kliknij Dodaj do zdjęcia albo naciśnij Enter. Przecinki oddzielają słowa kluczowe; Ustawienia → Pliki i metadane mogą też włączyć separatory średnikowe i sugestie słów kluczowych katalogu.",
+            "Użyj hierarchicznej ścieżki, takiej jak Miejsca > Boston, aby powiązane terminy pozostały razem. Drzewo słów kluczowych wyświetla terminy katalogu; kliknij termin, aby wyszukać, albo kliknij go dwukrotnie, aby zmienić nazwę tego słowa kluczowego katalogu."
+          ],
+          "tips": [
+            "Dodaj do zdjęcia i Enter dotyczą aktywnego zdjęcia. Oddzielne przyciski zaznaczenia działają na zaznaczonych zdjęciach w siatce. Połączenie metadanych pary może też aktualizować ich towarzyszy RAW lub JPEG."
+          ]
+        },
+        {
+          "title": "Dodaj lub usuń słowa kluczowe z zaznaczenia",
+          "steps": [
+            "Wybierz zdjęcia w dowolnej siatce i otwórz Informacje. Sprawdź liczbę wybranych zdjęć pod przyciskami słów kluczowych.",
+            "Wpisz jedno lub więcej słów kluczowych, a następnie wybierz Dodaj do zaznaczenia albo Usuń z zaznaczenia. Każde zdjęcie zachowuje pozostałe słowa kluczowe.",
+            "Użyj Cofnij zmianę słowa kluczowego, aby przywrócić ostatni wsad, dopóki to okno pozostaje otwarte. Cofnij odmawia nadpisania słów kluczowych zmienionych po tamtym wsadzie. Historia zdjęcia zachowuje też stany słów kluczowych przed i po."
+          ],
+          "paragraphs": [
+            "Partia może objąć maksymalnie 5000 zdjęć, w tym powiązanych towarzyszy. Usunięcie hierarchicznego słowa kluczowego usuwa dokładnie tę ścieżkę, a nie każdy element podrzędny. Drzewo słów kluczowych i podpowiedzi używają terminów już istniejących w katalogu."
+          ]
+        },
+        {
+          "title": "Opisz zdjęcie",
+          "paragraphs": [
+            "W Informacjach rozwiń Opis, aby zobaczyć tytuł, opis i nagłówek; Prawa, aby zobaczyć twórcę, prawa autorskie i kredyt; albo Umieść, aby zobaczyć lokalizację i współrzędne. Zmiany są zapisywane do katalogu podczas pisania. Otwórz w Mapach jest dostępne po wczytaniu metadanych tego zdjęcia i gdy szerokość oraz długość geograficzna są prawidłowe. Otwiera lokalizację w przeglądarce.",
+            "„Zastosuj do zaznaczenia” kopiuje bieżący formularz metadanych do wybranych zdjęć, w tym jego puste pola. Najpierw przejrzyj cały formularz. Metadane są uwzględniane w eksportach zgodnie z recepturą eksportu; edycja tych pól nie przepisuje oryginalnego pliku obrazu."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "raw-jpeg-pairs",
+        "capture-time",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "browse-folders",
+      "title": "Przeglądaj foldery i zapisuj ulubione",
+      "category": "Library",
+      "summary": "Wybierz zakres folderu, uwzględnij podfoldery i trzymaj często używane foldery pod ręką.",
+      "keywords": [
+        "ulubione",
+        "lokalne",
+        "foldery",
+        "panel boczny",
+        "brakujące zdjęcia",
+        "skanuj ponownie",
+        "synchronizuj",
+        "obserwowany folder",
+        "obserwowane foldery",
+        "podłączenie do aparatu"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz, co jest widoczne",
+          "paragraphs": [
+            "Lokalne → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy wybrany folder pokazuje też swoje potomne foldery. Inne filtry biblioteki nadal obowiązują.",
+            "W wąskim oknie systemu Linux użyj Pokaż lub ukryj bibliotekę w lewym górnym rogu, aby otworzyć szufladę biblioteki. Zamknij ją tym samym przyciskiem po wybraniu folderu, aby zrobić więcej miejsca na zdjęcie."
+          ],
+          "steps": [
+            "Kliknij folder pod Lokalna.",
+            "Włącz Uwzględnij podfoldery, aby dołączyć foldery podrzędne, albo wyłącz, aby wyświetlić tylko ten folder.",
+            "Kliknij gwiazdkę obok folderu albo otwórz jego menu ••• i wybierz Dodaj do ulubionych.",
+            "Użyj Lokalne → Ulubione, aby wrócić do zapisanych folderów."
+          ]
+        },
+        {
+          "title": "Działania folderu",
+          "paragraphs": [
+            "Menu ••• folderu zawiera Pokaż w Finderze na Macu, Pokaż w Eksploratorze plików w Windows lub Pokaż w Menedżerze plików w systemie Linux. Dla bieżącego folderu Synchronizuj folder odświeża widok. Lokalnie ••• → Ponownie skanuj foldery skanuje źródła katalogu.",
+            "Usuń z LightTable usuwa dodany katalog główny z listy źródeł aplikacji; nie przenosi oryginalnych plików do Kosza. Akcja jest dostępna, gdy dostępne jest więcej niż jedno źródło."
+          ]
+        },
+        {
+          "title": "Zarządzaj obserwowanymi folderami",
+          "paragraphs": [
+            "Otwórz Lokalne ••• → Folder obserwowany… , aby dodać obserwowany folder. Wybierz, jak mają być obsługiwane nadchodzące zdjęcia. Zapisz jest niedostępne, dopóki nie zostanie określony folder; kopiowanie do biblioteki wymaga też miejsca docelowego.",
+            "Aby edytować istniejącą obserwację, wybierz ją w Obserwowanych folderach. Każda zapisania obserwacja pojawia się na tej liście. Wybierz Nowy obserwowany folder dla innego folderu albo użyj Usuń obserwację, aby przestać obserwować zaznaczony folder. To nie usuwa jego zdjęć.",
+            "Skrót Obserwowanie otwiera pierwszy aktywny obserwowany folder. Błędy zapisu pozostają w oknie dialogowym, abyś mógł poprawić ustawienia."
+          ]
+        }
+      ],
+      "related": [
+        "add-photos",
+        "search-filter-sort",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "survey-photos",
+      "title": "Porównaj kilka zdjęć w Przegląd",
+      "category": "Library",
+      "summary": "Przejrzyj grupę razem, oznacz aktywną klatkę i zawęź zestaw kandydatów.",
+      "keywords": [
+        "przegląd",
+        "porównaj zdjęcia",
+        "porównaj klatki",
+        "seria",
+        "Obok siebie",
+        "zachowaj",
+        "ustaw zaznaczenie"
+      ],
+      "sections": [
+        {
+          "title": "Przejrzyj grupę",
+          "paragraphs": [
+            "Przegląd wyświetla oryginalne podglądy do wyboru między zdjęciami. Pokazuje do 16 wybranych zdjęć. Jeśli nie ma jawnego zaznaczenia, używa do sześciu pobliskich zdjęć w bieżącym widoku."
+          ],
+          "steps": [
+            "Zaznacz kandydatów w siatce i naciśnij N albo otwórz Informacje → Przegląd zaznaczenia.",
+            "Kliknij zdjęcie, aby aktywować tę komórkę przeglądu. Użyj strzałek w lewo i w prawo, aby przechodzić między komórkami.",
+            "Użyj paska narzędzi oznaczania lub skrótów klawiszowych dla flag, oceny i etykiety na aktywnej komórce.",
+            "Kliknij × na komórce, aby usunąć ją z przeglądu bez usuwania jej lub odrzucania. Kliknij dwukrotnie komórkę, aby otworzyć to zdjęcie w Szczegóły.",
+            "Kliknij Zamknij lub naciśnij Escape, aby opuścić Przegląd."
+          ]
+        },
+        {
+          "title": "Wybierz jedno zachowane",
+          "paragraphs": [
+            "Opcja Wybierz wybiera aktywne zdjęcie przeglądu i odrzuca pozostałe zdjęcia nadal znajdujące się w przeglądzie. To zmienia ich flagi. Powiązane metadane RAW i JPEG mogą rozszerzać te zmiany flag na pliki towarzyszące.",
+            "Aby ocenić edycję względem oryginału, użyj porównania przed/po w Szczegóły; Przegląd służy do wyboru spośród różnych kadrów."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "capture-time",
+      "title": "Skoryguj zegar aparatu lub strefę czasową",
+      "category": "Library",
+      "summary": "Podejrzyj wspólną korektę zegara, zachowując odstępy między zdjęciami.",
+      "keywords": [
+        "czas wykonania",
+        "data",
+        "Zegar aparatu",
+        "strefa czasowa",
+        "strefa czasowa",
+        "czas letni",
+        "sortuj według daty",
+        "znacznik czasu"
+      ],
+      "sections": [
+        {
+          "title": "Podgląd korekty",
+          "paragraphs": [
+            "Korekty czasu przechwycenia zmieniają daty katalogowe używane do sortowania według daty przechwycenia i eksportowanych metadanych. Oryginalne pliki obrazów i daty systemu plików pozostają bez zmian."
+          ],
+          "steps": [
+            "Wybierz zdjęcia, których to dotyczy, i otwórz Informacje → Popraw czas przechwycenia.",
+            "Wpisz przesunięcie zegara w godzinach, na przykład -1 lub 5.5.",
+            "Opcjonalnie wpisz Przypisz strefę czasową jako przesunięcie, na przykład -04:00 lub +05:30. Pozostaw puste, aby zachować istniejącą strefę, albo wpisz remove, aby ją wyczyścić.",
+            "Wybierz, czy uwzględnić towarzyszące pliki RAW + JPEG.",
+            "Kliknij Podgląd zaznaczenia i sprawdź czasy przed i po oraz wszelkie pominięte zdjęcia.",
+            "Kliknij Zastosuj podglądane zmiany. Jeśli zmienisz zaznaczenie lub kontrolki korekty, najpierw wygeneruj podgląd ponownie."
+          ]
+        },
+        {
+          "title": "Przywróć korektę",
+          "paragraphs": [
+            "Przypisanie strefy czasowej nie przesuwa też zegara aparatu. Użyj pola przesunięcia, gdy sam wyświetlany czas jest nieprawidłowy.",
+            "Cofnij ostatnią korektę odwraca najnowszą korektę przechowywaną w tym oknie. Przywróć czasy aparatu… pokazuje podgląd usunięcia korekt katalogu; przejrzyj podgląd i zastosuj go, aby przywrócić oryginalne czasy aparatu. Kroki czasu wykonania są także dostępne w Historii. Gdy zapis XMP jest włączony, zresetowanie korekty przywraca daty sidecarów zapisane przed jej zastosowaniem przez LightTable. Daty wykonania w starszych sidecarach bez tej zapisanej daty pozostają bez zmian."
+          ]
+        }
+      ],
+      "related": [
+        "search-filter-sort",
+        "metadata-and-keywords",
+        "raw-jpeg-pairs"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "xmp-interchange",
+      "title": "Wymiana metadanych za pomocą sidecarów XMP",
+      "category": "Library",
+      "summary": "Odczytaj metadane selekcji z innych edytorów i zachowaj obsługiwane zmiany obok oryginałów.",
+      "keywords": [
+        "XMP",
+        "sidecary",
+        "Photo Mechanic",
+        "digiKam",
+        "interoperacyjność",
+        "konflikt synchronizacji",
+        "przenośne metadane"
+      ],
+      "sections": [
+        {
+          "title": "Odczytaj metadane z innego edytora",
+          "paragraphs": [
+            "Poproś drugi edytor o zapisanie metadanych do sąsiednich plików XMP, a następnie wybierz Lokalne ••• → Importuj sidecary…. Ta akcja odczytuje oryginały z katalogu, w tym wszystkie strony dużych bibliotek do 100 000 zdjęć na jeden import. Wirtualne kopie zachowują własne metadane.",
+            "Obsługiwane metadane obejmują oceny w gwiazdkach, znaczniki wybierz/odrzuć, standardowe etykiety kolorystyczne, płaskie i hierarchiczne słowa kluczowe oraz opisowe pola IPTC. Jawna pusta wartość czyści to pole; nieobecna wartość pozostawia je bez zmian. Niestandardowe etykiety kolorystyczne, które nie pasują do koloru LightTable, są zgłaszane jako pominięte.",
+            "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie nie są stosowane przez tę akcję menu."
+          ]
+        },
+        {
+          "title": "Zapisuj zmiany obok oryginałów",
+          "paragraphs": [
+            "Włącz automatyczny zapis XMP w Ustawienia → Pliki i metadane. LightTable kolejkuje zmienione pola i zapisuje je obok dostępnych oryginałów. Zachowuje niepowiązane metadane i przed pierwszą aktualizacją zapisuje kopię zapasową istniejącego sidecara. Zapisy offline lub nieudane pozostają w kolejce do ponownej próby.",
+            "Jeśli inna aplikacja zmieni tę samą właściwość XMP po ostatnim odczycie lub synchronizacji, LightTable zgłasza konflikt i pozostawia ten sidecar bez zmian. Przejrzyj zewnętrzne metadane, a następnie zaimportuj sidecary, aby zaakceptować te wartości metadanych przed wprowadzeniem dalszych zmian w LightTable.",
+            "Użyj either photo.xmp albo photo.RAW.xmp dla jednego oryginału. Jeśli obecne są oba, import i synchronizacja zgłoszą niejednoznaczność zamiast wybierać jeden. Zachowaj jedną konwencję nazewnictwa po sprawdzeniu ich zawartości.",
+            "XMP wymienia obsługiwane metadane; nie jest to pełna kopia zapasowa katalogu. Zachowuj kopie zapasowe katalogu dla kolekcji, historii i wariantów oraz włącz przenośne edycje LightTable, gdy potrzebujesz, aby pełna receptura edycji podróżowała wraz z folderem."
+          ]
+        }
+      ],
+      "related": [
+        "metadata-and-keywords",
+        "settings-and-defaults",
+        "catalog-health-recovery",
+        "import-lightroom-catalog"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "search-filter-sort",
+      "title": "Znajduj zdjęcia za pomocą wyszukiwania, filtrów i sortowania",
+      "category": "Library",
+      "summary": "Zawęź zdjęcia według tekstu, aparatu, obiektywu, ekspozycji, daty wykonania, słów kluczowych i oznaczeń selekcji.",
+      "keywords": [
+        "znajdź",
+        "wyszukaj",
+        "słowa kluczowe",
+        "Filtr oceny",
+        "sortuj",
+        "data wykonania",
+        "brak wyników",
+        "nieocenione",
+        "typ pliku",
+        "RAW",
+        "JPEG",
+        "HEIC",
+        "TIFF",
+        "PNG",
+        "niededytowane",
+        "wyczyść filtry",
+        "aparat",
+        "obiektyw",
+        "ISO",
+        "aperture",
+        "czas naświetlania",
+        "ogniskowa",
+        "EXIF"
+      ],
+      "sections": [
+        {
+          "title": "Wyszukaj w bieżącym widoku",
+          "paragraphs": [
+            "Pole wyszukiwania dopasowuje tekst w nazwach plików, nazwach wyświetlanych, słowach kluczowych i dostępnych metadanych indeksu zdjęć. Przeszukuje bieżący folder lub kolekcję i łączy się z innymi aktywnymi filtrami."
+          ],
+          "steps": [
+            "Kliknij Wyszukaj zdjęcia i słowa kluczowe albo naciśnij /, gdy nie wpisujesz tekstu w polu.",
+            "Wpisz słowo lub frazę z nazwy pliku albo słów kluczowych.",
+            "Użyj Wszystkie zdjęcia, Bez flagi, Wybrane, Odrzucone lub Ocenione na pasku bocznym, aby wybrać grupę flagi lub oceny.",
+            "Kliknij Filtr obok Sortuj. Wybierz jeden lub więcej typów plików, a następnie połącz je z Flagą, Oceną, Etykietą koloru lub statusem edycji.",
+            "Wybierz Nazwa pliku, Ocena, Flaga, Data przechwycenia lub Etykieta kolorystyczna w Sortuj."
+          ]
+        },
+        {
+          "title": "Połącz i wyczyść filtry",
+          "paragraphs": [
+            "Wybierz RAW, JPEG, HEIC / HEIF, TIFF lub PNG. Wiele typów plików obejmuje dowolny z tych formatów; flaga, ocena, etykieta kolorystyczna, stan edycji i wyszukiwanie zawężają ten zestaw dalej. Brak wybranych typów plików oznacza wszystkie typy plików.",
+            "Przycisk Filtr pokazuje, ile wyborów jest aktywnych. Każdy wybór pojawia się jako usuwalny element nad siatką, a liczba pokazuje, ile zdjęć pasuje. Usuń element za pomocą jego × albo wybierz Wyczyść wszystko, aby zresetować filtry. Tekst wyszukiwania oraz wybrany folder lub kolekcja pozostają bez zmian.",
+            "Status edycji oferuje Edytowane, Nieedytowane i Wirtualne kopie. Wirtualna kopia używa typu swojego oryginalnego pliku. Naciśnij Escape lub kliknij poza panelem, aby zamknąć go bez czyszczenia wyborów."
+          ]
+        },
+        {
+          "title": "Filtruj aparat, ekspozycję i datę wykonania",
+          "paragraphs": [
+            "Rozwiń Aparat, ekspozycja i data w Filtrze. Aparat i Obiektyw dopasowują część nazwy. Słowo kluczowe dopasowuje pełną ścieżkę słowa kluczowego w katalogu i jego podrzędne elementy; na przykład Miejsca obejmuje Miejsca > Boston.",
+            "ISO, ogniskowa w milimetrach, przysłona f-number oraz czas migawki akceptują wartości minimalne i maksymalne. Aby uzyskać dokładne dopasowanie, wpisz tę samą liczbę na obu końcach. Czas migawki akceptuje sekundy lub ułamek, na przykład 1/250. Zdjęcia bez wymaganych metadanych ekspozycji nie pasują.",
+            "Daty wykonania obejmują zarówno pierwszy, jak i ostatni dzień. Te filtry łączą się z ocenami i innymi wyborami, przetrwają ponowne wczytanie i można je zapisać w inteligentnej kolekcji. Istniejące zdjęcia otrzymują wartości ekspozycji, gdy ich źródło zostanie następnym razem zeskanowane; przeskanuj folder ponownie, jeśli wartości są brakujące."
+          ]
+        },
+        {
+          "title": "Gdy zdjęcie wydaje się brakować",
+          "paragraphs": [
+            "Wyczyść tekst wyszukiwania i wybierz Wyczyść wszystko nad siatką, a następnie zaznacz wybrany folder, Uwzględnij podfoldery i każdą aktywną kolekcję. Preferencje sparowanych plików i zwinięte stosy mogą też ukrywać towarzysza albo element stosu.",
+            "Data wykonania sortuje od wcześniejszych do późniejszych; Ocena sortuje według wyższych ocen na początku."
+          ]
+        }
+      ],
+      "related": [
+        "browse-folders",
+        "smart-collections",
+        "raw-jpeg-pairs",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "collections",
+      "title": "Grupuj zdjęcia w kolekcje",
+      "category": "Library",
+      "summary": "Twórz nazwane grupy bez przenoszenia oryginalnych plików.",
+      "keywords": [
+        "kolekcja",
+        "album",
+        "organizuj",
+        "grupa",
+        "wybrany",
+        "usuń kolekcję"
+      ],
+      "sections": [
+        {
+          "title": "Utwórz i dodaj zdjęcia",
+          "paragraphs": [
+            "Zwykła kolekcja przechowuje wybrany zestaw zdjęć. Jest oddzielna od układu folderów na dysku."
+          ],
+          "steps": [
+            "Wybierz zdjęcia, które chcesz pogrupować.",
+            "Kliknij Utwórz kolekcję albo + obok Kolekcji, wpisz nazwę i zapisz. Bieżące zaznaczenie zostanie uwzględnione.",
+            "Kliknij kolekcję, aby ją wyświetlić. Ponowne kliknięcie aktywnej kolekcji opuszcza ją.",
+            "Przy aktywnej zwykłej kolekcji wybierz zdjęcia do dodania i kliknij Dodaj wybrane do kolekcji."
+          ]
+        },
+        {
+          "title": "Usuń kolekcję",
+          "paragraphs": [
+            "Menu ••• obok kolekcji usuwa kolekcję. Usuwa to grupowanie, a nie przenosi oryginalne pliki do Kosza. Wyszukiwanie i filtry mogą dodatkowo zawęzić zdjęcia wyświetlane w kolekcji."
+          ]
+        }
+      ],
+      "related": [
+        "smart-collections",
+        "views-and-selection",
+        "browse-folders"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "trash-rejected",
+      "title": "Przenieś odrzucone zdjęcia do Kosza",
+      "category": "Library",
+      "summary": "Dokładnie przejrzyj bieżący widok przed przeniesieniem odrzuconych oryginałów i sidecarów.",
+      "keywords": [
+        "usuń",
+        "kosz",
+        "odrzucony",
+        "przywróć",
+        "odzyskaj",
+        "usuń oryginały",
+        "kosz"
+      ],
+      "sections": [
+        {
+          "title": "Przejrzyj i przenieś odrzucone pliki",
+          "paragraphs": [
+            "Odrzucenie zdjęcia zmienia tylko jego flagę. Przenieś odrzucone zdjęcia do Kosza to osobna akcja pulpitu, która dotyczy odrzuconych zdjęć w bieżącym widoku, a nie tylko aktywnego zdjęcia."
+          ],
+          "steps": [
+            "Wybierz folder lub kolekcję oraz filtry, które definiują zdjęcia, które chcesz przejrzeć.",
+            "Sprawdź odrzucone zdjęcia. Sprawdź ustawienia plików sparowanych i rozwiń dowolne stosy, jeśli oczekujesz uwzględnienia ich pozostałych elementów.",
+            "Na Macu wybierz Zdjęcie → Przenieś odrzucone zdjęcia do Kosza… albo naciśnij Command+Delete. W aplikacji pulpitu w systemie Linux lub Windows naciśnij Ctrl+Delete.",
+            "Odczytaj liczbę zdjęć w potwierdzeniu i potwierdzaj tylko wtedy, gdy odpowiada zamierzonemu zestawowi."
+          ],
+          "tips": [
+            "Sąsiednie sidecary XMP przemieszczają się razem z oryginałami. Ukryte towarzyszące pliki RAW lub JPEG pozostają w bibliotece; wybierz Oba pliki w ustawieniach sparowanego przechwytywania, aby je uwzględnić.",
+            "Kopia wirtualna współdzieli oryginalny plik. Usuwanie kopii wirtualnej powinno używać akcji Zdjęcie → Usuń kopię wirtualną; przeniesienie jej źródła do Kosza wpływa na każdą edycję korzystającą z tego oryginału."
+          ]
+        },
+        {
+          "title": "Przywróć omyłkowo usunięty element",
+          "paragraphs": [
+            "Użyj Kosza Findera na Macu, Kosza pulpitu w systemie Linux albo Kosza systemu Windows, aby przywrócić oryginał i jego sidecary do poprzedniego folderu, a następnie ponownie przeskanuj w LightTable. Aplikacja nie ma wbudowanej przeglądarki Kosza."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "raw-jpeg-pairs",
+        "browse-folders",
+        "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "colour-labels",
+      "title": "Uporządkuj przepływ pracy za pomocą etykiet kolorystycznych",
+      "category": "Library",
+      "summary": "Używaj pięciu kolorów niezależnie od wyborów i ocen gwiazdkowych.",
+      "keywords": [
+        "kolor",
+        "kolor",
+        "etykiety",
+        "czerwony",
+        "żółty",
+        "zielony",
+        "niebieski",
+        "purpurowy",
+        "przepływ pracy"
+      ],
+      "sections": [
+        {
+          "title": "Zastosuj i filtruj etykietę",
+          "paragraphs": [
+            "Etykiety kolorów można przypisywać według własnego znaczenia — na przykład czerwony dla retuszu lub zielony dla dostarczenia. Nie zmieniają one ocen gwiazdkowych ani stanu wyboru/odrzucenia."
+          ],
+          "steps": [
+            "Wybierz zdjęcie albo zestaw w siatce i otwórz Informacje.",
+            "W etykiecie Kolor wybierz Czerwony, Żółty, Zielony, Niebieski lub Purpurowy. Wybierz Bez etykiety, aby ją wyczyścić.",
+            "Użyj 6 dla Czerwony, 7 dla Żółty, 8 dla Zielony i 9 dla Niebieski. Purpurowy jest dostępny w kontrolkach koloru.",
+            "Kliknij Filtr obok Sortuj i użyj etykiety koloru, aby znaleźć konkretny kolor, dowolny kolor lub zdjęcia bez etykiety."
+          ],
+          "tips": [
+            "Ponowne zastosowanie tej samej etykiety ją czyści. Działania etykiet koloru nie powodują automatycznego przechodzenia dalej."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "search-filter-sort",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "flags-and-ratings",
+      "title": "Wybieraj, odrzucaj i oceniaj zdjęcia",
+      "category": "Library",
+      "summary": "Oznacz zachowania i odrzucenia, nadaj oceny gwiazdkowe i kontroluj automatyczne przechodzenie dalej.",
+      "keywords": [
+        "selekcja",
+        "wybierz",
+        "odrzuć",
+        "flaga",
+        "usuń flagę",
+        "gwiazdki",
+        "ocena",
+        "Automatyczne przechodzenie",
+        "zachowaj"
+      ],
+      "sections": [
+        {
+          "title": "Oznacz aktywne zdjęcie lub zaznaczenie w siatce",
+          "paragraphs": [
+            "Flagi i gwiazdki są oddzielne: zdjęcie może być Wybrane i mieć dowolną ocenę gwiazdkową. Odrzuć oznacza zdjęcie do przeglądu; nie usuwa go."
+          ],
+          "steps": [
+            "Użyj Wybierz, Odrzuć i Usuń flagę na pasku oznaczania lub w Informacje. Klawisze P, X i U wykonują te same działania.",
+            "Kliknij gwiazdkę lub naciśnij 1–5, aby ocenić. Naciśnij 0, aby wyczyścić ocenę.",
+            "Aby wyczyścić istniejącą flagę wyboru, odrzucenie lub ocenę, nadaj tę samą etykietę ponownie.",
+            "Użyj widoków Wybrane, Odrzucone i Ocenione w panelu bocznym, aby przejrzeć swoje decyzje."
+          ]
+        },
+        {
+          "title": "Kontroluj, co stanie się dalej",
+          "paragraphs": [
+            "Włącz Automatyczne przechodzenie, aby przejść do następnego zdjęcia po wybraniu, odrzuceniu lub ocenieniu pojedynczego zdjęcia. Usunięcie flagi nie powoduje przejścia dalej.",
+            "Gdy w siatce zaznaczono wiele zdjęć, znaczniki odnoszą się do tego zestawu bez przechodzenia dalej. Jeśli włączone jest Łączenie metadanych pary, oznaczanie aktualizuje też rozpoznane towarzyszące pliki RAW i JPEG."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "colour-labels",
+        "raw-jpeg-pairs",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "rename-photos",
+      "title": "Zmień nazwę zdjęć z podglądem",
+      "category": "Library",
+      "summary": "Zastosuj spójny szablon nazwy pliku do wybranych oryginałów i ich sidecarów.",
+      "keywords": [
+        "zmień nazwę",
+        "nazwa pliku",
+        "sekwencja",
+        "wsadowy",
+        "tekst niestandardowy",
+        "tokeny daty",
+        "sidecary"
+      ],
+      "sections": [
+        {
+          "title": "Podgląd i zastosuj",
+          "paragraphs": [
+            "Zmień nazwę zmienia nazwy plików na dysku i zachowuje rekordy katalogu razem z plikami. Obsługuje także sąsiednie sidecary XMP. To różni się od nadawania nazwy kopii wirtualnej."
+          ],
+          "steps": [
+            "Wybierz zdjęcia do zmiany nazwy.",
+            "Otwórz Informacje → Zmień nazwę… (lub Zdjęcie → Zmień nazwę… w menu Mac).",
+            "Wpisz Szablon, na przykład {custom}_{sequence}. W razie potrzeby ustaw tekst niestandardowy i Rozpocznij od.",
+            "Sprawdź w podglądzie nazwy plików przed i po.",
+            "Kliknij Zmień nazwę, aby zastosować."
+          ],
+          "tips": [
+            "Dostępne tokeny obejmują {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min} i {ss}. Numery sekwencji używają czterech cyfr.",
+            "Oryginalne rozszerzenie jest zachowywane. Przy konflikcie nazw dodawany jest sufiks liczbowy. Szablony zmiany nazwy nie mogą tworzyć folderów.",
+            "Kopia wirtualna współdzieli plik źródłowy: uwzględnienie jej w zmianie nazwy odnosi się do tego oryginału. Interfejs nie oferuje dedykowanego przycisku cofania zmiany nazwy."
+          ]
+        }
+      ],
+      "related": [
+        "import-from-card",
+        "virtual-copies-and-stacks",
+        "views-and-selection"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "smart-collections",
+      "title": "Zapisz wyszukiwanie jako inteligentną kolekcję",
+      "category": "Library",
+      "summary": "Zachowaj nazwaną grupę, która aktualizuje się na podstawie obsługiwanych reguł wraz ze zmianami metadanych zdjęcia.",
+      "keywords": [
+        "inteligentna kolekcja",
+        "Zapisane wyszukiwanie",
+        "dynamiczny",
+        "Reguły filtra",
+        "automatycznie",
+        "minimalna ocena"
+      ],
+      "sections": [
+        {
+          "title": "Zapisz obsługiwane reguły",
+          "paragraphs": [
+            "Inteligentna kolekcja znajduje zdjęcia pasujące do zapisanych reguł. Obsługiwane reguły obejmują flagę, ocenę, Tylko nieocenione, typy plików, etykietę kolorystyczną, stan edycji, wirtualne kopie i tekst wyszukiwania. Zapisywane są też zakresy dla aparatu, obiektywu, hierarchicznego słowa kluczowego, daty wykonania, ISO, ogniskowej, przysłony i czasu migawki."
+          ],
+          "steps": [
+            "Ustaw tekst wyszukiwania i żądane opcje w Filtrze obok Sortuj.",
+            "Kliknij ✦ obok Kolekcji, oznaczone „Zapisz filtry jako inteligentną kolekcję”.",
+            "Nadaj nazwę kolekcji i zapisz.",
+            "Kliknij jego nazwę, aby wyświetlić pasujące zdjęcia. Zmiana odpowiednich metadanych zdjęcia wpływa na to, czy pasuje."
+          ]
+        },
+        {
+          "title": "Wiesz, co jest zapisane",
+          "paragraphs": [
+            "Wybrany folder oraz Uwzględnij podfoldery nie są zapisane w regułach inteligentnej kolekcji. Kolekcja przeszukuje bibliotekę na podstawie zapisanych ustawień filtra.",
+            "Nie możesz ręcznie dodawać zdjęć przy użyciu Dodaj wybrane do kolekcji, gdy aktywna jest inteligentna kolekcja. Bieżące filtry wyszukiwania i biblioteki nadal mogą zawęzić widok kolekcji.",
+            "Dla zdjęć ocenionych na cztery gwiazdki, wykonanych obiektywem 50 mm w 2026 roku, ustaw Ocenę na 4 gwiazdki i więcej, minimalną i maksymalną ogniskową na 50 oraz daty wykonania od 1 stycznia do 31 grudnia 2026. Zapisz te filtry jako inteligentną kolekcję."
+          ]
+        }
+      ],
+      "related": [
+        "collections",
+        "search-filter-sort",
+        "flags-and-ratings"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "virtual-copies-and-stacks",
+      "title": "Wypróbuj wirtualne kopie i grupuj zdjęcia w stosy",
+      "category": "Library",
+      "summary": "Zachowaj alternatywne edycje jednego oryginału i zwinąć powiązane zdjęcia w siatce.",
+      "keywords": [
+        "Wirtualna kopia",
+        "wersja",
+        "alternatywna edycja",
+        "stos",
+        "rozgrupuj",
+        "duplikat",
+        "kopiuj"
+      ],
+      "sections": [
+        {
+          "title": "Utwórz alternatywną edycję",
+          "paragraphs": [
+            "Kopia wirtualna odnosi się do tego samego oryginalnego pliku i zachowuje niezależny stan edycji. Nie tworzy drugiego oryginału na dysku."
+          ],
+          "steps": [
+            "Uczyń zdjęcie źródłowe aktywnym.",
+            "Otwórz menu akcji zdjęcia ••• obok Sortuj i Rozmiar, a następnie wybierz Utwórz wirtualną kopię.",
+            "Nazwij kopię i zapisz. Nowa kopia stanie się aktywna.",
+            "Edytuj kopię. Użyj Filtr → Stan edycji → Wirtualne kopie, aby później znaleźć kopie."
+          ],
+          "tips": [
+            "Usuń kopię wirtualną w akcjach zdjęcia usuwa aktywną kopię wirtualną. Aby uzyskać rzeczywisty drugi plik na dysku, wyeksportuj wyrenderowany obraz."
+          ]
+        },
+        {
+          "title": "Zwiń grupę",
+          "paragraphs": [
+            "Zaznacz co najmniej dwa zdjęcia, a następnie wybierz Akcje zdjęć ••• → Stosuj wybrane zdjęcia i wpisz nazwę. Odznaka siatki stosu pokazuje liczbę elementów; kliknij ją, aby rozwinąć lub zwinąć. Rozstaw wybrane zdjęcia usuwa grupowanie."
+          ]
+        }
+      ],
+      "related": [
+        "views-and-selection",
+        "search-filter-sort",
+        "collections"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "raw-jpeg-pairs",
+      "title": "Pracuj z parami RAW i JPEG",
+      "category": "Library",
+      "summary": "Wybierz, który plik towarzyszący pokazać i czy nowe zmiany metadanych dotyczą obu.",
+      "keywords": [
+        "raw",
+        "jpeg",
+        "jpg",
+        "sparuj",
+        "towarzysz",
+        "powiązane metadane",
+        "ukryty jpeg"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz widoczny towarzysz",
+          "paragraphs": [
+            "LightTable rozpoznaje parę, gdy jeden plik RAW i jeden JPEG mają tę samą nazwę podstawową w tym samym źródle i folderze. Każdy plik zachowuje własne edycje; kopie wirtualne pozostają niezależne."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Pliki i metadane i włącz Paruj przechwycenia RAW i JPEG.",
+            "Ustaw Pokaż sparowane przechwycenia na Oba pliki, Preferuj RAW lub Preferuj JPEG.",
+            "Podczas oglądania sparowanego zdjęcia użyj RAW → JPEG lub JPEG → RAW u góry, aby przełączyć się na jego odpowiednik."
+          ]
+        },
+        {
+          "title": "Połącz nowe zmiany metadanych",
+          "paragraphs": [
+            "Włącz Połącz metadane pary, aby połączyć nowe oceny, flagi, etykiety i zmiany słów kluczowych. Nie łączy to edycji zdjęć.",
+            "Eksporty i Kosz używają plików, które wybierzesz lub uwzględnisz w bieżącym widoku. Nie uwzględniają automatycznie ukrytego towarzysza. Wybierz Oba pliki i przejrzyj zaznaczenie, gdy potrzebujesz obu oryginałów. Korekta czasu przechwycenia ma własne pole wyboru Uwzględnij towarzyszące pliki RAW + JPEG."
+          ]
+        }
+      ],
+      "related": [
+        "flags-and-ratings",
+        "metadata-and-keywords",
+        "capture-time",
+        "trash-rejected"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "editing-effects",
+      "title": "Dostosuj Teksturę, Przejrzystość, Usuń zamglenie i Winietę",
+      "category": "Editing",
+      "summary": "Doprecyzuj szczegóły powierzchni, lokalny kontrast, zamglenie i jasność krawędzi w sekcji Efekty.",
+      "keywords": [
+        "efekty",
+        "tekstura",
+        "przejrzystość",
+        "usuń zamglenie",
+        "zamglenie",
+        "winieta",
+        "wygładź",
+        "szczegóły",
+        "lokalny kontrast",
+        "ciemne krawędzie",
+        "Jasne krawędzie"
+      ],
+      "sections": [
+        {
+          "title": "Dopracuj szczegóły i kontrast",
+          "paragraphs": [
+            "Rozwiń Efekty w Edycja. Tekstura zmienia drobne szczegóły lokalne, a Przejrzystość stosuje lokalny kontrast z większym naciskiem na średnie tony. Wartości dodatnie wzmacniają te efekty; ujemne je wygładzają."
+          ],
+          "steps": [
+            "Dostosuj Teksturę, patrząc na teksturalny fragment zdjęcia, taki jak tkanina, liście lub skóra.",
+            "Dostosuj Przejrzystość, sprawdzając kontrast wokół obiektu i krawędzi.",
+            "Sprawdź w 1:1, a następnie wróć do Dopasuj, aby ocenić ogólny wynik."
+          ],
+          "tips": [
+            "Do lokalnego traktowania użyj ustawień Tekstura i Przejrzystość w masce."
+          ]
+        },
+        {
+          "title": "Zmień zamglenie i jasność krawędzi",
+          "paragraphs": [
+            "Usuń zamglenie zmienia mglisty ton i obróbkę koloru obrazu. Winieta zmienia jasność krawędzi: wartości dodatnie przyciemniają krawędzie, a ujemne je rozjaśniają."
+          ],
+          "steps": [
+            "Zwiększ Usuń zamglenie, aby wzmocnić zamglony obraz, albo spróbuj wartości ujemnej dla łagodniejszego efektu. Podczas regulacji sprawdzaj zarówno kontrast, jak i kolor.",
+            "Ustaw Winietę dla żądanego traktowania krawędzi i sprawdź narożniki.",
+            "Przytrzymaj B, aby porównać z oryginałem, albo użyj Resetuj w Efektach, aby zresetować razem Teksturę, Klarowność, Usuń zamglenie i Winietę."
+          ],
+          "tips": [
+            "Winieta w Efektach to kreatywne traktowanie krawędzi. Użyj korekcji obiektywu, gdy chcesz skorygować winietowanie obiektywu."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-lens-corrections",
+        "editing-masks-brush-gradients",
+        "editing-tone"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-tone",
+      "title": "Dostosuj ekspozycję, kontrast i zakres tonalny",
+      "category": "Editing",
+      "summary": "Użyj kontrolek Jasny i histogramu, aby ustawić jasność i kontrast, a potem sprawdź wynik względem oryginału.",
+      "keywords": [
+        "ekspozycja",
+        "jasność",
+        "jasny",
+        "ton",
+        "kontrast",
+        "światła",
+        "cienie",
+        "światła",
+        "cienie",
+        "auto",
+        "histogram",
+        "obcinanie",
+        "przed"
+      ],
+      "sections": [
+        {
+          "title": "Zacznij od Jasny",
+          "paragraphs": [
+            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego. Kontrast zmienia ich rozdzielenie."
+          ],
+          "steps": [
+            "Ustaw Ekspozycję dla głównego obiektu.",
+            "Dostosuj Światła i Cienie, aby zrównoważyć jasne i ciemne obszary, a następnie doprecyzuj Biele, Cienie i Kontrast.",
+            "Użyj przycisku ostrzeżenia o przycięciu obok histogramu, aby sprawdzić przycięcie.",
+            "Porównaj wynik z oryginałem, używając kontrolki przed, albo przytrzymaj B, gdy zdjęcie jest aktywne."
+          ],
+          "tips": [
+            "Reset w sekcji Jasny resetuje tę grupę. Użyj Cofnij, gdy chcesz odwrócić tylko ostatnią korektę."
+          ]
+        },
+        {
+          "title": "Użyj Autom. jako punktu wyjścia",
+          "paragraphs": [
+            "Autom. w nagłówku Jasny analizuje dostępny podgląd obrazu i ustawia Ekspozycja, Cienie i Światła. Nie ustawia wszystkich kontrolek edycji."
+          ],
+          "steps": [
+            "Poczekaj, aż pojawi się podgląd zdjęcia, a następnie kliknij Autom.",
+            "Sprawdź wynik i dopracuj suwaki dla fotografii."
+          ],
+          "tips": [
+            "Jeśli Autom. informuje, że czeka na podgląd obrazu, pozwól mu się wczytać i spróbuj ponownie.",
+            "Menu zakresu oferuje też Waveform, RGB Parade i Vectorscope do sprawdzania tonów i koloru."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-curves",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-lens-corrections",
+      "title": "Zastosuj korekcje obiektywu i aberracji chromatycznej",
+      "category": "Editing",
+      "summary": "Użyj dopasowanego lub ręcznie wybranego profilu obiektywu albo wprowadź ręczne korekty, gdy dokładny profil jest niedostępny.",
+      "keywords": [
+        "obiektyw",
+        "profil",
+        "zniekształcenie",
+        "winieta",
+        "cieniowanie",
+        "aberracja chromatyczna",
+        "obelowanie",
+        "czerwony cyjan",
+        "niebieski żółty",
+        "optyka"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz i zweryfikuj korektę",
+          "paragraphs": [
+            "Rozwiń Korekcje obiektywu w Edytuj. Karta profilu wyjaśnia automatyczne dopasowanie aparat/obiektyw i to, czy dostępny jest użyteczny profil."
+          ],
+          "steps": [
+            "Odczytaj nazwę profilu i wyjaśnienie dopasowania.",
+            "Włącz Użyj dopasowanego profilu obiektywu, gdy profil jest dostępny, a następnie w razie potrzeby wybierz Koryguj zniekształcenia i Koryguj winietowanie obiektywu.",
+            "W razie potrzeby wybierz inną pozycję w Profil obiektywu i porównaj korektę z oryginałem.",
+            "Dopracuj ręczne sterowanie Zniekształcenie i Winietowanie. Dla barwnych obwódek dostosuj Czerwony / Cyjan i Niebieski / Żółty w Aberracji chromatycznej."
+          ],
+          "tips": [
+            "Brak dokładnie dopasowanego profilu obiektywu pozostawia dostępne ręczne sterowanie zniekształceniami i perspektywą.",
+            "Pola wyboru zniekształceń i winietowania profilu są włączane tylko wtedy, gdy wybrany profil udostępnia tę korekcję i profil jest włączony.",
+            "Profil wybrany ręcznie wymaga wzrokowego sprawdzenia; samo wybranie nie oznacza, że jest to dokładne dopasowanie.",
+            "Korekcje obiektywu i obwódek pozostają niedestrukcyjne podczas eksportu."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-presets",
+      "title": "Zastosuj, dostosuj i udostępniaj presety edycji",
+      "category": "Editing",
+      "summary": "Kliknij preset, aby go zastosować, dostosuj Ilość i zapisz lub udostępnij własne wyglądy.",
+      "keywords": [
+        "preset",
+        "presety",
+        "społeczność",
+        "galeria",
+        "wbudowane",
+        "ulubione",
+        "ukryj ustawienie wstępne",
+        "Lightroom",
+        "Camera Raw",
+        "Capture One",
+        "xmp",
+        "lrtemplate",
+        "costyle",
+        "ltpreset",
+        "importuj preset",
+        "zapisz wygląd",
+        "wypróbuj ustawienie wstępne",
+        "ilość presetu",
+        "siła presetu",
+        "wyłącz preset",
+        "zaktualizuj ustawienie wstępne",
+        "prześlij ustawienie wstępne",
+        "Zastąp korekty"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz kolekcję",
+          "paragraphs": [
+            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera dziesięć dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+          ],
+          "steps": [
+            "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
+            "Użyj gwiazdki obok ustawienia wstępnego, aby dodać je do ulubionych; Ulubione filtruje bieżącą kolekcję.",
+            "W Community wybierz Featured, New lub All i użyj Subject, aby zawęzić kolekcję. Wybierz preset, aby zobaczyć jego opis, twórcę, wersję, zachowanie filmu oraz dostępne zdjęcia przykładowe."
+          ],
+          "tips": [
+            "Polecane to kolekcja redakcyjna, a nie ranking popularności.",
+            "Wbudowany preset jest tylko do odczytu. Save a copy… umieszcza nazwaną kopię w Yours. Hide preset usuwa go ze zwykłego widoku Built-in; Show hidden i Restore to Built-in przywracają go."
+          ]
+        },
+        {
+          "title": "Zastosuj i dostosuj Ilość",
+          "paragraphs": [
+            "Kliknij kartę presetu, aby od razu zastosować go do głównego zdjęcia. Kliknij tę samą kartę ponownie albo użyj przycisku Włączone/Wył., aby go wyłączyć. Twoje zdjęcie pozostaje na tym komputerze."
+          ],
+          "steps": [
+            "Wybierz zdjęcie i kliknij kartę presetu. Wybrany preset pokazuje Ilość pod swoją nazwą.",
+            "Przeciągnij Ilość od 0% do 100%. Zero przywraca edycję sprzed presetu; 100% używa pełnego presetu. Kliknij dwukrotnie Ilość, aby zresetować ją do 100%.",
+            "Kliknięcie innego presetu zmienia wygląd. Cofnij i Ponów przywracają wybór presetu, stan włączenia i ilość. Wybrany preset i ilość są zapisywane z zdjęciem."
+          ],
+          "tips": [
+            "Nośnik filmowy, Film włącz/wył. oraz inne stałe opcje przełączają się przy każdej ilości powyżej zera. Ton, kolor, krzywe i regulacje liczbowe zmieniają się wraz z Ilością. Przykłady twórcy pozostają oddzielone od Twojego zdjęcia.",
+            "Przełączanie kart presetu używa edycji sprzed pierwszego presetu, aby wyglądy się nie kumulowały. Ręczne zmiany poza presetem, takie jak ekspozycja dla Wygląd, są zachowywane. Ręczna zmiana ustawienia kontrolowanego przez preset kończy jego dostosowanie Ilości; bieżąca edycja staje się wtedy punktem wyjścia dla następnego presetu."
+          ]
+        },
+        {
+          "title": "Co zachowuje wygląd",
+          "paragraphs": [
+            "Built-in i community looks zachowują Edycję Ekspozycji, Temp/Odcień, balans bieli z aparatu, korekcje RAW, format filmu, kadrowanie, geometrię, maski, korekcje Remove, korekcje obiektywu, wyostrzanie i redukcję szumu. Zmieniają ustawienia kreatywne zawarte w ich recepturze.",
+            "Film on włącza dołączone traktowanie filmu. Film off omija Film. Film unchanged pozostawia stan jego włączenia bez zmian. Traktowanie filmu może celowo zmieniać Camera EV, automatyczny pomiar, wywoływanie, drukowanie, ziarno i inne kreatywne kontrolki filmu."
+          ],
+          "tips": [
+            "Zachowanie wyglądu dotyczy wyglądów zapisanych z opcją Wygląd · zachowaj korekty zdjęcia. Edycja Pełny lub starszy zaimportowany preset może zawierać korekty specyficzne dla zdjęcia; przejrzyj wynikowe zdjęcie i użyj Cofnij, jeśli zmienia korekty, które chcesz zachować."
+          ]
+        },
+        {
+          "title": "Dodaj presety i aktualizacje społeczności",
+          "paragraphs": [
+            "Add to Yours pobiera i zapisuje wybraną recepturę społeczności bez jej stosowania. Zainstalowane receptury działają offline. Istniejące edycje zdjęć zapisują swoje ustawienia oddzielnie od presetu."
+          ],
+          "steps": [
+            "Kliknij preset Społeczność, aby użyć go na zdjęciu, a następnie kliknij Dodaj do Twoje, aby zachować kopię offline.",
+            "Możesz użyć tego później z Yours albo wrócić do Community, aby sprawdzić publiczną stronę ustawienia wstępnego.",
+            "Kliknij Odśwież, aby sprawdzić katalog. Gdy widoczna jest nowsza wersja, Update in Yours zastępuje zapisaną recepturę tylko wtedy, gdy ją wybierzesz."
+          ],
+          "tips": [
+            "Aktualizacja presetu nie zmienia zdjęć, które już edytowano.",
+            "Komunikat offline rozróżnia katalog z pamięci podręcznej od niedostępnego pierwszego pobrania. Niezbuforowane receptury i obrazy przykładów twórców mogą wymagać połączenia; Built-in i zainstalowane receptury pozostają dostępne.",
+            "Update LightTable oznacza, że preset wymaga funkcji, których ta wersja aplikacji nie obsługuje. Jego instalacja i sterowanie zastosowaniem pozostają wyłączone.",
+            "Open in LightTable na publicznej stronie presetu otwiera jego szczegóły w zainstalowanej aplikacji; nie stosuje wyglądu automatycznie."
+          ]
+        },
+        {
+          "title": "Zapisz, importuj i eksportuj",
+          "paragraphs": [
+            "Manage… otwiera lub zamyka Zarządzaj presetami; przycisk jest podświetlony, gdy sekcja jest otwarta. Save current look domyślnie ustawia Look · keep photo corrections. Full edit · include photo corrections oferuje też All adjustment settings lub Changed settings only."
+          ],
+          "steps": [
+            "Wybierz zakres presetu oraz to, czy uwzględnić profil filmu i ustawienia fizyczne, a następnie kliknij Zapisz jako nowe… i nadaj nazwę.",
+            "Aby importować, kliknij Importuj… i wybierz pliki presetów. Aplikacja na Macu obsługuje też wybór całego folderu presetów.",
+            "Sprawdź wynik importu i pokrycie konwersji nowego presetu, zanim go zastosujesz.",
+            "Aby wyeksportować, wybierz Wybrany preset i Format eksportu, a następnie kliknij Eksportuj…."
+          ],
+          "tips": [
+            "Eksport LightTable zachowuje natywną recepturę presetu. Eksporty Lightroom XMP i Capture One Style są przybliżone.",
+            "Obsługiwane wybory plików obejmują .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip i .json. Akceptowane rozszerzenie nie gwarantuje, że każde ustawienie da się przekonwertować.",
+            "W przypadku starszego lub Full edit presetu Apply mapped adjustments zmienia jego uwzględnione ustawienia. Replace adjustment settings najpierw resetuje też korekty, maski, korekcje Remove i geometrię. Replace zachowuje kadrowanie i zachowuje Film, chyba że preset zawiera Film albo włączysz Turn Film off dla działań poniżej."
+          ]
+        },
+        {
+          "title": "Przygotuj zgłoszenie do społeczności",
+          "paragraphs": [
+            "Publikacja w Community jest sprawdzana. Sekcja zgłoszenia pokazuje dokładne ustawienia Develop i Film w przygotowanym wyglądzie, jego zachowanie filmu oraz korekcje zdjęcia, które zachowuje. Nic nie jest przesyłane podczas sprawdzania tego podsumowania ani przygotowywania pobierania."
+          ],
+          "steps": [
+            "Zapisz preset w Yours, wybierz go i przejrzyj podsumowanie uwzględnionych ustawień w sekcji zgłoszenia do Community.",
+            "Kliknij Prepare community submission… i poczekaj na lokalne renderowanie przykładów. Zapisz plik ZIP zawierający preset, trzy licencjonowane pary zdjęć przed/po, informacje o prawach do zdjęć i uwagi dotyczące praw.",
+            "Otwórz pakiet i sprawdź przykłady. Możesz też wybrać własne zdjęcie i użyć Download example on this photo, aby zapisać plik JPEG 960 pikseli z udostępnionym wyglądem bez zmiany edycji.",
+            "Kliknij Otwórz formularz zgłoszeniowy, dołącz pakiet i wszelkie dodatkowe dozwolone przykłady, a przed wysłaniem dodaj dane twórcy, opis i uprawnienia do publikacji."
+          ],
+          "tips": [
+            "Trzy standardowe sceny przykładowe są dołączone do LightTable. Ich eksport nie używa Twoich fotografii ani katalogu, a ich pliki JPEG nie zawierają osadzonych metadanych zdjęć.",
+            "Przygotowanie zgłoszenia wyklucza korekcje specyficzne dla zdjęcia. Sprawdź wynikowy wygląd przed udostępnieniem go.",
+            "Udostępniaj tylko zdjęcia, które masz prawo publikować. Istniejące oznaczenie twórcy i atrybucja nadrzędnego presetu są zachowane; zgoda na ponowne użycie receptury i zgoda na wyświetlanie zdjęcia to osobne kwestie."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure",
+        "film-getting-started",
+        "editing-curves"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-color-mixer-point-color",
+      "title": "Zmienia pojedyncze kolory za pomocą Mieszania kolorów i Punktowego koloru",
+      "category": "Editing",
+      "summary": "Dostosuj szerokie pasmo kolorów albo pobierz konkretną barwę i doprecyzuj jej zakres, jasność i jednorodność.",
+      "keywords": [
+        "hsl",
+        "mieszacz kolorów",
+        "Mikser kolorów",
+        "kolor punktowy",
+        "próbka",
+        "barwa",
+        "jednorodność",
+        "luminancja",
+        "nasycenie",
+        "zakres"
+      ],
+      "sections": [
+        {
+          "title": "Dostosuj pas kolorów",
+          "paragraphs": [
+            "Miks kolorów znajduje się w Edytuj → Kolor. Zmienia kolory wewnątrz wybranego pasma w całym zdjęciu."
+          ],
+          "steps": [
+            "Wybierz jeden z kolorowych przycisków pasm w Mieszaniu kolorów.",
+            "Dostosuj Barwę, aby przesunąć to pasmo, Nasycenie, aby zmienić intensywność koloru, oraz Luminancję, aby zmienić jego jasność.",
+            "Wybierz inny pas, aby kontynuować, albo użyj Resetu Miksu kolorów, aby wyczyścić korekty miksera."
+          ]
+        },
+        {
+          "title": "Pobierz próbkę konkretnego koloru",
+          "paragraphs": [
+            "Point Color daje próbkowanej barwie własne kontrolki. Wpływa na dopasowywane kolory w całym zdjęciu; użyj lokalnej maski, gdy chcesz też ograniczyć obszar."
+          ],
+          "steps": [
+            "Kliknij Próbka koloru w sekcji Kolor punktowy, a następnie kliknij barwną plamkę na zdjęciu.",
+            "Dostosuj Zakres, aby zawęzić lub poszerzyć wpływające barwy, a następnie doprecyzuj przesunięcie Barwy, Nasycenie i Luminancję.",
+            "Użyj Jednolita barwa, Jednolita saturacja lub Jednolita luminancja, aby kolory w zakresie były bardziej podobne do próbkowanego fragmentu.",
+            "Wybierz zapisany punkt w selektorze, aby go edytować, albo użyj Usuń punkt, aby go usunąć."
+          ],
+          "tips": [
+            "Neutralne szare plamy nie mogą dostarczyć użytecznej próbki barwy; wybierz bardziej kolorowy obszar, gdy pojawi się monit.",
+            "Kolor punktowy przechowuje do ośmiu próbkowanych punktów. Jeśli próbkujesz ponownie, gdy istnieje już osiem, ósmy punkt zostaje zastąpiony.",
+            "Resetuj w Kolor punktowy czyści próbki punktów bez potrzeby pełnego resetu Koloru."
+          ]
+        }
+      ],
+      "related": [
+        "editing-white-balance",
+        "editing-color-grading",
+        "editing-masks-ranges-refinements"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-color-grading",
+      "title": "Koryguj kolor cieni, tonów średnich i świateł",
+      "category": "Editing",
+      "summary": "Nadaj regionom tonalnym różne traktowanie kolorystyczne i kontroluj, jak te traktowania się mieszają.",
+      "keywords": [
+        "korekcja kolorów",
+        "grading kolorów",
+        "Dzielenie tonów",
+        "cienie",
+        "tony średnie",
+        "światła",
+        "Globalna korekcja",
+        "mieszanie",
+        "balans"
+      ],
+      "sections": [
+        {
+          "title": "Zbuduj korekcję",
+          "paragraphs": [
+            "Color Grading w Edytuj zapewnia oddzielne wybory Cienie, Tony średnie i Światła, a także globalny grading. Każdy ma kontrolki Barwa, Nasycenie i Luminancja."
+          ],
+          "steps": [
+            "Rozwiń Tonowanie kolorów i wybierz Cienie, Tony średnie lub Światła.",
+            "Wybierz barwę, a następnie zwiększ nasycenie, aby korekcja koloru była widoczna. W razie potrzeby dostosuj luminancję dla tego zakresu tonalnego.",
+            "Powtórz dla pozostałych regionów albo kliknij Edytuj global grading, aby zmienić globalne traktowanie.",
+            "Dopracowuj Mieszanie i Balans, porównując zdjęcie w trakcie regulacji.",
+            "Użyj Resetuj w Korekcji kolorów, aby wyczyścić korektę."
+          ],
+          "tips": [
+            "Zmiana Barwy przy Nasyceniu równym zero nie dodaje widocznego koloru. Zacznij od umiarkowanej wartości nasycenia.",
+            "Użyj Mieszacz kolorów lub Kolor punktowy, gdy chcesz ukierunkować istniejącą barwę, a maski, gdy chcesz wskazać lokalizację na zdjęciu."
+          ]
+        }
+      ],
+      "related": [
+        "editing-color-mixer-point-color",
+        "editing-curves",
+        "editing-masks-brush-gradients"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-copy-paste-match-exposure",
+      "title": "Skopiuj edycje do zaznaczonych zdjęć i dopasuj ekspozycję",
+      "category": "Editing",
+      "summary": "Wybierz, które ustawienia chcesz przenieść, przejrzyj limity specyficzne dla maski lub dopasuj grupę do aktywnego punktu odniesienia ekspozycji.",
+      "keywords": [
+        "kopiuj ustawienia",
+        "wklej ustawienia",
+        "edycja wsadowa",
+        "synchronizuj",
+        "auto synchronizuj",
+        "synchronizuj",
+        "wiele zdjęć",
+        "dopasuj całkowitą ekspozycję",
+        "zaznaczenie",
+        "schowek"
+      ],
+      "sections": [
+        {
+          "title": "Przenieś wybrane ustawienia",
+          "paragraphs": [
+            "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami."
+          ],
+          "steps": [
+            "Otwórz zdjęcie źródłowe i kliknij Kopiuj ustawienia edycji albo naciśnij Command-Shift-C na Macu lub Ctrl-Shift-C w systemach Linux i Windows.",
+            "Zaznacz grupy, które chcesz przenieść, a następnie kliknij Kopiuj ustawienia.",
+            "Wybierz zdjęcie docelowe lub zdjęcia w bibliotece i kliknij Wklej ustawienia edycji albo użyj Command-Shift-V / Ctrl-Shift-V.",
+            "Przeczytaj komunikat o zakończeniu. W przypadku partii Zatrzymaj kończy przetwarzanie po bieżącym zdjęciu; ukończone zdjęcia zachowują wklejone edycje."
+          ],
+          "tips": [
+            "Kadrowanie i geometria, Lokalne maski oraz Naprawa są oddzielnymi wyborami i nie są uwzględnione domyślnie.",
+            "Naprawa kopiuje położenia punktów i należy ją przenosić tylko między zdjęciami o zgodnym kadrowaniu."
+          ]
+        },
+        {
+          "title": "Przejrzyj przeniesione maski",
+          "paragraphs": [
+            "Wybrane lokalne maski zastępują maski docelowe. Inteligentne zaznaczenia są wykrywane ponownie dla każdego innego zdjęcia. Ręczne kształty masek są kopiowane, więc ich położenie nadal trzeba sprawdzić."
+          ],
+          "tips": [
+            "Zaznaczenia obiektów wymagają nowego wyboru obiektu na celu. Inteligentne maski z ręcznie malowanymi dopracowaniami również wymagają ręcznego odtworzenia; powoduje to odmowę wklejenia na celu zamiast cichego kopiowania zaznaczenia zależnego od źródła.",
+            "Jeśli maski nie mogą zostać przeniesione, skopiuj ponownie z odznaczonymi Lokalnymi maskami, aby zastosować pozostałe grupy.",
+            "Sprawdź raport zakończenia, aby znaleźć nieudane zdjęcia. Partia może zakończyć się z częścią zdjęć zmienionych, a częścią pozostawionych bez zmian."
+          ]
+        },
+        {
+          "title": "Dopasuj całkowitą ekspozycję",
+          "paragraphs": [
+            "Dopasuj całkowitą ekspozycję używa aktywnego zdjęcia jako odniesienia. Gdy dostępne są metadane ekspozycji z rejestracji, porównuje te informacje; w przeciwnym razie przechodzi do średniej jasności obrazu. Sprawdź wynik, gdy sceny lub oświetlenie się różnią."
+          ],
+          "steps": [
+            "Wybierz co najmniej dwa zdjęcia i ustaw żądane zdjęcie referencyjne jako aktywne.",
+            "Poczekaj, aż edycje referencyjne zakończą zapisywanie.",
+            "Wybierz Dopasuj całkowitą ekspozycję w działaniach zdjęcia lub Biblioteka → Dopasuj całkowitą ekspozycję w menu Mac.",
+            "Sprawdź każdy wynik. Operacja aktualizuje odpowiednie sterowanie ekspozycją i ogranicza wynikową korektę do obsługiwanego zakresu."
+          ],
+          "tips": [
+            "Zdjęcie referencyjne jest wyłączone z aktualizacji celu. Dopasowanie jest punktem wyjścia, zwłaszcza gdy zdjęcia zawierają różne obiekty lub kadrowanie."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-presets",
+        "editing-masks-ai",
+        "editing-remove-heal"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-crop-geometry",
+      "title": "Kadruj, wyprostuj, obróć i skoryguj perspektywę",
+      "category": "Editing",
+      "summary": "Ustaw ramkę i proporcje, dostosuj orientację i perspektywę, a następnie zatwierdź lub anuluj sesję kadrowania.",
+      "keywords": [
+        "kadruj",
+        "Proporcje",
+        "wyprostuj",
+        "obróć",
+        "odbij",
+        "perspektywa",
+        "geometria",
+        "Wyprostuj",
+        "poziom",
+        "portret",
+        "krajobraz",
+        "zmień rozmiar"
+      ],
+      "sections": [
+        {
+          "title": "Ustaw kadr",
+          "paragraphs": [
+            "Otwórz Kadruj na pasku narzędzi edycji. Proporcje oferują Dowolny, Oryginalny, standardowe proporcje i Niestandardowy. Odczyt kadrowania pokazuje ramkę i zachowaną ilość."
+          ],
+          "steps": [
+            "Wybierz proporcje. Użyj Niestandardowy, aby wpisać własny stosunek szerokości do wysokości, oraz przycisku zamiany, aby zmienić orientację.",
+            "Przeciągnij uchwyt, aby zmienić rozmiar kadru; zdjęcie powiększa się, aby zachować wyśrodkowanie ramki. Przeciągnij wewnątrz ramki, aby przesunąć pod nią zdjęcie, albo poza nią, aby narysować nowy kadr.",
+            "Użyj klawiszy strzałek, aby przesunąć zaznaczenie; przytrzymaj Shift, aby robić większe kroki.",
+            "Kliknij Gotowe lub naciśnij Enter, aby zaakceptować. Kliknij Anuluj lub naciśnij Escape, aby przywrócić kadr z chwili otwarcia opcji Kadruj."
+          ],
+          "tips": [
+            "Kontrolka blokady proporcji pozwala zachować bieżące proporcje obrazu podczas zmiany rozmiaru."
+          ]
+        },
+        {
+          "title": "Doprecyzuj geometrię",
+          "paragraphs": [
+            "Kadruj i obracaj zawiera też Wyrównaj, obrót o 90 stopni, odbicia poziome i pionowe oraz sterowanie perspektywą."
+          ],
+          "steps": [
+            "Spróbuj Autom. poziom dla przekrzywionego horyzontu, a potem dopracuj Wyrównaj, jeśli to konieczne.",
+            "Użyj Obróć w lewo, Obróć w prawo lub przycisków odbicia, aby zmienić orientację.",
+            "Rozwiń Perspektywę i wypróbuj Autom. wyprostowanie albo ręcznie dostosuj Pion, Poziom i Skalę.",
+            "Sprawdź krawędzie i końcowe kadrowanie, a potem kliknij Gotowe."
+          ],
+          "tips": [
+            "Autom. poziom używa linii, które potrafi znaleźć; sprawdź wynik zamiast zakładać, że wykryty kąt pasuje do fotografii.",
+            "Resetuj Kadruj resetuje razem kadrowanie, obrót, odbicie i perspektywę."
+          ]
+        }
+      ],
+      "related": [
+        "editing-lens-corrections",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-masks-brush-gradients",
+      "title": "Wykonuj lokalne korekty za pomocą masek Pędzel, Liniowy i Promieniowy",
+      "category": "Editing",
+      "summary": "Maluj lub rysuj maskę, sprawdź jej nakładkę i dostosuj tylko wybrany obszar.",
+      "keywords": [
+        "maska",
+        "maskowanie",
+        "lokalna korekta",
+        "pędzel",
+        "liniowy gradient",
+        "radialny gradient",
+        "wtapianie",
+        "przepływ",
+        "nakładka",
+        "rozjaśnianie",
+        "wypalanie"
+      ],
+      "sections": [
+        {
+          "title": "Utwórz ręczną maskę",
+          "paragraphs": [
+            "Otwórz Maskę na pasku narzędzi edycji i wybierz narzędzie pod Utwórz nową maskę. Kliknij Utwórz nową maskę, aby pokazać lub ukryć narzędzia. Każda maska ma własne ustawienia Jasny i Kolor.",
+            "Tekstura i Przejrzystość używają obrazu po korektach globalnych i wcześniejszych maskach. Te kontrolki wymagają aktualizacji podglądu; poczekaj na jej zakończenie, zanim ocenisz wynik."
+          ],
+          "steps": [
+            "Wybierz Pędzel do malowania, Liniowy dla korekty stopniowanej lub Promieniowy dla korekty okrągłej.",
+            "Dla Pędzel wybierz Rozmiar, Piórko i Przepływ, a następnie maluj po zdjęciu. Dla Liniowy lub Promieniowy przeciągnij po zdjęciu, aby ustawić kształt.",
+            "Pozostaw Włącz nakładkę podczas sprawdzania zaznaczonego obszaru, a potem wyłącz ją, aby ocenić zdjęcie.",
+            "Dostosuj suwaki Jasność lub Kolor wybranej maski. Użyj Ilość w Zakres, aby zmniejszyć jej ogólną siłę.",
+            "Zmień nazwę maski za pomocą jej przycisku •••, aby później łatwo rozpoznać jej przeznaczenie."
+          ],
+          "tips": [
+            "Dodaj, Odejmij i Przecięcie wprowadzają tryby dopracowywania malowaniem. W przypadku maski Liniowej lub Promieniowej wybierz Edytuj kształt, aby wrócić do manipulowania jej kształtem.",
+            "Włącz tymczasowo wyłącza lub włącza efekt maski. Odwróć odwraca jej zaznaczenie.",
+            "Edytor umożliwia maksymalnie szesnaście lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
+            "Punkty maski i obrysy pędzla pozostają ostre i mają tę samą grubość podczas powiększania. Obrys rośnie wraz z obszarem, który obejmuje na zdjęciu."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-ai",
+        "editing-masks-ranges-refinements",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-photo-merge",
+      "title": "Scal bracketing HDR, panoramy i stosy ostrzenia",
+      "category": "Editing",
+      "summary": "Połącz sekwencję różnych oryginałów w nowy 16-bitowy TIFF, a następnie edytuj połączony wynik.",
+      "keywords": [
+        "scal zdjęcia",
+        "scal",
+        "hdr",
+        "wysoki zakres dynamiczny",
+        "fuzja ekspozycji",
+        "bracketing",
+        "panorama",
+        "panorama",
+        "łącz",
+        "stos ostrości",
+        "stos ostrości",
+        "tiff",
+        "wyrównanie"
+      ],
+      "sections": [
+        {
+          "title": "Rozpocznij scalanie w aplikacji na Maca",
+          "paragraphs": [
+            "Scalanie zdjęć używa neutralnego renderu każdego oryginału i tworzy nowy 16-bitowy TIFF w LightTable Merges. Zastosuj do wyniku końcowy wygląd, kadrowanie i lokalne korekty. Oryginalne pliki źródłowe pozostają dostępne."
+          ],
+          "steps": [
+            "Wybierz co najmniej dwa różne oryginały w bibliotece. Wiele kopii wirtualnych jednego oryginału liczy się jako jedno źródło.",
+            "Wybierz Zdjęcie → Scal zdjęcia… w menu Mac.",
+            "Wybierz HDR · exposure fusion, Panorama · feature aligned lub Focus stack · sharpness fused.",
+            "Opcjonalnie wpisz nazwę Wyniku, a następnie kliknij Scal.",
+            "Obserwuj postęp przygotowania, wyrównywania, mieszania i zapisywania. Gdy aplikacja zgłosi ukończenie i odświeży bibliotekę, otwórz TIFF w LightTable Merges i sprawdź go."
+          ],
+          "tips": [
+            "Tylko jedno scalanie może działać jednocześnie. Istniejąca nazwa pliku jest zachowywana; nowe scalanie o tej samej nazwie otrzymuje sufiks liczbowy.",
+            "Scal zwykle przetwarza każdy plik wejściowy do 6 000 pikseli na dłuższej krawędzi. Scalony wynik może więc mieć mniej szczegółów niż pełnorozdzielcza sekwencja źródłowa.",
+            "Jeśli scalanie zgłosi błąd, przeczytaj konkretny komunikat i popraw zaznaczenie wejściowe przed ponowną próbą."
+          ]
+        },
+        {
+          "title": "Wybierz odpowiednie źródła",
+          "paragraphs": [
+            "HDR przyjmuje 2–9 zdjęć z bracketingu ekspozycji o zgodnych wymiarach. Wyrównuje i łączy ekspozycyjnie renderowane klatki wyświetlacza, aby zbalansować użyteczne tony. Sprawdź poruszające się obiekty i krawędzie pod kątem artefaktów łączenia.",
+            "Panorama akceptuje 2–20 nakładających się kadrów. Wybierz sąsiednie kadry w sekwencji, aby sąsiednie wejścia miały wspólne szczegóły wizualne. Aplikacja wyrównuje cechy i miesza nakładki; obszary bez cech lub niewystarczające nakładanie mogą uniemożliwić niezawodne łączenie. Płótna panoramy są ograniczone do 120 megapikseli.",
+            "Stos ostrości przyjmuje 2–60 zdjęć z bracketingu ostrości o zgodnych wymiarach. Użyj statywu lub sekwencji na prowadnicy ostrości ze wspólnym kadrem. Aplikacja wyrównuje klatki, łączy ostre obszary i przycina do ich wspólnego wyrównanego obszaru."
+          ],
+          "steps": [
+            "W przypadku HDR sprawdź światła, cienie i wszystko, co poruszyło się między ekspozycjami.",
+            "W przypadku Panoramy sprawdź łączenia i zewnętrzną granicę, a następnie w razie potrzeby wykadruj wynik.",
+            "Dla Focus stack sprawdzaj przejścia między ostrymi obszarami, krawędziami pierwszego planu i końcowym kadrem w 1:1."
+          ],
+          "tips": [
+            "HDR tutaj to exposure fusion do wyrenderowanego TIFF-a. Nie tworzy liniowego scenicznie wzorca RAW ani DNG.",
+            "Niepowodzenie wyrównania może oznaczać, że kadry nie mają wystarczającego nakładania się lub wspólnego obszaru. Spróbuj bardziej spójnej sekwencji zamiast dodawania niezwiązanych kadrów."
+          ]
+        }
+      ],
+      "related": [
+        "editing-crop-geometry",
+        "editing-tone",
+        "editing-detail-effects-enhance"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-masks-ranges-refinements",
+      "title": "Dopracowuj maski za pomocą malowania, zakresów i połączonych zaznaczeń",
+      "category": "Editing",
+      "summary": "Dodaj, odejmij lub przetnij obszary, a następnie ogranicz korektę według luminancji lub pobranego koloru.",
+      "keywords": [
+        "doprecyzowanie maski",
+        "dodaj",
+        "odejmij",
+        "przecięcie",
+        "komponent",
+        "zakres luminancji",
+        "zakres kolorów",
+        "Zakres koloru",
+        "Próbkuj kolor",
+        "krycie",
+        "ilość",
+        "odwróć"
+      ],
+      "sections": [
+        {
+          "title": "Dopracuj przez malowanie",
+          "paragraphs": [
+            "Wybierz maskę na liście masek przed jej dopracowaniem. Dodaj rozszerza zaznaczenie; Odejmij usuwa malowane obszary; Przecięcie zachowuje tylko malowany obszar istniejącego zaznaczenia."
+          ],
+          "steps": [
+            "Wybierz Dodaj, Odejmij lub Przecięcie pod Wybrana maska.",
+            "Ustaw Rozmiar, Wtapianie i Przepływ, a następnie maluj, obserwując nakładkę.",
+            "Podczas używania Dodaj przytrzymaj Option na Macu, aby tymczasowo odjąć.",
+            "Wyłącz nakładkę i sprawdź korektę. Użyj Cofnij dla dopracowania, które chcesz odwrócić."
+          ]
+        },
+        {
+          "title": "Połącz inteligentne zaznaczenie",
+          "paragraphs": [
+            "Smart selection action kontroluje, czy następne inteligentne zaznaczenie stanie się nową maską, czy połączy się z aktualnie zaznaczoną maską."
+          ],
+          "steps": [
+            "Wybierz istniejącą maskę, a następnie rozwiń Utwórz nową maskę.",
+            "W Smart selection action wybierz Dodaj do zaznaczonej maski, Odejmij od zaznaczonej maski lub Przecięcie z zaznaczoną maską.",
+            "Wybierz inteligentne narzędzie, takie jak Obiekt lub Niebo, i sprawdź wynik łączony."
+          ],
+          "tips": [
+            "Ustaw Smart selection action z powrotem na Utwórz nową maskę, gdy chcesz, aby następne inteligentne zaznaczenie miało niezależne korekty.",
+            "Maska ma limit komponentów; panel informuje, gdy nie można dodać kolejnego inteligentnego komponentu."
+          ]
+        },
+        {
+          "title": "Ogranicz według jasności lub koloru",
+          "paragraphs": [
+            "Zakres zawęża dalej wybraną maskę. Luminancja Niska i Wysoka ograniczają wartości jasności. Zakres koloru celuje w barwę, a Ilość kontroluje siłę całej maski."
+          ],
+          "steps": [
+            "Rozwiń Zakres dla wybranej maski i dostosuj Luminancja niska oraz Luminancja wysoka, obserwując nakładkę.",
+            "Włącz Zakres koloru, a następnie kliknij Próbkuj kolor i próbkuj barwny punkt albo przytrzymaj Shift i przeciągnij po obszarze, aby go uśrednić.",
+            "Doprecyzuj Barwę, Zakres i ilość Koloru, a następnie użyj Ilość, aby ustawić ogólną siłę korekty."
+          ],
+          "tips": [
+            "Prawie neutralny obszar nie zapewnia użytecznej próbki barwy. Wybierz bardziej kolorowy obszar, gdy pojawi się monit."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ai",
+        "editing-color-mixer-point-color"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-remove-heal",
+      "title": "Usuń plamy i dopracuj korekcje Napraw lub Klon",
+      "category": "Editing",
+      "summary": "Maluj po rozpraszających elementach, sprawdzaj widoczność punktu i przesuwaj źródło lub cel korekty.",
+      "keywords": [
+        "usuń",
+        "naprawa",
+        "naprawa",
+        "klon",
+        "retusz",
+        "kurz",
+        "Usuwanie plamek",
+        "wizualizuj plamy",
+        "źródło",
+        "cel",
+        "rozpraszanie uwagi"
+      ],
+      "sections": [
+        {
+          "title": "Utwórz korekcję",
+          "paragraphs": [
+            "Otwórz Usuń na pasku narzędzi edycji. Usuń, Napraw i Klon są odrębnymi trybami. Napraw i Klon wybierają początkowe źródło automatycznie; sprawdź to źródło zamiast zakładać, że jest odpowiednie.",
+            "Korekty są stosowane po kolei, więc późniejsze źródło może obejmować wcześniejszą korektę. Poczekaj na aktualizację podglądu, zanim ocenisz wynik lub wyostrzanie wokół skorygowanego obszaru."
+          ],
+          "steps": [
+            "Wybierz Usuń, Napraw lub Klon, a następnie ustaw Rozmiar, Wtapianie i Krycie.",
+            "Kliknij plamkę lub przeciągnij po rozpraszającym elemencie na zdjęciu.",
+            "Dla drobnych plamek kurzu włącz Visualize Spots i dostosuj Próg, aby krawędzie były łatwiejsze do sprawdzenia.",
+            "Wyłącz Wizualizuj plamy i sprawdź skorygowane zdjęcie."
+          ],
+          "tips": [
+            "Wybranie korekty i wybranie innego trybu zmienia tryb tej korekty."
+          ]
+        },
+        {
+          "title": "Doprecyzuj istniejącą korektę",
+          "paragraphs": [
+            "Wybierz korektę z listy, aby pokazać jej sterowania. Kółka na obrazie wskazują edytowalny cel oraz, dla Napraw i Klon, źródło.",
+            "Powiększ, aby uzyskać precyzyjne umieszczenie. Obrysy okręgów i punkty pozostają ostre na każdym poziomie powiększenia; okręgi nadal pokazują ten sam obszar zdjęcia."
+          ],
+          "steps": [
+            "Przeciągnij okrąg celu, aby zmienić położenie korekty, albo wybierz Przesuń cel i kliknij jego nowe położenie.",
+            "W przypadku Napraw lub Klonu przeciągnij okrąg źródła do lepszego obszaru. Odśwież źródło próbuje innego położenia źródła.",
+            "Dostosuj Wtapianie lub Krycie, jeśli krawędź albo siła korekty wymagają dopracowania.",
+            "Przełącz Włącz tę korektę, aby porównać, albo użyj Usuń korektę, aby ją usunąć."
+          ],
+          "tips": [
+            "Usuń nie udostępnia źródłowego okręgu ani Odśwież źródło. Te kontrolki źródła dotyczą Napraw i Klonu.",
+            "Wyczyść wszystko usuwa korekcje Usuń, Napraw i Klon zdjęcia i jest niedostępne, gdy nie ma żadnych korekcji. Użyj Cofnij, aby odwrócić przypadkową zmianę edycji."
+          ]
+        }
+      ],
+      "related": [
+        "editing-detail-effects-enhance",
+        "editing-history-snapshots",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-save-recovery",
+      "title": "Zapisz edycje i odzyskaj niezapisane zmiany",
+      "category": "Editing",
+      "summary": "Edycje zapisują się automatycznie. Sprawdź status zapisu, ponów próbę nieudanego zapisu lub wybierz, które edycje odzyskać po ponownym otwarciu.",
+      "keywords": [
+        "zapisz",
+        "automatyczny zapis",
+        "niezapisane",
+        "odzyskiwanie",
+        "awaria",
+        "oryginalny",
+        "niedestrukcyjne",
+        "ponów próbę",
+        "zapisywanie"
+      ],
+      "sections": [
+        {
+          "title": "Sprawdź, czy Twoja praca została zapisana",
+          "paragraphs": [
+            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty."
+          ],
+          "steps": [
+            "Wykonaj korektę, a następnie sprawdź stan zapisu w aplikacji.",
+            "Poczekaj, aż Saving… zmieni się na Saved. Zapisywanie obejmuje także oczekujące zapisy historii edycji.",
+            "Jeśli stan mówi Niezapisane edycje, użyj Ponów zapis. Pozostaw okno otwarte, gdy zapis się nie powodzi."
+          ],
+          "tips": [
+            "Zapisano · wymaga uwagi odzyskiwania oznacza, że zapis się powiódł, ale lokalny system odzyskiwania zgłosił problem. Użyj dostępnej kontroli ponowienia próby i przeczytaj komunikat stanu."
+          ]
+        },
+        {
+          "title": "Wybierz odzyskane lub zapisane edycje",
+          "paragraphs": [
+            "Jeśli lokalne odzyskiwanie znajdzie nierozwiązane zmiany podczas otwierania biblioteki, „Odzyskaj niezapisane edycje?” wyświetla listę dotkniętych zdjęć. „Przywróć edycje” zastępuje ich zapisane ustawienia odzyskanymi ustawieniami. „Zachowaj zapisane edycje” pozostawia wersję katalogu i odrzuca te szkice odzyskiwania."
+          ],
+          "steps": [
+            "Przeczytaj nazwy zdjęć, których dotyczy to działanie, i wybierz Przywróć edycje lub Zachowaj zapisane edycje.",
+            "Jeśli przywracasz, poczekaj na zakończenie zapisywania przed zamknięciem aplikacji."
+          ],
+          "tips": [
+            "Odzyskiwanie może być niedostępne, jeśli lokalna pamięć lub dziennik odzyskiwania pulpitu zawiedzie. Aplikacja zgłasza ten stan; nie jest to gwarancja, że każda niezapisana edycja może zostać odzyskana.",
+            "Jeśli oryginał jest niedostępny lub się zmienił, jego rekord odzyskiwania jest zachowywany zamiast być stosowany do potencjalnie innego zdjęcia. Niektóre wersje robocze odzyskiwania pokazują informację o częściowej tożsamości, ponieważ nie mogą zweryfikować całego oryginału. Może to się zdarzyć w przypadku starszych wersji roboczych lub podczas używania trybu folderu. Przywracaj je tylko wtedy, gdy oryginalne zdjęcia nie zostały zastąpione."
+          ]
+        }
+      ],
+      "related": [
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-masks-ai",
+      "title": "Wybierz Obiekt, Niebo, Obiekt, Głębia lub Osoby",
+      "category": "Editing",
+      "summary": "Twórz lokalne zaznaczenia na urządzeniu, sprawdzaj ich dokładność i dopracuj wynik przed zastosowaniem korekt.",
+      "keywords": [
+        "maska ai",
+        "obiekt",
+        "niebo",
+        "obiekt",
+        "głębia",
+        "osoby",
+        "osoba",
+        "twarz",
+        "skóra",
+        "włosy",
+        "oczy",
+        "zęby",
+        "portret",
+        "wybierz tło"
+      ],
+      "sections": [
+        {
+          "title": "Utwórz inteligentne zaznaczenie",
+          "paragraphs": [
+            "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy."
+          ],
+          "steps": [
+            "Otwórz Maska i rozwiń Utwórz nową maskę.",
+            "Wybierz Obiekt lub Niebo, aby wykonać automatyczne zaznaczenie. W przypadku Obiekt kliknij Obiekt, a następnie kliknij obiekt na zdjęciu.",
+            "Wybierz Głębia, aby wykonać zaznaczenie na podstawie względnej odległości, a następnie otwórz Zakres i dostosuj Limit daleki oraz Limit bliski. Głębia przebiega od dalekiej do bliskiej.",
+            "Sprawdź Pokaż nakładkę i dopracuj pominięte lub dodatkowe obszary przed dostosowaniem Jasny lub Kolor."
+          ],
+          "tips": [
+            "Obiekt, Niebo i Obiekt mogą korzystać z lokalnych szacunków opartych na obrazie. Mogą nie trafić w krawędzie lub wybrać niewłaściwy region, zwłaszcza tam, gdzie obiekt i tło wyglądają podobnie.",
+            "Głębia używa osadzonej głębi wykonania, gdy jest dostępna, w przeciwnym razie lokalnego oszacowania. Szacowana głębia jest względna i może być niedokładna.",
+            "Użyj Odwróć, jeśli chcesz dostosować obszar poza wynikowym zaznaczeniem."
+          ]
+        },
+        {
+          "title": "Wybierz osoby lub obszary twarzy",
+          "paragraphs": [
+            "Osoby oferuje Osoba, Skóra twarzy, Oczy, Brwi, Usta, Zęby, Włosy i Wygładź skórę. Te elementy sterujące wymagają pomocnika Vision w macOS 14 lub nowszym i są ukryte w systemach Linux i Windows. Skóra twarzy i włosy są szacowane, a tożsamość nie jest wnioskowana."
+          ],
+          "steps": [
+            "Wybierz Osoby, a potem część, którą chcesz dostosować.",
+            "Sprawdź nakładkę i w razie potrzeby użyj malowanych dopracowań wokół granic.",
+            "W przypadku Wygładzania skóry sprawdź automatycznie zastosowaną redukcję Tekstury i Klarowności, a następnie dostosuj ją do portretu."
+          ],
+          "tips": [
+            "Odczytaj wszelkie błędy dostępności lub wykrywania w panelu maski. Obecność narzędzia w menu nie gwarantuje, że wymagany pomocnik lub użyteczny wybór jest dostępny."
+          ]
+        }
+      ],
+      "related": [
+        "editing-masks-brush-gradients",
+        "editing-masks-ranges-refinements",
+        "editing-copy-paste-match-exposure"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-white-balance",
+      "title": "Ustaw balans bieli i ogólny kolor",
+      "category": "Editing",
+      "summary": "Użyj Temperatura i Odcień albo pobierz próbkę z neutralnego obszaru, a następnie dostosuj Jaskrawość i Nasycenie.",
+      "keywords": [
+        "Balans bieli",
+        "balans bieli",
+        "temperatura",
+        "temperatura",
+        "odcień",
+        "neutralny",
+        "pipeta",
+        "dominanta koloru",
+        "jaskrawość",
+        "nasycenie"
+      ],
+      "sections": [
+        {
+          "title": "Zneutralizuj dominantę koloru",
+          "paragraphs": [
+            "Sekcja Kolor w Edytuj zawiera Temp i Odcień, a także pipetę balansu bieli obok Temp. To są końcowe sterowania panelu Edytuj."
+          ],
+          "steps": [
+            "Otwórz Edytuj i rozwiń Kolor.",
+            "Kliknij pipetę balansu bieli obok Temp, a następnie kliknij obszar na zdjęciu, który powinien być neutralnie szary.",
+            "Doprecyzuj Temp i Odcień na oko, jeśli pobrany wynik jest zbyt ciepły, chłodny, zielony lub magentowy.",
+            "Dostosuj Jaskrawość i Nasycenie, aby kontrolować ogólną intensywność koloru."
+          ],
+          "tips": [
+            "Wybierz widoczny neutralny fragment. Próbka niemal czarna powoduje komunikat Za ciemne do próbkowania; niedostępny podgląd wyświetla komunikat oczekiwania.",
+            "Kliknij pipetę ponownie, aby wyjść z trybu próbkowania bez wybierania punktu.",
+            "Resetuj w sekcji Kolor resetuje także powiązane korekty koloru, w tym Mieszacz kolorów, Point Color i Color Grading. Użyj własnego Resetuj danego narzędzia do węższej zmiany."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-mixer-point-color",
+        "editing-color-grading"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-curves",
+      "title": "Kształtuj kontrast i kolor za pomocą krzywych",
+      "category": "Editing",
+      "summary": "Dodawaj i przesuwaj punkty krzywej dla połączonego kanału RGB albo osobnych kanałów czerwonego, zielonego i niebieskiego.",
+      "keywords": [
+        "krzywa",
+        "krzywe",
+        "krzywa tonalna",
+        "rgb",
+        "czerwony",
+        "zielony",
+        "niebieski",
+        "kontrast",
+        "Punkt kontrolny",
+        "krzywa S"
+      ],
+      "sections": [
+        {
+          "title": "Edytuj krzywą",
+          "paragraphs": [
+            "Na wykresie Krzywa kierunek poziomy biegnie od ciemniejszych tonów wejściowych do jaśniejszych tonów wejściowych. Przesunięcie punktu w górę zwiększa jego wyjście; przesunięcie w dół je obniża. RGB reguluje połączoną krzywą, a R, G i B wpływają na pojedyncze kanały."
+          ],
+          "steps": [
+            "Otwórz Edytuj i rozwiń Krzywa.",
+            "Wybierz RGB, R, G lub B.",
+            "Kliknij wykres, aby dodać punkt, a potem przeciągnij go, aby ukształtować krzywą. Przeciągnij istniejący uchwyt, aby go przesunąć.",
+            "Kliknij dwukrotnie punkt wewnętrzny, aby go usunąć. Dwa uchwyty końcowe pozostają na miejscu.",
+            "Użyj Resetuj w Krzywa, aby zresetować krzywe, lub Cofnij, aby odwrócić najnowszą zmianę."
+          ],
+          "tips": [
+            "Użyj kilku punktów i porównuj zdjęcie podczas pracy; krzywe kanałów mogą wprowadzać silne zafarbienia.",
+            "Zapisana lub zaimportowana krzywa zachowuje dokładnie zapisaną tabelę do momentu jej edycji. Aplikacja przebudowuje reprezentatywne uchwyty do edycji, więc pierwsza regulacja może przekształcić zaimportowaną krzywą poza punkt, który przesuniesz."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-color-grading",
+        "editing-presets"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-detail-effects-enhance",
+      "title": "Wyostrzaj, redukuj szum i użyj Popraw",
+      "category": "Editing",
+      "summary": "Sprawdzaj szczegóły w 1:1, stosuj zwykłe kontrole szczegółów albo uruchom lokalne uczone usuwanie szumu, gdy jest dostępne.",
+      "keywords": [
+        "szczegóły",
+        "wyostrzanie",
+        "szum",
+        "usuwanie szumu",
+        "redukcja szumu",
+        "popraw",
+        "superrozdzielczość",
+        "Powiększ",
+        "tekstura",
+        "przejrzystość",
+        "usuń zamglenie",
+        "winieta",
+        "sensor"
+      ],
+      "sections": [
+        {
+          "title": "Oceń szczegóły przy 1:1",
+          "paragraphs": [
+            "Sekcja Szczegóły obejmuje Wyostrzanie, Promień, Szczegóły, Maskowanie, Szum luminancji oraz Szum koloru. Efekty zawierają Teksturę, Przejrzystość, Usuń zamglenie i Winietę."
+          ],
+          "steps": [
+            "Otwórz zdjęcie i użyj Spacja, aby przełączać między Dopasuj a 1:1.",
+            "Rozwiń Szczegóły w Edytuj. Dostosuj redukcję szumu i wyostrzanie, patrząc zarówno na teksturalne, jak i gładkie obszary.",
+            "Użyj Efektów dla tekstury, lokalnego kontrastu, zamglenia lub cieniowania krawędzi, a potem sprawdź całe zdjęcie w Dopasuj.",
+            "Użyj Resetuj odpowiedniej sekcji, jeśli chcesz rozpocząć tę grupę od nowa."
+          ],
+          "tips": [
+            "Kontrole szczegółów działają zarówno w trybie Film, jak i Develop. Unikaj oceniania wyostrzania wyłącznie na małym podglądzie Dopasuj."
+          ]
+        },
+        {
+          "title": "Uruchom wyuczony odszumiający algorytm na zdjęciu RAW",
+          "paragraphs": [
+            "Zdjęcia RAW mogą pokazywać kontrolki Redukcja szumu matrycy oraz Uczone usuwanie szumu. Uczone usuwanie szumu działa lokalnie po naciśnięciu Zastosuj usuwanie szumu; przesuwanie Siła nie uruchamia go na żywo."
+          ],
+          "steps": [
+            "Wybierz zdjęcie RAW i rozwiń Szczegóły.",
+            "Sprawdź, czy Zastosuj usuwanie szumu jest dostępne, wybierz Siła i kliknij Zastosuj usuwanie szumu.",
+            "Obserwuj komunikat o postępie. Użyj Anuluj, jeśli musisz zatrzymać zadanie.",
+            "Sprawdź gotowy podgląd w 1:1."
+          ],
+          "tips": [
+            "Nauczone usuwanie szumu wymaga pomocnika wnioskowania w macOS i zgodnego lokalnego modelu. Jest niedostępne w systemach Linux i Windows. Zwykła redukcja szumu i wyostrzanie pozostają dostępne. Wydania deweloperskie mogą nie zawierać modelu; przed uruchomieniem przeczytaj komunikat o dostępności."
+          ]
+        },
+        {
+          "title": "Utwórz ulepszoną pochodną w aplikacji Mac",
+          "paragraphs": [
+            "Zdjęcie → Popraw zdjęcie… oferuje Usuwanie szumu i Super rozdzielczość oraz zapisuje nowy wzorzec 16-bitowy, gdy wybrana operacja się powiedzie. Oryginał pozostaje nienaruszony."
+          ],
+          "steps": [
+            "Zaznacz zdjęcie, wybierz Zdjęcie → Popraw zdjęcie…, i przeczytaj komunikat o dostępności.",
+            "Wybierz ulepszenie i kliknij Popraw, jeśli jest dostępne.",
+            "Po zakończeniu znajdź nowy wynik w odświeżonej bibliotece i sprawdź go."
+          ],
+          "tips": [
+            "Niedostępne ulepszenia są wyłączone. Superrozdzielczość nie ma dołączonego modelu i wymaga zainstalowanego lokalnie zgodnego modelu.",
+            "Ulepszanie może generować szczegóły; oceniaj wynik, zanim potraktujesz go jako wierny zapis drobnej faktury."
+          ]
+        }
+      ],
+      "related": [
+        "editing-tone",
+        "editing-effects",
+        "editing-history-snapshots"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "editing-history-snapshots",
+      "title": "Cofnij edycje, przywróć Historię i zapisuj migawki",
+      "category": "Editing",
+      "summary": "Użyj Cofnij dla ostatniej pracy, Historii dla zapisanych kroków edycji oraz nazwanych migawek dla wyglądów, do których chcesz wrócić.",
+      "keywords": [
+        "cofnij",
+        "ponów",
+        "historia",
+        "migawka",
+        "wersja",
+        "przywróć",
+        "przywróć",
+        "resetuj"
+      ],
+      "sections": [
+        {
+          "title": "Cofnij lub przywróć wcześniejszy krok",
+          "paragraphs": [
+            "Cofnij i ponów działają dla każdego zdjęcia podczas bieżącej sesji. W bibliotekach katalogu Historia pozostaje po zamknięciu programu. Bliskie korekty mogą zostać połączone w jeden krok historii, więc lista nie jest zapisem każdej pozycji suwaka."
+          ],
+          "steps": [
+            "Użyj Command-Z na Macu albo Ctrl-Z w systemach Linux i Windows, aby cofnąć. Dodaj Shift, aby ponowić.",
+            "Otwórz Historię na pasku narzędzi edycji, aby zobaczyć zapisane kroki bieżącego zdjęcia, od najnowszego.",
+            "Kliknij krok, aby przywrócić jego ustawienia. Przywrócenie kroku jest samo w sobie edytowalnym cofaniem."
+          ],
+          "tips": [
+            "Historia trwała wymaga biblioteki katalogowej. Użycie tylko folderów nadal obsługuje sesyjne Cofnij i Ponów.",
+            "Wyczyść usuwa zapisane kroki historii zdjęcia; nie jest to polecenie resetowania korekty."
+          ]
+        },
+        {
+          "title": "Zachowaj nazwany wygląd",
+          "paragraphs": [
+            "Migawka zapisuje bieżące ustawienia korekcji zdjęcia, kadrowanie, maski, korekcje Usuń oraz optykę. To zapisany stan edycji tego zdjęcia. Utwórz migawkę jest niedostępne, dopóki zdjęcie nie zostanie wczytane."
+          ],
+          "steps": [
+            "Otwórz Historię, rozwiń Migawki i kliknij Utwórz migawkę.",
+            "Wpisz pomocną nazwę, na przykład Miękki portret lub Przed retuszem.",
+            "Kliknij nazwę migawki, aby zastosować ją później. Użyj Cofnij, jeśli chcesz wrócić do stanu, który właśnie zastąpiłeś."
+          ],
+          "tips": [
+            "Zdjęcie przechowuje do 50 migawek; utworzenie kolejnej ponad ten limit usuwa najstarszą migawkę z listy.",
+            "× obok migawki usuwa tę nazwaną migawkę, a nie oryginalne zdjęcie."
+          ]
+        }
+      ],
+      "related": [
+        "editing-save-recovery",
+        "editing-presets"
+      ],
+      "categoryLabel": "Edycja"
+    },
+    {
+      "id": "film-grain-and-format",
+      "title": "Dostosuj ziarno filmu i format",
+      "category": "Film",
+      "summary": "Kontroluj ziarno względem nośnika i wybierz symulowany rozmiar filmu.",
+      "keywords": [
+        "ziarno",
+        "rozmiar",
+        "tekstura",
+        "35mm",
+        "średni format",
+        "645",
+        "6x6",
+        "6x7",
+        "4x5",
+        "cząstka",
+        "szum"
+      ],
+      "sections": [
+        {
+          "title": "Ustaw format i ziarno",
+          "paragraphs": [
+            "Format filmu ustawia fizyczną dłuższą krawędź używaną przez symulację. Dostępne są 35 mm, 645, 6 × 6, 6 × 7 i 4 × 5; to ustawienie jest niezależne od kadrowania zdjęcia.",
+            "Rozmiar ziarna mnoży bazową powierzchnię cząstek wybranego nośnika. Odczyt pokazuje wynikową powierzchnię w µm², więc ten sam mnożnik może pokazać inną powierzchnię po zmianie nośnika."
+          ],
+          "steps": [
+            "W profilu Film wybierz format filmu.",
+            "Użyj Fizycznych etapów filmu, które otwierają się automatycznie, gdy Profil filmu jest włączony. Otwórz je ponownie, jeśli je zwinąłeś.",
+            "Włącz Rozmiar ziarna i dostosuj jego suwak albo wyczyść pole wyboru, aby wyłączyć ziarno.",
+            "Sprawdź obraz w 1:1 i poczekaj, aż szczegóły podglądu się zakończą, zanim ocenisz teksturę."
+          ]
+        },
+        {
+          "title": "Co oznacza liczba",
+          "paragraphs": [
+            "Bazowe wartości ziarna dla poszczególnych nośników są wyprowadzane z czułości filmu jako wizualne punkty startowe. Nie są to laboratoryjne pomiary ziarnistości dla każdej emulsji.",
+            "Ustawienie rozmiaru Ziarna należy do symulacji filmu. Wyostrzanie szczegółów i redukcja szumów w Edytuj to osobne korekty."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-halation-diffusion-scan",
+      "title": "Dostosuj halację, rozproszenie i charakter skanu",
+      "category": "Film",
+      "summary": "Dopracuj fizyczne efekty filmu i wybraną recepturę wyjściową.",
+      "keywords": [
+        "halacja",
+        "poświata",
+        "poświata",
+        "dyfuzja",
+        "sprzęgacze",
+        "blask",
+        "skanuj",
+        "ostrość",
+        "miękkość",
+        "skaner",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Fizyczne etapy filmu",
+          "paragraphs": [
+            "Wybierz Film na pasku narzędzi, a następnie włącz Profil filmu. Fizyczne etapy filmu otwierają się automatycznie; możesz je potem zwinąć. Konektory, Halacja, Wielkość ziarna i Blask wydruku mają po jednym polu wyboru włączania i jednym sterowaniu ilością. Wyłączenie etapu dezaktywuje jego suwak ilości.",
+            "Rozproszenie Capture zmienia modelowany etap aparatu. Blask wydruku i Wstępne naświetlenie wydruku należą do etapu wydruku i nie są dostępne dla bezpośrednich skanów slajdów."
+          ],
+          "steps": [
+            "Wybierz nośnik i Receptura wyjściowa przed dopracowaniem kontrolek etapu.",
+            "Zmieniaj jeden etap naraz i porównuj wynik.",
+            "Użyj pola wyboru dla każdego etapu, aby porównać jego wkład bez zastępowania wybranego nośnika."
+          ]
+        },
+        {
+          "title": "Kontrolki skanowania",
+          "paragraphs": [
+            "Miękkość skanowania dodaje rozmycie obiektywu do wybranej receptury wyjściowej. Ostrość skanowania skaluje wyostrzanie tej receptury; Wyostrzanie skanu włącza je lub wyłącza.",
+            "Są to korekty modelowanych receptur wyjściowych, a nie wybory zmierzonych marek skanerów. Oceniaj drobną fakturę i ostrość przy ukończonym podglądzie szczegółów 1:1."
+          ]
+        }
+      ],
+      "related": [
+        "film-negative-paper-and-slides",
+        "film-grain-and-format",
+        "performance-previews"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-getting-started",
+      "title": "Wybierz i obejrzyj podgląd nośnika filmu",
+      "category": "Film",
+      "summary": "Włącz fizyczny przepływ pracy z filmem i porównuj nośniki na podstawie własnego zdjęcia.",
+      "keywords": [
+        "film",
+        "nośnik",
+        "symulacja",
+        "realistyczna symulacja filmu",
+        "negatyw",
+        "suwak",
+        "przeglądaj",
+        "podgląd",
+        "preset",
+        "film wyłączony"
+      ],
+      "sections": [
+        {
+          "title": "Zacznij od nośnika",
+          "paragraphs": [
+            "Film stosuje modelowany film i proces wyjściowy do nieruchomego zdjęcia. Przełącznik profilu filmu steruje tym przetwarzaniem; Twoje korekty Edytuj pozostają aktywne po wyłączeniu Film."
+          ],
+          "steps": [
+            "Otwórz zdjęcie nieruchome i wybierz Film na pasku narzędzi, aby otworzyć Realistic Film Simulation.",
+            "Włącz przełącznik profilu filmu. Fizyczne etapy filmu otwierają się automatycznie; możesz je potem zwinąć.",
+            "Wybierz Nośnik albo kliknij Podgląd nośników na tym zdjęciu…, aby porównać wyrenderowane przykłady.",
+            "Wyszukaj nazwę nośnika, użyj Previous lub Next, aby przeglądać, a następnie wybierz podgląd, aby go zastosować."
+          ]
+        },
+        {
+          "title": "Co zawierają podglądy",
+          "paragraphs": [
+            "Podglądy nośnika zawierają edycje bieżącego zdjęcia. Przeglądanie i zamykanie okna podglądu nie stosuje nośnika; wybranie podglądu już tak.",
+            "Nośnik filmu opisuje fizyczny proces filmowy. Preset edycyjny może zawierać szerszy zestaw zapisanych korekt, a także może obejmować ustawienia Filmu. Menu Wyjście wewnątrz Film wybiera recepturę skanu lub wydruku; nie eksportuje pliku.",
+            "Po włączeniu filmu może pojawić się szybki podgląd, zanim zakończy się dokładny szczegół RAW i większy podgląd. Pasek postępu wypełnia się w miarę kończenia etapów przetwarzania podglądu i znika, gdy podgląd staje się widoczny. Dokładne szczegóły RAW i renderowanie w pełnej rozdzielczości są kontynuowane w tle."
+          ],
+          "tips": [
+            "Jeśli nośnik jest niedostępny, może to wymagać silnika GPU. Dostępność silnika jest pokazana w Ustawienia → Wydajność."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides",
+        "film-grain-and-format"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-reference-match",
+      "title": "Porównaj z obrazem odniesienia",
+      "category": "Film",
+      "summary": "Wyrównaj skan lub inne odniesienie, zmierz różnicę i zastosuj początkowe dopasowanie.",
+      "keywords": [
+        "odniesienie",
+        "dopasuj",
+        "skanuj",
+        "kalibracja",
+        "nakładka",
+        "podziel",
+        "krycie",
+        "pomiar",
+        "dopasowanie kolorów"
+      ],
+      "sections": [
+        {
+          "title": "Wczytaj i wyrównaj",
+          "paragraphs": [
+            "Dopasowanie odniesienia znajduje się w Realistic Film Simulation, otwieranym wraz z Filmem na pasku narzędzi. Użyj odniesienia z odpowiadającą treścią obrazu, aby wyrównanie i porównanie miały sens."
+          ],
+          "steps": [
+            "Rozwiń Dopasowanie referencyjne i wybierz zdjęcie referencyjne.",
+            "Wybierz Nakładka albo Podziel, a następnie ustaw Krycie / podziel.",
+            "Użyj Skaluj, Poziomo i Pionowy, aby dopasować odniesienie do swojego zdjęcia.",
+            "Kliknij Pomiar, aby sprawdzić porównanie, lub Starting match, aby zastosować początkową korektę."
+          ]
+        },
+        {
+          "title": "Co zmienia Początkowe dopasowanie",
+          "paragraphs": [
+            "Rozpoczęcie dopasowania wyłącza automatyczny pomiar sceny i koryguje Camera EV. W przypadku zdjęć RAW ustawia też niestandardowy balans bieli podczas rejestracji; w przypadku zdjęć przetworzonych koryguje żółtą i magentową filtrację wydruku.",
+            "To jest początkowa regulacja oparta na zmierzonych statystykach obrazu, a nie gwarancja dokładnego dopasowania filmu lub koloru. Po zastosowaniu sprawdź obraz i w razie potrzeby użyj Cofnij. Wyczyść usuwa nakładkę referencyjną."
+          ],
+          "tips": [
+            "Przycisk celu kalibracji pobiera obraz, którego możesz użyć w przepływie pracy z odniesieniem."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-negative-paper-and-slides"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-exposure-and-processing",
+      "title": "Ustaw ekspozycję filmu i wywoływanie",
+      "category": "Film",
+      "summary": "Zrozum EV aparatu, balans bieli przy wykonaniu, pomiar i kontrolki wywoływania.",
+      "keywords": [
+        "ekspozycja",
+        "aparat ev",
+        "pomiar",
+        "Balans bieli",
+        "temperatura",
+        "odcień",
+        "wywoływanie",
+        "kontrast",
+        "autentyczny",
+        "kreatywny"
+      ],
+      "sections": [
+        {
+          "title": "Sterowanie przechwytywaniem i wykańczaniem",
+          "paragraphs": [
+            "Aparat EV i balans bieli Capture działają przed ekspozycją filmu. Ekspozycja oraz Temp/Odcień w panelu Edytuj są końcowymi korektami później w przepływie pracy.",
+            "Balans bieli wykonania wymaga oryginału raw. Dla JPEG, HEIF, TIFF lub innego pliku przetworzonego użyj Edytuj Temp/Odcień."
+          ],
+          "steps": [
+            "Włącz Film, wybierz nośnik i dostosuj EV Aparat.",
+            "Pozostaw Pomiar sceny autom. włączony, aby automatycznie mierzyć scenę, albo wyłącz go, aby samodzielnie ustawić ekspozycję wykonania.",
+            "Rozwiń Wykonanie i przetwarzanie, aby wybrać Jak wykonano, Światło dzienne, Tungsten lub Niestandardowy balans bieli wykonania dla zdjęcia raw.",
+            "W przypadku Niestandardowy dostosuj Temperaturę i odcień przechwytywania."
+          ]
+        },
+        {
+          "title": "Wywoływanie i powiązane domyślne ustawienia",
+          "paragraphs": [
+            "Wywoływanie pojawia się tylko wtedy, gdy wybrany profil filmu udostępnia czasy wywoływania. Wywoływanie wydruku zależy od wybranego papieru i jest ukryte dla filmu slajdowego. Kontrast wywoływania jest osobną kontrolką filmu.",
+            "Autentyczny używa powiązanych fizycznych domyślnych ustawień, w tym zalecanego papieru nośnika, gdy papier jest odblokowany. Kreatywny zachowuje nadpisania papieru, gdy są zgodne. Zmiana nośników nadal może wybrać domyślny czas wywoływania i ekspozycję tego nośnika; porównaj wynik po zmianie nośnika."
+          ]
+        }
+      ],
+      "related": [
+        "film-getting-started",
+        "film-negative-paper-and-slides",
+        "film-reference-match"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "film-negative-paper-and-slides",
+      "title": "Pracuj z filmem negatywowym, papierem i slajdami",
+      "category": "Film",
+      "summary": "Wybierz proces druku dla negatywów i zrozum, dlaczego sterowanie drukiem znika dla filmu slajdowego.",
+      "keywords": [
+        "negatyw",
+        "pozytyw",
+        "odwrócenie",
+        "suwak",
+        "Przezroczystość",
+        "papier",
+        "drukuj",
+        "wyjście",
+        "zablokuj papier",
+        "filtrowanie",
+        "preflash"
+      ],
+      "sections": [
+        {
+          "title": "Film negatywowy i papier",
+          "paragraphs": [
+            "Nośniki negatywowe używają procesu film-do-wydruku. Wybór papieru jest ograniczony do profili zgodnych z modelem kanału koloru lub monochromatycznego wybranego filmu.",
+            "Użyj Ekspozycja wydruku, aby skorygować etap druku. W Przechwytywanie i przetwarzanie wybierz Papier i włącz Zablokuj papier przy zmianie nośnika, jeśli chcesz zachować zgodny papier podczas testowania innych nośników. Niekompatybilny papier nadal trzeba zastąpić."
+          ],
+          "steps": [
+            "Wybierz nośnik negatywu w Film.",
+            "Wybierz recepturę wyjścia: Czysty skan, Neutralny skan do druku lub Miękki druk optyczny.",
+            "Rozwiń Przechwytywanie i przetwarzanie, aby wybrać Papier i dostępny czas wywoływania w druku.",
+            "W Fizycznych etapach filmu dostosuj Blask wydruku, Preflash wydruku, Żółty filtr i Filtr magenta. Otwórz ponownie tę sekcję, jeśli ją zwinąłeś."
+          ]
+        },
+        {
+          "title": "Film slajdowy jest skanowany bezpośrednio",
+          "paragraphs": [
+            "Nośniki pozytywowe lub odwracalne używają bezpośredniego skanu przezroczystości, bez etapu negatyw–papier. Papier, ekspozycja wydruku, wywoływanie wydruku i inne kontrolki wyłącznie do druku są dla tych nośników ukryte.",
+            "Receptury wyjściowe są modelowanymi punktami startowymi dla miękkości skanowania, wyostrzania i efektów wydruku, tam gdzie ma to zastosowanie. Nie są to zmierzone emulacje konkretnych komercyjnych skanerów."
+          ]
+        }
+      ],
+      "related": [
+        "film-exposure-and-processing",
+        "film-halation-diffusion-scan"
+      ],
+      "categoryLabel": "Film"
+    },
+    {
+      "id": "export-format-color-space",
+      "title": "Wybierz rozmiar eksportu, format i przestrzeń kolorów",
+      "category": "Export",
+      "summary": "Korzystaj z presetów eksportu i rozumiej głębię bitową, skalowanie oraz bieżące ograniczenia gamutu kolorów.",
+      "keywords": [
+        "jpeg",
+        "jpg",
+        "png",
+        "heif",
+        "heic",
+        "tiff",
+        "16 bitów",
+        "srgb",
+        "p3",
+        "prophoto",
+        "icc",
+        "jakość",
+        "pełny rozmiar",
+        "rozdzielczość",
+        "preset"
+      ],
+      "sections": [
+        {
+          "title": "Formaty i presety",
+          "paragraphs": [
+            "Okno eksportu oferuje JPEG, PNG i 16-bitowy TIFF. W macOS oferuje też 8-bitowy HEIF; HEIF jest ukryty w systemach Linux i Windows. Zapisana receptura HEIF nie może tam zostać zastosowana, więc wybierz inny format. Suwak jakości dotyczy JPEG i HEIF.",
+            "JPG (Duży) używa pełnowymiarowego JPEG o jakości 92 w sRGB. JPG (Mały) używa dłuższego boku 2048 pikseli przy jakości 90 w sRGB. 16-bitowy TIFF używa pełnego rozmiaru i ProPhoto RGB. Zmiana tych ustawień wybiera Niestandardowy."
+          ],
+          "steps": [
+            "Otwórz Eksportuj i wybierz preset z górnego paska.",
+            "Ustaw Wymiary na Pełny rozmiar albo limit dłuższego boku.",
+            "Sprawdź Podgląd wyjściowy: wyeksportowany rozmiar uwzględnia obrót i kadr, a limit dłuższego boku zmniejsza większe obrazy bez powiększania mniejszych."
+          ]
+        },
+        {
+          "title": "Ograniczenia przestrzeni kolorów",
+          "paragraphs": [
+            "Każdy eksport osadza wybrany profil ICC. Wybierz sRGB, Display P3 lub ProPhoto RGB w Przestrzeń kolorów.",
+            "Eksporty wywoływania w szerokim gamucie zachowują kolory źródłowe, gdy kolor i lokalne korekty są wyłączone. Renderowanie Film i wyeksportowane wywoływanie z korektami są ograniczone do kolorów sRGB. Zakodowanie jednego z tych wyników w P3 lub ProPhoto nie przywraca kolorów już ograniczonych przez renderowanie."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "soft-proof",
+        "external-editor"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "export-metadata-sidecars",
+      "title": "Kontroluj metadane eksportu, sidecary i znaczniki czasu",
+      "category": "Export",
+      "summary": "Wybierz prywatność metadanych, opcjonalne pliki receptur i sposób obsługi czasu wykonania.",
+      "keywords": [
+        "metadane",
+        "prywatność",
+        "gps",
+        "lokalizacja",
+        "prawa autorskie",
+        "sidecar",
+        "receptura",
+        "znacznik czasu",
+        "data",
+        "strefa czasowa",
+        "czas wykonania"
+      ],
+      "sections": [
+        {
+          "title": "Pliki metadanych i receptur",
+          "paragraphs": [
+            "Eksport → Zaawansowane oferuje Wszystkie oprócz lokalizacji, Wszystkie metadane, Tylko prawa autorskie i Brak metadanych. Początkowy wybór metadanych to Wszystkie oprócz lokalizacji.",
+            "Kontrola pliku pomocniczego receptury decyduje, czy LightTable zapisze recepturę obok renderowanego eksportu. To jest niezależne od przenośnych edycji i preferencji plików pomocniczych XMP dla oryginałów w Ustawienia → Pliki i metadane."
+          ],
+          "steps": [
+            "Rozwiń Zaawansowane w Eksportuj.",
+            "Wybierz politykę Metadane odpowiednią dla plików, którymi będziesz się dzielić.",
+            "Wybierz, czy obok każdego wyeksportowanego zdjęcia zapisać plik towarzyszący Receptura."
+          ]
+        },
+        {
+          "title": "Znaczniki czasu plików",
+          "paragraphs": [
+            "Znacznik czasu pliku może używać czasu eksportu albo oryginalnego czasu rejestracji. Jeśli brakuje strefy czasowej rejestracji, domyślnie zachowuje się czas eksportu i zgłasza ostrzeżenie. Możesz zamiast tego wybrać interpretację w lokalnej strefie czasowej tego komputera.",
+            "Brakujący lub nieprawidłowy czas rejestracji może również pozostawić znacznik czasu eksportu bez zmian. Sprawdź szczegóły eksportu, aby zobaczyć zgłoszone ostrzeżenie. Znacznik czasu systemu plików pliku jest niezależny od wybranej powyżej polityki metadanych."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-filenames-and-folders",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "external-editor",
+      "title": "Edytuj zdjęcie w innej aplikacji",
+      "category": "Export",
+      "summary": "Wyślij dostosowany TIFF do innego edytora i ustaw domyślne formatowanie oraz stosowanie.",
+      "keywords": [
+        "zewnętrzny",
+        "edytor",
+        "photoshop",
+        "afinity",
+        "edytuj w",
+        "tiff",
+        "przekazanie",
+        "pochodna",
+        "stos"
+      ],
+      "sections": [
+        {
+          "title": "Otwórz zewnętrzny edytor",
+          "paragraphs": [
+            "Użyj Edytuj w… , aby przygotować zdjęcia dla innego edytora pikseli. Dostosowany TIFF jest zapisywany obok oryginału i można go z nim zgrupować w stos w katalogu. W systemach Linux i Windows Wybierz aplikację… pozwala wybrać plik wykonywalny edytora; Domyślna aplikacja używa skojarzenia plików z pulpitem."
+          ],
+          "steps": [
+            "Wybierz zdjęcie i naciśnij Command/Ctrl+E, aby otworzyć Edytuj w innej aplikacji.",
+            "Wybierz aplikację.",
+            "Wybierz TIFF z bieżącymi korektami, a następnie ustaw przestrzeń kolorów TIFF i głębię bitową TIFF.",
+            "Wybierz, czy renderowany plik ma być Sparuj z oryginałem.",
+            "Kliknij Edytuj i poczekaj na zakończenie renderowania, zanim zaczniesz pracować w innej aplikacji."
+          ]
+        },
+        {
+          "title": "Pliki RAW i domyślne",
+          "paragraphs": [
+            "Oryginały RAW muszą zostać wyrenderowane jako skorygowane TIFF-y. Przetworzony oryginał jest niedostępny, jeśli zaznaczenie zawiera plik RAW. W przypadku zdjęć przetworzonych ta opcja otwiera oryginał zamiast przygotowywać skorygowany TIFF.",
+            "Ustaw domyślną aplikację, przestrzeń kolorów, głębię bitową i zachowanie stosowania w Ustawienia → Edycja zewnętrzna. Skorygowane TIFF-y mogą używać 16 lub 8 bitów oraz ProPhoto RGB, Display P3 albo sRGB."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "export-photos",
+      "title": "Eksportuj wybrane zdjęcia",
+      "category": "Export",
+      "summary": "Wybierz dokładnie, które zdjęcia wyeksportować, obejrzyj podgląd wyjścia i monitoruj postęp.",
+      "keywords": [
+        "eksport",
+        "zapisz",
+        "jpeg",
+        "jpg",
+        "pobierz",
+        "zaznaczenie",
+        "wybrane",
+        "ocenione",
+        "wsadowy",
+        "anuluj",
+        "postęp"
+      ],
+      "sections": [
+        {
+          "title": "Wykonaj eksport",
+          "paragraphs": [
+            "Eksport tworzy renderowane pliki wyjściowe na podstawie edycji zdjęć. Użyj Wybrane zdjęcia, gdy chcesz ograniczyć eksport do określonego zaznaczenia. Każde zdjęcie dodane do kolejki zachowuje edycje, ocenę i korektę czasu wykonania wybrane w chwili rozpoczęcia eksportu."
+          ],
+          "steps": [
+            "Wybierz zdjęcia, które chcesz wyeksportować, a następnie kliknij przycisk Eksportuj zdjęcia na górnym pasku. Command/Ctrl+Shift+E także otwiera Eksportuj.",
+            "Sprawdź pole Zdjęcia. Wybierz Wybrane zdjęcia, Tylko wybrane, Ocenione 1+ lub Wszystkie oprócz odrzuconych.",
+            "Wybierz preset eksportu albo ustaw typ pliku, wymiary, jakość i przestrzeń kolorów.",
+            "Ustaw miejsce docelowe i sprawdź w podglądzie wyjścia nazwę pliku, wymiary i ścieżkę.",
+            "Kliknij Eksportuj i śledź postęp na górnym pasku.",
+            "Gdy eksport się zakończy, kliknij Pokaż w Finderze w drugim wierszu powiadomienia o ukończeniu, aby otworzyć folder zawierający wyeksportowane zdjęcie. Powiadomienie pozostaje widoczne przez 2,8 sekundy."
+          ]
+        },
+        {
+          "title": "Sprawdź zakres i wynik",
+          "paragraphs": [
+            "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
+            "Jeśli wsadowy eksport zapisuje do wielu folderów, Pokaż w Finderze pokazuje pierwsze zdjęcie wyeksportowane pomyślnie. Łącze jest nieobecne, gdy nie wyeksportowano żadnych zdjęć. Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu podają liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć nieruchomych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub jest renderowany, to zdjęcie zakończy się błędem; dodaj je ponownie do kolejki po sprawdzeniu oryginału."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-filenames-and-folders",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "soft-proof",
+      "title": "Wyświetl podgląd wyjścia z proofingiem miękkim",
+      "category": "Export",
+      "summary": "Wyświetl podgląd ekranu lub modelowanego papieru bez włączania go do eksportowanego zdjęcia.",
+      "keywords": [
+        "soft proof",
+        "proofing",
+        "gamut",
+        "papier",
+        "atrament",
+        "matowy",
+        "połysk",
+        "drukuj",
+        "p3",
+        "srgb"
+      ],
+      "sections": [
+        {
+          "title": "Włącz soft proof",
+          "paragraphs": [
+            "Sterowanie soft proof znajduje się w opcjach Widok przeglądarki (•••). Pozwalają one sprawdzać podgląd wyjściowy podczas edycji."
+          ],
+          "steps": [
+            "Otwórz opcje Widok (•••) pod przeglądarką.",
+            "Włącz Profil wyjściowy podglądu.",
+            "Wybierz wyświetlanie sRGB, wyświetlanie Display P3, Papier matowy lub Papier błyszczący.",
+            "W przypadku celów papierowych wybierz, czy symulować papier i atrament. W razie potrzeby przełącz Pokaż ostrzeżenie o gamucie poza zakresem.",
+            "Użyj przycisku Soft Proof w pasku narzędzi przeglądarki, aby wyłączyć podgląd."
+          ]
+        },
+        {
+          "title": "Interpretuj podgląd",
+          "paragraphs": [
+            "Matte i Gloss w tym interfejsie są modelowanymi podglądami papieru; nie stanowią wyboru zmierzonego profilu ICC drukarki. Traktuj podgląd jako wskazówkę podczas porównywania kontrastu i koloru.",
+            "Soft proof to stan podglądu. Wybierz rzeczywistą przestrzeń kolorów pliku oddzielnie w Eksportuj."
+          ]
+        }
+      ],
+      "related": [
+        "export-format-color-space",
+        "export-photos"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "export-filenames-and-folders",
+      "title": "Ustaw foldery eksportu i nazwy plików",
+      "category": "Export",
+      "summary": "Wybierz układ docelowy i zdecyduj, co się stanie, gdy nazwa pliku już istnieje.",
+      "keywords": [
+        "miejsce docelowe",
+        "folder",
+        "ścieżka",
+        "nazwa pliku",
+        "zmień nazwę",
+        "zastąp",
+        "pomiń",
+        "kolizja",
+        "hierarchia",
+        "sekwencja",
+        "szablon"
+      ],
+      "sections": [
+        {
+          "title": "Układ docelowy",
+          "paragraphs": [
+            "Jeden folder docelowy kieruje eksporty do wybranego folderu. Podfolder obok każdego oryginału używa względnej nazwy podfolderu dla każdego zdjęcia źródłowego. Zachowaj hierarchię folderów źródłowych zachowuje organizację folderów źródłowych pod miejscem docelowym eksportu."
+          ],
+          "steps": [
+            "Otwórz Eksportuj i wybierz układ docelowy.",
+            "Użyj Wybierz… dla folderu docelowego lub wpisz nazwę podfolderu, taką jak film-eksporty, dla Podfolder obok każdego oryginału.",
+            "Rozwiń Zaawansowane i edytuj szablon nazwy pliku.",
+            "Przed eksportem sprawdź nazwę pliku i miejsce docelowe pokazane w podglądzie wyjścia."
+          ]
+        },
+        {
+          "title": "Nazwy i istniejące pliki",
+          "paragraphs": [
+            "Szablony nazw plików obsługują {filename}, {stock}, {date}, {rating} i {sequence}. Na przykład {filename}_{stock} zawiera nazwę źródłową i nośnik filmu. Długie pola nazwy pliku są skracane, aby zostawić miejsce na nazwy wyjściowe i sidecarów; sprawdź Podgląd wyjścia.",
+            "„Zachowaj oba · dodaj numer” tworzy inną nazwę pliku, na przykład nazwę kończącą się na -2. „Pomiń istniejące” pozostawia zajęte nazwy bez zmian. „Zastąp” zastępuje istniejące wyjście w wybranej ścieżce. Użyj podglądu wyjścia, aby potwierdzić miejsce docelowe przed wybraniem „Zastąp”."
+          ]
+        }
+      ],
+      "related": [
+        "export-photos",
+        "export-metadata-sidecars"
+      ],
+      "categoryLabel": "Eksportuj"
+    },
+    {
+      "id": "about-lighttable",
+      "title": "O LightTable i open source",
+      "category": "Settings",
+      "summary": "Znajdź wersję aplikacji Mac, witrynę i kod źródłowy.",
+      "keywords": [
+        "o programie",
+        "wersja",
+        "witryna",
+        "github",
+        "open source",
+        "licencja",
+        "GPL"
+      ],
+      "sections": [
+        {
+          "title": "Otwórz O programie w macOS",
+          "paragraphs": [
+            "Wybierz LightTable → O programie w pasku menu macOS. Okno O programie pokazuje wersję aplikacji i — jeśli jest inny — numer jej kompilacji.",
+            "Witryna otwiera lighttable.app w domyślnej przeglądarce. GitHub otwiera publiczne repozytorium źródłowe LightTable, gdzie możesz przeglądać kod, zgłaszać problemy i współtworzyć.",
+            "LightTable jest darmowy i open source na licencji GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "settings-and-defaults",
+      "title": "Zmieniaj preferencje i domyślne ustawienia nowych zdjęć",
+      "category": "Settings",
+      "summary": "Dostosuj interfejs, zachowanie podczas selekcji, przenośne edycje i początkowe edycje dla nowych zdjęć.",
+      "keywords": [
+        "ustawienia",
+        "preferencje",
+        "domyślne",
+        "aparat",
+        "raw",
+        "seryjny",
+        "iso",
+        "czcionka",
+        "tło",
+        "tryb ciemny",
+        "powiadomienia",
+        "xmp",
+        "przenośny"
+      ],
+      "sections": [
+        {
+          "title": "Interfejs i zachowanie",
+          "paragraphs": [
+            "Większość zmian ustawień zapisuje się automatycznie. Język używa opcji Zastosuj język i po zapisaniu zmian przeładowuje okno. Ogólne kontroluje też Automatyczne przechodzenie po wybraniu, odrzuceniu lub ocenieniu, powiadomienia o zakończeniu oraz sprawdzanie aktualizacji.",
+            "Opcje interfejsu sterują tłem przeglądarki, skalą czcionki, Lights Out, nakładką informacji lupy i prowadnicami kadrowania. Te preferencje zmieniają wygląd obszaru roboczego bez zmiany wyeksportowanych pikseli.",
+            "Pliki i metadane kontrolują przenośne edycje LightTable obok oryginałów, automatyczny zapis XMP, parowanie RAW/JPEG oraz wprowadzanie słów kluczowych. Pełne przenośne edycje używają .lighttable-state.json; XMP przenosi zgodne edycje i metadane. Synchronizacja XMP zachowuje niepowiązane pola i zgłasza konflikty zmian zewnętrznych; odczytuj metadane Exchange przez sidecary XMP dla obsługiwanego przepływu pracy."
+          ]
+        },
+        {
+          "title": "Domyślne dla nieedytowanych zdjęć",
+          "paragraphs": [
+            "Domyślne wywoływania stosują się tylko do zdjęć, które nie mają jeszcze zapisanych edycji. Mogą uruchamiać Film włączony, wybierać przepływ pracy i neutralny profil wywoływania oraz stosować domyślny preset."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Domyślne wywołania.",
+            "Wybierz początkowe ustawienia Film, workflow, profil i preset.",
+            "Aby ustawić domyślne RAW dla konkretnego aparatu, otwórz zdjęcie RAW i dostosuj jego ustawienia RAW.",
+            "Wybierz dopasowanie według modelu aparatu, numeru seryjnego albo aparatu i ISO, a następnie kliknij Użyj bieżących ustawień RAW.",
+            "Użyj Resetuj w obszarze Bieżący aparat, aby usunąć domyślne ustawienie tego aparatu."
+          ]
+        },
+        {
+          "title": "Wygląd w systemie Linux i Omarchy",
+          "paragraphs": [
+            "W systemie Linux elementy sterujące używają jasnego lub ciemnego wyglądu systemu. W Omarchy paski narzędzi, panele boczne, menu i okna dialogowe korzystają z aktywnej palety pulpitu i aktualizują się w ciągu kilku sekund od zmiany motywu. Piksele zdjęcia, preferencja tła podglądu i neutralne zakresy kolorów zachowują własne kolory.",
+            "W wąskim oknie systemu Linux Pokaż lub ukryj bibliotekę otwiera bibliotekę jako szufladę. Rozszerzenie okna przywraca normalny układ obok siebie. W Hyprland użyj skrótów okien menedżera kompozycji, aby przenieść, ułożyć w kafelki, zmienić rozmiar lub zamknąć LightTable."
+          ]
+        }
+      ],
+      "related": [
+        "settings-language",
+        "keyboard-midi",
+        "photo-index",
+        "performance-previews",
+        "catalog-health-recovery",
+        "xmp-interchange"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "settings-language",
+      "title": "Wybierz język aplikacji i pomocy",
+      "category": "Settings",
+      "summary": "Ustaw jeden język dla interfejsu i przeszukiwanej pomocy, a Twój wybór zostanie zapamiętany na przyszłe uruchomienia.",
+      "keywords": [
+        "język",
+        "tłumaczenie",
+        "Angielski",
+        "Hiszpański",
+        "Francuski",
+        "Niemiecki",
+        "Chiński",
+        "Arabski",
+        "lokalizacja",
+        "ustawienia",
+        "pierwsze uruchomienie"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz język przy pierwszym użyciu",
+          "paragraphs": [
+            "Interfejs LightTable i przeszukiwalna pomoc używają jednego języka. Dostępne języki to angielski, hiszpański, francuski, niemiecki, włoski, portugalski, rosyjski, uproszczony chiński, tradycyjny chiński, japoński, koreański, arabski, hindi, bengalski, indonezyjski, turecki, wietnamski, tajski, polski i niderlandzki.",
+            "Przy pierwszym użyciu główny język systemu inny niż angielski spowoduje wyświetlenie prośby o wybór. Aplikacja Mac pyta przed pierwszym wyborem folderu i uruchomieniem; inne okna aplikacji pytają przed otwarciem edytora. Sugerowany jest obsługiwany język, a jeśli język systemu nie jest obsługiwany, angielski. Języki są podane pod ich natywnymi nazwami.",
+            "Jeśli podstawowym językiem systemu jest angielski, angielski zostaje zapisany automatycznie. Późniejsze uruchomienia używają zapisanego wyboru. W przeglądarce początkową sugestię dostarczają preferencje językowe przeglądarki."
+          ],
+          "steps": [
+            "Wybierz preferowany język w oknie pierwszego uruchomienia.",
+            "Kliknij Kontynuuj. Aplikacja przejdzie dalej po zapisaniu wyboru."
+          ]
+        },
+        {
+          "title": "Język można zmienić później",
+          "paragraphs": [
+            "Zmiana języka zapisuje oczekujące edycje i ponownie wczytuje bieżące okno. Nazwy plików zdjęć, Twoje słowa kluczowe i inna zawartość zdjęć zachowują dotychczasowe brzmienie."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Ogólne.",
+            "Wybierz język w ustawieniu Język.",
+            "Kliknij Zastosuj język i poczekaj, aż okno zostanie ponownie wczytane.",
+            "Otwórz Pomoc, aby wyszukiwać lub przeglądać w wybranym języku."
+          ],
+          "tips": [
+            "Jeśli wczytywanie lub zapisywanie języka się nie powiedzie, Twoje okno i wybór języka pozostaną dostępne do kolejnej próby. Jeśli oczekujące edycje zdjęć nie mogły zostać zapisane, użyj Ponów zapis, a następnie zastosuj język ponownie.",
+            "Jeśli nie można zapisać pierwszego wyboru na Macu, Spróbuj ponownie zachowuje wybór i ponawia próbę. Aplikacja uruchamia się dopiero po pomyślnym zapisie."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "shortcut-schemes"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "photo-index",
+      "title": "Włącz prywatne wyszukiwanie treści zdjęć",
+      "category": "Settings",
+      "summary": "Zbuduj lokalny indeks obiektów, scen, widocznego tekstu i twarzy.",
+      "keywords": [
+        "ai",
+        "wyszukaj",
+        "indeks",
+        "zawartość",
+        "obiekty",
+        "sceny",
+        "ocr",
+        "tekst",
+        "twarze",
+        "prywatność",
+        "lokalne",
+        "opis"
+      ],
+      "sections": [
+        {
+          "title": "Zbuduj indeks",
+          "paragraphs": [
+            "Indeks zdjęć jest domyślnie wyłączony i wymaga macOS. W systemach Linux i Windows wyświetla się Niedostępne na tej platformie, a nowego indeksowania nie można włączyć. Na Macu analiza pozostaje na urządzeniu i nie modyfikuje folderów ze zdjęciami. Apple Vision zapewnia podstawową analizę; bogatsze opisy z Modeli podstawowych pojawiają się tylko wtedy, gdy ta funkcja jest dostępna."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Indeks zdjęć.",
+            "Sprawdź stan możliwości na urządzeniu i włącz indeksowanie zawartości zdjęć.",
+            "Poczekaj na zakończenie postępu indeksowania. Zdjęcia mogą zyskiwać wyniki w miarę indeksowania.",
+            "Użyj pola wyszukiwania biblioteki, aby przeszukiwać treść zdjęć, widoczny tekst lub twarze, obok nazw plików i słów kluczowych.",
+            "Otwórz Informacje → Opis na urządzeniu, aby sprawdzić wygenerowane tagi bieżącego zdjęcia, widoczny tekst i liczbę twarzy."
+          ]
+        },
+        {
+          "title": "Pominięte zdjęcia",
+          "paragraphs": [
+            "Puste pliki, pliki, które nie zostały pobrane, oraz niedostępne oryginały są pomijane przed analizą. Indeks zdjęć raportuje ich liczbę osobno od błędów analizy. Pusty plik nie zawiera danych obrazu; może wymagać ponownego pobrania lub przywrócenia z kopii zapasowej.",
+            "Pobierz lub przywróć oryginały, ponownie połącz wszelkie niedostępne źródło i użyj Odbuduj indeks, aby spróbować ponownie. Indeksowanie nie pobiera plików ani nie zmienia oryginałów. Wcześniej wygenerowane metadane wyszukiwania są zachowywane, gdy plik staje się niedostępny, chyba że odbudujesz lub usuniesz indeks."
+          ]
+        },
+        {
+          "title": "Wstrzymaj, odbuduj lub usuń",
+          "paragraphs": [
+            "Wyłączenie indeksu wstrzymuje analizę i usuwa wygenerowane wyniki z aktywnego widoku wyszukiwania; istniejące dane indeksu pozostają lokalnie do czasu usunięcia. Przebuduj indeks ponownie uruchamia indeksowanie, gdy funkcja jest włączona.",
+            "„Usuń indeks” usuwa wygenerowane dane indeksu po potwierdzeniu. Oryginały i zapisane edycje pozostają bez zmian. Jeśli Apple Vision wyświetla komunikat „Wymagane utworzenie”, bieżąca instalacja nie zawiera wymaganego lokalnego analizatora. Modele podstawowe mogą być niedostępne, podczas gdy podstawowe indeksowanie Vision pozostaje użyteczne."
+          ]
+        }
+      ],
+      "related": [
+        "assisted-culling",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "assisted-culling",
+      "title": "Przejrzyj sugerowaną selekcję wspomaganą",
+      "category": "Settings",
+      "summary": "Przejrzyj lokalne sygnały analizy i stosuj flagi wyboru lub odrzucenia tylko wtedy, gdy chcesz.",
+      "keywords": [
+        "selekcja",
+        "selekcja",
+        "ai",
+        "wybrane",
+        "odrzucone",
+        "ostrość",
+        "oczy",
+        "nietrafienie",
+        "dokumenty",
+        "przegląd",
+        "flagi"
+      ],
+      "sections": [
+        {
+          "title": "Przejrzyj sygnały",
+          "paragraphs": [
+            "Wspomagana selekcja korzysta z prywatnego Indeksu zdjęć, który wymaga macOS. Nowa analiza jest niedostępna w systemach Linux i Windows. Nie oznacza zdjęć, dopóki jej o to nie poprosisz. Zdjęcie pasuje do grupy, jeśli dowolne z wybranych kryteriów zwróci tak; nie oceniono oznacza, że ten sygnał nie ma użytecznego werdyktu."
+          ],
+          "steps": [
+            "Włącz Indeks zdjęć w Ustawieniach i poczekaj na ocenienie zdjęć.",
+            "Rozwiń selekcję wspomaganą w panelu bocznym biblioteki.",
+            "Wybierz kryteria Wybierz, takie jak Ostrość obiektu, Ostrość oczu lub Otwarte oczy, albo kryteria Odrzuć, takie jak Problemy z ekspozycją, Pudła lub Dokumenty.",
+            "Użyj Wybrane, Odrzucone lub Wszystkie, aby przejrzeć pasujące zdjęcia.",
+            "Sprawdź sugestie, a następnie użyj Wybierz zaznacza lub Odrzuć odrzuca, jeśli chcesz zastosować te flagi."
+          ]
+        },
+        {
+          "title": "Stosowanie flag",
+          "paragraphs": [
+            "Potwierdzenie pokazuje liczbę obiektów, których dotyczy operacja, i ostrzega, że istniejące flagi na dopasowanych zdjęciach zostaną zastąpione. Powiązane metadane RAW/JPEG mogą również uwzględniać sparowany plik, jeśli to ustawienie jest włączone.",
+            "Są to sygnały analityczne do Twojej oceny, a nie ostateczne osądy, które fotografie zachować. Odrzucenie ustawia flagę; samo w sobie nie przenosi oryginałów do Kosza."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "keyboard-midi",
+      "title": "Używaj skrótów klawiaturowych i sterowania MIDI",
+      "category": "Settings",
+      "summary": "Znajdź skróty, wybierz schemat klawiatury i przypisz kontroler sprzętowy tam, gdzie dostępne jest Web MIDI.",
+      "keywords": [
+        "klawiatura",
+        "skrót",
+        "skrót",
+        "midi",
+        "pokrętło",
+        "suwak",
+        "kontroler",
+        "klawisze skrótów",
+        "automatyzacja",
+        "klasyczny",
+        "lighttable"
+      ],
+      "sections": [
+        {
+          "title": "Preferencje klawiatury",
+          "paragraphs": [
+            "Ustawienia → Skróty i sprzęt zawiera schemat skrótów i odnośnik klawiaturowy w sekcji Sterowanie klawiaturą i MIDI. W macOS menu Pomoc pulpitu ma też pozycję Skróty klawiaturowe. Używaj Ctrl dla skrótów Command/Ctrl w systemach Linux i Windows.",
+            "Wybierz LightTable lub Classic; schemat zostanie zastosowany po ponownym wczytaniu. Sterowanie suwakiem z klawiszem pozwala przytrzymać przypisany klawisz podczas przewijania lub używania klawiszy strzałek. Zezwalaj na automatyzację określa, czy zatwierdzone narzędzia lokalne mogą sterować oknem z historią i Cofnij."
+          ],
+          "tips": [
+            "Command/Ctrl+Shift+E otwiera Eksportuj; Command/Ctrl+E otwiera edycję zewnętrzną. Pola tekstowe zachowują zwykłe działanie wpisywania, więc opuść pole tekstowe przed użyciem niemodyfikowanych skrótów edycji."
+          ]
+        },
+        {
+          "title": "Mapowanie MIDI",
+          "paragraphs": [
+            "Obsługa MIDI zależy od Web MIDI API w bieżącym środowisku uruchomieniowym. Status może pokazywać Niewybrane, Wył., Brak urządzeń albo liczbę podłączonych urządzeń. Niewybrane oznacza, że to środowisko nie może używać kontrolek MIDI.",
+            "LightTable prosi o dostęp do MIDI tylko wtedy, gdy klikniesz przycisk stanu MIDI lub MIDI Learn. Otwarcie LightTable lub Ustawienia, regulowanie suwaków i resetowanie mapowań nie wymagają dostępu. Po przeładowaniu kliknij przycisk MIDI, aby ponownie się połączyć."
+          ],
+          "steps": [
+            "Podłącz kontroler MIDI wysyłający komunikaty Control Change.",
+            "Gdy MIDI jest dostępne, otwórz Sterowanie klawiaturą i MIDI i wybierz MIDI Learn. Zezwól na dostęp do MIDI, jeśli przeglądarka o to poprosi.",
+            "Kliknij suwak dostosowania, który chcesz zmapować, a następnie przekręć pokrętło lub przesuń suwak.",
+            "Sprawdź komunikat o mapowaniu, a następnie użyj sterowania sprzętowego, aby dostosować suwak.",
+            "Użyj Resetuj MIDI, aby przywrócić domyślne mapowania."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "export-photos",
+        "external-editor"
+      ],
+      "categoryLabel": "Ustawienia"
+    },
+    {
+      "id": "catalog-health-recovery",
+      "title": "Zrób kopię zapasową katalogu i rozwiąż problemy z odzyskiwaniem",
+      "category": "Troubleshooting",
+      "summary": "Gdy coś pójdzie nie tak, użyj zweryfikowanych kopii zapasowych katalogu, Library Health i diagnostyki pulpitu.",
+      "keywords": [
+        "katalog",
+        "kopia zapasowa",
+        "przywróć",
+        "odzyskiwanie",
+        "uszkodzony",
+        "uszkodzony",
+        "awaria",
+        "brak",
+        "tryb bezpieczny",
+        "diagnostyka",
+        "log",
+        "napraw"
+      ],
+      "sections": [
+        {
+          "title": "Zrób kopię zapasową i sprawdź",
+          "paragraphs": [
+            "Ustawienia → Katalog pokazują lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji wykonuj osobno. Lokalne ••• → Utwórz kopię zapasową katalogu… również tworzy kopię zapasową i pokazuje zapisany path lub błąd w oknie wyników. Znajdź duplikaty w tym samym menu pokazuje pasujące pliki albo informuje, że nie znaleziono żadnych."
+          ],
+          "steps": [
+            "Wybierz automatyczny interwał kopii zapasowych i lokalizację kopii zapasowej.",
+            "Kliknij Utwórz kopię zapasową teraz i sprawdź wynik Zweryfikowana kopia zapasowa.",
+            "Otwórz Library Health…, aby sprawdzić strukturę katalogu, brakujące pliki i informacje o odzyskiwaniu.",
+            "Użyj Sprawdź teraz, aby uruchomić dostępne kontrole katalogu. Pozycje brakujących plików są zachowywane wraz z ich edycjami."
+          ]
+        },
+        {
+          "title": "Zrozum wybory odzyskiwania",
+          "paragraphs": [
+            "Przywracanie kopii zapasowej zwraca dane katalogu do stanu z tej kopii, więc późniejszych edycji w niej nie ma. Gdy przywracany jest katalog roboczy, bieżący katalog jest najpierw kopiowany zapasowo.",
+            "Po uaktualnieniu pierwsze skanowanie odczytuje lokalne oryginały, aby wzmocnić dopasowywanie plików. Na dużej bibliotece może to zająć więcej czasu. Oryginały, które już były brakujące bez pełnej tożsamości pliku, pozostaną brakujące; zachowaj ich wpisy i przywróć oryginały do poprzednich zarejestrowanych ścieżek przed ponownym skanowaniem.",
+            "W systemie Windows sprawdzanie, czy oryginały zostały zmienione, odczytuje każdy lokalny plik w całości. Ponowne skanowanie, otwieranie zdjęć i kontrole podczas eksportu mogą trwać dłużej w przypadku dużych oryginałów. Te kontrole nie pobierają plików przechowywanych wyłącznie w chmurze.",
+            "W przypadku uszkodzonego katalogu Stan biblioteki może zaoferować ratowanie, przywrócenie lub nowy katalog. Ratowanie kopiuje czytelne wiersze, ale traci wiersze na uszkodzonych stronach. Rozpoczęcie od nowa nie przenosi ocen, edycji, kolekcji ani historii. Bieżący uszkodzony plik katalogu jest zachowany w Odzyskiwaniu."
+          ]
+        },
+        {
+          "title": "Znajdź dane aplikacji w systemie Linux",
+          "paragraphs": [
+            "System Linux zazwyczaj przechowuje katalog i presety w ~/.local/share/lighttable, preferencje w ~/.config/lighttable, pamięć podręczną renderowania w ~/.cache/lighttable, a logi w ~/.local/state/lighttable/logs. Niestandardowe ustawienia przechowywania systemu lub LightTable mogą zmienić te lokalizacje; Ustawienia pokazują aktywne ścieżki katalogu i pamięci podręcznej.",
+            "Oryginały pozostają w wybranych folderach ze zdjęciami. Kopie zapasowe katalogu nie zawierają tych oryginałów, twoich preferencji ani osobno zapisanych presetów. Wcześniejsze eksperymentalne dane z systemu Linux nie są automatycznie przenoszone ze starszych lokalizacji."
+          ]
+        },
+        {
+          "title": "Diagnostyka pulpitu",
+          "paragraphs": [
+            "W macOS Help → Diagnostics oferuje Przeładuj interfejs, Uruchom ponownie usługę renderowania, Pokaż dziennik serwera, Stan biblioteki… oraz Uruchom ponownie w trybie awaryjnym.",
+            "Tryb awaryjny wyłącza skanowanie, obserwowane foldery, lokalne AI i rozgrzewanie silnika. Użyj Uruchom ponownie usługę renderowania, aby wrócić do normalnej pracy."
+          ]
+        },
+        {
+          "title": "Zgłoś nieoczekiwane zamknięcie na Macu",
+          "paragraphs": [
+            "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
+            "Pomoc → Zgłoś problem… otwiera najnowszy raport lub bieżące dane diagnostyczne, jeśli nie zarejestrowano nieoczekiwanego zamknięcia. Raporty zawierają wersję aplikacji, macOS i sprzęt, ostatnią zarejestrowaną operację, gdy jest dostępna, filtrowane ostatnie logi oraz dostępne ślady błędów. Pasujący raport o awarii macOS może dodać informacje o stosie wywołań i plikach binarnych. Nieoczekiwane zamknięcie nie zawsze pozostawia ślad błędu ani wskazuje swoją przyczynę.",
+            "Raporty pozostają na Twoim Macu, dopóki nie zdecydujesz się ich udostępnić. Ścieżki, nazwy plików zdjęć, cytowane wartości logów i typowe pola poświadczeń są filtrowane; przed udostępnieniem sprawdź tekst. Zdjęcia i katalog nie są dołączane. Lokalnie przechowywanych jest ostatnich dziesięć raportów."
+          ],
+          "steps": [
+            "Przeczytaj raport diagnostyczny. Wybierz Kopiuj raport, aby wkleić go samodzielnie do wiadomości e-mail.",
+            "Albo wybierz Wyślij e-mail do opiekuna. To kopiuje raport i otwiera wersję roboczą zaadresowaną do team@lighttable.app.",
+            "Opisz, co robiłeś, wklej skopiowany raport do wersji roboczej i wyślij go, gdy będziesz gotowy. Jeśli nie otworzy się żadna aplikacja pocztowa, użyj swojego zwykłego serwisu poczty e-mail.",
+            "Wybierz Odrzuć, aby zamknąć raport. Nic nie jest wysyłane automatycznie."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "performance-previews"
+      ],
+      "categoryLabel": "Rozwiązywanie problemów"
+    },
+    {
+      "id": "performance-previews",
+      "title": "Popraw szybkość podglądu i sprawdź szczegóły obrazu",
+      "category": "Troubleshooting",
+      "summary": "Pozwól podglądom dostosować się do widoku, sprawdź prawdziwe szczegóły i zarządzaj generowanymi pamięciami podręcznymi.",
+      "keywords": [
+        "wydajność",
+        "wolny",
+        "nieostry",
+        "pikselowany",
+        "podgląd",
+        "rozdzielczość",
+        "100%",
+        "1:1",
+        "gpu",
+        "rdza",
+        "python",
+        "pamięć podręczna",
+        "opróżnij"
+      ],
+      "sections": [
+        {
+          "title": "Sprawdź, co zakończyło renderowanie",
+          "paragraphs": [
+            "Ustawienie powiększenia 100% nie gwarantuje, że dotarł pełny szczegół obrazu. Najpierw może pojawić się szybki podgląd, podczas gdy dokładne przetwarzanie RAW i większy podgląd kończą się. Pasek postępu wypełnia się w miarę kończenia etapów przetwarzania podglądu, z licznikiem takim jak 2 / 5. Znika, gdy tylko zostanie wyświetlony użyteczny podgląd; dokładne przetwarzanie RAW i większe podglądy są kontynuowane w tle bez nakładki. Licznik oznacza ukończone etapy, a nie pozostały czas. Zmniejszony ruch zachowuje te same aktualizacje etapów bez animacji. Zdjęcie pozostaje widoczne bez przyciemnienia. Przy 1:1 najedź na przycisk 1:1, aby sprawdzić, czy pełne szczegóły źródła są gotowe przed oceną drobnych detali.",
+            "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
+            "Usuń, Napraw, Klon i maski z Teksturą lub Przejrzystością wymagają dodatkowej aktualizacji podglądu. Poczekaj na zakończenie podglądu, zanim ocenisz ich szczegóły lub efekt późniejszych korekt."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Wydajność.",
+            "Zachowaj automatyczny poziom szczegółu podglądu do zwykłej edycji. Dostosowuje się on do rozmiaru okna, gęstości ekranu, kadru i powiększenia bez wyboru rozmiaru w pikselach.",
+            "Użyj GPU · Rust, gdy jest dostępne. Compatible · Python to alternatywny silnik filmu, ale niektóre nośniki wymagają Rust.",
+            "Oceń wyostrzanie, redukcję szumu i ziarno filmu w 1:1, po ustabilizowaniu się szczegółów."
+          ]
+        },
+        {
+          "title": "Zaawansowane zastąpienie podglądu",
+          "paragraphs": [
+            "Ustawienia → Wydajność → Zaawansowane zawiera Nadpisanie rozdzielczości podglądu. Automatyczna (zalecane) dopasowuje podgląd do widoku. Stała rozdzielczość może zmniejszyć przetwarzanie, ale może wyglądać na bardziej miękką; powiększenie 100% nadal żąda szczegółów źródłowych, z zastrzeżeniem limitu podglądu. Wymiary eksportu ustawia się osobno.",
+            "Starsze zapisane wybory szerokości podglądu resetują się do Autom. po aktualizacji do tego zachowania. Stałe wymuszenie wybrane w Zaawansowane jest zapisywane na późniejsze sesje. Wydajność pojawia się, gdy aktywne jest ręczne wymuszenie."
+          ],
+          "steps": [
+            "Otwórz Ustawienia → Wydajność i rozwiń Zaawansowane.",
+            "Wybierz stałe zastąpienie rozdzielczości podglądu tylko wtedy, gdy jest to potrzebne dla wydajności lub rozwiązywania problemów.",
+            "Wybierz Autom. (zalecane), aby wrócić do podglądów dopasowujących się do widoku."
+          ]
+        },
+        {
+          "title": "Zarządzaj pamięcią podręczną",
+          "paragraphs": [
+            "Wydajność pokazuje lokalizację pamięci podręcznej podglądu, użycie i budżet. Opróżnij pamięć podręczną usuwa wygenerowane podglądy i pamięci podręczne renderowania po potwierdzeniu; oryginały i edycje nie są naruszone. Podglądy trzeba będzie wygenerować ponownie.",
+            "Rozdzielczość podglądu jest niezależna od ustawienia Wymiary używanego dla wyeksportowanych plików. Zakończenie eksportu i Scal zdjęcie korzystają z akceleracji GPU automatycznie dla obsługiwanych etapów przetwarzania obrazu, z fallbackiem CPU, gdy jest niedostępna. Ustawienie silnika filmu kontroluje podglądy filmu; nie wyłącza tej akceleracji."
+          ]
+        },
+        {
+          "title": "Sprawdź renderowanie w systemie Linux",
+          "paragraphs": [
+            "W systemie Linux Ustawienia → Wydajność pokazuje aktywny renderer Rust i wykryty adapter po uruchomieniu. Wybór GPU · Rust może używać renderowania CPU, gdy niedostępny jest sprzętowy GPU. Programowy Vulkan nie jest akceleracją sprzętową.",
+            "Zdjęcie przekraczające limity GPU używa CPU. Jeśli proces roboczy renderowania przestanie odpowiadać, LightTable ponawia próbę raz na CPU i zachowuje ten proces roboczy na czas sesji. Uruchom LightTable ponownie po naprawie lub aktualizacji sterownika graficznego, aby spróbować renderowania GPU ponownie. Duże zdjęcia i renderowanie programowe mogą trwać dłużej; do zwykłej edycji używaj Autom. szczegółów podglądu."
+          ]
+        },
+        {
+          "title": "Odczytaj błąd podglądu",
+          "paragraphs": [
+            "Jeśli zdjęcia nie można wyrenderować lub wyświetlić, wiadomość w obszarze zdjęcia zawiera zgłoszoną przyczynę, gdy jest dostępna. Może to wskazywać brakujący plik, problem z wczytywaniem obrazu lub awarię grafiki. Jeśli przyczyna nie jest dostępna, wiadomość pozostaje ogólna."
+          ]
+        }
+      ],
+      "related": [
+        "film-grain-and-format",
+        "export-format-color-space",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Rozwiązywanie problemów"
+    }
+  ],
+  "locale": "pl",
+  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+}

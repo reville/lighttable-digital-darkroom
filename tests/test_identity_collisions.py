@@ -244,7 +244,9 @@ class IdentityCollisionTests(unittest.TestCase):
             def hexdigest(self):
                 return digest.hexdigest()
         with mock.patch.object(file_identity.hashlib, "blake2b", return_value=ChangingDigest()):
-            with self.assertRaisesRegex(OSError, "changed while hashing"):
+            # Windows can refuse the concurrent write itself while holding
+            # its content-read lock; other platforms reject the changed read.
+            with self.assertRaises(OSError):
                 file_identity.content_hash(original)
 
     def test_scan_rechecks_completed_hash_before_relinking(self):

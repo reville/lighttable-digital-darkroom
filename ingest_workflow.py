@@ -1,6 +1,8 @@
 """Card ingest: scan a card, plan a verified copy, and run it file by file."""
 from __future__ import annotations
 
+from server_localization import T
+
 import hashlib
 import os
 import re
@@ -197,7 +199,7 @@ def describe_file(path: Path | str) -> dict:
     """Public one-file counterpart to :func:`scan_source` for hot folders."""
     candidate = Path(path).expanduser()
     if candidate.suffix.lower() not in PHOTO_EXTENSIONS or not candidate.is_file():
-        raise ValueError("the watched arrival is not a supported photo")
+        raise ValueError(T("the watched arrival is not a supported photo"))
     return _describe(candidate)
 
 
@@ -311,10 +313,10 @@ def template_context(item: dict, sequence: int, custom: str) -> dict:
 def _destination_root(value) -> Path:
     raw = str(value or "").strip()
     if not raw:
-        raise ValueError("choose an ingest destination")
+        raise ValueError(T("choose an ingest destination"))
     root = Path(raw).expanduser().resolve()
     if root == Path(root.anchor):
-        raise ValueError("choose a specific ingest folder")
+        raise ValueError(T("choose a specific ingest folder"))
     return root
 
 
@@ -345,7 +347,7 @@ def _unique_path(candidate: Path, taken: set[str], item: dict) -> Path:
             continue
         taken.add(key)
         return path
-    raise ValueError(f"could not find a free name for {candidate.name}")
+    raise ValueError(T("could not find a free name for {name}", name=candidate.name))
 
 
 def build_plan(items, request, *, existing_hashes=None,
@@ -373,7 +375,7 @@ def build_plan(items, request, *, existing_hashes=None,
         if item.get("availability", "local") != "local":
             skipped.append({"source": str(item.get("path", "")),
                             "name": str(item.get("name", "")), "hash": "",
-                            "reason": item["availability"], "message": media_availability.CLOUD_MESSAGE})
+                            "reason": item["availability"], "message": media_availability.cloud_message()})
             continue
         digest = str(item.get("hash") or "")
         if existing_content_hashes is not None:
@@ -439,9 +441,9 @@ def _mismatch(source: Path, destination: Path, mode: str) -> str | None:
     try:
         source_size, copied_size = _size(source), _size(destination)
         if source_size != copied_size:
-            return f"copied {copied_size} of {source_size} bytes"
+            return T("copied {copied_size} of {source_size} bytes", copied_size=copied_size, source_size=source_size)
         if mode == "hash" and _file_hash(source) != _file_hash(destination):
-            return "copied bytes do not match the source"
+            return T("copied bytes do not match the source")
         return None
     except OSError as error:
         return _reason(error)
@@ -469,7 +471,7 @@ def _copy_verified(source: Path, destination: Path, mode: str) -> str | None:
         mismatch = _mismatch(source, destination, "hash")
         if not mismatch:
             return None
-        return f"{source.name}: destination appeared or changed ({mismatch})"
+        return T("{name}: destination appeared or changed ({mismatch})", name=source.name, mismatch=mismatch)
     try:
         destination.parent.mkdir(parents=True, exist_ok=True)
         _copy_bytes(source, temporary)
@@ -522,7 +524,7 @@ def copy_item(item: dict, *, verify: str = "hash") -> dict:
     result = {"ok": False, "destination": destination_value,
               "backup": backup_value or None, "bytes": 0, "error": None}
     if not source_value or not destination_value:
-        result["error"] = "ingest item is missing a source or a destination"
+        result["error"] = T("ingest item is missing a source or a destination")
         return result
 
     source, destination = Path(source_value), Path(destination_value)

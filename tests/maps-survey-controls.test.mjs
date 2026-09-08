@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import {t as tr} from '../web/i18n.js';
+import {labelSwatch} from '../web/labels.js';
 
 const source = (name) => readFileSync(new URL(`../web/${name}`, import.meta.url), 'utf8');
 
@@ -18,10 +20,10 @@ function metadataHarness(get = async () => ({ iptc: {} })) {
   }
   elements.set('infoPane', { classList: { contains: () => visible } });
   const context = vm.createContext({
-    setTimeout() { return 1; }, clearTimeout() {},
+    tr, setTimeout() { return 1; }, clearTimeout() {},
     window: { open: (...args) => opened.push(args) },
   });
-  vm.runInContext(source('metadata-panel.js').replace('export function', 'function'), context);
+  vm.runInContext(source('metadata-panel.js').replace(/^import .*;$/gm, '').replace('export function', 'function'), context);
   const panel = context.createMetadataPanel({
     el: (id) => elements.get(id), get, post: async () => ({ ok: true }),
     toast: (message) => notices.push(message),
@@ -138,8 +140,8 @@ function surveyHarness() {
       };
     },
   };
-  const context = vm.createContext({ document, labelSwatch: () => '' });
-  vm.runInContext(source('survey.js').replace(/^import .*;$/m, '').replace('export function', 'function'), context);
+  const context = vm.createContext({ document, tr, labelSwatch });
+  vm.runInContext(source('survey.js').replace(/^import .*;$/gm, '').replace('export function', 'function'), context);
   const survey = context.createSurvey({ el: (id) => elements.get(id), images: () => images });
   return {
     survey, swap: elements.get('surveySwap'),

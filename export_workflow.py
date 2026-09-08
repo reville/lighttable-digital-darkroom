@@ -1,6 +1,8 @@
 """Reusable export recipes, destinations, and collision-safe filenames."""
 from __future__ import annotations
 
+from server_localization import T
+
 import re
 import hashlib
 import os
@@ -135,10 +137,10 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
         metadata = "all-except-location"
     destination_mode = str(raw.get("destinationMode", "fixed"))
     if destination_mode not in DESTINATION_MODES:
-        raise ValueError("unknown export destination mode")
+        raise ValueError(T("unknown export destination mode"))
     timestamp_policy = str(raw.get("captureTimePolicy", "require-offset"))
     if timestamp_policy not in CAPTURE_TIME_POLICIES:
-        raise ValueError("unknown capture-time timezone policy")
+        raise ValueError(T("unknown capture-time timezone policy"))
     return {
         "id": _text(raw.get("id"), "recipe", 100),
         "name": _text(raw.get("name"), "Export recipe", 80),
@@ -181,7 +183,7 @@ def resolve_destination(library_root: Path, value: str | None) -> Path:
         destination = library_root / destination
     destination = destination.resolve()
     if destination == Path(destination.anchor):
-        raise ValueError("choose a specific export folder")
+        raise ValueError(T("choose a specific export folder"))
     return destination
 
 
@@ -197,10 +199,10 @@ def photo_destination(recipe: dict, *, library_root: Path,
         value = str(recipe.get("destination") or "film-exports")
         part = Path(value)
         if not part.parts or part.is_absolute() or ".." in part.parts or "\\" in value or ":" in value:
-            raise ValueError("Use a relative subfolder without '..' for original-folder exports")
+            raise ValueError(T("Use a relative subfolder without '..' for original-folder exports"))
         destination = (source.parent / part).resolve()
         if destination != source.parent and source.parent not in destination.parents:
-            raise ValueError("The export subfolder must stay inside the original folder")
+            raise ValueError(T("The export subfolder must stay inside the original folder"))
         return destination
     base = resolve_destination(library_root, recipe.get("destination"))
     # A stable root suffix prevents identically named sources from merging.
@@ -208,7 +210,7 @@ def photo_destination(recipe: dict, *, library_root: Path,
         str(root).encode("utf-8")).hexdigest()[:8]
     destination = (base / namespace / relative.parent).resolve()
     if base not in destination.parents:
-        raise ValueError("The export hierarchy must stay inside its destination")
+        raise ValueError(T("The export hierarchy must stay inside its destination"))
     return destination
 
 
@@ -216,7 +218,7 @@ def capture_timestamp(metadata: dict, policy: str = "require-offset") -> tuple[f
     """EXIF time is wall time: use its offset, or an explicit local-time opt-in."""
     raw = str(metadata.get("DateTimeOriginal") or "").strip()
     if not raw:
-        return None, "Capture time is missing; kept the export file timestamp."
+        return None, T("Capture time is missing; kept the export file timestamp.")
     raw = re.sub(r"^(\d{4}):(\d{2}):(\d{2})", r"\1-\2-\3", raw)
     offset = str(metadata.get("OffsetTimeOriginal") or "").strip()
     try:
@@ -224,14 +226,14 @@ def capture_timestamp(metadata: dict, policy: str = "require-offset") -> tuple[f
         if value.tzinfo is None and offset:
             value = datetime.fromisoformat(raw + offset)
         if value.tzinfo is None and policy != "local":
-            return None, "Capture timezone is missing; kept the export file timestamp."
+            return None, T("Capture timezone is missing; kept the export file timestamp.")
         if value.tzinfo is None:
             # datetime.timestamp applies the system timezone at the capture date,
             # including its historical DST offset, not today's UTC offset.
-            return value.timestamp(), "Capture timezone is missing; used this computer's local timezone."
+            return value.timestamp(), T("Capture timezone is missing; used this computer's local timezone.")
         return value.timestamp(), None
     except (ValueError, OverflowError, OSError):
-        return None, "Capture time or timezone is invalid; kept the export file timestamp."
+        return None, T("Capture time or timezone is invalid; kept the export file timestamp.")
 
 
 def apply_capture_timestamp(path: Path, metadata: dict, policy: str) -> str | None:
@@ -240,7 +242,7 @@ def apply_capture_timestamp(path: Path, metadata: dict, policy: str) -> str | No
         try:
             os.utime(path, (timestamp, timestamp))
         except (OSError, OverflowError, ValueError):
-            return "The filesystem could not preserve capture time; kept its export timestamp."
+            return T("The filesystem could not preserve capture time; kept its export timestamp.")
     return warning
 
 
@@ -280,7 +282,7 @@ def collision_path(path: Path, policy: str,
         candidate = path.with_name(f"{path.stem}-{index}{path.suffix}")
         if not occupied(candidate):
             return candidate
-    raise ValueError(f"could not find a free name for {path.name}")
+    raise ValueError(T("could not find a free name for {name}", name=f'{path.name}'))
 
 
 def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
@@ -294,7 +296,7 @@ def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
         width = min(width - x0, max(1, int(round(crop["w"] * width))))
         height = min(height - y0, max(1, int(round(crop["h"] * height))))
     if width < 1 or height < 1:
-        raise ValueError("Crop has no output pixels")
+        raise ValueError(T("Crop has no output pixels"))
     if long_edge and max(width, height) > int(long_edge):
         scale = int(long_edge) / max(width, height)
         width, height = max(1, round(width * scale)), max(1, round(height * scale))

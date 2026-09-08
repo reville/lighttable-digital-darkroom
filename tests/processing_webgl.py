@@ -39,9 +39,9 @@ def run(output_dir):
             pass
 
         def translate_path(self, path):
-            # Serve only checked-in renderer module and generated fixture PNGs.
-            if path == '/web/gl.js':
-                return str(ROOT / 'web/gl.js')
+            # Serve the renderer and its localization dependency, plus fixtures.
+            if path in {'/web/gl.js', '/web/i18n.js'}:
+                return str(ROOT / path.lstrip('/'))
             return super().translate_path(path)
 
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0),

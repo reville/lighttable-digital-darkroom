@@ -1,5 +1,6 @@
 """Stat-only availability checks; never hydrate a cloud file to inspect it."""
 from pathlib import Path
+from server_localization import T
 
 # macOS sys/stat.h: SF_DATALESS means the file's content is not local.
 # Other platforms do not expose st_flags, so ordinary files remain local.
@@ -7,6 +8,12 @@ SF_DATALESS = 0x40000000
 CLOUD_MESSAGE = ("This photo is stored in the cloud and is not downloaded. "
                  "In Finder, choose Download Now or Keep Downloaded, then "
                  "rescan the source in LightTable.")
+
+
+def cloud_message() -> str:
+    return T("This photo is stored in the cloud and is not downloaded. "
+             "In Finder, choose Download Now or Keep Downloaded, then "
+             "rescan the source in LightTable.")
 
 
 def from_stat(stat) -> str:
@@ -39,5 +46,5 @@ def index_availability(path: Path | str) -> str:
 def require_local(path: Path | str, *, stat=None) -> None:
     state = availability(path, stat=stat)
     if state != "local":
-        raise OSError(CLOUD_MESSAGE if state == "cloud-only" else
-                      "This photo is unavailable. Reconnect its source and rescan.")
+        raise OSError(cloud_message() if state == "cloud-only" else
+                      T("This photo is unavailable. Reconnect its source and rescan."))
