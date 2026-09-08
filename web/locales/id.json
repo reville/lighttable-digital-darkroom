@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 bit",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "Pengaturan zoom 100% tidak menjamin bahwa detail gambar penuh sudah tiba. Pratinjau cepat mungkin muncul terlebih dahulu saat pemrosesan RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai, dengan hitungan seperti 2 / 5. Bilah ini menghilang segera setelah pratinjau yang dapat digunakan ditampilkan; pemrosesan RAW yang akurat dan pratinjau yang lebih besar terus berjalan di latar belakang tanpa lapisan. Hitungan tersebut mewakili tahap yang selesai, bukan sisa waktu. Gerakan yang dikurangi mempertahankan pembaruan tahap yang sama tanpa animasi. Foto tetap terlihat tanpa menjadi redup. Pada 1:1, arahkan kursor ke tombol 1:1 untuk memeriksa apakah detail sumber penuh sudah siap sebelum menilai detail halus.",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "Asli RAW tidak dapat disunting di tempat; kirim TIFF yang sudah disesuaikan",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "Satu batch dapat memengaruhi hingga 5.000 foto, termasuk companion yang tertaut. Menghapus kata kunci hierarkis menghapus jalur itu secara tepat, bukan semua turunannya. Pohon kata kunci dan saran menggunakan istilah yang sudah ada di katalog.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "Preset bawaan bersifat hanya-baca. Simpan salinan… menempatkan salinan bernama di Milik Anda. Sembunyikan preset menghapusnya dari tampilan Bawaan biasa; Tampilkan yang tersembunyi dan Pulihkan ke Bawaan akan membawanya kembali.",
@@ -159,7 +158,6 @@
     "Advanced preview override": "Override pratinjau lanjutan",
     "After completion, find the new result in the refreshed library and inspect it.": "Setelah selesai, temukan hasil baru di library yang dimuat ulang dan periksa.",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "Setelah pemutakhiran, pemindaian pertama membaca asli lokal untuk memperkuat pencocokan file. Ini bisa memakan waktu lebih lama pada pustaka yang besar. Asli yang sebelumnya sudah hilang tanpa identitas file lengkap akan tetap hilang; pertahankan entri mereka dan pulihkan asli ke jalur katalog sebelumnya sebelum memindai ulang.",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "Setelah Anda mengaktifkan Film, pratinjau cepat dapat muncul sebelum detail RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai dan menghilang setelah pratinjau terlihat. Detail RAW yang akurat dan rendering resolusi penuh terus berjalan di latar belakang.",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "Sejajarkan hasil scan atau referensi lain, ukur perbedaannya, dan terapkan kecocokan awal.",
     "Aligning frames": "Menyelaraskan bingkai",
     "All": "Semua",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Original RAW harus dirender sebagai TIFF yang disesuaikan. Processed original tidak tersedia jika pilihan berisi file RAW. Untuk foto yang diproses, opsi itu membuka original, bukan menyiapkan TIFF yang disesuaikan.",
     "RAW originals only.": "Hanya asli RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Foto RAW dapat menampilkan kontrol Sensor noise reduction dan Learned denoise. Learned denoise berjalan secara lokal saat Anda menekan Apply denoise; menggeser Strength tidak menjalankannya secara langsung.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
     "RAW preview could not finish. Try the photo again.": "Pratinjau RAW tidak dapat diselesaikan. Coba foto itu lagi.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "Perkecil",
     "Zoom in": "Perbesar",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "Perbesar untuk penempatan yang presisi. Garis luar lingkaran dan pin tetap tajam pada setiap level zoom; lingkaran terus menampilkan area foto yang sama.",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
     "Zoom out": "Perkecil",
     "Zoom: {actualPct}%": "Zum: {actualPct}%",
     "a command-line server": "server baris perintah",

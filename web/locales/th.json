@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 บิต",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "การตั้งค่าซูม 100% ไม่ได้การันตีว่ารายละเอียดของภาพเต็มจะมาถึงแล้ว พรีวิวแบบรวดเร็วอาจปรากฏก่อน ขณะที่การประมวลผล RAW ที่แม่นยำและพรีวิวที่ใหญ่กว่าจะเสร็จสิ้น แถบความคืบหน้าจะเติมตามเมื่อขั้นตอนการประมวลผลพรีวิวเสร็จสิ้น โดยมีตัวนับเช่น 2 / 5 มันจะหายไปทันทีที่มีการแสดงพรีวิวที่ใช้งานได้; การประมวลผล RAW ที่แม่นยำและพรีวิวที่ใหญ่กว่าจะดำเนินต่อไปในพื้นหลังโดยไม่มีโอเวอร์เลย์ ตัวนับแสดงขั้นตอนที่เสร็จแล้ว ไม่ใช่เวลาที่เหลือ การลดการเคลื่อนไหวจะคงการอัปเดตขั้นตอนเดิมไว้โดยไม่มีภาพเคลื่อนไหว ภาพถ่ายยังคงมองเห็นได้โดยไม่มืดลง ที่ 1:1 ให้วางเมาส์เหนือปุ่ม 1:1 เพื่อตรวจว่ารายละเอียดต้นฉบับเต็มพร้อมแล้วก่อนประเมินรายละเอียดเล็กๆ",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "ต้นฉบับ RAW ไม่สามารถแก้ไขในที่เดิมได้; ส่ง TIFF ที่ปรับแล้ว",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "ชุดงานหนึ่งชุดอาจมีผลกับรูปถ่ายได้สูงสุด 5,000 รูป รวมถึง companion ที่เชื่อมโยงกัน การนำคีย์เวิร์ดแบบลำดับชั้นออกจะลบพาธนั้นโดยตรง ไม่ใช่ลูกหลานทั้งหมด ต้นไม้คีย์เวิร์ดและคำแนะนำจะใช้คำที่มีอยู่แล้วในแค็ตตาล็อก",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "พรีเซ็ตในตัวเป็นแบบอ่านอย่างเดียว Save a copy… จะวางสำเนาที่มีชื่อไว้ใน Yours Hide preset จะเอาออกจากมุมมอง Built-in ปกติ; Show hidden และ Restore to Built-in จะนำกลับมา",
@@ -159,7 +158,6 @@
     "Advanced preview override": "การแทนที่ตัวอย่างขั้นสูง",
     "After completion, find the new result in the refreshed library and inspect it.": "หลังจากเสร็จสิ้น ให้ค้นหาผลลัพธ์ใหม่ในไลบรารีที่รีเฟรชแล้วและตรวจสอบ",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "หลังจากอัปเกรด การสแกนครั้งแรกจะอ่านต้นฉบับในเครื่องเพื่อเพิ่มความแม่นยำในการจับคู่ไฟล์ ซึ่งอาจใช้เวลานานขึ้นกับไลบรารีขนาดใหญ่ ต้นฉบับที่หายไปอยู่แล้วโดยไม่มีอัตลักษณ์ไฟล์สมบูรณ์จะยังคงหายไป; ให้เก็บรายการของมันไว้และคืนค่าต้นฉบับไปยังพาธที่เคยมีในแค็ตตาล็อกก่อนสแกนใหม่",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "หลังจากคุณเปิดใช้ ฟิล์ม พรีวิวแบบรวดเร็วอาจปรากฏก่อนที่รายละเอียด RAW ที่แม่นยำและพรีวิวที่ใหญ่กว่าจะเสร็จสมบูรณ์ แถบความคืบหน้าจะเติมตามเมื่อขั้นตอนการประมวลผลพรีวิวเสร็จสิ้น และจะหายไปเมื่อพรีวิวมองเห็นได้แล้ว การเรนเดอร์รายละเอียด RAW ที่แม่นยำและแบบเต็มความละเอียดจะดำเนินต่อไปในพื้นหลัง",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "จัดแนวสแกนหรือข้อมูลอ้างอิงอื่น วัดความต่าง แล้วใช้การจับคู่เริ่มต้น",
     "Aligning frames": "กำลังจัดแนวเฟรม",
     "All": "ทั้งหมด",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "ต้นฉบับ RAW ต้องถูกเรนเดอร์เป็น TIFF ที่ปรับแล้ว Processed original จะไม่พร้อมใช้งานหากการเลือกมีไฟล์ RAW สำหรับภาพที่ประมวลผลแล้ว ตัวเลือกนั้นจะเปิดต้นฉบับแทนที่จะเตรียม TIFF ที่ปรับแล้ว",
     "RAW originals only.": "เฉพาะต้นฉบับ RAW เท่านั้น.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "ภาพ RAW สามารถแสดงการควบคุม Sensor noise reduction และ Learned denoise ได้ Learned denoise ทำงานในเครื่องเมื่อคุณกด Apply denoise; การเลื่อน Strength จะไม่ทำให้มันทำงานแบบสด",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "ภาพ RAW จะเปิดด้วยผลการประมวลผลของ LightTable ตั้งแต่แรก แม้จะปิดฟิล์มอยู่ก็ตาม ภาพแรกที่ยังไม่ได้เก็บในแคชอาจใช้เวลาสักครู่จึงจะแสดง แถบความคืบหน้าจะแสดงขั้นตอนการประมวลผลที่เสร็จแล้ว และหายไปเมื่อภาพปรากฏ",
     "RAW preview could not finish. Try the photo again.": "พรีวิว RAW ไม่สามารถเสร็จสิ้นได้ ลองภาพถ่ายนี้อีกครั้ง",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "ซูมออก",
     "Zoom in": "ซูมเข้า",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "ซูมเข้าเพื่อการวางตำแหน่งอย่างแม่นยำ เส้นรอบวงและหมุดจะคมชัดในทุกระดับซูม; วงกลมจะแสดงพื้นที่ของภาพถ่ายเท่าเดิมต่อไป",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "การซูมจะคงภาพตัวอย่างที่คมชัดที่สุดที่มีอยู่ไว้ขณะโหลดรายละเอียดเพิ่มเติม เมื่อซูมออกจะใช้ภาพตัวอย่างเดิมอีกครั้ง ที่ 1:1 ให้ตรวจสอบคำแนะนำเครื่องมือของปุ่มก่อนประเมินรายละเอียดเล็ก ๆ",
     "Zoom out": "ซูมออก",
     "Zoom: {actualPct}%": "ซูม: {actualPct}%",
     "a command-line server": "เซิร์ฟเวอร์บรรทัดคำสั่ง",

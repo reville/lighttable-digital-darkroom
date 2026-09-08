@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
+  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 बिट",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "100% ज़ूम सेटिंग यह गारंटी नहीं देती कि पूर्ण छवि विवरण पहुँच गया है। सटीक RAW प्रसंस्करण और बड़ा पूर्वावलोकन पूरा होने के दौरान पहले एक त्वरित पूर्वावलोकन दिखाई दे सकता है। पूर्वावलोकन प्रसंस्करण चरण पूरे होने पर प्रगति पट्टी भरती है, जिसमें 2 / 5 जैसी गिनती होती है। जैसे ही उपयोगी पूर्वावलोकन प्रदर्शित होता है, यह गायब हो जाती है; सटीक RAW प्रसंस्करण और बड़े पूर्वावलोकन बिना ओवरले के बैकग्राउंड में जारी रहते हैं। गिनती पूर्ण हुई अवस्थाएँ दर्शाती है, शेष समय नहीं। कम गति समान अवस्था अद्यतन बिना एनीमेशन के रखती है। फ़ोटो बिना मंद हुए दिखाई देती रहती है। 1:1 पर, बारीक विवरण का आकलन करने से पहले जाँचने के लिए 1:1 बटन पर होवर करें कि पूर्ण स्रोत विवरण तैयार है या नहीं।",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "RAW मूल को स्थान पर संपादित नहीं किया जा सकता; एक समायोजित TIFF भेजें",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "एक बैच 5,000 फ़ोटो तक प्रभावित कर सकता है, जिनमें जुड़ी हुई साथी फ़ाइलें भी शामिल हैं। श्रेणीबद्ध कीवर्ड हटाने पर केवल वही सटीक पथ हटता है, उसके हर वंशज नहीं। कीवर्ड ट्री और सुझाव कैटलॉग में पहले से मौजूद शब्दों का उपयोग करते हैं।",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "अंतर्निहित प्रीसेट केवल-पठन है। Save a copy… उसे Yours में एक नामित प्रतिलिपि के रूप में रखता है। Hide preset उसे सामान्य Built-in दृश्य से हटाता है; Show hidden और Restore to Built-in उसे वापस लाते हैं।",
@@ -159,7 +158,6 @@
     "Advanced preview override": "उन्नत पूर्वावलोकन ओवरराइड",
     "After completion, find the new result in the refreshed library and inspect it.": "पूरा होने के बाद, नया परिणाम refreshed library में ढूँढें और उसका निरीक्षण करें।",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "अपग्रेड के बाद, पहली स्कैन स्थानीय मूल पढ़कर फ़ाइल मिलान को बेहतर बनाती है। बड़े संग्रह पर इसमें अधिक समय लग सकता है। जो मूल पहले से बिना पूरी फ़ाइल पहचान के गायब थे, वे गायब ही रहेंगे; उनकी प्रविष्टियाँ रखें और फिर से स्कैन करने से पहले मूल को उनकी पिछली सूचीबद्ध पथों पर पुनर्स्थापित करें।",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "फ़िल्म चालू करने के बाद, सटीक RAW विवरण और बड़ा पूर्वावलोकन पूरा होने से पहले एक त्वरित पूर्वावलोकन दिखाई दे सकता है। पूर्वावलोकन प्रसंस्करण चरण पूरे होने पर प्रगति पट्टी भरती है और पूर्वावलोकन दिखाई देते ही गायब हो जाती है। सटीक RAW विवरण और पूर्ण-रिज़ॉल्यूशन रेंडरिंग बैकग्राउंड में जारी रहते हैं।",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "किसी scan या अन्य reference को align करें, अंतर मापें, और एक शुरुआती match लागू करें।",
     "Aligning frames": "फ़्रेम संरेखित किए जा रहे हैं",
     "All": "सभी",
@@ -2125,6 +2123,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW मूल फ़ाइलों को adjusted TIFFs के रूप में रेंडर किया जाना चाहिए। यदि चयन में कोई RAW फ़ाइल शामिल है, तो Processed original उपलब्ध नहीं होता। संसाधित फ़ोटो के लिए, वह विकल्प adjusted TIFF तैयार करने के बजाय मूल फ़ाइल खोलता है।",
     "RAW originals only.": "केवल RAW मूल।",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW फ़ोटो में Sensor noise reduction और Learned denoise नियंत्रण दिखाई दे सकते हैं। Learned denoise तब स्थानीय रूप से चलता है जब आप Apply denoise दबाते हैं; Strength हिलाने से यह तुरंत नहीं चलता।",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW फ़ोटो शुरू से LightTable की प्रोसेसिंग के साथ खुलती हैं, तब भी जब फ़िल्म बंद हो। कैश में न मौजूद पहली फ़ोटो को दिखाई देने में थोड़ा समय लग सकता है। प्रगति पट्टी पूरी हो चुकी प्रोसेसिंग के चरण दिखाती है और फ़ोटो दिखाई देने पर हट जाती है।",
     "RAW preview could not finish. Try the photo again.": "RAW पूर्वावलोकन पूरा नहीं हो सका। फ़ोटो को फिर से आज़माएँ।",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3150,6 +3149,7 @@
     "Zoom Out": "ज़ूम आउट",
     "Zoom in": "ज़ूम इन करें",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "सटीक स्थान निर्धारण के लिए ज़ूम इन करें। वृत्त रूपरेखाएँ और पिन हर ज़ूम स्तर पर तेज़ रहते हैं; वृत्त फ़ोटो के वही क्षेत्र को दिखाते रहते हैं।",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "ज़ूम करने पर अधिक विवरण लोड होने तक उपलब्ध सबसे स्पष्ट प्रीव्यू बना रहता है। ज़ूम आउट करने पर उसी प्रीव्यू का दोबारा उपयोग होता है। 1:1 पर बारीक विवरण का आकलन करने से पहले बटन का टूलटिप देखें।",
     "Zoom out": "ज़ूम आउट करें",
     "Zoom: {actualPct}%": "ज़ूम: {actualPct}%",
     "a command-line server": "एक कमांड-लाइन सर्वर",

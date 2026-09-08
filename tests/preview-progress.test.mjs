@@ -11,6 +11,8 @@ import {t as tr, tn as trn} from '../web/i18n.js';
 const appSource = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
 const renderSource = appSource.match(/^async function doRender\([^]*?^}/m)[0];
 const nativeEventSource = appSource.match(/^window.lightTableNativeEvent = \(event\) => \{[^]*?^};/m)[0];
+const autoSource = appSource.match(/^function scheduleAutomaticPreview\([^]*?^}/m)[0];
+const progressiveSource = appSource.match(/^function scheduleProgressiveRender\([^]*?^}/m)[0];
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
 function clock() {
@@ -31,6 +33,70 @@ function clock() {
     },
   };
 }
+
+function zoomHarness() {
+  const timer = clock(), renders = [];
+  const context = {
+    S: { viewMode: 'detail', renderState: 'ready', presentedPhotoName: 'photo.dng',
+      previewDetail: { name: 'photo.dng', refining: false, renderedWidth: 2200 } },
+    automaticPreviewRequest: { name: 'photo.dng', width: 2200 },
+    automaticPreviewTimer: null, renderTimer: null, settleRenderTimer: null,
+    lastInteractiveRenderAt: 0, INTERACTIVE_PREVIEW_WIDTH: 1100,
+    performance: { now: timer.now }, setTimeout: timer.schedule, clearTimeout: timer.cancel,
+    $: () => ({ value: 'auto' }), cur: () => ({ name: 'photo.dng' }),
+    width: 3000, requestedPreviewWidth: () => context.width,
+    viewFrameScheduler: { flush() {} }, viewportRegionEnabled: () => false,
+    doRender: (_time, options) => {
+      renders.push(options);
+      context.automaticPreviewRequest = { name: 'photo.dng', width: options.width };
+    },
+  };
+  vm.runInNewContext(`${autoSource}\n${progressiveSource}`, context);
+  return { context, timer, renders };
+}
+
+test('zoom asks once for larger detail, keeps it on zoom out, and coalesces rapid clicks', () => {
+  const { context: app, timer, renders } = zoomHarness();
+  app.scheduleAutomaticPreview(); timer.advance(100);
+  app.width = 4000; app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.deepEqual(renders.map(r => r.width), [4000], 'never insert an 1100px zoom preview');
+  assert.equal(renders[0].background, true);
+  assert.equal(renders[0].phase, 'settled');
+  app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.equal(renders.length, 1, 'do not duplicate an in-flight detail request');
+  app.S.previewDetail.renderedWidth = 4000;
+  app.width = 1800; app.scheduleAutomaticPreview(); timer.advance(200);
+  app.width = 3500; app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.equal(renders.length, 1, 'reuse the sharp surface in both directions');
+  app.width = 5000; app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.deepEqual(renders.map(r => r.width), [4000, 5000]);
+});
+
+test('navigation opens at requested detail while editing retains its responsive small pass', () => {
+  const { context: app, timer, renders } = zoomHarness();
+  app.S.renderState = 'pending';
+  app.scheduleProgressiveRender(0); timer.advance(0);
+  assert.equal(renders[0].width, 3000);
+  assert.equal(renders[0].phase, 'settled');
+  app.S.renderState = 'ready';
+  app.scheduleProgressiveRender(0); timer.advance(0);
+  assert.equal(renders[1].width, 1100);
+  assert.equal(renders[1].phase, 'interactive');
+});
+
+test('failed zoom detail is retryable and an outgoing photo cannot suppress the new preview', () => {
+  const { context: app, timer, renders } = zoomHarness();
+  app.automaticPreviewRequest = null;
+  app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.equal(renders.length, 1);
+  app.S.renderState = 'pending';
+  app.S.presentedPhotoName = 'previous.dng';
+  app.S.previewDetail = { name: 'previous.dng', refining: false, renderedWidth: 8000 };
+  app.automaticPreviewRequest = { name: 'previous.dng', width: 8000 };
+  app.scheduleAutomaticPreview(); timer.advance(200);
+  assert.equal(renders.length, 2);
+  assert.equal(renders[1].background, false);
+});
 
 test('progress only advances on completed stages and hides as soon as the preview is painted', () => {
   const timer = clock(), updates = [];
@@ -100,7 +166,7 @@ function renderHarness(overrides = {}) {
   const context = {tr, trn,
     S, performance, console, setTimeout: fn => scheduled.push(fn), clearTimeout: noop, CLIENT_ID: 'review',
     gradeBakeRequest, gradeBakeKey, previewFailureMessage,
-    prefetchTimer: null, refineTimer: null, viewportRegionTimer: null,
+    prefetchTimer: null, refineTimer: null, viewportRegionTimer: null, automaticPreviewRequest: null,
     interactiveRenderPhoto: 'photo.dng', lastContinuousInputAt: -Infinity,
     INTERACTIVE_PREVIEW_WIDTH: 1100, FULL_RESOLUTION_SETTLE_MS: 200,
     PERF: { renders: [] }, window: { dispatchEvent: noop },
@@ -243,7 +309,7 @@ test('a displayed neutral RAW draft is not mistaken for accurate pixels; refine 
   });
   await tick();
   assert.deepEqual(app.displays, [1], 'the small film result must replace the neutral draft');
-  assert.equal(app.requests[0].allowDraft, true);
+  assert.equal(app.requests[0].allowDraft, false, 'even a first render asks for consistent RAW pixels');
   assert.equal(app.requests.length, 1, 'first visible paint still takes priority over demosaic');
   app.finishPaint(); await tick();
   assert.deepEqual(app.requests.map(r => r.path), ['/api/render', ...Array(4).fill('/api/refine')]);
