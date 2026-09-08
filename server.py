@@ -2842,10 +2842,19 @@ def rot90k(deg: float) -> int:
     return (-int(round(deg / 90))) % 4
 
 
-def orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
+def orig_jpeg(name: str, width: int, rotate: float = 0, *,
+              quality: str = "draft") -> bytes:
     guard_photo(name)
     guard_local_photo(name)
     with SESSION.inflight("decode", library_workflow.source_name(name)):
+        if quality == "full" and is_raw(name):
+            # Compare uses the same neutral conversion as unedited Develop.
+            # The embedded camera JPEG is only a quick opening preview: it can
+            # have different tone/color and cannot resolve full image detail.
+            # Keep this separate from the draft URL's immutable browser cache.
+            import raw_decode_runtime
+            with raw_decode_runtime.cancellation(lambda: False, priority="refine"):
+                return build_neutral_preview(name, width, rotate).read_bytes()
         return _orig_jpeg(name, width, rotate)
 
 
@@ -6172,7 +6181,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_video(q["name"])
             elif u.path == "/api/orig":
                 self._send(200, orig_jpeg(q["name"], int(q.get("w", 1100)),
-                                          float(q.get("rot", 0))),
+                                          float(q.get("rot", 0)),
+                                          quality=q.get("quality", "draft")),
                            "image/jpeg",
                            "public, max-age=31536000, immutable")
             elif u.path == "/api/neutral":
