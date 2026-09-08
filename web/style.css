@@ -1075,7 +1075,8 @@ a.reset:hover { color:#fff; }
 .crop-perspective { margin-top:16px; }
 .crop-perspective .secbody { padding-right:0; padding-left:0; }
 .heal-brush-settings { padding:8px 0 12px; border-bottom:1px solid var(--line-soft); }
-#editSaveStatus { color:var(--muted); font-size:11px; white-space:nowrap; }
+/* Reserve both normal save labels so toolbar buttons stay put between saves. */
+#editSaveStatus { flex-shrink:0; min-width:8ch; color:var(--muted); font-size:11px; text-align:center; white-space:nowrap; }
 #editSaveStatus[data-state="error"] { color:#efb4ad; }
 .view-options { position:relative; }
 .view-options > summary { cursor:pointer; list-style:none; padding:6px 8px; border-radius:var(--radius); color:var(--muted); }
