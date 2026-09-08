@@ -538,11 +538,11 @@
         {
           "title": "Zoeken in de huidige weergave",
           "paragraphs": [
-            "Het zoekvak komt overeen met tekst in bestandsnamen, weergavenamen, trefwoorden en beschikbare foto-indexmetadata. Er wordt gezocht binnen de huidige map of verzameling en gecombineerd met de andere actieve filters."
+            "Het zoekvak komt overeen met tekst in bestandsnamen, weergavenamen, trefwoorden, namen die je toevoegt in Personen en beschikbare metagegevens van de foto-index. Het zoekt binnen de huidige map of collectie en combineert met de andere actieve filters."
           ],
           "steps": [
             "Klik op Foto's en trefwoorden zoeken, of druk op / wanneer je niet in een veld typt.",
-            "Typ een woord of zin uit de bestandsnaam of trefwoorden.",
+            "Typ een woord of woordgroep uit de bestandsnaam, trefwoorden of een naam die je hebt opgeslagen in Personen.",
             "Gebruik Alle foto’s, Zonder markering, Gekozen, Afgewezen of Beoordeeld in de zijbalk om een markeer- of beoordelingsgroep te kiezen.",
             "Klik op Filter naast Sorteren. Selecteer een of meer bestandstypen en combineer ze vervolgens met Markering, Beoordeling, Kleurlabel of Bewerkingsstatus.",
             "Kies Bestandsnaam, Beoordeling, Markering, Opnamedatum of Kleurlabel in Sorteren."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Bibliotheek"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Personen groeperen en vinden",
+      "category": "Library",
+      "summary": "Gebruik optionele gezichtsafstemming op het apparaat om vergelijkbare gezichten te groeperen, namen toe te voegen en mogelijke matches te beoordelen.",
+      "keywords": [
+        "personen",
+        "gezichten",
+        "gezichtsafstemming",
+        "herkenning",
+        "naam",
+        "samenvoegen",
+        "splitsen",
+        "dezelfde persoon",
+        "google photos",
+        "privacy",
+        "gekwantiseerd",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Gezichtsafstemming inschakelen",
+          "paragraphs": [
+            "Gezichtsafstemming staat los van de Foto-inhoudsindex en is standaard uitgeschakeld. Open Personen in de zijbalk Bibliotheek, of Instellingen → Foto-index → Gezichtsafstemming. Modellen downloaden en inschakelen downloadt ongeveer 10,1 MB aan modelbestanden. Fotogegevens worden op dit apparaat verwerkt en worden nooit geüpload voor afstemming.",
+            "Afstemming scant beschikbare stilstaande foto's in de huidige catalogus, niet alleen de huidige map of filter. Lege bestanden, cloud-only-bestanden en niet-beschikbare originelen worden overgeslagen zonder ze te downloaden."
+          ],
+          "steps": [
+            "Open Personen en kies Modellen downloaden en inschakelen.",
+            "Wacht tot de gezichtsgroepen verschijnen. Je kunt doorgaan met bewerken terwijl het scannen loopt.",
+            "Gebruik Nieuwe foto's scannen nadat je foto's hebt toegevoegd of niet-beschikbare originelen hebt teruggezet. Eerder gescande, ongewijzigde foto's worden opnieuw gebruikt."
+          ]
+        },
+        {
+          "title": "Een persoon naamgeven en doorbladeren",
+          "paragraphs": [
+            "Iedereen toont zichtbare gezichtsgroepen. Naamloos toont groepen die nog niet zijn benoemd. Open een groep, typ een naam en kies Naam opslaan. Alleen namen die je invoert worden gebruikt; het model kent de namen van personen niet.",
+            "Gebruik Gezichten om uitsneden van afzonderlijke gezichten te bekijken. Gebruik Foto's om de volledige foto's te zien en kies vervolgens een foto om deze in de editor te openen. Namen die je toevoegt worden doorzoekbaar in het zoekveld van de bibliotheek. Verborgen groepen leveren geen namen voor zoeken."
+          ]
+        },
+        {
+          "title": "Matches beoordelen en corrigeren",
+          "paragraphs": [
+            "Beoordelen van matches toont twee mogelijke groepen met gezichtssamples. Dezelfde persoon voegt ze samen. Verschillende personen registreert een correctie zodat koppelen niet opnieuw wordt voorgesteld. Voor nu overslaan laat de match staan voor een later moment.",
+            "Binnen een groep laat Samenvoegen met… je een andere groep kiezen en de combinatie beoordelen voordat je bevestigt. De naam van de huidige groep blijft behouden; als die naamloos is, wordt de naam van de andere groep gebruikt. Het opslaan van dezelfde naam op twee groepen voegt ze niet automatisch samen.",
+            "Kies Gezichten selecteren, selecteer enkele gezichten en kies vervolgens Naar een aparte persoon verplaatsen om ze te splitsen in een nieuwe naamloze groep. De twee groepen zullen niet opnieuw als match worden voorgesteld. Selecteer één gezicht en kies Gebruiken als omslag om de galerijafbeelding te wijzigen.",
+            "Persoon verbergen verplaatst een groep naar Verborgen zonder foto's of gezichtsgegevens te verwijderen. Open die daar en kies Persoon weergeven om deze te herstellen. Laatste wijziging ongedaan maken draait de meest recente groepsbewerking terug; een scan die foto's toevoegt of vernieuwt wist die ongedaanmakingsstap."
+          ]
+        },
+        {
+          "title": "Pauzeren en gezichtsgegevens verwijderen",
+          "paragraphs": [
+            "Pauzeren, of Gezichtsafstemming uitzetten, om het scannen te stoppen. Bestaande groepen en namen blijven beschikbaar, inclusief zoeken op naam. Nieuwe foto's scannen hervat de afstemming.",
+            "Gezichtsgegevens verwijderen… vraagt je om de verwijdering van de gezichtsgroepen, namen, correcties en thumbnails van deze catalogus te bevestigen. Originele foto's, bewerkingen en de Foto-inhoudsindex blijven ongewijzigd. Gedownloade modelbestanden blijven beschikbaar. Gegevens over gezichten worden afzonderlijk opgeslagen in de toepassingsgegevensmap en zijn niet opgenomen in catalogusback-ups."
+          ]
+        },
+        {
+          "title": "Wat u kunt verwachten",
+          "paragraphs": [
+            "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Automatische groepering gebruikt conservatieve gelijkenisregels; mogelijke matches blijven gescheiden voor beoordeling. Nieuwe gezichten die overeenkomen met een benoemde persoon worden voorgesteld ter bevestiging.",
+            "Kleine, wazige, aan het zicht onttrokken, profiel- en aanzienlijk in leeftijd uiteenlopende gezichten kunnen worden gemist of over meerdere groepen worden verdeeld. Het model kan ook onjuiste matches maken. Gezichten die samen in één foto voorkomen, worden niet automatisch gematcht; een handmatige samenvoeging blijft mogelijk voor spiegels en collages. Deze functie groepeert geen huisdieren en biedt geen gegarandeerde identiteitsnauwkeurigheid."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Bibliotheek"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "De index opbouwen",
           "paragraphs": [
+            "Gezichtsdetectie vindt foto's met gezichten. Gebruik de aparte optie Gezichtsafstemming en de Personen-weergave om een specifieke persoon te groeperen en een door jou toegevoegde naam te zoeken.",
             "De Foto-index staat standaard uit en vereist macOS. Linux en Windows tonen Niet beschikbaar op dit platform, en nieuwe indexering kan niet worden ingeschakeld. Op Mac blijft de analyse op het apparaat en wijzigt geen fotomappen. Apple Vision levert de kernanalyse; rijkere Foundation Models-beschrijvingen verschijnen alleen wanneer die mogelijkheid beschikbaar is."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

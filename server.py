@@ -70,6 +70,7 @@ import durable_io  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
+from film_lab_ai.face_service import FaceService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
 import platform_image  # noqa: E402
 import platform_paths  # noqa: E402
@@ -546,6 +547,7 @@ VISION_HELPER = Path(os.environ.get(
 )).expanduser()
 VISION_PROVIDER = VisionProvider(VISION_HELPER)
 AI_INDEX: AIIndexService | None = None
+FACE_INDEX: FaceService | None = None
 
 
 def load_json_file(p: Path, default):
@@ -6638,6 +6640,27 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/soft-proof/profiles":
                 import soft_proof
                 self._json({"profiles": soft_proof.list_system_icc_profiles()})
+            elif u.path.startswith("/api/people/"):
+                if not FACE_INDEX:
+                    self._json({"error": T("Face matching is not ready")}, 503)
+                elif u.path == "/api/people/status":
+                    self._json(FACE_INDEX.status())
+                elif u.path == "/api/people/groups":
+                    self._json({"groups": FACE_INDEX.store.gallery()})
+                elif u.path == "/api/people/members":
+                    self._json({"faces": FACE_INDEX.store.members(q.get("group", ""))})
+                elif u.path == "/api/people/suggestions":
+                    self._json({"matches": FACE_INDEX.store.suggestions()})
+                elif u.path == "/api/people/labels":
+                    self._json(FACE_INDEX.labels(catalog_image_names()))
+                elif u.path == "/api/people/thumbnail":
+                    payload = FACE_INDEX.store.thumbnail(q.get("face", ""))
+                    if payload:
+                        self._send(200, payload, "image/jpeg")
+                    else:
+                        self._json({"error": T("Face thumbnail unavailable")}, 404)
+                else:
+                    self._json({"error": T("Unknown people route")}, 404)
             elif u.path == "/api/ai-index/status":
                 if not AI_INDEX:
                     self._json({"error": T("local index is not ready")}, 503)
@@ -7169,6 +7192,11 @@ class Handler(BaseHTTPRequestHandler):
                         name, b.get("settings", {})))
                 else:
                     self._json({"error": T("unknown camera-default action")}, 400)
+            elif u.path == "/api/people":
+                if not FACE_INDEX:
+                    self._json({"error": T("Face matching is not ready")}, 503)
+                else:
+                    self._json(FACE_INDEX.action(self._body()))
             elif u.path == "/api/ai-index":
                 if not AI_INDEX:
                     self._json({"error": T("local index is not ready")}, 503)
@@ -7435,7 +7463,7 @@ class LightTableServer(ThreadingHTTPServer):
 
 
 def main() -> None:
-    global AI_INDEX, WATCH_SERVICE, PORT, HTTPD, LAUNCH_NOTICE
+    global AI_INDEX, FACE_INDEX, WATCH_SERVICE, PORT, HTTPD, LAUNCH_NOTICE
     STARTUP.path = recovery.startup_report_path(instance_directory())
     STARTUP.phase("starting", T("Starting LightTable…"))
     if os.environ.get("LIGHTTABLE_WATCH_PARENT"):
@@ -7517,8 +7545,21 @@ def main() -> None:
             VISION_HELPER, vision_provider=VISION_PROVIDER),
     )
     atexit.register(AI_INDEX.shutdown)
+    FACE_INDEX = FaceService(
+        library=(cat.path if cat is not None else FOLDER),
+        data_root=AI_DATA_ROOT,
+        list_images=catalog_image_names,
+        source_key=file_key,
+        source_identity=catalog_image_id,
+        preview_bytes=lambda name: orig_jpeg(name, 1024),
+        source_availability=lambda name: media_availability.index_availability(src_path(name)),
+        render_busy=RENDER_LOCK.locked,
+        worker_cleanup=(lambda: CATALOG.close() if CATALOG is not None else None),
+    )
+    atexit.register(FACE_INDEX.shutdown)
     if not SAFE_MODE:
         AI_INDEX.start()
+        FACE_INDEX.start()
     if cat is not None and os.environ.get("LIGHTTABLE_WATCH", "1") != "0" \
             and not SAFE_MODE:
         WATCH_SERVICE = watch_workflow.WatchService(
@@ -8513,7 +8554,13 @@ def browser_catalog_query(spec: dict | None = None, *,
     if "video" not in excluded:
         excluded.append("video")
     query["excludeKinds"] = excluded
-    return require_catalog().query(query, include_state=include_state)
+    page = require_catalog().query(query, include_state=include_state)
+    if FACE_INDEX:
+        labels = FACE_INDEX.labels([item["name"].split(catalog_module.VIRTUAL_MARKER)[0]
+                                    for item in page["items"]])
+        for item in page["items"]:
+            item["people"] = labels.get(item["name"].split(catalog_module.VIRTUAL_MARKER)[0], [])
+    return page
 
 
 def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
@@ -8533,6 +8580,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
         names = [name for name in library_item_names(st)
                  if not is_video(name)]
         ai_results = AI_INDEX.results(physical_names) if AI_INDEX else {}
+        people = FACE_INDEX.labels(physical_names) if FACE_INDEX else {}
         copies = {item["name"]: item
                   for item in library_state(st)["virtualCopies"]}
         rows = []
@@ -8558,6 +8606,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 width=entry.get("width"),
                 height=entry.get("height"),
                 ai=ai_results.get(source),
+                people=people.get(source, []),
             ))
         directories = {row["path"] for row in snapshot["folders"]}
         visible_snapshot = dict(snapshot)
@@ -8603,6 +8652,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "catalogId": item["id"],
             "sourceId": item["sourceId"],
             "ai": None,
+            "people": item.get("people", []),
         })
     folders = [{"path": row["relpath"], "name": row["name"] or "",
                 "count": row["count"]}

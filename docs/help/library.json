@@ -284,11 +284,11 @@
       {
         "title": "Search the current view",
         "paragraphs": [
-          "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters."
+          "The search box matches text in filenames, display names, keywords, names you add in People, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters."
         ],
         "steps": [
           "Click Search photos and keywords, or press / when you are not typing in a field.",
-          "Type a word or phrase from the filename or keywords.",
+          "Type a word or phrase from the filename, keywords, or a name you saved in People.",
           "Use All Photos, Unflagged, Picked, Rejected, or Rated in the sidebar to choose a flag or rating group.",
           "Click Filter beside Sort. Select one or more file types, then combine them with Flag, Rating, Color label, or Edit status.",
           "Choose File name, Rating, Flag, Capture date, or Colour label in Sort."

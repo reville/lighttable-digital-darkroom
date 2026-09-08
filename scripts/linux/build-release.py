@@ -52,6 +52,7 @@ def stage_resources(project: Path, python_source: Path, rust_source: Path, bundl
     (resources / "film_lab_ai").mkdir()
     for source in (project / "film_lab_ai").glob("*.py"):
         shutil.copy2(source, resources / "film_lab_ai" / source.name)
+    shutil.copytree(project / "film_lab_ai/licenses", resources / "film_lab_ai/licenses")
     copy_tree(python_source / "src", resources / "vendor/spektrafilm/src")
     copy_tree(rust_source / "data", resources / "engine/data")
     for source in (project / "profiles").glob("*.json"):

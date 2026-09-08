@@ -738,6 +738,21 @@ class ExportMetadataTests(CatalogServerTestCase):
 
 
 class PayloadAndCacheTests(CatalogServerTestCase):
+    def test_people_labels_are_in_initial_and_paged_rows_including_virtual_copies(self):
+        original = self.qualified("a.jpg")
+        copied = server.update_library({"action": "create_virtual", "name": original,
+                                        "displayName": "Alternate"})["copy"]["name"]
+        service = mock.Mock()
+        service.labels.side_effect = lambda names: {original: ["Alice"]} if original in names else {}
+        with mock.patch.object(server, "FACE_INDEX", service):
+            rows, _ = server.library_payload(limit=20)
+            page = server.browser_catalog_query({"limit": 20})
+        for items in (rows, page["items"]):
+            labels = {row["name"]: row["people"] for row in items}
+            self.assertEqual(labels[original], ["Alice"])
+            self.assertEqual(labels[copied], ["Alice"])
+            self.assertEqual(labels[self.qualified("sub/b.jpg")], [])
+
     def test_catalog_boot_payload_is_lean_and_reports_total(self):
         for name in (self.qualified("a.jpg"), self.qualified("sub/b.jpg")):
             server.save_image_state(name, {

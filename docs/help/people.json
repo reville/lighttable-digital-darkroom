@@ -1,0 +1,100 @@
+[
+  {
+    "id": "people-face-matching",
+    "title": "Group and find people",
+    "category": "Library",
+    "summary": "Use optional on-device face matching to group similar faces, add names, and review possible matches.",
+    "keywords": [
+      "people",
+      "faces",
+      "face matching",
+      "recognition",
+      "name",
+      "merge",
+      "split",
+      "same person",
+      "google photos",
+      "privacy",
+      "quantized",
+      "SFace"
+    ],
+    "sections": [
+      {
+        "title": "Enable face matching",
+        "paragraphs": [
+          "Face matching is separate from the Photo contents index and is off by default. Open People in the Library sidebar, or Settings → Photo Index → Face matching. Download models & enable downloads about 10.1 MB of model files. Photo data is processed on this device and is never uploaded for matching.",
+          "Matching scans available still photos in the current catalog, not just the current folder or filter. Empty files, cloud-only files, and unavailable originals are skipped without downloading them."
+        ],
+        "steps": [
+          "Open People and choose Download models & enable.",
+          "Wait for face groups to appear. You can keep editing while scanning runs.",
+          "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused."
+        ]
+      },
+      {
+        "title": "Name and browse a person",
+        "paragraphs": [
+          "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.",
+          "Use Faces to inspect crops of individual faces. Use Photos to see the full photographs, then choose a photo to open it in the editor. Names you add become searchable in the library search field. Hidden groups do not contribute names to search."
+        ]
+      },
+      {
+        "title": "Review and correct matches",
+        "paragraphs": [
+          "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.",
+          "Within a group, Merge with… lets you choose another group and review the combination before confirming it. The current group’s name is kept; if it is unnamed, the other group’s name is used. Saving the same name on two groups does not automatically merge them.",
+          "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.",
+          "Hide person moves a group to Hidden without deleting photos or face data. Open it there and choose Show person to restore it. Undo last change reverses the most recent group edit; a scan that adds or refreshes photos clears that undo entry."
+        ]
+      },
+      {
+        "title": "Pause and remove face data",
+        "paragraphs": [
+          "Pause, or turn Face matching off, to stop scanning. Existing groups and names remain available, including name search. Scan new photos resumes matching.",
+          "Delete face data… asks you to confirm removal of this catalog’s face groups, names, corrections, and thumbnails. Original photos, edits, and the Photo contents index are unchanged. Downloaded model files remain available. Face data is stored separately in the application data folder and is not included in catalog backups."
+        ]
+      },
+      {
+        "title": "What to expect",
+        "paragraphs": [
+          "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.",
+          "Small, blurry, obscured, profile, and substantially age-separated faces may be missed or split across groups. The model can also make incorrect matches. Faces appearing together in one photo are not automatically matched; a manual merge remains possible for mirrors and collages. This feature does not group pets or provide guaranteed identity accuracy."
+        ]
+      }
+    ],
+    "related": [
+      "photo-index",
+      "browse-folders"
+    ],
+    "sources": [
+      {
+        "path": "web/people.js",
+        "anchor": "export function createPeoplePanel"
+      },
+      {
+        "path": "web/people.css",
+        "anchor": ".people-panel"
+      },
+      {
+        "path": "film_lab_ai/face_service.py",
+        "anchor": "class FaceService:"
+      },
+      {
+        "path": "film_lab_ai/face_store.py",
+        "anchor": "class FaceStore:"
+      },
+      {
+        "path": "film_lab_ai/face_models.py",
+        "anchor": "MODEL_ID = \"sface-int8-2021dec-v1\""
+      },
+      {
+        "path": "web/library.js",
+        "anchor": "...(image.people || [])"
+      },
+      {
+        "path": "server.py",
+        "anchor": "elif u.path == \"/api/people\":"
+      }
+    ]
+  }
+]
