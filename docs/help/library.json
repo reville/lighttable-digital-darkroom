@@ -99,25 +99,25 @@
       {
         "title": "Plan the copy",
         "paragraphs": [
-          "Import from card copies files into the destination you choose. The card originals stay in place."
+          "Import from card copies files into the destination you choose. The card originals stay in place. Duplicate skipping compares complete file contents; a matching filename or camera header alone is not enough."
         ],
         "steps": [
           "Open Local ••• → Import from card….",
           "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
           "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
-          "Click Scan. Review the destination preview and the checked files, then click Import.",
-          "Wait for the copied count and check whether any files failed."
+          "Click Scan. Use Previous and Next to review every page, and check the selected count and destination preview before clicking Import. Import is unavailable when no photos are selected.",
+          "Wait for the copied count and check whether any files failed. Cancel stops after the current file finishes copying and verification; completed copies are kept and card originals stay untouched."
         ],
         "tips": [
-          "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
-          "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
+          "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence. Long template fields are shortened; check the destination preview.",
+          "Previews show 200 files per page. Selection carries across pages; Select all and Select none apply to the whole scan, including pages you have not opened.",
           "If files are reported as cloud-only, download them locally and scan again."
         ]
       },
       {
         "title": "Refresh the plan when settings change",
         "paragraphs": [
-          "Scan again after changing the destination or naming templates so you can review the updated paths before importing."
+          "Changing the source, destination, naming, or verification settings clears the reviewed plan. Scan again to review the new files and paths before importing."
         ]
       }
     ],
@@ -126,17 +126,19 @@
       "rename-photos"
     ],
     "sources": [
+      {"path": "catalog.py", "anchor": "def ingest_content_hashes("},
+      {"path": "ingest_workflow.py", "anchor": "def build_plan("},
       {
         "path": "web/index.html",
         "anchor": "<strong id=\"ingestTitle\">Import from card</strong>"
       },
       {
         "path": "web/catalog-ui.js",
-        "anchor": "(ingestPlan.items || []).slice(0, 200)"
+        "anchor": "items().slice(page * pageSize, (page + 1) * pageSize)"
       },
       {
         "path": "web/catalog-ui.js",
-        "anchor": "items: ingestPlan.items.filter((item) => checked.has(item.source))"
+        "anchor": "const chosen = () => items().filter(item => selected.has(item.source));"
       },
       {
         "path": "web/catalog-ui.js",
@@ -145,6 +147,10 @@
       {
         "path": "ingest_workflow.py",
         "anchor": "TOKENS = {\"filename\", \"camera\", \"sequence\", \"custom\", *DATE_TOKENS}"
+      },
+      {
+        "path": "server.py",
+        "anchor": "def cancel_ingest_job() -> bool:"
       }
     ]
   },
@@ -160,7 +166,10 @@
       "sidebar",
       "missing photos",
       "rescan",
-      "synchronize"
+      "synchronize",
+      "watch folder",
+      "watched folders",
+      "tethering"
     ],
     "sections": [
       {
@@ -181,6 +190,14 @@
         "paragraphs": [
           "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
           "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
+        ]
+      },
+      {
+        "title": "Manage watched folders",
+        "paragraphs": [
+          "Open Local ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
+          "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
+          "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
         ]
       }
     ],
@@ -205,6 +222,14 @@
       {
         "path": "app/main.swift",
         "anchor": "sources.removeAll { $0.path == clean }"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "el('watchExisting')?.addEventListener('change'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "Choose a watched folder and library destination first."
       }
     ]
   },
@@ -212,7 +237,7 @@
     "id": "search-filter-sort",
     "title": "Find photos with search, filters, and sorting",
     "category": "Library",
-    "summary": "Narrow the current folder or collection by text, file type, flags, stars, color label, and edit status.",
+    "summary": "Narrow photos by text, camera, lens, exposure, capture date, keywords, and culling marks.",
     "keywords": [
       "find",
       "search",
@@ -229,7 +254,14 @@
       "TIFF",
       "PNG",
       "unedited",
-      "clear filters"
+      "clear filters",
+      "camera",
+      "lens",
+      "ISO",
+      "aperture",
+      "shutter speed",
+      "focal length",
+      "EXIF"
     ],
     "sections": [
       {
@@ -254,6 +286,14 @@
         ]
       },
       {
+        "title": "Filter camera, exposure, and capture date",
+        "paragraphs": [
+          "Expand Camera, exposure & date in Filter. Camera and Lens match part of a name. Keyword matches a complete catalog keyword path and its descendants; for example, Places includes Places > Boston.",
+          "ISO, focal length in millimeters, aperture f-number, and shutter time accept minimum and maximum values. Enter the same number at both ends for an exact match. Shutter time accepts seconds or a fraction such as 1/250. Photos without the required exposure metadata do not match.",
+          "Capture dates include both the first and last day. These filters combine with ratings and other choices, survive a reload, and can be saved in a smart collection. Existing photos gain exposure values when their source is next scanned; rescan a folder if values are missing."
+        ]
+      },
+      {
         "title": "When a photo seems missing",
         "paragraphs": [
           "Clear the search text and choose Clear all above the grid, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.",
@@ -268,13 +308,14 @@
       "virtual-copies-and-stacks"
     ],
     "sources": [
+      {"path": "web/library-filters.js", "anchor": "export function photoHasEdits(image)"},
       {
         "path": "web/library.js",
         "anchor": "const terms = [image.name, image.displayName, ...(image.keywords || []),"
       },
       {
         "path": "web/app.js",
-        "anchor": "return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);"
+        "anchor": "return matchesKind && matchesLibraryFilters(im, fileTypes, editState, metadata) && photoMatchesQuery(im, search);"
       },
       {
         "path": "web/index.html",
@@ -291,6 +332,14 @@
       {
         "path": "web/library-filters.js",
         "anchor": "export function installLibraryFilters"
+      },
+      {
+        "path": "dam_filters.py",
+        "anchor": "def clean_filters(value: dict) -> dict:"
+      },
+      {
+        "path": "catalog_scan.py",
+        "anchor": "METADATA_VERSION = 4"
       }
     ]
   },
@@ -316,7 +365,8 @@
       {
         "title": "Move between views",
         "paragraphs": [
-          "Photo Grid presents photos as a visual overview. Culling Grid adds room for selection and rating information. Detail opens the active photo for close inspection."
+          "Photo Grid presents photos as a visual overview. Culling Grid adds room for selection and rating information. Detail opens the active photo for close inspection.",
+          "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name."
         ],
         "steps": [
           "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
@@ -327,9 +377,10 @@
       {
         "title": "Compare while zoomed in",
         "paragraphs": [
-          "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
+          "Click Compare in Detail to split the original and edited photo. Each time you turn Compare on, the divider automatically centers in the current view without changing your zoom or pan. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
           "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail.",
-          "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view."
+          "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.",
+          "Photo information, processing badges, and hold-key adjustment readouts stay at their normal screen size while you zoom or pan."
         ],
         "steps": [
           "Turn on Compare, then zoom beyond Fit.",
@@ -341,7 +392,8 @@
         "title": "Build a selection",
         "paragraphs": [
           "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
-          "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action."
+          "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action.",
+          "Open Info beside either grid to view metadata or tag selected photos. The grid narrows to make room for the inspector. Choose another inspector tool to return to the wider grid."
         ]
       }
     ],
@@ -378,6 +430,14 @@
       {
         "path": "web/compare-view.js",
         "anchor": "export function comparePositionAtViewCenter(image, viewport) {"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "function syncViewerChrome()"
+      },
+      {
+        "path": "web/style.css",
+        "anchor": ".app.grid-mode.grid-info-open"
       }
     ]
   },
@@ -634,7 +694,7 @@
       {
         "title": "Save supported rules",
         "paragraphs": [
-          "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text."
+          "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text. Camera, lens, hierarchical keyword, capture date, ISO, focal length, aperture, and shutter-time ranges are also saved."
         ],
         "steps": [
           "Set the search text and desired choices in Filter beside Sort.",
@@ -647,7 +707,8 @@
         "title": "Know what is saved",
         "paragraphs": [
           "The selected folder and Include subfolders are not saved in the smart collection rules. The collection searches the library using the saved filter choices.",
-          "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and library filters can still narrow the collection view."
+          "You cannot manually add photos with Add selected to collection while a smart collection is active. Current search and library filters can still narrow the collection view.",
+          "For four-star photos taken at 50mm in 2026, set Rating to 4 stars and up, focal length minimum and maximum to 50, and capture dates from January 1 through December 31, 2026. Save those filters as a smart collection."
         ]
       }
     ],
@@ -672,6 +733,10 @@
       {
         "path": "web/app.js",
         "anchor": "if (!collection || collection.type !== 'regular') return;"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "for flt in (collection_rules, spec.get(\"filter\") or {}):"
       }
     ]
   },
@@ -1017,23 +1082,38 @@
       "copyright",
       "creator",
       "location",
-      "GPS"
+      "GPS",
+      "batch keywords",
+      "remove keywords",
+      "undo keywords",
+      "hierarchical keywords"
     ],
     "sections": [
       {
         "title": "Add searchable keywords",
         "paragraphs": [
-          "Open Info on the active photo. Enter keywords in Add keywords and click Add or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
+          "Open Info on the active photo. Enter keywords in Add keywords and click Add to photo or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
           "Use a hierarchical path such as Places > Boston to keep related terms together. The Keyword tree lists catalog terms; click a term to search, or double-click it to rename that catalog keyword."
         ],
         "tips": [
-          "The keyword entry acts on the active photo, rather than every selected grid photo. Link pair metadata can also update its RAW or JPEG companion."
+          "Add to photo and Enter affect the active photo. The separate selection buttons act on the selected grid photos. Link pair metadata can also update their RAW or JPEG companions."
+        ]
+      },
+      {
+        "title": "Add or remove keywords on a selection",
+        "steps": [
+          "Select photos in either grid and open Info. Check the selected-photo count below the keyword buttons.",
+          "Enter one or more keywords, then choose Add to selection or Remove from selection. Each photo keeps its other keywords.",
+          "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states."
+        ],
+        "paragraphs": [
+          "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog."
         ]
       },
       {
         "title": "Describe the photo",
         "paragraphs": [
-          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type.",
+          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
           "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file."
         ]
       }
@@ -1041,7 +1121,8 @@
     "related": [
       "search-filter-sort",
       "raw-jpeg-pairs",
-      "capture-time"
+      "capture-time",
+      "xmp-interchange"
     ],
     "sources": [
       {
@@ -1071,6 +1152,18 @@
       {
         "path": "web/metadata-panel.js",
         "anchor": "files when the recipe asks for them; originals are never modified."
+      },
+      {
+        "path": "web/keyword-batch.js",
+        "anchor": "export function installKeywordBatch(ctx)"
+      },
+      {
+        "path": "keyword_workflow.py",
+        "anchor": "MAX_BATCH = 5000"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "createWebViewWith configuration:"
       }
     ]
   },
@@ -1108,7 +1201,7 @@
         "title": "Restore a correction",
         "paragraphs": [
           "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
-          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History."
+          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged."
         ]
       }
     ],
@@ -1118,6 +1211,7 @@
       "raw-jpeg-pairs"
     ],
     "sources": [
+      {"path": "xmp_sidecar.py", "anchor": "captureTimeOriginal"},
       {
         "path": "web/index.html",
         "anchor": "These catalog corrections affect capture-date sorting and exported metadata; original files and filesystem dates stay unchanged."
@@ -1174,14 +1268,15 @@
         "title": "Review translated edits",
         "paragraphs": [
           "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-          "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop."
+          "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
         ]
       }
     ],
     "related": [
       "add-photos",
       "collections",
-      "metadata-and-keywords"
+      "metadata-and-keywords",
+      "xmp-interchange"
     ],
     "sources": [
       {
@@ -1219,6 +1314,64 @@
       {
         "path": "server.py",
         "anchor": "label=\"before-import\""
+      }
+    ]
+  },
+  {
+    "id": "xmp-interchange",
+    "title": "Exchange metadata through XMP sidecars",
+    "category": "Library",
+    "summary": "Read culling metadata from other editors and keep supported changes beside your originals.",
+    "keywords": [
+      "XMP",
+      "sidecars",
+      "Photo Mechanic",
+      "digiKam",
+      "interoperability",
+      "sync conflict",
+      "portable metadata"
+    ],
+    "sections": [
+      {
+        "title": "Read metadata from another editor",
+        "paragraphs": [
+          "Ask the other editor to save its metadata to adjacent XMP files, then choose Local ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
+          "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
+          "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are not applied by this menu action."
+        ]
+      },
+      {
+        "title": "Write changes beside originals",
+        "paragraphs": [
+          "Turn on automatic XMP writing in Settings → Files & Metadata. LightTable queues changed fields and writes them beside available originals. It preserves unrelated metadata and saves a backup of the existing sidecar before first updating it. Offline or failed writes stay queued for retry.",
+          "If another application changes the same XMP property after the last read or sync, LightTable reports a conflict and leaves that sidecar unchanged. Review the external metadata, then import sidecars to accept those metadata values before making further changes in LightTable.",
+          "Use either photo.xmp or photo.RAW.xmp for one original. If both are present, import and sync report the ambiguity instead of choosing one. Keep one naming convention after checking their contents.",
+          "XMP exchanges supported metadata; it is not a complete catalog backup. Keep catalog backups for collections, history, and variants, and enable portable LightTable edits when you need the full editing recipe to travel with a folder."
+        ]
+      }
+    ],
+    "related": [
+      "metadata-and-keywords",
+      "settings-and-defaults",
+      "catalog-health-recovery",
+      "import-lightroom-catalog"
+    ],
+    "sources": [
+      {
+        "path": "server.py",
+        "anchor": "def import_sidecars(body: dict) -> dict:"
+      },
+      {
+        "path": "server.py",
+        "anchor": "def write_pending_sidecars() -> int:"
+      },
+      {
+        "path": "xmp_sidecar.py",
+        "anchor": "def sidecar_snapshot(source: Path) -> dict:"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "function bindSidecarImport() {"
       }
     ]
   }

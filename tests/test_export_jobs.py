@@ -138,6 +138,7 @@ class ExportDeliveryTests(unittest.TestCase):
         self.assertEqual(result['state'], 'cancelled')
         self.assertEqual(previous.read_bytes(), b'previous complete delivery')
         self.assertEqual(result['result']['completed'], 1)
+        self.assertEqual(result['result']['revealPath'], str((destination / 'IMG_0000.png').resolve()))
         self.assertEqual(result['result']['cancelledCount'], 39)
         self.assertEqual(len(list(destination.glob('*.png'))), 2)
         self.assertEqual(len(list(destination.glob('*.lighttable.json'))), 1)
@@ -166,7 +167,26 @@ class ExportDeliveryTests(unittest.TestCase):
         before = {p.name: p.read_bytes() for p in destination.iterdir()}
         record = self.wait(server.start_export(dict(opts, collision='skip'))['jobId'])
         self.assertEqual(record['result']['skipped'], 3)
+        self.assertNotIn('revealPath', record['result'])
         self.assertEqual(before, {p.name: p.read_bytes() for p in destination.iterdir()})
+
+    def test_reveal_path_identifies_published_output_after_rename_in_each_destination_mode(self):
+        name = self.add_photo(1, 0)
+        for mode in ('fixed', 'original-folder-relative', 'preserve-source-hierarchy'):
+            with self.subTest(mode=mode):
+                opts = {'names': [name], 'format': 'png', 'destination': 'finished',
+                        'destinationMode': mode, 'filenameTemplate': 'same',
+                        'metadata': 'none', 'sidecar': False, 'collision': 'rename'}
+                first = self.wait(server.start_export(opts)['jobId'])
+                second = self.wait(server.start_export(opts)['jobId'])
+                original = Path(first['result']['revealPath'])
+                renamed = Path(second['result']['revealPath'])
+                self.assertEqual(second['result']['completed'], 1)
+                self.assertTrue(renamed.is_file())
+                self.assertNotEqual(original, renamed)
+                self.assertEqual(original.parent, renamed.parent)
+                if mode == 'original-folder-relative':
+                    self.assertEqual(renamed.parent, (self.photos[name].parent / 'finished').resolve())
 
     def test_single_and_batch_use_same_original_relative_paths_and_virtual_name(self):
         first = self.add_photo(1, 1)

@@ -187,7 +187,10 @@ def clean_masks(values) -> list[dict]:
             continue
         component_values = raw.get("components")
         if not isinstance(component_values, list):
-            component_values = [raw]
+            # A flat mask's invert flag belongs to the entire selection.
+            # Canonical components have an independent invert flag; copying
+            # the legacy flag into both levels would cancel its inversion.
+            component_values = [{**raw, "invert": False}]
         components = []
         for component_index, component_raw in enumerate(
                 component_values[:MAX_MASK_COMPONENTS]):
@@ -413,7 +416,7 @@ def _color_weight(image: np.ndarray, hue: float | None,
         np.float32)
 
 
-def apply_masks(image: np.ndarray, masks) -> np.ndarray:
+def apply_masks(image: np.ndarray, masks, *, accelerated: bool = False) -> np.ndarray:
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
     for mask in clean_masks(masks):
         if not mask["enabled"] or grade.is_identity(mask["grade"]):
@@ -435,7 +438,18 @@ def apply_masks(image: np.ndarray, masks) -> np.ndarray:
             mask["colorAmount"])
         if not np.any(region_weight > 1e-6):
             continue
-        adjusted = grade.apply(region, mask["grade"])
+        apply_grade = grade.apply_accelerated if accelerated else grade.apply
+        if mask["grade"]["texture"] or mask["grade"]["clarity"]:
+            # Local detail uses the source's one-pixel cross neighbors.
+            # Include them beyond the mask bounds, then discard the halo so
+            # the selection limits changed pixels rather than sampled pixels.
+            height, width = output.shape[:2]
+            sy0, sy1 = max(0, y0 - 1), min(height, y1 + 1)
+            sx0, sx1 = max(0, x0 - 1), min(width, x1 + 1)
+            adjusted = apply_grade(output[sy0:sy1, sx0:sx1], mask["grade"])[
+                y0 - sy0:y1 - sy0, x0 - sx0:x1 - sx0]
+        else:
+            adjusted = apply_grade(region, mask["grade"])
         output[y0:y1, x0:x1] = (
             region * (1.0 - region_weight[..., None])
             + adjusted * region_weight[..., None])
@@ -699,13 +713,20 @@ def apply_manual_optics(image: np.ndarray, optics: dict) -> np.ndarray:
     py = ry * (1.0 + horizontal * 0.45 * rx)
     radius2 = px * px + py * py
     factor = 1.0 + distortion * 0.18 * radius2
-    source_x = px * factor * half + (width - 1) / 2.0
-    source_y = py * factor * half + (height - 1) / 2.0
-    warped = np.stack([
-        _map_coordinates()(image[..., channel], [source_y, source_x],
-                           order=1, mode="constant", cval=0.0)
-        for channel in range(3)
-    ], axis=2)
+    if any((distortion, vertical, horizontal, rotation, scale - 1.0)):
+        source_x = px * factor * half + (width - 1) / 2.0
+        source_y = py * factor * half + (height - 1) / 2.0
+        warped = np.stack([
+            _map_coordinates()(image[..., channel], [source_y, source_x],
+                               order=1, mode="constant", cval=0.0)
+            for channel in range(3)
+        ], axis=2)
+    else:
+        # Discrete flips need no interpolation. Reconstructing their integer
+        # coordinates through normalized float32 can put a border just below
+        # zero and sample black; it also softens unchanged source pixels.
+        warped = image[::(-1 if optics["flipVertical"] else 1),
+                       ::(-1 if optics["flipHorizontal"] else 1)].copy()
     if optics["vignette"]:
         radial = np.clip(radius2 / 2.0, 0.0, 1.5)
         warped *= (1.0 + optics["vignette"] * 0.8 * radial)[..., None]

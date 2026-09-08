@@ -45,7 +45,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2026 Nicholas Reville. Bundled film-engine components are GPLv3.</string>
+	<string>Copyright © 2026 LightTable contributors. Free and open source under GNU GPL v3.</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>

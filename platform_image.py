@@ -212,7 +212,15 @@ def _exiv2_value(data, *keys: str) -> str:
     import exiv2
 
     for key in keys:
-        item = data.findKey(exiv2.ExifKey(key))
+        try:
+            lookup = exiv2.ExifKey(key)
+        except exiv2.Exiv2Error as error:
+            if error.code != exiv2.ErrorCode.kerInvalidTag:
+                raise
+            # Exiv2 versions do not all recognize the same aliases. Continue
+            # to the supported fallback instead of discarding every EXIF field.
+            continue
+        item = data.findKey(lookup)
         if item != data.end():
             return item.toString()
     return ""
@@ -327,7 +335,8 @@ def _open_portable(source: Path) -> tuple[Image.Image, bytes | None]:
             pixels = np.asarray(buffer.get_pixels(oiio.UINT8))
             if pixels.ndim != 3 or pixels.shape[2] < 3:
                 raise ValueError("image decoder did not return RGB pixels")
-            embedded = bytes(spec.get_bytes_attribute("ICCProfile")) or None
+            attribute = spec.getattribute("ICCProfile")
+            embedded = bytes(attribute) if attribute is not None else None
             return Image.fromarray(pixels[..., :3], "RGB"), embedded
         except Exception as broad_error:  # noqa: BLE001
             raise RuntimeError(
@@ -497,6 +506,75 @@ def _write_linux_tiff(destination: Path, pixels: np.ndarray,
                      compression=None, extratags=tags)
 
 
+def _open_portable_full_precision(source: Path) -> tuple[np.ndarray, bytes | None]:
+    """Decode export pixels without Pillow's 8-bit multichannel conversion."""
+    import OpenImageIO as oiio
+
+    config = oiio.ImageSpec()
+    # Dropping alpha must retain the underlying color, as Pillow RGB does.
+    config.attribute("oiio:UnassociatedAlpha", 1)
+    config.attribute("oiio:reorient", 0)
+    buffer = oiio.ImageBuf(str(source), 0, 0, config)
+    spec = buffer.spec()
+    if spec.width <= 0 or spec.height <= 0:
+        raise RuntimeError(f"could not decode {source.name}: {buffer.geterror()}")
+    attribute = spec.getattribute("ICCProfile")
+    embedded = bytes(attribute) if attribute is not None else None
+    # Integer sources get at least 16-bit precision through the ICC transform;
+    # floating-point sources retain their range and fractional precision.
+    pixel_type = (oiio.UINT16 if spec.format.basetype in (oiio.UINT8, oiio.UINT16)
+                  else oiio.FLOAT)
+    pixels = buffer.get_pixels(pixel_type)
+    if pixels is None or buffer.has_error:
+        raise RuntimeError(f"could not decode {source.name}: {buffer.geterror()}")
+    pixels = np.asarray(pixels)
+    if pixels.ndim != 3 or pixels.shape[2] == 0:
+        raise ValueError("image decoder did not return color pixels")
+    # Match EXIF/Pillow orientation, including mirrored orientations 5 and 7.
+    orientation = spec.get_int_attribute("Orientation", 1)
+    if orientation == 2:
+        pixels = pixels[:, ::-1]
+    elif orientation == 3:
+        pixels = pixels[::-1, ::-1]
+    elif orientation == 4:
+        pixels = pixels[::-1]
+    elif orientation == 5:
+        pixels = pixels.transpose(1, 0, 2)
+    elif orientation == 6:
+        pixels = np.rot90(pixels, -1)
+    elif orientation == 7:
+        pixels = pixels.transpose(1, 0, 2)[::-1, ::-1]
+    elif orientation == 8:
+        pixels = np.rot90(pixels, 1)
+    if pixels.shape[2] < 3:
+        return np.ascontiguousarray(pixels[..., 0]), embedded
+    return np.ascontiguousarray(pixels[..., :3]), embedded
+
+
+def _convert_profile_full_precision(
+    pixels: np.ndarray, embedded_profile: bytes | None,
+    app_root: Path, output_space: str,
+) -> tuple[np.ndarray, bytes]:
+    """Apply the same perceptual ICC intent with LittleCMS 16-bit/float I/O."""
+    import imagecodecs
+
+    target_bytes = profile_path(app_root, output_space).read_bytes()
+    source_bytes = embedded_profile or profile_path(app_root, "srgb").read_bytes()
+    # Untagged gray inputs follow the same assumed-sRGB policy as RGB inputs.
+    # Tagged gray inputs keep their own tone curve through the ICC transform.
+    if pixels.ndim == 2 and imagecodecs.cms_info(source_bytes)["colorspace"] == "rgb":
+        pixels = np.repeat(pixels[..., None], 3, axis=2)
+    converted = imagecodecs.cms_transform(
+        pixels, source_bytes, target_bytes,
+        planar=False, outplanar=False, outcolorspace="rgb",
+        intent=imagecodecs.CMS.INTENT.PERCEPTUAL,
+        # Preserve the profile curves instead of resampling them into a
+        # coarse integer lookup table, especially in shadows and at gamut edges.
+        flags=imagecodecs.CMS.FLAGS.NOOPTIMIZE,
+    )
+    return converted, target_bytes
+
+
 def convert_processed_to_tiff(
     source: Path,
     destination: Path,
@@ -524,19 +602,28 @@ def convert_processed_to_tiff(
             )
         return
 
-    if sys.platform.startswith("linux") and source.suffix.lower() in {".tif", ".tiff"}:
-        pixels, embedded = _open_linux_tiff_float(source)
-        pixels, profile = _convert_float_profile(pixels, embedded, app_root, output_space)
+    if sys.platform.startswith("linux"):
+        # Linux uses system LittleCMS float I/O for TIFFs and uncompressed
+        # caches that remain readable without the optional imagecodecs wheel.
+        if source.suffix.lower() in {".tif", ".tiff"}:
+            pixels, embedded = _open_linux_tiff_float(source)
+            pixels, profile = _convert_float_profile(pixels, embedded, app_root, output_space)
+        else:
+            image, embedded = _open_portable(source)
+            image, profile = _convert_profile(image, embedded, app_root, output_space)
+            pixels = np.asarray(image)
         _write_linux_tiff(destination, pixels, profile)
         return
 
-    image, embedded = _open_portable(source)
-    image, profile = _convert_profile(image, embedded, app_root, output_space)
-    if sys.platform.startswith("linux"):
-        _write_linux_tiff(destination, np.asarray(image), profile)
-        return
-    options = {"icc_profile": profile} if profile else {}
-    image.save(destination, "TIFF", compression="tiff_lzw", **options)
+    import tifffile
+
+    pixels, embedded = _open_portable_full_precision(source)
+    pixels, profile = _convert_profile_full_precision(
+        pixels, embedded, app_root, output_space)
+    tifffile.imwrite(
+        destination, pixels, photometric="rgb", metadata=None,
+        compression="lzw", iccprofile=profile,
+    )
 
 
 def processed_preview(source: Path, max_width: int, *, app_root: Path,

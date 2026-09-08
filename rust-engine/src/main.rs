@@ -22,12 +22,16 @@ mod region;
 mod native_surface;
 #[cfg(unix)]
 mod shared_memory;
+mod grade_gpu;
+mod merge_gpu;
 
 #[derive(Debug, Deserialize)]
 struct Request {
     id: u64,
     #[serde(default = "default_command")]
     command: String,
+    operation: Option<String>,
+    parameters: Option<Vec<f32>>,
     input: Option<PathBuf>,
     input_shm: Option<String>,
     input_shm_len: Option<usize>,
@@ -92,6 +96,7 @@ struct Response {
     input_cache_hit: bool,
     viewport_accelerated: bool,
     native_gpu_packed: bool,
+    grade_gpu: bool,
     film_stage_cache_hit: bool,
     gpu_buffers_reused: bool,
     resident_cache_bytes: usize,
@@ -123,6 +128,7 @@ impl Response {
             input_cache_hit: false,
             viewport_accelerated: false,
             native_gpu_packed: false,
+            grade_gpu: false,
             film_stage_cache_hit: false,
             gpu_buffers_reused: false,
             resident_cache_bytes: 0,
@@ -191,6 +197,47 @@ impl Engine {
 
     fn handle(&mut self, request: Request) -> Result<Response> {
         let started = Instant::now();
+        if request.command == "compute_float" {
+            let path = request.input.as_deref().context("missing compute input")?;
+            let output = request.output.as_deref().context("missing compute output")?;
+            let operation = request.operation.as_deref().context("missing compute operation")?;
+            let parameters = request.parameters.as_deref().context("missing compute parameters")?;
+            let size = fs::metadata(path)?.len();
+            if size == 0 || size % 4 != 0 || size > 2 * 1024 * 1024 * 1024 {
+                bail!("invalid float compute input length");
+            }
+            let bytes = fs::read(path)?;
+            let input: &[f32] = bytemuck::try_cast_slice(&bytes)
+                .map_err(|_| anyhow!("invalid float compute input alignment"))?;
+            let load_ms = millis(started.elapsed());
+            let compute_started = Instant::now();
+            let samples = if operation == "grade" {
+                let grade = request.grade.as_ref().context("missing grade")?;
+                if parameters.len() != 2 || parameters.iter().any(|v|
+                    !v.is_finite() || *v <= 0.0 || v.fract() != 0.0 || *v > 65535.0) {
+                    bail!("grade dimensions required");
+                }
+                grade_gpu::apply(self.backend.as_ref(), input, parameters[0] as u32,
+                    parameters[1] as u32, grade)?
+            } else if operation.starts_with("merge_") {
+                merge_gpu::compute(self.backend.as_ref(), operation, input, parameters)?
+            } else {
+                bail!("unknown float compute operation");
+            };
+            let render_ms = millis(compute_started.elapsed());
+            let encode_started = Instant::now();
+            fs::write(output, bytemuck::cast_slice(&samples))?;
+            let mut response = Response::error(request.id, self.backend.name(), started, anyhow!(""));
+            response.ok = true;
+            response.error = None;
+            response.adapter = self.backend.adapter_diagnostics();
+            response.grade_gpu = operation == "grade";
+            response.load_ms = load_ms;
+            response.render_ms = render_ms;
+            response.encode_ms = millis(encode_started.elapsed());
+            response.total_ms = millis(started.elapsed());
+            return Ok(response);
+        }
         if request.command == "ping" || request.command == "probe_input" {
             let cached_input = if request.command == "probe_input" {
                 let key = request.input_cache_key.as_ref().context("missing input_cache_key")?;
@@ -222,6 +269,7 @@ impl Engine {
                 input_cache_hit: cached_input.is_some(),
                 viewport_accelerated: false,
             native_gpu_packed: false,
+            grade_gpu: false,
             film_stage_cache_hit: false,
                 gpu_buffers_reused: false,
                 resident_cache_bytes: 0,
@@ -464,16 +512,25 @@ impl Engine {
             let trimmed = plan.as_ref().map(|plan| region::crop_image(rendered, plan.trim));
             rotate_samples(trimmed.as_ref().unwrap_or(rendered), request.rotate_quarters_ccw)
         };
+        let mut grade_gpu = false;
         if request.grade.is_some()
             || request.masks.is_some()
             || request.crop.is_some()
             || request.long_edge.is_some()
         {
+            let mut remaining_grade = request.grade.as_ref();
+            if let Some(grade) = remaining_grade.filter(|g| !export::grade_is_identity(g)) {
+                if let Ok(graded) = grade_gpu::apply(backend, &samples, width, height, grade) {
+                    samples = graded;
+                    remaining_grade = None;
+                    grade_gpu = true;
+                }
+            }
             let processed = export::postprocess(
                 width,
                 height,
                 samples,
-                request.grade.as_ref(),
+                remaining_grade,
                 request.masks.as_ref(),
                 request.crop.as_ref(),
                 request.long_edge,
@@ -540,6 +597,7 @@ impl Engine {
             input_cache_hit,
             viewport_accelerated: accelerated,
             native_gpu_packed: packed.is_some(),
+            grade_gpu,
             film_stage_cache_hit: cache_status.0,
             gpu_buffers_reused: cache_status.1,
             resident_cache_bytes: cache_status.2,
@@ -1367,6 +1425,11 @@ mod resident_cache_tests {
     /// Exercise request routing without allocating an oversized GPU image.
     struct SizeLimitedBackend;
     impl ComputeBackend for SizeLimitedBackend {
+        fn try_compute_f32(&self, _shader: &'static str, _input: &[f32], parameters: &[f32],
+            _output_len: usize, _workgroups: [u32; 3]) -> Option<Vec<f32>> {
+            assert!(parameters[0] <= 64.0, "GPU finishing bypassed the request's CPU fallback");
+            None
+        }
         fn colorspace_convert(&self, image: &ImageBuf, matrix: &[[f32; 3]; 3]) -> ImageBuf {
             spektrafilm_gpu::cpu_backend::CpuBackend.colorspace_convert(image, matrix)
         }
@@ -1412,7 +1475,8 @@ mod resident_cache_tests {
             let response = engine.handle(serde_json::from_value(serde_json::json!({
                 "id":width, "command":"render", "input":input, "output":output,
                 "data_dir":data, "film":"kodak_portra_400", "paper":"kodak_endura_premier",
-                "bit_depth":32, "params":{"film_render":{"grain":{"active":false}}}
+                "bit_depth":32, "grade":{"exposure":0.1},
+                "params":{"film_render":{"grain":{"active":false}}}
             })).unwrap()).unwrap();
             assert_eq!(response.backend, if width > 64 { "CPU (rayon)" } else { "size-limited test backend" });
             assert_eq!(response.fallback_reason.as_deref(), (width > 64).then_some("test buffer limit"));

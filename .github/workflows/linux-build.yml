@@ -105,6 +105,22 @@ jobs:
         # These tests use Node's built-in runner and local modules; no npm dependencies.
         run: node --test tests/*.test.mjs
 
+      - name: Test float32 grade and merge parity on software Vulkan
+        timeout-minutes: 10
+        env:
+          LIGHTTABLE_TEST_GPU: '1'
+          LIGHTTABLE_GPU_COMPUTE: '1'
+          SPEKTRAFILM_BACKEND: wgpu
+          PYTHONPATH: ${{ github.workspace }}/vendor/spektrafilm/src
+        run: |
+          # A resident debug worker exercises real GPU requests on PRs without
+          # building a distributable package. Mesa validates correctness here;
+          # software Vulkan results do not establish hardware performance.
+          cargo +1.88.0 build --locked --manifest-path rust-engine/Cargo.toml --bin lighttable-engine
+          ln -s "$CARGO_TARGET_DIR/debug/lighttable-engine" engine/lighttable-engine
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_gpu_grade.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_merge_acceleration.py -v
+
       - name: Build and smoke-test relocated package
         if: github.event_name != 'pull_request'
         env:

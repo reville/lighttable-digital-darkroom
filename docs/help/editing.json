@@ -8,7 +8,7 @@
     "sections": [
       {
         "title": "Check that your work is saved",
-        "paragraphs": ["Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."],
+        "paragraphs": ["Editing controls are unavailable until a photo is loaded. Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."],
         "steps": ["Make your adjustment, then check the save status in the app.", "Wait for Saving… to change to Saved. Saving also includes pending edit-history writes.", "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing."],
         "tips": ["Saved · recovery needs attention means the save completed but the local recovery system reported a problem. Use the available retry control and read the status message."]
       },
@@ -16,7 +16,7 @@
         "title": "Choose recovered or saved edits",
         "paragraphs": ["If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts."],
         "steps": ["Read the affected photo names and choose Restore edits or Keep saved edits.", "If you restore, wait for saving to complete before closing the app."],
-        "tips": ["Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.", "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo."]
+        "tips": ["Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.", "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo. Some recovery drafts show a partial identity notice because they cannot verify the whole original. This can happen with older drafts or when using folder mode. Restore these only if the original photos have not been replaced."]
       }
     ],
     "related": ["editing-history-snapshots"],
@@ -43,7 +43,7 @@
       },
       {
         "title": "Keep a named look",
-        "paragraphs": ["A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo."],
+        "paragraphs": ["A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded."],
         "steps": ["Open History, expand Snapshots, and click Create snapshot.", "Enter a useful name, such as Soft portrait or Before retouching.", "Click the snapshot’s name to apply it later. Use Undo if you want to return to the state you just replaced."],
         "tips": ["The photo keeps up to 50 snapshots; creating another beyond that limit drops the oldest snapshot from the list.", "The × beside a snapshot deletes that named snapshot, not the original photo."]
       }
@@ -205,7 +205,7 @@
         "title": "Create an enhanced derivative in the Mac app",
         "paragraphs": ["Photo → Enhance Photo… offers Denoise and Super resolution and writes a new 16-bit master when the selected operation succeeds. The original remains untouched."],
         "steps": ["Select the photo, choose Photo → Enhance Photo…, and read the availability message.", "Choose the enhancement and click Enhance if available.", "After completion, find the new result in the refreshed library and inspect it."],
-        "tips": ["Super resolution has no bundled model and requires a compatible local model. A listed option alone does not mean that operation is available.", "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."]
+        "tips": ["Unavailable enhancements are disabled. Super resolution has no bundled model and requires a compatible model installed locally.", "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."]
       }
     ],
     "related": ["editing-tone", "editing-effects", "editing-history-snapshots"],
@@ -213,7 +213,7 @@
       {"path": "web/index.html", "anchor": "Judge sharpening and noise reduction at 1:1. These controls work in both Film and Develop modes."},
       {"path": "web/index.html", "anchor": "<b>Space</b><span>Toggle Fit / 1:1</span>"},
       {"path": "web/app.js", "anchor": "Runs locally when Apply is pressed; the slider is not live."},
-      {"path": "web/app.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
+      {"path": "web/enhance-panel.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
       {"path": "enhance_workflow.py", "anchor": "Super-resolution has no bundled model."},
       {"path": "enhance_workflow.py", "anchor": "Enhance output is model-generated detail, not measured detail."},
       {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: \"Enhance Photo…\","}
@@ -346,6 +346,7 @@
       "editing-history-snapshots"
     ],
     "sources": [
+      {"path": "edits.py", "anchor": "def apply_manual_optics("},
       {
         "path": "web/index.html",
         "anchor": "Reset crop, rotation, flips, and perspective"
@@ -400,18 +401,22 @@
     "sections": [
       {
         "title": "Create a manual mask",
-        "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments.", "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."],
+        "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light and Color adjustments.", "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."],
         "steps": ["Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.", "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.", "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.", "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.", "Rename the mask using its ••• button so its purpose is easy to recognize later."],
-        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks."]
+        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
       }
     ],
     "related": ["editing-masks-ai", "editing-masks-ranges-refinements", "editing-history-snapshots"],
     "sources": [
+      {"path": "edits.py", "anchor": "def clean_masks("},
+      {"path": "edits.py", "anchor": "def apply_masks("},
+      {"path": "web/editor-panels.js", "anchor": "export function normalizeMasks(raw)"},
       {"path": "web/index.html", "anchor": "<span>Create New Mask</span>"},
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
       {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = `Drag on the photo to edit the ${mask.type} mask.`;"},
       {"path": "web/app.js", "anchor": "Up to sixteen local masks can be active"},
-      {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"}
+      {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"},
+      {"path": "web/screen-overlay.js", "anchor": "export function prepareScreenOverlay("}
     ]
   },
   {
@@ -495,9 +500,9 @@
       },
       {
         "title": "Refine an existing correction",
-        "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source."],
+        "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.", "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."],
         "steps": ["Drag the target circle to reposition the correction, or choose Move Target and click its new position.", "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.", "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.", "Toggle Enable this correction to compare, or use Delete correction to remove it."],
-        "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change."]
+        "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections and is unavailable when there are none. Use Undo to reverse an accidental editing change."]
       }
     ],
     "related": ["editing-detail-effects-enhance", "editing-history-snapshots", "editing-copy-paste-match-exposure"],
@@ -507,14 +512,15 @@
       {"path": "web/app.js", "anchor": "function setHealToolMode(mode)"},
       {"path": "web/app.js", "anchor": "$('healRefresh').hidden = spot.mode === 'remove';"},
       {"path": "web/app.js", "anchor": "Click the new target position."},
-      {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."}
+      {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."},
+      {"path": "web/screen-overlay.js", "anchor": "export function screenOverlayGeometry("}
     ]
   },
   {
     "id": "editing-presets",
-    "title": "Find, try, and share editing presets",
+    "title": "Apply, adjust, and share editing presets",
     "category": "Editing",
-    "summary": "Browse built-in and community looks, preview them on your photo, and save or share your own presets.",
+    "summary": "Click a preset to apply it, adjust Amount, and save or share your own looks.",
     "keywords": [
       "preset",
       "presets",
@@ -533,6 +539,9 @@
       "import preset",
       "save look",
       "try preset",
+      "preset amount",
+      "preset strength",
+      "disable preset",
       "update preset",
       "submit preset",
       "replace adjustments"
@@ -554,18 +563,18 @@
         ]
       },
       {
-        "title": "Try before applying",
+        "title": "Apply and adjust Amount",
         "paragraphs": [
-          "Try on this photo renders a preview locally inside the preset details. It does not change or save your edit, and your photo is not uploaded to the community gallery."
+          "Click a preset card to apply it immediately to the main photo. Click the same card again, or use its On/Off button, to disable it. Your photo stays on this computer."
         ],
         "steps": [
-          "Select a photo and a preset, then click Try on this photo.",
-          "Wait for the preview, then use Before and With preset to compare. Creator examples have their own before/after controls and, when available, an Example photo selector.",
-          "Click Apply to commit the preset to the active photo. Use Undo in the details or the Undo action in the completion message to restore the previous edit."
+          "Select a photo and click a preset card. The selected preset shows Amount below its name.",
+          "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.",
+          "Click another preset to switch looks. Undo and Redo restore preset selection, enabled state, and amount. The selected preset and amount are saved with the photo."
         ],
         "tips": [
-          "Selecting a card, browsing another preset, or closing the details does not apply it.",
-          "Consecutive look applications use the edit from before the first look, so settings from one look do not accumulate into the next. A later manual edit starts a new comparison baseline. If you change photos or edit settings while a detail is open, select the preset again before applying."
+          "Film stock, Film on/off, and other fixed choices switch at any amount above zero. Tone, color, curves, and numerical adjustments vary with Amount. Creator examples remain separate from your photo.",
+          "Switching preset cards uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset."
         ]
       },
       {
@@ -584,7 +593,7 @@
           "Add to Yours downloads and saves the selected community recipe without applying it. Installed recipes work offline. Your existing photo edits store their settings separately from the preset."
         ],
         "steps": [
-          "Select a Community preset and click Add to Yours.",
+          "Click a Community preset to use it on your photo, then click Add to Yours to keep an offline copy.",
           "Use it later from Yours, or return to Community to inspect the public preset page.",
           "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it."
         ],
@@ -644,6 +653,10 @@
       {
         "path": "web/preset-browser.css",
         "anchor": ".preset-browser-manage[aria-expanded=\"true\"]"
+      },
+      {
+        "path": "web/preset-amount.js",
+        "anchor": "export function blendPresetState(base, target, amount) {"
       },
       {
         "path": "web/presets.js",

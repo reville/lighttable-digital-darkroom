@@ -4,6 +4,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+import media_availability
+
 from film_lab_ai.providers import VisionProvider
 from film_lab_ai.service import AIIndexService
 from film_lab_ai.store import IndexStore
@@ -75,7 +77,7 @@ for line in sys.stdin:
 
 
 class AIIndexServiceTests(unittest.TestCase):
-    def make_service(self, root, analyzer, fingerprints=None):
+    def make_service(self, root, analyzer, fingerprints=None, **options):
         library = root / "photos"
         library.mkdir(exist_ok=True)
         fingerprints = fingerprints or {"one.jpg": "one-v1", "two.jpg": "two-v1"}
@@ -87,6 +89,7 @@ class AIIndexServiceTests(unittest.TestCase):
             source_key=lambda name: fingerprints[name],
             preview_bytes=lambda name: f"preview:{name}".encode(),
             analyzer=analyzer,
+            **options,
         )
 
     def wait_for_scan(self, service):
@@ -139,6 +142,97 @@ class AIIndexServiceTests(unittest.TestCase):
             self.wait_for_scan(second)
             self.assertEqual(second_analyzer.calls, [])
             second.shutdown()
+
+    def test_unavailable_inputs_clear_old_errors_without_hashing_or_decoding(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            analyzer = FakeAnalyzer()
+            states = {'empty.jpg': 'empty', 'cloud.RAF': 'cloud-only',
+                      'missing.jpg': 'unavailable', 'bad.jpg': 'local',
+                      'good.jpg': 'local'}
+            service = self.make_service(
+                root, analyzer, {name: name for name in states},
+                source_availability=states.get)
+            good_preview = (Path(__file__).parent / 'fixtures/photos/portrait.jpg').read_bytes()
+            for name in states:
+                service.store.record_error(name, name, 'old decode failure', 1)
+
+            def fingerprint(name):
+                self.assertEqual(states[name], 'local', 'must not hydrate an input')
+                return name
+
+            def preview(name):
+                self.assertEqual(states[name], 'local', 'must not decode an input')
+                if name == 'bad.jpg':
+                    raise ValueError('corrupt image')
+                return good_preview
+
+            service._source_key = fingerprint
+            service._preview_bytes = preview
+            try:
+                service.enable()
+                status = self.wait_for_scan(service)
+                self.assertEqual((status['completed'], status['total']), (5, 5))
+                self.assertEqual((status['indexed'], status['errors'], status['skipped']), (1, 1, 3))
+                self.assertEqual(status['skippedReasons'],
+                                 {'empty': 1, 'cloud-only': 1, 'unavailable': 1})
+                self.assertIn('bad.jpg: corrupt image', status['lastError'])
+                self.assertEqual(analyzer.calls, [good_preview])
+                self.assertEqual(set(service.results(list(states))), {'good.jpg'})
+            finally:
+                service.shutdown()
+
+    def test_empty_file_is_indexed_when_restored_and_offline_metadata_is_retained(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            analyzer = FakeAnalyzer()
+            library = root / 'photos'
+            service = self.make_service(
+                root, analyzer,
+                source_availability=lambda name: media_availability.index_availability(library / name))
+            Image.new('RGB', (32, 24), 'navy').save(library / 'one.jpg')
+            (library / 'two.jpg').touch()
+            service._preview_bytes = lambda name: (library / name).read_bytes()
+            try:
+                service.enable()
+                status = self.wait_for_scan(service)
+                self.assertEqual((status['indexed'], status['errors'], status['skipped']), (1, 0, 1))
+                self.assertEqual(status['lastError'], '')
+                self.assertEqual(len(analyzer.calls), 1)
+                self.assertEqual((library / 'two.jpg').stat().st_size, 0)
+
+                Image.new('RGB', (32, 24), 'red').save(library / 'two.jpg')
+                service.start()
+                status = self.wait_for_scan(service)
+                self.assertEqual((status['indexed'], status['errors'], status['skipped']), (2, 0, 0))
+                self.assertEqual(len(analyzer.calls), 2, 'keep the already indexed photo')
+
+                (library / 'one.jpg').unlink()
+                service.start()
+                status = self.wait_for_scan(service)
+                self.assertEqual(status['skippedReasons'], {'unavailable': 1})
+                self.assertEqual(len(service.results(['one.jpg', 'two.jpg'])), 2)
+                self.assertEqual(len(analyzer.calls), 2, 'preserve existing search metadata')
+                service.clear()
+                self.assertEqual(service.status()['skipped'], 0)
+            finally:
+                service.shutdown()
+
+    def test_fingerprint_failure_does_not_stop_the_scan(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            service = self.make_service(Path(temporary), FakeAnalyzer())
+            service._preview_bytes = lambda name: (Path(__file__).parent / 'fixtures/photos/portrait.jpg').read_bytes()
+            with mock.patch.object(service, '_source_key',
+                                   side_effect=[OSError('read denied'), 'two-v1']):
+                try:
+                    service.enable()
+                    status = self.wait_for_scan(service)
+                    self.assertEqual((status['completed'], status['indexed'], status['errors']), (2, 1, 1))
+                    self.assertIn('one.jpg: read denied', status['lastError'])
+                    self.assertEqual(set(service.results(['one.jpg', 'two.jpg'])), {'two.jpg'})
+                finally:
+                    service.shutdown()
 
     def test_pause_hides_results_and_delete_removes_generated_index(self):
         with tempfile.TemporaryDirectory() as temporary:

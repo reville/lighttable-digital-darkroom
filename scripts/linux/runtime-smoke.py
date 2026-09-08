@@ -60,6 +60,7 @@ def main() -> None:
         os.environ.update(environment)
         import OpenImageIO  # noqa: F401
         import exiv2  # noqa: F401
+        import imagecodecs  # noqa: F401
         import lensfunpy  # noqa: F401
         import rawpy  # noqa: F401
         import numpy as np
@@ -88,6 +89,12 @@ def main() -> None:
 
         render_source = scratch / "render-source.tif"
         tifffile.imwrite(render_source, pixels.astype(np.uint16) * 257, photometric="rgb")
+        # Current import/export paths also read compressed, high-bit TIFFs.
+        # Exercise the newly pinned native codec wheel in the relocated runtime.
+        compressed = scratch / "compressed-source.tif"
+        tifffile.imwrite(compressed, pixels.astype(np.uint16) * 257,
+                         photometric="rgb", compression="deflate", predictor=True)
+        assert np.array_equal(tifffile.imread(compressed), pixels.astype(np.uint16) * 257)
         film = "kodak_portra_400"
         paper = server.fp.default_paper(film)
         params = server.fp.rust_params_json({"stock": film, "paper": paper})

@@ -126,8 +126,8 @@
     "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
     "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress"],
     "sections": [
-      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar."]},
-      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."]}
+      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar.", "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds."]},
+      {"title": "Check the scope and result", "paragraphs": ["Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."]}
     ],
     "related": ["export-format-color-space", "export-filenames-and-folders", "export-metadata-sidecars"],
     "sources": [
@@ -166,10 +166,11 @@
     "keywords": ["destination", "folder", "path", "filename", "rename", "overwrite", "skip", "collision", "hierarchy", "sequence", "template"],
     "sections": [
       {"title": "Destination layout", "paragraphs": ["One destination folder sends exports to the chosen folder. Subfolder beside each original uses a relative subfolder name for each source photo. Keep source folder hierarchy preserves source-folder organization beneath the export destination."], "steps": ["Open Export and choose Destination layout.", "Use Choose… for a destination folder, or enter a subfolder name such as film-exports for Subfolder beside each original.", "Expand Advanced and edit Filename template.", "Check the filename and destination shown in Output preview before exporting."]},
-      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
+      {"title": "Names and existing files", "paragraphs": ["Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.", "Keep both · add a number creates another filename, such as a name ending in -2. Skip existing leaves occupied names alone. Overwrite replaces existing output at the chosen path. Use the output preview to confirm the destination before choosing Overwrite."]}
     ],
     "related": ["export-photos", "export-metadata-sidecars"],
     "sources": [
+      {"path": "export_workflow.py", "anchor": "def _safe_piece("},
       {"path": "web/index.html", "anchor": "Keep source folder hierarchy"},
       {"path": "web/app.js", "anchor": "'Subfolder name, e.g. film-exports'"},
       {"path": "web/index.html", "anchor": "Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}."},
@@ -243,11 +244,11 @@
     "summary": "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.",
     "keywords": ["settings", "preferences", "defaults", "camera", "raw", "serial", "iso", "font", "background", "lights out", "notifications", "xmp", "portable"],
     "sections": [
-      {"title": "Interface and behavior", "paragraphs": ["Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata."]},
+      {"title": "Interface and behavior", "paragraphs": ["Settings changes save automatically. General controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.", "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.", "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow."]},
       {"title": "Defaults for unedited photos", "paragraphs": ["Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."], "steps": ["Open Settings → Develop Defaults.", "Choose the starting Film, workflow, profile, and preset settings.", "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.", "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.", "Use Reset in the Current camera area to remove that camera default."]},
       {"title": "Linux and Omarchy appearance", "paragraphs": ["On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.", "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable."]}
     ],
-    "related": ["keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery"],
+    "related": ["keyboard-midi", "photo-index", "performance-previews", "catalog-health-recovery", "xmp-interchange"],
     "sources": [
       {"path": "web/index.html", "anchor": "Changes save automatically."},
       {"path": "linux_theme.py", "anchor": "def desktop_theme("},
@@ -269,7 +270,7 @@
     "keywords": ["keyboard", "shortcut", "hotkey", "midi", "knob", "fader", "controller", "speed keys", "automation", "classic", "lighttable"],
     "sections": [
       {"title": "Keyboard preferences", "paragraphs": ["Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. On macOS, the desktop Help menu also has Keyboard Shortcuts. Use Ctrl for Command/Ctrl shortcuts on Linux and Windows.", "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."], "tips": ["Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts."]},
-      {"title": "MIDI mapping", "paragraphs": ["MIDI support depends on the Web MIDI API in the current runtime. The status can show Unavailable, Off, No devices, or a connected device count. Unavailable means this runtime cannot use the MIDI controls."], "steps": ["Connect a MIDI controller that sends Control Change messages.", "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn.", "Click the adjustment slider you want to map, then turn a knob or move a fader.", "Check the mapping message, then use the hardware control to adjust the slider.", "Use Reset MIDI to restore the default mappings."]}
+      {"title": "MIDI mapping", "paragraphs": ["MIDI support depends on the Web MIDI API in the current runtime. The status can show Unavailable, Off, No devices, or a connected device count. Unavailable means this runtime cannot use the MIDI controls.", "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect."], "steps": ["Connect a MIDI controller that sends Control Change messages.", "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.", "Click the adjustment slider you want to map, then turn a knob or move a fader.", "Check the mapping message, then use the hardware control to adjust the slider.", "Use Reset MIDI to restore the default mappings."]}
     ],
     "related": ["settings-and-defaults", "export-photos", "external-editor"],
     "sources": [
@@ -290,6 +291,7 @@
     "keywords": ["ai", "search", "index", "contents", "objects", "scenes", "ocr", "text", "faces", "privacy", "local", "description"],
     "sections": [
       {"title": "Build the index", "paragraphs": ["The Photo Index is off by default and requires macOS. Linux and Windows show Not available on this platform, and new indexing cannot be enabled. On Mac, analysis stays on the device and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."], "steps": ["Open Settings → Photo Index.", "Check the On-device capabilities status and turn on Photo contents index.", "Wait for indexing progress to complete. Photos can gain results as they are indexed.", "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.", "Open Info → On-device description to inspect the current photo’s generated tags, visible text, and face count."]},
+      {"title": "Skipped photos", "paragraphs": ["Empty files, files that are not downloaded, and unavailable originals are skipped before analysis. Photo Index reports their counts separately from analysis errors. An empty file contains no image data; it may need to be downloaded again or restored from a backup.", "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index."]},
       {"title": "Pause, rebuild, or delete", "paragraphs": ["Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.", "Delete index removes generated index data after confirmation. Originals and saved edits are unchanged. If Apple Vision says Build required, the current installation lacks the required local analyzer. Foundation Models may be unavailable while basic Vision indexing remains usable."]}
     ],
     "related": ["assisted-culling", "settings-and-defaults"],
@@ -299,7 +301,11 @@
       {"path": "web/app.js", "anchor": "'Search photos, contents, text, and faces'"},
       {"path": "web/app.js", "anchor": "indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted."},
       {"path": "web/app.js", "anchor": "Delete the generated local photo index? Your originals and edits will not be changed."},
-      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"}
+      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"},
+      {"path": "film_lab_ai/service.py", "anchor": "self._source_availability(name)"},
+      {"path": "media_availability.py", "anchor": "def index_availability("},
+      {"path": "web/local-ai.js", "anchor": "export function aiSkippedSummary("},
+      {"path": "web/style.css", "anchor": ".local-ai-status:not(.running) > span"}
     ]
   },
   {
@@ -332,8 +338,9 @@
     "sections": [
       {"title": "Check what has finished rendering", "paragraphs": ["A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.", "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.", "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."], "steps": ["Open Settings → Performance.", "Keep automatic preview detail for normal editing. It follows the window size, display density, crop, and zoom without a pixel-size choice.", "Use GPU · Rust when available. Compatible · Python is an alternate film engine, but some stocks require Rust.", "Judge sharpening, noise reduction, and film grain at 1:1 after detail has settled."]},
       {"title": "Advanced preview override", "paragraphs": ["Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.", "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active."], "steps": ["Open Settings → Performance and expand Advanced.", "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.", "Choose Automatic (recommended) to return to previews that follow your view."]},
-      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files."]},
-      {"title": "Check Linux rendering", "paragraphs": ["On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.", "A photo that exceeds the GPU's limits uses the CPU. If the rendering worker stops responding, LightTable retries once on the CPU and keeps that worker for the session. Reopen LightTable after repairing or updating your graphics driver to try GPU rendering again. Large photos and software rendering can take longer; use Automatic preview detail for normal editing."]}
+      {"title": "Manage cache storage", "paragraphs": ["Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.", "Preview resolution is separate from the Dimensions setting used for exported files. Export finishing and Photo Merge use GPU acceleration automatically for supported image-processing stages, with a CPU fallback when unavailable. The film-engine preference controls film previews; it does not disable this acceleration."]},
+      {"title": "Check Linux rendering", "paragraphs": ["On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.", "A photo that exceeds the GPU's limits uses the CPU. If the rendering worker stops responding, LightTable retries once on the CPU and keeps that worker for the session. Reopen LightTable after repairing or updating your graphics driver to try GPU rendering again. Large photos and software rendering can take longer; use Automatic preview detail for normal editing."]},
+      {"title": "Read a preview error", "paragraphs": ["If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."]}
     ],
     "related": ["film-grain-and-format", "export-format-color-space", "catalog-health-recovery"],
     "sources": [
@@ -343,12 +350,16 @@
       {"path": "web/index.html", "anchor": "Preview resolution override"},
       {"path": "web/preview-detail.js", "anchor": "if (delivered >= source - 1) return '100% detail ready';"},
       {"path": "web/preview-detail.js", "anchor": "if (refining) return 'Refining RAW detail…';"},
+      {"path": "web/preview-detail.js", "anchor": "export function previewFailureMessage"},
       {"path": "web/view-performance.js", "anchor": "if (actualSize) return Math.max(64, Math.min(8000, source || 1100));"},
       {"path": "web/index.html", "anchor": "Automatic (recommended)"},
       {"path": "web/settings.js", "anchor": "Purge generated previews and render caches? Originals and edits are not affected."},
       {"path": "web/app.js", "anchor": "pythonOption.disabled = rustOnly;"},
       {"path": "web/app.js", "anchor": "previewProgress.advance(4, my);"},
       {"path": "web/style.css", "anchor": ".preview-progress-track > span"},
+      {"path": "gpu_compute.py", "anchor": "def compute("},
+      {"path": "grade.py", "anchor": "def apply_accelerated("},
+      {"path": "merge_acceleration.py", "anchor": "def enabled("},
       {"path": "web/preview-progress.js", "anchor": "export function createPreviewProgress"},
       {"path": "web/preview-progress.js", "anchor": "export async function waitForRawRefinement"}
     ]
@@ -376,7 +387,7 @@
       {
         "title": "Back up and inspect",
         "paragraphs": [
-          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately."
+          "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Local ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found."
         ],
         "steps": [
           "Choose an Automatic backup interval and Backup location.",
@@ -389,6 +400,7 @@
         "title": "Understand recovery choices",
         "paragraphs": [
           "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
+          "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.",
           "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
         ]
       },
@@ -403,7 +415,21 @@
         "title": "Desktop diagnostics",
         "paragraphs": [
           "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.",
-          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation. If an issue persists, include the visible error and relevant server-log details when reporting it."
+          "Safe Mode turns off scanning, watched folders, local AI, and engine warm-up. Use Restart Rendering Service to return to normal operation."
+        ]
+      },
+      {
+        "title": "Report an unexpected exit on Mac",
+        "paragraphs": [
+          "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.",
+          "Help → Report a Problem… opens the latest report, or current diagnostics if no unexpected exit was recorded. Reports include the app build, macOS and hardware, the last recorded operation when available, filtered recent logs, and available error traces. A matching macOS crash report can add stack and binary information. An unexpected exit does not always leave an error trace or identify its cause.",
+          "Reports stay on your Mac until you choose to share them. Paths, photo filenames, quoted log values, and common credential fields are filtered; inspect the text before sharing. Photos and the catalog are not attached. The latest ten reports are kept locally."
+        ],
+        "steps": [
+          "Read the diagnostic report. Choose Copy report to paste it into an email yourself.",
+          "Or choose Email maintainer. This copies the report and opens a draft addressed to team@lighttable.app.",
+          "Describe what you were doing, paste the copied report into the draft, and send it when ready. If no email app opens, use your usual email service.",
+          "Choose Dismiss to close the report. Nothing is sent automatically."
         ]
       }
     ],
@@ -414,6 +440,7 @@
     "sources": [
       {"path": "platform_paths.py", "anchor": "def server_log_file("},
       {"path": "platform_paths.py", "anchor": "def data_directory("},
+      {"path": "catalog_scan.py", "anchor": "def scan_source("},
       {
         "path": "web/index.html",
         "anchor": "Backups include your catalog organization, edits, stored masks, history, and variants."
@@ -442,10 +469,42 @@
         "path": "web/recovery.js",
         "anchor": "Safe Mode: scanning, watched folders, local AI, and engine warm-up "
       },
+      {"path": "app/DiagnosticReports.swift", "anchor": "static let recipient = \"team@lighttable.app\""},
+      {"path": "fatal_diagnostics.py", "anchor": "faulthandler.enable(file=_fault_file, all_threads=True)"},
       {
         "path": "app/main.swift",
         "anchor": "diagnosticsMenu, title: \"Restart Rendering Service\","
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Back up catalog'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "showCatalogResult('Find duplicates'"
       }
+    ]
+  },
+  {
+    "id": "about-lighttable",
+    "title": "About LightTable and open source",
+    "category": "Settings",
+    "summary": "Find the Mac app version, website, and source code.",
+    "keywords": ["about", "version", "website", "github", "open source", "license", "gpl"],
+    "sections": [
+      {
+        "title": "Open About on macOS",
+        "paragraphs": [
+          "Choose LightTable → About LightTable in the Mac menu bar. The About window shows the app version and, when different, its build number.",
+          "Website opens lighttable.app in your default browser. GitHub opens the public LightTable source repository, where you can explore the code, report issues, and contribute.",
+          "LightTable is free and open source under the GNU GPL v3."
+        ]
+      }
+    ],
+    "related": ["settings-and-defaults", "catalog-health-recovery"],
+    "sources": [
+      {"path": "app/main.swift", "anchor": "private final class AboutWindowController: NSWindowController"},
+      {"path": "README.md", "anchor": "**GPL-3.0-only**"}
     ]
   }
 ]
