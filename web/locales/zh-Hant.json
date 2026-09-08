@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "目前相機",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "目前格式會保留資產現有的表示方式，包括可用時的 RAW 或內嵌深度。相容格式會建立可廣泛讀取的影像。已選取檔案會複製到 {path}。",
     "Current photo": "目前相片",
+    "Current photo / total photos": "目前照片 / 照片總數",
     "Current settings": "目前設定",
     "Current stock": "目前膠卷",
     "Curve": "曲線",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "按住按鍵滑桿控制",
     "Horizontal": "水平",
     "Hourly": "每小時",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "將滑鼠停留在頂端列的照片計數器上，即可查看數字的含義。",
     "Hue": "色相",
     "Hue shift": "色相偏移",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "相片已在資料夾模式中打開，且損壞的目錄尚未變更。打開圖庫健康狀態以搶救它、還原備份，或開始新的目錄。",
     "Photos could not be imported. Try again or choose a folder.": "無法匯入相片。請再試一次或選擇資料夾。",
     "Photos set aside": "已擱置的相片",
+    "Photos shown / total photos in this folder or collection": "顯示的照片數 / 此資料夾或收藏集中的照片總數",
     "Photos stay in their current folder. No moving or copying required.": "相片會保留在目前的資料夾中。無須移動或複製。",
     "Photos stay in their current folder. You can add more folders whenever you like.": "相片會保留在目前的資料夾中。您可隨時新增更多資料夾。",
     "Photos unstacked": "相片已取消堆疊",
@@ -2432,7 +2435,7 @@
     "Search": "搜尋",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "搜尋涵蓋文章標題、工具名稱和完整說明。選擇全部主題可跨整個應用程式搜尋。",
     "Search film stocks": "搜尋膠卷",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "搜尋膠卷名稱，使用上一個或下一個瀏覽，然後選擇預覽以套用。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "搜尋底片名稱或捲動瀏覽預覽，然後選擇一個預覽以套用該底片。預覽會放大並裁切，以便看清更多細節。",
     "Search help": "搜尋說明",
     "Search index: {value}": "搜尋索引：{value}",
     "Search objects, scenes, text, and faces": "搜尋物件、場景、文字和臉部",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "保留 {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名稱會反映現有檔案，並可能在匯出前變更。",
     "{value}× stock baseline": "{value}× 膠卷基準值",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} / {stocksLength} 種膠卷",
     "— none —": "— 無 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "「{value}」有繪製的微調。請在這張相片上重新建立它，或排除遮罩。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "「{value}」需要新的物件選取。請排除遮罩以貼上其他編輯。",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛"
+    "☆ Favorites": "☆ 最愛",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原圖尺寸無法取得，縮放百分比會顯示 —，且 1:1 將停用。Auto 仍會依螢幕調整預覽。重新掃描資料夾以更新尺寸。"
   },
   "plurals": {
     " · {count} paired file linked": {

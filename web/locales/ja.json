@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "現在のカメラ",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "現在の形式は、利用可能な場合 RAW や埋め込み深度を含め、アセットの現在の表現を保持します。［互換］は広く読み取れる画像を作成します。選択されたファイルは {path} にコピーされます。",
     "Current photo": "現在の写真",
+    "Current photo / total photos": "現在の写真 / 写真の総数",
     "Current settings": "現在の設定",
     "Current stock": "現在のストック",
     "Curve": "カーブ",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "ホールドキー式スライダーコントロール",
     "Horizontal": "横方向",
     "Hourly": "時間ごと",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "上部バーの写真カウンターにポインターを合わせると、数字の意味を確認できます。",
     "Hue": "色相",
     "Hue shift": "色相シフト",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "写真はフォルダーモードで開かれており、損傷したカタログは変更されていません。［ライブラリの健全性］を開いて救出するか、バックアップを復元するか、新しいカタログを開始してください。",
     "Photos could not be imported. Try again or choose a folder.": "写真を読み込めませんでした。再試行するか、フォルダーを選択してください。",
     "Photos set aside": "写真を取り分ける",
+    "Photos shown / total photos in this folder or collection": "表示中の写真数 / このフォルダーまたはコレクション内の写真の総数",
     "Photos stay in their current folder. No moving or copying required.": "写真は現在のフォルダーに残ります。移動やコピーは不要です。",
     "Photos stay in their current folder. You can add more folders whenever you like.": "写真は現在のフォルダーに残ります。必要なときにいつでもフォルダーを追加できます。",
     "Photos unstacked": "写真のスタックを解除しました",
@@ -2432,7 +2435,7 @@
     "Search": "検索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "検索は記事タイトル、ツール名、および全手順を対象にします。アプリ全体を検索するには［すべてのトピック］を選択してください。",
     "Search film stocks": "フィルムストックを検索",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ストック名を検索し、Previous または Next で参照してから、適用するプレビューを選びます。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "フィルム名を検索するか、プレビューをスクロールして、適用するものを選びます。細部が見やすいように、プレビューは拡大してトリミングされます。",
     "Search help": "ヘルプを検索",
     "Search index: {value}": "検索インデックス: {value}",
     "Search objects, scenes, text, and faces": "オブジェクト、シーン、テキスト、顔を検索します",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "{value}% を保持",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名前は既存ファイルに基づいており、書き出し前に変更される場合があります。",
     "{value}× stock baseline": "{value}× ストック基準",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} 個のストック中 {value}–{value2}",
     "— none —": "— なし —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "「{value}」には塗りの調整があります。この写真で再作成するか、除外マスクを使ってください。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "「{value}」には新しいオブジェクト選択が必要です。ほかの編集を貼り付けるには除外マスクを使ってください。",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り"
+    "☆ Favorites": "☆ お気に入り",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "元画像の寸法を取得できない場合、ズーム率は — と表示され、1:1 は無効になります。Auto は引き続き画面に合わせてプレビューを調整します。フォルダを再スキャンして寸法を更新してください。"
   },
   "plurals": {
     " · {count} paired file linked": {

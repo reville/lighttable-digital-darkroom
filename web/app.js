@@ -901,14 +901,14 @@ function applyViewNow() {
   const naturalW = displaySourcePixelWidth();
   const rect = cv?.getBoundingClientRect();
   const displayedW = rect?.width || 0;
-  const actualScale = naturalW > 0 ? (displayedW / naturalW) : 1;
-  const actualPct = Math.round(actualScale * 100);
+  const actualScale = naturalW > 0 ? (displayedW / naturalW) : null;
+  const actualPct = actualScale === null ? null : Math.round(actualScale * 100);
 
   const isFit = S.zoomMode === 'fit' || S.zoom <= 1;
   const is1to1 = !isFit && Math.abs(actualScale - 1.0) < 0.02;
 
-  $('zoomVal').textContent = `${actualPct}%`;
-  $('zoomVal').title = isFit ? tr("Fit to window ({actualPct}%)", {actualPct: actualPct}) : is1to1 ? tr("Actual size (100%)") : tr("Zoom: {actualPct}%", {actualPct: actualPct});
+  $('zoomVal').textContent = actualPct === null ? '—' : `${actualPct}%`;
+  $('zoomVal').title = actualPct === null ? '' : isFit ? tr("Fit to window ({actualPct}%)", {actualPct: actualPct}) : is1to1 ? tr("Actual size (100%)") : tr("Zoom: {actualPct}%", {actualPct: actualPct});
 
   const fitBtn = $('zoomFit');
   if (fitBtn) {
@@ -917,6 +917,7 @@ function applyViewNow() {
   }
   const oneBtn = $('zoom1');
   if (oneBtn) {
+    oneBtn.disabled = naturalW <= 0;
     oneBtn.classList.toggle('on', is1to1);
     oneBtn.setAttribute('aria-pressed', String(is1to1));
   }
@@ -959,8 +960,9 @@ function zoomAt(factor, sx, sy) {
     // panel resize then jumped back to that percentage.
     const baseW = currentZoom > 0 ? r.width / currentZoom : r.width;
     const nextDisplayedWidth = baseW * next;
-    const nextActualScale = nextDisplayedWidth / displaySourcePixelWidth();
-    if (Math.abs(nextActualScale - 1.0) < 0.02) {
+    const sourceWidth = displaySourcePixelWidth();
+    const nextActualScale = sourceWidth > 0 ? nextDisplayedWidth / sourceWidth : null;
+    if (nextActualScale !== null && Math.abs(nextActualScale - 1.0) < 0.02) {
       S.zoomMode = '100';
       S.targetPixelScale = 1;
     } else {
@@ -1018,8 +1020,12 @@ function sourceLongEdge(image = cur()) {
 }
 
 function displaySourcePixelWidth() {
-  const width = +cropSourceSize().width;
-  return width > 0 ? width : (+$('cv')?.width || 0);
+  // A preview texture is useful for layout, but is never evidence of the
+  // original's pixel count (including the canvas's initial 300px width).
+  if (cur()?.width > 0 && cur()?.height > 0) return +cropSourceSize().width;
+  const decoded = S.viewportSourceGeometry?.key === viewportSourceGeometryKey()
+    ? S.viewportSourceGeometry : null;
+  return decoded?.width || 0;
 }
 
 function viewportRegionEnabled() {
@@ -1078,8 +1084,8 @@ function requestedPreviewWidth() {
   if ($('pw').value === 'auto') {
     // Catalog dimensions already include EXIF orientation. Do not borrow the
     // outgoing canvas's orientation while the next photo is still loading.
-    const source = { width: +cur()?.width || +$('cv').width,
-      height: +cur()?.height || +$('cv').height };
+    const source = { width: +cur()?.width || 0,
+      height: +cur()?.height || 0 };
     if (Math.abs(Math.round((+S.params.rotate || 0) / 90)) % 2) {
       [source.width, source.height] = [source.height, source.width];
     }
@@ -5089,6 +5095,7 @@ function counts() {
   _countsPaintKey = paintKey;
   const shown = visible().length;
   $('counts').textContent = tr("{shown} of {scopeLength}", {shown: shown, scopeLength: scope.length});
+  $('counts').title = tr('Photos shown / total photos in this folder or collection');
   $('sourceAllCount').textContent = scope.length;
   $('sourcePendingCount').textContent = p;
   $('sourceApprovedCount').textContent = a;
@@ -10395,6 +10402,9 @@ function paintSelectionState() {
     thumb.classList.toggle('msel', S.msel.has(thumb.dataset.name));
   });
   $('counts').textContent = S.msel.size ? tr("{SMselSize} selected", {SMselSize: S.msel.size}) : `${S.idx + 1}/${S.images.length}`;
+  $('counts').title = S.msel.size
+    ? tr("{SMselSize} selected", {SMselSize: S.msel.size})
+    : tr('Current photo / total photos');
   syncCullBars();
   updateTransferActions();
 }
@@ -10625,7 +10635,7 @@ function onViewportResize() {
     S.zoom = clamp(
       (S.targetPixelScale * displaySourcePixelWidth()) / baseW, 1, 32);
     clampPan();
-  } else {
+  } else if (S.zoomMode !== 'custom') {
     S.zoom = 1;
     S.panX = 0;
     S.panY = 0;

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "当前相机",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "当前格式会保留资产的当前表示形式，包括 RAW 或嵌入深度（如可用）。兼容格式会创建一个可广泛读取的图像。所选文件将复制到 {path}。",
     "Current photo": "当前照片",
+    "Current photo / total photos": "当前照片 / 照片总数",
     "Current settings": "当前设置",
     "Current stock": "当前胶片",
     "Curve": "曲线",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "按住键滑块控制",
     "Horizontal": "水平",
     "Hourly": "按小时",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "将鼠标悬停在顶部栏的照片计数器上，即可查看数字的含义。",
     "Hue": "色相",
     "Hue shift": "色相偏移",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "照片处于文件夹模式，已损坏的目录未被更改。打开资料库健康状况以抢救它、还原备份，或开始新的目录。",
     "Photos could not be imported. Try again or choose a folder.": "无法导入照片。请重试或选择一个文件夹。",
     "Photos set aside": "照片已搁置",
+    "Photos shown / total photos in this folder or collection": "显示的照片数 / 此文件夹或收藏集中的照片总数",
     "Photos stay in their current folder. No moving or copying required.": "照片会保留在当前文件夹中。无需移动或复制。",
     "Photos stay in their current folder. You can add more folders whenever you like.": "照片会保留在当前文件夹中。你可以随时添加更多文件夹。",
     "Photos unstacked": "照片已取消堆栈",
@@ -2432,7 +2435,7 @@
     "Search": "搜索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "搜索涵盖文章标题、工具名称和完整说明。请选择“全部主题”以在应用中搜索。",
     "Search film stocks": "搜索胶片",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "搜索胶片名称，使用上一张或下一张浏览，然后选择一个预览来应用它。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "搜索胶片名称或滚动浏览预览，然后选择一个预览以应用该胶片。预览会放大并裁剪，以便看清更多细节。",
     "Search help": "搜索帮助",
     "Search index: {value}": "搜索索引：{value}",
     "Search objects, scenes, text, and faces": "搜索对象、场景、文本和面部",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "已保留 {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名称反映现有文件，可能会在导出前更改。",
     "{value}× stock baseline": "{value}× 胶片基准",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} / {stocksLength} 个胶片",
     "— none —": "— 无 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”有绘制过的微调。请在此照片上重新创建，或排除蒙版。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”需要新的对象选择。请排除蒙版以粘贴其他编辑。",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏"
+    "☆ Favorites": "☆ 收藏",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原图尺寸不可用，缩放百分比会显示 —，且 1:1 将被禁用。Auto 仍会根据屏幕调整预览。重新扫描文件夹以更新尺寸。"
   },
   "plurals": {
     " · {count} paired file linked": {

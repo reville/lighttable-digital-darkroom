@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Geçerli kamera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Geçerli biçim, varlıkların mevcut temsilini korur; kullanılabiliyorsa RAW veya gömülü derinlik de buna dahildir. Uyumlu, geniş ölçüde okunabilir bir görüntü oluşturur. Seçili dosyalar {path} konumuna kopyalanır.",
     "Current photo": "Geçerli fotoğraf",
+    "Current photo / total photos": "Geçerli fotoğraf / toplam fotoğraf",
     "Current settings": "Geçerli ayarlar",
     "Current stock": "Geçerli film stoğu",
     "Curve": "Eğri",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Tuş basılıyken kaydırıcı denetimi",
     "Horizontal": "Yatay",
     "Hourly": "Saatlik",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
     "Hue": "Renk tonu",
     "Hue shift": "Renk tonu kaydırma",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Fotoğraflar klasör modunda açık ve hasarlı katalog değişmedi. Kurtarmak, yedeklemeyi geri yüklemek veya yeni bir katalog başlatmak için Kütüphane Sağlığı'nı açın.",
     "Photos could not be imported. Try again or choose a folder.": "Fotoğraflar içe aktarılamadı. Tekrar deneyin veya bir klasör seçin.",
     "Photos set aside": "Bir kenara ayrılan fotoğraflar",
+    "Photos shown / total photos in this folder or collection": "Gösterilen fotoğraflar / bu klasör veya koleksiyondaki toplam fotoğraf",
     "Photos stay in their current folder. No moving or copying required.": "Fotoğraflar mevcut klasörlerinde kalır. Taşıma veya kopyalama gerekmez.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Fotoğraflar mevcut klasörlerinde kalır. İstediğiniz zaman daha fazla klasör ekleyebilirsiniz.",
     "Photos unstacked": "Fotoğraflar yığından çıkarıldı",
@@ -2432,7 +2435,7 @@
     "Search": "Ara",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Arama; makale başlıklarını, araç adlarını ve tüm yönergeleri kapsar. Uygulama genelinde aramak için Tüm konular’ı seçin.",
     "Search film stocks": "Film stoklarını ara",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Bir film stoğu adı arayın, gözatmak için Previous veya Next kullanın, ardından uygulamak için bir önizleme seçin.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Bir film adı arayın veya önizlemeleri kaydırın, ardından uygulamak için birini seçin. Ayrıntıları daha iyi göstermek için önizlemeler büyütülür ve kırpılır.",
     "Search help": "Yardımda ara",
     "Search index: {value}": "Arama dizini: {value}",
     "Search objects, scenes, text, and faces": "Nesneleri, sahneleri, metni ve yüzleri arayın",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "%{value} korundu",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Adlar mevcut dosyaları yansıtır ve dışa aktarmadan önce değişebilir.",
     "{value}× stock baseline": "{value}× film stoğu temel çizgisi",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} film stoğu arasında {value}–{value2}",
     "— none —": "— yok —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” boyanmış iyileştirmelere sahip. Bunu bu fotoğrafta yeniden oluşturun veya maskeleri hariç tutun.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” yeni bir nesne seçimi gerektiriyor. Diğer düzenlemeleri yapıştırmak için maskeleri hariç tutun.",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ Geri",
     "← Back to articles": "← Makalelere geri dön",
     "← People": "← Kişiler",
-    "☆ Favorites": "☆ Sık kullanılanlar"
+    "☆ Favorites": "☆ Sık kullanılanlar",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
   },
   "plurals": {
     " · {count} paired file linked": {

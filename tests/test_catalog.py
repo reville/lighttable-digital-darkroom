@@ -4,6 +4,7 @@ import json
 import os
 import sqlite3
 import tempfile
+import types
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -168,6 +169,57 @@ class ScanTests(unittest.TestCase):
             "Exif.SubImage1.ImageLength": "0",
         }), (None, None))
 
+    def test_rw2_metadata_reader_keeps_image_height_and_backfills_old_rows(self):
+        fields = {
+            "Exif.PanasonicRaw.ImageWidth": "6008",
+            "Exif.PanasonicRaw.ImageHeight": "4008",
+            "Exif.PanasonicRaw.SensorWidth": "6016",
+            "Exif.PanasonicRaw.SensorHeight": "4016",
+            "Exif.Image.Orientation": "6",
+        }
+        entries = {key: mock.Mock(**{"key.return_value": key,
+                    "toString.return_value": value}) for key, value in fields.items()}
+
+        class ExifData(list):
+            def findKey(self, key):
+                return entries.get(key)
+
+            def end(self):
+                return None
+
+        image = mock.Mock()
+        image.exifData.return_value = ExifData(entries.values())
+        exiv2 = types.SimpleNamespace(
+            ExifKey=lambda key: key,
+            ImageFactory=mock.Mock(open=mock.Mock(return_value=image)))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "photos"
+            root.mkdir()
+            photo = write_photo(root, "street.RW2")
+            cat = make_catalog(Path(directory))
+            self.addCleanup(cat.close)
+            source = cat.add_source(root)
+            with mock.patch.object(catalog_scan, "read_metadata", return_value={
+                    "width": None, "height": None, "metadata_version": 4}):
+                catalog_scan.scan_source(cat, source)
+            before = cat.query()["items"][0]
+            cat.save_state(before["id"], {"rating": 5, "grade": {"exposure": 0.5}})
+            with mock.patch.dict("sys.modules", {"exiv2": exiv2}):
+                metadata = catalog_scan.read_metadata(photo)
+                self.assertEqual((metadata["width"], metadata["height"]), (6008, 4008))
+                refreshed = catalog_scan.scan_source(cat, source)
+                image.readMetadata.reset_mock()
+                stable = catalog_scan.scan_source(cat, source)
+                image.readMetadata.assert_not_called()
+            after = cat.query()["items"][0]
+            self.assertEqual(refreshed["updated"], 1)
+            self.assertEqual(stable["updated"], 0)
+            self.assertEqual((after["width"], after["height"]), (4008, 6008))
+            self.assertEqual(after["id"], before["id"])
+            self.assertEqual(after["fileKey"], before["fileKey"])
+            self.assertEqual(after["rating"], 5)
+            self.assertEqual(cat.state_for(after["id"])["grade"]["exposure"], 0.5)
+
     def test_metadata_version_refreshes_an_unchanged_file_once(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "photos"
@@ -193,6 +245,18 @@ class ScanTests(unittest.TestCase):
             self.assertEqual(read.call_count, 1)
             self.assertEqual((item["width"], item["height"]), (4000, 6000))
             self.assertEqual(item["fileKey"], original_hash)
+
+    def test_photo_without_exif_uses_image_header_dimensions(self):
+        try:
+            import exiv2
+        except ImportError:
+            self.skipTest("Exiv2 metadata reader required")
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as directory:
+            photo = Path(directory) / "no-exif.jpg"
+            Image.new("RGB", (96, 64)).save(photo)
+            metadata = catalog_scan.read_metadata(photo)
+            self.assertEqual((metadata["width"], metadata["height"]), (96, 64))
 
     def test_scan_adds_files_and_skips_non_photos(self):
         with tempfile.TemporaryDirectory() as directory:

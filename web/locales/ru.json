@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Текущая камера",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Текущий формат сохраняет текущее представление ресурса, включая RAW или встроенную глубину, когда она доступна. Совместимый создаёт изображение, которое можно широко открыть. Выбранные файлы копируются в {path}.",
     "Current photo": "Текущее фото",
+    "Current photo / total photos": "Текущее фото / всего фото",
     "Current settings": "Текущие настройки",
     "Current stock": "Текущая пленка",
     "Curve": "Кривая",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Ползунок с удержанием клавиши",
     "Horizontal": "Горизонтально",
     "Hourly": "Почасовой",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Наведите указатель на счётчик фотографий в верхней панели, чтобы узнать, что означают его числа.",
     "Hue": "Оттенок",
     "Hue shift": "Сдвиг оттенка",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Фото открыты в режиме папки, и поврежденный каталог не был изменен. Откройте «Состояние библиотеки», чтобы восстановить его, восстановить резервную копию или начать новый каталог.",
     "Photos could not be imported. Try again or choose a folder.": "Не удалось импортировать фото. Попробуйте еще раз или выберите папку.",
     "Photos set aside": "Фото отложены",
+    "Photos shown / total photos in this folder or collection": "Показано фото / всего фото в этой папке или коллекции",
     "Photos stay in their current folder. No moving or copying required.": "Фото остаются в текущей папке. Перемещение или копирование не требуется.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Фото остаются в текущей папке. Вы можете добавлять больше папок в любое время.",
     "Photos unstacked": "Фото разгруппированы",
@@ -2432,7 +2435,7 @@
     "Search": "Поиск",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Поиск охватывает заголовки статей, названия инструментов и все инструкции. Выберите Все темы, чтобы искать по всему приложению.",
     "Search film stocks": "Поиск пленок",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Найдите название пленки, используйте Previous или Next для просмотра и затем выберите предварительный просмотр, чтобы применить его.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Найдите плёнку по названию или прокрутите предпросмотры, затем выберите один из них, чтобы применить плёнку. Предпросмотры увеличены и обрезаны, чтобы лучше показать детали.",
     "Search help": "Поиск справки",
     "Search index: {value}": "Индекс поиска: {value}",
     "Search objects, scenes, text, and faces": "Поиск объектов, сцен, текста и лиц",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "сохранено {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Имена отражают существующие файлы и могут измениться до экспорта.",
     "{value}× stock baseline": "{value}× базовый уровень Пленка",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} из {stocksLength} пленок",
     "— none —": "— нет —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "У «{value}» есть нарисованные уточнения. Воссоздайте их на этом фото или исключите маски.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "Для «{value}» нужно новое выделение объекта. Исключите маски, чтобы вставить другие изменения.",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ Назад",
     "← Back to articles": "← Назад к статьям",
     "← People": "← Люди",
-    "☆ Favorites": "☆ Избранное"
+    "☆ Favorites": "☆ Избранное",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Если размеры оригинала недоступны, вместо процента масштаба отображается —, а режим 1:1 отключён. Auto по-прежнему подстраивается под экран. Повторно просканируйте папку, чтобы обновить размеры."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "বর্তমান ক্যামেরা",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Current format অ্যাসেটের বর্তমান উপস্থাপনাটি বজায় রাখে, যেখানে প্রযোজ্য সেখানে RAW বা এমবেডেড depth-সহ। Compatible একটি ব্যাপকভাবে পাঠযোগ্য ছবি তৈরি করে। নির্বাচিত ফাইলগুলো {path}-এ কপি করা হয়।",
     "Current photo": "বর্তমান ফটো",
+    "Current photo / total photos": "বর্তমান ছবি / মোট ছবি",
     "Current settings": "বর্তমান সেটিংস",
     "Current stock": "বর্তমান স্টক",
     "Curve": "কার্ভ",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "হোল্ড-কী স্লাইডার নিয়ন্ত্রণ",
     "Horizontal": "আড়াআড়ি",
     "Hourly": "প্রতি ঘণ্টা",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "সংখ্যাগুলোর অর্থ জানতে ওপরের বারে ছবির কাউন্টারের ওপর মাউস পয়েন্টার রাখুন।",
     "Hue": "হিউ",
     "Hue shift": "হিউ শিফট",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "ফটোগুলি ফোল্ডার মোডে খোলা আছে এবং ক্ষতিগ্রস্ত ক্যাটালগটি পরিবর্তন করা হয়নি। এটি উদ্ধার করতে, ব্যাকআপ পুনঃস্থাপন করতে, অথবা একটি নতুন ক্যাটালগ শুরু করতে লাইব্রেরির স্বাস্থ্য খুলুন।",
     "Photos could not be imported. Try again or choose a folder.": "Photos আমদানি করা যায়নি। আবার চেষ্টা করুন বা একটি ফোল্ডার বেছে নিন।",
     "Photos set aside": "ফটোগুলি আলাদা করে রাখা হয়েছে",
+    "Photos shown / total photos in this folder or collection": "দেখানো ছবি / এই ফোল্ডার বা সংগ্রহের মোট ছবি",
     "Photos stay in their current folder. No moving or copying required.": "ফটোগুলো তাদের বর্তমান ফোল্ডারেই থাকে। সরানো বা কপি করার দরকার নেই।",
     "Photos stay in their current folder. You can add more folders whenever you like.": "ফটোগুলো তাদের বর্তমান ফোল্ডারেই থাকে। চাইলে যেকোনো সময় আরও ফোল্ডার যোগ করতে পারেন।",
     "Photos unstacked": "ফটোগুলি আনস্ট্যাক করা হয়েছে",
@@ -2432,7 +2435,7 @@
     "Search": "অনুসন্ধান",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "অনুসন্ধান নিবন্ধের শিরোনাম, টুলের নাম, এবং পুরো নির্দেশনাগুলো কভার করে। অ্যাপজুড়ে অনুসন্ধানের জন্য সব বিষয় নির্বাচন করুন।",
     "Search film stocks": "ফিল্ম স্টক অনুসন্ধান করুন",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "একটি stock নাম অনুসন্ধান করুন, Previous বা Next ব্যবহার করে ব্রাউজ করুন, তারপর প্রয়োগ করতে একটি preview বেছে নিন।",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "ফিল্মের নাম খুঁজুন অথবা প্রিভিউগুলো স্ক্রল করুন, তারপর প্রয়োগ করতে একটি বেছে নিন। আরও খুঁটিনাটি দেখানোর জন্য প্রিভিউগুলো বড় করে ক্রপ করা হয়।",
     "Search help": "সহায়তা খুঁজুন",
     "Search index: {value}": "অনুসন্ধান সূচি: {value}",
     "Search objects, scenes, text, and faces": "অবজেক্ট, দৃশ্য, টেক্সট, এবং মুখসমূহ খুঁজুন",
@@ -4022,7 +4025,6 @@
     "{value}% retained": "{value}% বজায় রাখা হয়েছে",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}নামগুলো বিদ্যমান ফাইলের প্রতিফলন এবং রপ্তানির আগে পরিবর্তিত হতে পারে।",
     "{value}× stock baseline": "{value}× স্টক বেসলাইন",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength}টি stock-এর মধ্যে {value}–{value2}",
     "— none —": "— কিছুই নয় —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”-এ আঁকা সূক্ষ্ম সমন্বয় আছে। এটি এই ফটোতে পুনঃসৃষ্টি করুন বা exclude masks ব্যবহার করুন।",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”-এর জন্য নতুন object selection দরকার। অন্য এডিট পেস্ট করতে exclude mask বাদ দিন।",
@@ -4030,7 +4032,8 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের"
+    "☆ Favorites": "☆ পছন্দের",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "মূল ছবির মাপ পাওয়া না গেলে জুমের শতাংশের জায়গায় — দেখায় এবং 1:1 নিষ্ক্রিয় থাকে। Auto তখনও স্ক্রিন অনুযায়ী প্রিভিউ সামঞ্জস্য করে। মাপ হালনাগাদ করতে ফোল্ডারটি আবার স্ক্যান করুন।"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -70,6 +70,20 @@ cached('revision:2|folder',[...rows],compute);
 assert.equal(visits,40000);
 ''')
 
+    def test_unknown_dimensions_cover_the_display_without_a_false_source_limit(self):
+        self.run_js('''
+const view = {viewportWidth:1028, viewportHeight:700, deviceScale:2};
+for (const dimensions of [{}, {sourceWidth:0,sourceHeight:0},
+    {sourceWidth:6000}, {sourceWidth:Infinity,sourceHeight:4000}]) {
+  assert.equal(automaticPreviewWidth({...view,...dimensions}), 2200);
+  assert.equal(automaticPreviewWidth({...view,...dimensions,zoom:2}), 4500);
+  assert.equal(automaticPreviewWidth({...view,...dimensions,crop:{w:.5,h:.5}}), 4500);
+  assert.equal(automaticPreviewWidth({...view,...dimensions,zoom:32}), 8000);
+}
+assert.equal(automaticPreviewWidth({...view,sourceWidth:300,sourceHeight:200}), 300,
+  'a genuinely small original must still keep its source limit');
+''')
+
     def test_preview_preferences_start_automatic_and_only_retain_explicit_overrides(self):
         self.run_js('''
 assert.equal(previewResolutionPreference(), 'auto');
