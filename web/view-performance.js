@@ -39,11 +39,19 @@ export function visibleGridPositions(layout, top, height, overscan = 500) {
 const PREVIEW_BUCKETS = [900, 1100, 1400, 1800, 2200, 2600, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000];
 export function automaticPreviewWidth({ sourceWidth, sourceHeight, viewportWidth,
   viewportHeight, deviceScale = 1, zoom = 1, crop = null, actualSize = false }) {
-  const source = Math.max(sourceWidth || 0, sourceHeight || 0);
-  if (actualSize) return Math.max(64, Math.min(8000, source || 1100));
-  if (!(source > 0 && viewportWidth > 0 && viewportHeight > 0)) return 1100;
-  const fit = Math.min(viewportWidth / (sourceWidth * (crop?.w || 1)), viewportHeight / (sourceHeight * (crop?.h || 1)));
-  const needed = Math.min(source, source * fit * Math.max(1, deviceScale) * Math.max(1, zoom));
+  const knownSource = sourceWidth > 0 && sourceHeight > 0 &&
+    Number.isFinite(sourceWidth) && Number.isFinite(sourceHeight);
+  const source = knownSource ? Math.max(sourceWidth, sourceHeight) : 8000;
+  if (actualSize) return Math.max(64, Math.min(8000, source));
+  if (!(viewportWidth > 0 && viewportHeight > 0)) return 1100;
+  const frameWidth = viewportWidth / (crop?.w || 1);
+  const frameHeight = viewportHeight / (crop?.h || 1);
+  // Unknown source dimensions are not a tiny original. Cover the viewport
+  // until metadata arrives; never cap resolution to a draft/helper texture.
+  const fitted = knownSource
+    ? source * Math.min(frameWidth / sourceWidth, frameHeight / sourceHeight)
+    : Math.max(frameWidth, frameHeight);
+  const needed = Math.min(source, fitted * Math.max(1, deviceScale) * Math.max(1, zoom));
   const bucket = PREVIEW_BUCKETS.find((size) => size >= needed) || 8000;
   return Math.max(64, Math.min(source, bucket));
 }

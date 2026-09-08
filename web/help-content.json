@@ -2965,7 +2965,8 @@
           "paragraphs": [
             "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.",
             "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
-            "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."
+            "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments.",
+            "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions."
           ],
           "steps": [
             "Open Settings → Performance.",
