@@ -1909,7 +1909,7 @@
           "paragraphs": [
             "Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.",
             "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file.",
-            "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The status badge shows a slim animated bar while the preview is processing. Wait for it to finish before judging fine detail."
+            "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background."
           ],
           "tips": [
             "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."
@@ -2594,8 +2594,8 @@
         {
           "title": "Check what has finished rendering",
           "paragraphs": [
-            "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. A slim animated bar beneath Applying film…, Refining RAW detail…, or Updating preview detail… stays visible until the requested preview is displayed. The bar indicates ongoing work, not a percentage or time remaining. With reduced motion enabled, the bar stays still. The photo stays visible without dimming. At 1:1, wait for 100% detail ready when assessing fine detail; Preview ready alone refers to the requested preview resolution.",
-            "If the status reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
+            "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.",
+            "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
             "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments."
           ],
           "steps": [
