@@ -6277,8 +6277,6 @@ function showCurrentImage(im) {
   $('orig').removeAttribute('src');
   $('currentName').textContent = displayName(im) + (im.availability === 'cloud-only' ? ' · Cloud only — download in Finder and rescan' : '');
   syncPairControls();
-  $('editFilename').textContent = displayName(im);
-  $('filmFilename').textContent = displayName(im);
   $('rawCameraDefaultStatus').textContent = isRawInput()
     ? 'Checking camera default…' : 'RAW originals only.';
   updateLoupeInfoOverlay();
