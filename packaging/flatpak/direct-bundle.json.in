@@ -20,8 +20,8 @@
             "name": "openblas",
             "buildsystem": "simple",
             "build-commands": [
-                "make -j${FLATPAK_BUILDER_N_JOBS} DYNAMIC_ARCH=1 NOFORTRAN=1 USE_OPENMP=0",
-                "make PREFIX=/app DYNAMIC_ARCH=1 NOFORTRAN=1 USE_OPENMP=0 install"
+                "make -j${FLATPAK_BUILDER_N_JOBS} TARGET=GENERIC DYNAMIC_ARCH=1 NUM_THREADS=64 NOFORTRAN=1 USE_OPENMP=0",
+                "make PREFIX=/app TARGET=GENERIC DYNAMIC_ARCH=1 NUM_THREADS=64 NOFORTRAN=1 USE_OPENMP=0 install"
             ],
             "cleanup": ["/include", "/lib/*.a", "/lib/cmake", "/lib/pkgconfig"],
             "sources": [

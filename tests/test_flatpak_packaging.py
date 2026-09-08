@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import struct
 import tarfile
 import tempfile
 import unittest
@@ -119,6 +120,12 @@ class FlatpakPackagingTests(unittest.TestCase):
         INSTALL.install(manifest.parent, prefix)
         self.assertTrue((prefix / "LightTable/Resources/LightTable/engine/lighttable-engine").is_file())
         self.assertTrue((prefix / "share/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png").is_file())
+        for size in (64, 128, 256):
+            icon = prefix / f"share/icons/hicolor/{size}x{size}/apps/app.lighttable.LightTable.png"
+            data = icon.read_bytes()
+            self.assertEqual(data[:8], b"\x89PNG\r\n\x1a\n")
+            self.assertEqual(struct.unpack(">II", data[16:24]), (size, size))
+            self.assertEqual(data, (manifest.parent / f"icon-{size}.png").read_bytes())
         self.assertEqual((prefix / "share/licenses/app.lighttable.LightTable/lighttable/dependencies/notice.txt").read_text(), "dependency notice")
         self.assertFalse((prefix / "LightTable/install.sh").exists())
         self.assertTrue(os.access(prefix / "bin/lighttable-desktop", os.X_OK))
