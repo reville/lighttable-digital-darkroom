@@ -325,7 +325,8 @@
         "title": "Compare while zoomed in",
         "paragraphs": [
           "Click Compare in Detail to split the original and edited photo. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
-          "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail."
+          "Original uses the same preview resolution as the edited photo, including at 1:1. For RAW photos, Original uses the neutral, unedited conversion; allow it to finish loading before judging detail.",
+          "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view."
         ],
         "steps": [
           "Turn on Compare, then zoom beyond Fit.",
@@ -522,7 +523,7 @@
         ],
         "tips": [
           "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0–5 for stars.",
-          "Hold B to show the original while inspecting an edit. Slash (/) focuses photo search.",
+          "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.",
           "Photo shortcuts are ignored while typing in text, number, or selection fields. Leave the field before using a photo command."
         ]
       }

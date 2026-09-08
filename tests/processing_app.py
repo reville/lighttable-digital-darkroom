@@ -63,7 +63,10 @@ def run(output_dir):
                     reference=str(output / f"{case['name']}-cli.png"),
                     display=str(output / f"{case['name']}-display.png"),
                     displayReference=str(output / f"{case['name']}-display-reference.png"),
-                    screenshot=str(output / f"{case['name']}-app.png"))
+                    screenshot=str(output / f"{case['name']}-app.png"),
+                    beforeRaw=str(output / f"{case['name']}-before.rgba"),
+                    beforeReference=str(output / f"{case['name']}-original.png"),
+                    releasedRaw=str(output / f"{case['name']}-released.rgba"))
     module = find_playwright_module()
     if not module or not shutil.which('node'):
         raise RuntimeError('Application gate requires Node and Playwright')
@@ -122,6 +125,13 @@ def run(output_dir):
         record.update(photo=frame['photo'], reference='Actual /api/render/file CLI route (Python CPU grade)',
                       screenshot=case['screenshot'], grade=frame['grade'])
         records.append(record)
+        before_reference = np.asarray(Image.open(case['beforeReference']).convert('RGB')).astype(float) / 255
+        before = np.fromfile(case['beforeRaw'], dtype=np.uint8).reshape(frame['height'], frame['width'], 4)
+        records.append(compare_images(case['name'] + '-hold-before', before_reference,
+                                      before[::-1, :, :3] / 255, output / 'before'))
+        released = np.fromfile(case['releasedRaw'], dtype=np.uint8).reshape(frame['height'], frame['width'], 4)
+        records.append(compare_images(case['name'] + '-release-before', actual[::-1, :, :3] / 255,
+                                      released[::-1, :, :3] / 255, output / 'before'))
         display = np.asarray(Image.open(case['display']).convert('RGB')).astype(float) / 255
         # The reference page displays the readback bytes at exactly the app's
         # DOM bounds, including fractional boundary coverage. No image fitting,
