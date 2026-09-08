@@ -110,6 +110,7 @@ jobs:
             .build/flatpak/evidence
             .build/flatpak/candidate/app.lighttable.LightTable.json
             .build/flatpak/candidate/candidate-provenance.json
+          include-hidden-files: true
           if-no-files-found: error
 
   arch:
@@ -214,6 +215,7 @@ jobs:
             .build/snap/candidate.json
             .build/snap/snapcraft.yaml
             .build/snap/evidence
+          include-hidden-files: true
           if-no-files-found: error
       - name: Remove ephemeral installed candidate
         if: always()
