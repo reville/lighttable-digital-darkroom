@@ -2486,6 +2486,35 @@
       ]
     },
     {
+      "id": "about-lighttable",
+      "title": "About LightTable and open source",
+      "category": "Settings",
+      "summary": "Find the Mac app version, website, and source code.",
+      "keywords": [
+        "about",
+        "version",
+        "website",
+        "github",
+        "open source",
+        "license",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Open About on macOS",
+          "paragraphs": [
+            "Choose LightTable → About LightTable in the Mac menu bar. The About window shows the app version and, when different, its build number.",
+            "Website opens lighttable.app in your default browser. GitHub opens the public LightTable source repository, where you can explore the code, report issues, and contribute.",
+            "LightTable is free and open source under the GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ]
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Change preferences and new-photo defaults",
       "category": "Settings",
