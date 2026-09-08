@@ -41,6 +41,7 @@ import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
+import { createEnhancePanel } from '/web/enhance-panel.js';
 import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
@@ -60,6 +61,7 @@ let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
+let ENHANCE = null;
 let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
@@ -290,6 +292,7 @@ function setActionDialog(id, open) {
   dialog.setAttribute('aria-hidden', String(!open));
   if (open) {
     updateTransferActions();
+    if (id === 'enhanceDialog') void ENHANCE?.refresh();
     requestAnimationFrame(() => dialog.querySelector('select, input, button')?.focus());
   }
 }
@@ -1929,7 +1932,8 @@ function renderEditItems(kind) {
 function syncMaskPanel() {
   renderEditItems('mask');
   const mask = selectedMask();
-  const createOpen = !S.masks.length || S.maskCreateOpen;
+  const createOpen = S.maskCreateOpen;
+  $('maskReset').disabled = !photoReadyForEditing() || !S.masks.length;
   $('maskCreateMenu').hidden = !createOpen;
   $('maskCreateToggle').setAttribute('aria-expanded', String(createOpen));
   $('maskSemanticCombineRow').hidden = !mask;
@@ -1998,6 +2002,7 @@ function syncMaskPanel() {
 
 function syncHealPanel() {
   renderEditItems('heal');
+  $('healReset').disabled = !photoReadyForEditing() || !S.heals.length;
   const spot = selectedHeal();
   for (const mode of ['remove', 'heal', 'clone']) {
     $(`healTool${mode[0].toUpperCase()}${mode.slice(1)}`).setAttribute(
@@ -5483,8 +5488,10 @@ function closeActionMenus() {
 }
 
 function openActionMenu(id, anchor = null, event = null) {
+  const wasOpen = $(id).classList.contains('on');
   closeActionMenus();
   closeFolderMenu();
+  if (anchor && wasOpen) return;
   updateTransferActions();
   const menu = $(id);
   menu.classList.add('on');
@@ -6364,6 +6371,7 @@ async function go(i) {
   S.idx = i;
   $('panel').inert = true;
   $('cmp').inert = true;
+  syncPhotoActions();
   const im = cur();
   CAPTURE_TIME?.selectionChanged();
   const generation = ++navigationGeneration;
@@ -7702,7 +7710,25 @@ function transferTargets() {
     .filter(Boolean);
   return selected.length ? selected : (cur() ? [cur()] : []);
 }
+function photoReadyForEditing() {
+  const photo = cur();
+  return !!photo && photo.kind !== 'video' && S.editingName === photo.name;
+}
+function syncPhotoActions() {
+  const ready = photoReadyForEditing();
+  for (const id of ['editPane', 'filmPane', 'cropPane', 'maskPane', 'healPane']) {
+    $(id).inert = !ready;
+  }
+  for (const id of ['resetEdit', 'autoBtn', 'zoomFit', 'zoom1', 'beforeBtn',
+    'wbBtn', 'clipBtn', 'versionCreate']) {
+    $(id).disabled = !ready;
+  }
+  $('maskReset').disabled = !ready || !S.masks.length;
+  $('healReset').disabled = !ready || !S.heals.length;
+  ENHANCE?.sync();
+}
 function updateTransferActions() {
+  syncPhotoActions();
   const targets = transferTargets();
   const primaryKey = window.__LIGHTTABLE_PLATFORM__ === 'windows' ? 'Ctrl' : '⌘';
   $('copyBtn').disabled = !cur();
@@ -10071,6 +10097,7 @@ $('clipBtn').onclick = () => {
 /* ------------------------------------------------------------ auto tone */
 $('autoBtn').onclick = (event) => {
   event.stopPropagation();
+  if (!photoReadyForEditing()) return;
   refreshWebGLSamplingSurface();
   const s = S.gl && S.gl.sample();
   if (!s) {
@@ -10762,27 +10789,16 @@ if ($('learnedDenoiseApply')) {
 }
 
 if ($('enhanceRun')) {
-  getJSON('/api/enhance/capabilities').then((capabilities) => {
-    const note = $('enhanceNote');
-    if (!capabilities.available) {
-      $('enhanceRun').disabled = true;
-      if (note) note.textContent = ((capabilities.reason || tr("Not available.")));
-    } else if (note) {
-      note.textContent = tr("Writes a new 16-bit master; the original is untouched.");
-    }
-  }).catch(() => {});
-  $('enhanceRun').onclick = async () => {
-    const im = cur();
-    if (!im) return;
-    const mode = $('enhanceMode') ? $('enhanceMode').value : 'denoise';
-    $('enhanceNote').textContent = tr("Working…");
-    const result = await api('/api/enhance', { name: im.name, mode });
-    $('enhanceNote').textContent = result.ok ? tr("Wrote {value}", {value: String(result.destination).split('/').pop()}) : (result.error || tr("Enhance failed"));
-    if (result.ok) {
+  ENHANCE = createEnhancePanel({
+    el: $, getPhoto: () => photoReadyForEditing() ? cur() : null,
+    getCapabilities: () => getJSON('/api/enhance/capabilities'),
+    run: (request) => api('/api/enhance', request),
+    onComplete: async () => {
       setActionDialog('enhanceDialog', false);
-      reloadLibrary();
-    }
-  };
+      await reloadLibrary();
+    },
+  });
+  void ENHANCE.refresh();
 }
 
 /* ------------------------------------------------------- native messages */

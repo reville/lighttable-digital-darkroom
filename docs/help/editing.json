@@ -8,7 +8,7 @@
     "sections": [
       {
         "title": "Check that your work is saved",
-        "paragraphs": ["Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."],
+        "paragraphs": ["Editing controls are unavailable until a photo is loaded. Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."],
         "steps": ["Make your adjustment, then check the save status in the app.", "Wait for Saving… to change to Saved. Saving also includes pending edit-history writes.", "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing."],
         "tips": ["Saved · recovery needs attention means the save completed but the local recovery system reported a problem. Use the available retry control and read the status message."]
       },
@@ -43,7 +43,7 @@
       },
       {
         "title": "Keep a named look",
-        "paragraphs": ["A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo."],
+        "paragraphs": ["A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded."],
         "steps": ["Open History, expand Snapshots, and click Create snapshot.", "Enter a useful name, such as Soft portrait or Before retouching.", "Click the snapshot’s name to apply it later. Use Undo if you want to return to the state you just replaced."],
         "tips": ["The photo keeps up to 50 snapshots; creating another beyond that limit drops the oldest snapshot from the list.", "The × beside a snapshot deletes that named snapshot, not the original photo."]
       }
@@ -205,7 +205,7 @@
         "title": "Create an enhanced derivative in the Mac app",
         "paragraphs": ["Photo → Enhance Photo… offers Denoise and Super resolution and writes a new 16-bit master when the selected operation succeeds. The original remains untouched."],
         "steps": ["Select the photo, choose Photo → Enhance Photo…, and read the availability message.", "Choose the enhancement and click Enhance if available.", "After completion, find the new result in the refreshed library and inspect it."],
-        "tips": ["Super resolution has no bundled model and requires a compatible local model. A listed option alone does not mean that operation is available.", "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."]
+        "tips": ["Unavailable enhancements are disabled. Super resolution has no bundled model and requires a compatible model installed locally.", "Enhancement can generate detail; evaluate the output before treating it as a faithful record of fine texture."]
       }
     ],
     "related": ["editing-tone", "editing-effects", "editing-history-snapshots"],
@@ -213,7 +213,7 @@
       {"path": "web/index.html", "anchor": "Judge sharpening and noise reduction at 1:1. These controls work in both Film and Develop modes."},
       {"path": "web/index.html", "anchor": "Toggle Fit / 1:1"},
       {"path": "web/app.js", "anchor": "Runs locally when Apply is pressed; the slider is not live."},
-      {"path": "web/app.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
+      {"path": "web/enhance-panel.js", "anchor": "Writes a new 16-bit master; the original is untouched."},
       {"path": "enhance_workflow.py", "anchor": "Super-resolution has no bundled model."},
       {"path": "enhance_workflow.py", "anchor": "Enhance output is model-generated detail, not measured detail."},
       {"path": "app/main.swift", "anchor": "addEditorItem(photoMenu, title: L(\"Enhance Photo…\"),"}
@@ -400,9 +400,9 @@
     "sections": [
       {
         "title": "Create a manual mask",
-        "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments.", "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."],
+        "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light and Color adjustments.", "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."],
         "steps": ["Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.", "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.", "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.", "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.", "Rename the mask using its ••• button so its purpose is easy to recognize later."],
-        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
+        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
       }
     ],
     "related": ["editing-masks-ai", "editing-masks-ranges-refinements", "editing-history-snapshots"],
@@ -498,7 +498,7 @@
         "title": "Refine an existing correction",
         "paragraphs": ["Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.", "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."],
         "steps": ["Drag the target circle to reposition the correction, or choose Move Target and click its new position.", "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.", "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.", "Toggle Enable this correction to compare, or use Delete correction to remove it."],
-        "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change."]
+        "tips": ["Remove does not expose a source circle or Refresh Source. Those source controls apply to Heal and Clone.", "Clear All removes the photo’s Remove, Heal, and Clone corrections and is unavailable when there are none. Use Undo to reverse an accidental editing change."]
       }
     ],
     "related": ["editing-detail-effects-enhance", "editing-history-snapshots", "editing-copy-paste-match-exposure"],

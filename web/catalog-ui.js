@@ -30,6 +30,33 @@ export function createCatalogUI(ctx) {
     }
   };
 
+  let catalogResultVersion = 0;
+  function showCatalogResult(title, message) {
+    const version = ++catalogResultVersion;
+    el('catalogResultTitle').textContent = title;
+    el('catalogResultBody').textContent = message;
+    const dialog = el('catalogResultDialog');
+    dialog.setAttribute('aria-hidden', 'false');
+    dialog.classList.add('on');
+    el('catalogResultClose').focus();
+    return message => {
+      if (version === catalogResultVersion) el('catalogResultBody').textContent = message;
+    };
+  }
+
+  const resultDialog = el('catalogResultDialog');
+  const closeResult = () => {
+    resultDialog?.setAttribute('aria-hidden', 'true');
+    resultDialog?.classList.remove('on');
+    el('localLibraryMenuBtn')?.focus();
+  };
+  el('catalogResultClose')?.addEventListener('click', closeResult);
+  resultDialog?.addEventListener('keydown', event => {
+    event.stopPropagation();
+    if (event.key === 'Escape') { event.preventDefault(); closeResult(); }
+    if (event.key === 'Tab') { event.preventDefault(); el('catalogResultClose').focus(); }
+  });
+
   /* ------------------------------------------------------------- sources */
 
   function renderSources() {
@@ -137,32 +164,33 @@ export function createCatalogUI(ctx) {
     const backup = el('catalogBackup');
     if (backup) {
       backup.addEventListener('click', async () => {
-        const result = await post('/api/catalog/backup', {});
-        const target = el('catalogMaintenance');
-        if (target) {
-          target.textContent = result.archive ? tr("Backed up to {resultArchive}", {resultArchive: result.archive}) : (result.error || tr("Failed"));
-        }
+        backup.disabled = true;
+        const report = showCatalogResult(tr('Back up catalog'), tr('Creating backup…'));
+        try {
+          const result = await post('/api/catalog/backup', {});
+          if (result.error || !result.archive) throw new Error(result.error || tr('Could not create backup'));
+          report(tr('Backed up to {resultArchive}', {resultArchive: result.archive}));
+        } catch (error) { report(String(error.message || error)); }
+        finally { backup.disabled = false; }
       });
     }
 
     const duplicates = el('catalogDuplicates');
     if (duplicates) {
       duplicates.addEventListener('click', async () => {
-        const result = await get('/api/catalog/duplicates');
-        const groups = (result && result.groups) || [];
-        const target = el('catalogMaintenance');
-        if (!target) return;
-        if (!groups.length) {
-          target.textContent = tr("No duplicate files found.");
-          return;
-        }
-        const total = groups.reduce((sum, g) => sum + g.files.length, 0);
-        const groupSummary = trn('{count} duplicate group covering {files}.',
-          '{count} duplicate groups covering {files}.', groups.length,
-          {count: groups.length, files: trn('{count} file', '{count} files', total, {count: total})});
-        target.innerHTML = `<strong>${i18nHTML(groupSummary)}</strong><br>`
-          + groups.slice(0, 20).map((group) =>
-            group.files.map((file) => escapeHTML(file.relpath)).join(' = ')).join('<br>');
+        duplicates.disabled = true;
+        const report = showCatalogResult(tr('Find duplicates'), tr('Looking for duplicate files…'));
+        try {
+          const result = await get('/api/catalog/duplicates');
+          if (result.error) throw new Error(result.error);
+          const groups = result.groups || [];
+          const total = groups.reduce((sum, group) => sum + group.files.length, 0);
+          report(!groups.length ? tr('No duplicate files found.')
+            : trn('{count} duplicate group covering {files}.', '{count} duplicate groups covering {files}.',
+              groups.length, {files: trn('{count} file', '{count} files', total)}) + '\n\n'
+              + groups.map(group => group.files.map(file => file.relpath).join(' = ')).join('\n'));
+        } catch (error) { report(String(error.message || error)); }
+        finally { duplicates.disabled = false; }
       });
     }
   }
@@ -173,22 +201,21 @@ export function createCatalogUI(ctx) {
     const button = el('importSidecarsBtn');
     if (!button) return;
     button.addEventListener('click', async () => {
-      const report = el('importReport');
-      if (report) report.textContent = tr("Reading sidecars…");
+      button.disabled = true;
+      const report = showCatalogResult(tr('Import sidecars'), tr('Reading sidecars…'));
       try {
         const result = await post('/api/import/sidecars', {
           apply: { metadata: true, develop: false, crop: false },
         });
-        if (report) {
-          const ignored = Object.entries(result.ignored || {}).map(([key, count]) => `${key} (${count})`);
-          report.textContent = tr('Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.', {read: result.read, applied: result.applied, missing: result.missing})
-            + (ignored.length ? ' ' + tr('Skipped: {items}.', {items: ignored.join(', ')}) : '')
-            + (result.errors?.length ? ' ' + tr('{count} errors: {details}', {count: result.errors.length, details: result.errors.slice(0, 5).join('; ')}) : '');
-        }
+        if (result.error) throw new Error(result.error);
+        const ignored = Object.entries(result.ignored || {});
+        report(tr('Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.',
+          {read: result.read, applied: result.applied, missing: result.missing})
+          + (ignored.length ? '\n' + tr('Skipped: {items}.', {items: ignored.map(([key, count]) => `${key} (${count})`).join(', ')}) : '')
+          + (result.errors?.length ? '\n' + tr('Errors: {details}', {details: result.errors.map(error => error.error || error).join('; ')}) : ''));
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
-      } catch (error) {
-        if (report) report.textContent = error.message || tr('Sidecars could not be read.');
-      }
+      } catch (error) { report(String(error.message || error)); }
+      finally { button.disabled = false; }
     });
   }
 
@@ -369,108 +396,204 @@ export function createCatalogUI(ctx) {
   }
 
   function bindIngest() {
-    const dialog = el('ingestDialog');
-    const open = el('ingestOpen');
+    const dialog = el('ingestDialog'), open = el('ingestOpen');
     if (!dialog || !open) return;
+    const start = el('ingestStart2'), cancel = el('ingestCancel');
+    const pageSize = 200, selected = new Set();
+    let page = 0, busy = false, scanning = false, jobId = null, cancelling = false;
+    const fields = ['ingestSource', 'ingestDest', 'ingestFolderTemplate',
+      'ingestFilenameTemplate', 'ingestCustom', 'ingestStart', 'ingestBackup',
+      'ingestVerify', 'ingestDuplicates'];
     const show = (visible) => {
       dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
       dialog.classList.toggle('on', visible);
     };
+    const items = () => ingestPlan?.items || [];
+    const chosen = () => items().filter(item => selected.has(item.source));
+    function controls() {
+      const locked = busy || scanning;
+      for (const id of [...fields, 'ingestChoose', 'ingestChooseDest', 'ingestChooseBackup']) {
+        el(id).disabled = locked;
+      }
+      el('ingestScan').disabled = locked || !el('ingestSource').value.trim()
+        || !el('ingestDest').value.trim();
+      start.disabled = locked || !selected.size || !ingestPlan;
+      cancel.disabled = scanning || (busy && (!jobId || cancelling));
+      el('ingestSelectAll').disabled = locked || selected.size === items().length;
+      el('ingestSelectNone').disabled = locked || !selected.size;
+      el('ingestPrevious').disabled = locked || !page;
+      el('ingestNext').disabled = locked || (page + 1) * pageSize >= items().length;
+      for (const input of el('ingestGrid').querySelectorAll('input')) input.disabled = locked;
+    }
+    function selectionStatus() {
+      const selectedItems = chosen();
+      const bytes = selectedItems.reduce((sum, item) => sum + (Number(item.size) || 0), 0);
+      const cloud = (ingestPlan?.skipped || []).filter(item => item.reason === 'cloud-only').length;
+      el('ingestStatus').textContent = trn('{selected} of {count} photo selected, {size} GB',
+        '{selected} of {count} photos selected, {size} GB', items().length,
+        {selected: selectedItems.length, size: (bytes / 1e9).toFixed(2)})
+        + (ingestPlan?.duplicates ? ' · ' + trn('{count} already in the catalog', '{count} already in the catalog', ingestPlan.duplicates) : '')
+        + (cloud ? '. ' + trn('{count} cloud-only photo skipped; download it in Finder and scan again.',
+          '{count} cloud-only photos skipped; download them in Finder and scan again.', cloud) : '');
+      el('ingestExample').textContent = selectedItems[0]
+        ? tr('First file lands at {firstDestination}', {firstDestination: selectedItems[0].destination}) : '';
+      controls();
+    }
+    function renderPage() {
+      el('ingestSelection').hidden = !items().length;
+      el('ingestPage').textContent = items().length
+        ? tr('Page {page} of {pages}', {page: page + 1, pages: Math.ceil(items().length / pageSize)}) : '';
+      el('ingestGrid').innerHTML = items().slice(page * pageSize, (page + 1) * pageSize)
+        .map(item => `<label class="ingest-cell">`
+          + `<input type="checkbox" ${selected.has(item.source) ? 'checked' : ''} data-source="${encodeURIComponent(item.source)}">`
+          + `<span class="ingest-cell-name">${escapeHTML(item.name)}</span>`
+          + `<span class="ingest-cell-dest">${escapeHTML(String(item.destination || '').split('/').slice(-2).join('/'))}</span></label>`).join('');
+      controls();
+    }
+    function invalidate() {
+      if (busy || scanning) return;
+      ingestPlan = null; selected.clear(); page = 0;
+      renderPage();
+      el('ingestExample').textContent = '';
+      el('ingestStatus').textContent = tr('Scan the source to review photos and destinations.');
+    }
+    for (const id of fields) {
+      el(id).addEventListener('input', invalidate);
+      el(id).addEventListener('change', invalidate);
+    }
+    el('ingestGrid').addEventListener('change', event => {
+      if (busy || scanning || !event.target.dataset.source) return;
+      const source = decodeURIComponent(event.target.dataset.source);
+      if (event.target.checked) selected.add(source); else selected.delete(source);
+      selectionStatus();
+    });
+    el('ingestSelectAll').addEventListener('click', () => {
+      if (busy || scanning) return;
+      items().forEach(item => selected.add(item.source)); renderPage(); selectionStatus();
+    });
+    el('ingestSelectNone').addEventListener('click', () => {
+      if (busy || scanning) return;
+      selected.clear(); renderPage(); selectionStatus();
+    });
+    for (const [id, step] of [['ingestPrevious', -1], ['ingestNext', 1]]) {
+      el(id).addEventListener('click', () => {
+        if (busy || scanning) return;
+        page = Math.max(0, Math.min(Math.ceil(items().length / pageSize) - 1, page + step));
+        renderPage();
+      });
+    }
     open.addEventListener('click', () => show(true));
-    const cancel = el('ingestCancel');
-    if (cancel) cancel.addEventListener('click', () => { show(false); });
-
-    ['ingestChoose', 'ingestChooseDest', 'ingestChooseBackup'].forEach((id) => {
-      const button = el(id);
-      if (!button) return;
-      button.addEventListener('click', () => {
-        const field = { ingestChoose: 'ingestSource',
-                        ingestChooseDest: 'ingestDest',
-                        ingestChooseBackup: 'ingestBackup' }[id];
+    cancel.addEventListener('click', async () => {
+      if (!busy) { show(false); return; }
+      if (!jobId || cancelling) return;
+      cancelling = true; controls();
+      el('ingestStatus').textContent = tr('Stopping after the current file finishes copying and verification…');
+      try {
+        const result = await post(`/api/jobs/${jobId}/cancel`, {});
+        if (result.error) throw new Error(result.error);
+      } catch (error) {
+        cancelling = false; controls();
+        el('ingestStatus').textContent = tr('Could not cancel import: {error}', {error: error.message || error});
+      }
+    });
+    ['ingestChoose', 'ingestChooseDest', 'ingestChooseBackup'].forEach(id => {
+      el(id).addEventListener('click', () => {
+        const field = { ingestChoose: 'ingestSource', ingestChooseDest: 'ingestDest',
+          ingestChooseBackup: 'ingestBackup' }[id];
         if (!sendNative('chooseIngestFolder', { field })) {
           toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
         }
       });
     });
-
-    const scan = el('ingestScan');
-    if (scan) {
-      scan.addEventListener('click', async () => {
-        const path = el('ingestSource').value.trim();
-        if (!path) { toast(tr("Choose a card first")); return; }
-        el('ingestStatus').textContent = tr("Scanning…");
-        try {
-          const result = await post('/api/ingest/scan',
-                                    { path, request: ingestRequest() });
-          ingestPlan = result.plan;
-          const grid = el('ingestGrid');
-          grid.innerHTML = (ingestPlan.items || []).slice(0, 200).map((item) => `
-            <label class="ingest-cell">
-              <input type="checkbox" checked data-source="${encodeURIComponent(item.source)}">
-              <span class="ingest-cell-name">${escapeHTML(item.name)}</span>
-              <span class="ingest-cell-dest">${escapeHTML(String(item.destination || '').split('/').slice(-2).join('/'))}</span>
-            </label>`).join('');
-          el('ingestStatus').textContent =
-            tr("{ingestPlanTotal} photos to copy{value}, {value2} GB{value3}", {ingestPlanTotal: ingestPlan.total, value: ingestPlan.duplicates ? tr(", {ingestPlanDuplicates} already in the catalog", {ingestPlanDuplicates: ingestPlan.duplicates}) : '', value2: (ingestPlan.bytes / 1e9).toFixed(2), value3: (ingestPlan.skipped || []).some((item) => item.reason === 'cloud-only') ? tr(". {valueLength} cloud-only photos skipped; download them in Finder and scan again.", {valueLength: (ingestPlan.skipped || []).filter((item) => item.reason === 'cloud-only').length}) : ''});
-          el('ingestStart2').disabled = !ingestPlan.total;
-          const first = (ingestPlan.items || [])[0];
-          el('ingestExample').textContent = first ? tr("First file lands at {firstDestination}", {firstDestination: first.destination}) : '';
-        } catch (error) {
-          el('ingestStatus').textContent = String(error.message || error);
+    el('ingestScan').addEventListener('click', async () => {
+      if (busy || scanning) return;
+      const path = el('ingestSource').value.trim();
+      if (!path || !el('ingestDest').value.trim()) {
+        el('ingestStatus').textContent = tr('Choose a source and destination first.'); return;
+      }
+      invalidate(); scanning = true; controls();
+      el('ingestStatus').textContent = tr('Scanning…');
+      try {
+        const result = await post('/api/ingest/scan', { path, request: ingestRequest() });
+        if (result.error || !Array.isArray(result.plan?.items)) {
+          throw new Error(result.error || tr('Could not scan the source'));
         }
-      });
-    }
-
-    const start = el('ingestStart2');
-    if (start) {
-      start.addEventListener('click', async () => {
-        if (!ingestPlan) return;
-        const checked = new Set(
-          Array.from(el('ingestGrid').querySelectorAll('input:checked'))
-            .map((input) => decodeURIComponent(input.dataset.source)));
-        const plan = {
-          ...ingestPlan,
-          items: ingestPlan.items.filter((item) => checked.has(item.source)),
-        };
-        start.disabled = true;
-        await post('/api/ingest', { plan, request: ingestRequest(),
-                                    path: el('ingestSource').value.trim() });
-        clearInterval(ingestPoll);
-        ingestPoll = setInterval(async () => {
-          const status = await get('/api/ingest/status');
+        ingestPlan = result.plan;
+        items().forEach(item => selected.add(item.source));
+        renderPage(); selectionStatus();
+      } catch (error) {
+        el('ingestStatus').textContent = String(error.message || error);
+      } finally { scanning = false; controls(); }
+    });
+    start.addEventListener('click', async () => {
+      if (busy || scanning || !ingestPlan || !selected.size) return;
+      const selectedItems = chosen();
+      if (!selectedItems.length) return;
+      const plan = { ...ingestPlan, items: selectedItems, total: selectedItems.length,
+        bytes: selectedItems.reduce((sum, item) => sum + (Number(item.size) || 0), 0) };
+      busy = true; cancelling = false; controls();
+      el('ingestStatus').textContent = tr('Starting import…');
+      try {
+        const result = await post('/api/ingest', { plan, request: ingestRequest(),
+          path: el('ingestSource').value.trim() });
+        if (result.error || !result.jobId) throw new Error(result.error || tr('Could not start import'));
+        jobId = result.jobId; controls();
+      } catch (error) {
+        busy = false; controls();
+        el('ingestStatus').textContent = String(error.message || error); return;
+      }
+      clearTimeout(ingestPoll);
+      let attempts = 0;
+      const poll = async () => {
+        try {
+          const record = await get(`/api/jobs/${jobId}`);
+          if (record.error) throw new Error(record.error);
+          const status = record.result || {};
+          const terminal = ['done', 'failed', 'cancelled'].includes(record.state);
+          const copied = tr('Copied {copied}/{total}', {copied: status.copied || 0, total: record.total});
           el('ingestStatus').textContent =
-            tr("Copied {statusCopied}/{statusTotal}{value}", {statusCopied: status.copied, statusTotal: status.total, value: status.errors && status.errors.length ? tr(" · {statusErrorsLength} failed", {statusErrorsLength: status.errors.length}) : ''});
-          if (!status.running) {
-            clearInterval(ingestPoll);
-            start.disabled = false;
+            (record.state === 'cancelled' ? tr('Import cancelled. {progress}', {progress: copied})
+              : cancelling && !terminal ? tr('Stopping after the current file… {progress}', {progress: copied}) : copied)
+            + (record.errors?.length ? ' · ' + trn('{count} failed', '{count} failed', record.errors.length) : '');
+          if (terminal) {
+            busy = false; jobId = null; cancelling = false;
+            ingestPlan = null; selected.clear(); page = 0; renderPage();
+            el('ingestExample').textContent = '';
+            if (record.state !== 'done') el('ingestStatus').textContent = tr('{progress} — the originals on the card were not touched.', {progress: el('ingestStatus').textContent});
             await refresh();
             if (ctx.onLibraryChanged) ctx.onLibraryChanged();
-            if (status.errors && status.errors.length) {
-              el('ingestStatus').textContent +=
-                tr(" — the originals on the card were not touched.");
-            }
-            notifyCompletion(tr("Import complete"),
-              trn("{value} photo copied{value2}", "{value} photos copied{value2}", status.copied, {value: (status.copied || 0), value2: (status.errors || []).length ? tr(" · {statusErrorsLength} failed", {statusErrorsLength: status.errors.length}) : ''}));
+            notifyCompletion(record.state === 'cancelled' ? tr('Import cancelled') : record.state === 'failed' ? tr('Import finished with errors') : tr('Import complete'),
+              trn('{count} photo copied', '{count} photos copied', status.copied || 0)
+              + (record.errors?.length ? ' · ' + trn('{count} failed', '{count} failed', record.errors.length) : ''));
+            return;
           }
-        }, 600);
-      });
-    }
-    return { show };
+        } catch (error) {
+          el('ingestStatus').textContent = tr('Could not read import progress: {error}', {error: error.message || error});
+        }
+        if (++attempts < 7200) ingestPoll = setTimeout(poll, 1000);
+        else el('ingestStatus').textContent = tr('Import is still running. Use Jobs to check its progress or cancel it.');
+      };
+      await poll();
+    });
+    controls();
+    return { show, setField(field, value) {
+      if (busy || scanning) return;
+      if (fields.includes(field)) { el(field).value = value; invalidate(); }
+    } };
   }
 
   /* ------------------------------------------------------------- watches */
 
   function renderWatches(statuses = []) {
     const byId = new Map(statuses.map((status) => [status.id, status]));
-    const list = el('watchList');
-    if (list) {
-      list.innerHTML = watches.map((watch) => {
-        const status = byId.get(watch.id) || {};
-        const detail = (status.available === false ? tr("Unavailable") : tr("{value} new", {value: status.handled || 0}));
-        return `<button class="source-row" data-watch-id="${escapeHTML(watch.id)}">`
-          + `<span class="source-name">${escapeHTML(watch.name)}</span>`
-          + `<span class="source-count">${i18nHTML(detail)}</span></button>`;
-      }).join('');
+    const existing = el('watchExisting');
+    if (existing) {
+      const selectedId = el('watchId').value;
+      el('watchExistingRow').hidden = !watches.length;
+      const options = `<option value="">${i18nHTML(tr('New watched folder'))}</option>`
+        + watches.map(watch => `<option value="${escapeHTML(watch.id)}">${escapeHTML(watch.enabled ? watch.name : tr('{name} · Paused', {name: watch.name}))}</option>`).join('');
+      if (existing.innerHTML !== options) existing.innerHTML = options;
+      if (existing.value !== selectedId) existing.value = selectedId;
     }
     const enabled = watches.filter((watch) => watch.enabled);
     const pill = el('watchPill');
@@ -529,8 +652,16 @@ export function createCatalogUI(ctx) {
       dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
       dialog.classList.toggle('on', visible);
     };
+    let saving = false;
     const syncMode = () => {
-      el('watchDestRow').hidden = el('watchMode').value !== 'ingest';
+      const needsDestination = el('watchMode').value === 'ingest';
+      el('watchDestRow').hidden = !needsDestination;
+      el('watchSave').disabled = saving || !el('watchPath').value.trim()
+        || (needsDestination && !el('watchDest').value.trim());
+      el('watchDelete').disabled = saving;
+      for (const id of ['watchExisting', 'watchName', 'watchPath', 'watchMode', 'watchDest', 'watchPreset', 'watchRecursive', 'watchFollow', 'watchChoose', 'watchChooseDest', 'watchCancel']) {
+        el(id).disabled = saving;
+      }
     };
     const populatePreset = async (selected = '') => {
       const presets = await get('/api/presets').catch(() => []);
@@ -542,8 +673,10 @@ export function createCatalogUI(ctx) {
       select.dispatchEvent(new Event('change'));
     };
     const edit = (watch = null) => {
+      if (saving) return;
       const current = watch || {};
       el('watchId').value = current.id || '';
+      el('watchExisting').value = current.id || '';
       el('watchName').value = current.name || '';
       el('watchPath').value = current.path || '';
       el('watchMode').value = current.mode || 'catalog';
@@ -558,13 +691,12 @@ export function createCatalogUI(ctx) {
       show(true);
     };
     open.addEventListener('click', () => edit());
-    el('watchPill')?.addEventListener('click', () => edit(watches[0]));
-    el('watchList')?.addEventListener('click', (event) => {
-      const row = event.target.closest('[data-watch-id]');
-      if (row) {
-        edit(watches.find((watch) => watch.id === row.dataset.watchId));
-      }
-    });
+    el('watchPill')?.addEventListener('click', () => edit(watches.find(watch => watch.enabled)));
+    el('watchExisting')?.addEventListener('change', () => edit(watches.find(watch => watch.id === el('watchExisting').value)));
+    for (const id of ['watchPath', 'watchDest']) {
+      el(id).addEventListener('input', syncMode);
+      el(id).addEventListener('change', syncMode);
+    }
     el('watchCancel')?.addEventListener('click', () => show(false));
     el('watchMode')?.addEventListener('change', syncMode);
     [['watchChoose', 'watchPath'], ['watchChooseDest', 'watchDest']]
@@ -574,7 +706,13 @@ export function createCatalogUI(ctx) {
         }
       }));
     el('watchSave')?.addEventListener('click', async () => {
+      if (saving) return;
       const mode = el('watchMode').value;
+      if (!el('watchPath').value.trim() || (mode === 'ingest' && !el('watchDest').value.trim())) {
+        el('watchStatus').textContent = mode === 'ingest'
+          ? tr('Choose a watched folder and library destination first.') : tr('Choose a folder to watch first.');
+        syncMode(); return;
+      }
       const watch = {
         id: el('watchId').value || undefined,
         name: el('watchName').value.trim(), path: el('watchPath').value.trim(),
@@ -586,24 +724,32 @@ export function createCatalogUI(ctx) {
           filenameTemplate: '{filename}', verify: 'hash', onDuplicate: 'skip',
         } : {},
       };
+      saving = true; syncMode();
       try {
         const result = await post('/api/watch', { action: 'save', watch });
+        if (result.error || !result.ok) throw new Error(result.error || tr('Could not save watched folder'));
         watches = result.watches || [];
         show(false);
         startWatchPolling();
       } catch (error) {
         el('watchStatus').textContent = String(error.message || error);
-      }
+      } finally { saving = false; syncMode(); }
     });
     el('watchDelete')?.addEventListener('click', async () => {
-      const result = await post('/api/watch', {
-        action: 'delete', id: el('watchId').value,
-      });
-      watches = result.watches || [];
-      show(false);
-      startWatchPolling();
+      if (saving || !el('watchId').value) return;
+      saving = true; syncMode();
+      try {
+        const result = await post('/api/watch', { action: 'delete', id: el('watchId').value });
+        if (result.error || !result.ok) throw new Error(result.error || tr('Could not delete watched folder'));
+        watches = result.watches || [];
+        show(false); startWatchPolling();
+      } catch (error) { el('watchStatus').textContent = String(error.message || error); }
+      finally { saving = false; syncMode(); }
     });
-    return { edit };
+    return { edit, setField(field, value) {
+      if (saving || !['watchPath', 'watchDest'].includes(field)) return;
+      el(field).value = value; syncMode();
+    } };
   }
 
   /* -------------------------------------------------------------- rename */
@@ -713,7 +859,7 @@ export function createCatalogUI(ctx) {
   bindSidecarImport();
   const importDialog = bindCatalogImport();
   const ingest = bindIngest();
-  bindWatches();
+  const watchDialog = bindWatches();
   const rename = bindRename();
   loadWatches();
 
@@ -723,7 +869,10 @@ export function createCatalogUI(ctx) {
     openIngest: () => ingest && ingest.show(true),
     openRename: () => rename && rename.open(),
     setCatalogPath: (path) => importDialog && importDialog.setPath(path),
-    setIngestField: (field, value) => { if (el(field)) el(field).value = value; },
+    setIngestField: (field, value) => {
+      if (field.startsWith('watch')) watchDialog?.setField(field, value);
+      else ingest?.setField(field, value);
+    },
     get catalog() { return catalog; },
   };
 }

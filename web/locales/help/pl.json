@@ -90,7 +90,7 @@
           "title": "Przeglądaj przetłumaczone edycje",
           "paragraphs": [
             "Ustawienia wywoływania są przybliżone i nie mogą zagwarantować wyrenderowanego wyglądu Lightroom. Nieobsługiwane lokalne maski, profile aparatu, maski ai .lrcat-data lub pakiety LUT oraz nieobsługiwane reguły inteligentnej kolekcji są zgłaszane jako pominięte. Zaimportowane ustawienia wywoływania wyłączają Film.",
-            "Lokalne ••• → Importuj sidecary… to osobna akcja odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania."
+            "Lokalne ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Jej okno wyników pokazuje postęp, liczbę zastosowanych elementów, pominięte ustawienia i błędy."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Otwórz Local ••• → Importuj z karty….",
             "Wybierz Źródło i Cel. Ustaw szablon folderu oraz Zmień nazwę na przed skanowaniem. Domyślne ustawienia zachowują nazwy plików i porządkują kopie jako rok/rok-miesiąc-dzień.",
             "Wybierz weryfikację: Pełny hash, Tylko rozmiar lub Brak. Ustaw Duplicates na Pomiń lub Kopiuj mimo to i opcjonalnie wybierz Second copy to.",
-            "Kliknij Skanuj. Sprawdź podgląd celu i zaznaczone pliki, a następnie kliknij Importuj.",
-            "Poczekaj na licznik skopiowanych plików i sprawdź, czy któreś pliki nie powiodły się."
+            "Kliknij Skanuj. Użyj Poprzedni i Następny, aby przejrzeć każdą stronę, i sprawdź liczbę zaznaczonych oraz podgląd miejsca docelowego przed kliknięciem Importuj. Import jest niedostępny, gdy nie zaznaczono żadnych zdjęć.",
+            "Poczekaj na liczbę skopiowanych i sprawdź, czy jakieś pliki się nie powiodły. Anuluj zatrzymuje po zakończeniu kopiowania i weryfikacji bieżącego pliku; ukończone kopie są zachowywane, a oryginały na karcie pozostają nienaruszone."
           ],
           "tips": [
             "Tokeny szablonu obejmują {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} i {dd}. Start at kontroluje czterocyfrową sekwencję.",
-            "Lista wyboru pokazuje obecnie do 200 plików na skan. Wysyłane są tylko zaznaczone pozycje z tej listy. Sprawdź liczbę ukończonych przy pracy z większą kartą.",
+            "Podglądy pokazują 200 plików na stronę. Zaznaczenie przenosi się między stronami; Zaznacz wszystko i Odznacz wszystko dotyczą całego skanu, w tym stron, których jeszcze nie otwarto.",
             "Jeśli pliki są raportowane jako tylko w chmurze, pobierz je lokalnie i przeskanuj ponownie."
           ]
         },
         {
           "title": "Odśwież plan po zmianie ustawień",
           "paragraphs": [
-            "Skanuj ponownie po zmianie miejsca docelowego lub szablonów nazewnictwa, aby móc przejrzeć zaktualizowane ścieżki przed importem."
+            "Zmiana źródła, miejsca docelowego, nazewnictwa lub ustawień weryfikacji czyści przejrzany plan. Przeskanuj ponownie, aby przejrzeć nowe pliki i ścieżki przed importem."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Opisz zdjęcie",
           "paragraphs": [
-            "W Informacje rozwiń Opis dla tytułu, podpisu i nagłówka; Prawa dla autora, praw autorskich i kredytu; lub Miejsce dla lokalizacji i współrzędnych. Zmiany są zapisywane w katalogu podczas pisania.",
+            "W Informacjach rozwiń Opis, aby zobaczyć tytuł, opis i nagłówek; Prawa, aby zobaczyć twórcę, prawa autorskie i kredyt; albo Umieść, aby zobaczyć lokalizację i współrzędne. Zmiany są zapisywane do katalogu podczas pisania. Otwórz w Mapach jest dostępne po wczytaniu metadanych tego zdjęcia i gdy szerokość oraz długość geograficzna są prawidłowe. Otwiera lokalizację w przeglądarce.",
             "„Zastosuj do zaznaczenia” kopiuje bieżący formularz metadanych do wybranych zdjęć, w tym jego puste pola. Najpierw przejrzyj cały formularz. Metadane są uwzględniane w eksportach zgodnie z recepturą eksportu; edycja tych pól nie przepisuje oryginalnego pliku obrazu."
           ]
         }
@@ -318,7 +318,10 @@
         "panel boczny",
         "brakujące zdjęcia",
         "skanuj ponownie",
-        "synchronizuj"
+        "synchronizuj",
+        "obserwowany folder",
+        "obserwowane foldery",
+        "podłączenie do aparatu"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Menu ••• folderu zawiera Pokaż w Finderze na Macu lub Pokaż w Eksploratorze plików w Windows. Dla bieżącego folderu Synchronizuj folder odświeża widok. Lokalne ••• → Przeskanuj foldery skanuje źródła katalogu.",
             "Usuń z LightTable usuwa dodany katalog główny z listy źródeł aplikacji; nie przenosi oryginalnych plików do Kosza. Akcja jest dostępna, gdy dostępne jest więcej niż jedno źródło."
+          ]
+        },
+        {
+          "title": "Zarządzaj obserwowanymi folderami",
+          "paragraphs": [
+            "Otwórz Lokalne ••• → Folder obserwowany… , aby dodać obserwowany folder. Wybierz, jak mają być obsługiwane nadchodzące zdjęcia. Zapisz jest niedostępne, dopóki nie zostanie określony folder; kopiowanie do biblioteki wymaga też miejsca docelowego.",
+            "Aby edytować istniejącą obserwację, wybierz ją w Obserwowanych folderach. Każda zapisania obserwacja pojawia się na tej liście. Wybierz Nowy obserwowany folder dla innego folderu albo użyj Usuń obserwację, aby przestać obserwować zaznaczony folder. To nie usuwa jego zdjęć.",
+            "Skrót Obserwowanie otwiera pierwszy aktywny obserwowany folder. Błędy zapisu pozostają w oknie dialogowym, abyś mógł poprawić ustawienia."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Utwórz ręczną maskę",
           "paragraphs": [
-            "Otwórz Maska na pasku narzędzi edycji i wybierz narzędzie w sekcji Utwórz nową maskę. Każda maska ma własne korekty Jasny i Kolor.",
+            "Otwórz Maskę na pasku narzędzi edycji i wybierz narzędzie pod Utwórz nową maskę. Kliknij Utwórz nową maskę, aby pokazać lub ukryć narzędzia. Każda maska ma własne ustawienia Jasny i Kolor.",
             "Tekstura i Przejrzystość używają obrazu po korektach globalnych i wcześniejszych maskach. Te kontrolki wymagają aktualizacji podglądu; poczekaj na jej zakończenie, zanim ocenisz wynik."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Dodaj, Odejmij i Przecięcie wprowadzają tryby dopracowywania malowaniem. W przypadku maski Liniowej lub Promieniowej wybierz Edytuj kształt, aby wrócić do manipulowania jej kształtem.",
             "Włącz tymczasowo wyłącza lub włącza efekt maski. Odwróć odwraca jej zaznaczenie.",
-            "Edytor pozwala użyć maksymalnie szesnastu lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystkie usuwa maski zdjęcia.",
+            "Edytor umożliwia maksymalnie szesnaście lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
             "Punkty maski i obrysy pędzla pozostają ostre i mają tę samą grubość podczas powiększania. Obrys rośnie wraz z obszarem, który obejmuje na zdjęciu."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Usuń nie udostępnia źródłowego okręgu ani Odśwież źródło. Te kontrolki źródła dotyczą Napraw i Klonu.",
-            "Wyczyść wszystkie usuwa korekty Usuń, Napraw i Klon zdjęcia. Użyj Cofnij, aby odwrócić przypadkową zmianę edycji."
+            "Wyczyść wszystko usuwa korekcje Usuń, Napraw i Klon zdjęcia i jest niedostępne, gdy nie ma żadnych korekcji. Użyj Cofnij, aby odwrócić przypadkową zmianę edycji."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Sprawdź, czy Twoja praca została zapisana",
           "paragraphs": [
-            "Korekty są przechowywane jako ustawienia edycji dla zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnej komendy Zapisz dla każdej korekty."
+            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty."
           ],
           "steps": [
             "Wykonaj korektę, a następnie sprawdź stan zapisu w aplikacji.",
@@ -1902,7 +1913,7 @@
             "Po zakończeniu znajdź nowy wynik w odświeżonej bibliotece i sprawdź go."
           ],
           "tips": [
-            "Super resolution nie ma dołączonego modelu i wymaga zgodnego lokalnego modelu. Sama opcja na liście nie oznacza, że ta operacja jest dostępna.",
+            "Niedostępne ulepszenia są wyłączone. Superrozdzielczość nie ma dołączonego modelu i wymaga zainstalowanego lokalnie zgodnego modelu.",
             "Ulepszanie może generować szczegóły; oceniaj wynik, zanim potraktujesz go jako wierny zapis drobnej faktury."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Zachowaj nazwany wygląd",
           "paragraphs": [
-            "Migawka zapisuje bieżące ustawienia korekt zdjęcia, kadr, maski, korekty Usuń i optykę. Jest to zapisany stan edycji tego zdjęcia."
+            "Migawka zapisuje bieżące ustawienia korekcji zdjęcia, kadrowanie, maski, korekcje Usuń oraz optykę. To zapisany stan edycji tego zdjęcia. Utwórz migawkę jest niedostępne, dopóki zdjęcie nie zostanie wczytane."
           ],
           "steps": [
             "Otwórz Historię, rozwiń Migawki i kliknij Utwórz migawkę.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Zrób kopię zapasową i sprawdź",
           "paragraphs": [
-            "Ustawienia → Katalog pokazuje lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Wykonuj osobno kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji."
+            "Ustawienia → Katalog pokazują lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji wykonuj osobno. Lokalne ••• → Utwórz kopię zapasową katalogu… również tworzy kopię zapasową i pokazuje zapisany path lub błąd w oknie wyników. Znajdź duplikaty w tym samym menu pokazuje pasujące pliki albo informuje, że nie znaleziono żadnych."
           ],
           "steps": [
             "Wybierz automatyczny interwał kopii zapasowych i lokalizację kopii zapasowej.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

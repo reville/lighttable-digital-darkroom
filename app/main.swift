@@ -1020,6 +1020,37 @@ private final class PhotosLibraryImporter {
     }
 }
 
+// MARK: - Native web UI
+
+private func isLocalEditorPage(_ url: URL?, port: Int) -> Bool {
+    guard let url, port > 0 else { return false }
+    return url.scheme == "http" && url.host == "127.0.0.1" && url.port == port
+        && url.user == nil && url.password == nil
+}
+
+private func externalWebURL(_ url: URL?) -> URL? {
+    guard let url, ["http", "https"].contains(url.scheme?.lowercased() ?? ""),
+          let host = url.host, !host.isEmpty,
+          url.user == nil, url.password == nil else { return nil }
+    return url
+}
+
+/// Closing a sheet and navigating can both finish the same WebKit request.
+/// Release the callback before invoking it so even reentrant cancellation is safe.
+private final class NativeJavaScriptReply {
+    private var completion: ((Bool) -> Void)?
+
+    init(_ completion: @escaping (Bool) -> Void) { self.completion = completion }
+
+    func resolve(_ accepted: Bool) {
+        let callback = completion
+        completion = nil
+        callback?(accepted)
+    }
+
+    deinit { resolve(false) }
+}
+
 // MARK: - Preset links
 
 /// A link names a reviewed catalog entry; it is never a file or fetch URL.
@@ -1067,7 +1098,7 @@ func presetExportData(content: String, encoding: String = "utf8") throws -> Data
 
 // MARK: - App
 
-final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
+final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate,
                          WKScriptMessageHandler, NSMenuItemValidation,
                          NSWindowDelegate,
                          PHPickerViewControllerDelegate {
@@ -1080,6 +1111,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private var closeApproved = false
     var window: NSWindow!
     var webView: WKWebView!
+    private var javaScriptConfirmation: (alert: NSAlert, reply: NativeJavaScriptReply)?
     private var secondaryLoupeWindow: NSWindow?
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
@@ -1165,6 +1197,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     }
 
     func applicationWillTerminate(_ note: Notification) {
+        cancelJavaScriptConfirmation()
         photosLibraryImporter?.shutdown()
         server.stop()
     }
@@ -1238,6 +1271,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
     private func prepareToClose(completion: @escaping (Bool) -> Void) {
         guard !closePending else { completion(false); return }
         closePending = true
+        cancelJavaScriptConfirmation()
         window.contentView?.isHidden = false
         var finished = false
         let finish: (Bool) -> Void = { [weak self] saved in
@@ -1368,6 +1402,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
             forMainFrameOnly: true))
         webView = LightTableWebView(frame: .zero, configuration: cfg)
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.setValue(false, forKey: "drawsBackground")
         // The page handles pinch itself; don't let WebKit scale the whole UI.
         webView.allowsMagnification = false
@@ -1438,6 +1473,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
 
     func windowWillClose(_ notification: Notification) {
         if notification.object as? NSWindow === window {
+            cancelJavaScriptConfirmation()
             secondaryLoupeWindow?.close()
         } else if notification.object as? NSWindow === secondaryLoupeWindow {
             secondaryLoupeWindow = nil
@@ -2083,9 +2119,71 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate,
         (webView as? LightTableWebView)?.resetWindowChromeLayout()
         // A server restart or library switch may change the editor's origin.
         if webView === self.webView {
+            cancelJavaScriptConfirmation()
             presetLinksReady = false
             secondaryLoupeWindow?.close()
         }
+    }
+
+    private func isTrustedEditorFrame(_ frame: WKFrameInfo, in webView: WKWebView) -> Bool {
+        let origin = frame.securityOrigin
+        return webView === self.webView && frame.isMainFrame
+            && isLocalEditorPage(webView.url, port: server.port)
+            && origin.protocol == "http" && origin.host == "127.0.0.1"
+            && origin.port == server.port
+    }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        if webView === self.webView { cancelJavaScriptConfirmation() }
+    }
+
+    func webView(_ webView: WKWebView,
+                 runJavaScriptConfirmPanelWithMessage message: String,
+                 initiatedByFrame frame: WKFrameInfo,
+                 completionHandler: @escaping (Bool) -> Void) {
+        guard isTrustedEditorFrame(frame, in: webView),
+              let parent = webView.window, parent.isVisible,
+              !closePending, !closeApproved,
+              javaScriptConfirmation == nil, parent.attachedSheet == nil else {
+            completionHandler(false)
+            return
+        }
+        let alert = NSAlert()
+        alert.messageText = "LightTable"
+        alert.informativeText = message
+        alert.addButton(withTitle: L("OK"))
+        alert.addButton(withTitle: L("Cancel"))
+        let reply = NativeJavaScriptReply(completionHandler)
+        javaScriptConfirmation = (alert, reply)
+        alert.beginSheetModal(for: parent) { [weak self] response in
+            if self?.javaScriptConfirmation?.reply === reply {
+                self?.javaScriptConfirmation = nil
+            }
+            reply.resolve(response == .alertFirstButtonReturn)
+        }
+    }
+
+    private func cancelJavaScriptConfirmation() {
+        guard let pending = javaScriptConfirmation else { return }
+        javaScriptConfirmation = nil
+        pending.reply.resolve(false)
+        if let parent = pending.alert.window.sheetParent {
+            parent.endSheet(pending.alert.window, returnCode: .cancel)
+            pending.alert.window.orderOut(nil)
+        }
+    }
+
+    func webView(_ webView: WKWebView,
+                 createWebViewWith configuration: WKWebViewConfiguration,
+                 for navigationAction: WKNavigationAction,
+                 windowFeatures: WKWindowFeatures) -> WKWebView? {
+        guard navigationAction.targetFrame == nil,
+              isTrustedEditorFrame(navigationAction.sourceFrame, in: webView),
+              let url = externalWebURL(navigationAction.request.url) else { return nil }
+        if !NSWorkspace.shared.open(url) {
+            sendEvent(["type": "error", "message": L("Could not open the link in your browser.")])
+        }
+        return nil
     }
 
     /// A catalog file from another editor, opened read-only by the server.

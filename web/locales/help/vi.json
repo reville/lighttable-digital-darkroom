@@ -90,7 +90,7 @@
           "title": "Xem lại các chỉnh sửa đã dịch",
           "paragraphs": [
             "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
-            "Local ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác đó không áp dụng cài đặt phát triển hay cắt xén."
+            "Cục bộ ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng cài đặt phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các cài đặt bị bỏ qua và lỗi."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Mở Local ••• → Nhập từ thẻ….",
             "Chọn Nguồn và Đích. Đặt mẫu Thư mục và Đổi tên thành trước khi quét. Mặc định giữ nguyên tên tệp và sắp xếp bản sao theo năm/năm-tháng-ngày.",
             "Chọn xác minh: Full hash, Size only, hoặc None. Đặt Duplicates thành Skip hoặc Copy anyway, và tùy chọn chọn Second copy to.",
-            "Nhấp Quét. Xem lại bản xem trước đích và các tệp đã được chọn, rồi nhấp Nhập.",
-            "Chờ số lượng đã sao chép và kiểm tra xem có tệp nào thất bại không."
+            "Bấm Quét. Dùng Trước đó và Tiếp theo để xem lại từng trang, và kiểm tra số lượng đã chọn cùng bản xem trước đích đến trước khi bấm Nhập. Nhập không khả dụng khi chưa chọn ảnh nào.",
+            "Hãy đợi số lượng đã sao chép và kiểm tra xem có tệp nào bị lỗi không. Hủy sẽ dừng sau khi tệp hiện tại hoàn tất sao chép và xác minh; các bản sao đã hoàn tất được giữ lại và ảnh gốc trên thẻ không bị chạm tới."
           ],
           "tips": [
             "Các mã mẫu bao gồm {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, và {dd}. Start at điều khiển chuỗi bốn chữ số.",
-            "Danh sách chọn hiện hiển thị tối đa 200 tệp mỗi lần quét. Chỉ các mục được đánh dấu trong danh sách đó mới được gửi đi. Hãy kiểm tra số lượng đã hoàn tất khi làm việc với thẻ lớn hơn.",
+            "Bản xem trước hiển thị 200 tệp mỗi trang. Vùng chọn được giữ xuyên qua các trang; Chọn tất cả và Chọn không có áp dụng cho toàn bộ lần quét, kể cả các trang bạn chưa mở.",
             "Nếu tệp được báo là chỉ có trên đám mây, hãy tải chúng về cục bộ rồi quét lại."
           ]
         },
         {
           "title": "Làm mới kế hoạch khi cài đặt thay đổi",
           "paragraphs": [
-            "Quét lại sau khi thay đổi đích đến hoặc mẫu đặt tên để bạn có thể xem lại các đường dẫn đã cập nhật trước khi nhập."
+            "Thay đổi cài đặt nguồn, đích đến, đặt tên hoặc xác minh sẽ xóa kế hoạch đã xem lại. Hãy quét lại để xem xét các tệp và đường dẫn mới trước khi nhập."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Mô tả ảnh",
           "paragraphs": [
-            "Trong Thông tin, mở rộng Mô tả cho tiêu đề, chú thích, và đầu đề; Quyền cho tác giả, bản quyền, và ghi công; hoặc Địa điểm cho vị trí và tọa độ. Các thay đổi được lưu vào danh mục khi bạn gõ.",
+            "Trong Thông tin, mở rộng Mô tả để xem tiêu đề, chú thích và đầu đề; Quyền để xem người tạo, bản quyền và ghi công; hoặc Đặt vào để xem vị trí và tọa độ. Các thay đổi được lưu vào danh mục khi bạn nhập. Mở trong Bản đồ khả dụng sau khi siêu dữ liệu của ảnh này được tải và cả vĩ độ lẫn kinh độ đều hợp lệ. Nó mở vị trí trong trình duyệt của bạn.",
             "Áp dụng cho vùng chọn sẽ sao chép biểu mẫu siêu dữ liệu hiện tại sang các ảnh đã chọn, kể cả các trường trống của nó. Hãy xem lại toàn bộ biểu mẫu trước. Siêu dữ liệu được bao gồm trong các lần xuất theo quy trình xuất; việc chỉnh sửa các trường này không ghi lại tệp ảnh gốc."
           ]
         }
@@ -318,7 +318,10 @@
         "thanh bên",
         "ảnh bị thiếu",
         "quét lại",
-        "đồng bộ hóa"
+        "đồng bộ hóa",
+        "thư mục theo dõi",
+        "các thư mục được theo dõi",
+        "gắn máy ảnh"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Menu ••• của một thư mục gồm Show in Finder trên Mac hoặc Show in File Explorer trên Windows. Với thư mục hiện tại, Synchronize Folder làm mới chế độ xem. Local ••• → Rescan folders quét lại các nguồn của danh mục.",
             "Xóa khỏi LightTable sẽ gỡ một thư mục gốc đã thêm khỏi danh sách nguồn của ứng dụng; nó không di chuyển các tệp gốc vào Thùng rác. Hành động này được cung cấp khi có nhiều hơn một nguồn."
+          ]
+        },
+        {
+          "title": "Quản lý các thư mục được theo dõi",
+          "paragraphs": [
+            "Mở Cục bộ ••• → Thư mục theo dõi… để thêm một thư mục được theo dõi. Chọn cách xử lý các ảnh đến. Lưu không khả dụng cho đến khi chỉ định một thư mục; sao chép vào thư viện cũng cần một đích đến.",
+            "Để chỉnh sửa một mục theo dõi hiện có, hãy chọn nó trong Các thư mục được theo dõi. Mọi mục theo dõi đã lưu đều xuất hiện trong danh sách này. Chọn Thư mục được theo dõi mới cho một thư mục khác, hoặc dùng Xóa theo dõi để ngừng theo dõi thư mục đã chọn. Thao tác này không xóa ảnh của nó.",
+            "Phím tắt Watching mở mục theo dõi đang hoạt động đầu tiên. Các lỗi lưu vẫn ở trong hộp thoại để bạn có thể sửa cài đặt."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Tạo mặt nạ thủ công",
           "paragraphs": [
-            "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ dưới Create New Mask. Mỗi mặt nạ có các điều chỉnh Sáng và Màu sắc riêng.",
+            "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh Sáng và Màu sắc riêng.",
             "Texture và Độ rõ nét dùng hình ảnh sau các điều chỉnh toàn cục và các mặt nạ trước đó. Các điều khiển này cần cập nhật bản xem trước; hãy đợi nó hoàn tất trước khi đánh giá kết quả."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Thêm, Trừ, và Giao nhau đưa bạn vào các chế độ tinh chỉnh bằng tô vẽ. Với mặt nạ Tuyến tính hoặc Hình tròn, chọn Chỉnh sửa hình dạng để quay lại thao tác với hình dạng của nó.",
             "Bật tạm thời sẽ tắt hoặc bật hiệu ứng của một mặt nạ. Đảo ngược sẽ đảo vùng chọn của nó.",
-            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa Mặt nạ sẽ xóa mặt nạ đã chọn; Clear All sẽ xóa các mặt nạ của ảnh.",
+            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa mặt nạ sẽ xóa mặt nạ đã chọn; Xóa tất cả sẽ xóa các mặt nạ của ảnh và không khả dụng khi không có mặt nạ nào.",
             "Các ghim mặt nạ và đường viền cọ vẫn sắc nét và có cùng độ dày khi bạn thu phóng. Đường viền sẽ lớn lên theo vùng nó bao phủ trong ảnh."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Remove không hiển thị vòng tròn nguồn hoặc Refresh Source. Các điều khiển nguồn đó áp dụng cho Heal và Clone.",
-            "Clear All sẽ xóa các chỉnh sửa Remove, Heal và Clone của ảnh. Dùng Hoàn tác để đảo ngược một thay đổi chỉnh sửa vô tình."
+            "Xóa tất cả sẽ xóa các chỉnh sửa Xóa bỏ, Chữa và Nhân bản của ảnh và không khả dụng khi không có chỉnh sửa nào. Hãy dùng Hoàn tác để đảo ngược một thay đổi chỉnh sửa vô tình."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Kiểm tra công việc của bạn đã được lưu",
           "paragraphs": [
-            "Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh."
+            "Các điều khiển Chỉnh sửa không khả dụng cho đến khi ảnh được tải. Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu các thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh."
           ],
           "steps": [
             "Thực hiện điều chỉnh của bạn, rồi kiểm tra trạng thái lưu trong ứng dụng.",
@@ -1902,7 +1913,7 @@
             "Sau khi hoàn tất, hãy tìm kết quả mới trong thư viện đã làm mới và kiểm tra nó."
           ],
           "tips": [
-            "Siêu phân giải không có mô hình đi kèm và yêu cầu một mô hình cục bộ tương thích. Một tùy chọn được liệt kê đơn lẻ không có nghĩa là thao tác đó khả dụng.",
+            "Các cải tiến không khả dụng đã bị tắt. Độ phân giải siêu cao không có mô hình đi kèm và cần một mô hình tương thích được cài đặt cục bộ.",
             "Enhancement có thể tạo ra chi tiết; hãy đánh giá đầu ra trước khi xem nó như một bản ghi trung thực của kết cấu mịn."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Giữ lại một giao diện có tên",
           "paragraphs": [
-            "Một snapshot lưu lại các thiết lập điều chỉnh hiện tại của ảnh, vùng cắt xén, mặt nạ, hiệu chỉnh Remove, và optics. Đây là một trạng thái chỉnh sửa đã lưu cho ảnh này."
+            "Ảnh chụp nhanh lưu các cài đặt điều chỉnh hiện tại của ảnh, cắt xén, mặt nạ, các chỉnh sửa Xóa bỏ và quang học. Đây là trạng thái chỉnh sửa đã lưu cho ảnh này. Tạo ảnh chụp nhanh không khả dụng cho đến khi ảnh được tải."
           ],
           "steps": [
             "Mở Lịch sử, mở rộng Ảnh chụp nhanh, và nhấp Tạo ảnh chụp nhanh.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Sao lưu và kiểm tra",
           "paragraphs": [
-            "Cài đặt → Danh mục hiển thị vị trí danh mục và tùy chọn sao lưu. Bản sao lưu bao gồm tổ chức danh mục, chỉnh sửa, mặt nạ đã lưu, lịch sử và các biến thể. Hãy sao lưu riêng ảnh gốc, thiết lập sẵn và hồ sơ bên ngoài, cùng với tùy chọn."
+            "Cài đặt → Danh mục hiển thị vị trí danh mục và các tùy chọn sao lưu. Bản sao lưu bao gồm tổ chức danh mục, các chỉnh sửa, mặt nạ đã lưu, lịch sử và các biến thể. Hãy sao lưu riêng các ảnh gốc, các thiết lập sẵn và hồ sơ ngoài, cũng như tùy chọn. Cục bộ ••• → Sao lưu danh mục… cũng tạo một bản sao lưu và hiển thị đường dẫn đã lưu hoặc lỗi trong hộp thoại kết quả. Tìm bản sao trong cùng menu hiển thị các tệp khớp, hoặc báo rằng không tìm thấy bản sao nào."
           ],
           "steps": [
             "Chọn khoảng thời gian sao lưu Tự động và vị trí Sao lưu.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

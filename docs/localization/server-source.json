@@ -158,6 +158,7 @@
     "ingest item is missing a source or a destination",
     "invalid JPEG header",
     "invalid folder name",
+    "invalid import selection; scan the source again",
     "invalid native surface",
     "invalid resident shared surface",
     "job is not cancellable",
@@ -195,6 +196,8 @@
     "resident Rust engine unavailable",
     "resident Rust render failed",
     "restored catalog failed its integrity check",
+    "scan the source and select photos before importing",
+    "select at least one photo to import",
     "shared array must be packed RGB16 pixels",
     "source photo is missing: {name}",
     "state root must be an object",
@@ -272,7 +275,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "ab57d552530117c96d7babe3a24e7b1b692d8187f4116964cd35dd230a372d7f",
+  "sourceDigest": "1ef9881e2c4502d5b84b5a3e38066785d45327cbbac2558aba5cce38dcb86c10",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -369,6 +372,7 @@
       "hidden folder names are not supported",
       "invalid JPEG header",
       "invalid folder name",
+      "invalid import selection; scan the source again",
       "invalid native surface",
       "invalid resident shared surface",
       "job not found",
@@ -402,6 +406,8 @@
       "resident Rust engine unavailable",
       "resident Rust render failed",
       "restored catalog failed its integrity check",
+      "scan the source and select photos before importing",
+      "select at least one photo to import",
       "shared array must be packed RGB16 pixels",
       "source photo is missing: {name}",
       "state root must be an object",

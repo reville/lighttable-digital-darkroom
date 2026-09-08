@@ -90,7 +90,7 @@
           "title": "Çevrilmiş düzenlemeleri incele",
           "paragraphs": [
             "Geliştirme ayarları yaklaşık değerlerdir ve Lightroom’un işlenmiş görünümünü garanti edemez. Desteklenmeyen local masks, camera profiles, .lrcat-data AI masks veya LUT yükleri ve desteklenmeyen akıllı koleksiyon kuralları atlandı olarak bildirilir. İçe aktarılan geliştirme ayarları Film’i kapatır.",
-            "Local ••• → Import sidecars… komşu yan dosyalardan desteklenen meta verileri okumak için ayrı bir işlemdir. Bu işlem geliştirme ayarlarını veya kırpmayı uygulamaz."
+            "Yerel ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstveriyi bitişik yardımcı dosyalardan okumak için kullanılan ayrı bir işlemdir. Bu işlem geliştirme ayarlarını veya kırpmayı uygulamaz. Sonuçlar iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Yerel ••• → Karttan içe aktar….'ı açın",
             "Kaynak ve Hedef’i seçin. Taramadan önce Klasör şablonu ve Yeniden adlandır’ı ayarlayın. Varsayılanlar dosya adlarını korur ve kopyaları yıl/yıl-ay-gün olarak düzenler.",
             "Doğrulamayı seçin: Tam karma, Yalnızca Boyut veya Yok. Yinelemeler için Atla veya Yine de kopyala ayarlayın ve isteğe bağlı olarak İkinci kopyayı seçin.",
-            "Tara’ya tıklayın. Hedef önizlemesini ve işaretli dosyaları gözden geçirin, ardından İçe Aktar’a tıklayın.",
-            "Kopyalanan sayıyı bekleyin ve herhangi bir dosyanın başarısız olup olmadığını kontrol edin."
+            "Tara’ya tıklayın. Her sayfayı gözden geçirmek için Önceki ve Sonraki’yi kullanın ve İçe Aktar’a tıklamadan önce seçili sayısını ve hedef önizlemesini kontrol edin. Hiç fotoğraf seçilmemişse İçe Aktar kullanılamaz.",
+            "Kopyalanan sayının tamamlanmasını bekleyin ve herhangi bir dosyanın başarısız olup olmadığını kontrol edin. İptal, geçerli dosyanın kopyalanması ve doğrulanması tamamlandıktan sonra durur; tamamlanan kopyalar korunur ve karttaki orijinallere dokunulmaz."
           ],
           "tips": [
             "Şablon belirteçleri {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} ve {dd} içerir. Başlangıç, dört haneli diziyi kontrol eder.",
-            "Seçim listesi şu anda tarama başına en fazla 200 dosya gösterir. Yalnızca o listedeki işaretli girdiler gönderilir. Daha büyük bir kartla çalışırken tamamlanan sayıyı kontrol edin.",
+            "Önizlemeler sayfa başına 200 dosya gösterir. Seçim sayfalar arasında taşınır; Tümünü Seç ve Hiçbirini Seçme, açmadığınız sayfalar da dahil olmak üzere tüm taramaya uygulanır.",
             "Dosyalar yalnızca bulutta olarak raporlanıyorsa, onları yerel olarak indirin ve yeniden tarayın."
           ]
         },
         {
           "title": "Ayarlar değiştiğinde planı yenileyin",
           "paragraphs": [
-            "Hedefi veya adlandırma şablonlarını değiştirdikten sonra yeniden tarayın; böylece içe aktarmadan önce güncellenmiş yolları inceleyebilirsiniz."
+            "Kaynak, hedef, adlandırma veya doğrulama ayarlarını değiştirmek gözden geçirilen planı temizler. Yeni dosya ve yolları içe aktarmadan önce gözden geçirmek için yeniden tarayın."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Fotoğrafı tanımla",
           "paragraphs": [
-            "Info içinde Description’ı başlık, açıklama ve başlık satırı için; Rights’ı oluşturucu, telif ve kredi için; ya da Place’i konum ve koordinatlar için genişletin. Değişiklikler yazarken katalogda kaydedilir.",
+            "Bilgi’de, başlık, altyazı ve manşet için Açıklama’yı; oluşturan, telif hakkı ve kredi için Haklar’ı; ya da konum ve koordinatlar için Yerleştir’i genişletin. Yaptığınız değişiklikler yazdıkça kataloğa kaydedilir. Bu fotoğrafın üstverisi yüklendikten ve enlem ile boylam geçerli olduktan sonra Haritalar’da aç kullanılabilir. Konumu tarayıcınızda açar.",
             "Apply to selection, boş alanları da dahil olmak üzere geçerli üstveri formunu seçili fotoğraflara kopyalar. Önce formun tamamını inceleyin. Üstveri, dışa aktarma iş akışına göre dışa aktarmalara dahil edilir; bu alanları düzenlemek özgün görüntü dosyasını yeniden yazmaz."
           ]
         }
@@ -318,7 +318,10 @@
         "kenar çubuğu",
         "eksik fotoğraflar",
         "yeniden tara",
-        "eşitle"
+        "eşitle",
+        "izlenecek klasör",
+        "izlenen klasörler",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Bir klasörün ••• menüsü Mac'te Finder'da Göster veya Windows'ta Dosya Gezgini'nde Göster seçeneğini içerir. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Yerel ••• → Klasörleri yeniden tara, katalog kaynaklarını tarar.",
             "Remove from LightTable, eklenmiş bir kök klasörü uygulamanın kaynak listesinden kaldırır; özgün dosyaları Çöp Kutusu’na taşımaz. Bu eylem, birden fazla kaynak mevcut olduğunda sunulur."
+          ]
+        },
+        {
+          "title": "İzlenen klasörleri yönet",
+          "paragraphs": [
+            "Bir izlenen klasör eklemek için Yerel ••• → İzlenecek klasör… yolunu açın. Gelen fotoğrafların nasıl ele alınacağını seçin. Bir klasör belirtilene kadar Kaydet kullanılamaz; kitaplığa kopyalama için ayrıca bir hedef gerekir.",
+            "Var olan bir izlemi düzenlemek için onu İzlenen klasörler içinde seçin. Kaydedilmiş her izlem bu listede görünür. Başka bir klasör için Yeni izlenen klasör seçin veya seçili klasörü izlemeyi durdurmak için İzlemeyi sil’i kullanın. Bu işlem fotoğraflarını silmez.",
+            "İzleme kısayolu ilk etkin izlemi açar. Kaydetme hataları, ayarları düzeltebilmeniz için iletişim kutusunda kalır."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Elle maske oluştur",
           "paragraphs": [
-            "Düzenleme araç çubuğunda Maske'yi açın ve Yeni Maske Oluştur altında bir araç seçin. Her maskenin kendi Işık ve Renk ayarları vardır.",
+            "Düzenleme araç çubuğunda Maske’yi açın ve Yeni Maske Oluştur altından bir araç seçin. Araçları göstermek veya gizlemek için Yeni Maske Oluştur’a tıklayın. Her maskenin kendi Işık ve Renk ayarları vardır.",
             "Doku ve Netlik, genel ayarlamalar ve daha önceki maskelerden sonraki görüntüyü kullanır. Bu kontroller bir önizleme güncellemesi gerektirir; sonucu değerlendirmeden önce tamamlanmasını bekleyin."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Ekle, Çıkar ve Kesiştir sizi boyama iyileştirme modlarına sokar. Doğrusal veya Radyal bir maske için, şekli düzenlemek üzere Edit Shape’i seçin.",
             "Etkinleştir, bir maskenin etkisini geçici olarak kapatır ya da açar. Tersine Çevir, seçimini tersler.",
-            "Düzenleyici en fazla on altı yerel maske izin verir. Maske Sil seçili maskeyi kaldırır; Tümünü Temizle fotoğrafın maskelerini kaldırır.",
+            "Düzenleyici en fazla on altı yerel maskeye izin verir. Maskeyi Sil, seçili maskeyi kaldırır; Tümünü Temizle, fotoğrafın maskelerini kaldırır ve bunların hiçbiri yoksa kullanılamaz.",
             "Maske sabitleme noktaları ve fırça konturları, yakınlaştırdıkça keskin ve aynı kalınlıkta kalır. Kontur, fotoğrafta kapladığı alanla birlikte büyür."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Remove, bir kaynak dairesi veya Refresh Source göstermez. Bu kaynak kontrolleri Heal ve Clone için geçerlidir.",
-            "Tümünü Temizle, fotoğrafın Kaldır, İyileştir ve Klonla düzeltmelerini kaldırır. Yanlışlıkla yapılan bir düzenlemeyi geri almak için Geri Al'ı kullanın."
+            "Tümünü Temizle, fotoğrafın Kaldır, İyileştir ve Klonla düzeltmelerini kaldırır ve bunların hiçbiri yoksa kullanılamaz. Yanlışlıkla yapılan bir düzenleme değişikliğini geri almak için Geri Al’ı kullanın."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Çalışmanızın kaydedildiğini kontrol edin",
           "paragraphs": [
-            "Ayarlar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Save komutuna gerek yoktur."
+            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur."
           ],
           "steps": [
             "Ayarlamanızı yapın, ardından uygulamadaki kaydetme durumunu kontrol edin.",
@@ -1902,7 +1913,7 @@
             "Tamamlandıktan sonra yeni sonucu yenilenmiş kitaplıkta bulun ve inceleyin."
           ],
           "tips": [
-            "Süper çözünürlükte birlikte gelen bir model yoktur ve uyumlu yerel bir model gerekir. Listelenen bir seçenek, tek başına işlemin kullanılabilir olduğu anlamına gelmez.",
+            "Kullanılamayan geliştirmeler devre dışı bırakılır. Süper çözünürlüğün birlikte gelen modeli yoktur ve uyumlu bir modelin yerel olarak yüklü olmasını gerektirir.",
             "Geliştirme ayrıntı üretebilir; ince dokunun sadık bir kaydı olarak kabul etmeden önce çıktıyı değerlendirin."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Adlandırılmış bir görünümü koru",
           "paragraphs": [
-            "Bir anlık görüntü, fotoğrafın geçerli ayarlarını, kırpmasını, maskelerini, Kaldır düzeltmelerini ve optiğini saklar. Bu fotoğraf için kaydedilmiş bir düzenleme durumudur."
+            "Bir anlık görüntü, fotoğrafın geçerli ayarlama ayarlarını, kırpmayı, maskeleri, Kaldır düzeltmelerini ve optiği kaydeder. Bu, bu fotoğraf için kaydedilmiş bir düzenleme durumudur. Fotoğraf yüklenene kadar Anlık görüntü oluştur kullanılamaz."
           ],
           "steps": [
             "Geçmiş’i açın, Anlık Görüntüler’i genişletin ve Anlık görüntü oluştur’a tıklayın.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Yedekle ve incele",
           "paragraphs": [
-            "Ayarlar → Katalog, katalog konumunu ve yedekleme tercihlerini gösterir. Yedekler katalog düzenini, düzenlemeleri, depolanan maskeleri, geçmişi ve varyantları içerir. Orijinal fotoğrafları, harici hazır ayarları ve profilleri ve tercihleri ayrıca yedekleyin."
+            "Ayarlar → Katalog, katalog konumunu ve yedekleme tercihlerini gösterir. Yedekler, katalog düzenini, düzenlemeleri, depolanmış maskeleri, geçmişi ve varyantları içerir. Orijinal fotoğrafları, harici hazır ayarları ve profilleri ile tercihleri ayrıca yedekleyin. Yerel ••• → Kataloğu yedekle… de bir yedek oluşturur ve kayıtlı yolunu ya da hatayı bir sonuçlar iletişim kutusunda gösterir. Aynı menüdeki Çiftleri bul, eşleşen dosyaları gösterir veya hiçbiri bulunmadığını bildirir."
           ],
           "steps": [
             "Bir Otomatik yedekleme aralığı ve Yedekleme konumu seçin.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

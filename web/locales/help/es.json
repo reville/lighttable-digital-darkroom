@@ -90,7 +90,7 @@
           "title": "Revisar ediciones traducidas",
           "paragraphs": [
             "Los ajustes de Develop son aproximados y no pueden prometer la apariencia renderizada de Lightroom. Las máscaras locales no compatibles, los perfiles de cámara, las máscaras de IA .lrcat-data o las cargas útiles de LUT, y las reglas de colecciones inteligentes no compatibles se informan como omitidas. Los ajustes de Develop importados desactivan Film.",
-            "Local ••• → Importar sidecars… es una acción separada para leer metadatos admitidos desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte."
+            "Local ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. Su cuadro de diálogo de resultados muestra progreso, recuentos aplicados, ajustes omitidos y errores."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Abra Local ••• → Importar desde tarjeta….",
             "Elige el Origen y el Destino. Define la plantilla de carpeta y Renombrar a antes de escanear. Los valores predeterminados conservan los nombres de archivo y organizan las copias como año/año-mes-día.",
             "Elija verificación: Hash completo, Solo tamaño o Ninguno. Establezca Duplicados en Saltar o Copiar igualmente y, opcionalmente, elija Segunda copia a.",
-            "Haz clic en Escanear. Revisa la vista previa de destino y los archivos marcados, y luego haz clic en Importar.",
-            "Espera al recuento de copiados y comprueba si algún archivo falló."
+            "Haz clic en Escanear. Usa Anterior y Siguiente para revisar cada página, y comprueba el recuento seleccionado y la vista previa del destino antes de hacer clic en Importar. Importar no está disponible cuando no hay fotos seleccionadas.",
+            "Espera el recuento de copiados y comprueba si falló algún archivo. Cancelar se detiene después de que el archivo actual termine de copiarse y verificarse; las copias completadas se conservan y los originales de la tarjeta no se tocan."
           ],
           "tips": [
             "Las fichas de plantilla incluyen {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} y {dd}. Iniciar en controla la secuencia de cuatro dígitos.",
-            "La lista de selección muestra actualmente hasta 200 archivos por escaneo. Solo se envían las entradas marcadas en esa lista. Revisa el conteo completado cuando trabajes con una tarjeta más grande.",
+            "Las vistas previas muestran 200 archivos por página. La selección se mantiene entre páginas; Seleccionar todo y No seleccionar nada se aplican al escaneo completo, incluidas las páginas que no hayas abierto.",
             "Si se informa que los archivos son solo de la nube, descárgalos localmente y vuelve a escanear."
           ]
         },
         {
           "title": "Actualice el plan cuando cambien la configuración",
           "paragraphs": [
-            "Vuelva a escanear después de cambiar el destino o las plantillas de nombre para poder revisar las rutas actualizadas antes de importar."
+            "Cambiar la configuración de origen, destino, nombres o verificación borra el plan revisado. Escanea de nuevo para revisar los nuevos archivos y rutas antes de importar."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Describir la foto",
           "paragraphs": [
-            "En Información, expande Descripción para título, pie de foto y encabezado; Derechos para autor, copyright y crédito; o Lugar para ubicación y coordenadas. Los cambios se guardan en el catálogo mientras escribes.",
+            "En Información, expande Descripción para título, pie de foto y titular; Derechos para autor, derechos de autor y crédito; o Lugar para ubicación y coordenadas. Los cambios se guardan en el catálogo mientras escribes. Abrir en Maps está disponible después de que se carguen los metadatos de esta foto y cuando latitud y longitud sean válidas. Abre la ubicación en tu navegador.",
             "Apply to selection copia el formulario de metadatos actual a las fotos seleccionadas, incluidos sus campos vacíos. Revisa primero el formulario completo. Los metadatos se incluyen en las exportaciones según la receta de exportación; editar estos campos no reescribe el archivo de imagen original."
           ]
         }
@@ -318,7 +318,10 @@
         "barra lateral",
         "fotos faltantes",
         "reescanear",
-        "sincronizar"
+        "sincronizar",
+        "carpeta vigilada",
+        "carpetas vigiladas",
+        "conexión tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "El menú ••• de una carpeta incluye Mostrar en Finder en Mac o Mostrar en el Explorador de archivos en Windows. Para la carpeta actual, Sincronizar carpeta actualiza la vista. Local ••• → Volver a escanear carpetas escanea las fuentes del catálogo.",
             "Quitar de LightTable elimina un origen raíz agregado de la lista de orígenes de la app; no mueve los archivos originales a la Papelera. La acción se ofrece cuando hay más de una fuente disponible."
+          ]
+        },
+        {
+          "title": "Administrar carpetas vigiladas",
+          "paragraphs": [
+            "Abre Local ••• → Carpeta vigilada… para agregar una carpeta vigilada. Elige cómo se deben tratar las fotos que lleguen. Guardar no está disponible hasta que se especifique una carpeta; copiar a la biblioteca también requiere un destino.",
+            "Para editar una vigilancia existente, elígela en Carpetas vigiladas. Cada vigilancia guardada aparece en esta lista. Elige Nueva carpeta vigilada para otra carpeta, o usa Eliminar punto de control para dejar de vigilar la carpeta seleccionada. Esto no elimina sus fotos.",
+            "El atajo de Vigilancia abre la primera vigilancia activa. Los errores de guardado permanecen en el cuadro de diálogo para que puedas corregir la configuración."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Crear una máscara manual",
           "paragraphs": [
-            "Abra Máscara en la barra de herramientas de edición y elija una herramienta en Crear nueva máscara. Cada máscara tiene sus propios ajustes de Luz y Color.",
+            "Abre Máscara en la barra de herramientas de edición y elige una herramienta en Crear nueva máscara. Haz clic en Crear nueva máscara para mostrar u ocultar las herramientas. Cada máscara tiene sus propios ajustes de Luz y Color.",
             "Textura y Claridad usan la imagen después de los ajustes globales y de las máscaras anteriores. Estos controles requieren una actualización de vista previa; espere a que termine antes de juzgar el resultado."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Agregar, Restar e Intersecar te ponen en modos de refinamiento con pintura. Para una máscara Lineal o Radial, elige Editar forma para volver a manipular su forma.",
             "Activar cambia temporalmente el efecto de una máscara a apagado o encendido. Invertir revierte su selección.",
-            "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo quita las máscaras de la foto.",
+            "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo elimina las máscaras de la foto y no está disponible cuando no hay ninguna.",
             "Los pines de la máscara y los contornos del pincel se mantienen nítidos y con el mismo grosor a medida que haces zoom. El contorno crece junto con el área que cubre en la foto."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Quitar no muestra un círculo de fuente ni Actualizar fuente. Esos controles de fuente se aplican a Corregir y Clonar.",
-            "Borrar todo elimina las correcciones de Eliminar, Corregir y Clonar de la foto. Use Deshacer para revertir un cambio de edición accidental."
+            "Borrar todo elimina las correcciones de Quitar, Corregir y Clonar de la foto y no está disponible cuando no hay ninguna. Usa Deshacer para revertir un cambio de edición accidental."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Verificar que su trabajo esté guardado",
           "paragraphs": [
-            "Los ajustes se almacenan como configuraciones de edición para la foto. El editor guarda los cambios automáticamente a medida que terminas las interacciones; no necesitas un comando Guardar aparte para cada ajuste."
+            "Los controles de edición no están disponibles hasta que se carga una foto. Los ajustes se guardan como configuración de edición de la foto. El editor guarda los cambios automáticamente cuando terminas las interacciones; no necesitas un comando Guardar separado para cada ajuste."
           ],
           "steps": [
             "Haz tu ajuste y luego comprueba el estado de guardado en la aplicación.",
@@ -1902,7 +1913,7 @@
             "Después de completar, encuentra el nuevo resultado en la biblioteca actualizada e inspecciónalo."
           ],
           "tips": [
-            "Super resolución no tiene un modelo integrado y requiere un modelo local compatible. Una opción listada por sí sola no significa que esa operación esté disponible.",
+            "Las mejoras no disponibles están desactivadas. La resolución super no tiene un modelo incluido y requiere un modelo compatible instalado localmente.",
             "La mejora puede generar detalle; evalúa el resultado antes de tratarlo como un registro fiel de la textura fina."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Conservar un aspecto con nombre",
           "paragraphs": [
-            "Una instantánea guarda los ajustes actuales de la foto, el recorte, las máscaras, las correcciones de Eliminar y las ópticas. Es un estado de edición guardado para esta foto."
+            "Una instantánea guarda la configuración de ajustes actual de la foto, el recorte, las máscaras, las correcciones de Quitar y la óptica. Es un estado de edición guardado para esta foto. Crear instantánea no está disponible hasta que se carga una foto."
           ],
           "steps": [
             "Abre Historial, expande Instantáneas y haz clic en Crear instantánea.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Hacer copia de seguridad e inspeccionar",
           "paragraphs": [
-            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haga copias de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado."
+            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haz copias de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado. Local ••• → Hacer copia de seguridad del catálogo… también crea una copia de seguridad y muestra su ruta guardada o el error en un cuadro de diálogo de resultados. Buscar duplicados en el mismo menú muestra archivos coincidentes, o informa que no se encontraron."
           ],
           "steps": [
             "Elige un intervalo de copia de seguridad automática y una ubicación de copia de seguridad.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

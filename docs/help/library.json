@@ -103,19 +103,19 @@
           "Open Local ••• → Import from card….",
           "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
           "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
-          "Click Scan. Review the destination preview and the checked files, then click Import.",
-          "Wait for the copied count and check whether any files failed."
+          "Click Scan. Use Previous and Next to review every page, and check the selected count and destination preview before clicking Import. Import is unavailable when no photos are selected.",
+          "Wait for the copied count and check whether any files failed. Cancel stops after the current file finishes copying and verification; completed copies are kept and card originals stay untouched."
         ],
         "tips": [
           "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
-          "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
+          "Previews show 200 files per page. Selection carries across pages; Select all and Select none apply to the whole scan, including pages you have not opened.",
           "If files are reported as cloud-only, download them locally and scan again."
         ]
       },
       {
         "title": "Refresh the plan when settings change",
         "paragraphs": [
-          "Scan again after changing the destination or naming templates so you can review the updated paths before importing."
+          "Changing the source, destination, naming, or verification settings clears the reviewed plan. Scan again to review the new files and paths before importing."
         ]
       }
     ],
@@ -130,11 +130,11 @@
       },
       {
         "path": "web/catalog-ui.js",
-        "anchor": "(ingestPlan.items || []).slice(0, 200)"
+        "anchor": "items().slice(page * pageSize, (page + 1) * pageSize)"
       },
       {
         "path": "web/catalog-ui.js",
-        "anchor": "items: ingestPlan.items.filter((item) => checked.has(item.source))"
+        "anchor": "const chosen = () => items().filter(item => selected.has(item.source));"
       },
       {
         "path": "web/catalog-ui.js",
@@ -143,6 +143,10 @@
       {
         "path": "ingest_workflow.py",
         "anchor": "TOKENS = {\"filename\", \"camera\", \"sequence\", \"custom\", *DATE_TOKENS}"
+      },
+      {
+        "path": "server.py",
+        "anchor": "def cancel_ingest_job() -> bool:"
       }
     ]
   },
@@ -158,7 +162,10 @@
       "sidebar",
       "missing photos",
       "rescan",
-      "synchronize"
+      "synchronize",
+      "watch folder",
+      "watched folders",
+      "tethering"
     ],
     "sections": [
       {
@@ -178,6 +185,14 @@
         "paragraphs": [
           "A folder’s ••• menu includes Show in Finder on Mac or Show in File Explorer on Windows. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
           "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
+        ]
+      },
+      {
+        "title": "Manage watched folders",
+        "paragraphs": [
+          "Open Local ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
+          "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
+          "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
         ]
       }
     ],
@@ -202,6 +217,14 @@
       {
         "path": "app/main.swift",
         "anchor": "sources.removeAll { $0.path == clean }"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "el('watchExisting')?.addEventListener('change'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "Choose a watched folder and library destination first."
       }
     ]
   },
@@ -1082,7 +1105,7 @@
       {
         "title": "Describe the photo",
         "paragraphs": [
-          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type.",
+          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
           "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file."
         ]
       }
@@ -1129,6 +1152,10 @@
       {
         "path": "keyword_workflow.py",
         "anchor": "MAX_BATCH = 5000"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "createWebViewWith configuration:"
       }
     ]
   },
@@ -1232,7 +1259,7 @@
         "title": "Review translated edits",
         "paragraphs": [
           "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-          "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop."
+          "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
         ]
       }
     ],

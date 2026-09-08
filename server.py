@@ -1231,9 +1231,11 @@ IMPORT_JOB: dict = {"running": False, "stage": "", "done": 0, "total": 0,
                     "result": None, "error": None}
 
 
-def cancel_ingest_job() -> None:
+def cancel_ingest_job() -> bool:
     with INGEST_LOCK:
         INGEST["cancelled"] = True
+    # The worker finishes and verifies its active file before becoming terminal.
+    return False
 
 
 def library_state(st: dict | None = None) -> dict:
@@ -7979,18 +7981,26 @@ def start_ingest(body: dict) -> dict:
     import ingest_workflow
 
     request = ingest_workflow.clean_plan_request(body.get("request"))
-    plan = body.get("plan")
-    if not plan or not plan.get("items"):
-        scanned = scan_ingest_source({"path": body["path"],
-                                      "request": body.get("request")})
-        plan = scanned["plan"]
+    # An explicitly supplied selection must never expand to a fresh scan.
+    # Only legacy callers that omit the plan may request scan-and-import.
+    if "plan" not in body:
+        plan = scan_ingest_source({"path": body["path"],
+                                   "request": body.get("request")})["plan"]
+    else:
+        plan = body["plan"]
+    if not isinstance(plan, dict) or not isinstance(plan.get("items"), list):
+        raise ValueError(T("scan the source and select photos before importing"))
     items = plan["items"]
+    if not items:
+        raise ValueError(T("select at least one photo to import"))
+    if any(not isinstance(item, dict) for item in items):
+        raise ValueError(T("invalid import selection; scan the source again"))
     with INGEST_LOCK:
         if INGEST["running"]:
             return {"error": T("an ingest is already running")}
         INGEST.update(running=True, done=0, total=len(items), errors=[],
                       copied=0, bytes=0, cancelled=False)
-        INGEST["jobId"] = JOBS.create(
+        job_id = INGEST["jobId"] = JOBS.create(
             "ingest", total=len(items), state="running",
             cancel=cancel_ingest_job)["id"]
 
@@ -8031,7 +8041,7 @@ def start_ingest(body: dict) -> dict:
                 cat.close()
 
     threading.Thread(target=run, name="lighttable-ingest", daemon=True).start()
-    return {"queued": len(items)}
+    return {"queued": len(items), "jobId": job_id}
 
 
 def rename_photos(body: dict) -> dict:

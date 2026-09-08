@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007",
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -15,11 +15,7 @@
     " · {failures} failed": " · {failures} nieudanych",
     " · {sMissing} missing files": " · brakujących plików: {sMissing}",
     " · {statusErrorsLength} error": " · {statusErrorsLength} błąd",
-    " · {statusErrorsLength} failed": " · nie powiodło się: {statusErrorsLength}",
-    " — the originals on the card were not touched.": " — oryginały na karcie nie zostały naruszone.",
-    ", {ingestPlanDuplicates} already in the catalog": ", {ingestPlanDuplicates} już w katalogu",
     ". Your Photos library stays unchanged.": ". Twoja biblioteka Zdjęć pozostaje bez zmian.",
-    ". {valueLength} cloud-only photos skipped; download them in Finder and scan again.": ". Pominięto {valueLength} zdjęć dostępnych tylko w chmurze; pobierz je w Finderze i skanuj ponownie.",
     ".lrcat": ".lrcat",
     "/Users/you/Pictures/My photos": "/Users/you/Pictures/My photos",
     "0 IRE": "0 IRE",
@@ -91,7 +87,7 @@
     "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk.": "Zwykła kolekcja przechowuje wybrany zestaw zdjęć. Jest oddzielna od układu folderów na dysku.",
     "A selected photo is no longer in the catalog": "Wybór zdjęcia nie ma już katalogu",
     "A smart collection finds photos that match its saved rules. Supported rules include flag, rating, Unrated only, file types, color label, edit status, virtual copies, and search text. Camera, lens, hierarchical keyword, capture date, ISO, focal length, aperture, and shutter-time ranges are also saved.": "Inteligentna kolekcja znajduje zdjęcia pasujące do zapisanych reguł. Obsługiwane reguły obejmują flagę, ocenę, Tylko nieocenione, typy plików, etykietę kolorystyczną, stan edycji, wirtualne kopie i tekst wyszukiwania. Zapisywane są też zakresy dla aparatu, obiektywu, hierarchicznego słowa kluczowego, daty wykonania, ISO, ogniskowej, przysłony i czasu migawki.",
-    "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo.": "Migawka zapisuje bieżące ustawienia korekt zdjęcia, kadr, maski, korekty Usuń i optykę. Jest to zapisany stan edycji tego zdjęcia.",
+    "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "Migawka zapisuje bieżące ustawienia korekcji zdjęcia, kadrowanie, maski, korekcje Usuń oraz optykę. To zapisany stan edycji tego zdjęcia. Utwórz migawkę jest niedostępne, dopóki zdjęcie nie zostanie wczytane.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Zapisana lub zaimportowana krzywa zachowuje dokładnie zapisaną tabelę do momentu jej edycji. Aplikacja przebudowuje reprezentatywne uchwyty do edycji, więc pierwsza regulacja może przekształcić zaimportowaną krzywą poza punkt, który przesuniesz.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "Kopia wirtualna odnosi się do tego samego oryginalnego pliku i zachowuje niezależny stan edycji. Nie tworzy drugiego oryginału na dysku.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "Kopia wirtualna współdzieli oryginalny plik. Usuwanie kopii wirtualnej powinno używać akcji Zdjęcie → Usuń kopię wirtualną; przeniesienie jej źródła do Kosza wpływa na każdą edycję korzystającą z tego oryginału.",
@@ -153,7 +149,6 @@
     "Adjust halation, diffusion, and scan character": "Dostosuj halację, rozproszenie i charakter skanu",
     "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.": "Dostosuj interfejs, zachowanie podczas selekcji, przenośne edycje i początkowe edycje dla nowych zdjęć.",
     "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.": "Dostosuj suwaki Jasność lub Kolor wybranej maski. Użyj Ilość w Zakres, aby zmniejszyć jej ogólną siłę.",
-    "Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment.": "Korekty są przechowywane jako ustawienia edycji dla zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnej komendy Zapisz dla każdej korekty.",
     "Advanced": "Zaawansowane",
     "Advanced preview override": "Zaawansowane zastąpienie podglądu",
     "After completion, find the new result in the refreshed library and inspect it.": "Po zakończeniu znajdź nowy wynik w odświeżonej bibliotece i sprawdź go.",
@@ -259,6 +254,7 @@
     "Back to Edit": "Wróć do Edytuj",
     "Back to Film": "Powrót do filmu",
     "Back up and inspect": "Zrób kopię zapasową i sprawdź",
+    "Back up catalog": "Utwórz kopię zapasową katalogu",
     "Back up catalog…": "Utwórz kopię zapasową katalogu…",
     "Back up now": "Utwórz kopię zapasową teraz",
     "Back up the catalog and troubleshoot recovery": "Zrób kopię zapasową katalogu i rozwiąż problemy z odzyskiwaniem",
@@ -381,6 +377,7 @@
     "Changes save automatically.": "Zmiany są zapisywane automatycznie.",
     "Changing Hue with Saturation at zero does not add visible color. Start with a modest saturation value.": "Zmiana Barwy przy Nasyceniu równym zero nie dodaje widocznego koloru. Zacznij od umiarkowanej wartości nasycenia.",
     "Changing language saves pending edits and reloads the current window. Photo filenames, your keywords, and other photo content keep their existing wording.": "Zmiana języka zapisuje oczekujące edycje i ponownie wczytuje bieżące okno. Nazwy plików zdjęć, Twoje słowa kluczowe i inna zawartość zdjęć zachowują dotychczasowe brzmienie.",
+    "Changing the source, destination, naming, or verification settings clears the reviewed plan. Scan again to review the new files and paths before importing.": "Zmiana źródła, miejsca docelowego, nazewnictwa lub ustawień weryfikacji czyści przejrzany plan. Przeskanuj ponownie, aby przejrzeć nowe pliki i ścieżki przed importem.",
     "Charcoal": "Węgiel",
     "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones.": "Sprawdź Podgląd wyjściowy: wyeksportowany rozmiar uwzględnia obrót i kadr, a limit dłuższego boku zmniejsza większe obrazy bez powiększania mniejszych.",
     "Check and repair": "Sprawdź i napraw",
@@ -396,6 +393,7 @@
     "Check the mapping message, then use the hardware control to adjust the slider.": "Sprawdź komunikat o mapowaniu, a następnie użyj sterowania sprzętowego, aby dostosować suwak.",
     "Check the scope and result": "Sprawdź zakres i wynik",
     "Check what has finished rendering": "Sprawdź, co zakończyło renderowanie",
+    "Checking available enhancements…": "Sprawdzanie dostępnych ulepszeń…",
     "Checking camera default…": "Sprawdzanie domyślnego aparatu…",
     "Checking local model…": "Sprawdzanie lokalnego modelu…",
     "Checking photo metadata…": "Sprawdzanie metadanych zdjęcia…",
@@ -428,9 +426,7 @@
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "Wybierz TIFF z bieżącymi korektami, a następnie ustaw przestrzeń kolorów TIFF i głębię bitową TIFF.",
     "Choose a .lrcat file": "Wybierz plik .lrcat",
     "Choose a Hue, then increase Saturation to make the color treatment visible. Adjust Luminance for that tonal region if needed.": "Wybierz barwę, a następnie zwiększ nasycenie, aby korekcja koloru była widoczna. W razie potrzeby dostosuj luminancję dla tego zakresu tonalnego.",
-    "Choose a card first": "Najpierw wybierz kartę",
     "Choose a card or folder": "Wybierz kartę lub folder",
-    "Choose a card to begin.": "Wybierz kartę, aby rozpocząć.",
     "Choose a catalog": "Wybierz katalog",
     "Choose a catalog to see what it holds.": "Wybierz katalog, aby zobaczyć, co zawiera.",
     "Choose a collection": "Wybierz kolekcję",
@@ -442,6 +438,7 @@
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Wybierz stałe zastąpienie rozdzielczości podglądu tylko wtedy, gdy jest to potrzebne dla wydajności lub rozwiązywania problemów.",
     "Choose a folder": "Wybierz folder",
     "Choose a folder to browse originals in place, or select one of the migration options.": "Wybierz folder, aby przeglądać oryginały na miejscu, albo wybierz jedną z opcji migracji.",
+    "Choose a folder to watch first.": "Najpierw wybierz folder do obserwowania.",
     "Choose a language in Language.": "Wybierz język w ustawieniu Język.",
     "Choose a language on first use": "Wybierz język przy pierwszym użyciu",
     "Choose a more colorful area": "Wybierz bardziej kolorowy obszar",
@@ -459,10 +456,13 @@
     "Choose a scheme": "Wybierz schemat",
     "Choose a select criterion above.": "Wybierz powyżej kryterium zaznaczania.",
     "Choose a settings folder": "Wybierz folder ustawień",
+    "Choose a source and destination first.": "Najpierw wybierz źródło i miejsce docelowe.",
+    "Choose a source and destination, then scan.": "Wybierz źródło i miejsce docelowe, a następnie skanuj.",
     "Choose a starting point": "Wybierz punkt początkowy",
     "Choose a tool": "Wybierz narzędzie",
     "Choose a tool to create your first mask": "Wybierz narzędzie, aby utworzyć swoją pierwszą maskę",
     "Choose a visible neutral patch. A nearly black sample produces Too dark to sample; an unavailable preview produces a waiting message.": "Wybierz widoczny neutralny fragment. Próbka niemal czarna powoduje komunikat Za ciemne do próbkowania; niedostępny podgląd wyświetla komunikat oczekiwania.",
+    "Choose a watched folder and library destination first.": "Najpierw wybierz obserwowany folder i miejsce docelowe biblioteki.",
     "Choose add, remove, or undo keywords": "Wybierz słowa kluczowe: dodaj, usuń lub cofnij",
     "Choose an Automatic backup interval and Backup location.": "Wybierz automatyczny interwał kopii zapasowych i lokalizację kopii zapasowej.",
     "Choose an Output recipe: Clean scan, Neutral print scan, or Soft optical print.": "Wybierz recepturę wyjścia: Czysty skan, Neutralny skan do druku lub Miękki druk optyczny.",
@@ -527,7 +527,7 @@
     "Clean up spots and distractions": "Usuń plamy i elementy rozpraszające uwagę",
     "Clear": "Wyczyść",
     "Clear All": "Wyczyść wszystko",
-    "Clear All removes the photo’s Remove, Heal, and Clone corrections. Use Undo to reverse an accidental editing change.": "Wyczyść wszystkie usuwa korekty Usuń, Napraw i Klon zdjęcia. Użyj Cofnij, aby odwrócić przypadkową zmianę edycji.",
+    "Clear All removes the photo’s Remove, Heal, and Clone corrections and is unavailable when there are none. Use Undo to reverse an accidental editing change.": "Wyczyść wszystko usuwa korekcje Usuń, Napraw i Klon zdjęcia i jest niedostępne, gdy nie ma żadnych korekcji. Użyj Cofnij, aby odwrócić przypadkową zmianę edycji.",
     "Clear Masks": "Wyczyść maski",
     "Clear Remove Corrections": "Wyczyść Usuń korekcje",
     "Clear all": "Wyczyść wszystko",
@@ -536,6 +536,7 @@
     "Clear preview caches": "Wyczyść pamięć podręczną podglądu",
     "Clear removes the photo’s stored history steps; it is not an adjustment-reset command.": "Wyczyść usuwa zapisane kroki historii zdjęcia; nie jest to polecenie resetowania korekty.",
     "Clear the search text and choose Clear all above the grid, then check the selected folder, Include subfolders, and any active collection. Paired-file preferences and collapsed stacks can also hide a companion or stack member.": "Wyczyść tekst wyszukiwania i wybierz Wyczyść wszystko nad siatką, a następnie zaznacz wybrany folder, Uwzględnij podfoldery i każdą aktywną kolekcję. Preferencje sparowanych plików i zwinięte stosy mogą też ukrywać towarzysza albo element stosu.",
+    "Clear the selection across all pages": "Wyczyść zaznaczenie na wszystkich stronach",
     "Clear this photo’s stored history steps; keep its current edits": "Wyczyść zapisane etapy historii tego zdjęcia; zachowaj jego bieżące edycje",
     "Click Add Photos at the upper left and choose one or more photos or folders.": "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz jedno lub więcej zdjęć albo folderów.",
     "Click Apply language and wait for the window to reload.": "Kliknij Zastosuj język i poczekaj, aż okno zostanie ponownie wczytane.",
@@ -560,7 +561,7 @@
     "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it.": "Kliknij Odśwież, aby sprawdzić katalog. Gdy widoczna jest nowsza wersja, Update in Yours zastępuje zapisaną recepturę tylko wtedy, gdy ją wybierzesz.",
     "Click Rename to apply.": "Kliknij Zmień nazwę, aby zastosować.",
     "Click Sample color under Point Color, then click a colorful patch in the photo.": "Kliknij Próbka koloru w sekcji Kolor punktowy, a następnie kliknij barwną plamkę na zdjęciu.",
-    "Click Scan. Review the destination preview and the checked files, then click Import.": "Kliknij Skanuj. Sprawdź podgląd celu i zaznaczone pliki, a następnie kliknij Importuj.",
+    "Click Scan. Use Previous and Next to review every page, and check the selected count and destination preview before clicking Import. Import is unavailable when no photos are selected.": "Kliknij Skanuj. Użyj Poprzedni i Następny, aby przejrzeć każdą stronę, i sprawdź liczbę zaznaczonych oraz podgląd miejsca docelowego przed kliknięciem Importuj. Import jest niedostępny, gdy nie zaznaczono żadnych zdjęć.",
     "Click Search photos and keywords, or press / when you are not typing in a field.": "Kliknij Wyszukaj zdjęcia i słowa kluczowe albo naciśnij /, gdy nie wpisujesz tekstu w polu.",
     "Click a collection to view it. Clicking the active collection again leaves it.": "Kliknij kolekcję, aby ją wyświetlić. Ponowne kliknięcie aktywnej kolekcji opuszcza ją.",
     "Click a color in the photo": "Kliknij kolor na zdjęciu",
@@ -607,6 +608,7 @@
     "Close help (Escape)": "Zamknij pomoc (Escape)",
     "Close preset details": "Zamknij szczegóły presetu",
     "Close settings": "Zamknij ustawienia",
+    "Close the catalog results": "Zamknij wyniki katalogu",
     "Cloud only": "Tylko w chmurze",
     "Collapse a group": "Zwiń grupę",
     "Collapse stack": "Zwiń stos",
@@ -672,7 +674,7 @@
     "Control export metadata, sidecars, and timestamps": "Kontroluj metadane eksportu, sidecary i znaczniki czasu",
     "Control grain relative to the stock and choose the simulated film size.": "Kontroluj ziarno względem nośnika i wybierz symulowany rozmiar filmu.",
     "Control what happens next": "Kontroluj, co stanie się dalej",
-    "Copied {statusCopied}/{statusTotal}{value}": "Skopiowano {statusCopied}/{statusTotal}{value}",
+    "Copied {copied}/{total}": "Skopiowano {copied}/{total}",
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "Kopiuje każdy czytelny wiersz do nowego pliku. Czytelne teraz: {value}. Zachowuje edycje wykonane po ostatniej kopii zapasowej; wiersze na uszkodzonych stronach zostaną utracone.",
     "Copy": "Kopiuj",
     "Copy Edit Settings": "Kopiuj ustawienia edycji",
@@ -703,9 +705,13 @@
     "Could not analyse this photo.": "Nie można było przeanalizować tego zdjęcia.",
     "Could not apply preset": "Nie można zastosować presetu",
     "Could not cancel": "Nie można anulować",
+    "Could not cancel import: {error}": "Nie można anulować importu: {error}",
+    "Could not check available enhancements.": "Nie można sprawdzić dostępnych ulepszeń.",
     "Could not choose an edit filename": "Nie udało się wybrać nazwy pliku edycji",
     "Could not clear photo history": "Nie można było wyczyścić historii zdjęcia",
+    "Could not create backup": "Nie można utworzyć kopii zapasowej",
     "Could not create the Photos import folder: {error}": "Nie można utworzyć folderu importu z Photos: {error}",
+    "Could not delete watched folder": "Nie można usunąć obserwowanego folderu",
     "Could not display preview": "Nie można wyświetlić podglądu",
     "Could not display this photo": "Nie można wyświetlić tego zdjęcia",
     "Could not export preset: {error}": "Nie można wyeksportować presetu: {error}",
@@ -718,11 +724,13 @@
     "Could not load presets. Your saved presets are kept.": "Nie można wczytać presetów. Zapisane presety zostają zachowane.",
     "Could not load this language. Try again.": "Nie udało się wczytać tego języka. Spróbuj ponownie.",
     "Could not move {path} to the Recycle Bin": "Nie udało się przenieść {path} do Kosza",
+    "Could not open the link in your browser.": "Nie można otworzyć łącza w przeglądarce.",
     "Could not open {name}: {message}": "Nie udało się otworzyć {name}: {message}",
     "Could not prepare submission": "Nie można przygotować zgłoszenia",
     "Could not prepare your library: {error}": "Nie udało się przygotować biblioteki: {error}",
     "Could not preview capture times": "Nie można było podejrzeć czasów wykonania",
     "Could not preview the rename": "Nie można było podejrzeć zmiany nazwy",
+    "Could not read import progress: {error}": "Nie można odczytać postępu importu: {error}",
     "Could not read language preferences. Try again.": "Nie można odczytać preferencji języka. Spróbuj ponownie.",
     "Could not read sidecar sync status.": "Nie można było odczytać stanu synchronizacji sidecar.",
     "Could not read the dragged photos": "Nie można odczytać przeciągniętych zdjęć",
@@ -746,6 +754,8 @@
     "Could not save setup.": "Nie można zapisać ustawienia.",
     "Could not save the example": "Nie można zapisać przykładu",
     "Could not save the language. Try again.": "Nie udało się zapisać języka. Spróbuj ponownie.",
+    "Could not save watched folder": "Nie można zapisać obserwowanego folderu",
+    "Could not scan the source": "Nie można przeskanować źródła",
     "Could not start import": "Nie można rozpocząć importu",
     "Could not start mask detection": "Nie udało się uruchomić wykrywania maski",
     "Could not start the render server.\n\n{error}": "Nie udało się uruchomić serwera renderowania.\n\n{error}",
@@ -777,6 +787,7 @@
     "Create virtual copy": "Utwórz wirtualną kopię",
     "Created {name}": "Utworzono {name}",
     "Created {name} in {seconds}s": "Utworzono {name} w {seconds}s",
+    "Creating backup…": "Tworzenie kopii zapasowej…",
     "Creative · preserve overrides": "Kreatywne · zachowaj nadpisania",
     "Creator": "Twórca",
     "Creator example": "Przykład twórcy",
@@ -938,6 +949,7 @@
     "Edit the red channel curve": "Edytuj krzywą kanału czerwonego",
     "Edited": "Edytowane",
     "Editing": "Edycja",
+    "Editing controls are unavailable until a photo is loaded. Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment.": "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty.",
     "Edits could not be saved. Use Retry save before continuing.": "Nie można było zapisać edycji. Użyj Ponów zapis przed kontynuowaniem.",
     "Edits have not been saved": "Zmiany nie zostały zapisane",
     "Edits not saved": "Edycje nie zostały zapisane",
@@ -978,6 +990,7 @@
     "Error matching exposure": "Błąd dopasowywania ekspozycji",
     "Error starting preview generation": "Błąd podczas uruchamiania generowania podglądu",
     "Error: {error}": "Błąd: {error}",
+    "Errors: {details}": "Błędy: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Każdy eksport osadza wybrany profil ICC. Wybierz sRGB, Display P3 lub ProPhoto RGB w Przestrzeń kolorów.",
     "Every step, kept with the photo": "Każdy krok, zachowany ze zdjęciem",
     "Example download prepared. Your edit has not changed.": "Przygotowano przykładowe pobieranie. Twoja edycja nie uległa zmianie.",
@@ -1045,7 +1058,6 @@
     "Eyes": "Oczy",
     "Eyes open": "Oczy otwarte",
     "Face skin": "Skóra twarzy",
-    "Failed": "Nie udało się",
     "Failed to match exposure": "Nie udało się dopasować ekspozycji",
     "Failed to start preview generation": "Nie udało się uruchomić generowania podglądu",
     "Failures": "Błędy",
@@ -1264,10 +1276,13 @@
     "Import a catalog": "Importuj katalog",
     "Import at most 100000 photos at once": "Importuj jednorazowo maksymalnie 100000 zdjęć",
     "Import at most 100000 photos at once; narrow the source or folder scope": "Importuj jednorazowo maksymalnie 100000 zdjęć; zawęź zakres źródła lub folderu",
+    "Import cancelled": "Import anulowany",
+    "Import cancelled. {progress}": "Import anulowany. {progress}",
     "Import catalog…": "Importuj katalog…",
     "Import complete": "Import zakończony",
     "Import entire library": "Importuj całą bibliotekę",
     "Import failed": "Nie udało się zaimportować",
+    "Import finished with errors": "Import zakończony z błędami",
     "Import finished with some originals unavailable. Run it again to retry.": "Import zakończony z niedostępnymi niektórymi oryginałami. Uruchom go ponownie, aby spróbować jeszcze raz.",
     "Import from Apple Photos": "Importuj z Apple Photos",
     "Import from Apple Photos…": "Importuj z Apple Photos…",
@@ -1275,9 +1290,11 @@
     "Import from card": "Importuj z karty",
     "Import from card copies files into the destination you choose. The card originals stay in place.": "Import z karty kopiuje pliki do wybranego miejsca docelowego. Oryginały na karcie pozostają na miejscu.",
     "Import from card…": "Importuj z karty…",
+    "Import is still running. Use Jobs to check its progress or cancel it.": "Import nadal trwa. Użyj Zadań, aby sprawdzić postęp lub anulować operację.",
     "Import photos from a card": "Importuj zdjęcia z karty",
     "Import photos…": "Importuj zdjęcia…",
     "Import progress": "Postęp importu",
+    "Import sidecars": "Importuj sidecary",
     "Import sidecars…": "Importuj sidecary…",
     "Import stopped. Any completed copies are kept; you can resume by importing again.": "Import został zatrzymany. Ukończone kopie zostaną zachowane; możesz wznowić, importując ponownie.",
     "Import stopped. Completed copies are safe; run it again to continue.": "Import zatrzymany. Ukończone kopie są bezpieczne; uruchom go ponownie, aby kontynuować.",
@@ -1295,7 +1312,7 @@
     "Improve preview speed and check image detail": "Popraw szybkość podglądu i sprawdź szczegóły obrazu",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "W Community wybierz Featured, New lub All i użyj Subject, aby zawęzić kolekcję. Wybierz preset, aby zobaczyć jego opis, twórcę, wersję, zachowanie filmu oraz dostępne zdjęcia przykładowe.",
     "In Film profile, choose Film format.": "W profilu Film wybierz format filmu.",
-    "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type.": "W Informacje rozwiń Opis dla tytułu, podpisu i nagłówka; Prawa dla autora, praw autorskich i kredytu; lub Miejsce dla lokalizacji i współrzędnych. Zmiany są zapisywane w katalogu podczas pisania.",
+    "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "W Informacjach rozwiń Opis, aby zobaczyć tytuł, opis i nagłówek; Prawa, aby zobaczyć twórcę, prawa autorskie i kredyt; albo Umieść, aby zobaczyć lokalizację i współrzędne. Zmiany są zapisywane do katalogu podczas pisania. Otwórz w Mapach jest dostępne po wczytaniu metadanych tego zdjęcia i gdy szerokość oraz długość geograficzna są prawidłowe. Otwiera lokalizację w przeglądarce.",
     "In Physical film stages, adjust Print glare, Print preflash, Yellow filter, and Magenta filter. Reopen the section if you collapsed it.": "W Fizycznych etapach filmu dostosuj Blask wydruku, Preflash wydruku, Żółty filtr i Filtr magenta. Otwórz ponownie tę sekcję, jeśli ją zwinąłeś.",
     "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action.": "W siatce działania flag, oceny i etykiety kolorystycznej dotyczą zaznaczonego zestawu. W Szczegóły te działania oznaczania dotyczą aktywnego zdjęcia. W Przeglądzie dotyczą aktywnej komórki przeglądu. Przed działaniem wsadowym sprawdź kontekst paska narzędzi oznaczania.",
     "In a grid, use the Size slider to change thumbnail size.": "W siatce użyj suwaka Rozmiar, aby zmienić rozmiar miniatur.",
@@ -1457,7 +1474,7 @@
     "Local masks": "Lokalne maski",
     "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęcia. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
     "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes.": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęć. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
-    "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop.": "Lokalne ••• → Importuj sidecary… to osobna akcja odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania.",
+    "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors.": "Lokalne ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Jej okno wyników pokazuje postęp, liczbę zastosowanych elementów, pominięte ustawienia i błędy.",
     "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.": "Lokalne → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy wybrany folder pokazuje też swoje potomne foldery. Inne filtry biblioteki nadal obowiązują.",
     "Location": "Lokalizacja",
     "Lock": "Zablokuj",
@@ -1472,6 +1489,7 @@
     "Longitude": "Długość geograficzna",
     "Look preservation applies to looks saved with Look · keep photo corrections. A Full edit or an older imported preset can include photo-specific corrections; inspect its details before applying.": "Zachowanie wyglądu dotyczy wyglądów zapisanych z opcją Look · keep photo corrections. Full edit lub starszy importowany preset może zawierać korekcje specyficzne dla zdjęcia; sprawdź jego szczegóły przed zastosowaniem.",
     "Look · keep photo corrections": "Wygląd · zachowaj korekty zdjęcia",
+    "Looking for duplicate files…": "Wyszukiwanie zduplikowanych plików…",
     "Looking for lines…": "Wyszukiwanie linii…",
     "Looks for your photographs": "Szukaj Twoich fotografii",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Wyglądy zachowują ekspozycję, balans bieli, kadrowanie, maski, Remove oraz korekcje aparatu i obiektywu.",
@@ -1505,6 +1523,7 @@
     "Make your adjustment, then check the save status in the app.": "Wykonaj korektę, a następnie sprawdź stan zapisu w aplikacji.",
     "Manage cache storage": "Zarządzaj pamięcią podręczną",
     "Manage presets": "Zarządzaj presetami",
+    "Manage watched folders": "Zarządzaj obserwowanymi folderami",
     "Manage {labelTextContent}": "Zarządzaj {labelTextContent}",
     "Manage…": "Zarządzaj…",
     "Manage… opens or closes Manage presets; the button is highlighted while the section is open. Save current look defaults to Look · keep photo corrections. Full edit · include photo corrections also offers All adjustment settings or Changed settings only.": "Manage… otwiera lub zamyka Zarządzaj presetami; przycisk jest podświetlony, gdy sekcja jest otwarta. Save current look domyślnie ustawia Look · keep photo corrections. Full edit · include photo corrections oferuje też All adjustment settings lub Changed settings only.",
@@ -1606,6 +1625,7 @@
     "New collection": "Nowa kolekcja",
     "New photos open in the physical film workflow.": "Nowe zdjęcia otwierają się w fizycznym przepływie pracy filmu.",
     "New ratings, flags, labels and keywords apply to both files. Exports and Trash use only the files you choose.": "Nowe oceny, flagi, etykiety i słowa kluczowe dotyczą obu plików. Eksporty i Kosz używają tylko wybranych przez Ciebie plików.",
+    "New watched folder": "Nowy obserwowany folder",
     "Newer than this build": "Nowsze niż ta wersja",
     "Next": "Następny",
     "Next Photo": "Następne zdjęcie",
@@ -1703,8 +1723,9 @@
     "Open Library Health… to check catalog structure, missing files, and recovery information.": "Otwórz Library Health…, aby sprawdzić strukturę katalogu, brakujące pliki i informacje o odzyskiwaniu.",
     "Open Local ••• → Import catalog…, or choose the Lightroom Classic catalog option in setup.": "Otwórz Lokalnie ••• → Importuj katalog… albo wybierz podczas konfiguracji opcję katalogu Lightroom Classic.",
     "Open Local ••• → Import from card….": "Otwórz Local ••• → Importuj z karty….",
+    "Open Local ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.": "Otwórz Lokalne ••• → Folder obserwowany… , aby dodać obserwowany folder. Wybierz, jak mają być obsługiwane nadchodzące zdjęcia. Zapisz jest niedostępne, dopóki nie zostanie określony folder; kopiowanie do biblioteki wymaga też miejsca docelowego.",
     "Open Mask and expand Create New Mask.": "Otwórz Maska i rozwiń Utwórz nową maskę.",
-    "Open Mask in the editing toolbar and choose a tool under Create New Mask. Each mask has its own Light and Color adjustments.": "Otwórz Maska na pasku narzędzi edycji i wybierz narzędzie w sekcji Utwórz nową maskę. Każda maska ma własne korekty Jasny i Kolor.",
+    "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light and Color adjustments.": "Otwórz Maskę na pasku narzędzi edycji i wybierz narzędzie pod Utwórz nową maskę. Kliknij Utwórz nową maskę, aby pokazać lub ukryć narzędzia. Każda maska ma własne ustawienia Jasny i Kolor.",
     "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera dziesięć dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online.",
     "Open Recovery Folder": "Otwórz folder odzyskiwania",
     "Open Recovery folder": "Otwórz folder Recovery",
@@ -1753,6 +1774,7 @@
     "Overwrite": "Zastąp",
     "P / X / U": "P / X / U",
     "PNG": "PNG",
+    "Page {page} of {pages}": "Strona {page} z {pages}",
     "Paint a mask directly on the photo": "Maluj maskę bezpośrednio na zdjęciu",
     "Paint areas to add to the selected mask": "Maluj obszary, aby dodać je do zaznaczonej maski",
     "Paint areas to subtract from the selected mask": "Maluj obszary, aby odjąć je od wybranej maski",
@@ -1911,6 +1933,7 @@
     "Preview unavailable · select to apply": "Podgląd niedostępny · wybierz, aby zastosować",
     "Preview unavailable. Try again.": "Podgląd niedostępny. Spróbuj ponownie.",
     "Preview {value} px · source {value2} px": "Podgląd {value} px · źródło {value2} px",
+    "Previews show 200 files per page. Selection carries across pages; Select all and Select none apply to the whole scan, including pages you have not opened.": "Podglądy pokazują 200 plików na stronę. Zaznaczenie przenosi się między stronami; Zaznacz wszystko i Odznacz wszystko dotyczą całego skanu, w tym stron, których jeszcze nie otwarto.",
     "Previews use this photo’s edits. Choose a stock to apply it.": "Podglądy używają edycji tego zdjęcia. Wybierz stock, aby ją zastosować.",
     "Previous": "Poprzedni",
     "Previous Photo": "Poprzednie zdjęcie",
@@ -2157,6 +2180,7 @@
     "Review and move rejected files": "Przejrzyj i przenieś odrzucone pliki",
     "Review assisted culling suggestions": "Przejrzyj sugerowaną selekcję wspomaganą",
     "Review local analysis signals and apply pick or reject flags only when you choose.": "Przejrzyj lokalne sygnały analizy i stosuj flagi wyboru lub odrzucenia tylko wtedy, gdy chcesz.",
+    "Review photos from the source using the destination and naming settings": "Przejrzyj zdjęcia ze źródła, korzystając z ustawień miejsca docelowego i nazewnictwa",
     "Review signals": "Przejrzyj sygnały",
     "Review the before-and-after filenames in the preview.": "Sprawdź w podglądzie nazwy plików przed i po.",
     "Review the current view carefully before moving rejected originals and sidecars.": "Dokładnie przejrzyj bieżący widok przed przeniesieniem odrzuconych oryginałów i sidecarów.",
@@ -2233,12 +2257,12 @@
     "Saving…": "Zapisywanie…",
     "Scale": "Skaluj",
     "Scan": "Skanuj",
-    "Scan again after changing the destination or naming templates so you can review the updated paths before importing.": "Skanuj ponownie po zmianie miejsca docelowego lub szablonów nazewnictwa, aby móc przejrzeć zaktualizowane ścieżki przed importem.",
     "Scan controls": "Kontrolki skanowania",
     "Scan sharpening": "Skanuj wyostrzanie",
     "Scan sharpness": "Skanuj ostrość",
     "Scan softness": "Miękkość skanowania",
     "Scan softness adds lens blur to the selected output recipe. Scan sharpness scales that recipe’s sharpening; Scan sharpening enables or disables it.": "Miękkość skanowania dodaje rozmycie obiektywu do wybranej receptury wyjściowej. Ostrość skanowania skaluje wyostrzanie tej receptury; Wyostrzanie skanu włącza je lub wyłącza.",
+    "Scan the source to review photos and destinations.": "Przeskanuj źródło, aby przejrzeć zdjęcia i miejsca docelowe.",
     "Scanning…": "Skanowanie…",
     "Scoring photos as the index reaches them.": "Ocenianie zdjęć w miarę docierania do nich przez indeks.",
     "Search": "Szukaj",
@@ -2267,6 +2291,7 @@
     "Select a photo and a preset, then click Try on this photo.": "Wybierz zdjęcie i preset, a następnie kliknij Wypróbuj na tym zdjęciu.",
     "Select a photo and press Command/Ctrl+E to open Edit in another app.": "Wybierz zdjęcie i naciśnij Command/Ctrl+E, aby otworzyć Edytuj w innej aplikacji.",
     "Select a photo first": "Najpierw wybierz zdjęcie",
+    "Select a photo first.": "Najpierw wybierz zdjęcie.",
     "Select a photo in LightTable to view at 100% 1:1 detail.": "Wybierz zdjęcie w LightTable, aby wyświetlić szczegóły w 100% 1:1.",
     "Select a photo in a stack": "Wybierz zdjęcie w stosie",
     "Select a photo or finish sampling to compare": "Wybierz zdjęcie lub zakończ próbkowanie, aby porównać",
@@ -2278,6 +2303,7 @@
     "Select a photo, or a set in a grid, and open Info.": "Wybierz zdjęcie albo zestaw w siatce i otwórz Informacje.",
     "Select a photo.": "Wybierz zdjęcie.",
     "Select a range of distances from the camera; refine the far and near limits": "Wybierz zakres odległości od aparatu; doprecyzuj granice daleką i bliską",
+    "Select all": "Zaznacz wszystko",
     "Select an active reference photo first": "Najpierw wybierz aktywne zdjęcie odniesienia",
     "Select an existing mask, then expand Create New Mask.": "Wybierz istniejącą maskę, a następnie rozwiń Utwórz nową maskę.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "Wybierz inny pas, aby kontynuować, albo użyj Resetu Miksu kolorów, aby wyczyścić korekty miksera.",
@@ -2292,11 +2318,13 @@
     "Select candidates in a grid and press N, or open Info → Survey selection.": "Zaznacz kandydatów w siatce i naciśnij N albo otwórz Informacje → Przegląd zaznaczenia.",
     "Select estimated face skin for local adjustments": "Wybierz szacowaną skórę twarzy do lokalnych korekt",
     "Select estimated hair regions for local adjustments": "Wybierz szacowane obszary włosów do lokalnych korekt",
+    "Select every photo across all pages": "Zaznacz każde zdjęcie na wszystkich stronach",
     "Select eyebrows for local adjustments": "Wybierz brwi do lokalnych korekt",
     "Select eyes for local adjustments": "Wybierz oczy do lokalnych korekt",
     "Select face skin and reduce Texture and Clarity": "Wybierz skórę twarzy i zmniejsz Tekstura oraz Przejrzystość",
     "Select lips for local adjustments": "Wybierz usta do lokalnych korekt",
     "Select no more than 5000 photos for a keyword batch": "Wybierz nie więcej niż 5000 zdjęć do wsadowego nadawania słów kluczowych",
+    "Select none": "Odznacz wszystko",
     "Select people for local adjustments": "Wybierz osoby do lokalnych korekt",
     "Select people or facial regions": "Wybierz osoby lub obszary twarzy",
     "Select photos and enter keywords first": "Najpierw wybierz zdjęcia i wpisz słowa kluczowe",
@@ -2364,7 +2392,7 @@
     "Settings copied": "Ustawienia skopiowane",
     "Settings copied; choices could not be remembered": "Ustawienia skopiowane; nie można było zapamiętać wyborów",
     "Settings sections": "Sekcje ustawień",
-    "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately.": "Ustawienia → Katalog pokazuje lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Wykonuj osobno kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji.",
+    "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Local ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found.": "Ustawienia → Katalog pokazują lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji wykonuj osobno. Lokalne ••• → Utwórz kopię zapasową katalogu… również tworzy kopię zapasową i pokazuje zapisany path lub błąd w oknie wyników. Znajdź duplikaty w tym samym menu pokazuje pasujące pliki albo informuje, że nie znaleziono żadnych.",
     "Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.": "Ustawienia → Wydajność → Zaawansowane zawiera Nadpisanie rozdzielczości podglądu. Automatyczna (zalecane) dopasowuje podgląd do widoku. Stała rozdzielczość może zmniejszyć przetwarzanie, ale może wyglądać na bardziej miękką; powiększenie 100% nadal żąda szczegółów źródłowych, z zastrzeżeniem limitu podglądu. Wymiary eksportu ustawia się osobno.",
     "Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. The desktop Help menu also has Keyboard Shortcuts.": "Ustawienia → Skróty i sprzęt zawiera schemat skrótów i referencję klawiatury w sekcji Klawiatura i sterowanie MIDI. W menu Pomoc na pulpicie znajduje się też Skróty klawiaturowe.",
     "Settings…": "Ustawienia…",
@@ -2395,11 +2423,12 @@
     "Show out-of-gamut warning": "Pokaż ostrzeżenie o gamucie poza zakresem",
     "Show paired captures": "Pokaż sparowane przechwycenia",
     "Show server log": "Pokaż log serwera",
+    "Show the next page of photos": "Pokaż następną stronę zdjęć",
+    "Show the previous page of photos": "Pokaż poprzednią stronę zdjęć",
     "Show {name}": "Pokaż {name}",
     "Showing recent results. Earlier failures remain included in the total.\n": "Wyświetlanie ostatnich wyników. Wcześniejsze niepowodzenia są nadal uwzględnione w sumie.\n",
     "Shutter": "Migawka",
     "Sidecars are up to date.": "Sidecary są aktualne.",
-    "Sidecars could not be read.": "Nie można było odczytać sidecarów.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Odczytane sidecary: {read}. Zastosowane: {applied}. Zdjęcia bez sidecarów: {missing}.",
     "Simulate paper and ink": "Symuluj papier i atrament",
     "Size": "Rozmiar",
@@ -2456,6 +2485,7 @@
     "Start with the photos in your Mac’s library.": "Zacznij od zdjęć z biblioteki na Macu.",
     "Starting LightTable in Safe Mode…": "Uruchamianie LightTable w trybie awaryjnym…",
     "Starting LightTable…": "Uruchamianie LightTable…",
+    "Starting import…": "Rozpoczynanie importu…",
     "Starting match": "Początkowe dopasowanie",
     "Starting match adjusts physical capture exposure and capture WB for RAW, or print filtration for processed files.": "Uruchomienie dopasowania dostosowuje fizyczną ekspozycję podczas wykonania i balans bieli podczas wykonania dla raw, albo filtrację do druku dla plików przetworzonych.",
     "Starting match turns off automatic scene metering and adjusts Camera EV. For RAW photos it also sets custom capture white balance; for processed photos it adjusts yellow and magenta print filtration.": "Rozpoczęcie dopasowania wyłącza automatyczny pomiar sceny i koryguje Camera EV. W przypadku zdjęć RAW ustawia też niestandardowy balans bieli podczas rejestracji; w przypadku zdjęć przetworzonych koryguje żółtą i magentową filtrację wydruku.",
@@ -2469,6 +2499,8 @@
     "Stop": "Zatrzymaj",
     "Stop import": "Zatrzymaj import",
     "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals.": "Stop import zachowuje ukończone kopie. Ponowne uruchomienie pomija te kopie i ponawia próbę dla niedokończonych oryginałów.",
+    "Stopping after the current file finishes copying and verification…": "Zatrzymywanie po zakończeniu kopiowania i weryfikacji bieżącego pliku…",
+    "Stopping after the current file… {progress}": "Zatrzymywanie po bieżącym pliku… {progress}",
     "Stopping after the current photo…": "Zatrzymywanie po bieżącym zdjęciu…",
     "Stopping export…": "Zatrzymywanie eksportu…",
     "Stopping import…": "Zatrzymywanie importu…",
@@ -2488,7 +2520,7 @@
     "Subtract from selected mask": "Odejmij od wybranej maski",
     "Suggest terms already used in this catalog.": "Sugeruj terminy już użyte w tym katalogu.",
     "Super resolution": "Superrozdzielczość",
-    "Super resolution has no bundled model and requires a compatible local model. A listed option alone does not mean that operation is available.": "Super resolution nie ma dołączonego modelu i wymaga zgodnego lokalnego modelu. Sama opcja na liście nie oznacza, że ta operacja jest dostępna.",
+    "Super resolution needs an installed model.": "Superrozdzielczość wymaga zainstalowanego modelu.",
     "Supported file choices include .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip, and .json. An accepted extension does not guarantee every setting can be converted.": "Obsługiwane wybory plików obejmują .ltpreset, .xmp, .lrtemplate, .costyle, .costylepack, .zip i .json. Akceptowane rozszerzenie nie gwarantuje, że każde ustawienie da się przekonwertować.",
     "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.": "Obsługiwane metadane obejmują oceny w gwiazdkach, znaczniki wybierz/odrzuć, standardowe etykiety kolorystyczne, płaskie i hierarchiczne słowa kluczowe oraz opisowe pola IPTC. Jawna pusta wartość czyści to pole; nieobecna wartość pozostawia je bez zmian. Niestandardowe etykiety kolorystyczne, które nie pasują do koloru LightTable, są zgłaszane jako pominięte.",
     "Survey": "Przegląd",
@@ -2534,6 +2566,7 @@
     "The Grain size setting belongs to the film simulation. Detail sharpening and noise reduction in Edit are separate adjustments.": "Ustawienie rozmiaru Ziarna należy do symulacji filmu. Wyostrzanie szczegółów i redukcja szumów w Edytuj to osobne korekty.",
     "The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available.": "Indeks zdjęć jest domyślnie wyłączony. Analiza pozostaje na tym Macu i nie modyfikuje folderów ze zdjęciami. Apple Vision zapewnia podstawową analizę; bogatsze opisy Foundation Models pojawiają się tylko wtedy, gdy ta funkcja jest dostępna.",
     "The TIFF is still rendering.": "TIFF jest nadal renderowany.",
+    "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings.": "Skrót Obserwowanie otwiera pierwszy aktywny obserwowany folder. Błędy zapisu pozostają w oknie dialogowym, abyś mógł poprawić ustawienia.",
     "The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again.": "Sidecar XMP został utworzony, usunięty lub zmieniony nazwą przez inną aplikację. Odczytaj jego metadane przed ponowną synchronizacją.",
     "The adjusted TIFF is written beside its original.": "Skorygowany TIFF jest zapisywany obok oryginału.",
     "The app and help use this language. Applying a language saves your edits and reloads this window.": "Aplikacja i pomoc używają tego języka. Zastosowanie języka zapisuje Twoje zmiany i ponownie wczytuje to okno.",
@@ -2551,7 +2584,7 @@
     "The desktop app checks its signed update feed.": "Aplikacja desktopowa sprawdza podpisany kanał aktualizacji.",
     "The destination is an original photo; export was not published": "Miejsce docelowe jest oryginalnym zdjęciem; eksport nie został opublikowany",
     "The disk holding the catalog is almost full. Backups are paused until space is freed.": "Dysk zawierający katalog jest prawie pełny. Kopie zapasowe są wstrzymane, dopóki nie zwolni się miejsce.",
-    "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks.": "Edytor pozwala użyć maksymalnie szesnastu lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystkie usuwa maski zdjęcia.",
+    "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.": "Edytor umożliwia maksymalnie szesnaście lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
     "The export destination changed after planning; preview it again": "Miejsce docelowe eksportu zmieniło się po zaplanowaniu; sprawdź podgląd ponownie",
     "The export destination moved while rendering; nothing was published": "Miejsce docelowe eksportu zostało przeniesione podczas renderowania; nic nie zostało opublikowane",
     "The export dialog offers JPEG, HEIF, PNG, and 16-bit TIFF. HEIF is an 8-bit output option on macOS. The quality slider applies to JPEG and HEIF.": "Okno eksportu oferuje JPEG, HEIF, PNG i 16-bitowy TIFF. HEIF to opcja wyjścia 8-bitowego w macOS. Suwak jakości dotyczy JPEG i HEIF.",
@@ -2587,7 +2620,6 @@
     "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color.": "Menu zakresu oferuje też Waveform, RGB Parade i Vectorscope do sprawdzania tonów i koloru.",
     "The search box matches text in filenames, display names, keywords, and available photo-index metadata. It searches within the current folder or collection and combines with the other active filters.": "Pole wyszukiwania dopasowuje tekst w nazwach plików, nazwach wyświetlanych, słowach kluczowych i dostępnych metadanych indeksu zdjęć. Przeszukuje bieżący folder lub kolekcję i łączy się z innymi aktywnymi filtrami.",
     "The selected folder and Include subfolders are not saved in the smart collection rules. The collection searches the library using the saved filter choices.": "Wybrany folder oraz Uwzględnij podfoldery nie są zapisane w regułach inteligentnej kolekcji. Kolekcja przeszukuje bibliotekę na podstawie zapisanych ustawień filtra.",
-    "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.": "Lista wyboru pokazuje obecnie do 200 plików na skan. Wysyłane są tylko zaznaczone pozycje z tej listy. Sprawdź liczbę ukończonych przy pracy z większą kartą.",
     "The server did not answer within {seconds} seconds. It may still be checking a very large library, or it may be stuck.\n\nLast reported step: {step}.": "Serwer nie odpowiedział w ciągu {seconds} sekund. Może nadal sprawdzać bardzo dużą bibliotekę albo może się zawiesił.\n\nOstatnio zgłoszony krok: {step}.",
     "The server exited with status {status} before it was ready.": "Serwer zakończył działanie ze statusem {status} zanim był gotowy.",
     "The server log has the details.": "Szczegóły znajdują się w dzienniku serwera.",
@@ -2623,6 +2655,7 @@
     "Tint": "Odcień",
     "Title": "Tytuł",
     "To clear an existing pick, reject, or rating, apply that same mark again.": "Aby wyczyścić istniejącą flagę wyboru, odrzucenie lub ocenę, nadaj tę samą etykietę ponownie.",
+    "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.": "Aby edytować istniejącą obserwację, wybierz ją w Obserwowanych folderach. Każda zapisania obserwacja pojawia się na tej liście. Wybierz Nowy obserwowany folder dla innego folderu albo użyj Usuń obserwację, aby przestać obserwować zaznaczony folder. To nie usuwa jego zdjęć.",
     "To export, choose a Selected preset and Export format, then click Export….": "Aby wyeksportować, wybierz Wybrany preset i Format eksportu, a następnie kliknij Eksportuj….",
     "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.": "Aby importować, kliknij Importuj… i wybierz pliki presetów. Aplikacja na Macu obsługuje też wybór całego folderu presetów.",
     "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames.": "Aby ocenić edycję względem oryginału, użyj porównania przed/po w Szczegóły; Przegląd służy do wyboru spośród różnych kadrów.",
@@ -2675,6 +2708,7 @@
     "Turning the index off pauses analysis and removes generated results from the active search view; existing index data remains local until deleted. Rebuild index reruns indexing when the feature is enabled.": "Wyłączenie indeksu wstrzymuje analizę i usuwa wygenerowane wyniki z aktywnego widoku wyszukiwania; istniejące dane indeksu pozostają lokalnie do czasu usunięcia. Przebuduj indeks ponownie uruchamia indeksowanie, gdy funkcja jest włączona.",
     "Type a word or phrase from the filename or keywords.": "Wpisz słowo lub frazę z nazwy pliku albo słów kluczowych.",
     "Unavailable": "Niedostępne",
+    "Unavailable enhancements are disabled. Super resolution has no bundled model and requires a compatible model installed locally.": "Niedostępne ulepszenia są wyłączone. Superrozdzielczość nie ma dołączonego modelu i wymaga zainstalowanego lokalnie zgodnego modelu.",
     "Under Colour label, choose Red, Yellow, Green, Blue, or Purple. Choose No label to clear it.": "W etykiecie Kolor wybierz Czerwony, Żółty, Zielony, Niebieski lub Purpurowy. Wybierz Bez etykiety, aby ją wyczyścić.",
     "Understand Camera EV, capture white balance, metering, and development controls.": "Zrozum EV aparatu, balans bieli przy wykonaniu, pomiar i kontrolki wywoływania.",
     "Understand recovery choices": "Zrozum wybory odzyskiwania",
@@ -2808,7 +2842,7 @@
     "Visualize Spots": "Wizualizuj plamy",
     "Wait for Saving… to change to Saved. Saving also includes pending edit-history writes.": "Poczekaj, aż Saving… zmieni się na Saved. Zapisywanie obejmuje także oczekujące zapisy historii edycji.",
     "Wait for indexing progress to complete. Photos can gain results as they are indexed.": "Poczekaj na zakończenie postępu indeksowania. Zdjęcia mogą zyskiwać wyniki w miarę indeksowania.",
-    "Wait for the copied count and check whether any files failed.": "Poczekaj na licznik skopiowanych plików i sprawdź, czy któreś pliki nie powiodły się.",
+    "Wait for the copied count and check whether any files failed. Cancel stops after the current file finishes copying and verification; completed copies are kept and card originals stay untouched.": "Poczekaj na liczbę skopiowanych i sprawdź, czy jakieś pliki się nie powiodły. Anuluj zatrzymuje po zakończeniu kopiowania i weryfikacji bieżącego pliku; ukończone kopie są zachowywane, a oryginały na karcie pozostają nienaruszone.",
     "Wait for the photo to finish loading before applying a preset": "Poczekaj, aż zdjęcie zakończy wczytywanie, zanim zastosujesz preset",
     "Wait for the preview, then use Before and With preset to compare. Creator examples have their own before/after controls and, when available, an Example photo selector.": "Poczekaj na podgląd, a następnie użyj Before i With preset, aby porównać. Przykłady twórców mają własne elementy sterujące przed/po oraz, gdy dostępne, selektor Example photo.",
     "Wait until the photo preview appears, then click Auto.": "Poczekaj, aż pojawi się podgląd zdjęcia, a następnie kliknij Autom.",
@@ -2821,6 +2855,7 @@
     "Watch folder…": "Folder obserwowany…",
     "Watch the preparation, alignment, blending, and saving progress. When the app reports completion and refreshes the library, open the TIFF in LightTable Merges and inspect it.": "Obserwuj postęp przygotowania, wyrównywania, mieszania i zapisywania. Gdy aplikacja zgłosi ukończenie i odświeży bibliotekę, otwórz TIFF w LightTable Merges i sprawdź go.",
     "Watch the progress message. Use Cancel if you need to stop the job.": "Obserwuj komunikat o postępie. Użyj Anuluj, jeśli musisz zatrzymać zadanie.",
+    "Watched folders": "Obserwowane foldery",
     "Watching {valueName} · {handled} new": "Obserwowanie {valueName} · {handled} nowych",
     "Waveform": "Przebieg fali",
     "Web MIDI API not supported in this browser": "Web MIDI API nie jest obsługiwane w tej przeglądarce",
@@ -2867,7 +2902,6 @@
     "Writing 16-bit TIFF": "Zapisywanie 16-bitowego TIFF",
     "Wrote {count} sidecar.": "Zapisano {count} sidecar.",
     "Wrote {count} sidecars.": "Zapisano {count} sidecarów.",
-    "Wrote {value}": "Zapisano {value}",
     "XMP": "XMP",
     "XMP cannot be checked safely": "Nie można bezpiecznie sprawdzić XMP",
     "XMP could not be written.": "Nie udało się zapisać XMP.",
@@ -3164,6 +3198,7 @@
     "invalid JPEG header": "nieprawidłowy nagłówek JPEG",
     "invalid desktop message": "nieprawidłowa wiadomość pulpitu",
     "invalid folder name": "nieprawidłowa nazwa folderu",
+    "invalid import selection; scan the source again": "nieprawidłowe zaznaczenie importu; przeskanuj źródło ponownie",
     "invalid native surface": "nieprawidłowa natywna powierzchnia",
     "invalid resident shared surface": "nieprawidłowa współdzielona powierzchnia lokalna",
     "invert": "odwróć",
@@ -3377,11 +3412,13 @@
     "saved search": "Zapisane wyszukiwanie",
     "saving": "zapisywanie",
     "scan": "skanuj",
+    "scan the source and select photos before importing": "przeskanuj źródło i wybierz zdjęcia przed importem",
     "scanner": "skaner",
     "scenes": "sceny",
     "search": "wyszukaj",
     "section": "sekcja",
     "select action must be set, add, remove, or clear": "selektor akcji musi być ustawiony: dodaj, usuń lub wyczyść",
+    "select at least one photo to import": "zaznacz co najmniej jedno zdjęcie do importu",
     "select background": "wybierz tło",
     "select multiple": "wybierz wiele",
     "selected": "wybrany",
@@ -3450,6 +3487,7 @@
     "temp": "temperatura",
     "temperature": "temperatura",
     "template": "szablon",
+    "tethering": "podłączenie do aparatu",
     "text": "tekst",
     "texture": "tekstura",
     "that catalog file does not exist": "ten plik katalogu nie istnieje",
@@ -3552,6 +3590,8 @@
     "virtual copies cannot move originals": "wirtualne kopie nie mogą przenosić oryginałów",
     "virtual copy": "Wirtualna kopia",
     "visualize spots": "wizualizuj plamy",
+    "watch folder": "obserwowany folder",
+    "watched folders": "obserwowane foldery",
     "watched ingest failed": "nie udało się wykonać wczytywania",
     "wb": "balans bieli",
     "white balance": "Balans bieli",
@@ -3565,10 +3605,13 @@
     "{SAiIndexed} photos indexed": "Zindeksowano zdjęć: {SAiIndexed}",
     "{SMselSize} selected": "Wybrano {SMselSize}",
     "{count} already added": "{count} już dodano",
+    "{count} already in the catalog": "{count} już w katalogu",
     "{count} article": "{count} artykuł",
     "{count} articles": "{count} artykuły",
     "{count} capture will change. Originals stay unchanged.": "Zostanie zmienionych {count} przechwycenie. Oryginały pozostaną bez zmian.",
     "{count} captures will change. Originals stay unchanged.": "Zostanie zmienionych {count} przechwycenie. Oryginały pozostaną bez zmian.",
+    "{count} cloud-only photo skipped; download it in Finder and scan again.": "Pominięto {count} zdjęcie dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie.",
+    "{count} cloud-only photos skipped; download them in Finder and scan again.": "Pominięto {count} zdjęcia dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie.",
     "{count} could not be imported.": "Nie udało się zaimportować {count}.",
     "{count} could not be imported. Run this import again to retry.": "Nie udało się zaimportować {count}. Uruchom ten import ponownie, aby spróbować jeszcze raz.",
     "{count} crash while {stage} · {time} · set aside": "{count} awaria podczas {stage} · {time} · odłożono na bok",
@@ -3581,11 +3624,11 @@
     "{count} duplicate groups covering {files}.": "{count} grupy duplikatów obejmujące {files}.",
     "{count} error": "{count} błąd",
     "{count} errors": "{count} błędy",
-    "{count} errors: {details}": "{count} błędy: {details}",
     "{count} face detected": "Wykryto {count} twarz",
     "{count} face found": "znaleziono {count} twarz",
     "{count} faces detected": "Wykryto {count} twarze",
     "{count} faces found": "znaleziono {count} twarze",
+    "{count} failed": "{count} niepowodzeń",
     "{count} file": "{count} plik",
     "{count} files": "{count} plików",
     "{count} indexed photo remains local until deleted.": "{count} zindeksowane zdjęcie pozostaje lokalnie do momentu usunięcia.",
@@ -3600,6 +3643,7 @@
     "{count} originals imported": "zaimportowano {count} oryginały",
     "{count} photo": "{count} zdjęcie",
     "{count} photo added. Your original catalog is unchanged.": "Dodano {count} zdjęcie. Twój oryginalny katalog pozostaje bez zmian.",
+    "{count} photo copied": "Skopiowano {count} zdjęcie",
     "{count} photo exported": "Wyeksportowano {count} zdjęcie",
     "{count} photo imported.": "Zaimportowano {count} zdjęcie.",
     "{count} photo indexed on this Mac.": "{count} zdjęcie zindeksowane na tym Macu.",
@@ -3608,6 +3652,7 @@
     "{count} photo updated": "Zaktualizowano {count} zdjęcie",
     "{count} photos": "{count} zdjęcia",
     "{count} photos added. Your original catalog is unchanged.": "Dodano {count} zdjęć. Twój oryginalny katalog pozostaje bez zmian.",
+    "{count} photos copied": "Skopiowano {count} zdjęcia",
     "{count} photos exported": "Wyeksportowano {count} zdjęcia",
     "{count} photos imported.": "Zaimportowano {count} zdjęcia.",
     "{count} photos indexed on this Mac.": "{count} zdjęć zindeksowanych na tym Macu.",
@@ -3644,7 +3689,6 @@
     "{imported} · {existing} · {failures}": "{imported} · {existing} · {failures}",
     "{imported} · {existing}.": "{imported} · {existing}.",
     "{inflightStage}ing": "{inflightStage}anie",
-    "{ingestPlanTotal} photos to copy{value}, {value2} GB{value3}": "{ingestPlanTotal} zdjęć do skopiowania{value}, {value2} GB{value3}",
     "{mergeTargetsLength} distinct originals selected.": "Wybrano {mergeTargetsLength} różne oryginały.",
     "{mergeTargetsLength} distinct originals selected. Use a tripod or focus rail sequence.": "Wybrano {mergeTargetsLength} odrębnych oryginałów. Użyj sekwencji statywu lub szyny do ustawiania ostrości.",
     "{message} {completed} of {count} original": "{message} {completed} z {count} oryginału",
@@ -3663,12 +3707,14 @@
     "{name} · Built-in": "{name} · Wbudowane",
     "{name} · Cloud only": "{name} · Tylko w chmurze",
     "{name} · Cloud only — download in Finder and rescan": "{name} · Tylko w chmurze — pobierz w Finderze i skanuj ponownie",
+    "{name} · Paused": "{name} · Wstrzymano",
     "{name}: destination appeared or changed ({mismatch})": "{name}: miejsce docelowe pojawiło się lub zmieniło ({mismatch})",
     "{name}: multiple XMP sidecars; keep one naming convention before importing": "{name}: wiele sidecarów XMP; zachowaj jedną konwencję nazewnictwa przed importem",
     "{name}: {before} → {after}{warning}": "{name}: {before} → {after}{warning}",
     "{photos} photos · {collections} collections. ": "{photos} zdjęć · {collections} kolekcji. ",
     "{prefix}: {matched} matched, {unmatched} not found. {collections} collections; {history} history steps. ": "{prefix}: zgodnych {matched}, nie znaleziono {unmatched}. {collections} kolekcji; {history} kroków historii. ",
     "{presetName} is already applied": "{presetName} jest już zastosowane",
+    "{progress} — the originals on the card were not touched.": "{progress} — oryginałów na karcie nie naruszono.",
     "{rating}★ and up": "{rating}★ i więcej",
     "{resultCount} · Local": "{resultCount} · Lokalne",
     "{resultCount} · Results for “{query}”": "{resultCount} · Wyniki dla „{query}”",
@@ -3678,6 +3724,8 @@
     "{resultTotal} photos · first output shown. ": "{resultTotal} zdjęć · pokazano pierwsze wyjście. ",
     "{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.": "Oceniono {scored} z {scopeLength} zdjęć. Nic nie jest oznaczone, dopóki tego nie zażądasz.",
     "{seconds}s": "{seconds}s",
+    "{selected} of {count} photo selected, {size} GB": "{selected} z {count} zdjęcie zaznaczone, {size} GB",
+    "{selected} of {count} photos selected, {size} GB": "{selected} z {count} zdjęcia zaznaczone, {size} GB",
     "{shown} of {scopeLength}": "{shown} z {scopeLength}",
     "{shown} of {total} photos": "{shown} z {total} zdjęć",
     "{source} · {count} mapped setting": "{source} · {count} zmapowane ustawienie",
@@ -3701,11 +3749,8 @@
     "{value} free of {value2} — almost full; backups are paused": "{value} wolne z {value2} — prawie pełne; kopie zapasowe są wstrzymane",
     "{value} lines · {confidence}% confidence{value2}": "{value} wiersze · {confidence}% pewności{value2}",
     "{value} min": "{value} min",
-    "{value} new": "{value} nowe",
     "{value} of {orderedLength}": "{value} z {orderedLength}",
-    "{value} photo copied{value2}": "skopiowano {value} zdjęcie{value2}",
     "{value} photos": "{value} zdjęcia",
-    "{value} photos copied{value2}": "skopiowano {value} zdjęć{value2}",
     "{value} photos · {value2} sources{value3}": "{value} zdjęć · {value2} źródeł{value3}",
     "{value} requires the Rust film engine": "{value} wymaga silnika filmu Rust",
     "{value} stale, {value2} missing": "{value} nieaktualnych, {value2} brakujących",
@@ -3736,9 +3781,9 @@
     },
     "Corrected {count} capture. You can also restore capture-time steps in History.": {
       "one": "Skorygowano {count} przechwycenie. Możesz też przywrócić kroki czasu wykonania w Historii.",
-      "few": "Skorygowano {count} przechwycenia. Możesz też przywrócić kroki czasu wykonania w Historii.",
-      "many": "Skorygowano {count} przechwyceń. Możesz też przywrócić kroki czasu wykonania w Historii.",
-      "other": "Skorygowano {count} przechwyceń. Możesz też przywrócić kroki czasu wykonania w Historii."
+      "few": "Skorygowano {count} przechwycenie. Możesz też przywrócić kroki czasu wykonania w Historii.",
+      "many": "Skorygowano {count} przechwycenie. Możesz też przywrócić kroki czasu wykonania w Historii.",
+      "other": "Skorygowano {count} przechwycenie. Możesz też przywrócić kroki czasu wykonania w Historii."
     },
     "Export {count} Photo": {
       "one": "Eksportuj {count} zdjęcie",
@@ -3766,14 +3811,14 @@
     },
     "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.": {
       "one": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęcia. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
-      "few": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęć. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
+      "few": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęcia. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
       "many": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęć. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami.",
       "other": "Lokalne odzyskiwanie znalazło zmiany dla {count} zdjęć. Przywrócenie zastąpi ich zapisane edycje tymi odzyskanymi zmianami."
     },
     "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.": {
       "one": "Przenieść {count} odrzucone zdjęcie do Kosza? Sidecary pójdą razem z nim. Sparowane pliki ukryte z tego widoku pozostaną w bibliotece. Wybierz Oba w ustawieniach pary, aby je uwzględnić.",
       "few": "Przenieść {count} odrzuconych zdjęć do Kosza? Sidecary pójdą razem z nimi. Sparowane pliki ukryte z tego widoku pozostaną w bibliotece. Wybierz Oba w ustawieniach pary, aby je uwzględnić.",
-      "many": "Przenieść {count} odrzuconych zdjęć do Kosza? Sidecary pójdą razem z nimi. Sparowane pliki ukryte z tego widoku pozostaną w bibliotece. Wybierz Oba w ustawieniach pary, aby je uwzględnić.",
+      "many": "Przenieść {count} odrzucone zdjęcie do Kosza? Sidecary pójdą razem z nim. Sparowane pliki ukryte z tego widoku pozostaną w bibliotece. Wybierz Oba w ustawieniach pary, aby je uwzględnić.",
       "other": "Przenieść {count} odrzuconych zdjęć do Kosza? Sidecary pójdą razem z nimi. Sparowane pliki ukryte z tego widoku pozostaną w bibliotece. Wybierz Oba w ustawieniach pary, aby je uwzględnić."
     },
     "Pasted to {count} photo": {
@@ -3815,32 +3860,32 @@
     "Rejected {count} photo": {
       "one": "Odrzucono {count} zdjęcie",
       "few": "Odrzucono {count} zdjęcia",
-      "many": "Odrzucono {count} zdjęć",
+      "many": "Odrzucono {count} zdjęcia",
       "other": "Odrzucono {count} zdjęcia"
     },
     "Removed generated masks from {count} photo": {
       "one": "Usunięto wygenerowane maski z {count} zdjęcia",
       "few": "Usunięto wygenerowane maski z {count} zdjęć",
       "many": "Usunięto wygenerowane maski z {count} zdjęć",
-      "other": "Usunięto wygenerowane maski z {count} zdjęcia"
+      "other": "Usunięto wygenerowane maski z {count} zdjęć"
     },
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "one": "Przywrócono {count} przechwycenie. Możesz też przywrócić kroki czasu wykonania w Historii.",
-      "few": "Przywrócono {count} przechwycenia. Możesz też przywrócić kroki czasu wykonania w Historii.",
+      "few": "Przywrócono {count} przechwyceń. Możesz też przywrócić kroki czasu wykonania w Historii.",
       "many": "Przywrócono {count} przechwyceń. Możesz też przywrócić kroki czasu wykonania w Historii.",
-      "other": "Przywrócono {count} przechwycenia. Możesz też przywrócić kroki czasu wykonania w Historii."
+      "other": "Przywrócono {count} przechwyceń. Możesz też przywrócić kroki czasu wykonania w Historii."
     },
     "Reviewing {count} photo that met a reject criterion.": {
       "one": "Przeglądanie {count} zdjęcia, które spełniło kryterium odrzucenia.",
       "few": "Przeglądanie {count} zdjęć, które spełniły kryterium odrzucenia.",
       "many": "Przeglądanie {count} zdjęć, które spełniły kryterium odrzucenia.",
-      "other": "Przeglądanie {count} zdjęcia, które spełniło kryterium odrzucenia."
+      "other": "Przeglądanie {count} zdjęć, które spełniły kryterium odrzucenia."
     },
     "Reviewing {count} photo that met a select criterion.": {
       "one": "Przeglądanie {count} zdjęcia, które spełniło kryterium wyboru.",
       "few": "Przeglądanie {count} zdjęć, które spełniły kryterium wyboru.",
       "many": "Przeglądanie {count} zdjęć, które spełniły kryterium wyboru.",
-      "other": "Przeglądanie {count} zdjęcia, które spełniło kryterium wyboru."
+      "other": "Przeglądanie {count} zdjęć, które spełniły kryterium wyboru."
     },
     "Wrote {count} sidecar.": {
       "one": "Zapisano {count} sidecar.",
@@ -3854,17 +3899,29 @@
       "many": "{count} już dodano",
       "other": "{count} już dodano"
     },
+    "{count} already in the catalog": {
+      "one": "{count} już w katalogu",
+      "few": "{count} już w katalogu",
+      "many": "{count} już w katalogu",
+      "other": "{count} już w katalogu"
+    },
     "{count} article": {
       "one": "{count} artykuł",
       "few": "{count} artykuły",
-      "many": "{count} artykułów",
-      "other": "{count} artykułu"
+      "many": "{count} artykuły",
+      "other": "{count} artykuły"
     },
     "{count} capture will change. Originals stay unchanged.": {
       "one": "Zostanie zmienionych {count} przechwycenie. Oryginały pozostaną bez zmian.",
-      "few": "Zostaną zmienione {count} przechwycenia. Oryginały pozostaną bez zmian.",
+      "few": "Zostanie zmienionych {count} przechwyceń. Oryginały pozostaną bez zmian.",
       "many": "Zostanie zmienionych {count} przechwyceń. Oryginały pozostaną bez zmian.",
-      "other": "Zostanie zmienionych {count} przechwycenia. Oryginały pozostaną bez zmian."
+      "other": "Zostanie zmienionych {count} przechwyceń. Oryginały pozostaną bez zmian."
+    },
+    "{count} cloud-only photo skipped; download it in Finder and scan again.": {
+      "one": "Pominięto {count} zdjęcie dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie.",
+      "few": "Pominięto {count} zdjęcia dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie.",
+      "many": "Pominięto {count} zdjęcia dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie.",
+      "other": "Pominięto {count} zdjęcia dostępne tylko w chmurze; pobierz je w Finderze i przeskanuj ponownie."
     },
     "{count} could not be imported.": {
       "one": "Nie udało się zaimportować {count}.",
@@ -3881,60 +3938,66 @@
     "{count} crash while {stage} · {time} · set aside": {
       "one": "{count} awaria podczas {stage} · {time} · odłożono na bok",
       "few": "{count} awarie podczas {stage} · {time} · odłożono na bok",
-      "many": "{count} awarii podczas {stage} · {time} · odłożono na bok",
-      "other": "{count} awarii podczas {stage} · {time} · odłożono na bok"
+      "many": "{count} awarie podczas {stage} · {time} · odłożono na bok",
+      "other": "{count} awarie podczas {stage} · {time} · odłożono na bok"
     },
     "{count} crash while {stage} · {time} · still open": {
       "one": "{count} awaria podczas {stage} · {time} · nadal otwarte",
       "few": "{count} awarie podczas {stage} · {time} · nadal otwarte",
-      "many": "{count} awarii podczas {stage} · {time} · nadal otwarte",
-      "other": "{count} awarii podczas {stage} · {time} · nadal otwarte"
+      "many": "{count} awarie podczas {stage} · {time} · nadal otwarte",
+      "other": "{count} awarie podczas {stage} · {time} · nadal otwarte"
     },
     "{count} damaged recovery draft kept for repair; other drafts remain available.": {
       "one": "{count} uszkodzonych szkiców odzyskiwania zachowano do naprawy; inne szkice są nadal dostępne.",
-      "few": "{count} uszkodzone szkice odzyskiwania zachowano do naprawy; inne szkice są nadal dostępne.",
+      "few": "{count} uszkodzonych szkiców odzyskiwania zachowano do naprawy; inne szkice są nadal dostępne.",
       "many": "{count} uszkodzonych szkiców odzyskiwania zachowano do naprawy; inne szkice są nadal dostępne.",
       "other": "{count} uszkodzonych szkiców odzyskiwania zachowano do naprawy; inne szkice są nadal dostępne."
     },
     "{count} duplicate group covering {files}.": {
       "one": "{count} grupa duplikatów obejmująca {files}.",
       "few": "{count} grupy duplikatów obejmujące {files}.",
-      "many": "{count} grup duplikatów obejmujących {files}.",
-      "other": "{count} grup duplikatów obejmujących {files}."
+      "many": "{count} grupy duplikatów obejmujące {files}.",
+      "other": "{count} grupy duplikatów obejmujące {files}."
     },
     "{count} error": {
       "one": "{count} błąd",
       "few": "{count} błędy",
-      "many": "{count} błędów",
-      "other": "{count} błędów"
+      "many": "{count} błędy",
+      "other": "{count} błędy"
     },
     "{count} face detected": {
       "one": "Wykryto {count} twarz",
       "few": "Wykryto {count} twarze",
-      "many": "Wykryto {count} twarzy",
-      "other": "Wykryto {count} twarzy"
+      "many": "Wykryto {count} twarze",
+      "other": "Wykryto {count} twarze"
     },
     "{count} face found": {
       "one": "znaleziono {count} twarz",
       "few": "znaleziono {count} twarze",
-      "many": "znaleziono {count} twarzy",
-      "other": "znaleziono {count} twarzy"
+      "many": "znaleziono {count} twarze",
+      "other": "znaleziono {count} twarze"
+    },
+    "{count} failed": {
+      "one": "{count} niepowodzeń",
+      "few": "{count} niepowodzeń",
+      "many": "{count} niepowodzeń",
+      "other": "{count} niepowodzeń"
     },
     "{count} file": {
       "one": "{count} plik",
-      "few": "{count} pliki",
+      "few": "{count} plików",
       "many": "{count} plików",
       "other": "{count} plików"
     },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} zindeksowane zdjęcie pozostaje lokalnie do momentu usunięcia.",
-      "few": "{count} zindeksowane zdjęcia pozostają lokalnie do momentu usunięcia.",
+      "few": "{count} zindeksowanych zdjęć pozostaje lokalnie do momentu usunięcia.",
       "many": "{count} zindeksowanych zdjęć pozostaje lokalnie do momentu usunięcia.",
       "other": "{count} zindeksowanych zdjęć pozostaje lokalnie do momentu usunięcia."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} minimalny inlier wyrównania",
-      "few": "{count} minimalne inliery wyrównania",
+      "few": "{count} minimalnych inlierów wyrównania",
       "many": "{count} minimalnych inlierów wyrównania",
       "other": "{count} minimalnych inlierów wyrównania"
     },
@@ -3953,8 +4016,8 @@
     "{count} original imported": {
       "one": "zaimportowano {count} oryginał",
       "few": "zaimportowano {count} oryginały",
-      "many": "zaimportowano {count} oryginałów",
-      "other": "zaimportowano {count} oryginałów"
+      "many": "zaimportowano {count} oryginały",
+      "other": "zaimportowano {count} oryginały"
     },
     "{count} photo": {
       "one": "{count} zdjęcie",
@@ -3967,6 +4030,12 @@
       "few": "Dodano {count} zdjęcia. Twój oryginalny katalog pozostaje bez zmian.",
       "many": "Dodano {count} zdjęć. Twój oryginalny katalog pozostaje bez zmian.",
       "other": "Dodano {count} zdjęć. Twój oryginalny katalog pozostaje bez zmian."
+    },
+    "{count} photo copied": {
+      "one": "Skopiowano {count} zdjęcie",
+      "few": "Skopiowano {count} zdjęcia",
+      "many": "Skopiowano {count} zdjęć",
+      "other": "Skopiowano {count} zdjęć"
     },
     "{count} photo exported": {
       "one": "Wyeksportowano {count} zdjęcie",
@@ -3988,7 +4057,7 @@
     },
     "{count} photo restored": {
       "one": "{count} zdjęcie przywrócone",
-      "few": "Przywrócono {count} zdjęcia",
+      "few": "{count} zdjęcia przywrócone",
       "many": "Przywrócono {count} zdjęć",
       "other": "Przywrócono {count} zdjęć"
     },
@@ -4019,8 +4088,8 @@
     "{count} preset · select one to try": {
       "one": "{count} preset · wybierz jeden, aby wypróbować",
       "few": "{count} presety · wybierz jeden, aby wypróbować",
-      "many": "{count} presety · wybierz jeden, aby wypróbować",
-      "other": "{count} presety · wybierz jeden, aby wypróbować"
+      "many": "{count} presetów · wybierz jeden, aby wypróbować",
+      "other": "{count} presetów · wybierz jeden, aby wypróbować"
     },
     "{count} rated photo": {
       "one": "{count} ocenione zdjęcie",
@@ -4049,26 +4118,26 @@
     "{count} source": {
       "one": "{count} źródło",
       "few": "{count} źródła",
-      "many": "{count} źródeł",
-      "other": "{count} źródeł"
+      "many": "{count} źródła",
+      "other": "{count} źródła"
     },
     "{count} unsupported setting skipped": {
-      "one": "Pominięto {count} nieobsługiwane ustawienie.",
-      "few": "Pominięto {count} nieobsługiwane ustawienia.",
-      "many": "Pominięto {count} nieobsługiwanych ustawień.",
-      "other": "Pominięto {count} nieobsługiwanych ustawień."
+      "one": "{count} nieobsługiwanych ustawień pominięto",
+      "few": "{count} nieobsługiwanych ustawień pominięto",
+      "many": "{count} nieobsługiwanych ustawień pominięto",
+      "other": "{count} nieobsługiwanych ustawień pominięto"
     },
     "{count} unsupported setting skipped: {details}": {
       "one": "Pominięto {count} nieobsługiwane ustawienie: {details}",
       "few": "Pominięto {count} nieobsługiwane ustawienia: {details}",
-      "many": "Pominięto {count} nieobsługiwanych ustawień: {details}",
-      "other": "Pominięto {count} nieobsługiwanych ustawień: {details}"
+      "many": "Pominięto {count} nieobsługiwane ustawienia: {details}",
+      "other": "Pominięto {count} nieobsługiwane ustawienia: {details}"
     },
     "{count} warning": {
       "one": "{count} ostrzeżenie",
       "few": "{count} ostrzeżenia",
-      "many": "{count} ostrzeżeń",
-      "other": "{count} ostrzeżeń"
+      "many": "{count} ostrzeżenia",
+      "other": "{count} ostrzeżenia"
     },
     "{message} {completed} of {count} original": {
       "one": "{message} {completed} z {count} oryginału",
@@ -4076,24 +4145,24 @@
       "many": "{message} {completed} z {count} oryginałów",
       "other": "{message} {completed} z {count} oryginałów"
     },
+    "{selected} of {count} photo selected, {size} GB": {
+      "one": "{selected} z {count} zdjęcie zaznaczone, {size} GB",
+      "few": "{selected} z {count} zdjęcia zaznaczone, {size} GB",
+      "many": "{selected} z {count} zdjęcia zaznaczone, {size} GB",
+      "other": "{selected} z {count} zdjęcia zaznaczone, {size} GB"
+    },
     "{source} · {count} mapped setting": {
       "one": "{source} · {count} zmapowane ustawienie",
-      "few": "{source} · {count} zmapowane ustawienia",
+      "few": "{source} · {count} zmapowanych ustawień",
       "many": "{source} · {count} zmapowanych ustawień",
       "other": "{source} · {count} zmapowanych ustawień"
     },
-    "{value} photo copied{value2}": {
-      "one": "skopiowano {value} zdjęcie{value2}",
-      "few": "skopiowano {value} zdjęcia{value2}",
-      "many": "skopiowano {value} zdjęć{value2}",
-      "other": "skopiowano {value} zdjęć{value2}"
-    },
     "{value} unexpected exit in the last 24 hours.": {
-      "one": "{value} nieoczekiwane zakończenie w ciągu ostatnich 24 godzin.",
+      "one": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin.",
       "few": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin.",
       "many": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin.",
       "other": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin."
     }
   },
-  "pluralsDigest": "d7ccd2b8f8b6a4d001b6530b7940604dfbd326dabfa9b6a858eedd9e78c0ac2a"
+  "pluralsDigest": "cadbf9ee5f6b76ddd4575b9f09cdb2648cf921b573906e7aea419fd19da8208a"
 }

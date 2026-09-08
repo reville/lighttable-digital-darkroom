@@ -27,6 +27,7 @@ export function createSurvey(ctx) {
   const container = el('survey');
   const grid = el('surveyGrid');
   const title = el('surveyTitle');
+  const swapButton = el('surveySwap');
 
   function imageFor(name) {
     return (ctx.images() || []).find((image) => image.name === name) || null;
@@ -89,6 +90,10 @@ export function createSurvey(ctx) {
   function render() {
     if (!container || !grid) return;
     const rows = names.map(imageFor).filter(Boolean);
+    if (swapButton) {
+      swapButton.hidden = mode !== 'compare';
+      swapButton.disabled = mode !== 'compare' || rows.length < 2;
+    }
     if (title) {
       title.textContent = mode === 'compare' ? tr("Compare {rowsLength} photos", {rowsLength: rows.length}) : tr("Survey {rowsLength} photos", {rowsLength: rows.length});
     }
@@ -145,7 +150,7 @@ export function createSurvey(ctx) {
   }
 
   function swap() {
-    if (mode !== 'compare' || names.length < 2) return;
+    if (mode !== 'compare' || names.map(imageFor).filter(Boolean).length < 2) return;
     names = [names[1], names[0]];
     render();
   }
