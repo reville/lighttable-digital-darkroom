@@ -16,6 +16,7 @@
 !include "WinMessages.nsh"
 !include "x64.nsh"
 
+!define PRESET_PROTOCOL_KEY "Software\Classes\lighttable"
 !define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\LightTable"
 
 Unicode True
@@ -82,6 +83,12 @@ Section "Install"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\LightTable.exe"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegStr HKCU "${UNINSTALL_KEY}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
+  ; Protocol arguments always name a catalog entry; the native host validates
+  ; the complete ID before opening its gallery. Quote both executable and URL.
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}" "" "URL:LightTable Preset"
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}" "URL Protocol" ""
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}\DefaultIcon" "" '$\"$INSTDIR\LightTable.exe$\",0'
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}\shell\open\command" "" '$\"$INSTDIR\LightTable.exe$\" --preset-url $\"%1$\"'
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoModify" 1
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoRepair" 1
 SectionEnd
@@ -103,6 +110,11 @@ Section "Uninstall"
   !include "${UNINSTALL_MANIFEST}"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"
+  ; Preserve a protocol claimed later by another installation.
+  ReadRegStr $0 HKCU "${PRESET_PROTOCOL_KEY}\shell\open\command" ""
+  ${If} $0 == '$\"$INSTDIR\LightTable.exe$\" --preset-url $\"%1$\"'
+    DeleteRegKey HKCU "${PRESET_PROTOCOL_KEY}"
+  ${EndIf}
   DeleteRegKey HKCU "${UNINSTALL_KEY}"
   ; Catalogs, preferences, caches, and photos are deliberately preserved.
 SectionEnd

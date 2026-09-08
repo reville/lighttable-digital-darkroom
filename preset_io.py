@@ -565,9 +565,27 @@ def _import_bytes(filename: str, data: bytes) -> list[dict]:
     if lower.endswith((".json", ".ltpreset")):
         value = json.loads(content)
         if isinstance(value, dict) and value.get("format") == "LightTable Preset":
+            from preset_library import validate_look
+            file_version = value.get("version", 1)
+            if type(file_version) is not int or file_version not in (1, 2, 3):
+                raise ValueError("Update LightTable to import this preset format")
             presets = value.get("presets", [])
-            return [dict(item, id=str(uuid.uuid4())) for item in presets
-                    if isinstance(item, dict)]
+            if not isinstance(presets, list) or len(presets) > 250:
+                raise ValueError("Invalid preset collection")
+            if file_version == 3:
+                for item in presets:
+                    validate_look(item)
+            imported = []
+            for item in presets:
+                if not isinstance(item, dict):
+                    continue
+                local = dict(item, id=str(uuid.uuid4()))
+                origin = local.pop("community", None)
+                if isinstance(origin, dict) and origin.get("id"):
+                    local["parentId"] = origin["id"]
+                local.pop("collection", None)
+                imported.append(local)
+            return imported
         raise ValueError("not a LightTable preset")
     raise ValueError("unsupported preset type")
 
@@ -710,7 +728,7 @@ def export_preset(preset: dict, format_name: str) -> tuple[str, str, str]:
     if format_name == "capture-one":
         return export_capture_one(preset)
     content = json.dumps({
-        "format": "LightTable Preset", "version": 2, "presets": [preset],
+        "format": "LightTable Preset", "version": 3 if preset.get("scope") == "look" else 2, "presets": [preset],
     }, indent=2)
     return (f"{_safe_filename(preset.get('name'))}.ltpreset",
             "application/json", content)

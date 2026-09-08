@@ -52,6 +52,7 @@ import color_pipeline  # noqa: E402
 import preview_progress  # noqa: E402
 import calibration_target  # noqa: E402
 import preset_io  # noqa: E402
+import preset_library  # noqa: E402
 import export_workflow  # noqa: E402
 import export_surface  # noqa: E402
 import library_workflow  # noqa: E402
@@ -538,6 +539,7 @@ def entry_for(st, name):
 
 PRESETS_FILE = Path(os.environ.get(
     "LIGHTTABLE_PRESETS_FILE", str(APP / "presets.json"))).expanduser()
+COMMUNITY_PRESETS = preset_library.CommunityCatalog(PRESETS_FILE.parent / "Community Presets")
 PREFS_FILE = Path(os.environ.get(
     "LIGHTTABLE_PREFS_FILE", str(APP / "prefs.json"))).expanduser()
 AI_DATA_ROOT = Path(os.environ.get(
@@ -680,6 +682,22 @@ def clean_preset(raw: dict) -> dict | None:
     name = " ".join(str(raw.get("name", "")).split()).strip()[:120]
     if not name:
         return None
+    if raw.get("scope") == "look":
+        preset_library.validate_look(raw)
+        return {
+            "id": str(raw.get("id") or secrets.token_hex(16))[:120],
+            "name": name, "source": "lighttable", "presetType": "style",
+            "scope": "look", "filmMode": raw["filmMode"],
+            "includeFilm": raw["filmMode"] == "on",
+            "recommendedFilmOff": raw["filmMode"] == "off",
+            "params": copy.deepcopy(raw.get("params", {})),
+            "includedFilm": list(raw.get("includedFilm", raw.get("params", {}))),
+            "grade": copy.deepcopy(raw.get("grade", {})),
+            "includedGrade": list(raw.get("includedGrade", raw.get("grade", {}))),
+            "masks": [], "heals": [], "optics": {},
+            "conversion": {"mapped": len(raw.get("grade", {})), "ignored": [], "notes": []},
+            **preset_library.metadata(raw),
+        }
     source = str(raw.get("source", "lighttable"))[:40]
     preset_type = "tool" if raw.get("presetType") == "tool" else "style"
     # Presets saved before scopes existed always contained the complete film
@@ -731,20 +749,62 @@ def clean_preset(raw: dict) -> dict | None:
     }
 
 
-def load_presets() -> list[dict]:
+def load_user_presets() -> list[dict]:
     with PRESETS_LOCK:
         items = load_json_file(PRESETS_FILE, [])
         if not isinstance(items, list):
             return []
-        return [cleaned for item in items if (cleaned := clean_preset(item))]
+        result = []
+        for item in items:
+            try:
+                cleaned = clean_preset(item)
+            except (ValueError, TypeError, KeyError):
+                continue
+            if cleaned:
+                result.append(dict(cleaned, collection="yours"))
+        return result
+
+
+def load_presets() -> list[dict]:
+    return preset_library.builtin_presets() + load_user_presets()
 
 
 def save_presets(items: list[dict]) -> list[dict]:
     with PRESETS_LOCK:
-        cleaned = [preset for item in items if (preset := clean_preset(item))]
+        cleaned = [preset for item in items if item.get("collection") != "builtin"
+                   and (preset := clean_preset(item))]
         cleaned.sort(key=lambda item: item["name"].casefold())
         durable_io.atomic_write_json(PRESETS_FILE, cleaned)
-        return cleaned
+        return load_presets()
+
+
+def install_community_preset(body: dict) -> dict:
+    # Network and validation finish before taking the local persistence lock.
+    recipe = copy.deepcopy(COMMUNITY_PRESETS.recipe(body.get("id"), body.get("version")))
+    ident = "community:" + recipe["id"]
+    recipe["community"] = {"id": recipe["id"], "version": recipe["version"]}
+    recipe["id"] = ident
+    with PRESETS_LOCK:
+        items = [p for p in load_user_presets() if p["id"] != ident]
+        items.append(recipe)
+        saved = save_presets(items)
+    EVENTS.publish("library", {"reason": "presets"})
+    return {"presets": saved, "installedId": ident}
+
+
+def export_preset_submission(body: dict) -> dict:
+    selected = next((p for p in load_presets() if p["id"] == body.get("id")), None)
+    if not selected:
+        raise ValueError("Choose a saved preset to submit")
+    exported = preset_library.prepare_look(selected)
+    exported["parentId"] = selected.get("community", {}).get("id", selected["id"])
+    exported["id"] = "submission/" + secrets.token_hex(8)
+    filename, content_type, content = preset_io.export_preset(exported, "lighttable")
+    result = {"filename": filename, "contentType": content_type, "content": content}
+    if body.get("examples") is True:
+        import preset_submission
+        result = preset_submission.build_bundle(exported)
+    return {**result, "submissionUrl": preset_library.submission_url(exported["name"])}
 
 
 def merge_imported_presets(current: list[dict], imported: list[dict]) -> list[dict]:
@@ -762,8 +822,9 @@ def merge_imported_presets(current: list[dict], imported: list[dict]) -> list[di
                 candidate = f"{base} ({suffix})"
                 suffix += 1
             item["name"] = candidate
-            item["id"] = str(raw.get("id") or hashlib.md5(
-                (candidate + str(time.time_ns())).encode()).hexdigest())
+            item["id"] = str(raw.get("id") or secrets.token_hex(16))
+            if any(p.get("id") == item["id"] for p in current):
+                item["id"] = "imported:" + secrets.token_hex(16)
             taken.add(candidate.casefold())
             current.append(item)
         return save_presets(current)
@@ -5903,6 +5964,7 @@ READ_ONLY_POST_PATHS = {
     "/api/refine", "/api/mask/semantic", "/api/perf/export-one",
     "/api/soft-proof", "/api/catalog/query", "/api/ingest/scan",
     "/api/photos/reveal", "/api/geometry/auto", "/api/presets/export",
+    "/api/presets/submission",
     "/api/export/preview",
 }
 
@@ -6317,6 +6379,10 @@ class Handler(BaseHTTPRequestHandler):
                     "image/png", "public, max-age=86400")
             elif u.path == "/api/presets":
                 self._json(load_presets())
+            elif u.path == "/api/presets/community":
+                self._json(COMMUNITY_PRESETS.catalog(refresh=q.get("refresh") == "1"))
+            elif u.path == "/api/presets/community/recipe":
+                self._json({"preset": COMMUNITY_PRESETS.recipe(q.get("id"), q.get("version"))})
             elif u.path == "/api/export-recipes":
                 self._json(load_export_recipes())
             elif u.path == "/api/prefs":
@@ -6766,27 +6832,43 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(undo_mask_batch(self._body()))
             elif u.path == "/api/presets":
                 b = self._body()
-                items = load_presets()
-                act = b.get("action")
-                if act == "save":
-                    items = [i for i in items if i.get("name") != b["name"]]
-                    items.append({
-                        "name": b["name"],
-                        "source": "lighttable",
-                        "presetType": b.get("presetType", "style"),
-                        "includeFilm": bool(b.get("includeFilm", True)),
-                        "recommendedFilmOff": False,
-                        "params": b.get("params", {}),
-                        "grade": b.get("grade", {}),
-                        "masks": b.get("masks", []),
-                        "heals": b.get("heals", []),
-                        "optics": b.get("optics", {}),
-                    })
-                elif act == "delete":
-                    items = [i for i in items if i.get("name") != b["name"]]
-                saved = save_presets(items)
+                with PRESETS_LOCK:
+                    items = load_user_presets()
+                    act = b.get("action")
+                    ident = str(b.get("id") or "")
+                    if ident and any(p["id"] == ident for p in preset_library.builtin_presets()):
+                        raise ValueError("Built-in presets are read-only. Save a copy to edit one.")
+                    if act == "save":
+                        selected = next((p for p in items if (p["id"] == ident if ident else p["name"] == b.get("name"))), None)
+                        raw = {**(selected or {}), **b, "id": ident or (selected or {}).get("id") or secrets.token_hex(16),
+                               "source": "lighttable", "recommendedFilmOff": False}
+                        raw.pop("collection", None)
+                        # Saving a local variation detaches it from update-managed downloads.
+                        if raw.get("community"):
+                            raw["parentId"] = raw["community"]["id"]
+                            raw.pop("community", None)
+                            # A local variation must not keep the installation ID:
+                            # downloading the original again must never overwrite it.
+                            raw["id"] = secrets.token_hex(16)
+                        if raw.get("scope") == "look":
+                            raw = preset_library.prepare_look(raw)
+                        cleaned = clean_preset(raw)
+                        if not cleaned:
+                            raise ValueError("Give this preset a name")
+                        replaced_id = (selected or {}).get("id", cleaned["id"])
+                        items = [p for p in items if p["id"] not in {cleaned["id"], replaced_id}]
+                        items.append(cleaned)
+                    elif act == "delete":
+                        items = [p for p in items if not (p["id"] == ident if ident else p["name"] == b.get("name"))]
+                    else:
+                        raise ValueError("Unknown preset action")
+                    saved = save_presets(items)
                 EVENTS.publish("library", {"reason": "presets"})
                 self._json(saved)
+            elif u.path == "/api/presets/community/install":
+                self._json(install_community_preset(self._body()))
+            elif u.path == "/api/presets/submission":
+                self._json(export_preset_submission(self._body()))
             elif u.path == "/api/presets/import":
                 b = self._body()
                 imported, failures = preset_io.import_uploads(b.get("files", []))
@@ -6799,7 +6881,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/presets/export":
                 b = self._body()
                 selected = next((item for item in load_presets()
-                                 if item["name"] == b.get("name")), None)
+                                 if (item["id"] == b["id"] if b.get("id") else item["name"] == b.get("name"))), None)
                 if not selected:
                     self._json({"error": "preset not found"}, 404)
                 else:

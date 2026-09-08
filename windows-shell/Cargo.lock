@@ -1100,7 +1100,9 @@ name = "lighttable-desktop-shell"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64",
  "directories",
+ "getrandom",
  "rfd",
  "serde",
  "serde_json",

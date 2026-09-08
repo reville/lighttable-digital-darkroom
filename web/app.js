@@ -64,7 +64,7 @@ import {
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
-import { createPresetBrowser } from '/web/preset-browser.js';
+import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installUIBridge } from '/web/ui-bridge.js';
 import { installSettings } from '/web/settings.js';
@@ -9352,13 +9352,16 @@ $('versionCreate').onclick = async () => {
 /* -------------------------------------------------------------- presets */
 let PRESETS = [];
 let LAST_PRESET_APPLICATION = null;
+let COMMUNITY_PRESETS = {};
+let PRESETS_READY = Promise.resolve();
+const COMMUNITY_RECIPES = new Map();
 const PRESET_SOURCE_LABELS = {
   'lighttable': 'LightTable', lightroom: 'Lightroom / Camera Raw',
   'capture-one': 'Capture One',
 };
 
 function selectedPreset() {
-  return PRESETS.find((preset) => preset.name === $('presetList').value) || null;
+  return PRESETS.find((preset) => presetKey(preset) === $('presetList').value) || null;
 }
 
 function presetHasApplicableSettings(preset) {
@@ -9372,7 +9375,8 @@ function renderPresetSummary(resetChoices = false) {
   $('presetApply').disabled = !cur() || !presetHasApplicableSettings(preset);
   $('presetReplace').disabled = $('presetApply').disabled;
   $('presetExport').disabled = !preset;
-  $('presetDel').disabled = !preset;
+  $('presetDel').disabled = !preset || preset.collection === 'builtin';
+  $('presetReplace').hidden = preset?.scope === 'look';
   if (!preset) {
     box.textContent = 'Choose a preset to see its source and conversion coverage.';
     return;
@@ -9386,9 +9390,10 @@ function renderPresetSummary(resetChoices = false) {
   const title = document.createElement('strong');
   title.textContent = `${source} · ${mapped} mapped setting${mapped === 1 ? '' : 's'}`;
   const detail = document.createElement('div');
-  detail.textContent = preset.includeFilm
-    ? 'Includes the Film profile and physical stages.'
-    : 'Portable edit preset; Film can be kept on or turned off below.';
+  detail.textContent = preset.scope === 'look'
+    ? `Film ${preset.filmMode === 'preserve' ? 'unchanged' : preset.filmMode || 'unchanged'}. Keeps exposure, white balance, crop and photo corrections.`
+    : preset.includeFilm ? 'Includes the Film profile and physical stages.'
+      : 'Portable edit preset; Film can be kept on or turned off below.';
   box.append(title, detail);
   if (preset.recommendedFilmOff) {
     const recommendation = document.createElement('div');
@@ -9411,7 +9416,16 @@ function renderPresetSummary(resetChoices = false) {
 
 async function loadPresets(select) {
   PRESET_BROWSER?.refresh({ loading: true });
-  PRESETS = await fetch('/api/presets').then((r) => r.json()).catch(() => []);
+  try {
+    const response = await fetch('/api/presets');
+    const result = await response.json();
+    if (!response.ok || !Array.isArray(result)) throw new Error('Presets unavailable');
+    PRESETS = result;
+  } catch { toast('Could not load presets. Your saved presets are kept.'); }
+  const migrated = migratePresetFavorites(Array.isArray(APP_PREFS.presetFavorites) ? APP_PREFS.presetFavorites : [], PRESETS);
+  if (JSON.stringify(migrated) !== JSON.stringify(APP_PREFS.presetFavorites || [])) {
+    APP_PREFS.presetFavorites = migrated; savePrefs();
+  }
   const sel = $('presetList');
   const keep = select ?? sel.value;
   sel.replaceChildren();
@@ -9420,11 +9434,11 @@ async function loadPresets(select) {
   sel.appendChild(empty);
   for (const preset of PRESETS) {
     const option = document.createElement('option');
-    option.value = preset.name;
-    option.textContent = preset.name;
+    option.value = presetKey(preset);
+    option.textContent = `${preset.name}${preset.collection === 'builtin' ? ' · Built-in' : ''}`;
     sel.appendChild(option);
   }
-  if (keep) sel.value = keep;
+  if (keep) sel.value = presetKey(PRESETS.find((preset) => presetKey(preset) === keep || preset.name === keep) || { name: keep });
   renderPresetSummary(true);
   PRESET_BROWSER?.refresh({ loading: false });
 }
@@ -9451,10 +9465,15 @@ function presetApplicationMatches(state, preset, options, photoName) {
 }
 
 function stateWithPreset(state, preset, options = {}, photoName) {
-  // A second click on an unchanged application is inert, including its preview.
-  // Further edits restore normal layering; never deduplicate unrelated masks.
+  // Consecutive public looks use the edit before the first application.
+  // A manual edit or navigation invalidates that baseline. Legacy tool presets
+  // retain their existing layering behavior.
   if (presetApplicationMatches(state, preset, options, photoName)) return cloneValue(state);
-  return composePresetState(state, preset, {
+  const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
+    LAST_PRESET_APPLICATION.name === photoName &&
+    LAST_PRESET_APPLICATION.state === JSON.stringify(state)
+    ? LAST_PRESET_APPLICATION.base : state;
+  return composePresetState(base, preset, {
     ...options, normalizeFilmParams, mergeFilmParams, createId: editId,
   });
 }
@@ -9465,6 +9484,9 @@ function applyPreset(preset, photo, options = {}) {
   readControls();
   const currentState = JSON.parse(snapshot());
   if (presetApplicationMatches(currentState, preset, options, photo.name)) return toast(`${preset.name} is already applied`);
+  const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
+    LAST_PRESET_APPLICATION.name === photo.name && LAST_PRESET_APPLICATION.state === JSON.stringify(currentState)
+    ? LAST_PRESET_APPLICATION.base : currentState;
   const next = stateWithPreset(currentState, preset, options, photo.name);
   pushUndo();
   S.params = next.params; S.grade = next.grade;
@@ -9476,6 +9498,7 @@ function applyPreset(preset, photo, options = {}) {
   drawGrade(); saveState(true); renderFilm(0);
   LAST_PRESET_APPLICATION = {
     name: photo.name, preset: JSON.stringify(preset), state: snapshot(),
+    scope: preset.scope, base: cloneValue(base),
     replace: !!options.replace, filmOff: !!options.filmOff,
   };
   PRESET_BROWSER?.refresh();
@@ -9494,16 +9517,85 @@ PRESET_BROWSER = createPresetBrowser({
   getSelectedName: () => $('presetList').value,
   canApply: presetHasApplicableSettings,
   getFavorites: () => Array.isArray(APP_PREFS.presetFavorites) ? APP_PREFS.presetFavorites : [],
-  onFavoritesChange(names) { APP_PREFS.presetFavorites = names; savePrefs(); },
-  onSelect(preset) { $('presetList').value = preset.name; renderPresetSummary(true); },
+  onFavoritesChange(ids) { APP_PREFS.presetFavorites = ids; savePrefs(); },
+  getHidden: () => Array.isArray(APP_PREFS.hiddenBuiltinPresets) ? APP_PREFS.hiddenBuiltinPresets : [],
+  onHiddenChange(ids) { APP_PREFS.hiddenBuiltinPresets = ids; savePrefs(); },
+  onSelect(preset) { $('presetList').value = presetKey(preset); renderPresetSummary(true); },
   onApply: (preset, photo) => applyPreset(preset, photo),
+  canUndo: () => !!LAST_PRESET_APPLICATION && LAST_PRESET_APPLICATION.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot(),
+  onUndo() {
+    if (LAST_PRESET_APPLICATION?.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot()) {
+      undo(); LAST_PRESET_APPLICATION = null;
+    }
+  },
+  getCommunity: () => COMMUNITY_PRESETS,
+  async loadCommunity(refresh) {
+    try {
+      const response = await fetch(`/api/presets/community${refresh ? '?refresh=1' : ''}`);
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Community is unavailable');
+      COMMUNITY_PRESETS = result;
+    } catch (error) {
+      COMMUNITY_PRESETS = { ...COMMUNITY_PRESETS, offline: true, error: error.message };
+    }
+  },
+  async getRecipe(preset, { signal } = {}) {
+    if (preset.collection !== 'community') return preset;
+    const key = `${preset.id}@${preset.version}:${preset.file?.sha256 || ''}`;
+    if (COMMUNITY_RECIPES.has(key)) return COMMUNITY_RECIPES.get(key);
+    const response = await fetch(`/api/presets/community/recipe?id=${encodeURIComponent(preset.id)}&version=${encodeURIComponent(preset.version)}`, { signal });
+    const result = await response.json();
+    if (!response.ok || !result.preset) throw new Error(result.error || 'Recipe is unavailable');
+    COMMUNITY_RECIPES.set(key, result.preset);
+    return result.preset;
+  },
+  async onInstall(preset) {
+    const result = await api('/api/presets/community/install', { id: preset.id, version: preset.version });
+    if (result.error) throw new Error(result.error);
+    await loadPresets(result.installedId);
+    toast('Preset saved to Yours');
+  },
+  async onDuplicate(preset) {
+    const name = await askName('Save a preset copy', `${preset.name} copy`);
+    if (!name?.trim()) return;
+    const result = await api('/api/presets', {
+      ...preset, action: 'save', id: undefined, collection: undefined,
+      name: name.trim(), version: '1.0.0', parentId: preset.id,
+    });
+    if (result.error) throw new Error(result.error);
+    await loadPresets(name.trim());
+    toast('Copy saved to Yours');
+  },
+  async getSubmission(preset, { signal } = {}) {
+    const response = await fetch('/api/presets/submission', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
+      body: JSON.stringify({ id: preset.id }),
+    });
+    const result = await response.json();
+    if (!response.ok || result.error) throw new Error(result.error || 'Could not inspect submission settings');
+    return result;
+  },
+  async onDownloadExample(preset, value) {
+    if (!(value instanceof Blob)) throw new Error('Example image is unavailable');
+    const stem = preset.name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100) || 'preset';
+    downloadPresetFile({ filename: `${stem}-example.jpg`, contentType: 'image/jpeg',
+      encoding: 'base64', content: bytesToBase64(await value.arrayBuffer()) });
+  },
+  async onSubmit(preset) {
+    const result = await api('/api/presets/submission', { id: preset.id, examples: true });
+    if (result.error) throw new Error(result.error);
+    downloadPresetFile(result);
+    return result;
+  },
   managementSection: $('presetManage'),
-  async getPreview(preset, photo, { signal }) {
+  async getPreview(preset, photo, { signal, width = 320 }) {
     const response = await fetch('/api/render/file', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
       body: JSON.stringify({
-        name: photo.name, state: stateWithPreset(photo.state, preset, {}, photo.name),
-        w: 320, format: 'jpeg', engine: photo.engine, client: 'preset-browser',
+        name: photo.name, state: preset ? stateWithPreset(photo.state, preset, {}, photo.name) :
+          (LAST_PRESET_APPLICATION?.scope === 'look' && LAST_PRESET_APPLICATION.name === photo.name &&
+            LAST_PRESET_APPLICATION.state === JSON.stringify(photo.state) ? LAST_PRESET_APPLICATION.base : photo.state),
+        w: width, format: 'jpeg', engine: photo.engine, client: 'preset-browser',
       }),
     });
     if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('Preview unavailable');
@@ -9511,18 +9603,24 @@ PRESET_BROWSER = createPresetBrowser({
   },
 });
 PRESET_BROWSER.setActive(S.activePane === 'presetsPane');
+$('presetSaveScope').onchange = () => { $('presetSaveOptions').hidden = $('presetSaveScope').value === 'look'; };
+$('presetSaveScope').onchange();
 
 $('presetSave').onclick = async () => {
   if (!cur()) return toast('Select a photo first');
   const name = await askName('Save preset');
   if (!name) return;
   readControls();
-  PRESETS = await api('/api/presets', {
+  const result = await api('/api/presets', {
     action: 'save', name, params: S.params, grade: S.grade,
+    scope: $('presetSaveScope').value,
+    filmMode: $('presetIncludeFilm').checked ? (S.params.profile_enabled === false ? 'off' : 'on') : 'preserve',
     masks: serializableMasks(), heals: S.heals, optics: S.optics,
     presetType: $('presetSaveType').value,
     includeFilm: $('presetIncludeFilm').checked,
   });
+  if (result.error) return toast(result.error);
+  PRESETS = result;
   await loadPresets(name);
   toast('Saved preset');
 };
@@ -9537,9 +9635,11 @@ $('presetReplace').onclick = () => {
   applyPreset(preset, photo, { replace: true, filmOff: $('presetFilmOff').checked });
 };
 $('presetDel').onclick = async () => {
-  const name = $('presetList').value;
-  if (!name) return;
-  PRESETS = await api('/api/presets', { action: 'delete', name });
+  const preset = selectedPreset();
+  if (!preset || preset.collection === 'builtin') return;
+  const result = await api('/api/presets', { action: 'delete', id: preset.id, name: preset.name });
+  if (result.error) return toast(result.error);
+  PRESETS = result;
   await loadPresets('');
   toast('Deleted');
 };
@@ -9590,11 +9690,13 @@ function downloadPresetFile(result) {
   if (bridge) {
     bridge.postMessage({
       action: 'savePreset', filename: result.filename,
-      content: result.content,
+      content: result.content, encoding: result.encoding,
     });
     return true;
   }
-  const blob = new Blob([result.content], { type: result.contentType || 'text/plain' });
+  const content = result.encoding === 'base64'
+    ? Uint8Array.from(atob(result.content), (character) => character.charCodeAt(0)) : result.content;
+  const blob = new Blob([content], { type: result.contentType || 'text/plain' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url; link.download = result.filename; link.click();
@@ -9606,7 +9708,7 @@ $('presetExport').onclick = async () => {
   const preset = selectedPreset();
   if (!preset) return toast('Pick a preset');
   const result = await api('/api/presets/export', {
-    name: preset.name, format: $('presetExportFormat').value,
+    id: preset.id, name: preset.name, format: $('presetExportFormat').value,
   });
   if (result.error) return toast(result.error);
   const awaitingNativeSave = downloadPresetFile(result);
@@ -10187,6 +10289,7 @@ async function savePrefs() {
     filmstripHeight: currentFilmstripHeight(),
     softProof: S.softProof,
     presetFavorites: APP_PREFS.presetFavorites || [],
+    hiddenBuiltinPresets: APP_PREFS.hiddenBuiltinPresets || [],
     cull: { on: S.cull.on, review: S.cull.review },
     leftCollapsed: $('appShell').classList.contains('left-collapsed'),
     filmstripHidden: document.querySelector('.workspace').classList.contains('filmstrip-hidden'),
@@ -10283,7 +10386,10 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   renderFolders();
 }).catch(() => {});
 
-loadPresets();
+PRESETS_READY = loadPresets().then(() => {
+  const presetId = new URLSearchParams(location.search).get('preset');
+  if (presetId) { switchPane('presetsPane'); void PRESET_BROWSER.openPreset(presetId); }
+});
 drawCurve();
 renderVersions();
 
@@ -10680,6 +10786,10 @@ if ($('enhanceRun')) {
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
   FIRST_RUN?.nativeEvent(message);
+  if (message?.type === 'presetLink' && typeof message.id === 'string') {
+    switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);
+    return;
+  }
   if (message && message.type === 'openLibraryHealth') {
     RECOVERY?.open();
     return;
@@ -10701,6 +10811,7 @@ window.lightTableNativeEvent = function (message) {
   }
   if (_origNativeEvent) _origNativeEvent(message);
 };
+PRESETS_READY.then(() => nativeBridge()?.postMessage({ action: 'requestPresetLinks' }));
 
 /* ------------------------------------------------------------- selection */
 if ($('renameOpen')) $('renameOpen').onclick = () => CATALOG_UI.openRename();

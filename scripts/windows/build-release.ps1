@@ -107,6 +107,8 @@ try {
         "preview_progress.py",
         "calibration_target.py",
         "preset_io.py",
+        "preset_library.py",
+        "preset_submission.py",
         "platform_image.py",
         "semantic_masks.py",
         "export_workflow.py",
@@ -145,6 +147,7 @@ try {
         ForEach-Object { Copy-Item $_.FullName $AiPackage }
     Copy-Item (Join-Path $Project "web") $Resources -Recurse
     Copy-Item (Join-Path $Project "profiles") $Resources -Recurse
+    Copy-Item (Join-Path $Project "presets") $Resources -Recurse
 
     $VendoredSource = Join-Path $Resources "vendor\spektrafilm"
     New-Item -ItemType Directory -Force -Path $VendoredSource | Out-Null
