@@ -92,6 +92,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `doctor / recovery` | `/api/recovery`, `/api/recovery/log` |
 | `cache / masks` | `/api/cache/status`, `/api/cache/purge`, `/api/cache/pregenerate`, `/api/cache/pregenerate/status`, `/api/cache/pregenerate/cancel`, `/api/batch/semantic-masks`, `/api/batch/semantic-masks/status`, `/api/batch/semantic-masks/cancel`, `/api/batch/semantic-masks/undo`, `/api/mask/semantic` |
 | `ai-index` | `/api/ai-index`, `/api/ai-index/status`, `/api/ai-index/results` |
+| `route (people)` | `/api/people`, `/api/people/status`, `/api/people/groups`, `/api/people/members`, `/api/people/suggestions`, `/api/people/labels` |
 | `soft-proof` | `/api/soft-proof`, `/api/soft-proof/profiles` |
 | `prefs` | `/api/prefs` |
 | `match-exposure` | `/api/match-exposure` |
@@ -101,6 +102,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 
 Internal browser/native routes are declared rather than hidden:
 
+- `/api/people/thumbnail` — local face crop used by the People gallery.
 - `/api/desktop-theme` — read-only Linux desktop palette for interface chrome.
 - `/api/export/preview` — read-only export dialog delivery example.
 - `/api/thumb/rendered` — edit-aware browser thumbnail replacement.

@@ -538,11 +538,11 @@
         {
           "title": "Geçerli görünümde ara",
           "paragraphs": [
-            "Arama kutusu, dosya adlarındaki, görünen adlardaki, anahtar sözcüklerdeki ve mevcut fotoğraf dizini meta verilerindeki metinle eşleşir. Geçerli klasör veya koleksiyon içinde arama yapar ve diğer etkin filtrelerle birlikte çalışır."
+            "Arama kutusu, dosya adlarındaki, görünen adlardaki, anahtar kelimelerdeki, Kişiler’de eklediğiniz adlardaki ve kullanılabilir fotoğraf dizini üstverisindeki metinle eşleşir. Geçerli klasör veya koleksiyon içinde arama yapar ve diğer etkin filtrelerle birleştirilir."
           ],
           "steps": [
             "Fotoğrafları ve anahtar sözcükleri ara’ya tıklayın ya da bir alana yazmıyorken / tuşuna basın.",
-            "Dosya adından veya anahtar sözcüklerden bir kelime ya da ifade yazın.",
+            "Dosya adından, anahtar kelimelerden veya Kişiler’de kaydettiğiniz bir addan bir sözcük ya da ifade yazın.",
             "Bir bayrak veya derecelendirme grubunu seçmek için kenar çubuğunda All Photos, Unflagged, Picked, Rejected veya Rated kullanın.",
             "Sırala’nın yanındaki Filtre’ye tıklayın. Bir veya daha fazla dosya türü seçin, ardından bunları Bayrak, Derecelendirme, Renk etiketi veya Düzenleme durumu ile birleştirin.",
             "Sırala’da Dosya adı, Derecelendirme, Bayrak, Yakalama tarihi veya Renk etiketi seçin."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Kütüphane"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Kişileri grupla ve bul",
+      "category": "Library",
+      "summary": "Benzer yüzleri gruplamak, ad eklemek ve olası eşleşmeleri incelemek için isteğe bağlı, cihaz içi yüz eşleştirmeyi kullanın.",
+      "keywords": [
+        "kişiler",
+        "yüzler",
+        "yüz eşleştirme",
+        "tanıma",
+        "ad",
+        "birleştir",
+        "böl",
+        "aynı kişi",
+        "google photos",
+        "gizlilik",
+        "kuantize edilmiş",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Yüz eşleştirmeyi etkinleştir",
+          "paragraphs": [
+            "Yüz eşleştirme, Fotoğraf içerikleri dizininden ayrıdır ve varsayılan olarak kapalıdır. Kütüphane kenar çubuğunda Kişiler’i açın veya Ayarlar → Fotoğraf Dizini → Yüz eşleştirme yolunu izleyin. Modelleri indir ve etkinleştir, yaklaşık 10,1 MB model dosyası indirir. Fotoğraf verileri bu cihazda işlenir ve eşleştirme için asla yüklenmez.",
+            "Eşleştirme, yalnızca geçerli klasörü veya filtreyi değil, geçerli katalogdaki kullanılabilir tüm fotoğrafları tarar. Boş dosyalar, yalnızca bulutta bulunan dosyalar ve kullanılamayan orijinaller indirilmeden atlanır."
+          ],
+          "steps": [
+            "Kişileri açın ve Modelleri indir ve etkinleştir'i seçin.",
+            "Yüz gruplarının görünmesini bekleyin. Tarama çalışırken düzenlemeye devam edebilirsiniz.",
+            "Fotoğraflar ekledikten veya kullanılamayan orijinalleri geri yükledikten sonra Yeni fotoğrafları tara seçeneğini kullanın. Daha önce taranmış, değişmemiş fotoğraflar yeniden kullanılır."
+          ]
+        },
+        {
+          "title": "Bir kişiye ad verin ve gözatın",
+          "paragraphs": [
+            "Herkes görünür yüz gruplarını gösterir. Adsız, adı henüz verilmemiş grupları gösterir. Bir grubu açın, bir ad yazın ve Adı kaydet seçin. Yalnızca sizin girdiğiniz adlar kullanılır; model kişilerin adlarını bilmez.",
+            "Tek tek yüzlerin kırpmalarını incelemek için Yüzler’i kullanın. Tam fotoğrafları görmek için Fotoğraflar’ı kullanın, ardından açmak için bir fotoğraf seçin ve düzenleyicide açın. Eklediğiniz adlar, kütüphane arama alanında aranabilir hale gelir. Gizli gruplar aramaya ad katkısında bulunmaz."
+          ]
+        },
+        {
+          "title": "Eşleşmeleri inceleyip düzeltin",
+          "paragraphs": [
+            "Eşleşmeleri incele, yüz örnekleriyle birlikte iki olası grubu gösterir. Aynı kişi bunları birleştirir. Farklı kişiler, eşleştirmenin yeniden önerilmemesi için bir düzeltme kaydeder. Şimdilik atla, eşleşmeyi daha sonra yeniden görmeniz için bırakır.",
+            "Bir grup içinde, … ile birleştir başka bir grup seçmenize ve onaylamadan önce birleşimi incelemenize olanak tanır. Geçerli grubun adı korunur; adı yoksa diğer grubun adı kullanılır. İki grupta aynı adı kaydetmek, bunları otomatik olarak birleştirmez.",
+            "Yüzleri seç’i seçin, bazı yüzleri seçin, ardından bunları yeni, adsız bir gruba ayırmak için Ayrı bir kişiye taşı’yı seçin. İki grup yeniden eşleşme olarak önerilmeyecektir. Bir yüz seçin ve galeri görselini değiştirmek için Kapak olarak kullan’ı seçin.",
+            "Kişiyi gizle, fotoğrafları veya yüz verilerini silmeden bir grubu Gizli’ye taşır. Orada açıp geri yüklemek için Kişiyi göster’i seçin. Son değişikliği geri al, en son grup düzenlemesini geri alır; fotoğraf ekleyen veya yenileyen bir tarama, bu geri alma girdisini temizler."
+          ]
+        },
+        {
+          "title": "Durdur ve yüz verilerini kaldır",
+          "paragraphs": [
+            "Tarama işlemini durdurmak için Duraklatın veya Yüz eşleştirme özelliğini kapalı konuma getirin. Var olan gruplar ve adlar, ad araması da dahil olmak üzere, kullanılabilir olmaya devam eder. Yeni fotoğrafları tara, eşleştirmeyi sürdürür.",
+            "Yüz verilerini sil… bu kataloğun yüz gruplarını, adlarını, düzeltmelerini ve küçük resimlerini kaldırmayı onaylamanızı ister. Orijinal fotoğraflar, düzenlemeler ve Fotoğraf içerikleri dizini değişmez. İndirilen model dosyaları kullanılabilir olmaya devam eder. Yüz verileri uygulama veri klasöründe ayrı olarak saklanır ve katalog yedeklemelerine dahil edilmez."
+          ]
+        },
+        {
+          "title": "Neler beklenmeli",
+          "paragraphs": [
+            "Kompakt SFace INT8 modeli, hizalanmış insan yüzlerini karşılaştırır. Otomatik gruplama, temkinli benzerlik kuralları kullanır; olası eşleşmeler inceleme için ayrı tutulur. Adlandırılmış bir kişiyle eşleşen yeni yüzler doğrulama için önerilir.",
+            "Küçük, bulanık, gizlenmiş, profil ve belirgin biçimde yaş farkı olan yüzler kaçırılabilir ya da gruplar arasında bölünebilir. Model yanlış eşleşmeler de yapabilir. Aynı fotoğrafta birlikte görünen yüzler otomatik olarak eşleştirilmez; aynalar ve kolajlar için manuel birleştirme yine de mümkündür. Bu özellik evcil hayvanları gruplamaz veya kimlik doğruluğunu garanti etmez."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Kütüphane"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Dizini oluştur",
           "paragraphs": [
+            "Yüz algılama, yüz içeren fotoğrafları bulur. Belirli bir kişiyi gruplamak ve eklediğiniz bir adı aramak için, ayrı Yüz eşleştirme seçeneğini ve Kişiler görünümünü kullanın.",
             "Fotoğraf Dizini varsayılan olarak kapalıdır ve macOS gerektirir. Linux ve Windows'ta Bu platformda kullanılamaz gösterilir ve yeni indeksleme etkinleştirilemez. Mac'te analiz aygıt üzerinde kalır ve fotoğraf klasörlerini değiştirmez. Apple Vision temel analizi sağlar; daha zengin Temel Modeller açıklamaları yalnızca bu özellik kullanılabildiğinde görünür."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

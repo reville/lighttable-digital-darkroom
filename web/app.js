@@ -42,6 +42,7 @@ import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
 import { createEnhancePanel } from '/web/enhance-panel.js';
+import { createPeoplePanel } from '/web/people.js';
 import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
@@ -211,6 +212,7 @@ function postNative(action, detail = {}, silent = false) {
 
 let nativeMenuStateTimer = null;
 function menuTextEditing() {
+  if (document.getElementById('peopleDialog')?.classList.contains('on')) return true;
   const active = document.activeElement;
   return !!active && (active.isContentEditable ||
     ['INPUT', 'TEXTAREA'].includes(active.tagName));
@@ -10952,6 +10954,23 @@ if ($('enhanceRun')) {
   });
   void ENHANCE.refresh();
 }
+
+const PEOPLE = createPeoplePanel({
+  api,
+  onLabels: (labels) => {
+    for (const image of S.images) image.people = labels[image.name.split('::lighttable-copy::')[0]] || [];
+    invalidateVisibleCache();
+    _stripKey = _gridKey = '';
+    refreshLists();
+  },
+  onPhoto: async (name) => {
+    await loadRemainingCatalogRows(S.catalogTotal);
+    const index = S.images.findIndex(image => image.name === name);
+    if (index < 0) throw new Error(tr('This photo is no longer in the catalog. Scan People again.'));
+    setViewMode('detail');
+    await go(index);
+  },
+});
 
 /* ------------------------------------------------------- native messages */
 const _origNativeEvent = window.lightTableNativeEvent;

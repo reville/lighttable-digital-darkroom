@@ -538,11 +538,11 @@
         {
           "title": "Rechercher dans l’affichage actuel",
           "paragraphs": [
-            "Le champ de recherche correspond au texte des noms de fichiers, des noms affichés, des mots-clés et des métadonnées d’index photo disponibles. Il recherche dans le dossier ou la collection actuel(le) et se combine avec les autres filtres actifs."
+            "La zone de recherche correspond au texte dans les noms de fichier, les noms d’affichage, les mots-clés, les noms que vous ajoutez dans Personnes et les métadonnées d’index de photos disponibles. Elle recherche dans le dossier ou la collection actuel(le) et se combine avec les autres filtres actifs."
           ],
           "steps": [
             "Cliquez sur Rechercher des photos et des mots-clés, ou appuyez sur / lorsque vous ne saisissez rien dans un champ.",
-            "Saisissez un mot ou une expression à partir du nom de fichier ou des mots-clés.",
+            "Saisissez un mot ou une expression à partir du nom de fichier, des mots-clés ou d’un nom que vous avez enregistré dans Personnes.",
             "Utilisez Toutes les photos, Sans drapeau, Sélectionnées, Rejetées ou Notées dans la barre latérale pour choisir un groupe de drapeau ou de note.",
             "Cliquez sur Filtre à côté de Trier. Sélectionnez un ou plusieurs types de fichiers, puis combinez-les avec Drapeau, Note, Étiquette de couleur ou État de modification.",
             "Choisissez Nom de fichier, Note, Drapeau, Date de capture ou Étiquette de couleur dans Trier."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Bibliothèque"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Grouper et rechercher des personnes",
+      "category": "Library",
+      "summary": "Utilisez la correspondance facultative des visages sur l’appareil pour regrouper les visages similaires, ajouter des noms et vérifier les correspondances possibles.",
+      "keywords": [
+        "personnes",
+        "visages",
+        "correspondance des visages",
+        "reconnaissance",
+        "nom",
+        "fusionner",
+        "séparer",
+        "même personne",
+        "google photos",
+        "confidentialité",
+        "quantifié",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Activer la correspondance des visages",
+          "paragraphs": [
+            "La correspondance des visages est distincte de l’index des contenus de la photo et est désactivée par défaut. Ouvrez Personnes dans la barre latérale Bibliothèque, ou Réglages → Index des photos → Correspondance des visages. Télécharger les modèles et activer télécharge environ 10,1 Mo de fichiers de modèle. Les données photo sont traitées sur cet appareil et ne sont jamais téléversées pour la correspondance.",
+            "La correspondance analyse les photos fixes disponibles dans le catalogue actuel, pas seulement le dossier ou le filtre actuel. Les fichiers vides, les fichiers stockés uniquement dans le cloud et les originaux indisponibles sont ignorés sans être téléchargés."
+          ],
+          "steps": [
+            "Ouvrez Personnes et choisissez Télécharger les modèles et activer.",
+            "Attendez que les groupes de visages apparaissent. Vous pouvez continuer à modifier pendant l’exécution de la numérisation.",
+            "Utilisez Numériser de nouvelles photos après avoir ajouté des photos ou restauré des originaux indisponibles. Les photos déjà numérisées et inchangées sont réutilisées."
+          ]
+        },
+        {
+          "title": "Nommer et parcourir une personne",
+          "paragraphs": [
+            "Tout le monde affiche les groupes de visages visibles. Sans nom affiche les groupes qui n’ont pas été nommés. Ouvrez un groupe, saisissez un nom et choisissez Enregistrer le nom. Seuls les noms que vous saisissez sont utilisés ; le modèle ne connaît pas les noms des personnes.",
+            "Utilisez Visages pour inspecter les recadrages des visages individuels. Utilisez Photos pour voir les photographies complètes, puis choisissez une photo pour l’ouvrir dans l’éditeur. Les noms que vous ajoutez deviennent recherchables dans le champ de recherche de la bibliothèque. Les groupes masqués ne contribuent pas aux noms dans la recherche."
+          ]
+        },
+        {
+          "title": "Vérifier et corriger les correspondances",
+          "paragraphs": [
+            "Vérifier les correspondances présente deux groupes possibles avec des échantillons de visages. Même personne les combine. Personnes différentes enregistre une correction afin que l’association ne soit plus suggérée. Ignorer pour l’instant laisse la correspondance pour une visite ultérieure.",
+            "Dans un groupe, Fusionner avec… vous permet de choisir un autre groupe et de vérifier la combinaison avant de la confirmer. Le nom du groupe actuel est conservé ; s’il est sans nom, le nom de l’autre groupe est utilisé. Enregistrer le même nom sur deux groupes ne les fusionne pas automatiquement.",
+            "Choisissez Sélectionner des visages, sélectionnez certains visages, puis Déplacer vers une personne distincte pour les séparer dans un nouveau groupe sans nom. Les deux groupes ne seront plus à nouveau proposés comme correspondance. Sélectionnez un visage et choisissez Utiliser comme couverture pour changer l’image de la galerie.",
+            "Masquer la personne déplace un groupe vers Masqué sans supprimer les photos ni les données de visage. Ouvrez-le là-bas et choisissez Afficher la personne pour le restaurer. Annuler la dernière modification inverse la modification de groupe la plus récente ; une numérisation qui ajoute ou actualise des photos efface cette entrée d’annulation."
+          ]
+        },
+        {
+          "title": "Suspendre et supprimer les données faciales",
+          "paragraphs": [
+            "Mettez en Pause, ou désactivez Correspondance des visages, pour arrêter la numérisation. Les groupes et noms existants restent disponibles, y compris la recherche de noms. Numériser de nouvelles photos reprend la correspondance.",
+            "Supprimer les données faciales… vous demande de confirmer la suppression des groupes de visages, des noms, des corrections et des vignettes de ce catalogue. Les photos originales, les modifications et l’index des contenus de la photo restent inchangés. Les fichiers de modèle téléchargés restent disponibles. Les données faciales sont stockées séparément dans le dossier de données de l’application et ne sont pas incluses dans les sauvegardes du catalogue."
+          ]
+        },
+        {
+          "title": "À quoi s’attendre",
+          "paragraphs": [
+            "Le modèle compact SFace INT8 compare les visages humains alignés. Le regroupement automatique utilise des règles de similarité conservatrices ; les correspondances possibles restent séparées pour vérification. Les nouveaux visages correspondant à une personne nommée sont proposés pour confirmation.",
+            "Les visages petits, flous, masqués, de profil et nettement séparés par l’âge peuvent être manqués ou répartis dans plusieurs groupes. Le modèle peut également faire des correspondances incorrectes. Les visages apparaissant ensemble sur une même photo ne sont pas automatiquement mis en correspondance ; une fusion manuelle reste possible pour les miroirs et les collages. Cette fonctionnalité ne regroupe pas les animaux de compagnie et ne fournit pas de précision d’identité garantie."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Bibliothèque"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Construire l'index",
           "paragraphs": [
+            "La détection des visages trouve les photos contenant des visages. Pour regrouper une personne précise et rechercher un nom que vous ajoutez, utilisez l’option distincte Correspondance des visages et la vue Personnes.",
             "L’Index des photos est désactivé par défaut et nécessite macOS. Linux et Windows affichent Indisponible sur cette plateforme, et la nouvelle indexation ne peut pas être activée. Sur Mac, l’analyse reste sur l’appareil et ne modifie pas les dossiers de photos. Apple Vision fournit l’analyse principale ; des descriptions plus riches des Modèles fondamentaux n’apparaissent que lorsque cette capacité est disponible."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

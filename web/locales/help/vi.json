@@ -538,11 +538,11 @@
         {
           "title": "Tìm kiếm trong chế độ xem hiện tại",
           "paragraphs": [
-            "Ô tìm kiếm khớp văn bản trong tên tệp, tên hiển thị, từ khóa và siêu dữ liệu chỉ mục ảnh hiện có. Nó tìm trong thư mục hoặc bộ sưu tập hiện tại và kết hợp với các bộ lọc đang hoạt động khác."
+            "Ô tìm kiếm khớp với văn bản trong tên tệp, tên hiển thị, từ khóa, tên bạn thêm trong Mọi người, và siêu dữ liệu chỉ mục ảnh khả dụng. Nó tìm trong thư mục hoặc bộ sưu tập hiện tại và kết hợp với các bộ lọc đang bật khác."
           ],
           "steps": [
             "Nhấp Tìm kiếm ảnh và từ khóa, hoặc nhấn / khi bạn không đang nhập trong một trường.",
-            "Nhập một từ hoặc cụm từ từ tên tệp hoặc từ khóa.",
+            "Nhập một từ hoặc cụm từ từ tên tệp, từ khóa, hoặc tên bạn đã lưu trong Mọi người.",
             "Dùng All Photos, Unflagged, Picked, Rejected hoặc Rated trong thanh bên để chọn một nhóm cờ hoặc xếp hạng.",
             "Nhấp Bộ lọc bên cạnh Sắp xếp. Chọn một hoặc nhiều loại tệp, rồi kết hợp chúng với Cờ, Xếp hạng, nhãn Màu sắc hoặc trạng thái Chỉnh sửa.",
             "Chọn Tên tệp, Xếp hạng, Cờ, ngày chụp, hoặc nhãn Màu sắc trong Sắp xếp."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Thư viện"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Nhóm và tìm người",
+      "category": "Library",
+      "summary": "Dùng tính năng ghép khuôn mặt tùy chọn trên thiết bị để nhóm các khuôn mặt tương tự, thêm tên và xem lại các kết quả khớp có thể có.",
+      "keywords": [
+        "mọi người",
+        "khuôn mặt",
+        "ghép khuôn mặt",
+        "nhận dạng",
+        "tên",
+        "hợp nhất",
+        "tách",
+        "cùng một người",
+        "Google Photos",
+        "quyền riêng tư",
+        "đã lượng tử hóa",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Bật ghép khuôn mặt",
+          "paragraphs": [
+            "Ghép khuôn mặt tách biệt với Chỉ mục nội dung ảnh và mặc định là tắt. Mở Mọi người trong thanh bên Thư viện, hoặc Cài đặt → Chỉ mục ảnh → Ghép khuôn mặt. Tải mô hình xuống và bật sẽ tải xuống khoảng 10,1 MB tệp mô hình. Dữ liệu ảnh được xử lý trên thiết bị này và không bao giờ được tải lên để ghép.",
+            "Ghép sẽ quét tất cả ảnh tĩnh còn khả dụng trong danh mục hiện tại, không chỉ thư mục hoặc bộ lọc hiện tại. Các tệp trống, tệp chỉ có trên đám mây và bản gốc không khả dụng sẽ bị bỏ qua mà không tải xuống."
+          ],
+          "steps": [
+            "Mở Mọi người và chọn Tải mô hình xuống và bật.",
+            "Chờ các nhóm khuôn mặt xuất hiện. Bạn có thể tiếp tục chỉnh sửa trong khi quá trình quét đang chạy.",
+            "Dùng Quét ảnh mới sau khi thêm ảnh hoặc khôi phục bản gốc không khả dụng. Những ảnh đã được quét trước đó và không thay đổi sẽ được dùng lại."
+          ]
+        },
+        {
+          "title": "Đặt tên và duyệt một người",
+          "paragraphs": [
+            "Tất cả mọi người hiển thị các nhóm khuôn mặt đang thấy. Chưa đặt tên hiển thị các nhóm chưa được đặt tên. Mở một nhóm, nhập tên và chọn Lưu tên. Chỉ những tên bạn nhập mới được dùng; mô hình không biết tên của mọi người.",
+            "Dùng Khuôn mặt để kiểm tra các phần cắt của từng khuôn mặt. Dùng Ảnh để xem toàn bộ ảnh, rồi chọn một ảnh để mở trong trình chỉnh sửa. Những tên bạn thêm sẽ trở thành có thể tìm kiếm trong ô tìm kiếm của thư viện. Các nhóm đã ẩn không đóng góp tên vào tìm kiếm."
+          ]
+        },
+        {
+          "title": "Xem lại và sửa các kết quả khớp",
+          "paragraphs": [
+            "Xem lại các kết quả khớp sẽ hiển thị hai nhóm có thể có cùng các mẫu khuôn mặt. Cùng một người sẽ hợp nhất chúng. Những người khác nhau ghi lại một chỉnh sửa để cặp đó sẽ không được đề xuất lại. Bỏ qua lúc này sẽ để lại kết quả khớp cho lần xem sau.",
+            "Trong một nhóm, Hợp nhất với… cho phép bạn chọn một nhóm khác và xem lại sự kết hợp trước khi xác nhận. Tên của nhóm hiện tại sẽ được giữ nguyên; nếu nhóm đó chưa đặt tên, tên của nhóm kia sẽ được dùng. Lưu cùng một tên trên hai nhóm không tự động hợp nhất chúng.",
+            "Chọn Chọn khuôn mặt, chọn một số khuôn mặt, rồi chọn Di chuyển sang một người riêng để tách chúng thành một nhóm mới chưa đặt tên. Hai nhóm sẽ không còn được đề xuất là một kết quả khớp nữa. Chọn một khuôn mặt và chọn Dùng làm ảnh bìa để thay đổi ảnh thư viện ảnh.",
+            "Ẩn người sẽ di chuyển một nhóm sang Đã ẩn mà không xóa ảnh hay dữ liệu khuôn mặt. Mở nhóm đó ở đó và chọn Hiển thị người để khôi phục. Hoàn tác thay đổi gần nhất sẽ đảo ngược lần chỉnh sửa nhóm gần nhất; một lần quét thêm hoặc làm mới ảnh sẽ xóa mục hoàn tác đó."
+          ]
+        },
+        {
+          "title": "Tạm dừng và xóa dữ liệu khuôn mặt",
+          "paragraphs": [
+            "Tạm dừng, hoặc tắt Ghép khuôn mặt, để dừng quét. Các nhóm và tên hiện có vẫn dùng được, bao gồm cả tìm kiếm theo tên. Quét ảnh mới sẽ tiếp tục ghép.",
+            "Xóa dữ liệu khuôn mặt… sẽ yêu cầu bạn xác nhận việc xóa các nhóm khuôn mặt, tên, chỉnh sửa và hình thu nhỏ của danh mục này. Ảnh gốc, các chỉnh sửa và Chỉ mục nội dung ảnh không thay đổi. Các tệp mô hình đã tải xuống vẫn dùng được. Dữ liệu khuôn mặt được lưu riêng trong thư mục dữ liệu ứng dụng và không được đưa vào các bản sao lưu danh mục."
+          ]
+        },
+        {
+          "title": "Điều cần mong đợi",
+          "paragraphs": [
+            "Mô hình SFace INT8 gọn so sánh các khuôn mặt người đã căn chỉnh. Ghép tự động dùng các quy tắc tương đồng thận trọng; các kết quả khớp có thể có sẽ vẫn tách riêng để xem lại. Các khuôn mặt mới khớp với một người đã đặt tên sẽ được đề xuất để xác nhận.",
+            "Khuôn mặt nhỏ, mờ nhòe, bị che khuất, nghiêng nghiêng và khác biệt đáng kể về độ tuổi có thể bị bỏ sót hoặc bị tách ra thành các nhóm khác nhau. Mô hình cũng có thể nhận dạng sai. Các khuôn mặt xuất hiện cùng nhau trong một ảnh sẽ không tự động được ghép; vẫn có thể hợp nhất thủ công cho ảnh gương và ảnh ghép. Tính năng này không nhóm thú cưng và không đảm bảo độ chính xác về danh tính."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Thư viện"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Xây dựng chỉ mục",
           "paragraphs": [
+            "Phát hiện khuôn mặt tìm các ảnh có chứa khuôn mặt. Để nhóm một người cụ thể và tìm tên bạn đã thêm, hãy dùng tùy chọn Ghép khuôn mặt riêng biệt và chế độ xem Mọi người.",
             "Chỉ mục ảnh mặc định tắt và yêu cầu macOS. Linux và Windows hiển thị Không khả dụng trên nền tảng này, và không thể bật lập chỉ mục mới. Trên Mac, phân tích vẫn ở trên thiết bị và không sửa đổi các thư mục ảnh. Apple Vision cung cấp phân tích cốt lõi; mô tả chi tiết hơn của Mô hình nền tảng chỉ xuất hiện khi khả năng đó khả dụng."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

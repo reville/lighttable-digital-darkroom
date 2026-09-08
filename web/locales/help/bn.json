@@ -538,11 +538,11 @@
         {
           "title": "বর্তমান ভিউ অনুসন্ধান করুন",
           "paragraphs": [
-            "অনুসন্ধান বক্সটি ফাইলনাম, প্রদর্শিত নাম, কীওয়ার্ড, এবং উপলব্ধ ফটো-সূচি মেটাডেটার টেক্সটের সঙ্গে মেলে। এটি বর্তমান ফোল্ডার বা সংগ্রহের মধ্যে অনুসন্ধান করে এবং অন্যান্য সক্রিয় ফিল্টারের সঙ্গে একত্রিত হয়।"
+            "search box file name, display name, keywords, People-এ আপনি যোগ করা নাম, এবং উপলব্ধ photo-index metadata-র মধ্যে থাকা টেক্সটের সাথে মিল খোঁজে। এটি বর্তমান folder বা collection-এর মধ্যে অনুসন্ধান করে এবং অন্যান্য সক্রিয় filter-এর সাথে একত্রিত হয়।"
           ],
           "steps": [
             "Search photos and keywords-এ ক্লিক করুন, অথবা কোনো field-এ টাইপ না করলে / চাপুন।",
-            "ফাইলের নাম বা কীওয়ার্ড থেকে একটি শব্দ বা বাক্যাংশ টাইপ করুন।",
+            "ফাইলের নাম, কীওয়ার্ড, অথবা People-এ আপনি সংরক্ষণ করা একটি নাম থেকে একটি শব্দ বা বাক্যাংশ টাইপ করুন।",
             "একটি flag বা rating group বেছে নিতে sidebar-এ All Photos, Unflagged, Picked, Rejected, বা Rated ব্যবহার করুন।",
             "Sort-এর পাশে Filter-এ ক্লিক করুন। এক বা একাধিক ফাইল টাইপ নির্বাচন করুন, তারপর সেগুলোকে Flag, Rating, Color label, বা Edit status-এর সাথে মিলিয়ে নিন।",
             "Sort-এ File name, Rating, Flag, Capture date, বা Colour label বেছে নিন।"
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "লাইব্রেরি"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "মানুষদের গ্রুপ করুন এবং খুঁজুন",
+      "category": "Library",
+      "summary": "সদৃশ মুখসমূহ গ্রুপ করতে, নাম যোগ করতে, এবং সম্ভাব্য মিল পর্যালোচনা করতে ঐচ্ছিক on-device face matching ব্যবহার করুন।",
+      "keywords": [
+        "মানুষ",
+        "মুখসমূহ",
+        "মুখের ম্যাচিং",
+        "স্বীকৃতি",
+        "নাম",
+        "মার্জ",
+        "বিভক্ত",
+        "একই ব্যক্তি",
+        "google photos",
+        "গোপনীয়তা",
+        "quantized",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "মুখের ম্যাচিং সক্রিয় করুন",
+          "paragraphs": [
+            "Face matching আলাদা এবং ডিফল্টভাবে বন্ধ থাকে Photo contents index থেকে। Library sidebar-এ People খুলুন, অথবা Settings → Photo Index → Face matching। Download models & enable প্রায় 10.1 MB model files ডাউনলোড করে। Photo data এই device-এ প্রক্রিয়াকরণ করা হয় এবং matching-এর জন্য কখনও upload করা হয় না।",
+            "Matching বর্তমান catalog-এ উপলব্ধ সব still photos স্ক্যান করে, শুধু বর্তমান folder বা filter নয়। ফাঁকা ফাইল, cloud-only ফাইল, এবং unavailable originals ডাউনলোড না করেই এড়িয়ে যাওয়া হয়।"
+          ],
+          "steps": [
+            "মানুষ খুলুন এবং মডেল ডাউনলোড করুন ও সক্রিয় করুন নির্বাচন করুন।",
+            "মুখের গ্রুপগুলি দেখা দেওয়ার জন্য অপেক্ষা করুন। স্ক্যান চলাকালীন আপনি এডিটিং চালিয়ে যেতে পারেন।",
+            "ফটো যোগ করার বা unavailable originals পুনঃস্থাপন করার পরে Scan new photos ব্যবহার করুন। আগে স্ক্যান করা, অপরিবর্তিত ফটোগুলি পুনরায় ব্যবহার করা হয়।"
+          ]
+        },
+        {
+          "title": "একজন ব্যক্তির নাম দিন এবং ব্রাউজ করুন",
+          "paragraphs": [
+            "Everyone দৃশ্যমান face groups দেখায়। Unnamed সেই গ্রুপগুলি দেখায় যেগুলোর নাম দেওয়া হয়নি। একটি গ্রুপ খুলুন, একটি নাম টাইপ করুন, এবং Save name নির্বাচন করুন। শুধু আপনি যে নামগুলো দেন সেগুলিই ব্যবহৃত হয়; model মানুষের নাম জানে না।",
+            "Faces ব্যবহার করে পৃথক face-এর crop পরিদর্শন করুন। ফটো পুরো ছবিগুলি দেখতে Photos ব্যবহার করুন, তারপর editor-এ খুলতে একটি photo নির্বাচন করুন। আপনি যে নাম যোগ করেন তা library search field-এ অনুসন্ধানযোগ্য হয়ে যায়। Hidden groups অনুসন্ধানে name অবদান রাখে না।"
+          ]
+        },
+        {
+          "title": "মিলসমূহ পর্যালোচনা ও সংশোধন করুন",
+          "paragraphs": [
+            "Review matches দুটি সম্ভাব্য গ্রুপকে face samples সহ উপস্থাপন করে। Same person সেগুলো একত্রিত করে। Different people একটি correction রেকর্ড করে, যাতে pairing আবার প্রস্তাব না করা হয়। Skip for now মিলটি পরে দেখার জন্য রেখে দেয়।",
+            "একটি group-এর মধ্যে, Merge with… আপনাকে অন্য একটি group বেছে নিতে এবং নিশ্চিত করার আগে সংমিশ্রণটি পর্যালোচনা করতে দেয়। বর্তমান group-এর name রাখা হয়; যদি সেটি unnamed হয়, তবে অন্য group-এর name ব্যবহৃত হয়। দুটি group-এ একই name save করলেও স্বয়ংক্রিয়ভাবে মার্জ হয় না।",
+            "Select faces নির্বাচন করুন, কিছু face নির্বাচন করুন, তারপর Move to a separate person বেছে নিয়ে সেগুলোকে একটি নতুন unnamed group-এ ভাগ করুন। এই দুটি গ্রুপ আবার match হিসেবে প্রস্তাব করা হবে না। একটি face নির্বাচন করে Use as cover বেছে নিয়ে gallery image পরিবর্তন করুন।",
+            "Hide person কোনো ফটো বা face data মুছে না ফেলেই একটি group-কে Hidden-এ সরায়। সেখানে এটি খুলে Show person বেছে নিয়ে পুনঃস্থাপন করুন। Undo last change সর্বশেষ group edit উল্টে দেয়; ফটো যোগ বা refresh করে এমন scan সেই undo entry মুছে দেয়।"
+          ]
+        },
+        {
+          "title": "বিরতি দিয়ে মুখের ডেটা সরান",
+          "paragraphs": [
+            "স্ক্যান বন্ধ করতে বিরতি দিন, অথবা Face matching বন্ধ করুন। বিদ্যমান গ্রুপ ও নামসমূহ, name search সহ, উপলব্ধ থাকবে। Scan new photos আবার matching শুরু করবে।",
+            "Delete face data… এই catalog-এর face groups, names, corrections, এবং thumbnails সরানোর বিষয়টি নিশ্চিত করতে আপনাকে জিজ্ঞাসা করে। মূল ফটো, edits, এবং Photo contents index অপরিবর্তিত থাকে। ডাউনলোড করা model files উপলব্ধই থাকে। Face data application data folder-এ আলাদাভাবে সংরক্ষিত হয় এবং catalog backups-এ অন্তর্ভুক্ত নয়।"
+          ]
+        },
+        {
+          "title": "কী আশা করবেন",
+          "paragraphs": [
+            "কম্প্যাক্ট SFace INT8 model সারিবদ্ধ human faces তুলনা করে। Automatic grouping সংযত similarity rules ব্যবহার করে; possible matches পর্যালোচনার জন্য আলাদা থাকে। নামকরণ করা কোনো ব্যক্তির সঙ্গে মেলা নতুন মুখসমূহ নিশ্চিতকরণের জন্য প্রস্তাব করা হয়।",
+            "ছোট, ঝাপসা, আড়াল করা, profile, এবং উল্লেখযোগ্যভাবে ভিন্ন বয়সের মুখসমূহ বাদ পড়তে পারে বা group-গুলির মধ্যে ভাগ হয়ে যেতে পারে। model ভুল মিলও করতে পারে। একটি ফটোতে একসঙ্গে দেখা মুখসমূহ স্বয়ংক্রিয়ভাবে match করা হয় না; mirrors এবং collages-এর জন্য manual merge এখনো সম্ভব। এই feature পোষা প্রাণী group করে না বা পরিচয় সঠিকতার নিশ্চয়তা দেয় না।"
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "লাইব্রেরি"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "সূচি তৈরি করুন",
           "paragraphs": [
+            "Face detection মুখসম্বলিত ফটোগুলি খুঁজে পায়। নির্দিষ্ট কোনো ব্যক্তিকে গ্রুপ করতে এবং আপনি যে নাম যোগ করেন তা অনুসন্ধান করতে, আলাদা Face matching বিকল্প এবং People view ব্যবহার করুন।",
             "ফটো সূচি ডিফল্টভাবে বন্ধ থাকে এবং এর জন্য macOS প্রয়োজন। Linux ও Windows-এ এই প্ল্যাটফর্মে উপলব্ধ নয় দেখায়, এবং নতুন ইন্ডেক্সিং সক্রিয় করা যায় না। Mac-এ, বিশ্লেষণ ডিভাইসেই থাকে এবং ফটো ফোল্ডার পরিবর্তন করে না। Apple Vision মূল বিশ্লেষণ সরবরাহ করে; ওই ক্ষমতা উপলব্ধ থাকলে তবেই আরও সমৃদ্ধ Foundation Models বর্ণনা দেখা যায়।"
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "bn",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

@@ -538,11 +538,11 @@
         {
           "title": "Cerca nella vista corrente",
           "paragraphs": [
-            "La casella di ricerca corrisponde al testo nei nomi dei file, nei nomi visualizzati, nelle parole chiave e nei metadati dell’indice foto disponibili. Cerca nella cartella o raccolta corrente e si combina con gli altri filtri attivi."
+            "La casella di ricerca abbina il testo nei filename, nei nomi visualizzati, nelle parole chiave, nei nomi che aggiungi in Persone e nei metadati disponibili dell'indice foto. Cerca all'interno della cartella o collezione corrente e si combina con gli altri filtri attivi."
           ],
           "steps": [
             "Fai clic su Cerca foto e parole chiave, oppure premi / quando non stai digitando in un campo.",
-            "Digita una parola o una frase dal filename o dalle parole chiave.",
+            "Digita una parola o una frase dal filename, dalle parole chiave o da un nome che hai salvato in Persone.",
             "Usa Tutte le foto, Non contrassegnate, Selezionati, Rifiutate o Classificate nella barra laterale per scegliere un gruppo di contrassegni o valutazione.",
             "Fai clic su Filtro accanto a Ordina. Seleziona uno o più tipi di file, quindi combinali con Contrassegna, Valutazione, Etichetta colore o Stato modifica.",
             "Scegli Nome file, Valutazione, Contrassegno, data di acquisizione o etichetta colore in Ordina."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Libreria"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Raggruppa e trova persone",
+      "category": "Library",
+      "summary": "Usa l'abbinamento volti opzionale sul dispositivo per raggruppare volti simili, aggiungere nomi e rivedere le possibili corrispondenze.",
+      "keywords": [
+        "persone",
+        "volti",
+        "abbinamento volti",
+        "riconoscimento",
+        "nome",
+        "unisci",
+        "dividi",
+        "stessa persona",
+        "Google Foto",
+        "privacy",
+        "quantizzato",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Abilita abbinamento volti",
+          "paragraphs": [
+            "L'abbinamento volti è separato dall'indice contenuti foto ed è disattivato per impostazione predefinita. Apri Persone nella barra laterale Libreria, oppure Impostazioni → Indice foto → Abbinamento volti. Scarica i modelli e abilita scarica circa 10,1 MB di file modello. I dati foto vengono elaborati su questo dispositivo e non vengono mai caricati per l'abbinamento.",
+            "L'abbinamento esegue la scansione delle foto fisse disponibili nel catalogo corrente, non solo nella cartella o nel filtro corrente. I file vuoti, i file solo nel cloud e gli originali non disponibili vengono saltati senza scaricarli."
+          ],
+          "steps": [
+            "Apri Persone e scegli Scarica modelli e abilita.",
+            "Attendi che appaiano i gruppi di volti. Puoi continuare a modificare mentre la scansione è in corso.",
+            "Usa Scansiona nuove foto dopo aver aggiunto foto o ripristinato originali non disponibili. Le foto già scansionate e invariati vengono riutilizzate."
+          ]
+        },
+        {
+          "title": "Assegna un nome e sfoglia una persona",
+          "paragraphs": [
+            "Tutti mostra i gruppi di volti visibili. Senza nome mostra i gruppi che non hanno ancora un nome. Apri un gruppo, digita un nome e scegli Salva nome. Vengono usati solo i nomi che inserisci; il modello non conosce i nomi delle persone.",
+            "Usa Volti per ispezionare i ritagli dei singoli volti. Usa Foto per vedere le fotografie complete, quindi scegli una foto per aprirla nell'editor. I nomi che aggiungi diventano ricercabili nel campo di ricerca della libreria. I gruppi nascosti non contribuiscono alla ricerca dei nomi."
+          ]
+        },
+        {
+          "title": "Rivedi e correggi gli abbinamenti",
+          "paragraphs": [
+            "Rivedi gli abbinamenti presenta due possibili gruppi con campioni di volti. Stessa persona li unisce. Persone diverse registra una correzione in modo che l'accoppiamento non venga suggerito di nuovo. Salta per ora lascia la corrispondenza per una visita successiva.",
+            "All'interno di un gruppo, Unisci con… ti consente di scegliere un altro gruppo e rivedere la combinazione prima di confermarla. Il nome del gruppo corrente viene mantenuto; se è senza nome, viene usato il nome dell'altro gruppo. Salvare lo stesso nome su due gruppi non li unisce automaticamente.",
+            "Scegli Seleziona i volti, seleziona alcuni volti, quindi Sposta in una persona separata per dividerli in un nuovo gruppo senza nome. I due gruppi non verranno più suggeriti come corrispondenza. Seleziona un volto e scegli Usa come copertina per cambiare l'immagine della galleria.",
+            "Nascondi persona sposta un gruppo in Nascosto senza eliminare foto o dati facciali. Aprilo lì e scegli Mostra persona per ripristinarlo. Annulla ultima modifica annulla la modifica più recente del gruppo; una scansione che aggiunge o aggiorna foto cancella quella voce di annullamento."
+          ]
+        },
+        {
+          "title": "Metti in pausa e rimuovi i dati facciali",
+          "paragraphs": [
+            "Metti in Pausa, oppure disattiva Abbinamento volti, per interrompere la scansione. I gruppi e i nomi esistenti restano disponibili, inclusa la ricerca per nome. Scansiona nuove foto riprende l'abbinamento.",
+            "Elimina dati facciali… ti chiede di confermare la rimozione dei gruppi di volti, dei nomi, delle correzioni e delle miniature di questo catalogo. Le foto originali, le modifiche e l'indice contenuti foto non cambiano. I file modello scaricati restano disponibili. I dati facciali sono archiviati separatamente nella cartella dei dati dell'applicazione e non sono inclusi nei backup del catalogo."
+          ]
+        },
+        {
+          "title": "Cosa aspettarsi",
+          "paragraphs": [
+            "Il modello compatto SFace INT8 confronta volti umani allineati. Il raggruppamento automatico usa regole di somiglianza conservative; le possibili corrispondenze restano separate per la revisione. I nuovi volti che corrispondono a una persona con nome vengono suggeriti per la conferma.",
+            "Volti piccoli, sfocati, oscurati, di profilo e notevolmente separati per età possono non essere rilevati o possono essere divisi tra gruppi. Il modello può anche effettuare abbinamenti errati. I volti che compaiono insieme in una sola foto non vengono abbinati automaticamente; resta possibile un'unione manuale per specchi e collage. Questa funzione non raggruppa gli animali domestici né fornisce un'accuratezza garantita dell'identità."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Libreria"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Costruisci l'indice",
           "paragraphs": [
+            "Il rilevamento volti trova le foto che contengono volti. Per raggruppare una persona specifica e cercare un nome che aggiungi, usa la separata opzione Abbinamento volti e la vista Persone.",
             "L'Indice foto è disattivato per impostazione predefinita e richiede macOS. Linux e Windows mostrano Non disponibile su questa piattaforma e la nuova indicizzazione non può essere abilitata. Su Mac, l'analisi resta sul dispositivo e non modifica le cartelle foto. Apple Vision fornisce l'analisi di base; descrizioni più ricche di Modelli di base compaiono solo quando tale funzionalità è disponibile."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }
