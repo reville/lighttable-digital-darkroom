@@ -5,14 +5,14 @@
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
         "web/first-run.js": "e581b791c20303a43c54e2e6565cea7a3e8072729b82c7dbef9838cb1cd25cb3",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "assisted-culling": {
       "content": "9af5dd7b18ed0202de1d8db1948c95b8f5f6a7273e97b3f6c02fb029296a5f60",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/local-ai.js": "7fd3cc2435b3905a0ba3952e9365db5924a3d2230a8f1effdef6eb923287a545"
       }
     },
@@ -20,22 +20,22 @@
       "content": "2032c026c01d58b37a5f11a324369edc495d99848efdc4e7b2177266d03c03e1",
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "capture-time": {
       "content": "088465f98807f47c7b775777ca5f782cbfdf239e43af199a5d52c2d8795c1f22",
       "sources": {
         "web/capture-time.js": "53054dc9c78513c2a8d8cee51c91fdc01a4020fe4eeedd0b256a6630b8f57039",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "catalog-health-recovery": {
       "content": "41e3f81ef36412cf1ec4ce0f431988f484834120a750a45d31a1fef66365c718",
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/recovery.js": "0b0c984746976d3895b5b922a6f2aecd4bf5ab0a3bd1bbcac1c18322acd306bb",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb"
       }
@@ -43,14 +43,14 @@
     "collections": {
       "content": "977ba37bd8ff1b6b181aeffccaa24ca482b06d59b3371e7463e1faa96f6191e7",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "colour-labels": {
       "content": "37ab0eedcaafc31195b889c3e9f9f05d1478b3045e0b5c91f540eedb45a4e083",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/labels.js": "4b56076017a4e70eb5b2f1f2b5d7cbb51f458628e6c3171432d819561aaa418e"
       }
     },
@@ -58,14 +58,14 @@
       "content": "e712dfb148dc4b8ecf156bfd3c7f98fad29204a8091ffb048b1b85b781e3f6d8",
       "sources": {
         "web/color-tools.js": "a71a5f5f4e026534cc6a0dd37a8467ac508c19e19dd6012cec12ee5192aeea96",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-color-mixer-point-color": {
       "content": "b0e38986c30ea898f08b9f26c3b362f9501905dfc5b3f744b35dfa93fac5e776",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-copy-paste-match-exposure": {
@@ -73,21 +73,21 @@
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
         "server.py": "104c9c8c6ac583c5dd5e4d8467f2a62ed1832dc367dd9f580451bbf62a3fb901",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/edit-transfer.js": "4575e626c642cf4604cc1574dc52120d96d820f7a3e4b283b6598d64ca57d166"
       }
     },
     "editing-crop-geometry": {
       "content": "847f666d8a355cae0104998f95f855baf7de6490a8445d2603e67e681623393c",
       "sources": {
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-curves": {
       "content": "6649b78fb8f7539558a27bd62d46769edd6bde6e5235aaa604f7bcfc74a24c73",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-detail-effects-enhance": {
@@ -95,53 +95,53 @@
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
         "enhance_workflow.py": "28b67a61a50e86d5c9da51ed69266d96ce317f1e0996db31e0854e1532a32ed6",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-effects": {
       "content": "0ece10b9b54782683aeebcf9f9a667e148d8731e5c85158bd85927bea2c0f6e4",
       "sources": {
         "grade.py": "738e09884d38dbaafc758e680966b76f8c87318b69da2b598e732a753ecd57ec",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-history-snapshots": {
       "content": "6f936976f8f8cdf840ad7ec9c962a8842d589de6e723fe92913419f08cee781f",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/history-panel.js": "cd627083e934d0e3601d0d8a1c1a605c110c1c164bc83c91ab6df65034810db6",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-lens-corrections": {
       "content": "f762cdbf87f331ba924707d70b72ad271cc9bed2ab8403bbcc1b6df99276af31",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-masks-ai": {
       "content": "896a488aeeae69c324acd2afbb8f6cc1d97d7b92e270423cece1162b2e1ddf30",
       "sources": {
         "semantic_masks.py": "1fde2645be458771b694bfb913e6443a5c771968b0b66908bb510db15dc87b48",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-masks-brush-gradients": {
       "content": "61e5a03da9c860f6c1bf1b049bce67710b34e74f551eabe3131705ee10ee69ce",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-masks-ranges-refinements": {
       "content": "30a985ed6dc45dceaf2b898bd62b60452a0df6395d63a0060b93c3c2862fada2",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-photo-merge": {
@@ -150,135 +150,135 @@
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
         "merge_workflow.py": "42aaacd9addb07d1257dec2c2da9e299903f1b68aa213082cff0b2747ccc9e68",
         "server.py": "104c9c8c6ac583c5dd5e4d8467f2a62ed1832dc367dd9f580451bbf62a3fb901",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-presets": {
       "content": "53107c055d29749d94f8708d4e18b5e246db2eb67b1b68948659c3f46fc65026",
       "sources": {
         "preset_io.py": "16aafa7edd016912ba7538ae223b1b532c3214b507763c22575ba2d0da25c2ea",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-remove-heal": {
       "content": "a21bed5c2d859545a1ab2ee26ff88c7d8463e4bb0ee96390cbda6c404cf6539e",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-save-recovery": {
       "content": "07e7a40c17c1c46fb63ffe875cb92bf97a8a846e98d91afe0015e05a24e2f4df",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/edit-save-queue.js": "89912c589158fa6ef921ab045488cccae9ea6c4bd916bc3ad82642764acb8e1d"
       }
     },
     "editing-tone": {
       "content": "7558b9922bbf1501ae4fcaa7ec5a7257078a4bd5f7b02e995b1c2eeac731b9a4",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "editing-white-balance": {
       "content": "ef6c9baa924103c29e019f7d095f6645a7d34b8059cb118b66c749c01480a6d7",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "export-filenames-and-folders": {
       "content": "1552993eec7ab45f052272d2f40d8d4a7bbecd798a0d7a3a293bbf9c6f6bc8f0",
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "export-format-color-space": {
       "content": "60a0df55b58ddb767af2cd0ed2caa75fa2fffc5b4ea987b5546be381c4a94b84",
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "export-metadata-sidecars": {
       "content": "261f370f2dc294998ff6bf5616fae9dfec97fcae48e74c49329fe2a9f756111a",
       "sources": {
         "export_workflow.py": "2df7f8636b686b7fb1675e24876ce828fdcf6879e35f816daff1230810878f01",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "export-photos": {
       "content": "4d390512f607806ae441447fd841b11e98359bbb324fb6750416268864a4f62a",
       "sources": {
         "server.py": "104c9c8c6ac583c5dd5e4d8467f2a62ed1832dc367dd9f580451bbf62a3fb901",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "external-editor": {
       "content": "a3d13d1cb1925ce67e1e93eb91dae2e189e700a3f40d66a11c658fe392a4e306",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "film-exposure-and-processing": {
       "content": "7e395ef5e25bfefb2dd6fa21a8cd0be4cf096a07263f501b2d59fd321fa5cb46",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "film-getting-started": {
       "content": "41af570de7f96eec29c31312925173b0dd477bbb37a1e0c2cedb1363533d2f4b",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
-        "web/style.css": "d424fd1d1ee31646dc5ea06e713e7b092e5897070962e0672bb3e6efcf91a133"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
+        "web/style.css": "0d166b919591dd5b6df99053b7eee60ec1c583e21f9bb1c0aa01c648d019dd3f"
       }
     },
     "film-grain-and-format": {
       "content": "117e7f33220929f2089dd5c4cf181a4373f627020fb119ac3badcc3c53066dc5",
       "sources": {
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "film-halation-diffusion-scan": {
       "content": "78653d9b4be06ab3ad3357a96ba37a5691ec354181728c00953b54f21bf8fe4c",
       "sources": {
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "film-negative-paper-and-slides": {
       "content": "54fd041aeb76d0acaf7428a3b9abea93e0382e8edc33effe895f0760dea943e0",
       "sources": {
         "film_pipeline.py": "0a9da4c2f7098dfa1767917517a8f11bd3af6933b543fa3ee22a815fc17883ab",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "film-reference-match": {
       "content": "8437ebbf70a45113536776e64be01fe91134024b82ba03807b1c0453a2a2719f",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "flags-and-ratings": {
       "content": "024887b0aec3ba1497cd788acb58f45a60e2b5abfaa0a458fea2428083904d05",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/labels.js": "4b56076017a4e70eb5b2f1f2b5d7cbb51f458628e6c3171432d819561aaa418e"
       }
     },
@@ -287,7 +287,7 @@
       "sources": {
         "ingest_workflow.py": "0443851f307f0a4bef9c724f4e119996e579233a52dbdffdd5cb256b49b3f413",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "import-lightroom-catalog": {
@@ -296,35 +296,35 @@
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
         "server.py": "104c9c8c6ac583c5dd5e4d8467f2a62ed1832dc367dd9f580451bbf62a3fb901",
         "web/catalog-ui.js": "275b4256f0b650c4dac4109cebaabce2b324b0e59b75a62739534bdacb13f1ba",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "keyboard-midi": {
       "content": "f2511061a9bddf2bcf22cd9ee3e31d52dc8f46df94d5e80587275a054bf3c5bd",
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/midi.js": "b26af6994583bc28ec09294351785c77aeb0848269f5c5aa094ca85524935fb0"
       }
     },
     "metadata-and-keywords": {
       "content": "2979a125df41a87f964cb871021d9d64d2475671170764dd7f692a4707f86677",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/metadata-panel.js": "57a865f3c49864fb9198d8ddc27432b0ebfdb4b65907fbd5eeb50030c92daf93"
       }
     },
     "performance-previews": {
       "content": "91f27aaf6e367408f0d1572495a6edc96f3534285b26144b02b496901edcc673",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/preview-detail.js": "2755c53ad030b4d3588d218f967b3094b5b268cd3d08e756c0a2deab784f1d98",
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "f379882d2234db258fa8f3491c5f0829913083012874dd417bb8bea8264dd4bd",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb",
-        "web/style.css": "d424fd1d1ee31646dc5ea06e713e7b092e5897070962e0672bb3e6efcf91a133",
+        "web/style.css": "0d166b919591dd5b6df99053b7eee60ec1c583e21f9bb1c0aa01c648d019dd3f",
         "web/view-performance.js": "8284cb871f75d1774996af75f78a434af92d33a001e647ab64a2fac0fa88fb6c"
       }
     },
@@ -332,15 +332,15 @@
       "content": "4b126846f459b5e30610108e553a3a9f0b6fb4f3563a87a9f2db6f6db9eac5ba",
       "sources": {
         "film_lab_ai/providers.py": "ff2e49c21a3ab2285ee1f3a1f438b14868a6e3f5a15c5d04d4cde1131521b7fd",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "raw-jpeg-pairs": {
       "content": "da12918a5daaf43a611386d4a8d7c2d5cc59b9a9cf4d85bb76efa3cb2c543f6e",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/photo-pairs.js": "555822d1f88b09cc2ec316f2a7e1665f78721b8dab2053a97d9600550895a6d5"
       }
     },
@@ -355,8 +355,8 @@
     "search-filter-sort": {
       "content": "2e3a01b337fd7d0e0206507c3f3356dc89de8d28dbc3c3f6edcce7f36962df9b",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/library-filters.js": "ce5a8b7272b19301b684af76675ec25ea87f53f2e76fdaea17ef1c99f1116825",
         "web/library.js": "e0fd82e840280b83030d990c87838d270d04840ec9d874996efba7a917003709"
       }
@@ -364,22 +364,22 @@
     "settings-and-defaults": {
       "content": "c924f166996e97b4da2d038d431ef735d757dc5cc12fba6e959f5fc39450f006",
       "sources": {
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb"
       }
     },
     "shortcut-schemes": {
       "content": "9117f2d6a953f9a3f836b91420b22d75cc570201d2d5cc822f2adf7e64f9d224",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9",
         "web/labels.js": "4b56076017a4e70eb5b2f1f2b5d7cbb51f458628e6c3171432d819561aaa418e"
       }
     },
     "smart-collections": {
       "content": "811716ffcdf02245d65b07cf0f3a60a85ba2fa11c540ce4a9d5993086a311bef",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/library.js": "e0fd82e840280b83030d990c87838d270d04840ec9d874996efba7a917003709"
       }
     },
@@ -387,14 +387,14 @@
       "content": "0fc72df4c888e30d32089e8a919d8f1993f289e7417edef271979d55eafe97de",
       "sources": {
         "soft_proof.py": "9d353ea6ba4bd911103632ec7e0463e08e8edf2679baa71fe24afd73d920e3aa",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "survey-photos": {
       "content": "b13b5825be39abb574e64995b612d8af0537c3e61be040cb91710ddbb6e73dc5",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/survey.js": "848f431664f546fdc3c24a8aed10f65edc87afa3879816dc004a875eb1506365"
       }
     },
@@ -403,22 +403,22 @@
       "sources": {
         "app/main.swift": "3a2d8f7ecf3ea0cef582e1ecfdbe7f6519832d3e95fba3900d77d2e357e6015d",
         "server.py": "104c9c8c6ac583c5dd5e4d8467f2a62ed1832dc367dd9f580451bbf62a3fb901",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931"
       }
     },
     "views-and-selection": {
       "content": "c7fe327084f2f9da186fc1f38af80e1d14fa9c2e03c20d98d1fe452047869ce5",
       "sources": {
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987",
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
-        "web/index.html": "b9f72a0baa25880fbebe27450e19a713afb2349c0838a95b7c39c6cd5f919532"
+        "web/index.html": "1bc7806e9bb3aa78d4c795ff2dac8db6ff68d12a155612f962c234c64fee8dc9"
       }
     },
     "virtual-copies-and-stacks": {
       "content": "218ec1271cafd5ab4b50150de522ed6bbd31c59451ffcdbe70466af76fdbf888",
       "sources": {
         "library_workflow.py": "9dfeb6839e0970471158d6abab48c867f4ec408748fde056d0fd721ec5e5009a",
-        "web/app.js": "255e83744365b9686159de33c5e57a644f72478bb8f2115c01c0136e0f635987"
+        "web/app.js": "2c2dca3737dd0542af00bdc3a9182fa912a667dc982b33e8d7eced90fe0d8931"
       }
     }
   },
