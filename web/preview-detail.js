@@ -1,6 +1,6 @@
 import { t as tr } from './i18n.js';
 /** Describe delivered detail, rather than treating a 100% zoom as pixel proof. */
-export function previewDetailLabel({state, refining=false, delivered=0, requested=0,
+export function previewDetailLabel({state, refining=false, delivered=0, renderedWidth=delivered, requested=0,
   source=0, actual=false, native=null} = {}) {
   if (state === 'empty' || state === 'error') return '';
   if (state === 'pending') return (actual ? tr("Loading 100% detail…") : tr("Updating preview…"));
@@ -11,7 +11,9 @@ export function previewDetailLabel({state, refining=false, delivered=0, requeste
     region.fullWidth >= region.width && region.fullHeight >= region.height &&
     native.width === region.width && native.height === region.height;
   if (sourcePixels) return actual ? tr("100% detail ready") : '';
-  if (delivered > 0 && requested > delivered + 1 && (!source || delivered < source - 1)) return tr("Updating preview detail…");
+  // Active RAW pixels can be smaller than metadata. A completed request
+  // must not report an update that will never run.
+  if (delivered > 0 && requested > renderedWidth + 1 && (!source || delivered < source - 1)) return tr("Updating preview detail…");
   if (!actual) return '';
   if (!source) return tr("Preview at 100% · source size unavailable");
   if (delivered >= source - 1) return tr("100% detail ready");

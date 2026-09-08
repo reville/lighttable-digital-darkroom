@@ -225,7 +225,8 @@
             "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
-            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri."
+            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
+            "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Aumenta Rimuovi foschia per rafforzare un'immagine velata, oppure prova un valore negativo per un trattamento più morbido. Controlla sia il contrasto sia il colore mentre la regoli.",
             "Imposta Vignettatura per il trattamento dei bordi desiderato e ispeziona gli angoli.",
-            "Tieni premuto B per confrontare con l'originale, oppure usa Reimposta in Effetti per reimpostare insieme Struttura, Chiarezza, Rimuovi foschia e Vignettatura."
+            "Aumenta Dimensione per mantenere una parte maggiore del centro priva di effetto; riducila per estendere la vignettatura verso l’interno.",
+            "Aumenta Sfumatura per una transizione più morbida, o riducila per un bordo più definito.",
+            "Tieni premuto B per confrontare con l’originale, oppure usa Reimposta in Effetti per reimpostare tutti i cursori di Effetti insieme."
           ],
           "tips": [
             "Vignettatura di Effetti è un trattamento creativo dei bordi. Usa le correzioni obiettivo quando vuoi correggere l’ombreggiatura dell’obiettivo."
@@ -2226,7 +2229,8 @@
         {
           "title": "Inizia con una pellicola",
           "paragraphs": [
-            "Pellicola applica una pellicola modellata e un processo di output a una foto ancora. L'interruttore del profilo Pellicola controlla questa elaborazione; le regolazioni di Modifica restano attive quando disattivi Pellicola."
+            "Pellicola applica una pellicola modellata e un processo di output a una foto ancora. L'interruttore del profilo Pellicola controlla questa elaborazione; le regolazioni di Modifica restano attive quando disattivi Pellicola.",
+            "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati."
           ],
           "steps": [
             "Apri una foto fissa e seleziona Pellicola nella barra strumenti per aprire Simulazione pellicola realistica.",
@@ -2240,7 +2244,7 @@
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
             "Una pellicola descrive il processo della pellicola fisica. Un predefinito di modifica può contenere regolazioni salvate più ampie e può includere anche impostazioni Film. Il menu Output dentro Film sceglie una ricetta di scansione o stampa; non esporta un file.",
-            "Dopo aver attivato Pellicola, può apparire un'anteprima rapida prima che il dettaglio RAW accurato e l'anteprima più grande terminino. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano e scompare una volta che l'anteprima è visibile. Il dettaglio RAW accurato e il rendering a piena risoluzione continuano in background."
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
           ],
           "tips": [
             "Se una pellicola non è disponibile, potrebbe richiedere il motore GPU. La disponibilità del motore è mostrata in Impostazioni → Prestazioni."
@@ -3068,7 +3072,8 @@
         {
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
-            "Un'impostazione di zoom al 100% non garantisce che sia arrivato il dettaglio completo dell'immagine. Potrebbe apparire prima un'anteprima rapida mentre l'elaborazione RAW accurata e un'anteprima più grande terminano. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano, con un conteggio come 2 / 5. Scompare non appena viene visualizzata un'anteprima utilizzabile; l'elaborazione RAW accurata e le anteprime più grandi continuano in background senza la sovrapposizione. Il conteggio rappresenta le fasi completate, non il tempo rimanente. Il movimento ridotto mantiene gli stessi aggiornamenti di fase senza animazione. La foto rimane visibile senza oscurarsi. A 1:1, passa il mouse sopra il pulsante 1:1 per verificare se il dettaglio completo della sorgente è pronto prima di valutare i dettagli fini.",
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
+            "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
             "Rimuovi, Correggi, Clona e le maschere con regolazioni di Struttura, Chiarezza, Bianchi, Neri o Curva tono richiedono un aggiornamento aggiuntivo dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il dettaglio o l'effetto di regolazioni successive.",
             "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
@@ -3122,5 +3127,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ab7b9e8b5fc89244bf01f9c666f9a4e2566e17e56656fb537c4ddd94366ef81e"
+  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1"
 }

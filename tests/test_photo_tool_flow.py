@@ -27,6 +27,7 @@ const pushUndo = () => counts.undo++;
 const saveState = () => counts.save++;
 const renderFilm = () => counts.render++;
 const refreshBaseEdits = () => counts.refresh++;
+const stopZoomMotion = noop;
 const syncCropPresentationNow = noop, zoomReset = noop, applyView = noop, applyViewNow = noop;
 const syncOpticsPanel = noop, syncMaskPanel = noop, syncControls = noop;
 const syncGrade = noop, drawGrade = noop, syncCurveFromGrade = noop, syncHsl = noop;

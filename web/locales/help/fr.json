@@ -225,7 +225,8 @@
             "La grille Photo présente les photos comme une vue d’ensemble visuelle. La grille de tri ajoute de la place pour la sélection et les informations de notation. Détails ouvre la photo active pour un examen rapproché.",
             "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
             "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
-            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres."
+            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
+            "Ajuster, 1:1, les boutons et les raccourcis de zoom offrent une animation fluide. Le défilement, le pincement et le déplacement répondent directement. L’animation du zoom est désactivée lorsque l’option Réduire les animations de votre système est activée."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Augmentez Supprimer la brume pour renforcer une image brumeuse, ou essayez une valeur négative pour un rendu plus doux. Vérifiez à la fois le contraste et la couleur pendant l’ajustement.",
             "Réglez Vignette pour le traitement des bords souhaité et inspectez les coins.",
-            "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser ensemble Texture, Clarté, Supprimer la brume et Vignettage."
+            "Augmentez Taille pour préserver une plus grande partie du centre ; diminuez-la pour étendre la vignette vers l’intérieur.",
+            "Augmentez Contour progressif pour une transition plus douce, ou diminuez-le pour un bord plus net.",
+            "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser tous les curseurs d’Effets ensemble."
           ],
           "tips": [
             "Le Vignettage d’Effets est un traitement créatif des bords. Utilisez les corrections d’objectif lorsque vous voulez corriger l’ombrage de l’objectif."
@@ -2226,7 +2229,8 @@
         {
           "title": "Commencer avec une pellicule",
           "paragraphs": [
-            "Film applique un film modélisé et un processus de sortie à une photo fixe. L’interrupteur de profil Film contrôle ce traitement ; vos ajustements Modifier restent actifs lorsque vous désactivez Film."
+            "Film applique un film modélisé et un processus de sortie à une photo fixe. L’interrupteur de profil Film contrôle ce traitement ; vos ajustements Modifier restent actifs lorsque vous désactivez Film.",
+            "Réinitialiser dans Simulation de film réaliste rétablit les valeurs par défaut de tous les curseurs Film. Réinitialiser dans une section ne concerne que les curseurs de cette section. Les interrupteurs et les options sélectionnées restent inchangés."
           ],
           "steps": [
             "Ouvrez une photo fixe et sélectionnez Film dans la barre d’outils pour ouvrir Simulation de film réaliste.",
@@ -2240,7 +2244,7 @@
           "paragraphs": [
             "Les aperçus de pellicule incluent les retouches de la photo actuelle. Parcourir et fermer la fenêtre d’aperçu n’appliquent pas une pellicule ; choisir un aperçu, oui.",
             "Une pellicule décrit le processus de pellicule physique. Un préréglage d’édition peut contenir des ajustements enregistrés plus larges, et peut aussi inclure des réglages de Film. Le menu Sortie dans Film choisit une recette de numérisation ou d’impression ; il n’exporte pas de fichier.",
-            "Après avoir activé Film, un aperçu rapide peut apparaître avant la fin du détail RAW précis et de l'aperçu plus grand. La barre de progression se remplit à mesure que les étapes de traitement de l'aperçu se terminent et disparaît une fois l'aperçu visible. Le détail RAW précis et le rendu en pleine résolution continuent en arrière-plan."
+            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible."
           ],
           "tips": [
             "Si une pellicule n’est pas disponible, elle peut nécessiter le moteur GPU. La disponibilité des moteurs est indiquée dans Réglages → Performance."
@@ -3068,7 +3072,8 @@
         {
           "title": "Vérifier ce qui a terminé le rendu",
           "paragraphs": [
-            "Un réglage de zoom 100% ne garantit pas que tous les détails de l'image soient arrivés. Un aperçu rapide peut apparaître d'abord pendant que le traitement RAW précis et un aperçu plus grand se terminent. La barre de progression se remplit à mesure que les étapes de traitement de l'aperçu se terminent, avec un compteur tel que 2 / 5. Elle disparaît dès qu'un aperçu utilisable est affiché ; le traitement RAW précis et les aperçus plus grands continuent en arrière-plan sans la superposition. Le compteur représente les étapes terminées, pas le temps restant. La réduction des animations conserve les mêmes mises à jour d'étape sans animation. La photo reste visible sans assombrissement. À 1:1, survolez le bouton 1:1 pour vérifier si le détail complet de la source est prêt avant d'évaluer les détails fins.",
+            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
+            "Le zoom conserve l’aperçu le plus net disponible pendant le chargement des détails supplémentaires. Le dézoom réutilise cet aperçu. À 1:1, consultez l’infobulle du bouton avant d’évaluer les détails fins.",
             "Si l'infobulle du bouton 1:1 indique une taille de pixel d'aperçu inférieure à celle de la source, vous voyez un aperçu livré plus petit. La résolution automatique adapte l'affichage et augmente sa demande pour la visualisation zoomée ; les sources très grandes peuvent dépasser la limite de demande de l'aperçu.",
             "Supprimer, Corriger, Dupliquer et les masques avec des réglages de Texture, Clarté, Blancs, Noirs ou Courbe de tonalité nécessitent une mise à jour supplémentaire de l’aperçu. Attendez la fin de l’aperçu avant d’évaluer leur détail ou l’effet des ajustements ultérieurs.",
             "Si les dimensions de l’original sont indisponibles, le pourcentage de zoom affiche — et 1:1 est désactivé. Auto s’adapte toujours à l’écran. Relancez l’analyse du dossier pour actualiser les dimensions."
@@ -3122,5 +3127,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "ab7b9e8b5fc89244bf01f9c666f9a4e2566e17e56656fb537c4ddd94366ef81e"
+  "sourceDigest": "ded185fa7c1654a1734a4211a40c5a9f6b83a7fbd8b9ce1ab8123e4333e8c8b1"
 }
