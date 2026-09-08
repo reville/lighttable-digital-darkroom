@@ -38,7 +38,7 @@ export function normalizeMasks(raw) {
     const allowed = ['brush', 'linear', 'radial', 'subject', 'sky', 'object', 'depth',
       'person', 'face-skin', 'eyes', 'eyebrows', 'lips', 'teeth', 'hair'];
     const sourceComponents = Array.isArray(mask?.components) && mask.components.length
-      ? mask.components : [mask || {}];
+      ? mask.components : [{...(mask || {}), invert: false}];
     const components = sourceComponents.slice(0, MAX_MASK_COMPONENTS).map((source, componentIndex) => {
       const type = allowed.includes(source?.type) ? source.type : 'radial';
       const component = {

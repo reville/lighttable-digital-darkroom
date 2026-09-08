@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import shutil
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from PIL import Image
 
 import catalog
+import catalog_scan
 import watch_workflow
 
 
@@ -125,6 +128,40 @@ class WatchWorkflowTests(unittest.TestCase):
         state = self.catalog.state_for(item["id"])
         self.assertEqual(state["params"], {"film_on": False})
         self.assertEqual(state["grade"], {"exposure": 0.75})
+
+    def test_look_preset_shares_guarded_acknowledgement_transaction(self):
+        path = write_photo(self.photos / "portrait.jpg")
+        image_id = catalog_scan.register_file(self.catalog, path)
+        self.catalog.save_state(image_id, {"grade": {"exposure": 0.75, "contrast": 0}})
+        preset = {"id": "look", "scope": "look", "filmMode": "off",
+                  "grade": {"exposure": 9, "contrast": 12}}
+        service = self.service(dict(self.watch, presetId="look"), presets=[preset])
+        service.poll_once(); service.poll_once()
+        self.assertEqual(service.status[0]["error"], "")
+        self.assertEqual(service.status[0]["handled"], 1)
+        state = self.catalog.state_for(image_id)
+        self.assertEqual(state["grade"], {"exposure": 0.75, "contrast": 12})
+        self.assertEqual(state["params"], {"profile_enabled": False})
+
+    def test_look_and_acknowledgement_roll_back_if_arrival_changes(self):
+        path = write_photo(self.photos / "portrait.jpg")
+        image_id = catalog_scan.register_file(self.catalog, path)
+        self.catalog.save_state(image_id, {"grade": {"exposure": 0.75, "contrast": 0}})
+        preset = {"id": "look", "scope": "look", "grade": {"contrast": 12}}
+        service = self.service(dict(self.watch, presetId="look"), presets=[preset])
+        apply = service._apply_preset
+
+        def changed_after_apply(*args, **kwargs):
+            apply(*args, **kwargs)
+            stat = path.stat()
+            os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns + 1_000_000))
+
+        service.poll_once()
+        with mock.patch.object(service, "_apply_preset", side_effect=changed_after_apply):
+            service.poll_once()
+        self.assertIn("changed", service.status[0]["error"])
+        self.assertEqual(self.catalog.state_for(image_id)["grade"], {"exposure": 0.75, "contrast": 0})
+        self.assertEqual(self.catalog.connection.execute("SELECT COUNT(*) FROM watch_ledger").fetchone()[0], 0)
 
 
 if __name__ == "__main__":

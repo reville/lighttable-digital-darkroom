@@ -253,6 +253,7 @@ class ScanIntegrityTests(unittest.TestCase):
         record = next(r for r in catalog_scan.walk_source(self.root)
                       if r["filename"] == new.name)
         record["header_hash"] = catalog_scan.header_hash(new)
+        record["content_hash"] = catalog_scan.file_identity.content_hash(new)
         checked = []
         stat = Path.stat
 
