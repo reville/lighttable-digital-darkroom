@@ -2189,6 +2189,14 @@
           ]
         },
         {
+          "title": "Pellicole ottimizzate e originali",
+          "paragraphs": [
+            "Ottimizzato da LightTable mostra prima Portra 160, 400 e 800. Riduce le variazioni verso il giallo nel fogliame verde-giallo. I controlli della carta e dell’uscita restano disponibili.",
+            "Spektrafilm originale conserva tutte le rese originali e rimane l’opzione predefinita per le nuove foto, le modifiche precedenti e i vecchi predefiniti di pellicola.",
+            "Queste versioni ottimizzate sono interpretazioni visive basate su fotografie di riferimento e controlli numerici del colore, non riproduzioni della pellicola calibrate tramite misurazioni. Le modifiche e i predefiniti nativi salvano la versione scelta."
+          ]
+        },
+        {
           "title": "Cosa includono le anteprime",
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
@@ -3075,5 +3083,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
 }

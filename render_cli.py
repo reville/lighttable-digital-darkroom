@@ -56,9 +56,11 @@ def render_rust(src: str, params: dict) -> np.ndarray:
             command.append("--scan-film")
         else:
             command += ["--paper", cp["paper"]]
-        result = subprocess.run(command, capture_output=True, text=True,
-                                timeout=1800, env=fp.rust_cli_environment(),
-                                **_creation_flags())
+        with fp.prepared_input_file(src, cp) as prepared:
+            command[2] = str(prepared)
+            result = subprocess.run(command, capture_output=True, text=True,
+                                    timeout=1800, env=fp.rust_cli_environment(),
+                                    **_creation_flags())
         if result.returncode != 0 or not output_path.is_file():
             detail = (result.stderr or result.stdout).strip()[-500:]
             raise RuntimeError(f"Rust film render failed: {detail}")

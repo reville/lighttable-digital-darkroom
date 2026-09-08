@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "일괄 마스크 진행",
     "Before": "이전",
     "Black": "검정",
-    "Black & white negative": "흑백 음성",
     "Blacks": "검정색",
     "Blend channels": "채널 혼합",
     "Blend detail from a source area with the target’s color and brightness": "원본 영역의 디테일을 대상의 색상과 밝기에 혼합합니다",
@@ -650,7 +649,6 @@
     "Color NR": "Color NR",
     "Color grade shadows, midtones, and highlights": "그림자, 중간톤, 하이라이트 색보정",
     "Color label": "색상 레이블",
-    "Color negative": "컬러 네거티브",
     "Color sampling: waiting for image preview…": "색상 샘플링: 이미지 미리보기를 기다리는 중…",
     "Color space limits": "색 공간 한계",
     "Color {value} · {value2}°": "색상 {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "로컬 복구가 라이브러리 열기 시 미해결 변경 사항을 찾으면 저장되지 않음 편집 복구?에 영향을 받은 사진이 나열됩니다. 편집 복원은 해당 사진의 저장된 설정을 복구된 설정으로 바꿉니다. 저장된 편집 유지는 카탈로그 버전을 유지하고 해당 복구 초안을 버립니다.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "마스크를 전송할 수 없으면, 다른 그룹을 적용하려면 로컬 마스크 선택을 해제한 상태로 다시 복사하세요.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "필요하면 렌즈 프로필에서 다른 항목을 선택하고 보정을 원본과 비교하세요.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1 버튼의 도구 설명에 표시되는 미리보기 픽셀 크기가 원본보다 작다면, 더 작은 전달 미리보기를 보고 있는 것입니다. 자동 해상도는 화면에 맞추고 확대 보기 요청 시 해상도를 높입니다. 매우 큰 원본은 미리보기 요청 한도를 초과할 수 있습니다.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac 앱이 정상 종료되지 않고 닫히면 다음에 실행할 때 진단 보고서가 열립니다. 렌더링 엔진이 예기치 않게 중지되면 엔진이 복구되는 동안 보고서가 열릴 수 있습니다. 보고서는 기록된 사건마다 한 번씩 표시됩니다. 닫기를 선택하면 계속 진행할 수 있습니다. 앱을 정상적으로 닫거나 렌더링 서비스를 다시 시작해도 보고서는 생성되지 않습니다.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac 첫 사용 선택 사항을 저장할 수 없으면 다시 시도하면 선택 내용이 유지되고 다시 시도합니다. 앱은 저장이 성공한 뒤에만 시작됩니다.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable은 MIDI 상태 버튼이나 MIDI 학습을 클릭할 때만 MIDI 접근을 요청합니다. LightTable 또는 설정을 열거나, 슬라이더를 조정하거나, 매핑을 초기화하는 작업은 접근을 요청하지 않습니다. 다시 로드한 후에는 MIDI 버튼을 클릭하여 다시 연결하세요.",
     "LightTable resources were not found": "LightTable 리소스를 찾을 수 없습니다",
     "LightTable saves separate copies in": "LightTable은 별도의 복사본을 저장합니다",
+    "LightTable tuned": "LightTable 조정판",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "LightTable 조정판은 Portra 160, 400, 800을 목록 맨 위에 표시합니다. 황록색 잎이 노란색으로 치우치는 현상을 줄여 줍니다. 인화지와 출력 조절 기능도 계속 사용할 수 있습니다.",
     "LightTable · lossless": "LightTable · 무손실",
     "LightTable — Loupe View": "LightTable — Loupe 보기",
     "LightTable — Secondary Loupe": "LightTable — 보조 루페",
@@ -2330,7 +2331,6 @@
     "Return to tool": "도구로 돌아가기",
     "Return to {value}": "{value}로 되돌리기",
     "Reveal Export Folder in Finder": "Finder에서 내보내기 폴더 보기",
-    "Reversal / slide (scanned)": "반전 / 슬라이드(스캔됨)",
     "Review": "검토",
     "Review a group": "그룹 검토",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "그룹을 함께 검토하고, 활성 프레임을 표시한 뒤, 후보 집합을 좁히세요.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "원본 크기를 사용할 수 없습니다",
     "Space": "공백",
     "Spanish": "스페인어",
+    "Spektrafilm original": "Spektrafilm 원본",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm 원본은 모든 원래 렌더링을 유지하며 새 사진, 이전 편집 및 이전 필름 프리셋의 기본값으로 계속 사용됩니다.",
     "Split": "분할",
     "Square Grid": "정사각형 격자",
     "Stack Selected Photos…": "선택한 사진 스택…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "이는 측정된 스캐너 브랜드를 선택하는 것이 아니라 모델링된 출력 레시피에 대한 조정입니다. 완성된 1:1 미리보기 디테일로 미세한 질감과 선명도를 평가하세요.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "이는 어떤 사진을 보관할지에 대한 최종 판단이 아니라 검토를 위한 분석 신호입니다. 거부는 플래그를 설정할 뿐이며, 그 자체로 원본을 휴지통으로 이동시키지는 않습니다.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "이 컨트롤은 선택한 출력 레시피를 수정합니다. 측정된 기준 스캔이 있을 때까지 스캐너 브랜드 이름은 의도적으로 생략됩니다.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "이 조정판은 참고 사진과 수치적 색상 검사를 바탕으로 한 시각적 해석이며, 실측값으로 보정한 필름 재현은 아닙니다. 편집과 기본 형식의 프리셋에는 선택한 버전이 저장됩니다.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "이 카탈로그에는 사진이 없습니다. 다른 카탈로그를 선택하거나 폴더로 시작하세요.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "이 카탈로그는 더 최신 버전의 LightTable 빌드로 만들어졌습니다. 변경되지 않은 채로 두었으며, 다시 열려면 앱을 업데이트하세요.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "이 카탈로그는 더 새로운 LightTable로 만들어졌습니다. 변경하지 않았습니다. 열려면 앱을 업데이트하세요.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "자르기, 마스크 또는 내보내기를 시도해 보세요…",
     "Try virtual copies and group photos in stacks": "가상 복사본을 사용하고 스택으로 사진 그룹화",
     "Tune the editing canvas without changing exported pixels.": "내보낸 픽셀을 변경하지 않고 편집 캔버스를 조정합니다.",
+    "Tuned and original stocks": "조정판 및 원본 필름",
     "Tungsten · 3200 K": "텅스텐 · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "자동 진행을 켜면 사진 하나를 선택, 거부 또는 평점 지정한 뒤 다음 사진으로 이동합니다. 플래그 해제는 이동하지 않습니다.",
     "Turn Film off for the actions below": "아래 작업에서는 Film을 끄세요",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요."
+    "☆ Favorites": "☆ 즐겨찾기"
   },
   "plurals": {
     " · {count} paired file linked": {

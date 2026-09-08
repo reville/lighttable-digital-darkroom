@@ -2189,6 +2189,14 @@
           ]
         },
         {
+          "title": "Pellicules ajustées et originales",
+          "paragraphs": [
+            "Ajusté par LightTable place Portra 160, 400 et 800 en tête de liste. Ces versions réduisent la dérive vers le jaune des feuillages jaune-vert. Les commandes de papier et de sortie restent disponibles.",
+            "Spektrafilm original conserve tous les rendus originaux et reste le choix par défaut pour les nouvelles photos, les anciennes retouches et les anciens préréglages de pellicule.",
+            "Ces versions ajustées sont des interprétations visuelles guidées par des photographies de référence et des contrôles numériques des couleurs, et non des reproductions de pellicule étalonnées par mesure. Les retouches et les préréglages natifs enregistrent la version choisie."
+          ]
+        },
+        {
           "title": "Ce que comprennent les aperçus",
           "paragraphs": [
             "Les aperçus de pellicule incluent les retouches de la photo actuelle. Parcourir et fermer la fenêtre d’aperçu n’appliquent pas une pellicule ; choisir un aperçu, oui.",
@@ -3075,5 +3083,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
 }

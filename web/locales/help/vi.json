@@ -2189,6 +2189,14 @@
           ]
         },
         {
+          "title": "Phim tinh chỉnh và phim gốc",
+          "paragraphs": [
+            "LightTable tinh chỉnh đưa Portra 160, 400 và 800 lên đầu danh sách. Các phiên bản này giảm hiện tượng lá xanh vàng bị ngả sang vàng. Các điều khiển giấy và đầu ra vẫn dùng được.",
+            "Spektrafilm gốc giữ nguyên mọi cách kết xuất ban đầu và vẫn là mặc định cho ảnh mới, các chỉnh sửa cũ và các thiết lập sẵn phim cũ.",
+            "Các phiên bản tinh chỉnh này là cách diễn giải thị giác dựa trên ảnh tham chiếu và kiểm tra màu bằng số liệu, không phải bản mô phỏng phim được hiệu chuẩn bằng phép đo. Các chỉnh sửa và thiết lập sẵn ở định dạng gốc lưu phiên bản bạn đã chọn."
+          ]
+        },
+        {
           "title": "Nội dung bao gồm trong bản xem trước",
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
@@ -3075,5 +3083,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
 }

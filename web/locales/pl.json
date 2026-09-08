@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "Postęp przetwarzania wsadowego maski",
     "Before": "Przed",
     "Black": "Czarny",
-    "Black & white negative": "Negatyw czarno-biały",
     "Blacks": "Cienie",
     "Blend channels": "Mieszaj kanały",
     "Blend detail from a source area with the target’s color and brightness": "Połącz szczegóły z obszaru źródłowego z kolorem i jasnością celu",
@@ -650,7 +649,6 @@
     "Color NR": "Color NR",
     "Color grade shadows, midtones, and highlights": "Koryguj kolor cieni, tonów średnich i świateł",
     "Color label": "Etykieta koloru",
-    "Color negative": "Kolorowy negatyw",
     "Color sampling: waiting for image preview…": "Próbkowanie koloru: oczekiwanie na podgląd obrazu…",
     "Color space limits": "Ograniczenia przestrzeni kolorów",
     "Color {value} · {value2}°": "Kolor {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Jeśli lokalne odzyskiwanie znajdzie nierozwiązane zmiany podczas otwierania biblioteki, „Odzyskaj niezapisane edycje?” wyświetla listę dotkniętych zdjęć. „Przywróć edycje” zastępuje ich zapisane ustawienia odzyskanymi ustawieniami. „Zachowaj zapisane edycje” pozostawia wersję katalogu i odrzuca te szkice odzyskiwania.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Jeśli maski nie mogą zostać przeniesione, skopiuj ponownie z odznaczonymi Lokalnymi maskami, aby zastosować pozostałe grupy.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "W razie potrzeby wybierz inną pozycję w Profil obiektywu i porównaj korektę z oryginałem.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Jeśli nie można zapisać pierwszego wyboru na Macu, Spróbuj ponownie zachowuje wybór i ponawia próbę. Aplikacja uruchamia się dopiero po pomyślnym zapisie.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable prosi o dostęp do MIDI tylko wtedy, gdy klikniesz przycisk stanu MIDI lub MIDI Learn. Otwarcie LightTable lub Ustawienia, regulowanie suwaków i resetowanie mapowań nie wymagają dostępu. Po przeładowaniu kliknij przycisk MIDI, aby ponownie się połączyć.",
     "LightTable resources were not found": "Nie znaleziono zasobów LightTable",
     "LightTable saves separate copies in": "LightTable zapisuje oddzielne kopie w",
+    "LightTable tuned": "Dostrojone przez LightTable",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "Dostrojone przez LightTable umieszcza Portra 160, 400 i 800 na początku listy. Te wersje ograniczają przesunięcie żółtozielonych liści w stronę żółci. Ustawienia papieru i wyjścia pozostają dostępne.",
     "LightTable · lossless": "LightTable · bezstratny",
     "LightTable — Loupe View": "LightTable — Widok lupy",
     "LightTable — Secondary Loupe": "LightTable — Dodatkowa lupa",
@@ -2330,7 +2331,6 @@
     "Return to tool": "Wróć do narzędzia",
     "Return to {value}": "Wróć do {value}",
     "Reveal Export Folder in Finder": "Pokaż folder eksportu w Finderze",
-    "Reversal / slide (scanned)": "Pozytyw / slajd (skanowany)",
     "Review": "Oceń",
     "Review a group": "Przejrzyj grupę",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Przejrzyj grupę razem, oznacz aktywną klatkę i zawęź zestaw kandydatów.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "Wymiary źródłowe są niedostępne",
     "Space": "Spacja",
     "Spanish": "Hiszpański",
+    "Spektrafilm original": "Oryginał Spektrafilm",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Oryginał Spektrafilm zachowuje wszystkie oryginalne sposoby renderowania i pozostaje domyślnym wyborem dla nowych zdjęć, starszych edycji i starszych presetów filmu.",
     "Split": "Podziel",
     "Square Grid": "Kwadratowa siatka",
     "Stack Selected Photos…": "Grupuj wybrane zdjęcia…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "Są to korekty modelowanych receptur wyjściowych, a nie wybory zmierzonych marek skanerów. Oceniaj drobną fakturę i ostrość przy ukończonym podglądzie szczegółów 1:1.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "Są to sygnały analityczne do Twojej oceny, a nie ostateczne osądy, które fotografie zachować. Odrzucenie ustawia flagę; samo w sobie nie przenosi oryginałów do Kosza.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "Te sterowania modyfikują wybraną recepturę wyjściową. Nazwy marek skanerów są celowo pominięte, dopóki nie istnieją zeskanowane próbki odniesienia.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "Te dostrojone wersje są interpretacjami wizualnymi opartymi na zdjęciach referencyjnych i liczbowych kontrolach koloru, a nie odwzorowaniami filmu skalibrowanymi na podstawie pomiarów. Edycje i presety w natywnym formacie zapisują wybraną wersję.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "Ten katalog nie ma zdjęć. Wybierz inny katalog lub rozpocznij od folderu.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "Ten katalog został utworzony przez nowszą wersję LightTable. Pozostawiono go bez zmian; zaktualizuj aplikację, aby go ponownie otworzyć.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "Ten katalog został utworzony przez nowszy LightTable. Został pozostawiony bez zmian; zaktualizuj aplikację, aby go otworzyć.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "Wypróbuj kadrowanie, maski lub eksport…",
     "Try virtual copies and group photos in stacks": "Wypróbuj wirtualne kopie i grupuj zdjęcia w stosy",
     "Tune the editing canvas without changing exported pixels.": "Dostosuj obszar roboczy edycji bez zmiany wyeksportowanych pikseli.",
+    "Tuned and original stocks": "Dostrojone i oryginalne filmy",
     "Tungsten · 3200 K": "Tungsten · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "Włącz Automatyczne przechodzenie, aby przejść do następnego zdjęcia po wybraniu, odrzuceniu lub ocenieniu pojedynczego zdjęcia. Usunięcie flagi nie powoduje przejścia dalej.",
     "Turn Film off for the actions below": "Wyłącz Film dla poniższych czynności",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary."
+    "☆ Favorites": "☆ Ulubione"
   },
   "plurals": {
     " · {count} paired file linked": {

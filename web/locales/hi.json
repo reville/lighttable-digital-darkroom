@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "बैच मास्क प्रगति",
     "Before": "पहले",
     "Black": "काला",
-    "Black & white negative": "काला और सफेद नकारात्मक",
     "Blacks": "काले",
     "Blend channels": "चैनल्स मिश्रित करें",
     "Blend detail from a source area with the target’s color and brightness": "स्रोत क्षेत्र से विवरण को लक्ष्य के रंग और चमक के साथ मिलाएँ",
@@ -650,7 +649,6 @@
     "Color NR": "रंग NR",
     "Color grade shadows, midtones, and highlights": "छायाओं, मिडटोन, और हाइलाइट्स को रंग-ग्रेड करें",
     "Color label": "रंग लेबल",
-    "Color negative": "रंग नकारात्मक",
     "Color sampling: waiting for image preview…": "रंग सैंपलिंग: छवि पूर्वावलोकन की प्रतीक्षा…",
     "Color space limits": "रंग स्थान सीमाएँ",
     "Color {value} · {value2}°": "रंग {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "यदि local recovery लाइब्रेरी खुलने पर लंबित परिवर्तन ढूँढता है, तो Recover unsaved edits? प्रभावित फ़ोटो की सूची दिखाता है। Restore edits उनकी सहेजी गई सेटिंग्स को recovered सेटिंग्स से बदल देता है। Keep saved edits कैटलॉग संस्करण को बनाए रखता है और उन recovery ड्राफ़्ट्स को छोड़ देता है।",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "यदि masks स्थानांतरित नहीं हो सकते, तो अन्य groups लागू करने के लिए Local masks अनचेक करके फिर से copy करें।",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "यदि आवश्यक हो, Lens profile में कोई अलग entry चुनें और correction की मूल से तुलना करें।",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "अगर मूल चित्र के आयाम उपलब्ध नहीं हैं, तो ज़ूम प्रतिशत की जगह — दिखता है और 1:1 अक्षम रहता है। Auto फिर भी पूर्वावलोकन को स्क्रीन के अनुसार ढालता है। आयाम अपडेट करने के लिए फ़ोल्डर को फिर से स्कैन करें।",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "यदि 1:1 बटन के टूलटिप में पूर्वावलोकन पिक्सेल आकार स्रोत से छोटा बताया गया है, तो आप छोटा डिलीवर किया गया पूर्वावलोकन देख रहे हैं। स्वतः रिज़ॉल्यूशन प्रदर्शन के अनुसार फिट होता है और ज़ूम किए गए देखने के लिए अपनी माँग बढ़ाता है; बहुत बड़े स्रोत पूर्वावलोकन अनुरोध सीमा से अधिक हो सकते हैं।",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "यदि Mac ऐप साफ़ रूप से बंद हुए बिना बंद हो जाता है, तो अगली बार लॉन्च करने पर एक निदान रिपोर्ट खुलती है। यदि इसका रेंडरिंग इंजन अप्रत्याशित रूप से रुक जाता है, तो इंजन के पुनर्प्राप्त होते समय रिपोर्ट खुल सकती है। रिपोर्ट दर्ज की गई प्रत्येक घटना के लिए एक बार दिखाई देती है; खारिज करें आपको जारी रखने देता है। ऐप को सामान्य रूप से बंद करने या उसकी रेंडरिंग सेवा पुनः आरंभ करने से रिपोर्ट नहीं बनती।",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "यदि Mac का पहली बार उपयोग वाला चयन सहेजा नहीं जा सकता, तो फिर से प्रयास करें चयन को बरकरार रखता है और पुनः प्रयास करता है। ऐप केवल सफलतापूर्वक सहेजने के बाद ही शुरू होता है।",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable केवल तभी MIDI एक्सेस का अनुरोध करता है जब आप MIDI स्थिति बटन या MIDI सीखें पर क्लिक करते हैं। LightTable या सेटिंग्स खोलना, स्लाइडर समायोजित करना, और मैपिंग रीसेट करना एक्सेस का अनुरोध नहीं करते। पुनः लोड करने के बाद, फिर से कनेक्ट करने के लिए किसी MIDI बटन पर क्लिक करें।",
     "LightTable resources were not found": "LightTable संसाधन नहीं मिले",
     "LightTable saves separate copies in": "LightTable अलग प्रतियाँ इसमें सहेजता है",
+    "LightTable tuned": "LightTable द्वारा समायोजित",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "LightTable द्वारा समायोजित समूह में Portra 160, 400 और 800 पहले दिखते हैं। यह पीले-हरे पत्तों में पीले रंग की ओर होने वाला बदलाव कम करता है। पेपर और आउटपुट नियंत्रण उपलब्ध रहते हैं।",
     "LightTable · lossless": "LightTable · हानिरहित",
     "LightTable — Loupe View": "LightTable — Loupe दृश्य",
     "LightTable — Secondary Loupe": "LightTable — द्वितीयक लूप",
@@ -2330,7 +2331,6 @@
     "Return to tool": "टूल पर वापस जाएँ",
     "Return to {value}": "{value} पर लौटें",
     "Reveal Export Folder in Finder": "Finder में एक्सपोर्ट फ़ोल्डर दिखाएँ",
-    "Reversal / slide (scanned)": "रिवर्सल / स्लाइड (स्कैन किया गया)",
     "Review": "समीक्षा",
     "Review a group": "समूह की समीक्षा करें",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "किसी समूह की साथ में समीक्षा करें, सक्रिय frame चिह्नित करें, और candidate set को सीमित करें।",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "स्रोत आयाम उपलब्ध नहीं हैं",
     "Space": "स्पेस",
     "Spanish": "स्पेनिश",
+    "Spektrafilm original": "Spektrafilm मूल",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm मूल सभी मूल रेंडरिंग को बनाए रखता है और नई फ़ोटो, पुराने संपादनों और पुराने फ़िल्म प्रीसेट के लिए डिफ़ॉल्ट बना रहता है।",
     "Split": "विभाजित करें",
     "Square Grid": "वर्गाकार ग्रिड",
     "Stack Selected Photos…": "चयनित फ़ोटो स्टैक करें…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "ये मापे गए स्कैनर ब्रांडों के चयन नहीं, बल्कि मॉडल किए गए आउटपुट रेसिपी के समायोजन हैं। पूर्ण 1:1 preview detail के साथ सूक्ष्म बनावट और तीक्ष्णता का मूल्यांकन करें।",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "ये आपकी समीक्षा के लिए विश्लेषण संकेत हैं, फ़ोटो को रखने या न रखने के अंतिम निर्णय नहीं। Reject करने से एक फ़्लैग सेट होता है; यह स्वयं मूल फ़ाइलों को Trash में नहीं भेजता।",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "ये नियंत्रण चयनित आउटपुट रेसिपी को संशोधित करते हैं। मापे गए संदर्भ स्कैन मौजूद होने तक स्कैनर ब्रांड नाम जानबूझकर छोड़ दिए जाते हैं।",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "ये समायोजित संस्करण संदर्भ फ़ोटो और रंगों की संख्यात्मक जाँच पर आधारित दृश्य व्याख्याएँ हैं, मापों से कैलिब्रेट की गई फ़िल्म की प्रतिकृतियाँ नहीं। संपादन और मूल प्रारूप वाले प्रीसेट आपका चुना हुआ संस्करण सहेजते हैं।",
     "This catalog has no photos. Choose another catalog or start with a folder.": "इस कैटलॉग में कोई फ़ोटो नहीं है। कोई और कैटलॉग चुनें या किसी फ़ोल्डर से शुरू करें।",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "यह कैटलॉग LightTable के नए बिल्ड द्वारा बनाया गया था। इसे अपरिवर्तित छोड़ दिया गया; इसे फिर खोलने के लिए ऐप अपडेट करें।",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "यह कैटलॉग LightTable के नए संस्करण से बनाया गया था. इसे अपरिवर्तित छोड़ा गया; खोलने के लिए ऐप अपडेट करें.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "crop, masks, या export… आज़माएँ",
     "Try virtual copies and group photos in stacks": "वर्चुअल कॉपी आज़माएँ और फ़ोटो को स्टैक्स में समूहित करें",
     "Tune the editing canvas without changing exported pixels.": "निर्यातित पिक्सेल बदले बिना संपादन कैनवास को समायोजित करें।",
+    "Tuned and original stocks": "समायोजित और मूल फ़िल्में",
     "Tungsten · 3200 K": "टंगस्टन · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "एक फ़ोटो को चुनने, अस्वीकृत करने, या रेट करने के बाद अगली फ़ोटो पर जाने के लिए Auto-advance चालू करें। फ़्लैग हटाने पर आगे नहीं बढ़ता।",
     "Turn Film off for the actions below": "नीचे दी गई कार्रवाइयों के लिए Film बंद करें",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ पीछे",
     "← Back to articles": "← लेखों पर वापस जाएँ",
     "← People": "← लोग",
-    "☆ Favorites": "☆ पसंदीदा",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "अगर मूल चित्र के आयाम उपलब्ध नहीं हैं, तो ज़ूम प्रतिशत की जगह — दिखता है और 1:1 अक्षम रहता है। Auto फिर भी पूर्वावलोकन को स्क्रीन के अनुसार ढालता है। आयाम अपडेट करने के लिए फ़ोल्डर को फिर से स्कैन करें।"
+    "☆ Favorites": "☆ पसंदीदा"
   },
   "plurals": {
     " · {count} paired file linked": {

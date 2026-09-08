@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "ความคืบหน้ามาสก์ชุดงาน",
     "Before": "ก่อนหน้า",
     "Black": "สีดำ",
-    "Black & white negative": "เนกาทีฟขาวดำ",
     "Blacks": "สีดำ",
     "Blend channels": "ผสานช่องสัญญาณ",
     "Blend detail from a source area with the target’s color and brightness": "ผสานรายละเอียดจากพื้นที่แหล่งที่มากับสีและความสว่างของเป้าหมาย",
@@ -650,7 +649,6 @@
     "Color NR": "Color NR",
     "Color grade shadows, midtones, and highlights": "เกรดสีเงา โทนกลาง และไฮไลต์",
     "Color label": "ป้ายสี",
-    "Color negative": "เนกาทีฟสี",
     "Color sampling: waiting for image preview…": "การสุ่มตัวอย่างสี: กำลังรอการแสดงตัวอย่างภาพ…",
     "Color space limits": "ขีดจำกัดพื้นที่สี",
     "Color {value} · {value2}°": "สี {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "หากการกู้คืนเฉพาะที่พบการเปลี่ยนแปลงที่ยังค้างอยู่เมื่อไลบรารีเปิดขึ้น กู้คืนการแก้ไขที่ยังไม่ได้บันทึก? จะแสดงรายการภาพถ่ายที่ได้รับผลกระทบ คืนค่าการแก้ไขจะแทนที่การตั้งค่าที่บันทึกไว้ด้วยการตั้งค่าที่กู้คืนไว้ เก็บการแก้ไขที่บันทึกไว้จะเก็บเวอร์ชันในแค็ตตาล็อกและทิ้งแบบร่างการกู้คืนเหล่านั้น",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "หากไม่สามารถถ่ายโอนมาสก์ได้ ให้คัดลอกอีกครั้งโดยไม่เลือก Local masks เพื่อใช้กลุ่มอื่นแทน",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "หากจำเป็น ให้เลือกรายการอื่นใน Lens profile และเปรียบเทียบการแก้ไขกับต้นฉบับ",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "หากไม่มีข้อมูลขนาดภาพต้นฉบับ เปอร์เซ็นต์การซูมจะแสดง — และ 1:1 จะถูกปิดใช้งาน Auto ยังคงปรับภาพตัวอย่างให้พอดีกับหน้าจอ สแกนโฟลเดอร์อีกครั้งเพื่ออัปเดตขนาดภาพ",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "ถ้าเคล็ดลับของปุ่ม 1:1 รายงานว่าขนาดพิกเซลของพรีวิวเล็กกว่าต้นฉบับ แสดงว่าคุณกำลังเห็นพรีวิวที่ส่งมาขนาดเล็กกว่า ความละเอียดอัตโนมัติจะพอดีกับจอแสดงผลและเพิ่มคำร้องขอเมื่อซูมดู; แหล่งที่มาขนาดใหญ่มากอาจเกินขีดจำกัดคำร้องขอของพรีวิว",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "หากแอป Mac ปิดลงโดยไม่ออกอย่างถูกต้อง รายงานการวินิจฉัยจะเปิดขึ้นในครั้งถัดไปที่คุณเปิดแอป หากเอนจินเรนเดอร์หยุดทำงานโดยไม่คาดคิด รายงานอาจเปิดขึ้นในขณะที่เอนจินกำลังกู้คืน รายงานจะปรากฏหนึ่งครั้งต่อหนึ่งเหตุการณ์ที่บันทึกไว้; ยกเลิก ช่วยให้คุณทำงานต่อได้ การปิดแอปตามปกติหรือการเริ่มบริการเรนเดอร์ใหม่จะไม่สร้างรายงาน",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "หากตัวเลือกใช้งานครั้งแรกบน Mac ไม่สามารถบันทึกได้ ลองอีกครั้งจะเก็บการเลือกไว้และลองซ้ำ แอปจะเริ่มทำงานหลังจากบันทึกสำเร็จเท่านั้น",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable จะขอสิทธิ์เข้าถึง MIDI เฉพาะเมื่อคุณคลิกปุ่มสถานะ MIDI หรือ เรียนรู้ MIDI เท่านั้น การเปิด LightTable หรือ การตั้งค่า, การปรับ สไลด์ และการรีเซ็ตการกำหนดค่าใหม่ จะไม่ขอสิทธิ์เข้าถึง หลังจากโหลดหน้าใหม่ ให้คลิกปุ่ม MIDI เพื่อเชื่อมต่ออีกครั้ง",
     "LightTable resources were not found": "ไม่พบทรัพยากรของ LightTable",
     "LightTable saves separate copies in": "LightTable บันทึกสำเนาแยกไว้ใน",
+    "LightTable tuned": "ปรับแต่งโดย LightTable",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "กลุ่มปรับแต่งโดย LightTable จะแสดง Portra 160, 400 และ 800 ไว้ด้านบน ช่วยลดการเปลี่ยนเป็นสีเหลืองของใบไม้สีเขียวอมเหลือง โดยยังใช้ตัวควบคุมกระดาษและผลลัพธ์ได้ตามเดิม",
     "LightTable · lossless": "LightTable · ไม่สูญเสียข้อมูล",
     "LightTable — Loupe View": "LightTable — มุมมอง Loupe",
     "LightTable — Secondary Loupe": "LightTable — Loupe รอง",
@@ -2330,7 +2331,6 @@
     "Return to tool": "กลับไปยังเครื่องมือ",
     "Return to {value}": "กลับไปที่ {value}",
     "Reveal Export Folder in Finder": "แสดงโฟลเดอร์ส่งออกใน Finder",
-    "Reversal / slide (scanned)": "ย้อนกลับ / สไลด์ (สแกนแล้ว)",
     "Review": "ตรวจสอบ",
     "Review a group": "ตรวจทานกลุ่ม",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "ตรวจทานเป็นกลุ่ม, ทำเครื่องหมายเฟรมที่ใช้งานอยู่, และจำกัดชุดผู้สมัคร",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "ไม่สามารถดูขนาดต้นฉบับได้",
     "Space": "พื้นที่ว่าง",
     "Spanish": "สเปน",
+    "Spektrafilm original": "Spektrafilm ต้นฉบับ",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm ต้นฉบับเก็บการเรนเดอร์ต้นฉบับทั้งหมดไว้ และยังเป็นค่าเริ่มต้นสำหรับภาพใหม่ การแก้ไขเก่า และพรีเซ็ตฟิล์มเก่า",
     "Split": "แยก",
     "Square Grid": "กริดสี่เหลี่ยม",
     "Stack Selected Photos…": "จัดกลุ่มภาพถ่ายที่เลือก…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "สิ่งเหล่านี้คือการปรับแต่งสูตรเอาต์พุตที่จำลองขึ้นมา ไม่ใช่การเลือกยี่ห้อสแกนเนอร์ที่วัดจริง ประเมินพื้นผิวละเอียดและความคมชัดด้วยรายละเอียดตัวอย่าง 1:1 ที่เสร็จสมบูรณ์",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "สิ่งเหล่านี้เป็นสัญญาณวิเคราะห์สำหรับการตรวจทานของคุณ ไม่ใช่ข้อสรุปสุดท้ายว่าจะเก็บภาพถ่ายใดไว้ การปฏิเสธจะตั้งธง; มันไม่ได้ย้ายไฟล์ต้นฉบับไปที่ถังขยะเอง",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "การควบคุมเหล่านี้จะปรับสูตรเอาต์พุตที่เลือก ชื่อแบรนด์ของสแกนเนอร์จะถูกละไว้โดยตั้งใจจนกว่าจะมีการสแกนอ้างอิงที่วัดค่าแล้ว",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "เวอร์ชันที่ปรับแต่งเหล่านี้เป็นการตีความทางสายตาจากภาพอ้างอิงและการตรวจสอบสีเชิงตัวเลข ไม่ใช่การจำลองฟิล์มที่ปรับเทียบจากค่าที่วัดได้ การแก้ไขและพรีเซ็ตในรูปแบบของแอปจะบันทึกเวอร์ชันที่คุณเลือกไว้",
     "This catalog has no photos. Choose another catalog or start with a folder.": "แค็ตตาล็อกนี้ไม่มีภาพถ่าย เลือกแค็ตตาล็อกอื่นหรือเริ่มจากโฟลเดอร์",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "แค็ตตาล็อกนี้ถูกสร้างโดย LightTable รุ่นใหม่กว่า มันถูกปล่อยไว้โดยไม่เปลี่ยนแปลง ให้อัปเดตแอปเพื่อเปิดมันอีกครั้ง",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "แค็ตตาล็อกนี้ถูกสร้างโดย LightTable เวอร์ชันใหม่กว่า จึงไม่ถูกเปลี่ยนแปลง; ให้อัปเดตแอปเพื่อเปิด",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "ลองครอป มาสก์ หรือส่งออก…",
     "Try virtual copies and group photos in stacks": "ลองใช้สำเนาเสมือนและจัดกลุ่มภาพถ่ายในสแต็ก",
     "Tune the editing canvas without changing exported pixels.": "ปรับแต่งผืนผ้าใบสำหรับการแก้ไขโดยไม่เปลี่ยนพิกเซลที่ส่งออก",
+    "Tuned and original stocks": "ฟิล์มที่ปรับแต่งและฟิล์มต้นฉบับ",
     "Tungsten · 3200 K": "ทังสเตน · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "เปิด Auto-advance เพื่อย้ายไปยังภาพถัดไปหลังจากเลือก ปฏิเสธ หรือให้คะแนนภาพถ่ายหนึ่งภาพ การเลิกตั้งธงจะไม่เลื่อนไปข้างหน้า",
     "Turn Film off for the actions below": "ปิด Film สำหรับการทำงานด้านล่าง",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ ย้อนกลับ",
     "← Back to articles": "← กลับไปที่บทความ",
     "← People": "← ผู้คน",
-    "☆ Favorites": "☆ รายการโปรด",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "หากไม่มีข้อมูลขนาดภาพต้นฉบับ เปอร์เซ็นต์การซูมจะแสดง — และ 1:1 จะถูกปิดใช้งาน Auto ยังคงปรับภาพตัวอย่างให้พอดีกับหน้าจอ สแกนโฟลเดอร์อีกครั้งเพื่ออัปเดตขนาดภาพ"
+    "☆ Favorites": "☆ รายการโปรด"
   },
   "plurals": {
     " · {count} paired file linked": {

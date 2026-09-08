@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -280,7 +280,6 @@
     "Batch mask progress": "Progression du masque par lot",
     "Before": "Avant",
     "Black": "Noir",
-    "Black & white negative": "Négatif noir et blanc",
     "Blacks": "Noirs",
     "Blend channels": "Mélanger les canaux",
     "Blend detail from a source area with the target’s color and brightness": "Fusionner les détails d’une zone source avec la couleur et la luminosité de la cible",
@@ -650,7 +649,6 @@
     "Color NR": "Réduction du bruit des couleurs",
     "Color grade shadows, midtones, and highlights": "Ajuster la couleur des ombres, des tons moyens et des hautes lumières",
     "Color label": "Étiquette de couleur",
-    "Color negative": "Négatif couleur",
     "Color sampling: waiting for image preview…": "Échantillonnage des couleurs : en attente de l’aperçu de l’image…",
     "Color space limits": "Limites de l’espace colorimétrique",
     "Color {value} · {value2}°": "Couleur {value} · {value2}°",
@@ -1352,6 +1350,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Si la récupération locale détecte des modifications en attente à l’ouverture de la bibliothèque, Récupérer les modifications non enregistrées ? répertorie les photos concernées. Restaurer les modifications remplace leurs réglages enregistrés par les réglages récupérés. Conserver les modifications enregistrées conserve la version du catalogue et abandonne ces brouillons de récupération.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Si les masques ne peuvent pas être transférés, copiez à nouveau avec Masques locaux décoché pour appliquer les autres groupes.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Si nécessaire, choisissez une autre entrée dans Profil d’objectif et comparez la correction avec l’original.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Si les dimensions de l’original sont indisponibles, le pourcentage de zoom affiche — et 1:1 est désactivé. Auto s’adapte toujours à l’écran. Relancez l’analyse du dossier pour actualiser les dimensions.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Si l'infobulle du bouton 1:1 indique une taille de pixel d'aperçu inférieure à celle de la source, vous voyez un aperçu livré plus petit. La résolution automatique adapte l'affichage et augmente sa demande pour la visualisation zoomée ; les sources très grandes peuvent dépasser la limite de demande de l'aperçu.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Si l’application Mac se ferme sans quitter proprement, un rapport de diagnostic s’ouvre au prochain lancement. Si son moteur de rendu s’arrête de manière inattendue, le rapport peut s’ouvrir pendant que le moteur se rétablit. Le rapport apparaît une fois pour chaque incident enregistré ; Ignorer vous permet de continuer. Fermer normalement l’application ou redémarrer son service de rendu ne crée pas de rapport.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Si le choix de première utilisation sur Mac ne peut pas être enregistré, Réessayer conserve la sélection et réessaie. L’application ne démarre qu’après un enregistrement réussi.",
@@ -1541,6 +1540,8 @@
     "LightTable requests MIDI access only when you click the MIDI status button or MIDI Learn. Opening LightTable or Settings, adjusting sliders, and resetting mappings do not request access. After a reload, click a MIDI button to reconnect.": "LightTable demande l’accès MIDI uniquement lorsque vous cliquez sur le bouton d’état MIDI ou sur Apprentissage MIDI. Ouvrir LightTable ou Réglages, ajuster les curseurs et réinitialiser les mappages ne demande pas d’accès. Après un rechargement, cliquez sur un bouton MIDI pour vous reconnecter.",
     "LightTable resources were not found": "Les ressources de LightTable n’ont pas été trouvées",
     "LightTable saves separate copies in": "LightTable enregistre des copies séparées dans",
+    "LightTable tuned": "Ajusté par LightTable",
+    "LightTable tuned puts Portra 160, 400, and 800 first. It reduces yellow shifts in yellow-green foliage. Paper and output controls remain available.": "Ajusté par LightTable place Portra 160, 400 et 800 en tête de liste. Ces versions réduisent la dérive vers le jaune des feuillages jaune-vert. Les commandes de papier et de sortie restent disponibles.",
     "LightTable · lossless": "LightTable · sans perte",
     "LightTable — Loupe View": "LightTable — Vue Loupe",
     "LightTable — Secondary Loupe": "LightTable — Loupe secondaire",
@@ -2330,7 +2331,6 @@
     "Return to tool": "Revenir à l'outil",
     "Return to {value}": "Revenir à {value}",
     "Reveal Export Folder in Finder": "Afficher le dossier d’export dans le Finder",
-    "Reversal / slide (scanned)": "Positif / diapositive (numérisé)",
     "Review": "Vérifier",
     "Review a group": "Revoir un groupe",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Examinez un groupe ensemble, marquez l’image active et restreignez un ensemble de candidats.",
@@ -2638,6 +2638,8 @@
     "Source dimensions are unavailable": "Les dimensions de la source ne sont pas disponibles",
     "Space": "Espace",
     "Spanish": "Espagnol",
+    "Spektrafilm original": "Spektrafilm original",
+    "Spektrafilm original keeps all original renderings and remains the default for new photos, older edits, and older stock presets.": "Spektrafilm original conserve tous les rendus originaux et reste le choix par défaut pour les nouvelles photos, les anciennes retouches et les anciens préréglages de pellicule.",
     "Split": "Séparer",
     "Square Grid": "Grille carrée",
     "Stack Selected Photos…": "Empiler les photos sélectionnées…",
@@ -2827,6 +2829,7 @@
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.": "Il s’agit d’ajustements de recettes de sortie modélisées, et non de sélections de marques de scanners mesurées. Évaluez la texture fine et la netteté avec un aperçu 1:1 détaillé terminé.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.": "Il s’agit de signaux d’analyse pour votre relecture, et non de jugements définitifs sur les photographies à conserver. Rejeter définit un drapeau ; cela ne déplace pas à lui seul les originaux vers la corbeille.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.": "Ces contrôles modifient la recette de sortie sélectionnée. Les noms de marques de scanners sont intentionnellement omis tant qu’aucun scan de référence mesuré n’existe.",
+    "These tuned versions are visual interpretations informed by reference photographs and numerical color checks, not measured film matches. Edits and native presets save your chosen version.": "Ces versions ajustées sont des interprétations visuelles guidées par des photographies de référence et des contrôles numériques des couleurs, et non des reproductions de pellicule étalonnées par mesure. Les retouches et les préréglages natifs enregistrent la version choisie.",
     "This catalog has no photos. Choose another catalog or start with a folder.": "Ce catalogue ne contient aucune photo. Choisissez un autre catalogue ou commencez avec un dossier.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.": "Ce catalogue a été créé par une version plus récente de LightTable. Il a été laissé inchangé ; mettez l’application à jour pour le rouvrir.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.": "Ce catalogue a été créé par une version plus récente de LightTable. Il n’a pas été modifié ; mettez l’application à jour pour l’ouvrir.",
@@ -2881,6 +2884,7 @@
     "Try crop, masks, or export…": "Essayez recadrer, les masques ou exporter…",
     "Try virtual copies and group photos in stacks": "Essayer les copies virtuelles et regrouper les photos en piles",
     "Tune the editing canvas without changing exported pixels.": "Ajustez la zone de travail de retouche sans modifier les pixels exportés.",
+    "Tuned and original stocks": "Pellicules ajustées et originales",
     "Tungsten · 3200 K": "Tungstène · 3200 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.": "Activez l’avance auto pour passer à la photo suivante après avoir sélectionné, rejeté ou noté une seule photo. Le retrait du drapeau n’avance pas.",
     "Turn Film off for the actions below": "Désactiver Film pour les actions ci-dessous",
@@ -4032,8 +4036,7 @@
     "‹ Back": "‹ Retour",
     "← Back to articles": "← Retour aux articles",
     "← People": "← Personnes",
-    "☆ Favorites": "☆ Favoris",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Si les dimensions de l’original sont indisponibles, le pourcentage de zoom affiche — et 1:1 est désactivé. Auto s’adapte toujours à l’écran. Relancez l’analyse du dossier pour actualiser les dimensions."
+    "☆ Favorites": "☆ Favoris"
   },
   "plurals": {
     " · {count} paired file linked": {

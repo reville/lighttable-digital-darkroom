@@ -2189,6 +2189,14 @@
           ]
         },
         {
+          "title": "Afgestemde en originele films",
+          "paragraphs": [
+            "Door LightTable afgestemd zet Portra 160, 400 en 800 bovenaan. Deze versies verminderen de verschuiving naar geel in geelgroen gebladerte. De instellingen voor papier en uitvoer blijven beschikbaar.",
+            "Spektrafilm origineel behoudt alle oorspronkelijke weergaven en blijft de standaard voor nieuwe foto’s, oudere bewerkingen en oudere filmvoorinstellingen.",
+            "Deze afgestemde versies zijn visuele interpretaties op basis van referentiefoto’s en numerieke kleurcontroles, geen op metingen gekalibreerde filmreproducties. Bewerkingen en voorinstellingen in het eigen formaat slaan de gekozen versie op."
+          ]
+        },
+        {
           "title": "Wat de voorbeelden bevatten",
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
@@ -3075,5 +3083,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
 }

@@ -2189,6 +2189,14 @@
           ]
         },
         {
+          "title": "Abgestimmte und originale Filme",
+          "paragraphs": [
+            "Von LightTable abgestimmt zeigt Portra 160, 400 und 800 zuerst. Diese Varianten verringern die Verschiebung gelbgrünen Laubs ins Gelbe. Die Einstellungen für Papier und Ausgabe bleiben verfügbar.",
+            "Spektrafilm-Original behält alle ursprünglichen Wiedergaben bei und bleibt der Standard für neue Fotos, ältere Bearbeitungen und ältere Filmvorgaben.",
+            "Diese abgestimmten Varianten sind visuelle Interpretationen auf Grundlage von Referenzfotos und numerischen Farbprüfungen, keine anhand von Messungen kalibrierten Filmnachbildungen. Bearbeitungen und native Vorgaben speichern die gewählte Variante."
+          ]
+        },
+        {
           "title": "Was die Vorschaubilder enthalten",
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
@@ -3075,5 +3083,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
 }
