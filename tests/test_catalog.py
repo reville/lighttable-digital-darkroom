@@ -200,7 +200,7 @@ class ScanTests(unittest.TestCase):
             self.addCleanup(cat.close)
             source = cat.add_source(root)
             with mock.patch.object(catalog_scan, "read_metadata", return_value={
-                    "width": None, "height": None, "metadata_version": 4}):
+                    "width": 1920, "height": 1280, "metadata_version": 5}):
                 catalog_scan.scan_source(cat, source)
             before = cat.query()["items"][0]
             cat.save_state(before["id"], {"rating": 5, "grade": {"exposure": 0.5}})
