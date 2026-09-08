@@ -514,9 +514,9 @@
   },
   {
     "id": "editing-presets",
-    "title": "Find, try, and share editing presets",
+    "title": "Apply, adjust, and share editing presets",
     "category": "Editing",
-    "summary": "Browse built-in and community looks, preview them on your photo, and save or share your own presets.",
+    "summary": "Click a preset to apply it, adjust Amount, and save or share your own looks.",
     "keywords": [
       "preset",
       "presets",
@@ -535,6 +535,9 @@
       "import preset",
       "save look",
       "try preset",
+      "preset amount",
+      "preset strength",
+      "disable preset",
       "update preset",
       "submit preset",
       "replace adjustments"
@@ -556,18 +559,18 @@
         ]
       },
       {
-        "title": "Try before applying",
+        "title": "Apply and adjust Amount",
         "paragraphs": [
-          "Try on this photo renders a preview locally inside the preset details. It does not change or save your edit, and your photo is not uploaded to the community gallery."
+          "Click a preset card to apply it immediately to the main photo. Click the same card again, or use its On/Off button, to disable it. Your photo stays on this computer."
         ],
         "steps": [
-          "Select a photo and a preset, then click Try on this photo.",
-          "Wait for the preview, then use Before and With preset to compare. Creator examples have their own before/after controls and, when available, an Example photo selector.",
-          "Click Apply to commit the preset to the active photo. Use Undo in the details or the Undo action in the completion message to restore the previous edit."
+          "Select a photo and click a preset card. The selected preset shows Amount below its name.",
+          "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.",
+          "Click another preset to switch looks. Undo and Redo restore preset selection, enabled state, and amount. The selected preset and amount are saved with the photo."
         ],
         "tips": [
-          "Selecting a card, browsing another preset, or closing the details does not apply it.",
-          "Consecutive look applications use the edit from before the first look, so settings from one look do not accumulate into the next. A later manual edit starts a new comparison baseline. If you change photos or edit settings while a detail is open, select the preset again before applying."
+          "Film stock, Film on/off, and other fixed choices switch at any amount above zero. Tone, color, curves, and numerical adjustments vary with Amount. Creator examples remain separate from your photo.",
+          "Switching preset cards uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset."
         ]
       },
       {
@@ -586,7 +589,7 @@
           "Add to Yours downloads and saves the selected community recipe without applying it. Installed recipes work offline. Your existing photo edits store their settings separately from the preset."
         ],
         "steps": [
-          "Select a Community preset and click Add to Yours.",
+          "Click a Community preset to use it on your photo, then click Add to Yours to keep an offline copy.",
           "Use it later from Yours, or return to Community to inspect the public preset page.",
           "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it."
         ],
@@ -646,6 +649,10 @@
       {
         "path": "web/preset-browser.css",
         "anchor": ".preset-browser-manage[aria-expanded=\"true\"]"
+      },
+      {
+        "path": "web/preset-amount.js",
+        "anchor": "export function blendPresetState(base, target, amount) {"
       },
       {
         "path": "web/presets.js",
