@@ -20,6 +20,8 @@ mod export;
 mod export_surface;
 mod region;
 mod native_surface;
+#[cfg(unix)]
+mod shared_memory;
 mod grade_gpu;
 mod merge_gpu;
 
@@ -76,6 +78,12 @@ struct Response {
     id: u64,
     ok: bool,
     backend: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    adapter: Option<spektrafilm_gpu::AdapterDiagnostics>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    gpu_timings: Option<spektrafilm_gpu::GpuTimings>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    fallback_reason: Option<String>,
     width: Option<u32>,
     height: Option<u32>,
     full_width: Option<u32>,
@@ -107,6 +115,9 @@ impl Response {
             id,
             ok: false,
             backend: backend.to_owned(),
+            adapter: None,
+            gpu_timings: None,
+            fallback_reason: None,
             width: None,
             height: None,
             full_width: None,
@@ -219,6 +230,7 @@ impl Engine {
             let mut response = Response::error(request.id, self.backend.name(), started, anyhow!(""));
             response.ok = true;
             response.error = None;
+            response.adapter = self.backend.adapter_diagnostics();
             response.grade_gpu = operation == "grade";
             response.load_ms = load_ms;
             response.render_ms = render_ms;
@@ -244,6 +256,9 @@ impl Engine {
                 id: request.id,
                 ok: true,
                 backend: self.backend.name().to_owned(),
+                adapter: self.backend.adapter_diagnostics(),
+                gpu_timings: None,
+                fallback_reason: None,
                 width: cached_input.map(|size| size.0),
                 height: cached_input.map(|size| size.1),
                 full_width: None,
@@ -326,6 +341,31 @@ impl Engine {
         };
         let load_ms = millis(load_started.elapsed());
 
+        if request.viewport.is_some() && (request.grade.is_some() || request.masks.is_some()
+            || request.crop.is_some() || request.long_edge.is_some()) {
+            bail!("viewport rendering requires an unbaked native preview");
+        }
+        let mut plan = request.viewport.map(|viewport| region::plan(viewport, image.width, image.height,
+            request.rotate_quarters_ccw, &params,
+            self.backend.name().to_lowercase().contains("wgpu"))).transpose()?;
+        let (check_width, check_height) = plan.as_ref().filter(|plan| plan.accelerated)
+            .map_or((image.width, image.height), |plan| (plan.render.width, plan.render.height));
+        // The per-stage path may apply working-resolution upscaling before
+        // dispatch. Check its larger dimensions as well as the resident input.
+        let scale = params.io.upscale_factor.max(1.0);
+        let fallback_reason = self.backend.render_support_error(
+            ((check_width as f32 * scale).round() as u32).max(check_width),
+            ((check_height as f32 * scale).round() as u32).max(check_height),
+            native_output.is_some());
+        let cpu_backend = spektrafilm_gpu::cpu_backend::CpuBackend;
+        let backend: &dyn ComputeBackend = if fallback_reason.is_some() {
+            // A large export should not permanently disable GPU previews for
+            // smaller images. Keep the device and select CPU for this request.
+            plan = request.viewport.map(|viewport| region::plan(viewport, image.width, image.height,
+                request.rotate_quarters_ccw, &params, false)).transpose()?;
+            &cpu_backend
+        } else { self.backend.as_ref() };
+
         let print_name = if request.scan_film {
             film_name
         } else {
@@ -339,7 +379,7 @@ impl Engine {
             pipeline_cache_key(film_name, &params)
         );
         let active_input = self.inputs.back_mut().expect("active cached input");
-        let reuse_film_stages = self.reuse_film_stages && self.backend.is_gpu();
+        let reuse_film_stages = self.reuse_film_stages && backend.is_gpu();
         let film_key =
             reuse_film_stages.then(|| film_stage_key(active_input.generation, &key, &params));
         let metered_ev = if reuse_film_stages && params.camera.auto_exposure {
@@ -416,13 +456,6 @@ impl Engine {
         let film_key = film_key.map(|key| format!("{pipeline_generation}:{key}"));
         let pipeline_ms = millis(pipeline_started.elapsed());
 
-        if request.viewport.is_some() && (request.grade.is_some() || request.masks.is_some()
-            || request.crop.is_some() || request.long_edge.is_some()) {
-            bail!("viewport rendering requires an unbaked native preview");
-        }
-        let plan = request.viewport.map(|viewport| region::plan(viewport, image.width, image.height,
-            request.rotate_quarters_ccw, &pipeline.params,
-            self.backend.name().to_lowercase().contains("wgpu"))).transpose()?;
         let accelerated = plan.as_ref().is_some_and(|plan| plan.accelerated);
         // Meter the original before the spatial crop, even with checkpoint reuse disabled.
         let metered_ev = if accelerated && metered_ev.is_none() && pipeline.params.camera.auto_exposure {
@@ -446,14 +479,14 @@ impl Engine {
             && request.grade.is_none() && request.masks.is_none()
             && request.crop.is_none() && request.long_edge.is_none();
         let packed = if native_only {
-            pipeline.process_resident_native(render_image, self.backend.as_ref(),
+            pipeline.process_resident_native(render_image, backend,
                 film_key.as_deref(), metered_ev,
                 spektrafilm_gpu::NativeOutputSpec {
                     quarters_ccw: request.rotate_quarters_ccw, crop: plan.as_ref().map(|plan| plan.trim.array()),
                 })
         } else { None };
         let resident_rendered = if packed.is_none() {
-            pipeline.process_resident_cached(render_image, self.backend.as_ref(),
+            pipeline.process_resident_cached(render_image, backend,
                 film_key.as_deref(), metered_ev)
         } else { None };
         if accelerated && packed.is_none() && resident_rendered.is_none() {
@@ -462,9 +495,9 @@ impl Engine {
         let used_resident = packed.is_some() || resident_rendered.is_some();
         let rendered = if packed.is_none() {
             Some(resident_rendered.unwrap_or_else(||
-                pipeline.process((*image).clone(), self.backend.as_ref())))
+                pipeline.process((*image).clone(), backend)))
         } else { None };
-        let mut cache_status = self.backend.resident_cache_status();
+        let mut cache_status = backend.resident_cache_status();
         if !used_resident {
             cache_status.0 = false;
             cache_status.1 = false;
@@ -487,7 +520,7 @@ impl Engine {
         {
             let mut remaining_grade = request.grade.as_ref();
             if let Some(grade) = remaining_grade.filter(|g| !export::grade_is_identity(g)) {
-                if let Ok(graded) = grade_gpu::apply(self.backend.as_ref(), &samples, width, height, grade) {
+                if let Ok(graded) = grade_gpu::apply(backend, &samples, width, height, grade) {
                     samples = graded;
                     remaining_grade = None;
                     grade_gpu = true;
@@ -550,7 +583,10 @@ impl Engine {
         Ok(Response {
             id: request.id,
             ok: true,
-            backend: self.backend.name().to_owned(),
+            backend: backend.name().to_owned(),
+            adapter: backend.adapter_diagnostics(),
+            gpu_timings: used_resident.then(|| backend.last_gpu_timings()).flatten(),
+            fallback_reason,
             width: Some(width),
             height: Some(height),
             full_width: request.viewport.map(|_| if request.rotate_quarters_ccw % 2 == 0 { image.width } else { image.height }),
@@ -1185,6 +1221,87 @@ mod tests {
     }
 }
 
+#[cfg(all(test, unix))]
+mod unix_shared_input_tests {
+    use super::*;
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    struct Segment { name: CString }
+
+    impl Segment {
+        fn new(bytes: &[u8]) -> Self {
+            static NEXT: AtomicU64 = AtomicU64::new(0);
+            let name = CString::new(format!("/lti-{:x}-{:x}", std::process::id(),
+                NEXT.fetch_add(1, Ordering::Relaxed))).unwrap();
+            let fd = unsafe { libc::shm_open(name.as_ptr(),
+                libc::O_RDWR | libc::O_CREAT | libc::O_EXCL, 0o600) };
+            assert!(fd >= 0, "{}", io::Error::last_os_error());
+            // Retain ownership before any fallible operation so a failed test
+            // still unlinks its object on both /dev/shm and Darwin POSIX shm.
+            let segment = Self { name };
+            let sized = unsafe { libc::ftruncate(fd, bytes.len() as libc::off_t) };
+            if sized != 0 {
+                unsafe { libc::close(fd); }
+                panic!("sizing test shared memory failed");
+            }
+            let address = unsafe { libc::mmap(std::ptr::null_mut(), bytes.len(),
+                libc::PROT_READ | libc::PROT_WRITE, libc::MAP_SHARED, fd, 0) };
+            unsafe { libc::close(fd); }
+            assert_ne!(address, libc::MAP_FAILED);
+            unsafe {
+                std::ptr::copy_nonoverlapping(bytes.as_ptr(), address.cast::<u8>(), bytes.len());
+                libc::munmap(address, bytes.len());
+            }
+            segment
+        }
+    }
+
+    impl Drop for Segment {
+        fn drop(&mut self) { unsafe { libc::shm_unlink(self.name.as_ptr()); } }
+    }
+
+    fn payload() -> Vec<u8> {
+        let mut bytes = Vec::from(*RAW_SHARED_MAGIC);
+        bytes.extend_from_slice(&2_u32.to_le_bytes());
+        bytes.extend_from_slice(&1_u32.to_le_bytes());
+        bytes.extend_from_slice(&12_u32.to_le_bytes());
+        for value in [0_u16, 32768, 65535, 16384, 8192, 4096] {
+            bytes.extend_from_slice(&value.to_le_bytes());
+        }
+        bytes
+    }
+
+    #[test]
+    fn unix_shared_raw_roundtrips_with_bare_and_posix_names() {
+        let bytes = payload();
+        let segment = Segment::new(&bytes);
+        let name = segment.name.to_str().unwrap();
+        let expected = parse_shared_input(&bytes).unwrap();
+        for supplied in [name, name.strip_prefix('/').unwrap()] {
+            let actual = load_shared_input(supplied, bytes.len()).unwrap();
+            assert_eq!((actual.width, actual.height), (2, 1));
+            assert_eq!(actual.data, expected.data);
+        }
+        // The reader must not unlink the server-owned object.
+        assert!(load_shared_input(name, bytes.len()).is_ok());
+    }
+
+    #[test]
+    fn unix_shared_raw_rejects_truncated_missing_and_invalid_objects() {
+        let bytes = payload();
+        let segment = Segment::new(&bytes);
+        let name = segment.name.to_str().unwrap().to_owned();
+        let page = unsafe { libc::sysconf(libc::_SC_PAGESIZE) } as usize;
+        assert!(load_shared_input(&name, bytes.len() + page).unwrap_err()
+            .to_string().contains("truncated"));
+        assert!(load_shared_input("nested/name", bytes.len()).is_err());
+        assert!(load_shared_input("bad name", bytes.len()).is_err());
+        assert!(load_shared_input(&name, RAW_SHARED_HEADER_BYTES - 1).is_err());
+        drop(segment);
+        assert!(load_shared_input(&name, bytes.len()).is_err());
+    }
+}
+
 #[cfg(all(test, windows))]
 mod windows_shared_input_tests {
     use super::*;
@@ -1304,6 +1421,72 @@ mod windows_shared_input_tests {
 #[cfg(test)]
 mod resident_cache_tests {
     use super::*;
+
+    /// Exercise request routing without allocating an oversized GPU image.
+    struct SizeLimitedBackend;
+    impl ComputeBackend for SizeLimitedBackend {
+        fn try_compute_f32(&self, _shader: &'static str, _input: &[f32], parameters: &[f32],
+            _output_len: usize, _workgroups: [u32; 3]) -> Option<Vec<f32>> {
+            assert!(parameters[0] <= 64.0, "GPU finishing bypassed the request's CPU fallback");
+            None
+        }
+        fn colorspace_convert(&self, image: &ImageBuf, matrix: &[[f32; 3]; 3]) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.colorspace_convert(image, matrix)
+        }
+        fn cctf_encode_srgb(&self, image: &ImageBuf) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.cctf_encode_srgb(image)
+        }
+        fn cctf_decode_srgb(&self, image: &ImageBuf) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.cctf_decode_srgb(image)
+        }
+        fn gaussian_blur(&self, image: &ImageBuf, sigma: f32) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.gaussian_blur(image, sigma)
+        }
+        fn table_lookup(&self, image: &ImageBuf, x: &[f32], y: &[[f32; 3]]) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.table_lookup(image, x, y)
+        }
+        fn lut3d_interp(&self, image: &ImageBuf, lut: &spektrafilm_gpu::Lut3D) -> ImageBuf {
+            spektrafilm_gpu::cpu_backend::CpuBackend.lut3d_interp(image, lut)
+        }
+        fn name(&self) -> &str { "size-limited test backend" }
+        fn render_support_error(&self, width: u32, _height: u32, _native: bool) -> Option<String> {
+            (width > 64).then(|| "test buffer limit".to_owned())
+        }
+    }
+
+    #[test]
+    #[ignore = "requires LIGHTTABLE_TEST_DATA_DIR with installed film profiles"]
+    fn oversized_request_uses_cpu_then_returns_to_original_backend() {
+        let data = std::env::var("LIGHTTABLE_TEST_DATA_DIR").expect("film profile data path");
+        let root = std::env::temp_dir().join(format!("lighttable-size-fallback-{}", std::process::id()));
+        fs::create_dir_all(&root).unwrap();
+        let mut engine = Engine {
+            backend: Box::new(SizeLimitedBackend),
+            inputs: VecDeque::new(), input_cache_max_bytes: 1024 * 1024,
+            pipelines: VecDeque::new(), print_profiles: VecDeque::new(),
+            pipeline_cache_max_entries: 4, next_input_generation: 0,
+            next_pipeline_generation: 0, reuse_film_stages: true,
+        };
+        for width in [128, 32] {
+            let input = root.join(format!("{width}.tiff"));
+            let output = root.join(format!("{width}-output.tiff"));
+            save_output(&input, width, 8, &vec![0.18; width as usize * 8 * 3],
+                95, 32).unwrap();
+            let response = engine.handle(serde_json::from_value(serde_json::json!({
+                "id":width, "command":"render", "input":input, "output":output,
+                "data_dir":data, "film":"kodak_portra_400", "paper":"kodak_endura_premier",
+                "bit_depth":32, "grade":{"exposure":0.1},
+                "params":{"film_render":{"grain":{"active":false}}}
+            })).unwrap()).unwrap();
+            assert_eq!(response.backend, if width > 64 { "CPU (rayon)" } else { "size-limited test backend" });
+            assert_eq!(response.fallback_reason.as_deref(), (width > 64).then_some("test buffer limit"));
+            assert_eq!((response.width, response.height), (Some(width), Some(8)));
+            assert!(response.mean.unwrap().is_finite());
+            assert!(output.is_file());
+        }
+        assert_eq!(engine.backend.name(), "size-limited test backend");
+        fs::remove_dir_all(root).unwrap();
+    }
 
     fn changed(group: &str, patch: serde_json::Value) -> RuntimeParams {
         let mut value = serde_json::to_value(RuntimeParams::default()).unwrap();

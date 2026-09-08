@@ -85,7 +85,7 @@ class AIIndexService:
                     if self.store.last_recovery else ""
                 ),
                 "capabilities": self.analyzer.capabilities(),
-                "privacy": "Index data stays in LightTable's local Application Support folder.",
+                "privacy": "Index data stays in LightTable's local data folder.",
             }
 
     def results(self, names: list[str]) -> dict[str, dict]:

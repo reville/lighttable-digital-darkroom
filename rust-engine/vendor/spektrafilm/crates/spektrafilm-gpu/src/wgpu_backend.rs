@@ -25,6 +25,75 @@ fn scalars_to_f32(v: &[spektrafilm_math::precision::Scalar]) -> std::borrow::Cow
 /// (halation tops out at tens of pixels).
 const MAX_BLUR_RADIUS: u32 = 256;
 
+/// Keep the existing 1024-pixel dispatch grid even on Vulkan devices whose
+/// workgroups are limited to 256 or 512 invocations. These kernels have no
+/// workgroup memory or barriers: each invocation can evaluate several pixels
+/// independently without changing their arithmetic or the dispatch ceiling.
+#[cfg(feature = "wgpu-backend")]
+fn linear_workgroup_size(limits: &wgpu::Limits) -> Option<u32> {
+    let supported = limits.max_compute_invocations_per_workgroup
+        .min(limits.max_compute_workgroup_size_x);
+    [1024, 512, 256].into_iter().find(|&size| size <= supported)
+}
+
+#[cfg(feature = "wgpu-backend")]
+fn portable_shader_source(source: &str, threads: u32) -> Cow<'_, str> {
+    const ENTRY: &str = "@compute @workgroup_size(1024)\nfn main(@builtin(global_invocation_id) gid: vec3<u32>)";
+    if threads == 1024 || !source.contains("@workgroup_size(1024)") {
+        return Cow::Borrowed(source);
+    }
+    assert!(matches!(threads, 256 | 512));
+    assert!(source.contains(ENTRY), "unsupported linear shader entry point");
+    let mut adapted = source.replacen(ENTRY, "fn lighttable_pixel(gid: vec3<u32>)", 1);
+    adapted.push_str(&format!(r#"
+
+@compute @workgroup_size({threads})
+fn main(@builtin(workgroup_id) group: vec3<u32>,
+        @builtin(local_invocation_id) local: vec3<u32>) {{
+    for (var offset = 0u; offset < 1024u; offset += {threads}u) {{
+        lighttable_pixel(vec3<u32>(group.x * 1024u + local.x + offset, group.y, group.z));
+    }}
+}}
+"#));
+    Cow::Owned(adapted)
+}
+
+#[cfg(feature = "wgpu-backend")]
+fn image_support_error(limits: &wgpu::Limits, width: u32, height: u32,
+    native_preview: bool) -> Option<String> {
+    let pixels = u64::from(width) * u64::from(height);
+    let Some(rgb_bytes) = pixels.checked_mul(12) else {
+        return Some(format!("{width}x{height} image byte count overflows"));
+    };
+    let capacity = u64::from(limits.max_storage_buffer_binding_size).min(limits.max_buffer_size);
+    if pixels == 0 || rgb_bytes > capacity || rgb_bytes > u64::from(u32::MAX) {
+        return Some(format!("{width}x{height} RGB image needs {rgb_bytes} bytes per buffer; GPU limit is {capacity}"));
+    }
+    let dispatch_limit = u64::from(limits.max_compute_workgroups_per_dimension);
+    if pixels.div_ceil(1024) > dispatch_limit
+        || u64::from(width).div_ceil(16) > dispatch_limit
+        || u64::from(height).div_ceil(16) > dispatch_limit {
+        return Some(format!("{width}x{height} image exceeds the GPU compute dispatch limit {dispatch_limit}"));
+    }
+    if native_preview {
+        // Rotation may swap the padded row axis. Native output also carries
+        // a small per-workgroup metering tail in the same storage buffer.
+        let packed_bytes = ((u64::from(width) * 4).div_ceil(256) * 256 * u64::from(height))
+            .max((u64::from(height) * 4).div_ceil(256) * 256 * u64::from(width))
+            + pixels.div_ceil(256) * 4;
+        if packed_bytes > capacity {
+            return Some(format!("native preview needs {packed_bytes} bytes; GPU buffer limit is {capacity}"));
+        }
+    }
+    None
+}
+
+#[cfg(feature = "wgpu-backend")]
+fn reduction_grid(groups: u32, limit: u32) -> (u32, u32) {
+    let width = groups.min(limit).max(1);
+    (width, groups.div_ceil(width))
+}
+
 #[inline]
 fn fir_blur_radius(sigma: f32) -> u32 {
     ((3.0_f32 * sigma + 0.5) as u32).min(MAX_BLUR_RADIUS)
@@ -94,6 +163,7 @@ fn f32_to_scalars(v: Vec<f32>) -> Vec<spektrafilm_math::precision::Scalar> {
 pub struct WgpuBackend {
     device: wgpu::Device,
     queue: wgpu::Queue,
+    adapter_info: wgpu::AdapterInfo,
     /// Cache compiled compute pipelines keyed by shader source pointer.
     /// `&'static str` is fine because all our shader sources come from `include_str!`.
     pipeline_cache: std::sync::Mutex<std::collections::HashMap<usize, CachedPipeline>>,
@@ -110,6 +180,9 @@ struct ResidentCache {
     last_scratch_hit: bool,
     scratch: Option<(usize, wgpu::Buffer, wgpu::Buffer)>,
     film: Option<(String, usize, wgpu::Buffer)>,
+    readback: Option<(usize, wgpu::Buffer)>,
+    last_readback_hit: bool,
+    timings: Option<crate::GpuTimings>,
 }
 
 #[cfg(feature = "wgpu-backend")]
@@ -119,6 +192,10 @@ const RESIDENT_FILM_BYTES: usize = 96 * 1024 * 1024;
 // Counts both the exact CPU comparison copy and GPU allocation.
 #[cfg(feature = "wgpu-backend")]
 const RESIDENT_STORAGE_BYTES: usize = 32 * 1024 * 1024;
+// A single staging buffer for ordinary previews on discrete GPUs. The mapped
+// unified-memory fast path needs no extra allocation and remains unchanged.
+#[cfg(feature = "wgpu-backend")]
+const RESIDENT_READBACK_BYTES: usize = 32 * 1024 * 1024;
 
 #[cfg(feature = "wgpu-backend")]
 struct CachedPipeline {
@@ -147,16 +224,17 @@ impl WgpuBackend {
         // megapixel counts (within RAM).
         let adapter_info = adapter.get_info();
         let adapter_limits = adapter.limits();
+        // The blur and reduction kernels require 256 invocations independently
+        // of the linear kernels. Let the caller select CPU fallback otherwise.
+        let linear_threads = linear_workgroup_size(&adapter_limits)?;
         let mut limits = wgpu::Limits::default();
         limits.max_storage_buffer_binding_size = adapter_limits.max_storage_buffer_binding_size;
         limits.max_buffer_size = adapter_limits.max_buffer_size;
         limits.max_compute_workgroups_per_dimension =
             adapter_limits.max_compute_workgroups_per_dimension;
         limits.max_bind_groups = adapter_limits.max_bind_groups.max(limits.max_bind_groups);
-        // Our per-pixel shaders use `@workgroup_size(1024)` so the
-        // dispatch grid stays under the 65535-per-dimension limit even
-        // for 30+ MP images. The default Limits cap workgroup
-        // invocations at 256, so we have to lift that here too.
+        // Retain the 1024-thread fast path where available. Smaller devices
+        // evaluate the same 1024 pixels per group with a portable wrapper.
         limits.max_compute_invocations_per_workgroup =
             adapter_limits.max_compute_invocations_per_workgroup;
         limits.max_compute_workgroup_size_x = adapter_limits.max_compute_workgroup_size_x;
@@ -186,16 +264,44 @@ impl WgpuBackend {
         tracing::info!(
             adapter = adapter_info.name,
             backend = ?adapter_info.backend,
+            linear_workgroup_threads = linear_threads,
             "wgpu backend initialized"
         );
 
         Some(Self {
             device,
             queue,
+            adapter_info,
             pipeline_cache: std::sync::Mutex::new(std::collections::HashMap::new()),
             resident_cache: std::sync::Mutex::new(ResidentCache::default()),
             storage_cache: std::sync::Mutex::new(std::collections::VecDeque::new()),
         })
+    }
+
+    fn readback_buffer(&self, resident: &mut ResidentCache, size: usize,
+        reuse: bool) -> wgpu::Buffer {
+        resident.last_readback_hit = false;
+        // Borrow unused scratch capacity instead of increasing the established
+        // total retained-memory ceiling (192 + 96 + 32 MiB).
+        let can_retain = reuse && size <= RESIDENT_READBACK_BYTES
+            && resident.scratch.as_ref().map_or(0, |(bytes, _, _)| bytes * 2) + size
+                <= RESIDENT_SCRATCH_BYTES;
+        if can_retain {
+            if let Some((bytes, buffer)) = resident.readback.as_ref().filter(|(bytes, _)| *bytes == size) {
+                debug_assert_eq!(*bytes, size);
+                resident.last_readback_hit = true;
+                return buffer.clone();
+            }
+        }
+        let buffer = self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("resident_readback"), size: size as u64,
+            usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        });
+        resident.readback = if can_retain {
+            Some((size, buffer.clone()))
+        } else { None };
+        buffer
     }
 
     /// Exact byte comparison prevents digest collisions or stale profile pointers.
@@ -252,7 +358,9 @@ impl WgpuBackend {
                 .device
                 .create_shader_module(wgpu::ShaderModuleDescriptor {
                     label: Some("compute_shader"),
-                    source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(shader_source)),
+                    source: wgpu::ShaderSource::Wgsl(portable_shader_source(
+                        shader_source, linear_workgroup_size(&self.device.limits()).unwrap(),
+                    )),
                 });
             let entries = layout_entries_fn();
             let bind_group_layout =
@@ -849,6 +957,8 @@ impl WgpuBackend {
         let img_bytes = n_pixels as usize * 3 * 4;
 
         let mut resident = self.resident_cache.lock().unwrap();
+        resident.timings = None;
+        resident.last_readback_hit = false;
         let reuse = p.film_cache_key.is_some();
         let mappable = self
             .device
@@ -895,6 +1005,12 @@ impl WgpuBackend {
         };
         resident.last_film_hit = film_hit;
         resident.last_scratch_hit = scratch_hit;
+        if !reuse || resident.readback.as_ref().is_some_and(|(bytes, _)| {
+            resident.scratch.as_ref().map_or(0, |(size, _, _)| size * 2) + bytes
+                > RESIDENT_SCRATCH_BYTES
+        }) {
+            resident.readback = None;
+        }
         if !film_hit {
             // Input upload is unnecessary when we start from developed density.
             let input_f32 = scalars_to_f32(&image.data);
@@ -1414,12 +1530,7 @@ impl WgpuBackend {
         // can't map buf_b directly. Skipping it on the mappable path also
         // avoids allocating a second full-image buffer per frame.
         let readback = (!mappable && native_rotation.is_none()).then(|| {
-            self.device.create_buffer(&wgpu::BufferDescriptor {
-                label: Some("readback"),
-                size: img_bytes as u64,
-                usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
-                mapped_at_creation: false,
-            })
+            self.readback_buffer(&mut resident, img_bytes, reuse)
         });
 
         // ── Halation auxiliary buffers + bind groups (only if active) ────
@@ -1725,7 +1836,7 @@ impl WgpuBackend {
 
         let native_pack = native_rotation.map(|rotation| {
             self.encode_native_pack(&mut encoder, &buf_b, image.width, image.height,
-                rotation, mappable)
+                rotation, mappable, reuse.then_some(&mut *resident))
         });
 
         // Zero-copy path: when buf_b is mappable, skip the blit and map it
@@ -1735,7 +1846,7 @@ impl WgpuBackend {
         }
         // Everything since function entry: CPU-side param prep, buffer
         // creation/uploads, and command encoding.
-        let cpu_setup_ms = t_start.elapsed().as_secs_f32() * 1000.0;
+        let cpu_setup_ms = t_start.elapsed().as_secs_f64() * 1000.0;
         self.queue.submit(Some(encoder.finish()));
 
         // Single sync point at the end. Map buf_b directly on the zero-copy
@@ -1749,8 +1860,9 @@ impl WgpuBackend {
         });
         self.device.poll(wgpu::Maintain::Wait);
         rx.recv().unwrap().unwrap();
-        let gpu_wait_ms = t_start.elapsed().as_secs_f32() * 1000.0 - cpu_setup_ms;
+        let gpu_wait_ms = t_start.elapsed().as_secs_f64() * 1000.0 - cpu_setup_ms;
         let data = slice.get_mapped_range();
+        let readback_bytes = data.len();
         if let Some((_, width, height, row_bytes)) = native_pack.as_ref() {
             let pixel_bytes = row_bytes * *height as usize;
             let pixels = data[..pixel_bytes].to_vec();
@@ -1759,6 +1871,12 @@ impl WgpuBackend {
                 / (*width as f64 * *height as f64 * 3.0);
             drop(data);
             map_target.unmap();
+            resident.timings = Some(crate::GpuTimings {
+                cpu_setup_ms, submit_to_map_ms: gpu_wait_ms,
+                cpu_readback_ms: t_start.elapsed().as_secs_f64() * 1000.0 - cpu_setup_ms - gpu_wait_ms,
+                upload_bytes: if film_hit { 0 } else { img_bytes }, readback_bytes,
+                readback_buffer_reused: resident.last_readback_hit,
+            });
             return crate::FilmChainOutput::Native(crate::NativePackedSurface {
                 width: *width, height: *height, row_bytes: *row_bytes, pixels, mean,
             });
@@ -1767,13 +1885,20 @@ impl WgpuBackend {
         drop(data);
         map_target.unmap();
 
+        resident.timings = Some(crate::GpuTimings {
+            cpu_setup_ms, submit_to_map_ms: gpu_wait_ms,
+            cpu_readback_ms: t_start.elapsed().as_secs_f64() * 1000.0 - cpu_setup_ms - gpu_wait_ms,
+            upload_bytes: if film_hit { 0 } else { img_bytes }, readback_bytes,
+            readback_buffer_reused: resident.last_readback_hit,
+        });
+
         let out = ImageBuf::from_data(image.width, image.height, f32_to_scalars(out_f32));
         tracing::debug!(
             cpu_setup_ms = format!("{cpu_setup_ms:.1}"),
             gpu_wait_ms = format!("{gpu_wait_ms:.1}"),
             readback_ms = format!(
                 "{:.1}",
-                t_start.elapsed().as_secs_f32() * 1000.0 - cpu_setup_ms - gpu_wait_ms
+                t_start.elapsed().as_secs_f64() * 1000.0 - cpu_setup_ms - gpu_wait_ms
             ),
             "film chain timings"
         );
@@ -1782,6 +1907,7 @@ impl WgpuBackend {
 
     fn encode_native_pack(&self, encoder: &mut wgpu::CommandEncoder,
         rgb: &wgpu::Buffer, width: u32, height: u32, output: crate::NativeOutputSpec, mappable: bool,
+        resident: Option<&mut ResidentCache>,
     ) -> (wgpu::Buffer, u32, u32, usize) {
         use wgpu::util::DeviceExt;
         let rotation = u32::from(output.quarters_ccw % 4);
@@ -1827,11 +1953,13 @@ impl WgpuBackend {
             pass.dispatch_workgroups(dispatch_width, groups.div_ceil(dispatch_width), 1);
         }
         let mapped = if mappable { output } else {
-            let staging = self.device.create_buffer(&wgpu::BufferDescriptor {
+            let staging = if let Some(resident) = resident {
+                self.readback_buffer(resident, size as usize, true)
+            } else { self.device.create_buffer(&wgpu::BufferDescriptor {
                 label: Some("native_pack_readback"), size,
                 usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
                 mapped_at_creation: false,
-            });
+            }) };
             encoder.copy_buffer_to_buffer(&output, 0, &staging, 0, size);
             staging
         };
@@ -1867,7 +1995,9 @@ impl WgpuBackend {
                 .device
                 .create_shader_module(wgpu::ShaderModuleDescriptor {
                     label: Some("compute_shader"),
-                    source: wgpu::ShaderSource::Wgsl(Cow::Borrowed(shader_source)),
+                    source: wgpu::ShaderSource::Wgsl(portable_shader_source(
+                        shader_source, linear_workgroup_size(&self.device.limits()).unwrap(),
+                    )),
                 });
             let bind_group_layout =
                 self.device
@@ -2389,11 +2519,39 @@ impl ComputeBackend for WgpuBackend {
         let storage = self.storage_cache.lock().unwrap();
         let bytes = cache.scratch.as_ref().map_or(0, |(size, _, _)| size * 2)
             + cache.film.as_ref().map_or(0, |(_, size, _)| *size)
+            + cache.readback.as_ref().map_or(0, |(size, _)| *size)
             + storage
                 .iter()
                 .map(|(_, data, _)| data.len() * 2)
                 .sum::<usize>();
         (cache.last_film_hit, cache.last_scratch_hit, bytes)
+    }
+
+    fn adapter_diagnostics(&self) -> Option<crate::AdapterDiagnostics> {
+        let limits = self.device.limits();
+        let mapped = self.device.features().contains(wgpu::Features::MAPPABLE_PRIMARY_BUFFERS);
+        Some(crate::AdapterDiagnostics {
+            name: self.adapter_info.name.clone(),
+            backend: format!("{:?}", self.adapter_info.backend),
+            device_type: format!("{:?}", self.adapter_info.device_type),
+            driver: self.adapter_info.driver.clone(),
+            driver_info: self.adapter_info.driver_info.clone(),
+            software: self.adapter_info.device_type == wgpu::DeviceType::Cpu,
+            memory_path: if mapped { "mapped_primary" } else { "staged" },
+            linear_workgroup_threads: linear_workgroup_size(&limits).unwrap(),
+            max_storage_buffer_bytes: u64::from(limits.max_storage_buffer_binding_size),
+            max_buffer_bytes: limits.max_buffer_size,
+            max_workgroups_per_dimension: limits.max_compute_workgroups_per_dimension,
+        })
+    }
+
+    fn last_gpu_timings(&self) -> Option<crate::GpuTimings> {
+        self.resident_cache.lock().unwrap().timings.clone()
+    }
+
+    fn render_support_error(&self, width: u32, height: u32,
+        native_preview: bool) -> Option<String> {
+        image_support_error(&self.device.limits(), width, height, native_preview)
     }
 
     fn name(&self) -> &str {
@@ -3584,6 +3742,7 @@ struct HighlightBoostState {
     reductions: Vec<(DispatchJob, u32)>,
     boost: DispatchJob,
     n_values: u32,
+    dispatch_limit: u32,
 }
 
 #[cfg(feature = "wgpu-backend")]
@@ -3732,6 +3891,7 @@ fn build_highlight_boost_state(
             bg: boost_bg,
         },
         n_values,
+        dispatch_limit: device.limits().max_compute_workgroups_per_dimension,
     }
 }
 
@@ -3745,7 +3905,8 @@ impl HighlightBoostState {
             });
             pass.set_pipeline(&job.pipeline.pipeline);
             pass.set_bind_group(0, &job.bg, &[]);
-            pass.dispatch_workgroups(*blocks, 1, 1);
+            let (x, y) = reduction_grid(*blocks, self.dispatch_limit);
+            pass.dispatch_workgroups(x, y, 1);
         }
         let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
             label: Some("highlight_boost"),
@@ -3753,7 +3914,7 @@ impl HighlightBoostState {
         });
         pass.set_pipeline(&self.boost.pipeline.pipeline);
         pass.set_bind_group(0, &self.boost.bg, &[]);
-        pass.dispatch_workgroups(self.n_values.div_ceil(1024), 1, 1);
+        pass.dispatch_workgroups(self.n_values.div_ceil(3).div_ceil(1024), 1, 1);
     }
 }
 
@@ -5462,6 +5623,209 @@ fn is_uniform(xs: &[f64]) -> bool {
 
 
 #[cfg(all(test, feature = "wgpu-backend"))]
+mod portability_tests {
+    use super::*;
+
+    fn constrained_backend(limits: wgpu::Limits) -> WgpuBackend {
+        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
+            backends: wgpu::Backends::PRIMARY, ..Default::default()
+        });
+        let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
+            .expect("WGPU adapter required");
+        let (device, queue) = pollster::block_on(adapter.request_device(
+            &wgpu::DeviceDescriptor { required_limits: limits, ..Default::default() }, None,
+        )).unwrap();
+        WgpuBackend {
+            device, queue, adapter_info: adapter.get_info(),
+            pipeline_cache: Default::default(), resident_cache: Default::default(),
+            storage_cache: Default::default(),
+        }
+    }
+
+    #[test]
+    fn image_limits_check_binding_dispatch_padding_and_overflow() {
+        let mut limits = wgpu::Limits::default();
+        assert!(image_support_error(&limits, 4000, 3000, false).unwrap().contains("buffer"));
+        limits.max_storage_buffer_binding_size = 1024 * 1024 * 1024;
+        limits.max_buffer_size = 1024 * 1024 * 1024;
+        assert!(image_support_error(&limits, 9504, 6336, true).is_none(), "61 MP image fits supported limits");
+        assert!(image_support_error(&limits, 10000, 7000, false).unwrap().contains("dispatch"));
+        assert!(image_support_error(&limits, u32::MAX, u32::MAX, false).is_some());
+        assert!(image_support_error(&limits, 0, 1, false).is_some());
+        limits.max_storage_buffer_binding_size = 1024;
+        assert!(image_support_error(&limits, 1, 8, false).is_none());
+        assert!(image_support_error(&limits, 1, 8, true).unwrap().contains("native"));
+        assert_eq!(reduction_grid(65536, 65535), (65535, 2));
+    }
+
+    #[test]
+    #[ignore = "requires a GPU adapter; validates discrete-style staging even on unified memory"]
+    fn staging_readback_reuses_only_matching_bounded_buffers() {
+        let backend = constrained_backend(wgpu::Limits::default());
+        assert_eq!(backend.adapter_diagnostics().unwrap().memory_path, "staged");
+        let mut resident = ResidentCache::default();
+        let _first = backend.readback_buffer(&mut resident, 1024, true);
+        assert!(!resident.last_readback_hit);
+        let _second = backend.readback_buffer(&mut resident, 1024, true);
+        assert!(resident.last_readback_hit);
+        let _resized = backend.readback_buffer(&mut resident, 2048, true);
+        assert!(!resident.last_readback_hit);
+        assert_eq!(resident.readback.as_ref().unwrap().0, 2048);
+        let _uncached = backend.readback_buffer(&mut resident, 2048, false);
+        assert!(resident.readback.is_none());
+        let _oversized = backend.readback_buffer(&mut resident, RESIDENT_READBACK_BYTES + 4, true);
+        assert!(resident.readback.is_none());
+    }
+
+    #[test]
+    #[ignore = "requires a GPU adapter; tests large-image dispatch boundaries using tiny limits"]
+    fn highlight_boost_crosses_reduction_rows_without_changing_scalar_math() {
+        use wgpu::util::DeviceExt;
+        let mut limits = wgpu::Limits::default();
+        limits.max_compute_workgroups_per_dimension = 2;
+        let backend = constrained_backend(limits);
+        let n_pixels = 1537_u32;
+        let input: Vec<f32> = (0..n_pixels * 3).map(|i| 0.01 + i as f32 / 1000.0).collect();
+        let params = crate::HighlightBoostGpuParams { boost_ev: 1.0, boost_range: 0.5, protect_ev: 0.0 };
+        let buffer = backend.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("highlight_test"), contents: bytemuck::cast_slice(&input),
+            usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+        });
+        let state = build_highlight_boost_state(&backend.device, &params, n_pixels, &buffer, &backend);
+        // Three reduction groups require two dispatch rows under the limit.
+        assert_eq!(state.reductions[0].1, 3);
+        let readback = backend.device.create_buffer(&wgpu::BufferDescriptor {
+            label: None, size: (input.len() * 4) as u64,
+            usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST, mapped_at_creation: false,
+        });
+        let mut encoder = backend.device.create_command_encoder(&Default::default());
+        state.encode_passes(&mut encoder);
+        encoder.copy_buffer_to_buffer(&buffer, 0, &readback, 0, (input.len() * 4) as u64);
+        backend.queue.submit(Some(encoder.finish()));
+        let (tx, rx) = std::sync::mpsc::channel();
+        readback.slice(..).map_async(wgpu::MapMode::Read, move |r| { tx.send(r).unwrap(); });
+        backend.device.poll(wgpu::Maintain::Wait);
+        rx.recv().unwrap().unwrap();
+        let mapped = readback.slice(..).get_mapped_range();
+        let output: &[f32] = bytemuck::cast_slice(&mapped);
+        let max_raw = *input.last().unwrap();
+        let raw_x0 = (0.184_f32 * params.protect_ev.exp2()).clamp(0.0, max_raw);
+        let a = 28.0_f32.powf(1.0 - params.boost_range);
+        let span = 1.0 - raw_x0 / max_raw;
+        let scale = (params.boost_ev.exp2() - 1.0) / ((a * span).exp() - a * span - 1.0) * max_raw;
+        for (&actual, &value) in output.iter().zip(&input) {
+            let dx = (value - raw_x0) / max_raw;
+            let expected = if value > raw_x0 { value + scale * ((a * dx).exp() - a * dx - 1.0) } else { value };
+            assert!((actual - expected).abs() <= 2e-5 * expected.max(1.0), "{actual} != {expected}");
+        }
+    }
+
+    #[test]
+    fn linear_threads_respect_both_adapter_limits() {
+        let mut limits = wgpu::Limits::default();
+        assert_eq!(linear_workgroup_size(&limits), Some(256));
+        limits.max_compute_invocations_per_workgroup = 1024;
+        assert_eq!(linear_workgroup_size(&limits), Some(256));
+        limits.max_compute_workgroup_size_x = 768;
+        assert_eq!(linear_workgroup_size(&limits), Some(512));
+        limits.max_compute_workgroup_size_x = 1024;
+        assert_eq!(linear_workgroup_size(&limits), Some(1024));
+        limits.max_compute_invocations_per_workgroup = 128;
+        assert_eq!(linear_workgroup_size(&limits), None);
+    }
+
+    #[test]
+    fn all_shaders_validate_with_portable_workgroups() {
+        let shaders = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../spektrafilm-shaders/wgsl");
+        let mut linear_count = 0;
+        for entry in std::fs::read_dir(shaders).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|s| s.to_str()) != Some("wgsl") { continue; }
+            let source = std::fs::read_to_string(&path).unwrap();
+            // Capable adapters must receive the original source, with no
+            // changed entry point, loop, or extra allocation.
+            assert!(matches!(portable_shader_source(&source, 1024), Cow::Borrowed(_)));
+            let is_linear = source.contains("@workgroup_size(1024)");
+            if is_linear {
+                linear_count += 1;
+                assert!(!source.contains("var<workgroup>"), "{} has shared state", path.display());
+                assert!(!source.contains("Barrier("), "{} synchronizes invocations", path.display());
+            }
+            for threads in [256, 512] {
+                let adapted = portable_shader_source(&source, threads);
+                let module = wgpu::naga::front::wgsl::parse_str(&adapted)
+                    .unwrap_or_else(|error| panic!("{}: {}", path.display(), error.emit_to_string(&adapted)));
+                wgpu::naga::valid::Validator::new(
+                    wgpu::naga::valid::ValidationFlags::all(),
+                    wgpu::naga::valid::Capabilities::all(),
+                ).validate(&module).unwrap_or_else(|error| panic!("{}: {error}", path.display()));
+                if is_linear {
+                    assert_eq!(module.entry_points[0].workgroup_size, [threads, 1, 1]);
+                } else {
+                    assert!(matches!(adapted, Cow::Borrowed(_)));
+                }
+            }
+        }
+        assert!(linear_count >= 20, "shader inventory was not exercised");
+    }
+
+    #[test]
+    #[ignore = "requires a real GPU; run explicitly on Linux or macOS"]
+    fn portable_linear_dispatch_covers_partial_and_multiple_groups() {
+        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
+            backends: wgpu::Backends::PRIMARY,
+            ..Default::default()
+        });
+        let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
+            .expect("WGPU adapter required");
+        // Deliberately request the portable 256-thread device contract even
+        // when the test machine supports 1024, so validation catches regressions.
+        let (device, queue) = pollster::block_on(adapter.request_device(
+            &wgpu::DeviceDescriptor::default(), None,
+        )).unwrap();
+        assert_eq!(linear_workgroup_size(&device.limits()), Some(256));
+        let backend = WgpuBackend {
+            device, queue,
+            adapter_info: adapter.get_info(),
+            pipeline_cache: Default::default(), resident_cache: Default::default(),
+            storage_cache: Default::default(),
+        };
+        let shaders = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../spektrafilm-shaders/wgsl");
+        for entry in std::fs::read_dir(shaders).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|s| s.to_str()) != Some("wgsl") { continue; }
+            let source = std::fs::read_to_string(&path).unwrap();
+            let module = backend.device.create_shader_module(wgpu::ShaderModuleDescriptor {
+                label: path.file_name().and_then(|name| name.to_str()),
+                source: wgpu::ShaderSource::Wgsl(portable_shader_source(&source, 256)),
+            });
+            let _pipeline = backend.device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+                label: path.file_name().and_then(|name| name.to_str()),
+                layout: None, module: &module, entry_point: Some("main"),
+                compilation_options: Default::default(), cache: None,
+            });
+        }
+        for n in [1_u32, 255, 256, 257, 1023, 1024, 1025, 2049] {
+            let source: Vec<f32> = (0..n * 3).map(|i| i as f32).collect();
+            let destination = vec![2.0_f32; source.len()];
+            let params = [n, 0.5_f32.to_bits(), 0, 0];
+            let result = backend.dispatch_compute(
+                include_str!("../../spektrafilm-shaders/wgsl/add_scaled.wgsl"),
+                &[
+                    GpuBuffer::uniform(bytemuck::cast_slice(&params)),
+                    GpuBuffer::storage_ro(bytemuck::cast_slice(&source)),
+                    GpuBuffer::storage_rw(bytemuck::cast_slice(&destination)),
+                ], n, 2,
+            );
+            let expected: Vec<f32> = source.iter().map(|&v| 2.0 + 0.5 * v).collect();
+            assert_eq!(result, expected, "missed or duplicated pixels with {n} pixels");
+        }
+    }
+}
+
+#[cfg(all(test, feature = "wgpu-backend"))]
 mod native_pack_tests {
     use super::*;
     use wgpu::util::DeviceExt;
@@ -5481,7 +5845,7 @@ mod native_pack_tests {
         let mut encoder = backend.device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
         let mappable = backend.device.features().contains(wgpu::Features::MAPPABLE_PRIMARY_BUFFERS);
         let (packed, out_width, out_height, row) = backend.encode_native_pack(&mut encoder, &rgb,
-            width, height, crate::NativeOutputSpec::default(), mappable);
+            width, height, crate::NativeOutputSpec::default(), mappable, None);
         assert_eq!((out_width, out_height, row), (width, height, width as usize * 4));
         backend.queue.submit(Some(encoder.finish()));
         let (tx, rx) = std::sync::mpsc::channel();

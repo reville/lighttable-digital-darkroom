@@ -6,6 +6,34 @@ pub mod wgpu_backend;
 
 use spektrafilm_math::image::ImageBuf;
 
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct AdapterDiagnostics {
+    pub name: String,
+    pub backend: String,
+    pub device_type: String,
+    pub driver: String,
+    pub driver_info: String,
+    pub software: bool,
+    pub memory_path: &'static str,
+    pub linear_workgroup_threads: u32,
+    pub max_storage_buffer_bytes: u64,
+    pub max_buffer_bytes: u64,
+    pub max_workgroups_per_dimension: u32,
+}
+
+/// Wall-clock boundaries, not GPU timestamp-query measurements. The wait
+/// includes submitted computation and any staging copy needed for mapping.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct GpuTimings {
+    pub cpu_setup_ms: f64,
+    pub submit_to_map_ms: f64,
+    pub cpu_readback_ms: f64,
+    /// Source image bytes only; small uniforms and spectral tables are excluded.
+    pub upload_bytes: usize,
+    pub readback_bytes: usize,
+    pub readback_buffer_reused: bool,
+}
+
 /// Compute backend abstraction. Each method corresponds to a GPU-friendly
 /// operation in the film simulation pipeline.
 ///
@@ -163,6 +191,13 @@ pub trait ComputeBackend: Send + Sync {
 
     /// Last resident request: film checkpoint hit, scratch reuse, retained bytes.
     fn resident_cache_status(&self) -> (bool, bool, usize) { (false, false, 0) }
+
+    fn adapter_diagnostics(&self) -> Option<AdapterDiagnostics> { None }
+    fn last_gpu_timings(&self) -> Option<GpuTimings> { None }
+
+    /// Reject image sizes before any GPU buffer/dispatch validation can panic.
+    fn render_support_error(&self, _width: u32, _height: u32,
+        _native_preview: bool) -> Option<String> { None }
 
     fn name(&self) -> &str;
 }
@@ -479,6 +514,13 @@ pub fn select_backend() -> Box<dyn ComputeBackend> {
     {
         if requested.as_deref().is_none() || requested.as_deref() == Some("wgpu") {
             if let Some(gpu) = wgpu_backend::WgpuBackend::new() {
+                // Software Vulkan is useful for explicit validation but is not
+                // a hardware speedup over our threaded CPU backend.
+                if requested.is_none() && gpu.adapter_diagnostics()
+                    .is_some_and(|info| info.software) {
+                    tracing::info!("software GPU adapter found; using CPU backend");
+                    return Box::new(cpu_backend::CpuBackend);
+                }
                 tracing::info!("using wgpu GPU backend");
                 return Box::new(gpu);
             }

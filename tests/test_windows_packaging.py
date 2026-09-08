@@ -230,8 +230,10 @@ class WindowsRuntimeLaunchContractTests(unittest.TestCase):
         self.assertIn('.arg(format!("pycache_prefix={}", bytecode.display()))', shell)
         self.assertNotIn("PYTHONDONTWRITEBYTECODE", shell)
         self.assertIn('command.env("NUMBA_CACHE_DIR", paths.cache.join("compiled-runtime"))', shell)
-        self.assertIn('WebContext::new(Some(paths.support.join("WebView2")))', shell)
-        self.assertIn(".with_theme(Some(Theme::Dark))", shell)
+        self.assertIn('WebContext::new(Some(paths.support.join(profile_name)))', shell)
+        self.assertIn('"WebView2"', shell)
+        self.assertIn('"WebKitGTK"', shell)
+        self.assertRegex(shell, r'\.with_theme\(if cfg!\(target_os = "linux"\) \{\s*None\s*\} else \{\s*Some\(Theme::Dark\)\s*\}\)')
         self.assertIn(".with_background_color(BACKGROUND)", shell)
 
     def test_desktop_shell_starts_servers_off_the_ui_thread_after_stopping_the_last(self):

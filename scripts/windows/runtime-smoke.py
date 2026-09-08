@@ -101,6 +101,16 @@ def check_file_identity(temp_path: Path) -> None:
     source.write_bytes(b"original pixels")
     original = source.stat()
     signature = file_identity.stat_signature(original, path=source)
+    if os.name == "nt":
+        # Build runners must exercise the metadata fast path, rather than
+        # silently hashing every original because a native binding is broken.
+        api = file_identity._windows_bindings()
+        with source.open("rb") as stream:
+            usn = api.file_usn(stream.fileno())
+            assert usn is not None, (
+                "Windows build smoke requires a journal-backed filesystem; "
+                "FSCTL_READ_FILE_USN_DATA failed", api.ctypes.get_last_error())
+        assert signature[-2] == 1, signature
     key = file_identity.signature_key(original, path=source)
     digest = file_identity.content_hash(source, expected_signature=key)
     with source.open("rb") as stream:
@@ -109,13 +119,13 @@ def check_file_identity(temp_path: Path) -> None:
         assert stream.read() == b"original pixels", "Identity closed a borrowed handle"
 
     # Keep the inode, length, and modification time while changing the bytes.
-    # On Windows, only the native ChangeTime distinguishes this revision.
+    # Even Windows ChangeTime can match for an immediate same-clock-tick write.
     with source.open("r+b") as stream:
         stream.write(b"replaced pixels")
     os.utime(source, ns=(original.st_atime_ns, original.st_mtime_ns))
     current = source.stat()
     assert file_identity.stat_signature(current, path=source)[:4] == signature[:4]
-    assert file_identity.signature_key(current, path=source) != key
+    assert file_identity.signature_key(current, path=source) != key, (signature, current)
     assert file_identity.content_hash(source) != digest
     try:
         file_identity.content_hash(source, expected_signature=key)
@@ -125,6 +135,30 @@ def check_file_identity(temp_path: Path) -> None:
         raise AssertionError("Replaced bytes passed the queued source guard")
 
     if os.name == "nt":
+        print("Native USN identity and immediate same-mtime rewrite checks passed", flush=True)
+        # Volumes without USN support must still reject changed bytes. Exercise
+        # the real ReOpenFile read handle and its independent file position.
+        native_usn = api.file_usn
+        api.file_usn = lambda fd: None
+        try:
+            fallback_key = file_identity.signature_key(current, path=source)
+            with source.open("rb") as stream:
+                assert stream.read(3) == b"rep"
+                assert file_identity.signature_key(os.fstat(stream.fileno()),
+                                                    fd=stream.fileno()) == fallback_key
+                assert stream.read() == b"laced pixels", "Fallback changed the borrowed file position"
+            source.write_bytes(b"original pixels")
+            os.utime(source, ns=(original.st_atime_ns, original.st_mtime_ns))
+            assert file_identity.signature_key(source.stat(), path=source) != fallback_key
+            try:
+                file_identity.content_hash(source, expected_signature=fallback_key)
+            except OSError:
+                pass
+            else:
+                raise AssertionError("No-journal fallback accepted replaced bytes")
+        finally:
+            api.file_usn = native_usn
+        current = source.stat()
         other = temp_path / "other-identity.bin"
         other.write_bytes(b"replaced pixels")
         os.utime(other, ns=(current.st_atime_ns, current.st_mtime_ns))
@@ -134,7 +168,8 @@ def check_file_identity(temp_path: Path) -> None:
             pass
         else:
             raise AssertionError("Native metadata handle accepted another file's stat")
-    print("Packaged file-revision identity smoke passed")
+    print("Packaged file-revision identity smoke passed" +
+          (" (native USN and no-journal byte fallback)" if os.name == "nt" else ""))
 
 
 def main() -> None:

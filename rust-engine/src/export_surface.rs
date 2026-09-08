@@ -39,9 +39,7 @@ pub fn publish(width: u32, height: u32, samples: &[f32]) -> Result<SharedExport>
         return Err(std::io::Error::last_os_error()).context("creating shared export");
     }
     let result = (|| {
-        if unsafe { libc::ftruncate(fd, length as libc::off_t) } != 0 {
-            return Err(std::io::Error::last_os_error()).context("sizing shared export");
-        }
+        crate::shared_memory::size_output(fd, length).context("sizing shared export")?;
         let address = unsafe { libc::mmap(std::ptr::null_mut(), length,
             libc::PROT_READ | libc::PROT_WRITE, libc::MAP_SHARED, fd, 0) };
         if address == libc::MAP_FAILED {

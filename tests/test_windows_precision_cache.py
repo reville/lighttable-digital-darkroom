@@ -56,11 +56,14 @@ class ProcessedPrecisionCacheTests(unittest.TestCase):
     def test_windows_rebuilds_old_processed_inputs_and_reuses_new_ones(self):
         self.exercise_cache("win32")
 
+    def test_linux_rebuilds_old_processed_inputs_and_reuses_new_ones(self):
+        self.exercise_cache("linux")
+
     def test_macos_keeps_existing_processed_input_caches(self):
         self.exercise_cache("darwin")
 
-    def test_raw_input_cache_identity_is_unchanged_on_both_platforms(self):
-        for platform in ("win32", "darwin"):
+    def test_raw_input_cache_identity_is_unchanged_on_all_platforms(self):
+        for platform in ("win32", "darwin", "linux"):
             with self.subTest(platform=platform):
                 self.exercise_cache(platform, raw=True)
 

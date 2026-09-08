@@ -16,7 +16,7 @@ test('waits for both responses, respects durable completion, and spares existing
   }
 });
 
-function fixture({ native = false, failSave = false } = {}) {
+function fixture({ native = false, failSave = false, platform = native ? 'macos' : undefined } = {}) {
   const all = new Map();
   class Element {
     hidden = false; disabled = false; value = ''; textContent = ''; inert = false;
@@ -37,7 +37,7 @@ function fixture({ native = false, failSave = false } = {}) {
     const node = new Element(name); node.dataset = { setupPage: name }; return node;
   });
   const shell = all.get('appShell');
-  globalThis.window = { __LIGHTTABLE_PLATFORM__: native ? 'macos' : undefined };
+  globalThis.window = { __LIGHTTABLE_PLATFORM__: platform };
   globalThis.document = { activeElement: null, body: new Element('body'), addEventListener() {} };
   document.body.children = [shell, all.get('firstRunDialog')];
   globalThis.requestAnimationFrame = (fn) => fn();
@@ -140,6 +140,19 @@ test('browser folder flow adds source through server before completing', async (
   assert.equal(f.writes.length, 1);
   await f.click('setupDone');
   assert.equal(f.writes[1].body.firstRunSetup.source, 'folder');
+});
+
+
+test('Linux empty-library setup does not wait for Mac-only first-run messages', async () => {
+  const f = fixture({ native: true, platform: 'linux' });
+  assert.equal(f.open(), true);
+  f.controller.nativeEvent({ type: 'sources', sources: [] });
+  assert.equal(f.open(), true);
+  assert.equal(f.all.get('setupPhotosSelected').hidden, true);
+  assert.equal(f.all.get('setupPhotosAll').disabled, true);
+  await f.click('setupLater');
+  f.controller.nativeEvent({ type: 'sources', sources: [] });
+  assert.equal(f.open(), false);
 });
 
 test('stopped selected import keeps successful photos and reports the stop', () => {

@@ -25,6 +25,20 @@ export function installSettings(context) {
       ? 'Automatic · matches the window, display, and zoom.'
       : `Manual override · ${value} px. Choose Automatic in Advanced to match the view.`;
   };
+  const refreshRendererStatus = async () => {
+    const status = byId('rendererStatus');
+    if (!status || window.__LIGHTTABLE_PLATFORM__ !== 'linux') return;
+    status.hidden = false;
+    try {
+      const response = await fetch('/api/health');
+      if (!response.ok) throw new Error('Renderer status unavailable.');
+      const renderer = (await response.json()).renderers?.interactive || {};
+      const adapter = renderer.adapter;
+      const label = renderer.backend || 'Warming up';
+      status.textContent = 'Rust renderer: ' + [label, adapter?.name,
+        adapter?.software ? 'Software rendering' : '', renderer.fallback_reason].filter(Boolean).join(' · ');
+    } catch (_) { status.textContent = 'Renderer status unavailable.'; }
+  };
   const showSidecarStatus = (status) => {
     const label = byId('sidecarWriteStatus');
     label.textContent = status.error ? status.error
@@ -210,6 +224,7 @@ export function installSettings(context) {
     dialog.setAttribute('aria-hidden', 'false');
     dialog.querySelector(`[data-settings-tab="${CSS.escape(tab)}"]`)?.focus();
     sendNative('listEditors', {});
+    void refreshRendererStatus();
   }
 
   function close() {

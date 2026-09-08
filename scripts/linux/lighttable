@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+SCRIPT=$(readlink -f -- "$0")
+ROOT=$(CDPATH= cd -- "$(dirname -- "$SCRIPT")/.." && pwd -P)
+case "${XDG_CACHE_HOME:-}" in
+  /*) LIGHTTABLE_RUNTIME_CACHE=$XDG_CACHE_HOME/lighttable ;;
+  *) LIGHTTABLE_RUNTIME_CACHE=$HOME/.cache/lighttable ;;
+esac
+export PYTHONNOUSERSITE=1
+export PYTHONPATH="$ROOT/Resources/LightTable:$ROOT/Resources/LightTable/vendor/spektrafilm/src"
+export NUMBA_CACHE_DIR=${NUMBA_CACHE_DIR:-$LIGHTTABLE_RUNTIME_CACHE/compiled-runtime}
+exec "$ROOT/Python/bin/python3" -P -X "pycache_prefix=$LIGHTTABLE_RUNTIME_CACHE/python-bytecode" -m lighttable_cli "$@"

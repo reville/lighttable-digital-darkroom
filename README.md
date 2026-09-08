@@ -118,18 +118,18 @@ for published downloads; package-manager installers are not available yet.
 | --- | --- |
 | macOS 13+, Apple silicon | Native AppKit/WebKit app with a Metal preview. Source builds are available; signed public packages are being prepared. |
 | Windows 10/11, x64 | Windows shell and installer build tooling are present, using WGPU/DirectX 12. Public packages and broader platform validation are still needed. |
-| Linux, including Omarchy | Maintainers wanted to establish and validate the desktop build, packaging, and platform support. No supported Linux desktop release yet. |
+| Linux, including Omarchy | Experimental GTK/WebKitGTK desktop port, Vulkan rendering, and portable-bundle build tooling. The initial targets are Ubuntu 24.04+ and Arch/Omarchy on x86-64. Hardware and desktop validation remain; no supported Linux release yet. |
 
 For development, follow the [source setup guide](CONTRIBUTING.md#source-setup-macos).
 A fresh clone needs the Python runtime dependencies and pinned film data before
 it can run. See [release setup](release/README.md) for bundled builds and
-[Windows](WINDOWS.md) for its build instructions and platform boundaries.
+[Windows](WINDOWS.md) and [Linux](LINUX.md) for their build instructions and platform boundaries.
 
 ## How it's made
 
 | Layer | Implementation |
 | --- | --- |
-| Desktop hosts | Swift, AppKit, WebKit, and Metal on macOS; Rust with Tao/Wry and the system webview on Windows. |
+| Desktop hosts | Swift, AppKit, WebKit, and Metal on macOS; Rust with Tao/Wry, WebView2 on Windows, and GTK/WebKitGTK on Linux. |
 | Interface | HTML, CSS, and native JavaScript modules in [`web/`](web/). No frontend bundler or build step. |
 | Local application | Python handles the HTTP API, catalog, imports, edit state, render scheduling, and exports. SQLite stores the library. |
 | Film renderer | A resident Rust/WGPU process in [`rust-engine/`](rust-engine/), adapted from [spektrafilm-rs](https://github.com/turbasvin/spektrafilm-rs). The Python spektrafilm implementation provides a reference and fallback. |
@@ -208,6 +208,7 @@ and saves per-case pixel differences and CI reports.
 - [Responsiveness and benchmarking](RESPONSIVENESS.md)
 - [Catalog recovery](RECOVERY.md)
 - [Windows architecture](WINDOWS.md)
+- [Experimental Linux build and validation](LINUX.md)
 - [Release and installer setup](release/README.md)
 - Roadmap notes: [RAW development](DEVELOP-ROADMAP.md),
   [catalog and workflow](WORKFLOW-ROADMAP.md), [remaining gaps](GAPS-ROADMAP.md).
