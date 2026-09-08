@@ -183,4 +183,5 @@ jobs:
           path: |
             .build/linux/arch-package/PKGBUILD
             .build/linux/arch-package/app.lighttable.LightTable.desktop
+          include-hidden-files: true
           if-no-files-found: error
