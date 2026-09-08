@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "561c3ae537cbb9892237cda530441873f75dded77b6fefb3bfa0031db764e392",
+  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Een export kan een gecatalogiseerd origineel of de bijbehorende capture-companion niet vervangen",
     "An external edit is already rendering": "Een externe bewerking wordt al gerenderd",
     "Analysis stays on this Mac and never modifies photo folders.": "Analyse blijft op deze Mac en wijzigt nooit fotomappen.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Animeer het zoomen van foto’s. Je keuze heeft voorrang op de systeeminstelling Verminder beweging.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Mogelijk importeert een ander LightTable-venster deze bibliotheek. Sluit die import en probeer het opnieuw.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Een andere toepassing heeft het XMP-bestand gewijzigd. Probeer opnieuw om de nieuwste wijzigingen samen te voegen.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Een andere kopie van LightTable heeft deze bibliotheek al geopend. Gebruik dat venster of sluit het af en probeer het opnieuw.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
     "Fit the whole photo to the available space": "Maak de hele foto passend in de beschikbare ruimte",
     "Fit to window ({actualPct}%)": "Passend maken in venster ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Passend maken, 1:1, zoomknoppen en zoomsneltoetsen worden vloeiend geanimeerd. Scrollen, knijpen en slepen reageren direct. Zoomanimatie is uitgeschakeld wanneer Verminder beweging in je systeeminstellingen is ingeschakeld.",
     "Flag": "Markering",
     "Flag and rate survey photo": "Overzichtsfoto markeren en beoordelen",
     "Flag and rating filters": "Markering- en beoordelingsfilters",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "Slimme selectiebewerking",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "De actie van de Slimme selectie bepaalt of de volgende slimme selectie een nieuw masker wordt of wordt gecombineerd met het momenteel geselecteerde masker.",
     "Smooth color": "Kleur verzachten",
+    "Smooth zoom": "Vloeiend zoomen",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
     "Snapshots": "Snapshots",
     "Soft Filmic": "Zacht filmisch",
     "Soft Proof": "Zachte proefdruk",

@@ -226,7 +226,7 @@
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
-            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống.",
+            "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
             "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa."
           ],
           "steps": [
@@ -2731,6 +2731,7 @@
           "paragraphs": [
             "Hầu hết thay đổi cài đặt được lưu tự động. Ngôn ngữ dùng Áp dụng ngôn ngữ và tải lại cửa sổ sau khi lưu các chỉnh sửa. Mục Chung cũng điều khiển Tự động chuyển ảnh sau khi chọn, từ chối hoặc gắn sao, thông báo hoàn tất và kiểm tra cập nhật.",
             "Các điều khiển giao diện gồm nền trình xem, thang phông chữ, Lights Out, lớp phủ thông tin loupe và hướng dẫn cắt xén. Các tùy chọn này thay đổi giao diện không gian làm việc mà không làm thay đổi pixel đã xuất.",
+            "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
             "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ."
           ]
         },
@@ -3128,5 +3129,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "561c3ae537cbb9892237cda530441873f75dded77b6fefb3bfa0031db764e392"
+  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
 }
