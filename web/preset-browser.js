@@ -61,7 +61,7 @@ export function createPresetBrowser({
   container, getPresets, getPhoto, getSelectedName = () => '',
   onSelect = () => {}, onApply, canApply = () => true,
   getFavorites = () => [], onFavoritesChange = () => {},
-  getPreview, onManage,
+  getPreview, managementSection,
 }) {
   let active = false, destroyed = false, loading = false, page = 0, favoritesOnly = false;
   let snapshot, searchTimer;
@@ -82,11 +82,22 @@ export function createPresetBrowser({
   const previous = root.querySelector('[data-page="previous"]');
   const next = root.querySelector('[data-page="next"]');
   const filterButtons = [...root.querySelectorAll('[data-filter]')];
-  if (onManage) {
+  let syncManagement;
+  if (managementSection) {
     const manage = document.createElement('button');
     manage.type = 'button'; manage.className = 'preset-browser-manage';
     manage.textContent = 'Manage…'; manage.setAttribute('aria-label', 'Manage presets');
-    manage.onclick = onManage;
+    manage.setAttribute('aria-controls', managementSection.id);
+    syncManagement = () => manage.setAttribute('aria-expanded', String(managementSection.open));
+    syncManagement();
+    managementSection.addEventListener('toggle', syncManagement);
+    manage.onclick = () => {
+      managementSection.open = !managementSection.open;
+      syncManagement();
+      if (managementSection.open) {
+        managementSection.querySelector('summary').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    };
     root.querySelector('.preset-browser-toolbar').append(manage);
   }
 
@@ -202,6 +213,10 @@ export function createPresetBrowser({
     refresh(options = {}) { loading = options.loading ?? loading; render(); },
     setActive(value) { active = !!value; if (active) render(); else cancel(); },
     select,
-    destroy() { destroyed = true; cancel(); root.remove(); },
+    destroy() {
+      destroyed = true; cancel();
+      if (syncManagement) managementSection.removeEventListener('toggle', syncManagement);
+      root.remove();
+    },
   };
 }
