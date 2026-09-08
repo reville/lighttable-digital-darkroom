@@ -1349,6 +1349,7 @@ dependencies = [
  "openblas-src",
  "pollster",
  "rayon",
+ "serde",
  "spektrafilm-math",
  "thiserror 2.0.20",
  "tracing",

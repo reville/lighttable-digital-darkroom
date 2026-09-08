@@ -24,7 +24,8 @@ class VisionProvider:
 
     @property
     def available(self) -> bool:
-        return self.helper.is_file() and os.access(self.helper, os.X_OK)
+        return (platform.system() == "Darwin"
+                and self.helper.is_file() and os.access(self.helper, os.X_OK))
 
     def analyze(self, image: Path) -> dict:
         if not self.available:

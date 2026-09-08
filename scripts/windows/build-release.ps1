@@ -110,6 +110,7 @@ try {
         "preset_library.py",
         "preset_submission.py",
         "platform_image.py",
+        "platform_paths.py",
         "semantic_masks.py",
         "export_workflow.py",
         "export_surface.py",

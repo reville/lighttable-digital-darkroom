@@ -31,10 +31,10 @@
         {
           "title": "Open a local folder",
           "paragraphs": [
-            "In the desktop app, Add Photos opens a picker for photos and folders. LightTable keeps the originals in their current location. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Local to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
           ],
           "steps": [
-            "Click Add Photos at the upper left and choose one or more photos or folders.",
+            "Click Add Photos at the upper left and choose photos, or use the + beside Local to choose a folder.",
             "Choose the folder under Local in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
             "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active."
           ],
@@ -299,7 +299,8 @@
         {
           "title": "Choose what is in view",
           "paragraphs": [
-            "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply."
+            "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
+            "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo."
           ],
           "steps": [
             "Click a folder under Local.",
@@ -311,7 +312,7 @@
         {
           "title": "Folder actions",
           "paragraphs": [
-            "A folder’s ••• menu includes Show in Finder on Mac or Show in File Explorer on Windows. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
+            "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
             "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
           ]
         }
@@ -531,7 +532,7 @@
           "steps": [
             "Choose the folder or collection and filters that define the photos you want to review.",
             "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
-            "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete.",
+            "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
             "Read the photo count in the confirmation and confirm only when it matches your intended set."
           ],
           "tips": [
@@ -540,9 +541,9 @@
           ]
         },
         {
-          "title": "Recover a mistaken removal on Mac",
+          "title": "Recover a mistaken removal",
           "paragraphs": [
-            "Use Finder’s Trash to put the original and its sidecars back in their previous folder, then rescan the folder in LightTable. The app does not have an in-app Trash browser."
+            "Use Finder’s Trash on Mac, the desktop Trash on Linux, or the Recycle Bin on Windows to restore the original and its sidecars to their previous folder, then rescan in LightTable. The app does not have an in-app Trash browser."
           ]
         }
       ],
@@ -1072,7 +1073,7 @@
             "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."
           ],
           "steps": [
-            "Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Windows.",
+            "Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Linux and Windows.",
             "Check the groups you want to transfer, then click Copy settings.",
             "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.",
             "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."
@@ -1626,7 +1627,7 @@
         {
           "title": "Select people or facial regions",
           "paragraphs": [
-            "People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. People masks require the Vision helper on macOS 14 or later. Face skin and hair are estimated, and no identity is inferred."
+            "People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. These controls require the Vision helper on macOS 14 or later and are hidden on Linux and Windows. Face skin and hair are estimated, and no identity is inferred."
           ],
           "steps": [
             "Choose People, then the part you want to adjust.",
@@ -1776,7 +1777,7 @@
             "Inspect the completed preview at 1:1."
           ],
           "tips": [
-            "Availability depends on the local model, helper, and supported platform. Development builds may lack the model, and the app reports this instead of pretending denoise succeeded."
+            "Learned denoise requires the macOS inference helper and a compatible local model. It is unavailable on Linux and Windows. Ordinary noise reduction and sharpening remain available. Development builds may lack the model; read the availability message before starting."
           ]
         },
         {
@@ -1823,7 +1824,7 @@
             "Undo and redo follow each photo during the current session. In catalog libraries, History persists after quitting. Nearby adjustments can be combined into a history step, so the list is not a record of every slider position."
           ],
           "steps": [
-            "Use Command-Z on Mac or Ctrl-Z on Windows to undo. Add Shift to redo.",
+            "Use Command-Z on Mac or Ctrl-Z on Linux and Windows to undo. Add Shift to redo.",
             "Open History in the editing toolbar to see the current photo’s stored steps, newest first.",
             "Click a step to restore its settings. Restoring a step is itself an undoable edit."
           ],
@@ -2152,7 +2153,7 @@
         {
           "title": "Formats and presets",
           "paragraphs": [
-            "The export dialog offers JPEG, HEIF, PNG, and 16-bit TIFF. HEIF is an 8-bit output option on macOS. The quality slider applies to JPEG and HEIF.",
+            "The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.",
             "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."
           ],
           "steps": [
@@ -2240,7 +2241,7 @@
         {
           "title": "Open an external editor",
           "paragraphs": [
-            "Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog."
+            "Use Edit in… to prepare photos for another pixel editor. The adjusted TIFF is written beside its original, and can be stacked with it in the catalog. On Linux and Windows, Choose application… lets you select an editor executable; Default application uses the desktop’s file association."
           ],
           "steps": [
             "Select a photo and press Command/Ctrl+E to open Edit in another app.",
@@ -2438,6 +2439,13 @@
             "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.",
             "Use Reset in the Current camera area to remove that camera default."
           ]
+        },
+        {
+          "title": "Linux and Omarchy appearance",
+          "paragraphs": [
+            "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.",
+            "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable."
+          ]
         }
       ],
       "related": [
@@ -2470,7 +2478,7 @@
         {
           "title": "Build the index",
           "paragraphs": [
-            "The Photo Index is off by default. Analysis stays on this Mac and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."
+            "The Photo Index is off by default and requires macOS. Linux and Windows show Not available on this platform, and new indexing cannot be enabled. On Mac, analysis stays on the device and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available."
           ],
           "steps": [
             "Open Settings → Photo Index.",
@@ -2515,7 +2523,7 @@
         {
           "title": "Review signals",
           "paragraphs": [
-            "Assisted culling uses the private Photo Index. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."
+            "Assisted culling uses the private Photo Index, which requires macOS. New analysis is unavailable on Linux and Windows. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."
           ],
           "steps": [
             "Enable Photo Index in Settings and wait for photos to be scored.",
@@ -2560,7 +2568,7 @@
         {
           "title": "Keyboard preferences",
           "paragraphs": [
-            "Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. The desktop Help menu also has Keyboard Shortcuts.",
+            "Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. On macOS, the desktop Help menu also has Keyboard Shortcuts. Use Ctrl for Command/Ctrl shortcuts on Linux and Windows.",
             "Choose LightTable or Classic; the scheme applies after a reload. Hold-key slider control lets you hold a mapped key while scrolling or using arrow keys. Allow automation controls whether approved local tools can control the window with history and Undo."
           ],
           "tips": [
@@ -2624,6 +2632,13 @@
           "paragraphs": [
             "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
             "For a damaged catalog, Library Health may offer salvage, restore, or a fresh catalog. Salvage copies readable rows but loses rows on damaged pages. Starting fresh does not carry over ratings, edits, collections, or history. The current damaged catalog file is preserved in Recovery."
+          ]
+        },
+        {
+          "title": "Find Linux application data",
+          "paragraphs": [
+            "Linux normally keeps the catalog and presets in ~/.local/share/lighttable, preferences in ~/.config/lighttable, render caches in ~/.cache/lighttable, and logs in ~/.local/state/lighttable/logs. Custom system or LightTable storage settings can change these locations; Settings shows the active catalog and cache paths.",
+            "Originals stay in the photo folders you choose. Catalog backups do not include those originals, your preferences, or separately stored presets. Earlier experimental Linux data is not moved automatically from older locations."
           ]
         },
         {
@@ -2691,6 +2706,13 @@
           "paragraphs": [
             "Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.",
             "Preview resolution is separate from the Dimensions setting used for exported files."
+          ]
+        },
+        {
+          "title": "Check Linux rendering",
+          "paragraphs": [
+            "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.",
+            "A photo that exceeds the GPU's limits uses the CPU. If the rendering worker stops responding, LightTable retries once on the CPU and keeps that worker for the session. Reopen LightTable after repairing or updating your graphics driver to try GPU rendering again. Large photos and software rendering can take longer; use Automatic preview detail for normal editing."
           ]
         }
       ],

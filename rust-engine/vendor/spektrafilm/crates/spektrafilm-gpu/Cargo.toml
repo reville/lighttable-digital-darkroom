@@ -15,6 +15,7 @@ spektrafilm-math.workspace = true
 rayon.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
+serde = { workspace = true, features = ["derive"] }
 wgpu = { workspace = true, optional = true, features = ["wgsl"] }
 cudarc = { version = "0.19.7", optional = true, default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading", "cuda-12000"] }
 bytemuck = { version = "1.25", features = ["derive"] }
@@ -30,7 +31,9 @@ accelerate-src = "0.3"
 [target.'cfg(all(not(target_os = "macos"), not(target_os = "windows")))'.dependencies]
 cblas = "0.4"
 blas-src = { version = "0.10", features = ["openblas"] }
-openblas-src = "0.10"
+# Link the distro's OpenBLAS (libopenblas-dev on Debian/Ubuntu, openblas on
+# Arch). Avoid downloading/building a second BLAS during an offline package build.
+openblas-src = { version = "0.10", features = ["system"] }
 
 [dev-dependencies]
 tracing-subscriber = { workspace = true }
