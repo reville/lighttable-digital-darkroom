@@ -261,7 +261,7 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.get_osfhandle = mock.Mock(return_value=99)
         api.reopen_file = mock.Mock(return_value=42)
         self.assertEqual(api.open_data_fd(8), 7)
-        api.reopen_file.assert_called_once_with(99, 0x80000000, 0x5, 0x08100000)
+        api.reopen_file.assert_called_once_with(99, 0x80000000, 0x5, 0)
         api.close_handle.assert_not_called()
         api.open_osfhandle.side_effect = OSError("allocation failed")
         with self.assertRaisesRegex(OSError, "allocation failed"):
