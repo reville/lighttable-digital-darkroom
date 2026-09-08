@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3095,6 +3095,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Dışa aktarma tamamlandığında, dışa aktarılan fotoğrafın bulunduğu klasörü açmak için tamamlanma bildirimindeki ikinci satırda yer alan Finder'da Göster bağlantısına tıklayın. Bildirim 2,8 saniye boyunca görünür kalır.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Eşleştirilmiş bir fotoğrafı görüntülerken, eşini görmek için üst kısımda RAW → JPEG veya JPEG → RAW kullanın.",
     "Where are your photos?": "Fotoğraflarınız nerede?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "Pencere açıkken LightTable her fotoğrafın kaydırma konumunu hatırlar ve fotoğraflar arasında geçiş yaparken mevcut yakınlaştırma düzeyini korur. Yeni fotoğraflar ortalanmış olarak gösterilir.",
     "While using Add, hold Option on Mac to subtract temporarily.": "Ekle kullanırken, Mac’te geçici olarak çıkarmak için Option tuşunu basılı tutun.",
     "White": "Beyaz",
     "White balance eyedropper": "Beyaz dengesi damlalığı",

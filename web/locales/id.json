@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3095,6 +3095,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Saat ekspor selesai, klik Tampilkan di Finder pada baris kedua notifikasi penyelesaian untuk membuka folder yang berisi foto yang diekspor. Notifikasi tetap terlihat selama 2,8 detik.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Saat melihat foto berpasangan, gunakan RAW → JPEG atau JPEG → RAW di dekat atas untuk beralih ke pasangannya.",
     "Where are your photos?": "Di mana foto Anda?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah.",
     "While using Add, hold Option on Mac to subtract temporarily.": "Saat menggunakan Tambahkan, tahan Option di Mac untuk mengurangi sementara.",
     "White": "Putih",
     "White balance eyedropper": "Eyedropper keseimbangan putih",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3095,6 +3095,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "เมื่อการส่งออกเสร็จสิ้น ให้คลิก แสดงใน Finder บนบรรทัดที่สองของการแจ้งเตือนเมื่อเสร็จสิ้น เพื่อเปิดโฟลเดอร์ที่มีรูปภาพที่ส่งออกไว้ การแจ้งเตือนจะยังคงแสดงเป็นเวลา 2.8 วินาที",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "เมื่อดูภาพที่จับคู่กัน ใช้ RAW → JPEG หรือ JPEG → RAW ใกล้ด้านบนเพื่อสลับไปยังคู่ของมัน",
     "Where are your photos?": "ภาพถ่ายของคุณอยู่ที่ไหน?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "ขณะที่หน้าต่างเปิดอยู่ LightTable จะจดจำตำแหน่งการเลื่อนดูของแต่ละภาพ และคงระดับการซูมปัจจุบันไว้เมื่อคุณเปลี่ยนภาพ ภาพใหม่จะแสดงตรงกลาง",
     "While using Add, hold Option on Mac to subtract temporarily.": "ขณะใช้ เพิ่ม ให้กด Option บน Mac เพื่อลบออกชั่วคราว",
     "White": "สีขาว",
     "White balance eyedropper": "หลอดดูดสีสำหรับสมดุลสีขาว",

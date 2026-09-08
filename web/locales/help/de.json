@@ -226,7 +226,8 @@
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
-            "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist."
+            "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist.",
+            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531"
 }

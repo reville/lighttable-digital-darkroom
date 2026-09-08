@@ -401,7 +401,8 @@
           "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.",
           "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.",
           "Hover over the photo counter in the top bar to see what its numbers mean.",
-          "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled."
+          "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.",
+          "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered."
         ],
         "steps": [
           "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
@@ -481,6 +482,10 @@
       {
         "path": "web/zoom-motion.js",
         "anchor": "export function createZoomMotion("
+      },
+      {
+        "path": "web/photo-pan.js",
+        "anchor": "export function createPhotoPanMemory()"
       }
     ]
   },

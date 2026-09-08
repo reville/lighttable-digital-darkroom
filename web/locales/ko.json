@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3095,6 +3095,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "내보내기가 완료되면, 완료 알림의 두 번째 줄에서 Finder에서 표시를 클릭하여 내보낸 사진이 들어 있는 폴더를 엽니다. 알림은 2.8초 동안 표시된 상태로 유지됩니다.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "쌍으로 된 사진을 볼 때는 상단 근처의 RAW → JPEG 또는 JPEG → RAW를 사용해 동반 파일로 전환하세요.",
     "Where are your photos?": "사진은 어디에 있나요?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "창이 열려 있는 동안 LightTable은 각 사진의 이동 위치를 기억하고 사진을 전환해도 현재 확대 비율을 유지합니다. 새 사진은 중앙에 표시됩니다.",
     "While using Add, hold Option on Mac to subtract temporarily.": "추가를 사용하는 동안 Mac에서는 Option 키를 눌러 일시적으로 빼기로 전환합니다.",
     "White": "흰색",
     "White balance eyedropper": "흰색 밸런스 스포이드",
