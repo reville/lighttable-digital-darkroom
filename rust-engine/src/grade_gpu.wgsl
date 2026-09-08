@@ -163,7 +163,13 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
     if p[15] != 0.0 {
         let n = (xy / max(vec2<f32>(p[0] - 1.0, p[1] - 1.0), vec2<f32>(1.0)) - vec2<f32>(0.5)) * 2.0;
         let radius = length(n) / 1.4142;
-        c = bounded(c * clamp(1.0 - p[15] * 0.9 * pow(radius, 2.2), 0.0, 2.0));
+        var shaped = radius;
+        if p[178] != 0.5 || p[179] != 1.0 {
+            let outer = 0.25 + 1.5 * p[178];
+            let width = outer * max(p[179], 0.01);
+            shaped = clamp((radius - outer + width) / width, 0.0, 1.0);
+        }
+        c = bounded(c * clamp(1.0 - p[15] * 0.9 * pow(shaped, 2.2), 0.0, 2.0));
     }
     let index = (id.y * u32(p[0]) + id.x) * 3u;
     output[index] = c.r; output[index + 1u] = c.g; output[index + 2u] = c.b;

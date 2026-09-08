@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1322,7 +1322,7 @@
     "History": "Historique",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "L’historique est stocké dans le catalogue, donc il persiste après la fermeture. Annuler et Rétablir suivent chaque photo pendant cette session.",
     "History request failed": "La demande d’historique a échoué",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser ensemble Texture, Clarté, Supprimer la brume et Vignettage.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Maintenez B pour comparer avec l’original, ou utilisez Réinitialiser dans Effets pour réinitialiser tous les curseurs d’Effets ensemble.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Maintenez B pour afficher l’original sans Film, sans masques locaux ni ajustements de finition ; relâchez B pour restaurer la modification. La barre oblique (/) place la recherche de photos au premier plan.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Maintenez B enfoncé pour voir l’original sans Film, sans masques locaux ni ajustements de finition. Relâchez B pour restaurer la vue modifiée.",
     "Hold a mapped key and scroll or use arrow keys.": "Maintenir une touche mappée enfoncée et faire défiler ou utiliser les touches fléchées.",
@@ -1421,6 +1421,8 @@
     "Include subfolders": "Inclure les sous-dossiers",
     "Includes the Film profile and physical stages.": "Inclut le Profil de film et les étapes physiques.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Augmentez Supprimer la brume pour renforcer une image brumeuse, ou essayez une valeur négative pour un rendu plus doux. Vérifiez à la fois le contraste et la couleur pendant l’ajustement.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Augmentez Contour progressif pour une transition plus douce, ou diminuez-le pour un bord plus net.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Augmentez Taille pour préserver une plus grande partie du centre ; diminuez-la pour étendre la vignette vers l’intérieur.",
     "Index data stays in LightTable's local data folder.": "Les données d’index restent dans le dossier de données local de LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indexation de {SAiCompleted} sur {SAiTotal}",
     "Info": "Infos",
@@ -2299,8 +2301,10 @@
     "Reset all Color Mixer channels": "Réinitialiser tous les canaux du Mélangeur de couleurs",
     "Reset crop, rotation, flips, and perspective": "Réinitialiser le recadrage, la rotation, les retournements et la perspective",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Réinitialiser le ton global, la couleur, les courbes, l’accentuation, la réduction du bruit et les effets",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Réinitialiser dans Simulation de film réaliste rétablit les valeurs par défaut de tous les curseurs Film. Réinitialiser dans une section ne concerne que les curseurs de cette section. Les interrupteurs et les options sélectionnées restent inchangés.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Réinitialiser les corrections du profil d’objectif, de la distorsion, du vignettage et de l’aberration chromatique",
     "Reset sharpening and noise reduction adjustments": "Réinitialiser les réglages d’accentuation et de réduction du bruit",
+    "Reset sliders to their defaults": "Rétablir les valeurs par défaut des curseurs",
     "Reset the RAW profile and capture-stage processing settings": "Réinitialiser le profil RAW et les réglages de traitement au stade de capture",
     "Reset the combined RGB and individual channel curves": "Réinitialiser les courbes RGB combinées et les courbes de chaque canal",
     "Reset this slider": "Réinitialiser ce curseur",
@@ -2602,6 +2606,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Les visages similaires sont regroupés. Ajoutez des noms, vérifiez les correspondances possibles et corrigez un groupe chaque fois que nécessaire.",
     "Simulate paper and ink": "Simuler le papier et l’encre",
     "Size": "Taille",
+    "Size of the clear area at the center of the vignette.": "Taille de la zone préservée au centre de la vignette.",
     "Size only": "Taille uniquement",
     "Skip": "Ignorer",
     "Skip existing": "Ignorer les éléments existants",
@@ -2626,6 +2631,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "L’épreuvage écran est un état d’affichage. Choisissez séparément l’espace couleur réel du fichier dans Exporter.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Les contrôles de simulation d’épreuve se trouvent dans les options d’Affichage du visualiseur (•••). Ils vous permettent d’inspecter un aperçu de sortie pendant la retouche.",
     "Soften skin": "Adoucir la peau",
+    "Softness of the vignette transition.": "Douceur de la transition de la vignette.",
     "Software rendering": "Rendu logiciel",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Certains brouillons utilisent une identité partielle de fichier qui ne peut pas vérifier l’original complet. Ne restaurez ceux-ci que si les photos originales n’ont pas été remplacées.",
     "Some edits have not been saved": "Certaines modifications n’ont pas été enregistrées",
@@ -4031,9 +4037,7 @@
     "‹ Back": "‹ Retour",
     "← Back to articles": "← Retour aux articles",
     "← People": "← Personnes",
-    "☆ Favorites": "☆ Favoris",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Réinitialiser dans Simulation de film réaliste rétablit les valeurs par défaut de tous les curseurs Film. Réinitialiser dans une section ne concerne que les curseurs de cette section. Les interrupteurs et les options sélectionnées restent inchangés.",
-    "Reset sliders to their defaults": "Rétablir les valeurs par défaut des curseurs"
+    "☆ Favorites": "☆ Favoris"
   },
   "plurals": {
     " · {count} paired file linked": {

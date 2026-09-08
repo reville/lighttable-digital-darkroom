@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "af908a708e4503b13e1acbc277cce97ecdee4f8a3592c979389d5129cf4ea9bd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1322,7 +1322,7 @@
     "History": "기록",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "기록은 카탈로그에 저장되므로 종료해도 유지됩니다. 이 세션 동안 각 사진에 대해 실행 취소와 다시 실행이 적용됩니다.",
     "History request failed": "기록 요청 실패",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "B를 누르고 원본과 비교하거나, 효과의 초기화를 사용하여 텍스처, 선명도, 헤이즈 제거, 비네팅을 함께 초기화하세요.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "B를 누른 채 원본과 비교하거나, 효과의 초기화를 사용하여 모든 효과 슬라이더를 함께 초기화하세요.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "B를 길게 눌러 Film, 로컬 마스크 또는 마무리 조정이 없는 원본을 표시하세요. B를 놓으면 편집 내용이 복원됩니다. 슬래시(/)는 사진 검색에 포커스를 둡니다.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "B를 길게 눌러 Film, 로컬 마스크 또는 마무리 조정이 없는 원본을 보세요. B를 놓으면 편집된 보기로 돌아갑니다.",
     "Hold a mapped key and scroll or use arrow keys.": "매핑된 키를 누른 채 스크롤하거나 화살표 키를 사용하세요.",
@@ -1421,6 +1421,8 @@
     "Include subfolders": "하위 폴더 포함",
     "Includes the Film profile and physical stages.": "필름 프로필과 실제 단계가 포함됩니다.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "헤이즈 제거를 높여 안개 낀 이미지를 강화하거나, 더 부드러운 처리를 위해 음수 값을 시도해 보세요. 조정하는 동안 대비와 색상을 모두 확인하세요.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "페더를 높이면 전환이 부드러워지고, 낮추면 경계가 더 뚜렷해집니다.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "크기를 높이면 중앙에서 효과가 적용되지 않는 영역이 넓어지고, 낮추면 비네팅이 더 안쪽까지 적용됩니다.",
     "Index data stays in LightTable's local data folder.": "인덱스 데이터는 LightTable의 로컬 데이터 폴더에 유지됩니다.",
     "Indexing {SAiCompleted} of {SAiTotal}": "{SAiTotal}개 중 {SAiCompleted}개 인덱싱 중",
     "Info": "정보",
@@ -2299,8 +2301,10 @@
     "Reset all Color Mixer channels": "모든 색상 혼합기 채널 초기화",
     "Reset crop, rotation, flips, and perspective": "자르기, 회전, 뒤집기, 원근을 초기화",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "전체 톤, 색상, 곡선, 선명하게 하기, 노이즈 감소 및 효과를 초기화합니다",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "사실적인 필름 시뮬레이션의 초기화은 모든 필름 슬라이더를 기본값으로 되돌립니다. 각 섹션의 초기화은 해당 섹션의 슬라이더에만 적용됩니다. 스위치와 선택한 옵션은 그대로 유지됩니다.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "렌즈 프로필, 왜곡, 비네팅 및 색수차 보정 초기화",
     "Reset sharpening and noise reduction adjustments": "선명하게 하기와 노이즈 감소 조정을 초기화합니다",
+    "Reset sliders to their defaults": "슬라이더를 기본값으로 재설정",
     "Reset the RAW profile and capture-stage processing settings": "RAW 프로필과 캡처 단계 처리 설정을 초기화합니다",
     "Reset the combined RGB and individual channel curves": "병합된 RGB 및 개별 채널 곡선을 초기화합니다",
     "Reset this slider": "이 슬라이더 초기화",
@@ -2602,6 +2606,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "비슷한 얼굴이 함께 그룹화됩니다. 필요할 때 이름을 추가하고, 가능한 일치를 검토하고, 그룹을 수정하세요.",
     "Simulate paper and ink": "용지와 잉크 시뮬레이션",
     "Size": "크기",
+    "Size of the clear area at the center of the vignette.": "비네팅 중앙에서 효과가 적용되지 않는 영역의 크기입니다.",
     "Size only": "크기만",
     "Skip": "건너뛰기",
     "Skip existing": "기존 항목 건너뛰기",
@@ -2626,6 +2631,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "소프트 프로프는 보기 상태입니다. 파일의 실제 색공간은 내보내기에서 별도로 선택하세요.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "소프트 프루프 컨트롤은 뷰어의 보기 옵션(•••)에 있습니다. 편집하는 동안 출력 미리보기를 검사할 수 있습니다.",
     "Soften skin": "피부 부드럽게 하기",
+    "Softness of the vignette transition.": "비네팅 전환의 부드러운 정도입니다.",
     "Software rendering": "소프트웨어 렌더링",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "일부 초안은 전체 원본을 확인할 수 없는 부분 파일 식별 정보를 사용합니다. 원본 사진이 대체되지 않았을 때만 이 항목을 복원하세요.",
     "Some edits have not been saved": "일부 편집 사항이 저장되지 않았습니다",
@@ -4031,9 +4037,7 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "사실적인 필름 시뮬레이션의 초기화은 모든 필름 슬라이더를 기본값으로 되돌립니다. 각 섹션의 초기화은 해당 섹션의 슬라이더에만 적용됩니다. 스위치와 선택한 옵션은 그대로 유지됩니다.",
-    "Reset sliders to their defaults": "슬라이더를 기본값으로 재설정"
+    "☆ Favorites": "☆ 즐겨찾기"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -235,7 +235,7 @@
       {
         "title": "Change haze and edge brightness",
         "paragraphs": ["Dehaze changes the image’s haze-like tonal and color treatment. Vignette changes edge brightness: positive values darken the edges and negative values brighten them."],
-        "steps": ["Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.", "Set Vignette for the edge treatment you want and inspect the corners.", "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together."],
+        "steps": ["Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.", "Set Vignette for the edge treatment you want and inspect the corners.", "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.", "Increase Feather for a softer transition, or decrease it for a more defined edge.", "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together."],
         "tips": ["Effects’ Vignette is a creative edge treatment. Use Lens corrections when you want to correct lens shading."]
       }
     ],
@@ -246,7 +246,10 @@
       {"path": "grade.py", "anchor": "\"clarity\": 0.0,      # -1..1, midtone-weighted local contrast"},
       {"path": "grade.py", "anchor": "haze = g[\"dehaze\"] * 0.12"},
       {"path": "grade.py", "anchor": "falloff = np.clip(1.0 - g[\"vignette\"] * 0.9 * (r ** 2.2), 0.0, 2.0)[..., None]"},
-      {"path": "web/app.js", "anchor": "effects: ['texture', 'clarity', 'dehaze', 'vignette'],"},
+      {"path": "grade.py", "anchor": "size, feather = g[\"vignetteSize\"], g[\"vignetteFeather\"]"},
+      {"path": "web/index.html", "anchor": "data-g=\"vignetteSize\""},
+      {"path": "web/index.html", "anchor": "data-g=\"vignetteFeather\""},
+      {"path": "web/app.js", "anchor": "effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],"},
       {"path": "web/index.html", "anchor": "data-local=\"clarity\""}
     ]
   },
