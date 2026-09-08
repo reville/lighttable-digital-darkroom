@@ -42,6 +42,11 @@ class SimulatedWindows:
         self.opened.append(reopened)
         return reopened
 
+    def open_content_fd(self, path):
+        fd = self.native.open_content_fd(path) if self.native else os.open(path, os.O_RDONLY)
+        self.opened.append(fd)
+        return fd
+
     def bump(self):
         self.epoch += 1
 
@@ -178,6 +183,14 @@ class WindowsSignatureTests(unittest.TestCase):
             with self.assertRaisesRegex(OSError, "changed before hashing"):
                 file_identity.content_hash(self.path, expected_signature=key)
 
+    def test_path_signatures_do_not_upgrade_an_attributes_only_handle(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        with mock.patch.object(windows, 'reopen_content_fd',
+                               side_effect=AssertionError('attributes-only upgrade')):
+            signature = file_identity.stat_signature(self.path.stat(), path=self.path)
+            self.assertEqual(file_identity.content_hash(self.path), signature[-1])
+
     def test_windows_placeholder_signatures_never_open_content(self):
         windows = SimulatedWindows()
         windows.install(self)
@@ -194,7 +207,7 @@ class WindowsSignatureTests(unittest.TestCase):
             # A previously local stat is also rejected if the live metadata
             # handle now says that the original has been evicted.
             with mock.patch.object(file_identity.os, 'fstat', return_value=placeholder), \
-                    mock.patch.object(windows, 'reopen_content_fd',
+                    mock.patch.object(windows, 'open_content_fd',
                                       side_effect=AssertionError('must not hydrate')):
                 with self.assertRaisesRegex(OSError, 'unavailable'):
                     file_identity.stat_signature(local, path=self.path)
@@ -243,15 +256,15 @@ class WindowsSignatureTests(unittest.TestCase):
         replacement.write_bytes(b'different fixture')
         before = self.path.stat()
         os.utime(replacement, ns=(before.st_atime_ns, before.st_mtime_ns))
-        reopen = windows.reopen_content_fd
+        open_content = windows.open_content_fd
 
-        def replaced(fd):
+        def replaced(path):
             os.replace(replacement, self.path)
-            return reopen(fd)
+            return open_content(path)
 
         with mock.patch.object(windows, 'change_time', return_value=123), \
-                mock.patch.object(windows, 'reopen_content_fd', side_effect=replaced):
-            with self.assertRaisesRegex(OSError, 'changed while querying'):
+                mock.patch.object(windows, 'open_content_fd', side_effect=replaced):
+            with self.assertRaisesRegex(OSError, 'changed before querying'):
                 file_identity.content_hash(self.path)
 
     def test_hash_retains_counter_from_before_reading(self):
@@ -280,7 +293,8 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.open_osfhandle = mock.Mock(return_value=7)
         api.close_handle = mock.Mock()
         api.invalid_handle = -1
-        api.ctypes = SimpleNamespace(WinError=lambda: OSError("native query failed"))
+        api.ctypes = SimpleNamespace(get_last_error=mock.Mock(return_value=32),
+            WinError=mock.Mock(side_effect=lambda code: OSError(code, "native query failed")))
         return api
 
     def test_metadata_handle_requests_attributes_only_and_transfers_ownership(self):
@@ -327,6 +341,36 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.open_osfhandle.assert_not_called()
         api.close_handle.assert_not_called()
 
+    def test_content_path_open_denies_writes_and_deletes_without_upgrading_metadata_handle(self):
+        api = self.bindings()
+        self.assertEqual(api.open_content_fd('original.tif'), 7)
+        api.create_file.assert_called_once_with('original.tif', 0x80000000, 0x1,
+                                               None, 3, 0x08100000, None)
+        api.reopen_file.assert_not_called()
+        api.open_osfhandle.assert_called_once_with(42, os.O_RDONLY | getattr(os, 'O_BINARY', 0))
+        api.close_handle.assert_not_called()
+
+    def test_failed_content_path_transfer_closes_native_handle_once(self):
+        api = self.bindings()
+        api.open_osfhandle.side_effect = OSError('descriptor allocation failed')
+        with self.assertRaisesRegex(OSError, 'allocation failed'):
+            api.open_content_fd('original.tif')
+        api.close_handle.assert_called_once_with(42)
+
+    def test_native_open_failures_report_ctypes_saved_error_without_touching_handles(self):
+        for method, native, value in (('open_metadata_fd', 'create_file', 'original.tif'),
+                                      ('open_content_fd', 'create_file', 'original.tif'),
+                                      ('reopen_content_fd', 'reopen_file', 9)):
+            with self.subTest(method=method):
+                api = self.bindings()
+                getattr(api, native).return_value = -1
+                with self.assertRaises(OSError) as raised:
+                    getattr(api, method)(value)
+                self.assertEqual(raised.exception.errno, 32)
+                api.ctypes.WinError.assert_called_once_with(32)
+                api.open_osfhandle.assert_not_called()
+                api.close_handle.assert_not_called()
+
     def test_native_change_query_errors_and_missing_counter_fail_closed(self):
         api = self.bindings()
 
@@ -335,11 +379,12 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
 
         api.basic_info = Info
         api.get_osfhandle = mock.Mock(return_value=42)
-        api.ctypes = SimpleNamespace(byref=ctypes.byref, sizeof=ctypes.sizeof,
-                                     WinError=lambda: OSError("native query failed"))
+        api.ctypes.byref = ctypes.byref
+        api.ctypes.sizeof = ctypes.sizeof
         api.query_file = mock.Mock(return_value=False)
         with self.assertRaisesRegex(OSError, "native query failed"):
             api.change_time(7)
+        api.ctypes.WinError.assert_called_once_with(32)
         api.query_file.return_value = True
         with self.assertRaisesRegex(OSError, "does not provide"):
             api.change_time(7)
