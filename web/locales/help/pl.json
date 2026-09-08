@@ -225,7 +225,8 @@
             "Siatka zdjęć prezentuje zdjęcia jako wizualny przegląd. Siatka selekcji dodaje miejsce na informacje o wyborze i ocenie. Szczegóły otwierają aktywne zdjęcie do dokładnej inspekcji.",
             "Prawy panel boczny używa przycisków z ikonami dla Edytuj, Film, Kadruj, Usuń, Maskowanie, Informacje, Historia i Presety. Najedź kursorem na ikonę, aby zobaczyć jej nazwę.",
             "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
-            "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby."
+            "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby.",
+            "Dopasuj, 1:1 oraz przyciski i skróty powiększania działają z płynną animacją. Przewijanie, gesty szczypania i przeciąganie reagują bezpośrednio. Animacja powiększania jest wyłączona, gdy w systemie włączono opcję Ogranicz ruch."
           ],
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

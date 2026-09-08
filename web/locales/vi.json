@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
     "Fit the whole photo to the available space": "Vừa toàn bộ ảnh vào không gian khả dụng",
     "Fit to window ({actualPct}%)": "Vừa khung với cửa sổ ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống.",
     "Flag": "Cờ",
     "Flag and rate survey photo": "Đánh cờ và xếp hạng ảnh xem nhanh",
     "Flag and rating filters": "Bộ lọc cờ và xếp hạng",

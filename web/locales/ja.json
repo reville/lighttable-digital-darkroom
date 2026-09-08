@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "「フィット」では小さな写真が拡大されることがあります。1:1 は「フィット」より写真が小さくなる場合でも実際のピクセルを表示し、ウインドウのサイズを変更しても同じピクセル倍率を維持します。",
     "Fit the whole photo to the available space": "写真全体を利用可能なスペースにフィット",
     "Fit to window ({actualPct}%)": "ウィンドウに合わせる ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "フィット、1:1、ズームボタン、ズームのショートカットは滑らかにアニメーションします。スクロール、ピンチ、ドラッグは操作に直接反応します。システムの「視差効果を減らす」が有効な場合、ズームアニメーションは無効になります。",
     "Flag": "フラグ",
     "Flag and rate survey photo": "サーベイ写真にフラグを付けてレーティング",
     "Flag and rating filters": "フラグとレーティングのフィルター",

@@ -78,3 +78,9 @@ test('metadata from a replaced file cannot overwrite current geometry or reuse t
   await current;
   assert.deepEqual([scene.image.width,scene.image.height],[5178,7752]);
 });
+
+
+test('startup resize is safe before photo settings have loaded', () => {
+  const view=scene(null);view.state.params=null;
+  assert.equal(view.displaySourcePixelWidth(),0);
+});

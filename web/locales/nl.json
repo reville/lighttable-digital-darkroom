@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
     "Fit the whole photo to the available space": "Maak de hele foto passend in de beschikbare ruimte",
     "Fit to window ({actualPct}%)": "Passend maken in venster ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Passend maken, 1:1, zoomknoppen en zoomsneltoetsen worden vloeiend geanimeerd. Scrollen, knijpen en slepen reageren direct. Zoomanimatie is uitgeschakeld wanneer Verminder beweging in je systeeminstellingen is ingeschakeld.",
     "Flag": "Markering",
     "Flag and rate survey photo": "Overzichtsfoto markeren en beoordelen",
     "Flag and rating filters": "Markering- en beoordelingsfilters",

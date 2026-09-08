@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "फ़िट छोटी फ़ोटो को बड़ा कर सकता है। 1:1 वास्तविक पिक्सेल दिखाता है, भले ही फ़ोटो फ़िट से छोटी हो जाए, और विंडो का आकार बदलने पर भी वही पिक्सेल स्केल बनाए रखता है।",
     "Fit the whole photo to the available space": "पूरी फ़ोटो को उपलब्ध स्थान में फ़िट करें",
     "Fit to window ({actualPct}%)": "विंडो में फ़िट करें ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "फ़िट, 1:1, ज़ूम बटन और ज़ूम शॉर्टकट सहज ऐनिमेशन के साथ काम करते हैं। स्क्रॉल, पिंच और ड्रैग सीधे प्रतिक्रिया देते हैं। सिस्टम की गति कम करें सेटिंग चालू होने पर ज़ूम ऐनिमेशन बंद हो जाता है।",
     "Flag": "फ़्लैग",
     "Flag and rate survey photo": "सर्वेक्षण फ़ोटो को फ़्लैग और रेट करें",
     "Flag and rating filters": "फ़्लैग और रेटिंग फ़िल्टर",

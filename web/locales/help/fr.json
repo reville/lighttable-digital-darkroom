@@ -225,7 +225,8 @@
             "La grille Photo présente les photos comme une vue d’ensemble visuelle. La grille de tri ajoute de la place pour la sélection et les informations de notation. Détails ouvre la photo active pour un examen rapproché.",
             "La barre latérale droite utilise des boutons d’icône pour Modifier, Film, Recadrer, Supprimer, Masquage, Infos, Historique et Préréglages. Survolez une icône pour voir son nom.",
             "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
-            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres."
+            "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
+            "Ajuster, 1:1, les boutons et les raccourcis de zoom offrent une animation fluide. Le défilement, le pincement et le déplacement répondent directement. L’animation du zoom est désactivée lorsque l’option Réduire les animations de votre système est activée."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "พอดีอาจขยายรูปภาพขนาดเล็ก 1:1 แสดงพิกเซลจริงแม้รูปภาพจะเล็กกว่าโหมดพอดี และคงมาตราส่วนพิกเซลเดิมเมื่อคุณปรับขนาดหน้าต่าง",
     "Fit the whole photo to the available space": "พอดีภาพถ่ายทั้งภาพลงในพื้นที่ว่างที่มีอยู่",
     "Fit to window ({actualPct}%)": "พอดีกับหน้าต่าง ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "พอดี, 1:1, ปุ่มซูม และปุ่มลัดซูมเคลื่อนไหวอย่างราบรื่น การเลื่อน การจีบนิ้ว และการลากตอบสนองโดยตรง ภาพเคลื่อนไหวการซูมจะปิดเมื่อเปิดการตั้งค่าลดการเคลื่อนไหวของระบบ",
     "Flag": "ตั้งธง",
     "Flag and rate survey photo": "ตั้งธงและให้คะแนนภาพมุมมองภาพรวม",
     "Flag and rating filters": "ตัวกรองธงและการให้คะแนน",

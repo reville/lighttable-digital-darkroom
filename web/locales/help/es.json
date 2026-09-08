@@ -225,7 +225,8 @@
             "Cuadrícula de fotos presenta las fotos como una vista general visual. Cuadrícula de descarte añade espacio para información de selección y calificación. Detalle abre la foto activa para una inspección cercana.",
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
-            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números."
+            "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
+            "Ajustar, 1:1, los botones y los atajos de zoom se animan suavemente. El desplazamiento, el gesto de pellizco y el arrastre responden directamente. La animación del zoom se desactiva cuando está activada la opción Reducir movimiento del sistema."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

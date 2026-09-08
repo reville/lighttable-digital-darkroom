@@ -225,7 +225,8 @@
             "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
-            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya."
+            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
+            "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

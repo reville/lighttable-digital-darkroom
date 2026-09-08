@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
     "Fit the whole photo to the available space": "Dopasuj całe zdjęcie do dostępnego miejsca",
     "Fit to window ({actualPct}%)": "Dopasuj do okna ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Dopasuj, 1:1 oraz przyciski i skróty powiększania działają z płynną animacją. Przewijanie, gesty szczypania i przeciąganie reagują bezpośrednio. Animacja powiększania jest wyłączona, gdy w systemie włączono opcję Ogranicz ruch.",
     "Flag": "Flaga",
     "Flag and rate survey photo": "Oceń i oznacz zdjęcie w przeglądzie",
     "Flag and rating filters": "Filtry flag i oceny",

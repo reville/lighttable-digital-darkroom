@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Режим «По размеру» может увеличивать небольшие фотографии. 1:1 показывает реальные пиксели, даже если фотография становится меньше, чем в режиме «По размеру», и сохраняет тот же масштаб пикселей при изменении размера окна.",
     "Fit the whole photo to the available space": "Подгоните все фото по размеру доступной области",
     "Fit to window ({actualPct}%)": "По размеру окна ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "«По размеру», 1:1, кнопки и сочетания клавиш масштабирования работают с плавной анимацией. Прокрутка, жесты сведения и разведения пальцев и перетаскивание реагируют напрямую. Анимация масштабирования отключается, если в системе включено уменьшение движения.",
     "Flag": "Флажок",
     "Flag and rate survey photo": "Пометить флажком и оценить обзорное фото",
     "Flag and rating filters": "Фильтры флажков и рейтинга",
