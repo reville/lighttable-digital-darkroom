@@ -1732,19 +1732,19 @@ function nativeGradePayload(grade) {
   const values = { ...grade };
   if (!curvesChanged) CURVE_KEYS.forEach((key) => delete values[key]);
   return { grade: values, curvesChanged, interaction: GRADE_PERF.take(),
-    softProof: S.holdBefore ? null : S.softProof };
+    softProof: S.softProof };
 }
 
 function drawGradeNow(forceWebGL = false, refreshScope = true) {
   scheduleViewportRegionRender();
   if (S.renderState === 'pending' && S.presentedPhotoName && S.presentedPhotoName !== cur()?.name) return;
   if (S.previewLoadGeneration != null) return;
-  const requestedGradeKey = gradeBakeKey(gradeBakeRequest(S.grade, S.masks, S.holdBefore));
+  const requestedGradeKey = gradeBakeKey(gradeBakeRequest(S.grade, S.masks));
   if (requestedGradeKey !== (S.presentedGradeKey ?? null)) {
     renderPhysicalPreview();
     return;
   }
-  const activeGrade = S.holdBefore || S.gradeEditsBaked ? GRADE_DEFAULTS : S.grade;
+  const activeGrade = S.gradeEditsBaked ? GRADE_DEFAULTS : S.grade;
   syncPreviewBackend();
   let upload;
   let channelUpload;
@@ -1771,8 +1771,8 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   // continuous draws, but allow an explicit one-shot refresh before sampling
   // or after a new helper texture arrives.
   if (S.gl && (!native || forceWebGL) && !interactiveMask) {
-    S.gl.draw(activeGrade, S.holdBefore || S.gradeEditsBaked ? [] : S.masks, upload,
-      S.holdBefore ? null : S.softProof);
+    S.gl.draw(activeGrade, S.gradeEditsBaked ? [] : S.masks, upload,
+      S.softProof);
     if (refreshScope) scheduleHistogram();
     if (!native) {
       const input = GRADE_PERF.take();
@@ -1795,7 +1795,7 @@ function refreshWebGLSamplingSurface() {
 }
 
 function nativeMaskPayload(imageData) {
-  const masks = (S.holdBefore || S.gradeEditsBaked ? [] : S.masks).slice(0, MAX_MASKS).map((mask) => ({
+  const masks = (S.gradeEditsBaked ? [] : S.masks).slice(0, MAX_MASKS).map((mask) => ({
     enabled: mask.enabled !== false,
     opacity: +mask.opacity || 0,
     lumaLow: +mask.lumaLow || 0,
@@ -3374,7 +3374,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     const request = {
       name: im.name, params: S.params, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
-      ...gradeBakeRequest(S.grade, S.masks, S.holdBefore),
+      ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
@@ -3401,7 +3401,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my !== S.seq) return;
-    if (requestedGradeKey !== gradeBakeKey(gradeBakeRequest(S.grade, S.masks, S.holdBefore))) {
+    if (requestedGradeKey !== gradeBakeKey(gradeBakeRequest(S.grade, S.masks))) {
       renderPhysicalPreview();
       return;
     }
@@ -3736,7 +3736,7 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
       });
     }
     postNative('nativePreview', {
-      generation, surface, grade: S.holdBefore || render.gradeEditsBaked ? GRADE_DEFAULTS : S.grade,
+      generation, surface, grade: render.gradeEditsBaked ? GRADE_DEFAULTS : S.grade,
       masks: nativeMaskPayload(packedMaskData),
       ...nativeEditsPayload(Boolean(render.baseEditsBaked)),
       original: {
@@ -3754,7 +3754,7 @@ function originalPreviewURL(requestedWidth = requestedPreviewWidth()) {
   // Compare must resolve the same detail as the edited preview, including 1:1.
   const width = requestedWidth;
   return `/api/orig?name=${encodeURIComponent(im.name)}` +
-    `&w=${width}&rot=${S.params.rotate || 0}&quality=full` +
+    `&w=${width}&rot=${S.params.rotate || 0}&quality=full&v=2` +
     `&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
 }
 
@@ -6319,7 +6319,7 @@ function broadcastToLoupe(photo) {
     type: 'sync',
     name: photo.name,
     metadata: metaParts,
-    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}`,
+    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}&v=2`,
   });
 }
 
@@ -7552,6 +7552,8 @@ $('rotL').onclick = () => rotate(-90);
 $('rotR').onclick = () => rotate(90);
 
 function renderedComparePosition() {
+  // The original texture bypasses Film, geometry, masks, grade, and proofing.
+  if (S.holdBefore) return 1;
   return S.compareActive ? S.comparePosition : 0;
 }
 
@@ -7679,6 +7681,7 @@ function setBefore(on) {
   if (on && S.compareActive) setCompareActive(false);
   S.holdBefore = on;
   $('beforeBtn').classList.toggle('on', on);
+  renderCompare();
   drawGrade();
 }
 $('beforeBtn').addEventListener('pointerdown', () => setBefore(true));

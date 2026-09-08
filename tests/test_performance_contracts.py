@@ -522,7 +522,7 @@ class NativePreviewContractTests(unittest.TestCase):
         javascript = (ROOT / "web" / "app.js").read_text()
         swift = (ROOT / "app" / "NativePreview.swift").read_text()
         metal = (ROOT / "app" / "NativePreview.metal").read_text()
-        self.assertIn("softProof: S.holdBefore ? null : S.softProof", javascript)
+        self.assertIn("softProof: S.softProof", javascript)
         self.assertNotIn("&& !advancedColorActive()", javascript)
         self.assertIn("var point0", swift)
         self.assertIn("var colorGrade0", swift)
