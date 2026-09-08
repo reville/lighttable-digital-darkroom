@@ -493,18 +493,27 @@ same floor `--foreground-mask` already requires.
   `subject_mask()` with `provider: "local-segmentation"`; every part refuses
   with "People masks need the Vision helper (macOS 14 or later)". No part is
   ever approximated from colour.
-- **Resolution.** `MAX_MASK_EDGE` of 256 is too coarse for eyes and teeth.
-  Parts use a 1024 px edge stored as PNG-compressed base64
+- **Resolution.** Subject, Sky, Object, and portrait parts now retain up to a
+  1024 px edge stored as PNG-compressed base64
   (`bitmap.encoding: "png"`) in `_clean_bitmap()` and `normalizeMasks()`,
   decoded by `_raster_component()` through Pillow and by the JS rasteriser
-  through an `Image` data URL. Existing kinds keep raw 256 so old states
-  parse unchanged.
-- **A control worth masking for.** `LOCAL_GRADE_KEYS` (`edits.py` line 26)
-  gains `texture` and `clarity`; negative texture is the whole point of a
-  skin mask. `localGrade()` in `gl.js` and its Metal twin reuse the global
-  texture and clarity kernels (`gl.js` line 243) under the per-mask weight;
-  `grade.apply()` already supports both, so export parity is by
-  construction. Two more `vec4[4]` uniform arrays after Phase 2.
+  through an `Image` data URL. Older raw 256 px bitmaps remain readable.
+  Image-guided refinement and fractional Vision alpha preserve softer edges.
+- **Local tone controls.** Masks include Texture, Clarity, Whites, Blacks,
+  and master/R/G/B tone curves. These controls use an ordered server preview
+  after the global grade and preceding masks, matching export. Their result
+  requires a preview refresh. Local curve editing preserves an imported LUT
+  until the user changes it, then uses shape-preserving cubic interpolation.
+- **Brush and gradient update.** New strokes accumulate Flow up to Density;
+  old strokes preserve their earlier behavior. Auto Mask freezes a color-based
+  selection at each stroke's start. Cross-photo paste refuses these saved
+  selections, which must be recreated for the new photo. Radial masks support
+  independent axes, rotation, and direct move/resize/rotate handles.
+- **Selection quality remains limited.** Higher resolution improves boundary
+  detail without replacing the underlying detectors. Hair and skin remain
+  geometric estimates around detected faces. The portrait fixture's hair mask
+  misses much of the long hair below the face; inspect and paint refinements.
+  Subject/Sky/Object estimates can still select the wrong region.
 - **UI.** A "People" button in the mask toolbar opens a popover with the
   seven parts and the face count ("2 faces found"); each creates a mask
   named after the part. A bundled tool preset "Soften skin" (face skin,

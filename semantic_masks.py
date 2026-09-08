@@ -16,14 +16,16 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import (binary_fill_holes, binary_propagation,
-                           gaussian_filter, label as connected_components)
-from skimage import color, morphology, segmentation
+from scipy.ndimage import (binary_propagation, gaussian_filter,
+                           label as connected_components, sobel)
+from skimage import color, segmentation
 
 
-MAX_MASK_EDGE = 256
+MAX_MASK_EDGE = 1024
+MAX_ANALYSIS_EDGE = 512
 MAX_PART_EDGE = 1024
 MAX_DEPTH_EDGE = 512
+PARTS_CACHE_VERSION = 2
 PERSON_PARTS = ("person", "face-skin", "eyes", "eyebrows", "lips",
                 "teeth", "hair")
 PEOPLE_MASK_UNAVAILABLE = (
@@ -41,17 +43,40 @@ def _working_image(image: np.ndarray, max_edge: int = MAX_MASK_EDGE) -> np.ndarr
     return rgb.astype(np.float32) / 255.0
 
 
-def _finish(mask: np.ndarray) -> np.ndarray:
-    selected = morphology.remove_small_objects(
-        np.asarray(mask, dtype=bool), max_size=max(7, mask.size // 800 - 1))
-    selected = morphology.remove_small_holes(
-        selected, max_size=max(8, mask.size // 500))
-    selected = binary_fill_holes(selected)
-    feathered = gaussian_filter(selected.astype(np.float32), 1.35)
-    maximum = float(feathered.max())
-    if maximum > 0:
-        feathered /= maximum
-    return np.clip(feathered * 255.0 + 0.5, 0, 255).astype(np.uint8)
+def _refine_edges(mask: np.ndarray, rgb: np.ndarray, *, strength: float = 1.0
+                  ) -> np.ndarray:
+    """Feather coverage without averaging across contrasting image edges.
+
+    A small joint bilateral kernel uses all three colour channels, including
+    boundaries with similar luminance. Unlike thresholding or hole filling,
+    this keeps soft model alpha and openings between branches and hair.
+    """
+    coverage = np.clip(np.asarray(mask, dtype=np.float32), 0, 1)
+    height, width = rgb.shape[:2]
+    if coverage.shape != (height, width):
+        coverage = np.asarray(Image.fromarray(coverage).resize(
+            (width, height), Image.Resampling.BILINEAR))
+    radius = 2
+    guide = np.pad(rgb, ((radius, radius), (radius, radius), (0, 0)), mode="edge")
+    padded = np.pad(coverage, radius, mode="edge")
+    total = np.zeros_like(coverage)
+    weights = np.zeros_like(coverage)
+    for dy in range(-radius, radius + 1):
+        for dx in range(-radius, radius + 1):
+            y, x = radius + dy, radius + dx
+            colour_delta = guide[y:y + height, x:x + width] - rgb
+            colour_distance = np.sum(colour_delta * colour_delta, axis=2)
+            weight = np.exp(-colour_distance / (2 * 0.08 ** 2)
+                            - (dx * dx + dy * dy) / (2 * 1.1 ** 2))
+            total += weight * padded[y:y + height, x:x + width]
+            weights += weight
+    return np.clip(coverage * (1 - strength) + total / weights * strength, 0, 1)
+
+
+def _finish(mask: np.ndarray, rgb: np.ndarray, *, strength: float = 1.0
+            ) -> np.ndarray:
+    refined = _refine_edges(mask, rgb, strength=strength)
+    return np.clip(refined * 255.0 + 0.5, 0, 255).astype(np.uint8)
 
 
 def _largest_relevant(mask: np.ndarray, point: tuple[int, int] | None = None) -> np.ndarray:
@@ -69,7 +94,7 @@ def _largest_relevant(mask: np.ndarray, point: tuple[int, int] | None = None) ->
 
 def subject_mask(image: np.ndarray) -> np.ndarray:
     """Select the most salient central foreground from local image evidence."""
-    rgb = _working_image(image)
+    rgb = _working_image(image, MAX_ANALYSIS_EDGE)
     height, width = rgb.shape[:2]
     lab = color.rgb2lab(rgb)
     labels = segmentation.slic(
@@ -111,7 +136,8 @@ def subject_mask(image: np.ndarray) -> np.ndarray:
     centre_label = int(labels[height // 2, width // 2])
     selected |= labels == centre_label
     # A semantic subject should be coherent rather than scattered saliency.
-    return _finish(_largest_relevant(selected, (width // 2, height // 2)))
+    return _finish(_largest_relevant(selected, (width // 2, height // 2)),
+                   _working_image(image))
 
 
 def sky_mask(image: np.ndarray) -> np.ndarray:
@@ -128,17 +154,31 @@ def sky_mask(image: np.ndarray) -> np.ndarray:
                  (hsv[..., 2] > 0.25))
     light_neutral = (hsv[..., 1] < 0.22) & (hsv[..., 2] > 0.62)
     luma = color.rgb2gray(rgb)
-    gy, gx = np.gradient(luma)
+    gy = sobel(luma, axis=0) / 8.0
+    gx = sobel(luma, axis=1) / 8.0
     smooth = np.hypot(gx, gy) < 0.13
-    candidate = smooth & ((colour_distance < 28.0) | blue_like | light_neutral)
+    # Extra blue/cloud colours are evidence only when they also occur near the
+    # top. Otherwise a connected blue object lower in a warm scene can leak
+    # into the selection merely because it happens to resemble a clear sky.
+    sky_colours = colour_distance < 28.0
+    if float(blue_like[:top_depth].mean()) >= 0.02:
+        sky_colours |= blue_like
+    if float(light_neutral[:top_depth].mean()) >= 0.02:
+        sky_colours |= light_neutral
+    candidate = smooth & sky_colours
     seeds = np.zeros_like(candidate)
-    seeds[:top_depth] = candidate[:top_depth]
+    seeds[0] = candidate[0]
     connected = binary_propagation(seeds, mask=candidate)
-    return _finish(connected)
+    return _finish(connected, rgb)
 
 
 def object_mask(image: np.ndarray, point: tuple[float, float]) -> np.ndarray:
-    """Select the connected colour region under a normalized user point."""
+    """Grow a point selection toward image boundaries using local colour cues.
+
+    Watershed boundaries admit gradual shading inside the clicked region while
+    distant colours supply background seeds. This is still an image heuristic,
+    not an object-recognition model.
+    """
     rgb = _working_image(image)
     height, width = rgb.shape[:2]
     x = int(np.clip(round(point[0] * (width - 1)), 0, width - 1))
@@ -147,16 +187,29 @@ def object_mask(image: np.ndarray, point: tuple[float, float]) -> np.ndarray:
     radius = max(2, min(height, width) // 80)
     local = lab[max(0, y - radius):y + radius + 1,
                 max(0, x - radius):x + radius + 1]
-    target = np.median(local.reshape(-1, 3), axis=0)
-    distance = np.linalg.norm(lab - target, axis=2)
-    local_distance = np.linalg.norm(local - target, axis=2)
-    tolerance = float(np.clip(np.percentile(local_distance, 90) * 2.5, 10, 34))
+    # A patch median alone can replace a clicked thin detail with its backdrop.
+    # Estimate the target only from neighbours resembling the actual seed.
+    similar = local[np.linalg.norm(local - lab[y, x], axis=2) < 12.0]
+    target = np.median(similar, axis=0)
+    channel_weights = np.array((0.45, 1.0, 1.0), dtype=np.float32)
+    distance = np.linalg.norm((lab - target) * channel_weights, axis=2)
+    local_distance = np.linalg.norm((similar - target) * channel_weights, axis=1)
+    tolerance = float(np.clip(np.percentile(local_distance, 90) * 2.5, 12, 24))
     candidate = distance <= tolerance
     seed = np.zeros_like(candidate)
     seed[y, x] = True
     connected = binary_propagation(seed, mask=candidate)
-    connected = morphology.closing(connected, morphology.disk(2))
-    return _finish(_largest_relevant(connected, (x, y)))
+    background = distance >= max(30.0, tolerance * 2.2)
+    if np.any(background):
+        markers = np.zeros((height, width), dtype=np.int32)
+        markers[background] = 2
+        markers[connected] = 1
+        gradient = np.sqrt(np.sum(
+            (sobel(lab, axis=0) / 8.0) ** 2
+            + (sobel(lab, axis=1) / 8.0) ** 2, axis=2))
+        regions = segmentation.watershed(gradient, markers)
+        connected = regions == 1
+    return _finish(_largest_relevant(connected, (x, y)), rgb)
 
 
 def estimated_depth_map(image: np.ndarray) -> np.ndarray:
@@ -224,7 +277,7 @@ def _embedded_depth(source_path: Path, helper: Path,
 
 
 def _vision_subject(source_path: Path, helper: Path,
-                    provider=None) -> np.ndarray | None:
+                    provider=None, *, image: np.ndarray) -> np.ndarray | None:
     if provider is None and not helper.is_file():
         return None
     with tempfile.TemporaryDirectory() as directory:
@@ -242,12 +295,14 @@ def _vision_subject(source_path: Path, helper: Path,
             )
             if completed.returncode or not output.is_file():
                 return None
-        mask = np.asarray(Image.open(output).convert("L"))
-        source = np.asarray(Image.open(source_path).convert("RGB"))
-        working = _working_image(source)
-        return np.asarray(Image.fromarray(mask).resize(
-            (working.shape[1], working.shape[0]),
-            Image.Resampling.LANCZOS))
+        try:
+            with Image.open(output) as result:
+                mask = np.asarray(result.convert("L"), dtype=np.float32) / 255.0
+        except (OSError, ValueError):
+            return None
+        # The caller's decoded, oriented image also works for RAW files that
+        # Pillow cannot read directly. Keep Vision's fractional alpha values.
+        return _finish(mask, _working_image(image), strength=0.35)
 
 
 def _person_parts(source_path: Path, helper: Path, provider=None,
@@ -260,6 +315,9 @@ def _person_parts(source_path: Path, helper: Path, provider=None,
     def load(root: Path) -> tuple[dict[str, np.ndarray], dict] | None:
         try:
             summary = json.loads((root / "parts.json").read_text())
+            if not isinstance(summary, dict) or \
+                    summary.get("maskVersion") != PARTS_CACHE_VERSION:
+                return None
             masks = {name: np.asarray(Image.open(root / f"{name}.png").convert("L"))
                      for name in PERSON_PARTS if (root / f"{name}.png").is_file()}
         except (OSError, ValueError):
@@ -276,6 +334,11 @@ def _person_parts(source_path: Path, helper: Path, provider=None,
         existing = load(root)
         if existing is not None:
             return existing
+        # Only remove files owned by this generated cache. If the new helper
+        # omits a part, its old bitmap must not survive the version change.
+        for name in (*PERSON_PARTS, "parts"):
+            (root / (f"{name}.json" if name == "parts" else f"{name}.png")).unlink(
+                missing_ok=True)
     try:
         if provider is not None:
             summary = provider.person_parts(source_path, root)
@@ -290,6 +353,7 @@ def _person_parts(source_path: Path, helper: Path, provider=None,
             except (ValueError, IndexError):
                 summary = {}
         summary = summary if isinstance(summary, dict) else {}
+        summary["maskVersion"] = PARTS_CACHE_VERSION
         (root / "parts.json").write_text(json.dumps(summary))
         loaded = load(root)
         if loaded is None:
@@ -326,11 +390,13 @@ def generate(image: np.ndarray, kind: str, point: tuple[float, float] | None = N
             raise ValueError(f"No {kind.replace('-', ' ')} found")
         provider = "vision-estimated" if kind in ("face-skin", "hair") \
             else str(summary.get("provider", "vision"))
-        return mask.astype(np.uint8, copy=False), provider
+        return _finish(mask.astype(np.float32) / 255.0,
+                       _working_image(image, MAX_PART_EDGE), strength=0.25), provider
     if kind == "subject" and source_path and vision_helper:
-        vision = _vision_subject(source_path, vision_helper, vision_provider)
+        vision = _vision_subject(source_path, vision_helper, vision_provider,
+                                 image=image)
         if vision is not None and np.any(vision):
-            return _finish(vision > 127), "vision"
+            return vision, "vision"
     if kind == "subject":
         return subject_mask(image), "local-segmentation"
     if kind == "sky":

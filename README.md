@@ -90,6 +90,13 @@ lens correction, crop and perspective, versions, and reusable export recipes
 sit alongside the film controls. HDR, panorama, and focus merge create new
 masters. Soft proofing covers sRGB, Display P3, matte paper, and gloss paper.
 
+Local masks support gradual dodging and burning with cumulative brush Flow,
+a Density ceiling, and Auto Mask color matching. Radial gradients can be oval
+and rotated. Each mask has Whites, Blacks, and RGB or individual-channel tone
+curves. Subject, Sky, and Object selections retain up to 1,024 pixels along
+their longest edge, with edges refined against the source image. Automatic
+selections remain starting points that need inspection and painted refinement.
+
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
 before film; processing stays floating point until the final encoder. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,

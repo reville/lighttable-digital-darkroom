@@ -1416,6 +1416,7 @@
           ],
           "tips": [
             "Objektauswahlen benötigen am Ziel eine neue Objektauswahl. Intelligente Masken mit gemalten Verfeinerungen müssen ebenfalls manuell neu erstellt werden; dadurch wird das Einfügen am Ziel verweigert, statt eine quellspezifische Auswahl stillschweigend zu kopieren.",
+            "Auto-Maske-Striche behalten eine Auswahl aus dem Quellfoto bei. Das Einfügen in ein anderes Foto wird verweigert; zeichne diese Striche im Ziel neu oder schließe Lokale Masken aus. Das Kopieren zurück auf dasselbe Foto behält die gespeicherte Auswahl bei.",
             "Wenn Masken nicht übertragen werden können, kopieren Sie erneut mit deaktiviertem Local masks, um die anderen Gruppen anzuwenden.",
             "Prüfen Sie den Abschlussbericht auf fehlgeschlagene Fotos. Ein Stapel kann beendet werden, obwohl einige Fotos geändert und andere unverändert gelassen wurden."
           ]
@@ -1514,8 +1515,16 @@
         "Pinsel",
         "Lineares Verlaufswerkzeug",
         "Radialverlauf",
+        "Ellipse",
+        "drehung",
         "Weiche Kante",
         "Fluss",
+        "dichte",
+        "auto maske",
+        "toleranz",
+        "Tonkurve",
+        "weißtöne",
+        "schwarztöne",
         "Überlagerung",
         "Abwedeln",
         "Nachbelichten"
@@ -1524,14 +1533,14 @@
         {
           "title": "Eine manuelle Maske erstellen",
           "paragraphs": [
-            "Öffnen Sie Maske in der Bearbeitungsleiste und wählen Sie ein Werkzeug unter Neue Maske erstellen. Klicken Sie auf Neue Maske erstellen, um die Werkzeuge ein- oder auszublenden. Jede Maske hat ihre eigenen Licht- und Farbeinstellungen.",
-            "Textur und Klarheit verwenden das Bild nach globalen Anpassungen und früheren Masken. Diese Regler erfordern eine Vorschauaktualisierung; warten Sie, bis sie abgeschlossen ist, bevor Sie das Ergebnis beurteilen."
+            "Öffne Maske in der Bearbeitungs-Werkzeugleiste und wähle unter Neue Maske erstellen ein Werkzeug aus. Klicke auf Neue Maske erstellen, um die Werkzeuge ein- oder auszublenden. Jede Maske hat eigene Anpassungen für Licht, Farbe und Tonkurve.",
+            "Textur, Klarheit, Weißtöne, Schwarztöne und Tonkurve verwenden das Bild nach globalen Anpassungen und früheren Masken. Diese Regler erfordern eine Vorschauaktualisierung; warte, bis sie abgeschlossen ist, bevor du das Ergebnis beurteilst. Vorschau und Export wenden sie in derselben Reihenfolge an."
           ],
           "steps": [
-            "Wählen Sie Brush zum Malen, Linear für eine verlaufende Anpassung oder Radial für eine runde Anpassung.",
-            "Wählen Sie für Pinsel Größe, Weiche Kante und Fluss und malen Sie dann über das Foto. Bei Linear oder Radial ziehen Sie auf dem Foto, um die Form festzulegen.",
+            "Wähle Pinsel zum Malen, Linear für eine abgestufte Anpassung oder Radial für eine runde oder ovale Anpassung.",
+            "Bei Pinsel wähle Größe, Weiche Kante, Fluss und Dichte und male dann über das Foto. Bei Linear oder Radial ziehst du auf dem Foto, um die Form festzulegen.",
             "Lassen Sie Show Overlay aktiviert, während Sie den ausgewählten Bereich prüfen, und schalten Sie es dann aus, um das Foto zu beurteilen.",
-            "Passen Sie die Light- oder Color-Regler der ausgewählten Maske an. Verwenden Sie Amount in Range, um die Gesamtstärke zu reduzieren.",
+            "Erhöhen Sie die Belichtung, um einen Bereich aufzuhellen, oder verringern Sie sie, um ihn abzudunkeln. Verwenden Sie bei Bedarf die anderen Licht- und Farbregler und die Menge in Bereich, um die Gesamtstärke der Maske zu reduzieren.",
             "Benennen Sie die Maske über ihre •••-Schaltfläche um, damit ihr Zweck später leicht zu erkennen ist."
           ],
           "tips": [
@@ -1540,11 +1549,47 @@
             "Der Editor erlaubt bis zu sechzehn lokale Masken. Maske löschen entfernt die ausgewählte Maske; Alles löschen entfernt die Masken des Fotos und ist nicht verfügbar, wenn keine vorhanden sind.",
             "Masken-Pins und Pinselkonturen bleiben beim Vergrößern gestochen scharf und gleich dick. Die Kontur wächst mit dem Bereich, den sie im Foto abdeckt."
           ]
+        },
+        {
+          "title": "Baue die Pinselabdeckung nach und nach auf",
+          "paragraphs": [
+            "Fluss steuert, wie viel Abdeckung jeder neue Strich hinzufügt, und Dichte legt die Obergrenze fest. Beide reichen von 1 % bis 100 %. Lasse den Zeiger los und male erneut, um die Abdeckung aufzubauen; erneutes Nachziehen innerhalb eines zusammenhängenden Strichs erhöht sie nicht weiter.",
+            "Aktiviere Auto-Maske, um jeden Strich auf Farben zu beschränken, die der Farbe am Anfang dieses Strichs ähneln. Erhöhe die Toleranz, um einen größeren Farbbereich einzuschließen. Die Auswahl wird zusammen mit dem Strich gespeichert, sodass spätere Farb- oder Belichtungsänderungen ihre Kanten nicht verschieben."
+          ],
+          "tips": [
+            "Bei 20 % Fluss und 60 % Dichte erreichen drei separate Striche über einem vollständig abgedeckten Bereich das Maximum. Eine Verringerung der Dichte löscht die bereits aufgetragene Abdeckung nicht.",
+            "Die Pinseleinstellungen gelten für neue Striche. Vorhandene Striche behalten ihr gespeichertes Aussehen, einschließlich des früheren Pinselverhaltens in älteren Bearbeitungen.",
+            "Jeder Pinsel- oder gemalte Verfeinerungsschritt umfasst bis zu 64 Striche, mit bis zu 512 Punkten pro Strich und 20.000 Maskenpunkten pro Foto. Der editor zeigt dir an, wenn ein Limit erreicht ist."
+          ]
+        },
+        {
+          "title": "Forme einen Radialverlauf",
+          "paragraphs": [
+            "Ziehe in Form bearbeiten den mittleren Griff, um die Maske zu verschieben, einen der Achsgriffe, um ihre Größe zu ändern, oder den äußeren Griff, um sie zu drehen. Halte beim Zeichnen oder Ändern der Größe die Umschalttaste gedrückt, um den Verlauf rund zu machen."
+          ],
+          "tips": [
+            "Form bietet außerdem die Regler Breite, Höhe, Drehung und Weiche Kante.",
+            "Wenn du vom Griff wegziehst, wird die ausgewählte radiale Maske neu gezeichnet."
+          ]
+        },
+        {
+          "title": "Passe eine lokale Tonkurve an",
+          "steps": [
+            "Erweitere die Tonkurve für die ausgewählte Maske und wähle RGB, Rot, Grün oder Blau.",
+            "Klicke auf das Diagramm, um einen Punkt hinzuzufügen, und ziehe ihn dann. Wenn du einen Punkt nach oben bewegst, wird seine Ausgabe heller; wenn du ihn nach unten bewegst, wird sie dunkler. Doppelklicke auf einen inneren Punkt, um ihn zu entfernen.",
+            "Verwende Kurve zurücksetzen, um nur den ausgewählten Kanal dieser Maske zurückzusetzen, oder Rückgängig, um eine Bearbeitung rückgängig zu machen."
+          ],
+          "tips": [
+            "Wenn das Diagramm fokussiert ist, wählen [ und ] Punkte aus, die Pfeiltasten verschieben sie, und Umschalttaste ermöglicht größere Schritte. Eingabe fügt einen Punkt hinzu, Löschen entfernt einen inneren Punkt, und Escape bricht eine laufende Anpassung ab.",
+            "Eine gespeicherte Kurve bleibt exakt, bis du sie bearbeitest. Der editor baut repräsentative Griffe neu auf, sodass die erste Anpassung eine importierte Kurve über den von dir verschobenen Punkt hinaus verändern kann."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Bearbeitung"
@@ -1640,7 +1685,7 @@
           ],
           "steps": [
             "Wählen Sie unter Ausgewählte Maske Hinzufügen, Subtrahieren oder Überschneiden.",
-            "Legen Sie Größe, Weiche Kante und Fluss fest und malen Sie dann unter Beobachtung der Überlagerung.",
+            "Stelle Größe, Weiche Kante, Fluss und Dichte ein und male dann, während du die Überlagerung beobachtest. Separate Striche bauen die Abdeckung bis zur Dichte auf; aktiviere Auto-Maske, um Striche auf ihre Startfarbe zu beschränken.",
             "Halten Sie bei Verwendung von Hinzufügen auf dem Mac Option gedrückt, um vorübergehend zu subtrahieren.",
             "Schalten Sie die Überlagerung aus und prüfen Sie die Anpassung. Verwenden Sie Undo für eine Verfeinerung, die Sie zurücknehmen möchten."
           ]
@@ -1818,7 +1863,8 @@
         {
           "title": "Eine intelligente Auswahl erstellen",
           "paragraphs": [
-            "Maske bietet Motiv-, Himmel-, Objekt-, Tiefen- und Personen-Auswahlen. Diese laufen lokal; verfügbare Methoden hängen von Auswahlsart und Plattform ab."
+            "Maske bietet Motiv-, Himmel-, Objekt-, Tiefen- und Personen-Auswahlen. Diese laufen lokal; verfügbare Methoden hängen von Auswahlsart und Plattform ab.",
+            "Motiv-, Himmel- und Objekt-Auswahlen behalten bis zu 1.024 Pixel entlang ihrer längsten Kante bei. Kanten werden anhand der Bildfarben verfeinert, und Vision-Motivauswahlen bewahren weiche Übergänge. Feine Grenzen müssen dennoch geprüft und per Pinsel verfeinert werden."
           ],
           "steps": [
             "Maske öffnen und Neue Maske erstellen erweitern.",
@@ -3024,7 +3070,7 @@
           "paragraphs": [
             "Eine 100%-Zoom-Einstellung garantiert nicht, dass alle Bilddetails bereits angekommen sind. Möglicherweise erscheint zuerst eine schnelle Vorschau, während die genaue RAW-Verarbeitung und eine größere Vorschau fertig werden. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, mit einer Anzeige wie 2 / 5. Er verschwindet, sobald eine verwendbare Vorschau angezeigt wird; die genaue RAW-Verarbeitung und größere Vorschauen laufen im Hintergrund ohne Überlagerung weiter. Die Anzeige steht für abgeschlossene Schritte, nicht für die verbleibende Zeit. Reduzierte Bewegung behält dieselben Schrittaktualisierungen ohne Animation bei. Das Foto bleibt sichtbar, ohne abgedunkelt zu werden. Bei 1:1 zeigen Sie mit dem Mauszeiger auf den 1:1-Button, um zu prüfen, ob die vollständigen Quellendetails bereit sind, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
-            "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen.",
+            "Entfernen, Reparieren, Klonen und Masken mit Anpassungen für Textur, Klarheit, Weißtöne, Schwarztöne oder Tonkurve benötigen eine zusätzliche Vorschauaktualisierung. Warte, bis die Vorschau fertig ist, bevor du ihre Details oder die Wirkung späterer Anpassungen beurteilst.",
             "Wenn die Abmessungen des Originals fehlen, zeigt die Zoomanzeige — und 1:1 ist deaktiviert. Auto passt sich weiterhin dem Bildschirm an. Scannen Sie den Ordner erneut, um die Abmessungen zu aktualisieren."
           ],
           "steps": [
@@ -3076,5 +3122,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "ab7b9e8b5fc89244bf01f9c666f9a4e2566e17e56656fb537c4ddd94366ef81e"
 }

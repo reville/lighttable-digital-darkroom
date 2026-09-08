@@ -457,7 +457,7 @@
             <div class="mask-tool-grid" role="group" aria-label="Create mask" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Create mask&quot;}">
             <button id="maskAddBrush" title="Paint a mask directly on the photo" data-i18n-attrs="{&quot;title&quot;:&quot;Paint a mask directly on the photo&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 15 9-9 2 2-9 9H4zM12 7l2-2 2 2-2 2M4 17c2 0 3-1 3-3"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Brush&quot;}">Brush</span></button>
             <button id="maskAddLinear" title="Create a mask with a gradual transition along a line" data-i18n-attrs="{&quot;title&quot;:&quot;Create a mask with a gradual transition along a line&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4h12M6 8h8M8 12h4M9.5 16h1"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Linear&quot;}">Linear</span></button>
-            <button id="maskAddRadial" title="Create a mask with a soft circular transition" data-i18n-attrs="{&quot;title&quot;:&quot;Create a mask with a soft circular transition&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="10" rx="7" ry="4.5"/><ellipse cx="10" cy="10" rx="3.5" ry="2"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Radial&quot;}">Radial</span></button>
+            <button id="maskAddRadial" title="Create a mask with a soft oval transition" data-i18n-attrs="{&quot;title&quot;:&quot;Create a mask with a soft oval transition&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><ellipse cx="10" cy="10" rx="7" ry="4.5"/><ellipse cx="10" cy="10" rx="3.5" ry="2"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Radial&quot;}">Radial</span></button>
             <button id="maskAddSubject" title="Automatically select the main subject for local adjustments" data-i18n-attrs="{&quot;title&quot;:&quot;Automatically select the main subject for local adjustments&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3"/><path d="M4.5 17c.6-4 2.4-6 5.5-6s4.9 2 5.5 6"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Subject&quot;}">Subject</span></button>
             <button id="maskAddSky" title="Automatically select the sky for local adjustments" data-i18n-attrs="{&quot;title&quot;:&quot;Automatically select the sky for local adjustments&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 13h14M5 13a5 5 0 0 1 9-3 3 3 0 0 1 3 3M10 3v3M4.5 5.5l2 2M15.5 5.5l-2 2"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Sky&quot;}">Sky</span></button>
             <button id="maskAddObject" title="Click an object in the photo to select it for local adjustments" data-i18n-attrs="{&quot;title&quot;:&quot;Click an object in the photo to select it for local adjustments&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7V4h3M13 4h3v3M16 13v3h-3M7 16H4v-3"/><circle cx="10" cy="10" r="2.5"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Object&quot;}">Object</span></button>
@@ -497,8 +497,20 @@
             <div class="mask-brush-settings">
               <div class="row mask-brush-control"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Size&quot;}">Size</span><input type="range" id="maskBrushSize" min="0.005" max="0.3" step="0.005"><span class="val" id="maskBrushSizeV">8%</span></div>
               <div class="row mask-brush-control"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Feather&quot;}">Feather</span><input type="range" id="maskBrushFeather" min="0" max="1" step="0.01"><span class="val" id="maskBrushFeatherV">70%</span></div>
-              <div class="row mask-brush-control"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Flow&quot;}">Flow</span><input type="range" id="maskBrushFlow" min="0.05" max="1" step="0.05"><span class="val" id="maskBrushFlowV">100%</span></div>
+              <div class="row mask-brush-control"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Flow&quot;}">Flow</span><input type="range" id="maskBrushFlow" min="0.01" max="1" step="0.01"><span class="val" id="maskBrushFlowV">100%</span></div>
+              <div class="row mask-brush-control"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Density&quot;}">Density</span><input type="range" id="maskBrushDensity" min="0.01" max="1" step="0.01"><span class="val" id="maskBrushDensityV">100%</span></div>
+              <label class="check-row mask-brush-control"><input type="checkbox" id="maskBrushAutoMask"><span data-i18n-text="{&quot;0&quot;:&quot;Auto Mask&quot;}">Auto Mask</span></label>
+              <div class="row mask-brush-control" id="maskBrushToleranceRow"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Tolerance&quot;}">Tolerance</span><input type="range" id="maskBrushTolerance" min="0.03" max="0.6" step="0.01"><span class="val" id="maskBrushToleranceV">18%</span></div>
             </div>
+            <details class="sec local-sec" id="maskShapeControls">
+              <summary><span data-i18n-text="{&quot;0&quot;:&quot;Shape&quot;}">Shape</span></summary>
+              <div class="secbody">
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Width&quot;}">Width</span><input type="range" id="maskRadiusX" min="0.01" max="1.5" step="0.01"><span class="val" id="maskRadiusXV">25%</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Height&quot;}">Height</span><input type="range" id="maskRadiusY" min="0.01" max="1.5" step="0.01"><span class="val" id="maskRadiusYV">25%</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Rotation&quot;}">Rotation</span><input type="range" id="maskAngle" min="-180" max="180" step="1"><span class="val" id="maskAngleV">0°</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Feather&quot;}">Feather</span><input type="range" id="maskShapeFeather" min="0" max="1" step="0.01"><span class="val" id="maskShapeFeatherV">65%</span></div>
+              </div>
+            </details>
             <details class="sec local-sec" open>
               <summary><span data-i18n-text="{&quot;0&quot;:&quot;Light&quot;}">Light</span></summary>
               <div class="secbody">
@@ -506,6 +518,8 @@
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Contrast&quot;}">Contrast</span><input type="range" data-local="contrast" min="-1" max="1" step="0.01"><span class="val" data-localv="contrast">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Highlights&quot;}">Highlights</span><input type="range" data-local="highlights" min="-1" max="1" step="0.01"><span class="val" data-localv="highlights">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Shadows&quot;}">Shadows</span><input type="range" data-local="shadows" min="-1" max="1" step="0.01"><span class="val" data-localv="shadows">0.00</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Whites&quot;}">Whites</span><input type="range" data-local="whites" min="-1" max="1" step="0.01"><span class="val" data-localv="whites">0.00</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Blacks&quot;}">Blacks</span><input type="range" data-local="blacks" min="-1" max="1" step="0.01"><span class="val" data-localv="blacks">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Texture&quot;}">Texture</span><input type="range" data-local="texture" min="-1" max="1" step="0.01"><span class="val" data-localv="texture">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Clarity&quot;}">Clarity</span><input type="range" data-local="clarity" min="-1" max="1" step="0.01"><span class="val" data-localv="clarity">0.00</span></div>
               </div>
@@ -516,6 +530,15 @@
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Temp&quot;}">Temp</span><input type="range" data-local="temp" min="-1" max="1" step="0.01"><span class="val" data-localv="temp">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Tint&quot;}">Tint</span><input type="range" data-local="tint" min="-1" max="1" step="0.01"><span class="val" data-localv="tint">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-local="saturation" min="-1" max="1" step="0.01"><span class="val" data-localv="saturation">0.00</span></div>
+              </div>
+            </details>
+            <details class="sec local-sec">
+              <summary><span data-i18n-text="{&quot;0&quot;:&quot;Tone Curve&quot;}">Tone Curve</span></summary>
+              <div class="secbody">
+                <label class="field-label" for="maskCurveChannel" data-i18n-text="{&quot;0&quot;:&quot;Channel&quot;}">Channel</label>
+                <select id="maskCurveChannel"><option value="L" data-i18n-text="{&quot;0&quot;:&quot;RGB&quot;}">RGB</option><option value="R" data-i18n-text="{&quot;0&quot;:&quot;Red&quot;}">Red</option><option value="G" data-i18n-text="{&quot;0&quot;:&quot;Green&quot;}">Green</option><option value="B" data-i18n-text="{&quot;0&quot;:&quot;Blue&quot;}">Blue</option></select>
+                <canvas id="maskCurve" width="256" height="256" style="display:block;width:100%;height:auto"></canvas>
+                <button id="maskCurveReset" type="button" class="quiet full" data-i18n-text="{&quot;0&quot;:&quot;Reset curve&quot;}">Reset curve</button>
               </div>
             </details>
             <details class="sec local-sec">
