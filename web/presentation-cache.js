@@ -25,6 +25,23 @@ export function createPresentationCache(limit = 48) {
       if (value) { entries.delete(key); entries.set(key, value); }
       return value;
     },
+    findPreview(image, request) {
+      // Only whole-photo surfaces with the exact source and baked recipe can
+      // stand in during navigation. A viewport tile cannot cover a new view.
+      const identity = renderRequestKey(image, { ...request, w: undefined, viewport: null });
+      let best = null;
+      for (const [key, value] of entries) {
+        const { w, ...candidate } = JSON.parse(key);
+        if (JSON.stringify(candidate) !== identity || !(w > 0)) continue;
+        const enough = w >= request.w, bestEnough = best?.width >= request.w;
+        if (!best || (enough && !bestEnough) ||
+            (enough === bestEnough && (enough ? w < best.width : w > best.width))) {
+          best = { key, width: w, value };
+        }
+      }
+      if (best) { entries.delete(best.key); entries.set(best.key, best.value); }
+      return best;
+    },
     set(key, value) {
       if (!value || value.error || value.cancelled || value.refining) return;
       entries.delete(key); entries.set(key, value);

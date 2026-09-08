@@ -3027,6 +3027,7 @@
           "title": "Vérifier ce qui a terminé le rendu",
           "paragraphs": [
             "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
+            "Lorsque vous changez de photo avec le zoom activé, LightTable affiche immédiatement un aperçu correspondant en cache, s’il est disponible. Les détails plus nets se chargent en arrière-plan et les photos voisines sont préchargées pour votre niveau de zoom.",
             "Le zoom conserve l’aperçu le plus net disponible pendant le chargement des détails supplémentaires. Le dézoom réutilise cet aperçu. À 1:1, consultez l’infobulle du bouton avant d’évaluer les détails fins.",
             "Si l'infobulle du bouton 1:1 indique une taille de pixel d'aperçu inférieure à celle de la source, vous voyez un aperçu livré plus petit. La résolution automatique adapte l'affichage et augmente sa demande pour la visualisation zoomée ; les sources très grandes peuvent dépasser la limite de demande de l'aperçu.",
             "Supprimer, Corriger, Dupliquer et les masques avec Texture ou Clarté nécessitent une mise à jour supplémentaire de l’aperçu. Attendez la fin de l’aperçu avant d’évaluer leur détail ou l’effet des ajustements ultérieurs.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
 }

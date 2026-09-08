@@ -3027,6 +3027,7 @@
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
             "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
+            "Quando cambi foto con lo zoom attivo, LightTable mostra subito un’anteprima corrispondente nella cache, se disponibile. I dettagli più nitidi vengono caricati in background e le foto vicine vengono precaricate per il tuo livello di zoom.",
             "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
             "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive.",
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
 }
