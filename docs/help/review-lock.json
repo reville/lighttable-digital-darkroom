@@ -321,12 +321,12 @@
       }
     },
     "keyboard-midi": {
-      "content": "f2511061a9bddf2bcf22cd9ee3e31d52dc8f46df94d5e80587275a054bf3c5bd",
+      "content": "ec3d07ce33f6a1d06769973fcc149fad373f9db7a43f59243c2e2cb0f891bbb8",
       "sources": {
         "app/main.swift": "f883a0c632ab691c866b067a70e8cdf3a57c1914cabe926631ad27f0cd07ad7a",
         "web/app.js": "d40a9779e24d87b5e7eca66e1e773971b9b0163bce22d7c7f26c67c6b7386725",
         "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
-        "web/midi.js": "b26af6994583bc28ec09294351785c77aeb0848269f5c5aa094ca85524935fb0"
+        "web/midi.js": "3c7a7c3259e1e49054ae9ece6898ec7d53ea2ed6ceac1df9477633f9dff17db4"
       }
     },
     "metadata-and-keywords": {
