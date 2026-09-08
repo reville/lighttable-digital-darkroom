@@ -2180,7 +2180,8 @@
         {
           "title": "Zacznij od nośnika",
           "paragraphs": [
-            "Film stosuje modelowany film i proces wyjściowy do nieruchomego zdjęcia. Przełącznik profilu filmu steruje tym przetwarzaniem; Twoje korekty Edytuj pozostają aktywne po wyłączeniu Film."
+            "Film stosuje modelowany film i proces wyjściowy do nieruchomego zdjęcia. Przełącznik profilu filmu steruje tym przetwarzaniem; Twoje korekty Edytuj pozostają aktywne po wyłączeniu Film.",
+            "Resetuj w Realistycznej symulacji filmu przywraca domyślne wartości wszystkich suwaków filmu. Resetuj w danej sekcji dotyczy tylko suwaków tej sekcji. Przełączniki i wybrane opcje pozostają bez zmian."
           ],
           "steps": [
             "Otwórz zdjęcie nieruchome i wybierz Film na pasku narzędzi, aby otworzyć Realistic Film Simulation.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

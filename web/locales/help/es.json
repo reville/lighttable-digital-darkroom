@@ -2180,7 +2180,8 @@
         {
           "title": "Empezar con un stock",
           "paragraphs": [
-            "Película aplica una película modelada y un proceso de salida a una foto fija. El interruptor de perfil de película controla este procesamiento; tus ajustes de Editar permanecen activos cuando desactivas Película."
+            "Película aplica una película modelada y un proceso de salida a una foto fija. El interruptor de perfil de película controla este procesamiento; tus ajustes de Editar permanecen activos cuando desactivas Película.",
+            "Restablecer en Simulación de película realista devuelve todos los deslizadores de Película a sus valores predeterminados. Restablecer en una sección solo afecta a los deslizadores de esa sección. Los interruptores y las opciones seleccionadas se mantienen."
           ],
           "steps": [
             "Abre una foto fija y selecciona Película en la barra de herramientas para abrir Simulación realista de película.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "シャープ化とノイズ除去の調整をリセットします",
     "Reset the RAW profile and capture-stage processing settings": "RAWプロファイルとキャプチャ段階の処理設定をリセットします",
     "Reset the combined RGB and individual channel curves": "結合RGBカーブと各チャンネルのカーブをリセットします",
-    "Reset the film profile and physical film stages for this photo": "この写真のフィルムプロファイルと物理的なフィルムステージをリセットします",
-    "Reset the film profile, stock, output, and capture settings": "フィルムプロファイル、ストック、出力、キャプチャ設定をリセットします",
-    "Reset the physical film stage controls to their defaults": "物理的なフィルムステージのコントロールを既定値にリセットします",
     "Reset this slider": "このスライダーをリセット",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "ホワイトバランス、自然な彩度、彩度、カラーミキサー、ポイントカラー、カラーグレーディングをリセット",
     "Reset {value}": "{value}をリセット",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り"
+    "☆ Favorites": "☆ お気に入り",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「リアルなフィルムシミュレーション」の「リセット」は、すべてのフィルムスライダーを初期値に戻します。各セクションの「リセット」は、そのセクションのスライダーだけに適用されます。スイッチと選択済みの項目は変更されません。",
+    "Reset sliders to their defaults": "スライダーを初期値に戻す"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "तीक्ष्णता और शोर में कमी के समायोजन रीसेट करें",
     "Reset the RAW profile and capture-stage processing settings": "RAW प्रोफ़ाइल और capture-stage प्रसंस्करण सेटिंग्स रीसेट करें",
     "Reset the combined RGB and individual channel curves": "संयुक्त RGB और अलग-अलग चैनल वक्र रीसेट करें",
-    "Reset the film profile and physical film stages for this photo": "इस फ़ोटो के लिए फ़िल्म प्रोफ़ाइल और भौतिक फ़िल्म स्टेज रीसेट करें",
-    "Reset the film profile, stock, output, and capture settings": "फ़िल्म प्रोफ़ाइल, stock, आउटपुट और capture सेटिंग्स रीसेट करें",
-    "Reset the physical film stage controls to their defaults": "भौतिक फ़िल्म स्टेज नियंत्रणों को उनके डिफ़ॉल्ट पर रीसेट करें",
     "Reset this slider": "इस स्लाइडर को रीसेट करें",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "श्वेत संतुलन, वाइब्रेंस, संतृप्ति, रंग मिक्सर, बिंदु रंग, और रंग ग्रेडिंग रीसेट करें",
     "Reset {value}": "{value} रीसेट करें",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ पीछे",
     "← Back to articles": "← लेखों पर वापस जाएँ",
     "← People": "← लोग",
-    "☆ Favorites": "☆ पसंदीदा"
+    "☆ Favorites": "☆ पसंदीदा",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "यथार्थवादी फ़िल्म सिमुलेशन में रीसेट करने से सभी फ़िल्म स्लाइडर अपने डिफ़ॉल्ट मानों पर लौट जाते हैं। किसी अनुभाग का रीसेट केवल उसी अनुभाग के स्लाइडर को बदलता है। स्विच और चुने गए विकल्प वैसे ही रहते हैं।",
+    "Reset sliders to their defaults": "स्लाइडर को डिफ़ॉल्ट मानों पर रीसेट करें"
   },
   "plurals": {
     " · {count} paired file linked": {

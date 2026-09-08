@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Reimposta le regolazioni di nitidezza e riduzione rumore",
     "Reset the RAW profile and capture-stage processing settings": "Reimposta il profilo RAW e le impostazioni di elaborazione della fase di acquisizione",
     "Reset the combined RGB and individual channel curves": "Reimposta le curve RGB combinate e le curve dei singoli canali",
-    "Reset the film profile and physical film stages for this photo": "Reimposta il profilo pellicola e le fasi fisiche della pellicola per questa foto",
-    "Reset the film profile, stock, output, and capture settings": "Reimposta il profilo pellicola, la pellicola, l'output e le impostazioni di acquisizione",
-    "Reset the physical film stage controls to their defaults": "Reimposta i controlli fisici dello stage pellicola ai valori predefiniti",
     "Reset this slider": "Reimposta questo cursore",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Reimposta bilanciamento del bianco, Vividezza, Saturazione, Miscelatore colore, Colore puntuale e Correzione colore",
     "Reset {value}": "Reimposta {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti"
+    "☆ Favorites": "☆ Preferiti",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati.",
+    "Reset sliders to their defaults": "Ripristina i valori predefiniti dei cursori"
   },
   "plurals": {
     " · {count} paired file linked": {

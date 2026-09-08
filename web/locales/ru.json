@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Сбросьте настройки повышения резкости и шумоподавления",
     "Reset the RAW profile and capture-stage processing settings": "Сбросить профиль RAW и настройки обработки на этапе съемки",
     "Reset the combined RGB and individual channel curves": "Сбросить объединенную кривую RGB и кривые отдельных каналов",
-    "Reset the film profile and physical film stages for this photo": "Сбросить профиль пленки и физические этапы пленки для этого фото",
-    "Reset the film profile, stock, output, and capture settings": "Сбросить профиль пленки, пленку, вывод и настройки съемки",
-    "Reset the physical film stage controls to their defaults": "Сбросить элементы управления физической пленочной ступени к значениям по умолчанию",
     "Reset this slider": "Сбросить этот ползунок",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Сбросить баланс белого, Сочность, Насыщенность, Микшер цветов, Точечный цвет и Цветокоррекцию",
     "Reset {value}": "Сбросить {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Назад",
     "← Back to articles": "← Назад к статьям",
     "← People": "← Люди",
-    "☆ Favorites": "☆ Избранное"
+    "☆ Favorites": "☆ Избранное",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "«Сбросить» в разделе «Реалистичная имитация пленки» возвращает все ползунки плёнки к значениям по умолчанию. «Сбросить» внутри секции затрагивает только её ползунки. Переключатели и выбранные параметры остаются без изменений.",
+    "Reset sliders to their defaults": "Вернуть ползунки к значениям по умолчанию"
   },
   "plurals": {
     " · {count} paired file linked": {

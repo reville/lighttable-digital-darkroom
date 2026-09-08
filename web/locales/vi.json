@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2304,9 +2304,6 @@
     "Reset sharpening and noise reduction adjustments": "Đặt lại các điều chỉnh làm sắc nét và khử nhiễu",
     "Reset the RAW profile and capture-stage processing settings": "Đặt lại hồ sơ RAW và cài đặt xử lý ở giai đoạn chụp",
     "Reset the combined RGB and individual channel curves": "Đặt lại các đường cong RGB tổng hợp và từng kênh riêng lẻ",
-    "Reset the film profile and physical film stages for this photo": "Đặt lại hồ sơ phim và các giai đoạn phim vật lý cho ảnh này",
-    "Reset the film profile, stock, output, and capture settings": "Đặt lại hồ sơ phim, phim, đầu ra và cài đặt chụp",
-    "Reset the physical film stage controls to their defaults": "Đặt lại các điều khiển giai đoạn phim vật lý về mặc định",
     "Reset this slider": "Đặt lại thanh trượt này",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Đặt lại cân bằng trắng, Độ rực, Độ bão hòa, Bộ trộn màu, Màu sắc điểm và Chỉnh màu",
     "Reset {value}": "Đặt lại {value}",
@@ -4034,7 +4031,9 @@
     "‹ Back": "‹ Quay lại",
     "← Back to articles": "← Quay lại bài viết",
     "← People": "← Mọi người",
-    "☆ Favorites": "☆ Mục yêu thích"
+    "☆ Favorites": "☆ Mục yêu thích",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Đặt lại trong Mô phỏng phim chân thực đưa tất cả thanh trượt Phim về giá trị mặc định. Đặt lại trong một phần chỉ ảnh hưởng đến các thanh trượt của phần đó. Các công tắc và tùy chọn đã chọn được giữ nguyên.",
+    "Reset sliders to their defaults": "Đặt lại các thanh trượt về giá trị mặc định"
   },
   "plurals": {
     " · {count} paired file linked": {
