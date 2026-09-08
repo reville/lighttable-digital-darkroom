@@ -215,7 +215,7 @@ hash_sources() {
 }
 
 NATIVE_HASH="$(hash_sources \
-  "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift")"
+  "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift")"
 XCODE_CONFIG_HASH="$(hash_sources \
   "$ROOT/app/Info.plist" "$ROOT/LightTable.xcodeproj/project.pbxproj" \
   "$PACKAGE_RESOLVED")"
@@ -231,7 +231,7 @@ SOURCE_TREE_HASH="$(hash_sources \
   "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
   "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
   "$ROOT/film_lab_ai" "$ROOT/app/main.swift" \
-  "$ROOT/app/NativePreview.swift" "$ROOT/app/NativePreview.metal" \
+  "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift" "$ROOT/app/NativePreview.metal" \
   "$ROOT/rust-engine/Cargo.toml" "$ROOT/rust-engine/Cargo.lock" \
   "$ROOT/rust-engine/src")"
 SOURCE_REVISION="$(git rev-parse HEAD)"
