@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "검색",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "검색은 문서 제목, 도구 이름, 전체 지침을 포함합니다. 앱 전체를 검색하려면 모든 주제를 선택하세요.",
     "Search film stocks": "필름 스톡 검색",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "스톡 이름을 검색하고, 이전 또는 다음으로 찾아본 뒤, 적용할 미리보기를 선택하세요.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "필름 이름을 검색하거나 미리보기를 스크롤한 다음 하나를 선택해 적용하세요. 세부 사항을 더 잘 볼 수 있도록 미리보기가 확대되고 잘립니다.",
     "Search help": "도움말 검색",
     "Search index: {value}": "검색 인덱스: {value}",
     "Search objects, scenes, text, and faces": "개체, 장면, 텍스트, 얼굴 검색",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% 유지됨",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}이름은 기존 파일을 반영하며 내보내기 전에 변경될 수 있습니다.",
     "{value}× stock baseline": "{value}× 필름 스톡 기준선",
-    "{value}–{value2} of {stocksLength} stocks": "스톡 {stocksLength}개 중 {value}–{value2}",
     "— none —": "— 없음 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}”에 칠한 세부 조정이 있습니다. 이 사진에 다시 만들거나 제외 마스크를 사용하세요.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}”에는 새 개체 선택이 필요합니다. 다른 편집 내용을 붙여넣으려면 제외 마스크를 사용하세요.",

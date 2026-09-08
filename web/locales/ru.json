@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Поиск",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Поиск охватывает заголовки статей, названия инструментов и все инструкции. Выберите Все темы, чтобы искать по всему приложению.",
     "Search film stocks": "Поиск пленок",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Найдите название пленки, используйте Previous или Next для просмотра и затем выберите предварительный просмотр, чтобы применить его.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Найдите плёнку по названию или прокрутите предпросмотры, затем выберите один из них, чтобы применить плёнку. Предпросмотры увеличены и обрезаны, чтобы лучше показать детали.",
     "Search help": "Поиск справки",
     "Search index: {value}": "Индекс поиска: {value}",
     "Search objects, scenes, text, and faces": "Поиск объектов, сцен, текста и лиц",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "сохранено {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Имена отражают существующие файлы и могут измениться до экспорта.",
     "{value}× stock baseline": "{value}× базовый уровень Пленка",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} из {stocksLength} пленок",
     "— none —": "— нет —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "У «{value}» есть нарисованные уточнения. Воссоздайте их на этом фото или исключите маски.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "Для «{value}» нужно новое выделение объекта. Исключите маски, чтобы вставить другие изменения.",

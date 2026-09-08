@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Buscar",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "La búsqueda abarca títulos de artículos, nombres de herramientas y las instrucciones completas. Elija Todos los temas para buscar en toda la aplicación.",
     "Search film stocks": "Buscar stocks de película",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Busca un nombre de stock, usa Anterior o Siguiente para explorar y luego elige una vista previa para aplicarlo.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Busca el nombre de una película o desplázate por las vistas previas y elige una para aplicarla. Las vistas previas se amplían y recortan para mostrar más detalle.",
     "Search help": "Buscar ayuda",
     "Search index: {value}": "Índice de búsqueda: {value}",
     "Search objects, scenes, text, and faces": "Busque objetos, escenas, texto y rostros",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "se conservó el {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Los nombres reflejan archivos existentes y pueden cambiar antes de la exportación.",
     "{value}× stock baseline": "{value}× línea base del stock",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} de {stocksLength} stocks",
     "— none —": "— ninguno —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” tiene refinamientos pintados. Vuélvelo a crear en esta foto o excluye máscaras.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” necesita una nueva selección de objeto. Excluye máscaras para pegar otras ediciones.",
