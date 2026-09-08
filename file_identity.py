@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import struct
 from functools import lru_cache
 from pathlib import Path
 
@@ -13,7 +14,7 @@ _WINDOWS = os.name == "nt"
 
 
 class _WindowsBindings:
-    """Metadata access only; initialized lazily on Windows, once per process."""
+    """File revision and guarded read handles; initialized lazily on Windows."""
 
     def __init__(self):
         import ctypes
@@ -35,6 +36,15 @@ class _WindowsBindings:
         self.query_file.argtypes = [wintypes.HANDLE, ctypes.c_int,
                                    wintypes.LPVOID, wintypes.DWORD]
         self.query_file.restype = wintypes.BOOL
+        self.device_io = kernel.DeviceIoControl
+        self.device_io.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.LPVOID,
+            wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD,
+            ctypes.POINTER(wintypes.DWORD), wintypes.LPVOID]
+        self.device_io.restype = wintypes.BOOL
+        self.reopen_file = kernel.ReOpenFile
+        self.reopen_file.argtypes = [wintypes.HANDLE, wintypes.DWORD,
+                                    wintypes.DWORD, wintypes.DWORD]
+        self.reopen_file.restype = wintypes.HANDLE
         self.close_handle = kernel.CloseHandle
         self.close_handle.argtypes = [wintypes.HANDLE]
         self.close_handle.restype = wintypes.BOOL
@@ -43,6 +53,7 @@ class _WindowsBindings:
         self.invalid_handle = ctypes.c_void_p(-1).value
         self.basic_info = FileBasicInfo
         self.ctypes = ctypes
+        self.dword = wintypes.DWORD
 
     def open_metadata_fd(self, path):
         # FILE_READ_ATTRIBUTES; share read/write/delete; OPEN_EXISTING. This
@@ -69,6 +80,46 @@ class _WindowsBindings:
             raise OSError("The filesystem does not provide a file change time")
         return int(info.ChangeTime)
 
+    def file_usn(self, fd):
+        # FSCTL_READ_FILE_USN_DATA is FILE_ANY_ACCESS: query this file handle,
+        # without opening the volume, enabling its journal, or flushing writes.
+        # SMB and volumes without an active journal can decline this query.
+        versions = (self.ctypes.c_ushort * 2)(2, 3)
+        output = self.ctypes.create_string_buffer(4096)
+        returned = self.dword()
+        if not self.device_io(self.get_osfhandle(fd), 0x000900EB,
+                              versions, self.ctypes.sizeof(versions),
+                              output, self.ctypes.sizeof(output),
+                              self.ctypes.byref(returned), None):
+            return None
+        return _usn_record(output.raw[:returned.value])
+
+    def open_data_fd(self, fd):
+        # ReOpenFile retains the same file object with an independent read
+        # position. A dup/seek would disturb a borrowed Python stream's offset.
+        # Deny concurrent writers for this fallback read; an actively edited
+        # source fails closed instead of hashing a mixture of revisions.
+        handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x5,
+                                  0x08000000 | 0x00100000)
+        if handle == self.invalid_handle:
+            raise self.ctypes.WinError()
+        try:
+            return self.open_osfhandle(handle, os.O_RDONLY | getattr(os, "O_BINARY", 0))
+        except BaseException:
+            self.close_handle(handle)
+            raise
+
+
+def _usn_record(data):
+    if len(data) < 8:
+        return None
+    length, major, _minor = struct.unpack_from("<IHH", data)
+    offset = {2: 24, 3: 40}.get(major)
+    if offset is None or not offset + 8 <= length <= len(data):
+        return None
+    usn = struct.unpack_from("<q", data, offset)[0]
+    return usn if usn > 0 else None
+
 
 @lru_cache(maxsize=1)
 def _windows_bindings():
@@ -78,13 +129,13 @@ def _windows_bindings():
 def _stat_fields(stat) -> tuple[int, int, int, int, int]:
     # CPython 3.13 path stat keeps legacy ctime=creation, while fstat may
     # expose native change time. Normalize both to birthtime on Windows;
-    # the independent native counter below supplies revision validation.
+    # the independent native revision below supplies content validation.
     ctime = getattr(stat, "st_birthtime_ns", stat.st_ctime_ns) if _WINDOWS else stat.st_ctime_ns
     return (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns,
             ctime)
 
 
-def _windows_change_time(stat, *, path=None, fd=None):
+def _windows_revision(stat, *, path=None, fd=None):
     if fd is None and path is None:
         raise OSError("A file path or descriptor is required for Windows identity")
     api = _windows_bindings()
@@ -95,10 +146,31 @@ def _windows_change_time(stat, *, path=None, fd=None):
         before = api.change_time(fd)
         if _stat_fields(os.fstat(fd)) != _stat_fields(stat):
             raise OSError("File changed before querying its identity")
+        usn = api.file_usn(fd)
+        if usn is not None:
+            revision = (1, usn)
+        else:
+            # Timestamps are not monotonic revision counters. Without a USN,
+            # cache guards must verify complete bytes, including same-tick
+            # rewrites. This intentionally costs a full read on those volumes;
+            # NTFS journal-backed checks remain metadata-only.
+            attrs = getattr(stat, "st_file_attributes", 0)
+            if attrs & (0x1000 | 0x40000 | 0x400000):
+                raise OSError("Download the cloud original before verifying its identity")
+            media_availability.require_local(path or "original", stat=stat)
+            digest = hashlib.blake2b(digest_size=16)
+            with os.fdopen(api.open_data_fd(fd), "rb") as stream:
+                if _stat_fields(os.fstat(stream.fileno())) != _stat_fields(stat):
+                    raise OSError("File changed before querying its identity")
+                for block in iter(lambda: stream.read(1 << 20), b""):
+                    digest.update(block)
+                if _stat_fields(os.fstat(stream.fileno())) != _stat_fields(stat):
+                    raise OSError("File changed while querying its identity")
+            revision = (2, int(digest.hexdigest(), 16))
         after = api.change_time(fd)
-        if before != after:
+        if before != after or api.file_usn(fd) != usn:
             raise OSError("File changed while querying its identity")
-        return after
+        return (after, *revision)
     finally:
         if owned_fd is not None:
             os.close(owned_fd)
@@ -107,9 +179,8 @@ def _windows_change_time(stat, *, path=None, fd=None):
 def stat_signature(stat, *, path=None, fd=None) -> tuple[int, ...]:
     signature = _stat_fields(stat)
     if _WINDOWS:
-        # Python <=3.13 exposes creation time as st_ctime_ns on Windows. The
-        # native change time also invalidates writes that restore the mtime.
-        signature += (_windows_change_time(stat, path=path, fd=fd),)
+        # Native ChangeTime alone can collide for rapid same-mtime rewrites.
+        signature += _windows_revision(stat, path=path, fd=fd)
     return signature
 
 

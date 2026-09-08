@@ -84,6 +84,9 @@ jobs:
           python3 scripts/linux/prepare-test-runtime.py
           # The source CLI resolves its colocated .venv, as development users do.
           ln -s .build/linux/test-runtime .venv
+          LIGHTTABLE_TEST_DATA_DIR="$PWD/engine/data" cargo +1.88.0 test --locked \
+            --manifest-path rust-engine/Cargo.toml \
+            resident_cache_tests::oversized_request_uses_cpu_then_returns_to_original_backend -- --ignored
 
       - name: Test Linux storage, shared memory, decoding and portable color
         env:
@@ -95,6 +98,7 @@ jobs:
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_raw_decode_cache.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_platform_image.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_tiff_precision.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_windows_precision_cache.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_one_shot.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_engine_recovery.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_cli_control.py -v
