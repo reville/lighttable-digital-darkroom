@@ -6847,12 +6847,16 @@ class Handler(BaseHTTPRequestHandler):
                         if raw.get("community"):
                             raw["parentId"] = raw["community"]["id"]
                             raw.pop("community", None)
+                            # A local variation must not keep the installation ID:
+                            # downloading the original again must never overwrite it.
+                            raw["id"] = secrets.token_hex(16)
                         if raw.get("scope") == "look":
                             raw = preset_library.prepare_look(raw)
                         cleaned = clean_preset(raw)
                         if not cleaned:
                             raise ValueError("Give this preset a name")
-                        items = [p for p in items if p["id"] != cleaned["id"]]
+                        replaced_id = (selected or {}).get("id", cleaned["id"])
+                        items = [p for p in items if p["id"] not in {cleaned["id"], replaced_id}]
                         items.append(cleaned)
                     elif act == "delete":
                         items = [p for p in items if not (p["id"] == ident if ident else p["name"] == b.get("name"))]

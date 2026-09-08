@@ -188,6 +188,27 @@ class PresetPersistenceTests(unittest.TestCase):
         self.assertEqual(users[0]["community"]["version"], "1.0.1")
         self.assertEqual(len(self.server.load_presets()), 11)
 
+    def test_saving_variation_then_reinstalling_keeps_the_variation(self):
+        recipe = {k: v for k, v in library.builtin_presets()[0].items() if k != "collection"}
+        with mock.patch.object(self.server.COMMUNITY_PRESETS, "recipe", return_value=recipe):
+            self.server.install_community_preset({"id": recipe["id"]})
+            handler = self.server.Handler.__new__(self.server.Handler)
+            handler.path = '/api/presets'; handler.headers = {}
+            handler._body = lambda: {'action': 'save', 'name': recipe['name'],
+                                     'grade': {'contrast': .2}, 'includedGrade': ['contrast']}
+            results = []
+            handler._json = lambda value, status=200: results.append((status, value))
+            handler._log_request = lambda _: None
+            handler.do_POST()
+            self.assertEqual(results[0][0], 200)
+            local = self.server.load_user_presets()[0]
+            self.assertNotIn('community', local)
+            self.assertFalse(local['id'].startswith('community:'))
+            self.server.install_community_preset({'id': recipe['id']})
+        users = self.server.load_user_presets()
+        self.assertEqual(len(users), 2)
+        self.assertEqual(next(p for p in users if p['id'] == local['id'])['grade']['contrast'], .2)
+
 
 if __name__ == "__main__":
     unittest.main()
