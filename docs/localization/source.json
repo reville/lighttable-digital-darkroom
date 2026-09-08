@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "pluralPairs": [
     {
@@ -1140,6 +1140,7 @@
     "Current camera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.",
     "Current photo",
+    "Current photo / total photos",
     "Current settings",
     "Current stock",
     "Curve",
@@ -1620,6 +1621,7 @@
     "Hold-key slider control",
     "Horizontal",
     "Hourly",
+    "Hover over the photo counter in the top bar to see what its numbers mean.",
     "Hue",
     "Hue shift",
     "IPTC",
@@ -2290,6 +2292,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
     "Photos could not be imported. Try again or choose a folder.",
     "Photos set aside",
+    "Photos shown / total photos in this folder or collection",
     "Photos stay in their current folder. No moving or copying required.",
     "Photos stay in their current folder. You can add more folders whenever you like.",
     "Photos unstacked",

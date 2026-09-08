@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Appareil photo actuel",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Le format actuel préserve la représentation présente de l’élément, y compris RAW ou la profondeur intégrée lorsqu’elle est disponible. Compatible crée une image largement lisible. Les fichiers sélectionnés sont copiés dans {path}.",
     "Current photo": "Photo actuelle",
+    "Current photo / total photos": "Photo actuelle / nombre total de photos",
     "Current settings": "Réglages actuels",
     "Current stock": "Pellicule actuelle",
     "Curve": "Courbe",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Commande du curseur avec touche maintenue",
     "Horizontal": "Horizontal",
     "Hourly": "Horaire",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
     "Hue": "Teinte",
     "Hue shift": "Décalage de teinte",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Les Photos sont ouvertes en mode dossier et le catalogue endommagé n’a pas été modifié. Ouvrez État de la bibliothèque pour le récupérer, restaurer une sauvegarde ou démarrer un nouveau catalogue.",
     "Photos could not be imported. Try again or choose a folder.": "Impossible d’importer les photos. Réessayez ou choisissez un dossier.",
     "Photos set aside": "Photos mises de côté",
+    "Photos shown / total photos in this folder or collection": "Photos affichées / nombre total de photos dans ce dossier ou cette collection",
     "Photos stay in their current folder. No moving or copying required.": "Les photos restent dans leur dossier actuel. Aucun déplacement ni copie nécessaire.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Les photos restent dans leur dossier actuel. Vous pouvez ajouter d’autres dossiers quand vous voulez.",
     "Photos unstacked": "Photos désimbriquées",

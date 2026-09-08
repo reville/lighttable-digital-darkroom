@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Текущая камера",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Текущий формат сохраняет текущее представление ресурса, включая RAW или встроенную глубину, когда она доступна. Совместимый создаёт изображение, которое можно широко открыть. Выбранные файлы копируются в {path}.",
     "Current photo": "Текущее фото",
+    "Current photo / total photos": "Текущее фото / всего фото",
     "Current settings": "Текущие настройки",
     "Current stock": "Текущая пленка",
     "Curve": "Кривая",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Ползунок с удержанием клавиши",
     "Horizontal": "Горизонтально",
     "Hourly": "Почасовой",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Наведите указатель на счётчик фотографий в верхней панели, чтобы узнать, что означают его числа.",
     "Hue": "Оттенок",
     "Hue shift": "Сдвиг оттенка",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Фото открыты в режиме папки, и поврежденный каталог не был изменен. Откройте «Состояние библиотеки», чтобы восстановить его, восстановить резервную копию или начать новый каталог.",
     "Photos could not be imported. Try again or choose a folder.": "Не удалось импортировать фото. Попробуйте еще раз или выберите папку.",
     "Photos set aside": "Фото отложены",
+    "Photos shown / total photos in this folder or collection": "Показано фото / всего фото в этой папке или коллекции",
     "Photos stay in their current folder. No moving or copying required.": "Фото остаются в текущей папке. Перемещение или копирование не требуется.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Фото остаются в текущей папке. Вы можете добавлять больше папок в любое время.",
     "Photos unstacked": "Фото разгруппированы",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "当前相机",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "当前格式会保留资产的当前表示形式，包括 RAW 或嵌入深度（如可用）。兼容格式会创建一个可广泛读取的图像。所选文件将复制到 {path}。",
     "Current photo": "当前照片",
+    "Current photo / total photos": "当前照片 / 照片总数",
     "Current settings": "当前设置",
     "Current stock": "当前胶片",
     "Curve": "曲线",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "按住键滑块控制",
     "Horizontal": "水平",
     "Hourly": "按小时",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "将鼠标悬停在顶部栏的照片计数器上，即可查看数字的含义。",
     "Hue": "色相",
     "Hue shift": "色相偏移",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "照片处于文件夹模式，已损坏的目录未被更改。打开资料库健康状况以抢救它、还原备份，或开始新的目录。",
     "Photos could not be imported. Try again or choose a folder.": "无法导入照片。请重试或选择一个文件夹。",
     "Photos set aside": "照片已搁置",
+    "Photos shown / total photos in this folder or collection": "显示的照片数 / 此文件夹或收藏集中的照片总数",
     "Photos stay in their current folder. No moving or copying required.": "照片会保留在当前文件夹中。无需移动或复制。",
     "Photos stay in their current folder. You can add more folders whenever you like.": "照片会保留在当前文件夹中。你可以随时添加更多文件夹。",
     "Photos unstacked": "照片已取消堆栈",
