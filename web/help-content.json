@@ -977,7 +977,7 @@
         {
           "title": "Apply an existing recipe",
           "paragraphs": [
-            "Open Presets in the editing toolbar. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."
+            "Open Presets in the editing toolbar. Click Manage… to open or close Manage presets; the button is highlighted while the section is open. Manage presets provides the selected preset’s source and conversion coverage, along with explicit application controls."
           ],
           "steps": [
             "Choose a preset and review its summary, especially if it came from another editor.",
@@ -993,7 +993,7 @@
         {
           "title": "Save or import a preset",
           "paragraphs": [
-            "Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles."
+            "Manage presets can save the current look or import LightTable recipes, Lightroom/Camera Raw presets, and Capture One styles. Manage… is available even when there are no presets, so you can import or save your first one."
           ],
           "steps": [
             "To save, select All adjustment settings or Changed settings only under Save current look, choose whether to include Film settings, and click Save new….",

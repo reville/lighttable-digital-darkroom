@@ -9497,11 +9497,7 @@ PRESET_BROWSER = createPresetBrowser({
   onFavoritesChange(names) { APP_PREFS.presetFavorites = names; savePrefs(); },
   onSelect(preset) { $('presetList').value = preset.name; renderPresetSummary(true); },
   onApply: (preset, photo) => applyPreset(preset, photo),
-  onManage() {
-    $('presetManage').open = true;
-    $('presetManage').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    $('presetManage').querySelector('summary').focus();
-  },
+  managementSection: $('presetManage'),
   async getPreview(preset, photo, { signal }) {
     const response = await fetch('/api/render/file', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
