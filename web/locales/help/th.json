@@ -2536,6 +2536,36 @@
       "categoryLabel": "ส่งออก"
     },
     {
+      "id": "about-lighttable",
+      "title": "เกี่ยวกับ LightTable และโอเพนซอร์ส",
+      "category": "Settings",
+      "summary": "ค้นหาเวอร์ชันแอปสำหรับ Mac, เว็บไซต์ และซอร์สโค้ด",
+      "keywords": [
+        "เกี่ยวกับ",
+        "เวอร์ชัน",
+        "เว็บไซต์",
+        "github",
+        "โอเพนซอร์ส",
+        "สัญญาอนุญาต",
+        "GPL"
+      ],
+      "sections": [
+        {
+          "title": "เปิด เกี่ยวกับ ใน macOS",
+          "paragraphs": [
+            "เลือก LightTable → เกี่ยวกับ LightTable ในแถบเมนูของ Mac หน้าต่างเกี่ยวกับจะแสดงเวอร์ชันของแอป และหมายเลขบิลด์เมื่อแตกต่างกัน",
+            "เว็บไซต์จะเปิด lighttable.app ในเบราว์เซอร์เริ่มต้นของคุณ GitHub จะเปิดคลังซอร์สสาธารณะของ LightTable ซึ่งคุณสามารถสำรวจโค้ด รายงานปัญหา และมีส่วนร่วมได้",
+            "LightTable เป็นอิสระและโอเพนซอร์สภายใต้ GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "การตั้งค่า"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "เปลี่ยนการตั้งค่าและค่าเริ่มต้นของภาพถ่ายใหม่",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "th",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

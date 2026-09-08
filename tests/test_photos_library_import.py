@@ -22,7 +22,7 @@ class PhotosLibraryImportTests(unittest.TestCase):
         locale_core = source.split("// BEGIN NATIVE LOCALIZATION CORE", 1)[1].split(
             "// END NATIVE LOCALIZATION CORE", 1)[0].split("\n", 1)[1]
         importer = source[source.index("private final class PhotosLibraryImporter"):
-                          source.index("// MARK: - App\n")]
+                          source.index("// MARK: - Native web UI\n")]
         initialization = source[source.index("        let defaults = UserDefaults.standard"):
                                 source.index("        var isDir: ObjCBool = false", source.index("func applicationDidFinishLaunching"))]
         launch = source[source.index("    private func launch(folder: String)"):]

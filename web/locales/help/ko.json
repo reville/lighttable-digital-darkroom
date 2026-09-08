@@ -2536,6 +2536,36 @@
       "categoryLabel": "내보내기"
     },
     {
+      "id": "about-lighttable",
+      "title": "LightTable 정보 및 오픈 소스",
+      "category": "Settings",
+      "summary": "Mac 앱 버전, 웹사이트, 소스 코드를 찾을 수 있습니다.",
+      "keywords": [
+        "정보",
+        "버전",
+        "웹사이트",
+        "github",
+        "오픈 소스",
+        "라이선스",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "macOS에서 정보 열기",
+          "paragraphs": [
+            "Mac 메뉴 막대에서 LightTable → LightTable 정보를 선택하세요. 정보 창에는 앱 버전과, 서로 다를 경우 빌드 번호가 표시됩니다.",
+            "웹사이트는 기본 브라우저에서 lighttable.app를 엽니다. GitHub는 공개 LightTable 소스 저장소를 열어 코드 살펴보기, 문제 보고, 기여를 할 수 있게 합니다.",
+            "LightTable은 GNU GPL v3.에 따라 제공되는 자유 및 오픈 소스입니다."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "설정"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "환경설정과 새 사진 기본값 변경",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "ko",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

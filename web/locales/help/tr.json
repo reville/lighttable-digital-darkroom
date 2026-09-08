@@ -2536,6 +2536,36 @@
       "categoryLabel": "Dışa Aktar"
     },
     {
+      "id": "about-lighttable",
+      "title": "LightTable ve açık kaynak hakkında",
+      "category": "Settings",
+      "summary": "Mac uygulama sürümünü, web sitesini ve kaynak kodunu bulun.",
+      "keywords": [
+        "hakkında",
+        "sürüm",
+        "web sitesi",
+        "github",
+        "açık kaynak",
+        "lisans",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "macOS'ta Hakkında'yı aç",
+          "paragraphs": [
+            "Mac menü çubuğunda LightTable → LightTable Hakkında'yı seçin. Hakkında penceresi uygulama sürümünü ve farklıysa derleme numarasını gösterir.",
+            "Web sitesi, lighttable.app'i varsayılan tarayıcınızda açar. GitHub, kodu inceleyebileceğiniz, sorun bildirebileceğiniz ve katkıda bulunabileceğiniz herkese açık LightTable kaynak deposunu açar.",
+            "LightTable, GNU GPL v3 kapsamında serbest ve açık kaynaklıdır."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Ayarlar"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Tercihleri ve yeni fotoğraf varsayılanlarını değiştirin",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

@@ -2536,6 +2536,36 @@
       "categoryLabel": "書き出し"
     },
     {
+      "id": "about-lighttable",
+      "title": "LightTable についてとオープンソース",
+      "category": "Settings",
+      "summary": "Mac アプリのバージョン、ウェブサイト、ソースコードを確認できます。",
+      "keywords": [
+        "about",
+        "バージョン",
+        "ウェブサイト",
+        "github",
+        "オープンソース",
+        "ライセンス",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "macOS で「About」を開く",
+          "paragraphs": [
+            "Mac のメニューバーで LightTable → LightTable について を選択します。About ウィンドウにはアプリのバージョンと、異なる場合はビルド番号が表示されます。",
+            "ウェブサイトは既定のブラウザで lighttable.app を開きます。GitHub は公開されている LightTable のソースリポジトリを開き、コードの確認、問題の報告、貢献ができます。",
+            "LightTable は GNU GPL v3 の下でフリーかつオープンソースです。"
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "設定"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "設定と新規写真の既定値を変更します",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "ja",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

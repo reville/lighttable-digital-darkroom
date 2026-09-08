@@ -2536,6 +2536,36 @@
       "categoryLabel": "匯出"
     },
     {
+      "id": "about-lighttable",
+      "title": "關於 LightTable 與開源",
+      "category": "Settings",
+      "summary": "尋找 Mac 應用程式版本、網站和原始碼。",
+      "keywords": [
+        "關於",
+        "版本",
+        "網站",
+        "github",
+        "開源",
+        "授權條款",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "在 macOS 上打開「關於」",
+          "paragraphs": [
+            "在 Mac 選單列中選擇 LightTable → 關於 LightTable。「關於」視窗會顯示應用程式版本，以及在不同時顯示其組建號碼。",
+            "網站會在您的預設瀏覽器中開啟 lighttable.app。GitHub 會開啟公開的 LightTable 原始碼儲存庫，您可以在其中探索程式碼、回報問題，並作出貢獻。",
+            "LightTable 依 GNU GPL v3 授權條款提供自由且開源。"
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "設定"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "變更偏好設定與新相片預設值",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }

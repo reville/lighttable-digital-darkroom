@@ -1,9 +1,16 @@
 {
   "articles": {
+    "about-lighttable": {
+      "content": "f176c760d71f2141d024f089715f371828dcb3916a9a86bdfbea36dbae67ce87",
+      "sources": {
+        "README.md": "d86407a7a02c05b2f3fc395e8f06cddeda69471eced4c50623d6e82e0ca44097",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870"
+      }
+    },
     "add-photos": {
       "content": "2b479b8c4e08b42fe56d33e6b8eae2ff5016376a4b5ce64d7ec637752aedc1cb",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "web/first-run.js": "8b8e7c182a727bbd015115e625cda8da5172163fa79edc38e4c38c01512b9d60",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54"
       }
@@ -19,7 +26,7 @@
     "browse-folders": {
       "content": "b031d33dfb6d2abbda4247bfbf88d8a03559d1b54a9ed9018af75514893335fc",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54"
@@ -35,7 +42,7 @@
     "catalog-health-recovery": {
       "content": "bd8b43e38a19909c4a3d1e034fa49f1a56b6d35a934393b4ed87cf420bfc6f6f",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54",
         "web/recovery.js": "fa5646aae6fdc5bc95dd317f08c9c3f78985a1c36d89785152d9cc55df1f0921",
@@ -73,7 +80,7 @@
     "editing-copy-paste-match-exposure": {
       "content": "be8f4a0a8723804902b7058c37d670dd1bff8c53a55ce24732056d0afea033f5",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "server.py": "1f99e0dd1325f0a811e07798505d1e8e34ffcd9f8281f0adb4671e12f2d22ba0",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
         "web/edit-transfer.js": "997b5ec4817b637a3c2988603e4a4d8510714c1da93452190eeb635d14349f44"
@@ -95,7 +102,7 @@
     "editing-detail-effects-enhance": {
       "content": "90464f937cc2e2c90f3700e464e239d67c807c2377f986f5d0df65b6efbdc4ef",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "enhance_workflow.py": "469386aabadff874fde87a1bb534f35bb3d9ff8d4843aec3f4df8a7839f746ee",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
         "web/enhance-panel.js": "6efc59ea9686bf72062453c76d61a9a09ad86511b4d9737e8ba95409fd95daa7",
@@ -151,7 +158,7 @@
     "editing-photo-merge": {
       "content": "5030e3092b04c12520f62d83ac0dd9b1f5b09b50e8af8cd1693f190bc63b47c1",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "merge_workflow.py": "af4489a9b4bdeb2374640e59d09a65b567a65da6b04ad7519b6d390eabee8e91",
         "server.py": "1f99e0dd1325f0a811e07798505d1e8e34ffcd9f8281f0adb4671e12f2d22ba0",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
@@ -161,7 +168,7 @@
     "editing-presets": {
       "content": "b408454541155b51882efc3dd3822b7e51aea09adca52799fe3b585615bb6b3e",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "preset_io.py": "ef53c6ad973ce5ab42c7c328fdd3e88ac002f913cad158bf20446e6219a94c8c",
         "preset_library.py": "98efb1e5151d8406e158681cde6da78003e2fe8c4bea911ee645fe78a644d14d",
         "preset_submission.py": "d0880b6df5b1d4fd31fc845cc8353da883f45ab430c00ee9faa3d403082ea5ca",
@@ -316,7 +323,7 @@
     "keyboard-midi": {
       "content": "f739b298e8159cbb4ce042ee24fc5a85ce8edfd9ee21a635cb9925b05351e008",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54",
         "web/midi.js": "4de297fc2eb9aecaf718f761b05597051162f77caa6d70293a1f42471a826ad2"
@@ -325,7 +332,7 @@
     "metadata-and-keywords": {
       "content": "4070dd0015da08ec42ca3dbf872e0d0e24c046eb2f938cf594101846244587ec",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "keyword_workflow.py": "5c545bd45205bf294d15cddbaf43f27a39ad5c30b69e7f98fab579d2b61a73a4",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0",
         "web/keyword-batch.js": "e38195a5528e40635522473776ba9b0a2052f11a78ac77fb7cfe81fa3cc8a88e",
@@ -393,7 +400,7 @@
     "settings-language": {
       "content": "71d4519da1bbc3f4308babd6af7b97a1928006cf84ba51197d08c440133665c4",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "web/i18n.js": "48ec7b56c856a8db9bcd47315a6c697582a0207a1656d42ed43260c3627b7388",
         "web/index.html": "e84e491e1f879aa014e9e0d62af0fc8fe54d95c0891d2bbdf36e30e11aa77e54",
         "web/locale-bootstrap.js": "06fc13de85d1b216f01742ae5667c03b18a4fd413913281bb87aa7866b287845",
@@ -435,7 +442,7 @@
     "trash-rejected": {
       "content": "1a1899fc69dcf35a01a2c59a2a63dd159818e80d438006158e49bbd2ad7271cf",
       "sources": {
-        "app/main.swift": "100b34cd48bc2497dd361c524afac7dc09c2d21b4b958fb7fcf3d4820d85c31e",
+        "app/main.swift": "b9e6b26b58ed9776c2a4ce272295afc3dc891f20d3ef2fde9a7fa11298fe7870",
         "server.py": "1f99e0dd1325f0a811e07798505d1e8e34ffcd9f8281f0adb4671e12f2d22ba0",
         "web/app.js": "a59010a380f72a0604706fa686351c6a0c611371a09cbd77448810214c2f62b0"
       }

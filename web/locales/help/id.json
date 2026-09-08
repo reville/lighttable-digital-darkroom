@@ -2536,6 +2536,36 @@
       "categoryLabel": "Ekspor"
     },
     {
+      "id": "about-lighttable",
+      "title": "Tentang LightTable dan sumber terbuka",
+      "category": "Settings",
+      "summary": "Temukan versi aplikasi Mac, situs web, dan kode sumbernya.",
+      "keywords": [
+        "tentang",
+        "versi",
+        "website",
+        "github",
+        "sumber terbuka",
+        "lisensi",
+        "gpl"
+      ],
+      "sections": [
+        {
+          "title": "Buka Tentang di macOS",
+          "paragraphs": [
+            "Pilih LightTable → Tentang LightTable di bar menu Mac. Jendela Tentang menampilkan versi aplikasi dan, jika berbeda, nomor build-nya.",
+            "Website membuka lighttable.app di peramban bawaan Anda. GitHub membuka repositori sumber LightTable publik, tempat Anda dapat menjelajahi kode, melaporkan masalah, dan berkontribusi.",
+            "LightTable adalah bebas dan sumber terbuka di bawah GNU GPL v3."
+          ]
+        }
+      ],
+      "related": [
+        "settings-and-defaults",
+        "catalog-health-recovery"
+      ],
+      "categoryLabel": "Pengaturan"
+    },
+    {
       "id": "settings-and-defaults",
       "title": "Ubah preferensi dan default foto baru",
       "category": "Settings",
@@ -2908,5 +2938,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "12773c15bc3de45a09b86d9311572b6cc746bdf170e6ecde1b4e9da52114f40a"
+  "sourceDigest": "5adf6106afd6baf324c2648151e4f82e6531e63f1542d4b01981e32866d0d94b"
 }
