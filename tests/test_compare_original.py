@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageCms
 
 import server
 
@@ -20,6 +20,96 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CompareOriginalTests(unittest.TestCase):
+    def test_processed_preview_preserves_srgb_and_invalidates_old_pixels(self):
+        profile = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
+        for old_cache in (False, True):
+            with self.subTest(old_cache=old_cache), tempfile.TemporaryDirectory() as directory:
+                folder = Path(directory)
+                source = Image.new("RGB", (64, 64))
+                colors = [(200, 40, 20), (30, 180, 60), (40, 80, 220), (128, 128, 128)]
+                for index, color in enumerate(colors):
+                    source.paste(color, (index * 16, 0, (index + 1) * 16, 64))
+                source.save(folder / "photo.jpg", icc_profile=profile, quality=100, subsampling=0)
+                decoded = Image.open(folder / "photo.jpg")
+                cache = folder / "cache"
+                (cache / "orig").mkdir(parents=True)
+                if old_cache:
+                    Image.new("RGB", (64, 64), "black").save(cache / "orig/source_64.jpg")
+                with mock.patch.object(server, "FOLDER", folder), \
+                        mock.patch.object(server, "CACHE", cache), \
+                        mock.patch.object(server, "file_key", return_value="source"), \
+                        mock.patch.object(server, "guard_local_photo"):
+                    image = Image.open(io.BytesIO(server.orig_jpeg("photo.jpg", 64)))
+                for x in (8, 24, 40, 56):
+                    np.testing.assert_allclose(image.getpixel((x, 32)),
+                                               decoded.getpixel((x, 32)), atol=1)
+
+    @unittest.skipUnless(shutil.which("node"), "Node.js is unavailable")
+    def test_finished_raw_replaces_draft_in_both_display_paths(self):
+        accurate = mock.Mock()
+        accurate.exists.side_effect = [False, True]
+        with mock.patch.object(server, "neutral_preview_path", return_value=accurate), \
+                mock.patch.object(server, "orig_jpeg", return_value=b"draft"), \
+                mock.patch.object(server, "guard_local_photo"), \
+                mock.patch.object(server, "file_key", return_value="source"):
+            responses = [server.render_preview("photo.dng", {"profile_enabled": False}, 1100)
+                         for _ in range(2)]
+        javascript = (ROOT / "web/app.js").read_text()
+        source = javascript[javascript.index("function rememberPresentedRender("):
+                            javascript.index("function setWebGLBaseImage(")]
+        script = """
+const assert = require('node:assert/strict'), vm = require('node:vm');
+const responses = RESPONSE;
+(async () => { for (const native of [true, false]) {
+  const uploads = [], S = {seq:1, renderState:'pending'};
+  const context = {S, performance, nativePreviewActive:() => native, drawGrade:() => {},
+    setNativeBaseImage:async render => {uploads.push(render.img); return {};},
+    setWebGLBaseImage:async url => {uploads.push(url); return {};}};
+  vm.runInNewContext(SOURCE + '\\nglobalThis.load=setBaseImage;', context);
+  await context.load(responses[0], 1);
+  S.renderState='ready'; S.seq=2;
+  await context.load(responses[1], 2);
+  assert.equal(uploads.length, 2, native ? 'Metal kept draft' : 'WebGL kept draft');
+  assert.match(uploads[1], /api\\/neutral/);
+}})().catch(e => {console.error(e); process.exitCode=1;});
+""".replace("RESPONSE", json.dumps(responses)).replace("SOURCE", json.dumps(source))
+        result = subprocess.run(["node", "-e", script], capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_cli_before_uses_accurate_raw_at_requested_resolution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            full, draft = folder / "full.jpg", folder / "draft.jpg"
+            Image.new("RGB", (3000, 2000), (60, 90, 120)).save(full)
+            Image.new("RGB", (1600, 1067), (30, 40, 50)).save(draft)
+            with mock.patch.object(server, "CACHE", folder), \
+                    mock.patch.object(server, "file_key", return_value="source"), \
+                    mock.patch.object(server, "guard_local_photo"), \
+                    mock.patch.object(server, "catalog_entry_for", return_value={}), \
+                    mock.patch.object(server, "build_neutral_preview", return_value=full), \
+                    mock.patch.object(server, "raw_display", return_value=draft):
+                result = server.program_render_image({"name": "photo.dng", "w": 3000, "before": True})
+            self.assertEqual(result.size, (3000, 2000))
+            np.testing.assert_array_equal(result, Image.open(full))
+
+    def test_cli_after_waits_for_accurate_raw_on_a_cold_cache(self):
+        for film in (False, True):
+            with self.subTest(film=film), tempfile.TemporaryDirectory() as directory:
+                image = Path(directory) / "accurate.jpg"
+                Image.new("RGB", (90, 60), (60, 90, 120)).save(image)
+                with mock.patch.object(server, "catalog_entry_for", return_value={}), \
+                        mock.patch.object(server, "render_preview", side_effect=[
+                            {"refining": True}, {"refining": False}]) as render, \
+                        mock.patch.object(server, "build_neutral_preview") as neutral, \
+                        mock.patch.object(server, "build_raw_preview") as raw, \
+                        mock.patch.object(server, "_preview_source_bytes", return_value=image.read_bytes()), \
+                        mock.patch.object(server, "exif_for", return_value={}):
+                    server.program_render_image({"name": "photo.dng", "w": 90,
+                        "state": {"params": {"profile_enabled": film}}})
+                self.assertEqual(render.call_count, 2, "CLI returned the draft without finishing RAW")
+                self.assertEqual(raw.call_count, int(film))
+                self.assertEqual(neutral.call_count, int(not film))
+
     @unittest.skipUnless(shutil.which("node"), "Node.js is unavailable")
     def test_browser_and_native_original_url_retains_requested_detail(self):
         javascript = (ROOT / "web/app.js").read_text()
@@ -40,6 +130,7 @@ console.log(JSON.stringify([800, 3000, 6000, undefined].map(width =>
         self.assertEqual([int(url["w"]) for url in urls], [800, 3000, 6000, 6000])
         for url in urls:
             self.assertEqual(url["quality"], "full")
+            self.assertEqual(url["v"], str(server.ORIGINAL_PREVIEW_CACHE_VERSION))
             self.assertEqual(url["name"], "3:photo & detail.ARW")
             self.assertEqual(url["rot"], "90")
             self.assertEqual(url["key"], "changed-source")
