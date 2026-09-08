@@ -631,7 +631,8 @@ afterVisiblePaint(20).then((paintedAt) => {
         self.assertIn("bar.addEventListener('pointerdown'", javascript)
         self.assertNotIn("cmp.addEventListener('pointerdown'", javascript)
         self.assertIn("if (compareEditingBlocked()) setCompareActive(false);", javascript)
-        self.assertIn(".cmp.comparing .cmp-bar { pointer-events:auto; opacity:1; }", css)
+        self.assertIn('id="compareOverlay" hidden', html)
+        self.assertIn("const bar = $('compareBar');", javascript)
 
     def test_zoom_targets_and_panel_geometry_remain_stable(self):
         javascript = (ROOT / "web" / "app.js").read_text()

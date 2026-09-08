@@ -12,6 +12,7 @@ HARNESS = r"""
 import {createAppState, cloneValue} from './web/state.js';
 import {OPTICS_DEFAULTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics} from './web/editor-panels.js';
 import {cropGeometry, restoreCropGeometry} from './web/edit-transfer.js';
+import {compareViewGeometry} from './web/compare-view.js';
 const S = createAppState({}, OPTICS_DEFAULTS);
 Object.assign(S, {params:{rotate:0}, editingName:'a', viewMode:'detail'});
 let photo = {name:'a', width:1200, height:800};
@@ -138,7 +139,7 @@ class PhotoToolFlowTests(unittest.TestCase):
             'clampCrop', 'previewCrop', 'previewSourceX', 'cropForRatio', 'syncCropPanel',
             'restoreCropChoices', 'rememberCropChoices', 'applyCropRatioChoice', 'setCropRatio',
             'renderedComparePosition', 'compareEditingBlocked', 'syncCompareControl',
-            'renderCompare', 'setCompareActive', 'syncHealPanel',
+            'syncCompareView', 'renderCompare', 'setCompareActive', 'syncHealPanel',
         )]
         cls.script = HARNESS + "\n" + section('const paneScrollPositions', 'function exitPhotoTool')
         cls.script += '\n' + '\n'.join(functions)

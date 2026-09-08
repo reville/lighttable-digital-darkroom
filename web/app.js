@@ -14,6 +14,7 @@ import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
+import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
@@ -897,6 +898,7 @@ function applyViewNow() {
 
   const isZoomed = !isFit && S.zoom > 1.01;
   cmp.classList.toggle('is-zoomed', isZoomed);
+  syncCompareView();
 
   scheduleNativeViewportLayout();
   scheduleViewportRegionRender();
@@ -7515,10 +7517,33 @@ function syncCompareControl() {
     : 'Toggle split before and after view (\\)';
 }
 
+function syncCompareView() {
+  $('compareSnap').hidden = !S.compareActive || S.zoomMode === 'fit' || S.zoom <= 1;
+  const overlay = $('compareOverlay');
+  const geometry = S.compareActive ? compareViewGeometry(
+    $('cmp').getBoundingClientRect(), $('zoomwrap').getBoundingClientRect(), S.comparePosition) : null;
+  overlay.hidden = !geometry;
+  if (!geometry) return;
+  // This sibling of the transformed photo keeps the line, handle and labels
+  // at their normal screen size, with the handle centred in the visible area.
+  for (const property of ['left', 'top', 'width', 'height']) {
+    overlay.style[property] = `${geometry[property]}px`;
+  }
+  overlay.style.setProperty('--pos', `${geometry.dividerX}px`);
+  $('tagL').hidden = geometry.dividerX <= 0;
+  $('tagR').hidden = geometry.dividerX >= geometry.width;
+}
+
+function snapCompareToView() {
+  if (!S.compareActive || compareEditingBlocked()) return;
+  const position = comparePositionAtViewCenter(
+    $('cmp').getBoundingClientRect(), $('zoomwrap').getBoundingClientRect());
+  if (position !== null) queueComparePosition(position);
+}
+
 function renderCompare() {
   const position = renderedComparePosition();
   const sourcePosition = previewSourceX(position);
-  const v = position * 100;
   if (nativePreviewActive()) {
     postNative('nativeCompare', { position: sourcePosition });
   } else if (S.gl?.drawCompare(sourcePosition)) {
@@ -7526,10 +7551,9 @@ function renderCompare() {
   } else {
     $('cmp').style.setProperty('--clip', (100 - sourcePosition * 100) + '%');
   }
-  $('cmp').style.setProperty('--pos', v + '%');
   $('cmp').classList.toggle('comparing', S.compareActive);
-  $('tagL').style.display = S.compareActive ? '' : 'none';
-  $('tagR').style.display = S.compareActive ? '' : 'none';
+  $('zoomwrap').classList.toggle('comparing', S.compareActive);
+  syncCompareView();
   syncCompareControl();
 }
 
@@ -7554,7 +7578,7 @@ $('compareReturn').onclick = () => setCompareActive(false);
 let compareFrame = null;
 let pendingComparePosition = 0.5;
 function queueComparePosition(value) {
-  pendingComparePosition = clamp(+value || 0.5, 0.02, 0.98);
+  pendingComparePosition = clampComparePosition(value);
   if (compareFrame !== null) return;
   compareFrame = requestAnimationFrame(() => {
     compareFrame = null;
@@ -7565,10 +7589,11 @@ function queueComparePosition(value) {
 }
 
 $('compareBtn').addEventListener('click', () => setCompareActive(!S.compareActive));
+$('compareSnap').addEventListener('click', snapCompareToView);
 
 (function compareDrag() {
   const cmp = $('cmp');
-  const bar = cmp.querySelector('.cmp-bar');
+  const bar = $('compareBar');
   let dragging = false;
   let dragRect = null;
   const update = (event) => {
@@ -8858,7 +8883,7 @@ function finishSpeedKey(key) {
     if (e.button !== 0 || S.speed) return;
     if (S.cropping || S.activePane === 'maskPane' || S.activePane === 'healPane') return;
     if (S.wbPick || S.pointColorPick || S.maskColorPick) return;
-    if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar')) return;
+    if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar, #compareSnap')) return;
     if (S.zoom <= 1 && S.zoomMode === 'fit') return;
     isPanning = true;
     panStartX = e.clientX;
@@ -8888,7 +8913,7 @@ function finishSpeedKey(key) {
   wrap.addEventListener('dblclick', (e) => {
     if (S.cropping || S.activePane === 'maskPane' || S.activePane === 'healPane') return;
     if (S.wbPick || S.pointColorPick || S.maskColorPick) return;
-    if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar')) return;
+    if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar, #compareSnap')) return;
     toggleActualZoomAt(e.clientX, e.clientY);
   });
 }());
@@ -9935,7 +9960,7 @@ $('wbBtn').onclick = (event) => {
 };
 function handleCanvasSample(e) {
   if (!S.maskColorPick && !S.pointColorPick && !S.wbPick) return;
-  if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar')) return;
+  if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar, #compareSnap')) return;
   const cv = $('cv'), r = cv.getBoundingClientRect();
   if (!r.width || !r.height) return;
   const u = clamp((e.clientX - r.left) / r.width, 0, 1);
