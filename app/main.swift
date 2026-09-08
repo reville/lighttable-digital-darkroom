@@ -865,6 +865,128 @@ private final class PhotosLibraryImporter {
     }
 }
 
+// MARK: - Selected Photos import
+
+/// Copy each provider's temporary file before its completion handler returns.
+/// Serial transfers bound iCloud downloads and make stopping an import immediate.
+private final class SelectedPhotosImporter {
+    private let providers: [NSItemProvider]
+    private let directory: URL
+    private let event: ([String: Any]) -> Void
+    private let queue = DispatchQueue(label: "lighttable.photos-selection-import", qos: .userInitiated)
+    private var progress: Progress?
+    private var completed = 0
+    private var imported = 0
+    private var failures = 0
+    private var finished = false
+
+    init(providers: [NSItemProvider], directory: URL, event: @escaping ([String: Any]) -> Void) {
+        self.providers = providers
+        self.directory = directory
+        self.event = event
+    }
+
+    func start() { queue.async { self.next() } }
+
+    func cancel() {
+        queue.async {
+            guard !self.finished else { return }
+            let request = self.progress
+            self.finish("cancelled")
+            // Cancellation handlers may synchronously call the provider back.
+            DispatchQueue.global(qos: .userInitiated).async { request?.cancel() }
+        }
+    }
+
+    private func next() {
+        guard !finished else { return }
+        guard completed < providers.count else { finish("completed"); return }
+        emit("running")
+        let index = completed
+        let provider = providers[completed]
+        let identifiers = provider.registeredTypeIdentifiers.filter {
+            UTType($0)?.conforms(to: .image) == true
+        }
+        guard let identifier = identifiers.first(where: {
+            UTType($0)?.conforms(to: .rawImage) == true
+        }) ?? identifiers.first else {
+            failures += 1
+            completed += 1
+            queue.async { self.next() }
+            return
+        }
+        // A provider may call back synchronously. Invoke it outside our serial
+        // queue so the callback can synchronously preserve its ephemeral file.
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            let request = provider.loadFileRepresentation(forTypeIdentifier: identifier) { [self] url, _ in
+                queue.sync {
+                    guard !finished, completed == index else { return }
+                    if let url {
+                        let staging = directory.appendingPathComponent(".\(UUID().uuidString).partial")
+                        defer { try? FileManager.default.removeItem(at: staging) }
+                        do {
+                            try FileManager.default.copyItem(at: url, to: staging)
+                            let destination = Self.importedPhotoDestination(
+                                in: directory, provider: provider, temporaryURL: url,
+                                typeIdentifier: identifier)
+                            try FileManager.default.moveItem(at: staging, to: destination)
+                            imported += 1
+                        } catch { failures += 1 }
+                    } else { failures += 1 }
+                    completed += 1
+                    progress = nil
+                    queue.async { self.next() }
+                }
+            }
+            queue.async {
+                if self.finished || self.completed != index {
+                    DispatchQueue.global(qos: .userInitiated).async { request.cancel() }
+                }
+                else { self.progress = request }
+            }
+        }
+    }
+
+    private static func importedPhotoDestination(
+        in directory: URL, provider: NSItemProvider, temporaryURL: URL,
+        typeIdentifier: String
+    ) -> URL {
+        let suggested = (provider.suggestedName ?? temporaryURL.lastPathComponent)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let supplied = URL(fileURLWithPath: suggested)
+        let invalid = CharacterSet(charactersIn: "/:\0").union(.controlCharacters)
+        let stem = supplied.deletingPathExtension().lastPathComponent
+            .components(separatedBy: invalid).joined(separator: "_")
+            .trimmingCharacters(in: CharacterSet(charactersIn: ". "))
+        let safeStem = stem.isEmpty ? "Photo" : stem
+        // Compatible import can deliver JPEG bytes for a name ending in HEIC.
+        // Use the delivered representation's type, not the original's suffix.
+        let ext = UTType(typeIdentifier)?.preferredFilenameExtension
+            ?? temporaryURL.pathExtension
+        let suffix = ext.isEmpty ? "" : ".\(ext)"
+        var candidate = directory.appendingPathComponent(safeStem + suffix)
+        var sequence = 2
+        while FileManager.default.fileExists(atPath: candidate.path) {
+            candidate = directory.appendingPathComponent("\(safeStem)-\(sequence)\(suffix)")
+            sequence += 1
+        }
+        return candidate
+    }
+
+    private func finish(_ state: String) {
+        guard !finished else { return }
+        finished = true
+        progress = nil
+        emit(state)
+    }
+
+    private func emit(_ state: String) {
+        let payload: [String: Any] = ["state": state, "completed": completed,
+            "total": providers.count, "imported": imported, "failures": failures]
+        DispatchQueue.main.async { [event] in event(payload) }
+    }
+}
+
 // MARK: - Native web UI
 
 private func isLocalEditorPage(_ url: URL?, port: Int) -> Bool {
@@ -1106,8 +1228,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private var pendingSetupCatalogEvent: [String: Any]?
     private var pendingPresetLinks: [String] = []
     private var presetLinksReady = false
-    private let photoImportQueue = DispatchQueue(
-        label: "lighttable.photos-import", qos: .userInitiated)
+    private var selectedPhotosImporter: SelectedPhotosImporter?
+    private var selectedPhotosProgress: NSAlert?
     /// Consecutive unexpected server exits. Reset after a session that ran
     /// long enough to count as healthy.
     private var crashRestarts = 0
@@ -1181,6 +1303,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func applicationWillTerminate(_ note: Notification) {
         cancelJavaScriptConfirmation()
+        selectedPhotosImporter?.cancel()
         photosLibraryImporter?.shutdown()
         server.stop()
         diagnostics.end()
@@ -1776,7 +1899,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func importEntirePhotosLibrary() {
-        guard photosLibraryImporter == nil, photosLibraryAuthorizationID == nil else {
+        guard selectedPhotosImporter == nil, photoPicker == nil,
+              photosLibraryImporter == nil, photosLibraryAuthorizationID == nil else {
             if let photosLibraryImportEvent { sendEvent(photosLibraryImportEvent) }
             return
         }
@@ -1849,6 +1973,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func presentPhotosPicker() {
+        guard photoPicker == nil, selectedPhotosImporter == nil,
+              photosLibraryImporter == nil, photosLibraryAuthorizationID == nil,
+              window.attachedSheet == nil else { return }
         let alert = NSAlert()
         alert.messageText = "Import from Apple Photos"
         alert.informativeText = """
@@ -1871,6 +1998,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             response == .alertFirstButtonReturn ? .current : .compatible
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = self
+        // PhotosUI's remote view has no useful initial fitting size on macOS.
+        // Without an explicit size AppKit collapses the sheet to its toolbar.
+        let available = window.contentView?.bounds.size ?? NSSize(width: 900, height: 700)
+        let size = NSSize(width: min(900, available.width - 40),
+                          height: min(700, available.height - 40))
+        picker.preferredContentSize = size
+        picker.view.setFrameSize(size)
         photoPicker = picker
         window.contentViewController?.presentAsSheet(picker)
     }
@@ -1888,33 +2022,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         return destination
     }
 
-    private func importedPhotoDestination(
-        in directory: URL, provider: NSItemProvider, temporaryURL: URL,
-        typeIdentifier: String
-    ) -> URL {
-        let fallbackExtension = UTType(typeIdentifier)?.preferredFilenameExtension
-            ?? temporaryURL.pathExtension
-        let suggested = (provider.suggestedName ?? temporaryURL.lastPathComponent)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        let supplied = URL(fileURLWithPath: suggested)
-        let rawStem = supplied.deletingPathExtension().lastPathComponent
-        let invalid = CharacterSet(charactersIn: "/:\0")
-            .union(.controlCharacters)
-        let stem = rawStem.components(separatedBy: invalid).joined(separator: "_")
-        let safeStem = stem.isEmpty ? "Photo" : stem
-        let ext = supplied.pathExtension.isEmpty
-            ? fallbackExtension : supplied.pathExtension
-        let suffix = ext.isEmpty ? "" : ".\(ext)"
-        var candidate = directory.appendingPathComponent(safeStem + suffix)
-        var sequence = 2
-        while FileManager.default.fileExists(atPath: candidate.path) {
-            candidate = directory.appendingPathComponent(
-                "\(safeStem)-\(sequence)\(suffix)")
-            sequence += 1
-        }
-        return candidate
-    }
-
     func picker(_ picker: PHPickerViewController,
                 didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(nil)
@@ -1928,53 +2035,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                        "message": "Could not create the Photos import folder: \(error.localizedDescription)"])
             return
         }
-        let group = DispatchGroup()
-        var imported = 0
-        var failures = 0
-        var unsupported = 0
-        for result in results {
-            let provider = result.itemProvider
-            let identifiers = provider.registeredTypeIdentifiers.filter {
-                UTType($0)?.conforms(to: .image) == true
-            }
-            let identifier = identifiers.first {
-                UTType($0)?.conforms(to: .rawImage) == true
-            } ?? identifiers.first
-            guard let identifier else { unsupported += 1; continue }
-            group.enter()
-            provider.loadFileRepresentation(forTypeIdentifier: identifier) {
-                [weak self] temporaryURL, _ in
-                guard let self else { group.leave(); return }
-                self.photoImportQueue.sync {
-                    defer { group.leave() }
-                    guard let temporaryURL else { failures += 1; return }
-                    do {
-                        let destination = self.importedPhotoDestination(
-                            in: directory, provider: provider,
-                            temporaryURL: temporaryURL,
-                            typeIdentifier: identifier)
-                        try FileManager.default.copyItem(
-                            at: temporaryURL, to: destination)
-                        imported += 1
-                    } catch {
-                        failures += 1
-                    }
-                }
-            }
-        }
-        group.notify(queue: .main) { [weak self] in
+        let alert = NSAlert()
+        alert.messageText = "Importing from Apple Photos"
+        alert.informativeText = "Downloading and copying \(results.count) photos. iCloud photos may take a little longer."
+        alert.addButton(withTitle: "Stop Import")
+        let spinner = NSProgressIndicator(frame: NSRect(x: 0, y: 0, width: 240, height: 16))
+        spinner.style = .bar
+        spinner.isIndeterminate = true
+        spinner.startAnimation(nil)
+        alert.accessoryView = spinner
+        selectedPhotosProgress = alert
+        let importer = SelectedPhotosImporter(providers: results.map(\.itemProvider), directory: directory) { [weak self] payload in
             guard let self else { return }
+            let state = payload["state"] as? String ?? ""
+            let completed = payload["completed"] as? Int ?? 0
+            if state == "running" {
+                alert.informativeText = "Copying photo \(completed + 1) of \(results.count). iCloud photos may take a little longer."
+                return
+            }
+            self.selectedPhotosImporter = nil
+            self.selectedPhotosProgress = nil
+            if let parent = alert.window.sheetParent {
+                parent.endSheet(alert.window, returnCode: .stop)
+                alert.window.orderOut(nil)
+            }
+            let imported = payload["imported"] as? Int ?? 0
+            let failures = payload["failures"] as? Int ?? 0
             guard imported > 0 else {
-                self.sendEvent(["type": "error",
-                                "message": "No Apple Photos assets could be imported."])
+                self.sendEvent(["type": "error", "message": state == "cancelled"
+                    ? "Import stopped. No photos were copied."
+                    : "No photos could be imported. Check your connection and available disk space, then try again."])
                 return
             }
             self.pendingPhotosImportEvent = [
-                "type": "photosImported", "count": imported,
-                "failures": failures + unsupported, "path": directory.path,
+                "type": "photosImported", "count": imported, "failures": failures,
+                "cancelled": state == "cancelled", "path": directory.path,
             ]
             self.addSource(directory.path)
             self.launch(folder: directory.path)
+        }
+        selectedPhotosImporter = importer
+        // Present after AppKit has detached the picker sheet.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.selectedPhotosImporter === importer else { return }
+            alert.beginSheetModal(for: self.window) { [weak self] response in
+                if response == .alertFirstButtonReturn { self?.selectedPhotosImporter?.cancel() }
+            }
+            importer.start()
         }
     }
 

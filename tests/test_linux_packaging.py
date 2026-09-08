@@ -197,6 +197,8 @@ class LinuxPackageResourcesTests(unittest.TestCase):
             resources = bundle / "Resources/LightTable"
             self.assertEqual((resources / "new_shared_module.py").read_text(), "application content")
             self.assertTrue((resources / "platform_paths.py").is_file())
+            self.assertEqual((resources / "build/icon-1024.png").read_bytes(),
+                             (bundle / "share/icons/lighttable.png").read_bytes())
             self.assertTrue((resources / "linux_theme.py").is_file())
             self.assertTrue((bundle / "CLI.md").is_file())
             self.assertTrue((bundle / "docs/help/editing.json").is_file())
