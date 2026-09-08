@@ -225,7 +225,8 @@
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
-            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số."
+            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
+            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Tăng Dehaze để tăng cường một ảnh có sương mù, hoặc thử giá trị âm cho một xử lý mềm hơn. Kiểm tra cả tương phản lẫn màu sắc khi bạn điều chỉnh.",
             "Đặt Tối góc cho kiểu xử lý viền bạn muốn và kiểm tra các góc.",
-            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Effects để đặt lại Texture, Clarity, Dehaze và Vignette cùng lúc."
+            "Tăng Kích thước để giữ vùng giữa không bị ảnh hưởng rộng hơn; giảm để hiệu ứng tối góc lan sâu hơn vào trong.",
+            "Tăng Làm mềm mép để chuyển tiếp mềm hơn, hoặc giảm để có đường biên rõ hơn.",
+            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Hiệu ứng để đặt lại tất cả thanh trượt Hiệu ứng cùng lúc."
           ],
           "tips": [
             "Vignette của Effects là một hiệu ứng sáng tạo ở rìa ảnh. Dùng Lens corrections khi bạn muốn sửa shading của ống kính."
@@ -3078,5 +3081,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915"
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
 }

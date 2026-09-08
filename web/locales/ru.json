@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Режим «По размеру» может увеличивать небольшие фотографии. 1:1 показывает реальные пиксели, даже если фотография становится меньше, чем в режиме «По размеру», и сохраняет тот же масштаб пикселей при изменении размера окна.",
     "Fit the whole photo to the available space": "Подгоните все фото по размеру доступной области",
     "Fit to window ({actualPct}%)": "По размеру окна ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "«По размеру», 1:1, кнопки и сочетания клавиш масштабирования работают с плавной анимацией. Прокрутка, жесты сведения и разведения пальцев и перетаскивание реагируют напрямую. Анимация масштабирования отключается, если в системе включено уменьшение движения.",
     "Flag": "Флажок",
     "Flag and rate survey photo": "Пометить флажком и оценить обзорное фото",
     "Flag and rating filters": "Фильтры флажков и рейтинга",
@@ -1322,7 +1323,7 @@
     "History": "История",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "История хранится в каталоге, поэтому сохраняется после выхода. Undo и redo идут за каждым фото в течение этого сеанса.",
     "History request failed": "Не удалось выполнить запрос к истории",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Удерживайте B, чтобы сравнить с оригиналом, или используйте «Сброс» в разделе «Эффекты», чтобы сбросить «Текстура», «Четкость», «Убрать дымку» и «Виньетирование» вместе.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Удерживайте B, чтобы сравнить с оригиналом, или используйте «Сбросить» в разделе «Эффекты», чтобы сбросить все ползунки этого раздела вместе.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Удерживайте B, чтобы показать оригинал без Пленка, локальных масок и финишных корректировок; отпустите B, чтобы вернуть правку. Слэш (/) переводит фокус в поиск фото.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Удерживайте B, чтобы просмотреть оригинал без Пленка, локальных масок и финишных корректировок. Отпустите B, чтобы вернуть отредактированный вид.",
     "Hold a mapped key and scroll or use arrow keys.": "Удерживайте назначенную клавишу и прокручивайте или используйте клавиши со стрелками.",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "Включить подпапки",
     "Includes the Film profile and physical stages.": "Включает Пленочный профиль и физические этапы.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Увеличьте «Убрать дымку», чтобы усилить дымчатое изображение, или попробуйте отрицательное значение для более мягкой обработки. При настройке проверяйте и контраст, и цвет.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Увеличьте «Растушевка» для более плавного перехода или уменьшите для более четкой границы.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Увеличьте «Размер», чтобы оставить большую часть центра без эффекта; уменьшите его, чтобы виньетка заходила дальше к центру.",
     "Index data stays in LightTable's local data folder.": "Данные индекса хранятся в локальной папке данных LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Индексация {SAiCompleted} из {SAiTotal}",
     "Info": "Инфо",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "Сбросить все каналы Микшер цветов",
     "Reset crop, rotation, flips, and perspective": "Сбросить обрезка, поворот, переворот и перспективу",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Сбросить общий тон, цвет, кривые, повышение резкости, шумоподавление и эффекты",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "«Сбросить» в разделе «Реалистичная имитация пленки» возвращает все ползунки плёнки к значениям по умолчанию. «Сбросить» внутри секции затрагивает только её ползунки. Переключатели и выбранные параметры остаются без изменений.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Сбросить коррекции профиля объектива, искажения, виньетирования и хроматической аберрации",
     "Reset sharpening and noise reduction adjustments": "Сбросьте настройки повышения резкости и шумоподавления",
+    "Reset sliders to their defaults": "Вернуть ползунки к значениям по умолчанию",
     "Reset the RAW profile and capture-stage processing settings": "Сбросить профиль RAW и настройки обработки на этапе съемки",
     "Reset the combined RGB and individual channel curves": "Сбросить объединенную кривую RGB и кривые отдельных каналов",
     "Reset this slider": "Сбросить этот ползунок",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Похожие лица группируются вместе. Добавляйте имена, проверяйте возможные совпадения и при необходимости исправляйте группу.",
     "Simulate paper and ink": "Сымитировать бумагу и чернила",
     "Size": "Размер",
+    "Size of the clear area at the center of the vignette.": "Размер области без эффекта в центре виньетки.",
     "Size only": "Только размер",
     "Skip": "Пропустить",
     "Skip existing": "Пропускать существующие",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Мягкая цветопроба — это режим просмотра. Выберите фактическое цветовое пространство файла отдельно в Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Элементы управления soft-proof находятся в параметрах «Вид» просмотрщика (•••). Они позволяют просматривать предварительный вывод во время редактирования.",
     "Soften skin": "Смягчить кожу",
+    "Softness of the vignette transition.": "Мягкость перехода виньетки.",
     "Software rendering": "Программный рендеринг",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Некоторые черновики используют частичную идентичность файла, которая не может проверить весь оригинал. Восстанавливайте их только если оригинальные фото не были заменены.",
     "Some edits have not been saved": "Некоторые правки не были сохранены",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ Назад",
     "← Back to articles": "← Назад к статьям",
     "← People": "← Люди",
-    "☆ Favorites": "☆ Избранное",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "«Сбросить» в разделе «Реалистичная имитация пленки» возвращает все ползунки плёнки к значениям по умолчанию. «Сбросить» внутри секции затрагивает только её ползунки. Переключатели и выбранные параметры остаются без изменений.",
-    "Reset sliders to their defaults": "Вернуть ползунки к значениям по умолчанию"
+    "☆ Favorites": "☆ Избранное"
   },
   "plurals": {
     " · {count} paired file linked": {

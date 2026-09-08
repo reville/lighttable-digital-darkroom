@@ -225,7 +225,8 @@
             "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
-            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri."
+            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
+            "Adatta, 1:1, i pulsanti e le scorciatoie di zoom hanno animazioni fluide. Scorrimento, pizzico e trascinamento rispondono direttamente. L’animazione dello zoom è disattivata quando è attiva l’impostazione di sistema Riduci movimento."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -1032,7 +1033,9 @@
           "steps": [
             "Aumenta Rimuovi foschia per rafforzare un'immagine velata, oppure prova un valore negativo per un trattamento più morbido. Controlla sia il contrasto sia il colore mentre la regoli.",
             "Imposta Vignettatura per il trattamento dei bordi desiderato e ispeziona gli angoli.",
-            "Tieni premuto B per confrontare con l'originale, oppure usa Reimposta in Effetti per reimpostare insieme Struttura, Chiarezza, Rimuovi foschia e Vignettatura."
+            "Aumenta Dimensione per mantenere una parte maggiore del centro priva di effetto; riducila per estendere la vignettatura verso l’interno.",
+            "Aumenta Sfumatura per una transizione più morbida, o riducila per un bordo più definito.",
+            "Tieni premuto B per confrontare con l’originale, oppure usa Reimposta in Effetti per reimpostare tutti i cursori di Effetti insieme."
           ],
           "tips": [
             "Vignettatura di Effetti è un trattamento creativo dei bordi. Usa le correzioni obiettivo quando vuoi correggere l’ombreggiatura dell’obiettivo."
@@ -3078,5 +3081,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915"
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
 }

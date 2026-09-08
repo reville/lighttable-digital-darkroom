@@ -24,7 +24,7 @@ and approximate conversions from other editors.
 The converter maps controls with a defensible counterpart: exposure; basic
 tone; temperature and tint where the source carries usable relative data;
 vibrance and saturation; texture, clarity, and dehaze; point curves; the
-eight-band colour mixer; vignette; sharpening; luminance and colour noise
+eight-band colour mixer; vignette amount; sharpening; luminance and colour noise
 reduction; and manual red/cyan or blue/yellow chromatic-aberration correction.
 
 Ranges and colour engines differ, so a numeric round trip between products is
@@ -42,6 +42,10 @@ preserve LightTable masks, healing, and lens geometry. Version 3 look files
 exclude those photo corrections. LightTable does not silently bake an
 unsupported operation into a hidden transform or claim that a similarly named
 control is equivalent.
+
+Native `.ltpreset` files preserve Vignette Size and Feather. External preset
+formats transfer only vignette amount; their vignette shape controls are not
+equivalent to LightTable’s Size and Feather.
 
 ## Application behavior
 
@@ -123,7 +127,8 @@ are rejected rather than silently changing a shared recipe. Film-on looks must
 identify a stock.
 
 Creative grade settings include contrast, highlights, shadows, whites, blacks,
-vibrance, saturation, texture, clarity, dehaze, vignette, curves, HSL, Point
+vibrance, saturation, texture, clarity, dehaze, vignette amount, size, and
+feather, curves, HSL, Point
 Color, and Color Grading. Creative Film settings include stock, paper, workflow,
 output recipe, development, Camera EV, metering, print exposure, grain,
 halation, diffusion, and scan controls. Camera EV is an intentional creative

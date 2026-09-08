@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "239332c31242780e8cd92340cd8c22b83ba4bbca61ef622d59645e3b24afe915",
+  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1195,6 +1195,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
     "Fit the whole photo to the available space": "Ajuste a foto inteira ao espaço disponível",
     "Fit to window ({actualPct}%)": "Ajustar à janela ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Ajustar, 1:1, os botões e os atalhos de zoom têm animações suaves. Rolar, pinçar e arrastar respondem diretamente. A animação de zoom é desativada quando a opção Reduzir movimento do sistema está ativada.",
     "Flag": "Bandeira",
     "Flag and rate survey photo": "Aplicar bandeira e avaliar foto da varredura",
     "Flag and rating filters": "Filtros de bandeira e avaliação",
@@ -1322,7 +1323,7 @@
     "History": "Histórico",
     "History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.": "O histórico é armazenado no catálogo, então ele sobrevive ao fechamento do aplicativo. Undo e redo seguem cada foto durante esta sessão.",
     "History request failed": "Falha na solicitação do histórico",
-    "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together.": "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir juntos Textura, Claridade, Remover névoa e Vinheta.",
+    "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together.": "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir todos os controles deslizantes de Efeitos juntos.",
     "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.": "Mantenha B pressionado para mostrar o original sem Filme, máscaras locais ou ajustes de finalização; solte B para restaurar a edição. Barra (/) foca a pesquisa de fotos.",
     "Hold B to view the original without Film, local masks, or finishing adjustments. Release B to restore the edited view.": "Mantenha B pressionado para ver o original sem Filme, máscaras locais ou ajustes de finalização. Solte B para restaurar a visualização editada.",
     "Hold a mapped key and scroll or use arrow keys.": "Mantenha uma tecla mapeada pressionada e role ou use as teclas de seta.",
@@ -1421,6 +1422,8 @@
     "Include subfolders": "Incluir subpastas",
     "Includes the Film profile and physical stages.": "Inclui o perfil de filme e as etapas físicas.",
     "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.": "Aumente Remover névoa para fortalecer uma imagem enevoada, ou tente um valor negativo para um tratamento mais suave. Verifique contraste e cor enquanto ajusta.",
+    "Increase Feather for a softer transition, or decrease it for a more defined edge.": "Aumente Suavizar bordas para uma transição mais suave, ou diminua para uma borda mais definida.",
+    "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.": "Aumente Tamanho para manter uma parte maior do centro sem efeito; diminua para que a vinheta alcance mais o interior.",
     "Index data stays in LightTable's local data folder.": "Os dados do índice permanecem na pasta de dados local do LightTable.",
     "Indexing {SAiCompleted} of {SAiTotal}": "Indexando {SAiCompleted} de {SAiTotal}",
     "Info": "Informações",
@@ -2299,8 +2302,10 @@
     "Reset all Color Mixer channels": "Redefinir todos os canais do Misturador de Cores",
     "Reset crop, rotation, flips, and perspective": "Redefina corte, rotação, inversões e perspectiva",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Redefina tom global, cor, curvas, nitidez, redução de ruído e efeitos",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Redefinir em Simulação realista de filme restaura os valores padrão de todos os controles deslizantes de Filme. Redefinir em uma seção afeta apenas os controles deslizantes dessa seção. Os interruptores e as opções selecionadas permanecem como estão.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Redefinir correções de perfil de lente, distorção, vinheta e aberração cromática",
     "Reset sharpening and noise reduction adjustments": "Redefina os ajustes de nitidez e redução de ruído",
+    "Reset sliders to their defaults": "Restaurar os valores padrão dos controles deslizantes",
     "Reset the RAW profile and capture-stage processing settings": "Redefina o perfil RAW e as configurações de processamento da etapa de captura",
     "Reset the combined RGB and individual channel curves": "Redefina as curvas RGB combinadas e as curvas individuais de cada canal",
     "Reset this slider": "Redefinir este deslizador",
@@ -2602,6 +2607,7 @@
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Rostos semelhantes são agrupados. Adicione nomes, revise possíveis correspondências e corrija um grupo sempre que precisar.",
     "Simulate paper and ink": "Simular papel e tinta",
     "Size": "Tamanho",
+    "Size of the clear area at the center of the vignette.": "Tamanho da área sem efeito no centro da vinheta.",
     "Size only": "Somente tamanho",
     "Skip": "Ignorar",
     "Skip existing": "Ignorar existentes",
@@ -2626,6 +2632,7 @@
     "Soft proof is a viewing state. Choose the file’s actual Colour space separately in Export.": "Soft proof é um estado de visualização. Escolha separadamente o espaço de Colour real do arquivo em Export.",
     "Soft-proof controls are in the viewer’s View options (•••). They let you inspect an output preview while editing.": "Os controles de prova suave ficam nas opções de Visualizar do visualizador (•••). Eles permitem inspecionar uma pré-visualização de saída durante a edição.",
     "Soften skin": "Suavizar pele",
+    "Softness of the vignette transition.": "Suavidade da transição da vinheta.",
     "Software rendering": "Renderização por software",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.": "Alguns rascunhos usam uma identidade parcial do arquivo que não consegue verificar o original inteiro. Restaure estes somente se as fotos originais não tiverem sido substituídas.",
     "Some edits have not been saved": "Algumas edições não foram salvas",
@@ -4031,9 +4038,7 @@
     "‹ Back": "‹ Voltar",
     "← Back to articles": "← Voltar para os artigos",
     "← People": "← Pessoas",
-    "☆ Favorites": "☆ Favoritos",
-    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Redefinir em Simulação realista de filme restaura os valores padrão de todos os controles deslizantes de Filme. Redefinir em uma seção afeta apenas os controles deslizantes dessa seção. Os interruptores e as opções selecionadas permanecem como estão.",
-    "Reset sliders to their defaults": "Restaurar os valores padrão dos controles deslizantes"
+    "☆ Favorites": "☆ Favoritos"
   },
   "plurals": {
     " · {count} paired file linked": {

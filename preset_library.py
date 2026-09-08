@@ -26,7 +26,7 @@ ID_PATTERN = re.compile(r"[a-z0-9][a-z0-9-]{0,39}/[a-z0-9][a-z0-9-]{0,59}\Z")
 VERSION_PATTERN = re.compile(r"[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\Z")
 CREATIVE_GRADE_KEYS = frozenset({
     "contrast", "highlights", "shadows", "whites", "blacks", "vibrance",
-    "saturation", "texture", "clarity", "dehaze", "vignette", "curveL",
+    "saturation", "texture", "clarity", "dehaze", "vignette", "vignetteSize", "vignetteFeather", "curveL",
     "curveR", "curveG", "curveB", "hsl", "pointColor", "colorGrading",
 })
 CREATIVE_FILM_KEYS = frozenset({
