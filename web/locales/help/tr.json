@@ -2241,6 +2241,14 @@
           ]
         },
         {
+          "title": "Ayarlı ve özgün filmler",
+          "paragraphs": [
+            "LightTable ayarlı grubunda Portra 160, 400 ve 800 ilk sırada gösterilir. Bu sürümler sarı-yeşil yaprakların sarıya kaymasını azaltır. Kâğıt ve çıktı denetimleri kullanılabilir durumda kalır.",
+            "Spektrafilm özgün, tüm özgün görüntü oluşturma seçeneklerini korur ve yeni fotoğraflar, eski düzenlemeler ve eski film ön ayarları için varsayılan olmaya devam eder.",
+            "Bu ayarlı sürümler, referans fotoğraflar ve sayısal renk kontrollerine dayanan görsel yorumlardır; ölçümlerle kalibre edilmiş film eşleşmeleri değildir. Düzenlemeler ve uygulamanın kendi biçimindeki ön ayarlar seçtiğiniz sürümü kaydeder."
+          ]
+        },
+        {
           "title": "Önizlemelerin neleri içerdiği",
           "paragraphs": [
             "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
@@ -3129,5 +3137,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

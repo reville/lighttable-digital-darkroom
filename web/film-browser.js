@@ -1,10 +1,66 @@
 import { t as tr } from './i18n.js';
 
 const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
+
+// Menu values identify a rendering variant; saved stock IDs always identify the
+// original emulsion, so paper, grain and development metadata remain shared.
+export function filmChoiceValue(params = {}) {
+  return params.film_tuning && params.film_tuning !== 'original'
+    ? `${params.stock}::${params.film_tuning}::${params.film_tuning_version || '1'}`
+    : params.stock;
+}
+
+export function normalizeFilmTuning(params = {}, profiles = []) {
+  const film = profiles.find((profile) => profile.id === params.stock);
+  const version = String(params.film_tuning_version || '1');
+  const tuning = film?.tunings?.find((item) =>
+    item.id === params.film_tuning && String(item.version) === version);
+  return { ...params, film_tuning: tuning?.id || 'original',
+    film_tuning_version: tuning ? version : '1' };
+}
+
+export function filmSelectionForChoice(choice, profiles = []) {
+  const [stock, film_tuning = 'original', film_tuning_version = '1'] = String(choice || '').split('::');
+  return normalizeFilmTuning({ stock, film_tuning, film_tuning_version }, profiles);
+}
+
+export function mergeFilmTuning(base, overlay = {}, profiles = []) {
+  const merged = { ...base, ...overlay };
+  // Applying a stock from an older preset must not inherit a tuned variant
+  // from the destination photo, even when both name the same emulsion.
+  if (Object.hasOwn(overlay, 'stock') && !Object.hasOwn(overlay, 'film_tuning')) {
+    merged.film_tuning = 'original';
+    merged.film_tuning_version = '1';
+  } else if (Object.hasOwn(overlay, 'film_tuning') &&
+      !Object.hasOwn(overlay, 'film_tuning_version')) {
+    merged.film_tuning_version = '1';
+  }
+  return normalizeFilmTuning(merged, profiles);
+}
+
+export function filmStockGroups(profiles = []) {
+  const films = profiles.filter((profile) => profile.stage === 'filming');
+  const tuned = films.flatMap((profile) => (profile.tunings || [])
+    .filter((tuning) => tuning.id === 'lighttable')
+    .map((tuning) => ({
+      id: filmChoiceValue({ stock: profile.id, film_tuning: tuning.id, film_tuning_version: tuning.version }),
+      label: `${profile.name} · ${tr("LightTable tuned")}`,
+      description: tuning.description || '', rustOnly: profile.rustOnly,
+    })));
+  const original = films.map((profile) => ({ id: profile.id,
+    label: `${profile.name} · ${tr("Spektrafilm original")}`,
+    rustOnly: profile.rustOnly,
+  }));
+  return [
+    { label: tr("LightTable tuned"), options: tuned },
+    { label: tr("Spektrafilm original"), options: original },
+  ].filter((group) => group.options.length);
+}
+
 /* Film previews use the actual pipeline on a snapshot, never saved photo edits. */
-export function filmParamsForStock(params, stock, profiles) {
-  const next = { ...params, stock };
-  const film = profiles.find((p) => p.id === stock);
+export function filmParamsForStock(params, choice, profiles) {
+  const next = { ...params, ...filmSelectionForChoice(choice, profiles) };
+  const film = profiles.find((p) => p.id === next.stock);
   next.development_time = film?.defaultDevelopmentTime || 0;
   if (Number.isFinite(film?.defaultExposureEv)) next.exposure_ev = film.defaultExposureEv;
   if (next.workflow_mode === 'authentic' && !next.paper_locked && film?.targetPrint) next.paper = film.targetPrint;
@@ -62,7 +118,7 @@ export function createFilmBrowser({ context, apply }) {
       button.type = 'button';
       button.className = 'film-preview-card';
       button.setAttribute('aria-label', tr("Apply {stockLabel}", {stockLabel: stock.label}));
-      button.setAttribute('aria-pressed', String(stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false));
+      button.setAttribute('aria-pressed', String(stock.id === filmChoiceValue(snapshot.state.params) && snapshot.state.params.profile_enabled !== false));
       const image = document.createElement('img');
       image.alt = tr("{stockLabel} preview", {stockLabel: stock.label});
       image.hidden = true;
@@ -102,7 +158,7 @@ export function createFilmBrowser({ context, apply }) {
           if (request !== generation) return;
           const url = URL.createObjectURL(blob); urls.add(url);
           image.src = url; image.hidden = false;
-          status.textContent = stock.id === snapshot.state.params.stock && snapshot.state.params.profile_enabled !== false ? tr("Current stock") : tr("Apply stock");
+          status.textContent = stock.id === filmChoiceValue(snapshot.state.params) && snapshot.state.params.profile_enabled !== false ? tr("Current stock") : tr("Apply stock");
         } catch (error) {
           if (request !== generation || error.name === 'AbortError') return;
           status.textContent = tr("Preview unavailable · select to apply");

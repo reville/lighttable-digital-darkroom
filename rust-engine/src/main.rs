@@ -24,6 +24,7 @@ mod native_surface;
 mod shared_memory;
 mod grade_gpu;
 mod merge_gpu;
+mod film_tuning;
 
 #[derive(Debug, Deserialize)]
 struct Request {
@@ -36,6 +37,7 @@ struct Request {
     input_shm: Option<String>,
     input_shm_len: Option<usize>,
     input_cache_key: Option<String>,
+    input_tuning: Option<film_tuning::Specification>,
     output: Option<PathBuf>,
     native_output: Option<PathBuf>,
     #[serde(default)]
@@ -159,6 +161,33 @@ struct CachedInput {
     bytes: usize,
     generation: u64,
     metering: VecDeque<(String, f32)>,
+    tuned: Option<(film_tuning::Specification, Arc<ImageBuf>)>,
+}
+
+impl CachedInput {
+    fn retained_bytes(&self) -> usize {
+        self.bytes + self.tuned.as_ref().map_or(0, |(_, image)| {
+            std::mem::size_of_val(image.data.as_slice())
+        })
+    }
+
+    fn prepare_tuned(&mut self, spec: film_tuning::Specification, budget: usize)
+        -> Result<Arc<ImageBuf>>
+    {
+        spec.validate()?;
+        if let Some((cached_spec, image)) = &self.tuned {
+            if *cached_spec == spec { return Ok(Arc::clone(image)); }
+        }
+        // Keep the immutable original available to probe_input and Original
+        // renders. Retain only the latest interpretation of this source.
+        self.tuned = None;
+        let image = Arc::new(film_tuning::prepare_input(&self.image, spec)?);
+        let bytes = std::mem::size_of_val(image.data.as_slice());
+        if self.bytes.saturating_add(bytes) <= budget {
+            self.tuned = Some((spec, Arc::clone(&image)));
+        }
+        Ok(image)
+    }
 }
 
 struct Engine {
@@ -295,6 +324,15 @@ impl Engine {
         let film_name = request.film.as_deref().context("missing film")?;
         let mut params = request.params.context("missing params")?;
         params.io.scan_film = request.scan_film;
+        if let Some(spec) = request.input_tuning {
+            spec.validate()?;
+            if params.io.input_color_space != "ProPhoto RGB" {
+                bail!("LightTable film tuning requires ProPhoto RGB input");
+            }
+            // prepare_input performs any ROMM decoding before metering and
+            // every CPU/GPU/native/viewport/export path below sees linear input.
+            params.io.input_cctf_decoding = false;
+        }
 
         let load_started = Instant::now();
         let identity = if let Some(key) = request.input_cache_key.as_deref() {
@@ -327,18 +365,30 @@ impl Engine {
             self.inputs.push_back(CachedInput {
                 generation: self.next_input_generation,
                 metering: VecDeque::new(),
+                tuned: None,
                 identity,
                 image: Arc::clone(&image),
                 bytes,
             });
             while self.inputs.len() > 1
-                && self.inputs.iter().map(|cached| cached.bytes).sum::<usize>()
+                && self.inputs.iter().map(CachedInput::retained_bytes).sum::<usize>()
                     > self.input_cache_max_bytes
             {
                 self.inputs.pop_front();
             }
             image
         };
+        let image = if let Some(spec) = request.input_tuning {
+            let image = self.inputs.back_mut().expect("active cached input")
+                .prepare_tuned(spec, self.input_cache_max_bytes)?;
+            while self.inputs.len() > 1
+                && self.inputs.iter().map(CachedInput::retained_bytes).sum::<usize>()
+                    > self.input_cache_max_bytes
+            {
+                self.inputs.pop_front();
+            }
+            image
+        } else { image };
         let load_ms = millis(load_started.elapsed());
 
         if request.viewport.is_some() && (request.grade.is_some() || request.masks.is_some()
@@ -381,12 +431,10 @@ impl Engine {
         let active_input = self.inputs.back_mut().expect("active cached input");
         let reuse_film_stages = self.reuse_film_stages && backend.is_gpu();
         let film_key =
-            reuse_film_stages.then(|| film_stage_key(active_input.generation, &key, &params));
+            reuse_film_stages.then(|| input_variant_key(
+                film_stage_key(active_input.generation, &key, &params), request.input_tuning));
         let metered_ev = if reuse_film_stages && params.camera.auto_exposure {
-            let meter_key = serde_json::to_string(&(
-                &params.io.input_color_space,
-                &params.camera.auto_exposure_method,
-            ))?;
+            let meter_key = metering_cache_key(&params, request.input_tuning);
             if let Some((_, value)) = active_input
                 .metering
                 .iter()
@@ -884,6 +932,19 @@ fn film_stage_key(input_generation: u64, pipeline_key: &str, params: &RuntimePar
     dependencies.settings.use_scanner_lut = defaults.settings.use_scanner_lut;
     serde_json::to_string(&(input_generation, pipeline_key, dependencies))
         .expect("finite runtime parameters")
+}
+
+fn input_variant_key(original: String, tuning: Option<film_tuning::Specification>) -> String {
+    match tuning {
+        Some(spec) => spec.extend_key(original),
+        None => original,
+    }
+}
+
+fn metering_cache_key(params: &RuntimeParams, tuning: Option<film_tuning::Specification>) -> String {
+    input_variant_key(serde_json::to_string(&(
+        &params.io.input_color_space, &params.camera.auto_exposure_method,
+    )).expect("metering parameter strings"), tuning)
 }
 
 /// Only dependencies baked into the expensive film spectral calibration.
@@ -1559,7 +1620,7 @@ mod resident_cache_tests {
             engine.inputs.push_back(CachedInput {
                 identity: InputIdentity::Shared(key.into()),
                 image: Arc::new(ImageBuf::from_data(2,1,vec![precision::from_f32(0.5);6])),
-                bytes: 24, generation: 1, metering: VecDeque::new(),
+                bytes: 24, generation: 1, metering: VecDeque::new(), tuned: None,
             });
         }
         let found = engine.handle(request()).unwrap();
@@ -1568,5 +1629,60 @@ mod resident_cache_tests {
         assert_eq!(engine.inputs.back().unwrap().identity, InputIdentity::Shared("input-a".into()));
         engine.inputs.clear();
         assert!(!engine.handle(request()).unwrap().input_cache_hit);
+    }
+
+    #[test]
+    fn tuning_requests_distinguish_film_and_meter_caches_without_changing_original_keys() {
+        let base = RuntimeParams::default();
+        let original_film = film_stage_key(1, "profile-a", &base);
+        let original_meter = serde_json::to_string(&(
+            &base.io.input_color_space, &base.camera.auto_exposure_method,
+        )).unwrap();
+        let absent: Request = serde_json::from_value(serde_json::json!({"id":1})).unwrap();
+        assert!(absent.input_tuning.is_none());
+        assert_eq!(input_variant_key(original_film.clone(), absent.input_tuning), original_film);
+        assert_eq!(metering_cache_key(&base, None), original_meter);
+        let mut film_keys = std::collections::HashSet::from([original_film.clone()]);
+        let mut meter_keys = std::collections::HashSet::from([original_meter]);
+        for (amount, decoding) in [(0.9,false), (0.8,false), (0.55,false), (0.9,true)] {
+            let request: Request = serde_json::from_value(serde_json::json!({
+                "id":1,"input_tuning":{"version":1,"green_amount":amount,
+                    "input_cctf_decoding":decoding}
+            })).unwrap();
+            request.input_tuning.unwrap().validate().unwrap();
+            assert!(film_keys.insert(input_variant_key(original_film.clone(), request.input_tuning)));
+            assert!(meter_keys.insert(metering_cache_key(&base, request.input_tuning)));
+        }
+    }
+
+    #[test]
+    fn transformed_input_reuses_only_matching_spec_and_respects_cache_budget() {
+        let original = Arc::new(ImageBuf::from_data(1,1,
+            vec![0.22,0.32,0.07].into_iter().map(precision::from_f32).collect()));
+        let bytes = std::mem::size_of_val(original.data.as_slice());
+        let mut input = CachedInput {
+            identity: InputIdentity::Shared("source".into()), image: Arc::clone(&original),
+            bytes, generation: 1, metering: VecDeque::new(), tuned: None,
+        };
+        let spec = film_tuning::Specification {
+            version: 1, green_amount: 0.9, input_cctf_decoding: false,
+        };
+        let first = input.prepare_tuned(spec, bytes * 2).unwrap();
+        let second = input.prepare_tuned(spec, bytes * 2).unwrap();
+        assert!(Arc::ptr_eq(&first, &second));
+        assert_eq!(input.retained_bytes(), bytes * 2);
+        assert!(Arc::ptr_eq(&input.image, &original));
+        assert_eq!(precision::to_f32(input.image.data[0]), 0.22);
+        assert!(precision::to_f32(first.data[0]) < 0.22);
+        let other_spec = film_tuning::Specification { green_amount: 0.8, ..spec };
+        let third = input.prepare_tuned(other_spec, bytes * 2).unwrap();
+        assert!(!Arc::ptr_eq(&first, &third));
+        assert_ne!(first.data, third.data);
+        assert_eq!(input.tuned.as_ref().unwrap().0, other_spec);
+        let transient = input.prepare_tuned(spec, bytes).unwrap();
+        assert!(input.tuned.is_none());
+        assert_eq!(input.retained_bytes(), bytes);
+        assert_eq!(transient.data, first.data);
+        assert!(Arc::ptr_eq(&input.image, &original));
     }
 }

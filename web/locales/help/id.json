@@ -2241,6 +2241,14 @@
           ]
         },
         {
+          "title": "Film yang disetel dan asli",
+          "paragraphs": [
+            "Disetel oleh LightTable menempatkan Portra 160, 400, dan 800 di urutan pertama. Versi ini mengurangi pergeseran ke kuning pada dedaunan hijau kekuningan. Kontrol kertas dan keluaran tetap tersedia.",
+            "Spektrafilm asli mempertahankan semua hasil render asli dan tetap menjadi pilihan bawaan untuk foto baru, suntingan lama, dan preset film lama.",
+            "Versi yang disetel ini merupakan interpretasi visual berdasarkan foto referensi dan pemeriksaan warna numerik, bukan reproduksi film yang dikalibrasi melalui pengukuran. Suntingan dan preset format asli menyimpan versi yang Anda pilih."
+          ]
+        },
+        {
           "title": "Apa yang disertakan dalam pratinjau",
           "paragraphs": [
             "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
@@ -3129,5 +3137,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

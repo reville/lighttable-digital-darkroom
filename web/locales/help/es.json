@@ -2241,6 +2241,14 @@
           ]
         },
         {
+          "title": "Películas ajustadas y originales",
+          "paragraphs": [
+            "Ajustado por LightTable muestra primero Portra 160, 400 y 800. Reduce los cambios hacia el amarillo en el follaje verde amarillento. Los controles de papel y salida siguen disponibles.",
+            "Spektrafilm original conserva todas las versiones originales y sigue siendo la opción predeterminada para las fotos nuevas, las ediciones anteriores y los ajustes preestablecidos antiguos de película.",
+            "Estas versiones ajustadas son interpretaciones visuales basadas en fotografías de referencia y comprobaciones numéricas del color, no reproducciones de película calibradas mediante mediciones. Las ediciones y los ajustes preestablecidos nativos guardan la versión elegida."
+          ]
+        },
+        {
           "title": "Lo que incluyen las vistas previas",
           "paragraphs": [
             "Las vistas previas de stock incluyen las ediciones de la foto actual. Explorar y cerrar la ventana de vista previa no aplica un stock; elegir una vista previa sí.",
@@ -3129,5 +3137,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

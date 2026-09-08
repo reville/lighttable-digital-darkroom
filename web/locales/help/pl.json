@@ -2241,6 +2241,14 @@
           ]
         },
         {
+          "title": "Dostrojone i oryginalne filmy",
+          "paragraphs": [
+            "Dostrojone przez LightTable umieszcza Portra 160, 400 i 800 na początku listy. Te wersje ograniczają przesunięcie żółtozielonych liści w stronę żółci. Ustawienia papieru i wyjścia pozostają dostępne.",
+            "Oryginał Spektrafilm zachowuje wszystkie oryginalne sposoby renderowania i pozostaje domyślnym wyborem dla nowych zdjęć, starszych edycji i starszych presetów filmu.",
+            "Te dostrojone wersje są interpretacjami wizualnymi opartymi na zdjęciach referencyjnych i liczbowych kontrolach koloru, a nie odwzorowaniami filmu skalibrowanymi na podstawie pomiarów. Edycje i presety w natywnym formacie zapisują wybraną wersję."
+          ]
+        },
+        {
           "title": "Co zawierają podglądy",
           "paragraphs": [
             "Podglądy nośnika zawierają edycje bieżącego zdjęcia. Przeglądanie i zamykanie okna podglądu nie stosuje nośnika; wybranie podglądu już tak.",
@@ -3129,5 +3137,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }
