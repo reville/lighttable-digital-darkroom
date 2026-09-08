@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "Geçerli kamera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "Geçerli biçim, varlıkların mevcut temsilini korur; kullanılabiliyorsa RAW veya gömülü derinlik de buna dahildir. Uyumlu, geniş ölçüde okunabilir bir görüntü oluşturur. Seçili dosyalar {path} konumuna kopyalanır.",
     "Current photo": "Geçerli fotoğraf",
+    "Current photo / total photos": "Geçerli fotoğraf / toplam fotoğraf",
     "Current settings": "Geçerli ayarlar",
     "Current stock": "Geçerli film stoğu",
     "Curve": "Eğri",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Tuş basılıyken kaydırıcı denetimi",
     "Horizontal": "Yatay",
     "Hourly": "Saatlik",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
     "Hue": "Renk tonu",
     "Hue shift": "Renk tonu kaydırma",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "Fotoğraflar klasör modunda açık ve hasarlı katalog değişmedi. Kurtarmak, yedeklemeyi geri yüklemek veya yeni bir katalog başlatmak için Kütüphane Sağlığı'nı açın.",
     "Photos could not be imported. Try again or choose a folder.": "Fotoğraflar içe aktarılamadı. Tekrar deneyin veya bir klasör seçin.",
     "Photos set aside": "Bir kenara ayrılan fotoğraflar",
+    "Photos shown / total photos in this folder or collection": "Gösterilen fotoğraflar / bu klasör veya koleksiyondaki toplam fotoğraf",
     "Photos stay in their current folder. No moving or copying required.": "Fotoğraflar mevcut klasörlerinde kalır. Taşıma veya kopyalama gerekmez.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "Fotoğraflar mevcut klasörlerinde kalır. İstediğiniz zaman daha fazla klasör ekleyebilirsiniz.",
     "Photos unstacked": "Fotoğraflar yığından çıkarıldı",

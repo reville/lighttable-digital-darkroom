@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "현재 카메라",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "현재 형식은 가능한 경우 RAW 또는 포함된 깊이를 포함해 자산의 현재 표현을 보존합니다. 호환 가능은 폭넓게 읽을 수 있는 이미지를 만듭니다. 선택한 파일은 {path}에 복사됩니다.",
     "Current photo": "현재 사진",
+    "Current photo / total photos": "현재 사진 / 전체 사진 수",
     "Current settings": "현재 설정",
     "Current stock": "현재 스톡",
     "Curve": "곡선",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "Hold 키 슬라이더 제어",
     "Horizontal": "가로",
     "Hourly": "시간별",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "상단 표시줄의 사진 카운터에 마우스 포인터를 올리면 숫자의 의미를 확인할 수 있습니다.",
     "Hue": "색조",
     "Hue shift": "색조 이동",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "사진은 폴더 모드로 열려 있으며 손상된 카탈로그는 변경되지 않았습니다. Library Health를 열어 복구하거나, 백업을 복원하거나, 새 카탈로그를 시작하세요.",
     "Photos could not be imported. Try again or choose a folder.": "사진을 가져오지 못했습니다. 다시 시도하거나 폴더를 선택하세요.",
     "Photos set aside": "사진 보류",
+    "Photos shown / total photos in this folder or collection": "표시된 사진 수 / 이 폴더 또는 컬렉션의 전체 사진 수",
     "Photos stay in their current folder. No moving or copying required.": "사진은 현재 폴더에 그대로 유지됩니다. 이동이나 복사는 필요하지 않습니다.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "사진은 현재 폴더에 그대로 유지됩니다. 원할 때 언제든지 폴더를 더 추가할 수 있습니다.",
     "Photos unstacked": "사진 스택 해제됨",

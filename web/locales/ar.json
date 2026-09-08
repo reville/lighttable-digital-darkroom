@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "الكاميرا الحالية",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "يحافظ التنسيق الحالي على التمثيل الحالي للأصل، بما في ذلك RAW أو العمق المضمن عند توفره. ينشئ التوافق صورة قابلة للقراءة على نطاق واسع. تُنسخ الملفات المحددة إلى {path}.",
     "Current photo": "الصورة الحالية",
+    "Current photo / total photos": "الصورة الحالية / إجمالي الصور",
     "Current settings": "الإعدادات الحالية",
     "Current stock": "الفيلم الحالي",
     "Curve": "منحنى",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "التحكم بمنزلق مفتاح الضغط",
     "Horizontal": "أفقي",
     "Hourly": "بالساعة",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "مرّر المؤشر فوق عدّاد الصور في الشريط العلوي لمعرفة معنى أرقامه.",
     "Hue": "الصبغة",
     "Hue shift": "إزاحة الصبغة",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "الصور مفتوحة في وضع المجلد، ولم يتم تغيير الكتالوج المتضرر. افتح سلامة المكتبة لإنقاذه، أو استعد نسخة احتياطية، أو ابدأ كتالوجًا جديدًا.",
     "Photos could not be imported. Try again or choose a folder.": "تعذر استيراد الصور. حاول مرة أخرى أو اختر مجلدًا.",
     "Photos set aside": "الصور جانبًا",
+    "Photos shown / total photos in this folder or collection": "الصور المعروضة / إجمالي الصور في هذا المجلد أو المجموعة",
     "Photos stay in their current folder. No moving or copying required.": "تبقى الصور في مجلدها الحالي. لا حاجة إلى نقل أو نسخ.",
     "Photos stay in their current folder. You can add more folders whenever you like.": "تبقى الصور في مجلدها الحالي. يمكنك إضافة المزيد من المجلدات متى شئت.",
     "Photos unstacked": "تم إلغاء تكديس الصور",

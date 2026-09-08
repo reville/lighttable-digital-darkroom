@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
+  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -850,6 +850,7 @@
     "Current camera": "वर्तमान कैमरा",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.": "वर्तमान प्रारूप परिसंपत्ति के मौजूदा निरूपण को संरक्षित करता है, जिसमें उपलब्ध होने पर RAW या अंतर्निहित गहराई शामिल है। संगत एक व्यापक रूप से पठनीय छवि बनाता है। चयनित फ़ाइलें {path} में प्रतिलिपि की जाती हैं।",
     "Current photo": "वर्तमान फ़ोटो",
+    "Current photo / total photos": "वर्तमान फ़ोटो / कुल फ़ोटो",
     "Current settings": "वर्तमान सेटिंग्स",
     "Current stock": "वर्तमान स्टॉक",
     "Curve": "वक्र",
@@ -1330,6 +1331,7 @@
     "Hold-key slider control": "की-होल्ड स्लाइडर नियंत्रण",
     "Horizontal": "क्षैतिज",
     "Hourly": "प्रति घंटा",
+    "Hover over the photo counter in the top bar to see what its numbers mean.": "संख्याओं का अर्थ जानने के लिए ऊपर की पट्टी में फ़ोटो काउंटर पर माउस पॉइंटर रखें।",
     "Hue": "ह्यू",
     "Hue shift": "ह्यू शिफ्ट",
     "IPTC": "IPTC",
@@ -1999,6 +2001,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.": "फ़ोटो फ़ोल्डर मोड में खुले हैं और क्षतिग्रस्त कैटलॉग में कोई बदलाव नहीं किया गया है। इसे बचाने के लिए लाइब्रेरी स्वास्थ्य खोलें, बैकअप पुनर्स्थापित करें, या नया कैटलॉग शुरू करें।",
     "Photos could not be imported. Try again or choose a folder.": "फ़ोटो आयात नहीं की जा सकीं। फिर से कोशिश करें या कोई फ़ोल्डर चुनें।",
     "Photos set aside": "फ़ोटो अलग रखी गईं",
+    "Photos shown / total photos in this folder or collection": "दिखाई गई फ़ोटो / इस फ़ोल्डर या संग्रह में कुल फ़ोटो",
     "Photos stay in their current folder. No moving or copying required.": "फ़ोटो अपने मौजूदा फ़ोल्डर में ही रहती हैं। स्थानांतरित या कॉपी करने की आवश्यकता नहीं है।",
     "Photos stay in their current folder. You can add more folders whenever you like.": "फ़ोटो अपने मौजूदा फ़ोल्डर में रहती हैं। आप जब चाहें और फ़ोल्डर जोड़ सकते हैं।",
     "Photos unstacked": "फ़ोटो का स्टैक हटाया गया",

@@ -5095,6 +5095,7 @@ function counts() {
   _countsPaintKey = paintKey;
   const shown = visible().length;
   $('counts').textContent = tr("{shown} of {scopeLength}", {shown: shown, scopeLength: scope.length});
+  $('counts').title = tr('Photos shown / total photos in this folder or collection');
   $('sourceAllCount').textContent = scope.length;
   $('sourcePendingCount').textContent = p;
   $('sourceApprovedCount').textContent = a;
@@ -10401,6 +10402,9 @@ function paintSelectionState() {
     thumb.classList.toggle('msel', S.msel.has(thumb.dataset.name));
   });
   $('counts').textContent = S.msel.size ? tr("{SMselSize} selected", {SMselSize: S.msel.size}) : `${S.idx + 1}/${S.images.length}`;
+  $('counts').title = S.msel.size
+    ? tr("{SMselSize} selected", {SMselSize: S.msel.size})
+    : tr('Current photo / total photos');
   syncCullBars();
   updateTransferActions();
 }
