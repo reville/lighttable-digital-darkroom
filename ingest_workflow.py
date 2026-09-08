@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 import durable_io
+import file_identity
 
 import media_formats
 import media_availability
@@ -50,7 +51,9 @@ def _safe_piece(value, default="untitled") -> str:
     """
     value = re.sub(r"[\\/:*?\"<>|\x00-\x1f]+", "_", str(value or ""))
     value = re.sub(r"\s+", " ", value).strip(" ._")
-    return (value or default)[:120]
+    # Match export's byte budget so Unicode folder and filename templates
+    # leave room for extensions, numbered collisions and companion sidecars.
+    return (value or default).encode("utf-8")[:120].decode("utf-8", errors="ignore")
 
 
 def _reason(error: OSError) -> str:
@@ -87,14 +90,14 @@ def _format_moment(moment: datetime) -> str:
 # --- identity ---------------------------------------------------------------
 
 def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
-    """Identity for one file: BLAKE2b-128 over its size and first `chunk` bytes.
+    """Legacy ingest prefix: BLAKE2b-128 over size and first `chunk` bytes.
 
     The digest is `hashlib.blake2b(digest_size=16)` fed the byte length in
     decimal ASCII, a newline, then the first `chunk` bytes of the file, and is
-    returned as 32 hex characters. It is cheap enough to run over a whole card
-    and is the identity the catalog stores for a photo, so the recipe is fixed:
-    changing the size prefix, the chunk size or the digest size would stop new
-    hashes matching the ones already written.
+    returned as 32 hex characters. Preserve this recipe for existing ingest
+    plans and legacy watcher acknowledgements. It differs from the catalog's
+    prefix recipe and is not a complete-file identity; current duplicate
+    decisions also compare full content hashes.
     """
     path = Path(path)
     media_availability.require_local(path)
@@ -107,12 +110,7 @@ def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
 
 def _file_hash(path: Path) -> str:
     """Full-content BLAKE2b-128, used when a copy is verified in "hash" mode."""
-    media_availability.require_local(path)
-    digest = hashlib.blake2b(digest_size=16)
-    with Path(path).open("rb") as handle:
-        for block in iter(lambda: handle.read(COPY_CHUNK), b""):
-            digest.update(block)
-    return digest.hexdigest()
+    return file_identity.content_hash(path)
 
 
 # --- scanning ---------------------------------------------------------------
@@ -322,8 +320,9 @@ def _destination_root(value) -> Path:
 
 def _same_photo(path: Path, item: dict) -> bool:
     """True when a file already on disk is this very photo, from an earlier run."""
-    try:  # the header hash already covers the byte length
-        return header_hash(path) == str(item.get("hash") or "")
+    try:
+        return (header_hash(path) == str(item.get("hash") or "")
+                and _file_hash(path) == _file_hash(Path(item["path"])))
     except OSError:
         return False
 
@@ -349,7 +348,8 @@ def _unique_path(candidate: Path, taken: set[str], item: dict) -> Path:
     raise ValueError(f"could not find a free name for {candidate.name}")
 
 
-def build_plan(items, request, *, existing_hashes=None) -> dict:
+def build_plan(items, request, *, existing_hashes=None,
+               existing_content_hashes=None) -> dict:
     """Turn scanned items and one request into an exact, collision-free copy list."""
     request = clean_plan_request(request)
     root = _destination_root(request["destination"])
@@ -376,7 +376,11 @@ def build_plan(items, request, *, existing_hashes=None) -> dict:
                             "reason": item["availability"], "message": media_availability.CLOUD_MESSAGE})
             continue
         digest = str(item.get("hash") or "")
-        duplicate = bool(digest) and digest.casefold() in known
+        if existing_content_hashes is not None:
+            candidates = existing_content_hashes.get(digest, ())
+            duplicate = bool(candidates) and _file_hash(Path(item["path"])) in candidates
+        else:
+            duplicate = bool(digest) and digest.casefold() in known
         if duplicate:
             duplicates += 1
             if request["onDuplicate"] == "skip":
@@ -459,10 +463,10 @@ def _copy_verified(source: Path, destination: Path, mode: str) -> str | None:
     except OSError as error:
         return f"{source.name}: {_reason(error)}"
     temporary = durable_io.temporary_path(destination, "ingest")
-    # Even "none" compares size here, so a rerun cannot adopt a stray file.
+    # Adopting an existing file always needs full identity, regardless of the
+    # selected verification policy for newly copied bytes.
     if destination.exists():
-        mismatch = _mismatch(
-            source, destination, "size" if mode == "none" else mode)
+        mismatch = _mismatch(source, destination, "hash")
         if not mismatch:
             return None
         return f"{source.name}: destination appeared or changed ({mismatch})"
