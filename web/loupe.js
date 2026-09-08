@@ -168,7 +168,7 @@ function loadPhoto(data) {
   emptyState.hidden = true;
   stage.hidden = false;
 
-  const url = data.url || `/api/orig?name=${encodeURIComponent(data.name)}&w=3840`;
+  const url = data.url || `/api/orig?name=${encodeURIComponent(data.name)}&w=3840&v=2`;
   const isNew = loupeImg.src !== url;
 
   loupeImg.onload = () => {

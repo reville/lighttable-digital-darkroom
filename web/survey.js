@@ -30,7 +30,7 @@ export function createSurvey(ctx) {
   }
 
   function imageURL(image) {
-    return `/api/orig?name=${encodeURIComponent(image.name)}&w=800&key=${encodeURIComponent(image.fileKey || image.mtime || '')}`;
+    return `/api/orig?name=${encodeURIComponent(image.name)}&w=800&v=2&key=${encodeURIComponent(image.fileKey || image.mtime || '')}`;
   }
 
   function syncSurveyCell(cell, image, isActive) {

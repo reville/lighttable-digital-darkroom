@@ -2849,6 +2849,9 @@ def rot90k(deg: float) -> int:
     return (-int(round(deg / 90))) % 4
 
 
+ORIGINAL_PREVIEW_CACHE_VERSION = 2  # display sRGB, not film-input ProPhoto
+
+
 def orig_jpeg(name: str, width: int, rotate: float = 0, *,
               quality: str = "draft") -> bytes:
     guard_photo(name)
@@ -2867,15 +2870,16 @@ def orig_jpeg(name: str, width: int, rotate: float = 0, *,
 
 def _orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
     k = rot90k(rotate)
+    prefix = f"v{ORIGINAL_PREVIEW_CACHE_VERSION}_{file_key(name)}_{width}"
     if k:
-        rotated = CACHE / "orig" / f"{file_key(name)}_{width}_{k}.jpg"
+        rotated = CACHE / "orig" / f"{prefix}_{k}.jpg"
         if not valid_jpeg_cache(rotated):
             base = Image.open(io.BytesIO(_orig_jpeg(name, width, 0))).convert("RGB")
             arr = np.rot90(np.asarray(base), k)
             durable_io.cache_write_bytes(
                 rotated, jpeg_bytes(np.ascontiguousarray(arr)))
         return rotated.read_bytes()
-    p = CACHE / "orig" / f"{file_key(name)}_{width}.jpg"
+    p = CACHE / "orig" / f"{prefix}.jpg"
     if not valid_jpeg_cache(p):
         if is_raw(name):
             im = Image.open(raw_display(name))
@@ -2887,7 +2891,8 @@ def _orig_jpeg(name: str, width: int, rotate: float = 0) -> bytes:
             im.save(buffer, "JPEG", quality=88, subsampling=1)
             durable_io.cache_write_bytes(p, buffer.getvalue())
         else:
-            arr = linear_for(name, width)
+            arr = platform_image.processed_preview(
+                src_path(name), width, app_root=APP, output_space="srgb")
             durable_io.cache_write_bytes(
                 p, jpeg_bytes((arr * 255 + 0.5).astype(np.uint8)))
         prune_cache_throttled(p.parent, "*.jpg", _ORIGINAL_CACHE_MAX_BYTES)
@@ -2933,7 +2938,7 @@ RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
 RENDER_CACHE_VERSION = 8  # sixteen-mask atlas, range masks, and uniformity
 EDIT_PREVIEW_CACHE_VERSION = 1
-EDITED_THUMB_CACHE_VERSION = 1
+EDITED_THUMB_CACHE_VERSION = 2  # processed source previews now use display sRGB
 EDITED_THUMB_RENDER_EDGE = 512
 EDITED_THUMB_OUTPUT_EDGE = 320
 EDITED_THUMB_LOCK = threading.Lock()
@@ -3639,7 +3644,8 @@ def _render_preview(name: str, params: dict, width: int,
         if refining:
             preview_image = orig_jpeg(name, width, cp["rotate"])
             image_url = (f"/api/orig?name={quote(name, safe='')}&w={width}"
-                         f"&rot={cp['rotate']}&key={file_key(name)}")
+                         f"&rot={cp['rotate']}&key={file_key(name)}"
+                         f"&v={ORIGINAL_PREVIEW_CACHE_VERSION}")
         elif is_raw(name):
             preview_image = accurate
             image_url = (f"/api/neutral?name={quote(name, safe='')}&w={width}"
@@ -3649,9 +3655,10 @@ def _render_preview(name: str, params: dict, width: int,
         else:
             preview_image = orig_jpeg(name, width, cp["rotate"])
             image_url = (f"/api/orig?name={quote(name, safe='')}&w={width}"
-                         f"&rot={cp['rotate']}&key={file_key(name)}")
+                         f"&rot={cp['rotate']}&key={file_key(name)}"
+                         f"&v={ORIGINAL_PREVIEW_CACHE_VERSION}")
         source_key = hashlib.md5(json.dumps([
-            "source-preview-v1", file_key(name), cp, int(width),
+            "source-preview-v2", file_key(name), cp, int(width), image_url,
         ], sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         response = {
             "ms": int((time.time() - t0) * 1000), "match": 1.0,
@@ -5743,10 +5750,24 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
     params = fp.clean_params(state.get("params") or {})
     if body.get("before"):
         return Image.open(io.BytesIO(orig_jpeg(
-            name, width, params.get("rotate", 0)))).convert("RGB")
+            name, width, params.get("rotate", 0), quality="full"))).convert("RGB")
     result = render_preview(
         name, params, width, str(body.get("engine", "rs")),
         str(body.get("client", "cli"))[:80], None, False, priority)
+    if result.get("refining"):
+        # File/analysis requests have no browser refinement loop. Finish the
+        # RAW source before encoding their one authoritative result.
+        import raw_decode_runtime
+        with raw_decode_runtime.cancellation(None, priority=priority):
+            if params["profile_enabled"]:
+                build_raw_preview(name, width, "full", params)
+            else:
+                build_neutral_preview(name, width, params.get("rotate", 0), params)
+        result = render_preview(
+            name, params, width, str(body.get("engine", "rs")),
+            str(body.get("client", "cli"))[:80], None, False, priority)
+        if result.get("refining"):
+            raise RuntimeError("Accurate RAW preview is unavailable")
     if result.get("cancelled"):
         raise RuntimeError(result.get("reason") or "render cancelled")
     base = Image.open(io.BytesIO(_preview_source_bytes(

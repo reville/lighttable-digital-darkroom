@@ -87,6 +87,7 @@ try {
     GradeRenderer.prototype.draw = function(...args) {
       draw.apply(this, args);
       if (this.canvas.id !== 'cv' || !this.ready) return;
+      window.processingRenderer = this;
       const gl = this.gl;
       if (gl.getParameter(gl.FRAMEBUFFER_BINDING) !== null) return;
       const pixels = new Uint8Array(this.canvas.width * this.canvas.height * 4);
@@ -120,6 +121,23 @@ try {
     await page.waitForFunction(({source, grade}) => processingFrame.sourceURL === source &&
       Object.entries(grade).every(([key, value]) =>
         Math.abs(processingFrame.grade[key] - value) < 0.0001), {source, grade}, {timeout:120000});
+  };
+  const captureBefore = async (test, frame, name) => {
+    await page.waitForFunction(() => processingRenderer.originalReady, null, {timeout:30000});
+    await page.evaluate(() => document.activeElement?.blur());
+    const beforeHold = await page.evaluate(() => processingFrames);
+    await page.keyboard.down('b');
+    await page.waitForFunction(before => processingFrames > before, beforeHold);
+    const held = await page.evaluate(() => processingFrame);
+    fs.writeFileSync(test.beforeRaw, Buffer.from(held.pixels));
+    const original = await page.request.post(config.baseUrl + '/api/render/file',
+      {data:{name, w:frame.width, format:'png', before:true, state:{params:test.params}}, timeout:120000});
+    if (!original.ok()) throw Error(`Original reference: ${await original.text()}`);
+    fs.writeFileSync(test.beforeReference, await original.body());
+    const beforeRelease = await page.evaluate(() => processingFrames);
+    await page.keyboard.up('b');
+    await page.waitForFunction(before => processingFrames > before, beforeRelease);
+    fs.writeFileSync(test.releasedRaw, Buffer.from(await page.evaluate(() => processingFrame.pixels)));
   };
   for (const [index, test] of config.cases.entries()) {
     process.stdout.write(JSON.stringify({event:'case', name:test.name}) + '\n');
@@ -171,6 +189,7 @@ try {
       if (!reference.ok()) throw Error(await reference.text());
       fs.writeFileSync(test.reference, await reference.body());
       const bounds = await captureDisplay(test, frame);
+      await captureBefore(test, frame, name);
       results.push({name:test.name, photo:name, bounds, ...frame});
       continue;
     }
@@ -227,6 +246,7 @@ try {
     if (!reference.ok()) throw Error(`CLI reference: ${await reference.text()}`);
     fs.writeFileSync(test.reference, await reference.body());
     const bounds = await captureDisplay(test, frame);
+    await captureBefore(test, frame, name);
     results.push({name:test.name, photo:name, bounds, ...frame});
   }
   if (!delayedFilmResponses) throw Error('Slow physical-render regression was not exercised');
