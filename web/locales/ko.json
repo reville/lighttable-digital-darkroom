@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "맞춤은 작은 사진을 확대할 수 있습니다. 1:1은 사진이 맞춤보다 작아지더라도 실제 픽셀을 표시하며, 창 크기를 변경해도 같은 픽셀 배율을 유지합니다.",
     "Fit the whole photo to the available space": "전체 사진이 사용 가능한 공간에 맞도록",
     "Fit to window ({actualPct}%)": "창에 맞춤 ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "맞춤, 1:1, 확대/축소 버튼과 단축키는 부드럽게 애니메이션됩니다. 스크롤, 핀치, 드래그는 직접 반응합니다. 시스템의 동작 줄이기 설정이 켜져 있으면 확대/축소 애니메이션이 비활성화됩니다.",
     "Flag": "플래그",
     "Flag and rate survey photo": "서베이 사진에 플래그 지정 및 평점 매기기",
     "Flag and rating filters": "플래그 및 평점 필터",

@@ -225,7 +225,8 @@
             "Foto-Raster zeigt Fotos als visuelle Übersicht. Aussortier-Raster schafft Platz für Auswahl- und Bewertungsinformationen. Details öffnet das aktive Foto zur nahen Prüfung.",
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
-            "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten."
+            "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
+            "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

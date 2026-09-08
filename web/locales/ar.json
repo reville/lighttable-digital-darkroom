@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "قد يؤدي الملاءمة إلى تكبير الصور الصغيرة. يعرض 1:1 وحدات البكسل الفعلية حتى عندما تصبح الصورة أصغر من وضع الملاءمة، ويحافظ على مقياس البكسل نفسه عند تغيير حجم النافذة.",
     "Fit the whole photo to the available space": "ملاءمة الصورة بالكامل في المساحة المتاحة",
     "Fit to window ({actualPct}%)": "ملاءمة إلى النافذة ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "تتحرك الملاءمة و1:1 وأزرار التكبير واختصاراته بسلاسة. يستجيب التمرير والقرص والسحب مباشرة. تُعطَّل حركة التكبير عند تفعيل إعداد تقليل الحركة في النظام.",
     "Flag": "علامة",
     "Flag and rate survey photo": "وضع علامة وتقييم صورة الاستعراض",
     "Flag and rating filters": "مرشحات العلامة والتقييم",

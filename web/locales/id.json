@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
     "Fit the whole photo to the available space": "Paskan seluruh foto ke ruang yang tersedia",
     "Fit to window ({actualPct}%)": "Pas ke jendela ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan.",
     "Flag": "Bendera",
     "Flag and rate survey photo": "Bendera dan beri rating foto survei",
     "Flag and rating filters": "Filter bendera dan rating",

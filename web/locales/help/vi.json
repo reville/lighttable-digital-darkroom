@@ -225,7 +225,8 @@
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
-            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số."
+            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
+            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03"
 }

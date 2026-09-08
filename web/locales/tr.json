@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
+  "sourceDigest": "908cb4d1dd62aa3c9dc6ccdeb37af0737a4e57a33e6d97e69b8be4ea257c5b03",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1197,6 +1197,7 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
     "Fit the whole photo to the available space": "Tüm fotoğrafı kullanılabilir alana sığdırın",
     "Fit to window ({actualPct}%)": "Pencereye sığdır ({actualPct}%)",
+    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayolları akıcı biçimde canlandırılır. Kaydırma, iki parmakla yakınlaştırma ve sürükleme doğrudan tepki verir. Sisteminizde Hareketi Azalt ayarı etkinleştirildiğinde yakınlaştırma animasyonu devre dışı kalır.",
     "Flag": "Bayrak",
     "Flag and rate survey photo": "İnceleme fotoğrafını işaretle ve derecelendir",
     "Flag and rating filters": "Bayrak ve derecelendirme filtreleri",
