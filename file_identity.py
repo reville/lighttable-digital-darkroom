@@ -33,10 +33,10 @@ class _WindowsBindings:
             wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD,
             wintypes.HANDLE]
         self.create_file.restype = wintypes.HANDLE
-        self.reopen_file = kernel.ReOpenFile
-        self.reopen_file.argtypes = [wintypes.HANDLE, wintypes.DWORD,
-                                    wintypes.DWORD, wintypes.DWORD]
-        self.reopen_file.restype = wintypes.HANDLE
+        self.final_path = kernel.GetFinalPathNameByHandleW
+        self.final_path.argtypes = [wintypes.HANDLE, wintypes.LPWSTR,
+                                   wintypes.DWORD, wintypes.DWORD]
+        self.final_path.restype = wintypes.DWORD
         self.query_file = kernel.GetFileInformationByHandleEx
         self.query_file.argtypes = [wintypes.HANDLE, ctypes.c_int,
                                    wintypes.LPVOID, wintypes.DWORD]
@@ -75,24 +75,25 @@ class _WindowsBindings:
             raise OSError(T("The filesystem does not provide a file change time"))
         return int(info.ChangeTime)
 
-    def reopen_content_fd(self, fd):
-        # ReOpenFile preserves the object identity but has an independent file
-        # pointer. Deny concurrent writers/deleters for the complete read; a
-        # timestamp cannot detect every write made within one clock tick.
-        # OPEN_NO_RECALL supplements the attribute-only availability checks.
-        handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x1,
-                                  0x00100000 | 0x08000000)
-        if handle == self.invalid_handle:
-            raise self.ctypes.WinError(self.ctypes.get_last_error())
-        try:
-            return self.open_osfhandle(handle, os.O_RDONLY | getattr(os, "O_BINARY", 0))
-        except BaseException:
-            self.close_handle(handle)
-            raise
+    def path_for_fd(self, fd):
+        # Resolve the object without reading or seeking the borrowed handle.
+        # Keep the extended-length DOS/UNC prefix returned by Windows intact.
+        handle = self.get_osfhandle(fd)
+        capacity = 260
+        for _ in range(3):
+            buffer = self.ctypes.create_unicode_buffer(capacity)
+            length = self.final_path(handle, buffer, capacity, 0)
+            if not length:
+                raise self.ctypes.WinError(self.ctypes.get_last_error())
+            if length < capacity:
+                return buffer.value
+            if length > 32767:
+                raise self.ctypes.WinError(206)  # ERROR_FILENAME_EXCED_RANGE
+            capacity = length + 1
+        raise OSError(T("File changed while querying its identity"))
 
     def open_content_fd(self, path):
-        # Do not upgrade an attributes-only handle through ReOpenFile. Open
-        # the verified path for data access and compare its identity before
+        # Open the verified path for data access and compare its identity before
         # reading. This handle also denies writers/deleters and owns its offset.
         handle = self.create_file(os.fsdecode(os.fspath(path)), 0x80000000, 0x1,
                                   None, 3, 0x00100000 | 0x08000000, None)
@@ -178,8 +179,8 @@ def _windows_content_signature(stat, *, path=None, fd=None):
             handles.callback(os.close, fd)
         _require_windows_local(os.fstat(fd), path)
         before = _windows_change_time(stat, fd=fd)
-        read_fd = (api.open_content_fd(path) if path is not None
-                   else api.reopen_content_fd(fd))
+        content_path = path if path is not None else api.path_for_fd(fd)
+        read_fd = api.open_content_fd(content_path)
         handles.callback(os.close, read_fd)
         _require_windows_local(os.fstat(read_fd), path)
         if _windows_change_time(stat, fd=read_fd) != before:
@@ -189,7 +190,7 @@ def _windows_content_signature(stat, *, path=None, fd=None):
             raise OSError(T("File changed while querying its identity"))
         # The metadata handle may have been opened before a pathname swap.
         # Recheck that path while this object's deny-write/delete lock is held.
-        if path is not None and _stat_fields(Path(path).stat()) != _stat_fields(stat):
+        if _stat_fields(Path(content_path).stat()) != _stat_fields(stat):
             raise OSError(T("File changed while querying its identity"))
         return before, digest
 

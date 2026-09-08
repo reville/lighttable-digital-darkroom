@@ -3,6 +3,7 @@ from contextlib import ExitStack
 import ctypes
 import os
 from pathlib import Path
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -35,12 +36,13 @@ class SimulatedWindows:
         changed = self.native.change_time(fd) if self.native else os.fstat(fd).st_ctime_ns
         return changed + self.epoch
 
-    def reopen_content_fd(self, fd):
-        # A duplicate simulates ownership; unlike native ReOpenFile it shares
-        # the offset, so the reader must also restore its temporary position.
-        reopened = self.native.reopen_content_fd(fd) if self.native else os.dup(fd)
-        self.opened.append(reopened)
-        return reopened
+    def path_for_fd(self, fd):
+        if self.native:
+            return self.native.path_for_fd(fd)
+        if sys.platform == 'darwin':
+            import fcntl
+            return os.fsdecode(fcntl.fcntl(fd, fcntl.F_GETPATH, b'\0' * 1024).split(b'\0', 1)[0])
+        return os.readlink(f'/proc/self/fd/{fd}')
 
     def open_content_fd(self, path):
         fd = self.native.open_content_fd(path) if self.native else os.open(path, os.O_RDONLY)
@@ -101,10 +103,17 @@ class WindowsSignatureTests(unittest.TestCase):
         path_stat = SimpleNamespace(**fields, st_ctime_ns=5)
         fd_stat = SimpleNamespace(**fields, st_ctime_ns=900)
         api = SimpleNamespace(change_time=mock.Mock(return_value=900),
-                              reopen_content_fd=os.dup)
+            path_for_fd=lambda fd: str(self.path),
+            open_content_fd=lambda path: os.open(path, os.O_RDONLY))
+        real_stat = Path.stat
+
+        def path_metadata(candidate, *args, **kwargs):
+            return path_stat if candidate == self.path else real_stat(candidate, *args, **kwargs)
+
         with mock.patch.object(file_identity, "_WINDOWS", True), \
                 mock.patch.object(file_identity, "_windows_bindings", return_value=api), \
                 mock.patch.object(file_identity.os, "fstat", return_value=fd_stat), \
+                mock.patch.object(Path, 'stat', path_metadata), \
                 self.path.open("rb") as stream:
             # The supplied path stat and the already-open handle represent
             # the same file even when CPython exposes different ctime fields.
@@ -183,13 +192,29 @@ class WindowsSignatureTests(unittest.TestCase):
             with self.assertRaisesRegex(OSError, "changed before hashing"):
                 file_identity.content_hash(self.path, expected_signature=key)
 
-    def test_path_signatures_do_not_upgrade_an_attributes_only_handle(self):
+    def test_path_signatures_use_the_known_path_without_resolving_a_descriptor(self):
         windows = SimulatedWindows()
         windows.install(self)
-        with mock.patch.object(windows, 'reopen_content_fd',
-                               side_effect=AssertionError('attributes-only upgrade')):
+        with mock.patch.object(windows, 'path_for_fd',
+                               side_effect=AssertionError('known path must be used')):
             signature = file_identity.stat_signature(self.path.stat(), path=self.path)
             self.assertEqual(file_identity.content_hash(self.path), signature[-1])
+
+    def test_borrowed_descriptor_resolving_to_another_file_is_rejected_before_reading(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        other = self.path.with_name('other.tif')
+        other.write_bytes(self.path.read_bytes())
+        before = self.path.stat()
+        os.utime(other, ns=(before.st_atime_ns, before.st_mtime_ns))
+        with self.path.open('rb') as stream:
+            stream.seek(3)
+            with mock.patch.object(windows, 'path_for_fd', return_value=str(other)), \
+                    mock.patch.object(file_identity.os, 'read', side_effect=AssertionError('wrong file read')):
+                with self.assertRaisesRegex(OSError, 'changed before querying'):
+                    file_identity.stat_signature(os.fstat(stream.fileno()), fd=stream.fileno())
+            self.assertEqual(stream.tell(), 3)
+            self.assertEqual(stream.read(), b'hanged fixture')
 
     def test_windows_placeholder_signatures_never_open_content(self):
         windows = SimulatedWindows()
@@ -288,12 +313,13 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         # invoking the real DLL still needs separate native Windows validation.
         api = file_identity._WindowsBindings.__new__(file_identity._WindowsBindings)
         api.create_file = mock.Mock(return_value=42)
-        api.reopen_file = mock.Mock(return_value=43)
+        api.final_path = mock.Mock(return_value=0)
         api.get_osfhandle = mock.Mock(return_value=42)
         api.open_osfhandle = mock.Mock(return_value=7)
         api.close_handle = mock.Mock()
         api.invalid_handle = -1
         api.ctypes = SimpleNamespace(get_last_error=mock.Mock(return_value=32),
+            create_unicode_buffer=ctypes.create_unicode_buffer,
             WinError=mock.Mock(side_effect=lambda code: OSError(code, "native query failed")))
         return api
 
@@ -319,25 +345,38 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.open_osfhandle.assert_not_called()
         api.close_handle.assert_not_called()
 
-    def test_content_reopen_denies_writes_and_deletes_and_uses_binary_reads(self):
+    def test_borrowed_final_path_preserves_long_unicode_and_extended_prefix(self):
         api = self.bindings()
-        self.assertEqual(api.reopen_content_fd(9), 7)
-        api.reopen_file.assert_called_once_with(42, 0x80000000, 0x1, 0x08100000)
-        api.open_osfhandle.assert_called_once_with(43, os.O_RDONLY | getattr(os, 'O_BINARY', 0))
+        path = '\\\\?\\C:\\' + '照片' * 150 + '.tif'
+
+        def final_path(handle, buffer, capacity, flags):
+            self.assertEqual((handle, flags), (42, 0))
+            if capacity <= len(path):
+                return len(path) + 1
+            buffer.value = path
+            return len(path)
+
+        api.final_path.side_effect = final_path
+        self.assertEqual(api.path_for_fd(9), path)
+        self.assertEqual(api.final_path.call_count, 2)
+        api.create_file.assert_not_called()
         api.close_handle.assert_not_called()
 
-    def test_failed_content_reopen_transfer_closes_only_new_handle(self):
+    def test_final_path_failure_preserves_native_error_and_borrowed_handle(self):
         api = self.bindings()
-        api.open_osfhandle.side_effect = OSError('descriptor allocation failed')
-        with self.assertRaisesRegex(OSError, 'allocation failed'):
-            api.reopen_content_fd(9)
-        api.close_handle.assert_called_once_with(43)
+        with self.assertRaises(OSError) as raised:
+            api.path_for_fd(9)
+        self.assertEqual(raised.exception.errno, 32)
+        api.ctypes.WinError.assert_called_once_with(32)
+        api.open_osfhandle.assert_not_called()
+        api.close_handle.assert_not_called()
 
-    def test_failed_content_reopen_does_not_transfer_or_close_borrowed_handle(self):
+    def test_continually_growing_final_path_query_has_a_fixed_attempt_bound(self):
         api = self.bindings()
-        api.reopen_file.return_value = -1
-        with self.assertRaises(OSError):
-            api.reopen_content_fd(9)
+        api.final_path.side_effect = lambda handle, buffer, capacity, flags: capacity + 1
+        with self.assertRaisesRegex(OSError, 'changed while querying'):
+            api.path_for_fd(9)
+        self.assertEqual(api.final_path.call_count, 3)
         api.open_osfhandle.assert_not_called()
         api.close_handle.assert_not_called()
 
@@ -346,7 +385,7 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         self.assertEqual(api.open_content_fd('original.tif'), 7)
         api.create_file.assert_called_once_with('original.tif', 0x80000000, 0x1,
                                                None, 3, 0x08100000, None)
-        api.reopen_file.assert_not_called()
+        api.final_path.assert_not_called()
         api.open_osfhandle.assert_called_once_with(42, os.O_RDONLY | getattr(os, 'O_BINARY', 0))
         api.close_handle.assert_not_called()
 
@@ -359,8 +398,7 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
 
     def test_native_open_failures_report_ctypes_saved_error_without_touching_handles(self):
         for method, native, value in (('open_metadata_fd', 'create_file', 'original.tif'),
-                                      ('open_content_fd', 'create_file', 'original.tif'),
-                                      ('reopen_content_fd', 'reopen_file', 9)):
+                                      ('open_content_fd', 'create_file', 'original.tif')):
             with self.subTest(method=method):
                 api = self.bindings()
                 getattr(api, native).return_value = -1
