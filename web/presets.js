@@ -13,7 +13,7 @@ export function bytesToBase64(value) {
 
 export const LOOK_GRADE_KEYS = new Set([
   'contrast', 'highlights', 'shadows', 'whites', 'blacks', 'vibrance', 'saturation',
-  'texture', 'clarity', 'dehaze', 'vignette', 'curveL', 'curveR', 'curveG', 'curveB',
+  'texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather', 'curveL', 'curveR', 'curveG', 'curveB',
   'hsl', 'pointColor', 'colorGrading',
 ]);
 export const CREATIVE_FILM_KEYS = new Set([

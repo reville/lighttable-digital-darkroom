@@ -20,7 +20,7 @@ const GRADE_KEYS = {
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks', 'curveL'],
   color: ['temp', 'tint', 'vibrance', 'saturation', 'curveR', 'curveG', 'curveB',
     'hsl', 'pointColor', 'colorGrading'],
-  detail: ['texture', 'clarity', 'dehaze', 'vignette', 'sharpness', 'sharpenRadius',
+  detail: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather', 'sharpness', 'sharpenRadius',
     'sharpenDetail', 'sharpenMasking', 'luminanceNoise', 'colorNoise'],
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],
 };

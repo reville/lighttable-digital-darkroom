@@ -224,7 +224,9 @@
           "paragraphs": [
             "Photo Grid menampilkan foto sebagai tinjauan visual. Culling Grid menambahkan ruang untuk informasi seleksi dan rating. Detail membuka foto aktif untuk pemeriksaan dekat.",
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
-            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya."
+            "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
+            "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
+            "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -1031,7 +1033,9 @@
           "steps": [
             "Tingkatkan Dehaze untuk memperkuat gambar berkabut, atau coba nilai negatif untuk perlakuan yang lebih lembut. Periksa kontras dan warna saat Anda menyesuaikannya.",
             "Atur Vinyet untuk perlakuan tepi yang Anda inginkan dan periksa sudutnya.",
-            "Tahan B untuk membandingkan dengan original, atau gunakan Atur Ulang pada Effects untuk mengatur ulang Texture, Clarity, Dehaze, dan Vignette sekaligus."
+            "Naikkan Ukuran agar lebih banyak bagian tengah tidak terpengaruh; turunkan agar vinyet menjangkau lebih jauh ke dalam.",
+            "Naikkan Kehalusan Tepi untuk transisi yang lebih halus, atau turunkan untuk tepi yang lebih tegas.",
+            "Tahan B untuk membandingkan dengan foto asli, atau gunakan Atur Ulang di Efek untuk mengatur ulang semua penggeser Efek sekaligus."
           ],
           "tips": [
             "Vignette di Effects adalah perlakuan tepi kreatif. Gunakan koreksi lensa saat Anda ingin mengoreksi shading lensa."
@@ -2179,7 +2183,8 @@
         {
           "title": "Mulai dengan stok",
           "paragraphs": [
-            "Film menerapkan film yang dimodelkan dan proses keluaran pada foto diam. Sakelar profil Film mengontrol pemrosesan ini; penyesuaian Edit Anda tetap aktif saat Anda mematikan Film."
+            "Film menerapkan film yang dimodelkan dan proses keluaran pada foto diam. Sakelar profil Film mengontrol pemrosesan ini; penyesuaian Edit Anda tetap aktif saat Anda mematikan Film.",
+            "Atur Ulang di Simulasi Film yang Realistis mengembalikan semua penggeser Film ke nilai bawaannya. Atur Ulang dalam suatu bagian hanya memengaruhi penggeser di bagian tersebut. Sakelar dan opsi yang dipilih tetap seperti semula."
           ],
           "steps": [
             "Buka foto diam dan pilih Film di rel alat untuk membuka Simulasi Film Realistis.",
@@ -2201,7 +2206,7 @@
           "paragraphs": [
             "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
             "Film stock menjelaskan proses film fisik. Preset pengeditan dapat berisi penyesuaian tersimpan yang lebih luas, dan juga dapat menyertakan pengaturan Film. Menu Output di dalam Film memilih resep scan atau print; ini tidak mengekspor file.",
-            "Setelah Anda mengaktifkan Film, pratinjau cepat dapat muncul sebelum detail RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai dan menghilang setelah pratinjau terlihat. Detail RAW yang akurat dan rendering resolusi penuh terus berjalan di latar belakang."
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat."
           ],
           "tips": [
             "Jika suatu stok tidak tersedia, mungkin diperlukan engine GPU. Ketersediaan engine ditampilkan di Pengaturan → Performa."
@@ -3029,7 +3034,8 @@
         {
           "title": "Periksa apa yang telah selesai dirender",
           "paragraphs": [
-            "Pengaturan zoom 100% tidak menjamin bahwa detail gambar penuh sudah tiba. Pratinjau cepat mungkin muncul terlebih dahulu saat pemrosesan RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai, dengan hitungan seperti 2 / 5. Bilah ini menghilang segera setelah pratinjau yang dapat digunakan ditampilkan; pemrosesan RAW yang akurat dan pratinjau yang lebih besar terus berjalan di latar belakang tanpa lapisan. Hitungan tersebut mewakili tahap yang selesai, bukan sisa waktu. Gerakan yang dikurangi mempertahankan pembaruan tahap yang sama tanpa animasi. Foto tetap terlihat tanpa menjadi redup. Pada 1:1, arahkan kursor ke tombol 1:1 untuk memeriksa apakah detail sumber penuh sudah siap sebelum menilai detail halus.",
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
+            "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
             "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
             "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi."
@@ -3083,5 +3089,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
+  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
 }

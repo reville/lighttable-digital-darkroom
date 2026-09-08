@@ -224,7 +224,9 @@
           "paragraphs": [
             "A Grade de fotos apresenta as fotos como uma visão geral visual. A Grade de seleção adiciona espaço para informações de seleção e avaliação. Detalhe abre a foto ativa para inspeção de perto.",
             "A barra lateral direita usa botões de ícone para Editar, Filme, Cortar, Remover, Máscaras, Informações, Histórico e Predefinições. Passe o mouse sobre um ícone para ver o nome dele.",
-            "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números."
+            "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
+            "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
+            "Ajustar, 1:1, os botões e os atalhos de zoom têm animações suaves. Rolar, pinçar e arrastar respondem diretamente. A animação de zoom é desativada quando a opção Reduzir movimento do sistema está ativada."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -1031,7 +1033,9 @@
           "steps": [
             "Aumente Remover névoa para fortalecer uma imagem enevoada, ou tente um valor negativo para um tratamento mais suave. Verifique contraste e cor enquanto ajusta.",
             "Defina Vinheta para o tratamento de borda desejado e inspecione os cantos.",
-            "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir juntos Textura, Claridade, Remover névoa e Vinheta."
+            "Aumente Tamanho para manter uma parte maior do centro sem efeito; diminua para que a vinheta alcance mais o interior.",
+            "Aumente Suavizar bordas para uma transição mais suave, ou diminua para uma borda mais definida.",
+            "Segure B para comparar com o original, ou use Redefinir em Efeitos para redefinir todos os controles deslizantes de Efeitos juntos."
           ],
           "tips": [
             "Vignette em Effects é um tratamento criativo de borda. Use Lens corrections quando quiser corrigir o sombreamento da lente."
@@ -2179,7 +2183,8 @@
         {
           "title": "Começar com um filme",
           "paragraphs": [
-            "Filme aplica um processo modelado de filme e saída a uma foto estática. O controle do perfil de Filme controla esse processamento; seus ajustes de Editar permanecem ativos quando você desliga Filme."
+            "Filme aplica um processo modelado de filme e saída a uma foto estática. O controle do perfil de Filme controla esse processamento; seus ajustes de Editar permanecem ativos quando você desliga Filme.",
+            "Redefinir em Simulação realista de filme restaura os valores padrão de todos os controles deslizantes de Filme. Redefinir em uma seção afeta apenas os controles deslizantes dessa seção. Os interruptores e as opções selecionadas permanecem como estão."
           ],
           "steps": [
             "Abra uma foto estática e selecione Filme na barra de ferramentas para abrir a Simulação realista de filme.",
@@ -2201,7 +2206,7 @@
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
             "Uma película de filme descreve o processo físico do filme. Uma predefinição de edição pode conter ajustes salvos mais amplos e também pode incluir configurações de Filme. O menu Saída dentro de Filme escolhe uma receita de digitalização ou impressão; ele não exporta um arquivo.",
-            "Depois que você ativa Filme, uma pré-visualização rápida pode aparecer antes que os detalhes RAW precisos e a pré-visualização maior sejam concluídos. A barra de progresso se preenche à medida que as etapas de processamento da pré-visualização terminam e desaparece assim que a pré-visualização fica visível. O detalhamento RAW preciso e a renderização em resolução total continuam em segundo plano."
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
           ],
           "tips": [
             "Se um filme não estiver disponível, ele pode exigir o mecanismo da GPU. A disponibilidade do mecanismo é mostrada em Ajustes → Desempenho."
@@ -3029,7 +3034,8 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
-            "Uma configuração de zoom de 100% não garante que o detalhamento completo da imagem já tenha chegado. Uma pré-visualização rápida pode aparecer primeiro enquanto o processamento RAW preciso e uma pré-visualização maior são concluídos. A barra de progresso se preenche à medida que as etapas de processamento da pré-visualização terminam, com uma contagem como 2 / 5. Ela desaparece assim que uma pré-visualização utilizável é exibida; o processamento RAW preciso e as pré-visualizações maiores continuam em segundo plano sem a sobreposição. A contagem representa etapas concluídas, não o tempo restante. A redução de movimento mantém as mesmas atualizações de etapa sem animação. A foto permanece visível sem escurecer. Em 1:1, passe o cursor sobre o botão 1:1 para verificar se o detalhamento completo da origem está pronto antes de avaliar detalhes finos.",
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
             "Remover, Corrigir, Clonar e máscaras com Textura ou Claridade precisam de uma atualização adicional da pré-visualização. Aguarde a pré-visualização terminar antes de julgar o detalhe ou o efeito dos ajustes posteriores.",
             "Se as dimensões do original não estiverem disponíveis, a percentagem de zoom mostra — e 1:1 fica desativado. Auto continua a adaptar-se ao ecrã. Volte a analisar a pasta para atualizar as dimensões."
@@ -3083,5 +3089,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
+  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
 }

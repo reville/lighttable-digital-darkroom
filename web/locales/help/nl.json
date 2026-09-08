@@ -224,7 +224,9 @@
           "paragraphs": [
             "Foto-raster presenteert foto's als een visueel overzicht. Selectieraster voegt ruimte toe voor selectie- en beoordelingsinformatie. Details opent de actieve foto voor nauwkeurige inspectie.",
             "De rechterzijbalk gebruikt pictogramknoppen voor Bewerken, Film, Bijsnijden, Verwijderen, Maskering, Info, Geschiedenis en Voorinstellingen. Beweeg de aanwijzer over een pictogram om de naam ervan te zien.",
-            "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen."
+            "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
+            "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen.",
+            "Passend maken, 1:1, zoomknoppen en zoomsneltoetsen worden vloeiend geanimeerd. Scrollen, knijpen en slepen reageren direct. Zoomanimatie is uitgeschakeld wanneer Verminder beweging in je systeeminstellingen is ingeschakeld."
           ],
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
@@ -1031,7 +1033,9 @@
           "steps": [
             "Verhoog Nevel verwijderen om een nevelig beeld te versterken, of probeer een negatieve waarde voor een zachtere behandeling. Controleer zowel contrast als kleur terwijl u dit aanpast.",
             "Stel Vignettering in voor de gewenste randbehandeling en inspecteer de hoeken.",
-            "Houd B ingedrukt om te vergelijken met het origineel, of gebruik in Effecten Opnieuw instellen om Textuur, Helderheid, Nevel verwijderen en Vignettering samen opnieuw in te stellen."
+            "Verhoog Grootte om meer van het midden onaangetast te laten; verlaag de waarde om de vignettering verder naar binnen te laten reiken.",
+            "Verhoog Vervaging voor een zachtere overgang, of verlaag de waarde voor een duidelijkere rand.",
+            "Houd B ingedrukt om te vergelijken met het origineel, of gebruik Opnieuw instellen in Effecten om alle schuifregelaars van Effecten tegelijk opnieuw in te stellen."
           ],
           "tips": [
             "Vignet in Effecten is een creatieve randbehandeling. Gebruik lenscorrecties wanneer je lensverdonkering wilt corrigeren."
@@ -2179,7 +2183,8 @@
         {
           "title": "Begin met een film",
           "paragraphs": [
-            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt."
+            "Film past een gemodelleerde film- en uitvoerprocedure toe op een stilstaande foto. De schakelaar Filmprofiel regelt deze verwerking; uw aanpassingen in Bewerken blijven actief wanneer u Film uitschakelt.",
+            "Opnieuw instellen in Realistische filmsimulatie zet alle filmschuifregelaars terug naar hun standaardwaarden. Opnieuw instellen binnen een sectie beïnvloedt alleen de schuifregelaars van die sectie. Schakelaars en geselecteerde opties blijven zoals ze zijn."
           ],
           "steps": [
             "Open een stilstaande foto en selecteer Film in de gereedschapsbalk om Realistic Film Simulation te openen.",
@@ -2201,7 +2206,7 @@
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
             "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
-            "Nadat je Film hebt ingeschakeld, kan eerst een snel voorbeeld verschijnen voordat nauwkeurige RAW-details en het grotere voorbeeld klaar zijn. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid en verdwijnt zodra het voorbeeld zichtbaar is. Nauwkeurige RAW-details en weergave op volledige resolutie gaan op de achtergrond door."
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
           ],
           "tips": [
             "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
@@ -3029,7 +3034,8 @@
         {
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
-            "Een zoominstelling van 100% garandeert niet dat alle beelddetails al zijn aangekomen. Eerst kan een snel voorbeeld verschijnen terwijl nauwkeurige RAW-verwerking en een groter voorbeeld worden voltooid. De voortgangsbalk vult zich terwijl de verwerkingsstadia van het voorbeeld worden voltooid, met een telling zoals 2 / 5. Hij verdwijnt zodra een bruikbaar voorbeeld wordt weergegeven; nauwkeurige RAW-verwerking en grotere voorbeelden gaan op de achtergrond door zonder de overlay. De telling staat voor voltooide stadia, niet voor resterende tijd. Verminderde beweging houdt dezelfde stadiumupdates zonder animatie. De foto blijft zichtbaar zonder dimming. Bij 1:1 kun je boven de knop 1:1 zweven om te controleren of volledige bron-details klaar zijn voordat je fijne details beoordeelt.",
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
             "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt.",
             "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken."
@@ -3083,5 +3089,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
+  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
 }

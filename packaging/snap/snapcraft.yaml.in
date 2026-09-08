@@ -1,0 +1,49 @@
+# Generated from a verified official Linux bundle. Store publication is separate.
+name: lighttable
+version: '@VERSION@'
+summary: RAW photo editing and film simulation
+description: |
+  LightTable is a digital darkroom for RAW photography, with non-destructive
+  editing, film simulation, photo organization and local processing.
+base: core24
+grade: devel
+confinement: strict
+license: GPL-3.0-only
+website: https://lighttable.app
+source-code: https://github.com/reville/lighttable-digital-darkroom
+issues: https://github.com/reville/lighttable-digital-darkroom/issues
+icon: payload/LightTable/share/icons/lighttable.png
+platforms:
+  amd64:
+assumes: [snapd2.54]
+
+plugs:
+  shared-memory:
+    private: true
+
+apps:
+  lighttable:
+    extensions: [gnome]
+    command: LightTable/bin/lighttable-desktop
+    command-chain: [bin/lighttable-snap-environment]
+    desktop: LightTable/share/applications/app.lighttable.LightTable.desktop
+    common-id: app.lighttable.LightTable
+    plugs: [home, network, network-bind, removable-media, shared-memory]
+  cli:
+    extensions: [gnome]
+    command: LightTable/bin/lighttable
+    command-chain: [bin/lighttable-snap-environment]
+    plugs: [home, network, network-bind, removable-media, shared-memory]
+
+parts:
+  lighttable:
+    plugin: dump
+    source: payload
+    stage-packages:
+      - libxdo3
+      - libopenblas0-pthread
+      - libgomp1
+      - libssl3t64
+      - liblcms2-2
+      - xdg-utils
+      - zenity

@@ -224,7 +224,9 @@
           "paragraphs": [
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
-            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số."
+            "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
+            "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
+            "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -1031,7 +1033,9 @@
           "steps": [
             "Tăng Dehaze để tăng cường một ảnh có sương mù, hoặc thử giá trị âm cho một xử lý mềm hơn. Kiểm tra cả tương phản lẫn màu sắc khi bạn điều chỉnh.",
             "Đặt Tối góc cho kiểu xử lý viền bạn muốn và kiểm tra các góc.",
-            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Effects để đặt lại Texture, Clarity, Dehaze và Vignette cùng lúc."
+            "Tăng Kích thước để giữ vùng giữa không bị ảnh hưởng rộng hơn; giảm để hiệu ứng tối góc lan sâu hơn vào trong.",
+            "Tăng Làm mềm mép để chuyển tiếp mềm hơn, hoặc giảm để có đường biên rõ hơn.",
+            "Giữ B để so sánh với bản gốc, hoặc dùng Đặt lại trong Hiệu ứng để đặt lại tất cả thanh trượt Hiệu ứng cùng lúc."
           ],
           "tips": [
             "Vignette của Effects là một hiệu ứng sáng tạo ở rìa ảnh. Dùng Lens corrections khi bạn muốn sửa shading của ống kính."
@@ -2179,7 +2183,8 @@
         {
           "title": "Bắt đầu với một phim",
           "paragraphs": [
-            "Phim áp dụng một quy trình phim và đầu ra được mô phỏng cho một ảnh tĩnh. Công tắc profile Phim điều khiển quá trình xử lý này; các điều chỉnh Chỉnh sửa của bạn vẫn hoạt động khi bạn tắt Phim."
+            "Phim áp dụng một quy trình phim và đầu ra được mô phỏng cho một ảnh tĩnh. Công tắc profile Phim điều khiển quá trình xử lý này; các điều chỉnh Chỉnh sửa của bạn vẫn hoạt động khi bạn tắt Phim.",
+            "Đặt lại trong Mô phỏng phim chân thực đưa tất cả thanh trượt Phim về giá trị mặc định. Đặt lại trong một phần chỉ ảnh hưởng đến các thanh trượt của phần đó. Các công tắc và tùy chọn đã chọn được giữ nguyên."
           ],
           "steps": [
             "Mở một ảnh tĩnh và chọn Phim trong thanh công cụ để mở Mô phỏng Phim Chân thực.",
@@ -2201,7 +2206,7 @@
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
             "Một film stock mô tả quy trình phim vật lý. Một preset chỉnh sửa có thể chứa các điều chỉnh đã lưu rộng hơn, và cũng có thể bao gồm các thiết lập Film. Menu Output bên trong Film chọn một recipe quét hoặc in; nó không xuất tệp.",
-            "Sau khi bạn bật Phim, một bản xem trước nhanh có thể xuất hiện trước khi chi tiết RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất và biến mất khi bản xem trước hiển thị. Chi tiết RAW chính xác và kết xuất độ phân giải đầy đủ tiếp tục chạy trong nền."
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
           ],
           "tips": [
             "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng."
@@ -3029,7 +3034,8 @@
         {
           "title": "Kiểm tra những gì đã kết xuất xong",
           "paragraphs": [
-            "Thiết lập thu phóng 100% không đảm bảo rằng toàn bộ chi tiết ảnh đã đến. Một bản xem trước nhanh có thể xuất hiện trước trong khi xử lý RAW chính xác và bản xem trước lớn hơn hoàn tất. Thanh tiến trình sẽ đầy dần khi các giai đoạn xử lý bản xem trước hoàn tất, với số như 2 / 5. Nó biến mất ngay khi một bản xem trước dùng được được hiển thị; xử lý RAW chính xác và các bản xem trước lớn hơn tiếp tục chạy trong nền mà không có lớp phủ. Con số biểu thị các giai đoạn đã hoàn thành, không phải thời gian còn lại. Chế độ giảm chuyển động vẫn giữ nguyên các cập nhật giai đoạn nhưng không có hoạt ảnh. Ảnh vẫn hiển thị mà không bị làm mờ. Ở 1:1, rê chuột lên nút 1:1 để kiểm tra xem chi tiết nguồn đầy đủ đã sẵn sàng trước khi đánh giá chi tiết nhỏ hay chưa.",
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
+            "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
             "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau.",
             "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
@@ -3083,5 +3089,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "298acc6f3b02f449fc909964e320d0be4b488d8ccd50b2ac95d84c3a5e471852"
+  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
 }
