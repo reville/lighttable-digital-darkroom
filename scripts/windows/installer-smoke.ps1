@@ -27,6 +27,10 @@ function Invoke-InstallerProcess([string]$Executable, [string]$Arguments) {
     if ($Process.ExitCode -ne 0) { throw "Installer process exited with $($Process.ExitCode)" }
 }
 
+$ProtocolPath = "HKCU:\Software\Classes\lighttable"
+if (Test-Path $ProtocolPath) {
+    throw "Installer smoke requires an account without an existing LightTable protocol handler"
+}
 $RegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\LightTable"
 if (Test-Path $RegistryPath) {
     throw "Installer smoke requires a Windows account without an existing LightTable install"
@@ -52,6 +56,14 @@ try {
     }
     if ($Installed.InstallLocation -ne $InstallPath -or $Installed.QuietUninstallString -notmatch ' /S$') {
         throw "Installer registration is missing installation or silent uninstall metadata"
+    }
+    $ProtocolCommand = (Get-Item ($ProtocolPath + "\shell\open\command")).GetValue("")
+    if ($ProtocolCommand -cne ('"' + $InstallPath + '\LightTable.exe" --preset-url "%1"')) {
+        throw "The preset protocol handler is missing or incorrectly quoted"
+    }
+    $ProtocolKey = Get-Item $ProtocolPath
+    if ($ProtocolKey.GetValueNames() -notcontains "URL Protocol") {
+        throw "The preset URL protocol marker is missing"
     }
     $FirstPath = Get-RawUserPath
     $BinPath = Join-Path $InstallPath "bin"
@@ -85,6 +97,7 @@ try {
     # waiting here waits for the real removal operation.
     Invoke-InstallerProcess $Uninstaller "/S _?=$InstallPath"
     if (Test-Path $RegistryPath) { throw "Uninstall left product registration behind" }
+    if (Test-Path $ProtocolPath) { throw "Uninstall left the preset protocol handler behind" }
     if ((Get-RawUserPath) -cne $BeforePath) { throw "Uninstall did not restore the previous user PATH" }
     if (Test-Path (Join-Path $BinPath "lighttable.cmd")) { throw "Uninstall left the CLI installed" }
     if (Test-Path (Join-Path $InstallPath "LightTable.exe")) { throw "Uninstall left the GUI installed" }

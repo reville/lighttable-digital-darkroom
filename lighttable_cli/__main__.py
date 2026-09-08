@@ -122,6 +122,9 @@ def preset_state(preset: dict) -> dict:
     Sending those would reset the photo's own film, local corrections, and
     geometry; only the groups the preset actually contains are applied.
     """
+    if preset.get("scope") == "look":
+        from preset_library import look_patch
+        return look_patch(preset)
     entry: dict = {}
     grade = preset.get("grade") if isinstance(preset.get("grade"), dict) else {}
     included = preset.get("includedGrade")

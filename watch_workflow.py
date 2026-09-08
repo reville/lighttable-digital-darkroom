@@ -128,6 +128,12 @@ class WatchService:
         if not preset:
             return
         current = self.catalog.state_for(image_id)
+        if preset.get("scope") == "look":
+            from preset_library import look_patch
+            patch = look_patch(preset)
+            entry = {key: {**(current.get(key) or {}), **value} for key, value in patch.items()}
+            self.catalog.save_state(image_id, entry)
+            return
         entry: dict = {}
         if preset.get("includeFilm"):
             entry["params"] = preset.get("params") or {}

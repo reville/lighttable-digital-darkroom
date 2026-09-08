@@ -229,7 +229,7 @@ MODEL_HASH="$(hash_sources "$MODEL_PACKAGE" "$MODEL_INDEX" \
   "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt")"
 SOURCE_TREE_HASH="$(hash_sources \
   "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
-  "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" \
+  "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
   "$ROOT/film_lab_ai" "$ROOT/app/main.swift" \
   "$ROOT/app/NativePreview.swift" "$ROOT/app/NativePreview.metal" \
   "$ROOT/rust-engine/Cargo.toml" "$ROOT/rust-engine/Cargo.lock" \
@@ -326,6 +326,8 @@ done
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
   "$ROOT/profiles/" "$STAGE_PAYLOAD/profiles/"
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
+  "$ROOT/presets/" "$STAGE_PAYLOAD/presets/"
+/usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
   --exclude='*.swift' "$ROOT/film_lab_ai/" "$STAGE_PAYLOAD/film_lab_ai/"
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
   "$PYTHON_SOURCE/src/spektrafilm/" \
@@ -407,6 +409,19 @@ plist_bool() {
   /usr/libexec/PlistBuddy -c "Delete :$1" "$PLIST" >/dev/null 2>&1 || true
   /usr/libexec/PlistBuddy -c "Add :$1 bool $2" "$PLIST"
 }
+
+# The quick update starts with an older bundle's plist. Refresh protocol
+# declarations from source as well as its version and personal identity.
+"$BASE_PYTHON" - "$ROOT/app/Info.plist" "$PLIST" <<'PYPLIST'
+import plistlib
+import sys
+from pathlib import Path
+source = plistlib.loads(Path(sys.argv[1]).read_bytes())
+target_path = Path(sys.argv[2])
+target = plistlib.loads(target_path.read_bytes())
+target["CFBundleURLTypes"] = source["CFBundleURLTypes"]
+target_path.write_bytes(plistlib.dumps(target))
+PYPLIST
 
 plist_string CFBundleName "$PRODUCT_NAME"
 plist_string CFBundleDisplayName "$PRODUCT_NAME"
