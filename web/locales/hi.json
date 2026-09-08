@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "खोजें",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "खोज में लेख शीर्षक, टूल नाम, और पूर्ण निर्देश शामिल हैं। ऐप में खोज करने के लिए सभी विषय चुनें।",
     "Search film stocks": "फ़िल्म स्टॉक खोजें",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "किसी stock नाम की खोज करें, ब्राउज़ करने के लिए Previous या Next का उपयोग करें, फिर लागू करने के लिए preview चुनें।",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "फ़िल्म का नाम खोजें या प्रीव्यू स्क्रॉल करें, फिर लागू करने के लिए कोई प्रीव्यू चुनें। ज़्यादा बारीकी दिखाने के लिए प्रीव्यू बड़े करके क्रॉप किए जाते हैं।",
     "Search help": "सहायता खोजें",
     "Search index: {value}": "खोज सूचकांक: {value}",
     "Search objects, scenes, text, and faces": "ऑब्जेक्ट, दृश्य, पाठ, और चेहरे खोजें",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% रखा गया",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}नाम मौजूदा फ़ाइलों को दर्शाते हैं और निर्यात से पहले बदल सकते हैं.",
     "{value}× stock baseline": "{value}× स्टॉक बेसलाइन",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} स्टॉक में से {value}–{value2}",
     "— none —": "— कोई नहीं —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” में पेंट किए गए परिशोधन हैं. इसे इस फ़ोटो पर फिर से बनाएँ या exclude masks करें.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” को नए ऑब्जेक्ट चयन की आवश्यकता है. अन्य संपादन चिपकाने के लिए exclude masks करें.",

@@ -2185,7 +2185,7 @@
             "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
             "Film profil anahtarını açın. Fiziksel film aşamaları otomatik olarak açılır; sonrasında daraltabilirsiniz.",
             "Film Stoğu seçin veya işlenmiş örnekleri karşılaştırmak için bu fotoğrafta Film stoklarını önizle’ye tıklayın…",
-            "Bir film stoğu adı arayın, gözatmak için Previous veya Next kullanın, ardından uygulamak için bir önizleme seçin."
+            "Bir film adı arayın veya önizlemeleri kaydırın, ardından uygulamak için birini seçin. Ayrıntıları daha iyi göstermek için önizlemeler büyütülür ve kırpılır."
           ]
         },
         {
@@ -3075,5 +3075,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

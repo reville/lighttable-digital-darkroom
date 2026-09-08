@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "検索",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "検索は記事タイトル、ツール名、および全手順を対象にします。アプリ全体を検索するには［すべてのトピック］を選択してください。",
     "Search film stocks": "フィルムストックを検索",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ストック名を検索し、Previous または Next で参照してから、適用するプレビューを選びます。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "フィルム名を検索するか、プレビューをスクロールして、適用するものを選びます。細部が見やすいように、プレビューは拡大してトリミングされます。",
     "Search help": "ヘルプを検索",
     "Search index: {value}": "検索インデックス: {value}",
     "Search objects, scenes, text, and faces": "オブジェクト、シーン、テキスト、顔を検索します",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% を保持",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名前は既存ファイルに基づいており、書き出し前に変更される場合があります。",
     "{value}× stock baseline": "{value}× ストック基準",
-    "{value}–{value2} of {stocksLength} stocks": "{stocksLength} 個のストック中 {value}–{value2}",
     "— none —": "— なし —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "「{value}」には塗りの調整があります。この写真で再作成するか、除外マスクを使ってください。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "「{value}」には新しいオブジェクト選択が必要です。ほかの編集を貼り付けるには除外マスクを使ってください。",

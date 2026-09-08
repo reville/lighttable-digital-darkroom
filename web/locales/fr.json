@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Rechercher",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "La recherche couvre les titres d’articles, les noms des outils et l’intégralité des instructions. Choisissez Tous les sujets pour rechercher dans l’application entière.",
     "Search film stocks": "Rechercher des pellicules",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Recherchez un nom de pellicule, utilisez Précédent ou Suivant pour parcourir, puis choisissez un aperçu pour l’appliquer.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Recherchez le nom d’un film ou faites défiler les aperçus, puis choisissez-en un pour l’appliquer. Les aperçus sont agrandis et recadrés pour montrer davantage de détails.",
     "Search help": "Rechercher dans l'aide",
     "Search index: {value}": "Index de recherche : {value}",
     "Search objects, scenes, text, and faces": "Rechercher des objets, des scènes, du texte et des visages",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value} % conservé",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Les noms reflètent les fichiers existants et peuvent changer avant l’exportation.",
     "{value}× stock baseline": "{value}× base de référence de la pellicule",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} sur {stocksLength} pellicules",
     "— none —": "— aucun —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "« {value} » comporte des raffinements peints. Recréez-le sur cette photo ou excluez les masques.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "« {value} » nécessite une nouvelle sélection d’objet. Excluez les masques pour coller les autres retouches.",

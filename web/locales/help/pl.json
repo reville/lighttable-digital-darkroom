@@ -2185,7 +2185,7 @@
             "Otwórz zdjęcie nieruchome i wybierz Film na pasku narzędzi, aby otworzyć Realistic Film Simulation.",
             "Włącz przełącznik profilu filmu. Fizyczne etapy filmu otwierają się automatycznie; możesz je potem zwinąć.",
             "Wybierz Nośnik albo kliknij Podgląd nośników na tym zdjęciu…, aby porównać wyrenderowane przykłady.",
-            "Wyszukaj nazwę nośnika, użyj Previous lub Next, aby przeglądać, a następnie wybierz podgląd, aby go zastosować."
+            "Wyszukaj nazwę filmu lub przewiń podglądy, a następnie wybierz jeden, aby go zastosować. Podglądy są powiększone i przycięte, aby lepiej pokazać szczegóły."
           ]
         },
         {
@@ -3075,5 +3075,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
 }

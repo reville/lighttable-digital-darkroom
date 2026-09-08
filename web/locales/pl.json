@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Szukaj",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Wyszukiwanie obejmuje tytuły artykułów, nazwy narzędzi i pełną treść instrukcji. Wybierz Wszystkie tematy, aby przeszukiwać całą aplikację.",
     "Search film stocks": "Szukaj nośników filmu",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Wyszukaj nazwę nośnika, użyj Previous lub Next, aby przeglądać, a następnie wybierz podgląd, aby go zastosować.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Wyszukaj nazwę filmu lub przewiń podglądy, a następnie wybierz jeden, aby go zastosować. Podglądy są powiększone i przycięte, aby lepiej pokazać szczegóły.",
     "Search help": "Szukaj w pomocy",
     "Search index: {value}": "Indeks wyszukiwania: {value}",
     "Search objects, scenes, text, and faces": "Wyszukuj obiekty, sceny, tekst i twarze",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "zachowano {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Nazwy odzwierciedlają istniejące pliki i mogą się zmienić przed eksportem.",
     "{value}× stock baseline": "{value}× baza nośnika",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} z {stocksLength} nośników",
     "— none —": "— brak —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "„{value}” ma ręcznie malowane dopracowania. Odtwórz je na tym zdjęciu lub wyklucz maski.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "„{value}” wymaga nowego zaznaczenia obiektu. Wyklucz maski, aby wkleić inne edycje.",

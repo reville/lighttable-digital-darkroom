@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "Zoeken",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "Zoeken omvat artikeltitels, toolnamen en de volledige instructies. Kies Alle onderwerpen om in de hele app te zoeken.",
     "Search film stocks": "Filmstocks zoeken",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "Zoek op een filmnaam, gebruik Vorige of Volgende om te bladeren en kies daarna een voorbeeld om toe te passen.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "Zoek op filmnaam of scrol door de voorbeelden en kies er een om toe te passen. De voorbeelden zijn vergroot en bijgesneden om meer detail te tonen.",
     "Search help": "Help zoeken",
     "Search index: {value}": "Zoekindex: {value}",
     "Search objects, scenes, text, and faces": "Zoek op objecten, scènes, tekst en gezichten",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "{value}% behouden",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}Namen weerspiegelen bestaande bestanden en kunnen veranderen vóór export.",
     "{value}× stock baseline": "{value}× film-basislijn",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} van {stocksLength} films",
     "— none —": "— geen —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” heeft geschilderde verfijningen. Maak het opnieuw aan op deze foto of sluit maskers uit.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” heeft een nieuwe objectselectie nodig. Sluit maskers uit om andere bewerkingen te plakken.",

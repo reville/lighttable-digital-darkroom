@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "搜尋",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "搜尋涵蓋文章標題、工具名稱和完整說明。選擇全部主題可跨整個應用程式搜尋。",
     "Search film stocks": "搜尋膠卷",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "搜尋膠卷名稱，使用上一個或下一個瀏覽，然後選擇預覽以套用。",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "搜尋底片名稱或捲動瀏覽預覽，然後選擇一個預覽以套用該底片。預覽會放大並裁切，以便看清更多細節。",
     "Search help": "搜尋說明",
     "Search index: {value}": "搜尋索引：{value}",
     "Search objects, scenes, text, and faces": "搜尋物件、場景、文字和臉部",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "保留 {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}名稱會反映現有檔案，並可能在匯出前變更。",
     "{value}× stock baseline": "{value}× 膠卷基準值",
-    "{value}–{value2} of {stocksLength} stocks": "{value}–{value2} / {stocksLength} 種膠卷",
     "— none —": "— 無 —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "「{value}」有繪製的微調。請在這張相片上重新建立它，或排除遮罩。",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "「{value}」需要新的物件選取。請排除遮罩以貼上其他編輯。",

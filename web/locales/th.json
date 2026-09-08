@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2435,7 +2435,7 @@
     "Search": "ค้นหา",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.": "การค้นหาครอบคลุมชื่อบทความ ชื่อเครื่องมือ และคำสั่งทั้งหมด เลือก หัวข้อทั้งหมด เพื่อค้นหาทั้งแอป",
     "Search film stocks": "ค้นหาสต็อกฟิล์ม",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.": "ค้นหาชื่อสต็อก ใช้ Previous หรือ Next เพื่อเรียกดู จากนั้นเลือกพรีวิวเพื่อใช้งาน",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.": "ค้นหาชื่อฟิล์มหรือเลื่อนดูภาพตัวอย่าง แล้วเลือกภาพตัวอย่างเพื่อใช้ฟิล์มนั้น ภาพตัวอย่างจะถูกขยายและครอปเพื่อให้เห็นรายละเอียดชัดขึ้น",
     "Search help": "ค้นหาความช่วยเหลือ",
     "Search index: {value}": "ดัชนีค้นหา: {value}",
     "Search objects, scenes, text, and faces": "ค้นหาวัตถุ ฉาก ข้อความ และใบหน้า",
@@ -4025,7 +4025,6 @@
     "{value}% retained": "คงไว้ {value}%",
     "{value}{value2}Names reflect existing files and may change before export.": "{value}{value2}ชื่ออ้างอิงจากไฟล์ที่มีอยู่ และอาจเปลี่ยนก่อนส่งออก",
     "{value}× stock baseline": "ค่าเริ่มต้นของสต็อก {value}×",
-    "{value}–{value2} of {stocksLength} stocks": "สต็อก {value}–{value2} จาก {stocksLength} สต็อก",
     "— none —": "— ไม่มี —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.": "“{value}” มีการปรับแต่งที่วาดไว้แล้ว สร้างใหม่บนภาพถ่ายนี้หรือยกเว้นมาสก์",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.": "“{value}” ต้องเลือกวัตถุใหม่อีกครั้ง ยกเว้นมาสก์เพื่อวางการแก้ไขอื่นๆ",
