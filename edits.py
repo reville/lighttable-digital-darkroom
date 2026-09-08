@@ -416,7 +416,7 @@ def _color_weight(image: np.ndarray, hue: float | None,
         np.float32)
 
 
-def apply_masks(image: np.ndarray, masks) -> np.ndarray:
+def apply_masks(image: np.ndarray, masks, *, accelerated: bool = False) -> np.ndarray:
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
     for mask in clean_masks(masks):
         if not mask["enabled"] or grade.is_identity(mask["grade"]):
@@ -438,6 +438,7 @@ def apply_masks(image: np.ndarray, masks) -> np.ndarray:
             mask["colorAmount"])
         if not np.any(region_weight > 1e-6):
             continue
+        apply_grade = grade.apply_accelerated if accelerated else grade.apply
         if mask["grade"]["texture"] or mask["grade"]["clarity"]:
             # Local detail uses the source's one-pixel cross neighbors.
             # Include them beyond the mask bounds, then discard the halo so
@@ -445,10 +446,10 @@ def apply_masks(image: np.ndarray, masks) -> np.ndarray:
             height, width = output.shape[:2]
             sy0, sy1 = max(0, y0 - 1), min(height, y1 + 1)
             sx0, sx1 = max(0, x0 - 1), min(width, x1 + 1)
-            adjusted = grade.apply(output[sy0:sy1, sx0:sx1], mask["grade"])[
+            adjusted = apply_grade(output[sy0:sy1, sx0:sx1], mask["grade"])[
                 y0 - sy0:y1 - sy0, x0 - sx0:x1 - sx0]
         else:
-            adjusted = grade.apply(region, mask["grade"])
+            adjusted = apply_grade(region, mask["grade"])
         output[y0:y1, x0:x1] = (
             region * (1.0 - region_weight[..., None])
             + adjusted * region_weight[..., None])

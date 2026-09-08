@@ -36,10 +36,11 @@ def provenance():
                                 text=True, timeout=15, check=True)
         return result.stdout.strip()
     paths = ['film_pipeline.py', 'grade.py', 'edits.py', 'render_cli.py',
+             'gpu_compute.py', 'merge_acceleration.py', 'merge_workflow.py',
              'color_pipeline.py', 'web/gl.js', 'app/NativePreview.swift', 'app/NativePreview.metal']
     paths += [str(path.relative_to(ROOT)) for path in (ROOT / 'tests').glob('*processing*') if path.is_file()]
-    paths += [str(path.relative_to(ROOT)) for path in (ROOT / 'rust-engine').rglob('*.rs')
-              if 'target' not in path.parts]
+    paths += [str(path.relative_to(ROOT)) for path in (ROOT / 'rust-engine').rglob('*')
+              if path.suffix in {'.rs', '.wgsl'} and 'target' not in path.parts]
     paths += ['scripts/check-processing.py', 'server.py', 'web/app.js']
     return {'revision': git('rev-parse', 'HEAD'), 'workingTree': git('status', '--short'),
             'host': platform.platform(), 'python': sys.version,

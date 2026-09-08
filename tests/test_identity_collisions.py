@@ -168,7 +168,7 @@ class IdentityCollisionTests(unittest.TestCase):
             connection.execute("UPDATE meta SET value='5' WHERE key='schema_version'")
         self.cat = catalog.Catalog(self.cat.path)
         self.addCleanup(self.cat.close)
-        self.assertEqual(self.cat.stats()["schema"], 6)
+        self.assertEqual(self.cat.stats()["schema"], catalog.SCHEMA_VERSION)
         with mock.patch.object(file_identity, "content_hash", wraps=file_identity.content_hash) as hashing:
             self.scan()
             self.scan()

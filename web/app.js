@@ -1,3 +1,4 @@
+import { installKeywordBatch } from '/web/keyword-batch.js';
 import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
 import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
@@ -15,6 +16,7 @@ import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
+import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
 import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
@@ -64,7 +66,7 @@ import {
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
-import { createPresetBrowser } from '/web/preset-browser.js';
+import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installUIBridge } from '/web/ui-bridge.js';
 import { installSettings } from '/web/settings.js';
@@ -112,6 +114,7 @@ const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
   onChange: () => { refreshFilteredView(); savePrefs(); } });
+let KEYWORD_BATCH = null;
 let MASK_BATCH = null;
 let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
@@ -305,7 +308,7 @@ document.addEventListener('keydown', (event) => {
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
     ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
-    LIBRARY_FILTERS.types(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -901,6 +904,8 @@ function applyViewNow() {
   const isZoomed = !isFit && S.zoom > 1.01;
   cmp.classList.toggle('is-zoomed', isZoomed);
   syncCompareView();
+  syncViewerChrome();
+  drawEditOverlayNow();
 
   scheduleNativeViewportLayout();
   scheduleViewportRegionRender();
@@ -1563,15 +1568,15 @@ function buildMaskTexture(edge = 512) {
   return new ImageData(rgba, width, height * tiles);
 }
 
-function drawBrushCursor(ctx, overlay, point, size, feather, accent = '#fff') {
+function drawBrushCursor(ctx, surface, point, size, feather, accent = '#fff') {
   if (!point) return;
-  const x = point[0] * overlay.width, y = point[1] * overlay.height;
-  const outer = Math.max(3, size * Math.min(overlay.width, overlay.height) / 2);
+  const x = point[0] * surface.width, y = point[1] * surface.height;
+  const outer = Math.max(3, size * Math.min(surface.width, surface.height) / 2);
   const inner = Math.max(1.5, outer * (1 - feather));
   ctx.save();
   ctx.strokeStyle = accent;
-  ctx.lineWidth = Math.max(1, overlay.width / 1100);
-  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2;
+  ctx.lineWidth = 1;
+  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2 * surface.pixelRatio;
   ctx.beginPath(); ctx.arc(x, y, outer, 0, Math.PI * 2); ctx.stroke();
   if (feather > 0.02) {
     ctx.strokeStyle = 'rgba(255,255,255,.68)';
@@ -1591,15 +1596,33 @@ function syncOverlayCursorClass() {
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
 }
 
+function syncViewerChrome() {
+  const chrome = $('viewerChrome');
+  const frame = $('cmp').getBoundingClientRect();
+  const geometry = screenOverlayGeometry(frame, frame, $('zoomwrap').getBoundingClientRect());
+  chrome.hidden = !geometry;
+  if (!geometry) return;
+  for (const key of ['left', 'top', 'width', 'height']) chrome.style[key] = `${geometry[key]}px`;
+}
+
 function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
-  if (!canvas.width || !canvas.height) return;
-  if (overlay.width !== canvas.width || overlay.height !== canvas.height) {
-    overlay.width = canvas.width; overlay.height = canvas.height;
+  const active = canvas.width && canvas.height &&
+    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+  const geometry = active ? screenOverlayGeometry(
+    canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
+  const surface = prepareScreenOverlay(overlay, geometry);
+  syncOverlayCursorClass();
+  if (!surface) return;
+  const { ctx } = surface;
+  if (S.overlayHoverClientPoint) {
+    const [clientX, clientY] = S.overlayHoverClientPoint;
+    const rect = overlay.getBoundingClientRect();
+    S.overlayHoverPoint = clientX >= rect.left && clientX <= rect.right &&
+      clientY >= rect.top && clientY <= rect.bottom ? overlayPoint({clientX, clientY}) : null;
   }
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
   if (S.activePane === 'maskPane') {
     const mask = selectedMask();
     if (!mask) return;
@@ -1651,21 +1674,21 @@ function drawEditOverlayNow() {
           packedMaskData.data[sourceOffset + channel] * rangeWeight * 0.42);
       }
       tintCtx.putImageData(pixels, 0, 0);
-      ctx.drawImage(tinted, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(tinted, 0, 0, surface.width, surface.height);
     }
-    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = Math.max(1.5, overlay.width / 900);
+    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = 1.5;
     if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'linear') {
-      const [sx, sy] = [mask.start[0] * overlay.width, mask.start[1] * overlay.height];
-      const [ex, ey] = [mask.end[0] * overlay.width, mask.end[1] * overlay.height];
+      const [sx, sy] = [mask.start[0] * surface.width, mask.start[1] * surface.height];
+      const [ex, ey] = [mask.end[0] * surface.width, mask.end[1] * surface.height];
       ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
       for (const [x, y] of [[sx, sy], [ex, ey]]) { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'radial') {
-      const x = mask.center[0] * overlay.width, y = mask.center[1] * overlay.height;
-      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(overlay.width, overlay.height), 0, Math.PI * 2); ctx.stroke();
+      const x = mask.center[0] * surface.width, y = mask.center[1] * surface.height;
+      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(surface.width, surface.height), 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
     if (mask.type === 'brush' || S.maskRefineMode) {
-      drawBrushCursor(ctx, overlay, S.overlayHoverPoint, S.brushSize, S.brushFeather,
+      drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
         S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
@@ -1673,14 +1696,14 @@ function drawEditOverlayNow() {
       const threshold = +$('healVisualizeThreshold').value;
       ctx.save();
       ctx.filter = `grayscale(1) invert(1) contrast(${2 + threshold * 7}) brightness(${0.72 + threshold * 0.35})`;
-      ctx.drawImage(S.baseImg, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(S.baseImg, 0, 0, surface.width, surface.height);
       ctx.restore();
     }
     for (const spot of S.localPinsVisible ? S.heals : []) {
       const selected = spot.id === S.selectedHealId;
-      const tx = spot.target[0] * overlay.width, ty = spot.target[1] * overlay.height;
-      const sx = spot.source[0] * overlay.width, sy = spot.source[1] * overlay.height;
-      const radius = spot.radius * Math.min(overlay.width, overlay.height);
+      const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
+      const sx = spot.source[0] * surface.width, sy = spot.source[1] * surface.height;
+      const radius = spot.radius * Math.min(surface.width, surface.height);
       ctx.save();
       ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
       ctx.lineWidth = selected ? 2.2 : 1.25;
@@ -1703,10 +1726,9 @@ function drawEditOverlayNow() {
       }
       ctx.restore();
     }
-    drawBrushCursor(ctx, overlay, S.overlayHoverPoint,
+    drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
   }
-  syncOverlayCursorClass();
 }
 
 const previewFrameScheduler = createFrameScheduler((work) => {
@@ -2484,12 +2506,12 @@ $('lensReset').onclick = (event) => {
   syncOpticsPanel(); syncGrade(); drawGrade(); saveState(); refreshBaseEdits();
 };
 
-function overlayPoint(event, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayPoint(event, rect = $('cv').getBoundingClientRect()) {
   return [clamp((event.clientX - rect.left) / rect.width, 0, 1),
     clamp((event.clientY - rect.top) / rect.height, 0, 1)];
 }
 
-function overlayDistance(a, b, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayDistance(a, b, rect = $('cv').getBoundingClientRect()) {
   return Math.hypot((a[0] - b[0]) * rect.width, (a[1] - b[1]) * rect.height);
 }
 
@@ -2512,9 +2534,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
   if (!cur() || event.button !== 0) return;
   event.stopPropagation();
   event.preventDefault();
-  const rect = $('editOverlay').getBoundingClientRect();
+  const rect = $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (S.activePane === 'maskPane') {
     if (S.maskColorPick) {
       if (event.shiftKey) {
@@ -2589,9 +2612,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
   const gesture = S.editGesture;
-  const rect = gesture?.rect || $('editOverlay').getBoundingClientRect();
+  const rect = gesture?.rect || $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (!gesture || gesture.pointerId !== event.pointerId) { drawEditOverlay(); return; }
   if (S.activePane === 'maskPane') {
     if (gesture.type === 'mask-color-sample') {
@@ -2667,7 +2691,7 @@ $('editOverlay').addEventListener('pointerup', finishEditGesture);
 $('editOverlay').addEventListener('pointercancel', finishEditGesture);
 $('editOverlay').addEventListener('pointerleave', () => {
   if (S.editGesture?.pointerId !== undefined) return;
-  S.overlayHoverPoint = null; drawEditOverlay();
+  S.overlayHoverPoint = null; S.overlayHoverClientPoint = null; drawEditOverlay();
 });
 
 /* ------------------------------------------------------------ film render */
@@ -3365,6 +3389,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   const viewport = w === requestedWidth ? requestedViewportRegion() : null;
   const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
+  const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
+    S.previewDetail?.name === im.name && S.previewDetail.refining === false;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
   $('zoomwrap').setAttribute('aria-busy', 'true');
@@ -3372,10 +3398,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     S.params.profile_enabled ? 'Applying film…' : 'Loading preview…', my);
   try {
     const request = {
-      name: im.name, params: S.params, w, engine: $('engine').value,
+      name: im.name, params: { ...S.params }, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
+      allow_draft: !hasAccuratePixels,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3438,8 +3465,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     // is on screen. When this photo is already presented accurately, keep
     // those pixels and let the refinement replace them: swapping in a draft
     // flashes a different rendering on every zoom, crop, or panel change.
-    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
-      S.presentedPhotoName === im.name;
+    const keepAccuratePixels = Boolean(m.refining) && hasAccuratePixels;
     let imageTiming = null;
     if (!keepAccuratePixels) {
       imageTiming = await setBaseImage(m, my, {
@@ -3514,7 +3540,20 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
          ' · ' + (m.engine === 'rs' ? 'rust/gpu' : 'python');
     $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
     $('rstat').className = '';
-    if (phase === 'interactive' && w !== requestedWidth) {
+    if (m.refining) {
+      // Start accurate RAW work immediately after the useful first frame.
+      // Rendering a large embedded-camera draft first delays demosaic and
+      // creates a second temporary film result that will soon be replaced.
+      const refinementRequest = { name: im.name, params: { ...request.params },
+        w: requestedWidth, client: CLIENT_ID, generation: my };
+      const ready = await waitForRawRefinement({
+        request: () => api('/api/refine', refinementRequest),
+        isCurrent: () => my === S.seq && cur()?.name === im.name,
+      });
+      if (ready) return doRender(scheduledAt, {
+        width: requestedWidth, requestedWidth, phase: 'refinement', background: true,
+      });
+    } else if (phase === 'interactive' && w !== requestedWidth) {
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3532,16 +3571,6 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       };
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
-    } else if (m.refining) {
-      const refinementRequest = { name: im.name, params: { ...request.params },
-        w, client: CLIENT_ID, generation: my };
-      const ready = await waitForRawRefinement({
-        request: () => api('/api/refine', refinementRequest),
-        isCurrent: () => my === S.seq && cur()?.name === im.name,
-      });
-      if (ready) return doRender(scheduledAt, {
-        width: w, requestedWidth, phase: 'refinement', background: true,
-      });
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
@@ -4413,13 +4442,14 @@ function visible() {
   const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
   const editState = $('editFilter')?.value || 'all';
   const fileTypes = LIBRARY_FILTERS.types();
+  const metadata = LIBRARY_FILTERS.metadata();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -4450,7 +4480,7 @@ function visible() {
     const matchesKind = (kind === 'all' || (kind === 'raw' && im.raw) ||
       (kind === 'processed' && !im.raw && !im.virtual) ||
       (kind === 'virtual' && im.virtual));
-    return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);
+    return matchesKind && matchesLibraryFilters(im, fileTypes, editState, metadata) && photoMatchesQuery(im, search);
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
@@ -5269,7 +5299,7 @@ $('addSmartCollection').onclick = async () => {
       editState: ['edited', 'unedited', 'virtual'].includes($('filter').value)
         ? $('filter').value : $('editFilter').value,
       unrated: $('ratingFilter').value === 'unrated' || $('filter').value === 'unrated',
-      label: $('labelFilter').value },
+      label: $('labelFilter').value, ...LIBRARY_FILTERS.metadata() },
   });
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
@@ -5615,6 +5645,7 @@ document.addEventListener('pointerdown', (event) => {
 window.addEventListener('resize', () => { closeFolderMenu(); closeActionMenus(); });
 
 function refreshLists() {
+  KEYWORD_BATCH?.sync();
   renderStrip();
   if ($('library').classList.contains('show')) renderGrid();
   counts();
@@ -5666,6 +5697,7 @@ function setViewMode(mode, persist = true) {
   $('editor').classList.toggle('hide', gridMode);
   $('filmstripShell').style.display = gridMode ? 'none' : '';
   $('appShell').classList.toggle('grid-mode', gridMode);
+  $('appShell').classList.toggle('grid-info-open', gridMode && S.activePane === 'infoPane');
   document.querySelectorAll('[data-view]').forEach((button) => {
     const selected = button.dataset.view === mode;
     button.classList.toggle('on', selected);
@@ -5735,6 +5767,8 @@ function switchPane(id, { fromCompare = false } = {}) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
   S.activePane = id;
+  $('appShell').classList.toggle('grid-info-open', S.viewMode !== 'detail' && id === 'infoPane');
+  if (S.viewMode !== 'detail') { _gridLayoutKey = ''; requestAnimationFrame(renderGrid); }
   let activeButton = null;
   document.querySelectorAll('.panel-pane').forEach((p) => p.classList.toggle('on', p.id === id));
   document.querySelectorAll('.tool-btn').forEach((button) => {
@@ -6709,8 +6743,9 @@ function syncCullPanel() {
     }
   }
 
-  $('cullIntro').textContent = !S.ai.enabled
-    ? 'Turn the index on to sort a shoot into selects and rejects.'
+  $('cullEnableIndex').hidden = !!S.ai.enabled;
+  $('cullIntroText').textContent = !S.ai.enabled
+    ? ' to sort a shoot into selects and rejects.'
     : !scored
       ? (S.ai.running
         ? 'Scoring photos as the index reaches them.'
@@ -6904,6 +6939,7 @@ function scheduleAIStatusPoll(reset = false) {
 
 async function runAIAction(action) {
   $('aiToggle').disabled = true;
+  $('cullEnableIndex').disabled = true;
   try {
     const status = await api('/api/ai-index', { action });
     if (status.error) throw new Error(status.error);
@@ -6921,6 +6957,7 @@ async function runAIAction(action) {
   } catch (error) {
     toast(`Local index: ${error.message}`);
   } finally {
+    $('cullEnableIndex').disabled = false;
     syncAI();
   }
 }
@@ -7444,6 +7481,7 @@ document.querySelectorAll('.tool-btn').forEach((b) => {
     ? selectPhotoTool(b.dataset.pane) : switchPane(b.dataset.pane);
 });
 $('aiToggle').onclick = () => runAIAction(S.ai.enabled ? 'disable' : 'enable');
+$('cullEnableIndex').onclick = () => runAIAction('enable');
 $('aiRebuild').onclick = () => runAIAction('rebuild');
 $('aiClear').onclick = () => {
   if (window.confirm('Delete the generated local photo index? Your originals and edits will not be changed.')) {
@@ -7653,12 +7691,14 @@ function renderCompare() {
 
 function setCompareActive(on, { restoreTool = true } = {}) {
   const next = Boolean(on) && !!cur() && !S.wbPick && !S.pointColorPick && !S.maskColorPick;
+  const entering = next && !S.compareActive;
   const returnPane = compareReturnPane;
-  if (next && !S.compareActive && PHOTO_TOOL_PANES.includes(S.activePane)) {
+  if (entering && PHOTO_TOOL_PANES.includes(S.activePane)) {
     compareReturnPane = S.activePane;
     switchPane(lastAdjustmentPane, { fromCompare: true });
   }
   S.compareActive = next;
+  if (entering) snapCompareToView();
   if (!next) compareReturnPane = null;
   renderCompare();
   const back = $('compareReturn');
@@ -9250,6 +9290,7 @@ async function showExif(name) {
 
 /* ------------------------------------------------------------ keywords */
 function renderKeywords() {
+  KEYWORD_BATCH?.sync();
   const box = $('keywordList');
   box.replaceChildren();
   const im = cur();
@@ -9315,6 +9356,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   const separator = e.key === ',' ||
     (e.key === ';' && APP_PREFS.keywordSeparators === 'comma-semicolon');
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
+});
+
+KEYWORD_BATCH = installKeywordBatch({
+  el: $, post: api, toast, enabled: () => S.catalogEnabled,
+  names: () => [...S.msel], flush: flushEditSaves,
+  values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
+    .map(value => value.trim()).filter(Boolean),
+  apply: changes => {
+    for (const item of changes) {
+      const image = S.images.find(image => image.name === item.name);
+      if (!image) continue;
+      image.keywords = [...item.keywords];
+      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+    }
+    renderKeywords(); refreshFilteredView();
+    METADATA?.refreshKeywordTree();
+  },
 });
 
 /* ------------------------------------------------------------- versions */
@@ -9392,13 +9451,16 @@ $('versionCreate').onclick = async () => {
 /* -------------------------------------------------------------- presets */
 let PRESETS = [];
 let LAST_PRESET_APPLICATION = null;
+let COMMUNITY_PRESETS = {};
+let PRESETS_READY = Promise.resolve();
+const COMMUNITY_RECIPES = new Map();
 const PRESET_SOURCE_LABELS = {
   'lighttable': 'LightTable', lightroom: 'Lightroom / Camera Raw',
   'capture-one': 'Capture One',
 };
 
 function selectedPreset() {
-  return PRESETS.find((preset) => preset.name === $('presetList').value) || null;
+  return PRESETS.find((preset) => presetKey(preset) === $('presetList').value) || null;
 }
 
 function presetHasApplicableSettings(preset) {
@@ -9412,7 +9474,8 @@ function renderPresetSummary(resetChoices = false) {
   $('presetApply').disabled = !cur() || !presetHasApplicableSettings(preset);
   $('presetReplace').disabled = $('presetApply').disabled;
   $('presetExport').disabled = !preset;
-  $('presetDel').disabled = !preset;
+  $('presetDel').disabled = !preset || preset.collection === 'builtin';
+  $('presetReplace').hidden = preset?.scope === 'look';
   if (!preset) {
     box.textContent = 'Choose a preset to see its source and conversion coverage.';
     return;
@@ -9426,9 +9489,10 @@ function renderPresetSummary(resetChoices = false) {
   const title = document.createElement('strong');
   title.textContent = `${source} · ${mapped} mapped setting${mapped === 1 ? '' : 's'}`;
   const detail = document.createElement('div');
-  detail.textContent = preset.includeFilm
-    ? 'Includes the Film profile and physical stages.'
-    : 'Portable edit preset; Film can be kept on or turned off below.';
+  detail.textContent = preset.scope === 'look'
+    ? `Film ${preset.filmMode === 'preserve' ? 'unchanged' : preset.filmMode || 'unchanged'}. Keeps exposure, white balance, crop and photo corrections.`
+    : preset.includeFilm ? 'Includes the Film profile and physical stages.'
+      : 'Portable edit preset; Film can be kept on or turned off below.';
   box.append(title, detail);
   if (preset.recommendedFilmOff) {
     const recommendation = document.createElement('div');
@@ -9451,7 +9515,16 @@ function renderPresetSummary(resetChoices = false) {
 
 async function loadPresets(select) {
   PRESET_BROWSER?.refresh({ loading: true });
-  PRESETS = await fetch('/api/presets').then((r) => r.json()).catch(() => []);
+  try {
+    const response = await fetch('/api/presets');
+    const result = await response.json();
+    if (!response.ok || !Array.isArray(result)) throw new Error('Presets unavailable');
+    PRESETS = result;
+  } catch { toast('Could not load presets. Your saved presets are kept.'); }
+  const migrated = migratePresetFavorites(Array.isArray(APP_PREFS.presetFavorites) ? APP_PREFS.presetFavorites : [], PRESETS);
+  if (JSON.stringify(migrated) !== JSON.stringify(APP_PREFS.presetFavorites || [])) {
+    APP_PREFS.presetFavorites = migrated; savePrefs();
+  }
   const sel = $('presetList');
   const keep = select ?? sel.value;
   sel.replaceChildren();
@@ -9460,11 +9533,11 @@ async function loadPresets(select) {
   sel.appendChild(empty);
   for (const preset of PRESETS) {
     const option = document.createElement('option');
-    option.value = preset.name;
-    option.textContent = preset.name;
+    option.value = presetKey(preset);
+    option.textContent = `${preset.name}${preset.collection === 'builtin' ? ' · Built-in' : ''}`;
     sel.appendChild(option);
   }
-  if (keep) sel.value = keep;
+  if (keep) sel.value = presetKey(PRESETS.find((preset) => presetKey(preset) === keep || preset.name === keep) || { name: keep });
   renderPresetSummary(true);
   PRESET_BROWSER?.refresh({ loading: false });
 }
@@ -9491,10 +9564,15 @@ function presetApplicationMatches(state, preset, options, photoName) {
 }
 
 function stateWithPreset(state, preset, options = {}, photoName) {
-  // A second click on an unchanged application is inert, including its preview.
-  // Further edits restore normal layering; never deduplicate unrelated masks.
+  // Consecutive public looks use the edit before the first application.
+  // A manual edit or navigation invalidates that baseline. Legacy tool presets
+  // retain their existing layering behavior.
   if (presetApplicationMatches(state, preset, options, photoName)) return cloneValue(state);
-  return composePresetState(state, preset, {
+  const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
+    LAST_PRESET_APPLICATION.name === photoName &&
+    LAST_PRESET_APPLICATION.state === JSON.stringify(state)
+    ? LAST_PRESET_APPLICATION.base : state;
+  return composePresetState(base, preset, {
     ...options, normalizeFilmParams, mergeFilmParams, createId: editId,
   });
 }
@@ -9505,6 +9583,9 @@ function applyPreset(preset, photo, options = {}) {
   readControls();
   const currentState = JSON.parse(snapshot());
   if (presetApplicationMatches(currentState, preset, options, photo.name)) return toast(`${preset.name} is already applied`);
+  const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
+    LAST_PRESET_APPLICATION.name === photo.name && LAST_PRESET_APPLICATION.state === JSON.stringify(currentState)
+    ? LAST_PRESET_APPLICATION.base : currentState;
   const next = stateWithPreset(currentState, preset, options, photo.name);
   pushUndo();
   S.params = next.params; S.grade = next.grade;
@@ -9516,6 +9597,7 @@ function applyPreset(preset, photo, options = {}) {
   drawGrade(); saveState(true); renderFilm(0);
   LAST_PRESET_APPLICATION = {
     name: photo.name, preset: JSON.stringify(preset), state: snapshot(),
+    scope: preset.scope, base: cloneValue(base),
     replace: !!options.replace, filmOff: !!options.filmOff,
   };
   PRESET_BROWSER?.refresh();
@@ -9534,20 +9616,85 @@ PRESET_BROWSER = createPresetBrowser({
   getSelectedName: () => $('presetList').value,
   canApply: presetHasApplicableSettings,
   getFavorites: () => Array.isArray(APP_PREFS.presetFavorites) ? APP_PREFS.presetFavorites : [],
-  onFavoritesChange(names) { APP_PREFS.presetFavorites = names; savePrefs(); },
-  onSelect(preset) { $('presetList').value = preset.name; renderPresetSummary(true); },
+  onFavoritesChange(ids) { APP_PREFS.presetFavorites = ids; savePrefs(); },
+  getHidden: () => Array.isArray(APP_PREFS.hiddenBuiltinPresets) ? APP_PREFS.hiddenBuiltinPresets : [],
+  onHiddenChange(ids) { APP_PREFS.hiddenBuiltinPresets = ids; savePrefs(); },
+  onSelect(preset) { $('presetList').value = presetKey(preset); renderPresetSummary(true); },
   onApply: (preset, photo) => applyPreset(preset, photo),
-  onManage() {
-    $('presetManage').open = true;
-    $('presetManage').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    $('presetManage').querySelector('summary').focus();
+  canUndo: () => !!LAST_PRESET_APPLICATION && LAST_PRESET_APPLICATION.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot(),
+  onUndo() {
+    if (LAST_PRESET_APPLICATION?.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot()) {
+      undo(); LAST_PRESET_APPLICATION = null;
+    }
   },
-  async getPreview(preset, photo, { signal }) {
+  getCommunity: () => COMMUNITY_PRESETS,
+  async loadCommunity(refresh) {
+    try {
+      const response = await fetch(`/api/presets/community${refresh ? '?refresh=1' : ''}`);
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Community is unavailable');
+      COMMUNITY_PRESETS = result;
+    } catch (error) {
+      COMMUNITY_PRESETS = { ...COMMUNITY_PRESETS, offline: true, error: error.message };
+    }
+  },
+  async getRecipe(preset, { signal } = {}) {
+    if (preset.collection !== 'community') return preset;
+    const key = `${preset.id}@${preset.version}:${preset.file?.sha256 || ''}`;
+    if (COMMUNITY_RECIPES.has(key)) return COMMUNITY_RECIPES.get(key);
+    const response = await fetch(`/api/presets/community/recipe?id=${encodeURIComponent(preset.id)}&version=${encodeURIComponent(preset.version)}`, { signal });
+    const result = await response.json();
+    if (!response.ok || !result.preset) throw new Error(result.error || 'Recipe is unavailable');
+    COMMUNITY_RECIPES.set(key, result.preset);
+    return result.preset;
+  },
+  async onInstall(preset) {
+    const result = await api('/api/presets/community/install', { id: preset.id, version: preset.version });
+    if (result.error) throw new Error(result.error);
+    await loadPresets(result.installedId);
+    toast('Preset saved to Yours');
+  },
+  async onDuplicate(preset) {
+    const name = await askName('Save a preset copy', `${preset.name} copy`);
+    if (!name?.trim()) return;
+    const result = await api('/api/presets', {
+      ...preset, action: 'save', id: undefined, collection: undefined,
+      name: name.trim(), version: '1.0.0', parentId: preset.id,
+    });
+    if (result.error) throw new Error(result.error);
+    await loadPresets(name.trim());
+    toast('Copy saved to Yours');
+  },
+  async getSubmission(preset, { signal } = {}) {
+    const response = await fetch('/api/presets/submission', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
+      body: JSON.stringify({ id: preset.id }),
+    });
+    const result = await response.json();
+    if (!response.ok || result.error) throw new Error(result.error || 'Could not inspect submission settings');
+    return result;
+  },
+  async onDownloadExample(preset, value) {
+    if (!(value instanceof Blob)) throw new Error('Example image is unavailable');
+    const stem = preset.name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100) || 'preset';
+    downloadPresetFile({ filename: `${stem}-example.jpg`, contentType: 'image/jpeg',
+      encoding: 'base64', content: bytesToBase64(await value.arrayBuffer()) });
+  },
+  async onSubmit(preset) {
+    const result = await api('/api/presets/submission', { id: preset.id, examples: true });
+    if (result.error) throw new Error(result.error);
+    downloadPresetFile(result);
+    return result;
+  },
+  managementSection: $('presetManage'),
+  async getPreview(preset, photo, { signal, width = 320 }) {
     const response = await fetch('/api/render/file', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
       body: JSON.stringify({
-        name: photo.name, state: stateWithPreset(photo.state, preset, {}, photo.name),
-        w: 320, format: 'jpeg', engine: photo.engine, client: 'preset-browser',
+        name: photo.name, state: preset ? stateWithPreset(photo.state, preset, {}, photo.name) :
+          (LAST_PRESET_APPLICATION?.scope === 'look' && LAST_PRESET_APPLICATION.name === photo.name &&
+            LAST_PRESET_APPLICATION.state === JSON.stringify(photo.state) ? LAST_PRESET_APPLICATION.base : photo.state),
+        w: width, format: 'jpeg', engine: photo.engine, client: 'preset-browser',
       }),
     });
     if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('Preview unavailable');
@@ -9555,18 +9702,24 @@ PRESET_BROWSER = createPresetBrowser({
   },
 });
 PRESET_BROWSER.setActive(S.activePane === 'presetsPane');
+$('presetSaveScope').onchange = () => { $('presetSaveOptions').hidden = $('presetSaveScope').value === 'look'; };
+$('presetSaveScope').onchange();
 
 $('presetSave').onclick = async () => {
   if (!cur()) return toast('Select a photo first');
   const name = await askName('Save preset');
   if (!name) return;
   readControls();
-  PRESETS = await api('/api/presets', {
+  const result = await api('/api/presets', {
     action: 'save', name, params: S.params, grade: S.grade,
+    scope: $('presetSaveScope').value,
+    filmMode: $('presetIncludeFilm').checked ? (S.params.profile_enabled === false ? 'off' : 'on') : 'preserve',
     masks: serializableMasks(), heals: S.heals, optics: S.optics,
     presetType: $('presetSaveType').value,
     includeFilm: $('presetIncludeFilm').checked,
   });
+  if (result.error) return toast(result.error);
+  PRESETS = result;
   await loadPresets(name);
   toast('Saved preset');
 };
@@ -9581,9 +9734,11 @@ $('presetReplace').onclick = () => {
   applyPreset(preset, photo, { replace: true, filmOff: $('presetFilmOff').checked });
 };
 $('presetDel').onclick = async () => {
-  const name = $('presetList').value;
-  if (!name) return;
-  PRESETS = await api('/api/presets', { action: 'delete', name });
+  const preset = selectedPreset();
+  if (!preset || preset.collection === 'builtin') return;
+  const result = await api('/api/presets', { action: 'delete', id: preset.id, name: preset.name });
+  if (result.error) return toast(result.error);
+  PRESETS = result;
   await loadPresets('');
   toast('Deleted');
 };
@@ -9634,11 +9789,13 @@ function downloadPresetFile(result) {
   if (bridge) {
     bridge.postMessage({
       action: 'savePreset', filename: result.filename,
-      content: result.content,
+      content: result.content, encoding: result.encoding,
     });
     return true;
   }
-  const blob = new Blob([result.content], { type: result.contentType || 'text/plain' });
+  const content = result.encoding === 'base64'
+    ? Uint8Array.from(atob(result.content), (character) => character.charCodeAt(0)) : result.content;
+  const blob = new Blob([content], { type: result.contentType || 'text/plain' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url; link.download = result.filename; link.click();
@@ -9650,7 +9807,7 @@ $('presetExport').onclick = async () => {
   const preset = selectedPreset();
   if (!preset) return toast('Pick a preset');
   const result = await api('/api/presets/export', {
-    name: preset.name, format: $('presetExportFormat').value,
+    id: preset.id, name: preset.name, format: $('presetExportFormat').value,
   });
   if (result.error) return toast(result.error);
   const awaitingNativeSave = downloadPresetFile(result);
@@ -10146,6 +10303,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  KEYWORD_BATCH?.sync();
   CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
@@ -10220,6 +10378,7 @@ async function savePrefs() {
     ratingFilter: $('ratingFilter').value, kindFilter: $('kindFilter').value,
     labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
     fileTypeFilters: LIBRARY_FILTERS.types(),
+    metadataFilters: LIBRARY_FILTERS.metadata(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10231,6 +10390,7 @@ async function savePrefs() {
     filmstripHeight: currentFilmstripHeight(),
     softProof: S.softProof,
     presetFavorites: APP_PREFS.presetFavorites || [],
+    hiddenBuiltinPresets: APP_PREFS.hiddenBuiltinPresets || [],
     cull: { on: S.cull.on, review: S.cull.review },
     leftCollapsed: $('appShell').classList.contains('left-collapsed'),
     filmstripHidden: document.querySelector('.workspace').classList.contains('filmstrip-hidden'),
@@ -10281,6 +10441,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
+  LIBRARY_FILTERS.setMetadata(p.metadataFilters);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -10327,7 +10488,10 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   renderFolders();
 }).catch(() => {});
 
-loadPresets();
+PRESETS_READY = loadPresets().then(() => {
+  const presetId = new URLSearchParams(location.search).get('preset');
+  if (presetId) { switchPane('presetsPane'); void PRESET_BROWSER.openPreset(presetId); }
+});
 drawCurve();
 renderVersions();
 
@@ -10393,6 +10557,14 @@ if (typeof ResizeObserver !== 'undefined') {
   viewportObserver.observe($('cv'));
 }
 window.addEventListener('resize', onViewportResize);
+function watchOverlayPixelRatio() {
+  const display = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  display.addEventListener('change', () => {
+    drawEditOverlay();
+    watchOverlayPixelRatio();
+  }, { once: true });
+}
+watchOverlayPixelRatio();
 document.addEventListener('visibilitychange', onViewportResize);
 if (NATIVE_PREVIEW) scheduleNativeViewportLayout();
 
@@ -10724,6 +10896,10 @@ if ($('enhanceRun')) {
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
   FIRST_RUN?.nativeEvent(message);
+  if (message?.type === 'presetLink' && typeof message.id === 'string') {
+    switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);
+    return;
+  }
   if (message && message.type === 'openLibraryHealth') {
     RECOVERY?.open();
     return;
@@ -10745,6 +10921,7 @@ window.lightTableNativeEvent = function (message) {
   }
   if (_origNativeEvent) _origNativeEvent(message);
 };
+PRESETS_READY.then(() => nativeBridge()?.postMessage({ action: 'requestPresetLinks' }));
 
 /* ------------------------------------------------------------- selection */
 if ($('renameOpen')) $('renameOpen').onclick = () => CATALOG_UI.openRename();
@@ -10828,6 +11005,7 @@ function uiStateReport() {
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
       fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
+      ...LIBRARY_FILTERS.metadata(),
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',
     },

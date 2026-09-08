@@ -20,6 +20,7 @@ A running window is discovered from its protected instance file. Use
 
 ```sh
 lighttable photos list --where status=pending --jsonl
+lighttable photos list --where 'rating>=4' --where focal-length=50 --where from=2026-01-01 --where to=2026-12-31 --jsonl
 lighttable rate 5 @current
 lighttable flag reject --where 'rating>=1' --where status=pending
 lighttable edit set @selection --grade exposure=0.25 --curve 'L=0,0;0.5,0.4;1,1' --label 'Lift exposure'
@@ -77,7 +78,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `versions` | `/api/state` |
 | `film / schema` | `/api/options` |
 | `raw-default` | `/api/raw-default` |
-| `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export` |
+| `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export`, `/api/presets/community`, `/api/presets/community/recipe`, `/api/presets/community/install`, `/api/presets/submission` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
 | `import` | `/api/import/catalog`, `/api/import/report`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |

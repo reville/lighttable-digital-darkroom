@@ -16,6 +16,7 @@
 !include "WinMessages.nsh"
 !include "x64.nsh"
 
+!define PRESET_PROTOCOL_KEY "Software\Classes\lighttable"
 !define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\LightTable"
 
 Unicode True
@@ -56,6 +57,19 @@ UninstPage uninstConfirm
 UninstPage instfiles
 
 Section "Install"
+  ; Resolve the prerequisite before modifying an existing LightTable install.
+  InitPluginsDir
+  SetOutPath "$PLUGINSDIR"
+  File /oname=ensure-webview2.ps1 "ensure-webview2.ps1"
+  DetailPrint "Checking Microsoft Edge WebView2 Runtime…"
+  ClearErrors
+  ExecWait '"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "$PLUGINSDIR\ensure-webview2.ps1"' $0
+  ${If} ${Errors}
+  ${OrIf} $0 != 0
+    MessageBox MB_OK|MB_ICONSTOP "Microsoft Edge WebView2 Runtime could not be installed. Connect to the internet and run setup again, or install the Runtime from https://developer.microsoft.com/microsoft-edge/webview2 first." /SD IDOK
+    SetErrorLevel 1
+    Abort
+  ${EndIf}
   SetOutPath "$INSTDIR"
   File /r "${PAYLOAD}\*"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -82,6 +96,12 @@ Section "Install"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\LightTable.exe"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegStr HKCU "${UNINSTALL_KEY}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
+  ; Protocol arguments always name a catalog entry; the native host validates
+  ; the complete ID before opening its gallery. Quote both executable and URL.
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}" "" "URL:LightTable Preset"
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}" "URL Protocol" ""
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}\DefaultIcon" "" '$\"$INSTDIR\LightTable.exe$\",0'
+  WriteRegStr HKCU "${PRESET_PROTOCOL_KEY}\shell\open\command" "" '$\"$INSTDIR\LightTable.exe$\" --preset-url $\"%1$\"'
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoModify" 1
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoRepair" 1
 SectionEnd
@@ -103,6 +123,11 @@ Section "Uninstall"
   !include "${UNINSTALL_MANIFEST}"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"
+  ; Preserve a protocol claimed later by another installation.
+  ReadRegStr $0 HKCU "${PRESET_PROTOCOL_KEY}\shell\open\command" ""
+  ${If} $0 == '$\"$INSTDIR\LightTable.exe$\" --preset-url $\"%1$\"'
+    DeleteRegKey HKCU "${PRESET_PROTOCOL_KEY}"
+  ${EndIf}
   DeleteRegKey HKCU "${UNINSTALL_KEY}"
   ; Catalogs, preferences, caches, and photos are deliberately preserved.
 SectionEnd

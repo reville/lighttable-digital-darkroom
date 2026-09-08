@@ -4,6 +4,8 @@ from __future__ import annotations
 import hashlib
 import time
 
+import dam_filters
+
 
 VIRTUAL_MARKER = "::lighttable-copy::"
 
@@ -58,6 +60,7 @@ def clean_collections(values) -> list[dict]:
             "id": ident, "name": _name(raw.get("name"), "Collection"),
             "type": kind, "members": _members(raw.get("members")),
             "rules": {
+                **dam_filters.clean_filters(rules),
                 "flag": str(rules.get("flag", "all"))
                 if str(rules.get("flag", "all")) in
                 ("all", "pending", "approved", "skipped") else "all",
