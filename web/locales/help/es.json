@@ -226,7 +226,7 @@
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
-            "Ajustar, 1:1, los botones y los atajos de zoom se animan suavemente. El desplazamiento, el gesto de pellizco y el arrastre responden directamente. La animación del zoom se desactiva cuando está activada la opción Reducir movimiento del sistema."
+            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -2684,6 +2684,7 @@
           "paragraphs": [
             "La mayoría de los cambios de configuración se guardan automáticamente. El idioma usa Aplicar idioma y vuelve a cargar la ventana después de guardar los cambios. General también controla el Avance automático después de seleccionar, rechazar o calificar, las notificaciones de finalización y las comprobaciones de actualizaciones.",
             "La interfaz controla el fondo del visor, la escala de fuente, Lights Out, la superposición de información de la lupa y las guías de recorte. Estas preferencias cambian la apariencia del espacio de trabajo sin cambiar los píxeles exportados.",
+            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
             "Archivos y metadatos controla las ediciones portátiles de LightTable junto a los originales, la escritura automática de XMP, el emparejamiento RAW/JPEG y la entrada de palabras clave. Las ediciones portátiles completas usan .lighttable-state.json; XMP transporta las ediciones y los metadatos compatibles. La sincronización XMP conserva los campos no relacionados e informa de cambios externos en conflicto; lea los metadatos de intercambio a través de sidecars XMP para el flujo de trabajo compatible."
           ]
         },
@@ -3081,5 +3082,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e"
+  "sourceDigest": "8bb63a27c89016f0b25e10273e7727750d00a20494cd2667361bddae40f47213"
 }

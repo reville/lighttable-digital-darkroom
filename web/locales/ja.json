@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "8bb63a27c89016f0b25e10273e7727750d00a20494cd2667361bddae40f47213",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -180,6 +180,7 @@
     "An export cannot replace a cataloged original or its capture companion": "書き出しで、カタログに登録されたオリジナルやその撮影コンパニオンは置き換えられません",
     "An external edit is already rendering": "外部編集はすでにレンダリング中です",
     "Analysis stays on this Mac and never modifies photo folders.": "分析はこの Mac 上に保持され、写真フォルダーを変更することはありません。",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "写真のズームをアニメーション表示します。この選択はシステムの「視差効果を減らす」設定より優先されます。",
     "Another LightTable window may be importing this library. Close that import and try again.": "別のLightTableウィンドウがこのライブラリを読み込んでいる可能性があります。その読み込みを閉じてからもう一度試してください。",
     "Another application changed the XMP file. Retry to merge its latest changes.": "別のアプリケーションが XMP ファイルを変更しました。再試行して最新の変更をマージしてください。",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "別の LightTable のコピーがすでにこのライブラリを開いています。そのウィンドウを使用するか、終了してからもう一度試してください。",
@@ -1195,7 +1196,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "「フィット」では小さな写真が拡大されることがあります。1:1 は「フィット」より写真が小さくなる場合でも実際のピクセルを表示し、ウインドウのサイズを変更しても同じピクセル倍率を維持します。",
     "Fit the whole photo to the available space": "写真全体を利用可能なスペースにフィット",
     "Fit to window ({actualPct}%)": "ウィンドウに合わせる ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "フィット、1:1、ズームボタン、ズームのショートカットは滑らかにアニメーションします。スクロール、ピンチ、ドラッグは操作に直接反応します。システムの「視差効果を減らす」が有効な場合、ズームアニメーションは無効になります。",
     "Flag": "フラグ",
     "Flag and rate survey photo": "サーベイ写真にフラグを付けてレーティング",
     "Flag and rating filters": "フラグとレーティングのフィルター",
@@ -2624,6 +2624,8 @@
     "Smart selection action": "スマート選択アクション",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Smart selection action は、次のスマート選択を新しいマスクにするか、現在選択中のマスクと組み合わせるかを制御します。",
     "Smooth color": "カラーをなじませる",
+    "Smooth zoom": "スムーズズーム",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "設定 → インターフェース の「スムーズズーム」で、フィット、1:1、ズームボタン、ショートカットのアニメーションをオンまたはオフにできます。この選択は「視差効果を減らす」より優先され、選択するまでは LightTable がシステム設定に従います。スクロール、ピンチ、ドラッグは操作に直接反応します。",
     "Snapshots": "スナップショット",
     "Soft Filmic": "ソフトフィルミック",
     "Soft Proof": "ソフトプルーフ",

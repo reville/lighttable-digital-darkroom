@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "8bb63a27c89016f0b25e10273e7727750d00a20494cd2667361bddae40f47213",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -180,6 +180,7 @@
     "An export cannot replace a cataloged original or its capture companion": "निर्यात किसी कैटलॉग किए गए मूल या उसके कैप्चर सहायक को प्रतिस्थापित नहीं कर सकता",
     "An external edit is already rendering": "एक बाहरी संपादन पहले से रेंडर हो रहा है",
     "Analysis stays on this Mac and never modifies photo folders.": "विश्लेषण इस Mac पर ही रहता है और फ़ोटो फ़ोल्डरों को कभी संशोधित नहीं करता।",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "फ़ोटो ज़ूम को ऐनिमेट करें। आपकी पसंद सिस्टम की गति कम करने की सेटिंग पर प्राथमिकता रखती है।",
     "Another LightTable window may be importing this library. Close that import and try again.": "हो सकता है LightTable की कोई दूसरी विंडो इस लाइब्रेरी को आयात कर रही हो। वह आयात बंद करें और फिर से प्रयास करें।",
     "Another application changed the XMP file. Retry to merge its latest changes.": "किसी अन्य एप्लिकेशन ने XMP फ़ाइल बदल दी है. इसके नवीनतम परिवर्तन मर्ज करने के लिए फिर से प्रयास करें.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "LightTable की एक और प्रतिलिपि में यह लाइब्रेरी पहले से खुली है। उस विंडो का उपयोग करें या उसे बंद करें, फिर फिर से प्रयास करें।",
@@ -1195,7 +1196,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "फ़िट छोटी फ़ोटो को बड़ा कर सकता है। 1:1 वास्तविक पिक्सेल दिखाता है, भले ही फ़ोटो फ़िट से छोटी हो जाए, और विंडो का आकार बदलने पर भी वही पिक्सेल स्केल बनाए रखता है।",
     "Fit the whole photo to the available space": "पूरी फ़ोटो को उपलब्ध स्थान में फ़िट करें",
     "Fit to window ({actualPct}%)": "विंडो में फ़िट करें ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "फ़िट, 1:1, ज़ूम बटन और ज़ूम शॉर्टकट सहज ऐनिमेशन के साथ काम करते हैं। स्क्रॉल, पिंच और ड्रैग सीधे प्रतिक्रिया देते हैं। सिस्टम की गति कम करें सेटिंग चालू होने पर ज़ूम ऐनिमेशन बंद हो जाता है।",
     "Flag": "फ़्लैग",
     "Flag and rate survey photo": "सर्वेक्षण फ़ोटो को फ़्लैग और रेट करें",
     "Flag and rating filters": "फ़्लैग और रेटिंग फ़िल्टर",
@@ -2624,6 +2624,8 @@
     "Smart selection action": "स्मार्ट चयन क्रिया",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Smart selection action नियंत्रित करता है कि अगला smart selection नया मास्क बने या वर्तमान चयनित मास्क के साथ संयोजित हो।",
     "Smooth color": "स्मूद रंग",
+    "Smooth zoom": "सहज ज़ूम",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "सेटिंग्स → इंटरफ़ेस में सहज ज़ूम, फ़िट, 1:1, ज़ूम बटन और शॉर्टकट के ऐनिमेशन चालू या बंद करता है। आपकी पसंद गति कम करने की सेटिंग पर प्राथमिकता रखती है; जब तक आप नहीं चुनते, LightTable सिस्टम की सेटिंग का पालन करता है। स्क्रॉल, पिंच और खींचने पर सीधे प्रतिक्रिया मिलती है।",
     "Snapshots": "स्नैपशॉट्स",
     "Soft Filmic": "सॉफ्ट फ़िल्मिक",
     "Soft Proof": "सॉफ्ट प्रूफ़",

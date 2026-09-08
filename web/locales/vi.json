@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "25360f3ae24a5fe0f1a4b799ac2341fe7e29a56b4317eb57a21ca08e56b1913e",
+  "sourceDigest": "8bb63a27c89016f0b25e10273e7727750d00a20494cd2667361bddae40f47213",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -180,6 +180,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Một bản xuất không thể thay thế một ảnh gốc đã được lập danh mục hoặc ứng dụng đi kèm chụp của nó",
     "An external edit is already rendering": "Một chỉnh sửa ngoài đang được kết xuất",
     "Analysis stays on this Mac and never modifies photo folders.": "Phân tích chỉ nằm trên máy Mac này và không bao giờ sửa đổi các thư mục ảnh.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Tạo hiệu ứng chuyển động khi thu phóng ảnh. Lựa chọn của bạn được ưu tiên hơn cài đặt Giảm chuyển động của hệ thống.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Có thể một cửa sổ LightTable khác đang nhập thư viện này. Hãy đóng quá trình nhập đó và thử lại.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Một ứng dụng khác đã thay đổi tệp XMP. Thử lại để hợp nhất các thay đổi mới nhất của nó.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Một bản sao LightTable khác đang mở thư viện này. Hãy dùng cửa sổ đó hoặc thoát nó, rồi thử lại.",
@@ -1195,7 +1196,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
     "Fit the whole photo to the available space": "Vừa toàn bộ ảnh vào không gian khả dụng",
     "Fit to window ({actualPct}%)": "Vừa khung với cửa sổ ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Vừa khung, 1:1, các nút và phím tắt thu phóng chuyển động mượt mà. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp. Hoạt ảnh thu phóng bị tắt khi bật cài đặt Giảm chuyển động của hệ thống.",
     "Flag": "Cờ",
     "Flag and rate survey photo": "Đánh cờ và xếp hạng ảnh xem nhanh",
     "Flag and rating filters": "Bộ lọc cờ và xếp hạng",
@@ -2624,6 +2624,8 @@
     "Smart selection action": "Hành động chọn thông minh",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Smart selection action điều khiển việc lựa chọn thông minh tiếp theo sẽ trở thành mặt nạ mới hay kết hợp với mặt nạ hiện đang được chọn.",
     "Smooth color": "Làm mịn màu sắc",
+    "Smooth zoom": "Thu phóng mượt",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
     "Snapshots": "Ảnh chụp nhanh",
     "Soft Filmic": "Phim mềm",
     "Soft Proof": "Hiệu chỉnh mềm",

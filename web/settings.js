@@ -3,6 +3,7 @@ import { changeLanguage } from './locale-bootstrap.js';
 import { api } from '/web/api.js';
 import { sendNative } from '/web/native-bridge.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
+import { smoothZoomEnabled } from '/web/zoom-motion.js';
 
 const byId = (id) => document.getElementById(id);
 const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525', '#777777', '#ffffff']);
@@ -175,6 +176,7 @@ export function installSettings(context) {
     byId('completionNotifications').checked = pref('completionNotifications', false);
     byId('automaticUpdateChecks').checked = pref('automaticUpdateChecks', true);
     byId('viewerBackground').value = pref('viewerBackground', '#121212');
+    byId('smoothZoom').checked = smoothZoomEnabled(currentPrefs);
     byId('uiFontScale').value = String(pref('uiFontScale', 100));
     byId('uiFontScaleV').textContent = `${byId('uiFontScale').value}%`;
     byId('lightsOutEnabled').checked = pref('lightsOutEnabled', false);
@@ -263,6 +265,7 @@ export function installSettings(context) {
   });
 
   const checkboxPrefs = {
+    smoothZoom: 'smoothZoom',
     autoAdvance: 'autoAdvance', completionNotifications: 'completionNotifications',
     automaticUpdateChecks: 'automaticUpdateChecks', lightsOutEnabled: 'lightsOutEnabled',
     loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars', catalogMirror: 'catalogMirror',
