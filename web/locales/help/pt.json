@@ -538,11 +538,11 @@
         {
           "title": "Pesquisar na visualização atual",
           "paragraphs": [
-            "A caixa de pesquisa corresponde ao texto em nomes de arquivos, nomes exibidos, palavras-chave e metadados de índice de foto disponíveis. Ela pesquisa dentro da pasta ou coleção atual e combina com os outros filtros ativos."
+            "A caixa de pesquisa corresponde ao texto nos nomes dos arquivos, nomes de exibição, palavras-chave, nomes que você adiciona em Pessoas e metadados disponíveis do índice de fotos. Ela pesquisa na pasta ou coleção atual e combina com os outros filtros ativos."
           ],
           "steps": [
             "Clique em Pesquisar fotos e palavras-chave, ou pressione / quando não estiver digitando em um campo.",
-            "Digite uma palavra ou frase do nome do arquivo ou das palavras-chave.",
+            "Digite uma palavra ou frase do nome do arquivo, palavras-chave ou um nome que você salvou em Pessoas.",
             "Use All Photos, Unflagged, Picked, Rejected ou Rated na barra lateral para escolher um grupo de bandeira ou avaliação.",
             "Clique em Filtro ao lado de Ordenar. Selecione um ou mais tipos de arquivo e depois combine-os com Bandeira, Avaliação, Rótulo de cor ou status de Edição.",
             "Escolha Nome do arquivo, Avaliação, Bandeira, data de captura ou rótulo de cor em Ordenar."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Biblioteca"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Agrupar e encontrar pessoas",
+      "category": "Library",
+      "summary": "Use a correspondência opcional de rostos no dispositivo para agrupar rostos semelhantes, adicionar nomes e revisar possíveis correspondências.",
+      "keywords": [
+        "pessoas",
+        "rostos",
+        "correspondência de rostos",
+        "reconhecimento",
+        "nome",
+        "mesclar",
+        "dividir",
+        "mesma pessoa",
+        "fotos do Google",
+        "privacidade",
+        "quantizado",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Ativar correspondência de rostos",
+          "paragraphs": [
+            "A correspondência de rostos é separada do índice de conteúdo da foto e vem desativada por padrão. Abra Pessoas na barra lateral da Biblioteca, ou Configurações → Índice de fotos → correspondência de rostos. Baixar modelos e ativar baixa cerca de 10.1 MB de arquivos de modelo. Os dados da foto são processados neste dispositivo e nunca são enviados para correspondência.",
+            "A correspondência analisa as fotos estáticas disponíveis no catálogo atual, não apenas a pasta ou filtro atual. Arquivos vazios, arquivos somente na nuvem e originais indisponíveis são ignorados sem baixá-los."
+          ],
+          "steps": [
+            "Abra Pessoas e escolha Baixar modelos e ativar.",
+            "Aguarde até que os grupos de rostos apareçam. Você pode continuar editando enquanto a digitalização é executada.",
+            "Use Digitalizar fotos novas após adicionar fotos ou restaurar originais indisponíveis. Fotos digitalizadas anteriormente e inalteradas são reutilizadas."
+          ]
+        },
+        {
+          "title": "Nomear e navegar uma pessoa",
+          "paragraphs": [
+            "Todos mostra os grupos de rostos visíveis. Sem nome mostra os grupos que ainda não receberam nome. Abra um grupo, digite um nome e escolha Salvar nome. Apenas os nomes que você inserir são usados; o modelo não conhece os nomes das pessoas.",
+            "Use Rostos para inspecionar cortes de rostos individuais. Use Fotos para ver as fotografias completas e, em seguida, escolha uma foto para abri-la no editor. Os nomes que você adiciona passam a ser pesquisáveis no campo de pesquisa da biblioteca. Grupos ocultos não contribuem com nomes para a pesquisa."
+          ]
+        },
+        {
+          "title": "Revisar e corrigir correspondências",
+          "paragraphs": [
+            "Revisar correspondências apresenta dois grupos possíveis com amostras de rostos. Mesma pessoa os combina. Pessoas diferentes registra uma correção para que o pareamento não seja sugerido novamente. Pular por enquanto deixa a correspondência para uma visita posterior.",
+            "Dentro de um grupo, Mesclar com… permite escolher outro grupo e revisar a combinação antes de confirmá-la. O nome do grupo atual é mantido; se ele estiver sem nome, o nome do outro grupo é usado. Salvar o mesmo nome em dois grupos não os mescla automaticamente.",
+            "Escolha Selecionar rostos, selecione alguns rostos e depois Mover para uma pessoa separada para dividi-los em um novo grupo sem nome. Os dois grupos não serão sugeridos como correspondência novamente. Selecione um rosto e escolha Usar como capa para alterar a imagem da galeria.",
+            "Ocultar pessoa move um grupo para Oculto sem excluir fotos ou dados faciais. Abra-o lá e escolha Mostrar pessoa para restaurá-lo. Desfazer última alteração reverte a edição mais recente do grupo; uma digitalização que adiciona ou atualiza fotos limpa essa entrada de desfazer."
+          ]
+        },
+        {
+          "title": "Pausar e remover dados faciais",
+          "paragraphs": [
+            "Pausar ou desativar a correspondência de rostos para interromper a digitalização. Os grupos e nomes existentes continuam disponíveis, incluindo a pesquisa por nome. Digitalizar fotos novas retoma a correspondência.",
+            "Excluir dados faciais… pede confirmação para remover os grupos de rostos, nomes, correções e miniaturas deste catálogo. As fotos originais, edições e o índice de conteúdo da foto permanecem inalterados. Os arquivos de modelo baixados permanecem disponíveis. Os dados faciais são armazenados separadamente na pasta de dados do aplicativo e não são incluídos nos backups do catálogo."
+          ]
+        },
+        {
+          "title": "O que esperar",
+          "paragraphs": [
+            "O modelo compacto SFace INT8 compara rostos humanos alinhados. O agrupamento automático usa regras de similaridade conservadoras; possíveis correspondências permanecem separadas para revisão. Novos rostos correspondentes a uma pessoa com nome são sugeridos para confirmação.",
+            "Rostos pequenos, borrados, obstruídos, de perfil e com diferença de idade substancial podem ser ignorados ou divididos entre grupos. O modelo também pode fazer correspondências incorretas. Rostos que aparecem juntos em uma mesma foto não são correspondidos automaticamente; uma mesclagem manual continua possível para espelhos e colagens. Este recurso não agrupa animais de estimação nem fornece precisão de identidade garantida."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Biblioteca"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Construir o índice",
           "paragraphs": [
+            "A detecção de rostos encontra fotos que contêm rostos. Para agrupar uma pessoa específica e pesquisar um nome que você adicionar, use a opção separada de correspondência de rostos e a visualização Pessoas.",
             "O Índice de fotos vem desativado por padrão e requer macOS. O Linux e o Windows mostram Não disponível nesta plataforma, e a nova indexação não pode ser ativada. No Mac, a análise permanece no dispositivo e não modifica as pastas de fotos. Apple Vision fornece a análise principal; descrições mais ricas de Modelos de Fundação aparecem somente quando esse recurso está disponível."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

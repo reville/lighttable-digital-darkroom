@@ -5,7 +5,7 @@ export function photoMatchesQuery(image, query, exif = null) {
   const normalized = String(query || '').trim().toLocaleLowerCase();
   if (!normalized) return true;
   const terms = [image.name, image.displayName, ...(image.keywords || []),
-    ...aiSearchTerms(image.ai)];
+    ...(image.people || []), ...aiSearchTerms(image.ai)];
   if (exif) terms.push(...Object.values(exif));
   return terms.some((value) => String(value || '').toLocaleLowerCase().includes(normalized));
 }

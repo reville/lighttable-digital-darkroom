@@ -538,11 +538,11 @@
         {
           "title": "Buscar en la vista actual",
           "paragraphs": [
-            "El cuadro de búsqueda coincide con texto en nombres de archivo, nombres mostrados, palabras clave y metadatos de índice de fotos disponibles. Busca dentro de la carpeta o colección actual y se combina con los demás filtros activos."
+            "El cuadro de búsqueda coincide con texto en nombres de archivo, nombres visibles, palabras clave, nombres que agregue en Personas y metadatos disponibles del índice de fotos. Busca dentro de la carpeta o colección actual y se combina con los demás filtros activos."
           ],
           "steps": [
             "Haz clic en Buscar fotos y palabras clave, o pulsa / cuando no estés escribiendo en un campo.",
-            "Escribe una palabra o frase del nombre de archivo o de las palabras clave.",
+            "Escriba una palabra o frase del nombre de archivo, las palabras clave o un nombre que haya guardado en Personas.",
             "Usa Todas las fotos, Sin marca, Seleccionadas, Rechazadas o Calificadas en la barra lateral para elegir un grupo de marca o calificación.",
             "Haga clic en Filtro junto a Ordenar. Seleccione uno o más tipos de archivo y luego combínelos con Marcar, Calificación, Etiqueta de color o Estado de edición.",
             "Elige Nombre de archivo, Calificación, Marcar, Fecha de captura o Etiqueta de color en Ordenar."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Biblioteca"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Agrupar y encontrar personas",
+      "category": "Library",
+      "summary": "Use la coincidencia de rostros opcional en el dispositivo para agrupar rostros similares, agregar nombres y revisar posibles coincidencias.",
+      "keywords": [
+        "personas",
+        "rostros",
+        "coincidencia de rostros",
+        "reconocimiento",
+        "nombre",
+        "combinar",
+        "dividir",
+        "misma persona",
+        "google photos",
+        "privacidad",
+        "cuantizado",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Activar coincidencia de rostros",
+          "paragraphs": [
+            "La coincidencia de rostros es independiente del índice de contenido de la foto y está desactivada por defecto. Abra Personas en la barra lateral de la biblioteca, o Configuración → Índice de fotos → Coincidencia de rostros. Descargar modelos y activar descarga unos 10,1 MB de archivos de modelo. Los datos de la foto se procesan en este dispositivo y nunca se cargan para la coincidencia.",
+            "La coincidencia analiza las fotos fijas disponibles en el catálogo actual, no solo la carpeta o el filtro actuales. Los archivos vacíos, los archivos solo en la nube y los originales no disponibles se omiten sin descargarlos."
+          ],
+          "steps": [
+            "Abre Personas y elige Descargar modelos y activar.",
+            "Espere a que aparezcan los grupos de rostros. Puede seguir editando mientras se ejecuta el escaneo.",
+            "Use Escanear fotos nuevas después de agregar fotos o restaurar originales no disponibles. Las fotos escaneadas previamente y sin cambios se reutilizan."
+          ]
+        },
+        {
+          "title": "Nombrar y explorar una persona",
+          "paragraphs": [
+            "Todos muestra los grupos de rostros visibles. Sin nombre muestra los grupos que no han sido nombrados. Abra un grupo, escriba un nombre y elija Guardar nombre. Solo se usan los nombres que usted introduce; el modelo no conoce los nombres de las personas.",
+            "Use Rostros para inspeccionar recortes de rostros individuales. Use Fotos para ver las fotografías completas y luego elija una foto para abrirla en el editor. Los nombres que agrega se vuelven buscables en el campo de búsqueda de la biblioteca. Los grupos ocultos no aportan nombres a la búsqueda."
+          ]
+        },
+        {
+          "title": "Revisar y corregir coincidencias",
+          "paragraphs": [
+            "Revisar coincidencias presenta dos grupos posibles con muestras de rostros. Misma persona los combina. Personas diferentes registra una corrección para que el emparejamiento no se sugiera de nuevo. Saltar por ahora deja la coincidencia para una visita posterior.",
+            "Dentro de un grupo, Combinar con… le permite elegir otro grupo y revisar la combinación antes de confirmarla. Se conserva el nombre del grupo actual; si no tiene nombre, se usa el nombre del otro grupo. Guardar el mismo nombre en dos grupos no los combina automáticamente.",
+            "Elija Seleccionar rostros, seleccione algunos rostros y luego Mover a una persona separada para dividirlos en un nuevo grupo sin nombre. Los dos grupos no volverán a sugerirse como coincidencia. Seleccione un rostro y elija Usar como portada para cambiar la imagen de la galería.",
+            "Ocultar persona mueve un grupo a Oculto sin eliminar fotos ni datos de rostro. Ábralo allí y elija Mostrar persona para restaurarlo. Deshacer último cambio revierte la edición de grupo más reciente; un escaneo que agrega o actualiza fotos borra esa entrada de deshacer."
+          ]
+        },
+        {
+          "title": "Pausar y eliminar datos de rostro",
+          "paragraphs": [
+            "Pausar o desactivar Coincidencia de rostros para detener el escaneo. Los grupos y nombres existentes siguen disponibles, incluida la búsqueda por nombre. Escanear fotos nuevas reanuda la coincidencia.",
+            "Eliminar datos de rostro… le pide que confirme la eliminación de los grupos de rostros, nombres, correcciones y miniaturas de este catálogo. Las fotos originales, las ediciones y el índice de contenido de la foto no cambian. Los archivos de modelo descargados permanecen disponibles. Los datos de rostro se almacenan por separado en la carpeta de datos de la aplicación y no se incluyen en las copias de seguridad del catálogo."
+          ]
+        },
+        {
+          "title": "Qué esperar",
+          "paragraphs": [
+            "El modelo compacto SFace INT8 compara rostros humanos alineados. La agrupación automática usa reglas de similitud conservadoras; las posibles coincidencias permanecen separadas para su revisión. Se sugieren para confirmación nuevos rostros que coincidan con una persona con nombre.",
+            "Los rostros pequeños, borrosos, obstruidos, de perfil y con una diferencia de edad considerable pueden pasarse por alto o dividirse entre grupos. El modelo también puede hacer coincidencias incorrectas. Los rostros que aparecen juntos en una misma foto no se emparejan automáticamente; sigue siendo posible una combinación manual para espejos y collages. Esta función no agrupa mascotas ni proporciona una precisión de identidad garantizada."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Biblioteca"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Construir el índice",
           "paragraphs": [
+            "La detección de rostros encuentra fotos que contienen rostros. Para agrupar a una persona específica y buscar un nombre que agregue, use la opción separada Coincidencia de rostros y la vista Personas.",
             "El Índice de fotos está desactivado de forma predeterminada y requiere macOS. Linux y Windows muestran No disponible en esta plataforma, y no se puede habilitar la nueva indexación. En Mac, el análisis permanece en el dispositivo y no modifica las carpetas de fotos. Apple Vision proporciona el análisis principal; las descripciones más ricas de Modelos de base aparecen solo cuando esa capacidad está disponible."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

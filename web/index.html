@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/web/preset-browser.css">
 <link rel="stylesheet" href="/web/help.css">
 <link rel="stylesheet" href="/web/first-run.css">
+<link rel="stylesheet" href="/web/people.css">
 <link rel="stylesheet" href="/web/linux-layout.css">
 <link rel="stylesheet" href="/web/desktop-theme.css">
 <link rel="stylesheet" href="/web/localization.css">
@@ -85,6 +86,7 @@
     <section class="source-block">
       <div class="sidebar-heading" data-i18n-text="{&quot;0&quot;:&quot;Library&quot;}">Library</div>
       <button class="source-row on" data-source="all"><span data-i18n-text="{&quot;0&quot;:&quot;All Photos&quot;}">All Photos</span><b id="sourceAllCount">0</b></button>
+      <button class="source-row" id="peopleOpen" aria-haspopup="dialog" aria-controls="peopleDialog"><span data-i18n-text="{&quot;0&quot;:&quot;People&quot;}">People</span><b id="peopleCount"></b></button>
       <div class="source-filters" role="group" aria-label="Flag and rating filters" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Flag and rating filters&quot;}">
       <button class="source-row" data-source="pending"><span data-i18n-text="{&quot;0&quot;:&quot;Unflagged&quot;}">Unflagged</span><b id="sourcePendingCount">0</b></button>
       <button class="source-row" data-source="approved"><span data-i18n-text="{&quot;0&quot;:&quot;Picked&quot;}">Picked</span><b id="sourceApprovedCount">0</b></button>
@@ -1175,6 +1177,11 @@
         </section>
         <section class="settings-pane" data-settings-pane="ai" role="tabpanel">
           <h2 data-i18n-text="{&quot;0&quot;:&quot;Photo Index&quot;}">Photo Index</h2><p class="settings-intro" data-i18n-text="{&quot;0&quot;:&quot;Private, on-device search and review signals.&quot;}">Private, on-device search and review signals.</p>
+          <div class="settings-group">
+            <div class="local-ai-enable-row"><div><strong data-i18n-text="{&quot;0&quot;:&quot;Face matching&quot;}">Face matching</strong><span data-i18n-text="{&quot;0&quot;:&quot;Group similar faces and search names you add.&quot;}">Group similar faces and search names you add.</span></div><button class="section-switch" id="peopleToggle" aria-label="Face matching" aria-pressed="false" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Face matching&quot;}"><span class="switch-label" data-i18n-text="{&quot;0&quot;:&quot;Off&quot;}">Off</span><span class="switch-track" aria-hidden="true"><span></span></span></button></div>
+            <p class="hint" id="peopleSettingsStatus" data-i18n-text="{&quot;0&quot;:&quot;Optional · compact model · 10.1 MB download. Photos stay on this device.&quot;}">Optional · compact model · 10.1 MB download. Photos stay on this device.</p>
+            <div class="btnrow"><button id="peopleSettingsOpen" data-i18n-text="{&quot;0&quot;:&quot;Open People…&quot;}">Open People…</button></div>
+          </div>
           <div class="settings-group">
             <div class="local-ai-privacy"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="8" width="12" height="9" rx="2"/><path d="M7 8V6a3 3 0 0 1 6 0v2"/></svg><div><strong data-i18n-text="{&quot;0&quot;:&quot;Off by default&quot;}">Off by default</strong><span data-i18n-text="{&quot;0&quot;:&quot;Analysis stays on this Mac and never modifies photo folders.&quot;}">Analysis stays on this Mac and never modifies photo folders.</span></div></div>
             <div class="local-ai-enable-row"><div><strong data-i18n-text="{&quot;0&quot;:&quot;Photo contents index&quot;}">Photo contents index</strong><span id="aiToggleDescription" data-i18n-text="{&quot;0&quot;:&quot;Search objects, scenes, text, and faces&quot;}">Search objects, scenes, text, and faces</span></div><button class="section-switch" id="aiToggle" aria-pressed="false"><span class="switch-label" data-i18n-text="{&quot;0&quot;:&quot;Off&quot;}">Off</span><span class="switch-track" aria-hidden="true"><span></span></span></button></div>

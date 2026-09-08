@@ -538,11 +538,11 @@
         {
           "title": "Wyszukaj w bieżącym widoku",
           "paragraphs": [
-            "Pole wyszukiwania dopasowuje tekst w nazwach plików, nazwach wyświetlanych, słowach kluczowych i dostępnych metadanych indeksu zdjęć. Przeszukuje bieżący folder lub kolekcję i łączy się z innymi aktywnymi filtrami."
+            "Pole wyszukiwania dopasowuje tekst w nazwach plików, nazwach wyświetlanych, słowach kluczowych, nazwach dodanych w Osoby oraz dostępnych metadanych indeksu zdjęć. Wyszukuje w bieżącym folderze lub kolekcji i łączy się z innymi aktywnymi filtrami."
           ],
           "steps": [
             "Kliknij Wyszukaj zdjęcia i słowa kluczowe albo naciśnij /, gdy nie wpisujesz tekstu w polu.",
-            "Wpisz słowo lub frazę z nazwy pliku albo słów kluczowych.",
+            "Wpisz słowo lub frazę z nazwy pliku, słów kluczowych albo nazwę zapisaną w Osoby.",
             "Użyj Wszystkie zdjęcia, Bez flagi, Wybrane, Odrzucone lub Ocenione na pasku bocznym, aby wybrać grupę flagi lub oceny.",
             "Kliknij Filtr obok Sortuj. Wybierz jeden lub więcej typów plików, a następnie połącz je z Flagą, Oceną, Etykietą koloru lub statusem edycji.",
             "Wybierz Nazwa pliku, Ocena, Flaga, Data przechwycenia lub Etykieta kolorystyczna w Sortuj."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Biblioteka"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Grupuj i znajdź osoby",
+      "category": "Library",
+      "summary": "Użyj opcjonalnego lokalnego dopasowywania twarzy, aby grupować podobne twarze, dodawać nazwy i przeglądać możliwe dopasowania.",
+      "keywords": [
+        "osoby",
+        "twarze",
+        "dopasowywanie twarzy",
+        "rozpoznawanie",
+        "nazwa",
+        "scal",
+        "podziel",
+        "ta sama osoba",
+        "google photos",
+        "prywatność",
+        "skwantyzowane",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Włącz dopasowywanie twarzy",
+          "paragraphs": [
+            "Dopasowywanie twarzy jest oddzielne od indeksu zawartości zdjęć i domyślnie jest wyłączone. Otwórz Osoby w panelu bocznym Biblioteka albo Ustawienia → Indeks zdjęć → Dopasowywanie twarzy. Pobierz modele i włącz pobiera około 10,1 MB plików modeli. Dane zdjęć są przetwarzane na tym urządzeniu i nigdy nie są przesyłane do dopasowywania.",
+            "Dopasowywanie skanuje wszystkie dostępne zdjęcia w bieżącym katalogu, a nie tylko bieżący folder lub filtr. Puste pliki, pliki tylko w chmurze i niedostępne oryginały są pomijane bez pobierania."
+          ],
+          "steps": [
+            "Otwórz Osoby i wybierz Pobierz modele i włącz.",
+            "Poczekaj, aż pojawią się grupy twarzy. Możesz dalej edytować podczas skanowania.",
+            "Użyj Skanuj nowe zdjęcia po dodaniu zdjęć lub przywróceniu niedostępnych oryginałów. Zdjęcia wcześniej zeskanowane i bez zmian są używane ponownie."
+          ]
+        },
+        {
+          "title": "Nazwij i przeglądaj osobę",
+          "paragraphs": [
+            "Wszyscy pokazuje widoczne grupy twarzy. Bez nazwy pokazuje grupy, które nie zostały nazwane. Otwórz grupę, wpisz nazwę i wybierz Zapisz nazwę. Używane są tylko nazwy wprowadzone przez Ciebie; model nie zna nazw osób.",
+            "Użyj Twarze, aby sprawdzić kadry pojedynczych twarzy. Użyj Zdjęcia, aby zobaczyć pełne fotografie, a następnie wybierz zdjęcie, aby otworzyć je w edytorze. Dodane przez Ciebie nazwy stają się przeszukiwalne w polu wyszukiwania biblioteki. Ukryte grupy nie dodają nazw do wyszukiwania."
+          ]
+        },
+        {
+          "title": "Przejrzyj i popraw dopasowania",
+          "paragraphs": [
+            "Przejrzyj dopasowania pokazuje dwie możliwe grupy z próbkami twarzy. Ta sama osoba łączy je. Różne osoby zapisuje poprawkę, aby sparowanie nie było proponowane ponownie. Pomiń na razie pozostawia dopasowanie do późniejszego przeglądu.",
+            "W obrębie grupy Scal z… pozwala wybrać inną grupę i przejrzeć połączenie przed jego zatwierdzeniem. Zachowana zostaje nazwa bieżącej grupy; jeśli nie ma nazwy, używana jest nazwa drugiej grupy. Zapisanie tej samej nazwy w dwóch grupach nie powoduje ich automatycznego scalenia.",
+            "Wybierz Wybierz twarze, zaznacz kilka twarzy, a następnie wybierz Przenieś do osobnej osoby, aby podzielić je na nową grupę bez nazwy. Te dwie grupy nie będą ponownie sugerowane jako dopasowanie. Zaznacz jedną twarz i wybierz Użyj jako okładki, aby zmienić obraz w galerii.",
+            "Ukryj osobę przenosi grupę do Ukryte bez usuwania zdjęć ani danych twarzy. Otwórz ją tam i wybierz Pokaż osobę, aby ją przywrócić. Cofnij ostatnią zmianę odwraca ostatnią edycję grupy; skanowanie, które dodaje lub odświeża zdjęcia, czyści ten wpis cofania."
+          ]
+        },
+        {
+          "title": "Wstrzymaj i usuń dane twarzy",
+          "paragraphs": [
+            "Wstrzymaj albo wyłącz Dopasowywanie twarzy, aby zatrzymać skanowanie. Istniejące grupy i nazwy pozostaną dostępne, w tym wyszukiwanie nazw. Skanuj nowe zdjęcia wznawia dopasowywanie.",
+            "Usuń dane twarzy… prosi o potwierdzenie usunięcia z tego katalogu grup twarzy, nazw, poprawek i miniaturek. Oryginalne zdjęcia, edycje i Indeks zawartości zdjęć pozostają bez zmian. Pobrane pliki modeli pozostają dostępne. Dane twarzy są przechowywane osobno w folderze danych aplikacji i nie są uwzględniane w kopiach zapasowych katalogu."
+          ]
+        },
+        {
+          "title": "Czego się spodziewać",
+          "paragraphs": [
+            "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Automatyczne grupowanie używa zachowawczych reguł podobieństwa; możliwe dopasowania pozostają osobno do przeglądu. Nowe twarze pasujące do nazwanej osoby są sugerowane do potwierdzenia.",
+            "Małe, nieostre, zasłonięte, z profilu oraz wyraźnie różniące się wiekiem twarze mogą zostać pominięte lub podzielone między grupy. Model może też błędnie dopasowywać twarze. Twarze występujące razem na jednym zdjęciu nie są automatycznie dopasowywane; ręczne scalenie pozostaje możliwe w przypadku luster i kolaży. Ta funkcja nie grupuje zwierząt domowych ani nie zapewnia gwarantowanej dokładności identyfikacji."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Biblioteka"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Zbuduj indeks",
           "paragraphs": [
+            "Wykrywanie twarzy znajduje zdjęcia zawierające twarze. Aby pogrupować konkretną osobę i wyszukać dodaną nazwę, użyj oddzielnej opcji Dopasowywanie twarzy oraz widoku Osoby.",
             "Indeks zdjęć jest domyślnie wyłączony i wymaga macOS. W systemach Linux i Windows wyświetla się Niedostępne na tej platformie, a nowego indeksowania nie można włączyć. Na Macu analiza pozostaje na urządzeniu i nie modyfikuje folderów ze zdjęciami. Apple Vision zapewnia podstawową analizę; bogatsze opisy z Modeli podstawowych pojawiają się tylko wtedy, gdy ta funkcja jest dostępna."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }
