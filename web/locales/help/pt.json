@@ -3083,6 +3083,7 @@
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
             "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "Ao mudar de foto com o zoom ampliado, o LightTable mostra imediatamente uma pré-visualização correspondente em cache, se disponível. Os detalhes mais nítidos são carregados em segundo plano e as fotos próximas são pré-carregadas para o seu nível de zoom.",
             "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
             "Remover, Corrigir, Clonar e máscaras com ajustes de Textura, Claridade, Brancos, Pretos ou Curva de Tom precisam de uma atualização adicional da pré-visualização. Aguarde a pré-visualização terminar antes de avaliar o detalhe ou o efeito de ajustes posteriores.",
@@ -3137,5 +3138,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

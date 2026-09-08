@@ -3083,6 +3083,7 @@
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
             "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+            "Wenn du bei vergrößerter Ansicht das Foto wechselst, zeigt LightTable sofort eine passende Vorschau aus dem Cache, sofern verfügbar. Schärfere Details werden im Hintergrund geladen und benachbarte Fotos für deine Zoomstufe vorgeladen.",
             "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
             "Entfernen, Reparieren, Klonen und Masken mit Anpassungen für Textur, Klarheit, Weißtöne, Schwarztöne oder Tonkurve benötigen eine zusätzliche Vorschauaktualisierung. Warte, bis die Vorschau fertig ist, bevor du ihre Details oder die Wirkung späterer Anpassungen beurteilst.",
@@ -3137,5 +3138,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

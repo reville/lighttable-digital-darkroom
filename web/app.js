@@ -1151,31 +1151,39 @@ function scheduleViewportRegionRender() {
   if (key === lastViewportRenderKey) return;
   clearTimeout(viewportRegionTimer);
   viewportRegionTimer = setTimeout(() => {
-    doRender(performance.now(), { width: requestedPreviewWidth(), phase: 'settled' });
+    doRender(performance.now(), { width: requestedPreviewWidth(), phase: 'settled',
+      background: S.presentedPhotoName === cur()?.name && S.renderState === 'ready' });
   }, 45);
 }
 
-function requestedPreviewWidth() {
+function requestedPreviewWidth(image = cur(), params = S.params, crop = previewCrop()) {
   if ($('pw').value === 'auto') {
     // Catalog dimensions already include EXIF orientation. Do not borrow the
     // outgoing canvas's orientation while the next photo is still loading.
-    const source = { width: +cur()?.width || 0,
-      height: +cur()?.height || 0 };
-    if (Math.abs(Math.round((+S.params?.rotate || 0) / 90)) % 2) {
+    const source = { width: +image?.width || 0,
+      height: +image?.height || 0 };
+    if (Math.abs(Math.round((+params?.rotate || 0) / 90)) % 2) {
       [source.width, source.height] = [source.height, source.width];
     }
     const viewport = $('zoomwrap');
+    let zoom = S.cropping || S.cropTransition ? 1 : S.zoom;
+    if (image !== cur() && S.zoomMode === 'custom' && S.targetPixelScale > 0 &&
+        source.width > 0 && source.height > 0) {
+      const fit = Math.min(viewport.clientWidth / (crop?.w || 1) / source.width,
+        viewport.clientHeight / (crop?.h || 1) / source.height);
+      if (fit > 0) zoom = S.targetPixelScale / fit;
+    }
     return automaticPreviewWidth({ sourceWidth: +source.width, sourceHeight: +source.height,
       viewportWidth: viewport.clientWidth, viewportHeight: viewport.clientHeight,
       deviceScale: window.devicePixelRatio || 1,
       // The cropping view's zoom is presentation only; re-rendering for it
       // would swap textures under a drag.
-      zoom: S.cropping || S.cropTransition ? 1 : S.zoom, crop: previewCrop(),
+      zoom, crop,
       actualSize: S.zoomMode === '100' });
   }
   const selected = +$('pw').value || INTERACTIVE_PREVIEW_WIDTH;
   return S.zoomMode === '100'
-    ? Math.max(selected, sourceLongEdge())
+    ? Math.max(selected, sourceLongEdge(image))
     : selected;
 }
 
@@ -3543,8 +3551,8 @@ async function runNativeRawJourney(width, layer) {
 function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
   clearTimeout(renderTimer);
   const requestedWidth = requestedPreviewWidth();
-  // Navigation needs one consistent first image. Small interactive renders
-  // are useful for changing a recipe, not for opening or magnifying a photo.
+  // Opening can use an accurate cached surface before requesting sharp detail.
+  // Zooming an already visible photo still keeps its existing sharp pixels.
   const opening = S.presentedPhotoName !== cur()?.name || S.renderState !== 'ready';
   const width = opening || viewportRegionEnabled() ? requestedWidth
     : Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
@@ -3553,7 +3561,7 @@ function scheduleProgressiveRender(scheduledAt, firstDelay = 0) {
     doRender(scheduledAt, {
       width,
       requestedWidth,
-      phase: width === requestedWidth ? 'settled' : 'interactive',
+      phase: opening ? 'navigation' : width === requestedWidth ? 'settled' : 'interactive',
     });
   }, firstDelay);
   clearTimeout(settleRenderTimer);
@@ -3585,9 +3593,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   readControls();
   const my = ++S.seq;
   const requestedWidth = options.requestedWidth || requestedPreviewWidth();
-  const w = options.width || requestedWidth;
+  let w = options.width || requestedWidth;
   if ($('pw').value === 'auto') automaticPreviewRequest = { name: im.name, width: requestedWidth };
-  const phase = (options.phase || 'settled');
+  let phase = (options.phase || 'settled');
   if (window.__LIGHTTABLE_NATIVE_BENCHMARK_ITERATIONS__) {
     postNative('nativeBenchmarkProgress', {
       stage: 'render-start', generation: my, width: w,
@@ -3599,9 +3607,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     interactiveRenderIntervalMs = null;
   }
   const requestStartedAt = performance.now();
-  const viewport = w === requestedWidth ? requestedViewportRegion() : null;
-  const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
-    requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
+  const viewport = phase !== 'navigation' && w === requestedWidth ? requestedViewportRegion() : null;
   const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
     S.previewDetail?.name === im.name && S.previewDetail.refining === false;
   $('rstat').textContent = tr('rendering…');
@@ -3619,6 +3625,14 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
+    if (phase === 'navigation') {
+      const cached = options.skipPresentationCache ? null : presentationCache.findPreview(im, request);
+      w = cached?.width || Math.min(requestedWidth, INTERACTIVE_PREVIEW_WIDTH);
+      request.w = w;
+      phase = w < requestedWidth ? 'interactive' : 'settled';
+    }
+    const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
+      requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
     const requestedGradeKey = gradeBakeKey(request);
     clearTimeout(viewportRegionTimer);
     lastViewportRenderKey = JSON.stringify([im.name, viewport]);
@@ -3773,7 +3787,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       if (ready) return doRender(scheduledAt, {
         width: requestedWidth, requestedWidth, phase: 'refinement', background: true,
       });
-    } else if (phase === 'interactive' && w !== requestedWidth) {
+    } else if (phase === 'interactive' && w < requestedWidth) {
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -4377,30 +4391,33 @@ function prefetchState(im) {
 let prefetchTimer = null;
 let lastNavigationDirection = 1;
 
-function prefetchImage(target, epoch = navigationGeneration) {
-  if (!target || epoch !== navigationGeneration) return;
-  const doRenderPrefetch = async () => {
-    if (epoch !== navigationGeneration) return;
+async function prefetchImage(target, epoch, generation, detail = false) {
+  const current = () => epoch === navigationGeneration && generation === S.seq;
+  if (!target || !current()) return;
+  try {
+    await prefetchState(target);
+    if (!current()) return;
+    const params = normalizeFilmParams(target.params);
+    const width = requestedPreviewWidth(target, params, target.crop || null);
     const request = {
       name: target.name,
-      params: normalizeFilmParams(target.params),
+      params,
       optics: target.optics || OPTICS_DEFAULTS,
       heals: target.heals || [],
-      w: $('pw').value === 'auto' ? INTERACTIVE_PREVIEW_WIDTH
-        : Math.min(requestedPreviewWidth(), INTERACTIVE_PREVIEW_WIDTH),
+      ...gradeBakeRequest(target.grade || GRADE_DEFAULTS, target.masks || []),
+      w: detail ? width : Math.min(width, INTERACTIVE_PREVIEW_WIDTH),
       engine: $('engine').value,
-      client: CLIENT_ID, generation: S.seq, priority: 'prefetch',
+      client: CLIENT_ID, generation, priority: 'prefetch',
       allow_draft: false,
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
     const result = presentationCache.get(key) || await api('/api/render', request);
     presentationCache.set(key, result);
-    if (epoch === navigationGeneration && result.native && !result.cancelled) {
+    if (current() && result.native && !result.cancelled) {
       postNative('nativePreload', { surface: result.native, epoch });
     }
-  };
-  prefetchState(target).then(doRenderPrefetch).catch(() => {});
+  } catch (_) { /* A speculative miss must not interrupt navigation. */ }
 }
 
 function prefetch(refining = false) {
@@ -4413,10 +4430,15 @@ function prefetch(refining = false) {
   const secondary = ordered[visibleIndex - lastNavigationDirection];
   if (!primary && !secondary) return;
 
-  const epoch = navigationGeneration;
-  prefetchTimer = setTimeout(() => {
-    if (primary) prefetchImage(primary, epoch);
-    if (secondary) setTimeout(() => prefetchImage(secondary, epoch), 100);
+  const epoch = navigationGeneration, generation = S.seq;
+  prefetchTimer = setTimeout(async () => {
+    // Warm both useful first frames before larger work. Each step rechecks the
+    // photo and render generation so navigation, zoom, or edits stop the batch.
+    for (const detail of [false, true]) {
+      for (const target of [primary, secondary]) {
+        await prefetchImage(target, epoch, generation, detail);
+      }
+    }
   }, 80);
 }
 
