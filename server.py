@@ -6328,6 +6328,11 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError(T("request body must be a JSON object"))
         return value
 
+    def _browser_cookie_name(self) -> str:
+        # Cookies ignore ports. Distinct names keep browser sessions for two
+        # localhost instances from replacing each other's mutation token.
+        return f"lighttable_token_{int(self.server.server_address[1])}"
+
     def _enforce_security(self, *, mutating: bool) -> None:
         # Direct unit tests instantiate Handler without a socket/server.  Real
         # requests always have one and take the complete path below.
@@ -6348,11 +6353,20 @@ class Handler(BaseHTTPRequestHandler):
         supplied = str(self.headers.get("X-LightTable-Token", ""))
         if not supplied:
             cookies = str(self.headers.get("Cookie", ""))
+            scoped_name = self._browser_cookie_name()
+            legacy = ""
             for part in cookies.split(";"):
                 key, _, value = part.strip().partition("=")
-                if key == "lighttable_token":
+                if key == scoped_name:
                     supplied = value
                     break
+                if key == "lighttable_token":
+                    legacy = value
+            else:
+                # Accept an existing session only when no scoped cookie was
+                # supplied. Never rescue an invalid scoped token with legacy
+                # credentials, and never rewrite another version's cookie.
+                supplied = legacy
         if not supplied or not secrets.compare_digest(supplied, INSTANCE_TOKEN):
             raise APIError(401, T("this change needs the instance token"),
                            "unauthorized")
@@ -6447,7 +6461,7 @@ class Handler(BaseHTTPRequestHandler):
             if u.path == "/":
                 self._send(200, (APP / "web" / "index.html").read_bytes(),
                            "text/html; charset=utf-8", headers={
-                               "Set-Cookie": "lighttable_token="
+                               "Set-Cookie": f"{self._browser_cookie_name()}="
                                f"{INSTANCE_TOKEN}; Path=/; HttpOnly; SameSite=Strict",
                            })
             elif u.path == "/app-icon.png":

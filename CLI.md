@@ -135,6 +135,8 @@ Resources expose this schema, the agent guide, and current window state.
 ## Safety
 
 Mutating requests require the token held in the discovered instance file.
-The CLI never prints it. Cross-origin requests and incorrect Host headers
+The CLI never prints it. Browser session cookies are scoped by server port
+so opening another local instance does not invalidate the first window.
+Cross-origin requests and incorrect Host headers
 are rejected. Destructive generic route calls require `--yes`; photo trash
 remains a recoverable native-host operation.
