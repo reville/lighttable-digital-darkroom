@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Objectselecties hebben een nieuwe objectkeuze op de bestemming nodig. Slimme maskers met geschilderde verfijningen moeten ook handmatig opnieuw worden gemaakt; hierdoor wordt het plakken naar de bestemming geweigerd in plaats van stilzwijgend een bronspecifieke selectie te kopiëren.",
+            "Streken van Automatisch masker bewaren een selectie die is gemaakt op basis van de bronfoto. Het plakken ervan naar een andere foto wordt geweigerd; maak die streken opnieuw op de bestemming of sluit Lokale maskers uit. Terugkopiëren naar dezelfde foto behoudt de opgeslagen selectie.",
             "Als maskers niet kunnen worden overgedragen, kopieer dan opnieuw met Lokale maskers uitgeschakeld om de andere groepen toe te passen.",
             "Controleer het voltooiingsrapport op mislukte foto's. Een batch kan eindigen met sommige foto's gewijzigd en andere ongewijzigd."
           ]
@@ -1517,8 +1518,16 @@
         "penseel",
         "lineair verloop",
         "radiaal verloop",
+        "ellipse",
+        "rotatie",
         "vervaging",
         "verloop",
+        "dichtheid",
+        "automatisch masker",
+        "tolerantie",
+        "tooncurve",
+        "witten",
+        "zwartwaarden",
         "overlay",
         "doordrukken",
         "doordrukken"
@@ -1527,14 +1536,14 @@
         {
           "title": "Een handmatig masker maken",
           "paragraphs": [
-            "Open Masker in de bewerkingstoolbalk en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen Licht- en Kleur-aanpassingen.",
-            "Structuur en Helderheid gebruiken de afbeelding na globale aanpassingen en eerdere maskers. Deze besturingselementen vereisen een voorvertoningsupdate; wacht tot deze is voltooid voordat je het resultaat beoordeelt."
+            "Open Masker in de bewerkingstoolbar en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen aanpassingen voor Licht, Kleur en Tooncurve.",
+            "Structuur, Helderheid, Witten, Zwartwaarden en Tooncurve gebruiken het beeld na globale aanpassingen en eerdere maskers. Deze regelaars vereisen een voorvertoningsupdate; wacht tot deze klaar is voordat u het resultaat beoordeelt. Voorvertoning en export passen ze in dezelfde volgorde toe."
           ],
           "steps": [
-            "Kies Penseel om te schilderen, Lineair voor een geleidelijke aanpassing of Radiaal voor een ronde aanpassing.",
-            "Kies voor Penseel Grootte, Doezelaar en Verloop en schilder vervolgens over de foto. Voor Lineair of Radiaal sleept u op de foto om de vorm in te stellen.",
+            "Kies Penseel om te schilderen, Lineair voor een geleidelijke aanpassing of Radiaal voor een ronde of ovale aanpassing.",
+            "Kies voor Penseel Grootte, Vervaging, Verloop en Dichtheid en schilder vervolgens over de foto. Sleep voor Lineair of Radiaal op de foto om de vorm in te stellen.",
             "Laat Overlay tonen ingeschakeld terwijl je het geselecteerde gebied controleert, en schakel het daarna uit om de foto te beoordelen.",
-            "Pas de schuifregelaars Licht of Kleur van het geselecteerde masker aan. Gebruik Hoeveelheid in Bereik om de algehele sterkte te verminderen.",
+            "Verhoog Belichting om een gebied lichter te maken of verlaag deze om het donkerder te maken. Gebruik indien nodig de andere bedieningselementen voor Licht en Kleur, en Hoeveelheid in Bereik om de algehele sterkte van het masker te verminderen.",
             "Hernoem het masker met de •••-knop zodat het doel later gemakkelijk te herkennen is."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto en is niet beschikbaar wanneer er geen zijn.",
             "Maskerpinnen en penseelcontouren blijven scherp en even dik terwijl u inzoomt. De contour wordt groter naarmate het gebied dat deze in de foto bedekt groter wordt."
           ]
+        },
+        {
+          "title": "Bouw de penseeldekking geleidelijk op",
+          "paragraphs": [
+            "Verloop bepaalt hoeveel dekking elke nieuwe streek toevoegt en Dichtheid bepaalt het maximum. Beide lopen van 1% tot 100%. Laat de aanwijzer los en schilder opnieuw om de dekking op te bouwen; opnieuw overtrekken binnen één doorlopende streek bouwt deze niet verder op.",
+            "Schakel Automatisch masker in om elke streek te beperken tot kleuren die lijken op de kleur waar die streek begint. Verhoog Tolerantie om een breder kleurenbereik op te nemen. De selectie wordt opgeslagen met de streek, zodat latere kleur- of belichtingsaanpassingen de randen niet verplaatsen."
+          ],
+          "tips": [
+            "Bij 20% Verloop en 60% Dichtheid bereiken drie afzonderlijke streken over een volledig bedekt gebied het maximum. Het verlagen van Dichtheid wist de reeds geschilderde dekking niet uit.",
+            "Penseelinstellingen zijn van toepassing op nieuwe streken. Bestaande streken behouden hun opgeslagen uiterlijk, inclusief het eerdere penseelgedrag in oudere bewerkingen.",
+            "Elk penseel of elke geschilderde verfijning bevat maximaal 64 streken, met maximaal 512 punten per streek en 20.000 maskerpunten per foto. De editor laat het u weten wanneer een limiet is bereikt."
+          ]
+        },
+        {
+          "title": "Maak een radiaal verloopvorm",
+          "paragraphs": [
+            "Sleep in Vorm bewerken de middelste handgreep om het masker te verplaatsen, een van de ashandgrepen om de grootte aan te passen, of de buitenste handgreep om het te roteren. Houd Shift ingedrukt tijdens het tekenen of vergroten/verkleinen om het verloop rond te maken."
+          ],
+          "tips": [
+            "Vorm biedt ook de regelaars Breedte, Hoogte, Rotatie en Vervaging.",
+            "Als u van de handgrepen weg sleept, wordt het geselecteerde radiale masker opnieuw getekend."
+          ]
+        },
+        {
+          "title": "Pas een lokale tooncurve aan",
+          "steps": [
+            "Vouw Tooncurve uit voor het geselecteerde masker en kies RGB, Rood, Groen of Blauw.",
+            "Klik op de grafiek om een punt toe te voegen en sleep het vervolgens. Als u een punt omhoog verplaatst, wordt de uitvoer lichter; als u het omlaag verplaatst, wordt deze donkerder. Dubbelklik op een tussenpunt om het te verwijderen.",
+            "Gebruik Curve opnieuw instellen om alleen het geselecteerde kanaal van dit masker opnieuw in te stellen, of Ongedaan maken om een bewerking terug te draaien."
+          ],
+          "tips": [
+            "Wanneer de grafiek focus heeft, selecteren [ en ] punten, verplaatsen de pijltoetsen ze en zorgt Shift voor grotere verplaatsingen. Enter voegt een punt toe, Delete verwijdert een tussenpunt en Escape annuleert een lopende aanpassing.",
+            "Een opgeslagen kromme blijft exact totdat u deze bewerkt. De editor bouwt representatieve handgrepen opnieuw op, zodat de eerste aanpassing een geïmporteerde kromme verder kan hervormen dan het punt dat u verplaatst."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Bewerken"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Kies Toevoegen, Aftrekken of Doorsnijden onder Geselecteerd masker.",
-            "Stel Grootte, Vervaging en Verloop in en schilder vervolgens terwijl je de overlay bekijkt.",
+            "Stel Grootte, Vervaging, Verloop en Dichtheid in en schilder vervolgens terwijl u de overlay bekijkt. Afzonderlijke streken bouwen de dekking op tot Dichtheid; schakel Automatisch masker in om streken te beperken tot de kleur waarmee ze beginnen.",
             "Houd tijdens gebruik van Toevoegen Option op Mac ingedrukt om tijdelijk af te trekken.",
             "Schakel de overlay uit en inspecteer de aanpassing. Gebruik Ongedaan maken voor een verfijning die je wilt terugdraaien."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Een slimme selectie maken",
           "paragraphs": [
-            "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze werken lokaal; beschikbare methoden zijn afhankelijk van het selectietype en het platform."
+            "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze werken lokaal; beschikbare methoden zijn afhankelijk van het selectietype en het platform.",
+            "Selecties voor Onderwerp, Lucht en Object behouden tot 1.024 pixels langs hun langste rand. Randen worden verfijnd aan de hand van beeldkleuren, en Vision-onderwerpsselecties behouden zachte overgangen. Fijne grenzen moeten nog steeds worden gecontroleerd en geschilderd verfijnd."
           ],
           "steps": [
             "Open Masker en klap Nieuw masker maken uit.",
@@ -3030,7 +3076,7 @@
             "Als je ingezoomd van foto wisselt, toont LightTable direct een overeenkomend voorbeeld uit de cache, als dat beschikbaar is. Scherpere details worden op de achtergrond geladen en nabijgelegen foto’s worden vooraf geladen voor je zoomniveau.",
             "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
-            "Verwijderen, Retoucheren, Kloon en maskers met Structuur of Helderheid hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat je hun detail of het effect van latere aanpassingen beoordeelt.",
+            "Verwijderen, Retoucheren, Kloon en maskers met aanpassingen voor Structuur, Helderheid, Witten, Zwartwaarden of Tooncurve hebben een extra voorvertoningsupdate nodig. Wacht tot de voorvertoning klaar is voordat u hun details of het effect van latere aanpassingen beoordeelt.",
             "Als de afmetingen van het origineel ontbreken, toont het zoompercentage — en is 1:1 uitgeschakeld. Auto past het voorbeeld nog steeds aan het scherm aan. Scan de map opnieuw om de afmetingen bij te werken."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
+  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
 }

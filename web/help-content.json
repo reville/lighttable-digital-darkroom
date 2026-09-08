@@ -1393,6 +1393,7 @@
           ],
           "tips": [
             "Object selections need a new object choice on the destination. Smart masks with painted refinements also need manual recreation; these cause the destination paste to be refused rather than silently copying a source-specific selection.",
+            "Auto Mask strokes keep a selection made from the source photo. Pasting them to a different photo is refused; recreate those strokes on the destination or exclude Local masks. Copying them back onto the same photo keeps the saved selection.",
             "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.",
             "Inspect the completion report for failed photos. A batch can finish with some photos changed and others left unchanged."
           ]
@@ -1489,8 +1490,16 @@
         "brush",
         "linear gradient",
         "radial gradient",
+        "ellipse",
+        "rotation",
         "feather",
         "flow",
+        "density",
+        "auto mask",
+        "tolerance",
+        "tone curve",
+        "whites",
+        "blacks",
         "overlay",
         "dodge",
         "burn"
@@ -1499,14 +1508,14 @@
         {
           "title": "Create a manual mask",
           "paragraphs": [
-            "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light and Color adjustments.",
-            "Texture and Clarity use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result."
+            "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.",
+            "Texture, Clarity, Whites, Blacks, and Tone Curve use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result. Preview and export apply them in the same order."
           ],
           "steps": [
-            "Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round adjustment.",
-            "For Brush, choose Size, Feather, and Flow, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.",
+            "Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round or oval adjustment.",
+            "For Brush, choose Size, Feather, Flow, and Density, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.",
             "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.",
-            "Adjust the selected mask’s Light or Color sliders. Use Amount in Range to reduce its overall strength.",
+            "Raise Exposure to lighten an area or lower it to darken it. Use the other Light and Color controls as needed, and Amount in Range to reduce the mask’s overall strength.",
             "Rename the mask using its ••• button so its purpose is easy to recognize later."
           ],
           "tips": [
@@ -1515,11 +1524,47 @@
             "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.",
             "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."
           ]
+        },
+        {
+          "title": "Build brush coverage gradually",
+          "paragraphs": [
+            "Flow controls how much coverage each new stroke adds, and Density sets its ceiling. Both range from 1% to 100%. Release the pointer and paint again to build coverage; retracing within one continuous stroke does not build it further.",
+            "Enable Auto Mask to limit each stroke to colors similar to the color where that stroke begins. Increase Tolerance to include a wider range of colors. Its selection is saved with the stroke, so later color or exposure edits do not move its edges."
+          ],
+          "tips": [
+            "At 20% Flow and 60% Density, three separate strokes over a fully covered area reach the ceiling. Lowering Density does not erase coverage already painted.",
+            "Brush settings apply to new strokes. Existing strokes retain their saved appearance, including the earlier brush behavior in older edits.",
+            "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached."
+          ]
+        },
+        {
+          "title": "Shape a radial gradient",
+          "paragraphs": [
+            "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."
+          ],
+          "tips": [
+            "Shape also provides Width, Height, Rotation, and Feather controls.",
+            "Dragging away from its handles redraws the selected radial mask."
+          ]
+        },
+        {
+          "title": "Adjust a local tone curve",
+          "steps": [
+            "Expand Tone Curve for the selected mask and choose RGB, Red, Green, or Blue.",
+            "Click the graph to add a point, then drag it. Moving a point up brightens its output; moving it down darkens it. Double-click an interior point to remove it.",
+            "Use Reset curve to reset only the selected channel of this mask, or Undo to reverse an edit."
+          ],
+          "tips": [
+            "With the graph focused, [ and ] select points, arrow keys move them, and Shift makes larger moves. Enter adds a point, Delete removes an interior point, and Escape cancels an adjustment in progress.",
+            "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ]
     },
@@ -1613,7 +1658,7 @@
           ],
           "steps": [
             "Choose Add, Subtract, or Intersect beneath Selected Mask.",
-            "Set Size, Feather, and Flow, then paint while watching the overlay.",
+            "Set Size, Feather, Flow, and Density, then paint while watching the overlay. Separate strokes build coverage up to Density; enable Auto Mask to restrict strokes by their starting color.",
             "While using Add, hold Option on Mac to subtract temporarily.",
             "Turn the overlay off and inspect the adjustment. Use Undo for a refinement you want to reverse."
           ]
@@ -1788,7 +1833,8 @@
         {
           "title": "Create a smart selection",
           "paragraphs": [
-            "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform."
+            "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.",
+            "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement."
           ],
           "steps": [
             "Open Mask and expand Create New Mask.",
@@ -2973,7 +3019,7 @@
             "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.",
             "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.",
             "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
-            "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments.",
+            "Remove, Heal, Clone, and masks with Texture, Clarity, Whites, Blacks, or Tone Curve adjustments need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments.",
             "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions."
           ],
           "steps": [

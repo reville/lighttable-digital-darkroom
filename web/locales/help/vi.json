@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Chọn đối tượng yêu cầu một lựa chọn đối tượng mới trên đích. Mặt nạ thông minh với tinh chỉnh tô vẽ cũng cần tạo lại thủ công; các trường hợp này sẽ khiến việc dán vào đích bị từ chối thay vì âm thầm sao chép một vùng chọn cụ thể cho nguồn.",
+            "Các nét vẽ Mặt nạ tự động giữ một vùng chọn được tạo từ ảnh nguồn. Dán chúng sang ảnh khác sẽ bị từ chối; hãy tạo lại các nét vẽ đó trên đích đến hoặc loại trừ Mặt nạ cục bộ. Sao chép chúng trở lại cùng ảnh sẽ giữ nguyên vùng chọn đã lưu.",
             "Nếu mặt nạ không thể chuyển, hãy sao chép lại với Local masks bỏ chọn để áp dụng các nhóm khác.",
             "Kiểm tra báo cáo hoàn tất đối với các ảnh thất bại. Một lô có thể kết thúc với một số ảnh đã thay đổi và những ảnh khác không đổi."
           ]
@@ -1517,8 +1518,16 @@
         "cọ",
         "dốc tuyến tính",
         "dốc xuyên tâm",
+        "hình elip",
+        "xoay",
         "làm mềm mép",
         "luồng",
+        "mật độ",
+        "mặt nạ tự động",
+        "độ dung sai",
+        "đường cong tông",
+        "trắng",
+        "đen",
         "lớp phủ",
         "né sáng",
         "đốt cháy"
@@ -1527,14 +1536,14 @@
         {
           "title": "Tạo mặt nạ thủ công",
           "paragraphs": [
-            "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh Sáng và Màu sắc riêng.",
-            "Texture và Độ rõ nét dùng hình ảnh sau các điều chỉnh toàn cục và các mặt nạ trước đó. Các điều khiển này cần cập nhật bản xem trước; hãy đợi nó hoàn tất trước khi đánh giá kết quả."
+            "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh riêng cho Sáng, Màu sắc và Đường cong tông.",
+            "Kết cấu, Độ rõ nét, Trắng, Đen và Đường cong tông sử dụng ảnh sau các điều chỉnh toàn cục và các mặt nạ trước đó. Các điều khiển này cần một lần cập nhật bản xem trước; hãy đợi nó hoàn tất trước khi đánh giá kết quả. Bản xem trước và xuất sẽ áp dụng chúng theo cùng một thứ tự."
           ],
           "steps": [
-            "Chọn Brush để vẽ, Linear cho điều chỉnh chuyển sắc, hoặc Radial cho điều chỉnh hình tròn.",
-            "Với Brush, chọn Kích thước, Lông cọ, và Luồng, rồi tô lên ảnh. Với Linear hoặc Radial, kéo trên ảnh để đặt hình dạng.",
+            "Chọn Cọ để tô, Tuyến tính cho điều chỉnh chuyển sắc, hoặc Hình tròn cho điều chỉnh tròn hay bầu dục.",
+            "Với Cọ, chọn Kích thước, Làm mềm mép, Luồng và Mật độ, rồi tô lên ảnh. Với Tuyến tính hoặc Hình tròn, kéo trên ảnh để đặt hình dạng.",
             "Giữ Show Overlay bật khi kiểm tra vùng đã chọn, rồi tắt nó để đánh giá ảnh.",
-            "Chỉnh các thanh trượt Light hoặc Color của mặt nạ đã chọn. Dùng Amount trong Range để giảm cường độ tổng thể của nó.",
+            "Tăng Phơi sáng để làm sáng một vùng hoặc giảm để làm tối vùng đó. Sử dụng các điều khiển Sáng và Màu sắc khác khi cần, và Lượng trong Phạm vi để giảm sức mạnh tổng thể của mặt nạ.",
             "Đổi tên mặt nạ bằng nút ••• của nó để mục đích của nó dễ nhận ra sau này."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa mặt nạ sẽ xóa mặt nạ đã chọn; Xóa tất cả sẽ xóa các mặt nạ của ảnh và không khả dụng khi không có mặt nạ nào.",
             "Các ghim mặt nạ và đường viền cọ vẫn sắc nét và có cùng độ dày khi bạn thu phóng. Đường viền sẽ lớn lên theo vùng nó bao phủ trong ảnh."
           ]
+        },
+        {
+          "title": "Xây dựng độ phủ của cọ dần dần",
+          "paragraphs": [
+            "Luồng kiểm soát lượng độ phủ mà mỗi nét vẽ mới thêm vào, và Mật độ đặt ngưỡng tối đa của nó. Cả hai đều nằm trong khoảng từ 1% đến 100%. Nhả con trỏ ra và tô lại để xây dựng độ phủ; vẽ chồng trong một nét vẽ liên tục không làm tăng thêm độ phủ.",
+            "Bật Mặt nạ tự động để giới hạn mỗi nét vẽ vào các màu tương tự với màu tại nơi nét vẽ đó bắt đầu. Tăng Độ dung sai để bao gồm một phạm vi màu rộng hơn. Vùng chọn của nó được lưu cùng với nét vẽ, vì vậy các chỉnh sửa màu sắc hoặc phơi sáng sau đó sẽ không làm di chuyển mép của nó."
+          ],
+          "tips": [
+            "Ở Luồng 20% và Mật độ 60%, ba nét vẽ riêng biệt trên một vùng đã phủ đầy sẽ đạt tới ngưỡng tối đa. Giảm Mật độ không xóa phần phủ đã tô trước đó.",
+            "Cài đặt cọ áp dụng cho các nét vẽ mới. Các nét vẽ hiện có giữ nguyên giao diện đã lưu, bao gồm cả hành vi cọ trước đó trong các chỉnh sửa cũ hơn.",
+            "Mỗi cọ hoặc tinh chỉnh được vẽ giữ tối đa 64 nét vẽ, với tối đa 512 điểm cho mỗi nét vẽ và 20.000 điểm mặt nạ cho mỗi ảnh. Trình chỉnh sửa sẽ báo cho bạn khi đạt đến giới hạn."
+          ]
+        },
+        {
+          "title": "Tạo một dốc xuyên tâm",
+          "paragraphs": [
+            "Trong Chỉnh sửa hình dạng, kéo tay nắm giữa để di chuyển mặt nạ, tay nắm theo trục để thay đổi kích thước, hoặc tay nắm ngoài để xoay nó. Giữ Shift trong khi vẽ hoặc thay đổi kích thước để làm cho dốc trở nên tròn."
+          ],
+          "tips": [
+            "Hình dạng cũng cung cấp các điều khiển Chiều rộng, Chiều cao, Xoay và Làm mềm mép.",
+            "Kéo ra xa các tay nắm sẽ vẽ lại mặt nạ hình tròn đã chọn."
+          ]
+        },
+        {
+          "title": "Điều chỉnh đường cong tông cục bộ",
+          "steps": [
+            "Mở rộng Đường cong tông cho mặt nạ đã chọn và chọn RGB, Đỏ, Xanh lá hoặc Xanh dương.",
+            "Bấm vào đồ thị để thêm một điểm, rồi kéo nó. Di chuyển điểm lên sẽ làm sáng đầu ra của nó; di chuyển xuống sẽ làm tối nó. Bấm đúp vào một điểm bên trong để xóa nó.",
+            "Dùng Đặt lại đường cong để chỉ đặt lại kênh đã chọn của mặt nạ này, hoặc Hoàn tác để đảo ngược một chỉnh sửa."
+          ],
+          "tips": [
+            "Khi đồ thị được chọn, [ và ] sẽ chọn các điểm, các phím mũi tên di chuyển chúng, và Shift tạo ra các bước di chuyển lớn hơn. Enter thêm một điểm, Delete xóa một điểm bên trong, và Escape hủy một điều chỉnh đang thực hiện.",
+            "Một đường cong đã lưu sẽ giữ nguyên chính xác cho đến khi bạn chỉnh sửa nó. Trình chỉnh sửa sẽ dựng lại các tay nắm đại diện, vì vậy điều chỉnh đầu tiên có thể làm thay đổi một đường cong đã nhập vượt ra ngoài điểm bạn di chuyển."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Chỉnh sửa"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Chọn Thêm, Trừ, hoặc Giao phía dưới Mặt nạ Đã chọn.",
-            "Đặt Kích thước, Làm mềm mép, và Luồng, rồi tô vẽ trong khi quan sát lớp phủ.",
+            "Đặt Kích thước, Làm mềm mép, Luồng và Mật độ, rồi tô trong khi quan sát lớp phủ. Các nét vẽ riêng biệt sẽ xây dựng độ phủ tới mức Mật độ; bật Mặt nạ tự động để giới hạn nét vẽ theo màu khởi đầu của chúng.",
             "Khi đang dùng Thêm, giữ Option trên Mac để tạm thời trừ.",
             "Tắt overlay và kiểm tra điều chỉnh. Dùng Undo cho một tinh chỉnh mà bạn muốn đảo ngược."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Tạo một vùng chọn thông minh",
           "paragraphs": [
-            "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng."
+            "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng.",
+            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ."
           ],
           "steps": [
             "Mở Mặt nạ và mở rộng Tạo Mặt nạ Mới.",
@@ -3030,7 +3076,7 @@
             "Khi chuyển ảnh trong lúc phóng to, LightTable hiển thị ngay bản xem trước phù hợp trong bộ nhớ đệm nếu có. Chi tiết sắc nét hơn được tải trong nền, còn các ảnh lân cận được tải trước theo mức thu phóng của bạn.",
             "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
-            "Xóa bỏ, Chữa, Nhân bản, và các mặt nạ với Texture hoặc Độ rõ nét cần thêm một lần cập nhật bản xem trước. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết của chúng hoặc tác động của các chỉnh sửa sau.",
+            "Các mặt nạ có điều chỉnh Remove, Heal, Clone và các mặt nạ với điều chỉnh Kết cấu, Độ rõ nét, Trắng, Đen, hoặc Đường cong tông cần một lần cập nhật bản xem trước bổ sung. Hãy đợi bản xem trước hoàn tất trước khi đánh giá chi tiết hoặc hiệu ứng của các điều chỉnh sau.",
             "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "e7bf6ce4d916d20b8f700f86e14d2fbeb8914659af7b61795e422829c3197059"
+  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
 }

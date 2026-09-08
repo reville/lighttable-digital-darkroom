@@ -93,6 +93,21 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
                 expected = edits.apply_base(self.pixels.astype(np.float32) / 255, {}, heals)
                 np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
 
+    def test_local_tones_and_curves_use_exact_ordered_preview_pixels(self):
+        import grade
+        from processing_edit_cases import full_mask
+        for values in ({"whites": .4}, {"blacks": -.3},
+                       {"curveL": (np.linspace(0, 1, 256) ** .7).tolist()}):
+            with self.subTest(controls=list(values)):
+                masks = [full_mask({"exposure": -.25}), full_mask(values)]
+                result = server.apply_preview_edits(self.result, "frame.jpg", 48, {},
+                    {}, [], native=True, grade_values={"exposure": .3}, masks=masks)
+                self.assertTrue(result["gradeEditsBaked"])
+                rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")
+                expected = edits.apply_masks(grade.apply(self.pixels.astype(np.float32) / 255,
+                    {"exposure": .3}), masks)
+                np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
+
     def test_local_detail_bakes_grade_and_invalidates_on_prior_mask_or_grade(self):
         from processing_edit_cases import full_mask
         masks = [full_mask({"exposure": 1}), full_mask({"texture": 1})]
