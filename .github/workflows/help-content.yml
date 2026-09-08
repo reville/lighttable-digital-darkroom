@@ -27,6 +27,7 @@ jobs:
           node --test tests/help-search.test.mjs
       - name: Translation sources, catalogs, and localized Help
         run: |
+          python3 -m pip install --constraint requirements-runtime.lock numpy pillow
           python3 scripts/localization.py check
           python3 scripts/extract-web-i18n.py --check
           python3 scripts/native_localization_sources.py
