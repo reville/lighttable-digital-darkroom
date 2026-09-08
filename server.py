@@ -7462,6 +7462,7 @@ def main() -> None:
         list_images=catalog_image_names,
         source_key=file_key,
         preview_bytes=lambda name: orig_jpeg(name, 1024),
+        source_availability=lambda name: media_availability.index_availability(src_path(name)),
         render_busy=RENDER_LOCK.locked,
         worker_cleanup=(
             lambda: CATALOG.close() if CATALOG is not None else None),

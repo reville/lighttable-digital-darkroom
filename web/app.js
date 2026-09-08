@@ -34,7 +34,7 @@ import {
   LABELS, LABEL_KEYS, LABEL_COLORS, LABEL_TITLES, KEY_SCHEMES,
   cleanLabel, labelSwatch, renderLabelRow,
 } from '/web/labels.js';
-import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally } from '/web/local-ai.js';
+import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally, aiSkippedSummary } from '/web/local-ai.js';
 import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
@@ -6898,7 +6898,7 @@ function syncAI(status = S.ai) {
 
   const card = $('aiStatusCard');
   card.classList.toggle('running', running);
-  card.classList.toggle('ready', enabled && !running && !S.ai.lastError);
+  card.classList.toggle('ready', enabled && !running && !S.ai.lastError && !S.ai.skipped);
   card.classList.toggle('error', !!S.ai.lastError);
   const fraction = S.ai.total ? clamp(S.ai.completed / S.ai.total, 0, 1) : 0;
   $('aiProgress').style.width = `${fraction * 100}%`;
@@ -6914,8 +6914,11 @@ function syncAI(status = S.ai) {
     $('aiStatus').textContent = `${S.ai.indexed} photos indexed`;
     $('aiStatusDetail').textContent = S.ai.lastError;
   } else {
-    $('aiStatus').textContent = 'Ready';
+    $('aiStatus').textContent = S.ai.skipped ? 'Complete with skipped photos' : 'Ready';
     $('aiStatusDetail').textContent = `${S.ai.indexed} ${S.ai.indexed === 1 ? 'photo' : 'photos'} indexed on this Mac.`;
+  }
+  if (enabled && !running && S.ai.skipped) {
+    $('aiStatusDetail').textContent += ` ${aiSkippedSummary(S.ai)}`;
   }
   $('aiRebuild').disabled = !enabled || !vision.available;
   $('aiClear').disabled = !enabled && !S.ai.indexed && !S.ai.errors;
