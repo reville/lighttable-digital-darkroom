@@ -16,7 +16,7 @@
         "title": "Choose recovered or saved edits",
         "paragraphs": ["If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts."],
         "steps": ["Read the affected photo names and choose Restore edits or Keep saved edits.", "If you restore, wait for saving to complete before closing the app."],
-        "tips": ["Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.", "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo."]
+        "tips": ["Recovery may be unavailable if local storage or the desktop recovery journal fails. The app reports that condition; it is not a guarantee that every unsaved edit can be recovered.", "If an original is unavailable or has changed, its recovery record is kept instead of being applied to a potentially different photo. Some recovery drafts show a partial identity notice because they cannot verify the whole original. This can happen with older drafts or when using folder mode. Restore these only if the original photos have not been replaced."]
       }
     ],
     "related": ["editing-history-snapshots"],
@@ -346,6 +346,7 @@
       "editing-history-snapshots"
     ],
     "sources": [
+      {"path": "edits.py", "anchor": "def apply_manual_optics("},
       {
         "path": "web/index.html",
         "anchor": "Reset crop, rotation, flips, and perspective"
@@ -407,6 +408,9 @@
     ],
     "related": ["editing-masks-ai", "editing-masks-ranges-refinements", "editing-history-snapshots"],
     "sources": [
+      {"path": "edits.py", "anchor": "def clean_masks("},
+      {"path": "edits.py", "anchor": "def apply_masks("},
+      {"path": "web/editor-panels.js", "anchor": "export function normalizeMasks(raw)"},
       {"path": "web/index.html", "anchor": "<span>Create New Mask</span>"},
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
       {"path": "web/app.js", "anchor": "else $('maskInstruction').textContent = `Drag on the photo to edit the ${mask.type} mask.`;"},

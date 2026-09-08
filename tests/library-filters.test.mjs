@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import vm from 'node:vm';
 import { normalizeFileTypes, photoFileType, photoHasEdits, matchesLibraryFilters, filterChips } from '../web/library-filters.js';
 import { collapsePairs, pairViewPreference } from '../web/photo-pairs.js';
+import { normalizeMasks, normalizeHeals, normalizeOptics, OPTICS_DEFAULTS } from '../web/editor-panels.js';
 
 const images = [
   {name:'1:Tree.ARW', raw:true, rating:5, status:'approved', hasEdits:true},
@@ -62,6 +63,26 @@ test('ratings and empty edit containers do not count as edits',()=>{
   assert.equal(photoHasEdits({rating:5,params:{},grade:{}}),false);
   assert.equal(matchesLibraryFilters({hasEdits:true},[],'unedited'),false);
   assert.equal(matchesLibraryFilters({name:'copy',sourceName:'a.JPG',virtual:true},['jpeg'],'virtual'),true);
+});
+
+test('local masks, healing and optics count before the catalog edit flag refreshes',()=>{
+  const source = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
+  const normalize = source.match(/^function normalizeLibraryImage\([^]*?^}/m)[0];
+  const context = vm.createContext({S: {catalogEnabled: false}, normalizeMasks, normalizeHeals, normalizeOptics});
+  vm.runInContext(normalize, context);
+  for (const changes of [
+    {masks: [{id: 'mask', type: 'radial', grade: {exposure: 1}}]},
+    {heals: [{id: 'spot', mode: 'clone', target: [.5, .5]}]},
+    {optics: {rotate: 2}}, {optics: {scale: 1.1}}, {optics: {profileEnabled: true}},
+  ]) {
+    const image = context.normalizeLibraryImage({name: 'photo.jpg', hasEdits: false, ...changes});
+    assert.equal(matchesLibraryFilters(image, [], 'edited'), true, JSON.stringify(changes));
+    assert.equal(matchesLibraryFilters(image, [], 'unedited'), false);
+  }
+  const neutral = context.normalizeLibraryImage({name: 'photo.jpg', rating: 5});
+  assert.deepEqual(JSON.parse(JSON.stringify(neutral.optics)), OPTICS_DEFAULTS);
+  assert.equal(photoHasEdits(neutral), false);
+  assert.equal(photoHasEdits({...neutral, masks: [], heals: [], optics: {}}), false);
 });
 
 test('each active restriction is visible in the summary, including old saved filters',()=>{

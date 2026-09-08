@@ -220,6 +220,23 @@ test('returning to a photo uses retained edits when a save has failed, then Retr
   assert.equal(app.nodes.get('retryEditSave').hidden, true);
 });
 
+test('actual go and editor controls never display a recovery rejected for a replaced original', async () => {
+  const app = harness({manual: true});
+  app.queue.enqueue('A.raw', {
+    state: {name: 'A.raw', grade: {exposure: 9}},
+    sourceKey: 'old-original', expectedRecoverySourceKey: 'old-original',
+  }, {immediate: true});
+  await settle();
+  app.requests[0].resolve({error: 'The original changed; the draft was kept'});
+  await assert.rejects(app.queue.flush());
+  await app.go(1);
+  await app.go(0);
+  assert.equal(app.S.images[0].grade.exposure, 0);
+  assert.equal(app.S.grade.exposure, 0);
+  assert.equal(app.queue.getPending('A.raw').state.grade.exposure, 9);
+  assert.equal(app.nodes.get('retryEditSave').hidden, false);
+});
+
 test('the actual photo navigation, Undo and Redo handlers keep independent stacks', async () => {
   const app = harness();
   app.pushUndo();

@@ -97,7 +97,7 @@ class StorageReadinessTests(TestCase):
             try:
                 row = cat.connection.execute('SELECT capture_time,availability FROM files').fetchone()
                 self.assertEqual(tuple(row), ('2022-01-02T03:04:05', 'local'))
-                self.assertEqual(cat.stats()['schema'], 5)
+                self.assertEqual(cat.stats()['schema'], catalog.SCHEMA_VERSION)
                 with cat.write() as conn:
                     conn.execute("INSERT INTO capture_overrides VALUES(1,'2022-01-02T04:04:05-05:00',0)")
                 recovered_path = Path(directory) / 'recovered.sqlite3'

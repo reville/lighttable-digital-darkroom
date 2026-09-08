@@ -4184,6 +4184,8 @@ function editHistorySnapshot() {
 let editRecovery = null;
 let editRecoveryReady = false;
 let editRecoveryIssue = null;
+const deferredEditRecovery = new Map();
+let deferredRecoveryRefreshIssue = null;
 const journalRequests = new Map();
 window.addEventListener('lighttable-edit-journal', ({detail}) => {
   const request = journalRequests.get(detail.id);
@@ -4268,6 +4270,23 @@ const closeBarrier = createCloseBarrier({
 window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
 
+async function refreshDeferredEditRecovery() {
+  let refreshFailed = false;
+  for (const [name, sourceKey] of deferredEditRecovery) {
+    if (editSaveQueue.getPending(name)) continue;
+    const image = S.images.find(item => item.name === name);
+    if (!image || await reconcilePeerSave(image, sourceKey)) deferredEditRecovery.delete(name);
+    else if (!editSaveQueue.getPending(name)) refreshFailed = true;
+  }
+  if (refreshFailed) {
+    deferredRecoveryRefreshIssue = new Error('Recovered edits are saved, but their display could not refresh. Retry to reload them.');
+    updateEditRecoveryHealth(deferredRecoveryRefreshIssue);
+  } else if (!deferredEditRecovery.size && deferredRecoveryRefreshIssue) {
+    if (editRecoveryIssue === deferredRecoveryRefreshIssue) updateEditRecoveryHealth(null);
+    deferredRecoveryRefreshIssue = null;
+  }
+}
+
 $('retryEditSave').onclick = async () => {
   try {
     if (!editRecoveryReady && editRecovery) {
@@ -4278,6 +4297,7 @@ $('retryEditSave').onclick = async () => {
       throw new Error('Could not save photo history');
     }
     await editSaveQueue.retry();
+    await refreshDeferredEditRecovery();
     toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
   }
   catch { toast('Still unable to save. Your changes are kept in this window.'); }
@@ -6230,7 +6250,9 @@ function showCurrentImage(im) {
   $('cmp').inert = false;
   setRenderPresentation('pending', im.name);
   const pending = editSaveQueue.getPending(im.name);
-  if (pending) Object.assign(im, pending.state);
+  // A recovery awaiting identity validation must not be shown on a replacement
+  // original. Ordinary unsaved edits keep their existing optimistic display.
+  if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...(im.grade || {}) };
@@ -6988,8 +7010,11 @@ async function chooseEditRecovery(records) {
   title.textContent = 'Recover unsaved edits?';
   const description = document.createElement('p');
   description.textContent = `Local recovery found changes for ${records.length} photo${records.length === 1 ? '' : 's'}. Restoring replaces their saved edits with these recovered changes.`;
+  if (records.some(item => item.legacyIdentity)) {
+    description.textContent += ' Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.';
+  }
   const list = document.createElement('p');
-  list.textContent = records.slice(0, 3).map(item => item.name).join(' · ')
+  list.textContent = records.slice(0, 3).map(item => item.name + (item.legacyIdentity ? ' (partial identity)' : '')).join(' · ')
     + (records.length > 3 ? ' …' : '');
   const actions = document.createElement('div'); actions.className = 'modal-actions';
   const discard = document.createElement('button'); discard.textContent = 'Keep saved edits';
@@ -7024,14 +7049,21 @@ async function initializeEditRecovery(data) {
   for (const record of records) {
     // An acknowledged save whose cleanup was interrupted needs no replay.
     const saved = await getJSON(`/api/state?name=${encodeURIComponent(record.name)}&recovery=1`).catch(() => null);
-    if (!saved || saved.error || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey)) {
+    const legacyIdentity = Boolean(record.payload.sourceKey && saved?._recoverySourceKey
+      && record.payload.sourceKey !== saved._recoverySourceKey
+      && record.payload.sourceKey === saved._recoveryLegacySourceKey);
+    if (!saved || saved.error || !saved._recoverySourceKey
+      || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey && !legacyIdentity)) {
       toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
       continue;
     }
     if (saved && !saved.error && recoveryAcknowledged(record.payload, saved)) {
       await editRecovery.remove(record.name, record.token).catch(error =>
         toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
-    } else outstanding.push(record);
+    } else outstanding.push({...record, legacyIdentity,
+      // A confirmed legacy recovery is guarded against the complete identity
+      // seen before the dialog. Changes while the dialog is open still fail.
+      payload: {...record.payload, sourceKey: saved._recoverySourceKey}});
   }
   if (!outstanding.length) return;
   if (await chooseEditRecovery(outstanding)) {
@@ -7040,12 +7072,20 @@ async function initializeEditRecovery(data) {
         expectedRecoverySourceKey: record.payload.sourceKey,
         history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
       {immediate: true});
+    }
+    await flushEditSaves();
+    for (const record of outstanding) {
+      if (editSaveQueue.getPending(record.name)) {
+        deferredEditRecovery.set(record.name, record.payload.sourceKey);
+        continue;
+      }
+      deferredEditRecovery.delete(record.name);
       const image = S.images.find(item => item.name === record.name);
       if (image) Object.assign(image, normalizeLibraryImage({
         ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
+        recoverySourceKey: record.payload.sourceKey,
       }, true));
     }
-    await flushEditSaves();
   } else {
     for (const record of outstanding) await editRecovery.remove(record.name, record.token)
       .catch(error => toast(`Saved edits kept; recovery cleanup needs attention: ${error.message}`));
@@ -10797,7 +10837,7 @@ function uiStateReport() {
   };
 }
 
-async function reconcilePeerSave(image) {
+async function reconcilePeerSave(image, recoveredSourceKey = null) {
   const generation = image.peerSyncGeneration = (image.peerSyncGeneration || 0) + 1;
   try {
     // Peer windows each have their own ordered queue. Echoing their accepted
@@ -10813,8 +10853,12 @@ async function reconcilePeerSave(image) {
     if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
         || before !== JSON.stringify(image)
         || (editing && (cur() !== image || S.editingName !== image.name || editorBefore !== snapshot()))) return;
-    await applyServerStateEvent({names: [image.name], patch: state, origin: 'window', reconciled: true});
+    const patch = recoveredSourceKey
+      ? {...state, stateLoaded: true, hasEdits: true, recoverySourceKey: recoveredSourceKey} : state;
+    await applyServerStateEvent({names: [image.name], patch, origin: 'window', reconciled: true});
+    return true;
   } catch { /* A failed local save stays pending for the explicit Retry action. */ }
+  return false;
 }
 
 async function applyServerStateEvent(event) {

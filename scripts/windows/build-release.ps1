@@ -99,6 +99,7 @@ try {
         "validation.py",
         "media_formats.py",
         "media_availability.py",
+        "file_identity.py",
         "capture_time.py",
         "film_pipeline.py",
         "grade.py",

@@ -91,8 +91,14 @@ def _align_exposures(values: list[ImageInput], *,
             raise ValueError("HDR inputs must have matching dimensions")
         small = transform.resize(_alignment_gray(image), ref_small.shape,
                                  anti_aliasing=True, preserve_range=True)
-        shift, _, _ = phase_cross_correlation(ref_small, small,
-                                              upsample_factor=10)
+        if index == reference_index or not np.any(ref_small) or not np.any(small):
+            # The reference is already aligned. A featureless exposure has no
+            # translation evidence; phase correlation otherwise invents a
+            # subpixel shift and creates black borders even in identical frames.
+            shift = np.zeros(2, dtype=np.float64)
+        else:
+            shift, _, _ = phase_cross_correlation(ref_small, small,
+                                                  upsample_factor=10)
         full_shift = np.asarray(shift) / scale
         if np.any(np.abs(full_shift) > np.asarray((height, width)) * 0.2):
             # A featureless bracket can make phase correlation wrap to a false

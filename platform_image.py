@@ -211,7 +211,15 @@ def _exiv2_value(data, *keys: str) -> str:
     import exiv2
 
     for key in keys:
-        item = data.findKey(exiv2.ExifKey(key))
+        try:
+            lookup = exiv2.ExifKey(key)
+        except exiv2.Exiv2Error as error:
+            if error.code != exiv2.ErrorCode.kerInvalidTag:
+                raise
+            # Exiv2 versions do not all recognize the same aliases. Continue
+            # to the supported fallback instead of discarding every EXIF field.
+            continue
+        item = data.findKey(lookup)
         if item != data.end():
             return item.toString()
     return ""

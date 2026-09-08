@@ -97,7 +97,7 @@
       {
         "title": "Plan the copy",
         "paragraphs": [
-          "Import from card copies files into the destination you choose. The card originals stay in place."
+          "Import from card copies files into the destination you choose. The card originals stay in place. Duplicate skipping compares complete file contents; a matching filename or camera header alone is not enough."
         ],
         "steps": [
           "Open Local ••• → Import from card….",
@@ -107,7 +107,7 @@
           "Wait for the copied count and check whether any files failed."
         ],
         "tips": [
-          "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence.",
+          "Template tokens include {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, and {dd}. Start at controls the four-digit sequence. Long template fields are shortened; check the destination preview.",
           "The selection list currently shows up to 200 files per scan. Only checked entries in that list are submitted. Check the completed count when working with a larger card.",
           "If files are reported as cloud-only, download them locally and scan again."
         ]
@@ -124,6 +124,8 @@
       "rename-photos"
     ],
     "sources": [
+      {"path": "catalog.py", "anchor": "def ingest_content_hashes("},
+      {"path": "ingest_workflow.py", "anchor": "def build_plan("},
       {
         "path": "web/index.html",
         "anchor": "<strong id=\"ingestTitle\">Import from card</strong>"
@@ -265,6 +267,7 @@
       "virtual-copies-and-stacks"
     ],
     "sources": [
+      {"path": "web/library-filters.js", "anchor": "export function photoHasEdits(image)"},
       {
         "path": "web/library.js",
         "anchor": "const terms = [image.name, image.displayName, ...(image.keywords || []),"
@@ -1104,7 +1107,7 @@
         "title": "Restore a correction",
         "paragraphs": [
           "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
-          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History."
+          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged."
         ]
       }
     ],
@@ -1114,6 +1117,7 @@
       "raw-jpeg-pairs"
     ],
     "sources": [
+      {"path": "xmp_sidecar.py", "anchor": "captureTimeOriginal"},
       {
         "path": "web/index.html",
         "anchor": "These catalog corrections affect capture-date sorting and exported metadata; original files and filesystem dates stay unchanged."
