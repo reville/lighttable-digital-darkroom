@@ -74,18 +74,37 @@ Poisson/binomial expectations. With GPU enabled it also checks CPU/GPU scan
 noise moments. Statistical regions exclude the known blur support between
 flat fields; ordinary preview image comparisons retain image edges.
 
-Browser element screenshots can include background outside a canvas whose CSS
-origin is fractional. The app check computes the photo rectangle from DOM
-geometry and compares bilinear presentation there; it does not align images by
-their contents or trim mismatched pixels to obtain a pass.
+Browser element screenshots include fractional CSS boundary coverage. The app
+check independently scores the framebuffer against the CLI, then compares the
+visible app canvas with a separate reference canvas containing those readback
+bytes at identical DOM bounds. Both use the browser's compositor, including its
+fractional scaling, rather than approximating it with an integer-sized resize.
+The reference page is labeled as a reference artifact, never an app screenshot.
+No image registration or border trimming is used.
 
 These are software-equivalence tests for the declared model and fixtures, not
 proof that a simulation matches a particular physical negative, chemical bath,
 scanner, printer, or monitor. The two spectral implementations share measured
 profile data, so agreement cannot establish that the profile data are correct.
-Real-camera RAW demosaicing/WB, all stock combinations, native lens/heal/mask
-presentation, operating-system display calibration, and stochastic perceptual
-quality need additional fixtures or real-device comparisons.
+Real-camera RAW demosaicing/WB, all stock combinations, operating-system display
+calibration, and stochastic perceptual quality need additional fixtures or
+real-device comparisons.
+
+Regression coverage includes Vision3 200T/500T with automatic metering on/off,
+flat-field Texture/Clarity after global exposure or an earlier mask, real-photo
+full and partial masks, Heal/Remove, sequential Clone, sharpening after retouch,
+and manual optical boundaries. Native edit cases exercise the server's bake
+decision before submitting its surface and edit payload to Metal. Browser app
+cases additionally cover an exposure slider while a detail mask is active and
+clearing the last detail mask. Ordinary grade-only controls retain their live
+GPU path.
+
+Retouching uses the exact ordered CPU base correction before GPU grading.
+Masks with Texture or Clarity bake the complete global-grade/local-mask stack,
+because a single fragment pass cannot sample the image produced by earlier
+adjustments. These edits can increase preview latency; the expensive film base
+is reused. Corrected surfaces are RGBA8 for Metal and lossless PNG for browser
+presentation. Soft proof, compare, and reference overlays remain display steps.
 
 Active optical diffusion now uses the exact CPU PSF convolution on both render
 backends. Other supported stages remain on the selected GPU backend, but the

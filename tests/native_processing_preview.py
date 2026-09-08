@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+from unittest import mock
 from pathlib import Path
 
 import numpy as np
@@ -26,7 +27,9 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import grade
+import edits
 from processing_support import compare_images, grade_cases, target_rgb8
+from processing_edit_cases import edit_cases, edit_sources
 
 
 def _blocked(message):
@@ -81,6 +84,42 @@ def run(output_dir: Path) -> list[dict]:
         references["native-" + name][:, before] = source_b[:, before].astype(np.float32) / 255
     add("portrait-orientation-and-size", portrait, {}, "load", surface={"url": "portrait.png"})
     add("landscape-size-restored", source_a, {}, "load", surface={"url": "a.png"})
+    # Exercise the server's real bake decision, then the actual Metal display
+    # payload. Without that route, Heal/Remove or local detail can accidentally
+    # be tested against an already-corrected input the app never receives.
+    import server as app_server
+    sources = edit_sources()
+    cache = output_dir / "route-cache"
+    (cache / "render").mkdir(parents=True, exist_ok=True)
+    with mock.patch.object(app_server, "CACHE", cache), \
+         mock.patch.object(app_server, "file_key", return_value="processing-fixture"), \
+         mock.patch.object(app_server, "exif_for", return_value={}), \
+         mock.patch.object(app_server, "prune_render_cache_throttled"):
+        for index, case in enumerate(edit_cases()):
+            pixels = sources[case["fixture"]]
+            h, w = pixels.shape[:2]
+            key = f"{index:032x}"
+            base_path = cache / "render" / f"{key}.rgba"
+            app_server.write_native_surface(base_path, pixels)
+            response = app_server.apply_preview_edits(
+                {"key": key, "native": {"url": f"/api/render/native?key={key}"}},
+                "fixture.png", w, {}, case.get("optics"), case.get("heals"), native=True,
+                grade_values=case.get("grade"), masks=case.get("masks"))
+            name = "native-edits-" + case["name"]
+            shutil.copy(cache / "render" / f"{response['key']}.rgba", inputs / f"{name}.flra")
+            baked = response.get("baseEditsBaked", False)
+            grade_baked = response.get("gradeEditsBaked", False)
+            actions.append({"name": name, "type": "processed", "width": w, "height": h,
+                "surface": {"url": f"{name}.flra", "format": "rgba8", "width": w,
+                            "height": h, "rowBytes": w * 4, "headerBytes": 16},
+                "optics": {} if baked else case.get("optics", {}),
+                "heals": [] if baked else case.get("heals", []),
+                "grade": {} if grade_baked else case.get("grade", {}),
+                "maskPayload": {"masks": []}, "recipe": case,
+                "baseEditsBaked": baked, "gradeEditsBaked": grade_baked})
+            references[name] = edits.apply_masks(grade.apply(edits.apply_base(
+                pixels.astype(np.float32) / 255, case.get("optics"), case.get("heals")),
+                case.get("grade")), case.get("masks"))
     manifest = output_dir / "manifest.json"
     manifest.write_text(json.dumps(actions, indent=2))
 
@@ -139,6 +178,11 @@ def run(output_dir: Path) -> list[dict]:
                       proof="production renderer submitted MTKView drawable",
                       device=evidence["device"], display_evidence=frames[name],
                       grade=action["grade"])
+        if "recipe" in action:
+            record.update(reference="Python export order: optics/retouch, grade, ordered masks",
+                          recipe=action["recipe"],
+                          baseEditsBaked=action["baseEditsBaked"],
+                          gradeEditsBaked=action["gradeEditsBaked"])
         if name == "native-navigation-a-restored" and not frames[name]["texture_cache_hit"]:
             record.update(status="fail", error="A/B/A navigation did not exercise cached A restoration")
         records.append(record)

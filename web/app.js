@@ -70,6 +70,7 @@ import { installSettings } from '/web/settings.js';
 import { HELP_SECTION_TOPICS } from '/web/help-search.js';
 import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
+import { gradeBakeRequest, gradeBakeKey } from '/web/preview-processing.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 
 const $ = (id) => document.getElementById(id);
@@ -1736,7 +1737,13 @@ function nativeGradePayload(grade) {
 function drawGradeNow(forceWebGL = false, refreshScope = true) {
   scheduleViewportRegionRender();
   if (S.renderState === 'pending' && S.presentedPhotoName && S.presentedPhotoName !== cur()?.name) return;
-  const activeGrade = S.holdBefore ? GRADE_DEFAULTS : S.grade;
+  if (S.previewLoadGeneration != null) return;
+  const requestedGradeKey = gradeBakeKey(gradeBakeRequest(S.grade, S.masks, S.holdBefore));
+  if (requestedGradeKey !== (S.presentedGradeKey ?? null)) {
+    renderPhysicalPreview();
+    return;
+  }
+  const activeGrade = S.holdBefore || S.gradeEditsBaked ? GRADE_DEFAULTS : S.grade;
   syncPreviewBackend();
   let upload;
   let channelUpload;
@@ -1763,7 +1770,7 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   // continuous draws, but allow an explicit one-shot refresh before sampling
   // or after a new helper texture arrives.
   if (S.gl && (!native || forceWebGL) && !interactiveMask) {
-    S.gl.draw(activeGrade, S.holdBefore ? [] : S.masks, upload,
+    S.gl.draw(activeGrade, S.holdBefore || S.gradeEditsBaked ? [] : S.masks, upload,
       S.holdBefore ? null : S.softProof);
     if (refreshScope) scheduleHistogram();
     if (!native) {
@@ -1787,7 +1794,7 @@ function refreshWebGLSamplingSurface() {
 }
 
 function nativeMaskPayload(imageData) {
-  const masks = (S.holdBefore ? [] : S.masks).slice(0, MAX_MASKS).map((mask) => ({
+  const masks = (S.holdBefore || S.gradeEditsBaked ? [] : S.masks).slice(0, MAX_MASKS).map((mask) => ({
     enabled: mask.enabled !== false,
     opacity: +mask.opacity || 0,
     lumaLow: +mask.lumaLow || 0,
@@ -1819,7 +1826,7 @@ function nativeEditsPayload(baked = S.baseEditsBaked) {
 }
 
 function nativeBaseRequiresBake() {
-  return !!S.optics.profileEnabled || S.heals.filter((spot) => spot.enabled !== false).length > 16;
+  return !!S.optics.profileEnabled || S.heals.some((spot) => spot.enabled !== false);
 }
 
 /* ---------------------------------------------------------- local tools */
@@ -3355,16 +3362,19 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     const request = {
       name: im.name, params: S.params, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
+      ...gradeBakeRequest(S.grade, S.masks, S.holdBefore),
       client: CLIENT_ID, generation: my, priority: 'interactive',
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
+    const requestedGradeKey = gradeBakeKey(request);
     clearTimeout(viewportRegionTimer);
     lastViewportRenderKey = JSON.stringify([im.name, viewport]);
     const presentationKey = renderRequestKey(im, request);
     const remembered = options.skipPresentationCache ? null : presentationCache.get(presentationKey);
     const m = remembered ? { ...remembered, cached: true }
       : await api('/api/render', request);
+    m.previewGradeKey = requestedGradeKey;
     presentationCache.set(presentationKey, m);
     const responseAt = performance.now();
     if (measureInteractiveRoundTrip && !remembered && !m.cached && !m.error &&
@@ -3379,6 +3389,10 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       });
     }
     if (my !== S.seq) return;
+    if (requestedGradeKey !== gradeBakeKey(gradeBakeRequest(S.grade, S.masks, S.holdBefore))) {
+      renderPhysicalPreview();
+      return;
+    }
     if (m.cancelled) {
       previewProgress.finish({ immediate: true });
       $('rstat').textContent = '';
@@ -3683,6 +3697,13 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   }
   scheduleNativeViewportLayout();
 
+  // Install the mask state with the source swap, including baked-to-live
+  // transitions, so the first drawable cannot reuse the previous mask atlas.
+  if (S.maskTextureDirty || !packedMaskData) {
+    packedMaskData = buildMaskTexture();
+    S.maskTextureDirty = false;
+  }
+
   // Histogram, WB sampling, and reference matching retain a 256px WebGL
   // helper, generated only after interaction settles. A response without a
   // helper still presents a JPEG surface, which seeds sampling just as well.
@@ -3697,7 +3718,8 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
       });
     }
     postNative('nativePreview', {
-      generation, surface, grade: S.holdBefore ? GRADE_DEFAULTS : S.grade,
+      generation, surface, grade: S.holdBefore || render.gradeEditsBaked ? GRADE_DEFAULTS : S.grade,
+      masks: nativeMaskPayload(packedMaskData),
       ...nativeEditsPayload(Boolean(render.baseEditsBaked)),
       original: {
         url: originalPreviewURL(), format: 'image', width: 0, height: 0,
@@ -3761,6 +3783,10 @@ function rememberPresentedRender(state, identity, backend, timing) {
 }
 
 async function setBaseImage(render, generation, { preserveCanvasSize = false } = {}) {
+  const previousGradeState = [S.presentedGradeKey, S.gradeEditsBaked];
+  S.presentedGradeKey = render.previewGradeKey ?? null;
+  S.gradeEditsBaked = Boolean(render.gradeEditsBaked);
+  S.maskTextureDirty = true;
   const native = nativePreviewActive();
   const backend = native ? 'native-metal' : 'webgl';
   const identity = render.key || render.native?.url || render.img;
@@ -3771,9 +3797,18 @@ async function setBaseImage(render, generation, { preserveCanvasSize = false } =
     return { decodeMs: 0, uploadMs: 0, uploadedAt: now, presentedAt: now,
       presentation: backend, deduplicated: true };
   }
-  const timing = native
-    ? await setNativeBaseImage(render, generation, { preserveCanvasSize })
-    : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize });
+  S.previewLoadGeneration = generation;
+  let timing;
+  try {
+    timing = native
+      ? await setNativeBaseImage(render, generation, { preserveCanvasSize })
+      : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize });
+    if (generation === S.seq && timing.failed) {
+      [S.presentedGradeKey, S.gradeEditsBaked] = previousGradeState;
+    }
+  } finally {
+    if (S.previewLoadGeneration === generation) S.previewLoadGeneration = null;
+  }
   if (generation === S.seq && !timing.cancelled) rememberPresentedRender(S, identity, backend, timing);
   return timing;
 }
