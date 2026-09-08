@@ -287,7 +287,6 @@ if [[ -z "$PREVIOUS_NATIVE_HASH" || "$PREVIOUS_NATIVE_HASH" != "$NATIVE_HASH" ]]
   echo "Building the native shell (incremental)..."
   DERIVED_DATA="$ROOT/.build/release/DerivedData"
   xcodebuild \
-    -quiet \
     -project LightTable.xcodeproj \
     -scheme LightTable \
     -configuration Release \
