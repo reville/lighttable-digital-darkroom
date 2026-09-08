@@ -2,19 +2,42 @@
 from unittest import mock
 import os
 import server
+import catalog_scan
+import catalog
 from tests.test_server_catalog import CatalogServerTestCase
 
 class RecoveryIdentityTests(CatalogServerTestCase):
-    def test_catalog_and_folder_drafts_use_the_same_live_source_revision(self):
+    def test_legacy_catalog_identity_remains_an_explicit_recovery_candidate(self):
+        name = self.qualified('a.jpg')
+        path = self.root / 'a.jpg'
+        stat = path.stat()
+        legacy = catalog.source_revision(catalog_scan.header_hash(path), stat.st_size, stat.st_mtime_ns)
+        # This is the persisted shape before schema 6 backfills old rows.
+        with self.catalog.write() as conn:
+            conn.execute('UPDATE files SET content_hash=NULL, content_signature=NULL')
+        recovered = server.recovery_state_for(name)
+        self.assertNotEqual(recovered['_recoverySourceKey'], legacy)
+        self.assertEqual(recovered['_recoveryLegacySourceKey'], legacy)
+        catalog_scan.scan_source(self.catalog, self.source)
+        self.assertEqual(server.recovery_state_for(name)['_recoverySourceKey'], recovered['_recoverySourceKey'])
+        self.assertEqual(server.recovery_state_for(name)['_recoveryLegacySourceKey'], legacy)
+
+    def test_catalog_and_warmed_folder_drafts_use_full_source_revision(self):
         rows, _ = server.library_payload()
         row = next(row for row in rows if row['name'] == self.qualified('a.jpg'))
         recovered = server.recovery_state_for(row['name'])
         self.assertEqual(row['recoverySourceKey'], recovered['_recoverySourceKey'])
         self.assertNotEqual(row['fileKey'], row['recoverySourceKey'])
-        with mock.patch.object(server, 'catalog_handle', return_value=None):
+        with mock.patch.object(server, 'catalog_handle', return_value=None), \
+                mock.patch.object(server, '_HEADER_HASH_CACHE', {}):
             rows, _ = server.library_payload()
             row = next(row for row in rows if row['name'] == 'a.jpg')
-            self.assertEqual(row['recoverySourceKey'], server.recovery_state_for('a.jpg')['_recoverySourceKey'])
+            recovered = server.recovery_state_for('a.jpg')
+            self.assertEqual(row['recoverySourceKey'], recovered['_recoveryLegacySourceKey'])
+            self.assertNotEqual(row['recoverySourceKey'], recovered['_recoverySourceKey'])
+            rows, _ = server.library_payload()
+            row = next(row for row in rows if row['name'] == 'a.jpg')
+            self.assertEqual(row['recoverySourceKey'], recovered['_recoverySourceKey'])
 
     def test_source_replacement_after_prompt_is_rejected_before_state_write(self):
         name = self.qualified('a.jpg')

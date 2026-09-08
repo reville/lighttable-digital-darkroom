@@ -11,6 +11,75 @@ const deferred = () => {
   return { promise, resolve };
 };
 
+function exportNotificationHarness(result) {
+  const elements = new Map(), timers = new Map(), nativeCalls = [];
+  let poll, timerId = 0;
+  const el = (id) => {
+    if (!elements.has(id)) {
+      const classes = new Set();
+      elements.set(id, { value: '', textContent: '', children: [],
+        replaceChildren(...children) { this.children = children; },
+        appendChild(child) { this.children.push(child); },
+        classList: {
+          add: (name) => classes.add(name), remove: (name) => classes.delete(name),
+          contains: (name) => classes.has(name),
+          toggle(name, enabled) { enabled ? classes.add(name) : classes.delete(name); },
+        },
+      });
+    }
+    return elements.get(id);
+  };
+  const context = vm.createContext({
+    $: el, document: {
+      createTextNode: (textContent) => ({textContent}),
+      createElement: (tagName) => ({tagName}),
+    },
+    setTimeout(fn, duration) { timers.set(++timerId, {fn, duration}); return timerId; },
+    clearTimeout(id) { timers.delete(id); },
+    setInterval(fn) { poll = fn; return 1; }, clearInterval() {},
+    exportTimer: null, activeExportJobId: null, latestExportStatus: null,
+    saveState: async () => true, transferTargets: () => [], exportExtraOptions: () => ({}),
+    api: async () => ({queued: 1, jobId: 'export-job', destination: '/initial/destination'}),
+    fetch: async () => ({json: async () => ({state: 'done', progress: 1, total: 1, result})}),
+    postNative: (action, detail) => nativeCalls.push({action, ...detail}), notifyCompletion() {},
+  });
+  const app = source('app.js');
+  vm.runInContext(app.slice(app.indexOf('function toast('), app.indexOf('function notifyCompletion(')) +
+    app.slice(app.indexOf('async function runExport('), app.indexOf('/* ------------------------------------------------ modern export modal */')), context);
+  return {context, el, timers, nativeCalls, finish: async () => { await context.runExport(); await poll(); }};
+}
+
+test('export completion lasts one extra second and reveals its published output', async () => {
+  const path = '/custom destination/renamed photo-2.jpg';
+  const h = exportNotificationHarness({completed: 1, revealPath: path});
+  await h.finish();
+  const toast = h.el('toast'), link = toast.children[1];
+  assert.equal([...h.timers.values()][0].duration, 2800);
+  assert.equal(toast.classList.contains('toast-stacked'), true);
+  assert.equal(link.tagName, 'a');
+  assert.equal(link.textContent, 'Show in Finder');
+  let prevented = false;
+  link.onclick({preventDefault() { prevented = true; }});
+  assert.equal(prevented, true);
+  assert.deepEqual(h.nativeCalls, [{action: 'revealFolder', path}]);
+  assert.equal(toast.classList.contains('show'), false);
+  assert.equal(toast.inert, true);
+});
+
+test('export without an output has no Finder link and other toast durations stay unchanged', async () => {
+  const h = exportNotificationHarness({completed: 0, skipped: 1});
+  await h.finish();
+  assert.equal(h.el('toast').children.length, 1);
+  h.context.toast('Saved');
+  assert.equal([...h.timers.values()][0].duration, 1800);
+  h.context.toast('Applied preset', {run() { h.context.toast('Undone'); }});
+  assert.equal([...h.timers.values()][0].duration, 5000);
+  h.el('toast').children[1].onclick({preventDefault() {}});
+  assert.equal(h.el('toast').classList.contains('show'), true, 'an action must not hide its new notification');
+  [...h.timers.values()][0].fn();
+  assert.equal(h.el('toast').inert, true, 'a dismissed link must leave keyboard navigation');
+});
+
 function metadataHarness({ get, post } = {}) {
   const elements = new Map();
   const timers = new Map();

@@ -628,7 +628,12 @@ _CRS_EXPORT = {
 
 
 def _escape(value: str) -> str:
-    return (str(value).replace("&", "&amp;").replace("<", "&lt;")
+    # Pasted captions can contain form feeds and other characters XML 1.0
+    # cannot represent, even as character references. Never publish a sidecar
+    # that reports success but cannot be read or merged on the next save.
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ud800-\udfff\ufffe\uffff]",
+                  "\ufffd", str(value))
+    return (text.replace("&", "&amp;").replace("<", "&lt;")
             .replace(">", "&gt;").replace('"', "&quot;"))
 
 
@@ -689,6 +694,7 @@ def build_sidecar(record: dict) -> str:
             stamp = capture_time.normalized_timestamp(record["captureTimeOverride"])
             attributes.append(f'   exif:DateTimeOriginal="{_escape(stamp)}"')
             attributes.append(f'   photoshop:DateCreated="{_escape(stamp)}"')
+            elements.append('   <lighttable:captureTimeOriginal rdf:parseType="Resource"/>')
         except ValueError:
             pass
 
@@ -747,6 +753,21 @@ def build_sidecar(record: dict) -> str:
         elements="\n".join(elements) if elements else "")
 
 
+def _import_scoped_element(document, node):
+    """Copy an element together with the namespace scope it inherited."""
+    saved = document.importNode(node, deep=True)
+    ancestor, declarations = node, {}
+    while ancestor is not None:
+        if ancestor.nodeType == Node.ELEMENT_NODE:
+            for attribute in ancestor.attributes.values():
+                if attribute.name == "xmlns" or attribute.prefix == "xmlns":
+                    declarations.setdefault(attribute.name, attribute.value)
+        ancestor = ancestor.parentNode
+    for name, value in declarations.items():
+        saved.setAttribute(name, value)
+    return saved
+
+
 def _owned_properties(record: dict) -> set[tuple[str, str]]:
     """Only explicitly supplied fields are ours to update."""
     owned = {(NAMESPACES["xmp"], "CreatorTool")}
@@ -761,7 +782,8 @@ def _owned_properties(record: dict) -> set[tuple[str, str]]:
         "crop": [("crs", name) for name in
                  ("HasCrop", "CropLeft", "CropTop", "CropRight", "CropBottom")],
         "captureTimeOverride": [("exif", "DateTimeOriginal"),
-                                ("photoshop", "DateCreated")],
+                                ("photoshop", "DateCreated"),
+                                ("lighttable", "captureTimeOriginal")],
     }.items():
         if key in record:
             owned.update((NAMESPACES[prefix], name) for prefix, name in properties)
@@ -867,6 +889,41 @@ def merge_sidecar(existing: str, record: dict) -> str:
         rdf.appendChild(holder)
         holders.append(holder)
     owned = _owned_properties(record)
+    native_uri = "https://lighttable.photo/ns/1.0/"
+    capture_properties = {(NAMESPACES["exif"], "DateTimeOriginal"),
+                          (NAMESPACES["photoshop"], "DateCreated")}
+    capture_marker = (native_uri, "captureTimeOriginal")
+    # Capture fields participate in external-edit conflict detection, but a
+    # full-state mirror may replace them only when an override owns them.
+    owned.difference_update(capture_properties | {capture_marker})
+    previous_capture = next((child for holder in holders for child in holder.childNodes
+                             if (child.namespaceURI, child.localName) == capture_marker), None)
+    if "captureTimeOverride" in record:
+        changing = fresh.hasAttributeNS(NAMESPACES["exif"], "DateTimeOriginal")
+        if changing or (record["captureTimeOverride"] is None and previous_capture is not None):
+            owned.update(capture_properties | {capture_marker})
+            if changing:
+                replacement = fresh.getElementsByTagNameNS(*capture_marker)[0]
+                if previous_capture is not None:
+                    fresh.replaceChild(_import_scoped_element(generated, previous_capture), replacement)
+                else:
+                    # Keep the pre-correction dates inside an XMP structure.
+                    # A later reset restores them, while ordinary full-state
+                    # mirrors with no override leave foreign camera dates alone.
+                    for holder in holders:
+                        for attribute in holder.attributes.values():
+                            if (attribute.namespaceURI, attribute.localName) in capture_properties:
+                                saved = generated.createElementNS(attribute.namespaceURI, attribute.name)
+                                saved.setAttribute(f"xmlns:{attribute.prefix}", attribute.namespaceURI)
+                                saved.appendChild(generated.createTextNode(attribute.value))
+                                replacement.appendChild(saved)
+                        for child in holder.childNodes:
+                            if (child.namespaceURI, child.localName) in capture_properties:
+                                replacement.appendChild(_import_scoped_element(generated, child))
+            else:
+                for child in previous_capture.childNodes:
+                    if (child.namespaceURI, child.localName) in capture_properties:
+                        fresh.appendChild(_import_scoped_element(generated, child))
     if any(key in supplied for key in _NATIVE_FIELDS):
         payload = scalars.get(("lighttable", "edit")) or "{}"
         try:

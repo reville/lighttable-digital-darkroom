@@ -417,7 +417,24 @@ class InterchangeTests(unittest.TestCase):
         original = ATTRIBUTE_XMP.replace('xmp:Rating="4"',
             'exif:DateTimeOriginal="2020-01-01T12:00:00" photoshop:DateCreated="2020-01-01T12:00:00" xmp:Rating="4"')
         result = xmp_sidecar.merge_sidecar(original, {"captureTimeOverride": "2026-09-08T12:00:00"})
-        self.assertNotIn("2020-01-01", result)
+        root = ET.fromstring(result)
+        properties = {f"{{{xmp_sidecar.NAMESPACES[prefix]}}}{name}": []
+                      for prefix, name in (("exif", "DateTimeOriginal"),
+                                           ("photoshop", "DateCreated"))}
+        for holder in root.findall(
+                f".//{{{xmp_sidecar.RDF_NS}}}RDF/{{{xmp_sidecar.RDF_NS}}}Description"):
+            for name, values in properties.items():
+                if name in holder.attrib:
+                    values.append(holder.attrib[name])
+                values.extend(child.text for child in holder.findall(name))
+            # Earlier dates are recoverable only inside the ownership marker;
+            # they must not survive as active metadata on another description.
+            for marker in holder.findall(
+                    f"{{{xmp_sidecar.NAMESPACES['lighttable']}}}captureTimeOriginal"):
+                holder.remove(marker)
+        for values in properties.values():
+            self.assertEqual(values, ["2026-09-08T12:00:00"])
+        self.assertNotIn("2020-01-01", ET.tostring(root, encoding="unicode"))
         self.assertEqual(xmp_sidecar.parse(result)["captureTime"], "2026-09-08T12:00:00")
 
     def test_partial_updates_preserve_native_edits_and_explicit_clears(self):
@@ -483,6 +500,34 @@ class ExternalEditTests(unittest.TestCase):
                                                      expected_snapshot=baseline))
             self.assertIn("xmp:Rating", errors[0])
             self.assertEqual(self.target.read_text(), external)
+
+    def test_capture_correction_and_reset_refuse_conflicting_external_changes(self):
+        original = ATTRIBUTE_XMP.replace('xmp:Rating="4"',
+            'exif:DateTimeOriginal="2020-01-01T12:00:00" xmp:Rating="4"')
+        owned = xmp_sidecar.merge_sidecar(original,
+                                        {"captureTimeOverride": "2025-01-01T12:00:00"})
+        for correction, changed_year, field in (
+                ("2026-01-01T12:00:00", "2025", "exif:DateTimeOriginal"),
+                (None, "2025", "exif:DateTimeOriginal"),
+                (None, "2020", "lighttable:captureTimeOriginal")):
+            with self.subTest(correction=correction, field=field):
+                self.target.write_text(owned)
+                baseline = xmp_sidecar.sidecar_snapshot(self.source)
+                external = owned.replace(changed_year + "-01-01", "2024-01-01")
+                self.target.write_text(external)
+                errors = []
+                self.assertFalse(xmp_sidecar.write_sidecar(
+                    self.source, {"captureTimeOverride": correction}, errors,
+                    expected_snapshot=baseline))
+                self.assertIn(field, errors[0])
+                self.assertEqual(self.target.read_text(), external)
+        # A full-state mirror with no owned override leaves a foreign date alone.
+        self.target.write_text(original)
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.write_text(original.replace("2020-01-01", "2024-01-01"))
+        self.assertTrue(xmp_sidecar.write_sidecar(
+            self.source, {"captureTimeOverride": None}, expected_snapshot=baseline))
+        self.assertEqual(xmp_sidecar.read_for(self.source)["captureTime"], "2024-01-01T12:00:00")
 
     def test_unrelated_external_changes_are_merged(self):
         baseline = xmp_sidecar.sidecar_snapshot(self.source)
