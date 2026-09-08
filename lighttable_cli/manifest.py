@@ -82,6 +82,9 @@ ROUTE_COVERAGE = {
         "/api/batch/semantic-masks/cancel", "/api/batch/semantic-masks/undo", "/api/mask/semantic"],
     "ai-index": ["/api/ai-index", "/api/ai-index/status",
                  "/api/ai-index/results"],
+    "route (people)": ["/api/people", "/api/people/status",
+                       "/api/people/groups", "/api/people/members",
+                       "/api/people/suggestions", "/api/people/labels"],
     "soft-proof": ["/api/soft-proof", "/api/soft-proof/profiles"],
     "prefs": ["/api/prefs"],
     "match-exposure": ["/api/match-exposure"],
@@ -92,6 +95,7 @@ ROUTE_COVERAGE = {
 }
 
 INTERNAL_ROUTES = {
+    "/api/people/thumbnail": "local face crop used by the People gallery",
     "/api/desktop-theme": "read-only Linux desktop palette for interface chrome",
     "/api/export/preview": "read-only export dialog delivery example",
     "/api/thumb/rendered": "edit-aware browser thumbnail replacement",
@@ -180,7 +184,7 @@ TOOLS = [
 
 
 DESTRUCTIVE_ROUTES = {
-    "/api/photos/trash", "/api/history/clear", "/api/ai-index",
+    "/api/photos/trash", "/api/history/clear", "/api/ai-index", "/api/people",
     "/api/catalog/sources", "/api/photos/move", "/api/photos/rename",
     "/api/recovery",
 }
