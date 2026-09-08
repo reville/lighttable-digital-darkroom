@@ -46,7 +46,9 @@ Photo originals and exported images stay in their selected folders.
 7. Verify store-name ownership, review licenses/metadata, change `grade` to `stable`
    only after the above checks, then publish through the maintainer's Snap account.
 
-CLI startup in CI is limited evidence; it does not complete this checklist.
+CI checks the installed CLI and runs isolated CPU renders, codec imports and the
+local server inside confinement. These checks do not complete the desktop,
+upgrade and hardware checklist above.
 Snap manages its own user data and removal/snapshots. Before uninstalling or
 switching package formats, preserve a catalog backup; do not describe Snap removal
 as equivalent to the portable installer's launcher-only uninstall.

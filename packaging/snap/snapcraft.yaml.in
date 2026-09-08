@@ -41,7 +41,7 @@ parts:
     source: payload
     stage-packages:
       - libxdo3
-      - libopenblas0
+      - libopenblas0-pthread
       - libgomp1
       - libssl3t64
       - liblcms2-2
