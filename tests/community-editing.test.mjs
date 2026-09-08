@@ -73,6 +73,20 @@ test('unrecoverable object intent, painted AI refinements and detector errors re
   assert.deepEqual(await regenerateTransferMasks(masks,async()=>assert.fail()),masks);
   assert.deepEqual(await regenerateTransferMasks([{type:'object'}],async()=>assert.fail(),{samePhoto:true}),[{type:'object'}]);
 });
+test('Auto Mask selections refuse cross-photo paste in every stroke location', async () => {
+  const stroke = {buildUp:true,points:[[.3,.4]],edgeMask:{width:1,height:1,data:'/w=='}};
+  for (const key of ['strokes','addStrokes','subtractStrokes','intersectStrokes']) {
+    for (const component of [false,true]) {
+      const part = {type:'brush',[key]:[structuredClone(stroke)]};
+      const masks = [component ? {name:'Face light',type:'brush',components:[part]} : {...part,name:'Face light'}];
+      await assert.rejects(regenerateTransferMasks(masks,async()=>assert.fail('must not generate a selection')),
+        /“Face light” uses Auto Mask\. Recreate its strokes on this photo or exclude masks\./);
+      const same = await regenerateTransferMasks(masks,async()=>assert.fail(),{samePhoto:true});
+      assert.deepEqual(same,masks);
+      assert.notEqual(same,masks);
+    }
+  }
+});
 test('Crop Cancel restores entry crop and geometry while preserving other edits', () => {
   const entry=cropGeometry({...destination,cropChoices:{aspect:'3:2'}});
   const changed={...structuredClone(source),grade:{exposure:4},rating:5,keywords:['keep'],optics:{...source.optics,distortion:.9}};
@@ -135,6 +149,17 @@ test('AI failure prevents saving any part of a target paste',async()=>{
   const h=pasteHarness([target],{clipboard,semanticError:true}); await h.run();
   assert.equal(h.calls.filter(c=>c.path==='/api/state').length,0); assert.equal(target.grade.exposure,-1);
   assert.match(h.nodes.get('transferStatus').textContent,/No model/);
+});
+test('Auto Mask refusal leaves every destination category untouched', async()=>{
+  const target={name:'target.raw',...structuredClone(destination)};
+  const clipboard={...source,sourceName:'source.raw',choices:only('tone','masks'),
+    masks:[{name:'Edge light',type:'brush',strokes:[{buildUp:true,points:[[.3,.4]],
+      edgeMask:{width:1,height:1,data:'/w=='}}]}]};
+  const h=pasteHarness([target],{clipboard}); await h.run();
+  assert.equal(h.calls.length,0);
+  assert.equal(target.grade.exposure,-1);
+  assert.deepEqual(target.masks,destination.masks);
+  assert.match(h.nodes.get('transferStatus').textContent,/uses Auto Mask/);
 });
 
 test('paste save failure retains the entire target edit in the queue for retry', async()=>{

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { radialHandles } from '../web/mask-shape.js';
 import { screenOverlayGeometry, prepareScreenOverlay } from '../web/screen-overlay.js';
 
 const viewport = { left: 120, top: 80, width: 900, height: 600 };
@@ -109,7 +110,7 @@ test('pointer placement and handle hit tests use the whole photo after cropping 
 test('radial and linear mask pins and brush outlines retain screen size', () => {
   const overlay = recordingCanvas();
   let image = viewport;
-  const mask = { type: 'radial', center: [0.5, 0.5], radius: 0.1,
+  const mask = { type: 'radial', center: [0.5, 0.5], radius: 0.1, radiusX: 0.1, radiusY: 0.15, angle: 45,
     start: [0.4, 0.5], end: [0.6, 0.5] };
   const S = { activePane: 'maskPane', localPinsVisible: true, brushSize: 0.2,
     brushFeather: 0.5, overlayHoverPoint: [0.5, 0.5] };
@@ -120,12 +121,12 @@ test('radial and linear mask pins and brush outlines retain screen size', () => 
     zoomwrap: { getBoundingClientRect: () => viewport },
   };
   const draw = new Function('S', '$', 'window', 'screenOverlayGeometry', 'prepareScreenOverlay',
-    'syncOverlayCursorClass', 'selectedMask', source.slice(source.indexOf('function drawBrushCursor('),
+    'syncOverlayCursorClass', 'selectedMask', 'radialHandles', source.slice(source.indexOf('function drawBrushCursor('),
       source.indexOf('function syncOverlayCursorClass(')) + '\n' +
     source.slice(source.indexOf('function drawEditOverlayNow()'), source.indexOf('const previewFrameScheduler')) +
     '\nreturn drawEditOverlayNow;')(
     S, id => elements[id], { devicePixelRatio: 2 }, screenOverlayGeometry, prepareScreenOverlay,
-    () => {}, () => mask);
+    () => {}, () => mask, radialHandles);
   for (const zoom of [1, 8, 32]) {
     image = rect(120 - 450 * (zoom - 1), 80 - 300 * (zoom - 1), 900 * zoom, 600 * zoom);
     for (const type of ['radial', 'linear', 'brush']) {
@@ -133,8 +134,12 @@ test('radial and linear mask pins and brush outlines retain screen size', () => 
       overlay.calls.length = 0;
       draw();
       const radii = overlay.calls.filter(c => c.method === 'arc').map(c => c.args[2]);
-      assert.deepEqual(radii, type === 'radial' ? [60 * zoom, 5] :
+      assert.deepEqual(radii, type === 'radial' ? [5, 5, 5, 5] :
         type === 'linear' ? [6, 6] : [60 * zoom, 30 * zoom]);
+      if (type === 'radial') {
+        const ellipse = overlay.calls.find(c => c.method === 'ellipse');
+        assert.deepEqual(ellipse.args.slice(2, 5), [60 * zoom, 90 * zoom, Math.PI / 4]);
+      }
       const strokes = overlay.calls.filter(c => c.method === 'stroke');
       assert.ok(strokes.every(c => c.lineWidth === (type === 'brush' ? 1 : 1.5)));
     }
