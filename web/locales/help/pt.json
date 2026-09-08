@@ -2241,6 +2241,14 @@
           ]
         },
         {
+          "title": "Filmes ajustados e originais",
+          "paragraphs": [
+            "Ajustado pelo LightTable coloca Portra 160, 400 e 800 no início da lista. Reduz os desvios para o amarelo na folhagem verde-amarelada. Os controles de papel e saída continuam disponíveis.",
+            "Spektrafilm original mantém todas as renderizações originais e continua sendo o padrão para novas fotos, edições anteriores e predefinições antigas de filme.",
+            "Estas versões ajustadas são interpretações visuais baseadas em fotografias de referência e verificações numéricas de cor, não reproduções de filme calibradas por medições. As edições e as predefinições nativas salvam a versão escolhida."
+          ]
+        },
+        {
           "title": "O que as pré-visualizações incluem",
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
@@ -3129,5 +3137,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "441dae033b61271a3b719609b5d15ef1dbf8cc79a5b36e58260ac376c44861e6"
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e"
 }

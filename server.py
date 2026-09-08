@@ -3167,7 +3167,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 9  # cumulative brush, elliptical masks, and local tone controls
+RENDER_CACHE_VERSION = 10  # versioned film tuning after the cumulative-mask update
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 2  # processed source previews now use display sRGB
 EDITED_THUMB_RENDER_EDGE = 512
@@ -3218,6 +3218,7 @@ _RENDERER_PROVENANCE = {
     "residentEngineSha256": _digest_file(RUST_WORKER_BIN),
     "oneShotEngineSha256": _digest_file(RUST_BIN),
     "profileCatalogSha256": fp.PROFILE_CATALOG_DIGEST,
+    "filmTuningSha256": fp.film_tuning.TUNING_DIGEST,
 }
 RENDERER_IDENTITY = hashlib.sha256(json.dumps(
     _RENDERER_PROVENANCE, sort_keys=True, separators=(",", ":"),
@@ -3473,6 +3474,7 @@ def render_rust(name: str, params: dict, width: int,
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
             "params": fp.rust_params_json(params),
+            **fp.rust_tuning_request(params),
             "quality": 88,
             "rotate_quarters_ccw": rot90k(cp["rotate"]),
         }
@@ -3529,9 +3531,17 @@ def render_rust(name: str, params: dict, width: int,
     else:
         cmd += ["--scan-film"]
     preview_progress.advance(2)
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
-                       env=fp.rust_cli_environment(),
-                       **subprocess_flags())
+    # The resident worker handles tuning in memory; the pinned upstream CLI
+    # receives an equivalent prepared source, with its transfer decoding off.
+    if not valid_tiff_cache(src_tif):
+        import tifffile as tf
+        arr = linear_for(name, width, params)
+        tf.imwrite(src_tif, (np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16))
+    with fp.prepared_input_file(src_tif, cp) as prepared:
+        cmd[2] = str(prepared)
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
+                           env=fp.rust_cli_environment(),
+                           **subprocess_flags())
     if r.returncode != 0 or not out_png.exists():
         raise RuntimeError((r.stderr or r.stdout).strip()[-400:])
     preview_progress.advance(3)
@@ -3589,7 +3599,8 @@ def render_viewport_rust(name: str, params: dict, output: Path | None,
     engine = preview_engine()
     request = {"data_dir": str(RUST_DATA), "film": cp["stock"], "paper": cp["paper"],
                "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
-               "params": fp.rust_params_json(params), "quality": 88,
+               "params": fp.rust_params_json(params),
+               **fp.rust_tuning_request(params), "quality": 88,
                "rotate_quarters_ccw": rot90k(cp["rotate"]), "viewport": viewport}
     if output is not None:
         request["output"] = str(output)
@@ -4529,6 +4540,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
             "params": fp.rust_params_json(params),
+            **fp.rust_tuning_request(params),
             "rotate_quarters_ccw": rot90k(cp["rotate"]),
             "quality": int(job.get("quality", 92)),
             "grade": grade.clean(job.get("grade") or {}),
@@ -4574,6 +4586,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
                 "data_dir": str(RUST_DATA), "film": cp["stock"],
                 "paper": cp["paper"], "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
                 "params": fp.rust_params_json(params),
+                **fp.rust_tuning_request(params),
                 "rotate_quarters_ccw": rot90k(cp["rotate"]), "bit_depth": 32,
             }
             metrics = _resident_render_full(name, params, request)
@@ -4610,6 +4623,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
                     "paper": cp["paper"],
                     "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
                     "params": fp.rust_params_json(params),
+                    **fp.rust_tuning_request(params),
                     "rotate_quarters_ccw": rot90k(cp["rotate"]),
                     "bit_depth": 32,
                 }
