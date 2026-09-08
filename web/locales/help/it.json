@@ -224,6 +224,7 @@
           "paragraphs": [
             "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
+            "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri."
           ],
           "steps": [
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }

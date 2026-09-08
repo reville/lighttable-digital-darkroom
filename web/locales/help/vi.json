@@ -224,6 +224,7 @@
           "paragraphs": [
             "Lưới ảnh trình bày ảnh dưới dạng tổng quan trực quan. Lưới lọc thêm không gian cho thông tin chọn và xếp hạng. Chi tiết mở ảnh đang hoạt động để xem kiểm tra cận cảnh.",
             "Thanh bên phải sử dụng các nút biểu tượng cho Chỉnh sửa, Phim, Cắt xén, Xóa bỏ, Mặt nạ, Thông tin, Lịch sử và Thiết lập sẵn. Di chuột lên một biểu tượng để xem tên của nó.",
+            "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số."
           ],
           "steps": [
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }
