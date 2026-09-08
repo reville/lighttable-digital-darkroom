@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Al termine dell’esportazione, fai clic su Mostra nel Finder nella seconda riga della notifica di completamento per aprire la cartella contenente la foto esportata. La notifica rimane visibile per 2,8 secondi.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Quando visualizzi una foto abbinata, usa RAW → JPEG o JPEG → RAW in alto per passare al relativo compagno.",
     "Where are your photos?": "Dove sono le tue foto?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro.",
     "While using Add, hold Option on Mac to subtract temporarily.": "Mentre usi Aggiungi, tieni premuto Option su Mac per sottrarre temporaneamente.",
     "White": "Bianco",
     "White balance eyedropper": "Contagocce del bilanciamento del bianco",

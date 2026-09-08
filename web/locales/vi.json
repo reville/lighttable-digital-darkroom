@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "Khi quá trình xuất hoàn tất, hãy nhấp Hiển thị trong Finder trên dòng thứ hai của thông báo hoàn tất để mở thư mục chứa ảnh đã xuất. Thông báo sẽ hiển thị trong 2,8 giây.",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "Khi xem một ảnh ghép đôi, dùng RAW → JPEG hoặc JPEG → RAW gần phía trên để chuyển sang ảnh đi kèm của nó.",
     "Where are your photos?": "Ảnh của bạn ở đâu?",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa.",
     "While using Add, hold Option on Mac to subtract temporarily.": "Khi đang dùng Thêm, giữ Option trên Mac để tạm thời trừ.",
     "White": "Trắng",
     "White balance eyedropper": "Ống nhỏ giọt cân bằng trắng",

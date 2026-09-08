@@ -23,7 +23,7 @@ function scene(sourceWidth, fitWidth, reduced = true) {
     'drawEditOverlayNow','scheduleNativeViewportLayout','scheduleViewportRegionRender','applyView',
     'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview','createZoomMotion','cur','document',
     'viewportRegionEnabled','markContinuousInput','automaticPreviewTimer','viewportRegionTimer','doRender','requestedPreviewWidth',
-    `${helpers}\n${setup}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt,zoomMotion,stopZoomMotion};`)(
+    `const rememberPhotoPan = () => {};\n${helpers}\n${setup}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt,zoomMotion,stopZoomMotion};`)(
       S,id=>({cv,cmp,...buttons})[id],()=>sourceWidth,(v,a,b)=>Math.max(a,Math.min(b,v)),
       ()=>sourceWidth,noop,noop,()=>({}),noop,noop,noop,noop,noop,noop,noop,noop,noop,
       options=>createZoomMotion({...options,now:()=>at,reducedMotion:()=>reduced,

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
+  "sourceDigest": "5eaf32d7aec22fe11e798fd5f9b0ed7185429bede1792e54c149de4040aa602e",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -3133,6 +3133,7 @@
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.": "書き出しが完了したら、完了通知の 2 行目にある「Finder で表示」をクリックして、書き出した写真を含むフォルダーを開きます。通知は 2.8 秒間表示されたままになります。",
     "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion.": "ペアの写真を表示しているときは、上部付近の RAW → JPEG または JPEG → RAW を使って相手側に切り替えます。",
     "Where are your photos?": "写真はどこにありますか？",
+    "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.": "ウィンドウを開いている間、LightTable は各写真のパン位置を記憶し、写真を切り替えても現在のズーム倍率を維持します。新しい写真は中央に表示されます。",
     "While using Add, hold Option on Mac to subtract temporarily.": "追加を使用中に、Mac では Option キーを押して一時的に減算します。",
     "White": "白",
     "White balance eyedropper": "ホワイトバランスのスポイト",
