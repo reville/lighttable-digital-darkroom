@@ -25,11 +25,12 @@ def install(source: Path, prefix: Path) -> None:
         (prefix / "bin" / name).chmod(0o755)
     # AppStream composes catalog icons from standard theme sizes; a lone
     # 1024px macOS source icon is not sufficient for the catalog composer.
-    for size in (64, 128, 256, 1024):
+    # Flatpak rejects exported icons larger than 512px. Keep the original
+    # 1024px resource inside the application, outside the exported icon theme.
+    for size in (64, 128, 256):
         icon = prefix / f"share/icons/hicolor/{size}x{size}/apps/{app_id}.png"
         icon.parent.mkdir(parents=True, exist_ok=True)
-        origin = bundle / "Resources/LightTable/build/icon-1024.png" if size == 1024 else source / f"icon-{size}.png"
-        shutil.copy2(origin, icon)
+        shutil.copy2(source / f"icon-{size}.png", icon)
     licenses = prefix / f"share/licenses/{app_id}/lighttable"
     licenses.mkdir(parents=True)
     for name in ("LICENSE", "THIRD_PARTY_NOTICES.md"):
