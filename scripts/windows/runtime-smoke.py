@@ -93,6 +93,50 @@ def check_server_startup(resources: Path, temp_path: Path,
                     process.wait(timeout=5)
 
 
+def check_file_identity(temp_path: Path) -> None:
+    """Exercise native file-revision handles in the packaged interpreter."""
+    import file_identity
+
+    source = temp_path / "identity.bin"
+    source.write_bytes(b"original pixels")
+    original = source.stat()
+    signature = file_identity.stat_signature(original, path=source)
+    key = file_identity.signature_key(original, path=source)
+    digest = file_identity.content_hash(source, expected_signature=key)
+    with source.open("rb") as stream:
+        assert file_identity.stat_signature(os.fstat(stream.fileno()),
+                                            fd=stream.fileno()) == signature
+        assert stream.read() == b"original pixels", "Identity closed a borrowed handle"
+
+    # Keep the inode, length, and modification time while changing the bytes.
+    # On Windows, only the native ChangeTime distinguishes this revision.
+    with source.open("r+b") as stream:
+        stream.write(b"replaced pixels")
+    os.utime(source, ns=(original.st_atime_ns, original.st_mtime_ns))
+    current = source.stat()
+    assert file_identity.stat_signature(current, path=source)[:4] == signature[:4]
+    assert file_identity.signature_key(current, path=source) != key
+    assert file_identity.content_hash(source) != digest
+    try:
+        file_identity.content_hash(source, expected_signature=key)
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Replaced bytes passed the queued source guard")
+
+    if os.name == "nt":
+        other = temp_path / "other-identity.bin"
+        other.write_bytes(b"replaced pixels")
+        os.utime(other, ns=(current.st_atime_ns, current.st_mtime_ns))
+        try:
+            file_identity.stat_signature(current, path=other)
+        except OSError:
+            pass
+        else:
+            raise AssertionError("Native metadata handle accepted another file's stat")
+    print("Packaged file-revision identity smoke passed")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("resources", type=Path)
@@ -164,6 +208,7 @@ def main() -> None:
             assert np.unique(pixels[..., 0]).size > 256
             assert converted.pages[0].tags.get(34675) is not None
 
+        check_file_identity(temp_path)
         check_server_startup(resources, temp_path, environment)
 
     print("Packaged Windows runtime smoke passed")

@@ -28,6 +28,7 @@ class AIIndexService:
         list_images: Callable[[], list[str]],
         source_key: Callable[[str], str],
         preview_bytes: Callable[[str], bytes],
+        source_availability: Callable[[str], str] = lambda name: "local",
         render_busy: Callable[[], bool] = lambda: False,
         worker_cleanup: Callable[[], None] = lambda: None,
         analyzer=None,
@@ -40,6 +41,7 @@ class AIIndexService:
         self._list_images = list_images
         self._source_key = source_key
         self._preview_bytes = preview_bytes
+        self._source_availability = source_availability
         self._render_busy = render_busy
         self._worker_cleanup = worker_cleanup
         self._lock = threading.RLock()
@@ -52,6 +54,7 @@ class AIIndexService:
         self._current = ""
         self._last_error = ""
         self._scan_complete = False
+        self._skipped: dict[str, int] = {}
 
     @property
     def enabled(self) -> bool:
@@ -70,6 +73,8 @@ class AIIndexService:
                 "running": self._running,
                 "indexed": stats["indexed"],
                 "errors": stats["errors"],
+                "skipped": sum(self._skipped.values()),
+                "skippedReasons": dict(self._skipped),
                 "completed": self._completed,
                 "total": self._total,
                 "current": self._current,
@@ -118,6 +123,7 @@ class AIIndexService:
             self._current = ""
             self._last_error = ""
             self._scan_complete = False
+            self._skipped = {}
         return self.status()
 
     def start(self) -> None:
@@ -139,6 +145,7 @@ class AIIndexService:
             self._running = True
             self._completed = 0
             self._last_error = ""
+            self._skipped = {}
         try:
             capabilities = self.analyzer.capabilities()
             if not capabilities.get("vision", {}).get("available"):
@@ -160,21 +167,30 @@ class AIIndexService:
                     break
                 with self._lock:
                     self._current = name
-                fingerprint = self._source_key(name)
-                if self.store.is_current(name, fingerprint,
-                                         culling.ANALYSIS_VERSION):
-                    with self._lock:
-                        self._completed += 1
-                    continue
+                fingerprint = ""
                 try:
+                    # Check before hashing as well as decoding: opening a
+                    # cloud placeholder can trigger an unwanted download.
+                    availability = self._source_availability(name)
+                    if availability != "local":
+                        self.store.clear_error(name)
+                        with self._lock:
+                            self._skipped[availability] = (
+                                self._skipped.get(availability, 0) + 1)
+                        continue
+                    fingerprint = self._source_key(name)
+                    if self.store.is_current(name, fingerprint,
+                                             culling.ANALYSIS_VERSION):
+                        continue
                     self._index_one(name, fingerprint, generation)
                 except Exception as error:  # one bad photo must not stop a library
                     if self._should_continue(generation):
                         self.store.record_error(name, fingerprint, str(error), time.time())
                         with self._lock:
                             self._last_error = f"{name}: {str(error)[:180]}"
-                with self._lock:
-                    self._completed += 1
+                finally:
+                    with self._lock:
+                        self._completed += 1
         except Exception as error:
             with self._lock:
                 self._last_error = str(error)[:240]
