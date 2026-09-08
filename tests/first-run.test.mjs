@@ -154,3 +154,13 @@ test('Linux empty-library setup does not wait for Mac-only first-run messages', 
   f.controller.nativeEvent({ type: 'sources', sources: [] });
   assert.equal(f.open(), false);
 });
+
+test('stopped selected import keeps successful photos and reports the stop', () => {
+  const f = fixture({ native: true });
+  f.controller.nativeEvent({ type: 'sources', firstRun: true, photosLibraryImportAvailable: true });
+  f.controller.nativeEvent({ type: 'photosImported', count: 2, failures: 1, cancelled: true });
+  assert.equal(f.all.get('setupHeading-result').textContent, 'Import stopped');
+  assert.match(f.all.get('setupResultMessage').textContent, /2 photos imported/);
+  assert.match(f.all.get('setupResultMessage').textContent, /1 could not be imported/);
+  assert.equal(f.open(), true);
+});

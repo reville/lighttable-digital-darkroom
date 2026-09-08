@@ -45,6 +45,8 @@ def stage_resources(project: Path, python_source: Path, rust_source: Path, bundl
     for source in project.glob("*.py"):
         shutil.copy2(source, resources / source.name)
     shutil.copy2(project / "media-formats.json", resources)
+    (resources / "build").mkdir()
+    shutil.copy2(project / "build/icon-1024.png", resources / "build/icon-1024.png")
     for name in ("lighttable_cli", "web", "profiles", "presets"):
         copy_tree(project / name, resources / name)
     (resources / "film_lab_ai").mkdir()
