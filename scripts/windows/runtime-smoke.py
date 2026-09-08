@@ -93,6 +93,22 @@ def check_server_startup(resources: Path, temp_path: Path,
                     process.wait(timeout=5)
 
 
+def diagnose_reopen_failure(api, source: Path) -> None:
+    """Four read-only probes of our fixture; never change production flags."""
+    for name, opener in (("metadata", lambda: api.open_metadata_fd(source)),
+                         ("read", lambda: os.open(source, os.O_RDONLY))):
+        fd = opener()
+        try:
+            for flags in (0x08100000, 0):
+                handle = api.reopen_file(api.get_osfhandle(fd), 0x80000000, 0x5, flags)
+                error = api.ctypes.get_last_error() if handle == api.invalid_handle else None
+                if error is None:
+                    api.close_handle(handle)
+                print(f"ReOpenFile probe: {name}, flags={flags:#010x}, error={error}", flush=True)
+        finally:
+            os.close(fd)
+
+
 def check_file_identity(temp_path: Path) -> None:
     """Exercise native file-revision handles in the packaged interpreter."""
     import file_identity
@@ -135,12 +151,20 @@ def check_file_identity(temp_path: Path) -> None:
         raise AssertionError("Replaced bytes passed the queued source guard")
 
     if os.name == "nt":
+        print("Native USN identity and immediate same-mtime rewrite checks passed", flush=True)
         # Volumes without USN support must still reject changed bytes. Exercise
         # the real ReOpenFile read handle and its independent file position.
         native_usn = api.file_usn
         api.file_usn = lambda fd: None
         try:
-            fallback_key = file_identity.signature_key(current, path=source)
+            try:
+                fallback_key = file_identity.signature_key(current, path=source)
+            except OSError:
+                try:
+                    diagnose_reopen_failure(api, source)
+                except Exception as probe_error:
+                    print(f"ReOpenFile probe failed: {probe_error}", flush=True)
+                raise
             with source.open("rb") as stream:
                 assert stream.read(3) == b"rep"
                 assert file_identity.signature_key(os.fstat(stream.fileno()),

@@ -62,7 +62,7 @@ class _WindowsBindings:
         handle = self.create_file(os.fsdecode(os.fspath(path)), 0x80, 0x7,
                                   None, 3, 0, None)
         if handle == self.invalid_handle:
-            raise self.ctypes.WinError()
+            raise self.ctypes.WinError(self.ctypes.get_last_error())
         try:
             # The CRT fd takes ownership only after this succeeds. os.fstat
             # then validates the very same native handle, without reading data.
@@ -75,7 +75,7 @@ class _WindowsBindings:
         info = self.basic_info()
         if not self.query_file(self.get_osfhandle(fd), 0,
                                self.ctypes.byref(info), self.ctypes.sizeof(info)):
-            raise self.ctypes.WinError()
+            raise self.ctypes.WinError(self.ctypes.get_last_error())
         if info.ChangeTime <= 0:
             raise OSError("The filesystem does not provide a file change time")
         return int(info.ChangeTime)
@@ -102,7 +102,7 @@ class _WindowsBindings:
         handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x5,
                                   0x08000000 | 0x00100000)
         if handle == self.invalid_handle:
-            raise self.ctypes.WinError()
+            raise self.ctypes.WinError(self.ctypes.get_last_error())
         try:
             return self.open_osfhandle(handle, os.O_RDONLY | getattr(os, "O_BINARY", 0))
         except BaseException:

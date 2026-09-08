@@ -218,7 +218,8 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.open_osfhandle = mock.Mock(return_value=7)
         api.close_handle = mock.Mock()
         api.invalid_handle = -1
-        api.ctypes = SimpleNamespace(WinError=lambda: OSError("native query failed"))
+        api.ctypes = SimpleNamespace(get_last_error=mock.Mock(return_value=32),
+                                     WinError=mock.Mock(side_effect=lambda code: OSError(code, "native query failed")))
         return api
 
     def test_metadata_handle_requests_attributes_only_and_transfers_ownership(self):
@@ -240,6 +241,18 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.create_file.return_value = -1
         with self.assertRaises(OSError):
             api.open_metadata_fd("original.tif")
+        api.open_osfhandle.assert_not_called()
+        api.close_handle.assert_not_called()
+        api.ctypes.WinError.assert_called_once_with(32)
+
+    def test_failed_reopen_retains_ctypes_private_last_error(self):
+        api = self.bindings()
+        api.get_osfhandle = mock.Mock(return_value=99)
+        api.reopen_file = mock.Mock(return_value=-1)
+        with self.assertRaises(OSError) as raised:
+            api.open_data_fd(8)
+        self.assertEqual(raised.exception.errno, 32)
+        api.ctypes.WinError.assert_called_once_with(32)
         api.open_osfhandle.assert_not_called()
         api.close_handle.assert_not_called()
 
@@ -296,11 +309,12 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
 
         api.basic_info = Info
         api.get_osfhandle = mock.Mock(return_value=42)
-        api.ctypes = SimpleNamespace(byref=ctypes.byref, sizeof=ctypes.sizeof,
-                                     WinError=lambda: OSError("native query failed"))
+        api.ctypes.byref = ctypes.byref
+        api.ctypes.sizeof = ctypes.sizeof
         api.query_file = mock.Mock(return_value=False)
         with self.assertRaisesRegex(OSError, "native query failed"):
             api.change_time(7)
+        api.ctypes.WinError.assert_called_once_with(32)
         api.query_file.return_value = True
         with self.assertRaisesRegex(OSError, "does not provide"):
             api.change_time(7)
