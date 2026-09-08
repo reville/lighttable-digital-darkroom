@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="/web/preset-browser.css">
 <link rel="stylesheet" href="/web/help.css">
 <link rel="stylesheet" href="/web/first-run.css">
+<link rel="stylesheet" href="/web/linux-layout.css">
+<link rel="stylesheet" href="/web/desktop-theme.css">
 </head>
 <body>
 
@@ -1154,6 +1156,7 @@
           <h2>Performance</h2><p class="settings-intro">Rendering and generated preview storage.</p>
           <div class="settings-group settings-fields">
             <label class="field"><span>Film engine</span><select id="settingsEngine"><option value="rs">GPU · Rust</option><option value="py">Compatible · Python</option></select></label>
+            <p class="hint" id="rendererStatus" role="status" hidden></p>
             <div class="settings-action-block"><div><strong>Preview detail</strong><small id="settingsPreviewSummary" role="status">Automatic · matches the window, display, and zoom.</small></div></div>
             <label class="field"><span>Cache budget</span><div class="settings-range"><input type="range" id="cacheBudgetGB" min="2" max="32" step="1" value="8"><output id="cacheBudgetGBV">8 GB</output></div></label>
             <div class="settings-path"><span>Location</span><code id="cacheLocation">Checking…</code></div>

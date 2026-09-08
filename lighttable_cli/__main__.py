@@ -12,6 +12,8 @@ import urllib.parse
 import uuid
 from pathlib import Path
 
+import platform_paths
+
 from .client import Client, ClientError, query
 from .instances import Instance, default_instance_directory, discover, select
 from .manifest import (
@@ -379,11 +381,7 @@ def normalize_global_arguments(argv: list[str]) -> list[str]:
 def profile_environment(args, *, parent: bool) -> tuple[dict, Path]:
     env = dict(os.environ)
     if args.profile == "review":
-        if os.name == "nt":
-            base = Path(env.get("LOCALAPPDATA", str(Path.home()))) / "LightTable"
-        else:
-            base = Path.home() / "Library/Application Support/LightTable"
-        support = Path(env.get("LIGHTTABLE_PROFILE_ROOT", str(base / "Profiles"))) / "review"
+        support = platform_paths.profile_root() / "review"
         folder = Path(args.folder).expanduser() if args.folder else APP / "demo-assets/cc0-raw/files"
         env.update({
             "LIGHTTABLE_DIR": str(folder),
@@ -394,6 +392,13 @@ def profile_environment(args, *, parent: bool) -> tuple[dict, Path]:
             "LIGHTTABLE_INSTANCE_DIR": str(support / "instances"),
             "LIGHTTABLE_HEADLESS": "1",
         })
+        if platform_paths.is_linux():
+            env.update({
+                "LIGHTTABLE_AI_DIR": str(support / "AI Index"),
+                "LIGHTTABLE_MODEL_DIR": str(support / "Models"),
+                "LIGHTTABLE_SERVER_LOG": str(support / "logs/server.log"),
+                "LIGHTTABLE_LOG_FILE": str(support / "logs/server.log"),
+            })
     else:
         folder = Path(args.folder).expanduser() if args.folder else Path.home() / "Pictures"
         env["LIGHTTABLE_DIR"] = str(folder)
@@ -407,6 +412,9 @@ def profile_environment(args, *, parent: bool) -> tuple[dict, Path]:
 
 def start_server(args, *, parent: bool) -> tuple[subprocess.Popen, Path]:
     env, _ = profile_environment(args, parent=parent)
+    if platform_paths.is_linux() and (parent or getattr(args, "daemon", False)):
+        env.setdefault("LIGHTTABLE_SERVER_LOG", str(platform_paths.server_log_file()))
+        env.setdefault("LIGHTTABLE_LOG_FILE", env["LIGHTTABLE_SERVER_LOG"])
     python = APP / ".venv/bin/python"
     executable = str(python if python.is_file() else Path(sys.executable))
     process = subprocess.Popen(

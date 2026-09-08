@@ -1,4 +1,48 @@
+pub mod linux;
 pub mod preset_links;
+
+/// Read a bounded HTTP status line, including responses split across TCP reads.
+pub fn successful_health_response(stream: impl std::io::Read) -> bool {
+    use std::io::{BufRead, BufReader};
+    let mut status = String::new();
+    if BufReader::new(stream.take(128))
+        .read_line(&mut status)
+        .is_err()
+        || !status.ends_with("\r\n")
+    {
+        return false;
+    }
+    let mut fields = status.split_ascii_whitespace();
+    matches!(fields.next(), Some("HTTP/1.0" | "HTTP/1.1")) && fields.next() == Some("200")
+}
+
+#[cfg(test)]
+mod health_tests {
+    use super::successful_health_response;
+    use std::io::{self, Read};
+
+    struct Fragmented<'a>(&'a [u8]);
+    impl Read for Fragmented<'_> {
+        fn read(&mut self, bytes: &mut [u8]) -> io::Result<usize> {
+            self.0.read(&mut bytes[..1])
+        }
+    }
+
+    #[test]
+    fn health_accepts_both_http_versions_and_fragmented_responses() {
+        for response in [b"HTTP/1.0 200 OK\r\n".as_slice(), b"HTTP/1.1 200 OK\r\n"] {
+            assert!(successful_health_response(Fragmented(response)));
+        }
+        for response in [
+            "HTTP/1.1 500 Error\r\n",
+            "HTTP/1.1 2000 Invalid\r\n",
+            "HTTP/1.1 200",
+            "not HTTP\r\n",
+        ] {
+            assert!(!successful_health_response(response.as_bytes()));
+        }
+    }
+}
 
 use std::{
     collections::HashSet,
@@ -18,7 +62,9 @@ pub fn preset_export_data(content: &str, encoding: Option<&str>) -> Result<Vec<u
     }
     match encoding.unwrap_or("utf8") {
         "utf8" | "utf-8" => Ok(content.as_bytes().to_vec()),
-        "base64" => STANDARD.decode(content).context("The preset export contains invalid base64 data"),
+        "base64" => STANDARD
+            .decode(content)
+            .context("The preset export contains invalid base64 data"),
         _ => bail!("The preset export uses an unsupported encoding"),
     }
 }
@@ -200,6 +246,9 @@ pub fn validate_windows_folder_name(raw: &str) -> Result<String> {
 }
 
 pub fn rename_root(path: &Path, raw_name: &str) -> Result<PathBuf> {
+    #[cfg(target_os = "linux")]
+    let name = linux::validate_folder_name(raw_name)?;
+    #[cfg(not(target_os = "linux"))]
     let name = validate_windows_folder_name(raw_name)?;
     let parent = path.parent().context("the source folder has no parent")?;
     let destination = parent.join(name);
@@ -216,10 +265,19 @@ mod tests {
 
     #[test]
     fn exported_recipes_and_binary_submissions_keep_their_exact_bytes() {
-        assert_eq!(preset_export_data("{\"name\":\"Café\"}", None).unwrap(), "{\"name\":\"Café\"}".as_bytes());
-        assert_eq!(preset_export_data("UEsDBAD/", Some("base64")).unwrap(), vec![80, 75, 3, 4, 0, 255]);
+        assert_eq!(
+            preset_export_data("{\"name\":\"Café\"}", None).unwrap(),
+            "{\"name\":\"Café\"}".as_bytes()
+        );
+        assert_eq!(
+            preset_export_data("UEsDBAD/", Some("base64")).unwrap(),
+            vec![80, 75, 3, 4, 0, 255]
+        );
         for invalid in ["not base64!", "UEsDBAD_", "AA", "AB==", "AA==\n"] {
-            assert!(preset_export_data(invalid, Some("base64")).is_err(), "{invalid:?}");
+            assert!(
+                preset_export_data(invalid, Some("base64")).is_err(),
+                "{invalid:?}"
+            );
         }
         assert!(preset_export_data("text", Some("hex")).is_err());
         assert!(preset_export_data(&"A".repeat(15 * 1024 * 1024 + 1), Some("base64")).is_err());

@@ -2,6 +2,7 @@
 from contextlib import ExitStack
 import ctypes
 import os
+import struct
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -34,6 +35,10 @@ class SimulatedWindows:
     def change_time(self, fd):
         changed = self.native.change_time(fd) if self.native else os.fstat(fd).st_ctime_ns
         return changed + self.epoch
+
+    def file_usn(self, fd):
+        # Synthetic revision, not a claim about the host filesystem's journal.
+        return 1 + self.epoch
 
     def bump(self):
         self.epoch += 1
@@ -86,7 +91,8 @@ class WindowsSignatureTests(unittest.TestCase):
         fields = dict(st_dev=1, st_ino=2, st_size=3, st_mtime_ns=4, st_birthtime_ns=5)
         path_stat = SimpleNamespace(**fields, st_ctime_ns=5)
         fd_stat = SimpleNamespace(**fields, st_ctime_ns=900)
-        api = SimpleNamespace(change_time=mock.Mock(return_value=900))
+        api = SimpleNamespace(change_time=mock.Mock(return_value=900),
+                              file_usn=mock.Mock(return_value=123))
         with mock.patch.object(file_identity, "_WINDOWS", True), \
                 mock.patch.object(file_identity, "_windows_bindings", return_value=api), \
                 mock.patch.object(file_identity.os, "fstat", return_value=fd_stat):
@@ -95,7 +101,51 @@ class WindowsSignatureTests(unittest.TestCase):
             self.assertEqual(file_identity.stat_signature(path_stat, fd=7),
                              file_identity.stat_signature(fd_stat, fd=7))
             self.assertEqual(file_identity.stat_signature(fd_stat, fd=7),
-                             (1, 2, 3, 4, 5, 900))
+                             (1, 2, 3, 4, 5, 900, 1, 123))
+
+    def test_usn_invalidates_same_tick_rewrite_without_reading_originals(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        with mock.patch.object(windows, "change_time", return_value=900), \
+                mock.patch.object(windows, "file_usn", side_effect=[101, 101, 102, 102]):
+            stat = self.path.stat()
+            before = file_identity.stat_signature(stat, path=self.path)
+            after = file_identity.stat_signature(stat, path=self.path)
+        self.assertEqual(before[:-1], after[:-1])
+        self.assertNotEqual(before, after)
+
+    def test_no_journal_reads_complete_bytes_and_preserves_borrowed_offset(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        stat = self.path.stat()
+        # No timestamp changes, including after a same-size in-place rewrite.
+        with mock.patch.object(windows, "change_time", return_value=900), \
+                mock.patch.object(windows, "file_usn", return_value=None), \
+                mock.patch.object(windows, "open_data_fd", create=True,
+                                  side_effect=lambda fd: os.open(self.path, os.O_RDONLY)) as opens, \
+                mock.patch.object(file_identity, "_stat_fields", return_value=(1, 2, stat.st_size, 4, 5)):
+            before = file_identity.signature_key(stat, path=self.path)
+            with self.path.open("rb") as stream:
+                stream.read(3)
+                self.assertEqual(file_identity.signature_key(os.fstat(stream.fileno()), fd=stream.fileno()), before)
+                self.assertEqual(stream.read(), b"hanged fixture")
+            self.path.write_bytes(b"different fixture")
+            after = file_identity.signature_key(self.path.stat(), path=self.path)
+            self.assertNotEqual(before, after)
+            with self.assertRaisesRegex(OSError, "changed before hashing"):
+                file_identity.content_hash(self.path, expected_signature=before)
+            self.assertEqual(opens.call_count, 4)
+
+    def test_no_journal_does_not_hydrate_a_windows_cloud_placeholder(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        fields = dict(st_dev=1, st_ino=2, st_size=3, st_mtime_ns=4,
+                      st_ctime_ns=5, st_birthtime_ns=5, st_file_attributes=0x400000)
+        stat = SimpleNamespace(**fields)
+        with mock.patch.object(windows, "file_usn", return_value=None), \
+                mock.patch.object(file_identity.os, "fstat", return_value=stat):
+            with self.assertRaisesRegex(OSError, "cloud original"):
+                file_identity.stat_signature(stat, path=self.path)
 
     def test_owned_metadata_descriptor_closes_after_success_and_query_failure(self):
         windows = SimulatedWindows()
@@ -168,7 +218,8 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
         api.open_osfhandle = mock.Mock(return_value=7)
         api.close_handle = mock.Mock()
         api.invalid_handle = -1
-        api.ctypes = SimpleNamespace(WinError=lambda: OSError("native query failed"))
+        api.ctypes = SimpleNamespace(get_last_error=mock.Mock(return_value=32),
+                                     WinError=mock.Mock(side_effect=lambda code: OSError(code, "native query failed")))
         return api
 
     def test_metadata_handle_requests_attributes_only_and_transfers_ownership(self):
@@ -192,6 +243,63 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
             api.open_metadata_fd("original.tif")
         api.open_osfhandle.assert_not_called()
         api.close_handle.assert_not_called()
+        api.ctypes.WinError.assert_called_once_with(32)
+
+    def test_failed_reopen_retains_ctypes_private_last_error(self):
+        api = self.bindings()
+        api.get_osfhandle = mock.Mock(return_value=99)
+        api.reopen_file = mock.Mock(return_value=-1)
+        with self.assertRaises(OSError) as raised:
+            api.open_data_fd(8)
+        self.assertEqual(raised.exception.errno, 32)
+        api.ctypes.WinError.assert_called_once_with(32)
+        api.open_osfhandle.assert_not_called()
+        api.close_handle.assert_not_called()
+
+    def test_full_read_reopens_same_object_without_sharing_writes_or_seeking_borrowed_fd(self):
+        api = self.bindings()
+        api.get_osfhandle = mock.Mock(return_value=99)
+        api.reopen_file = mock.Mock(return_value=42)
+        self.assertEqual(api.open_data_fd(8), 7)
+        api.reopen_file.assert_called_once_with(99, 0x80000000, 0x5, 0)
+        api.close_handle.assert_not_called()
+        api.open_osfhandle.side_effect = OSError("allocation failed")
+        with self.assertRaisesRegex(OSError, "allocation failed"):
+            api.open_data_fd(8)
+        api.close_handle.assert_called_once_with(42)
+
+    def test_usn_query_is_read_only_file_metadata_and_handles_unavailable_journals(self):
+        api = self.bindings()
+        api.ctypes = ctypes
+        api.dword = ctypes.c_uint32
+        api.get_osfhandle = mock.Mock(return_value=99)
+        record = bytearray(64)
+        struct.pack_into("<IHH", record, 0, len(record), 2, 0)
+        struct.pack_into("<q", record, 24, 123456)
+
+        def query(handle, code, versions, input_size, output, capacity, returned, overlapped):
+            self.assertEqual((handle, code, list(versions), input_size, capacity, overlapped),
+                             (99, 0x000900EB, [2, 3], 4, 4096, None))
+            ctypes.memmove(output, bytes(record), len(record))
+            ctypes.cast(returned, ctypes.POINTER(ctypes.c_uint32))[0] = len(record)
+            return True
+
+        api.device_io = query
+        self.assertEqual(api.file_usn(8), 123456)
+        api.device_io = mock.Mock(return_value=False)
+        self.assertIsNone(api.file_usn(8))
+
+    def test_usn_parser_handles_v2_v3_and_rejects_missing_or_malformed_records(self):
+        for major, offset in ((2, 24), (3, 40)):
+            record = bytearray(80)
+            struct.pack_into("<IHH", record, 0, len(record), major, 0)
+            struct.pack_into("<q", record, offset, 321)
+            self.assertEqual(file_identity._usn_record(record), 321)
+            struct.pack_into("<q", record, offset, 0)
+            self.assertIsNone(file_identity._usn_record(record))
+        for data in (b"", b"short", struct.pack("<IHH", 200, 2, 0),
+                     struct.pack("<IHH", 8, 4, 0)):
+            self.assertIsNone(file_identity._usn_record(data))
 
     def test_native_change_query_errors_and_missing_counter_fail_closed(self):
         api = self.bindings()
@@ -201,11 +309,12 @@ class WindowsBindingOwnershipTests(unittest.TestCase):
 
         api.basic_info = Info
         api.get_osfhandle = mock.Mock(return_value=42)
-        api.ctypes = SimpleNamespace(byref=ctypes.byref, sizeof=ctypes.sizeof,
-                                     WinError=lambda: OSError("native query failed"))
+        api.ctypes.byref = ctypes.byref
+        api.ctypes.sizeof = ctypes.sizeof
         api.query_file = mock.Mock(return_value=False)
         with self.assertRaisesRegex(OSError, "native query failed"):
             api.change_time(7)
+        api.ctypes.WinError.assert_called_once_with(32)
         api.query_file.return_value = True
         with self.assertRaisesRegex(OSError, "does not provide"):
             api.change_time(7)
