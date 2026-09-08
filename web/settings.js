@@ -1,5 +1,6 @@
 import { api } from '/web/api.js';
 import { sendNative } from '/web/native-bridge.js';
+import { previewResolutionPreference } from '/web/preview-preferences.js';
 
 const byId = (id) => document.getElementById(id);
 const VALID_BACKGROUNDS = new Set(['#0f0f0f', '#121212', '#252525', '#777777', '#ffffff']);
@@ -18,6 +19,12 @@ export function installSettings(context) {
   let currentPrefs = {};
 
   const pref = (key, fallback) => currentPrefs[key] ?? fallback;
+  const syncPreviewSummary = () => {
+    const value = byId('pw').value;
+    byId('settingsPreviewSummary').textContent = value === 'auto'
+      ? 'Automatic · matches the window, display, and zoom.'
+      : `Manual override · ${value} px. Choose Automatic in Advanced to match the view.`;
+  };
   const showSidecarStatus = (status) => {
     const label = byId('sidecarWriteStatus');
     label.textContent = status.error ? status.error
@@ -167,7 +174,8 @@ export function installSettings(context) {
     byId('settingsExternalEditBitDepth').value = String(pref('externalEditBitDepth', 16));
     byId('settingsExternalEditStack').checked = pref('externalEditStack', true);
     byId('settingsEngine').value = pref('engine', byId('engine')?.value || 'auto');
-    byId('settingsPreviewWidth').value = pref('pw', byId('pw')?.value || 'auto');
+    byId('pw').value = previewResolutionPreference(currentPrefs);
+    syncPreviewSummary();
     const budget = Math.round(Number(pref('cacheBudgetGB', 7.5)));
     byId('cacheBudgetGB').value = String(Math.max(2, Math.min(32, budget)));
     byId('cacheBudgetGBV').textContent = `${byId('cacheBudgetGB').value} GB`;
@@ -343,9 +351,9 @@ export function installSettings(context) {
     context.updateRuntimeControl('engine', event.target.value);
     savePatch({ engine: event.target.value });
   });
-  byId('settingsPreviewWidth').addEventListener('change', (event) => {
-    context.updateRuntimeControl('pw', event.target.value);
-    savePatch({ pw: event.target.value });
+  byId('pw').addEventListener('change', (event) => {
+    syncPreviewSummary();
+    savePatch({ previewResolution: event.target.value });
   });
 
   window.addEventListener('keydown', (event) => {
