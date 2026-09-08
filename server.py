@@ -79,6 +79,7 @@ from events import EventBroker, encode_sse  # noqa: E402
 from jobs import JobRegistry  # noqa: E402
 from validation import ValidationError, clean_state_patch  # noqa: E402
 from render_scheduling import LatestWorkQueue, PriorityGate, RenderCancelled  # noqa: E402
+from raw_decode_cache import DecodedRawCache, source_identity  # noqa: E402
 
 FOLDER = Path(os.environ.get("LIGHTTABLE_DIR", "")).expanduser()
 PORT = int(os.environ.get("LIGHTTABLE_PORT", "8321"))
@@ -2036,6 +2037,7 @@ def cache_status() -> dict:
 def purge_generated_cache() -> dict:
     """Delete only generated files below this instance's exact cache root."""
     color_pipeline.RAW_DEMOSAIC_CACHE.clear()
+    NEUTRAL_DISPLAY_CACHE.clear()
     EXPORT_SHARED_CACHE.clear()
     removed, bytes_removed = 0, 0
     root = CACHE.resolve()
@@ -2351,7 +2353,10 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
     return t
 
 
-NEUTRAL_PREVIEW_CACHE_VERSION = 3
+NEUTRAL_PREVIEW_CACHE_VERSION = 4
+# Retain the developed pixels independently of the requested JPEG size. RGB16
+# keeps rounding below preview precision and halves the float32 memory cost.
+NEUTRAL_DISPLAY_CACHE = DecodedRawCache(256 * 1024 * 1024)
 
 
 def neutral_preview_path(name: str, width: int, rotate: float = 0,
@@ -2375,9 +2380,17 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
         if learned:
             image = color_pipeline.load_float_rgb(neutral_tiff_for(name, params))
         else:
+            import raw_decode_runtime
+            identity = source_identity(src_path(name))
             linear = color_pipeline.decode_raw(
                 src_path(name), params, max_width=width)
-            image = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+            key = (identity, color_pipeline.raw_decode_fingerprint(params),
+                   linear.shape) if identity is not None else None
+            def develop():
+                display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+                return (display * 65535.0 + 0.5).astype(np.uint16)
+            image = NEUTRAL_DISPLAY_CACHE.get_or_build(
+                key, develop, raw_decode_runtime.check_cancel)
     else:
         image = platform_image.processed_preview(
             src_path(name), width, app_root=APP, output_space="srgb")
@@ -3895,23 +3908,20 @@ def _render_preview(name: str, params: dict, width: int,
     # Once accurate pixels are visible, an embedded-camera film pass would
     # only be discarded by the window. Prepare the accurate input first and
     # spend the film render on pixels the window can actually present.
-    if is_raw(name) and not allow_draft:
+    if is_raw(name) and cp["profile_enabled"] and not allow_draft:
         if render_is_stale(client, generation):
             return {"cancelled": True, "reason": "superseded"}
-        if cp["profile_enabled"]:
-            build_raw_preview(name, width, "full", params)
-        else:
-            build_neutral_preview(name, width, cp["rotate"], cp)
+        build_raw_preview(name, width, "full", params)
     if not cp["profile_enabled"]:
         t0 = time.time()
         accurate = neutral_preview_path(name, width, cp["rotate"], cp)
-        refining = bool(is_raw(name) and not accurate.exists())
-        if refining:
-            preview_image = orig_jpeg(name, width, cp["rotate"])
-            image_url = (f"/api/orig?name={quote(name, safe='')}&w={width}"
-                         f"&rot={cp['rotate']}&key={file_key(name)}"
-                         f"&v={ORIGINAL_PREVIEW_CACHE_VERSION}")
-        elif is_raw(name):
+        cached = not is_raw(name) or accurate.exists()
+        if is_raw(name):
+            # The embedded JPEG has the camera's tone curve and brightness.
+            # Showing it before Develop produces a visible exposure change.
+            # Use the actual RAW conversion from the first displayed frame.
+            if not cached:
+                accurate = build_neutral_preview(name, width, cp["rotate"], cp)
             preview_image = accurate
             image_url = (f"/api/neutral?name={quote(name, safe='')}&w={width}"
                          f"&rot={cp['rotate']}&rk="
@@ -3928,7 +3938,7 @@ def _render_preview(name: str, params: dict, width: int,
         response = {
             "ms": int((time.time() - t0) * 1000), "match": 1.0,
             "engine": "source", "profile_enabled": False,
-            "cached": not refining, "refining": refining,
+            "cached": cached, "refining": False,
             "img": image_url, "key": source_key,
         }
         if native:

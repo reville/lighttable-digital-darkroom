@@ -45,11 +45,12 @@ class CompareOriginalTests(unittest.TestCase):
                                                decoded.getpixel((x, 32)), atol=1)
 
     @unittest.skipUnless(shutil.which("node"), "Node.js is unavailable")
-    def test_finished_raw_replaces_draft_in_both_display_paths(self):
+    def test_raw_opens_accurately_and_cache_hit_does_not_replace_pixels(self):
         accurate = mock.Mock()
         accurate.exists.side_effect = [False, True]
         with mock.patch.object(server, "neutral_preview_path", return_value=accurate), \
-                mock.patch.object(server, "orig_jpeg", return_value=b"draft"), \
+                mock.patch.object(server, "orig_jpeg", side_effect=AssertionError("camera flash")), \
+                mock.patch.object(server, "build_neutral_preview", return_value=accurate), \
                 mock.patch.object(server, "guard_local_photo"), \
                 mock.patch.object(server, "file_key", return_value="source"):
             responses = [server.render_preview("photo.dng", {"profile_enabled": False}, 1100)
@@ -69,8 +70,8 @@ const responses = RESPONSE;
   await context.load(responses[0], 1);
   S.renderState='ready'; S.seq=2;
   await context.load(responses[1], 2);
-  assert.equal(uploads.length, 2, native ? 'Metal kept draft' : 'WebGL kept draft');
-  assert.match(uploads[1], /api\\/neutral/);
+  assert.equal(uploads.length, 1, 'cached neutral preview must not upload again');
+  assert.match(uploads[0], /api\\/neutral/);
 }})().catch(e => {console.error(e); process.exitCode=1;});
 """.replace("RESPONSE", json.dumps(responses)).replace("SOURCE", json.dumps(source))
         result = subprocess.run(["node", "-e", script], capture_output=True, text=True, timeout=10)

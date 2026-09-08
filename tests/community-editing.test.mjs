@@ -139,6 +139,8 @@ test('preview status distinguishes refining, incomplete detail and true 100% rea
   assert.equal(previewDetailLabel({state:'ready',refining:true,actual:true}),'Refining RAW detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:1100,requested:6000,source:6000,actual:true}),'Updating preview detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:6000,requested:6000,source:6000,actual:true}),'100% detail ready');
+  assert.equal(previewDetailLabel({state:'ready',delivered:6024,renderedWidth:6048,requested:6048,source:6048,actual:true}),'Preview 6024 px · source 6048 px');
+  assert.equal(previewDetailLabel({state:'ready',delivered:1100,renderedWidth:1100,requested:6048,source:6048,actual:true}),'Updating preview detail…');
   assert.equal(previewDetailLabel({state:'ready',delivered:8000,requested:8000,source:12000,actual:true}),'Preview 8000 px · source 12000 px');
   assert.equal(previewDetailLabel({state:'ready',delivered:1400,requested:1400,source:6000,actual:false}),'');
   assert.equal(previewDetailLabel({state:'error',actual:true}),'');

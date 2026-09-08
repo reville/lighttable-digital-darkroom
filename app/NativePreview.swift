@@ -352,6 +352,7 @@ final class NativePreviewRenderer {
     private var originalURL: URL?
     private var requestedGeneration = 0
     private var awaitingPhoto = false
+    private var preparingSurface = false
 
     func beginNavigation(generation: Int) {
         requestedGeneration = generation
@@ -389,6 +390,7 @@ final class NativePreviewRenderer {
         metalView.isPaused = true
         metalView.enableSetNeedsDisplay = false
         metalView.autoResizeDrawable = true
+        metalView.presentsWithTransaction = true
         metalView.clearColor = MTLClearColorMake(0.0627, 0.0627, 0.0627, 1)
         metalView.colorspace = CGColorSpace(name: CGColorSpace.sRGB)
         metalView.isHidden = true
@@ -454,10 +456,16 @@ final class NativePreviewRenderer {
         let nextViewport = SIMD4<Float>(uvScale.x, uvScale.y, uvOffset.x, uvOffset.y)
         let hidden = !visible || frame.width < 1 || frame.height < 1
         guard view.frame != nextFrame || viewport != nextViewport || view.isHidden != hidden else { return }
+        // Resize and the matching source window must reach the compositor in
+        // the same transaction. Otherwise it stretches the previous drawable
+        // into the new clipped rectangle until the deferred render arrives.
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        defer { CATransaction.commit() }
         if view.frame != nextFrame { view.frame = nextFrame }
         viewport = nextViewport
         view.isHidden = hidden
-        if !hidden, imageTexture != nil { scheduleRender() }
+        if !hidden, imageTexture != nil { render() }
     }
 
     func setBackgroundColor(_ color: NSColor) {
@@ -723,11 +731,7 @@ final class NativePreviewRenderer {
         requestedGeneration = generation
         let started = ProcessInfo.processInfo.systemUptime
         if let cached = textureCache.value(for: cacheKey(surface)) {
-            awaitingPhoto = false
-            prepare?()
-            updateGrade(grade, renderNow: false)
-            setImageTexture(cached, surface: surface)
-            render { gpuMs in
+            installSurface(cached, surface: surface, grade: grade, prepare: prepare) { gpuMs in
                 guard let gpuMs else {
                     completion(.failure(NativePreviewError.drawableUnavailable)); return
                 }
@@ -783,12 +787,8 @@ final class NativePreviewRenderer {
                     }
                     DispatchQueue.main.async {
                         guard generation == self.requestedGeneration else { return }
-                        self.awaitingPhoto = false
-                        prepare?()
-                        self.updateGrade(grade, renderNow: false)
                         self.cacheTexture(texture, surface: surface)
-                        self.setImageTexture(texture, surface: surface)
-                        self.render { gpuMs in
+                        self.installSurface(texture, surface: surface, grade: grade, prepare: prepare) { gpuMs in
                             guard let gpuMs else {
                                 completion(.failure(
                                     NativePreviewError.drawableUnavailable))
@@ -821,12 +821,8 @@ final class NativePreviewRenderer {
                 let mappedAt = ProcessInfo.processInfo.systemUptime
                 DispatchQueue.main.async {
                     guard generation == self.requestedGeneration else { return }
-                    self.awaitingPhoto = false
-                    prepare?()
-                    self.updateGrade(grade, renderNow: false)
                     self.cacheTexture(texture, surface: surface)
-                    self.setImageTexture(texture, surface: surface)
-                    self.render { gpuMs in
+                    self.installSurface(texture, surface: surface, grade: grade, prepare: prepare) { gpuMs in
                         guard let gpuMs else {
                             completion(.failure(NativePreviewError.drawableUnavailable))
                             return
@@ -842,6 +838,25 @@ final class NativePreviewRenderer {
         } else {
             fetchHTTP()
         }
+    }
+
+    private func installSurface(
+        _ texture: MTLTexture, surface: NativeSurfaceDescription,
+        grade: [String: Any], prepare: (() -> Void)?,
+        completion: @escaping (Double?) -> Void
+    ) {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        defer { CATransaction.commit() }
+        awaitingPhoto = false
+        // Preparation can resize the view and update masks. Suppress any
+        // intermediate draw until the new pixels and recipe are all installed.
+        preparingSurface = true
+        prepare?()
+        updateGrade(grade, renderNow: false)
+        setImageTexture(texture, surface: surface)
+        preparingSurface = false
+        render(completion: completion)
     }
 
     private func setImageTexture(_ texture: MTLTexture, surface: NativeSurfaceDescription) {
@@ -1223,6 +1238,7 @@ final class NativePreviewRenderer {
         attempt: Int = 0,
         completion: ((Double?) -> Void)? = nil
     ) {
+        guard !preparingSurface else { return }
         view.drawFrame { [self] in
             renderFrame(attempt: attempt, completion: completion)
         }
@@ -1273,7 +1289,6 @@ final class NativePreviewRenderer {
                 DispatchQueue.main.async { callback?(sample) }
             }
         }
-        commandBuffer.present(drawable)
         if let completion {
             let started = ProcessInfo.processInfo.systemUptime
             commandBuffer.addCompletedHandler { _ in
@@ -1281,6 +1296,11 @@ final class NativePreviewRenderer {
             }
         }
         commandBuffer.commit()
+        // Transactional CAMetalLayer presentation requires scheduling the
+        // commands before presenting directly on the drawable (Apple's
+        // presentsWithTransaction contract). Do not use commandBuffer.present.
+        commandBuffer.waitUntilScheduled()
+        drawable.present()
     }
 }
 
