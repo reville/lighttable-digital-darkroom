@@ -2179,7 +2179,8 @@
         {
           "title": "Commencer avec une pellicule",
           "paragraphs": [
-            "Film applique un film modélisé et un processus de sortie à une photo fixe. L’interrupteur de profil Film contrôle ce traitement ; vos ajustements Modifier restent actifs lorsque vous désactivez Film."
+            "Film applique un film modélisé et un processus de sortie à une photo fixe. L’interrupteur de profil Film contrôle ce traitement ; vos ajustements Modifier restent actifs lorsque vous désactivez Film.",
+            "Réinitialiser dans Simulation de film réaliste rétablit les valeurs par défaut de tous les curseurs Film. Réinitialiser dans une section ne concerne que les curseurs de cette section. Les interrupteurs et les options sélectionnées restent inchangés."
           ],
           "steps": [
             "Ouvrez une photo fixe et sélectionnez Film dans la barre d’outils pour ouvrir Simulation de film réaliste.",
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
 }

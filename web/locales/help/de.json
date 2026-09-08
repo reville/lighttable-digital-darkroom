@@ -2179,7 +2179,8 @@
         {
           "title": "Mit einem Film beginnen",
           "paragraphs": [
-            "Film wendet auf ein Standbild einen modellierten Film- und Ausgabeprozess an. Der Filmprofil-Schalter steuert diese Verarbeitung; Ihre Bearbeiten-Anpassungen bleiben aktiv, wenn Sie Film ausschalten."
+            "Film wendet auf ein Standbild einen modellierten Film- und Ausgabeprozess an. Der Filmprofil-Schalter steuert diese Verarbeitung; Ihre Bearbeiten-Anpassungen bleiben aktiv, wenn Sie Film ausschalten.",
+            "Zurücksetzen in Realistische Filmsimulation setzt alle Film-Schieberegler auf ihre Standardwerte zurück. Zurücksetzen in einem Abschnitt betrifft nur dessen Schieberegler. Schalter und ausgewählte Optionen bleiben unverändert."
           ],
           "steps": [
             "Öffnen Sie ein Standbild und wählen Sie Film in der Werkzeugleiste, um Realistic Film Simulation zu öffnen.",
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1"
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27"
 }

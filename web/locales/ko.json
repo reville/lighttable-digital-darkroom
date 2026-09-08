@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "로컬 복구가 라이브러리 열기 시 미해결 변경 사항을 찾으면 저장되지 않음 편집 복구?에 영향을 받은 사진이 나열됩니다. 편집 복원은 해당 사진의 저장된 설정을 복구된 설정으로 바꿉니다. 저장된 편집 유지는 카탈로그 버전을 유지하고 해당 복구 초안을 버립니다.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "마스크를 전송할 수 없으면, 다른 그룹을 적용하려면 로컬 마스크 선택을 해제한 상태로 다시 복사하세요.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "필요하면 렌즈 프로필에서 다른 항목을 선택하고 보정을 원본과 비교하세요.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "1:1 버튼의 도구 설명에 표시되는 미리보기 픽셀 크기가 원본보다 작다면, 더 작은 전달 미리보기를 보고 있는 것입니다. 자동 해상도는 화면에 맞추고 확대 보기 요청 시 해상도를 높입니다. 매우 큰 원본은 미리보기 요청 한도를 초과할 수 있습니다.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac 앱이 정상 종료되지 않고 닫히면 다음에 실행할 때 진단 보고서가 열립니다. 렌더링 엔진이 예기치 않게 중지되면 엔진이 복구되는 동안 보고서가 열릴 수 있습니다. 보고서는 기록된 사건마다 한 번씩 표시됩니다. 닫기를 선택하면 계속 진행할 수 있습니다. 앱을 정상적으로 닫거나 렌더링 서비스를 다시 시작해도 보고서는 생성되지 않습니다.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Mac 첫 사용 선택 사항을 저장할 수 없으면 다시 시도하면 선택 내용이 유지되고 다시 시도합니다. 앱은 저장이 성공한 뒤에만 시작됩니다.",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "모든 색상 혼합기 채널 초기화",
     "Reset crop, rotation, flips, and perspective": "자르기, 회전, 뒤집기, 원근을 초기화",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "전체 톤, 색상, 곡선, 선명하게 하기, 노이즈 감소 및 효과를 초기화합니다",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "사실적인 필름 시뮬레이션의 초기화은 모든 필름 슬라이더를 기본값으로 되돌립니다. 각 섹션의 초기화은 해당 섹션의 슬라이더에만 적용됩니다. 스위치와 선택한 옵션은 그대로 유지됩니다.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "렌즈 프로필, 왜곡, 비네팅 및 색수차 보정 초기화",
     "Reset sharpening and noise reduction adjustments": "선명하게 하기와 노이즈 감소 조정을 초기화합니다",
+    "Reset sliders to their defaults": "슬라이더를 기본값으로 재설정",
     "Reset the RAW profile and capture-stage processing settings": "RAW 프로필과 캡처 단계 처리 설정을 초기화합니다",
     "Reset the combined RGB and individual channel curves": "병합된 RGB 및 개별 채널 곡선을 초기화합니다",
-    "Reset the film profile and physical film stages for this photo": "이 사진의 필름 프로필과 물리적 필름 스테이지를 초기화합니다",
-    "Reset the film profile, stock, output, and capture settings": "필름 프로필, 스톡, 출력 및 캡처 설정을 초기화합니다",
-    "Reset the physical film stage controls to their defaults": "물리적 필름 스테이지 컨트롤을 기본값으로 초기화합니다",
     "Reset this slider": "이 슬라이더 초기화",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "화이트 밸런스, 생동감, 채도, 색상 혼합기, 포인트 색상 및 색상 그레이딩 초기화",
     "Reset {value}": "{value} 초기화",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "원본 크기를 확인할 수 없으면 확대 비율에 —가 표시되고 1:1이 비활성화됩니다. Auto는 계속 화면에 맞게 미리보기를 조정합니다. 폴더를 다시 스캔하여 크기를 갱신하세요."
+    "☆ Favorites": "☆ 즐겨찾기"
   },
   "plurals": {
     " · {count} paired file linked": {

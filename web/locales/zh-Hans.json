@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "如果在资料库打开时本地恢复发现未完成的更改，“恢复未保存的编辑？”会列出受影响的照片。“还原编辑”会用恢复的设置替换其已保存的设置。“保留已保存的编辑”会保留目录版本并丢弃这些恢复草稿。",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "如果蒙版无法传输，请在取消勾选局部蒙版后再次复制，以应用其他组。",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "如有必要，请在镜头配置文件中选择不同的条目，并将修正与原图比较。",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原图尺寸不可用，缩放百分比会显示 —，且 1:1 将被禁用。Auto 仍会根据屏幕调整预览。重新扫描文件夹以更新尺寸。",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "如果 1:1 按钮的工具提示显示预览像素大小小于源文件，说明你看到的是较小的已交付预览。自动分辨率会适配显示并在缩放查看时提高请求；非常大的源文件可能会超过预览请求限制。",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "如果 Mac 应用未正常退出而关闭，下次启动时会打开诊断报告。如果其渲染引擎意外停止，报告可能会在引擎恢复时打开。每次记录到的事件只会显示一份报告；“关闭”可让你继续。正常关闭应用或重新启动其渲染服务不会生成报告。",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "如果 Mac 的首次使用选择无法保存，“再试一次”会保留该选择并重试。应用只会在保存成功后启动。",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "重置所有“颜色混合器”通道",
     "Reset crop, rotation, flips, and perspective": "重置裁剪、旋转、翻转和透视",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "重置全局色调、颜色、曲线、锐化、降噪和效果",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "“真实胶片模拟”中的“重置”会将所有胶片滑块恢复为默认值。各分区的“重置”仅影响该分区的滑块。开关和已选选项保持不变。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "重置镜头配置文件、失真、暗角和色差校正",
     "Reset sharpening and noise reduction adjustments": "重置锐化和降噪调整",
+    "Reset sliders to their defaults": "将滑块恢复为默认值",
     "Reset the RAW profile and capture-stage processing settings": "重置 RAW 配置文件和拍摄阶段处理设置",
     "Reset the combined RGB and individual channel curves": "重置合并的 RGB 曲线和各通道曲线",
-    "Reset the film profile and physical film stages for this photo": "重置此照片的胶片配置文件和实体胶片阶段",
-    "Reset the film profile, stock, output, and capture settings": "重置胶片配置文件、胶片、输出和拍摄设置",
-    "Reset the physical film stage controls to their defaults": "将实体胶片台控制恢复为默认值",
     "Reset this slider": "重置此滑块",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "重置白平衡、自然饱和度、饱和度、颜色混合器、点颜色和颜色分级",
     "Reset {value}": "重置 {value}",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原图尺寸不可用，缩放百分比会显示 —，且 1:1 将被禁用。Auto 仍会根据屏幕调整预览。重新扫描文件夹以更新尺寸。"
+    "☆ Favorites": "☆ 收藏"
   },
   "plurals": {
     " · {count} paired file linked": {

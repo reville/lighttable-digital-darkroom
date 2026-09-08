@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Se il recupero locale trova modifiche in sospeso all’apertura della libreria, Recupero modifiche non salvate? elenca le foto interessate. Ripristina modifiche sostituisce le impostazioni salvate con quelle recuperate. Conserva modifiche salvate mantiene la versione del catalogo e scarta le bozze di recupero.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Se le maschere non possono essere trasferite, copia di nuovo con Maschere locali deselezionato per applicare gli altri gruppi.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Se necessario, scegli una voce diversa in Profilo obiettivo e confronta la correzione con l’originale.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Se l'app per Mac si chiude senza una chiusura corretta, la prossima volta che la avvii si apre un report diagnostico. Se il suo motore di rendering si arresta in modo imprevisto, il report può aprirsi mentre il motore si ripristina. Il report appare una volta per ogni incidente registrato; Ignora ti consente di continuare. Chiudere normalmente l'app o riavviare il suo servizio di rendering non crea un report.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Se la scelta di primo utilizzo su Mac non può essere salvata, Riprova mantiene la selezione e ripete il tentativo. L'app si avvia solo dopo il salvataggio riuscito.",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "Reimposta tutti i canali del Miscelatore colore",
     "Reset crop, rotation, flips, and perspective": "Reimposta ritaglio, rotazione, capovolgimenti e prospettiva",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Reimposta tono globale, colore, curve, nitidezza, riduzione rumore ed effetti",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Reimposta in Simulazione realistica della pellicola riporta tutti i cursori Pellicola ai valori predefiniti. Reimposta in una sezione modifica solo i cursori di quella sezione. Gli interruttori e le opzioni selezionate restano invariati.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Reimposta le correzioni del profilo obiettivo, della distorsione, della vignettatura e dell'aberrazione cromatica",
     "Reset sharpening and noise reduction adjustments": "Reimposta le regolazioni di nitidezza e riduzione rumore",
+    "Reset sliders to their defaults": "Ripristina i valori predefiniti dei cursori",
     "Reset the RAW profile and capture-stage processing settings": "Reimposta il profilo RAW e le impostazioni di elaborazione della fase di acquisizione",
     "Reset the combined RGB and individual channel curves": "Reimposta le curve RGB combinate e le curve dei singoli canali",
-    "Reset the film profile and physical film stages for this photo": "Reimposta il profilo pellicola e le fasi fisiche della pellicola per questa foto",
-    "Reset the film profile, stock, output, and capture settings": "Reimposta il profilo pellicola, la pellicola, l'output e le impostazioni di acquisizione",
-    "Reset the physical film stage controls to their defaults": "Reimposta i controlli fisici dello stage pellicola ai valori predefiniti",
     "Reset this slider": "Reimposta questo cursore",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Reimposta bilanciamento del bianco, Vividezza, Saturazione, Miscelatore colore, Colore puntuale e Correzione colore",
     "Reset {value}": "Reimposta {value}",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
+    "☆ Favorites": "☆ Preferiti"
   },
   "plurals": {
     " · {count} paired file linked": {

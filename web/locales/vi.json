@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "Nếu khôi phục cục bộ tìm thấy các thay đổi chưa xử lý khi thư viện mở, Khôi phục chỉnh sửa chưa lưu? sẽ liệt kê các ảnh bị ảnh hưởng. Khôi phục chỉnh sửa sẽ thay thế các cài đặt đã lưu của chúng bằng các cài đặt đã khôi phục. Giữ các chỉnh sửa đã lưu sẽ giữ phiên bản danh mục và loại bỏ các bản nháp khôi phục đó.",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "Nếu mặt nạ không thể chuyển, hãy sao chép lại với Local masks bỏ chọn để áp dụng các nhóm khác.",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "Nếu cần, chọn một mục khác trong Lens profile và so sánh chỉnh sửa với bản gốc.",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước.",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Nếu ứng dụng Mac đóng mà không thoát sạch, báo cáo chẩn đoán sẽ mở vào lần tiếp theo bạn khởi chạy. Nếu công cụ kết xuất dừng đột ngột, báo cáo có thể mở trong khi công cụ đang phục hồi. Báo cáo xuất hiện một lần cho mỗi sự cố đã ghi nhận; Bỏ qua cho phép bạn tiếp tục. Đóng ứng dụng bình thường hoặc khởi động lại dịch vụ kết xuất của nó sẽ không tạo báo cáo.",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "Nếu lựa chọn dùng lần đầu trên Mac không thể lưu, Thử lại sẽ giữ nguyên lựa chọn và thử lại. Ứng dụng chỉ khởi chạy sau khi lưu thành công.",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "Đặt lại tất cả kênh của Bộ trộn màu",
     "Reset crop, rotation, flips, and perspective": "Đặt lại cắt xén, xoay, lật và phối cảnh",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "Đặt lại tông toàn cục, màu sắc, đường cong, làm sắc nét, khử nhiễu và hiệu ứng",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "Đặt lại trong Mô phỏng phim chân thực đưa tất cả thanh trượt Phim về giá trị mặc định. Đặt lại trong một phần chỉ ảnh hưởng đến các thanh trượt của phần đó. Các công tắc và tùy chọn đã chọn được giữ nguyên.",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "Đặt lại hồ sơ ống kính, biến dạng, tối góc và các hiệu chỉnh quang sai màu",
     "Reset sharpening and noise reduction adjustments": "Đặt lại các điều chỉnh làm sắc nét và khử nhiễu",
+    "Reset sliders to their defaults": "Đặt lại các thanh trượt về giá trị mặc định",
     "Reset the RAW profile and capture-stage processing settings": "Đặt lại hồ sơ RAW và cài đặt xử lý ở giai đoạn chụp",
     "Reset the combined RGB and individual channel curves": "Đặt lại các đường cong RGB tổng hợp và từng kênh riêng lẻ",
-    "Reset the film profile and physical film stages for this photo": "Đặt lại hồ sơ phim và các giai đoạn phim vật lý cho ảnh này",
-    "Reset the film profile, stock, output, and capture settings": "Đặt lại hồ sơ phim, phim, đầu ra và cài đặt chụp",
-    "Reset the physical film stage controls to their defaults": "Đặt lại các điều khiển giai đoạn phim vật lý về mặc định",
     "Reset this slider": "Đặt lại thanh trượt này",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "Đặt lại cân bằng trắng, Độ rực, Độ bão hòa, Bộ trộn màu, Màu sắc điểm và Chỉnh màu",
     "Reset {value}": "Đặt lại {value}",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ Quay lại",
     "← Back to articles": "← Quay lại bài viết",
     "← People": "← Mọi người",
-    "☆ Favorites": "☆ Mục yêu thích",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Nếu không có kích thước ảnh gốc, phần trăm thu phóng hiển thị — và 1:1 bị vô hiệu hóa. Auto vẫn điều chỉnh bản xem trước vừa với màn hình. Quét lại thư mục để cập nhật kích thước."
+    "☆ Favorites": "☆ Mục yêu thích"
   },
   "plurals": {
     " · {count} paired file linked": {

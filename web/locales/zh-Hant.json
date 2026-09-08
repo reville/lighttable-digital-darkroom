@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "035b1fc102891aac4fb335b6553894e7387313b11076e3e8f3e44406b2bf85a1",
+  "sourceDigest": "2331b2d9cb4f6bc1c834a8d74bbdf6f93bbe7ac753ba35ebd3f083ce1f89fd27",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1352,6 +1352,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "如果本機復原在圖庫開啟時找到尚未處理的變更，未儲存的編輯要復原？會列出受影響的相片。還原編輯會以復原後的設定取代其已儲存設定。保留已儲存編輯會保留目錄版本，並捨棄那些復原草稿。",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "如果遮罩無法傳輸，請取消勾選本機遮罩後再複製一次，以套用其他群組。",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "如有需要，請在鏡頭設定檔中選擇其他項目，並將修正與原始檔比較。",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原圖尺寸無法取得，縮放百分比會顯示 —，且 1:1 將停用。Auto 仍會依螢幕調整預覽。重新掃描資料夾以更新尺寸。",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "如果 1:1 按鈕的工具提示回報的預覽像素大小小於來源，表示您看到的是較小的已送達預覽。自動解析度會符合顯示並在放大檢視時提高其請求；非常大的來源可能會超過預覽請求限制。",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "如果 Mac 應用程式在未正常結束時關閉，您下次啟動時會開啟診斷報告。如果其算繪引擎非預期地停止，報告可能會在引擎復原時開啟。每次記錄到的事件只會顯示一份報告；關閉可讓您繼續使用。正常關閉應用程式或重新啟動其算繪服務不會建立報告。",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "如果 Mac 初次使用選項無法儲存，重試會保留選取內容並重新嘗試。應用程式只有在儲存成功後才會啟動。",
@@ -2298,13 +2299,12 @@
     "Reset all Color Mixer channels": "重設所有色彩混合器通道",
     "Reset crop, rotation, flips, and perspective": "重設裁切、旋轉、翻轉與透視",
     "Reset global tone, color, curves, sharpening, noise reduction, and effects": "重設全域色調、色彩、曲線、銳利化、雜訊降低與效果",
+    "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "「寫實底片模擬」中的「重設」會將所有底片滑桿恢復為預設值。各區段的「重設」僅影響該區段的滑桿。開關和已選選項保持不變。",
     "Reset lens profile, distortion, vignetting, and chromatic aberration corrections": "重設鏡頭描述檔、失真、暗角和色差校正",
     "Reset sharpening and noise reduction adjustments": "重設銳利化與雜訊降低調整",
+    "Reset sliders to their defaults": "將滑桿恢復為預設值",
     "Reset the RAW profile and capture-stage processing settings": "重設 RAW 描述檔與擷取階段處理設定",
     "Reset the combined RGB and individual channel curves": "重設合併的 RGB 與各別色版曲線",
-    "Reset the film profile and physical film stages for this photo": "重設此相片的底片描述檔與實體底片階段",
-    "Reset the film profile, stock, output, and capture settings": "重設底片描述檔、膠卷、輸出與擷取設定",
-    "Reset the physical film stage controls to their defaults": "將實體底片階段控制項重設為預設值",
     "Reset this slider": "重設此滑桿",
     "Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading": "重設白平衡、鮮豔度、飽和度、色彩混合器、點色彩和色彩分級",
     "Reset {value}": "重設 {value}",
@@ -4033,8 +4033,7 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "如果原圖尺寸無法取得，縮放百分比會顯示 —，且 1:1 將停用。Auto 仍會依螢幕調整預覽。重新掃描資料夾以更新尺寸。"
+    "☆ Favorites": "☆ 最愛"
   },
   "plurals": {
     " · {count} paired file linked": {
