@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279",
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Bir dışa aktarma, kataloglanmış bir orijinali veya onun yakalama eşlikçisini değiştiremez",
     "An external edit is already rendering": "Harici bir düzenleme zaten işleniyor",
     "Analysis stays on this Mac and never modifies photo folders.": "Analiz bu Mac’te kalır ve fotoğraf klasörlerini asla değiştirmez.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Fotoğraf yakınlaştırmasını canlandırır. Seçiminiz sistemin Hareketi Azalt ayarına göre önceliklidir.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Başka bir LightTable penceresi bu kütüphaneyi içe aktarıyor olabilir. O içe aktarmayı kapatın ve yeniden deneyin.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Başka bir uygulama XMP dosyasını değiştirdi. En son değişikliklerini birleştirmek için yeniden deneyin.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "LightTable’ın başka bir kopyası bu kütüphaneyi zaten açık tutuyor. O pencereyi kullanın ya da kapatın, sonra yeniden deneyin.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
     "Fit the whole photo to the available space": "Tüm fotoğrafı kullanılabilir alana sığdırın",
     "Fit to window ({actualPct}%)": "Pencereye sığdır ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayolları akıcı biçimde canlandırılır. Kaydırma, iki parmakla yakınlaştırma ve sürükleme doğrudan tepki verir. Sisteminizde Hareketi Azalt ayarı etkinleştirildiğinde yakınlaştırma animasyonu devre dışı kalır.",
     "Flag": "Bayrak",
     "Flag and rate survey photo": "İnceleme fotoğrafını işaretle ve derecelendir",
     "Flag and rating filters": "Bayrak ve derecelendirme filtreleri",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "Akıllı seçim eylemi",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Akıllı seçim eylemi, bir sonraki akıllı seçimin yeni bir maske mi olacağını yoksa şu anda seçili maskeyle mi birleşeceğini kontrol eder.",
     "Smooth color": "Rengi yumuşat",
+    "Smooth zoom": "Yumuşak yakınlaştırma",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
     "Snapshots": "Anlık görüntüler",
     "Soft Filmic": "Yumuşak Filmik",
     "Soft Proof": "Yumuşak Prova",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279",
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "لا يمكن للتصدير استبدال نسخة أصلية في الكتالوج أو مرافق الالتقاط الخاص بها",
     "An external edit is already rendering": "يوجد تحرير خارجي قيد العرض بالفعل",
     "Analysis stays on this Mac and never modifies photo folders.": "يبقى التحليل على هذا الـ Mac ولا يغيّر مجلدات الصور أبدًا.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "تحريك تكبير الصورة. يتجاوز اختيارك إعداد تقليل الحركة في النظام.",
     "Another LightTable window may be importing this library. Close that import and try again.": "قد تكون نافذة LightTable أخرى تستورد هذه المكتبة. أغلق ذلك الاستيراد وحاول مرة أخرى.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "غيّرت تطبيق آخر ملف XMP. أعد المحاولة لدمج أحدث التغييرات.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "توجد نسخة أخرى من LightTable مفتوحة بالفعل على هذه المكتبة. استخدم تلك النافذة أو أغلقها، ثم حاول مرة أخرى.",
@@ -1210,7 +1211,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "قد يؤدي الملاءمة إلى تكبير الصور الصغيرة. يعرض 1:1 وحدات البكسل الفعلية حتى عندما تصبح الصورة أصغر من وضع الملاءمة، ويحافظ على مقياس البكسل نفسه عند تغيير حجم النافذة.",
     "Fit the whole photo to the available space": "ملاءمة الصورة بالكامل في المساحة المتاحة",
     "Fit to window ({actualPct}%)": "ملاءمة إلى النافذة ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "تتحرك الملاءمة و1:1 وأزرار التكبير واختصاراته بسلاسة. يستجيب التمرير والقرص والسحب مباشرة. تُعطَّل حركة التكبير عند تفعيل إعداد تقليل الحركة في النظام.",
     "Flag": "علامة",
     "Flag and rate survey photo": "وضع علامة وتقييم صورة الاستعراض",
     "Flag and rating filters": "مرشحات العلامة والتقييم",
@@ -2651,6 +2651,8 @@
     "Smart selection action": "إجراء التحديد الذكي",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "يتحكم إجراء التحديد الذكي في ما إذا كان التحديد الذكي التالي يصبح قناعًا جديدًا أو يندمج مع القناع المحدد حاليًا.",
     "Smooth color": "لون ناعم",
+    "Smooth zoom": "تكبير سلس",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "يُشغّل خيار «تكبير سلس» في الإعدادات ← الواجهة حركة التكبير أو يوقفها لأمر ملاءمة و1:1 وأزرار التكبير والاختصارات. يتجاوز اختيارك إعداد تقليل الحركة؛ وحتى تختار، يتبع LightTable إعداد النظام. يستجيب التمرير والقرص والسحب مباشرةً.",
     "Snapshots": "اللقطات",
     "Soft Filmic": "فيلمي ناعم",
     "Soft Proof": "المعاينة البرمجية",

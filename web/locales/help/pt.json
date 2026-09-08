@@ -226,7 +226,7 @@
             "A barra lateral direita usa botões de ícone para Editar, Filme, Cortar, Remover, Máscaras, Informações, Histórico e Predefinições. Passe o mouse sobre um ícone para ver o nome dele.",
             "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
             "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
-            "Ajustar, 1:1, os botões e os atalhos de zoom têm animações suaves. Rolar, pinçar e arrastar respondem diretamente. A animação de zoom é desativada quando a opção Reduzir movimento do sistema está ativada."
+            "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -2730,6 +2730,7 @@
           "paragraphs": [
             "A maioria das alterações de configurações é salva automaticamente. O idioma usa Aplicar idioma e recarrega a janela após salvar as edições. Geral também controla Avanço automático após selecionar, rejeitar ou avaliar, notificações de conclusão e verificações de atualização.",
             "Interface controla o fundo do visualizador, a escala da fonte, Lights Out, a sobreposição de informações da lupa e as guias de corte. Essas preferências alteram a aparência do espaço de trabalho sem modificar os pixels exportados.",
+            "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente.",
             "Arquivos e metadados controla edições portáteis do LightTable ao lado dos originais, gravação automática de XMP, pareamento RAW/JPEG e entrada de palavras-chave. As edições portáteis completas usam .lighttable-state.json; XMP carrega edições e metadados compatíveis. A sincronização XMP preserva campos não relacionados e relata alterações externas conflitantes; leia metadados de Exchange por meio de sidecars XMP para o fluxo de trabalho compatível."
           ]
         },
@@ -3128,5 +3129,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "45c7ddb637737dbb891c2a9926a342b1ac827a504bbca16311c3099207da7279"
+  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
 }
