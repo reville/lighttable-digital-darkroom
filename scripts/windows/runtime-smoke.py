@@ -104,18 +104,24 @@ def check_file_identity(temp_path: Path) -> None:
     key = file_identity.signature_key(original, path=source)
     digest = file_identity.content_hash(source, expected_signature=key)
     with source.open("rb") as stream:
+        stream.seek(3)
         assert file_identity.stat_signature(os.fstat(stream.fileno()),
                                             fd=stream.fileno()) == signature
-        assert stream.read() == b"original pixels", "Identity closed a borrowed handle"
+        assert stream.tell() == 3, "Identity moved a borrowed file position"
+        assert stream.read() == b"ginal pixels", "Identity closed a borrowed handle"
 
     # Keep the inode, length, and modification time while changing the bytes.
-    # On Windows, only the native ChangeTime distinguishes this revision.
+    # ChangeTime can also stay equal within one Windows clock tick. The fresh
+    # complete content signature must distinguish this revision without sleeps.
     with source.open("r+b") as stream:
         stream.write(b"replaced pixels")
     os.utime(source, ns=(original.st_atime_ns, original.st_mtime_ns))
     current = source.stat()
     assert file_identity.stat_signature(current, path=source)[:4] == signature[:4]
-    assert file_identity.signature_key(current, path=source) != key
+    current_signature = file_identity.stat_signature(current, path=source)
+    assert file_identity.signature_key(current, path=source) != key, {
+        "before": signature, "after": current_signature,
+    }
     assert file_identity.content_hash(source) != digest
     try:
         file_identity.content_hash(source, expected_signature=key)
@@ -125,6 +131,19 @@ def check_file_identity(temp_path: Path) -> None:
         raise AssertionError("Replaced bytes passed the queued source guard")
 
     if os.name == "nt":
+        api = file_identity._windows_bindings()
+        with source.open("rb") as stream:
+            locked_fd = api.reopen_content_fd(stream.fileno())
+            try:
+                try:
+                    with source.open("r+b"):
+                        pass
+                except PermissionError:
+                    pass
+                else:
+                    raise AssertionError("Content identity allowed a concurrent writer")
+            finally:
+                os.close(locked_fd)
         other = temp_path / "other-identity.bin"
         other.write_bytes(b"replaced pixels")
         os.utime(other, ns=(current.st_atime_ns, current.st_mtime_ns))

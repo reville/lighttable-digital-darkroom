@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+from contextlib import ExitStack
 from functools import lru_cache
 from pathlib import Path
 
@@ -14,7 +15,7 @@ _WINDOWS = os.name == "nt"
 
 
 class _WindowsBindings:
-    """Metadata access only; initialized lazily on Windows, once per process."""
+    """Native file handles; initialized lazily on Windows, once per process."""
 
     def __init__(self):
         import ctypes
@@ -32,6 +33,10 @@ class _WindowsBindings:
             wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD,
             wintypes.HANDLE]
         self.create_file.restype = wintypes.HANDLE
+        self.reopen_file = kernel.ReOpenFile
+        self.reopen_file.argtypes = [wintypes.HANDLE, wintypes.DWORD,
+                                    wintypes.DWORD, wintypes.DWORD]
+        self.reopen_file.restype = wintypes.HANDLE
         self.query_file = kernel.GetFileInformationByHandleEx
         self.query_file.argtypes = [wintypes.HANDLE, ctypes.c_int,
                                    wintypes.LPVOID, wintypes.DWORD]
@@ -70,6 +75,21 @@ class _WindowsBindings:
             raise OSError(T("The filesystem does not provide a file change time"))
         return int(info.ChangeTime)
 
+    def reopen_content_fd(self, fd):
+        # ReOpenFile preserves the object identity but has an independent file
+        # pointer. Deny concurrent writers/deleters for the complete read; a
+        # timestamp cannot detect every write made within one clock tick.
+        # OPEN_NO_RECALL supplements the attribute-only availability checks.
+        handle = self.reopen_file(self.get_osfhandle(fd), 0x80000000, 0x1,
+                                  0x00100000 | 0x08000000)
+        if handle == self.invalid_handle:
+            raise self.ctypes.WinError()
+        try:
+            return self.open_osfhandle(handle, os.O_RDONLY | getattr(os, "O_BINARY", 0))
+        except BaseException:
+            self.close_handle(handle)
+            raise
+
 
 @lru_cache(maxsize=1)
 def _windows_bindings():
@@ -79,7 +99,7 @@ def _windows_bindings():
 def _stat_fields(stat) -> tuple[int, int, int, int, int]:
     # CPython 3.13 path stat keeps legacy ctime=creation, while fstat may
     # expose native change time. Normalize both to birthtime on Windows;
-    # the independent native counter below supplies revision validation.
+    # the native timestamp and complete digest below validate the revision.
     ctime = getattr(stat, "st_birthtime_ns", stat.st_ctime_ns) if _WINDOWS else stat.st_ctime_ns
     return (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns,
             ctime)
@@ -105,12 +125,68 @@ def _windows_change_time(stat, *, path=None, fd=None):
             os.close(owned_fd)
 
 
-def stat_signature(stat, *, path=None, fd=None) -> tuple[int, ...]:
+def _require_windows_local(stat, path=None):
+    media_availability.require_local(path, stat=stat)
+    # OFFLINE, RECALL_ON_OPEN and RECALL_ON_DATA_ACCESS are exposed by Windows
+    # stat without reading bytes. A read must never hydrate these placeholders.
+    if getattr(stat, "st_file_attributes", 0) & (0x1000 | 0x40000 | 0x400000):
+        raise OSError(T("This photo is unavailable. Reconnect its source and rescan."))
+
+
+def _read_descriptor_digest(fd, size):
+    """Read at most the observed size plus one byte, preserving the position."""
+    position = os.lseek(fd, 0, os.SEEK_CUR)
+    try:
+        os.lseek(fd, 0, os.SEEK_SET)
+        digest = hashlib.blake2b(digest_size=16)
+        remaining = size
+        while remaining >= 0:
+            block = os.read(fd, min(1 << 20, remaining + 1))
+            if not block:
+                break
+            digest.update(block)
+            remaining -= len(block)
+        if remaining != 0:
+            raise OSError(T("File changed while querying its identity"))
+        return digest.hexdigest()
+    finally:
+        os.lseek(fd, position, os.SEEK_SET)
+
+
+def _windows_content_signature(stat, *, path=None, fd=None):
+    if fd is None and path is None:
+        raise OSError(T("A file path or descriptor is required for Windows identity"))
+    _require_windows_local(stat, path)
+    api = _windows_bindings()
+    with ExitStack() as handles:
+        if fd is None:
+            fd = api.open_metadata_fd(path)
+            handles.callback(os.close, fd)
+        _require_windows_local(os.fstat(fd), path)
+        before = _windows_change_time(stat, fd=fd)
+        read_fd = api.reopen_content_fd(fd)
+        handles.callback(os.close, read_fd)
+        _require_windows_local(os.fstat(read_fd), path)
+        if _windows_change_time(stat, fd=read_fd) != before:
+            raise OSError(T("File changed before querying its identity"))
+        digest = _read_descriptor_digest(read_fd, stat.st_size)
+        if _windows_change_time(stat, fd=read_fd) != before:
+            raise OSError(T("File changed while querying its identity"))
+        # The metadata handle may have been opened before a pathname swap.
+        # Recheck that path while this object's deny-write/delete lock is held.
+        if path is not None and _stat_fields(Path(path).stat()) != _stat_fields(stat):
+            raise OSError(T("File changed while querying its identity"))
+        return before, digest
+
+
+def stat_signature(stat, *, path=None, fd=None) -> tuple[int | str, ...]:
     signature = _stat_fields(stat)
     if _WINDOWS:
-        # Python <=3.13 exposes creation time as st_ctime_ns on Windows. The
-        # native change time also invalidates writes that restore the mtime.
-        signature += (_windows_change_time(stat, path=path, fd=fd),)
+        # ChangeTime is a timestamp, not a revision counter: same-size writes
+        # can preserve it and mtime. Windows therefore rereads all local bytes
+        # for every identity check, including warm-cache checks. This costs
+        # disk I/O but never reuses stale content solely on timestamp equality.
+        signature += _windows_content_signature(stat, path=path, fd=fd)
     return signature
 
 
@@ -134,6 +210,10 @@ def content_hash(path: Path | str, *, expected_revision=None,
     if expected_revision is not None and expected_revision != (
             before.st_size, before.st_mtime_ns):
         raise OSError(T("file changed before hashing: {path}", path=path))
+    if _WINDOWS:
+        # The strong signature already read and validated the complete file.
+        # Do not recursively call content_hash or perform another full read.
+        return before_signature[-1]
     digest = hashlib.blake2b(digest_size=16)
     with path.open("rb") as stream:
         fd = stream.fileno()
