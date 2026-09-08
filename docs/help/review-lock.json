@@ -262,7 +262,7 @@
         "web/app.js": "064a74bcda38c2b9c8f89ef43b740f54cb21f9e63ceeb6f48061b6b34bf8a47c",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
         "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
-        "web/style.css": "b53acec30f37472811e4e62214a9a944e6fa1506b6a90ebe8fe73e5a2f00bcd1"
+        "web/style.css": "02c027fe160e4c3028773a0fb487e6e504134ad61f212a64c7e8bc4a68bcc84d"
       }
     },
     "film-grain-and-format": {
@@ -352,7 +352,7 @@
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "4f9101296cb8bf1c269b20afe60ef13d3cb2903733c74fcd733e97db7cb61947",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb",
-        "web/style.css": "b53acec30f37472811e4e62214a9a944e6fa1506b6a90ebe8fe73e5a2f00bcd1",
+        "web/style.css": "02c027fe160e4c3028773a0fb487e6e504134ad61f212a64c7e8bc4a68bcc84d",
         "web/view-performance.js": "8284cb871f75d1774996af75f78a434af92d33a001e647ab64a2fac0fa88fb6c"
       }
     },
@@ -443,7 +443,7 @@
         "web/app.js": "064a74bcda38c2b9c8f89ef43b740f54cb21f9e63ceeb6f48061b6b34bf8a47c",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
         "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
-        "web/style.css": "b53acec30f37472811e4e62214a9a944e6fa1506b6a90ebe8fe73e5a2f00bcd1"
+        "web/style.css": "02c027fe160e4c3028773a0fb487e6e504134ad61f212a64c7e8bc4a68bcc84d"
       }
     },
     "virtual-copies-and-stacks": {

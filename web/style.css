@@ -954,7 +954,20 @@ a.reset:hover { color:#fff; }
 .btnrow { display:flex; gap:8px; }
 .btnrow button { flex:1; min-width:0; padding-inline:8px; }
 .camera-default-actions #rawResetCameraDefault { flex:0 0 auto; }
-.path-field { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; }
+.path-field { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; }
+.path-field::before {
+  content:"";
+  position:absolute;
+  inset-inline-start:9px;
+  top:50%;
+  transform:translateY(-50%);
+  width:16px;
+  height:16px;
+  background:var(--muted);
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M2.5 5a1 1 0 0 1 1-1H8l2 2h6.5a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1Z' fill='none' stroke='black' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events:none;
+}
+.path-field input { padding-inline-start:32px; }
 .path-field button { white-space:nowrap; }
 .pane-content { padding:8px 16px 24px; }
 .pane-content .field-label { margin-top:14px; }
