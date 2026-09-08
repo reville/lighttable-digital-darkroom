@@ -103,6 +103,7 @@ Internal browser/native routes are declared rather than hidden:
 - `/api/export/preview` — read-only export dialog delivery example.
 - `/api/thumb/rendered` — edit-aware browser thumbnail replacement.
 - `/api/render/native` — native surface transport.
+- `/api/render/png` — lossless corrected preview transport.
 - `/api/render/helper` — browser helper generated from a native surface.
 - `/api/render/image` — cached base-render bytes.
 - `/api/edit/image` — cached base-edit bytes.
