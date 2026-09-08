@@ -19,3 +19,11 @@ directory, copies the two source images there, remaps the sanitised root, and
 performs an end-to-end import. Routine migration testing therefore does not
 require Lightroom Classic to be installed; Lightroom is only needed when this
 fixture must be regenerated for a new catalog schema.
+
+# GPU grade precision fixture
+
+`gpu-grade-dark-uniformity.npy` contains only the pixel values of a 17×17
+float32 RGB crop from a dark photograph. Its center pixel exposed
+Point Color luminance uniformity amplifying tiny earlier GPU rounding
+differences. The regression tiles this crop without resampling so its center
+pixel retains the exact neighbor context while exercising export-size routing.

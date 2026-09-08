@@ -19,6 +19,24 @@ def parse_where(expressions: list[str] | None, *, limit: int = 5000,
         "from": "dateFrom", "to": "dateTo", "q": "query",
     }
     for expression in expressions or []:
+        numeric = {"iso": "iso", "focal-length": "focalLength", "aperture": "aperture", "shutter": "shutter"}
+        matched = False
+        for operator, suffix in ((">=", "Min"), ("<=", "Max"), ("=", "")):
+            if operator not in expression:
+                continue
+            key, value = expression.split(operator, 1)
+            if key not in numeric:
+                continue
+            from dam_filters import positive_number
+            number = positive_number(value)
+            if number is None:
+                raise ValueError(f"invalid exposure selector: {expression}")
+            for bound in ([suffix] if suffix else ["Min", "Max"]):
+                filters[numeric[key] + bound] = number
+            matched = True
+            break
+        if matched:
+            continue
         if ">=" in expression:
             key, value = expression.split(">=", 1)
             if key != "rating":

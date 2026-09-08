@@ -1,9 +1,15 @@
 import tempfile
 import unittest
+import json
 from pathlib import Path
+from unittest import mock
+import xml.etree.ElementTree as ET
 
 import preset_io
 import xmp_sidecar
+
+
+FIXTURES = Path(__file__).parent / "fixtures" / "xmp"
 
 
 ATTRIBUTE_XMP = """<?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>
@@ -298,6 +304,242 @@ class EditPatchTests(unittest.TestCase):
         self.assertIsNone(patch["crop"])
         self.assertEqual(patch["optics"], {})
         self.assertEqual(patch["mapped"], 0)
+
+
+class InterchangeTests(unittest.TestCase):
+    def fixture(self, name):
+        return (FIXTURES / f"{name}-representative.xmp").read_text()
+
+    def test_photo_mechanic_tag_custom_label_and_flat_terms(self):
+        parsed = xmp_sidecar.parse(self.fixture("photo-mechanic"))
+        self.assertEqual(parsed["status"], "approved")
+        self.assertEqual(parsed["rating"], 4)
+        self.assertEqual(parsed["label"], "Ready for WEB")
+        self.assertEqual(parsed["metadataKeywords"],
+                         ["Animals > dog", "Weather > snow", "Assignment 27"])
+        self.assertEqual(parsed["caption"], "A dog in the snow & wind.")
+
+    def test_digikam_native_fields_and_alternate_namespace_prefixes(self):
+        parsed = xmp_sidecar.parse(self.fixture("digikam"))
+        self.assertEqual(parsed["rating"], 5)
+        self.assertEqual(parsed["status"], "approved")
+        self.assertEqual(parsed["label"], "purple")
+        self.assertEqual(parsed["metadataKeywords"],
+                         ["Places > France > Paris", "People > Friends", "Trip 2026"])
+
+    def test_all_digikam_pick_states_and_reject_precedence(self):
+        original = self.fixture("digikam")
+        for pick, status in {0: "pending", 1: "skipped", 2: "pending", 3: "approved"}.items():
+            with self.subTest(pick=pick):
+                parsed = xmp_sidecar.parse(original.replace(
+                    "<dk:PickLabel>3", f"<dk:PickLabel>{pick}"))
+                self.assertEqual(parsed["status"], status)
+                self.assertEqual(parsed["rejected"], status == "skipped")
+        self.assertEqual(xmp_sidecar.parse(original.replace(
+            "<a:Rating>5", "<a:Rating>-1"))["status"], "skipped")
+
+    def test_nonfinite_and_invalid_external_numbers_do_not_raise(self):
+        for value in ("NaN", "Infinity", "-Infinity", "unknown"):
+            parsed = xmp_sidecar.parse(self.fixture("digikam").replace(
+                "<a:Rating>5", f"<a:Rating>{value}"))
+            self.assertIsNone(parsed["rating"])
+
+    def test_metadata_round_trip_updates_both_keyword_namespaces(self):
+        for app in ("photo-mechanic", "digikam"):
+            with self.subTest(app=app):
+                original = self.fixture(app)
+                parsed = xmp_sidecar.parse(original)
+                record = {"rating": 3, "status": "pending", "label": "green",
+                          "keywords": parsed["metadataKeywords"] + ["Delivery > Finals"],
+                          "iptc": {"caption": "Updated caption: café & snow"}}
+                result = xmp_sidecar.merge_sidecar(original, record)
+                updated = xmp_sidecar.parse(result)
+                self.assertEqual(updated["rating"], 3)
+                self.assertEqual(updated["status"], "pending")
+                self.assertEqual(updated["label"], "green")
+                self.assertEqual(updated["caption"], record["iptc"]["caption"])
+                self.assertEqual(updated["metadataKeywords"],
+                                 parsed["metadataKeywords"] + ["Delivery > Finals"])
+                self.assertEqual(updated["title"], parsed["title"])
+                self.assertEqual(updated["city"], parsed["city"])
+                root = ET.fromstring(result)
+                ns = xmp_sidecar.NAMESPACES
+                self.assertEqual(root.find(f".//{{{ns['digiKam']}}}TagsList/{{{xmp_sidecar.RDF_NS}}}Seq")[-1].text,
+                                 "Delivery/Finals")
+                if app == "photo-mechanic":
+                    self.assertIn('photomechanic:Prefs="0:2:3:001827"', result)
+                    self.assertIn('photomechanic:ColorClass="2"', result)
+                    self.assertIn("Un chien dans la neige.", result)
+                    self.assertIn("Example Assistant", result)
+                    self.assertIn("Fixture profile", result)
+                else:
+                    self.assertIn("Des amis près de la Seine.", result)
+                    self.assertIn("Example person", result)
+                    self.assertIn("synthetic editor history retained verbatim", result)
+
+    def test_custom_label_keeps_exact_case_and_clearing_removes_both_keyword_forms(self):
+        original = self.fixture("photo-mechanic")
+        updated = xmp_sidecar.merge_sidecar(original, {"label": "Ready for WEB", "keywords": []})
+        parsed = xmp_sidecar.parse(updated)
+        self.assertEqual(parsed["label"], "Ready for WEB")
+        self.assertEqual(parsed["metadataKeywords"], [])
+
+    def test_explicit_empty_fields_are_distinct_from_absent_fields(self):
+        empty = xmp_sidecar.parse(xmp_sidecar.build_sidecar({
+            "rating": 0, "label": "none", "keywords": [], "iptc": {"caption": "", "city": ""}}))
+        self.assertEqual(set(empty["metadataPresent"]), {"rating", "label", "keywords", "caption", "city"})
+        self.assertEqual(empty["rating"], 0)
+        self.assertEqual(empty["metadataKeywords"], [])
+        self.assertIsNone(empty["caption"])
+        absent = xmp_sidecar.parse(xmp_sidecar.build_sidecar({}))
+        self.assertEqual(absent["metadataPresent"], [])
+
+    def test_partial_status_keeps_stars_and_clearing_default_caption_keeps_translation(self):
+        updated = xmp_sidecar.merge_sidecar(self.fixture("digikam"),
+                                          {"status": "pending", "iptc": {"caption": ""}})
+        parsed = xmp_sidecar.parse(updated)
+        self.assertEqual(parsed["rating"], 5)
+        self.assertIsNone(parsed["caption"])
+        self.assertIn("Des amis près de la Seine.", updated)
+        self.assertEqual(parsed["title"], "Evening by the river")
+
+    def test_translation_qualifiers_keep_their_namespace_scope(self):
+        original = self.fixture("digikam").replace(
+            'xmlns:dk=', 'xmlns:review="urn:translation-review" xmlns:dk=').replace(
+                'xml:lang="fr"', 'xml:lang="fr" review:approved="yes"')
+        updated = xmp_sidecar.merge_sidecar(original, {"iptc": {"caption": "New caption"}})
+        root = ET.fromstring(updated)
+        translated = next(node for node in root.iter() if node.get(
+            f"{{{xmp_sidecar.XML_NS}}}lang") == "fr")
+        self.assertEqual(translated.get("{urn:translation-review}approved"), "yes")
+
+    def test_capture_time_override_replaces_existing_fields(self):
+        original = ATTRIBUTE_XMP.replace('xmp:Rating="4"',
+            'exif:DateTimeOriginal="2020-01-01T12:00:00" photoshop:DateCreated="2020-01-01T12:00:00" xmp:Rating="4"')
+        result = xmp_sidecar.merge_sidecar(original, {"captureTimeOverride": "2026-09-08T12:00:00"})
+        self.assertNotIn("2020-01-01", result)
+        self.assertEqual(xmp_sidecar.parse(result)["captureTime"], "2026-09-08T12:00:00")
+
+    def test_partial_updates_preserve_native_edits_and_explicit_clears(self):
+        original = xmp_sidecar.merge_sidecar(self.fixture("photo-mechanic"), {
+            "params": {"film": "fixture-film"}, "masks": [{"id": "mask-1"}],
+            "grade": {"exposure": 0.75}, "rating": 4, "status": "skipped"})
+        updated = xmp_sidecar.merge_sidecar(original, {"rating": 2})
+        parsed = xmp_sidecar.parse(updated)
+        self.assertEqual(parsed["rating"], 2)
+        self.assertTrue(parsed["rejected"])
+        self.assertEqual(parsed["crs"]["Exposure2012"], "+0.75")
+        self.assertEqual(parsed["title"], "Winter ascent")
+        self.assertIn("Fixture profile", updated)
+        root = ET.fromstring(updated)
+        key = f"{{{xmp_sidecar.NAMESPACES['lighttable']}}}edit"
+        native = json.loads(next(node.get(key) for node in root.iter() if key in node.attrib))
+        self.assertEqual(native["params"], {"film": "fixture-film"})
+        self.assertEqual(native["masks"], [{"id": "mask-1"}])
+        cleared = xmp_sidecar.merge_sidecar(updated, {"masks": [], "crop": None, "status": "pending"})
+        root = ET.fromstring(cleared)
+        native = json.loads(next(node.get(key) for node in root.iter() if key in node.attrib))
+        self.assertEqual(native["params"], {"film": "fixture-film"})
+        self.assertEqual(native["masks"], [])
+        self.assertIsNone(native["crop"])
+        self.assertFalse(xmp_sidecar.parse(cleared)["rejected"])
+        self.assertEqual(xmp_sidecar.parse(cleared)["rating"], 2)
+
+    def test_rating_only_preserves_foreign_rejection(self):
+        updated = xmp_sidecar.merge_sidecar(REJECTED_XMP, {"rating": 3})
+        self.assertTrue(xmp_sidecar.parse(updated)["rejected"])
+        self.assertEqual(xmp_sidecar.parse(updated)["rating"], 3)
+        self.assertEqual(xmp_sidecar.parse(updated)["label"], "To Print")
+
+    def test_utf16_sidecar_is_reused_and_backed_up_before_utf8_update(self):
+        import durable_io
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "frame.RAW"
+            target = Path(str(source) + ".XMP")
+            original = self.fixture("digikam").replace("UTF-8", "UTF-16").encode("utf-16")
+            target.write_bytes(original)
+            self.assertTrue(xmp_sidecar.write_sidecar(source, {"rating": 2}))
+            self.assertEqual(xmp_sidecar.read_for(source)["rating"], 2)
+            self.assertEqual(durable_io.backup_path(target).read_bytes(), original)
+            self.assertFalse(source.with_suffix(".xmp").exists())
+
+
+class ExternalEditTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.source = Path(self.directory.name) / "frame.RAW"
+        self.target = self.source.with_suffix(".xmp")
+        self.original = (FIXTURES / "photo-mechanic-representative.xmp").read_text()
+        self.target.write_text(self.original)
+
+    def test_external_same_field_change_is_refused_and_not_fixed_by_retry(self):
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        external = self.original.replace('xmp:Rating="4"', 'xmp:Rating="5"')
+        self.target.write_text(external)
+        for _ in range(2):
+            errors = []
+            self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2}, errors,
+                                                     expected_snapshot=baseline))
+            self.assertIn("xmp:Rating", errors[0])
+            self.assertEqual(self.target.read_text(), external)
+
+    def test_unrelated_external_changes_are_merged(self):
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.write_text(self.original.replace("Fixture profile", "External profile"))
+        self.assertTrue(xmp_sidecar.write_sidecar(self.source, {"rating": 2},
+                                                expected_snapshot=baseline))
+        self.assertIn("External profile", self.target.read_text())
+        self.assertEqual(xmp_sidecar.read_for(self.source)["rating"], 2)
+
+    def test_matching_external_value_is_idempotent(self):
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.write_text(self.original.replace('xmp:Rating="4"', 'xmp:Rating="2"'))
+        self.assertTrue(xmp_sidecar.write_sidecar(self.source, {"rating": 2},
+                                                expected_snapshot=baseline))
+
+    def test_external_caption_change_does_not_block_editing_another_iptc_field(self):
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.write_text(self.original.replace("A dog in the snow", "Two dogs in the snow"))
+        self.assertTrue(xmp_sidecar.write_sidecar(self.source, {"iptc": {"city": "Québec"}},
+                                                expected_snapshot=baseline))
+        parsed = xmp_sidecar.read_for(self.source)
+        self.assertEqual(parsed["city"], "Québec")
+        self.assertIn("Two dogs", parsed["caption"])
+
+    def test_sidecar_deletion_or_creation_requires_reread(self):
+        baseline = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.unlink()
+        self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2},
+                                                 expected_snapshot=baseline))
+        absent = xmp_sidecar.sidecar_snapshot(self.source)
+        self.target.write_text(self.original)
+        self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2},
+                                                 expected_snapshot=absent))
+        self.assertEqual(self.target.read_text(), self.original)
+
+    def test_both_naming_forms_are_ambiguous_even_with_equal_metadata(self):
+        appended = Path(str(self.source) + ".xmp")
+        appended.write_text(self.original)
+        errors = []
+        self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2}, errors))
+        self.assertIn("Multiple XMP", errors[0])
+        self.assertEqual(self.target.read_text(), self.original)
+        self.assertEqual(appended.read_text(), self.original)
+        self.assertEqual(len(xmp_sidecar.read_sidecar(self.source)["sidecarConflicts"]), 2)
+        with self.assertRaisesRegex(ValueError, "Multiple XMP"):
+            xmp_sidecar.sidecar_snapshot(self.source)
+
+    def test_change_during_merge_is_refused(self):
+        merge = xmp_sidecar.merge_sidecar
+        external = self.original.replace("Fixture profile", "External profile")
+        def racing_merge(text, record):
+            result = merge(text, record)
+            self.target.write_text(external)
+            return result
+        with mock.patch.object(xmp_sidecar, "merge_sidecar", side_effect=racing_merge):
+            self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2}))
+        self.assertEqual(self.target.read_text(), external)
 
 
 if __name__ == "__main__":
