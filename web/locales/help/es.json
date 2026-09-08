@@ -1420,6 +1420,7 @@
           ],
           "tips": [
             "Las selecciones de objeto necesitan una nueva elección de objeto en el destino. Las máscaras inteligentes con refinamientos pintados también necesitan recreación manual; esto provoca que el pegado al destino sea rechazado en lugar de copiar silenciosamente una selección específica del origen.",
+            "Los trazos de Máscara automática conservan una selección hecha a partir de la foto de origen. Pegarla en una foto diferente se rechaza; vuelva a crear esos trazos en el destino o excluya Máscaras locales. Copiarlos de vuelta a la misma foto conserva la selección guardada.",
             "Si no se pueden transferir las máscaras, copia de nuevo con Máscaras locales desmarcado para aplicar los otros grupos.",
             "Inspeccione el informe de finalización para ver las fotos fallidas. Un lote puede terminar con algunas fotos modificadas y otras sin cambios."
           ]
@@ -1518,8 +1519,16 @@
         "pincel",
         "degradado lineal",
         "degradado radial",
+        "elipse",
+        "rotación",
         "desvanecer",
         "flujo",
+        "densidad",
+        "máscara automática",
+        "tolerancia",
+        "curva de tono",
+        "blancos",
+        "negros",
         "superposición",
         "sobreexponer",
         "sobreexponer"
@@ -1528,14 +1537,14 @@
         {
           "title": "Crear una máscara manual",
           "paragraphs": [
-            "Abre Máscara en la barra de herramientas de edición y elige una herramienta en Crear nueva máscara. Haz clic en Crear nueva máscara para mostrar u ocultar las herramientas. Cada máscara tiene sus propios ajustes de Luz y Color.",
-            "Textura y Claridad usan la imagen después de los ajustes globales y de las máscaras anteriores. Estos controles requieren una actualización de vista previa; espere a que termine antes de juzgar el resultado."
+            "Abra Máscara en la barra de herramientas de edición y elija una herramienta en Crear nueva máscara. Haga clic en Crear nueva máscara para mostrar u ocultar las herramientas. Cada máscara tiene sus propios ajustes de Luz, Color y Curva de tono.",
+            "Textura, Claridad, Blancos, Negros y Curva de tono usan la imagen después de los ajustes globales y de las máscaras anteriores. Estos controles requieren una actualización de la vista previa; espere a que termine antes de juzgar el resultado. La vista previa y la exportación los aplican en el mismo orden."
           ],
           "steps": [
-            "Elige Pincel para pintar, Lineal para un ajuste degradado o Radial para un ajuste circular.",
-            "Para Pincel, elija Tamaño, Pluma y Flujo, y luego pinte sobre la foto. Para Lineal o Radial, arrastre sobre la foto para establecer la forma.",
+            "Elija Pincel para pintar, Lineal para un ajuste graduado o Radial para un ajuste circular u ovalado.",
+            "Para Pincel, elija Tamaño, Desvanecer, Flujo y Densidad, y luego pinte sobre la foto. Para Lineal o Radial, arrastre sobre la foto para definir la forma.",
             "Mantén activado Mostrar superposición mientras revisas el área seleccionada, y luego desactívalo para evaluar la foto.",
-            "Ajusta los deslizadores de Luz o Color de la máscara seleccionada. Usa Cantidad en Rango para reducir su intensidad global.",
+            "Aumente Exposición para aclarar un área o redúzcala para oscurecerla. Use los demás controles de Luz y Color según sea necesario, y Cantidad en Rango para reducir la intensidad general de la máscara.",
             "Renombra la máscara usando su botón ••• para que su propósito sea fácil de reconocer más adelante."
           ],
           "tips": [
@@ -1544,11 +1553,47 @@
             "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo elimina las máscaras de la foto y no está disponible cuando no hay ninguna.",
             "Los pines de la máscara y los contornos del pincel se mantienen nítidos y con el mismo grosor a medida que haces zoom. El contorno crece junto con el área que cubre en la foto."
           ]
+        },
+        {
+          "title": "Construya la cobertura del pincel gradualmente",
+          "paragraphs": [
+            "Flujo controla cuánto cobertura agrega cada nuevo trazo, y Densidad establece su límite. Ambos van de 1% a 100%. Suelte el puntero y pinte de nuevo para acumular cobertura; repasar dentro de un solo trazo continuo no la aumenta más.",
+            "Active Máscara automática para limitar cada trazo a colores similares al color donde comienza ese trazo. Aumente Tolerancia para incluir un rango más amplio de colores. Su selección se guarda con el trazo, por lo que las ediciones posteriores de color o exposición no moverán sus bordes."
+          ],
+          "tips": [
+            "Con 20% de Flujo y 60% de Densidad, tres trazos separados sobre un área totalmente cubierta alcanzan el límite. Reducir la Densidad no borra la cobertura ya pintada.",
+            "La configuración del pincel se aplica a los trazos nuevos. Los trazos existentes conservan su apariencia guardada, incluido el comportamiento anterior del pincel en ediciones más antiguas.",
+            "Cada pincel o refinamiento pintado admite hasta 64 trazos, con hasta 512 puntos por trazo y 20 000 puntos de máscara por foto. El editor le indica cuando se alcanza un límite."
+          ]
+        },
+        {
+          "title": "Dale forma a un degradado radial",
+          "paragraphs": [
+            "En Editar forma, arrastre el tirador central para mover la máscara, cualquiera de los tiradores de eje para cambiar su tamaño o el tirador exterior para rotarla. Mantenga presionada Shift mientras dibuja o cambia el tamaño para que el degradado sea circular."
+          ],
+          "tips": [
+            "Forma también proporciona controles de Ancho, Altura, Rotación y Desvanecer.",
+            "Al arrastrarla lejos de sus tiradores, se redibuja la máscara radial seleccionada."
+          ]
+        },
+        {
+          "title": "Ajuste una curva de tono local",
+          "steps": [
+            "Expanda Curva de tono para la máscara seleccionada y elija RGB, Rojo, Verde o Azul.",
+            "Haga clic en el gráfico para agregar un punto y luego arrástrelo. Mover un punto hacia arriba aclara su salida; moverlo hacia abajo la oscurece. Haga doble clic en un punto interior para eliminarlo.",
+            "Use Restablecer curva para restablecer solo el canal seleccionado de esta máscara, o Deshacer para revertir una edición."
+          ],
+          "tips": [
+            "Con el gráfico enfocado, [ y ] seleccionan puntos, las teclas de flecha los mueven y Shift permite movimientos más grandes. Enter agrega un punto, Delete elimina un punto interior y Escape cancela un ajuste en curso.",
+            "Una curva almacenada permanece exacta hasta que la edita. El editor reconstruye tiradores representativos, de modo que el primer ajuste puede remodelar una curva importada más allá del punto que mueve."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Edición"
@@ -1644,7 +1689,7 @@
           ],
           "steps": [
             "Elige Agregar, Restar o Intersecar debajo de Máscara seleccionada.",
-            "Configura Tamaño, Desvanecer y Flujo, luego pinta observando la superposición.",
+            "Defina Tamaño, Desvanecer, Flujo y Densidad, y luego pinte mientras observa la superposición. Los trazos separados acumulan cobertura hasta la Densidad; active Máscara automática para restringir los trazos por el color inicial.",
             "Mientras usas Agregar, mantén presionada Option en Mac para restar temporalmente.",
             "Desactiva la superposición e inspecciona el ajuste. Usa Deshacer para una refinación que quieras revertir."
           ]
@@ -1822,7 +1867,8 @@
         {
           "title": "Crear una selección inteligente",
           "paragraphs": [
-            "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma."
+            "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma.",
+            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado."
           ],
           "steps": [
             "Abra Máscara y expanda Crear nueva máscara.",
@@ -3030,7 +3076,7 @@
             "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
             "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
-            "Quitar, Corregir, Clonar y las máscaras con Textura o Claridad necesitan una actualización adicional de la vista previa. Espere a que termine la vista previa antes de juzgar su detalle o el efecto de los ajustes posteriores.",
+            "Quitar, Corregir, Clonar y las máscaras con ajustes de Textura, Claridad, Blancos, Negros o Curva de tono necesitan una actualización adicional de la vista previa. Espere a que la vista previa termine antes de juzgar su detalle o el efecto de ajustes posteriores.",
             "Si las dimensiones del original no están disponibles, el porcentaje de zoom muestra — y 1:1 está desactivado. Auto sigue ajustándose a la pantalla. Vuelve a escanear la carpeta para actualizar las dimensiones."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "f64ac78f444831d4c8c5d1d973db1c5969c573264f91f5ed3d7402678ba77531"
+  "sourceDigest": "561c3ae537cbb9892237cda530441873f75dded77b6fefb3bfa0031db764e392"
 }

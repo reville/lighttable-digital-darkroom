@@ -16,6 +16,8 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 import grade
+import mask_raster
+from server_localization import T
 
 
 MAX_MASKS = 16
@@ -27,7 +29,7 @@ MAX_BITMAP_EDGE = 1024
 MAX_HEALS = 50
 LOCAL_GRADE_KEYS = (
     "exposure", "contrast", "highlights", "shadows",
-    "temp", "tint", "saturation", "texture", "clarity",
+    "whites", "blacks", "temp", "tint", "saturation", "texture", "clarity",
 )
 OPTICS_DEFAULTS = {
     "profileEnabled": False,
@@ -64,7 +66,8 @@ def _point(value, default=(0.5, 0.5)) -> list[float]:
 def clean_local_grade(value) -> dict:
     raw = value if isinstance(value, dict) else {}
     cleaned = grade.clean(raw)
-    return {key: cleaned[key] for key in LOCAL_GRADE_KEYS}
+    return {key: cleaned[key] for key in (*LOCAL_GRADE_KEYS, *grade.CURVE_KEYS)
+            if key in cleaned}
 
 
 def _clean_strokes(values, point_budget: list[int] | None = None) -> list[dict]:
@@ -82,12 +85,21 @@ def _clean_strokes(values, point_budget: list[int] | None = None) -> list[dict]:
             continue
         if point_budget is not None:
             point_budget[0] -= len(points)
-        result.append({
+        stroke = {
             "size": _clamp(raw.get("size"), 0.005, 0.5, 0.08),
             "feather": _clamp(raw.get("feather"), 0.0, 1.0, 0.65),
-            "flow": _clamp(raw.get("flow"), 0.05, 1.0, 1.0),
+            "flow": _clamp(raw.get("flow"), 0.01, 1.0, 1.0),
             "points": points,
-        })
+        }
+        if raw.get("buildUp"):
+            stroke["buildUp"] = True
+            stroke["density"] = _clamp(raw.get("density"), 0.01, 1.0, 1.0)
+            edge = _clean_bitmap(raw.get("edgeMask"))
+            if edge:
+                stroke["edgeMask"] = edge
+            elif "edgeMask" in raw:
+                raise ValueError(T("Saved Auto Mask data is missing or damaged. Restore the stroke from History before exporting."))
+        result.append(stroke)
     return result
 
 
@@ -144,6 +156,9 @@ def _clean_mask_component(raw, index: int,
     elif kind == "radial":
         component["center"] = _point(raw.get("center"))
         component["radius"] = _clamp(raw.get("radius"), 0.01, 1.5, 0.25)
+        for key in ("radiusX", "radiusY"):
+            component[key] = _clamp(raw.get(key), 0.01, 1.5, component["radius"])
+        component["angle"] = _clamp(raw.get("angle"), -180.0, 180.0, 0.0)
         component["feather"] = _clamp(raw.get("feather"), 0.0, 1.0, 0.65)
     else:
         bitmap = _clean_bitmap(raw.get("bitmap"))
@@ -167,9 +182,17 @@ def require_saved_mask_assets(values) -> None:
             continue
         components = mask.get("components")
         components = components if isinstance(components, list) else [mask]
-        for component in components:
+        # Browser refinements are migrated into components by clean_masks.
+        # Validate their frozen edge selections before normalization as well.
+        refinements = [{"strokes": mask.get(field)} for field in
+                       ("addStrokes", "subtractStrokes", "intersectStrokes")]
+        for component in [*components, *refinements]:
             if not isinstance(component, dict):
                 continue
+            for stroke in component.get("strokes", []) if isinstance(component.get("strokes"), list) else []:
+                if isinstance(stroke, dict) and stroke.get("edgeMask") is not None:
+                    if _clean_bitmap(stroke["edgeMask"]) is None:
+                        raise ValueError(T("Saved Auto Mask data is missing or damaged. Restore the stroke from History before exporting."))
             kind = component.get("type")
             if kind in {"subject", "sky", "object", "depth", "person", "face-skin",
                         "eyes", "eyebrows", "lips", "teeth", "hair"}:
@@ -237,7 +260,7 @@ def clean_masks(values) -> list[dict]:
                 item["colorHue"] = round(hue % 360.0, 3)
         # Retain the first component's geometry for backwards-compatible
         # callers while the canonical schema is the ordered component list.
-        for key in ("strokes", "start", "end", "center", "radius", "feather",
+        for key in ("strokes", "start", "end", "center", "radius", "radiusX", "radiusY", "angle", "feather",
                     "bitmap", "provider", "depthLow", "depthHigh"):
             if key in components[0]:
                 item[key] = components[0][key]
@@ -315,8 +338,12 @@ def _raster_component(component: dict, height: int, width: int) -> np.ndarray:
     minimum = float(max(1, min(width, height)))
     if component["type"] == "radial":
         cx, cy = component["center"]
-        distance = np.hypot(xx - cx * (width - 1), yy - cy * (height - 1))
-        normalised = distance / max(component["radius"] * minimum, 1.0)
+        dx, dy = xx - cx * (width - 1), yy - cy * (height - 1)
+        angle = math.radians(component.get("angle", 0))
+        rx = max(component.get("radiusX", component["radius"]) * minimum, 1.0)
+        ry = max(component.get("radiusY", component["radius"]) * minimum, 1.0)
+        normalised = np.hypot((dx * math.cos(angle) + dy * math.sin(angle)) / rx,
+                             (-dx * math.sin(angle) + dy * math.cos(angle)) / ry)
         feather = component["feather"]
         weight = 1.0 - _smoothstep(max(0.0, 1.0 - feather), 1.0, normalised)
     elif component["type"] == "linear":
@@ -329,6 +356,13 @@ def _raster_component(component: dict, height: int, width: int) -> np.ndarray:
     elif component["type"] == "brush":
         combined = np.zeros((height, width), dtype=np.float32)
         for stroke in component.get("strokes", []):
+            if stroke.get("buildUp"):
+                coverage = mask_raster.stroke_coverage(stroke, height, width)
+                if stroke.get("edgeMask"):
+                    coverage *= _raster_component({"type": "subject", "invert": False,
+                                                   "bitmap": stroke["edgeMask"]}, height, width)
+                combined = mask_raster.accumulate(combined, coverage, stroke)
+                continue
             layer = Image.new("L", (width, height), 0)
             draw = ImageDraw.Draw(layer)
             points = [(round(x * (width - 1)), round(y * (height - 1)))

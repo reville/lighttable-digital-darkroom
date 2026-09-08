@@ -20,7 +20,7 @@ import threading
 
 ROOT = Path(__file__).resolve().parent
 SOURCE_FILE = 'docs/localization/server-source.json'
-SOURCE_MODULES = ('server.py', 'export_workflow.py', 'media_availability.py',
+SOURCE_MODULES = ('server.py', 'edits.py', 'export_workflow.py', 'media_availability.py',
                   'jobs.py', 'enhance_workflow.py', 'color_pipeline.py',
                   'film_lab_ai/providers.py', 'film_lab_ai/service.py',
                   'film_lab_ai/face_models.py', 'film_lab_ai/face_service.py',
