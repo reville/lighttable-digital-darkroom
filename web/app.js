@@ -1,3 +1,4 @@
+import { installKeywordBatch } from '/web/keyword-batch.js';
 import { installLibraryFilters, matchesLibraryFilters, photoHasEdits } from '/web/library-filters.js';
 import { close as closeDropdown } from '/web/dropdown.js';
 import {installDialogFocus} from '/web/dialog-focus.js';
@@ -12,9 +13,10 @@ import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
-import { previewDetailLabel } from '/web/preview-detail.js';
+import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { previewResolutionPreference } from '/web/preview-preferences.js';
 import { createPreviewProgress, waitForRawRefinement } from '/web/preview-progress.js';
+import { screenOverlayGeometry, prepareScreenOverlay } from '/web/screen-overlay.js';
 import { clampComparePosition, compareViewGeometry, comparePositionAtViewCenter } from '/web/compare-view.js';
 import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
@@ -32,11 +34,12 @@ import {
   LABELS, LABEL_KEYS, LABEL_COLORS, LABEL_TITLES, KEY_SCHEMES,
   cleanLabel, labelSwatch, renderLabelRow,
 } from '/web/labels.js';
-import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally } from '/web/local-ai.js';
+import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally, aiSkippedSummary } from '/web/local-ai.js';
 import { createSurvey } from '/web/survey.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
+import { createEnhancePanel } from '/web/enhance-panel.js';
 import { installFirstRunSetup } from '/web/first-run.js';
 import { installRecovery } from '/web/recovery.js';
 import {
@@ -56,6 +59,7 @@ let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
+let ENHANCE = null;
 let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
@@ -64,6 +68,7 @@ import {
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
+import { presetEditState, blendPresetState, reconcilePresetAdjustment } from '/web/preset-amount.js';
 import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installDesktopTheme } from '/web/desktop-theme.js';
@@ -113,6 +118,7 @@ const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
   onChange: () => { refreshFilteredView(); savePrefs(); } });
+let KEYWORD_BATCH = null;
 let MASK_BATCH = null;
 let SELECTION_REQUEST = null;
 let KEY_SCHEME_NAME = 'lighttable';
@@ -127,18 +133,30 @@ const presentationCache = createPresentationCache();
 const GRADE_PERF = createInteractionRecorder(Boolean(window.__LIGHTTABLE_BENCHMARK__));
 
 /* ------------------------------------------------------------------ utils */
-function toast(msg, action = null) {
+function toast(msg, action = null, duration = null) {
   const t = $('toast');
   t.replaceChildren(document.createTextNode(msg));
+  t.classList.toggle('toast-stacked', !!action?.link);
   if (action?.run) {
-    const button = document.createElement('button');
-    button.type = 'button'; button.textContent = action.label || 'Undo';
-    button.onclick = () => { action.run(); t.classList.remove('show'); };
+    const button = document.createElement(action.link ? 'a' : 'button');
+    if (action.link) { button.href = '#'; button.className = 'toast-link'; }
+    else button.type = 'button';
+    button.textContent = action.label || 'Undo';
+    button.onclick = (event) => {
+      event.preventDefault();
+      t.classList.remove('show');
+      t.inert = true;
+      action.run();
+    };
     t.appendChild(button);
   }
   t.classList.add('show');
+  t.inert = false;
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => t.classList.remove('show'), action ? 5000 : 1800);
+  toast._t = setTimeout(() => {
+    t.classList.remove('show');
+    t.inert = true;
+  }, duration ?? (action ? 5000 : 1800));
 }
 
 function notifyCompletion(title, message) {
@@ -286,6 +304,7 @@ function setActionDialog(id, open) {
   dialog.setAttribute('aria-hidden', String(!open));
   if (open) {
     updateTransferActions();
+    if (id === 'enhanceDialog') void ENHANCE?.refresh();
     requestAnimationFrame(() => dialog.querySelector('select, input, button')?.focus());
   }
 }
@@ -306,7 +325,7 @@ document.addEventListener('keydown', (event) => {
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
     ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
-    LIBRARY_FILTERS.types(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -475,11 +494,12 @@ window.lightTableNativeEvent = (event) => {
     if (!pending) return;
     nativePreviewPending.delete(event.generation);
     if (event.type === 'nativePreviewFailed') {
-      toast('Native preview unavailable for this photo');
+      const error = event.message || 'Native preview unavailable';
+      if (event.generation === S.seq) toast(error);
       pending.resolve({
         decodeMs: 0, uploadMs: 0, uploadedAt: performance.now(),
         presentedAt: performance.now(), presentation: 'native-failed',
-        failed: true, error: 'Native preview unavailable',
+        failed: true, error,
       });
       return;
     }
@@ -661,7 +681,7 @@ function syncFilmReadout(id, value) {
 function snapshot() {
   const image = cur();
   return JSON.stringify({
-    params: S.params, grade: S.grade, crop: S.crop,
+    params: S.params, grade: S.grade, crop: S.crop, preset: S.preset || null,
     cropChoices: cur()?.cropChoices,
     masks: serializableMasks(), heals: S.heals, optics: S.optics,
     status: image?.status, rating: image?.rating, label: image?.label,
@@ -691,6 +711,8 @@ function restore(json, stack, persist = true) {
   const previousFilm = filmRenderFingerprint();
   const previousBaseEdits = baseEditsFingerprint();
   const st = JSON.parse(json);
+  S.preset = cloneValue(st.preset || null);
+  presetAmountGesture = null;
   S.params = normalizeFilmParams(st.params); S.grade = st.grade; S.crop = st.crop;
   restoreCropChoices(st.cropChoices);
   S.masks = normalizeMasks(st.masks); S.heals = normalizeHeals(st.heals);
@@ -714,6 +736,7 @@ function restore(json, stack, persist = true) {
   if (filmRenderFingerprint() !== previousFilm) renderFilm();
   else if (baseEditsFingerprint() !== previousBaseEdits) refreshBaseEdits();
   updateUndoRedoButtons();
+  PRESET_BROWSER?.refresh();
 }
 function undo() {
   if (S.editingName !== cur()?.name) return;
@@ -902,6 +925,8 @@ function applyViewNow() {
   const isZoomed = !isFit && S.zoom > 1.01;
   cmp.classList.toggle('is-zoomed', isZoomed);
   syncCompareView();
+  syncViewerChrome();
+  drawEditOverlayNow();
 
   scheduleNativeViewportLayout();
   scheduleViewportRegionRender();
@@ -1564,15 +1589,15 @@ function buildMaskTexture(edge = 512) {
   return new ImageData(rgba, width, height * tiles);
 }
 
-function drawBrushCursor(ctx, overlay, point, size, feather, accent = '#fff') {
+function drawBrushCursor(ctx, surface, point, size, feather, accent = '#fff') {
   if (!point) return;
-  const x = point[0] * overlay.width, y = point[1] * overlay.height;
-  const outer = Math.max(3, size * Math.min(overlay.width, overlay.height) / 2);
+  const x = point[0] * surface.width, y = point[1] * surface.height;
+  const outer = Math.max(3, size * Math.min(surface.width, surface.height) / 2);
   const inner = Math.max(1.5, outer * (1 - feather));
   ctx.save();
   ctx.strokeStyle = accent;
-  ctx.lineWidth = Math.max(1, overlay.width / 1100);
-  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2;
+  ctx.lineWidth = 1;
+  ctx.shadowColor = 'rgba(0,0,0,.9)'; ctx.shadowBlur = 2 * surface.pixelRatio;
   ctx.beginPath(); ctx.arc(x, y, outer, 0, Math.PI * 2); ctx.stroke();
   if (feather > 0.02) {
     ctx.strokeStyle = 'rgba(255,255,255,.68)';
@@ -1592,15 +1617,33 @@ function syncOverlayCursorClass() {
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
 }
 
+function syncViewerChrome() {
+  const chrome = $('viewerChrome');
+  const frame = $('cmp').getBoundingClientRect();
+  const geometry = screenOverlayGeometry(frame, frame, $('zoomwrap').getBoundingClientRect());
+  chrome.hidden = !geometry;
+  if (!geometry) return;
+  for (const key of ['left', 'top', 'width', 'height']) chrome.style[key] = `${geometry[key]}px`;
+}
+
 function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
-  if (!canvas.width || !canvas.height) return;
-  if (overlay.width !== canvas.width || overlay.height !== canvas.height) {
-    overlay.width = canvas.width; overlay.height = canvas.height;
+  const active = canvas.width && canvas.height &&
+    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+  const geometry = active ? screenOverlayGeometry(
+    canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
+    $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
+  const surface = prepareScreenOverlay(overlay, geometry);
+  syncOverlayCursorClass();
+  if (!surface) return;
+  const { ctx } = surface;
+  if (S.overlayHoverClientPoint) {
+    const [clientX, clientY] = S.overlayHoverClientPoint;
+    const rect = overlay.getBoundingClientRect();
+    S.overlayHoverPoint = clientX >= rect.left && clientX <= rect.right &&
+      clientY >= rect.top && clientY <= rect.bottom ? overlayPoint({clientX, clientY}) : null;
   }
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
   if (S.activePane === 'maskPane') {
     const mask = selectedMask();
     if (!mask) return;
@@ -1652,21 +1695,21 @@ function drawEditOverlayNow() {
           packedMaskData.data[sourceOffset + channel] * rangeWeight * 0.42);
       }
       tintCtx.putImageData(pixels, 0, 0);
-      ctx.drawImage(tinted, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(tinted, 0, 0, surface.width, surface.height);
     }
-    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = Math.max(1.5, overlay.width / 900);
+    ctx.strokeStyle = '#fff'; ctx.fillStyle = '#4b9cf5'; ctx.lineWidth = 1.5;
     if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'linear') {
-      const [sx, sy] = [mask.start[0] * overlay.width, mask.start[1] * overlay.height];
-      const [ex, ey] = [mask.end[0] * overlay.width, mask.end[1] * overlay.height];
+      const [sx, sy] = [mask.start[0] * surface.width, mask.start[1] * surface.height];
+      const [ex, ey] = [mask.end[0] * surface.width, mask.end[1] * surface.height];
       ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
       for (const [x, y] of [[sx, sy], [ex, ey]]) { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'radial') {
-      const x = mask.center[0] * overlay.width, y = mask.center[1] * overlay.height;
-      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(overlay.width, overlay.height), 0, Math.PI * 2); ctx.stroke();
+      const x = mask.center[0] * surface.width, y = mask.center[1] * surface.height;
+      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(surface.width, surface.height), 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
     if (mask.type === 'brush' || S.maskRefineMode) {
-      drawBrushCursor(ctx, overlay, S.overlayHoverPoint, S.brushSize, S.brushFeather,
+      drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
         S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
@@ -1674,14 +1717,14 @@ function drawEditOverlayNow() {
       const threshold = +$('healVisualizeThreshold').value;
       ctx.save();
       ctx.filter = `grayscale(1) invert(1) contrast(${2 + threshold * 7}) brightness(${0.72 + threshold * 0.35})`;
-      ctx.drawImage(S.baseImg, 0, 0, overlay.width, overlay.height);
+      ctx.drawImage(S.baseImg, 0, 0, surface.width, surface.height);
       ctx.restore();
     }
     for (const spot of S.localPinsVisible ? S.heals : []) {
       const selected = spot.id === S.selectedHealId;
-      const tx = spot.target[0] * overlay.width, ty = spot.target[1] * overlay.height;
-      const sx = spot.source[0] * overlay.width, sy = spot.source[1] * overlay.height;
-      const radius = spot.radius * Math.min(overlay.width, overlay.height);
+      const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
+      const sx = spot.source[0] * surface.width, sy = spot.source[1] * surface.height;
+      const radius = spot.radius * Math.min(surface.width, surface.height);
       ctx.save();
       ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
       ctx.lineWidth = selected ? 2.2 : 1.25;
@@ -1704,10 +1747,9 @@ function drawEditOverlayNow() {
       }
       ctx.restore();
     }
-    drawBrushCursor(ctx, overlay, S.overlayHoverPoint,
+    drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
   }
-  syncOverlayCursorClass();
 }
 
 const previewFrameScheduler = createFrameScheduler((work) => {
@@ -1904,7 +1946,8 @@ function renderEditItems(kind) {
 function syncMaskPanel() {
   renderEditItems('mask');
   const mask = selectedMask();
-  const createOpen = !S.masks.length || S.maskCreateOpen;
+  const createOpen = S.maskCreateOpen;
+  $('maskReset').disabled = !photoReadyForEditing() || !S.masks.length;
   $('maskCreateMenu').hidden = !createOpen;
   $('maskCreateToggle').setAttribute('aria-expanded', String(createOpen));
   $('maskSemanticCombineRow').hidden = !mask;
@@ -1974,6 +2017,7 @@ function syncMaskPanel() {
 
 function syncHealPanel() {
   renderEditItems('heal');
+  $('healReset').disabled = !photoReadyForEditing() || !S.heals.length;
   const spot = selectedHeal();
   for (const mode of ['remove', 'heal', 'clone']) {
     $(`healTool${mode[0].toUpperCase()}${mode.slice(1)}`).setAttribute(
@@ -2485,12 +2529,12 @@ $('lensReset').onclick = (event) => {
   syncOpticsPanel(); syncGrade(); drawGrade(); saveState(); refreshBaseEdits();
 };
 
-function overlayPoint(event, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayPoint(event, rect = $('cv').getBoundingClientRect()) {
   return [clamp((event.clientX - rect.left) / rect.width, 0, 1),
     clamp((event.clientY - rect.top) / rect.height, 0, 1)];
 }
 
-function overlayDistance(a, b, rect = $('editOverlay').getBoundingClientRect()) {
+function overlayDistance(a, b, rect = $('cv').getBoundingClientRect()) {
   return Math.hypot((a[0] - b[0]) * rect.width, (a[1] - b[1]) * rect.height);
 }
 
@@ -2513,9 +2557,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
   if (!cur() || event.button !== 0) return;
   event.stopPropagation();
   event.preventDefault();
-  const rect = $('editOverlay').getBoundingClientRect();
+  const rect = $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (S.activePane === 'maskPane') {
     if (S.maskColorPick) {
       if (event.shiftKey) {
@@ -2590,9 +2635,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
   const gesture = S.editGesture;
-  const rect = gesture?.rect || $('editOverlay').getBoundingClientRect();
+  const rect = gesture?.rect || $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
   S.overlayHoverPoint = point;
+  S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (!gesture || gesture.pointerId !== event.pointerId) { drawEditOverlay(); return; }
   if (S.activePane === 'maskPane') {
     if (gesture.type === 'mask-color-sample') {
@@ -2668,7 +2714,7 @@ $('editOverlay').addEventListener('pointerup', finishEditGesture);
 $('editOverlay').addEventListener('pointercancel', finishEditGesture);
 $('editOverlay').addEventListener('pointerleave', () => {
   if (S.editGesture?.pointerId !== undefined) return;
-  S.overlayHoverPoint = null; drawEditOverlay();
+  S.overlayHoverPoint = null; S.overlayHoverClientPoint = null; drawEditOverlay();
 });
 
 /* ------------------------------------------------------------ film render */
@@ -3366,6 +3412,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
   const viewport = w === requestedWidth ? requestedViewportRegion() : null;
   const measureInteractiveRoundTrip = (viewport || w <= INTERACTIVE_PREVIEW_WIDTH) &&
     requestStartedAt - lastContinuousInputAt < FULL_RESOLUTION_SETTLE_MS;
+  const hasAccuratePixels = S.renderState === 'ready' && S.presentedPhotoName === im.name &&
+    S.previewDetail?.name === im.name && S.previewDetail.refining === false;
   $('rstat').textContent = 'rendering…';
   $('rstat').className = 'busy';
   $('zoomwrap').setAttribute('aria-busy', 'true');
@@ -3373,10 +3421,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     S.params.profile_enabled ? 'Applying film…' : 'Loading preview…', my);
   try {
     const request = {
-      name: im.name, params: S.params, w, engine: $('engine').value,
+      name: im.name, params: { ...S.params }, w, engine: $('engine').value,
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
+      allow_draft: !hasAccuratePixels,
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3419,7 +3468,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = 'error: ' + m.error;
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not render this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not render this photo', m.error));
       }
       return;
     }
@@ -3439,8 +3489,7 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
     // is on screen. When this photo is already presented accurately, keep
     // those pixels and let the refinement replace them: swapping in a draft
     // flashes a different rendering on every zoom, crop, or panel change.
-    const keepAccuratePixels = Boolean(m.refining) && S.renderState === 'ready' &&
-      S.presentedPhotoName === im.name;
+    const keepAccuratePixels = Boolean(m.refining) && hasAccuratePixels;
     let imageTiming = null;
     if (!keepAccuratePixels) {
       imageTiming = await setBaseImage(m, my, {
@@ -3456,7 +3505,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
         $('zoomwrap').setAttribute('aria-busy', 'false');
         $('rstat').textContent = imageTiming.error || 'preview unavailable';
         $('rstat').className = '';
-        setRenderPresentation('error', im.name, 'Could not display this photo');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not display this photo', imageTiming.error));
         return;
       }
       S.baseEditsBaked = Boolean(m.baseEditsBaked);
@@ -3515,7 +3565,20 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
          ' · ' + (m.engine === 'rs' ? 'rust/gpu' : 'python');
     $('rstat').textContent = status + (m.refining ? ' · refining RAW…' : '');
     $('rstat').className = '';
-    if (phase === 'interactive' && w !== requestedWidth) {
+    if (m.refining) {
+      // Start accurate RAW work immediately after the useful first frame.
+      // Rendering a large embedded-camera draft first delays demosaic and
+      // creates a second temporary film result that will soon be replaced.
+      const refinementRequest = { name: im.name, params: { ...request.params },
+        w: requestedWidth, client: CLIENT_ID, generation: my };
+      const ready = await waitForRawRefinement({
+        request: () => api('/api/refine', refinementRequest),
+        isCurrent: () => my === S.seq && cur()?.name === im.name,
+      });
+      if (ready) return doRender(scheduledAt, {
+        width: requestedWidth, requestedWidth, phase: 'refinement', background: true,
+      });
+    } else if (phase === 'interactive' && w !== requestedWidth) {
       const renderWhenIdle = () => {
         const idleFor = performance.now() - lastContinuousInputAt;
         if (idleFor < FULL_RESOLUTION_SETTLE_MS) {
@@ -3533,16 +3596,6 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       };
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
-    } else if (m.refining) {
-      const refinementRequest = { name: im.name, params: { ...request.params },
-        w, client: CLIENT_ID, generation: my };
-      const ready = await waitForRawRefinement({
-        request: () => api('/api/refine', refinementRequest),
-        isCurrent: () => my === S.seq && cur()?.name === im.name,
-      });
-      if (ready) return doRender(scheduledAt, {
-        width: w, requestedWidth, phase: 'refinement', background: true,
-      });
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
     prefetch(m.refining || phase === 'interactive');
   } catch (e) {
@@ -3570,7 +3623,8 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       $('rstat').textContent = failure.error || 'Could not finish preview';
       $('rstat').className = '';
       if (S.renderState === 'pending' && S.renderName === im.name) {
-        setRenderPresentation('error', im.name, 'Could not reach the renderer');
+        setRenderPresentation('error', im.name,
+          previewFailureMessage('Could not finish this preview', failure.error));
       }
     }
   }
@@ -3856,7 +3910,7 @@ function setWebGLBaseImage(dataUri, {
           toast('WebGL unavailable: ' + e.message);
           return res({ decodeMs: performance.now() - startedAt, uploadMs: 0,
             uploadedAt: performance.now(), failed: true,
-            error: 'WebGL preview could not be initialized' });
+            error: previewFailureMessage('WebGL preview could not be initialized', e) });
         }
         browserOriginalTextureURL = null;
         browserReferenceTextureURL = null;
@@ -3878,7 +3932,7 @@ function setWebGLBaseImage(dataUri, {
     img.onerror = () => {
       const failedAt = performance.now();
       res({ decodeMs: failedAt - startedAt, uploadMs: 0, uploadedAt: failedAt,
-        failed: true, error: 'Preview image could not be decoded' });
+        failed: true, error: 'Preview image could not be loaded or decoded' });
     };
     img.src = dataUri;
   });
@@ -4179,12 +4233,14 @@ const PANE_STEP_LABELS = {
 
 function editHistorySnapshot() {
   return JSON.stringify({ params: S.params, grade: S.grade, crop: S.crop,
-    masks: serializableMasks(), heals: S.heals, optics: S.optics });
+    masks: serializableMasks(), heals: S.heals, optics: S.optics, preset: S.preset || null });
 }
 
 let editRecovery = null;
 let editRecoveryReady = false;
 let editRecoveryIssue = null;
+const deferredEditRecovery = new Map();
+let deferredRecoveryRefreshIssue = null;
 const journalRequests = new Map();
 window.addEventListener('lighttable-edit-journal', ({detail}) => {
   const request = journalRequests.get(detail.id);
@@ -4269,6 +4325,23 @@ const closeBarrier = createCloseBarrier({
 window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
 
+async function refreshDeferredEditRecovery() {
+  let refreshFailed = false;
+  for (const [name, sourceKey] of deferredEditRecovery) {
+    if (editSaveQueue.getPending(name)) continue;
+    const image = S.images.find(item => item.name === name);
+    if (!image || await reconcilePeerSave(image, sourceKey)) deferredEditRecovery.delete(name);
+    else if (!editSaveQueue.getPending(name)) refreshFailed = true;
+  }
+  if (refreshFailed) {
+    deferredRecoveryRefreshIssue = new Error('Recovered edits are saved, but their display could not refresh. Retry to reload them.');
+    updateEditRecoveryHealth(deferredRecoveryRefreshIssue);
+  } else if (!deferredEditRecovery.size && deferredRecoveryRefreshIssue) {
+    if (editRecoveryIssue === deferredRecoveryRefreshIssue) updateEditRecoveryHealth(null);
+    deferredRecoveryRefreshIssue = null;
+  }
+}
+
 $('retryEditSave').onclick = async () => {
   try {
     if (!editRecoveryReady && editRecovery) {
@@ -4279,6 +4352,7 @@ $('retryEditSave').onclick = async () => {
       throw new Error('Could not save photo history');
     }
     await editSaveQueue.retry();
+    await refreshDeferredEditRecovery();
     toast(editRecoveryIssue ? 'Edits saved; local recovery still needs attention' : 'Edits saved');
   }
   catch { toast('Still unable to save. Your changes are kept in this window.'); }
@@ -4296,6 +4370,7 @@ function saveState(immediate = false) {
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
   readControls();
+  S.preset = reconcilePresetAdjustment(S.preset, presetEditState(S));
   const edits = JSON.parse(editHistorySnapshot());
   Object.assign(im, cloneValue(edits));
   const current = JSON.stringify(edits);
@@ -4394,13 +4469,14 @@ function visible() {
   const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
   const editState = $('editFilter')?.value || 'all';
   const fileTypes = LIBRARY_FILTERS.types();
+  const metadata = LIBRARY_FILTERS.metadata();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -4431,7 +4507,7 @@ function visible() {
     const matchesKind = (kind === 'all' || (kind === 'raw' && im.raw) ||
       (kind === 'processed' && !im.raw && !im.virtual) ||
       (kind === 'virtual' && im.virtual));
-    return matchesKind && matchesLibraryFilters(im, fileTypes, editState) && photoMatchesQuery(im, search);
+    return matchesKind && matchesLibraryFilters(im, fileTypes, editState, metadata) && photoMatchesQuery(im, search);
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
@@ -5250,7 +5326,7 @@ $('addSmartCollection').onclick = async () => {
       editState: ['edited', 'unedited', 'virtual'].includes($('filter').value)
         ? $('filter').value : $('editFilter').value,
       unrated: $('ratingFilter').value === 'unrated' || $('filter').value === 'unrated',
-      label: $('labelFilter').value },
+      label: $('labelFilter').value, ...LIBRARY_FILTERS.metadata() },
   });
   const created = result?.library?.collections?.find(
     (collection) => String(collection.id) === String(result.id));
@@ -5464,8 +5540,10 @@ function closeActionMenus() {
 }
 
 function openActionMenu(id, anchor = null, event = null) {
+  const wasOpen = $(id).classList.contains('on');
   closeActionMenus();
   closeFolderMenu();
+  if (anchor && wasOpen) return;
   updateTransferActions();
   const menu = $(id);
   menu.classList.add('on');
@@ -5596,6 +5674,7 @@ document.addEventListener('pointerdown', (event) => {
 window.addEventListener('resize', () => { closeFolderMenu(); closeActionMenus(); });
 
 function refreshLists() {
+  KEYWORD_BATCH?.sync();
   renderStrip();
   if ($('library').classList.contains('show')) renderGrid();
   counts();
@@ -5647,6 +5726,7 @@ function setViewMode(mode, persist = true) {
   $('editor').classList.toggle('hide', gridMode);
   $('filmstripShell').style.display = gridMode ? 'none' : '';
   $('appShell').classList.toggle('grid-mode', gridMode);
+  $('appShell').classList.toggle('grid-info-open', gridMode && S.activePane === 'infoPane');
   document.querySelectorAll('[data-view]').forEach((button) => {
     const selected = button.dataset.view === mode;
     button.classList.toggle('on', selected);
@@ -5716,6 +5796,8 @@ function switchPane(id, { fromCompare = false } = {}) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
   S.activePane = id;
+  $('appShell').classList.toggle('grid-info-open', S.viewMode !== 'detail' && id === 'infoPane');
+  if (S.viewMode !== 'detail') { _gridLayoutKey = ''; requestAnimationFrame(renderGrid); }
   let activeButton = null;
   document.querySelectorAll('.panel-pane').forEach((p) => p.classList.toggle('on', p.id === id));
   document.querySelectorAll('.tool-btn').forEach((button) => {
@@ -6231,11 +6313,15 @@ function showCurrentImage(im) {
   $('cmp').inert = false;
   setRenderPresentation('pending', im.name);
   const pending = editSaveQueue.getPending(im.name);
-  if (pending) Object.assign(im, pending.state);
+  // A recovery awaiting identity validation must not be shown on a replacement
+  // original. Ordinary unsaved edits keep their existing optimistic display.
+  if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...(im.grade || {}) };
   S.crop = im.crop || null;
+  S.preset = cloneValue(im.preset || null);
+  presetAmountGesture = null;
   S.masks = normalizeMasks(im.masks);
   S.heals = normalizeHeals(im.heals);
   S.optics = normalizeOptics(im.optics);
@@ -6340,6 +6426,7 @@ async function go(i) {
   S.idx = i;
   $('panel').inert = true;
   $('cmp').inert = true;
+  syncPhotoActions();
   const im = cur();
   CAPTURE_TIME?.selectionChanged();
   const generation = ++navigationGeneration;
@@ -6688,8 +6775,9 @@ function syncCullPanel() {
     }
   }
 
-  $('cullIntro').textContent = !S.ai.enabled
-    ? 'Turn the index on to sort a shoot into selects and rejects.'
+  $('cullEnableIndex').hidden = !!S.ai.enabled;
+  $('cullIntroText').textContent = !S.ai.enabled
+    ? ' to sort a shoot into selects and rejects.'
     : !scored
       ? (S.ai.running
         ? 'Scoring photos as the index reaches them.'
@@ -6823,7 +6911,7 @@ function syncAI(status = S.ai) {
 
   const card = $('aiStatusCard');
   card.classList.toggle('running', running);
-  card.classList.toggle('ready', enabled && !running && !S.ai.lastError);
+  card.classList.toggle('ready', enabled && !running && !S.ai.lastError && !S.ai.skipped);
   card.classList.toggle('error', !!S.ai.lastError);
   const fraction = S.ai.total ? clamp(S.ai.completed / S.ai.total, 0, 1) : 0;
   $('aiProgress').style.width = `${fraction * 100}%`;
@@ -6839,8 +6927,11 @@ function syncAI(status = S.ai) {
     $('aiStatus').textContent = `${S.ai.indexed} photos indexed`;
     $('aiStatusDetail').textContent = S.ai.lastError;
   } else {
-    $('aiStatus').textContent = 'Ready';
+    $('aiStatus').textContent = S.ai.skipped ? 'Complete with skipped photos' : 'Ready';
     $('aiStatusDetail').textContent = `${S.ai.indexed} ${S.ai.indexed === 1 ? 'photo' : 'photos'} indexed on this Mac.`;
+  }
+  if (enabled && !running && S.ai.skipped) {
+    $('aiStatusDetail').textContent += ` ${aiSkippedSummary(S.ai)}`;
   }
   $('aiRebuild').disabled = !enabled || !vision.available;
   $('aiClear').disabled = !enabled && !S.ai.indexed && !S.ai.errors;
@@ -6883,6 +6974,7 @@ function scheduleAIStatusPoll(reset = false) {
 
 async function runAIAction(action) {
   $('aiToggle').disabled = true;
+  $('cullEnableIndex').disabled = true;
   try {
     const status = await api('/api/ai-index', { action });
     if (status.error) throw new Error(status.error);
@@ -6900,6 +6992,7 @@ async function runAIAction(action) {
   } catch (error) {
     toast(`Local index: ${error.message}`);
   } finally {
+    $('cullEnableIndex').disabled = false;
     syncAI();
   }
 }
@@ -6989,8 +7082,11 @@ async function chooseEditRecovery(records) {
   title.textContent = 'Recover unsaved edits?';
   const description = document.createElement('p');
   description.textContent = `Local recovery found changes for ${records.length} photo${records.length === 1 ? '' : 's'}. Restoring replaces their saved edits with these recovered changes.`;
+  if (records.some(item => item.legacyIdentity)) {
+    description.textContent += ' Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.';
+  }
   const list = document.createElement('p');
-  list.textContent = records.slice(0, 3).map(item => item.name).join(' · ')
+  list.textContent = records.slice(0, 3).map(item => item.name + (item.legacyIdentity ? ' (partial identity)' : '')).join(' · ')
     + (records.length > 3 ? ' …' : '');
   const actions = document.createElement('div'); actions.className = 'modal-actions';
   const discard = document.createElement('button'); discard.textContent = 'Keep saved edits';
@@ -7025,14 +7121,21 @@ async function initializeEditRecovery(data) {
   for (const record of records) {
     // An acknowledged save whose cleanup was interrupted needs no replay.
     const saved = await getJSON(`/api/state?name=${encodeURIComponent(record.name)}&recovery=1`).catch(() => null);
-    if (!saved || saved.error || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey)) {
+    const legacyIdentity = Boolean(record.payload.sourceKey && saved?._recoverySourceKey
+      && record.payload.sourceKey !== saved._recoverySourceKey
+      && record.payload.sourceKey === saved._recoveryLegacySourceKey);
+    if (!saved || saved.error || !saved._recoverySourceKey
+      || (record.payload.sourceKey && record.payload.sourceKey !== saved._recoverySourceKey && !legacyIdentity)) {
       toast(`Recovery kept for ${record.name}: its original is unavailable or has changed.`);
       continue;
     }
     if (saved && !saved.error && recoveryAcknowledged(record.payload, saved)) {
       await editRecovery.remove(record.name, record.token).catch(error =>
         toast(`Saved edits are safe; recovery cleanup needs attention: ${error.message}`));
-    } else outstanding.push(record);
+    } else outstanding.push({...record, legacyIdentity,
+      // A confirmed legacy recovery is guarded against the complete identity
+      // seen before the dialog. Changes while the dialog is open still fail.
+      payload: {...record.payload, sourceKey: saved._recoverySourceKey}});
   }
   if (!outstanding.length) return;
   if (await chooseEditRecovery(outstanding)) {
@@ -7041,12 +7144,20 @@ async function initializeEditRecovery(data) {
         expectedRecoverySourceKey: record.payload.sourceKey,
         history: record.payload.history ? {...record.payload.history, label: 'Recovered edit'} : null},
       {immediate: true});
+    }
+    await flushEditSaves();
+    for (const record of outstanding) {
+      if (editSaveQueue.getPending(record.name)) {
+        deferredEditRecovery.set(record.name, record.payload.sourceKey);
+        continue;
+      }
+      deferredEditRecovery.delete(record.name);
       const image = S.images.find(item => item.name === record.name);
       if (image) Object.assign(image, normalizeLibraryImage({
         ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
+        recoverySourceKey: record.payload.sourceKey,
       }, true));
     }
-    await flushEditSaves();
   } else {
     for (const record of outstanding) await editRecovery.remove(record.name, record.token)
       .catch(error => toast(`Saved edits kept; recovery cleanup needs attention: ${error.message}`));
@@ -7419,6 +7530,7 @@ document.querySelectorAll('.tool-btn').forEach((b) => {
     ? selectPhotoTool(b.dataset.pane) : switchPane(b.dataset.pane);
 });
 $('aiToggle').onclick = () => runAIAction(S.ai.enabled ? 'disable' : 'enable');
+$('cullEnableIndex').onclick = () => runAIAction('enable');
 $('aiRebuild').onclick = () => runAIAction('rebuild');
 $('aiClear').onclick = () => {
   if (window.confirm('Delete the generated local photo index? Your originals and edits will not be changed.')) {
@@ -7628,12 +7740,14 @@ function renderCompare() {
 
 function setCompareActive(on, { restoreTool = true } = {}) {
   const next = Boolean(on) && !!cur() && !S.wbPick && !S.pointColorPick && !S.maskColorPick;
+  const entering = next && !S.compareActive;
   const returnPane = compareReturnPane;
-  if (next && !S.compareActive && PHOTO_TOOL_PANES.includes(S.activePane)) {
+  if (entering && PHOTO_TOOL_PANES.includes(S.activePane)) {
     compareReturnPane = S.activePane;
     switchPane(lastAdjustmentPane, { fromCompare: true });
   }
   S.compareActive = next;
+  if (entering) snapCompareToView();
   if (!next) compareReturnPane = null;
   renderCompare();
   const back = $('compareReturn');
@@ -7713,7 +7827,25 @@ function transferTargets() {
     .filter(Boolean);
   return selected.length ? selected : (cur() ? [cur()] : []);
 }
+function photoReadyForEditing() {
+  const photo = cur();
+  return !!photo && photo.kind !== 'video' && S.editingName === photo.name;
+}
+function syncPhotoActions() {
+  const ready = photoReadyForEditing();
+  for (const id of ['editPane', 'filmPane', 'cropPane', 'maskPane', 'healPane']) {
+    $(id).inert = !ready;
+  }
+  for (const id of ['resetEdit', 'autoBtn', 'zoomFit', 'zoom1', 'beforeBtn',
+    'wbBtn', 'clipBtn', 'versionCreate']) {
+    $(id).disabled = !ready;
+  }
+  $('maskReset').disabled = !ready || !S.masks.length;
+  $('healReset').disabled = !ready || !S.heals.length;
+  ENHANCE?.sync();
+}
 function updateTransferActions() {
+  syncPhotoActions();
   const targets = transferTargets();
   const primaryKey = ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__) ? 'Ctrl' : '⌘';
   $('copyBtn').disabled = !cur();
@@ -8082,7 +8214,10 @@ async function runExport(customOpts = {}) {
         $('estat').textContent = `${st.completed || 0} exported` +
           (record.state === 'cancelled' ? ' · cancelled' : ' · done') +
           (warnings ? ` · ${warnings} warning(s)` : '') + (errors ? ` · ${errors} error(s)` : '');
-        toast($('estat').textContent);
+        toast($('estat').textContent, st.completed > 0 && st.revealPath ? {
+          label: 'Show in Finder', link: true,
+          run: () => postNative('revealFolder', { path: st.revealPath }),
+        } : null, 2800);
         notifyCompletion(record.state === 'cancelled' ? 'Export cancelled' : 'Export complete', $('estat').textContent);
       }
     } catch (_error) {
@@ -9229,6 +9364,7 @@ async function showExif(name) {
 
 /* ------------------------------------------------------------ keywords */
 function renderKeywords() {
+  KEYWORD_BATCH?.sync();
   const box = $('keywordList');
   box.replaceChildren();
   const im = cur();
@@ -9294,6 +9430,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   const separator = e.key === ',' ||
     (e.key === ';' && APP_PREFS.keywordSeparators === 'comma-semicolon');
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
+});
+
+KEYWORD_BATCH = installKeywordBatch({
+  el: $, post: api, toast, enabled: () => S.catalogEnabled,
+  names: () => [...S.msel], flush: flushEditSaves,
+  values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
+    .map(value => value.trim()).filter(Boolean),
+  apply: changes => {
+    for (const item of changes) {
+      const image = S.images.find(image => image.name === item.name);
+      if (!image) continue;
+      image.keywords = [...item.keywords];
+      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+    }
+    renderKeywords(); refreshFilteredView();
+    METADATA?.refreshKeywordTree();
+  },
 });
 
 /* ------------------------------------------------------------- versions */
@@ -9466,6 +9620,62 @@ $('presetList').addEventListener('change', () => {
   PRESET_BROWSER?.select();
 });
 
+let presetAmountGesture = null;
+function currentPresetAdjustment() {
+  return reconcilePresetAdjustment(S.preset, presetEditState(S));
+}
+
+function presentPresetAdjustment(adjustment, immediate = true) {
+  const previousFilm = filmRenderFingerprint(), previousBase = baseEditsFingerprint();
+  S.preset = adjustment;
+  Object.assign(S, blendPresetState(adjustment.base, adjustment.target,
+    adjustment.enabled ? adjustment.amount : 0));
+  S.maskTextureDirty = true;
+  S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
+  syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
+  syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
+  drawGrade(); saveState(immediate);
+  if (filmRenderFingerprint() !== previousFilm) renderFilm(immediate ? 0 : 120);
+  else if (baseEditsFingerprint() !== previousBase) refreshBaseEdits();
+}
+
+function toggleBrowserPreset(preset, photo, identity = presetKey(preset)) {
+  if (!photo?.name || cur()?.name !== photo.name || S.editingName !== photo.name) return;
+  readControls();
+  const previous = currentPresetAdjustment();
+  if (previous?.id !== identity && !presetHasApplicableSettings(preset)) return;
+  pushUndo(); presetAmountGesture = null;
+  let adjustment;
+  if (previous?.id === identity) {
+    adjustment = { ...previous, enabled: !previous.enabled };
+    if (adjustment.enabled && adjustment.amount === 0) adjustment.amount = 100;
+  } else {
+    const base = previous ? previous.base : presetEditState(S);
+    const target = composePresetState(base, preset, {
+      normalizeFilmParams, mergeFilmParams, createId: editId,
+    });
+    adjustment = { id: identity, name: preset.name, amount: 100, enabled: true,
+      base: cloneValue(base), target: presetEditState(target) };
+  }
+  LAST_PRESET_APPLICATION = null;
+  presentPresetAdjustment(adjustment);
+  return true;
+}
+
+function changePresetAmount(id, photoName, amount, commit = false) {
+  if (cur()?.name !== photoName || S.editingName !== photoName) return false;
+  const adjustment = currentPresetAdjustment();
+  if (!adjustment || adjustment.id !== id) return false;
+  amount = Math.max(0, Math.min(100, Math.round(Number(amount) || 0)));
+  if (amount !== adjustment.amount || adjustment.enabled !== (amount > 0)) {
+    if (presetAmountGesture !== photoName) { pushUndo(); presetAmountGesture = photoName; }
+    markContinuousInput();
+    presentPresetAdjustment({ ...adjustment, amount, enabled: amount > 0 }, false);
+  }
+  if (commit) { presetAmountGesture = null; saveState(true); }
+  return true;
+}
+
 function presetPhotoSnapshot() {
   const image = cur();
   if (!image || !S.params || S.editingName !== image.name) return null;
@@ -9485,8 +9695,12 @@ function presetApplicationMatches(state, preset, options, photoName) {
 
 function stateWithPreset(state, preset, options = {}, photoName) {
   // Consecutive public looks use the edit before the first application.
-  // A manual edit or navigation invalidates that baseline. Legacy tool presets
-  // retain their existing layering behavior.
+  // The saved Amount baseline also survives navigation and unrelated edits.
+  // Management actions retain their explicit layering/replacement behavior.
+  const adjustment = reconcilePresetAdjustment(state.preset, presetEditState(state));
+  if (adjustment) return composePresetState({ ...state, ...adjustment.base }, preset, {
+    ...options, normalizeFilmParams, mergeFilmParams, createId: editId,
+  });
   if (presetApplicationMatches(state, preset, options, photoName)) return cloneValue(state);
   const base = preset.scope === 'look' && LAST_PRESET_APPLICATION?.scope === 'look' &&
     LAST_PRESET_APPLICATION.name === photoName &&
@@ -9508,6 +9722,7 @@ function applyPreset(preset, photo, options = {}) {
     ? LAST_PRESET_APPLICATION.base : currentState;
   const next = stateWithPreset(currentState, preset, options, photo.name);
   pushUndo();
+  S.preset = null;
   S.params = next.params; S.grade = next.grade;
   S.masks = next.masks; S.heals = next.heals; S.optics = next.optics;
   S.maskTextureDirty = true;
@@ -9540,13 +9755,9 @@ PRESET_BROWSER = createPresetBrowser({
   getHidden: () => Array.isArray(APP_PREFS.hiddenBuiltinPresets) ? APP_PREFS.hiddenBuiltinPresets : [],
   onHiddenChange(ids) { APP_PREFS.hiddenBuiltinPresets = ids; savePrefs(); },
   onSelect(preset) { $('presetList').value = presetKey(preset); renderPresetSummary(true); },
-  onApply: (preset, photo) => applyPreset(preset, photo),
-  canUndo: () => !!LAST_PRESET_APPLICATION && LAST_PRESET_APPLICATION.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot(),
-  onUndo() {
-    if (LAST_PRESET_APPLICATION?.name === cur()?.name && LAST_PRESET_APPLICATION.state === snapshot()) {
-      undo(); LAST_PRESET_APPLICATION = null;
-    }
-  },
+  onApply: (preset, photo, identity) => toggleBrowserPreset(preset, photo, identity),
+  getAdjustment: currentPresetAdjustment,
+  onAmount: changePresetAmount,
   getCommunity: () => COMMUNITY_PRESETS,
   async loadCommunity(refresh) {
     try {
@@ -10087,6 +10298,7 @@ $('clipBtn').onclick = () => {
 /* ------------------------------------------------------------ auto tone */
 $('autoBtn').onclick = (event) => {
   event.stopPropagation();
+  if (!photoReadyForEditing()) return;
   refreshWebGLSamplingSurface();
   const s = S.gl && S.gl.sample();
   if (!s) {
@@ -10223,6 +10435,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 
 /* ------------------------------------------------------- multi-select */
 function paintSelectionState() {
+  KEYWORD_BATCH?.sync();
   CAPTURE_TIME?.selectionChanged();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
@@ -10297,6 +10510,7 @@ async function savePrefs() {
     ratingFilter: $('ratingFilter').value, kindFilter: $('kindFilter').value,
     labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
     fileTypeFilters: LIBRARY_FILTERS.types(),
+    metadataFilters: LIBRARY_FILTERS.metadata(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10364,6 +10578,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   if (!$('kindFilter').value) $('kindFilter').value = 'all';
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
+  LIBRARY_FILTERS.setMetadata(p.metadataFilters);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -10480,6 +10695,14 @@ if (typeof ResizeObserver !== 'undefined') {
   viewportObserver.observe($('cv'));
 }
 window.addEventListener('resize', onViewportResize);
+function watchOverlayPixelRatio() {
+  const display = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  display.addEventListener('change', () => {
+    drawEditOverlay();
+    watchOverlayPixelRatio();
+  }, { once: true });
+}
+watchOverlayPixelRatio();
 document.addEventListener('visibilitychange', onViewportResize);
 if (NATIVE_PREVIEW) scheduleNativeViewportLayout();
 
@@ -10782,29 +11005,16 @@ if ($('learnedDenoiseApply')) {
 }
 
 if ($('enhanceRun')) {
-  getJSON('/api/enhance/capabilities').then((capabilities) => {
-    const note = $('enhanceNote');
-    if (!capabilities.available) {
-      $('enhanceRun').disabled = true;
-      if (note) note.textContent = capabilities.reason || 'Not available.';
-    } else if (note) {
-      note.textContent = 'Writes a new 16-bit master; the original is untouched.';
-    }
-  }).catch(() => {});
-  $('enhanceRun').onclick = async () => {
-    const im = cur();
-    if (!im) return;
-    const mode = $('enhanceMode') ? $('enhanceMode').value : 'denoise';
-    $('enhanceNote').textContent = 'Working…';
-    const result = await api('/api/enhance', { name: im.name, mode });
-    $('enhanceNote').textContent = result.ok
-      ? `Wrote ${String(result.destination).split('/').pop()}`
-      : (result.error || 'Enhance failed');
-    if (result.ok) {
+  ENHANCE = createEnhancePanel({
+    el: $, getPhoto: () => photoReadyForEditing() ? cur() : null,
+    getCapabilities: () => getJSON('/api/enhance/capabilities'),
+    run: (request) => api('/api/enhance', request),
+    onComplete: async () => {
       setActionDialog('enhanceDialog', false);
-      reloadLibrary();
-    }
-  };
+      await reloadLibrary();
+    },
+  });
+  void ENHANCE.refresh();
 }
 
 /* ------------------------------------------------------- native messages */
@@ -10920,6 +11130,7 @@ function uiStateReport() {
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
       fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
+      ...LIBRARY_FILTERS.metadata(),
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',
     },
@@ -10929,7 +11140,7 @@ function uiStateReport() {
   };
 }
 
-async function reconcilePeerSave(image) {
+async function reconcilePeerSave(image, recoveredSourceKey = null) {
   const generation = image.peerSyncGeneration = (image.peerSyncGeneration || 0) + 1;
   try {
     // Peer windows each have their own ordered queue. Echoing their accepted
@@ -10945,8 +11156,12 @@ async function reconcilePeerSave(image) {
     if (generation !== image.peerSyncGeneration || editSaveQueue.getPending(image.name)
         || before !== JSON.stringify(image)
         || (editing && (cur() !== image || S.editingName !== image.name || editorBefore !== snapshot()))) return;
-    await applyServerStateEvent({names: [image.name], patch: state, origin: 'window', reconciled: true});
+    const patch = recoveredSourceKey
+      ? {...state, stateLoaded: true, hasEdits: true, recoverySourceKey: recoveredSourceKey} : state;
+    await applyServerStateEvent({names: [image.name], patch, origin: 'window', reconciled: true});
+    return true;
   } catch { /* A failed local save stays pending for the explicit Retry action. */ }
+  return false;
 }
 
 async function applyServerStateEvent(event) {

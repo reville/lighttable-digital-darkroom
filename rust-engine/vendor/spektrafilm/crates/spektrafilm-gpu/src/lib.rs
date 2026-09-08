@@ -40,6 +40,14 @@ pub struct GpuTimings {
 /// Default implementations fall back to CPU. GPU backends override the
 /// spectral methods for massive speedups.
 pub trait ComputeBackend: Send + Sync {
+    /// Application float32 compute operations. CPU backends decline so the
+    /// caller can retain its established reference implementation.
+    fn try_compute_f32(&self, _shader: &'static str, _input: &[f32],
+        _parameters: &[f32], _output_len: usize, _workgroups: [u32; 3]) -> Option<Vec<f32>> { None }
+    /// Consecutive passes keep intermediates on the device and read back only
+    /// the last output. Each tuple is (parameters, output float count, groups).
+    fn try_compute_chain_f32(&self, _shader: &'static str, _input: &[f32],
+        _stages: &[(Vec<f32>, usize, [u32; 3])]) -> Option<Vec<f32>> { None }
     fn colorspace_convert(&self, img: &ImageBuf, matrix: &[[f32; 3]; 3]) -> ImageBuf;
     fn cctf_encode_srgb(&self, img: &ImageBuf) -> ImageBuf;
     fn cctf_decode_srgb(&self, img: &ImageBuf) -> ImageBuf;

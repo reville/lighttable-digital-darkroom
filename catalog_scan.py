@@ -8,10 +8,9 @@ Three jobs live here:
 * importing the per-folder `.lighttable-state.json` files that were the
   library before the catalog existed.
 
-The walk is deliberately shallow in what it reads. Only new or changed files
-pay for a header hash and a metadata read; everything else is a `stat` compare.
-That is what keeps a rescan of a large library close to the cost of the walk
-itself.
+Only new or changed files pay for complete hashing and metadata reads after a
+one-time full-digest backfill for older catalogs. Unchanged files use a `stat`
+compare, keeping ordinary rescans close to the cost of the walk itself.
 """
 
 from __future__ import annotations
@@ -27,6 +26,8 @@ from typing import Callable, Iterable
 
 import catalog as catalog_module
 import durable_io
+import dam_filters
+import file_identity
 import media_formats
 import media_availability
 
@@ -42,20 +43,30 @@ MERGE_DIR_NAME = "LightTable Merges"
 SKIP_DIRS = {EXPORT_DIR_NAME, "__pycache__"}
 
 HEADER_CHUNK = 65536
-METADATA_VERSION = 3
+METADATA_VERSION = 4
+
+
+class _ChangedScanSource(OSError):
+    """The scanned bytes no longer belong to the revision being published."""
+
+
+def _validate_scan_identity(record: dict) -> None:
+    path = Path(record["path"])
+    try:
+        stat = path.stat()
+        media_availability.require_local(path, stat=stat)
+        if record.get("content_signature") != file_identity.signature_key(stat, path=path):
+            raise OSError(f"file changed before scan publication: {path}")
+    except OSError as error:
+        raise _ChangedScanSource(str(error)) from error
 
 
 def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
     """Content identity: BLAKE2b over the file size and its first 64 KiB.
 
-    A full hash of a 60 MB raw file is too slow to run across a whole library,
-    and a path is not identity at all. The header of a camera file carries its
-    maker notes, timestamps, and thumbnail, so a size-plus-header digest
-    separates distinct captures reliably while costing one read per file.
-
-    This is a *fast* identity, not a cryptographic one: two files with the same
-    size and identical first 64 KiB collide. Ingest verification uses a full
-    hash where that matters.
+    This legacy key narrows lookup candidates and stays compatible with saved
+    file keys. Files with the same size/header can contain different pixels;
+    relinking and duplicate decisions must verify the complete content digest.
     """
     digest = hashlib.blake2b(digest_size=16)
     try:
@@ -126,7 +137,13 @@ def walk_source(root: Path, *, limit: int = 500000,
             if ext not in ALL_EXTS:
                 continue
             try:
-                stat = entry.stat(follow_symlinks=False)
+                # Windows DirEntry.stat() omits the device and file index.
+                # The identity guard needs the actual target identity there.
+                stat = (os.stat(entry.path, follow_symlinks=False) if file_identity._WINDOWS
+                        else entry.stat(follow_symlinks=False))
+                availability = media_availability.from_stat(stat)
+                signature = (file_identity.signature_key(stat, path=entry.path)
+                             if availability == "local" else None)
             except OSError as error:
                 report(f"{entry.path}: {error}")
                 continue
@@ -141,9 +158,10 @@ def walk_source(root: Path, *, limit: int = 500000,
                 "kind": kind_for(ext),
                 "size": stat.st_size,
                 "mtime_ns": stat.st_mtime_ns,
+                "content_signature": signature,
                 "mtime_iso": _iso(stat.st_mtime),
                 "path": entry.path,
-                "availability": media_availability.from_stat(stat),
+                "availability": availability,
             }
             seen += 1
 
@@ -221,6 +239,13 @@ def read_metadata(path: Path) -> dict:
     out["camera_model"] = value("Exif.Image.Model") or None
     out["lens"] = (value("Exif.Photo.LensModel", "Exif.Image.LensInfo")
                    or None)
+    for column, keys in {
+        "iso": ("Exif.Photo.PhotographicSensitivity", "Exif.Photo.ISOSpeedRatings"),
+        "focal_length": ("Exif.Photo.FocalLength",),
+        "aperture": ("Exif.Photo.FNumber",),
+        "shutter_seconds": ("Exif.Photo.ExposureTime",),
+    }.items():
+        out[column] = dam_filters.positive_number(value(*keys))
     dimension_fields: dict[str, str] = {}
     try:
         for item in data:
@@ -262,7 +287,7 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
 
     existing: dict[str, dict] = {}
     for row in cat.connection.execute(
-            "SELECT relpath, id, size, mtime_ns, header_hash, metadata_version, missing, availability "
+            "SELECT relpath, id, size, mtime_ns, header_hash, content_hash, content_signature, metadata_version, missing, availability "
             "FROM files WHERE source_id=?",
             (source_id,)).fetchall():
         existing[row["relpath"]] = dict(row)
@@ -275,74 +300,133 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
         nonlocal added, updated, relinked, cloud_only
         if not records:
             return
-        with cat.write() as conn:
-            for record in records:
-                previous = existing.get(record["relpath"])
-                was_missing = bool(previous and previous["missing"])
-                if was_missing:
-                    # A file restored by Finder may retain its exact size and
-                    # timestamp. Revive it before the unchanged-file fast path,
-                    # without replacing its metadata or edit interpretations.
-                    cat.restore_file(conn, previous["id"])
-                    updated += 1
-                availability = record.get("availability", "local")
-                if availability != "local":
-                    cloud_only += int(availability == "cloud-only")
-                    # Eviction must never erase capture metadata, content identity
-                    # or edits. A placeholder has no bytes to fingerprint/relink.
-                    if previous:
-                        if previous["availability"] != availability:
-                            conn.execute("UPDATE files SET availability=? WHERE id=?",
-                                         (availability, previous["id"]))
-                            if not was_missing:
-                                updated += 1
-                    else:
+        # Read complete bytes only for new/changed files or the one-time legacy
+        # digest backfill. Keep disk IO outside the catalog write transaction.
+        for record in records:
+            previous = existing.get(record["relpath"])
+            if record.get("availability", "local") != "local":
+                continue
+            unchanged = (previous and previous["size"] == record["size"]
+                         and previous["mtime_ns"] == record["mtime_ns"]
+                         and previous["content_signature"] == record.get("content_signature"))
+            if unchanged and previous["content_hash"]:
+                record["content_hash"] = previous["content_hash"]
+                continue
+            try:
+                record["header_hash"] = header_hash(Path(record["path"]))
+                record["content_hash"] = file_identity.content_hash(
+                    record["path"], expected_revision=(record["size"], record["mtime_ns"]),
+                    expected_signature=record.get("content_signature"))
+            except OSError as error:
+                record["identity_error"] = True
+                incomplete(str(error))
+        counts_before = (added, updated, relinked, cloud_only)
+        validated_records = []
+        try:
+            with cat.write() as conn:
+                for record in records:
+                    if record.get("identity_error"):
+                        continue
+                    previous = existing.get(record["relpath"])
+                    availability = record.get("availability", "local")
+                    metadata_current = not read_metadata_for_new or (
+                        previous and previous["metadata_version"] >= METADATA_VERSION)
+                    if availability == "local":
+                        # The ordinary unchanged path publishes nothing. Preserve
+                        # its stat-only cost without another validation round trip.
+                        if (previous and not previous["missing"] and metadata_current
+                                and previous["availability"] == "local"
+                                and previous["content_hash"] and record.get("content_signature")
+                                and previous["content_signature"] == record["content_signature"]
+                                and previous["size"] == record["size"]
+                                and previous["mtime_ns"] == record["mtime_ns"]):
+                            continue
+                        try:
+                            _validate_scan_identity(record)
+                        except _ChangedScanSource as error:
+                            record["identity_error"] = True
+                            incomplete(str(error))
+                            continue
+                        validated_records.append(record)
+                    was_missing = bool(previous and previous["missing"])
+                    if was_missing:
+                        # A file restored by Finder may retain its exact size and
+                        # timestamp. Revive it before the unchanged-file fast path,
+                        # without replacing its metadata or edit interpretations.
+                        cat.restore_file(conn, previous["id"])
+                        updated += 1
+                    if availability != "local":
+                        cloud_only += int(availability == "cloud-only")
+                        # Eviction must never erase capture metadata, content identity
+                        # or edits. A placeholder has no bytes to fingerprint/relink.
+                        if previous:
+                            if previous["availability"] != availability:
+                                conn.execute("UPDATE files SET availability=? WHERE id=?",
+                                             (availability, previous["id"]))
+                                if not was_missing:
+                                    updated += 1
+                        else:
+                            cat.upsert_file(conn, source_id, record)
+                            added += 1
+                        continue
+                    became_local = previous and previous["availability"] != "local"
+                    if became_local:
+                        conn.execute("UPDATE files SET availability='local' WHERE id=?",
+                                     (previous["id"],))
+                    unchanged = previous \
+                        and previous["size"] == record["size"] \
+                        and previous["mtime_ns"] == record["mtime_ns"] \
+                        and (not previous["content_signature"] or
+                             previous["content_signature"] == record.get("content_signature") or
+                             previous["content_hash"] == record.get("content_hash"))
+                    if unchanged and metadata_current and not became_local:
+                        if (not previous["content_hash"] or previous["content_signature"] !=
+                                record.get("content_signature")):
+                            conn.execute("UPDATE files SET content_hash=?, content_signature=? WHERE id=?",
+                                         (record["content_hash"], record.get("content_signature"), previous["id"]))
+                        continue
+                    if not previous:
+                        if cat.relink_by_hash(conn, source_id, record) is not None:
+                            relinked += 1
+                            continue
+                        if read_metadata_for_new:
+                            record.update(read_metadata(Path(record["path"])))
                         cat.upsert_file(conn, source_id, record)
                         added += 1
-                    continue
-                became_local = previous and previous["availability"] != "local"
-                if became_local:
-                    conn.execute("UPDATE files SET availability='local' WHERE id=?",
-                                 (previous["id"],))
-                unchanged = previous \
-                    and previous["size"] == record["size"] \
-                    and previous["mtime_ns"] == record["mtime_ns"]
-                metadata_current = not read_metadata_for_new or (
-                    previous and previous["metadata_version"] >= METADATA_VERSION)
-                if unchanged and metadata_current and not became_local:
-                    continue
-                if not previous:
-                    record["header_hash"] = header_hash(Path(record["path"]))
-                    if cat.relink_by_hash(conn, source_id, record) is not None:
-                        relinked += 1
-                        continue
-                    if read_metadata_for_new:
-                        record.update(read_metadata(Path(record["path"])))
-                    cat.upsert_file(conn, source_id, record)
-                    added += 1
-                else:
-                    record["header_hash"] = (previous["header_hash"]
-                                             if unchanged and previous["header_hash"] else
-                                             header_hash(Path(record["path"])))
-                    if read_metadata_for_new:
-                        metadata = read_metadata(Path(record["path"]))
-                        # A version-only refresh is opportunistic. If the
-                        # metadata binding is unavailable, retain the existing
-                        # row and retry on a later scan instead of replacing
-                        # useful fields with nulls.
-                        if unchanged and not metadata.get("metadata_version"):
-                            continue
-                        record.update(metadata)
-                    cat.upsert_file(conn, source_id, record)
-                    if not was_missing:
-                        updated += 1
+                    else:
+                        record["header_hash"] = record.get("header_hash") or previous["header_hash"]
+                        if read_metadata_for_new:
+                            metadata = read_metadata(Path(record["path"]))
+                            # A version-only refresh is opportunistic. If the
+                            # metadata binding is unavailable, retain the existing
+                            # row and retry on a later scan instead of replacing
+                            # useful fields with nulls.
+                            if unchanged and not metadata.get("metadata_version"):
+                                conn.execute("UPDATE files SET content_hash=?, content_signature=? WHERE id=?",
+                                             (record["content_hash"], record.get("content_signature"), previous["id"]))
+                                continue
+                            record.update(metadata)
+                        cat.upsert_file(conn, source_id, record)
+                        if not was_missing:
+                            updated += 1
+                # Earlier records can change while later metadata or relink work
+                # runs. Do not commit any partial results from that bounded batch.
+                for record in validated_records:
+                    _validate_scan_identity(record)
+        except _ChangedScanSource as error:
+            # cat.write rolls back this batch, including restored visibility,
+            # metadata, and relinked image/search rows. A later scan retries it.
+            added, updated, relinked, cloud_only = counts_before
+            incomplete(str(error))
+            return
 
         # Notify only after the rows commit, so a thumbnail worker can resolve
         # qualified names immediately. The callback only queues bounded work;
         # source decoding never runs inside the catalog write transaction.
         if on_local_file:
             for record in records:
-                if record.get("availability", "local") == "local" \
+                if not record.get("identity_error") \
+                        and record.get("availability", "local") == "local" \
                         and record.get("kind") != "video":
                     try:
                         on_local_file(source_id, record["relpath"])
@@ -397,7 +481,9 @@ def scan_all(cat: catalog_module.Catalog, **kwargs) -> dict:
     return totals
 
 
-def register_file(cat: catalog_module.Catalog, path: Path | str) -> int:
+def register_file(cat: catalog_module.Catalog, path: Path | str, *,
+                  expected_signature: str | None = None,
+                  expected_content_hash: str | None = None) -> int:
     """Register one settled file under its most specific active source."""
     candidate = Path(path).expanduser().resolve()
     if not candidate.is_file():
@@ -415,6 +501,9 @@ def register_file(cat: catalog_module.Catalog, path: Path | str) -> int:
     _, source_id, _, relative = max(sources, key=lambda item: item[0])
     stat = candidate.stat()
     media_availability.require_local(candidate, stat=stat)
+    signature = file_identity.signature_key(stat, path=candidate)
+    if expected_signature is not None and expected_signature != signature:
+        raise _ChangedScanSource(f"file changed before registration: {candidate}")
     ext = candidate.suffix.lower()
     if ext not in ALL_EXTS:
         raise ValueError(f"unsupported photo type: {ext or 'none'}")
@@ -422,16 +511,24 @@ def register_file(cat: catalog_module.Catalog, path: Path | str) -> int:
         "relpath": relative.as_posix(), "filename": candidate.name,
         "ext": ext, "kind": kind_for(ext), "size": stat.st_size,
         "mtime_ns": stat.st_mtime_ns, "mtime_iso": _iso(stat.st_mtime),
+        "content_signature": signature,
         "header_hash": header_hash(candidate), "path": str(candidate),
+        "content_hash": file_identity.content_hash(candidate,
+            expected_revision=(stat.st_size, stat.st_mtime_ns),
+            expected_signature=signature),
     }
+    if expected_content_hash is not None and record["content_hash"] != expected_content_hash:
+        raise _ChangedScanSource(f"file content changed before registration: {candidate}")
     record.update(read_metadata(candidate))
     with cat.write() as conn:
+        _validate_scan_identity(record)
         file_id = cat.upsert_file(conn, source_id, record)
         row = conn.execute(
             "SELECT id FROM images WHERE file_id=? AND copy_ident IS NULL",
             (file_id,)).fetchone()
         if not row:
             raise RuntimeError("catalog did not create an image row")
+        _validate_scan_identity(record)
         return int(row["id"])
 
 
@@ -514,6 +611,7 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
             "heals": entry.get("heals"),
             "optics": entry.get("optics"),
             "provenance": entry.get("provenance"),
+            "preset": entry.get("preset"),
             "keywords": entry.get("keywords") or [],
         }
         cat.save_state(image_id, payload)

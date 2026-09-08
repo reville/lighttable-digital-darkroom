@@ -33,6 +33,32 @@ front of them.
 | A generated cache bundle is truncated or malformed | Discarded and regenerated (existing behaviour). Library Health can clear every preview cache. | — |
 | The local AI index is damaged | Quarantined and rebuilt automatically; it holds only generated data (existing behaviour). | — |
 | The server log is truncated on each launch | The shell rotates `server.log` → `server.1.log` → `server.2.log` and writes a launch header. | Help ▸ Diagnostics ▸ Show Server Log. |
+| The Mac app closes without a clean quit | A per-process session marker and advisory lock distinguish a stopped app from another live instance. On the next launch, the app saves a filtered diagnostic report and offers it once. | Copy report, Email maintainer, or Dismiss. The whole app does not automatically relaunch. |
+| The rendering engine stops unexpectedly on Mac | Before restarting it, the shell saves the recent log, available direct-to-file fatal stack, exit status, build information, and last recorded operation. | The diagnostic report stays available from Help ▸ Report a Problem…. |
+
+## Sharing diagnostics on Mac
+
+Reports remain local until the user shares them. **Email maintainer** copies
+the report and opens a short draft to `team@lighttable.app`; the user adds a
+description, pastes the report, and sends it. Keeping the report on the clipboard
+avoids mail-URL length limits. If no mail app opens, the report can be pasted
+into webmail. No background upload or automatic send occurs.
+
+`app/DiagnosticReports.swift` stores per-process native session markers and the
+latest ten incident reports in `Catalog/Diagnostics`. Engine reports are captured
+before log rotation, and deliberate engine restarts are excluded. A report panel
+works even if the web interface cannot start. On opening the panel, a bounded
+background lookup can add a matching macOS `.ips` report's exception, stack frames,
+and binary UUIDs; both process identity and the launch interval must match.
+Paths, photo names, quoted log values, and common credential fields are filtered;
+the user can inspect all shared text. No original photos or catalog are attached.
+
+`fatal_diagnostics.py` writes fatal Python/native stacks directly to the file
+specified by `LIGHTTABLE_FAULT_LOG`, avoiding loss when the logging thread dies.
+An OS kill or unclean shutdown may leave no trace; the report explicitly says so.
+Native session markers detect unclean exits, not their causes. A normal quit
+removes its marker, and another live instance's lock prevents a false report.
+These reporting controls currently belong to the macOS host.
 
 ## Pieces
 

@@ -2081,6 +2081,85 @@ impl GpuBuffer {
 
 #[cfg(feature = "wgpu-backend")]
 impl ComputeBackend for WgpuBackend {
+    fn try_compute_f32(&self, shader: &'static str, input: &[f32], parameters: &[f32],
+        output_len: usize, workgroups: [u32; 3]) -> Option<Vec<f32>> {
+        self.try_compute_chain_f32(shader, input, &[(parameters.to_vec(), output_len, workgroups)])
+    }
+    fn try_compute_chain_f32(&self, shader: &'static str, input: &[f32],
+        stages: &[(Vec<f32>, usize, [u32; 3])]) -> Option<Vec<f32>> {
+        use wgpu::util::DeviceExt;
+        let limits = self.device.limits();
+        let valid_size = |size: usize| size.checked_mul(4).is_some_and(|bytes|
+            bytes > 0 && bytes as u64 <=
+            (limits.max_storage_buffer_binding_size as u64).min(limits.max_buffer_size));
+        if !valid_size(input.len()) || stages.is_empty() || stages.len() > 32
+            || stages.iter().any(|(p, n, g)| !valid_size(p.len()) || !valid_size(*n)
+                || g.iter().any(|&v| v == 0 || v > limits.max_compute_workgroups_per_dimension)) {
+            return None;
+        }
+        let entries = (0..3).map(|i| wgpu::BindGroupLayoutEntry {
+            binding: i, visibility: wgpu::ShaderStages::COMPUTE,
+            ty: wgpu::BindingType::Buffer { ty: wgpu::BufferBindingType::Storage { read_only: i != 2 },
+                has_dynamic_offset: false, min_binding_size: None }, count: None,
+        }).collect::<Vec<_>>();
+        let cache = self.get_or_compile_pipeline(shader, || entries);
+        let compiled = cache.get(&(shader.as_ptr() as usize))?;
+        let mut buffers = vec![self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: Some("application float input"), contents: bytemuck::cast_slice(input),
+            usage: wgpu::BufferUsages::STORAGE,
+        })];
+        let direct = self.device.features().contains(wgpu::Features::MAPPABLE_PRIMARY_BUFFERS);
+        let mut encoder = self.device.create_command_encoder(&Default::default());
+        for (index, (parameters, output_len, workgroups)) in stages.iter().enumerate() {
+            let last = index + 1 == stages.len();
+            let params_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                label: Some("application float parameters"), contents: bytemuck::cast_slice(parameters),
+                usage: wgpu::BufferUsages::STORAGE,
+            });
+            buffers.push(self.device.create_buffer(&wgpu::BufferDescriptor {
+                label: Some("application float intermediate"), size: (*output_len as u64) * 4,
+                usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC
+                    | if direct && last { wgpu::BufferUsages::MAP_READ } else { wgpu::BufferUsages::empty() },
+                mapped_at_creation: false,
+            }));
+            let bindings = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+                label: Some("application float compute"), layout: &compiled.bind_group_layout,
+                entries: &[
+                    wgpu::BindGroupEntry { binding: 0, resource: buffers[index].as_entire_binding() },
+                    wgpu::BindGroupEntry { binding: 1, resource: params_buffer.as_entire_binding() },
+                    wgpu::BindGroupEntry { binding: 2, resource: buffers[index + 1].as_entire_binding() },
+                ],
+            });
+            let mut pass = encoder.begin_compute_pass(&wgpu::ComputePassDescriptor {
+                label: Some("application float compute"), timestamp_writes: None,
+            });
+            pass.set_pipeline(&compiled.pipeline);
+            pass.set_bind_group(0, &bindings, &[]);
+            pass.dispatch_workgroups(workgroups[0], workgroups[1], workgroups[2]);
+        }
+        let output_buffer = buffers.last()?;
+        let output_bytes = stages.last()?.1 as u64 * 4;
+        let staging = (!direct).then(|| self.device.create_buffer(&wgpu::BufferDescriptor {
+            label: Some("application float readback"), size: output_bytes,
+            usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+            mapped_at_creation: false,
+        }));
+        if let Some(staging) = &staging {
+            encoder.copy_buffer_to_buffer(output_buffer, 0, staging, 0, output_bytes);
+        }
+        self.queue.submit(Some(encoder.finish()));
+        let mapped_buffer = staging.as_ref().unwrap_or(output_buffer);
+        let slice = mapped_buffer.slice(..);
+        let (tx, rx) = std::sync::mpsc::channel();
+        slice.map_async(wgpu::MapMode::Read, move |result| { let _ = tx.send(result); });
+        self.device.poll(wgpu::Maintain::Wait);
+        rx.recv().ok()?.ok()?;
+        let mapped = slice.get_mapped_range();
+        let result = bytemuck::cast_slice(&mapped).to_vec();
+        drop(mapped);
+        mapped_buffer.unmap();
+        Some(result)
+    }
     fn colorspace_convert(&self, img: &ImageBuf, matrix: &[[f32; 3]; 3]) -> ImageBuf {
         cpu_backend::CpuBackend.colorspace_convert(img, matrix)
     }

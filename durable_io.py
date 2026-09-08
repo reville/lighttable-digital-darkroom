@@ -8,6 +8,7 @@ user may need to recover after an external or interrupted write.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -19,14 +20,37 @@ from typing import Any, Callable
 
 def backup_path(path: Path | str) -> Path:
     path = Path(path)
-    return path.with_name(path.name + ".backup")
+    name = path.name + ".backup"
+    if len(name.encode("utf-8")) > 255:
+        # Some filesystems accept longer Unicode names. Keep an already saved
+        # backup at the old spelling reachable after upgrading this helper.
+        legacy = path.with_name(name)
+        try:
+            if legacy.is_file():
+                return legacy
+        except OSError:
+            pass
+        # Retain a stable association with the complete name when appending
+        # .backup would exceed NAME_MAX. A digest separates equal long prefixes.
+        tail = "." + hashlib.sha256(path.name.encode("utf-8")).hexdigest()[:16] + ".backup"
+        prefix = path.name.encode("utf-8")[:255 - len(tail)].decode("utf-8", errors="ignore")
+        name = prefix + tail
+    return path.with_name(name)
 
 
 def temporary_path(path: Path | str, label: str = "tmp") -> Path:
     """A unique path beside ``path`` that retains its real file extension."""
     path = Path(path)
     token = f"{os.getpid()}.{threading.get_ident()}.{time.time_ns()}"
-    return path.with_name(f".{path.stem}.{label}.{token}{path.suffix}")
+    tail = f".{label}.{token}{path.suffix}"
+    # A valid destination can already be close to NAME_MAX. Appending the
+    # staging token to its full stem would make an otherwise writable file
+    # impossible to save. A UTF-8 byte bound also works on byte-limited volumes.
+    budget = 255 - len(tail.encode("utf-8")) - 1
+    if budget < 1:
+        raise ValueError("The file extension is too long for a staging filename")
+    stem = path.stem.encode("utf-8")[:budget].decode("utf-8", errors="ignore")
+    return path.with_name(f".{stem}{tail}")
 
 
 def _flush_directory(directory: Path) -> None:
@@ -69,8 +93,9 @@ def atomic_write_bytes(
     """Durably replace a file without exposing partially-written bytes.
 
     When ``keep_backup`` is set, only a valid prior file is copied to
-    ``<name>.backup``.  ``backup_once`` is useful for XMP: the first pre-app
-    sidecar is retained rather than gradually replaced by app-authored copies.
+    the sibling returned by :func:`backup_path`. ``backup_once`` is useful for
+    XMP: the first pre-app sidecar is retained rather than gradually replaced
+    by app-authored copies.
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

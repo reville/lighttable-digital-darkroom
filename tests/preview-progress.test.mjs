@@ -3,12 +3,14 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
 import { gradeBakeRequest, gradeBakeKey } from '../web/preview-processing.js';
+import { previewFailureMessage } from '../web/preview-detail.js';
 
 const source = readFileSync(new URL('../web/preview-progress.js', import.meta.url), 'utf8');
 const { createPreviewProgress, waitForRawRefinement } = await import(
   `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 const appSource = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
 const renderSource = appSource.match(/^async function doRender\([^]*?^}/m)[0];
+const nativeEventSource = appSource.match(/^window.lightTableNativeEvent = \(event\) => \{[^]*?^};/m)[0];
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
 function clock() {
@@ -75,24 +77,37 @@ test('RAW polling stops on navigation, failure, or the retry limit', async () =>
     request: async () => ({ ready: false }), maxAttempts: 3, sleep: async () => {} }), /could not finish/);
 });
 
+test('ready RAW detail is detected within 100 ms without shortening the slow-decoder allowance', async () => {
+  let time = 0;
+  await waitForRawRefinement({ isCurrent: () => true,
+    request: async () => ({ ready: time >= 1250 }), sleep: async ms => { time += ms; } });
+  assert.equal(time, 1300);
+  time = 0;
+  await waitForRawRefinement({ isCurrent: () => true,
+    request: async () => ({ ready: time >= 179000 }), sleep: async ms => { time += ms; } });
+  assert.equal(time, 179000);
+});
+
 // Run the actual orchestration with only HTTP and display boundaries stubbed.
 // A slow decode spans several polls; no new render may invalidate its generation.
-function renderHarness() {
+function renderHarness(overrides = {}) {
   const S = { seq: 0, params: { profile_enabled: true }, renderState: 'ready',
-    presentedPhotoName: 'photo.dng', optics: {}, heals: [] };
-  const requests = [], displays = [], progress = [], scheduled = [], nodes = new Map();
+    presentedPhotoName: 'photo.dng', optics: {}, heals: [],
+    previewDetail: { name: 'photo.dng', refining: false } };
+  const requests = [], displays = [], progress = [], presentations = [], scheduled = [], nodes = new Map();
   const noop = () => {};
   let finishDecode, finishPaint;
   const context = {
     S, performance, console, setTimeout: fn => scheduled.push(fn), clearTimeout: noop, CLIENT_ID: 'review',
-    gradeBakeRequest, gradeBakeKey,
+    gradeBakeRequest, gradeBakeKey, previewFailureMessage,
     prefetchTimer: null, refineTimer: null, viewportRegionTimer: null,
     interactiveRenderPhoto: 'photo.dng', lastContinuousInputAt: -Infinity,
     INTERACTIVE_PREVIEW_WIDTH: 1100, FULL_RESOLUTION_SETTLE_MS: 200,
     PERF: { renders: [] }, window: { dispatchEvent: noop },
     CustomEvent: class { constructor(type, detail) { this.detail = detail; } },
     cur: () => ({ name: 'photo.dng' }),
-    $: id => { if (!nodes.has(id)) nodes.set(id, { value: id === 'pw' ? '2200' : 'rs', setAttribute: noop }); return nodes.get(id); },
+    $: id => { if (!nodes.has(id)) nodes.set(id, { value: id === 'pw' ? '2200' : 'rs',
+      setAttribute(key, value) { this[key] = value; } }); return nodes.get(id); },
     readControls: noop, requestedPreviewWidth: () => 2200,
     requestedViewportRegion: () => null, nativePreviewActive: () => false,
     renderRequestKey: () => 'key', presentationCache: { get: noop, set: noop },
@@ -100,7 +115,7 @@ function renderHarness() {
     previewProgress: { start: label => progress.push(label), advance: noop, finish: () => progress.push('done') },
     waitForRawRefinement: options => waitForRawRefinement({ ...options, sleep: async () => {} }),
     api: async (path, body) => {
-      requests.push({ path, generation: body.generation });
+      requests.push({ path, generation: body.generation, width: body.w, allowDraft: body.allow_draft });
       if (path === '/api/refine') {
         if (requests.filter(r => r.path === path).length < 4) return { ready: false };
         return new Promise(resolve => { finishDecode = () => resolve({ ready: true }); });
@@ -111,11 +126,12 @@ function renderHarness() {
       displays.push(generation);
       return new Promise(resolve => { finishPaint = () => resolve({ presentedAt: performance.now(), uploadedAt: performance.now() }); });
     },
-    setRenderPresentation: noop, drawGrade: noop, syncOpticsPanel: noop,
+    setRenderPresentation: (...args) => presentations.push(args), drawGrade: noop, syncOpticsPanel: noop,
     syncBrowserOriginal: noop, prefetch: noop,
+    ...overrides,
   };
-  vm.runInNewContext(`${renderSource}\nglobalThis.render = doRender;`, context);
-  return { ...context, requests, displays, progress,
+  vm.runInNewContext(`${nativeEventSource}\n${renderSource}\nglobalThis.render = doRender;`, context);
+  return { ...context, requests, displays, progress, presentations,
     finishDecode: () => finishDecode(), finishPaint: () => finishPaint(),
     runScheduled: () => scheduled.shift()() };
 }
@@ -128,6 +144,7 @@ test('actual RAW render waits on one generation, retains accurate pixels, and fi
   assert.ok(app.requests.every(r => r.generation === 1));
   assert.deepEqual(app.displays, [], 'draft must not replace existing accurate pixels');
   assert.equal(app.progress.at(-1), 'done', 'an existing usable preview hides progress during RAW work');
+  assert.equal(app.requests[0].allowDraft, false, 'do not compute a draft that cannot be displayed');
   app.finishDecode(); await tick();
   assert.equal(app.requests.at(-1).path, '/api/render');
   assert.equal(app.requests.at(-1).generation, 2);
@@ -135,6 +152,74 @@ test('actual RAW render waits on one generation, retains accurate pixels, and fi
   assert.equal(app.progress.filter(value => value !== 'done').length, 1, 'background refinement must not restart the bar');
   app.finishPaint(); await rendered;
   assert.equal(app.progress.at(-1), 'done');
+});
+
+test('native failure reason survives the desktop event and render pipeline', async () => {
+  for (const reason of ['Metal could not allocate the preview texture.', undefined]) {
+    const nativePreviewPending = new Map(), toasts = [];
+    const app = renderHarness({
+      nativePreviewPending, toast: message => toasts.push(message),
+      api: async () => ({}),
+      setBaseImage: (_, generation) => new Promise(resolve => nativePreviewPending.set(generation, { resolve })),
+    });
+    const rendered = app.render(); await tick();
+    app.window.lightTableNativeEvent({ type: 'nativePreviewFailed', generation: app.S.seq, message: reason });
+    await rendered;
+    const expected = reason || 'Native preview unavailable';
+    assert.deepEqual(app.presentations, [['error', 'photo.dng', `Could not display this photo\n${expected}`]]);
+    assert.deepEqual(toasts, [expected]);
+    assert.equal(app.$('zoomwrap')['aria-busy'], 'false');
+    assert.equal(nativePreviewPending.size, 0);
+  }
+});
+
+test('server and thrown failures show their reported cause in the photo area', async () => {
+  for (const [api, expected] of [
+    [async () => ({ error: 'The original file is missing.' }), 'Could not render this photo\nThe original file is missing.'],
+    [async () => { throw new Error('Connection lost'); }, 'Could not finish this preview\nConnection lost'],
+  ]) {
+    const app = renderHarness({ api });
+    app.S.renderState = 'pending'; app.S.renderName = 'photo.dng';
+    await app.render();
+    assert.deepEqual(app.presentations, [['error', 'photo.dng', expected]]);
+  }
+  assert.equal(previewFailureMessage('Could not display this photo', {}), 'Could not display this photo');
+  assert.equal(previewFailureMessage('Could not display this photo', '  '), 'Could not display this photo');
+});
+
+test('a late native failure cannot replace the current photo error or show a stale toast', async () => {
+  const nativePreviewPending = new Map(), toasts = [];
+  const app = renderHarness({
+    nativePreviewPending, toast: message => toasts.push(message), api: async () => ({}),
+    setBaseImage: (_, generation) => new Promise(resolve => nativePreviewPending.set(generation, { resolve })),
+  });
+  const rendered = app.render(); await tick();
+  const oldGeneration = app.S.seq++;
+  app.window.lightTableNativeEvent({ type: 'nativePreviewFailed', generation: oldGeneration, message: 'Old failure' });
+  await rendered;
+  assert.deepEqual(app.presentations, []);
+  assert.deepEqual(toasts, []);
+});
+
+test('a displayed neutral RAW draft is not mistaken for accurate pixels; refine before a large film render', async () => {
+  const app = renderHarness();
+  app.S.previewDetail.refining = true;
+  const rendered = app.render(performance.now(), {
+    width: 1100, requestedWidth: 2200, phase: 'interactive',
+  });
+  await tick();
+  assert.deepEqual(app.displays, [1], 'the small film result must replace the neutral draft');
+  assert.equal(app.requests[0].allowDraft, true);
+  assert.equal(app.requests.length, 1, 'first visible paint still takes priority over demosaic');
+  app.finishPaint(); await tick();
+  assert.deepEqual(app.requests.map(r => r.path), ['/api/render', ...Array(4).fill('/api/refine')]);
+  assert.ok(app.requests.slice(1).every(r => r.width === 2200));
+  app.finishDecode(); await tick();
+  assert.deepEqual(app.requests.filter(r => r.path === '/api/render').map(r => r.width), [1100, 2200]);
+  assert.deepEqual(app.displays, [1, 2]);
+  app.finishPaint(); await rendered;
+  assert.equal(app.progress.at(-1), 'done');
+  assert.equal(app.PERF.renders.filter(r => r.presentation === 'draft-skipped').length, 0);
 });
 
 test('obsolete RAW completion neither renders nor hides progress for the new photo', async () => {

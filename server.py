@@ -36,6 +36,8 @@ from urllib.parse import parse_qs, quote, urlparse
 if __name__ == "__main__":
     import bounded_logging
     bounded_logging.from_environment()
+    import fatal_diagnostics
+    fatal_diagnostics.install()
 
 import numpy as np
 from PIL import Image, ImageStat
@@ -61,6 +63,7 @@ import catalog_scan  # noqa: E402
 import watch_workflow  # noqa: E402
 import media_formats  # noqa: E402
 import media_availability  # noqa: E402
+import file_identity  # noqa: E402
 import durable_io  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
@@ -472,13 +475,13 @@ def clean_crop(c):
 
 
 def clean_keywords(values) -> list[str]:
-    """Short, unique, user-authored search tags for one photo."""
+    """Unique search tags, retaining complete supported keyword hierarchies."""
     if not isinstance(values, list):
         return []
     out = []
     seen = set()
     for value in values[:100]:
-        text = " ".join(str(value).split()).strip()[:60]
+        text = " ".join(str(value).split()).strip()[:400]
         key = text.casefold()
         if text and key not in seen:
             seen.add(key)
@@ -528,6 +531,7 @@ def entry_for(st, name):
         "keywords": clean_keywords(e.get("keywords", [])),
         "versions": clean_versions(e.get("versions", [])),
         "provenance": e.get("provenance"),
+        "preset": e.get("preset"),
         "label": clean_label(e.get("label")),
     }
 
@@ -873,13 +877,16 @@ def save_image_states(entries: dict[str, dict]) -> None:
     """Merge one or more image edits and persist one atomic state snapshot."""
     cat = catalog_handle()
     if cat is not None:
-        updates, versions, names = {}, {}, []
+        updates, versions, names, changed = {}, {}, [], {}
         for name, entry in entries.items():
             image_id = catalog_image_id(name)
             if image_id is None:
                 continue
             payload = dict(entry)
             version = payload.pop("versions", None)
+            previous = (cat.mark_metadata_for(image_id) if set(payload) <= {"rating", "status", "label", "keywords"}
+                        else cat.state_for(image_id))
+            changed[name] = [key for key, value in payload.items() if previous.get(key) != value]
             updates[image_id] = payload
             if version is not None:
                 versions[image_id] = version
@@ -888,7 +895,8 @@ def save_image_states(entries: dict[str, dict]) -> None:
         for image_id, version in versions.items():
             cat.save_versions(image_id, version)
         for name in names:
-            queue_sidecar(name)
+            if changed[name]:
+                queue_sidecar(name, changed[name])
         _queue_mirror()
         return
     with STATE_LOCK:
@@ -1000,7 +1008,7 @@ _SIDECAR_PREFIX = "sidecar.pending:"
 _SIDECAR_WRITE_LOCK = threading.Lock()
 
 
-def queue_sidecar(name: str) -> None:
+def queue_sidecar(name: str, fields=None) -> None:
     """Persist the outbox entry by image ID, so renames and restarts are safe."""
     if library_workflow.is_virtual(name):
         return  # A virtual edit must never replace its original's XMP.
@@ -1010,10 +1018,26 @@ def queue_sidecar(name: str) -> None:
     image_id = catalog_image_id(name)
     if image_id is None:
         return
+    import xmp_sidecar
+    key = _SIDECAR_PREFIX + str(image_id)
     with cat.write() as conn:
+        row = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+        previous = json.loads(row[0]) if row else {}
+        pending_fields = (None if fields is None or (row and previous.get("fields") is None)
+                          else sorted(set(previous.get("fields", [])) | set(fields)))
+        baseline = previous.get("snapshot")
+        error = previous.get("snapshotError", "")
+        if baseline is None and not error:
+            synced = conn.execute("SELECT value FROM meta WHERE key=?",
+                                  ("sidecar.synced:" + str(image_id),)).fetchone()
+            try:
+                baseline = json.loads(synced[0]) if synced else xmp_sidecar.sidecar_snapshot(src_path(name))
+            except Exception as failure:
+                error = str(failure)
         conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES(?, ?)",
-                     (_SIDECAR_PREFIX + str(image_id), json.dumps({
-                         "revision": time.time_ns(), "error": ""})))
+                     (key, json.dumps({"revision": time.time_ns(), "error": error,
+                                       "snapshot": baseline, "snapshotError": error,
+                                       "fields": pending_fields})))
 
 
 def _pending_sidecars(cat) -> list:
@@ -1050,6 +1074,7 @@ def write_pending_sidecars() -> int:
     try:
         for pending in _pending_sidecars(cat):
             errors = []
+            snapshot = None
             try:
                 image_id = int(pending["key"][len(_SIDECAR_PREFIX):])
                 image = cat.image_row(image_id)
@@ -1062,9 +1087,28 @@ def write_pending_sidecars() -> int:
                     path = src_path(name)
                     if not path.is_file():
                         raise OSError("Original is unavailable. Reconnect its folder and retry.")
+                    pending_record = json.loads(pending["value"])
+                    if pending_record.get("snapshotError"):
+                        raise ValueError(pending_record["snapshotError"])
                     record = dict(cat.state_for(image_id), iptc=cat.iptc_for(image_id))
-                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors)
+                    # This is a complete catalog snapshot. Explicitly clear a
+                    # previous LightTable correction when the override is gone;
+                    # the XMP ownership marker preserves foreign camera dates.
+                    record.setdefault("captureTimeOverride", None)
+                    fields = pending_record.get("fields")
+                    if fields is not None:
+                        iptc = {key: value for key, value in record["iptc"].items()
+                                if "iptc" in fields or "iptc." + key in fields}
+                        record = {key: value for key, value in record.items() if key in fields}
+                        if iptc:
+                            record["iptc"] = iptc
+                    succeeded = xmp_sidecar.write_sidecar(path, record, errors=errors,
+                        expected_snapshot=pending_record.get("snapshot"))
                     if succeeded:
+                        snapshot = xmp_sidecar.sidecar_snapshot(path)
+                        with cat.write() as conn:
+                            conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                                ("sidecar.synced:" + str(image_id), json.dumps(snapshot)))
                         written += 1
             except Exception as error:  # retain the outbox entry for retry
                 succeeded = False
@@ -1073,6 +1117,17 @@ def write_pending_sidecars() -> int:
                 if succeeded:
                     conn.execute("DELETE FROM meta WHERE key=? AND value=?",
                                  (pending["key"], pending["value"]))
+                    # A newer local edit may have queued while disk I/O ran.
+                    # Advance only that same baseline past our own successful
+                    # write; otherwise it would look like an external conflict.
+                    newer = conn.execute("SELECT value FROM meta WHERE key=?",
+                                         (pending["key"],)).fetchone()
+                    if snapshot is not None and newer:
+                        queued = json.loads(newer[0])
+                        if queued.get("snapshot") == pending_record.get("snapshot"):
+                            queued["snapshot"] = snapshot
+                            conn.execute("UPDATE meta SET value=? WHERE key=?",
+                                         (json.dumps(queued), pending["key"]))
                 else:
                     updated = dict(json.loads(pending["value"]),
                                    error="; ".join(errors) or "XMP could not be written.")
@@ -1106,15 +1161,28 @@ def catalog_entry_for(name: str) -> dict:
         "keywords": clean_keywords(state.get("keywords", [])),
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
+        "preset": state.get("preset"),
     }
 
 
 def recovery_state_for(name: str) -> dict:
     state = dict(catalog_entry_for(name))
     try:
+        path = src_path(name)
+        before = path.stat()
+        before_signature = file_identity.stat_signature(before, path=path)
         state["_recoverySourceKey"] = file_key(name)
+        # Journals written before complete-file identities were introduced
+        # contain this weaker revision. It is only a candidate for explicit
+        # legacy recovery, never a substitute for the current write guard.
+        legacy_hash = catalog_scan.header_hash(path)
+        if file_identity.stat_signature(path.stat(), path=path) != before_signature:
+            raise OSError("Original changed while reading recovery identity")
+        state["_recoveryLegacySourceKey"] = catalog_module.source_revision(
+            legacy_hash, before.st_size, before.st_mtime_ns)
     except (ValueError, OSError):
         state["_recoverySourceKey"] = None
+        state["_recoveryLegacySourceKey"] = None
     cat = catalog_handle()
     state["_recoveryHistoryAvailable"] = cat is not None
     if cat is not None:
@@ -1171,9 +1239,11 @@ IMPORT_JOB: dict = {"running": False, "stage": "", "done": 0, "total": 0,
                     "result": None, "error": None}
 
 
-def cancel_ingest_job() -> None:
+def cancel_ingest_job() -> bool:
     with INGEST_LOCK:
         INGEST["cancelled"] = True
+    # The worker finishes and verifies its active file before becoming terminal.
+    return False
 
 
 def library_state(st: dict | None = None) -> dict:
@@ -1787,17 +1857,45 @@ def src_path(name: str) -> Path:
     return resolve_name(name)[0]
 
 
-_HEADER_HASH_CACHE: dict[tuple[str, int, int], str] = {}
+_HEADER_HASH_CACHE: dict[tuple, str] = {}
+
+
+def _catalog_content_hash(path: Path, stat) -> str | None:
+    """Reuse a scan's complete digest only for this exact, unchanged file."""
+    cat = catalog_handle()
+    if cat is None:
+        return None
+    resolved = path.resolve()
+    for source in cat.connection.execute(
+            "SELECT id, path FROM sources WHERE active=1").fetchall():
+        try:
+            relpath = resolved.relative_to(Path(source["path"]).resolve()).as_posix()
+        except ValueError:
+            continue
+        row = cat.connection.execute(
+            "SELECT content_hash FROM files WHERE source_id=? AND relpath=?"
+            " AND missing=0 AND size=? AND mtime_ns=? AND content_signature=?",
+            (source["id"], relpath, stat.st_size, stat.st_mtime_ns,
+             file_identity.signature_key(stat, path=path))).fetchone()
+        if row and row["content_hash"]:
+            return row["content_hash"]
+    return None
 
 
 def content_hash(path: Path) -> str:
     """Cached content identity for a file, keyed by its stat signature."""
     stat = path.stat()
     media_availability.require_local(path, stat=stat)
-    key = (str(path), stat.st_size, stat.st_mtime_ns)
+    signature = file_identity.stat_signature(stat, path=path)
+    key = (str(path), *signature)
     cached = _HEADER_HASH_CACHE.get(key)
     if cached is None:
-        cached = catalog_scan.header_hash(path)
+        cached = _catalog_content_hash(path, stat)
+        if cached is None:
+            cached = file_identity.content_hash(
+                path, expected_signature=":".join(map(str, signature)))
+        if file_identity.stat_signature(path.stat(), path=path) != signature:
+            raise OSError(f"Original changed while identifying it: {path}")
         if len(_HEADER_HASH_CACHE) > 20000:
             _HEADER_HASH_CACHE.clear()
         _HEADER_HASH_CACHE[key] = cached
@@ -1814,7 +1912,31 @@ def file_key(name: str) -> str:
     """
     src = src_path(name)
     stat = src.stat()
-    return catalog_module.source_revision(content_hash(src), stat.st_size, stat.st_mtime_ns)
+    signature = file_identity.stat_signature(stat, path=src)
+    digest = content_hash(src)
+    if file_identity.stat_signature(src.stat(), path=src) != signature:
+        raise OSError(f"Original changed while identifying it: {src}")
+    return catalog_module.source_revision(digest, stat.st_size, stat.st_mtime_ns)
+
+
+def folder_listing_file_key(name: str) -> str:
+    """Cheap display/recovery identity while folder mode enumerates originals.
+
+    A complete identity already verified in this session takes precedence.
+    Otherwise retain the older prefix revision, which recovery treats as a
+    partial-identity candidate requiring explicit confirmation. Rendering and
+    source-write guards must continue to call file_key instead.
+    """
+    path = src_path(name)
+    stat = path.stat()
+    media_availability.require_local(path, stat=stat)
+    signature = file_identity.stat_signature(stat, path=path)
+    digest = _HEADER_HASH_CACHE.get((str(path), *signature))
+    if digest is None:
+        digest = catalog_scan.header_hash(path)
+    if file_identity.stat_signature(path.stat(), path=path) != signature:
+        raise OSError(f"Original changed while identifying it: {path}")
+    return catalog_module.source_revision(digest, stat.st_size, stat.st_mtime_ns)
 
 
 _TIFF_CACHE_MAX_BYTES = int(os.environ.get(
@@ -2147,11 +2269,18 @@ def valid_tiff_cache(path: Path) -> bool:
         return False
 
 
+def processed_tiff_cache_tag() -> str:
+    # Portable conversion now preserves 16-bit/float source precision. Rebuild
+    # its old 8-bit intermediates without invalidating Mac or RAW caches.
+    return "romm" if sys.platform == "darwin" else "romm-icc16-v1"
+
+
 def tiff_for(name: str, params: dict | None = None, *,
              denoise_status=None, denoise_cancel=None) -> Path:
-    """Full-resolution 16-bit TIFF decode of the source, cached on disk."""
+    """Full-resolution source TIFF decode, cached on disk."""
     src = src_path(name)
-    wb_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    wb_key = (color_pipeline.raw_decode_fingerprint(params) if is_raw(name)
+              else processed_tiff_cache_tag())
     t = CACHE / "tiff" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_{wb_key}.tif"
     with TIFF_BUILD_LOCK:
         if not valid_tiff_cache(t) or t.stat().st_mtime < src.stat().st_mtime:
@@ -2183,7 +2312,8 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                      output_space: str = "srgb") -> Path:
     """Full-resolution, display-referred source for profile-off exports."""
     src = src_path(name)
-    raw_key = color_pipeline.raw_decode_fingerprint(params) if is_raw(name) else "romm"
+    raw_key = (color_pipeline.raw_decode_fingerprint(params) if is_raw(name)
+               else processed_tiff_cache_tag())
     output_space = color_pipeline.normalise_output_space(output_space)
     # Keep preview cache identity stable, and isolate color-preserving exports.
     color_key = "" if output_space == "srgb" else f"_gamut-v1-{output_space}"
@@ -2538,17 +2668,39 @@ def video_thumbnail(name: str) -> bytes:
 
 
 _EXIF_CACHE: dict[str, dict] = {}
-def exif_for(name: str) -> dict:
+_EXIF_CACHE_SIGNATURES: dict[str, tuple] = {}
+_EXIF_CACHE_LOCK = threading.Lock()
+_LIVE_CAPTURE_TIME = object()
+
+
+def exif_for(name: str, *, capture_override=_LIVE_CAPTURE_TIME) -> dict:
     """Camera metadata for the info panel. Cached; exiftool costs ~50 ms."""
     guard_local_photo(name)
-    if name not in _EXIF_CACHE:
-        _EXIF_CACHE[name] = platform_image.metadata(src_path(name))
-    out = dict(_EXIF_CACHE[name])
-    cat = catalog_handle()
-    image_id = catalog_image_id(name) if cat is not None else None
-    info = cat.capture_details(image_id) if image_id is not None else None
-    if info and info["override"]:
-        out.update(capture_clock.exif_fields(info["override"]))
+    source = src_path(name)
+    stat = source.stat()
+    media_availability.require_local(source, stat=stat)
+    signature = (str(source), *file_identity.stat_signature(stat, path=source))
+    with _EXIF_CACHE_LOCK:
+        cached = (_EXIF_CACHE.get(name)
+                  if _EXIF_CACHE_SIGNATURES.get(name) == signature else None)
+    if cached is None:
+        cached = platform_image.metadata(source)
+        if (str(source), *file_identity.stat_signature(source.stat(), path=source)) != signature:
+            raise OSError(f"Original changed while reading its metadata: {source}")
+        with _EXIF_CACHE_LOCK:
+            if len(_EXIF_CACHE) >= 20000:
+                _EXIF_CACHE.clear()
+                _EXIF_CACHE_SIGNATURES.clear()
+            _EXIF_CACHE[name] = cached
+            _EXIF_CACHE_SIGNATURES[name] = signature
+    out = dict(cached)
+    if capture_override is _LIVE_CAPTURE_TIME:
+        cat = catalog_handle()
+        image_id = catalog_image_id(name) if cat is not None else None
+        info = cat.capture_details(image_id) if image_id is not None else None
+        capture_override = info["override"] if info else None
+    if capture_override:
+        out.update(capture_clock.exif_fields(capture_override))
         out["CaptureTimeCorrection"] = "Catalog override · original unchanged"
     return out
 
@@ -2599,7 +2751,7 @@ def capture_time_action(body: dict) -> dict:
     names = cat.apply_capture_changes(changes,
         label="Capture time restored" if action == "restore-history" else "Capture time corrected")
     for name in names:
-        queue_sidecar(name)
+        queue_sidecar(name, ["captureTimeOverride"])
     _queue_mirror()
     EVENTS.publish("library", {"reason": "capture-time", "names": names})
     return {"ok": True, "count": len(changes), "names": names}
@@ -3259,7 +3411,7 @@ def preview_engine():
 
 
 
-def render_key(name: str, params: dict, width: int, engine: str = "py") -> str:
+def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
     cleaned = fp.clean_params(params)
     if not is_raw(name):
         # Capture WB is deliberately RAW-only. Preserve it in the saved edit
@@ -3691,10 +3843,11 @@ def native_image_payload(url: str, image: bytes | Path) -> dict:
 
 
 def render_preview(name: str, params: dict, width: int,
-                   engine: str = "py", client: str = "",
+                   engine: str = "rs", client: str = "",
                    generation: int | None = None,
                    native: bool = False,
-                   priority: str = "interactive", viewport: dict | None = None) -> dict:
+                   priority: str = "interactive", viewport: dict | None = None,
+                   allow_draft: bool = True) -> dict:
     viewport = clean_viewport(viewport)
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
@@ -3712,7 +3865,8 @@ def render_preview(name: str, params: dict, width: int,
                         client, generation, name, completed)):
                 preview_progress.advance(1)
                 return _render_preview(name, params, width, engine, client,
-                                       generation, native, priority, viewport)
+                                       generation, native, priority, viewport,
+                                       allow_draft)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -3721,13 +3875,24 @@ def render_preview(name: str, params: dict, width: int,
 
 
 def _render_preview(name: str, params: dict, width: int,
-                    engine: str = "py", client: str = "",
+                    engine: str = "rs", client: str = "",
                     generation: int | None = None,
                     native: bool = False,
-                    priority: str = "interactive", viewport: dict | None = None) -> dict:
+                    priority: str = "interactive", viewport: dict | None = None,
+                    allow_draft: bool = True) -> dict:
     params = dict(params)
     params["linear_input"] = is_raw(name)
     cp = fp.clean_params(params)
+    # Once accurate pixels are visible, an embedded-camera film pass would
+    # only be discarded by the window. Prepare the accurate input first and
+    # spend the film render on pixels the window can actually present.
+    if is_raw(name) and not allow_draft:
+        if render_is_stale(client, generation):
+            return {"cancelled": True, "reason": "superseded"}
+        if cp["profile_enabled"]:
+            build_raw_preview(name, width, "full", params)
+        else:
+            build_neutral_preview(name, width, cp["rotate"], cp)
     if not cp["profile_enabled"]:
         t0 = time.time()
         accurate = neutral_preview_path(name, width, cp["rotate"], cp)
@@ -4140,8 +4305,8 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         out, job.get("optics"), job.get("heals"), job.get("lensProfile"))
     g = job.get("grade") or {}
     if not grade.is_identity(g):
-        out = np.clip(grade.apply(out, g), 0, 1).astype(np.float32)
-    out = edits.apply_masks(out, job.get("masks"))
+        out = np.clip(grade.apply_accelerated(out, g), 0, 1).astype(np.float32)
+    out = edits.apply_masks(out, job.get("masks"), accelerated=True)
 
     crop = job.get("crop")
     if crop:
@@ -4172,7 +4337,7 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
     return size
 
 
-def export_metadata_fields(name: str) -> dict:
+def export_metadata_fields(name: str, *, state: dict | None = None) -> dict:
     """Catalog metadata for one image, in the shape write_metadata expects."""
     cat = catalog_handle()
     if cat is None:
@@ -4181,7 +4346,8 @@ def export_metadata_fields(name: str) -> dict:
     if image_id is None:
         return {}
     iptc = cat.iptc_for(image_id)
-    state = cat.state_for(image_id)
+    if state is None:
+        state = cat.state_for(image_id)
     fields = {key: iptc.get(key) for key in
               ("title", "caption", "creator", "copyright")
               if iptc.get(key)}
@@ -4678,6 +4844,8 @@ class ExportBatch:
             self.status["cancelledCount"] += self.remaining
             self.status["done"] += self.remaining
             self.remaining = 0
+            if not self.active:
+                self.status.update(running=False, cancelled=True)
             self.publish_status()
         return False
 
@@ -4703,6 +4871,8 @@ class ExportBatch:
             self.status["done"] += 1
             for key in ("completed", "skipped", "cancelledCount"):
                 self.status[key] += int(outcome.get(key, 0))
+            if outcome.get("completed") and outcome.get("path"):
+                self.status.setdefault("revealPath", outcome["path"])
             if outcome.get("error"):
                 self.status["errors"].append(f"{name}: {outcome['error']}")
             if outcome.get("log"):
@@ -4795,6 +4965,18 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         check()
         guard_photo(name)
         guard_local_photo(name)
+        if "sourceSignature" in job and job["sourceSignature"] is None:
+            raise ValueError("Original was unavailable when export was queued; queue this photo again")
+        source_path = src_path(name)
+        expected_source = tuple(job["sourceSignature"]) if "sourceSignature" in job else \
+            file_identity.stat_signature(source_path.stat(), path=source_path)
+
+        def check_source():
+            current_source = src_path(name)
+            if file_identity.stat_signature(current_source.stat(), path=current_source) != expected_source:
+                raise ValueError("Original changed after export was queued; queue this photo again")
+
+        check_source()
         edits.require_saved_mask_assets(job.get("masks"))
         started = time.perf_counter()
         job = dict(job)
@@ -4808,10 +4990,12 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         cp = fp.clean_params(job["params"])
         # Resolve metadata only for the worker's source, as in preview.
         metadata_started = time.perf_counter()
-        metadata = exif_for(name)
+        metadata = (exif_for(name, capture_override=job["captureTimeOverride"])
+                    if "captureTimeOverride" in job else exif_for(name))
         job["lensProfile"] = edits.lens_profile_for(metadata,
             edits.clean_optics(job.get("optics")).get("profileOverride"))
-        job["metadataFields"] = export_metadata_fields(name)
+        if "metadataFields" not in job:
+            job["metadataFields"] = export_metadata_fields(name)
         requested = export_requested_path(name, job, metadata)
         job["phase_ms"]["prepare_metadata"] = (time.perf_counter() - metadata_started) * 1000
         check()
@@ -4830,6 +5014,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             raise ValueError("An export cannot replace a cataloged original or its capture companion")
         staged = durable_io.temporary_path(dst, "export")
         check()
+        check_source()
         if RUST_WORKER_BIN and cp["profile_enabled"]:
             metrics = export_with_resident_engine(name, staged, job)
             detail = (f"{metrics.get('backend', 'cache')} "
@@ -4905,6 +5090,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
         with export_phase(job, "publish"), publish_lock:
             check()
+            check_source()
             if dst.parent.resolve() != out_dir:
                 raise ValueError("The export destination moved while rendering; nothing was published")
             if export_would_replace_original(dst, name):
@@ -4977,6 +5163,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
             entry = {
                 "status": item.get("status", "pending"),
                 "rating": int(item.get("rating", 0) or 0),
+                "captureTimeOverride": item.get("captureTimeOverride"),
                 "label": clean_label(item.get("label")),
                 "params": item.get("params"),
                 "grade": item.get("grade"),
@@ -5031,6 +5218,13 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             root = source_root(source_id) if source_id is not None else FOLDER
             item_destination = export_workflow.photo_destination(
                 recipe, library_root=FOLDER, source=source, source_root=root)
+        try:
+            source_path = src_path(n)
+            source_signature = list(file_identity.stat_signature(source_path.stat(), path=source_path))
+        except (OSError, ValueError):
+            # Preview still reports missing originals. A queued worker must
+            # not silently adopt a file that arrives after this snapshot.
+            source_signature = None
         items.append((n, {
             "params": e["params"] or default_params,
             "grade": e["grade"] or default_grade,
@@ -5051,6 +5245,8 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "filenameTemplate": recipe["filenameTemplate"],
             "collision": recipe["collision"],
             "rating": e["rating"],
+            "captureTimeOverride": e.get("captureTimeOverride"),
+            "metadataFields": copy.deepcopy(export_metadata_fields(n, state=e)),
             "exportBaseName": export_base_name,
             "sequence": len(items) + 1,
             "provenance": renderer_provenance(),
@@ -5058,6 +5254,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "sidecar": recipe.get("sidecar", True),
             "watermark": recipe.get("watermark"),
             "sourceName": n,
+            "sourceSignature": source_signature,
         }))
     if target_names is None and opts.get("pairView") in ("raw", "jpeg"):
         groups = {}
@@ -5431,7 +5628,7 @@ class PreviewPregenQueue:
 
 
 def publish_mask_change(name: str, masks: list[dict], *, added=None, removed=None) -> None:
-    queue_sidecar(name)
+    queue_sidecar(name, ["masks"])
     _queue_mirror()
     EVENTS.publish("state", {"names": [name], "fields": ["masks"],
         "patch": {"masks": masks}, "origin": "batch-masks",
@@ -6595,10 +6792,11 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError("viewport rendering requires unwarped source geometry")
                 result = render_preview(
                     b["name"], b.get("params", {}), int(b.get("w", 1100)),
-                    b.get("engine", "py"), client,
+                    b.get("engine", "rs"), client,
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
-                    str(b.get("priority", "interactive")), b.get("viewport"))
+                    str(b.get("priority", "interactive")), b.get("viewport"),
+                    allow_draft=b.get("allow_draft") is not False)
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
                         result, b["name"], int(b.get("w", 1100)),
@@ -7036,6 +7234,9 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(result)
             elif u.path == "/api/catalog/keywords":
                 body = self._body()
+                if body.get("action") in {"add", "remove", "undo"}:
+                    self._json(keyword_batch_action(body))
+                    return
                 cat = require_catalog()
                 if body.get("action") == "rename":
                     cat.rename_keyword(int(body["id"]), str(body["name"]))
@@ -7052,7 +7253,8 @@ class Handler(BaseHTTPRequestHandler):
                 image_id = catalog_image_id(body["name"])
                 if image_id is None:
                     raise ValueError("unknown image")
-                cat.save_iptc(image_id, body.get("fields") or {})
+                save_catalog_metadata(body["name"], image_id, body.get("fields") or {})
+                _queue_mirror()
                 EVENTS.publish("state", {"names": [body["name"]],
                                           "fields": ["metadata"],
                                           "origin": "metadata"})
@@ -7067,8 +7269,9 @@ class Handler(BaseHTTPRequestHandler):
                 for name in body.get("names", [])[:5000]:
                     image_id = catalog_image_id(str(name))
                     if image_id is not None:
-                        cat.save_iptc(image_id, fields)
+                        save_catalog_metadata(str(name), image_id, fields)
                         count += 1
+                _queue_mirror()
                 EVENTS.publish("state", {
                     "names": [str(name) for name in body.get("names", [])[:5000]],
                     "fields": ["metadata"], "origin": "metadata"})
@@ -7303,6 +7506,7 @@ def main() -> None:
         list_images=catalog_image_names,
         source_key=file_key,
         preview_bytes=lambda name: orig_jpeg(name, 1024),
+        source_availability=lambda name: media_availability.index_availability(src_path(name)),
         render_busy=RENDER_LOCK.locked,
         worker_cleanup=(
             lambda: CATALOG.close() if CATALOG is not None else None),
@@ -7677,6 +7881,51 @@ def catalog_collections_action(body: dict) -> dict:
             "library": current_library_state()}
 
 
+def keyword_batch_action(body: dict) -> dict:
+    import keyword_workflow
+
+    cat = require_catalog()
+    action = str(body.get("action", ""))
+    names = body.get("names", [])
+    if not isinstance(names, list) or len(names) > keyword_workflow.MAX_BATCH:
+        raise ValueError("Select no more than 5000 photos for a keyword batch")
+    names = list(dict.fromkeys(str(name) for name in names))
+    ids = []
+    for name in names:
+        image_id = catalog_image_id(name)
+        if image_id is None:
+            raise ValueError("A selected photo is no longer in the catalog")
+        ids.append(image_id)
+        if load_preferences().get("linkPairedMetadata"):
+            for companion in cat.paired_image_names(image_id):
+                paired_id = catalog_image_id(companion)
+                if paired_id is not None:
+                    ids.append(paired_id)
+    result = keyword_workflow.change(cat, ids, clean_keywords(body.get("keywords")),
+                                     action, undo_id=str(body.get("undoId", "")))
+    patches = {}
+    for item in result["changes"]:
+        row = cat.image_row(item["id"])
+        name = catalog_module.qualified_name(row["source_id"], row["relpath"], row["copy_ident"])
+        item["name"] = name
+        patches[name] = {"keywords": item["keywords"]}
+        queue_sidecar(name, ["keywords"])
+    _queue_mirror()
+    EVENTS.publish("state", {"names": list(patches), "fields": ["keywords"],
+                             "patches": patches, "origin": "keywords"})
+    return result
+
+
+def save_catalog_metadata(name: str, image_id: int, fields: dict) -> None:
+    cat = require_catalog()
+    before = cat.iptc_for(image_id)
+    cat.save_iptc(image_id, fields)
+    after = cat.iptc_for(image_id)
+    changed = ["iptc." + key for key in after if before.get(key) != after[key]]
+    if changed:
+        queue_sidecar(name, changed)
+
+
 def import_sidecars(body: dict) -> dict:
     """Read rating, label, keywords, IPTC, and develop settings from XMP.
 
@@ -7695,20 +7944,38 @@ def import_sidecars(body: dict) -> dict:
     conflict = str(body.get("conflict", "skip-existing"))
 
     names = body.get("names")
-    if not names:
-        scope = require_catalog().query({"limit": 5000,
-                                         **(body.get("scope") or {})})
-        names = [item["name"] for item in scope["items"]]
+    if names is None:
+        names = []
+        # Snapshot the scope before importing: metadata changes can alter a
+        # smart collection's membership. Never silently import one page only.
+        for offset in range(0, 100000, 5000):
+            page = cat.query({**(body.get("scope") or {}), "limit": 5000,
+                              "offset": offset})
+            if page["total"] > 100000:
+                raise ValueError("Import at most 100000 photos at once; narrow the source or folder scope")
+            names.extend(item["name"] for item in page["items"])
+            if len(names) >= page["total"] or not page["items"]:
+                break
+    if not isinstance(names, list) or len(names) > 100000:
+        raise ValueError("Import at most 100000 photos at once")
+    names = list(dict.fromkeys(str(name) for name in names))
 
     report = {"read": 0, "applied": 0, "skipped": 0, "missing": 0,
               "ignored": {}, "errors": []}
-    for name in names[:20000]:
+    for name in names:
+        if library_workflow.is_virtual(name):
+            report["skipped"] += 1
+            continue  # The physical original's XMP does not describe its variants.
         try:
             path = src_path(name)
         except ValueError:
             report["missing"] += 1
             continue
         parsed = xmp_sidecar.read_for(path)
+        if parsed and parsed.get("sidecarConflicts"):
+            report["errors"].append(f"{path.name}: multiple XMP sidecars; keep one naming convention before importing")
+            report["skipped"] += 1
+            continue
         if not parsed:
             report["missing"] += 1
             continue
@@ -7727,13 +7994,18 @@ def import_sidecars(body: dict) -> dict:
                     entry["captureTimeOverride"] = capture_clock.normalized_timestamp(parsed["captureTime"])
                 except ValueError:
                     report["ignored"]["invalid capture time"] = report["ignored"].get("invalid capture time", 0) + 1
+            if parsed.get("status") in {"pending", "approved", "skipped"}:
+                entry["status"] = parsed["status"]
             if parsed.get("rating") is not None:
                 entry["rating"] = max(0, min(5, int(parsed["rating"])))
-            if parsed.get("label"):
-                entry["label"] = clean_label(parsed["label"])
-            keywords = list(parsed.get("keywordPaths")
-                            or parsed.get("keywords") or [])
-            if keywords:
+            if "label" in parsed.get("metadataPresent", []):
+                label = clean_label(parsed.get("label"))
+                if label == "none" and str(parsed["label"]).casefold() not in {"none", ""}:
+                    report["ignored"]["custom color label"] = report["ignored"].get("custom color label", 0) + 1
+                else:
+                    entry["label"] = label
+            keywords = list(parsed.get("metadataKeywords") or [])
+            if "keywords" in parsed.get("metadataPresent", []):
                 entry["keywords"] = clean_keywords(keywords)
         if (want_develop or want_crop) and not (has_edits
                                                 and conflict == "skip-existing"):
@@ -7747,14 +8019,16 @@ def import_sidecars(body: dict) -> dict:
             for note in patch.get("ignored", []) or []:
                 report["ignored"][note] = report["ignored"].get(note, 0) + 1
         if entry:
+            cat.add_history(image_id, "Before sidecar metadata import", current, origin="sidecar")
             cat.save_state(image_id, entry)
+            cat.add_history(image_id, "Sidecar metadata import", cat.state_for(image_id), origin="sidecar")
             report["applied"] += 1
         else:
             report["skipped"] += 1
         iptc_fields = {key: parsed.get(key) for key in
                        ("title", "caption", "creator", "copyright", "credit",
                         "headline", "city", "state", "country")
-                       if parsed.get(key)}
+                       if key in parsed.get("metadataPresent", [])}
         gps = parsed.get("gps")
         if gps:
             iptc_fields.update({"gps_lat": gps.get("lat"),
@@ -7762,6 +8036,30 @@ def import_sidecars(body: dict) -> dict:
                                 "gps_alt": gps.get("alt")})
         if want_metadata and iptc_fields:
             cat.save_iptc(image_id, iptc_fields)
+            if not entry:
+                report["applied"] += 1
+                report["skipped"] -= 1
+        if want_metadata and parsed.get("origin") == "sidecar":
+            try:
+                baseline = xmp_sidecar.sidecar_snapshot(path)
+                with cat.write() as conn:
+                    conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)",
+                                 ("sidecar.synced:" + str(image_id), json.dumps(baseline)))
+                    key = _SIDECAR_PREFIX + str(image_id)
+                    pending = conn.execute("SELECT value FROM meta WHERE key=?", (key,)).fetchone()
+                    if pending:
+                        queued = json.loads(pending[0])
+                        fields = set(queued.get("fields") or ("params", "grade", "crop", "masks", "heals", "optics"))
+                        fields -= {"rating", "status", "label", "keywords", "iptc", "captureTimeOverride"}
+                        fields = {field for field in fields if not field.startswith("iptc.")}
+                        if fields:
+                            queued.update(snapshot=baseline, snapshotError="", error="", fields=sorted(fields))
+                            conn.execute("UPDATE meta SET value=? WHERE key=?", (json.dumps(queued), key))
+                        else:
+                            conn.execute("DELETE FROM meta WHERE key=?", (key,))
+            except Exception as error:
+                report["errors"].append(str(error))
+    EVENTS.publish("library", {"reason": "sidecar-import"})
     return report
 
 
@@ -7833,13 +8131,9 @@ def scan_ingest_source(body: dict) -> dict:
         raise ValueError("that folder does not exist")
     items = ingest_workflow.scan_source(root)
     cat = catalog_handle()
-    known: set[str] = set()
-    if cat is not None:
-        known = {row["header_hash"] for row in cat.connection.execute(
-            "SELECT DISTINCT header_hash FROM files"
-            " WHERE header_hash IS NOT NULL").fetchall()}
+    known = cat.ingest_content_hashes(items) if cat is not None else {}
     request = ingest_workflow.clean_plan_request(body.get("request"))
-    plan = ingest_workflow.build_plan(items, request, existing_hashes=known)
+    plan = ingest_workflow.build_plan(items, request, existing_content_hashes=known)
     return {"plan": plan, "scanned": len(items)}
 
 
@@ -7853,18 +8147,26 @@ def start_ingest(body: dict) -> dict:
     import ingest_workflow
 
     request = ingest_workflow.clean_plan_request(body.get("request"))
-    plan = body.get("plan")
-    if not plan or not plan.get("items"):
-        scanned = scan_ingest_source({"path": body["path"],
-                                      "request": body.get("request")})
-        plan = scanned["plan"]
+    # An explicitly supplied selection must never expand to a fresh scan.
+    # Only legacy callers that omit the plan may request scan-and-import.
+    if "plan" not in body:
+        plan = scan_ingest_source({"path": body["path"],
+                                   "request": body.get("request")})["plan"]
+    else:
+        plan = body["plan"]
+    if not isinstance(plan, dict) or not isinstance(plan.get("items"), list):
+        raise ValueError("scan the source and select photos before importing")
     items = plan["items"]
+    if not items:
+        raise ValueError("select at least one photo to import")
+    if any(not isinstance(item, dict) for item in items):
+        raise ValueError("invalid import selection; scan the source again")
     with INGEST_LOCK:
         if INGEST["running"]:
             return {"error": "an ingest is already running"}
         INGEST.update(running=True, done=0, total=len(items), errors=[],
                       copied=0, bytes=0, cancelled=False)
-        INGEST["jobId"] = JOBS.create(
+        job_id = INGEST["jobId"] = JOBS.create(
             "ingest", total=len(items), state="running",
             cancel=cancel_ingest_job)["id"]
 
@@ -7905,7 +8207,7 @@ def start_ingest(body: dict) -> dict:
                 cat.close()
 
     threading.Thread(target=run, name="lighttable-ingest", daemon=True).start()
-    return {"queued": len(items)}
+    return {"queued": len(items), "jobId": job_id}
 
 
 def rename_photos(body: dict) -> dict:
@@ -8245,7 +8547,8 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
                 displayName=(copy["displayName"] if copy
                              else Path(source).name),
                 availability=(availability := media_availability.availability(src_path(name))),
-                fileKey=(revision := file_key(name) if availability == "local" else ""),
+                fileKey=(revision := folder_listing_file_key(name)
+                         if availability == "local" else ""),
                 recoverySourceKey=revision,
 
                 mtime=snapshot["mtimes"].get(source, 0.0),
@@ -8284,6 +8587,8 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
+            **{key: item.get(key) for key in
+               ("camera", "lens", "iso", "focalLength", "aperture", "shutterSeconds", "keywords")},
             "status": item["status"],
             "rating": item["rating"],
             "label": item["label"],
