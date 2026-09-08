@@ -24,6 +24,8 @@ const key = renderRequestKey(im,req);
 const same = renderRequestKey(im,{...req,params:{a:1,b:2},generation:99});
 const changed = [ {...req,w:2200}, {...req,params:{a:2,b:2}},
  {...req,optics:{distortion:0.2}}, {...req,heals:[{id:'spot'}]},
+ {...req,grade:{exposure:1},masks:[{grade:{texture:1}}]},
+ {...req,grade:{exposure:2},masks:[{grade:{texture:1}}]},
  {...req,viewport:{x:0,y:0,width:200,height:100}},
  {...req,viewport:{x:100,y:0,width:200,height:100}}]
  .map(r=>renderRequestKey(im,r)!==key);
@@ -38,6 +40,28 @@ console.log(JSON.stringify({same:key===same,changed,size:c.size,
         self.assertTrue(all(result['changed']))
         self.assertEqual(result['size'], 2)
         self.assertEqual((result['a'], result['b'], result['c']), ('A', None, 'C'))
+
+    def test_spatial_masks_bake_and_return_to_live_without_double_grading(self):
+        result = self.run_js("""
+import {gradeBakeRequest, gradeBakeKey} from './web/preview-processing.js';
+import {renderRequestKey} from './web/presentation-cache.js';
+const grade = {exposure:1};
+const masks = [{grade:{exposure:.5}}, {grade:{texture:1}, opacity:1}];
+const first = gradeBakeRequest(grade,masks);
+const disabled = masks.map(m=>({...m,enabled:false}));
+const zero = masks.map(m=>({...m,opacity:0}));
+const keys = [gradeBakeRequest({...grade,exposure:2},masks),
+ gradeBakeRequest(grade,masks.toReversed())].map(gradeBakeKey);
+const cacheKeys = [first,gradeBakeRequest({...grade,exposure:2},masks),
+ gradeBakeRequest(grade,masks.toReversed()),{}].map(r=>renderRequestKey({name:'a'},r));
+console.log(JSON.stringify({first,keys,cacheUnique:new Set(cacheKeys).size,
+ live:[gradeBakeRequest(grade,[]),gradeBakeRequest(grade,disabled),
+ gradeBakeRequest(grade,zero),gradeBakeRequest(grade,masks,true)].map(gradeBakeKey)}));
+""")
+        self.assertEqual(result['first']['grade'], {'exposure': 1})
+        self.assertTrue(all(result['keys']))
+        self.assertEqual(result['cacheUnique'], 4)
+        self.assertEqual(result['live'], [None] * 4)
 
     def test_navigation_reentry_commits_native_state_even_when_surface_is_identical(self):
         result = self.run_js("""
