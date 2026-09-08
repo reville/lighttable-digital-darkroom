@@ -1176,6 +1176,9 @@ a.reset:hover { color:#fff; }
 .toast { position:fixed; z-index:100; bottom:20px; left:50%; transform:translate(-50%,8px); padding:8px 14px; border-radius:var(--radius); background:#efefef; color:#161616; box-shadow:0 4px 18px rgba(0,0,0,.4); font-size:12px; font-weight:500; opacity:0; transition:opacity .15s ease,transform .15s ease; pointer-events:none; display:flex; align-items:center; gap:10px; }
 .toast.show { opacity:1; transform:translate(-50%,0); pointer-events:auto; }
 .toast button { border:0; border-left:1px solid #aaa; border-radius:0; background:transparent; color:#161616; font:inherit; font-weight:650; padding:0 0 0 10px; min-height:0; }
+.toast.toast-stacked { flex-direction:column; gap:4px; }
+.toast .toast-link { color:var(--accent-strong); text-decoration:none; }
+.toast .toast-link:hover { text-decoration:underline; }
 .modal-backdrop { position:fixed; z-index:90; inset:0; display:none; place-items:center; background:rgba(0,0,0,.62); backdrop-filter:blur(2px); }
 .modal-backdrop.on { display:grid; }
 .modal { width:min(360px,calc(100vw - 40px)); padding:20px; border:1px solid var(--line-strong); border-radius:var(--radius-l); background:var(--panel-raised); box-shadow:0 18px 60px rgba(0,0,0,.6); animation:pane-in .14s ease; }

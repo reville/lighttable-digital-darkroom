@@ -2384,14 +2384,15 @@
             "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.",
             "Choose an export preset or set file type, dimensions, quality, and color space.",
             "Set the destination and inspect Output preview for the filename, dimensions, and path.",
-            "Click Export and follow the progress in the top bar."
+            "Click Export and follow the progress in the top bar.",
+            "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds."
           ]
         },
         {
           "title": "Check the scope and result",
           "paragraphs": [
             "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.",
-            "Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."
+            "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow."
           ]
         }
       ],
