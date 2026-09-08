@@ -1,5 +1,7 @@
 # Third-party components
 
+- Optional face matching uses OpenCV Zoo SFace INT8 (Apache-2.0) and YuNet (MIT), pinned to `47534e27c9851bb1128ccc0102f1145e27f23f98`. Model downloads are verified against SHA-256 hashes in `film_lab_ai/face_models.py`. Their license texts are bundled in `film_lab_ai/licenses/`. The `opencv-python-headless` runtime retains its package license and third-party notices.
+
 LightTable is distributed under GPL-3.0-only. Existing third-party copyright,
 license, and attribution notices remain in their source files and license texts.
 

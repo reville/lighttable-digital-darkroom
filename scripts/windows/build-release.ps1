@@ -113,6 +113,7 @@ try {
     New-Item -ItemType Directory -Force -Path $AiPackage | Out-Null
     Get-ChildItem (Join-Path $Project "film_lab_ai") -Filter *.py |
         ForEach-Object { Copy-Item $_.FullName $AiPackage }
+    Copy-Item (Join-Path $Project "film_lab_ai\licenses") $AiPackage -Recurse
     Copy-Item (Join-Path $Project "web") $Resources -Recurse
     $BuildAssets = Join-Path $Resources "build"
     New-Item -ItemType Directory -Force -Path $BuildAssets | Out-Null

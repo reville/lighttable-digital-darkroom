@@ -133,6 +133,10 @@
       "other": "{count} errors"
     },
     {
+      "one": "{count} face",
+      "other": "{count} faces"
+    },
+    {
       "one": "{count} face detected",
       "other": "{count} faces detected"
     },
@@ -151,6 +155,10 @@
     {
       "one": "{count} file not downloaded",
       "other": "{count} files not downloaded"
+    },
+    {
+      "one": "{count} group",
+      "other": "{count} groups"
     },
     {
       "one": "{count} indexed photo remains local until deleted.",
@@ -229,6 +237,10 @@
       "other": "{count} rated photos"
     },
     {
+      "one": "{count} selected",
+      "other": "{count} selected"
+    },
+    {
       "one": "{count} selected photo",
       "other": "{count} selected photos"
     },
@@ -247,6 +259,10 @@
     {
       "one": "{count} unavailable file",
       "other": "{count} unavailable files"
+    },
+    {
+      "one": "{count} unavailable photo skipped",
+      "other": "{count} unavailable photos skipped"
     },
     {
       "one": "{count} unsupported setting skipped",

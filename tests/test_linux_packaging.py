@@ -178,6 +178,7 @@ class LinuxPackageResourcesTests(unittest.TestCase):
                                                           ("project", "python", "rust", "bundle"))
             for path in ("server.py", "platform_paths.py", "linux_theme.py", "new_shared_module.py", "media-formats.json",
                          "lighttable_cli/__init__.py", "film_lab_ai/__init__.py", "web/index.html",
+                         "film_lab_ai/licenses/SFace.txt", "film_lab_ai/licenses/YuNet.txt",
                          "profiles/stock.json", "presets/default.json", "LICENSE", "THIRD_PARTY_NOTICES.md",
                          "LINUX.md", "CLI.md", "docs/help/editing.json", "packaging/linux/arch/README.md",
                          "requirements-runtime.lock", "packaging/linux/runtime.json", "build/icon-1024.png"):
@@ -200,6 +201,9 @@ class LinuxPackageResourcesTests(unittest.TestCase):
             self.assertEqual((resources / "build/icon-1024.png").read_bytes(),
                              (bundle / "share/icons/lighttable.png").read_bytes())
             self.assertTrue((resources / "linux_theme.py").is_file())
+            for license_name in ("SFace.txt", "YuNet.txt"):
+                self.assertEqual((resources / "film_lab_ai/licenses" / license_name).read_text(),
+                                 "application content")
             self.assertTrue((bundle / "CLI.md").is_file())
             self.assertTrue((bundle / "docs/help/editing.json").is_file())
             self.assertTrue((bundle / "packaging/linux/arch/README.md").is_file())

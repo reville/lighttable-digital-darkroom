@@ -108,6 +108,7 @@ mkdir -p "$PAYLOAD/film_lab_ai" "$PAYLOAD/build"
 for AI_SOURCE in "$ROOT"/film_lab_ai/*.py; do
   /usr/bin/ditto "$AI_SOURCE" "$PAYLOAD/film_lab_ai/$(basename "$AI_SOURCE")"
 done
+/usr/bin/ditto "$ROOT/film_lab_ai/licenses" "$PAYLOAD/film_lab_ai/licenses"
 swiftc -O -swift-version 5 \
   -target arm64-apple-macos13.0 \
   -o "$PAYLOAD/build/LightTableVision" \

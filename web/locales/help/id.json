@@ -538,11 +538,11 @@
         {
           "title": "Cari tampilan saat ini",
           "paragraphs": [
-            "Kotak cari mencocokkan teks dalam nama file, nama tampilan, keyword, dan metadata indeks foto yang tersedia. Pencarian bekerja di dalam folder atau koleksi saat ini dan digabungkan dengan filter aktif lainnya."
+            "Kotak pencarian mencocokkan teks dalam nama file, nama tampilan, kata kunci, nama yang Anda tambahkan di Orang, dan metadata indeks foto yang tersedia. Ini mencari di dalam folder atau koleksi saat ini dan digabungkan dengan filter aktif lainnya."
           ],
           "steps": [
             "Klik Cari foto dan kata kunci, atau tekan / saat Anda tidak mengetik di suatu field.",
-            "Ketik kata atau frasa dari nama file atau kata kunci.",
+            "Ketik satu kata atau frasa dari nama file, kata kunci, atau nama yang Anda simpan di Orang.",
             "Gunakan All Photos, Unflagged, Picked, Rejected, atau Rated di sidebar untuk memilih grup bendera atau rating.",
             "Klik Filter di samping Urutkan. Pilih satu atau lebih tipe file, lalu kombinasikan dengan Bendera, Rating, label Warna, atau status Edit.",
             "Pilih Nama file, Rating, Bendera, Tanggal pengambilan, atau Label warna di Urutkan."
@@ -577,6 +577,75 @@
         "smart-collections",
         "raw-jpeg-pairs",
         "virtual-copies-and-stacks"
+      ],
+      "categoryLabel": "Pustaka"
+    },
+    {
+      "id": "people-face-matching",
+      "title": "Kelompokkan dan temukan orang",
+      "category": "Library",
+      "summary": "Gunakan pencocokan wajah di perangkat yang opsional untuk mengelompokkan wajah serupa, menambahkan nama, dan meninjau kemungkinan kecocokan.",
+      "keywords": [
+        "orang",
+        "wajah",
+        "pencocokan wajah",
+        "pengenalan",
+        "nama",
+        "gabungkan",
+        "pisahkan",
+        "orang yang sama",
+        "google photos",
+        "privasi",
+        "terkuantisasi",
+        "SFace"
+      ],
+      "sections": [
+        {
+          "title": "Aktifkan pencocokan wajah",
+          "paragraphs": [
+            "Pencocokan wajah terpisah dari indeks konten foto dan secara default nonaktif. Buka Orang di sidebar Pustaka, atau Pengaturan → Indeks Foto → Pencocokan wajah. Unduh model & aktifkan mengunduh sekitar 10,1 MB file model. Data foto diproses di perangkat ini dan tidak pernah diunggah untuk pencocokan.",
+            "Pencocokan memindai foto diam yang tersedia di katalog saat ini, bukan hanya folder atau filter saat ini. File kosong, file hanya-di-cloud, dan asli yang tidak tersedia akan dilewati tanpa mengunduhnya."
+          ],
+          "steps": [
+            "Buka Orang dan pilih Unduh model & aktifkan.",
+            "Tunggu hingga grup wajah muncul. Anda dapat terus menyunting saat pemindaian berjalan.",
+            "Gunakan Pindai foto baru setelah menambahkan foto atau memulihkan asli yang tidak tersedia. Foto yang sudah dipindai sebelumnya dan tidak berubah akan digunakan kembali."
+          ]
+        },
+        {
+          "title": "Beri nama dan telusuri seseorang",
+          "paragraphs": [
+            "Semua orang menampilkan grup wajah yang terlihat. Tanpa nama menampilkan grup yang belum diberi nama. Buka sebuah grup, ketik nama, lalu pilih Simpan nama. Hanya nama yang Anda masukkan yang digunakan; model tidak mengetahui nama orang.",
+            "Gunakan Wajah untuk memeriksa pangkasan wajah individual. Gunakan Foto untuk melihat foto lengkap, lalu pilih foto untuk membukanya di penyunting. Nama yang Anda tambahkan menjadi dapat dicari di bidang pencarian pustaka. Grup tersembunyi tidak menyumbang nama ke pencarian."
+          ]
+        },
+        {
+          "title": "Tinjau dan koreksi kecocokan",
+          "paragraphs": [
+            "Tinjau kecocokan menampilkan dua grup yang mungkin beserta sampel wajah. Orang yang sama menggabungkannya. Orang berbeda mencatat koreksi sehingga pemasangan tidak akan disarankan lagi. Lewati untuk sekarang akan meninggalkan kecocokan itu untuk nanti.",
+            "Di dalam sebuah grup, Gabungkan dengan… memungkinkan Anda memilih grup lain dan meninjau penggabungan sebelum mengonfirmasinya. Nama grup saat ini dipertahankan; jika grup itu tanpa nama, nama grup lainnya digunakan. Menyimpan nama yang sama pada dua grup tidak akan secara otomatis menggabungkannya.",
+            "Pilih Pilih wajah, pilih beberapa wajah, lalu Pindahkan ke orang terpisah untuk memisahkannya menjadi grup baru tanpa nama. Kedua grup tidak akan disarankan sebagai kecocokan lagi. Pilih satu wajah lalu pilih Gunakan sebagai sampul untuk mengubah gambar galeri.",
+            "Sembunyikan orang memindahkan grup ke Tersembunyi tanpa menghapus foto atau data wajah. Buka di sana lalu pilih Tampilkan orang untuk memulihkannya. Urungkan perubahan terakhir membalik penyuntingan grup yang paling baru; pemindaian yang menambahkan atau menyegarkan foto akan menghapus entri urungkan itu."
+          ]
+        },
+        {
+          "title": "Jeda dan hapus data wajah",
+          "paragraphs": [
+            "Jeda, atau nonaktifkan Pencocokan wajah, untuk menghentikan pemindaian. Grup dan nama yang sudah ada tetap tersedia, termasuk pencarian nama. Pindai foto baru akan melanjutkan pencocokan.",
+            "Hapus data wajah… meminta Anda mengonfirmasi penghapusan grup wajah, nama, koreksi, dan thumbnail dari katalog ini. Foto asli, suntingan, dan Indeks konten foto tidak berubah. File model yang diunduh tetap tersedia. Data wajah disimpan secara terpisah di folder data aplikasi dan tidak disertakan dalam cadangan katalog."
+          ]
+        },
+        {
+          "title": "Yang perlu diharapkan",
+          "paragraphs": [
+            "Model SFace INT8 yang compact membandingkan wajah manusia yang sejajar. Pengelompokan otomatis menggunakan aturan kemiripan yang konservatif; kemungkinan kecocokan tetap terpisah untuk ditinjau. Wajah baru yang cocok dengan orang bernama akan disarankan untuk konfirmasi.",
+            "Wajah yang kecil, buram, terhalang, profil, dan yang berbeda usia secara signifikan dapat terlewat atau terpisah ke beberapa grup. Model juga dapat membuat kecocokan yang salah. Wajah yang muncul bersama dalam satu foto tidak dicocokkan secara otomatis; penggabungan manual tetap dimungkinkan untuk cermin dan kolase. Fitur ini tidak mengelompokkan hewan peliharaan atau memberikan akurasi identitas yang dijamin."
+          ]
+        }
+      ],
+      "related": [
+        "photo-index",
+        "browse-folders"
       ],
       "categoryLabel": "Pustaka"
     },
@@ -2637,6 +2706,7 @@
         "settings-language",
         "keyboard-midi",
         "photo-index",
+        "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
         "xmp-interchange"
@@ -2720,6 +2790,7 @@
         {
           "title": "Bangun indeks",
           "paragraphs": [
+            "Deteksi wajah menemukan foto yang berisi wajah. Untuk mengelompokkan orang tertentu dan mencari nama yang Anda tambahkan, gunakan opsi Pencocokan wajah dan tampilan Orang yang terpisah.",
             "Indeks Foto nonaktif secara default dan memerlukan macOS. Linux dan Windows menampilkan Tidak tersedia pada platform ini, dan pengindeksan baru tidak dapat diaktifkan. Di Mac, analisis tetap berada di perangkat dan tidak memodifikasi folder foto. Apple Vision menyediakan analisis inti; deskripsi Model Dasar yang lebih kaya hanya muncul saat kemampuan itu tersedia."
           ],
           "steps": [
@@ -2746,6 +2817,7 @@
         }
       ],
       "related": [
+        "people-face-matching",
         "assisted-culling",
         "settings-and-defaults"
       ],
@@ -3001,5 +3073,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "f399796e26d101d27be83c3395e2842978c301dda4117114c6d3231c2462cfee"
+  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
 }

@@ -23,6 +23,8 @@ SOURCE_FILE = 'docs/localization/server-source.json'
 SOURCE_MODULES = ('server.py', 'export_workflow.py', 'media_availability.py',
                   'jobs.py', 'enhance_workflow.py', 'color_pipeline.py',
                   'film_lab_ai/providers.py', 'film_lab_ai/service.py',
+                  'film_lab_ai/face_models.py', 'film_lab_ai/face_service.py',
+                  'film_lab_ai/face_store.py',
                   'ingest_workflow.py', 'watch_workflow.py',
                   'keyword_workflow.py', 'xmp_sidecar.py', 'platform_image.py',
                   'file_identity.py', 'durable_io.py')
