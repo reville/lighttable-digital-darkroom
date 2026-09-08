@@ -294,7 +294,11 @@
       {"path": "web/app.js", "anchor": "'Search photos, contents, text, and faces'"},
       {"path": "web/app.js", "anchor": "indexed ${S.ai.indexed === 1 ? 'photo remains' : 'photos remain'} local until deleted."},
       {"path": "web/app.js", "anchor": "Delete the generated local photo index? Your originals and edits will not be changed."},
-      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"}
+      {"path": "film_lab_ai/providers.py", "anchor": "the local Vision analyzer has not been built"},
+      {"path": "film_lab_ai/service.py", "anchor": "self._source_availability(name)"},
+      {"path": "media_availability.py", "anchor": "def index_availability("},
+      {"path": "web/local-ai.js", "anchor": "export function aiSkippedSummary("},
+      {"path": "web/style.css", "anchor": ".local-ai-status:not(.running) > span"}
     ]
   },
   {

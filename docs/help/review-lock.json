@@ -254,7 +254,7 @@
         "web/app.js": "c0ed1199faae240360a4b699f964cfd9454031030cbfa13d1ebbf4c9fb9222ec",
         "web/film-browser.js": "bda9ef862d3cedee30e55328ea02b8048064387d67552eb39d5a8d8b60b42e61",
         "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
-        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b"
+        "web/style.css": "3dfd025682f4a4cd2e7f334def3ede924ce9fc2b1d6098b5344e39ccae32c78e"
       }
     },
     "film-grain-and-format": {
@@ -344,16 +344,20 @@
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "4f9101296cb8bf1c269b20afe60ef13d3cb2903733c74fcd733e97db7cb61947",
         "web/settings.js": "f39da91d035f46b693cad463fb31d6c8f65d111f69468f769a1ec8eb8587a6fb",
-        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b",
+        "web/style.css": "3dfd025682f4a4cd2e7f334def3ede924ce9fc2b1d6098b5344e39ccae32c78e",
         "web/view-performance.js": "8284cb871f75d1774996af75f78a434af92d33a001e647ab64a2fac0fa88fb6c"
       }
     },
     "photo-index": {
-      "content": "2d25cf83b41680063d3f145776b89790b2aeb753d67eaacbc7a07ef2725e69b2",
+      "content": "13cac1783c0407aece753fc52c3439dbc6d6d8a7779c0a5005801a8dcaab7969",
       "sources": {
         "film_lab_ai/providers.py": "ff2e49c21a3ab2285ee1f3a1f438b14868a6e3f5a15c5d04d4cde1131521b7fd",
+        "film_lab_ai/service.py": "fcdcbfdc4db56f68852c7613204276b6fd5ef9c3b6bf42e08ab6c5f043ec3ab9",
+        "media_availability.py": "1efc73ac8356b23cc0bca745362b799e30d21ecfae6a83b5da9b45e8cedb07fa",
         "web/app.js": "c0ed1199faae240360a4b699f964cfd9454031030cbfa13d1ebbf4c9fb9222ec",
-        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8"
+        "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
+        "web/local-ai.js": "231bd403a8e3598c7896d5ccbd896c6fe519098cdd64e09422d33336a151166e",
+        "web/style.css": "3dfd025682f4a4cd2e7f334def3ede924ce9fc2b1d6098b5344e39ccae32c78e"
       }
     },
     "raw-jpeg-pairs": {
@@ -435,7 +439,7 @@
         "web/app.js": "c0ed1199faae240360a4b699f964cfd9454031030cbfa13d1ebbf4c9fb9222ec",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
         "web/index.html": "ad8f7cad1f20ff09aa9fc6a42c638c0b5b41a516dd27ae690156f931eafccee8",
-        "web/style.css": "7b928ded384428cfe50677f0216ba6a0a8548814be7a8b1f9d28698ba64cf17b"
+        "web/style.css": "3dfd025682f4a4cd2e7f334def3ede924ce9fc2b1d6098b5344e39ccae32c78e"
       }
     },
     "virtual-copies-and-stacks": {
