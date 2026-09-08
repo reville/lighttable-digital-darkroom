@@ -76,32 +76,57 @@ Version 0.5.0 is marked as a development release while preparation is underway.
   external-editor portal behavior, and recoverable trash still need interactive
   portal validation before a public candidate release.
 
-## Source-only build work remaining
+## Experimental source-only build graph
 
 `python-source-audit.json` inventories every exact pin in `requirements-runtime.lock`.
 It contains SHA-256-pinned PyPI source distributions or immutable upstream Git pins;
 it contains no wheels. `audit-python-sources.py` checks lock drift offline, and its
 explicit `--refresh` mode queries PyPI. This inventory is not a transitive build graph.
 
-The current unsolved work is an **offline build and verification of the scientific
-runtime**, not missing upstream source. `rawpy 0.26.1`, `lensfunpy 1.18.0` and
-`opencv-python-headless 4.13.0.92` have no PyPI sdist at these pins; their upstream
-Git sources are recorded instead. A completed manifest must build and pin:
+`source-candidate.json` is now a concrete, separate source-build attempt generated
+offline by `scripts/flatpak/source-manifest.py`. It includes CPython 3.13.12 without
+ensurepip's bundled wheel, source-built Python packaging tools, all 29 runtime
+requirements, LLVM 22.1.8 for llvmlite 0.49, OpenBLAS/LAPACK, FFTW, LibRaw, Lensfun,
+OpenEXR/Imath, Exiv2, and all three native engines. Cargo archives and checksums
+come from the exact application and upstream CLI lockfiles; Cargo runs with
+`--offline --locked`. PEP 517 builds use `--no-index --no-build-isolation`, and
+wheel files are created locally from the pinned sources. OpenCV and dateutil use
+separate build environments to honor their older NumPy/setuptools/SCM bounds.
 
-- CPython 3.13 and the packaging backends, Cython, Meson-Python, scikit-build-core,
-  pybind11, Pythran and their build dependencies;
-- the matching LLVM toolchain for llvmlite/Numba, and Fortran/LAPACK for SciPy;
-- FFTW, LibRaw, Lensfun and its database, Exiv2 and its Python binding;
-- OpenImageIO, OpenEXR/Imath and the required codecs, OpenCV's headless bindings,
-  and imagecodecs' native codec libraries;
-- source-built NumPy/SciPy/scikit-image and the remaining Python runtime packages,
-  with all source licenses, before replaying the existing precision/parity tests.
+`source-dependencies.json` records the source pins and the exact maintained GIMP
+recipe revision used for Exiv2/OpenEXR modules. It also records build dependencies.
+`source-cli-Cargo.lock` is the pinned upstream export CLI's lockfile. The generator
+checks the application's runtime lock and upstream CLI identity before emitting
+a manifest. The generated source recipe is **not a verified Flathub package**.
 
-Native code builds must disable implicit CMake/Meson/Python dependency downloads
-and provide those sources beforehand. Optional codecs cannot simply be disabled
-without checking LightTable's advertised image formats. The source-only manifest
-and installed source-built application are **NOT DONE**; this candidate does not
-claim otherwise.
+The known remaining blocker is the full native codec-library closure for
+imagecodecs. Its default source build silently produces a reduced codec set.
+`source-imagecodecs.py` retains the Linux wheel codec set and lets missing headers
+fail; it does not suppress JPEG XL or other codecs to make the build pass.
+`source-status.json` lists the missing recipes and native checks still required.
+The first module rejects this known incomplete state **before compiling Python or
+LLVM**. It must not be described as a runnable source-only application yet.
+
+```sh
+python3 scripts/flatpak/source-manifest.py --source-revision FULL_APPLICATION_COMMIT
+python3 scripts/flatpak/source-check.py
+python3 scripts/flatpak/source-preflight.py packaging/flatpak/source-status.json
+# The last command currently exits 2 with the concrete unresolved dependencies.
+```
+
+For a deliberate, bounded foundation experiment, generate another manifest with
+`--allow-incomplete --output .build/source-flatpak/source-candidate.json`, then use
+flatpak-builder's `--stop-at=openblas`. This omits the recorded-closure gate while
+retaining compiler checks and offline builds; it does not reduce the codec set.
+Fetch sources with `--download-only`, then compile with `--disable-download`.
+The Rust SDK extension is a build tool only; LLVM runtime libraries are compiled
+from source, never copied from an SDK extension.
+
+Current maintained GIMP recipes build LAPACK under GNOME 50 without a Fortran SDK
+extension, but this work has **not executed gfortran inside that SDK**. The first
+build check requires it explicitly; `source-status.json` gives the native probe.
+All source-built runtime imports, codec/ICC/TIFF precision, film-engine parity,
+license installation, and the installed native window still require Linux proof.
 
 ## Official requirements checked
 
