@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "Uma configuração de zoom de 100% não garante que o detalhamento completo da imagem já tenha chegado. Uma pré-visualização rápida pode aparecer primeiro enquanto o processamento RAW preciso e uma pré-visualização maior são concluídos. A barra de progresso se preenche à medida que as etapas de processamento da pré-visualização terminam, com uma contagem como 2 / 5. Ela desaparece assim que uma pré-visualização utilizável é exibida; o processamento RAW preciso e as pré-visualizações maiores continuam em segundo plano sem a sobreposição. A contagem representa etapas concluídas, não o tempo restante. A redução de movimento mantém as mesmas atualizações de etapa sem animação. A foto permanece visível sem escurecer. Em 1:1, passe o cursor sobre o botão 1:1 para verificar se o detalhamento completo da origem está pronto antes de avaliar detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
-            "Remover, Corrigir, Clonar e máscaras com Textura ou Claridade precisam de uma atualização adicional da pré-visualização. Aguarde a pré-visualização terminar antes de julgar o detalhe ou o efeito dos ajustes posteriores."
+            "Remover, Corrigir, Clonar e máscaras com Textura ou Claridade precisam de uma atualização adicional da pré-visualização. Aguarde a pré-visualização terminar antes de julgar o detalhe ou o efeito dos ajustes posteriores.",
+            "Se as dimensões do original não estiverem disponíveis, a percentagem de zoom mostra — e 1:1 fica desativado. Auto continua a adaptar-se ao ecrã. Volte a analisar a pasta para atualizar as dimensões."
           ],
           "steps": [
             "Abra Configurações → Desempenho.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

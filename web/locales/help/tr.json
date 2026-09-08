@@ -3022,7 +3022,8 @@
           "paragraphs": [
             "100% yakınlaştırma ayarı, tam görüntü ayrıntısının ulaştığını garanti etmez. Doğru RAW işleme ve daha büyük önizleme tamamlanırken önce hızlı bir önizleme görünebilir. Önizleme işleme aşamaları tamamlandıkça ilerleme çubuğu dolar; örneğin 2 / 5 gibi bir sayım gösterir. Kullanılabilir bir önizleme gösterilir gösterilmez kaybolur; doğru RAW işleme ve daha büyük önizlemeler bindirme olmadan arka planda sürer. Sayım, kalan zamanı değil tamamlanan aşamaları temsil eder. Azaltılmış hareket, animasyon olmadan aynı aşama güncellemelerini korur. Fotoğraf karartılmadan görünür kalır. 1:1’de, ince ayrıntıları değerlendirirken tam kaynak ayrıntısının hazır olup olmadığını kontrol etmek için 1:1 düğmesinin üzerine gelin.",
             "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
-            "Kaldır, İyileştir, Klonla ve Doku ya da Netlik içeren maskeler ek bir önizleme güncellemesi gerektirir. Ayrıntılarını veya sonraki ayarlamaların etkisini değerlendirmeden önce önizlemenin bitmesini bekleyin."
+            "Kaldır, İyileştir, Klonla ve Doku ya da Netlik içeren maskeler ek bir önizleme güncellemesi gerektirir. Ayrıntılarını veya sonraki ayarlamaların etkisini değerlendirmeden önce önizlemenin bitmesini bekleyin.",
+            "Kaynak boyutları kullanılamıyorsa yakınlaştırma yüzdesi — gösterir ve 1:1 devre dışı kalır. Auto, önizlemeyi ekrana sığdırmaya devam eder. Boyutları güncellemek için klasörü yeniden tarayın."
           ],
           "steps": [
             "Ayarlar → Performans'ı açın.",
@@ -3073,5 +3074,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1"
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44"
 }

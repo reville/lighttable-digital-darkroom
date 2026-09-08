@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "ba3e60a7fa5d219c6220183898a8eaf827d8b7b01ae4c47a1041a06c56eca0d1",
+  "sourceDigest": "3f741c4c6d7dd36e4a7f52f28c799b851abfdab931375faaf96fec892ed25d44",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4030,7 +4030,8 @@
     "‹ Back": "‹ Retour",
     "← Back to articles": "← Retour aux articles",
     "← People": "← Personnes",
-    "☆ Favorites": "☆ Favoris"
+    "☆ Favorites": "☆ Favoris",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "Si les dimensions de l’original sont indisponibles, le pourcentage de zoom affiche — et 1:1 est désactivé. Auto s’adapte toujours à l’écran. Relancez l’analyse du dossier pour actualiser les dimensions."
   },
   "plurals": {
     " · {count} paired file linked": {
