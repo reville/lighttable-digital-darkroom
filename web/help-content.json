@@ -1013,7 +1013,9 @@
           "steps": [
             "Increase Dehaze to strengthen a hazy image, or try a negative value for a softer treatment. Check both contrast and color as you adjust it.",
             "Set Vignette for the edge treatment you want and inspect the corners.",
-            "Hold B to compare with the original, or use Effects’ Reset to reset Texture, Clarity, Dehaze, and Vignette together."
+            "Increase Size to keep more of the center clear; decrease it to bring the vignette further inward.",
+            "Increase Feather for a softer transition, or decrease it for a more defined edge.",
+            "Hold B to compare with the original, or use Effects’ Reset to reset all Effects sliders together."
           ],
           "tips": [
             "Effects’ Vignette is a creative edge treatment. Use Lens corrections when you want to correct lens shading."
@@ -2141,7 +2143,8 @@
         {
           "title": "Start with a stock",
           "paragraphs": [
-            "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off."
+            "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off.",
+            "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are."
           ],
           "steps": [
             "Open a still photo and select Film in the tool rail to open Realistic Film Simulation.",
@@ -2155,7 +2158,7 @@
           "paragraphs": [
             "Stock previews include the current photo’s edits. Browsing and closing the preview window do not apply a stock; choosing a preview does.",
             "A film stock describes the physical film process. An editing preset can contain broader saved adjustments, and may also include Film settings. The Output menu inside Film chooses a scan or print recipe; it does not export a file.",
-            "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background."
+            "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible."
           ],
           "tips": [
             "If a stock is unavailable, it may require the GPU engine. Engine availability is shown in Settings → Performance."
@@ -2966,7 +2969,8 @@
         {
           "title": "Check what has finished rendering",
           "paragraphs": [
-            "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.",
+            "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.",
+            "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.",
             "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.",
             "Remove, Heal, Clone, and masks with Texture or Clarity need an additional preview update. Wait for the preview to finish before judging their detail or the effect of later adjustments.",
             "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions."

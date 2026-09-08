@@ -22,13 +22,13 @@ function scene(sourceWidth, fitWidth, reduced = true) {
     'clampPan','syncPreviewDetailStatus','cropViewState','syncCompareView','syncViewerChrome',
     'drawEditOverlayNow','scheduleNativeViewportLayout','scheduleViewportRegionRender','applyView',
     'renderFilm','syncCropPresentationNow','scheduleAutomaticPreview','createZoomMotion','cur','document',
-    'viewportRegionEnabled','markContinuousInput','automaticPreviewTimer','viewportRegionTimer',
+    'viewportRegionEnabled','markContinuousInput','automaticPreviewTimer','viewportRegionTimer','doRender','requestedPreviewWidth',
     `${helpers}\n${setup}\nreturn {toggleActualZoomAt,onViewportResize,applyViewNow,zoomAt,zoomMotion,stopZoomMotion};`)(
       S,id=>({cv,cmp,...buttons})[id],()=>sourceWidth,(v,a,b)=>Math.max(a,Math.min(b,v)),
       ()=>sourceWidth,noop,noop,()=>({}),noop,noop,noop,noop,noop,noop,noop,noop,noop,
       options=>createZoomMotion({...options,now:()=>at,reducedMotion:()=>reduced,
         requestFrame:run=>{frame=run;return 1;},cancelFrame:()=>{frame=null;},
-        setTimer:()=>1,clearTimer:noop}),()=>({name:'photo'}),{hidden:false},()=>false,noop,null,null);
+        setTimer:()=>1,clearTimer:noop}),()=>({name:'photo'}),{hidden:false},()=>false,noop,null,null,noop,()=>Math.min(sourceWidth,8000));
   return {S,buttons,...methods,tick(time){at=time;const run=frame;frame=null;run?.(at);},resize(width){fitWidth=width;methods.onViewportResize();}};
 }
 

@@ -27,7 +27,7 @@ MAX_ARCHIVE_MEMBERS = 250
 GRADE_SCALARS = {
     "exposure", "contrast", "highlights", "shadows", "whites", "blacks",
     "temp", "tint", "vibrance", "saturation", "texture", "clarity",
-    "dehaze", "vignette", "sharpness", "sharpenRadius", "sharpenDetail",
+    "dehaze", "vignette", "vignetteSize", "vignetteFeather", "sharpness", "sharpenRadius", "sharpenDetail",
     "sharpenMasking", "luminanceNoise", "colorNoise",
     "chromaticAberrationRedCyan", "chromaticAberrationBlueYellow",
 }
