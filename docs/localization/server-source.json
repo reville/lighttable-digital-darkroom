@@ -605,6 +605,7 @@
       "File changed before querying its identity",
       "File changed while querying its identity",
       "The filesystem does not provide a file change time",
+      "This photo is unavailable. Reconnect its source and rescan.",
       "file changed before hashing: {path}",
       "file changed while hashing: {path}"
     ],
