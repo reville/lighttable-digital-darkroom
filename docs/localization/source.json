@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50",
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "pluralPairs": [
     {
@@ -1140,6 +1140,7 @@
     "Current camera",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.",
     "Current photo",
+    "Current photo / total photos",
     "Current settings",
     "Current stock",
     "Curve",
@@ -1621,6 +1622,7 @@
     "Hold-key slider control",
     "Horizontal",
     "Hourly",
+    "Hover over the photo counter in the top bar to see what its numbers mean.",
     "Hue",
     "Hue shift",
     "IPTC",
@@ -2291,6 +2293,7 @@
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
     "Photos could not be imported. Try again or choose a folder.",
     "Photos set aside",
+    "Photos shown / total photos in this folder or collection",
     "Photos stay in their current folder. No moving or copying required.",
     "Photos stay in their current folder. You can add more folders whenever you like.",
     "Photos unstacked",
@@ -2724,7 +2727,7 @@
     "Search",
     "Search covers article titles, tool names, and the full instructions. Choose All topics to search across the app.",
     "Search film stocks",
-    "Search for a stock name, use Previous or Next to browse, then choose a preview to apply it.",
+    "Search for a stock name or scroll through the previews, then choose one to apply it. Previews are enlarged and cropped to show more detail.",
     "Search help",
     "Search index: {value}",
     "Search objects, scenes, text, and faces",
@@ -4314,7 +4317,6 @@
     "{value}% retained",
     "{value}{value2}Names reflect existing files and may change before export.",
     "{value}× stock baseline",
-    "{value}–{value2} of {stocksLength} stocks",
     "— none —",
     "“{value}” has painted refinements. Recreate it on this photo or exclude masks.",
     "“{value}” needs a new object selection. Exclude masks to paste other edits.",

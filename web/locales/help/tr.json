@@ -224,7 +224,8 @@
           "paragraphs": [
             "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar.",
             "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin.",
-            "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur."
+            "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
+            "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -2185,7 +2186,7 @@
             "Durağan bir fotoğraf açın ve Gerçekçi Film Simülasyonunu açmak için araç rayından Film'i seçin.",
             "Film profil anahtarını açın. Fiziksel film aşamaları otomatik olarak açılır; sonrasında daraltabilirsiniz.",
             "Film Stoğu seçin veya işlenmiş örnekleri karşılaştırmak için bu fotoğrafta Film stoklarını önizle’ye tıklayın…",
-            "Bir film stoğu adı arayın, gözatmak için Previous veya Next kullanın, ardından uygulamak için bir önizleme seçin."
+            "Bir film adı arayın veya önizlemeleri kaydırın, ardından uygulamak için birini seçin. Ayrıntıları daha iyi göstermek için önizlemeler büyütülür ve kırpılır."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }

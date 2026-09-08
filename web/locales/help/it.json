@@ -224,7 +224,8 @@
           "paragraphs": [
             "Griglia foto presenta le foto come panoramica visiva. La Griglia di culling aggiunge spazio per informazioni di selezione e valutazione. Dettagli apre la foto attiva per un'ispezione ravvicinata.",
             "La barra laterale destra usa pulsanti con icone per Modifica, Pellicola, Ritaglia, Rimuovi, Mascheratura, Info, Cronologia e Predefiniti. Passa il puntatore su un’icona per vederne il nome.",
-            "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra."
+            "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
+            "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -2185,7 +2186,7 @@
             "Apri una foto fissa e seleziona Pellicola nella barra strumenti per aprire Simulazione pellicola realistica.",
             "Attiva l'interruttore del profilo Pellicola. Fasi fisiche della pellicola si apre automaticamente; puoi comprimerlo in seguito.",
             "Scegli Pellicola, oppure fai clic su Visualizza pellicole su questa foto… per confrontare esempi renderizzati.",
-            "Cerca un nome di pellicola, usa Precedente o Successivo per sfogliare, quindi scegli un’anteprima per applicarla."
+            "Cerca il nome di una pellicola o scorri le anteprime, poi scegline una per applicarla. Le anteprime sono ingrandite e ritagliate per mostrare più dettagli."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }

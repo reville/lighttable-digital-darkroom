@@ -224,7 +224,8 @@
           "paragraphs": [
             "A Grade de fotos apresenta as fotos como uma visão geral visual. A Grade de seleção adiciona espaço para informações de seleção e avaliação. Detalhe abre a foto ativa para inspeção de perto.",
             "A barra lateral direita usa botões de ícone para Editar, Filme, Cortar, Remover, Máscaras, Informações, Histórico e Predefinições. Passe o mouse sobre um ícone para ver o nome dele.",
-            "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela."
+            "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
+            "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -2185,7 +2186,7 @@
             "Abra uma foto estática e selecione Filme na barra de ferramentas para abrir a Simulação realista de filme.",
             "Ative o interruptor do perfil de Filme. Etapas físicas do filme abre automaticamente; você pode recolhê-lo depois.",
             "Escolha Filme, ou clique em Visualizar filmes desta foto… para comparar exemplos renderizados.",
-            "Pesquise pelo nome de um stock de filme, use Previous ou Next para navegar e, depois, escolha uma pré-visualização para aplicá-lo."
+            "Pesquise o nome de um filme ou percorra as pré-visualizações e escolha uma para aplicá-la. As pré-visualizações são ampliadas e recortadas para mostrar mais detalhes."
           ]
         },
         {
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "191d920a4c726eea2f1bf157e6d19fc476cecf8e99d3280cc67a0343bb2f2a50"
+  "sourceDigest": "4ac20390838efd141326cd091be9c0fa1007c5afa1b54181d272eeaeae475734"
 }
