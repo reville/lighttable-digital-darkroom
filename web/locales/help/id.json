@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Pilih foto dari Apple Photos",
+          "paragraphs": [
+            "Di aplikasi macOS, gunakan Berkas → Impor dari Apple Photos… atau Pilih beberapa… di penyiapan Foto. Format Saat Ini mempertahankan representasi yang disediakan oleh Foto; Kompatibel meminta format yang dapat dibaca secara luas. Representasi terpilih ini dapat mencakup pengeditan Foto dan terpisah dari impor original seluruh pustaka.",
+            "Pilih foto, lalu klik Tambahkan. LightTable menampilkan progres saat mengunduh dan menyalinnya. Hentikan Impor mempertahankan salinan yang sudah selesai dan menghentikan transfer yang tersisa. Pustaka Foto Anda tetap tidak berubah.",
+            "Salinan disimpan di Pictures / LightTable Imports / Apple Photos. Mengimpor pilihan lagi akan membuat salinan terpisah dengan nama file bernomor; file yang sudah ada tidak pernah ditimpa."
+          ],
+          "steps": [
+            "Pilih Format Saat Ini atau Kompatibel.",
+            "Pilih satu atau beberapa foto di pemilih lalu klik Tambahkan. Gunakan Batal untuk keluar tanpa mengimpor.",
+            "Tunggu hingga impor selesai, lalu tinjau foto di LightTable."
+          ]
+        },
+        {
           "title": "Buka folder lokal",
           "paragraphs": [
             "Di aplikasi desktop, Add Photos membuka pemilih untuk foto dan folder. LightTable menyimpan original di lokasi saat ini. Memilih foto individual menambahkan folder yang menampungnya, sehingga foto lain yang didukung di folder itu juga dapat muncul."
@@ -75,11 +88,11 @@
         {
           "title": "Siapkan dan periksa",
           "paragraphs": [
-            "Pengimpor membaca salinan sementara dari katalog Lightroom Classic .lrcat. Tambahkan folder foto yang digunakan oleh katalog ini memungkinkan impor mendaftarkan asli yang dirujuk dan folder tempatnya berada. Ini membiarkan asli tetap di tempat. Kosongkan opsi itu untuk mencocokkan hanya foto yang sudah ada di LightTable.",
+            "Pengimpor membaca salinan sementara dari katalog Lightroom Classic .lrcat dan membiarkan penyiapan dan katalog Lightroom Anda tidak berubah. Foto tetap berada di folder saat ini dan direferensikan, bukan diduplikasi. Tambahkan folder foto yang digunakan oleh katalog ini memungkinkan impor mencatat original yang direferensikan dan folder induknya. Hapus centang opsi itu untuk mencocokkan hanya foto yang sudah ada di LightTable.",
             "Pratinjau kompatibilitas melaporkan kecocokan di pustaka saat ini tanpa mengubahnya. Foto yang belum ditambahkan mungkin ditampilkan sebagai tidak cocok di pratinjau; mengimpor dengan Tambahkan folder foto diaktifkan mendaftarkan asli yang tersedia sebelum mencocokkan lagi."
           ],
           "steps": [
-            "Buka Lokal ••• → Impor katalog…, atau pilih opsi katalog Lightroom Classic saat penyiapan.",
+            "Buka Lokal ••• → Impor katalog…, atau pilih Impor dari Lightroom di penyiapan.",
             "Pilih berkas .lrcat dan tinjau jumlah serta peringatannya.",
             "Pilih kategori yang akan diimpor, kebijakan untuk edit yang sudah ada, dan apakah akan menambahkan folder foto yang dirujuk.",
             "Klik Kompatibilitas pratinjau dan tinjau setelan yang dipetakan dan yang dilewati. Coba 20 varian membuat edit percobaan terpisah sebelum impor yang lebih besar.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

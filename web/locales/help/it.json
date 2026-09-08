@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Scegli foto da Apple Photos",
+          "paragraphs": [
+            "Nell'app macOS, usa File → Importa da Apple Photos… oppure Scegline alcuni… in configurazione Foto. Formato attuale mantiene la rappresentazione fornita da Foto; Compatibile richiede un formato ampiamente leggibile. Queste rappresentazioni selezionate possono includere le modifiche di Foto e sono separate dall'importazione degli originali dell'intera libreria.",
+            "Seleziona le foto, poi fai clic su Aggiungi. LightTable mostra il progresso mentre le scarica e le copia. Interrompi importazione mantiene le copie completate e interrompe i trasferimenti rimanenti. La tua libreria Foto resta invariata.",
+            "Le copie vengono salvate in Pictures / LightTable Imports / Apple Photos. Importare di nuovo una selezione crea copie separate con nomi file numerati; i file esistenti non vengono mai sovrascritti."
+          ],
+          "steps": [
+            "Scegli Formato attuale o Compatibile.",
+            "Seleziona una o più foto nel selettore e fai clic su Aggiungi. Usa Annulla per uscire senza importare.",
+            "Attendi che l'importazione sia terminata, poi rivedi le foto in LightTable."
+          ]
+        },
+        {
           "title": "Apri una cartella locale",
           "paragraphs": [
             "Nell’app desktop, Aggiungi foto apre un selettore per foto e cartelle. LightTable conserva gli originali nella loro posizione attuale. Selezionare una singola foto aggiunge la cartella che la contiene, così possono comparire anche altre foto supportate in quella cartella."
@@ -75,11 +88,11 @@
         {
           "title": "Prepara e controlla",
           "paragraphs": [
-            "L'importatore legge una copia temporanea di un catalogo Lightroom Classic .lrcat. Aggiungi le cartelle delle foto usate da questo catalogo consente all'importazione di registrare gli originali referenziati e le cartelle che li contengono. Lascia gli originali al loro posto. Disattiva questa opzione per abbinare solo le foto già presenti in LightTable.",
+            "L'importatore legge una copia temporanea di un catalogo .lrcat di Lightroom Classic e lascia invariati la configurazione e il catalogo di Lightroom. Le foto restano nelle cartelle attuali e sono referenziate, non duplicate. L'aggiunta delle cartelle foto usate da questo catalogo consente all'importazione di registrare gli originali referenziati e le cartelle che li contengono. Deseleziona questa opzione per abbinare solo le foto già presenti in LightTable.",
             "L'anteprima di compatibilità dei riferimenti mostra le corrispondenze nella libreria corrente senza modificarla. Le foto non ancora aggiunte possono apparire come non abbinate nell'anteprima; l'importazione con Aggiungi le cartelle delle foto abilitato registra gli originali disponibili prima di abbinare di nuovo."
           ],
           "steps": [
-            "Apri Locale ••• → Importa catalogo…, oppure scegli l'opzione di catalogo Lightroom Classic nella configurazione.",
+            "Apri Locale ••• → Importa catalogo…, oppure scegli Importa da Lightroom nella configurazione.",
             "Scegli il file .lrcat e rivedi i relativi conteggi e avvisi.",
             "Scegli le categorie da importare, la politica per le modifiche esistenti e se aggiungere le cartelle delle foto referenziate.",
             "Fai clic su Compatibilità anteprima e rivedi le impostazioni mappate e ignorate. Prova 20 varianti crea modifiche di prova separate prima di un'importazione più ampia.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }

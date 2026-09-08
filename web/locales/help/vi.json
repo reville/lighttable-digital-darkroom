@@ -29,6 +29,19 @@
           ]
         },
         {
+          "title": "Chọn ảnh từ Ảnh Apple",
+          "paragraphs": [
+            "Trong ứng dụng macOS, dùng Tệp → Nhập từ Ảnh Apple… hoặc Chọn vài mục… trong thiết lập Ảnh. Định dạng hiện tại giữ nguyên biểu diễn do Ảnh cung cấp; Tương thích yêu cầu một định dạng có thể đọc rộng rãi. Những biểu diễn đã chọn này có thể bao gồm các chỉnh sửa trong Ảnh và tách biệt với toàn bộ quá trình nhập ảnh gốc của thư viện.",
+            "Chọn ảnh, rồi nhấp Thêm. LightTable hiển thị tiến trình trong khi tải xuống và sao chép chúng. Dừng nhập sẽ giữ lại các bản sao đã hoàn tất và dừng các lần chuyển còn lại. Thư viện Ảnh của bạn vẫn không thay đổi.",
+            "Các bản sao được lưu trong Pictures / LightTable Imports / Apple Photos. Nhập lại một vùng chọn sẽ tạo các bản sao riêng với tên tệp được đánh số; các tệp hiện có sẽ không bao giờ bị ghi đè."
+          ],
+          "steps": [
+            "Chọn Định dạng hiện tại hoặc Tương thích.",
+            "Chọn một hoặc nhiều ảnh trong trình chọn rồi nhấp Thêm. Dùng Hủy để thoát mà không nhập.",
+            "Chờ quá trình nhập hoàn tất, sau đó xem lại ảnh trong LightTable."
+          ]
+        },
+        {
           "title": "Mở thư mục cục bộ",
           "paragraphs": [
             "Trong ứng dụng desktop, Add Photos mở bộ chọn cho ảnh và thư mục. LightTable giữ ảnh gốc ở vị trí hiện tại của chúng. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa nó, vì vậy các ảnh được hỗ trợ khác trong thư mục đó cũng có thể xuất hiện."
@@ -75,11 +88,11 @@
         {
           "title": "Chuẩn bị và kiểm tra",
           "paragraphs": [
-            "Trình nhập đọc một bản sao tạm thời của danh mục .lrcat của Lightroom Classic. Thêm các thư mục ảnh được dùng bởi danh mục này cho phép nhập đăng ký các ảnh gốc được tham chiếu và các thư mục chứa chúng. Nó không di chuyển ảnh gốc. Bỏ chọn tùy chọn đó để chỉ khớp các ảnh đã có trong LightTable.",
+            "Trình nhập đọc một bản sao tạm thời của danh mục Lightroom Classic .lrcat và giữ nguyên thiết lập Lightroom cũng như danh mục của bạn. Ảnh vẫn ở trong các thư mục hiện tại và được tham chiếu, không bị sao chép. Thêm các thư mục ảnh được danh mục này sử dụng sẽ cho phép quá trình nhập đăng ký các ảnh gốc được tham chiếu và các thư mục chứa chúng. Bỏ chọn tùy chọn đó để chỉ khớp với những ảnh đã có trong LightTable.",
             "Tương thích bản xem trước báo cáo các ảnh khớp trong thư viện hiện tại mà không thay đổi nó. Ảnh chưa được thêm có thể hiển thị là không khớp trong bản xem trước; nhập với bật Thêm các thư mục ảnh sẽ ghi nhận các ảnh gốc hiện có trước khi khớp lại."
           ],
           "steps": [
-            "Mở Cục bộ ••• → Nhập danh mục…, hoặc chọn tùy chọn danh mục Lightroom Classic trong phần thiết lập.",
+            "Mở Cục bộ ••• → Nhập danh mục…, hoặc chọn Nhập từ Lightroom trong thiết lập.",
             "Chọn tệp .lrcat và xem lại số lượng cùng các cảnh báo của nó.",
             "Chọn các danh mục để nhập, chính sách cho các chỉnh sửa hiện có, và có thêm các thư mục ảnh được tham chiếu hay không.",
             "Nhấp Tương thích bản xem trước và xem lại các cài đặt đã ánh xạ và bị bỏ qua. Thử 20 biến thể sẽ tạo các chỉnh sửa thử riêng trước một lần nhập lớn hơn.",
@@ -2966,5 +2979,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "a0d391cbbca595123255e10d39c758c4001c310a8753d9c4f5e0df095e5c6adb"
+  "sourceDigest": "00221dcbed786b08ebc2601cbf299dd807528822a86e41f37f52d23baf79992a"
 }
