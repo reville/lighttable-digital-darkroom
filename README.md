@@ -99,6 +99,13 @@ lens correction, crop and perspective, versions, and reusable export recipes
 sit alongside the film controls. HDR, panorama, and focus merge create new
 masters. Soft proofing covers sRGB, Display P3, matte paper, and gloss paper.
 
+Local masks support gradual dodging and burning with cumulative brush Flow,
+a Density ceiling, and Auto Mask color matching. Radial gradients can be oval
+and rotated. Each mask has Whites, Blacks, and RGB or individual-channel tone
+curves. Subject, Sky, and Object selections retain up to 1,024 pixels along
+their longest edge, with edges refined against the source image. Automatic
+selections remain starting points that need inspection and painted refinement.
+
 In Effects, Vignette darkens or brightens the edges. Size controls how much of
 the center stays clear, and Feather controls how softly the effect blends in.
 Existing edits keep their original vignette appearance with the default Size
