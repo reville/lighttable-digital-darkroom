@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Pilihan objek memerlukan pilihan objek baru pada tujuan. Masker cerdas dengan penyempurnaan yang dilukis juga perlu dibuat ulang secara manual; ini menyebabkan paste tujuan ditolak, bukan menyalin diam-diam pilihan yang spesifik untuk sumber.",
+            "Sapuan Masker Otomatis menyimpan pilihan yang dibuat dari foto sumber. Menempelkannya ke foto lain ditolak; buat ulang sapuan tersebut di tujuan atau kecualikan Masker lokal. Menyalinnya kembali ke foto yang sama mempertahankan pilihan yang disimpan.",
             "Jika masker tidak dapat dipindahkan, salin lagi dengan Local masks tidak dicentang untuk menerapkan grup lainnya.",
             "Periksa laporan penyelesaian untuk foto yang gagal. Sebuah batch dapat selesai dengan sebagian foto berubah dan yang lain tetap tidak berubah."
           ]
@@ -1517,8 +1518,16 @@
         "kuas",
         "gradien linear",
         "gradien radial",
+        "elips",
+        "rotasi",
         "bulu",
         "alur",
+        "kepadatan",
+        "masker otomatis",
+        "toleransi",
+        "kurva nada",
+        "putih",
+        "hitam",
         "lapisan",
         "dodge",
         "dodge"
@@ -1527,14 +1536,14 @@
         {
           "title": "Buat masker manual",
           "paragraphs": [
-            "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya dan Warna sendiri.",
-            "Tekstur dan Kejernihan menggunakan gambar setelah penyesuaian global dan masker sebelumnya. Kontrol ini memerlukan pembaruan pratinjau; tunggu hingga selesai sebelum menilai hasilnya."
+            "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya, Warna, dan Kurva Nada sendiri.",
+            "Tekstur, Kejernihan, Putih, Hitam, dan Kurva Nada menggunakan gambar setelah penyesuaian global dan masker sebelumnya. Kontrol ini memerlukan pembaruan pratinjau; tunggu hingga selesai sebelum menilai hasilnya. Pratinjau dan ekspor menerapkannya dalam urutan yang sama."
           ],
           "steps": [
-            "Pilih Brush untuk melukis, Linear untuk penyesuaian bertahap, atau Radial untuk penyesuaian melingkar.",
-            "Untuk Kuas, pilih Ukuran, Feather, dan Flow, lalu cat di atas foto. Untuk Linear atau Radial, seret di foto untuk mengatur bentuk.",
+            "Pilih Kuas untuk melukis, Linear untuk penyesuaian bertahap, atau Radial untuk penyesuaian bulat atau oval.",
+            "Untuk Kuas, pilih Ukuran, Bulu, Alur, dan Kepadatan, lalu lukis di atas foto. Untuk Linear atau Radial, seret pada foto untuk menetapkan bentuknya.",
             "Biarkan Show Overlay tetap aktif saat memeriksa area terpilih, lalu matikan untuk menilai foto.",
-            "Sesuaikan slider Light atau Color dari masker terpilih. Gunakan Amount di Range untuk mengurangi kekuatan keseluruhannya.",
+            "Naikkan Eksposur untuk mencerahkan suatu area atau turunkan untuk menggelapkannya. Gunakan kontrol Cahaya dan Warna lainnya sesuai kebutuhan, dan Jumlah di Rentang untuk mengurangi kekuatan keseluruhan masker.",
             "Ubah nama masker menggunakan tombol ••• agar tujuannya mudah dikenali nanti."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "Penyunting memungkinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker foto dan tidak tersedia jika tidak ada.",
             "Pin masker dan garis luar kuas tetap tajam dan memiliki ketebalan yang sama saat Anda melakukan zoom. Garis luar bertambah sesuai area yang dicakupnya di foto."
           ]
+        },
+        {
+          "title": "Bangun cakupan kuas secara bertahap",
+          "paragraphs": [
+            "Alur mengontrol seberapa banyak cakupan yang ditambahkan setiap sapuan baru, dan Kepadatan menetapkan batas maksimumnya. Keduanya berkisar dari 1% hingga 100%. Lepaskan pointer dan lukis lagi untuk membangun cakupan; menelusuri ulang dalam satu sapuan berkelanjutan tidak akan menambahkannya lebih jauh.",
+            "Aktifkan Masker Otomatis untuk membatasi setiap sapuan pada warna yang mirip dengan warna di tempat sapuan itu dimulai. Tingkatkan Toleransi untuk menyertakan rentang warna yang lebih luas. Pilihannya disimpan bersama sapuan, jadi nanti edit warna atau eksposur tidak akan menggeser tepinya."
+          ],
+          "tips": [
+            "Pada Alur 20% dan Kepadatan 60%, tiga sapuan terpisah di area yang tertutup penuh mencapai batas maksimum. Menurunkan Kepadatan tidak menghapus cakupan yang sudah dilukis.",
+            "Pengaturan kuas berlaku untuk sapuan baru. Sapuan yang sudah ada mempertahankan tampilan yang disimpannya, termasuk perilaku kuas sebelumnya pada edit yang lebih lama.",
+            "Setiap penyempurnaan kuas atau lukisan menampung hingga 64 sapuan, dengan hingga 512 titik per sapuan dan 20.000 titik masker per foto. Penyunting akan memberi tahu Anda saat batas tercapai."
+          ]
+        },
+        {
+          "title": "Bentuk gradien radial",
+          "paragraphs": [
+            "Di Edit Bentuk, seret handle tengah untuk memindahkan masker, handle sumbu mana pun untuk mengubah ukurannya, atau handle luar untuk memutarnya. Tahan Shift saat menggambar atau mengubah ukuran agar gradien menjadi bulat."
+          ],
+          "tips": [
+            "Bentuk juga menyediakan kontrol Lebar, Tinggi, Rotasi, dan Bulu.",
+            "Menyeret menjauh dari handle-nya akan menggambar ulang masker radial terpilih."
+          ]
+        },
+        {
+          "title": "Sesuaikan kurva nada lokal",
+          "steps": [
+            "Perluas Kurva Nada untuk masker terpilih dan pilih RGB, Merah, Hijau, atau Biru.",
+            "Klik grafik untuk menambahkan titik, lalu seret titik tersebut. Menggerakkan titik ke atas mencerahkan keluarannya; menggerakkannya ke bawah menggelapkannya. Klik dua kali titik interior untuk menghapusnya.",
+            "Gunakan Atur ulang kurva untuk mengatur ulang hanya saluran terpilih dari masker ini, atau Urungkan untuk membalikkan edit."
+          ],
+          "tips": [
+            "Saat grafik sedang fokus, [ dan ] memilih titik, tombol panah memindahkannya, dan Shift membuat perpindahan lebih besar. Enter menambahkan titik, Delete menghapus titik interior, dan Escape membatalkan penyesuaian yang sedang berlangsung.",
+            "Kurva yang disimpan tetap akurat sampai Anda mengeditnya. Penyunting membangun ulang handle perwakilan, sehingga penyesuaian pertama dapat membentuk ulang kurva impor melampaui titik yang Anda pindahkan."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Pengeditan"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Pilih Tambahkan, Kurangi, atau Irisan di bawah Masker Terpilih.",
-            "Atur Ukuran, Bulu, dan Alur, lalu lukis sambil memperhatikan lapisan.",
+            "Atur Ukuran, Bulu, Alur, dan Kepadatan, lalu lukis sambil memperhatikan lapisan. Sapuan terpisah membangun cakupan hingga Kepadatan; aktifkan Masker Otomatis untuk membatasi sapuan berdasarkan warna awalnya.",
             "Saat menggunakan Tambahkan, tahan Option di Mac untuk mengurangi sementara.",
             "Matikan overlay dan periksa penyesuaian. Gunakan Undo untuk perbaikan yang ingin Anda balik."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Buat pilihan cerdas",
           "paragraphs": [
-            "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform."
+            "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform.",
+            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual."
           ],
           "steps": [
             "Buka Masker dan luaskan Buat Masker Baru.",
@@ -3037,7 +3083,7 @@
             "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
             "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
-            "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
+            "Hapus, Perbaiki, Klon, dan masker dengan penyesuaian Tekstur, Kejernihan, Putih, Hitam, atau Kurva Nada memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
             "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi."
           ],
           "steps": [
@@ -3089,5 +3135,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "23b855cdf90264a8acaf7312576ad34c6020e840336e0765a02d345fca052d62"
+  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc"
 }

@@ -87,6 +87,7 @@
     "Render worker stopped responding; using CPU for this session",
     "Requested metadata could not be saved.",
     "Richer descriptions require macOS 27 or later",
+    "Saved Auto Mask data is missing or damaged. Restore the stroke from History before exporting.",
     "Select between 1 and 5,000 photos for a mask batch",
     "Select between 1 and {limit} photos",
     "Select faces to move to a separate group",
@@ -317,7 +318,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "6d28ee9d4a4900efa46d8ba70f7d7d6f138bc567dbc3be3a81de0d098a32d83e",
+  "sourceDigest": "52feee0ac0ea4000a1e276b4c0f60d944f13cc9d60ae56d12e6b5bb0ae345588",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -513,6 +514,9 @@
       "{name} already exists; no files were moved",
       "{name}: multiple XMP sidecars; keep one naming convention before importing",
       "{value} requires the Rust film engine"
+    ],
+    "edits.py": [
+      "Saved Auto Mask data is missing or damaged. Restore the stroke from History before exporting."
     ],
     "export_workflow.py": [
       "Capture time is missing; kept the export file timestamp.",
