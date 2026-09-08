@@ -149,6 +149,7 @@ for LICENSE_NAME in SCUNet-CODE-LICENSE.txt SCUNet-WEIGHTS-LICENSE.txt; do
 done
 /usr/bin/ditto "$ROOT/web" "$PAYLOAD/web"
 /usr/bin/ditto "$ROOT/profiles" "$PAYLOAD/profiles"
+/usr/bin/ditto "$ROOT/presets" "$PAYLOAD/presets"
 /usr/bin/ditto "$PYTHON_SOURCE/src/spektrafilm" \
   "$PAYLOAD/vendor/spektrafilm/src/spektrafilm"
 

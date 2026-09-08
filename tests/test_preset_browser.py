@@ -181,6 +181,159 @@ console.log(JSON.stringify({included:included.params,excluded:excluded.params,re
             "profile_enabled": True, "stock": "new", "grain_amount": 1,
         })
 
+    def test_look_preserves_photo_corrections_even_with_malformed_recipe(self):
+        result = self.run_js("""
+import {composePresetState} from './web/presets.js';
+const state={params:{stock:'base',profile_enabled:true,wb_mode:'custom',wb_temperature:5100,
+  raw_profile:'camera',film_format:'120',linear_input:true,input_color_space:'camera',rotate:90},
+  grade:{exposure:1.2,temp:0.2,tint:-0.1,sharpness:0.6,luminanceNoise:0.3,
+    chromaticAberrationRedCyan:0.4,contrast:0.1},
+  crop:{x:0.1,y:0.2,w:0.7,h:0.6},masks:[{id:'mask'}],heals:[{id:'heal'}],optics:{vertical:0.2}};
+const preset={scope:'look',filmMode:'off',includeFilm:true,
+  includedFilm:['stock','grain_amount','wb_temperature','film_format','raw_profile','rotate'],
+  params:{stock:'new',grain_amount:0.3,wb_temperature:2000,film_format:'35mm',
+    raw_profile:'smooth',rotate:0,halation_amount:0.9},
+  grade:{contrast:0.4,exposure:-2,temp:1,tint:1,sharpness:0,luminanceNoise:0,
+    chromaticAberrationRedCyan:-0.4},
+  masks:[{id:'bad'}],heals:[{id:'bad'}],optics:{vertical:-0.5}};
+const before=JSON.stringify([state,preset]);
+const next=composePresetState(state,preset,{replace:true});
+const preserve=composePresetState(state,{...preset,filmMode:'preserve'});
+console.log(JSON.stringify({state,next,preserveEnabled:preserve.params.profile_enabled,
+  unchanged:before===JSON.stringify([state,preset])}));
+""")
+        state, next_state = result["state"], result["next"]
+        for key in ["crop", "masks", "heals", "optics"]:
+            self.assertEqual(next_state[key], state[key])
+        for key in ["exposure", "temp", "tint", "sharpness", "luminanceNoise", "chromaticAberrationRedCyan"]:
+            self.assertEqual(next_state["grade"][key], state["grade"][key])
+        for key in ["wb_mode", "wb_temperature", "raw_profile", "film_format", "linear_input", "input_color_space", "rotate"]:
+            self.assertEqual(next_state["params"][key], state["params"][key])
+        self.assertEqual(next_state["grade"]["contrast"], 0.4)
+        self.assertEqual(next_state["params"]["stock"], "new")
+        self.assertEqual(next_state["params"]["grain_amount"], 0.3)
+        self.assertNotIn("halation_amount", next_state["params"])
+        self.assertFalse(next_state["params"]["profile_enabled"])
+        self.assertTrue(result["preserveEnabled"])
+        self.assertTrue(result["unchanged"])
+
+    def test_ids_migrate_favorites_and_distinguish_duplicate_names(self):
+        result = self.run_js("""
+import {migratePresetFavorites,filterPresets,presetWebURL} from './web/preset-browser.js';
+const presets=[{id:'lighttable/warm',name:'Warm',collection:'builtin',tags:['Portrait']},
+  {id:'mine/1',name:'Warm',collection:'yours',author:{name:'Alice'}},
+  {id:'mine/2',name:'Evening',collection:'yours',description:'Blue shadows'}];
+const ids=migratePresetFavorites(['Warm','deleted/id','mine/2','Warm'],presets);
+const names=opts=>filterPresets(presets,opts).map(p=>p.id);
+console.log(JSON.stringify({ids,
+  exact:names({favoritesOnly:true,favorites:['mine/1']}),
+  collection:names({collection:'builtin',tag:'Portrait'}),
+  author:names({query:'alice'}),description:names({query:'blue shadows'}),
+  unsafe:[presetWebURL('javascript:alert(1)'),presetWebURL('file:///etc/passwd'),presetWebURL('http://bad.test')],
+  safe:presetWebURL('https://example.com/preset')}));
+""")
+        self.assertEqual(result["ids"], ["lighttable/warm", "mine/1", "deleted/id", "mine/2"])
+        self.assertEqual(result["exact"], ["mine/1"])
+        self.assertEqual(result["collection"], ["lighttable/warm"])
+        self.assertEqual(result["author"], ["mine/1"])
+        self.assertEqual(result["description"], ["mine/2"])
+        self.assertEqual(result["unsafe"], [None, None, None])
+        self.assertEqual(result["safe"], "https://example.com/preset")
+
+    def test_successive_looks_share_baseline_and_manual_edits_reset_it(self):
+        result = self.run_js("""
+import {readFileSync} from 'node:fs';
+import {composePresetState} from './web/presets.js';
+const source=readFileSync('./web/app.js','utf8');
+const section=(first,last)=>source.slice(source.indexOf(first),source.indexOf(last));
+let LAST_PRESET_APPLICATION=null;
+const S={editingName:'A',params:{profile_enabled:false,stock:'base'},
+  grade:{exposure:0.7,contrast:0.1,saturation:0},masks:[],heals:[],optics:{}};
+const cur=()=>({name:'A'}),cloneValue=v=>structuredClone(v);
+let undos=0; const history=[];
+const editId=p=>p,normalizeFilmParams=p=>p,mergeFilmParams=(a,b)=>({...a,...b});
+const snapshot=()=>JSON.stringify({params:S.params,grade:S.grade,masks:S.masks,heals:S.heals,optics:S.optics});
+const readControls=()=>{},pushUndo=()=>{undos++;history.push(JSON.parse(snapshot()))},presetHasApplicableSettings=()=>true;
+const syncControls=()=>{},syncGrade=()=>{},syncCurveFromGrade=()=>{},syncHsl=()=>{};
+const syncMaskPanel=()=>{},syncHealPanel=()=>{},syncOpticsPanel=()=>{},drawGrade=()=>{};
+const saveState=()=>{},renderFilm=()=>{},toast=()=>{},PRESET_BROWSER=null;
+const presetApplicationMatches=eval('('+section('function presetApplicationMatches(', 'function stateWithPreset(').trim()+')');
+const stateWithPreset=eval('('+section('function stateWithPreset(', 'function applyPreset(').trim()+')');
+const applyPreset=eval('('+section('function applyPreset(', 'PRESET_BROWSER = createPresetBrowser(').trim()+')');
+const a={name:'Film',scope:'look',filmMode:'on',includedFilm:['stock'],params:{stock:'film'},grade:{saturation:0.5}};
+const b={name:'Natural',scope:'look',filmMode:'off',grade:{contrast:0.3}};
+const original=JSON.parse(snapshot());
+applyPreset(a,{name:'A'});
+const preview=stateWithPreset(JSON.parse(snapshot()),b,{},'A');
+const beforePreview=snapshot();
+stateWithPreset(JSON.parse(snapshot()),b,{},'A');
+const previewReadOnly=beforePreview===snapshot();
+applyPreset(b,{name:'A'});
+const switched=JSON.parse(snapshot());
+S.grade.exposure=1.1;
+applyPreset(a,{name:'A'});
+const manual=JSON.parse(snapshot());
+const otherPhoto=stateWithPreset(original,b,{},'B');
+console.log(JSON.stringify({preview,previewReadOnly,switched,manual,otherPhoto,undos,history}));
+""")
+        for label in ["preview", "switched"]:
+            self.assertEqual(result[label]["grade"]["saturation"], 0)
+            self.assertEqual(result[label]["grade"]["contrast"], 0.3)
+            self.assertEqual(result[label]["grade"]["exposure"], 0.7)
+            self.assertEqual(result[label]["params"]["stock"], "base")
+            self.assertFalse(result[label]["params"]["profile_enabled"])
+        self.assertTrue(result["previewReadOnly"])
+        self.assertEqual(result["manual"]["grade"]["exposure"], 1.1)
+        self.assertEqual(result["manual"]["grade"]["contrast"], 0.3)
+        self.assertEqual(result["otherPhoto"]["grade"]["exposure"], 0.7)
+        self.assertEqual(result["undos"], 3)
+        self.assertEqual(result["history"][1]["grade"]["saturation"], 0.5)
+        self.assertEqual(result["history"][2]["grade"]["exposure"], 1.1)
+
+    def test_catalog_calendar_date_does_not_shift_across_time_zones(self):
+        result = self.run_js("""
+import {formatPresetCatalogDate} from './web/preset-browser.js';
+const format=value=>formatPresetCatalogDate(value,'en-US');
+process.env.TZ='America/New_York';
+const west={calendar:format('2026-09-08'),timestamp:format('2026-09-08T00:30:00Z')};
+process.env.TZ='Pacific/Kiritimati';
+const east={calendar:format('2026-09-08'),timestamp:format('2026-09-08T23:30:00Z')};
+console.log(JSON.stringify({west,east,invalid:format('invalid date')}));
+""")
+        self.assertEqual(result["west"], {"calendar": "9/8/2026", "timestamp": "9/7/2026"})
+        self.assertEqual(result["east"], {"calendar": "9/8/2026", "timestamp": "9/9/2026"})
+        self.assertEqual(result["invalid"], "")
+
+    def test_binary_exports_preserve_zip_and_jpeg_bytes_in_browser_and_native(self):
+        result = self.run_js("""
+import {readFileSync} from 'node:fs';
+import {bytesToBase64} from './web/presets.js';
+const source=readFileSync('./web/app.js','utf8');
+const start=source.indexOf('function downloadPresetFile(');
+const end=source.indexOf("$('presetExport').onclick",start);
+let bridge=null,blob,clicked=0,message;
+const nativeBridge=()=>bridge;
+const URL={createObjectURL:value=>{blob=value;return 'blob:example'},revokeObjectURL:()=>{}};
+const document={createElement:()=>({click:()=>{clicked++}})};
+const setTimeout=fn=>fn();
+const downloadPresetFile=eval('('+source.slice(start,end).trim()+')');
+const bytes=Uint8Array.from([80,75,3,4,0,255,128,10]);
+const payload={filename:'submission.zip',contentType:'application/zip',
+  encoding:'base64',content:bytesToBase64(bytes)};
+const browserResult=downloadPresetFile(payload);
+const restored=[...new Uint8Array(await blob.arrayBuffer())];
+bridge={postMessage:value=>{message=value}};
+const nativeResult=downloadPresetFile(payload);
+console.log(JSON.stringify({restored,clicked,browserResult,nativeResult,message,type:blob.type}));
+""")
+        self.assertEqual(result["restored"], [80, 75, 3, 4, 0, 255, 128, 10])
+        self.assertEqual(result["clicked"], 1)
+        self.assertFalse(result["browserResult"])
+        self.assertTrue(result["nativeResult"])
+        self.assertEqual(result["type"], "application/zip")
+        self.assertEqual(result["message"]["encoding"], "base64")
+        self.assertEqual(result["message"]["filename"], "submission.zip")
+
     def test_loading_photo_cannot_supply_preview_state_or_receive_a_preset(self):
         result = self.run_js("""
 import {readFileSync} from 'node:fs';
