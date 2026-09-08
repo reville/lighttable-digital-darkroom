@@ -42,6 +42,7 @@
   "Could not create the Photos import folder: {error}",
   "Could not export preset: {error}",
   "Could not move {path} to the Recycle Bin",
+  "Could not open the link in your browser.",
   "Could not open {name}: {message}",
   "Could not prepare your library: {error}",
   "Could not rename folder: {error}",

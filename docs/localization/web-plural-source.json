@@ -85,12 +85,20 @@
       "other": "{count} already added"
     },
     {
+      "one": "{count} already in the catalog",
+      "other": "{count} already in the catalog"
+    },
+    {
       "one": "{count} article",
       "other": "{count} articles"
     },
     {
       "one": "{count} capture will change. Originals stay unchanged.",
       "other": "{count} captures will change. Originals stay unchanged."
+    },
+    {
+      "one": "{count} cloud-only photo skipped; download it in Finder and scan again.",
+      "other": "{count} cloud-only photos skipped; download them in Finder and scan again."
     },
     {
       "one": "{count} could not be imported.",
@@ -129,6 +137,10 @@
       "other": "{count} faces found"
     },
     {
+      "one": "{count} failed",
+      "other": "{count} failed"
+    },
+    {
       "one": "{count} file",
       "other": "{count} files"
     },
@@ -159,6 +171,10 @@
     {
       "one": "{count} photo added. Your original catalog is unchanged.",
       "other": "{count} photos added. Your original catalog is unchanged."
+    },
+    {
+      "one": "{count} photo copied",
+      "other": "{count} photos copied"
     },
     {
       "one": "{count} photo exported",
@@ -233,12 +249,12 @@
       "other": "{message} {completed} of {count} originals"
     },
     {
-      "one": "{source} · {count} mapped setting",
-      "other": "{source} · {count} mapped settings"
+      "one": "{selected} of {count} photo selected, {size} GB",
+      "other": "{selected} of {count} photos selected, {size} GB"
     },
     {
-      "one": "{value} photo copied{value2}",
-      "other": "{value} photos copied{value2}"
+      "one": "{source} · {count} mapped setting",
+      "other": "{source} · {count} mapped settings"
     },
     {
       "one": "{value} unexpected exit in the last 24 hours.",

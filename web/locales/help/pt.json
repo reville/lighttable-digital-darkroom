@@ -90,7 +90,7 @@
           "title": "Revisar edições traduzidas",
           "paragraphs": [
             "As configurações de Desenvolver são aproximadas e não podem garantir a aparência renderizada do Lightroom. Máscaras locais sem suporte, perfis de câmera, máscaras de IA do .lrcat-data ou cargas úteis de LUT, e regras de coleção inteligente sem suporte são relatadas como ignoradas. As configurações de desenvolvimento importadas desativam Filme.",
-            "Local ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte."
+            "Local ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra o progresso, as contagens aplicadas, as configurações ignoradas e os erros."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Abra Local ••• → Importar do cartão….",
             "Escolha a Origem e o Destino. Defina o modelo de Pasta e Renomear para antes de digitalizar. As predefinições mantêm os nomes de arquivo e organizam as cópias como ano/ano-mês-dia.",
             "Escolha verificação: Hash completo, Apenas tamanho ou Nenhum. Defina Duplicatas como Ignorar ou Copiar mesmo assim e, opcionalmente, escolha Segunda cópia para.",
-            "Clique em Digitalizar. Revise a pré-visualização do destino e os arquivos marcados e, em seguida, clique em Importar.",
-            "Aguarde a contagem de cópias e verifique se algum arquivo falhou."
+            "Clique em Digitalizar. Use Anterior e Próximo para revisar cada página e verifique a contagem selecionada e a pré-visualização do destino antes de clicar em Importar. Importar fica indisponível quando nenhuma foto está selecionada.",
+            "Aguarde a contagem de copiadas e verifique se algum arquivo falhou. Cancelar interrompe após o arquivo atual terminar de copiar e verificar; as cópias concluídas são mantidas e os originais do cartão permanecem intocados."
           ],
           "tips": [
             "Os tokens de modelo incluem {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Iniciar em controla a sequência de quatro dígitos.",
-            "A lista de seleção atualmente mostra até 200 arquivos por digitalização. Apenas as entradas marcadas nessa lista são enviadas. Verifique a contagem concluída ao trabalhar com um cartão maior.",
+            "As pré-visualizações mostram 200 arquivos por página. A seleção é mantida entre páginas; Selecionar todos e Selecionar nenhum se aplicam à digitalização inteira, incluindo páginas que você não abriu.",
             "Se os arquivos forem informados como apenas na nuvem, baixe-os localmente e digitalize novamente."
           ]
         },
         {
           "title": "Atualize o plano quando as configurações mudarem",
           "paragraphs": [
-            "Digitalize novamente depois de alterar o destino ou os modelos de nomeação para revisar os caminhos atualizados antes de importar."
+            "Alterar as configurações de origem, destino, nomeação ou verificação limpa o plano revisado. Digitalize novamente para revisar os novos arquivos e caminhos antes de importar."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Descreva a foto",
           "paragraphs": [
-            "Em Informações, expanda Descrição para título, legenda e cabeçalho; Direitos para criador, copyright e crédito; ou Local para local e coordenadas. As alterações são salvas no catálogo enquanto você digita.",
+            "Em Informações, expanda Descrição para título, legenda e manchete; Direitos para criador, direitos autorais e crédito; ou Inserir para localização e coordenadas. As alterações são salvas no catálogo à medida que você digita. Abrir no Maps fica disponível depois que os metadados desta foto são carregados e a latitude e a longitude são válidas. Ele abre a localização no seu navegador.",
             "Aplicar à seleção copia o formulário de metadados atual para as fotos selecionadas, incluindo os campos em branco. Revise primeiro o formulário inteiro. Os metadados são incluídos nas exportações de acordo com a receita de exportação; editar esses campos não regrava o arquivo de imagem original."
           ]
         }
@@ -318,7 +318,10 @@
         "barra lateral",
         "fotos ausentes",
         "reanalisar",
-        "sincronizar"
+        "sincronizar",
+        "pasta observada",
+        "pastas observadas",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "O menu ••• de uma pasta inclui Mostrar no Finder no Mac ou Mostrar no Explorador de Arquivos no Windows. Para a pasta atual, Sincronizar pasta atualiza a visualização. Local ••• → Reexaminar pastas faz a varredura das origens do catálogo.",
             "Remover do LightTable remove uma raiz adicionada da lista de origens do app; isso não move os arquivos originais para o Lixo. A ação é oferecida quando há mais de uma origem disponível."
+          ]
+        },
+        {
+          "title": "Gerenciar pastas observadas",
+          "paragraphs": [
+            "Abra Local ••• → Pasta observada… para adicionar uma pasta observada. Escolha como as fotos que chegarem devem ser tratadas. Salvar fica indisponível até que uma pasta seja especificada; copiar para a biblioteca também requer um destino.",
+            "Para editar uma observação existente, escolha-a em Pastas observadas. Cada observação salva aparece nesta lista. Escolha Nova pasta observada para outra pasta ou use Excluir observação para parar de observar a pasta selecionada. Isso não exclui as fotos dela.",
+            "O atalho de Observando abre a primeira observação ativa. Os erros de salvamento permanecem na caixa de diálogo para que você possa corrigir as configurações."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Criar uma máscara manual",
           "paragraphs": [
-            "Abra Máscara na barra de ferramentas de edição e escolha uma ferramenta em Criar nova máscara. Cada máscara tem seus próprios ajustes de Luz e Cor.",
+            "Abra Máscara na barra de ferramentas de edição e escolha uma ferramenta em Criar Nova Máscara. Clique em Criar Nova Máscara para mostrar ou ocultar as ferramentas. Cada máscara tem seus próprios ajustes de Claro e Cor.",
             "Textura e Claridade usam a imagem após os ajustes globais e as máscaras anteriores. Esses controles exigem uma atualização da pré-visualização; aguarde até terminar antes de julgar o resultado."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Adicionar, Subtrair e Interseção colocam você nos modos de refinamento por pintura. Para uma máscara Linear ou Radial, escolha Editar Forma para voltar a manipular a forma.",
             "Ativar alterna temporariamente o efeito de uma máscara para desligado ou ligado. Inverter reverte sua seleção.",
-            "O editor permite até dezesseis máscaras locais. Excluir máscara remove a máscara selecionada; Limpar tudo remove as máscaras da foto.",
+            "O editor permite até dezesseis máscaras locais. Excluir Máscara remove a máscara selecionada; Limpar todos remove as máscaras da foto e fica indisponível quando não há nenhuma.",
             "Os pinos da máscara e os contornos do pincel permanecem nítidos e com a mesma espessura conforme você amplia. O contorno aumenta junto com a área que ele cobre na foto."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Remove não expõe um círculo de origem nem Refresh Source. Esses controles de origem se aplicam a Heal e Clone.",
-            "Limpar tudo remove as correções Remover, Corrigir e Clonar da foto. Use Desfazer para reverter uma alteração acidental de edição."
+            "Limpar todos remove as correções de Remover, Corrigir e Clonar da foto e fica indisponível quando não há nenhuma. Use Desfazer para reverter uma alteração de edição acidental."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Verificar se o seu trabalho foi salvo",
           "paragraphs": [
-            "Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente à medida que você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste."
+            "Os controles de edição ficam indisponíveis até que uma foto seja carregada. Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente conforme você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste."
           ],
           "steps": [
             "Faça seu ajuste e depois verifique o status de salvamento no aplicativo.",
@@ -1902,7 +1913,7 @@
             "Após a conclusão, encontre o novo resultado na biblioteca atualizada e inspecione-o."
           ],
           "tips": [
-            "Super-resolução não tem modelo incluso e requer um modelo local compatível. Uma opção listada por si só não significa que essa operação esteja disponível.",
+            "Os aprimoramentos indisponíveis estão desativados. A Super resolução não tem modelo incluído e requer um modelo compatível instalado localmente.",
             "Aprimorar pode gerar detalhe; avalie a saída antes de tratá-la como um registro fiel de textura fina."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Manter uma aparência nomeada",
           "paragraphs": [
-            "Um instantâneo armazena as configurações de ajuste atuais da foto, corte, máscaras, correções de Remover e óptica. É um estado de edição salvo para esta foto."
+            "Um instantâneo armazena as configurações atuais de ajuste da foto, corte, máscaras, correções de Remover e óptica. É um estado de edição salvo para esta foto. Criar instantâneo fica indisponível até que uma foto seja carregada."
           ],
           "steps": [
             "Abra Histórico, expanda Instantâneos e clique em Criar instantâneo.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Fazer backup e inspecionar",
           "paragraphs": [
-            "Configurações → Catálogo mostra a localização do catálogo e as preferências de backup. Os backups incluem organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup de fotos originais, predefinições e perfis externos, e preferências separadamente."
+            "Configurações → Catálogo mostra o local do catálogo e as preferências de backup. Os backups incluem a organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup de fotos originais, predefinições e perfis externos e preferências separadamente. Local ••• → Fazer backup do catálogo… também cria um backup e mostra o caminho salvo ou o erro em uma caixa de diálogo de resultados. Encontrar duplicatas no mesmo menu mostra arquivos correspondentes ou informa que nenhum foi encontrado."
           ],
           "steps": [
             "Escolha um intervalo de backup automático e um local de backup.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

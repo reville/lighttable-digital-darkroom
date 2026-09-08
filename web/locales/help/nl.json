@@ -90,7 +90,7 @@
           "title": "Vertaalde bewerkingen beoordelen",
           "paragraphs": [
             "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
-            "Lokaal ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metadata uit naastliggende sidecars in te lezen. Die actie past geen ontwikkelingsinstellingen of uitsnede toe."
+            "Lokaal ••• → Sidecars importeren… is een afzonderlijke actie voor het lezen van ondersteunde metagegevens uit naastliggende sidecars. Die actie past geen ontwikkelingsinstellingen of bijsnijden toe. Het resultatenvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Open Lokaal ••• → Importeren vanaf kaart….",
             "Kies de bron en bestemming. Stel Map-sjabloon en Hernoemen in vóór het scannen. De standaardinstellingen behouden bestandsnamen en ordenen kopieën per jaar/jaar-maand-dag.",
             "Kies verificatie: Volledige hash, Alleen grootte of Geen. Stel Dubbele bestanden in op Overslaan of Toch kopiëren, en kies optioneel Tweede kopie naar.",
-            "Klik op Scannen. Controleer het bestemmingsvoorbeeld en de aangevinkte bestanden en klik vervolgens op Importeren.",
-            "Wacht op het aantal gekopieerde bestanden en controleer of er bestanden zijn mislukt."
+            "Klik op Scannen. Gebruik Vorige en Volgende om elke pagina te controleren en controleer het geselecteerde aantal en de voorvertoning van de bestemming voordat u op Importeren klikt. Importeren is niet beschikbaar wanneer er geen foto's zijn geselecteerd.",
+            "Wacht op het gekopieerde aantal en controleer of er bestanden zijn mislukt. Annuleren stopt nadat het huidige bestand klaar is met kopiëren en verifiëren; voltooide kopieën worden behouden en originelen op de kaart blijven onaangetast."
           ],
           "tips": [
             "Sjabloontokens zijn onder andere {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} en {dd}. Start op bepaalt de viercijferige reeks.",
-            "De selectielijst toont momenteel tot 200 bestanden per scan. Alleen aangevinkte vermeldingen in die lijst worden verzonden. Controleer het aantal voltooide items wanneer u met een grotere kaart werkt.",
+            "Voorvertoningen tonen 200 bestanden per pagina. Selectie loopt door over pagina's; Alles selecteren en Niets selecteren gelden voor de hele scan, inclusief pagina's die u nog niet hebt geopend.",
             "Als bestanden als alleen in de cloud worden gemeld, download ze dan lokaal en scan opnieuw."
           ]
         },
         {
           "title": "Werk het plan bij wanneer instellingen veranderen",
           "paragraphs": [
-            "Scan opnieuw nadat u het bestemmings- of naamgevingssjabloon hebt gewijzigd, zodat u de bijgewerkte paden kunt bekijken vóór het importeren."
+            "Als u de instellingen voor bron, bestemming, naamgeving of verificatie wijzigt, wordt het gecontroleerde plan gewist. Scan opnieuw om de nieuwe bestanden en paden te controleren voordat u importeert."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Beschrijf de foto",
           "paragraphs": [
-            "Vouw in Info Beschrijving uit voor titel, bijschrift en kop; Rechten voor maker, auteursrecht en credit; of Plaats voor locatie en coördinaten. Wijzigingen worden terwijl u typt opgeslagen in de catalogus.",
+            "In Info vouwt u Beschrijving uit voor titel, bijschrift en kop; Rechten voor maker, copyright en credit; of Plaats voor locatie en coördinaten. Wijzigingen worden opgeslagen in de catalogus terwijl u typt. Openen in Maps is beschikbaar nadat de metagegevens van deze foto zijn geladen en zowel breedtegraad als lengtegraad geldig zijn. Hiermee wordt de locatie geopend in uw browser.",
             "Toepassen op selectie kopieert het huidige metagegevensformulier naar geselecteerde foto's, inclusief de lege velden. Controleer eerst het hele formulier. Metagegevens worden in exporten opgenomen volgens het exportrecept; het bewerken van deze velden schrijft het oorspronkelijke afbeeldingsbestand niet opnieuw weg."
           ]
         }
@@ -318,7 +318,10 @@
         "zijbalk",
         "ontbrekende foto's",
         "opnieuw scannen",
-        "synchroniseren"
+        "synchroniseren",
+        "watchmap",
+        "bewaakte mappen",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Het •••-menu van een map bevat Tonen in Finder op Mac of Tonen in Verkenner op Windows. Voor de huidige map ververst Map synchroniseren de weergave. Lokaal ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
             "Verwijderen uit LightTable verwijdert een toegevoegde bron uit de bronlijst van de app; het verplaatst de originele bestanden niet naar de Prullenmand. De actie wordt aangeboden wanneer meer dan één bron beschikbaar is."
+          ]
+        },
+        {
+          "title": "Bewaakte mappen beheren",
+          "paragraphs": [
+            "Open Lokaal ••• → Watchmap… om een bewaakte map toe te voegen. Kies hoe binnenkomende foto's moeten worden afgehandeld. Opslaan is niet beschikbaar totdat een map is opgegeven; kopiëren naar de bibliotheek vereist ook een bestemming.",
+            "Om een bestaande watch te bewerken, kiest u deze in Bewaakte mappen. Elke opgeslagen watch verschijnt in deze lijst. Kies Nieuwe bewaakte map voor een andere map, of gebruik Watch verwijderen om het bewaken van de geselecteerde map te stoppen. Dit verwijdert de foto's niet.",
+            "De sneltoets voor Bewaken opent de eerste actieve watch. Slaffouten blijven in het dialoogvenster staan zodat u de instellingen kunt corrigeren."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Een handmatig masker maken",
           "paragraphs": [
-            "Open Masker in de bewerkwerkbalk en kies een hulpmiddel onder Nieuw masker maken. Elk masker heeft zijn eigen licht- en kleuraanpassingen.",
+            "Open Masker in de bewerkingstoolbalk en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen Licht- en Kleur-aanpassingen.",
             "Structuur en Helderheid gebruiken de afbeelding na globale aanpassingen en eerdere maskers. Deze besturingselementen vereisen een voorvertoningsupdate; wacht tot deze is voltooid voordat je het resultaat beoordeelt."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Toevoegen, Verwijderen en Snijden plaatsen u in verfverfijningsmodi. Kies bij een Lineair of Radiaal masker Bewerken van vorm om terug te keren naar het aanpassen van de vorm.",
             "Inschakelen schakelt het effect van een masker tijdelijk uit of in. Omkeren draait de selectie om.",
-            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto.",
+            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto en is niet beschikbaar wanneer er geen zijn.",
             "Maskerpinnen en penseelcontouren blijven scherp en even dik terwijl u inzoomt. De contour wordt groter naarmate het gebied dat deze in de foto bedekt groter wordt."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Verwijderen toont geen broncirkel of Bron vernieuwen. Die bronbedieningen gelden voor Retoucheren en Kloon.",
-            "Alles wissen verwijdert de correcties Verwijderen, Retoucheren en Kloon van de foto. Gebruik Ongedaan maken om een onbedoelde bewerkingswijziging terug te draaien."
+            "Alles wissen verwijdert de correcties Verwijderen, Retoucheren en Kloon van de foto en is niet beschikbaar wanneer er geen zijn. Gebruik Ongedaan maken om een onbedoelde bewerkingswijziging terug te draaien."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Controleer of uw werk is opgeslagen",
           "paragraphs": [
-            "Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties beëindigt; u hebt geen afzonderlijk Opslaan-commando nodig voor elke aanpassing."
+            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing."
           ],
           "steps": [
             "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
@@ -1902,7 +1913,7 @@
             "Zoek na voltooiing het nieuwe resultaat in de vernieuwde bibliotheek en inspecteer het."
           ],
           "tips": [
-            "Superresolutie heeft geen ingebouwd model en vereist een compatibel lokaal model. Alleen een vermelde optie betekent niet dat die bewerking beschikbaar is.",
+            "Niet-beschikbare verbeteringen zijn uitgeschakeld. Superresolutie heeft geen meegeleverd model en vereist een compatibel model dat lokaal is geïnstalleerd.",
             "Verbetering kan details genereren; beoordeel de uitvoer voordat je deze als een getrouwe weergave van fijne structuur behandelt."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Een benoemde look bewaren",
           "paragraphs": [
-            "Een momentopname bewaart de huidige aanpassingsinstellingen, bijsnijding, maskers, correcties voor Verwijderen en optiek van de foto. Het is een opgeslagen bewerkingsstatus voor deze foto."
+            "Een momentopname slaat de huidige aanpassingsinstellingen, bijsnijden, maskers, Retoucheren-correcties en optiek van de foto op. Het is een opgeslagen bewerkingsstatus voor deze foto. Momentopname maken is niet beschikbaar totdat een foto is geladen."
           ],
           "steps": [
             "Open Geschiedenis, vouw Snapshots uit en klik op Snapshot maken.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Back-uppen en inspecteren",
           "paragraphs": [
-            "Instellingen → Catalogus toont de cataloguslocatie en back-upvoorkeuren. Back-ups bevatten catalogusorganisatie, bewerkingen, opgeslagen maskers, geschiedenis en varianten. Maak originele foto's, externe voorinstellingen en profielen, en voorkeuren apart back-up."
+            "Instellingen → Catalogus toont de cataloguslocatie en back-upvoorkeuren. Back-ups bevatten catalogusorganisatie, bewerkingen, opgeslagen maskers, geschiedenis en varianten. Maak originele foto's, externe voorinstellingen en profielen, en voorkeuren apart back-uppen. Lokaal ••• → Catalogus back-uppen… maakt ook een back-up en toont het opgeslagen pad of de fout in een resultatenvenster. Duplicaten zoeken in hetzelfde menu toont overeenkomende bestanden, of meldt dat er geen zijn gevonden."
           ],
           "steps": [
             "Kies een automatisch back-upinterval en een back-uplocatie.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

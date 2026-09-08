@@ -90,7 +90,7 @@
           "title": "Rivedi modifiche tradotte",
           "paragraphs": [
             "Le impostazioni Develop sono approssimative e non possono garantire l’aspetto renderizzato di Lightroom. Le maschere locali non supportate, i profili fotocamera, le maschere IA .lrcat-data o i payload LUT, e le regole delle raccolte intelligenti non supportate vengono segnalati come saltati. Le impostazioni Develop importate disattivano Film.",
-            "Locale ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio."
+            "Locale ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati da sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra avanzamento, conteggi applicati, impostazioni saltate ed errori."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Apri Local ••• → Importa da scheda….",
             "Scegli l'Origine e la Destinazione. Imposta modello Cartella e Rinomina in prima della scansione. I valori predefiniti mantengono i nomi file e organizzano le copie come anno/anno-mese-giorno.",
             "Scegli verifica: Hash completo, Solo dimensione o Nessuno. Imposta Duplicati su Salta o Copia comunque e, facoltativamente, scegli Seconda copia in.",
-            "Fai clic su Scansiona. Rivedi l'anteprima di destinazione e i file selezionati, poi fai clic su Importa.",
-            "Attendi il conteggio copiato e verifica se qualche file è fallito."
+            "Fai clic su Scansiona. Usa Precedente e Successivo per rivedere ogni pagina e controlla il conteggio selezionato e l'anteprima della destinazione prima di fare clic su Importa. Importa non è disponibile quando non è selezionata alcuna foto.",
+            "Attendi il conteggio delle copiate e verifica se qualche file non è riuscito. Annulla si interrompe dopo il completamento della copia e della verifica del file corrente; le copie completate vengono mantenute e gli originali sulla scheda restano intatti."
           ],
           "tips": [
             "I token del modello includono {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} e {dd}. Inizia da controlla la sequenza a quattro cifre.",
-            "L'elenco di selezione mostra attualmente fino a 200 file per scansione. Vengono inviati solo gli elementi selezionati in quell'elenco. Controlla il conteggio completato quando lavori con una scheda più grande.",
+            "Le anteprime mostrano 200 file per pagina. La selezione si estende su più pagine; Seleziona tutto e Deseleziona tutto si applicano all'intera scansione, comprese le pagine non ancora aperte.",
             "Se i file vengono segnalati come solo cloud, scaricali in locale e scansiona di nuovo."
           ]
         },
         {
           "title": "Aggiorna il piano quando le impostazioni cambiano",
           "paragraphs": [
-            "Scansiona di nuovo dopo aver modificato la destinazione o i modelli di denominazione, così potrai rivedere i percorsi aggiornati prima di importare."
+            "La modifica delle impostazioni di origine, destinazione, denominazione o verifica cancella il piano revisionato. Esegui di nuovo la scansione per rivedere i nuovi file e percorsi prima di importare."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Descrivi la foto",
           "paragraphs": [
-            "In Info, espandi Descrizione per titolo, didascalia e intestazione; Diritti per autore, copyright e credito; oppure Luogo per località e coordinate. Le modifiche vengono salvate nel catalogo mentre digiti.",
+            "In Info, espandi Descrizione per titolo, didascalia e intestazione; Diritti per autore, copyright e credito; oppure Posiziona per posizione e coordinate. Le modifiche vengono salvate nel catalogo mentre digiti. Apri in Mappe è disponibile dopo il caricamento dei metadati di questa foto e quando sia latitudine sia longitudine sono validi. Apre la posizione nel browser.",
             "Applica alla selezione copia il modulo di metadati corrente alle foto selezionate, inclusi i campi vuoti. Rivedi prima l’intero modulo. I metadati sono inclusi nelle esportazioni in base alla ricetta di esportazione; la modifica di questi campi non riscrive il file immagine originale."
           ]
         }
@@ -318,7 +318,10 @@
         "barra laterale",
         "foto mancanti",
         "riscansiona",
-        "sincronizza"
+        "sincronizza",
+        "cartella da monitorare",
+        "cartelle monitorate",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Il menu ••• di una cartella include Mostra nel Finder su Mac o Mostra in Esplora file su Windows. Per la cartella corrente, Sincronizza cartella aggiorna la visualizzazione. Locale ••• → Riscansiona cartelle esegue la scansione delle origini del catalogo.",
             "Rimuovi da LightTable rimuove un'origine aggiunta dall'elenco sorgenti dell'app; non sposta i file originali nel Cestino. L'azione è disponibile quando è presente più di una sorgente."
+          ]
+        },
+        {
+          "title": "Gestisci cartelle monitorate",
+          "paragraphs": [
+            "Apri Locale ••• → Cartella da monitorare… per aggiungere una cartella monitorata. Scegli come devono essere gestite le foto in arrivo. Salva non è disponibile finché non viene specificata una cartella; copiare nella libreria richiede anche una destinazione.",
+            "Per modificare una watch esistente, selezionala in Cartelle monitorate. Ogni watch salvata appare in questo elenco. Scegli Nuova cartella monitorata per un'altra cartella, oppure usa Elimina watch per smettere di monitorare la cartella selezionata. Questo non elimina le sue foto.",
+            "La scorciatoia Watching apre la prima watch attiva. Gli errori di salvataggio restano nella finestra di dialogo, così puoi correggere le impostazioni."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Crea una maschera manuale",
           "paragraphs": [
-            "Apri Maschera nella barra degli strumenti di modifica e scegli uno strumento sotto Crea nuova maschera. Ogni maschera ha le proprie regolazioni di Luce e Colore.",
+            "Apri Maschera nella barra degli strumenti di modifica e scegli uno strumento sotto Crea nuova maschera. Fai clic su Crea nuova maschera per mostrare o nascondere gli strumenti. Ogni maschera ha le proprie regolazioni di Luce e Colore.",
             "Struttura e Chiarezza usano l'immagine dopo le regolazioni globali e le maschere precedenti. Questi controlli richiedono un aggiornamento dell'anteprima; attendi il completamento prima di giudicare il risultato."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Aggiungi, Sottrai e Interseca attivano le modalità di rifinitura tramite pennello. Per una maschera Lineare o Radiale, scegli Modifica forma per tornare a manipolarne la forma.",
             "Abilita disattiva o attiva temporaneamente l'effetto di una maschera. Inverti ne capovolge la selezione.",
-            "L'editor consente fino a sedici maschere locali. Elimina maschera rimuove la maschera selezionata; Cancella tutto rimuove le maschere della foto.",
+            "L'editor consente fino a sedici maschere locali. Elimina maschera rimuove la maschera selezionata; Cancella tutto rimuove le maschere della foto ed è non disponibile quando non ce ne sono.",
             "I pin della Maschera e i contorni del pennello restano nitidi e con lo stesso spessore mentre ingrandisci. Il contorno cresce con l'area che copre nella foto."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Rimuovi non espone un cerchio sorgente né Aggiorna sorgente. Questi controlli sorgente si applicano a Correggi e Clona.",
-            "Cancella tutto rimuove le correzioni di Rimuovi, Correggi e Clona della foto. Usa Annulla per invertire una modifica accidentale."
+            "Cancella tutto rimuove le correzioni Rimuovi, Correggi e Clona della foto ed è non disponibile quando non ce ne sono. Usa Annulla per invertire una modifica di modifica accidentale."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Verifica che il tuo lavoro sia salvato",
           "paragraphs": [
-            "Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche mentre completi le interazioni; non serve un comando Salva separato per ogni regolazione."
+            "I controlli di modifica non sono disponibili finché non viene caricata una foto. Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche quando completi le interazioni; non serve un comando Salva separato per ogni regolazione."
           ],
           "steps": [
             "Apporta la tua regolazione, quindi controlla lo stato di salvataggio nell'app.",
@@ -1902,7 +1913,7 @@
             "Dopo il completamento, trova il nuovo risultato nella libreria aggiornata e ispezionalo."
           ],
           "tips": [
-            "La super risoluzione non ha un modello incluso e richiede un modello locale compatibile. Una semplice opzione elencata non significa che quell'operazione sia disponibile.",
+            "Le migliorie non disponibili sono disattivate. La Risoluzione super non ha un modello incluso e richiede un modello compatibile installato localmente.",
             "Il Miglioramento può generare dettaglio; valuta il risultato prima di considerarlo una registrazione fedele della trama fine."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Conserva un aspetto nominato",
           "paragraphs": [
-            "Un'istantanea memorizza le impostazioni di regolazione correnti della foto, il ritaglio, le maschere, le correzioni Rimuovi e l'ottica. È uno stato di modifica salvato per questa foto."
+            "Un'istantanea memorizza le impostazioni di regolazione correnti della foto, il ritaglio, le maschere, le correzioni Rimuovi e l'ottica. È uno stato di modifica salvato per questa foto. Crea istantanea non è disponibile finché non viene caricata una foto."
           ],
           "steps": [
             "Apri Cronologia, espandi Istantanee e fai clic su Crea istantanea.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Esegui backup e ispeziona",
           "paragraphs": [
-            "Impostazioni → Catalogo mostra la posizione del catalogo e le preferenze di backup. I backup includono organizzazione del catalogo, modifiche, maschere memorizzate, cronologia e varianti. Esegui il backup separatamente di foto originali, predefiniti e profili esterni e preferenze."
+            "Impostazioni → Catalogo mostra la posizione del catalogo e le preferenze di backup. I backup includono organizzazione del catalogo, modifiche, maschere salvate, cronologia e varianti. Esegui il backup delle foto originali, dei predefiniti e dei profili esterni e delle preferenze separatamente. Locale ••• → Backup catalogo… crea anche un backup e mostra il percorso salvato o l'errore in una finestra dei risultati. Trova duplicati nello stesso menu mostra i file corrispondenti, oppure segnala che non ne sono stati trovati."
           ],
           "steps": [
             "Scegli un intervallo di backup automatico e una posizione di backup.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

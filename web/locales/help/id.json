@@ -90,7 +90,7 @@
           "title": "Tinjau penyuntingan yang diterjemahkan",
           "paragraphs": [
             "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
-            "Local ••• → Import sidecars… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar di sebelahnya. Tindakan itu tidak menerapkan pengaturan pengembangan atau crop."
+            "Lokal ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang berdekatan. Tindakan itu tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Buka Lokal ••• → Impor dari kartu….",
             "Pilih Sumber dan Tujuan. Atur Folder template dan Rename ke sebelum memindai. Pengaturan bawaan mempertahankan nama file dan mengatur salinan sebagai tahun/tahun-bulan-hari.",
             "Pilih verifikasi: Full hash, Size only, atau None. Atur Duplikat ke Lewati atau Salin saja, dan secara opsional pilih Salinan kedua ke.",
-            "Klik Pindai. Tinjau pratinjau tujuan dan file yang dicentang, lalu klik Impor.",
-            "Tunggu jumlah yang disalin dan periksa apakah ada file yang gagal."
+            "Klik Pindai. Gunakan Sebelumnya dan Berikutnya untuk meninjau setiap halaman, dan periksa jumlah terpilih serta pratinjau tujuan sebelum mengklik Impor. Impor tidak tersedia jika tidak ada foto yang dipilih.",
+            "Tunggu jumlah yang disalin dan periksa apakah ada file yang gagal. Batal menghentikan setelah file saat ini selesai disalin dan diverifikasi; salinan yang selesai dipertahankan dan file asli di kartu tetap tidak disentuh."
           ],
           "tips": [
             "Token template mencakup {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm}, dan {dd}. Start at mengontrol urutan empat digit.",
-            "Daftar seleksi saat ini menampilkan hingga 200 file per pemindaian. Hanya entri yang dicentang dalam daftar itu yang dikirim. Periksa jumlah yang selesai saat bekerja dengan kartu yang lebih besar.",
+            "Pratinjau menampilkan 200 file per halaman. Pilihan berlaku lintas halaman; Pilih semua dan Pilih tidak ada berlaku untuk seluruh hasil pemindaian, termasuk halaman yang belum Anda buka.",
             "Jika file dilaporkan sebagai cloud-only, unduh secara lokal lalu pindai lagi."
           ]
         },
         {
           "title": "Segarkan rencana saat pengaturan berubah",
           "paragraphs": [
-            "Pindai lagi setelah mengubah tujuan atau template penamaan agar Anda dapat meninjau jalur yang diperbarui sebelum mengimpor."
+            "Mengubah pengaturan sumber, tujuan, penamaan, atau verifikasi akan menghapus rencana yang telah ditinjau. Pindai lagi untuk meninjau file dan jalur baru sebelum mengimpor."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Jelaskan foto",
           "paragraphs": [
-            "Di Info, perluas Description untuk title, caption, dan headline; Rights untuk creator, copyright, dan credit; atau Place untuk lokasi dan koordinat. Perubahan disimpan ke katalog saat Anda mengetik.",
+            "Di Info, perluas Deskripsi untuk judul, keterangan, dan headline; Hak untuk pembuat, hak cipta, dan kredit; atau Tempat untuk lokasi dan koordinat. Perubahan disimpan ke katalog saat Anda mengetik. Buka di Maps tersedia setelah metadata foto ini dimuat dan garis lintang serta garis bujur valid. Itu membuka lokasi di peramban Anda.",
             "Apply to selection menyalin formulir metadata saat ini ke foto terpilih, termasuk kolom kosongnya. Tinjau seluruh formulir terlebih dahulu. Metadata disertakan dalam ekspor sesuai dengan resep ekspor; mengedit bidang-bidang ini tidak menulis ulang file gambar asli."
           ]
         }
@@ -318,7 +318,10 @@
         "sidebar",
         "foto hilang",
         "pindai ulang",
-        "sinkronkan"
+        "sinkronkan",
+        "folder pantau",
+        "folder yang dipantau",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Menu ••• pada sebuah folder mencakup Show in Finder di Mac atau Show in File Explorer di Windows. Untuk folder saat ini, Synchronize Folder menyegarkan tampilan. Local ••• → Rescan folders memindai sumber katalog.",
             "Remove from LightTable menghapus root yang ditambahkan dari daftar sumber aplikasi; itu tidak memindahkan file asli ke Trash. Tindakan ini tersedia ketika lebih dari satu sumber tersedia."
+          ]
+        },
+        {
+          "title": "Kelola folder yang dipantau",
+          "paragraphs": [
+            "Buka Lokal ••• → Pantau folder… untuk menambahkan folder yang dipantau. Pilih bagaimana foto yang masuk harus ditangani. Simpan tidak tersedia sampai folder ditentukan; menyalin ke dalam pustaka juga memerlukan tujuan.",
+            "Untuk mengedit watch yang sudah ada, pilih di Folder yang dipantau. Setiap watch yang disimpan muncul di daftar ini. Pilih Folder yang dipantau baru untuk folder lain, atau gunakan Hapus watch untuk berhenti memantau folder terpilih. Ini tidak menghapus fotonya.",
+            "Pintasan Watching membuka watch aktif pertama. Kesalahan penyimpanan tetap ada di dialog sehingga Anda dapat memperbaiki pengaturan."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Buat masker manual",
           "paragraphs": [
-            "Buka Masker di bilah alat penyuntingan dan pilih alat di bawah Buat Masker Baru. Setiap masker memiliki penyesuaian Cahaya dan Warna sendiri.",
+            "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya dan Warna sendiri.",
             "Tekstur dan Kejernihan menggunakan gambar setelah penyesuaian global dan masker sebelumnya. Kontrol ini memerlukan pembaruan pratinjau; tunggu hingga selesai sebelum menilai hasilnya."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Add, Subtract, dan Intersect menempatkan Anda dalam mode penyempurnaan lukisan. Untuk masker Linear atau Radial, pilih Edit Shape untuk kembali memanipulasi bentuknya.",
             "Enable sementara mematikan atau menghidupkan efek masker. Invert membalik seleksinya.",
-            "Editor mengizinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker pada foto.",
+            "Penyunting memungkinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker foto dan tidak tersedia jika tidak ada.",
             "Pin masker dan garis luar kuas tetap tajam dan memiliki ketebalan yang sama saat Anda melakukan zoom. Garis luar bertambah sesuai area yang dicakupnya di foto."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Remove tidak menampilkan source circle atau Refresh Source. Kontrol source tersebut berlaku untuk Heal dan Clone.",
-            "Bersihkan Semua menghapus koreksi Hapus, Perbaiki, dan Klon pada foto. Gunakan Urungkan untuk membalik perubahan penyuntingan yang tidak sengaja."
+            "Bersihkan Semua menghapus koreksi Hapus, Perbaiki, dan Klon pada foto dan tidak tersedia jika tidak ada. Gunakan Urungkan untuk membalikkan perubahan pengeditan yang tidak disengaja."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Periksa apakah pekerjaan Anda sudah disimpan",
           "paragraphs": [
-            "Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan otomatis saat Anda menyelesaikan interaksi; Anda tidak memerlukan perintah Save terpisah untuk setiap penyesuaian."
+            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian."
           ],
           "steps": [
             "Lakukan penyesuaian Anda, lalu periksa status simpan di aplikasi.",
@@ -1902,7 +1913,7 @@
             "Setelah selesai, temukan hasil baru di library yang dimuat ulang dan periksa."
           ],
           "tips": [
-            "Super resolution tidak memiliki model bawaan dan memerlukan model lokal yang kompatibel. Opsi yang tercantum sendiri tidak berarti operasi itu tersedia.",
+            "Peningkatan yang tidak tersedia dinonaktifkan. Resolusi super tidak memiliki model bawaan dan memerlukan model yang kompatibel terinstal secara lokal.",
             "Enhancement dapat menghasilkan detail; evaluasi output sebelum menganggapnya sebagai catatan akurat dari tekstur halus."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Simpan tampilan bernama",
           "paragraphs": [
-            "Snapshot menyimpan pengaturan penyesuaian foto saat ini, pangkasan, masker, koreksi Hapus, dan optik. Ini adalah status penyuntingan tersimpan untuk foto ini."
+            "Snapshot menyimpan pengaturan penyesuaian foto saat ini, pangkas, masker, koreksi Hapus, dan optik. Ini adalah keadaan pengeditan tersimpan untuk foto ini. Buat snapshot tidak tersedia sampai foto dimuat."
           ],
           "steps": [
             "Buka Riwayat, perluas Snapshot, dan klik Buat snapshot.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Cadangkan dan periksa",
           "paragraphs": [
-            "Pengaturan → Katalog menampilkan lokasi katalog dan preferensi cadangan. Cadangan mencakup organisasi katalog, suntingan, masker yang tersimpan, riwayat, dan varian. Cadangkan foto asli, preset dan profil eksternal, serta preferensi secara terpisah."
+            "Pengaturan → Katalog menampilkan lokasi katalog dan preferensi cadangan. Cadangan mencakup pengorganisasian katalog, edit, masker tersimpan, riwayat, dan variasi. Cadangkan foto asli, preset dan profil eksternal, serta preferensi secara terpisah. Lokal ••• → Cadangkan katalog… juga membuat cadangan dan menampilkan jalur tersimpan atau kesalahannya di dialog hasil. Temukan duplikat di menu yang sama menampilkan file yang cocok, atau melaporkan bahwa tidak ada yang ditemukan."
           ],
           "steps": [
             "Pilih interval cadangan Otomatis dan lokasi Cadangan.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

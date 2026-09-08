@@ -90,7 +90,7 @@
           "title": "Übersetzte Bearbeitungen prüfen",
           "paragraphs": [
             "Develop-Einstellungen sind ungefähre Werte und können Lightrooms dargestellte Erscheinung nicht garantieren. Nicht unterstützte lokale Masken, Kameraprofiele, .lrcat-data-KI-Masken oder LUT-Nutzdaten sowie nicht unterstützte Regeln für intelligente Sammlungen werden als übersprungen gemeldet. Importierte Develop-Einstellungen schalten Film aus.",
-            "Lokal ••• → Sidecars importieren… ist eine separate Aktion zum Einlesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungs-Einstellungen oder Zuschnitt an."
+            "Lokal ••• → Sidecars importieren… ist eine separate Aktion zum Einlesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahlen, übersprungene Einstellungen und Fehler."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Local ••• → Von Karte importieren…. öffnen",
             "Wählen Sie Quelle und Ziel. Stellen Sie Ordner-Vorlage und Umbenennen in vor dem Scannen ein. Die Standardwerte behalten Dateinamen bei und organisieren Kopien als Jahr/Jahr-Monat-Tag.",
             "Wählen Sie Prüfung: Vollständiger Hash, Nur Größe oder Keine. Setzen Sie Duplikate auf Überspringen oder Trotzdem kopieren und wählen Sie optional Zweite Kopie zu.",
-            "Klicken Sie auf Scannen. Prüfen Sie die Zielvorschau und die ausgewählten Dateien, und klicken Sie dann auf Importieren.",
-            "Warten Sie auf die Anzahl der kopierten Dateien und prüfen Sie, ob Dateien fehlgeschlagen sind."
+            "Klicken Sie auf Scannen. Verwenden Sie Vorherige und Nächste, um jede Seite zu überprüfen, und prüfen Sie die ausgewählte Anzahl und die Zielvorschau, bevor Sie auf Importieren klicken. Importieren ist nicht verfügbar, wenn keine Fotos ausgewählt sind.",
+            "Warten Sie auf die kopierte Anzahl und prüfen Sie, ob Dateien fehlgeschlagen sind. Abbrechen stoppt, nachdem die aktuelle Datei mit Kopieren und Überprüfung fertig ist; bereits kopierte Dateien bleiben erhalten und die Originale auf der Karte werden nicht verändert."
           ],
           "tips": [
             "Vorlagen-Tokens umfassen {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} und {dd}. Start bei steuert die vierstellige Sequenz.",
-            "Die Auswahlliste zeigt derzeit bis zu 200 Dateien pro Scan. Nur angekreuzte Einträge in dieser Liste werden übermittelt. Prüfen Sie die Anzahl der abgeschlossenen Elemente, wenn Sie mit einer größeren Karte arbeiten.",
+            "Vorschauen zeigen 200 Dateien pro Seite. Die Auswahl bleibt seitenübergreifend erhalten; Alle auswählen und Keine auswählen gelten für den gesamten Scan, einschließlich der Seiten, die Sie noch nicht geöffnet haben.",
             "Wenn Dateien als nur in der Cloud vorhanden gemeldet werden, laden Sie sie lokal herunter und scannen Sie erneut."
           ]
         },
         {
           "title": "Den Plan aktualisieren, wenn sich Einstellungen ändern",
           "paragraphs": [
-            "Scannen Sie erneut, nachdem Sie das Ziel oder die Namensvorlagen geändert haben, damit Sie die aktualisierten Pfade vor dem Import prüfen können."
+            "Das Ändern von Quelle, Ziel, Benennung oder Überprüfung setzt den geprüften Plan zurück. Scannen Sie erneut, um die neuen Dateien und Pfade vor dem Import zu überprüfen."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Beschreiben Sie das Foto",
           "paragraphs": [
-            "In Info erweitern Sie Beschreibung für Titel, Bildunterschrift und Überschrift; Rechte für Urheber, Copyright und Credit; oder Ort für Standort und Koordinaten. Änderungen werden beim Tippen im Katalog gespeichert.",
+            "Unter Info können Sie Beschreibung erweitern, um Titel, Beschriftung und Überschrift zu sehen; Rechte, um Urheber, Urheberrecht und Quellenangabe zu sehen; oder Ort, um Ort und Koordinaten zu sehen. Änderungen werden beim Tippen im Katalog gespeichert. In Karten öffnen ist verfügbar, nachdem die Metadaten dieses Fotos geladen wurden und sowohl Breiten- als auch Längengrad gültig sind. Es öffnet den Ort in Ihrem Browser.",
             "Apply to selection kopiert das aktuelle Metadatenformular auf ausgewählte Fotos, einschließlich seiner leeren Felder. Prüfen Sie zuerst das gesamte Formular. Metadaten werden beim Export gemäß dem Export-Rezept einbezogen; das Bearbeiten dieser Felder schreibt die ursprüngliche Bilddatei nicht neu."
           ]
         }
@@ -318,7 +318,10 @@
         "Seitenleiste",
         "Fehlende Fotos",
         "erneut scannen",
-        "synchronisieren"
+        "synchronisieren",
+        "Beobachtungsordner",
+        "beobachtete Ordner",
+        "Tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Das •••-Menü eines Ordners enthält Auf dem Finder zeigen auf dem Mac bzw. Im Datei-Explorer anzeigen unter Windows. Für den aktuellen Ordner aktualisiert Ordner synchronisieren die Ansicht. Lokal ••• → Ordner neu scannen scannt die Katalogquellen.",
             "Aus LightTable entfernen entfernt eine hinzugefügte Wurzel aus der Quellenliste der App; die originalen Dateien werden dabei nicht in den Papierkorb verschoben. Die Aktion wird angeboten, wenn mehr als eine Quelle verfügbar ist."
+          ]
+        },
+        {
+          "title": "Beobachtete Ordner verwalten",
+          "paragraphs": [
+            "Öffnen Sie Lokal ••• → Beobachtungsordner…, um einen Beobachtungsordner hinzuzufügen. Wählen Sie aus, wie eingehende Fotos behandelt werden sollen. Speichern ist nicht verfügbar, bis ein Ordner angegeben ist; das Kopieren in die Bibliothek erfordert außerdem ein Ziel.",
+            "Um eine vorhandene Beobachtung zu bearbeiten, wählen Sie sie unter Beobachtete Ordner aus. Jede gespeicherte Beobachtung erscheint in dieser Liste. Wählen Sie Neuer Beobachtungsordner für einen weiteren Ordner, oder verwenden Sie Beobachtung löschen, um die Überwachung des ausgewählten Ordners zu beenden. Dadurch werden seine Fotos nicht gelöscht.",
+            "Das Tastenkürzel für Überwachung öffnet die erste aktive Beobachtung. Speicherfehler bleiben im Dialog, damit Sie die Einstellungen korrigieren können."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Eine manuelle Maske erstellen",
           "paragraphs": [
-            "Öffnen Sie Maske in der Bearbeitungs-Symbolleiste und wählen Sie ein Werkzeug unter Neue Maske erstellen. Jede Maske hat ihre eigenen Licht- und Farb-Anpassungen.",
+            "Öffnen Sie Maske in der Bearbeitungsleiste und wählen Sie ein Werkzeug unter Neue Maske erstellen. Klicken Sie auf Neue Maske erstellen, um die Werkzeuge ein- oder auszublenden. Jede Maske hat ihre eigenen Licht- und Farbeinstellungen.",
             "Textur und Klarheit verwenden das Bild nach globalen Anpassungen und früheren Masken. Diese Regler erfordern eine Vorschauaktualisierung; warten Sie, bis sie abgeschlossen ist, bevor Sie das Ergebnis beurteilen."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Hinzufügen, Subtrahieren und Schneiden versetzen Sie in Mal-Verfeinerungsmodi. Wählen Sie bei einer linearen oder radialen Maske Form bearbeiten, um zur Bearbeitung ihrer Form zurückzukehren.",
             "Aktivieren schaltet die Wirkung einer Maske vorübergehend aus oder ein. Umkehren kehrt ihre Auswahl um.",
-            "Der Editor erlaubt bis zu sechzehn lokale Masken. Maske löschen entfernt die ausgewählte Maske; Alles löschen entfernt die Masken des Fotos.",
+            "Der Editor erlaubt bis zu sechzehn lokale Masken. Maske löschen entfernt die ausgewählte Maske; Alles löschen entfernt die Masken des Fotos und ist nicht verfügbar, wenn keine vorhanden sind.",
             "Masken-Pins und Pinselkonturen bleiben beim Vergrößern gestochen scharf und gleich dick. Die Kontur wächst mit dem Bereich, den sie im Foto abdeckt."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Remove zeigt keinen Quellenkreis oder Refresh Source an. Diese Quell-Steuerelemente gelten für Heal und Clone.",
-            "Alles löschen entfernt die Korrekturen Entfernen, Reparieren und Klonen des Fotos. Verwenden Sie Rückgängig, um eine versehentliche Bearbeitungsänderung rückgängig zu machen."
+            "Alles löschen entfernt die Korrekturen Entfernen, Reparieren und Klonen des Fotos und ist nicht verfügbar, wenn keine vorhanden sind. Verwenden Sie Rückgängig, um eine versehentliche Bearbeitungsänderung rückgängig zu machen."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Prüfen, dass Ihre Arbeit gespeichert ist",
           "paragraphs": [
-            "Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, während Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Speichern-Befehl."
+            "Bearbeitungssteuerungen sind nicht verfügbar, bis ein Foto geladen ist. Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, sobald Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Befehl Speichern."
           ],
           "steps": [
             "Nehmen Sie Ihre Anpassung vor und prüfen Sie dann den Speicherstatus in der App.",
@@ -1902,7 +1913,7 @@
             "Finden Sie nach Abschluss das neue Ergebnis in der aktualisierten Bibliothek und prüfen Sie es."
           ],
           "tips": [
-            "Superauflösung hat kein mitgeliefertes Modell und erfordert ein kompatibles lokales Modell. Eine aufgelistete Option allein bedeutet nicht, dass diese Operation verfügbar ist.",
+            "Nicht verfügbare Verbesserungen sind deaktiviert. Superauflösung hat kein mitgeliefertes Modell und erfordert ein lokal installiertes kompatibles Modell.",
             "Verbesserung kann Details erzeugen; beurteilen Sie das Ergebnis, bevor Sie es als getreue Wiedergabe feiner Texturen behandeln."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Einen benannten Look beibehalten",
           "paragraphs": [
-            "Ein Schnappschuss speichert die aktuellen Anpassungseinstellungen, den Zuschnitt, Masken, Korrekturen zum Entfernen und die Objektivkorrekturen des Fotos. Es ist ein gespeicherter Bearbeitungszustand für dieses Foto."
+            "Ein Schnappschuss speichert die aktuellen Anpassungseinstellungen, den Zuschnitt, Masken, Korrekturen für Entfernen und Optik des Fotos. Es ist ein gespeicherter Bearbeitungszustand für dieses Foto. Schnappschuss erstellen ist nicht verfügbar, bis ein Foto geladen ist."
           ],
           "steps": [
             "Öffnen Sie Verlauf, erweitern Sie Schnappschüsse und klicken Sie auf Schnappschuss erstellen.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Sichern und prüfen",
           "paragraphs": [
-            "Einstellungen → Katalog zeigt den Katalogspeicherort und die Backup-Einstellungen. Backups umfassen die Katalogorganisation, Bearbeitungen, gespeicherte Masken, Verlauf und Varianten. Sichern Sie Originalfotos, externe Vorgaben und Profile sowie Einstellungen getrennt."
+            "Einstellungen → Katalog zeigt den Katalogspeicherort und die Sicherungseinstellungen. Sicherungen umfassen die Katalogstruktur, Bearbeitungen, gespeicherte Masken, Verlauf und Varianten. Sichern Sie Originalfotos, externe Vorgaben und Profile sowie Einstellungen separat. Lokal ••• → Katalog sichern… erstellt ebenfalls eine Sicherung und zeigt den gespeicherten Pfad oder Fehler in einem Ergebnisdialog an. Duplikate finden im selben Menü zeigt passende Dateien an oder meldet, dass keine gefunden wurden."
           ],
           "steps": [
             "Wählen Sie ein automatisches Sicherungsintervall und einen Sicherungskopiespeicherort.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

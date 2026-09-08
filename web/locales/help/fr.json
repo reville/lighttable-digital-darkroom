@@ -90,7 +90,7 @@
           "title": "Vérifier les retouches traduites",
           "paragraphs": [
             "Les réglages de développement sont approximatifs et ne peuvent pas promettre l’apparence rendue de Lightroom. Les masques locaux non pris en charge, les profils d’appareil photo, les masques IA .lrcat-data ou les charges utiles LUT, ainsi que les règles de collection intelligente non prises en charge, sont signalés comme ignorés. Les réglages de développement importés désactivent Film.",
-            "Local ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage."
+            "Local ••• → Importer les sidecars… est une action distincte permettant de lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage. Sa boîte de dialogue de résultats affiche la progression, les nombres appliqués, les réglages ignorés et les erreurs."
           ]
         }
       ],
@@ -165,19 +165,19 @@
             "Ouvrir Local ••• → Importer depuis la carte….",
             "Choisissez la source et la destination. Définissez le modèle de dossier et Renommer vers avant la numérisation. Les valeurs par défaut conservent les noms de fichiers et organisent les copies par année/année-mois-jour.",
             "Choisissez la vérification : Hachage complet, Taille uniquement ou Aucun. Réglez Doublons sur Ignorer ou Copier quand même, et choisissez éventuellement Deuxième copie vers.",
-            "Cliquez sur Numériser. Vérifiez l’aperçu de destination et les fichiers cochés, puis cliquez sur Importer.",
-            "Attendez le nombre copié et vérifiez si des fichiers ont échoué."
+            "Cliquez sur Numériser. Utilisez Précédent et Suivant pour vérifier chaque page, puis contrôlez le nombre sélectionné et l’aperçu de destination avant de cliquer sur Importer. Importer est indisponible lorsqu’aucune photo n’est sélectionnée.",
+            "Attendez le nombre copié et vérifiez si certains fichiers ont échoué. Annuler s’arrête après la fin de la copie et de la vérification du fichier en cours ; les copies terminées sont conservées et les originaux de la carte ne sont pas touchés."
           ],
           "tips": [
             "Les jetons de modèle incluent {filename}, {sequence}, {custom}, {camera}, {yyyy}, {mm} et {dd}. Démarrer à contrôle la séquence à quatre chiffres.",
-            "La liste de sélection affiche actuellement jusqu’à 200 fichiers par numérisation. Seules les entrées cochées dans cette liste sont soumises. Vérifiez le nombre terminé lorsque vous travaillez avec une carte plus grande.",
+            "Les aperçus affichent 200 fichiers par page. La sélection s’étend sur plusieurs pages ; Tout sélectionner et Tout désélectionner s’appliquent à toute la numérisation, y compris aux pages que vous n’avez pas ouvertes.",
             "Si des fichiers sont signalés comme disponibles uniquement dans le cloud, téléchargez-les localement et lancez une nouvelle numérisation."
           ]
         },
         {
           "title": "Actualiser le plan lorsque les réglages changent",
           "paragraphs": [
-            "Numérisez à nouveau après avoir modifié la destination ou les modèles de nommage afin de pouvoir vérifier les chemins mis à jour avant l’import."
+            "La modification des réglages de source, de destination, de nommage ou de vérification efface le plan examiné. Numérisez à nouveau pour vérifier les nouveaux fichiers et chemins avant d’importer."
           ]
         }
       ],
@@ -293,7 +293,7 @@
         {
           "title": "Décrire la photo",
           "paragraphs": [
-            "Dans Infos, développez Description pour le titre, la légende et le titre principal ; Droits pour l’auteur, le copyright et le crédit ; ou Lieu pour l’emplacement et les coordonnées. Les modifications sont enregistrées dans le catalogue au fur et à mesure de la saisie.",
+            "Dans Infos, développez Description pour le titre, la légende et le titre ; Droits pour le créateur, les droits d’auteur et le crédit ; ou Lieu pour l’emplacement et les coordonnées. Les modifications sont enregistrées dans le catalogue au fur et à mesure de votre saisie. Ouvrir dans Plans est disponible une fois les métadonnées de cette photo chargées et lorsque la latitude et la longitude sont valides. Cela ouvre l’emplacement dans votre navigateur.",
             "Appliquer à la sélection copie le formulaire de métadonnées actuel sur les photos sélectionnées, y compris ses champs vides. Examinez d’abord le formulaire dans son ensemble. Les métadonnées sont incluses dans les exports selon la recette d’export ; la modification de ces champs ne réécrit pas le fichier image d’origine."
           ]
         }
@@ -318,7 +318,10 @@
         "barre latérale",
         "photos manquantes",
         "rescanner",
-        "synchroniser"
+        "synchroniser",
+        "dossier à surveiller",
+        "dossiers surveillés",
+        "tethering"
       ],
       "sections": [
         {
@@ -338,6 +341,14 @@
           "paragraphs": [
             "Le menu ••• d’un dossier inclut Afficher dans le Finder sur Mac ou Afficher dans l’Explorateur de fichiers sous Windows. Pour le dossier actuel, Synchroniser le dossier actualise l’affichage. Local ••• → Analyser à nouveau les dossiers examine les sources du catalogue.",
             "Supprimer de LightTable supprime une racine ajoutée de la liste des sources de l’application ; cela ne déplace pas les fichiers d’origine vers la corbeille. L’action est proposée lorsqu’il y a plus d’une source disponible."
+          ]
+        },
+        {
+          "title": "Gérer les dossiers surveillés",
+          "paragraphs": [
+            "Ouvrez Local ••• → Dossier à surveiller… pour ajouter un dossier surveillé. Choisissez comment les photos entrantes doivent être traitées. Enregistrer est indisponible tant qu’aucun dossier n’est spécifié ; la copie dans la bibliothèque nécessite également une destination.",
+            "Pour modifier une surveillance existante, choisissez-la dans Dossiers surveillés. Chaque surveillance enregistrée apparaît dans cette liste. Choisissez Nouveau dossier surveillé pour un autre dossier, ou utilisez Supprimer la montre pour arrêter de surveiller le dossier sélectionné. Cela ne supprime pas ses photos.",
+            "Le raccourci Watching ouvre la première surveillance active. Les erreurs d’enregistrement restent dans la boîte de dialogue afin que vous puissiez corriger les réglages."
           ]
         }
       ],
@@ -1424,7 +1435,7 @@
         {
           "title": "Créer un masque manuel",
           "paragraphs": [
-            "Ouvrez Masque dans la barre d’outils de retouche et choisissez un outil sous Créer un nouveau masque. Chaque masque a ses propres ajustements de Lumière et de Couleur.",
+            "Ouvrez Masque dans la barre d’outils de modification et choisissez un outil sous Créer un nouveau masque. Cliquez sur Créer un nouveau masque pour afficher ou masquer les outils. Chaque masque possède ses propres réglages de Lumière et de Couleur.",
             "Texture et Clarté utilisent l’image après les ajustements globaux et les masques précédents. Ces commandes nécessitent une mise à jour de l’aperçu ; attendez qu’elle se termine avant d’évaluer le résultat."
           ],
           "steps": [
@@ -1437,7 +1448,7 @@
           "tips": [
             "Ajouter, Soustraire et Intersecter vous placent dans les modes de raffinement par peinture. Pour un masque Linéaire ou Radial, choisissez Modifier la forme pour revenir à la manipulation de sa forme.",
             "Activer coupe temporairement l’effet d’un masque. Inverser inverse sa sélection.",
-            "L’éditeur permet jusqu’à seize masques locaux. Supprimer le masque enlève le masque sélectionné ; Effacer tout supprime les masques de la photo.",
+            "L’éditeur autorise jusqu’à seize masques locaux. Supprimer le masque supprime le masque sélectionné ; Tout effacer supprime les masques de la photo et est indisponible lorsqu’il n’y en a aucun.",
             "Les épingles du Masque et les contours du pinceau restent nets et gardent la même épaisseur lorsque vous zoomez. Le contour s’agrandit avec la zone qu’il couvre sur la photo."
           ]
         }
@@ -1631,7 +1642,7 @@
           ],
           "tips": [
             "Supprimer n’expose pas de cercle source ni de Rafraîchir la source. Ces contrôles de source s’appliquent à Corriger et Dupliquer.",
-            "Effacer tout supprime les corrections Remove, Heal et Clone de la photo. Utilisez Annuler pour inverser une modification accidentelle."
+            "Tout effacer supprime les corrections Supprimer, Corriger et Dupliquer de la photo et est indisponible lorsqu’il n’y en a aucune. Utilisez Annuler pour inverser une modification d’édition accidentelle."
           ]
         }
       ],
@@ -1662,7 +1673,7 @@
         {
           "title": "Vérifier que votre travail est enregistré",
           "paragraphs": [
-            "Les ajustements sont enregistrés comme paramètres d’édition pour la photo. L’éditeur enregistre les modifications automatiquement lorsque vous terminez les interactions ; vous n’avez pas besoin d’une commande Enregistrer séparée pour chaque ajustement."
+            "Les commandes de modification sont indisponibles tant qu’aucune photo n’est chargée. Les ajustements sont enregistrés comme réglages de modification pour la photo. L’éditeur enregistre automatiquement les changements lorsque vous terminez les interactions ; vous n’avez pas besoin d’une commande Enregistrer distincte pour chaque ajustement."
           ],
           "steps": [
             "Effectuez votre réglage, puis vérifiez l’état d’enregistrement dans l’application.",
@@ -1902,7 +1913,7 @@
             "Après l’opération, trouvez le nouveau résultat dans la bibliothèque actualisée et inspectez-le."
           ],
           "tips": [
-            "La super résolution n’a pas de modèle intégré et nécessite un modèle local compatible. Une option répertoriée seule ne signifie pas que cette opération est disponible.",
+            "Les améliorations indisponibles sont désactivées. La super résolution n’a pas de modèle intégré et nécessite l’installation locale d’un modèle compatible.",
             "L’amélioration peut générer du détail ; évaluez le résultat avant de le considérer comme un enregistrement fidèle de la texture fine."
           ]
         }
@@ -1948,7 +1959,7 @@
         {
           "title": "Conserver un rendu nommé",
           "paragraphs": [
-            "Un instantané enregistre les réglages d’ajustement actuels de la photo, le recadrage, les masques, les corrections Remove et l’optique. C’est un état de retouche enregistré pour cette photo."
+            "Un instantané enregistre les réglages d’ajustement, le recadrage, les masques, les corrections Supprimer et les optiques actuels de la photo. Il s’agit d’un état d’édition enregistré pour cette photo. Créer un instantané est indisponible tant qu’aucune photo n’est chargée."
           ],
           "steps": [
             "Ouvrez Historique, développez Instantanés et cliquez sur Créer un instantané.",
@@ -2796,7 +2807,7 @@
         {
           "title": "Sauvegarder et inspecter",
           "paragraphs": [
-            "Réglages → Catalogue affiche l'emplacement du catalogue et les préférences de sauvegarde. Les sauvegardes incluent l'organisation du catalogue, les modifications, les masques stockés, l'historique et les variantes. Sauvegardez séparément les photos originales, les préréglages et profils externes, ainsi que les préférences."
+            "Réglages → Catalogue affiche l’emplacement du catalogue et les préférences de sauvegarde. Les sauvegardes incluent l’organisation du catalogue, les modifications, les masques enregistrés, l’historique et les variantes. Sauvegardez séparément les photos originales, les préréglages et profils externes, ainsi que les préférences. Local ••• → Sauvegarder le catalogue… crée également une sauvegarde et affiche son chemin enregistré ou une erreur dans une boîte de dialogue de résultats. Trouver les doublons dans le même menu affiche les fichiers correspondants, ou signale qu’aucun n’a été trouvé."
           ],
           "steps": [
             "Choisissez un intervalle de sauvegarde automatique et un emplacement de sauvegarde.",
@@ -2896,5 +2907,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "d17e994406e952601795bbc85b83b43cf81b4845df5725d4b4a797584e579007"
+  "sourceDigest": "c07e9b328eaa85f46570036a0c64542b667189418ef2db4f84df1bb0470d7460"
 }

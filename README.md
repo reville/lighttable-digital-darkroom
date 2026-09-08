@@ -10,7 +10,8 @@ Rust and GPU-driven render core, and physical film simulation built on
 [Screenshots](https://lighttable.app/screenshots.html) ·
 [Features](https://lighttable.app/features.html) ·
 [Get started](#get-started) ·
-[Contribute](#contributing)
+[Contribute](#contributing) ·
+[Contact](#contact)
 
 For searchable guides inside the app, click **Help** in the top bar or press
 **F1** or **?**. Help is bundled for offline use and linked from inspector
@@ -211,6 +212,12 @@ and report what you verified.
 The [processing correctness pipeline](PROCESSING-CORRECTNESS.md) compares film
 stages, exports, and displayed previews with independent numerical references,
 and saves per-case pixel differences and CI reports.
+
+## Contact
+
+- [GitHub Issues](https://github.com/reville/lighttable-digital-darkroom/issues): bug reports and feature requests.
+- [GitHub Discussions](https://github.com/reville/lighttable-digital-darkroom/discussions): general questions and community conversation.
+- [team@lighttable.app](mailto:team@lighttable.app): private questions, collaboration, press, or just getting in touch.
 
 ## Project documentation
 
