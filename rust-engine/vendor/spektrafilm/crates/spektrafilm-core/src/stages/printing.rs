@@ -262,16 +262,8 @@ pub fn expose_calibrated(
             lin.height,
         );
         let dm = edf.to_model();
-        lin = if backend.is_gpu() {
-            spektrafilm_model::diffusion::apply_diffusion_filter_blur(
-                &lin,
-                &dm,
-                pix_um as f64,
-                backend,
-            )
-        } else {
-            spektrafilm_model::diffusion::apply_diffusion_filter_um(&lin, &dm, pix_um as f64)
-        };
+        // Preview and export must use the same discretely sampled PSF.
+        lin = spektrafilm_model::diffusion::apply_diffusion_filter_um(&lin, &dm, pix_um as f64);
         lin.data.par_iter_mut().for_each(|v| {
             let x = *v as f64;
             *v = spektrafilm_math::precision::from_f64((x.max(0.0) + 1e-10).log10());
@@ -356,6 +348,7 @@ pub fn process_with_calibration(
         preflash,
         bw_print_correction,
     );
+    crate::pipeline::dump_if_env("SPEKTRAFILM_DUMP_PRINT_LOG_RAW", &log_raw);
     develop(&log_raw, print, params, backend)
 }
 

@@ -17,7 +17,7 @@ fn scalars_to_f32(v: &[spektrafilm_math::precision::Scalar]) -> std::borrow::Cow
     std::borrow::Cow::Borrowed(v)
 }
 
-/// FIR Gaussian-blur half-width `ceil(3σ)`, hard-capped so a pathological σ
+/// FIR Gaussian-blur half-width `round(3σ)`, matching Python/SciPy, capped so a pathological σ
 /// can never build a multi-thousand-tap kernel that hangs the GPU (a
 /// monster kernel froze the display once). Callers that need a blur wider
 /// than this must downsample first (the diffusion filter does). 256 → at
@@ -27,7 +27,7 @@ const MAX_BLUR_RADIUS: u32 = 256;
 
 #[inline]
 fn fir_blur_radius(sigma: f32) -> u32 {
-    ((3.0_f32 * sigma).ceil() as u32).min(MAX_BLUR_RADIUS)
+    ((3.0_f32 * sigma + 0.5) as u32).min(MAX_BLUR_RADIUS)
 }
 
 #[cfg(all(feature = "wgpu-backend", feature = "precision-f64"))]
