@@ -2692,6 +2692,12 @@
             "Performance shows the preview cache location, usage, and budget. Purge cache removes generated previews and render caches after confirmation; originals and edits are unaffected. Previews will need to be generated again.",
             "Preview resolution is separate from the Dimensions setting used for exported files."
           ]
+        },
+        {
+          "title": "Read a preview error",
+          "paragraphs": [
+            "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."
+          ]
         }
       ],
       "related": [

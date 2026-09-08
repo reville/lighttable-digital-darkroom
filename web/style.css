@@ -606,7 +606,15 @@ input[type=checkbox]:disabled { opacity:.4; }
 .zoomwrap.photo-pending::after,
 .zoomwrap.photo-empty::after { content:"Rendering photo…"; }
 .zoomwrap.photo-pending:not(.photo-empty)::after { display:none; }
-.zoomwrap.photo-error::after { color:var(--skip); }
+.zoomwrap.photo-error::after {
+  color:var(--skip);
+  padding:24px;
+  text-align:center;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+  line-height:1.6;
+  overflow:auto;
+}
 .zoomwrap.photo-empty .cmp,
 .zoomwrap.photo-error .cmp { opacity:0; pointer-events:none; }
 .cmp { position:relative; max-width:100%; max-height:100%; cursor:default; touch-action:none; user-select:none; overflow:hidden; transform-origin:center; transition:opacity .16s ease; }
