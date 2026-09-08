@@ -11636,7 +11636,7 @@
         {
           "type": "file",
           "path": "../../scripts/flatpak/source-install.py",
-          "sha256": "291eca3d29e1d8b5a72eaa064e0fdec5b948f510af7db330534d7f3b249de3ae"
+          "sha256": "5b84a108c4dbbdce6efa6e8de1a7d6e085d9da3ee93ce538d67d6c3250bff4eb"
         },
         {
           "type": "file",
