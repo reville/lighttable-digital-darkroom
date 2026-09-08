@@ -64,6 +64,7 @@ let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
 let PRESET_BROWSER = null;
 let ENHANCE = null;
+let MASK_CURVE = null;
 let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
@@ -82,6 +83,9 @@ import { HELP_SECTION_TOPICS } from '/web/help-search.js';
 import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { gradeBakeRequest, gradeBakeKey } from '/web/preview-processing.js';
+import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
+import { radialHandles, editRadial } from '/web/mask-shape.js';
+import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 
 const $ = (id) => document.getElementById(id);
@@ -1357,7 +1361,7 @@ const smoothStep = (edge0, edge1, value) => {
 };
 
 const brushRasterCache = new Map();
-function brushStrokeValues(strokes, width, height, cacheKey = '') {
+function legacyBrushStrokeValues(strokes, width, height, cacheKey = '') {
   const source = strokes || [];
   if (!source.length) {
     brushRasterCache.delete(cacheKey);
@@ -1423,6 +1427,42 @@ function brushStrokeValues(strokes, width, height, cacheKey = '') {
   return combined;
 }
 
+const cumulativeBrushCache = createStrokeRasterCache({
+  legacyValues: (stroke, width, height) => legacyBrushStrokeValues([stroke], width, height),
+  edgeValues: (stroke, width, height) => {
+    const bitmap = stroke.edgeMask;
+    const values = semanticBitmapValues({bitmap}, width, height);
+    return bitmap.encoding === 'png' && !semanticPngCache.get(String(bitmap.data || ''))?.source
+      ? null : values;
+  },
+});
+function brushStrokeValues(strokes, width, height, cacheKey = '') {
+  if (!(strokes || []).some(stroke => stroke.buildUp)) {
+    return legacyBrushStrokeValues(strokes, width, height, cacheKey);
+  }
+  return cumulativeBrushCache.raster(strokes, width, height, cacheKey);
+}
+
+function captureBrushEdgeMask(point) {
+  if (!S.baseImg?.complete || !S.baseImg.naturalWidth) return null;
+  const scale = Math.min(1, 1024 / Math.max(S.baseImg.naturalWidth, S.baseImg.naturalHeight));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(S.baseImg.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(S.baseImg.naturalHeight * scale));
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  ctx.drawImage(S.baseImg, 0, 0, canvas.width, canvas.height);
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const values = autoMaskValues(pixels.data, canvas.width, canvas.height, point, S.brushTolerance);
+  for (let i = 0; i < values.length; i++) {
+    pixels.data[i * 4] = pixels.data[i * 4 + 1] = pixels.data[i * 4 + 2] = values[i];
+    pixels.data[i * 4 + 3] = 255;
+  }
+  ctx.putImageData(pixels, 0, 0);
+  const data = canvas.toDataURL('image/png').split(',')[1];
+  semanticPngCache.set(data, {source: values, width: canvas.width, height: canvas.height});
+  return {width: canvas.width, height: canvas.height, encoding: 'png', data};
+}
+
 function refineMaskValues(values, mask, width, height) {
   const added = brushStrokeValues(mask.addStrokes, width, height, `${mask.id}:add`);
   const subtracted = brushStrokeValues(mask.subtractStrokes, width, height, `${mask.id}:subtract`);
@@ -1438,7 +1478,7 @@ function refineMaskValues(values, mask, width, height) {
 
 function primaryMaskComponent(mask) {
   const base = { ...(mask.components?.[0] || {}), type: mask.type };
-  for (const key of ['strokes', 'start', 'end', 'center', 'radius', 'feather',
+  for (const key of ['strokes', 'start', 'end', 'center', 'radius', 'radiusX', 'radiusY', 'angle', 'feather',
     'bitmap', 'provider', 'depthLow', 'depthHigh']) {
     if (mask[key] !== undefined) base[key] = mask[key];
   }
@@ -1480,6 +1520,9 @@ function semanticBitmapValues(component, width, height) {
         const source = new Uint8Array(sourceWidth * sourceHeight);
         for (let i = 0; i < source.length; i++) source[i] = rgba[i * 4];
         semanticPngCache.set(key, { source, width: sourceWidth, height: sourceHeight });
+        // A first render may have cached the still-loading PNG as empty.
+        maskGeometryCache.clear();
+        cumulativeBrushCache.clear();
         S.maskTextureDirty = true; drawGrade();
       };
       image.onerror = () => semanticPngCache.set(key, { failed: true });
@@ -1505,9 +1548,13 @@ const semanticPngCache = new Map();
 function resizeMaskValues(source, sourceWidth, sourceHeight, width, height) {
   const values = new Uint8Array(width * height);
   for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-    const sx = Math.min(sourceWidth - 1, Math.round(x * (sourceWidth - 1) / Math.max(width - 1, 1)));
-    const sy = Math.min(sourceHeight - 1, Math.round(y * (sourceHeight - 1) / Math.max(height - 1, 1)));
-    values[y * width + x] = source[sy * sourceWidth + sx];
+    const sx = clamp((x + 0.5) * sourceWidth / width - 0.5, 0, sourceWidth - 1);
+    const sy = clamp((y + 0.5) * sourceHeight / height - 0.5, 0, sourceHeight - 1);
+    const x0 = Math.floor(sx), x1 = Math.min(x0 + 1, sourceWidth - 1);
+    const y0 = Math.floor(sy), y1 = Math.min(y0 + 1, sourceHeight - 1);
+    const top = source[y0 * sourceWidth + x0] * (1 - sx + x0) + source[y0 * sourceWidth + x1] * (sx - x0);
+    const bottom = source[y1 * sourceWidth + x0] * (1 - sx + x0) + source[y1 * sourceWidth + x1] * (sx - x0);
+    values[y * width + x] = Math.round(top * (1 - sy + y0) + bottom * (sy - y0));
   }
   return values;
 }
@@ -1536,22 +1583,18 @@ function canvasGeometryValues(component, width, height) {
     const minimum = Math.min(width, height);
     const cx = component.center[0] * (width - 1);
     const cy = component.center[1] * (height - 1);
-    const radius = Math.max(1, component.radius * minimum);
+    const rx = Math.max(1, (component.radiusX ?? component.radius) * minimum);
+    const ry = Math.max(1, (component.radiusY ?? component.radius) * minimum);
+    const angle = (component.angle || 0) * Math.PI / 180;
     const inner = clamp(1 - (component.feather ?? 0.65), 0, 1);
-    if (inner >= 0.999) {
-      ctx.fillStyle = '#fff';
-      ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-    } else {
-      const gradient = ctx.createRadialGradient(
-        cx, cy, radius * inner, cx, cy, radius);
-      for (let index = 0; index <= 16; index++) {
-        const position = index / 16;
-        const value = Math.round((1 - smoothStep(0, 1, position)) * 255);
-        gradient.addColorStop(position, `rgb(${value},${value},${value})`);
-      }
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+    const values = new Uint8Array(width * height);
+    const cosine = Math.cos(angle), sine = Math.sin(angle);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const dx = x - cx, dy = y - cy;
+      const distance = Math.hypot((dx * cosine + dy * sine) / rx, (-dx * sine + dy * cosine) / ry);
+      values[y * width + x] = Math.round((inner >= 1 ? +(distance < 1) : 1 - smoothStep(inner, 1, distance)) * 255);
     }
+    return values;
   }
   const pixels = ctx.getImageData(0, 0, width, height).data;
   const values = new Uint8Array(width * height);
@@ -1591,7 +1634,8 @@ function maskGeometryKey(mask, width, height) {
   const geometry = {
     type: mask.type, invert: mask.invert, strokes: mask.strokes,
     start: mask.start, end: mask.end, center: mask.center,
-    radius: mask.radius, feather: mask.feather, bitmap: mask.bitmap,
+    radius: mask.radius, radiusX: mask.radiusX, radiusY: mask.radiusY, angle: mask.angle,
+    feather: mask.feather, bitmap: mask.bitmap,
     components: mask.components, addStrokes: mask.addStrokes,
     subtractStrokes: mask.subtractStrokes,
     intersectStrokes: mask.intersectStrokes,
@@ -1619,7 +1663,7 @@ function maskGeometryValues(mask, width, height) {
   return values;
 }
 
-function maskTextureSize(edge = 512) {
+function maskTextureSize(edge = 1024) {
   const aspect = $('cv').width / $('cv').height;
   return {
     width: aspect >= 1 ? edge : Math.max(1, Math.round(edge * aspect)),
@@ -1627,7 +1671,7 @@ function maskTextureSize(edge = 512) {
   };
 }
 
-function buildMaskTexture(edge = 512) {
+function buildMaskTexture(edge = S.editGesture ? 512 : 1024) {
   if (!S.masks.length || !$('cv').width || !$('cv').height) {
     maskGeometryCache.clear();
     return new ImageData(new Uint8ClampedArray(4), 1, 1);
@@ -1767,8 +1811,17 @@ function drawEditOverlayNow() {
       for (const [x, y] of [[sx, sy], [ex, ey]]) { ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else if (S.localPinsVisible && !S.maskRefineMode && mask.type === 'radial') {
       const x = mask.center[0] * surface.width, y = mask.center[1] * surface.height;
-      ctx.beginPath(); ctx.arc(x, y, mask.radius * Math.min(surface.width, surface.height), 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      const minimum = Math.min(surface.width, surface.height);
+      ctx.beginPath(); ctx.ellipse(x, y, mask.radiusX * minimum, mask.radiusY * minimum,
+        (mask.angle || 0) * Math.PI / 180, 0, Math.PI * 2); ctx.stroke();
+      const handles = radialHandles(mask, surface.width, surface.height);
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.lineTo(handles.rotate[0] * surface.width, handles.rotate[1] * surface.height); ctx.stroke();
+      ctx.setLineDash([]);
+      for (const [u, v] of Object.values(handles)) {
+        ctx.beginPath(); ctx.arc(u * surface.width, v * surface.height, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
     }
     if (mask.type === 'brush' || S.maskRefineMode) {
       drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
@@ -2009,6 +2062,7 @@ function renderEditItems(kind) {
 
 function syncMaskPanel() {
   renderEditItems('mask');
+  MASK_CURVE?.sync();
   const mask = selectedMask();
   const createOpen = S.maskCreateOpen;
   $('maskReset').disabled = !photoReadyForEditing() || !S.masks.length;
@@ -2053,11 +2107,23 @@ function syncMaskPanel() {
   $('maskBrushSize').value = S.brushSize;
   $('maskBrushFeather').value = S.brushFeather;
   $('maskBrushFlow').value = S.brushFlow;
+  $('maskBrushDensity').value = S.brushDensity;
+  $('maskBrushAutoMask').checked = S.brushAutoMask;
+  $('maskBrushTolerance').value = S.brushTolerance;
   $('maskBrushSizeV').textContent = `${Math.round(S.brushSize * 100)}%`;
   $('maskBrushFeatherV').textContent = `${Math.round(S.brushFeather * 100)}%`;
   $('maskBrushFlowV').textContent = `${Math.round(S.brushFlow * 100)}%`;
+  $('maskBrushDensityV').textContent = `${Math.round(S.brushDensity * 100)}%`;
+  $('maskBrushToleranceV').textContent = `${Math.round(S.brushTolerance * 100)}%`;
   const brushing = mask.type === 'brush' || !!S.maskRefineMode;
   document.querySelectorAll('.mask-brush-control').forEach((row) => { row.hidden = !brushing; });
+  $('maskBrushToleranceRow').hidden = !brushing || !S.brushAutoMask;
+  $('maskShapeControls').hidden = mask.type !== 'radial';
+  if (mask.type === 'radial') for (const [id, key] of [
+    ['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'], ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+    $(id).value = mask[key];
+    $(id + 'V').textContent = key === 'angle' ? `${Math.round(mask[key])}°` : `${Math.round(mask[key] * 100)}%`;
+  }
   $('maskRefineAdd').setAttribute('aria-pressed', String(S.maskRefineMode === 'add'));
   $('maskRefineSubtract').setAttribute('aria-pressed', String(S.maskRefineMode === 'subtract'));
   $('maskRefineIntersect').setAttribute('aria-pressed', String(S.maskRefineMode === 'intersect'));
@@ -2280,15 +2346,34 @@ $('maskRefineSubtract').onclick = () => { S.maskRefineMode = 'subtract'; syncMas
 $('maskRefineIntersect').onclick = () => { S.maskRefineMode = 'intersect'; syncMaskPanel(); drawEditOverlay(); };
 $('maskEditShape').onclick = () => { S.maskRefineMode = null; syncMaskPanel(); drawEditOverlay(); };
 $('maskShowOverlay').onchange = drawEditOverlay;
-for (const id of ['maskBrushSize', 'maskBrushFeather', 'maskBrushFlow']) {
+for (const id of ['maskBrushSize', 'maskBrushFeather', 'maskBrushFlow', 'maskBrushDensity', 'maskBrushTolerance']) {
   $(id).addEventListener('input', () => {
     if (id === 'maskBrushSize') S.brushSize = +$(id).value;
     else if (id === 'maskBrushFeather') S.brushFeather = +$(id).value;
-    else S.brushFlow = +$(id).value;
+    else if (id === 'maskBrushFlow') S.brushFlow = +$(id).value;
+    else if (id === 'maskBrushDensity') S.brushDensity = +$(id).value;
+    else S.brushTolerance = +$(id).value;
     const output = $(id + 'V');
     output.textContent = `${Math.round(+$(id).value * 100)}%`;
     drawEditOverlay();
   });
+}
+$('maskBrushAutoMask').onchange = () => {
+  S.brushAutoMask = $('maskBrushAutoMask').checked;
+  syncMaskPanel();
+};
+MASK_CURVE = installMaskCurve({canvas: $('maskCurve'), reset: $('maskCurveReset'),
+  channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo,
+  changed: () => drawGrade(), save: () => saveState()});
+for (const [id, key] of [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
+  ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+  $(id).addEventListener('pointerdown', pushUndo);
+  $(id).addEventListener('input', () => {
+    const mask = selectedMask(); if (mask?.type !== 'radial') return;
+    mask[key] = +$(id).value;
+    S.maskTextureDirty = true; syncMaskPanel(); drawGrade();
+  });
+  $(id).addEventListener('change', () => saveState());
 }
 $('maskVisible').onchange = () => {
   const mask = selectedMask(); if (!mask) return;
@@ -2608,6 +2693,13 @@ function healHandleAt(point, rect) {
   return null;
 }
 
+function maskPointCount() {
+  const count = strokes => (strokes || []).reduce((sum, stroke) => sum + (stroke.points?.length || 0), 0);
+  return S.masks.reduce((sum, mask) => sum + maskComponents(mask).reduce(
+    (total, component) => total + count(component.strokes), 0)
+    + count(mask.addStrokes) + count(mask.subtractStrokes) + count(mask.intersectStrokes), 0);
+}
+
 $('editOverlay').addEventListener('pointerdown', (event) => {
   if (!cur() || event.button !== 0) return;
   event.stopPropagation();
@@ -2636,20 +2728,40 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
     const refineMode = event.altKey ? 'subtract' :
       (S.maskRefineMode || (mask.type === 'brush' ? 'add' : null));
     if (!refineMode && isSemantic) return;
+    if (refineMode && maskPointCount() >= MAX_TOTAL_MASK_POINTS) {
+      return toast(tr("This photo has reached the 20,000-point mask limit"));
+    }
     pushUndo(); $('editOverlay').setPointerCapture(event.pointerId);
     if (refineMode) {
-      const stroke = { size: S.brushSize, feather: S.brushFeather, flow: S.brushFlow, points: [point] };
       const strokes = refineMode === 'subtract' ? mask.subtractStrokes :
         refineMode === 'intersect' ? mask.intersectStrokes :
           (mask.type === 'brush' ? mask.strokes : mask.addStrokes);
+      if (strokes.length >= 64) {
+        $('editOverlay').releasePointerCapture(event.pointerId);
+        return toast(tr('This brush has reached its 64-stroke limit. Create another mask to keep painting.'));
+      }
+      const stroke = { size: S.brushSize, feather: S.brushFeather, flow: S.brushFlow,
+        density: S.brushDensity, buildUp: true, points: [point] };
+      if (S.brushAutoMask) {
+        stroke.edgeMask = captureBrushEdgeMask(point);
+        if (!stroke.edgeMask) {
+          $('editOverlay').releasePointerCapture(event.pointerId);
+          return toast(tr('Auto Mask is waiting for the photo preview.'));
+        }
+      }
       strokes.push(stroke);
       S.editGesture = { type: 'brush', pointerId: event.pointerId, stroke, rect };
     } else if (mask.type === 'linear') {
       mask.start = point; mask.end = point;
       S.editGesture = { type: 'linear', pointerId: event.pointerId, rect };
     } else {
-      mask.center = point; mask.radius = 0.01;
-      S.editGesture = { type: 'radial', pointerId: event.pointerId, start: point, rect };
+      const handle = Object.entries(radialHandles(mask, rect.width, rect.height))
+        .find(([, location]) => overlayDistance(point, location, rect) <= 11)?.[0];
+      if (!handle) {
+        mask.center = point; mask.radius = mask.radiusX = mask.radiusY = 0.01; mask.angle = 0;
+      }
+      S.editGesture = { type: 'radial', handle, center: [...mask.center],
+        pointerId: event.pointerId, start: point, rect };
     }
     S.maskTextureDirty = true; drawGrade();
   } else if (S.activePane === 'healPane') {
@@ -2705,14 +2817,13 @@ $('editOverlay').addEventListener('pointermove', (event) => {
     if (gesture.type === 'brush') {
       const previous = gesture.stroke.points.at(-1);
       if (Math.hypot(previous[0] - point[0], previous[1] - point[1]) > 0.002) {
-        const countStrokes = (strokes) => (strokes || []).reduce(
-          (sum, stroke) => sum + (stroke.points?.length || 0), 0);
-        const total = S.masks.reduce((sum, item) => sum + maskComponents(item)
-          .reduce((componentSum, component) => componentSum +
-            countStrokes(component.strokes), 0)
-          + countStrokes(item.addStrokes) + countStrokes(item.subtractStrokes)
-          + countStrokes(item.intersectStrokes), 0);
-        if (total >= MAX_TOTAL_MASK_POINTS) {
+        const total = maskPointCount();
+        if (gesture.stroke.points.length >= 512) {
+          if (!gesture.pointLimitShown) {
+            gesture.pointLimitShown = true;
+            toast(tr('This stroke has reached its point limit. Release and paint another stroke to continue.'));
+          }
+        } else if (total >= MAX_TOTAL_MASK_POINTS) {
           if (!gesture.pointLimitShown) {
             gesture.pointLimitShown = true;
             toast(tr("This photo has reached the 20,000-point mask limit"));
@@ -2721,8 +2832,7 @@ $('editOverlay').addEventListener('pointermove', (event) => {
       }
     } else if (gesture.type === 'linear') mask.end = point;
     else if (gesture.type === 'radial') {
-      mask.radius = clamp(Math.hypot((point[0] - gesture.start[0]) * rect.width,
-        (point[1] - gesture.start[1]) * rect.height) / Math.min(rect.width, rect.height), 0.01, 1.5);
+      editRadial(mask, gesture, point, rect, event.shiftKey);
     }
     S.maskTextureDirty = true; drawGrade();
   } else if (S.activePane === 'healPane') {

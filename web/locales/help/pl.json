@@ -1419,6 +1419,7 @@
           ],
           "tips": [
             "Zaznaczenia obiektów wymagają nowego wyboru obiektu na celu. Inteligentne maski z ręcznie malowanymi dopracowaniami również wymagają ręcznego odtworzenia; powoduje to odmowę wklejenia na celu zamiast cichego kopiowania zaznaczenia zależnego od źródła.",
+            "Pociągnięcia Automatycznej maski zachowują zaznaczenie utworzone ze zdjęcia źródłowego. Wklejenie ich do innego zdjęcia jest odrzucane; odtwórz te pociągnięcia na miejscu docelowym albo wyklucz Lokalne maski. Skopiowanie ich z powrotem na to samo zdjęcie zachowuje zapisane zaznaczenie.",
             "Jeśli maski nie mogą zostać przeniesione, skopiuj ponownie z odznaczonymi Lokalnymi maskami, aby zastosować pozostałe grupy.",
             "Sprawdź raport zakończenia, aby znaleźć nieudane zdjęcia. Partia może zakończyć się z częścią zdjęć zmienionych, a częścią pozostawionych bez zmian."
           ]
@@ -1517,8 +1518,16 @@
         "pędzel",
         "liniowy gradient",
         "radialny gradient",
+        "elipsa",
+        "obrót",
         "wtapianie",
         "przepływ",
+        "gęstość",
+        "automatyczna maska",
+        "tolerancja",
+        "krzywa tonalna",
+        "światła",
+        "cienie",
         "nakładka",
         "rozjaśnianie",
         "wypalanie"
@@ -1527,14 +1536,14 @@
         {
           "title": "Utwórz ręczną maskę",
           "paragraphs": [
-            "Otwórz Maskę na pasku narzędzi edycji i wybierz narzędzie pod Utwórz nową maskę. Kliknij Utwórz nową maskę, aby pokazać lub ukryć narzędzia. Każda maska ma własne ustawienia Jasny i Kolor.",
-            "Tekstura i Przejrzystość używają obrazu po korektach globalnych i wcześniejszych maskach. Te kontrolki wymagają aktualizacji podglądu; poczekaj na jej zakończenie, zanim ocenisz wynik."
+            "Otwórz Maska na pasku narzędzi edycji i wybierz narzędzie pod Utwórz nową maskę. Kliknij Utwórz nową maskę, aby pokazać lub ukryć narzędzia. Każda maska ma własne korekty Jasny, Kolor i Krzywa tonalna.",
+            "Tekstura, Przejrzystość, Światła, Cienie i Krzywa tonalna używają obrazu po korektach globalnych i wcześniejszych maskach. Te kontrolki wymagają odświeżenia podglądu; poczekaj na jego zakończenie przed oceną wyniku. Podgląd i eksport stosują je w tej samej kolejności."
           ],
           "steps": [
-            "Wybierz Pędzel do malowania, Liniowy dla korekty stopniowanej lub Promieniowy dla korekty okrągłej.",
-            "Dla Pędzel wybierz Rozmiar, Piórko i Przepływ, a następnie maluj po zdjęciu. Dla Liniowy lub Promieniowy przeciągnij po zdjęciu, aby ustawić kształt.",
+            "Wybierz Pędzel, aby malować, Liniowy dla regulacji stopniowej albo Promieniowy dla regulacji okrągłej lub eliptycznej.",
+            "Dla Pędzla wybierz Rozmiar, Wtapianie, Przepływ i Gęstość, a następnie maluj po zdjęciu. Dla Liniowy lub Promieniowy przeciągnij na zdjęciu, aby ustawić kształt.",
             "Pozostaw Włącz nakładkę podczas sprawdzania zaznaczonego obszaru, a potem wyłącz ją, aby ocenić zdjęcie.",
-            "Dostosuj suwaki Jasność lub Kolor wybranej maski. Użyj Ilość w Zakres, aby zmniejszyć jej ogólną siłę.",
+            "Zwiększ wartość Ekspozycja, aby rozjaśnić obszar, lub zmniejsz ją, aby go przyciemnić. W razie potrzeby użyj pozostałych kontrolek Jasny i Kolor oraz Ilość w Zakres, aby zmniejszyć ogólną siłę maska.",
             "Zmień nazwę maski za pomocą jej przycisku •••, aby później łatwo rozpoznać jej przeznaczenie."
           ],
           "tips": [
@@ -1543,11 +1552,47 @@
             "Edytor umożliwia maksymalnie szesnaście lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
             "Punkty maski i obrysy pędzla pozostają ostre i mają tę samą grubość podczas powiększania. Obrys rośnie wraz z obszarem, który obejmuje na zdjęciu."
           ]
+        },
+        {
+          "title": "Stopniowo buduj pokrycie pędzla",
+          "paragraphs": [
+            "Przepływ określa, ile pokrycia dodaje każde nowe pociągnięcie, a Gęstość ustala jego limit. Oba zakresy wynoszą od 1% do 100%. Zwolnij wskaźnik i maluj ponownie, aby budować pokrycie; ponowne przeprowadzanie w ramach jednego ciągłego pociągnięcia nie zwiększa go dalej.",
+            "Włącz Automatyczną maskę, aby ograniczyć każde pociągnięcie do kolorów podobnych do koloru, w którym to pociągnięcie się zaczyna. Zwiększ Tolerancję, aby objąć szerszy zakres kolorów. Jej zaznaczenie jest zapisywane wraz z pociągnięciem, więc późniejsze korekty koloru lub ekspozycji nie przesuwają jej krawędzi."
+          ],
+          "tips": [
+            "Przy Przepływie 20% i Gęstości 60% trzy oddzielne pociągnięcia na całkowicie pokrytym obszarze osiągają limit. Zmniejszenie Gęstości nie usuwa już narysowanego pokrycia.",
+            "Ustawienia pędzla dotyczą nowych pociągnięć. Istniejące pociągnięcia zachowują zapisany wygląd, w tym wcześniejsze zachowanie pędzla w starszych edycjach.",
+            "Każdy pędzel lub malowana korekta może zawierać maksymalnie 64 pociągnięcia, do 512 punktów na pociągnięcie i 20 000 punktów maski na zdjęcie. Edytor poinformuje Cię po osiągnięciu limitu."
+          ]
+        },
+        {
+          "title": "Ukształtuj promieniowy gradient",
+          "paragraphs": [
+            "W Edytuj kształt przeciągnij uchwyt środkowy, aby przesunąć maskę, uchwyt osi, aby zmienić jej rozmiar, lub uchwyt zewnętrzny, aby ją obrócić. Przytrzymaj Shift podczas rysowania lub zmiany rozmiaru, aby gradient był okrągły."
+          ],
+          "tips": [
+            "Kształt udostępnia też kontrolki Szerokość, Wysokość, Obrót i Wtapianie.",
+            "Przeciągnięcie z dala od uchwytów powoduje przerysowanie wybranej maski promieniowej."
+          ]
+        },
+        {
+          "title": "Dostosuj lokalną krzywą tonalną",
+          "steps": [
+            "Rozwiń Krzywą tonalną dla wybranej maski i wybierz RGB, Czerwony, Zielony lub Niebieski.",
+            "Kliknij wykres, aby dodać punkt, a potem go przeciągnij. Przesunięcie punktu w górę rozjaśnia jego wyjście; przesunięcie w dół je przyciemnia. Kliknij dwukrotnie punkt wewnętrzny, aby go usunąć.",
+            "Użyj Resetuj krzywą, aby zresetować tylko wybrany kanał tej maski, albo Cofnij, aby odwrócić edycję."
+          ],
+          "tips": [
+            "Gdy wykres ma fokus, [ i ] zaznaczają punkty, klawisze strzałek je przesuwają, a Shift umożliwia większe przesunięcia. Enter dodaje punkt, Delete usuwa punkt wewnętrzny, a Escape anuluje trwającą korektę.",
+            "Zapisana krzywa pozostaje dokładna, dopóki jej nie edytujesz. Edytor odbudowuje reprezentatywne uchwyty, więc pierwsza korekta może zmienić zaimportowaną krzywą poza punkt, który przesuniesz."
+          ],
+          "paragraphs": []
         }
       ],
       "related": [
         "editing-masks-ai",
         "editing-masks-ranges-refinements",
+        "editing-curves",
         "editing-history-snapshots"
       ],
       "categoryLabel": "Edycja"
@@ -1643,7 +1688,7 @@
           ],
           "steps": [
             "Wybierz Dodaj, Odejmij lub Przecięcie pod Wybrana maska.",
-            "Ustaw Rozmiar, Wtapianie i Przepływ, a następnie maluj, obserwując nakładkę.",
+            "Ustaw Rozmiar, Wtapianie, Przepływ i Gęstość, a następnie maluj, obserwując nakładkę. Oddzielne pociągnięcia budują pokrycie do poziomu Gęstości; włącz Automatyczną maskę, aby ograniczyć pociągnięcia według koloru początkowego.",
             "Podczas używania Dodaj przytrzymaj Option na Macu, aby tymczasowo odjąć.",
             "Wyłącz nakładkę i sprawdź korektę. Użyj Cofnij dla dopracowania, które chcesz odwrócić."
           ]
@@ -1821,7 +1866,8 @@
         {
           "title": "Utwórz inteligentne zaznaczenie",
           "paragraphs": [
-            "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy."
+            "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy.",
+            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty."
           ],
           "steps": [
             "Otwórz Maska i rozwiń Utwórz nową maskę.",
@@ -3030,7 +3076,7 @@
             "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
             "Powiększanie zachowuje najostrzejszy dostępny podgląd podczas wczytywania dodatkowych szczegółów. Przy pomniejszaniu ten podgląd jest używany ponownie. W skali 1:1 sprawdź podpowiedź przycisku przed oceną drobnych szczegółów.",
             "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
-            "Usuń, Napraw, Klon i maski z Teksturą lub Przejrzystością wymagają dodatkowej aktualizacji podglądu. Poczekaj na zakończenie podglądu, zanim ocenisz ich szczegóły lub efekt późniejszych korekt.",
+            "Usuń, Napraw, Klon i maski z korektami Tekstura, Przejrzystość, Światła, Cienie lub Krzywa tonalna wymagają dodatkowego odświeżenia podglądu. Poczekaj, aż podgląd się zakończy, zanim ocenisz szczegóły lub wpływ późniejszych korekt.",
             "Jeśli wymiary oryginału są niedostępne, zamiast procentu powiększenia widnieje —, a 1:1 jest wyłączone. Auto nadal dopasowuje podgląd do ekranu. Przeskanuj folder ponownie, aby zaktualizować wymiary."
           ],
           "steps": [
@@ -3082,5 +3128,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8bb63a27c89016f0b25e10273e7727750d00a20494cd2667361bddae40f47213"
+  "sourceDigest": "f3f453df3604c11abf3f8c65808feb7d991f7da6973fb414f46a08776c140d41"
 }

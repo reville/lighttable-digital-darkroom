@@ -1,5 +1,6 @@
 """Regression recipes for ordered edits, with flat-field and real-photo controls."""
 import base64
+import io
 from pathlib import Path
 
 import numpy as np
@@ -45,6 +46,29 @@ def edit_cases():
         {"name": "sequential-clones", "fixture": "gradient", "heals": [dict(spot, mode="clone"),
          dict(spot, mode="clone", target=[.15, .5], source=[.35, .5], radius=.1)]},
     ]
+    brush = {"buildUp": True, "size": .35, "feather": .6, "flow": .2,
+             "density": .5, "points": [[.2, .5], [.8, .5]]}
+    for count in (1, 2, 5):
+        cases.append({"name": f"brush-flow-{count}", "fixture": "photo", "masks": [
+            {"type": "brush", "strokes": [brush] * count, "grade": {"exposure": .7}}]})
+    edge = np.zeros((128, 192), dtype=np.uint8)
+    edge[:, :96] = 255
+    encoded = io.BytesIO()
+    Image.fromarray(edge).save(encoded, format='PNG')
+    bitmap = {"width": 192, "height": 128, "encoding": "png",
+              "data": base64.b64encode(encoded.getvalue()).decode()}
+    cases.append({"name": "brush-saved-auto-mask", "fixture": "photo", "masks": [
+        {"type": "brush", "strokes": [dict(brush, edgeMask=bitmap)] * 3,
+         "grade": {"exposure": .7}}]})
+    cases.extend([
+        {"name": "ellipse-local-tones", "fixture": "photo", "masks": [
+            {"type": "radial", "center": [.4, .5], "radiusX": .4, "radiusY": .17,
+             "angle": 35, "feather": .6, "grade": {"whites": -.4, "blacks": .25}}]},
+        {"name": "ellipse-local-curve", "fixture": "photo", "masks": [
+            {"type": "radial", "center": [.5, .5], "radiusX": .45, "radiusY": .2,
+             "angle": -20, "feather": .5,
+             "grade": {"curveL": (np.linspace(0, 1, 256) ** .75).tolist()}}]},
+    ])
     for mode in ("clone", "heal", "remove"):
         cases.append({"name": "photo-" + mode, "fixture": "photo", "heals": [dict(spot, mode=mode)]})
     for key, value in (("rotate", 7), ("distortion", .3), ("vertical", .3),

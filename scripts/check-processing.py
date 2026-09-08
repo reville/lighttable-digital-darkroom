@@ -35,7 +35,8 @@ def provenance():
         result = subprocess.run(['git', *args], cwd=ROOT, capture_output=True,
                                 text=True, timeout=15, check=True)
         return result.stdout.strip()
-    paths = ['film_pipeline.py', 'grade.py', 'edits.py', 'render_cli.py',
+    paths = ['film_pipeline.py', 'grade.py', 'edits.py', 'mask_raster.py', 'render_cli.py',
+             'web/mask-raster.js', 'web/mask-shape.js', 'web/mask-curve.js',
              'gpu_compute.py', 'merge_acceleration.py', 'merge_workflow.py',
              'color_pipeline.py', 'web/gl.js', 'app/NativePreview.swift', 'app/NativePreview.metal']
     paths += [str(path.relative_to(ROOT)) for path in (ROOT / 'tests').glob('*processing*') if path.is_file()]
