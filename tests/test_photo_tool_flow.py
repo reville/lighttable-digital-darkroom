@@ -37,7 +37,7 @@ const renderEditItems = noop, syncOverlayCursorClass = noop;
 const nativePreviewActive = () => false;
 const syncBrowserOriginal = noop, requestedPreviewWidth = () => 1200;
 const PRESET_BROWSER = null, HISTORY = null, METADATA = null;
-let SURVEY = null;
+let SURVEY = null, presetAmountGesture = null;
 const KEYS = {speed:{}, pick:[], reject:[], unflag:[], crop:'r', compare:'\\'};
 const LABEL_KEYS = {};
 const selectedHeal = () => S.heals.find(spot => spot.id === S.selectedHealId) || null;
@@ -130,6 +130,7 @@ class PhotoToolFlowTests(unittest.TestCase):
 
         functions = [function(name) for name in (
             'snapshot', 'restore', 'filmRenderFingerprint', 'baseEditsFingerprint',
+            'photoReadyForEditing',
             'exitPhotoTool', 'selectPhotoTool', 'switchPane', 'setCropMode',
             'cropViewState', 'cropViewPrefersImmediate', 'cropViewFrame', 'cropFitScale',
             'cropViewTarget', 'cropViewBackgroundRGB', 'cropViewDimStyle', 'snapCropView',
