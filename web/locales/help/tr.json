@@ -224,6 +224,7 @@
           "paragraphs": [
             "Photo Grid, fotoğrafları görsel bir genel bakış olarak sunar. Culling Grid, seçme ve derecelendirme bilgileri için alan ekler. Detail, etkin fotoğrafı yakından incelemek için açar.",
             "Sağ kenar çubuğu, Düzenle, Film, Kırp, Kaldır, Maskeleme, Bilgi, Geçmiş ve Hazır Ayarlar için simge düğmeleri kullanır. Adını görmek için bir simgenin üzerine gelin.",
+            "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
             "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin."
           ],
           "steps": [
@@ -3076,5 +3077,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6"
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba"
 }

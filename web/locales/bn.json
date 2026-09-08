@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "9542c8ad3b1937170958c850ea61ba67186afc6149c1a45331e1e338f9a261b6",
+  "sourceDigest": "2fa764d976de13c5e67e915b946955ab00607a3e40571cb443aa74932ddca0ba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1194,6 +1194,7 @@
     "Finish saving your edits before undoing the batch": "ব্যাচটি পূর্বাবস্থায় ফেরানোর আগে আপনার এডিটগুলোর সংরক্ষণ সম্পন্ন করুন",
     "First file lands at {firstDestination}": "প্রথম ফাইল {firstDestination}-এ পৌঁছায়",
     "Fit": "ফিট",
+    "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "ফিট ছোট ছবি বড় করতে পারে। 1:1 প্রকৃত পিক্সেল দেখায়, এমনকি ছবি ফিটের চেয়েও ছোট হয়ে গেলেও, এবং উইন্ডোর আকার পরিবর্তন করলে একই পিক্সেল স্কেল বজায় রাখে।",
     "Fit the whole photo to the available space": "সম্পূর্ণ ফটোটি উপলব্ধ স্থানে ফিট করুন",
     "Fit to window ({actualPct}%)": "উইন্ডোতে ফিট করুন ({actualPct}%)",
     "Flag": "ফ্ল্যাগ",
@@ -1352,6 +1353,7 @@
     "If local recovery finds outstanding changes when the library opens, Recover unsaved edits? lists the affected photos. Restore edits replaces their saved settings with the recovered settings. Keep saved edits keeps the catalog version and discards those recovery drafts.": "যদি local recovery লাইব্রেরি খোলার সময় বাকি পরিবর্তন খুঁজে পায়, Recover unsaved edits? প্রভাবিত ফটোগুলোর তালিকা দেখায়। Restore edits তাদের সংরক্ষিত settings-গুলোকে পুনরুদ্ধার করা settings দিয়ে প্রতিস্থাপন করে। Keep saved edits catalog version বজায় রাখে এবং সেই recovery drafts বাতিল করে।",
     "If masks cannot be transferred, copy again with Local masks unchecked to apply the other groups.": "mask স্থানান্তর করা না গেলে, অন্য group প্রয়োগ করতে Local masks আনচেক করে আবার কপি করুন।",
     "If necessary, choose a different entry in Lens profile and compare the correction against the original.": "প্রয়োজনে Lens profile-এ অন্য একটি entry বেছে নিন এবং correction-টি মূলের সঙ্গে তুলনা করুন।",
+    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "মূল ছবির মাপ পাওয়া না গেলে জুমের শতাংশের জায়গায় — দেখায় এবং 1:1 নিষ্ক্রিয় থাকে। Auto তখনও স্ক্রিন অনুযায়ী প্রিভিউ সামঞ্জস্য করে। মাপ হালনাগাদ করতে ফোল্ডারটি আবার স্ক্যান করুন।",
     "If the 1:1 button’s tooltip reports a preview pixel size smaller than the source, you are seeing a smaller delivered preview. Auto resolution fits the display and increases its request for zoomed viewing; very large sources can exceed the preview request limit.": "যদি 1:1 বোতামের টুলটিপে দেখা যায় যে পূর্বরূপ পিক্সেল আকার source-এর চেয়ে ছোট, তবে আপনি একটি ছোট delivered preview দেখছেন। Auto resolution ডিসপ্লের সঙ্গে মানিয়ে নেয় এবং zoomed viewing-এর জন্য অনুরোধ বাড়ায়; খুব বড় source preview request limit অতিক্রম করতে পারে।",
     "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.": "Mac অ্যাপটি যদি পরিষ্কারভাবে বন্ধ না হয়ে বন্ধ হয়ে যায়, তবে পরের বার আপনি এটি চালু করলে একটি ডায়াগনস্টিক রিপোর্ট খুলবে। এর রেন্ডারিং ইঞ্জিন অপ্রত্যাশিতভাবে বন্ধ হয়ে গেলে, ইঞ্জিন পুনরুদ্ধারের সময় রিপোর্টটি খুলতে পারে। প্রতিটি নথিভুক্ত ঘটনার জন্য রিপোর্টটি একবার দেখা যায়; Dismiss আপনাকে চালিয়ে যেতে দেয়। অ্যাপটি স্বাভাবিকভাবে বন্ধ করা বা এর রেন্ডারিং সার্ভিস পুনরায় চালু করা কোনও রিপোর্ট তৈরি করে না।",
     "If the Mac first-use choice cannot be saved, Try Again retains the selection and retries. The app starts only after saving succeeds.": "ম্যাকে প্রথম ব্যবহারের পছন্দটি সংরক্ষণ করা না গেলে, আবার চেষ্টা করুন নির্বাচনটি ধরে রাখে এবং পুনরায় চেষ্টা করে। অ্যাপটি কেবল সংরক্ষণ সফল হওয়ার পরেই শুরু হয়।",
@@ -4030,7 +4032,6 @@
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
     "☆ Favorites": "☆ পছন্দের",
-    "If source dimensions are unavailable, the zoom percentage shows — and 1:1 is disabled. Auto still fits the display. Rescan the folder to refresh dimensions.": "মূল ছবির মাপ পাওয়া না গেলে জুমের শতাংশের জায়গায় — দেখায় এবং 1:1 নিষ্ক্রিয় থাকে। Auto তখনও স্ক্রিন অনুযায়ী প্রিভিউ সামঞ্জস্য করে। মাপ হালনাগাদ করতে ফোল্ডারটি আবার স্ক্যান করুন।",
     "Reset in Realistic Film Simulation restores all Film sliders to their defaults. A section’s Reset affects only that section’s sliders. Switches and selected options stay as they are.": "বাস্তবসম্মত ফিল্ম সিমুলেশনে রিসেট করলে সব ফিল্ম স্লাইডার তাদের ডিফল্ট মানে ফিরে যায়। কোনো বিভাগের রিসেট শুধু সেই বিভাগের স্লাইডারগুলিকে বদলায়। সুইচ ও নির্বাচিত বিকল্পগুলি অপরিবর্তিত থাকে।",
     "Reset sliders to their defaults": "স্লাইডারগুলিকে ডিফল্ট মানে ফিরিয়ে আনুন"
   },
