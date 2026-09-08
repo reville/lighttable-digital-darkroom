@@ -226,7 +226,7 @@
             "Die rechte Seitenleiste verwendet Symbolschaltflächen für Bearbeiten, Film, Zuschneiden, Entfernen, Maskierung, Info, Verlauf und Vorgaben. Bewegen Sie den Mauszeiger über ein Symbol, um seinen Namen anzuzeigen.",
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
-            "Anpassen, 1:1 sowie Zoomtasten und Zoomkurzbefehle werden sanft animiert. Scrollen, Aufziehen und Zuziehen mit zwei Fingern sowie Ziehen reagieren direkt. Die Zoomanimation ist deaktiviert, wenn die Systemeinstellung Bewegung reduzieren aktiviert ist."
+            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -2738,6 +2738,7 @@
           "paragraphs": [
             "Die meisten Einstellungsänderungen werden automatisch gespeichert. Die Sprache verwendet Sprache anwenden und lädt das Fenster nach dem Speichern der Änderungen neu. Allgemein steuert außerdem den automatischen Wechsel nach Auswählen, Ablehnen oder Bewerten, Benachrichtigungen beim Abschluss und die Update-Prüfung.",
             "Die Oberflächensteuerungen bestimmen den Hintergrund des Betrachters, die Schriftgröße, Lights Out, das Informations-Overlay der Lupe und die Zuschneidehilfen. Diese Einstellungen ändern das Erscheinungsbild des Arbeitsbereichs, ohne exportierte Pixel zu verändern.",
+            "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
             "Dateien & Metadaten steuert portable LightTable-Bearbeitungen neben Originalen, das automatische Schreiben von XMP, RAW/JPEG-Paarung und Stichworteingabe. Vollständige portable Bearbeitungen verwenden .lighttable-state.json; XMP enthält kompatible Bearbeitungen und Metadaten. XMP-Synchronisierung bewahrt nicht betroffene Felder und meldet widersprüchliche externe Änderungen; lesen Sie Austauschmetadaten über XMP-Sidecars für den unterstützten Workflow."
           ]
         },
@@ -3135,5 +3136,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc"
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1"
 }

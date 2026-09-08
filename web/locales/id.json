@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc",
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -181,6 +181,7 @@
     "An export cannot replace a cataloged original or its capture companion": "Ekspor tidak dapat menggantikan asli yang terdata di katalog atau pendamping tangkapnya",
     "An external edit is already rendering": "Edit eksternal sedang dirender",
     "Analysis stays on this Mac and never modifies photo folders.": "Analisis tetap di Mac ini dan tidak pernah mengubah folder foto.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Animasikan zoom foto. Pilihan Anda mengesampingkan pengaturan Kurangi Gerakan pada sistem.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Jendela LightTable lain mungkin sedang mengimpor pustaka ini. Tutup impor itu dan coba lagi.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Aplikasi lain mengubah file XMP. Coba lagi untuk menggabungkan perubahan terbarunya.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Salinan LightTable lain sudah membuka pustaka ini. Gunakan jendela itu atau keluar, lalu coba lagi.",
@@ -1208,7 +1209,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
     "Fit the whole photo to the available space": "Paskan seluruh foto ke ruang yang tersedia",
     "Fit to window ({actualPct}%)": "Pas ke jendela ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Pas, 1:1, tombol zoom, dan pintasan zoom bergerak dengan mulus. Menggulir, mencubit, dan menyeret merespons secara langsung. Animasi zoom dinonaktifkan saat pengaturan Kurangi Gerakan pada sistem Anda diaktifkan.",
     "Flag": "Bendera",
     "Flag and rate survey photo": "Bendera dan beri rating foto survei",
     "Flag and rating filters": "Filter bendera dan rating",
@@ -2650,6 +2650,8 @@
     "Smart selection action": "Tindakan pilihan cerdas",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Tindakan seleksi Cerdas mengontrol apakah seleksi cerdas berikutnya menjadi masker baru atau digabung dengan masker yang saat ini dipilih.",
     "Smooth color": "Warna halus",
+    "Smooth zoom": "Zoom halus",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
     "Snapshots": "Snapshot",
     "Soft Filmic": "Filmik Halus",
     "Soft Proof": "Soft Proof",

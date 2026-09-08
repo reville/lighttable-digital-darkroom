@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "8ffcf75194d871c8fd39381b42e68c11b28da4e9a0d56f1aafce8e9bb70afbcc",
+  "sourceDigest": "ca64ef45a43e8f71cbbb7d39ccbe737df1cca983b8066689561fc0e2bdff37f1",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "plurals": {
     " · {count} paired file linked": {
@@ -472,6 +472,7 @@
     "An export cannot replace a cataloged original or its capture companion": "An export cannot replace a cataloged original or its capture companion",
     "An external edit is already rendering": "An external edit is already rendering",
     "Analysis stays on this Mac and never modifies photo folders.": "Analysis stays on this Mac and never modifies photo folders.",
+    "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.": "Animate photo zoom. Your choice overrides the system’s Reduce Motion setting.",
     "Another LightTable window may be importing this library. Close that import and try again.": "Another LightTable window may be importing this library. Close that import and try again.",
     "Another application changed the XMP file. Retry to merge its latest changes.": "Another application changed the XMP file. Retry to merge its latest changes.",
     "Another copy of LightTable already has this library open. Use that window or quit it, then try again.": "Another copy of LightTable already has this library open. Use that window or quit it, then try again.",
@@ -1499,7 +1500,6 @@
     "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.": "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.",
     "Fit the whole photo to the available space": "Fit the whole photo to the available space",
     "Fit to window ({actualPct}%)": "Fit to window ({actualPct}%)",
-    "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.": "Fit, 1:1, zoom buttons, and zoom shortcuts animate smoothly. Scrolling, pinching, and dragging respond directly. Zoom animation is disabled when your system’s Reduce Motion setting is enabled.",
     "Flag": "Flag",
     "Flag and rate survey photo": "Flag and rate survey photo",
     "Flag and rating filters": "Flag and rating filters",
@@ -2941,6 +2941,8 @@
     "Smart selection action": "Smart selection action",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.": "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.",
     "Smooth color": "Smooth color",
+    "Smooth zoom": "Smooth zoom",
+    "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.": "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
     "Snapshots": "Snapshots",
     "Soft Filmic": "Soft Filmic",
     "Soft Proof": "Soft Proof",
