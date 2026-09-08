@@ -2193,7 +2193,7 @@
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
             "Una pellicola descrive il processo della pellicola fisica. Un predefinito di modifica può contenere regolazioni salvate più ampie e può includere anche impostazioni Film. Il menu Output dentro Film sceglie una ricetta di scansione o stampa; non esporta un file.",
-            "Dopo aver attivato Pellicola, può apparire un'anteprima rapida prima che il dettaglio RAW accurato e l'anteprima più grande terminino. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano e scompare una volta che l'anteprima è visibile. Il dettaglio RAW accurato e il rendering a piena risoluzione continuano in background."
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
           ],
           "tips": [
             "Se una pellicola non è disponibile, potrebbe richiedere il motore GPU. La disponibilità del motore è mostrata in Impostazioni → Prestazioni."
@@ -3021,7 +3021,8 @@
         {
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
-            "Un'impostazione di zoom al 100% non garantisce che sia arrivato il dettaglio completo dell'immagine. Potrebbe apparire prima un'anteprima rapida mentre l'elaborazione RAW accurata e un'anteprima più grande terminano. La barra di avanzamento si riempie man mano che le fasi di elaborazione dell'anteprima terminano, con un conteggio come 2 / 5. Scompare non appena viene visualizzata un'anteprima utilizzabile; l'elaborazione RAW accurata e le anteprime più grandi continuano in background senza la sovrapposizione. Il conteggio rappresenta le fasi completate, non il tempo rimanente. Il movimento ridotto mantiene gli stessi aggiornamenti di fase senza animazione. La foto rimane visibile senza oscurarsi. A 1:1, passa il mouse sopra il pulsante 1:1 per verificare se il dettaglio completo della sorgente è pronto prima di valutare i dettagli fini.",
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
+            "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
             "Rimuovi, Correggi, Clona e le maschere con Struttura o Chiarezza richiedono un ulteriore aggiornamento dell'anteprima. Attendi che l'anteprima finisca prima di giudicare il loro dettaglio o l'effetto delle regolazioni successive.",
             "Se le dimensioni dell’originale non sono disponibili, la percentuale di zoom mostra — e 1:1 è disabilitato. Auto continua ad adattarsi allo schermo. Esegui nuovamente la scansione della cartella per aggiornare le dimensioni."
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
 }

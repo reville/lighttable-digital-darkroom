@@ -2193,7 +2193,7 @@
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
             "Uma película de filme descreve o processo físico do filme. Uma predefinição de edição pode conter ajustes salvos mais amplos e também pode incluir configurações de Filme. O menu Saída dentro de Filme escolhe uma receita de digitalização ou impressão; ele não exporta um arquivo.",
-            "Depois que você ativa Filme, uma pré-visualização rápida pode aparecer antes que os detalhes RAW precisos e a pré-visualização maior sejam concluídos. A barra de progresso se preenche à medida que as etapas de processamento da pré-visualização terminam e desaparece assim que a pré-visualização fica visível. O detalhamento RAW preciso e a renderização em resolução total continuam em segundo plano."
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
           ],
           "tips": [
             "Se um filme não estiver disponível, ele pode exigir o mecanismo da GPU. A disponibilidade do mecanismo é mostrada em Ajustes → Desempenho."
@@ -3021,7 +3021,8 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
-            "Uma configuração de zoom de 100% não garante que o detalhamento completo da imagem já tenha chegado. Uma pré-visualização rápida pode aparecer primeiro enquanto o processamento RAW preciso e uma pré-visualização maior são concluídos. A barra de progresso se preenche à medida que as etapas de processamento da pré-visualização terminam, com uma contagem como 2 / 5. Ela desaparece assim que uma pré-visualização utilizável é exibida; o processamento RAW preciso e as pré-visualizações maiores continuam em segundo plano sem a sobreposição. A contagem representa etapas concluídas, não o tempo restante. A redução de movimento mantém as mesmas atualizações de etapa sem animação. A foto permanece visível sem escurecer. Em 1:1, passe o cursor sobre o botão 1:1 para verificar se o detalhamento completo da origem está pronto antes de avaliar detalhes finos.",
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
             "Remover, Corrigir, Clonar e máscaras com Textura ou Claridade precisam de uma atualização adicional da pré-visualização. Aguarde a pré-visualização terminar antes de julgar o detalhe ou o efeito dos ajustes posteriores.",
             "Se as dimensões do original não estiverem disponíveis, a percentagem de zoom mostra — e 1:1 fica desativado. Auto continua a adaptar-se ao ecrã. Volte a analisar a pasta para atualizar as dimensões."
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
 }

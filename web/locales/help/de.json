@@ -2193,7 +2193,7 @@
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
             "Ein Filmstock beschreibt den physischen Filmprozess. Eine Bearbeitungsvorgabe kann breitere gespeicherte Anpassungen enthalten und möglicherweise auch Film-Einstellungen. Das Ausgabe-Menü innerhalb von Film wählt ein Scan- oder Druckrezept; es exportiert keine Datei.",
-            "Nachdem Sie Film eingeschaltet haben, kann eine schnelle Vorschau erscheinen, bevor genaue RAW-Details und die größere Vorschau fertig sind. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, und verschwindet, sobald die Vorschau sichtbar ist. Genaue RAW-Details und die Darstellung in voller Auflösung laufen im Hintergrund weiter."
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
           ],
           "tips": [
             "Wenn ein Film nicht verfügbar ist, kann die GPU-Engine erforderlich sein. Die Verfügbarkeit der Engine wird in Einstellungen → Leistung angezeigt."
@@ -3021,7 +3021,8 @@
         {
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
-            "Eine 100%-Zoom-Einstellung garantiert nicht, dass alle Bilddetails bereits angekommen sind. Möglicherweise erscheint zuerst eine schnelle Vorschau, während die genaue RAW-Verarbeitung und eine größere Vorschau fertig werden. Der Fortschrittsbalken füllt sich, wenn die Vorschaubearbeitungsschritte abgeschlossen werden, mit einer Anzeige wie 2 / 5. Er verschwindet, sobald eine verwendbare Vorschau angezeigt wird; die genaue RAW-Verarbeitung und größere Vorschauen laufen im Hintergrund ohne Überlagerung weiter. Die Anzeige steht für abgeschlossene Schritte, nicht für die verbleibende Zeit. Reduzierte Bewegung behält dieselben Schrittaktualisierungen ohne Animation bei. Das Foto bleibt sichtbar, ohne abgedunkelt zu werden. Bei 1:1 zeigen Sie mit dem Mauszeiger auf den 1:1-Button, um zu prüfen, ob die vollständigen Quellendetails bereit sind, bevor Sie feine Details beurteilen.",
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+            "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
             "Entfernen, Reparieren, Klonen sowie Masken mit Textur oder Klarheit benötigen eine zusätzliche Vorschauaktualisierung. Warten Sie, bis die Vorschau abgeschlossen ist, bevor Sie deren Details oder die Wirkung späterer Anpassungen beurteilen.",
             "Wenn die Abmessungen des Originals fehlen, zeigt die Zoomanzeige — und 1:1 ist deaktiviert. Auto passt sich weiterhin dem Bildschirm an. Scannen Sie den Ordner erneut, um die Abmessungen zu aktualisieren."
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
 }

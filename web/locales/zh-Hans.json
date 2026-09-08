@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 位",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "100% 缩放设置并不保证完整图像细节已经到达。快速预览可能会先出现，而精确 RAW 处理和较大的预览则在完成中。预览处理阶段完成时，进度条会填充，并显示诸如 2 / 5 之类的计数。可用预览一旦显示就会消失；精确 RAW 处理和更大的预览会在后台继续进行，而不会显示叠加层。该计数表示已完成的阶段，而不是剩余时间。减少动态效果会保留相同的阶段更新，但没有动画。照片会保持可见，不会变暗。在 1:1 时，将鼠标悬停在 1:1 按钮上可在评估细节前检查完整源文件细节是否已就绪。",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "RAW 原始文件无法就地编辑；请发送已调整的 TIFF",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "一个批处理最多可影响 5,000 张照片，包括关联的伴侣文件。移除层级关键词只会移除该确切路径，而不会移除所有子级。关键词树和建议会使用资料库中已有的术语。",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "内置预设为只读。点击“保存副本…”会在“你的内容”中放入一个带名称的副本。“隐藏预设”会将其从常规的“内置”视图中移除；“显示隐藏项”和“恢复为内置”会将其带回。",
@@ -159,7 +158,6 @@
     "Advanced preview override": "高级预览覆盖",
     "After completion, find the new result in the refreshed library and inspect it.": "完成后，在刷新后的库中找到新结果并进行检查。",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "升级后，首次扫描会读取本地原始文件以增强文件匹配。这在大型图库上可能需要更长时间。那些已经缺失且没有完整文件身份的原始文件仍然会缺失；请保留其条目，并在重新扫描前将原始文件恢复到其先前的目录路径。",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "在你开启“胶片”后，快速预览可能会先出现，然后精确 RAW 细节和较大的预览完成。预览处理阶段完成时，进度条会填充，预览可见后即消失。精确 RAW 细节和全分辨率渲染会在后台继续进行。",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "对齐扫描件或其他参考，测量差异，并应用一个起始匹配。",
     "Aligning frames": "正在对齐帧",
     "All": "全部",
@@ -2123,6 +2121,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW 原始文件必须渲染为已调整的 TIFF。如果所选内容包含 RAW 文件，Processed original 将不可用。对于已处理照片，该选项会打开原始文件，而不是准备一个已调整的 TIFF。",
     "RAW originals only.": "仅 RAW 原始文件。",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW 照片可以显示传感器降噪和学习型降噪控制。学习型降噪会在你按下“应用降噪”后本地运行；移动强度不会实时运行它。",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 照片打开时即采用 LightTable 的显影效果，即使关闭胶片功能也是如此。首次打开尚未缓存的照片可能需要稍等片刻。进度条显示已完成的处理阶段，并在照片显示后消失。",
     "RAW preview could not finish. Try the photo again.": "RAW 预览无法完成。请重试这张照片。",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3151,6 +3150,7 @@
     "Zoom Out": "缩小",
     "Zoom in": "放大",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "放大以便精确放置。圆形轮廓和控制点在每个缩放级别都保持清晰；圆形会继续显示照片中的相同区域。",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "缩放时会保留当前最清晰的预览，同时加载更多细节。缩小时会重复使用该预览。在 1:1 下，评估细微细节前请先查看按钮的提示。",
     "Zoom out": "缩小",
     "Zoom: {actualPct}%": "缩放：{actualPct}%",
     "a command-line server": "命令行服务器",

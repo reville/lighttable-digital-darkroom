@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 GB",
     "8 bit": "8 ビット",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "100%ズーム設定でも、画像の完全な詳細が到達したことは保証されません。正確なRAW処理とより大きなプレビューが完了する前に、簡易プレビューが先に表示されることがあります。プログレスバーはプレビュー処理の段階が完了するにつれて進み、2 / 5 のような数値が表示されます。使用可能なプレビューが表示されるとすぐに消え、正確なRAW処理とより大きなプレビューはオーバーレイなしでバックグラウンドで続行されます。この数値は残り時間ではなく、完了した段階を表します。動きを減らす設定では、アニメーションなしで同じ段階更新が行われます。写真は暗くならずにそのまま表示されます。1:1では、細部を確認する前に、1:1ボタンにカーソルを合わせて、ソースの完全な詳細が準備できているか確認します。",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "RAWオリジナルはその場で編集できません。調整済みの TIFF を送ってください",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "1 バッチで最大 5,000 枚の写真に影響することがあり、関連するペアも含まれます。階層キーワードを削除すると、その正確なパスだけが削除され、すべての子孫は削除されません。キーワードツリーと候補は、すでにカタログにある用語を使用します。",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "Built-inのプリセットは読み取り専用です。Save a copy… を使うと、名前付きコピーがYoursに保存されます。Hide preset は通常のBuilt-in表示から削除します。Show hidden と Restore to Built-in で元に戻せます。",
@@ -159,7 +158,6 @@
     "Advanced preview override": "詳細プレビューの上書き",
     "After completion, find the new result in the refreshed library and inspect it.": "完了後は、更新されたライブラリで新しい結果を見つけて確認します。",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "アップグレード後の最初のスキャンでは、ローカルのオリジナルを読み取り、ファイル照合を強化します。大規模なライブラリでは時間がかかることがあります。完全なファイル識別情報がない状態で既に見つかっていなかったオリジナルは、引き続き見つかりません。エントリは保持し、再スキャンする前にオリジナルを以前のカタログ登録パスへ復元してください。",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "フィルムをオンにすると、正確なRAWの詳細とより大きなプレビューが完了する前に、簡易プレビューが表示されることがあります。プログレスバーはプレビュー処理の段階が完了するにつれて進み、プレビューが表示されると消えます。正確なRAWの詳細とフル解像度のレンダリングはバックグラウンドで続行されます。",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "スキャンやその他の参照を合わせ、差分を測定して、初期一致を適用します。",
     "Aligning frames": "フレームを整列中",
     "All": "すべて",
@@ -2123,6 +2121,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW の元画像は、調整済み TIFF としてレンダリングする必要があります。選択内容に RAW ファイルが含まれている場合、Processed original は利用できません。処理済み写真では、そのオプションは調整済み TIFF を準備するのではなく、元画像を開きます。",
     "RAW originals only.": "RAWオリジナルのみ。",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW 写真では、Sensor noise reduction と Learned denoise のコントロールが表示されることがあります。Learned denoise は、Apply denoise を押したときにローカルで実行されます。Strength を動かしただけでは即時には実行されません。",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 写真は、フィルムがオフの場合も、最初から LightTable の現像結果で表示されます。キャッシュにない写真を初めて開く際は、表示まで少し時間がかかることがあります。進行状況バーは完了した処理段階を示し、写真が表示されると消えます。",
     "RAW preview could not finish. Try the photo again.": "RAWプレビューを完了できませんでした。写真を再試行してください。",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3151,6 +3150,7 @@
     "Zoom Out": "ズームアウト",
     "Zoom in": "ズームイン",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "正確に配置するにはズームインしてください。円の輪郭とピンは、どのズームレベルでもシャープなままで、円は写真の同じ領域を表示し続けます。",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "ズーム中は、より細かな画像の読み込みが完了するまで、利用可能な最も鮮明なプレビューを維持します。縮小時にはそのプレビューを再利用します。1:1 では、細部を評価する前にボタンのツールチップを確認してください。",
     "Zoom out": "ズームアウト",
     "Zoom: {actualPct}%": "ズーム: {actualPct}%",
     "a command-line server": "コマンドラインサーバー",

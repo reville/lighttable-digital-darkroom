@@ -2193,7 +2193,7 @@
           "paragraphs": [
             "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
             "Film stock menjelaskan proses film fisik. Preset pengeditan dapat berisi penyesuaian tersimpan yang lebih luas, dan juga dapat menyertakan pengaturan Film. Menu Output di dalam Film memilih resep scan atau print; ini tidak mengekspor file.",
-            "Setelah Anda mengaktifkan Film, pratinjau cepat dapat muncul sebelum detail RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai dan menghilang setelah pratinjau terlihat. Detail RAW yang akurat dan rendering resolusi penuh terus berjalan di latar belakang."
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat."
           ],
           "tips": [
             "Jika suatu stok tidak tersedia, mungkin diperlukan engine GPU. Ketersediaan engine ditampilkan di Pengaturan → Performa."
@@ -3021,7 +3021,8 @@
         {
           "title": "Periksa apa yang telah selesai dirender",
           "paragraphs": [
-            "Pengaturan zoom 100% tidak menjamin bahwa detail gambar penuh sudah tiba. Pratinjau cepat mungkin muncul terlebih dahulu saat pemrosesan RAW yang akurat dan pratinjau yang lebih besar selesai. Bilah progres terisi saat tahap pemrosesan pratinjau selesai, dengan hitungan seperti 2 / 5. Bilah ini menghilang segera setelah pratinjau yang dapat digunakan ditampilkan; pemrosesan RAW yang akurat dan pratinjau yang lebih besar terus berjalan di latar belakang tanpa lapisan. Hitungan tersebut mewakili tahap yang selesai, bukan sisa waktu. Gerakan yang dikurangi mempertahankan pembaruan tahap yang sama tanpa animasi. Foto tetap terlihat tanpa menjadi redup. Pada 1:1, arahkan kursor ke tombol 1:1 untuk memeriksa apakah detail sumber penuh sudah siap sebelum menilai detail halus.",
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
+            "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
             "Hapus, Perbaiki, Klon, dan masker dengan Tekstur atau Kejernihan memerlukan pembaruan pratinjau tambahan. Tunggu hingga pratinjau selesai sebelum menilai detailnya atau efek penyesuaian berikutnya.",
             "Jika dimensi sumber tidak tersedia, persentase zoom menampilkan — dan 1:1 dinonaktifkan. Auto tetap menyesuaikan pratinjau dengan layar. Pindai ulang folder untuk memperbarui dimensi."
@@ -3075,5 +3076,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247"
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60"
 }

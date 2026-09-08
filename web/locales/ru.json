@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "72af1804745575db3553f65591f0c22495763591842de9d4c2347b25d4631247",
+  "sourceDigest": "9de90a68485ba9d9a27432786714dde889921e693c21ce70dcc434f9fdf93d60",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -67,7 +67,6 @@
     "8 GB": "8 ГБ",
     "8 bit": "8 бит",
     "900 px": "900 px",
-    "A 100% zoom setting does not guarantee that full image detail has arrived. A quick preview may appear first while accurate RAW processing and a larger preview finish. The progress bar fills as preview processing stages finish, with a count such as 2 / 5. It disappears as soon as a usable preview is displayed; accurate RAW processing and larger previews continue in the background without the overlay. The count represents completed stages, not time remaining. Reduced motion keeps the same stage updates without animation. The photo stays visible without dimming. At 1:1, hover over the 1:1 button to check whether full source detail is ready before assessing fine detail.": "Настройка масштаба 100% не гарантирует, что все детали изображения уже загружены. Сначала может появиться быстрый предпросмотр, пока завершается точная обработка RAW и создание более крупного предпросмотра. Индикатор выполнения заполняется по мере завершения этапов обработки предпросмотра, с таким счетчиком, как 2 / 5. Он исчезает, как только отображается пригодный предпросмотр; точная обработка RAW и более крупные предпросмотры продолжают работать в фоновом режиме без наложения. Счетчик показывает завершенные этапы, а не оставшееся время. При уменьшенном движении сохраняются те же обновления этапов без анимации. Фото остается видимым без затемнения. На 1:1 наведите курсор на кнопку 1:1, чтобы проверить, готова ли полная детализация источника, прежде чем оценивать мелкие детали.",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "RAW-оригинал нельзя редактировать на месте; отправьте скорректированный TIFF",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "Пакет может затронуть до 5 000 фото, включая связанные компаньоны. Удаление иерархического ключевого слова удаляет именно этот путь, а не всех потомков. Дерево ключевых слов и подсказки используют термины, уже имеющиеся в каталоге.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "Встроенный пресет доступен только для чтения. Сохранить копию… помещает именованную копию в Ваши. Скрыть пресет удаляет его из обычного просмотра Встроенные; Показать скрытые и Восстановить в Встроенные возвращают его.",
@@ -159,7 +158,6 @@
     "Advanced preview override": "Дополнительное переопределение предпросмотра",
     "After completion, find the new result in the refreshed library and inspect it.": "После завершения найдите новый результат в обновленной библиотеке и проверьте его.",
     "After upgrading, the first scan reads local originals to strengthen file matching. This can take longer on a large library. Originals that were already missing without a complete file identity remain missing; keep their entries and restore the originals to their previous cataloged paths before rescanning.": "После обновления первый скан читает локальные оригиналы, чтобы улучшить сопоставление файлов. На большой библиотеке это может занять больше времени. Оригиналы, которые уже отсутствовали без полной идентичности файла, остаются отсутствующими; сохраните их записи и восстановите оригиналы по их прежним каталогизированным путям перед повторным сканированием.",
-    "After you turn on Film, a quick preview can appear before accurate RAW detail and the larger preview finish. The progress bar fills as preview processing stages finish and disappears once the preview is visible. Accurate RAW detail and full-resolution rendering continue in the background.": "После включения Пленка быстрый предпросмотр может появиться до завершения точной обработки RAW и создания большего предпросмотра. Индикатор выполнения заполняется по мере завершения этапов обработки предпросмотра и исчезает, когда предпросмотр становится видимым. Точная обработка RAW и полноразмерный рендеринг продолжаются в фоновом режиме.",
     "Align a scan or other reference, measure the difference, and apply a starting match.": "Выровняйте скан или другой образец, измерьте разницу и примените начальное совпадение.",
     "Aligning frames": "Выравнивание кадров",
     "All": "Все",
@@ -2123,6 +2121,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Оригиналы RAW должны быть отрендерены как скорректированные TIFF. Processed original недоступен, если выбор содержит файл RAW. Для обработанных фото этот параметр открывает оригинал, а не готовит скорректированный TIFF.",
     "RAW originals only.": "Только RAW-оригиналы.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Фотографии RAW могут показывать элементы управления Шумоподавление сенсора и Обученное шумоподавление. Обученное шумоподавление выполняется локально, когда вы нажимаете Применить шумоподавление; перемещение Силы не запускает его в реальном времени.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Фотографии RAW открываются с обработкой LightTable, даже когда режим «Плёнка» выключен. Первое фото, которого ещё нет в кэше, может появиться с небольшой задержкой. Индикатор выполнения показывает завершённые этапы обработки и исчезает, когда фото становится видимым.",
     "RAW preview could not finish. Try the photo again.": "Не удалось завершить предпросмотр RAW. Попробуйте фото еще раз.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -3151,6 +3150,7 @@
     "Zoom Out": "Уменьшить",
     "Zoom in": "Увеличить масштаб",
     "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo.": "Увеличьте масштаб для точного размещения. Контуры кругов и узлы остаются четкими на любом уровне масштабирования; круги продолжают показывать ту же область фото.",
+    "Zoom keeps the sharpest available preview while larger detail loads. Zooming out reuses it. At 1:1, check the button’s tooltip before judging fine detail.": "При увеличении сохраняется самый чёткий доступный предпросмотр, пока загружаются дополнительные детали. При уменьшении он используется повторно. В масштабе 1:1 проверьте подсказку кнопки, прежде чем оценивать мелкие детали.",
     "Zoom out": "Уменьшить масштаб",
     "Zoom: {actualPct}%": "Масштаб: {actualPct}%",
     "a command-line server": "сервер командной строки",
