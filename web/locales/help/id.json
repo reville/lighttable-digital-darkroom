@@ -226,7 +226,8 @@
             "Sidebar kanan menggunakan tombol ikon untuk Edit, Film, Pangkas, Hapus, Masking, Info, Riwayat, dan Preset. Arahkan kursor ke ikon untuk melihat namanya.",
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
             "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
-            "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung."
+            "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
+            "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -2240,6 +2241,14 @@
           ]
         },
         {
+          "title": "Film yang disetel dan asli",
+          "paragraphs": [
+            "Disetel oleh LightTable menempatkan Portra 160, 400, dan 800 di urutan pertama. Versi ini mengurangi pergeseran ke kuning pada dedaunan hijau kekuningan. Kontrol kertas dan keluaran tetap tersedia.",
+            "Spektrafilm asli mempertahankan semua hasil render asli dan tetap menjadi pilihan bawaan untuk foto baru, suntingan lama, dan preset film lama.",
+            "Versi yang disetel ini merupakan interpretasi visual berdasarkan foto referensi dan pemeriksaan warna numerik, bukan reproduksi film yang dikalibrasi melalui pengukuran. Suntingan dan preset format asli menyimpan versi yang Anda pilih."
+          ]
+        },
+        {
           "title": "Apa yang disertakan dalam pratinjau",
           "paragraphs": [
             "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
@@ -3129,5 +3138,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

@@ -226,7 +226,8 @@
             "La barra lateral derecha usa botones de icono para Editar, Película, Recortar, Quitar, Máscaras, Información, Historial y Ajustes preestablecidos. Pasa el cursor sobre un icono para ver su nombre.",
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
-            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente."
+            "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
+            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -2240,6 +2241,14 @@
           ]
         },
         {
+          "title": "Películas ajustadas y originales",
+          "paragraphs": [
+            "Ajustado por LightTable muestra primero Portra 160, 400 y 800. Reduce los cambios hacia el amarillo en el follaje verde amarillento. Los controles de papel y salida siguen disponibles.",
+            "Spektrafilm original conserva todas las versiones originales y sigue siendo la opción predeterminada para las fotos nuevas, las ediciones anteriores y los ajustes preestablecidos antiguos de película.",
+            "Estas versiones ajustadas son interpretaciones visuales basadas en fotografías de referencia y comprobaciones numéricas del color, no reproducciones de película calibradas mediante mediciones. Las ediciones y los ajustes preestablecidos nativos guardan la versión elegida."
+          ]
+        },
+        {
           "title": "Lo que incluyen las vistas previas",
           "paragraphs": [
             "Las vistas previas de stock incluyen las ediciones de la foto actual. Explorar y cerrar la ventana de vista previa no aplica un stock; elegir una vista previa sí.",
@@ -3129,5 +3138,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "a8967d4e03eefb39b9c0c0c69be508d6221d9b3d7c90d662cb03dbafc441c4b9"
+  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
 }

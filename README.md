@@ -71,6 +71,15 @@ The print and scan stages remain editable. Profile sources and the distinction
 between measured data and modeled assumptions are documented in
 [Film profiles](FILM-PROFILES.md) and the [calibration guide](calibration/README.md).
 
+**LightTable tuned** versions of Portra 160, 400, and 800 appear first in the
+stock list. They reduce the yellowward shift of yellow-green foliage while
+keeping paper, output, and physical film controls available. These are visual
+interpretations informed by reference photographs and numerical color checks,
+not measured matches to real film. **Spektrafilm original** keeps all original
+stock renderings and remains the default. Existing edits and older stock presets
+keep their original rendering; edits and native presets save the selected
+variant and tuning version.
+
 ### Bring your Lightroom library
 
 LightTable reads a **copy** of a Lightroom Classic catalog. Ratings, flags,
@@ -82,6 +91,9 @@ Capture One styles. A conversion report names what was mapped and what was
 skipped, and labels converted settings as approximate:
 different render engines produce different results. See
 [preset interchange](PRESET-INTERCHANGE.md) for compatibility details.
+
+In Detail, switching photos keeps the current zoom level and restores each
+photo’s pan position for the current window session. New photos start centered.
 
 ### A full editing workflow
 

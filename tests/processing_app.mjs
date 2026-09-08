@@ -155,15 +155,15 @@ try {
       const recipe = {params:test.params, grade:test.grade || {}, masks:test.masks || [],
         heals:test.heals || [], optics:test.optics || {}, crop:null};
       if (!test.clearMasks) {
-        const beforeRender = await page.evaluate(() => __lightTablePerf.renders.length);
         // External state uses the same supported route as the CLI; its event
         // updates the open app. Do not inject internal S or draw a test renderer.
         const accepted = await page.request.post(config.baseUrl + '/api/state', {
           headers:{Origin:config.baseUrl}, data:{name, ...recipe, origin:'processing-regression'}});
         if (!accepted.ok()) throw Error(await accepted.text());
-        await page.waitForFunction(({count, name}) => __lightTablePerf.renders.length > count &&
-          __lightTablePerf.renders.at(-1).image === name &&
-          document.querySelector('#rstat').className !== 'busy', {count:beforeRender, name}, {timeout:120000});
+        // A grade-only patch redraws WebGL without another physical render.
+        // Match the displayed source and grade before operating its sliders;
+        // a pending navigation render must not make this wait pass by chance.
+        await waitForRecipe(name, recipe);
       }
       if (test.sliderExposure != null || test.clearMasks) {
         const count = await page.evaluate(() => __lightTablePerf.renders.length);
