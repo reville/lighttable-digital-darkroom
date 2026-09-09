@@ -2817,6 +2817,7 @@ def _item(row: sqlite3.Row) -> dict:
         "label": _enum_or(row["label"], LABEL_VALUES, "none"),
         "captureTime": _text_or(
             row["capture_time"] or row["mtime_iso"], None),
+        "captureTimeKnown": bool(row["capture_time"]),
         "mtime": mtime_ns / 1e9,
         "fileKey": _text_or(row["header_hash"]),
         "recoverySourceKey": source_revision(_text_or(row["content_hash"] or row["header_hash"]),

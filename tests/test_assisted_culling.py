@@ -260,6 +260,31 @@ class DocumentTests(unittest.TestCase):
         self.assertEqual(record["criteria"]["document"]["verdict"], "no")
 
 
+class SimilaritySignatureTests(unittest.TestCase):
+    def test_signature_is_deterministic_and_compact(self):
+        image = texture()
+        first = culling.analyze(image)["similarity"]
+        self.assertEqual(first, culling.analyze(image.copy())["similarity"])
+        self.assertEqual(first["version"], 1)
+        self.assertEqual(len(bytes.fromhex(first["hash"])), 8)
+        self.assertEqual(len(bytes.fromhex(first["layout"])), 48)
+        self.assertAlmostEqual(first["aspect"], 512 / 384, places=3)
+        self.assertLess(len(json.dumps(first)), 230)
+
+    def test_flat_frames_are_marked_as_low_information(self):
+        for level in (0.0, 0.5, 1.0):
+            record = culling.analyze(np.full((64, 96, 3), level, np.float32))
+            self.assertEqual(record["similarity"]["contrast"], 0.0)
+            self.assertEqual(record["similarity"]["hash"], "0000000000000000")
+
+    def test_different_color_scenes_do_not_share_the_complete_signature(self):
+        image = np.zeros((64, 96, 3), np.float32)
+        image[:, 48:, 0] = 0.8
+        other = image[..., [2, 1, 0]]
+        self.assertNotEqual(culling.analyze(image)["similarity"]["layout"],
+                            culling.analyze(other)["similarity"]["layout"])
+
+
 class RecordShapeTests(unittest.TestCase):
     def test_every_criterion_is_answered_with_a_reason(self):
         record = culling.analyze(texture(), vision(faces=[face()]))

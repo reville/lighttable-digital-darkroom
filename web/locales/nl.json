@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "Een momentopname slaat de huidige aanpassingsinstellingen, bijsnijden, maskers, Retoucheren-correcties en optiek van de foto op. Het is een opgeslagen bewerkingsstatus voor deze foto. Momentopname maken is niet beschikbaar totdat een foto is geladen.",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "Een opgeslagen kromme blijft exact totdat u deze bewerkt. De editor bouwt representatieve handgrepen opnieuw op, zodat de eerste aanpassing een geïmporteerde kromme verder kan hervormen dan het punt dat u verplaatst.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Een opgeslagen of geïmporteerde kromme behoudt zijn exact opgeslagen tabel totdat u deze bewerkt. De app bouwt representatieve handgrepen opnieuw op voor bewerking, zodat de eerste aanpassing een geïmporteerde kromme kan hervormen voorbij het punt dat u verplaatst.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Een voorgestelde foto heeft een uniek sterkere beoordeling op basis van scherpte, open ogen en gedetecteerde problemen. Bij gelijke stand of onvoldoende bewijs wordt geen duidelijke aanbeveling getoond. Vergelijkbaarheidsgroepen zijn suggesties; ze maken geen stapels en wijzigen geen markeringen.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "Een virtuele kopie verwijst naar hetzelfde oorspronkelijke bestand en behoudt een onafhankelijke bewerkingsstatus. Het maakt geen tweede origineel op schijf.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "Een virtuele kopie deelt zijn originele bestand. Voor het verwijderen van een virtuele kopie moet u Foto-acties → Virtuele kopie verwijderen gebruiken; als u de bron naar de Prullenmand verplaatst, heeft dat invloed op elke bewerking die dat origineel gebruikt.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "Een virtuele kopie deelt het bronbestand: als u deze in een hernoeming opneemt, wordt dat originele bestand aangepakt. De interface biedt geen speciale knop voor ongedaan maken van hernoemen.",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "Kies Verwijderen, Heal of Clone en stel vervolgens Grootte, Vervaging en Dekking in.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Kies Selecteren-criteria zoals Onderwerp scherpte, Oog scherpte of Ogen open, of Afwijzen-criteria zoals Belichtingsproblemen, Misfires of Documenten.",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "Kies Gezichten selecteren, selecteer enkele gezichten en kies vervolgens Naar een aparte persoon verplaatsen om ze te splitsen in een nieuwe naamloze groep. De twee groepen zullen niet opnieuw als match worden voorgesteld. Selecteer één gezicht en kies Gebruiken als omslag om de galerijafbeelding te wijzigen.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Kies Selecties of Afgewezen om overeenkomsten te beoordelen voordat u markeringen toepast.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "Kies Film, of klik op Voorbeeldfilms op deze foto… om gerenderde voorbeelden te vergelijken.",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "Kies Onderwerp of Lucht voor een automatische selectie. Voor Object klikt u op Object en daarna op het object in de foto.",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "Kies TIFF met huidige aanpassingen en stel daarna TIFF-kleurruimte en TIFF-bitdiepte in.",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "Kies een foto om te beoordelen of te markeren",
     "Choose a preset to see its source and conversion coverage.": "Kies een voorinstelling om de bron- en conversiedekking te bekijken.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Kies een afdrukproces voor negatieven en begrijp waarom afdrukbedieningen verdwijnen voor diafilm.",
-    "Choose a reject criterion above.": "Kies hierboven een afwijscriterium.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Kies een opgeslagen punt in de selector om het te bewerken, of gebruik Punt verwijderen om het te verwijderen.",
     "Choose a saved preset to submit": "Kies een opgeslagen voorinstelling om in te dienen",
     "Choose a scheme": "Kies een schema",
-    "Choose a select criterion above.": "Kies hierboven een selectiecriterium.",
     "Choose a settings folder": "Kies een instellingenmap",
     "Choose a source and destination first.": "Kies eerst een bron en bestemming.",
     "Choose a source and destination, then scan.": "Kies een bron en bestemming en scan vervolgens.",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "Kies een andere map in het menu Bestand.",
     "Choose application…": "Kies toepassing…",
     "Choose catalog…": "Catalogus kiezen…",
+    "Choose criteria above.": "Kies hierboven criteria.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "Kies bewerkingsinstellingen om te kopiëren ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "Kies precies welke foto's je wilt exporteren, bekijk het uitvoervoorbeeld en bewaak de voortgang.",
     "Choose export size, format, and color space": "Kies exportgrootte, formaat en kleurruimte",
@@ -547,6 +548,7 @@
     "Choose your language": "Kies uw taal",
     "Choose your preferred language in the first-use dialog.": "Kies je voorkeurstaal in het dialoogvenster voor eerste gebruik.",
     "Choose…": "Kies…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Als u een criterium kiest, worden de overeenkomende foto's in het raster geopend. Gebruik Selecties, Afgewezen of Alles om de beoordelingsweergave te wijzigen. Andere bibliotheekfilters blijven van toepassing.",
     "Choosing a file needs the desktop app; paste a path instead": "Voor het kiezen van een bestand is de desktop-app nodig; plak in plaats daarvan een pad",
     "Choosing a folder needs the desktop app; paste a path instead": "Een map kiezen vereist de desktop-app; plak in plaats daarvan een pad",
     "Chromatic aberration": "Chromatische aberratie",
@@ -690,6 +692,7 @@
     "Compare": "Vergelijken",
     "Compare Before & After": "Voor en na vergelijken",
     "Compare several photos in Survey": "Meerdere foto's vergelijken in Overzicht",
+    "Compare similar photos": "Vergelijk vergelijkbare foto's",
     "Compare the faces before combining their photos.": "Vergelijk de gezichten voordat u hun foto's samenvoegt.",
     "Compare while zoomed in": "Vergelijken terwijl ingezoomd",
     "Compare with a reference image": "Vergelijken met een referentieafbeelding",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "Kopieert elke leesbare rij naar een nieuw bestand. Nu leesbaar: {value}. Behoudt bewerkingen die na de laatste back-up zijn gemaakt; rijen op beschadigde pagina's gaan verloren.",
     "Copy": "Kopiëren",
     "Copy Edit Settings": "Bewerkingsinstellingen kopiëren",
+    "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen.",
     "Copy and verify it into the library": "Kopieer het en verifieer het in de catalogus",
     "Copy anyway": "Toch kopiëren",
@@ -980,6 +984,7 @@
     "Downloading update…": "Update downloaden…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "Sleep Hoeveelheid van 0% naar 100%. Nul zet de bewerking terug naar vóór de voorinstelling; 100% gebruikt de volledige voorinstelling. Dubbelklik op Hoeveelheid om deze terug te zetten naar 100%.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "Sleep een handgreep om de uitsnede te wijzigen; de foto zoomt zodat het kader gecentreerd blijft. Sleep binnen het kader om de foto eronder te verplaatsen, of buiten het kader om een nieuwe uitsnede te tekenen.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Versleep een van de punten om het verloop aan te passen. Versleep de lijn om het te verplaatsen. Sleep ergens anders om het opnieuw te tekenen.",
     "Drag either on-image circle to refine the target or source.": "Sleep aan de cirkel op de afbeelding om het doel of de bron te verfijnen.",
     "Drag on the photo to change the selected gradient’s shape or position": "Sleep op de foto om de vorm of positie van het geselecteerde verloop te wijzigen",
     "Drag on the photo to edit the {tool} mask.": "Sleep over de foto om het {tool}-masker te bewerken.",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "Elk penseel of elke geschilderde verfijning bevat maximaal 64 streken, met maximaal 512 punten per streek en 20.000 maskerpunten per foto. De editor laat het u weten wanneer een limiet is bereikt.",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "Elke nieuwe back-up bevat een inhoudsmanifest en checksum, en wordt afzonderlijk opnieuw geopend om deze te verifiëren.",
     "Edit": "Bewerken",
+    "Edit History": "Bewerkingsgeschiedenis",
     "Edit In…": "Bewerken in…",
     "Edit Shape": "Vorm bewerken",
     "Edit a curve": "Een kromme bewerken",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "Fout: {error}",
     "Errors: {details}": "Fouten: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Elke export sluit het geselecteerde ICC-profiel in. Kies sRGB, Display P3 of ProPhoto RGB in Kleurruimte.",
-    "Edit History": "Bewerkingsgeschiedenis",
     "Everyone": "Iedereen",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Iedereen toont zichtbare gezichtsgroepen. Naamloos toont groepen die nog niet zijn benoemd. Open een groep, typ een naam en kies Naam opslaan. Alleen namen die je invoert worden gebruikt; het model kent de namen van personen niet.",
     "Example download prepared. Your edit has not changed.": "Voorbeelddownload voorbereid. Je bewerking is niet gewijzigd.",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "Metagegevens uitwisselen via XMP-sidecars",
     "Existing LightTable edits could not be merged safely": "Bestaande LightTable-bewerkingen konden niet veilig worden samengevoegd",
     "Existing files": "Bestaande bestanden",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Bestaande markeringen blijven standaard behouden. Schakel Bestaande markeringen vervangen alleen in wanneer u eerdere beslissingen wilt wijzigen. Batchacties hebben invloed op de weergegeven overeenkomsten en omvatten gekoppelde RAW/JPEG-bestanden wanneer metadata-koppeling is ingeschakeld; beschermde of al overeenkomende markeringen worden uitgesloten van het actieaantal.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Bestaande markeringen blijven behouden. Aantallen omvatten niet-gemarkeerde gekoppelde RAW/JPEG-bestanden.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Bestaande markeringen kunnen worden vervangen. Aantallen omvatten gekoppelde RAW/JPEG-bestanden.",
     "Existing settings could not be loaded; this photo was left unchanged": "Bestaande instellingen konden niet worden geladen; deze foto is ongewijzigd gelaten",
     "Expand Advanced and edit Filename template.": "Klap Geavanceerd uit en bewerk het bestandsnaamsjabloon.",
     "Expand Advanced in Export.": "Breid Geavanceerd uit in Exporteren.",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "Overzichtsfoto markeren en beoordelen",
     "Flag and rating filters": "Markering- en beoordelingsfilters",
     "Flag as Pick": "Als keuze markeren",
+    "Flag {count} photo as a pick": "Markeer {count} foto als selectie",
+    "Flag {count} photo as a reject": "Markeer {count} foto als afwijzing",
+    "Flag {count} photos as picks": "Markeer {count} foto's als selecties",
+    "Flag {count} photos as rejects": "Markeer {count} foto's als afwijzingen",
     "Flags and ratings apply to selection": "Markeringen en beoordelingen worden toegepast op de selectie",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "Markeringen en sterren zijn gescheiden: een foto kan Gekozen zijn en elke sterbeoordeling hebben. Afwijzen markeert een foto voor beoordeling; het verwijdert deze niet.",
     "Flip horizontal": "Horizontaal spiegelen",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "Foto's groeperen in collecties",
     "Group similar faces and search names you add.": "Vergelijk vergelijkbare gezichten en zoek naar namen die u toevoegt.",
     "Group the rendered derivative with its source in the catalog.": "Gropeer het gerenderde afgeleide bestand met de bron in de catalogus.",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Groep {index} van {count}. Geen duidelijke aanbeveling; vergelijk deze foto's.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Groep {index} van {count}. Voorgesteld: {name}. Gebaseerd op scherpte en oogcontroles; beoordeel elk beeld afzonderlijk.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Groeperen vereist werkelijke opnametijden en huidige Photo Index-analyse. Bestanden met alleen bestandssysteemdatums, video's, virtuele kopieën en foto's zonder voldoende visuele details worden uitgesloten. Bestaande indexrecords worden na deze update ververst door de indexworker.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "Hier verschijnen groepen terwijl foto's worden gescand. Je kunt doorgaan met bewerken terwijl dit loopt.",
     "Guides for your photographs, from first edit to export.": "Handleiding voor je foto's, van eerste bewerking tot export.",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR accepteert 2–9 belichtingsbracket-foto’s met overeenkomende afmetingen. Het lijnt frames uit en voegt de belichting samen voor display-gerenderde frames om bruikbare tonen in balans te brengen. Controleer bewegende onderwerpen en randen op samenvoegartefacten.",
@@ -1431,6 +1446,7 @@
     "Import…": "Importeren…",
     "Improve preview speed and check image detail": "Verbeter de voorbeeldsnelheid en controleer beelddetails",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "Kies in Community Aanbevolen, Nieuw of Alles en gebruik Onderwerp om de verzameling te verfijnen. Selecteer een voorinstelling om de beschrijving, maker, versie, Film-gedrag en beschikbare voorbeeldfoto's te zien.",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "Sleep in Vorm bewerken de middelste handgreep om het masker te verplaatsen, een van de ashandgrepen om de grootte aan te passen, of de buitenste handgreep om het te roteren. Houd Shift ingedrukt tijdens het tekenen of vergroten/verkleinen om het verloop rond te maken.",
     "In Film profile, choose Film format.": "Kies in het Film-profiel het Film-formaat.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "In Info vouwt u Beschrijving uit voor titel, bijschrift en kop; Rechten voor maker, copyright en credit; of Plaats voor locatie en coördinaten. Wijzigingen worden opgeslagen in de catalogus terwijl u typt. Openen in Maps is beschikbaar nadat de metagegevens van deze foto zijn geladen en zowel breedtegraad als lengtegraad geldig zijn. Hiermee wordt de locatie geopend in uw browser.",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Inspecteer de afbeelding op 1:1 en wacht tot de details van het voorbeeld zijn voltooid voordat je de structuur beoordeelt.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Inspecteer de overlay en gebruik waar nodig geschilderde verfijningen rond randen.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Controleer de afgewezen foto's. Controleer de instellingen voor gekoppelde bestanden en vouw eventueel stapels uit als u verwacht de andere leden mee te nemen.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Inspecteer de suggesties en gebruik daarna Kiezen selecteert of Afwijzen wijst af als je die markeringen wilt toepassen.",
     "Interface": "Interface",
     "Interface and behavior": "Interface en gedrag",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Interface bestuurt de achtergrond van de viewer, lettergrootte, Lights Out, het overlay met loupe-info en bijsnijdhulplijnen. Deze voorkeuren wijzigen het uiterlijk van de werkruimte zonder de geëxporteerde pixels te wijzigen.",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Breng lokale aanpassingen aan met Penseel-, Lineaire en Radiale maskers",
     "Make photos easier to find and prepare descriptive metadata for export.": "Maak foto's makkelijker te vinden en bereid beschrijvende metagegevens voor export voor.",
     "Make select": "Selectie maken",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Maak selecteren de actieve overzichtsfoto tot gekozen foto en wijst het de andere foto’s in het overzicht af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metadata kan deze markeringswijzigingen ook uitbreiden naar begeleidende bestanden.",
     "Make the source photo active.": "Maak de bronfoto actief.",
     "Make your adjustment, then check the save status in the app.": "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
     "Manage cache storage": "Cache-opslag beheren",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "Nieuwer dan deze build",
     "Next": "Volgende",
     "Next Photo": "Volgende foto",
+    "Next group": "Volgende groep",
     "Next presets": "Volgende voorinstellingen",
     "No Rating": "Geen beoordeling",
     "No TIFF was created.": "Er is geen TIFF gemaakt.",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "Nog geen voorinstellingen in deze collectie.",
     "No rejected photos in this view": "Er zijn geen afgewezen foto's in deze weergave",
     "No sampled colors": "Geen gesamplede kleuren",
+    "No similar groups found. Photos need current index analysis and capture times.": "Geen vergelijkbare groepen gevonden. Foto's hebben huidige indexanalyse en opnametijden nodig.",
     "No sources yet.": "Nog geen bronnen.",
     "No steps recorded yet.": "Nog geen stappen vastgelegd.",
     "No usable lines found.": "Geen bruikbare regels gevonden.",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "Kiezen (P)",
     "Pick / reject / unflag": "Kiezen / afwijzen / markering verwijderen",
     "Pick a preset": "Kies een voorinstelling",
-    "Pick selects": "Kiezen selecteert",
-    "Pick the selects": "Kies de selecties",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{count} foto kiezen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{count} foto's kiezen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Pick {count} select": "Kies {count} selecteren",
-    "Pick {count} selects": "{count} selecties kiezen",
     "Pick, reject, and rate photos": "Kiezen, afwijzen en foto's beoordelen",
     "Picked": "Gekozen",
     "Picked only": "Alleen gekozen",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "Voorbeelden gebruiken de bewerkingen van deze foto. Kies een film om ze toe te passen.",
     "Previous": "Vorige",
     "Previous Photo": "Vorige foto",
+    "Previous group": "Vorige groep",
     "Previous presets": "Vorige voorinstellingen",
     "Print development": "Printontwikkeling",
     "Print exposure": "Afdrukbelichting",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "Community vernieuwen…",
     "Reject": "Afwijzen",
     "Reject (X)": "Afwijzen (X)",
-    "Reject rejects": "Afwijzen van afgewezen foto's",
-    "Reject the rejects": "De afgewezen items afwijzen",
-    "Reject {count} photo": "{count} foto afwijzen",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{count} foto afwijzen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Reject {count} photos": "{count} foto's afwijzen",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{count} foto's afwijzen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
     "Rejected": "Afgewezen",
     "Rejected {count} photo": "{count} foto afgewezen",
     "Rejected {count} photos": "{count} foto's afgewezen",
@@ -2317,6 +2322,7 @@
     "Repair": "Herstellen",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "Herhaal dit voor de andere regio’s, of klik Globale bewerking bewerken om de globale behandeling te wijzigen.",
     "Replace adjustment settings": "Aanpassingsinstellingen vervangen",
+    "Replace existing flags": "Bestaande markeringen vervangen",
     "Replace local masks; detect AI selections on each photo": "Lokale maskers vervangen; detecteer AI-selecties op elke foto",
     "Replace with imported": "Vervangen door geïmporteerde",
     "Replaced adjustments with {name}": "Aanpassingen vervangen door {name}",
@@ -2368,6 +2374,8 @@
     "Restored that step": "Die stap hersteld",
     "Restored {count} capture. You can also restore capture-time steps in History.": "{count} opname hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten.",
     "Restored {count} captures. You can also restore capture-time steps in History.": "{count} opnames hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten.",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count} fotomarkering hersteld. Latere markeringswijzigingen blijven behouden.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count} fotomarkeringen hersteld. Latere markeringswijzigingen blijven behouden.",
     "Restore…": "Herstellen…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "Het herstellen van een back-up zet catalogusgegevens terug naar de toestand van die back-up, zodat latere bewerkingen daar niet in staan. Wanneer een werkcatalogus wordt hersteld, wordt de huidige catalogus eerst geback-upt.",
     "Result name": "Resultaatnaam",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Beoordelen van matches toont twee mogelijke groepen met gezichtssamples. Dezelfde persoon voegt ze samen. Verschillende personen registreert een correctie zodat koppelen niet opnieuw wordt voorgesteld. Voor nu overslaan laat de match staan voor een later moment.",
     "Review photos from the source using the destination and naming settings": "Controleer foto's uit de bron met de instellingen voor bestemming en naamgeving",
     "Review signals": "Signalen beoordelen",
+    "Review similar photos": "Vergelijkbare foto's beoordelen",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Vergelijkbare foto's beoordelen zoekt visueel vergelijkbare geïndexeerde foto's die binnen 30 seconden zijn vastgelegd in de huidige map of collectie. Groepen openen in Overzicht met maximaal 16 foto's. Gebruik Vorige groep en Volgende groep om de alternatieven te vergelijken en markeer daarna afzonderlijke foto's met de overzichtsbediening.",
     "Review the before-and-after filenames in the preview.": "Bekijk in het voorbeeld de bestandsnamen voor en na de wijziging.",
     "Review the current view carefully before moving rejected originals and sidecars.": "Bekijk de huidige weergave zorgvuldig voordat je afgewezen originelen en sidecars verplaatst.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Beoordeel de weergegeven foto's en gebruik daarna Foto's markeren als selecties of Foto's markeren als afwijzingen. De knop toont hoeveel bestanden worden gewijzigd.",
     "Review the import result and the new preset’s conversion coverage before applying it.": "Bekijk het importresultaat en de conversiedekking van de nieuwe voorinstelling voordat je deze toepast.",
     "Review the import result, then continue into the library.": "Controleer het importresultaat en ga daarna door naar de bibliotheek.",
     "Review the result and refine the sliders for the photograph.": "Controleer het resultaat en verfijn de schuifregelaars voor de foto.",
     "Review transferred masks": "Overgebrachte maskers beoordelen",
     "Review translated edits": "Vertaalde bewerkingen beoordelen",
     "Reviewing every photo.": "Elke foto beoordelen.",
-    "Reviewing {count} photo that met a reject criterion.": "Bezig met beoordelen van {count} foto die aan een afwijzingscriterium voldeed.",
-    "Reviewing {count} photo that met a select criterion.": "Bezig met beoordelen van {count} foto die aan een selectiecriterium voldeed.",
-    "Reviewing {count} photos that met a reject criterion.": "Bezig met beoordelen van {count} foto's die aan een afwijzingscriterium voldeden.",
-    "Reviewing {count} photos that met a select criterion.": "Bezig met beoordelen van {count} foto's die aan een selectiecriterium voldeden.",
     "Rich descriptions on": "Rijke beschrijvingen aan",
     "Richer descriptions require macOS 27 or later": "Rijkere beschrijvingen vereisen macOS 27 of later",
     "Rights": "Rechten",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "Selecteer een bereik van afstanden vanaf de camera; verfijn de verre en nabije limieten",
     "Select all": "Alles selecteren",
     "Select an active reference photo first": "Selecteer eerst een actieve referentiefoto",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn.",
     "Select an existing mask, then expand Create New Mask.": "Selecteer een bestaand masker en vouw vervolgens Nieuw masker maken uit.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "Selecteer een andere band om door te gaan, of gebruik Opnieuw instellen van Kleurenmixer om de mixeraanpassingen te wissen.",
     "Select at least two distinct originals": "Selecteer ten minste twee verschillende originelen",
@@ -2617,6 +2625,7 @@
     "Settings…": "Instellingen…",
     "Shadows": "Schaduwen",
     "Shape": "Vorm",
+    "Shape a linear gradient": "Een lineair verloop vormgeven",
     "Shape a radial gradient": "Maak een radiaal verloopvorm",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "Vorm biedt ook de regelaars Breedte, Hoogte, Rotatie en Vervaging.",
     "Shape contrast and color with curves": "Vorm contrast en kleur met krommen",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "De catalogus is ongewijzigd gebleven.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "De catalogus is hersteld vanuit een geverifieerde back-up; de beschadigde kopie staat in de map Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Automatische groepering gebruikt conservatieve gelijkenisregels; mogelijke matches blijven gescheiden voor beoordeling. Nieuwe gezichten die overeenkomen met een benoemde persoon worden voorgesteld ter bevestiging.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "De bevestiging toont het getroffen aantal en waarschuwt dat bestaande markeringen op overeenkomende foto’s zullen worden vervangen. Gekoppelde RAW/JPEG-metadata kan ook het gekoppelde bestand bevatten wanneer die voorkeur is ingeschakeld.",
     "The current catalog is backed up first, then replaced by this one.": "De huidige catalogus wordt eerst geback-upt en daarna vervangen door deze.",
     "The desktop Trash service (gio) is unavailable": "De Prullenmandservice van het bureaublad (gio) is niet beschikbaar",
     "The desktop app checks its signed update feed.": "De desktopapp controleert zijn ondertekende updatefeed.",
@@ -2987,6 +2995,7 @@
     "Undo last change": "Laatste wijziging ongedaan maken",
     "Undo last correction": "Laatste correctie ongedaan maken",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "Laatste correctie ongedaan maken draait de meest recente correctie terug die in dit venster wordt vastgehouden. Cameratijden herstellen… toont een voorbeeld van het verwijderen van cataloguscorrigeringen; bekijk het voorbeeld en pas het toe om de oorspronkelijke cameratijden te herstellen. Opnamedatumstappen zijn ook beschikbaar in Geschiedenis. Wanneer XMP schrijven is ingeschakeld, herstelt het opnieuw instellen van een correctie de sidecar-datums die zijn opgeslagen voordat LightTable deze toepaste. Opnamedatums in oudere sidecars zonder die opgeslagen datum blijven ongewijzigd.",
+    "Undo last flag batch": "Laatste markering-batch ongedaan maken",
     "Undo or restore an earlier step": "Een eerdere stap ongedaan maken of terugzetten",
     "Undo snapshots must be strings": "Ongedaan-makingsmomentopnamen moeten tekenreeksen zijn",
     "Unedited": "Onbewerkt",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Gebruik Schalen, Horizontaal en Verticaal om de referentie met je foto uit te lijnen.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Gebruik Nieuwe foto's scannen nadat je foto's hebt toegevoegd of niet-beschikbare originelen hebt teruggezet. Eerder gescande, ongewijzigde foto's worden opnieuw gebruikt.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Gebruik Scoop, WinGet, Chocolatey, AUR, Flatpak of Snap om de installaties die zij beheren bij te werken. Download een nieuwe ZIP voor draagbare Windows-kopieën. Builds zonder ingestelde ondertekening van updates kunnen zichzelf niet bijwerken.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Gebruik Selecties, Afgewezen of Alles om de overeenkomende foto's te beoordelen.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Gebruik Temp en Tint of neem een monster van een neutraal gebied en pas daarna Levendigheid en Verzadiging aan.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Gebruik Ongedaan maken voor recent werk, Geschiedenis voor opgeslagen bewerkingsstappen en benoemde momentopnamen voor looks die je opnieuw wilt bekijken.",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Gebruik Ongedaan maken in het voltooiingsbericht of Laatste markering-batch ongedaan maken in de zijbalk om een batch te herstellen. Ongedaan maken blijft beschikbaar tijdens deze sessie en behoudt eventuele latere handmatige of externe markeringsbeslissingen. Als opslaan mislukt, gebruik dan Opslaan opnieuw proberen of maak de batch ongedaan; mislukte schrijfbewerkingen blijven in de wachtrij.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Gebruik Trefwoordwijziging ongedaan maken om de laatste batch te herstellen zolang dit venster open blijft. Ongedaan maken weigert trefwoorden te overschrijven die na die batch zijn gewijzigd. Foto-geschiedenis bewaart ook de trefwoordtoestanden voor en na.",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "Gebruik Uniforme kleurtoon, Uniforme verzadiging of Uniforme luminantie om kleuren in het bereik meer op het gesamplede vlak te laten lijken.",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "Gebruik een paar punten en vergelijk de foto terwijl je werkt; kanaalkrommen kunnen sterke kleurzweem veroorzaken.",
@@ -3162,6 +3171,7 @@
     "What to expect": "Wat u kunt verwachten",
     "What to open": "Wat openen",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Wanneer MIDI beschikbaar is, open Toetsenbord- en MIDI-besturing en kies MIDI leren. Sta MIDI-toegang toe als uw browser daarom vraagt.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
     "When a photo already has edits": "Wanneer een foto al bewerkingen heeft",
     "When a photo arrives": "Wanneer een foto binnenkomt",
     "When a photo seems missing": "Wanneer een foto ontbrekend lijkt",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} groepen",
     "{count} indexed photo remains local until deleted.": "{count} geïndexeerde foto blijft lokaal totdat deze wordt verwijderd.",
     "{count} indexed photos remain local until deleted.": "{count} geïndexeerde foto's blijven lokaal totdat deze worden verwijderd.",
+    "{count} matching photo shown: {criteria}.": "{count} overeenkomende foto weergegeven: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} overeenkomende foto's weergegeven: {criteria}.",
     "{count} minimum alignment inlier": "{count} minimale uitlijningsinlier",
     "{count} minimum alignment inliers": "{count} minimale uitlijningsinliers",
     "{count} missing": "{count} ontbrekend",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Versleep een van de punten om het verloop aan te passen. Versleep de lijn om het te verplaatsen. Sleep ergens anders om het opnieuw te tekenen.",
-    "Shape a linear gradient": "Een lineair verloop vormgeven",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn.",
-    "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave."
+    "☆ Favorites": "☆ Favorieten"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4142,6 +4149,14 @@
     "Exporting {count} photo to {destination}…": {
       "one": "{count} foto exporteren naar {destination}…",
       "other": "{count} foto's exporteren naar {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Markeer {count} foto als selectie",
+      "other": "Markeer {count} foto's als selecties"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Markeer {count} foto als afwijzing",
+      "other": "Markeer {count} foto's als afwijzingen"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "{count} foto geïmporteerd uit Apple Photos{value}",
@@ -4163,25 +4178,9 @@
       "one": "Geplakt naar {count} foto",
       "other": "Geplakt naar {count} foto's"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{count} foto kiezen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-      "other": "{count} foto's kiezen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen."
-    },
-    "Pick {count} select": {
-      "one": "Kies {count} selecteren",
-      "other": "{count} selecties kiezen"
-    },
     "Picked {count} photo": {
       "one": "{count} foto gekozen",
       "other": "{count} foto's gekozen"
-    },
-    "Reject {count} photo": {
-      "one": "{count} foto afwijzen",
-      "other": "{count} foto's afwijzen"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{count} foto afwijzen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-      "other": "{count} foto's afwijzen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen."
     },
     "Rejected {count} photo": {
       "one": "{count} foto afgewezen",
@@ -4195,13 +4194,9 @@
       "one": "{count} opname hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten.",
       "other": "{count} opnames hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Bezig met beoordelen van {count} foto die aan een afwijzingscriterium voldeed.",
-      "other": "Bezig met beoordelen van {count} foto's die aan een afwijzingscriterium voldeden."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Bezig met beoordelen van {count} foto die aan een selectiecriterium voldeed.",
-      "other": "Bezig met beoordelen van {count} foto's die aan een selectiecriterium voldeden."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "{count} fotomarkering hersteld. Latere markeringswijzigingen blijven behouden.",
+      "other": "{count} fotomarkeringen hersteld. Latere markeringswijzigingen blijven behouden."
     },
     "Wrote {count} sidecar.": {
       "one": "{count} sidecar weggeschreven.",
@@ -4251,9 +4246,17 @@
       "one": "{count} duplicaatgroep met {files}.",
       "other": "{count} duplicaatgroepen met {files}."
     },
+    "{count} empty file": {
+      "one": "{count} leeg bestand",
+      "other": "{count} lege bestanden"
+    },
     "{count} error": {
       "one": "{count} fout",
       "other": "{count} fouten"
+    },
+    "{count} face": {
+      "one": "{count} gezicht",
+      "other": "{count} gezichten"
     },
     "{count} face detected": {
       "one": "{count} gezicht gedetecteerd",
@@ -4271,9 +4274,21 @@
       "one": "{count} bestand",
       "other": "{count} bestanden"
     },
+    "{count} file not downloaded": {
+      "one": "{count} bestand niet gedownload",
+      "other": "{count} bestanden niet gedownload"
+    },
+    "{count} group": {
+      "one": "{count} groep",
+      "other": "{count} groepen"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} geïndexeerde foto blijft lokaal totdat deze wordt verwijderd.",
       "other": "{count} geïndexeerde foto's blijven lokaal totdat deze worden verwijderd."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count} overeenkomende foto weergegeven: {criteria}.",
+      "other": "{count} overeenkomende foto's weergegeven: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} minimale uitlijningsinlier",
@@ -4323,6 +4338,10 @@
       "one": "{count} foto geselecteerd",
       "other": "{count} foto's geselecteerd"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} foto overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op.",
+      "other": "{count} foto's overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op."
+    },
     "{count} photo updated": {
       "one": "{count} foto bijgewerkt",
       "other": "{count} foto's bijgewerkt"
@@ -4339,6 +4358,10 @@
       "one": "{count} beoordeelde foto",
       "other": "{count} beoordeelde foto's"
     },
+    "{count} selected": {
+      "one": "{count} geselecteerd",
+      "other": "{count} geselecteerd"
+    },
     "{count} selected photo": {
       "one": "{count} geselecteerde foto",
       "other": "{count} geselecteerde foto's"
@@ -4354,6 +4377,14 @@
     "{count} source": {
       "one": "{count} bron",
       "other": "{count} bronnen"
+    },
+    "{count} unavailable file": {
+      "one": "{count} niet-beschikbaar bestand",
+      "other": "{count} niet-beschikbare bestanden"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} niet-beschikbare foto overgeslagen",
+      "other": "{count} niet-beschikbare foto's overgeslagen"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} niet-ondersteunde instelling overgeslagen",
@@ -4382,39 +4413,7 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "{value} onverwachte afsluiting in de afgelopen 24 uur.",
       "other": "{value} onverwachte afsluitingen in de afgelopen 24 uur."
-    },
-    "{count} empty file": {
-      "one": "{count} leeg bestand",
-      "other": "{count} lege bestanden"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} bestand niet gedownload",
-      "other": "{count} bestanden niet gedownload"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} foto overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op.",
-      "other": "{count} foto's overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op."
-    },
-    "{count} unavailable file": {
-      "one": "{count} niet-beschikbaar bestand",
-      "other": "{count} niet-beschikbare bestanden"
-    },
-    "{count} face": {
-      "one": "{count} gezicht",
-      "other": "{count} gezichten"
-    },
-    "{count} group": {
-      "one": "{count} groep",
-      "other": "{count} groepen"
-    },
-    "{count} selected": {
-      "one": "{count} geselecteerd",
-      "other": "{count} geselecteerd"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} niet-beschikbare foto overgeslagen",
-      "other": "{count} niet-beschikbare foto's overgeslagen"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

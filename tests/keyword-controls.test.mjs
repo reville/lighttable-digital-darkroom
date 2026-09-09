@@ -31,7 +31,7 @@ function libraryHarness() {
     activeFolder: '', includeSubfolders: true, cull: {review: 'all', on: {}, revision: 0}};
   const saves = [];
   const pending = new Map();
-  const context = vm.createContext({S: state, $: element, cur: () => photo, APP_PREFS: {},
+  const context = vm.createContext({CULL_BATCH: {noteFlagChange() {}}, S: state, $: element, cur: () => photo, APP_PREFS: {},
     LIBRARY_FILTERS: {types: () => [], metadata: () => ({})}, CULL_SELECT: [], CULL_REJECT: [],
     pairViewPreference: () => 'both', collapsePairs: list => list, photoMatchesRules: () => true,
     matchesCullReview: () => true, matchesLibraryFilters: () => true,

@@ -52,6 +52,19 @@ none of those keywords has changed afterward. Photo History also retains the
 before and after states. Batches support up to 5,000 photos, including RAW/JPEG
 companions when **Link pair metadata** is enabled.
 
+### Assisted culling
+
+Choose a criterion to review matching photos in the grid, then apply pick or
+reject flags to the displayed matches. Existing flags are preserved unless
+**Replace existing flags** is enabled. Counts include linked RAW/JPEG files;
+**Undo last flag batch** restores the batch without overwriting later decisions.
+
+**Review similar photos** opens conservative groups in Survey, using visual
+similarity and actual capture times within 30 seconds. Focus and eye checks can
+suggest a strongest frame; ties or insufficient evidence show no recommendation.
+These groups do not change flags or create catalog stacks. New analysis requires
+the macOS Photo Index; existing records refresh through its worker.
+
 ## Exchange metadata through XMP
 
 1. In the other editor, save metadata to adjacent XMP sidecars.

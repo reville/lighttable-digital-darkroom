@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "Снимок сохраняет текущие настройки коррекции фото, кадрирование, маски, коррекции Удалить и оптику. Это сохраненное состояние редактирования для этого фото. Создать снимок недоступно, пока фото не загружено.",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "Сохраненная кривая остается точной, пока вы ее не измените. Редактор перестраивает опорные маркеры, поэтому первая корректировка может изменить импортированную кривую сильнее, чем перемещенная точка.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Сохраненная или импортированная кривая сохраняет свою точную сохраненную таблицу до тех пор, пока вы ее не отредактируете. Приложение перестраивает репрезентативные маркеры для редактирования, поэтому первая корректировка может изменить импортированную кривую сильнее, чем точка, которую вы перемещаете.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "У рекомендованного фото оценка заметно лучше по фокусу, открытым глазам и обнаруженным проблемам. При равенстве или недостатке данных явной рекомендации нет. Группы сходства — это рекомендации; они не создают стопки и не изменяют флажки.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "Виртуальная копия относится к тому же исходному файлу и имеет независимое состояние редактирования. Она не создает второй исходный файл на диске.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "Виртуальная копия использует общий исходный файл. Для удаления виртуальной копии следует использовать действия Фото → Удалить виртуальную копию; перемещение ее источника в Корзину влияет на каждую правку, использующую этот исходник.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "Виртуальная копия использует общий исходный файл: включение ее в переименование переименовывает этот исходный файл. В интерфейсе нет отдельной кнопки отмены переименования.",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "Выберите Удалить, Восстановить или Клонировать, затем задайте Размер, Растушевка и Непрозрачность.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Выберите критерии «Выбрать», такие как «Резкость объекта», «Резкость глаз» или «Глаза открыты», либо критерии «Отклонить», такие как «Проблемы с экспозицией», «Ошибочные срабатывания» или «Документы».",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "Выберите Select faces, выберите несколько лиц, затем Move to a separate person, чтобы разделить их на новую безымянную группу. Эти две группы больше не будут предлагаться как совпадение. Выберите одно лицо и Use as cover, чтобы изменить изображение в галерее.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Выберите Выбранные или Отклоненные, чтобы просмотреть совпадения перед применением флажков.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "Выберите Пленка или нажмите Просмотреть Пленка в этом фото…, чтобы сравнить отрендеренные примеры.",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "Выберите «Объект» или «Небо» для автоматического выделения. Для «Объект» нажмите «Объект», а затем щелкните объект на фото.",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "Выберите TIFF с текущими настройками, затем задайте цветовое пространство TIFF и глубину TIFF.",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Choose a preset to see its source and conversion coverage.": "Выберите пресет, чтобы увидеть его исходный профиль и покрытие преобразования.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Выберите процесс печати для негативов и поймите, почему элементы управления печатью исчезают для слайд-пленки.",
-    "Choose a reject criterion above.": "Выберите критерий отклонения выше.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Выберите сохраненную точку в селекторе, чтобы отредактировать ее, или используйте Удалить точку, чтобы убрать ее.",
     "Choose a saved preset to submit": "Выберите сохраненный пресет для отправки",
     "Choose a scheme": "Выберите схему",
-    "Choose a select criterion above.": "Выберите критерий выбора выше.",
     "Choose a settings folder": "Выберите папку настроек",
     "Choose a source and destination first.": "Сначала выберите источник и назначение.",
     "Choose a source and destination, then scan.": "Выберите источник и назначение, затем сканируйте.",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "Выберите другую папку в меню Файл.",
     "Choose application…": "Выбрать приложение…",
     "Choose catalog…": "Выбрать каталог…",
+    "Choose criteria above.": "Выберите критерии выше.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "Выберите настройки правок для копирования ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "Выберите, какие именно фото экспортировать, просмотрите вывод и следите за ходом выполнения.",
     "Choose export size, format, and color space": "Выберите размер экспорта, формат и цветовое пространство",
@@ -547,6 +548,7 @@
     "Choose your language": "Выберите язык",
     "Choose your preferred language in the first-use dialog.": "Выберите предпочитаемый язык в диалоге первого запуска.",
     "Choose…": "Выбрать…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Выбор критерия открывает соответствующие фото в сетке. Используйте Выбранные, Отклоненные или Все, чтобы изменить режим проверки. Другие фильтры библиотеки по-прежнему применяются.",
     "Choosing a file needs the desktop app; paste a path instead": "Для выбора файла требуется настольное приложение; вместо этого вставьте путь",
     "Choosing a folder needs the desktop app; paste a path instead": "Для выбора папки нужно настольное приложение; вместо этого вставьте путь",
     "Chromatic aberration": "Хроматическая аберрация",
@@ -690,6 +692,7 @@
     "Compare": "Сравнить",
     "Compare Before & After": "Сравнить до и после",
     "Compare several photos in Survey": "Сравнить несколько фото в Обзор",
+    "Compare similar photos": "Сравнить похожие фото",
     "Compare the faces before combining their photos.": "Сравните лица перед объединением их фото.",
     "Compare while zoomed in": "Сравнить при увеличении",
     "Compare with a reference image": "Сравнить с эталонным изображением",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "Копирует каждую читаемую строку в новый файл. Сейчас читаемых: {value}. Сохраняет правки, сделанные после последней резервной копии; строки на повреждённых страницах будут потеряны.",
     "Copy": "Копировать",
     "Copy Edit Settings": "Скопировать настройки редактирования",
+    "Copy and Paste are below the photo in Detail view.": "Кнопки копирования и вставки находятся под фотографией в режиме подробного просмотра.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy и Paste передают группы, которые вы явно выбираете. Настройки в неотмеченных группах остаются такими, как есть на каждой цели. Это явный рабочий процесс copy/paste: последующие правки источника не синхронизируются автоматически с целями.",
     "Copy and verify it into the library": "Скопировать и проверить в библиотеке",
     "Copy anyway": "Копировать в любом случае",
@@ -980,6 +984,7 @@
     "Downloading update…": "Загрузка обновления…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "Перетащите Количество от 0% до 100%. Ноль восстанавливает редактирование до пресета; 100% использует полный пресет. Дважды щелкните Количество, чтобы сбросить его до 100%.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "Перетащите маркер, чтобы изменить размер кадрирования; фото масштабируется так, чтобы центрировать рамку. Перетащите внутри рамки, чтобы сдвинуть фото под ней, или снаружи, чтобы задать новое кадрирование.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Перетащите любую точку, чтобы настроить градиент. Перетащите линию, чтобы переместить его. Потяните в другом месте, чтобы нарисовать его заново.",
     "Drag either on-image circle to refine the target or source.": "Перетащите любой круг на изображении, чтобы уточнить цель или источник.",
     "Drag on the photo to change the selected gradient’s shape or position": "Перетащите по фото, чтобы изменить форму или положение выбранного градиента",
     "Drag on the photo to edit the {tool} mask.": "Перетащите по фото, чтобы редактировать маску {tool}.",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "Каждая кисть или нарисованная коррекция может содержать до 64 мазков, до 512 точек на мазок и до 20 000 точек маски на фото. Редактор сообщает вам, когда достигнут предел.",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "Каждая новая резервная копия включает манифест содержимого и контрольную сумму и открывается отдельно для проверки.",
     "Edit": "Редактировать",
+    "Edit History": "История редактирования",
     "Edit In…": "Редактировать в…",
     "Edit Shape": "Редактировать форму",
     "Edit a curve": "Редактировать кривую",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "Ошибка: {error}",
     "Errors: {details}": "Ошибки: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Каждый экспорт встраивает выбранный профиль ICC. В Colour space выберите sRGB, Display P3 или ProPhoto RGB.",
-    "Edit History": "История редактирования",
     "Everyone": "Все",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone показывает видимые группы лиц. Unnamed показывает группы, которым еще не присвоено имя. Откройте группу, введите имя и выберите Сохранить имя. Используются только введенные вами имена; модель не знает имен людей.",
     "Example download prepared. Your edit has not changed.": "Подготовлена загрузка примера. Ваше редактирование не изменилось.",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "Обмен метаданными через XMP-сайдкары",
     "Existing LightTable edits could not be merged safely": "Не удалось безопасно объединить существующие правки LightTable",
     "Existing files": "Существующие файлы",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "По умолчанию существующие флажки сохраняются. Включайте Заменить существующие флажки только когда хотите изменить предыдущие решения. Пакетные действия влияют на показанные совпадения и включают связанные файлы RAW/JPEG, когда включена привязка метаданных; защищенные или уже совпадающие флажки исключаются из подсчета действий.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Существующие флажки сохраняются. В подсчет входят не помеченные связанные файлы RAW/JPEG.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Существующие флажки могут быть заменены. В подсчет входят связанные файлы RAW/JPEG.",
     "Existing settings could not be loaded; this photo was left unchanged": "Не удалось загрузить существующие настройки; это фото оставлено без изменений",
     "Expand Advanced and edit Filename template.": "Разверните Дополнительно и отредактируйте шаблон имени файла.",
     "Expand Advanced in Export.": "Разверните Дополнительно в Экспорт.",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "Пометить флажком и оценить обзорное фото",
     "Flag and rating filters": "Фильтры флажков и рейтинга",
     "Flag as Pick": "Пометить как выбранное",
+    "Flag {count} photo as a pick": "Пометить {count} фото как выбранное",
+    "Flag {count} photo as a reject": "Пометить {count} фото как отклоненное",
+    "Flag {count} photos as picks": "Пометить {count} фото как выбранные",
+    "Flag {count} photos as rejects": "Пометить {count} фото как отклоненные",
     "Flags and ratings apply to selection": "Флажки и оценки применяются к выделению",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "Флажки и звезды — это разные вещи: у фото может быть «Выбрать» и любой рейтинг звезд. «Отклонить» помечает фото для проверки; это не удаляет его.",
     "Flip horizontal": "Отразить по горизонтали",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "Группировать фото в коллекции",
     "Group similar faces and search names you add.": "Группируйте похожие лица и ищите добавленные вами имена.",
     "Group the rendered derivative with its source in the catalog.": "Сгруппируйте обработанный производный файл с его источником в каталоге.",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Группа {index} из {count}. Явной рекомендации нет; сравните эти фото.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Группа {index} из {count}. Рекомендовано: {name}. Основано на проверке фокуса и глаз; проверьте каждый кадр.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Для группировки требуются фактическое Время съемки и текущий анализ Photo Index. Файлы только с датами файловой системы, видео, виртуальные копии и фото без достаточной визуальной детализации исключаются. Существующие записи индекса обновляются индексным процессом после этого обновления.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "Группы будут появляться здесь по мере сканирования фото. Вы можете продолжать редактирование, пока это выполняется.",
     "Guides for your photographs, from first edit to export.": "Руководства по вашим фотографиям — от первой правки до экспорта.",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR принимает 2–9 фото с брекетингом экспозиции и совпадающими размерами. Он выравнивает и сливает по экспозиции кадры, отображаемые на экране, чтобы сбалансировать полезные тона. Проверьте движущиеся объекты и края на наличие артефактов смешивания.",
@@ -1431,6 +1446,7 @@
     "Import…": "Импорт…",
     "Improve preview speed and check image detail": "Улучшите скорость предпросмотра и проверьте детализацию изображения",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "В Сообществе выберите Рекомендуемые, Новые или Все и используйте Объект, чтобы сузить коллекцию. Выберите пресет, чтобы увидеть его описание, автора, версию, поведение Пленки и доступные примеры фото.",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "В режиме «Редактировать форму» перетащите любую точку, чтобы настроить соответствующий конец градиента. Перетащите соединяющую их линию, чтобы переместить весь градиент, сохранив его угол и ширину перехода. Потяните в другом месте фотографии, чтобы нарисовать его заново.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "В Редактировать форму перетащите центральный маркер, чтобы переместить маску, любой маркер оси, чтобы изменить ее размер, или внешний маркер, чтобы повернуть ее. Удерживайте Shift при рисовании или изменении размера, чтобы сделать градиент круглым.",
     "In Film profile, choose Film format.": "В профиле Пленка выберите формат пленки.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "В Инфо разверните Описание для заголовка, подписи и подзаголовка; Права для автора, авторского права и упоминания; или Разместить для местоположения и координат. Изменения сохраняются в каталог по мере ввода. Открыть в Картах доступно после загрузки метаданных этого фото и если широта и долгота действительны. Оно открывает местоположение в вашем браузере.",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Проверьте изображение в масштабе 1:1 и дождитесь завершения детализации предпросмотра перед оценкой текстуры.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Проверьте наложение и при необходимости используйте нарисованные уточнения вдоль границ.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Проверьте отклоненные фото. Проверьте настройки пары файлов и разверните любые стопки, если ожидаете включить их другие элементы.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Просмотрите предложения, затем используйте Pick selects или Reject rejects, если хотите применить эти флажки.",
     "Interface": "Интерфейс",
     "Interface and behavior": "Интерфейс и поведение",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Элементы интерфейса управляют фоном просмотрщика, масштабом шрифта, Lights Out, наложением информации лупы и направляющими обрезки. Эти параметры изменяют внешний вид рабочей области, не меняя экспортируемые пиксели.",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Выполняйте локальные корректировки с помощью масок Кисть, Линейный и Радиальный",
     "Make photos easier to find and prepare descriptive metadata for export.": "Сделайте фото легче находить и подготовьте описательные метаданные для экспорта.",
     "Make select": "Сделать выделение",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Команда «Сделать выбранными» делает активное фото обзора выбранным, а остальные фото, оставшиеся в обзоре, — отклоненными. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространять эти изменения флажков на пары.",
     "Make the source photo active.": "Сделать исходное фото активным.",
     "Make your adjustment, then check the save status in the app.": "Сделайте корректировку, затем проверьте статус сохранения в приложении.",
     "Manage cache storage": "Управление хранилищем кэша",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "Новее, чем эта сборка",
     "Next": "Следующее",
     "Next Photo": "Следующее фото",
+    "Next group": "Следующая группа",
     "Next presets": "Следующие пресеты",
     "No Rating": "Нет рейтинга",
     "No TIFF was created.": "Ни один TIFF не был создан.",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "В этой коллекции пока нет пресетов.",
     "No rejected photos in this view": "В этом представлении нет отклоненных фото",
     "No sampled colors": "Нет выбранных цветов",
+    "No similar groups found. Photos need current index analysis and capture times.": "Похожих групп не найдено. Для фото требуется текущий анализ индекса и Время съемки.",
     "No sources yet.": "Пока нет источников.",
     "No steps recorded yet.": "Пока не записано ни одного шага.",
     "No usable lines found.": "Подходящих строк не найдено.",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "Выбрать (P)",
     "Pick / reject / unflag": "Выбрать / отклонить / снять флажок",
     "Pick a preset": "Выберите пресет",
-    "Pick selects": "Выбрать отмеченные",
-    "Pick the selects": "Выбрать выбранные",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Выбрать {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Pick {count} select": "Выбрать {count} выбор",
-    "Pick {count} selects": "Выбрать {count} выделенных",
     "Pick, reject, and rate photos": "Выбирать, отклонять и оценивать фото",
     "Picked": "Выбранные",
     "Picked only": "Только выбранные",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "Предпросмотры используют редактирование этого фото. Выберите пленку, чтобы применить его.",
     "Previous": "Предыдущее",
     "Previous Photo": "Предыдущее фото",
+    "Previous group": "Предыдущая группа",
     "Previous presets": "Предыдущие пресеты",
     "Print development": "Печать обработкой",
     "Print exposure": "Печатная экспозиция",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "Обновление сообщества…",
     "Reject": "Отклонить",
     "Reject (X)": "Отклонить (X)",
-    "Reject rejects": "Отклонить отклоненные",
-    "Reject the rejects": "Отклонить отклоненные",
-    "Reject {count} photo": "Отклонить {count} фото",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Отклонить {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Reject {count} photos": "Отклонить {count} фото",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
     "Rejected": "Отклоненные",
     "Rejected {count} photo": "Отклонено {count} фото",
     "Rejected {count} photos": "Отклонено {count} фото",
@@ -2317,6 +2322,7 @@
     "Repair": "Восстановить",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "Повторите для других областей или щелкните Edit global grade, чтобы изменить глобальную обработку.",
     "Replace adjustment settings": "Заменить настройки корректировки",
+    "Replace existing flags": "Заменить существующие флажки",
     "Replace local masks; detect AI selections on each photo": "Заменить локальные маски; определять AI-выделения на каждом фото",
     "Replace with imported": "Заменить на импортированные",
     "Replaced adjustments with {name}": "Заменены настройки на {name}",
@@ -2368,6 +2374,8 @@
     "Restored that step": "Этот шаг восстановлен",
     "Restored {count} capture. You can also restore capture-time steps in History.": "Восстановлено {count} съемка. Вы также можете восстановить шаги по времени съемки в «История».",
     "Restored {count} captures. You can also restore capture-time steps in History.": "Восстановлено {count} снимков. Вы также можете восстановить шаги по времени съемки в «История».",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Восстановлен флажок {count} фото. Последующие изменения флажков сохранены.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
     "Restore…": "Восстановить…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "Восстановление из резервной копии возвращает данные каталога к состоянию этой копии, поэтому более поздних изменений в ней нет. Когда восстанавливается рабочий каталог, текущий каталог сначала резервируется.",
     "Result name": "Имя результата",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Review matches показывает две возможные группы с образцами лиц. Same person объединяет их. Different people сохраняет исправление, чтобы это сочетание больше не предлагалось. Skip for now оставляет совпадение для более позднего просмотра.",
     "Review photos from the source using the destination and naming settings": "Просмотрите фото из источника, используя настройки назначения и именования",
     "Review signals": "Сигналы проверки",
+    "Review similar photos": "Просмотр похожих фото",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Просмотр похожих фото находит визуально похожие индексированные фото, снятые в течение 30 секунд, в текущей папке или коллекции. Группы открываются в Обзор с до 16 фото. Используйте Предыдущее группа и Следующее группа, чтобы сравнить альтернативы, а затем пометьте отдельные фото с помощью элементов управления обзора.",
     "Review the before-and-after filenames in the preview.": "Проверьте в предпросмотре имена файлов до и после.",
     "Review the current view carefully before moving rejected originals and sidecars.": "Тщательно проверьте текущий вид перед перемещением отклоненных оригиналов и сайдкаров.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Проверьте показанные фото, затем используйте Пометить фото как выбранные или Пометить фото как отклоненные. На кнопке показано, сколько файлов будет изменено.",
     "Review the import result and the new preset’s conversion coverage before applying it.": "Проверьте результат импорта и покрытие преобразования нового пресета перед применением.",
     "Review the import result, then continue into the library.": "Просмотрите результат импорта, затем продолжите в библиотеку.",
     "Review the result and refine the sliders for the photograph.": "Проверьте результат и уточните ползунки для фотографии.",
     "Review transferred masks": "Проверить перенесенные маски",
     "Review translated edits": "Проверить переведенные правки",
     "Reviewing every photo.": "Проверка каждого фото.",
-    "Reviewing {count} photo that met a reject criterion.": "Просмотр {count} фото, которое соответствовало критерию отклонения.",
-    "Reviewing {count} photo that met a select criterion.": "Просмотр {count} фото, которое соответствовало критерию выбора.",
-    "Reviewing {count} photos that met a reject criterion.": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-    "Reviewing {count} photos that met a select criterion.": "Просмотр {count} фото, которые соответствовали критерию выбора.",
     "Rich descriptions on": "Подробные описания включены",
     "Richer descriptions require macOS 27 or later": "Более подробные описания требуют macOS 27 или более поздней версии",
     "Rights": "Права",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "Выберите диапазон расстояний от камеры; уточните дальнюю и ближнюю границы",
     "Select all": "Выбрать все",
     "Select an active reference photo first": "Сначала выберите активное эталонное фото",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Выберите существующую линейную маску, чтобы снова настроить её. Если вы рисовали в режимах «Добавить», «Вычесть» или «Пересечение», сначала выберите «Редактировать форму». Нажмите H, если точки скрыты.",
     "Select an existing mask, then expand Create New Mask.": "Выберите существующую маску, затем разверните Создать новую маску.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "Выберите другую полосу, чтобы продолжить, или используйте Reset в Color Mixer, чтобы сбросить настройки микшера.",
     "Select at least two distinct originals": "Выберите как минимум два различных оригинала",
@@ -2617,6 +2625,7 @@
     "Settings…": "Настройки…",
     "Shadows": "Тени",
     "Shape": "Форма",
+    "Shape a linear gradient": "Изменение формы линейного градиента",
     "Shape a radial gradient": "Создать радиальный градиент",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "Форма также содержит элементы управления Ширина, Высота, Поворот и Растушевка.",
     "Shape contrast and color with curves": "Формируйте контраст и цвет с помощью кривых",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "Каталог остался без изменений.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Каталог был восстановлен из проверенной резервной копии; поврежденная копия находится в папке Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Компактная модель SFace INT8 сравнивает выровненные человеческие лица. Автоматическая группировка использует консервативные правила сходства; возможные совпадения остаются отдельными для проверки. Новые лица, совпадающие с названным человеком, предлагаются для подтверждения.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "В подтверждении показывается количество затронутых элементов и предупреждение, что существующие флажки у совпадающих фото будут заменены. Связанные метаданные RAW/JPEG также могут включать пару файлов, если этот параметр включен.",
     "The current catalog is backed up first, then replaced by this one.": "Текущий каталог сначала будет резервно сохранен, затем заменен этим.",
     "The desktop Trash service (gio) is unavailable": "Служба корзины рабочего стола (gio) недоступна",
     "The desktop app checks its signed update feed.": "Настольное приложение проверяет свою подписанную ленту обновлений.",
@@ -2987,6 +2995,7 @@
     "Undo last change": "Отменить последнее изменение",
     "Undo last correction": "Отменить последнюю коррекцию",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "Отменить последнюю коррекцию отменяет последнюю коррекцию, сохраненную в этом окне. Восстановить время камеры… показывает предварительный просмотр удаления коррекций каталога; проверьте предварительный просмотр и примените его, чтобы восстановить исходное время камеры. Шаги по времени съемки также доступны в Истории. Когда включена запись XMP, сброс коррекции восстанавливает даты сайдкаров, сохраненные до того, как LightTable применил ее. Даты съемки в более старых сайдкарах без этой сохраненной даты остаются без изменений.",
+    "Undo last flag batch": "Отменить последний пакет флажков",
     "Undo or restore an earlier step": "Отменить или восстановить предыдущий шаг",
     "Undo snapshots must be strings": "Снимки отмены должны быть строками",
     "Unedited": "Не редактировано",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Используйте Масштабировать, Горизонтальный и Вертикальный, чтобы выровнять опорное изображение по фото.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Используйте Сканировать новые фото после добавления фото или восстановления недоступных оригиналов. Ранее отсканированные неизмененные фото используются повторно.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Используйте Scoop, WinGet, Chocolatey, AUR, Flatpak или Snap для обновления управляемых ими установок. Для портативных копий Windows скачайте новый ZIP. Сборки без настроенной подписи обновлений не могут обновляться самостоятельно.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Используйте Выбранные, Отклоненные или Все, чтобы просмотреть совпадающие фото.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Используйте Температура и Оттенок или выберите нейтральную область, затем настройте Сочность и Насыщенность.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Используйте Undo для недавней работы, History для сохраненных шагов редактирования и именованные снимки для образов, к которым хотите вернуться.",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Используйте Отменить в сообщении о завершении или Отменить последний пакет флажков в боковой панели, чтобы восстановить пакет. Отмена остается доступной в течение этого сеанса и сохраняет любые последующие ручные или внешние решения по флажкам. Если сохранение не удается, используйте Повторить сохранение или отмените пакет; неудачные записи остаются в очереди.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Используйте Отменить изменение ключевых слов, чтобы восстановить последний пакет, пока это окно остаётся открытым. Отмена не позволяет перезаписывать ключевые слова, изменённые после того пакета. История фото также сохраняет состояния ключевых слов до и после.",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "Используйте «Равномерный оттенок», «Равномерная насыщенность» или «Равномерная яркость», чтобы сделать цвета в диапазоне более похожими на выбранный образец.",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "Используйте несколько точек и сравнивайте фото по ходу работы; кривые каналов могут давать сильные цветовые оттенки.",
@@ -3162,6 +3171,7 @@
     "What to expect": "Чего ожидать",
     "What to open": "Что открывать",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Когда MIDI доступен, откройте Управление с клавиатуры и MIDI и выберите Обучение MIDI. Разрешите доступ к MIDI, если браузер попросит.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Когда Обзор открыт из Помощь при отбраковке, сравните предложенную группу и помечайте фото по отдельности. Сделать выделение доступно в обычном Обзор: оно выбирает активное фото обзора и отклоняет другие фото, которые все еще находятся в обзоре. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространить эти изменения флажков на сопутствующее приложение.",
     "When a photo already has edits": "Когда у фото уже есть редактирование",
     "When a photo arrives": "Когда фото поступает",
     "When a photo seems missing": "Когда фото кажется отсутствующим",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} групп",
     "{count} indexed photo remains local until deleted.": "{count} проиндексированное фото останется локально, пока не будет удалено.",
     "{count} indexed photos remain local until deleted.": "{count} проиндексированных фото останутся локально, пока не будут удалены.",
+    "{count} matching photo shown: {criteria}.": "Показано {count} совпадающее фото: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}.",
     "{count} minimum alignment inlier": "{count} минимальное совпадение для выравнивания",
     "{count} minimum alignment inliers": "{count} минимальных инлайеров для выравнивания",
     "{count} missing": "{count} отсутствует",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ Назад",
     "← Back to articles": "← Назад к статьям",
     "← People": "← Люди",
-    "☆ Favorites": "☆ Избранное",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Перетащите любую точку, чтобы настроить градиент. Перетащите линию, чтобы переместить его. Потяните в другом месте, чтобы нарисовать его заново.",
-    "Shape a linear gradient": "Изменение формы линейного градиента",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "В режиме «Редактировать форму» перетащите любую точку, чтобы настроить соответствующий конец градиента. Перетащите соединяющую их линию, чтобы переместить весь градиент, сохранив его угол и ширину перехода. Потяните в другом месте фотографии, чтобы нарисовать его заново.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Выберите существующую линейную маску, чтобы снова настроить её. Если вы рисовали в режимах «Добавить», «Вычесть» или «Пересечение», сначала выберите «Редактировать форму». Нажмите H, если точки скрыты.",
-    "Copy and Paste are below the photo in Detail view.": "Кнопки копирования и вставки находятся под фотографией в режиме подробного просмотра."
+    "☆ Favorites": "☆ Избранное"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4150,6 +4157,18 @@
       "few": "Экспортируется {count} фото в {destination}…",
       "many": "Экспортируется {count} фото в {destination}…",
       "other": "Экспортируется {count} фото в {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Пометить {count} фото как выбранное",
+      "few": "Пометить {count} фото как выбранные",
+      "many": "Пометить {count} фото как выбранные",
+      "other": "Пометить {count} фото как выбранные"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Пометить {count} фото как отклоненное",
+      "few": "Пометить {count} фото как отклоненные",
+      "many": "Пометить {count} фото как отклоненные",
+      "other": "Пометить {count} фото как отклоненные"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Импортировано {count} фото из Apple Photos{value}",
@@ -4181,35 +4200,11 @@
       "many": "Вставлено в {count} фото",
       "other": "Вставлено в {count} фото"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Выбрать {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-      "few": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "many": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "other": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены."
-    },
-    "Pick {count} select": {
-      "one": "Выбрать {count} выделение",
-      "few": "Выбрать {count} выделения",
-      "many": "Выбрать {count} выделений",
-      "other": "Выбрать {count} выделений"
-    },
     "Picked {count} photo": {
       "one": "Выбрано {count} фото",
       "few": "Выбрано {count} фото",
       "many": "Выбрано {count} фото",
       "other": "Выбрано {count} фото"
-    },
-    "Reject {count} photo": {
-      "one": "Отклонить {count} фото",
-      "few": "Отклонить {count} фото",
-      "many": "Отклонить {count} фото",
-      "other": "Отклонить {count} фото"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Отклонить {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-      "few": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "many": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "other": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены."
     },
     "Rejected {count} photo": {
       "one": "Отклонено {count} фото",
@@ -4229,17 +4224,11 @@
       "many": "Восстановлено {count} снимков. Вы также можете восстановить шаги по времени съемки в «История».",
       "other": "Восстановлено {count} снимков. Вы также можете восстановить шаги по времени съемки в «История»."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Просмотр {count} фото, которое соответствовало критерию отклонения.",
-      "few": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-      "many": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-      "other": "Просмотр {count} фото, которые соответствовали критерию отклонения."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Просмотр {count} фото, которое соответствовало критерию выбора.",
-      "few": "Просмотр {count} фото, которые соответствовали критерию выбора.",
-      "many": "Просмотр {count} фото, которые соответствовали критерию выбора.",
-      "other": "Просмотр {count} фото, которые соответствовали критерию выбора."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "Восстановлен флажок {count} фото. Последующие изменения флажков сохранены.",
+      "few": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
+      "many": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
+      "other": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены."
     },
     "Wrote {count} sidecar.": {
       "one": "Записан {count} сайдкар.",
@@ -4313,11 +4302,23 @@
       "many": "{count} группа дубликатов, охватывающая {files}.",
       "other": "{count} группа дубликатов, охватывающая {files}."
     },
+    "{count} empty file": {
+      "one": "{count} пустой файл",
+      "few": "{count} пустых файла",
+      "many": "{count} пустых файлов",
+      "other": "{count} пустых файлов"
+    },
     "{count} error": {
       "one": "{count} ошибка",
       "few": "{count} ошибка",
       "many": "{count} ошибка",
       "other": "{count} ошибки"
+    },
+    "{count} face": {
+      "one": "{count} лицо",
+      "few": "{count} лица",
+      "many": "{count} лиц",
+      "other": "{count} лиц"
     },
     "{count} face detected": {
       "one": "{count} лицо обнаружено",
@@ -4343,11 +4344,29 @@
       "many": "{count} файлов",
       "other": "{count} файлов"
     },
+    "{count} file not downloaded": {
+      "one": "{count} файл не загружен",
+      "few": "{count} файла не загружено",
+      "many": "{count} файлов не загружено",
+      "other": "{count} файлов не загружено"
+    },
+    "{count} group": {
+      "one": "{count} группа",
+      "few": "{count} группы",
+      "many": "{count} групп",
+      "other": "{count} групп"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} проиндексированное фото останется локально, пока не будет удалено.",
       "few": "{count} проиндексированных фото останутся локально, пока не будут удалены.",
       "many": "{count} проиндексированных фото останутся локально, пока не будут удалены.",
       "other": "{count} проиндексированных фото останутся локально, пока не будут удалены."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "Показано {count} совпадающее фото: {criteria}.",
+      "few": "Показано {count} совпадающих фото: {criteria}.",
+      "many": "Показано {count} совпадающих фото: {criteria}.",
+      "other": "Показано {count} совпадающих фото: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} минимальное совпадение для выравнивания",
@@ -4421,6 +4440,12 @@
       "many": "Выбрано {count} фото",
       "other": "Выбрано {count} фото"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "few": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "many": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "other": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс."
+    },
     "{count} photo updated": {
       "one": "обновлено фото: {count}",
       "few": "{count} фото обновлено",
@@ -4445,6 +4470,12 @@
       "many": "оцененных фото: {count}",
       "other": "оцененных фото: {count}"
     },
+    "{count} selected": {
+      "one": "{count} выбрано",
+      "few": "{count} выбрано",
+      "many": "{count} выбрано",
+      "other": "{count} выбрано"
+    },
     "{count} selected photo": {
       "one": "{count} выбранное фото",
       "few": "{count} выбранных фото",
@@ -4468,6 +4499,18 @@
       "few": "{count} источника",
       "many": "{count} источников",
       "other": "{count} источников"
+    },
+    "{count} unavailable file": {
+      "one": "{count} недоступный файл",
+      "few": "{count} недоступных файла",
+      "many": "{count} недоступных файлов",
+      "other": "{count} недоступных файлов"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} недоступное фото пропущено",
+      "few": "{count} недоступных фото пропущено",
+      "many": "{count} недоступных фото пропущено",
+      "other": "{count} недоступных фото пропущено"
     },
     "{count} unsupported setting skipped": {
       "one": "пропущено {count} неподдерживаемое значение настройки",
@@ -4510,55 +4553,7 @@
       "few": "{value} неожиданных выхода за последние 24 часа.",
       "many": "{value} неожиданных выходов за последние 24 часа.",
       "other": "{value} неожиданных выходов за последние 24 часа."
-    },
-    "{count} empty file": {
-      "one": "{count} пустой файл",
-      "few": "{count} пустых файла",
-      "many": "{count} пустых файлов",
-      "other": "{count} пустых файлов"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} файл не загружен",
-      "few": "{count} файла не загружено",
-      "many": "{count} файлов не загружено",
-      "other": "{count} файлов не загружено"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "few": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "many": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "other": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс."
-    },
-    "{count} unavailable file": {
-      "one": "{count} недоступный файл",
-      "few": "{count} недоступных файла",
-      "many": "{count} недоступных файлов",
-      "other": "{count} недоступных файлов"
-    },
-    "{count} face": {
-      "one": "{count} лицо",
-      "few": "{count} лица",
-      "many": "{count} лиц",
-      "other": "{count} лиц"
-    },
-    "{count} group": {
-      "one": "{count} группа",
-      "few": "{count} группы",
-      "many": "{count} групп",
-      "other": "{count} групп"
-    },
-    "{count} selected": {
-      "one": "{count} выбрано",
-      "few": "{count} выбрано",
-      "many": "{count} выбрано",
-      "other": "{count} выбрано"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} недоступное фото пропущено",
-      "few": "{count} недоступных фото пропущено",
-      "many": "{count} недоступных фото пропущено",
-      "other": "{count} недоступных фото пропущено"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

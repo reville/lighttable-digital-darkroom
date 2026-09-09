@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "스냅샷은 사진의 현재 조정 설정, 자르기, 마스크, 복구 보정, 광학 설정을 저장합니다. 이 사진의 저장된 편집 상태입니다. 사진이 로드될 때까지 스냅샷 만들기는 사용할 수 없습니다.",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "저장된 곡선은 편집할 때까지 정확하게 유지됩니다. 편집기는 대표 핸들을 다시 생성하므로, 첫 조정에서 이동한 포인트를 넘어 가져온 곡선의 모양이 바뀔 수 있습니다.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "저장되었거나 가져온 곡선은 편집하기 전까지 정확히 저장된 표를 유지합니다. 앱은 편집용 대표 핸들을 다시 생성하므로, 첫 조정으로 가져온 곡선이 이동한 지점을 넘어서 형태가 바뀔 수 있습니다.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "추천 사진은 초점, 열린 눈, 감지된 문제를 기준으로 유일하게 더 강한 평가를 받은 사진입니다. 동점이거나 증거가 충분하지 않으면 뚜렷한 추천이 표시되지 않습니다. 유사성 그룹은 제안일 뿐이며, 스택을 만들거나 플래그를 변경하지 않습니다.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "가상 복사본은 동일한 원본 파일을 참조하며 독립적인 편집 상태를 유지합니다. 디스크에 두 번째 원본을 만들지는 않습니다.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "가상 복사는 원본 파일을 공유합니다. 가상 복사를 삭제하려면 Photo actions → Delete virtual copy를 사용해야 합니다. 원본을 휴지통으로 옮기면 해당 원본을 사용하는 모든 편집에 영향을 줍니다.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "가상 복사는 원본 파일을 공유합니다. 이름 바꾸기에 포함하면 해당 원본이 대상으로 지정됩니다. 인터페이스에는 전용 이름 바꾸기 실행 취소 버튼이 없습니다.",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "제거, 복구 또는 복제를 선택한 다음 크기, 페더 및 불투명도를 설정합니다.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "피사체 선명도, 눈 선명도, 눈 뜸 같은 선택 기준 또는 노출 문제, 오작동, 문서 같은 거부 기준을 선택하세요.",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "얼굴 선택을 선택한 다음 일부 얼굴을 선택하고, 별도 사람으로 이동을 선택하여 새 이름 없음 그룹으로 분할하세요. 두 그룹은 다시 일치 대상으로 제안되지 않습니다. 얼굴 하나를 선택하고 표지로 사용을 선택하여 갤러리 이미지를 변경하세요.",
+    "Choose Selects or Rejects to review matches before applying flags.": "플래그를 적용하기 전에 일치 항목을 검토하려면 선택 항목 또는 거부 항목을 선택하세요.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "스톡을 선택하거나, 이 사진의 스톡 미리보기…를 클릭해 렌더링된 예시를 비교하세요.",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "자동 선택은 피사체 또는 하늘을 선택하세요. 개체의 경우 개체를 클릭한 다음 사진에서 해당 개체를 클릭하세요.",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "현재 조정이 적용된 TIFF를 선택한 다음 TIFF 색공간과 TIFF 비트 깊이를 설정하세요.",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "평점 또는 플래그를 지정할 사진 선택",
     "Choose a preset to see its source and conversion coverage.": "사전 설정을 선택하여 원본 및 변환 범위를 확인합니다.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "음화에 사용할 인쇄 공정을 선택하고, 슬라이드 필름에서 인쇄 컨트롤이 사라지는 이유를 이해하세요.",
-    "Choose a reject criterion above.": "위에서 거부 기준을 선택하세요.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "선택기에서 저장된 점을 선택해 편집하거나, 점 삭제를 사용해 제거하세요.",
     "Choose a saved preset to submit": "제출할 저장된 사전 설정을 선택하세요",
     "Choose a scheme": "방식 선택",
-    "Choose a select criterion above.": "위에서 선택 기준을 선택하세요.",
     "Choose a settings folder": "설정 폴더 선택",
     "Choose a source and destination first.": "먼저 원본과 대상을 선택하세요.",
     "Choose a source and destination, then scan.": "원본과 대상을 선택한 다음 스캔하세요.",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "파일 메뉴에서 다른 폴더를 선택하세요.",
     "Choose application…": "응용 프로그램 선택…",
     "Choose catalog…": "카탈로그 선택…",
+    "Choose criteria above.": "위에서 기준을 선택하세요.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "복사할 편집 설정 선택 ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "내보낼 사진을 정확히 선택하고, 출력 미리보기를 확인하며, 진행 상황을 모니터링하세요.",
     "Choose export size, format, and color space": "내보내기 크기, 형식, 색공간 선택",
@@ -547,6 +548,7 @@
     "Choose your language": "언어를 선택하세요",
     "Choose your preferred language in the first-use dialog.": "처음 사용하는 대화 상자에서 선호하는 언어를 선택하세요.",
     "Choose…": "선택…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "기준을 선택하면 일치하는 사진이 격자에서 열립니다. 검토 보기를 변경하려면 선택 항목, 거부 항목 또는 모두를 사용하세요. 다른 라이브러리 필터는 계속 적용됩니다.",
     "Choosing a file needs the desktop app; paste a path instead": "파일을 선택하려면 데스크톱 앱이 필요합니다. 대신 경로를 붙여넣으세요",
     "Choosing a folder needs the desktop app; paste a path instead": "폴더를 선택하려면 데스크톱 앱이 필요합니다. 대신 경로를 붙여넣으세요",
     "Chromatic aberration": "색수차",
@@ -690,6 +692,7 @@
     "Compare": "비교",
     "Compare Before & After": "비교 전후",
     "Compare several photos in Survey": "Survey에서 여러 사진 비교",
+    "Compare similar photos": "유사한 사진 비교",
     "Compare the faces before combining their photos.": "사진을 병합하기 전에 얼굴을 비교하세요.",
     "Compare while zoomed in": "확대 상태에서 비교",
     "Compare with a reference image": "참조 이미지와 비교",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "읽을 수 있는 모든 행을 새 파일에 복사합니다. 현재 읽을 수 있음: {value}. 마지막 백업 이후에 만든 편집 내용은 유지되며, 손상된 페이지의 행은 손실됩니다.",
     "Copy": "복사",
     "Copy Edit Settings": "편집 설정 복사",
+    "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "복사와 붙여넣기는 사용자가 명시적으로 선택한 그룹을 전달합니다. 체크하지 않은 그룹의 설정은 각 대상에서 그대로 유지됩니다. 이는 명시적인 복사/붙여넣기 작업 흐름입니다. 나중에 원본을 편집해도 대상에 자동으로 동기화되지 않습니다.",
     "Copy and verify it into the library": "라이브러리에 복사하고 검증",
     "Copy anyway": "그래도 복사",
@@ -980,6 +984,7 @@
     "Downloading update…": "업데이트 다운로드 중…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "양을 0%에서 100%까지 드래그하세요. 0은 사전 설정 이전의 편집으로 복원하고, 100%는 전체 사전 설정을 사용합니다. 양을 두 번 클릭하면 100%로 초기화됩니다.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "핸들을 드래그하여 자르기 영역 크기를 조절하세요. 사진은 프레임이 중앙에 유지되도록 확대됩니다. 프레임 안쪽을 드래그하면 사진을 그 아래로 이동하고, 바깥쪽을 드래그하면 새 자르기를 그릴 수 있습니다.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "어느 점이든 드래그하여 그라디언트를 조정하세요. 선을 드래그하면 전체가 이동합니다. 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
     "Drag either on-image circle to refine the target or source.": "대상 또는 원본을 다듬으려면 사진 위의 원을 드래그합니다.",
     "Drag on the photo to change the selected gradient’s shape or position": "사진 위에서 드래그하여 선택된 그라디언트의 모양이나 위치를 변경합니다",
     "Drag on the photo to edit the {tool} mask.": "사진에서 드래그하여 {tool} 마스크를 편집하세요.",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "각 브러시 또는 칠한 세부 조정에는 최대 64스트로크, 스트로크당 최대 512포인트, 사진당 최대 20,000마스크 포인트가 저장됩니다. 한도에 도달하면 편집기가 알려줍니다.",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "각 새 백업에는 내용 매니페스트와 체크섬이 포함되며, 독립적으로 다시 열어 검증합니다.",
     "Edit": "편집",
+    "Edit History": "편집 기록",
     "Edit In…": "다음으로 편집…",
     "Edit Shape": "모양 편집",
     "Edit a curve": "곡선 편집",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "오류: {error}",
     "Errors: {details}": "오류: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "모든 내보내기는 선택한 ICC 프로필을 포함합니다. 색공간에서 sRGB, Display P3, 또는 ProPhoto RGB를 선택하세요.",
-    "Edit History": "편집 기록",
     "Everyone": "모두",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "모두는 보이는 얼굴 그룹을 표시합니다. 이름 없음은 이름이 지정되지 않은 그룹을 표시합니다. 그룹을 열고 이름을 입력한 다음 이름 저장을 선택하세요. 입력한 이름만 사용되며, 모델은 사람 이름을 알지 못합니다.",
     "Example download prepared. Your edit has not changed.": "예제 다운로드가 준비되었습니다. 편집 내용은 변경되지 않았습니다.",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "XMP 사이드카를 통해 메타데이터를 교환합니다",
     "Existing LightTable edits could not be merged safely": "기존 LightTable 편집 내용을 안전하게 병합할 수 없었습니다",
     "Existing files": "기존 파일",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "기본적으로 기존 플래그는 유지됩니다. 이전 결정을 바꾸려는 경우에만 기존 플래그 바꾸기를 활성화하세요. 일괄 작업은 표시된 일치 항목에 영향을 주며, 메타데이터 연결이 활성화된 경우 연결된 RAW/JPEG 파일을 포함합니다. 보호되었거나 이미 일치하는 플래그는 작업 수에서 제외됩니다.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "기존 플래그는 유지됩니다. 개수에는 플래그가 지정되지 않은 연결 RAW/JPEG 파일이 포함됩니다.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "기존 플래그가 바뀔 수 있습니다. 개수에는 연결된 RAW/JPEG 파일이 포함됩니다.",
     "Existing settings could not be loaded; this photo was left unchanged": "기존 설정을 불러올 수 없습니다. 이 사진은 변경하지 않았습니다",
     "Expand Advanced and edit Filename template.": "고급을 확장하고 파일명 템플릿 편집.",
     "Expand Advanced in Export.": "내보내기에서 고급 확장.",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "서베이 사진에 플래그 지정 및 평점 매기기",
     "Flag and rating filters": "플래그 및 평점 필터",
     "Flag as Pick": "선택으로 플래그 지정",
+    "Flag {count} photo as a pick": "사진 {count}장을 선택 항목으로 플래그 지정",
+    "Flag {count} photo as a reject": "사진 {count}장을 거부 항목으로 플래그 지정",
+    "Flag {count} photos as picks": "사진 {count}장을 선택 항목으로 플래그 지정",
+    "Flag {count} photos as rejects": "사진 {count}장을 거부 항목으로 플래그 지정",
     "Flags and ratings apply to selection": "플래그와 평점은 선택에 적용됩니다",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "플래그와 별은 별개입니다. 사진은 선택됨 상태이면서 어떤 별 평점이든 가질 수 있습니다. 거부는 사진을 검토 대상으로 표시할 뿐 삭제하지는 않습니다.",
     "Flip horizontal": "가로로 뒤집기",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "사진을 컬렉션으로 그룹화",
     "Group similar faces and search names you add.": "비슷한 얼굴을 그룹화하고 추가한 이름을 검색합니다.",
     "Group the rendered derivative with its source in the catalog.": "렌더링된 파생 파일을 카탈로그에서 원본과 함께 그룹화합니다.",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "그룹 {index}/{count}. 뚜렷한 추천 없음; 이 사진들을 비교하세요.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "그룹 {index}/{count}. 추천: {name}. 초점과 눈 확인을 기준으로 함; 모든 프레임을 검토하세요.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "그룹화에는 실제 캡처 시간과 현재 사진 인덱스 분석이 필요합니다. 파일 시스템 날짜만 있는 파일, 동영상, 가상 복사본, 그리고 시각적 디테일이 충분하지 않은 사진은 제외됩니다. 이 업데이트 이후 인덱스 작업자가 기존 인덱스 기록을 새로 고칩니다.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "사진이 스캔되면 그룹이 여기에 표시됩니다. 이 작업이 진행되는 동안 계속 편집할 수 있습니다.",
     "Guides for your photographs, from first edit to export.": "첫 편집부터 내보내기까지, 사진 작업을 위한 가이드입니다.",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR은 크기가 일치하는 2–9장의 브래킷 노출 사진을 허용합니다. 유용한 톤의 균형을 맞추기 위해 디스플레이 렌더링 프레임을 정렬하고 노출을 합성합니다. 움직이는 피사체와 가장자리의 합성 아티팩트를 검토하세요.",
@@ -1431,6 +1446,7 @@
     "Import…": "가져오기…",
     "Improve preview speed and check image detail": "미리보기 속도 향상 및 이미지 디테일 확인",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "커뮤니티에서 추천, 새로 만들기 또는 모두를 선택하고 피사체를 사용해 컬렉션을 좁히세요. 사전 설정을 선택하면 설명, 작성자, 버전, Film 동작 및 사용 가능한 예시 사진을 볼 수 있습니다.",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "모양 편집에서 가운데 핸들을 드래그해 마스크를 이동하고, 축 핸들로 크기를 조절하며, 바깥쪽 핸들로 회전하세요. 그리거나 크기를 조절할 때 Shift를 누르고 있으면 그라디언트가 원형이 됩니다.",
     "In Film profile, choose Film format.": "Film 프로필에서 Film 형식을 선택하세요.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "정보에서 설명을 펼치면 제목, 캡션, 머리글을 볼 수 있고, 권한을 펼치면 작성자, 저작권, 크레딧을 볼 수 있으며, 배치를 펼치면 위치와 좌표를 볼 수 있습니다. 변경 내용은 입력하는 즉시 카탈로그에 저장됩니다. 이 사진의 메타데이터가 로드되고 위도와 경도가 모두 유효하면 지도에서 열기를 사용할 수 있습니다. 그러면 브라우저에서 위치가 열립니다.",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "이미지를 1:1로 확인하고, 텍스처를 판단하기 전에 미리보기 디테일이 끝날 때까지 기다리세요.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "오버레이를 확인하고 필요에 따라 경계 주변을 칠해 세부를 다듬으세요.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "거부된 사진을 검토하세요. 짝 파일 설정을 확인하고 다른 구성원을 포함할 것으로 예상되면 모든 스택을 펼치세요.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "제안을 검토한 뒤, 해당 플래그를 적용하려면 선택 선택 또는 거부 거부를 사용하세요.",
     "Interface": "인터페이스",
     "Interface and behavior": "인터페이스 및 동작",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "인터페이스는 뷰어 배경, 글꼴 크기, Lights Out, 루페 정보 오버레이, 자르기 가이드를 제어합니다. 이러한 환경설정은 내보낸 픽셀을 변경하지 않고 작업 공간의 모양만 바꿉니다.",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "브러시, 선형 및 방사형 마스크로 로컬 조정을 합니다",
     "Make photos easier to find and prepare descriptive metadata for export.": "사진을 더 쉽게 찾을 수 있게 하고 내보내기용 설명 메타데이터를 준비합니다.",
     "Make select": "선택 항목 만들기",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "선택 만들기는 활성 서베이 사진을 선택하고 서베이에 남아 있는 다른 사진들을 거부합니다. 이 작업은 해당 사진의 플래그를 변경합니다. 연결된 RAW 및 JPEG 메타데이터는 이러한 플래그 변경을 동반 사진으로 확장할 수 있습니다.",
     "Make the source photo active.": "원본 사진을 활성 상태로 만듭니다.",
     "Make your adjustment, then check the save status in the app.": "조정을 마친 다음 앱에서 저장 상태를 확인합니다.",
     "Manage cache storage": "캐시 저장소 관리",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "이 빌드보다 최신",
     "Next": "다음",
     "Next Photo": "다음 사진",
+    "Next group": "다음 그룹",
     "Next presets": "다음 사전 설정",
     "No Rating": "평점 없음",
     "No TIFF was created.": "TIFF가 생성되지 않았습니다.",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "이 컬렉션에는 아직 사전 설정이 없습니다.",
     "No rejected photos in this view": "이 보기에는 거부된 사진이 없습니다",
     "No sampled colors": "샘플링된 색상 없음",
+    "No similar groups found. Photos need current index analysis and capture times.": "유사한 그룹을 찾지 못했습니다. 사진에는 현재 인덱스 분석과 캡처 시간이 필요합니다.",
     "No sources yet.": "아직 원본이 없습니다.",
     "No steps recorded yet.": "아직 기록된 단계가 없습니다.",
     "No usable lines found.": "사용 가능한 줄을 찾을 수 없습니다.",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "선택 (P)",
     "Pick / reject / unflag": "선택 / 거부 / 플래그 해제",
     "Pick a preset": "사전 설정 선택",
-    "Pick selects": "선택 항목 선택",
-    "Pick the selects": "선택 항목 선택",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria}에 일치하는 사진 {count}장을 선택하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria}에 일치하는 사진 {count}장을 선택하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다.",
-    "Pick {count} select": "선택 {count}개 선택",
-    "Pick {count} selects": "선택 {count}개 선택",
     "Pick, reject, and rate photos": "사진 선택, 거부 및 평점 매기기",
     "Picked": "선택됨",
     "Picked only": "선택됨만",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "미리보기는 이 사진의 편집 내용을 사용합니다. 적용할 필름을 선택하세요.",
     "Previous": "이전",
     "Previous Photo": "이전 사진",
+    "Previous group": "이전 그룹",
     "Previous presets": "이전 사전 설정",
     "Print development": "인쇄 현상",
     "Print exposure": "인쇄 노출",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "커뮤니티 새로 고치는 중…",
     "Reject": "거부",
     "Reject (X)": "거부 (X)",
-    "Reject rejects": "거부 항목 거부",
-    "Reject the rejects": "거부 항목 거부",
-    "Reject {count} photo": "사진 {count}장 거부",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria}에 일치하는 사진 {count}장을 거부하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다.",
-    "Reject {count} photos": "사진 {count}장 거부",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria}에 일치하는 사진 {count}장을 거부하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다.",
     "Rejected": "거부됨",
     "Rejected {count} photo": "사진 {count}장 거부됨",
     "Rejected {count} photos": "사진 {count}장 거부됨",
@@ -2317,6 +2322,7 @@
     "Repair": "복구",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "다른 영역에도 반복하거나, 전역 처리 방식을 변경하려면 전역 등급 편집을 클릭하세요.",
     "Replace adjustment settings": "조정 설정 바꾸기",
+    "Replace existing flags": "기존 플래그 바꾸기",
     "Replace local masks; detect AI selections on each photo": "로컬 마스크를 대체하고 각 사진에서 AI 선택 영역을 감지",
     "Replace with imported": "가져온 항목으로 바꾸기",
     "Replaced adjustments with {name}": "{name}으로 조정 항목을 대체했습니다",
@@ -2368,6 +2374,8 @@
     "Restored that step": "해당 단계가 복원됨",
     "Restored {count} capture. You can also restore capture-time steps in History.": "캡처 {count}개를 복원했습니다. 기록에서 캡처 시간 단계도 복원할 수 있습니다.",
     "Restored {count} captures. You can also restore capture-time steps in History.": "캡처 {count}개를 복원했습니다. 기록에서 캡처 시간 단계도 복원할 수 있습니다.",
+    "Restored {count} photo flag. Later flag changes are preserved.": "사진 플래그 {count}개를 복원했습니다. 이후의 플래그 변경은 유지됩니다.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "사진 플래그 {count}개를 복원했습니다. 이후의 플래그 변경은 유지됩니다.",
     "Restore…": "복원…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "백업 복원은 카탈로그 데이터를 해당 백업 시점으로 되돌리므로, 이후 편집은 포함되지 않습니다. 작업 중인 카탈로그를 복원할 때는 현재 카탈로그를 먼저 백업합니다.",
     "Result name": "결과 이름",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "일치 검토는 얼굴 샘플이 있는 두 개의 가능한 그룹을 보여줍니다. 같은 사람은 이를 병합합니다. 다른 사람들은 다시는 페어링이 제안되지 않도록 수정 사항을 기록합니다. 지금은 건너뛰기는 나중에 다시 볼 수 있도록 일치를 그대로 둡니다.",
     "Review photos from the source using the destination and naming settings": "대상 및 이름 지정 설정을 사용하여 원본의 사진을 검토",
     "Review signals": "검토 신호",
+    "Review similar photos": "유사한 사진 검토",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "유사한 사진 검토는 현재 폴더 또는 컬렉션에서 30초 이내에 촬영된 시각적으로 유사한 인덱싱된 사진을 찾습니다. 그룹은 최대 16장의 사진과 함께 서베이에서 열립니다. 이전 그룹과 다음 그룹을 사용해 대안을 비교한 다음, 서베이 컨트롤로 개별 사진에 플래그를 지정하세요.",
     "Review the before-and-after filenames in the preview.": "미리보기에서 이전/이후 파일 이름을 확인합니다.",
     "Review the current view carefully before moving rejected originals and sidecars.": "거부된 원본과 사이드카를 이동하기 전에 현재 보기를 주의 깊게 검토하세요.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "표시된 사진을 검토한 다음 사진을 선택 항목으로 플래그 지정 또는 사진을 거부 항목으로 플래그 지정을 사용하세요. 버튼에는 변경될 파일 수가 표시됩니다.",
     "Review the import result and the new preset’s conversion coverage before applying it.": "적용하기 전에 가져오기 결과와 새 사전 설정의 변환 범위를 검토하세요.",
     "Review the import result, then continue into the library.": "가져오기 결과를 검토한 다음 라이브러리로 계속 진행하세요.",
     "Review the result and refine the sliders for the photograph.": "결과를 검토하고 사진에 맞게 슬라이더를 조정합니다.",
     "Review transferred masks": "전달된 마스크 검토",
     "Review translated edits": "번역된 편집 검토",
     "Reviewing every photo.": "모든 사진을 검토하는 중입니다.",
-    "Reviewing {count} photo that met a reject criterion.": "거부 기준에 해당한 사진 {count}장을 검토하는 중입니다.",
-    "Reviewing {count} photo that met a select criterion.": "선택 기준에 해당한 사진 {count}장을 검토하는 중입니다.",
-    "Reviewing {count} photos that met a reject criterion.": "거부 기준에 해당한 사진 {count}장을 검토하는 중입니다.",
-    "Reviewing {count} photos that met a select criterion.": "선택 기준에 해당한 사진 {count}장을 검토하는 중입니다.",
     "Rich descriptions on": "상세 설명 켜짐",
     "Richer descriptions require macOS 27 or later": "더 풍부한 설명을 사용하려면 macOS 27 이상이 필요합니다",
     "Rights": "권한",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "카메라로부터의 거리 범위를 선택하세요. 원거리 및 근거리 한계를 세부 조정합니다",
     "Select all": "모두 선택",
     "Select an active reference photo first": "먼저 활성 참조 사진을 선택하세요",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요.",
     "Select an existing mask, then expand Create New Mask.": "기존 마스크를 선택한 다음 새 마스크 만들기를 확장합니다.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "계속하려면 다른 밴드를 선택하거나, 색상 혼합기의 초기화를 사용해 혼합기 조정을 지우세요.",
     "Select at least two distinct originals": "서로 다른 원본을 최소 두 장 선택하세요",
@@ -2617,6 +2625,7 @@
     "Settings…": "설정…",
     "Shadows": "그림자",
     "Shape": "모양",
+    "Shape a linear gradient": "선형 그라디언트 모양 조정",
     "Shape a radial gradient": "방사형 그라디언트 모양 지정",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "모양에는 너비, 높이, 회전, 페더 컨트롤도 있습니다.",
     "Shape contrast and color with curves": "곡선으로 대비와 색상을 조정",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "카탈로그는 변경되지 않았습니다.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "검증된 백업에서 카탈로그를 복원했습니다. 손상된 복사본은 Recovery 폴더에 있습니다.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "컴팩트 SFace INT8 모델은 정렬된 사람 얼굴을 비교합니다. 자동 그룹화는 보수적인 유사도 규칙을 사용하며, 가능한 일치는 검토를 위해 별도로 유지됩니다. 이름이 지정된 사람과 일치하는 새 얼굴은 확인을 위해 제안됩니다.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "확인 창에는 영향을 받는 개수가 표시되며, 일치하는 사진의 기존 플래그가 대체된다는 경고가 나옵니다. 연결된 RAW/JPEG 메타데이터는 해당 환경설정이 활성화되어 있으면 페어링된 파일도 포함할 수 있습니다.",
     "The current catalog is backed up first, then replaced by this one.": "현재 카탈로그를 먼저 백업한 다음 이 카탈로그로 바꿉니다.",
     "The desktop Trash service (gio) is unavailable": "데스크톱 휴지통 서비스(gio)를 사용할 수 없습니다",
     "The desktop app checks its signed update feed.": "데스크톱 앱이 서명된 업데이트 피드를 확인합니다.",
@@ -2987,6 +2995,7 @@
     "Undo last change": "마지막 변경 실행 취소",
     "Undo last correction": "마지막 보정 실행 취소",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "마지막 보정 실행 취소는 이 창에 보관된 가장 최근 보정을 되돌립니다. 카메라 시간 복원…은 카탈로그 보정을 제거하는 미리보기를 표시합니다. 미리보기를 검토한 다음 적용하여 원래 카메라 시간을 복원하세요. 캡처 시간 단계는 기록에서도 사용할 수 있습니다. XMP 쓰기가 활성화된 경우, 보정을 초기화하면 LightTable이 적용하기 전에 저장한 사이드카 날짜가 복원됩니다. 저장된 날짜가 없는 이전 사이드카의 캡처 날짜는 변경되지 않은 상태로 유지됩니다.",
+    "Undo last flag batch": "마지막 플래그 일괄 실행 취소",
     "Undo or restore an earlier step": "이전 단계 실행 취소 또는 복원",
     "Undo snapshots must be strings": "실행 취소 스냅샷은 문자열이어야 합니다",
     "Unedited": "미편집",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "기준 이미지를 자신의 사진과 맞추려면 크기 조정, 가로, 세로를 사용하세요.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "사진을 추가했거나 사용할 수 없는 원본을 복원한 후에는 새 사진 스캔을 사용하세요. 이전에 스캔된 변경 없는 사진은 다시 사용됩니다.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop, WinGet, Chocolatey, AUR, Flatpak 또는 Snap이 관리하는 설치는 해당 관리자를 통해 업데이트하세요. Windows 휴대용 사본은 새 ZIP을 다운로드하세요. 업데이트 서명이 설정되지 않은 빌드는 자체 업데이트할 수 없습니다.",
-    "Use Selects, Rejects, or All to review the matching photos.": "일치하는 사진을 검토하려면 선택 항목, 거부 항목 또는 모두를 사용합니다.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "임시와 색조를 사용하거나 중립 영역을 샘플링한 다음 생동감과 채도를 조정하세요.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "최근 작업에는 실행 취소를, 저장된 편집 단계에는 기록을, 다시 보고 싶은 룩에는 이름 있는 스냅샷을 사용하세요.",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "완료 메시지의 실행 취소 또는 사이드바의 마지막 플래그 일괄 실행 취소를 사용하여 일괄 작업을 복원하세요. 실행 취소는 이 세션 동안 계속 사용할 수 있으며, 이후의 수동 또는 외부 플래그 결정은 유지됩니다. 저장에 실패하면 저장 다시 시도 또는 일괄 작업 실행 취소를 사용하세요. 실패한 쓰기 작업은 대기열에 남습니다.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "창을 열어 둔 상태에서 마지막 일괄 변경을 복원하려면 키워드 변경 실행 취소를 사용하세요. 실행 취소는 그 일괄 작업 이후 변경된 키워드를 덮어쓰지 않습니다. 사진 기록도 이전과 이후의 키워드 상태를 유지합니다.",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "범위의 색상을 샘플링한 패치와 더 비슷하게 만들려면 균일 색조, 균일 채도 또는 균일 휘도를 사용하세요.",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "몇 개의 점만 사용하고 작업하면서 사진을 비교하세요. 채널 곡선은 강한 색 틀어짐을 만들 수 있습니다.",
@@ -3162,6 +3171,7 @@
     "What to expect": "예상 내용",
     "What to open": "열 대상",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "MIDI를 사용할 수 있으면 키보드 및 MIDI 컨트롤을 열고 MIDI 학습을 선택하세요. 브라우저에서 요청하면 MIDI 접근을 허용하세요.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "서베이가 보조 선별에서 열리면 추천 그룹을 비교하고 사진에 개별적으로 플래그를 지정하세요. 일반 서베이에서는 선택 항목 만들기를 사용할 수 있습니다. 이는 활성 서베이 사진을 선택하고 서베이에 남아 있는 다른 사진들을 거부합니다. 이렇게 하면 해당 사진의 플래그가 변경됩니다. 연결된 RAW 및 JPEG 메타데이터는 이러한 플래그 변경을 보조 사진으로 확장할 수 있습니다.",
     "When a photo already has edits": "사진에 이미 편집이 있으면",
     "When a photo arrives": "사진이 들어오면",
     "When a photo seems missing": "사진이 누락된 것처럼 보일 때",
@@ -3973,6 +3983,8 @@
     "{count} groups": "그룹 {count}개",
     "{count} indexed photo remains local until deleted.": "인덱싱된 사진 {count}장은 삭제될 때까지 로컬에 유지됩니다.",
     "{count} indexed photos remain local until deleted.": "인덱싱된 사진 {count}장은 삭제될 때까지 로컬에 유지됩니다.",
+    "{count} matching photo shown: {criteria}.": "일치하는 사진 {count}장 표시됨: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "일치하는 사진 {count}장 표시됨: {criteria}.",
     "{count} minimum alignment inlier": "정렬 최소 inlier {count}개",
     "{count} minimum alignment inliers": "정렬 최소 inlier {count}개",
     "{count} missing": "누락됨 {count}개",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "어느 점이든 드래그하여 그라디언트를 조정하세요. 선을 드래그하면 전체가 이동합니다. 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
-    "Shape a linear gradient": "선형 그라디언트 모양 조정",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요.",
-    "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다."
+    "☆ Favorites": "☆ 즐겨찾기"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4138,6 +4145,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "사진 {count}장을 {destination}에 내보내는 중…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "사진 {count}장을 선택 항목으로 플래그 지정"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "사진 {count}장을 거부 항목으로 플래그 지정"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "Apple Photos에서 사진 {count}장을 가져왔습니다{value}"
@@ -4154,20 +4167,8 @@
     "Pasted to {count} photo": {
       "other": "사진 {count}장에 붙여넣음"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "{criteria}에 일치하는 사진 {count}장을 선택하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다."
-    },
-    "Pick {count} select": {
-      "other": "선택 {count}개 선택"
-    },
     "Picked {count} photo": {
       "other": "선택됨 {count}장 사진"
-    },
-    "Reject {count} photo": {
-      "other": "사진 {count}장 거부"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "{criteria}에 일치하는 사진 {count}장을 거부하시겠습니까? 해당 사진의 기존 플래그는 바뀝니다."
     },
     "Rejected {count} photo": {
       "other": "사진 {count}장 거부됨"
@@ -4178,11 +4179,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "캡처 {count}개를 복원했습니다. 기록에서 캡처 시간 단계도 복원할 수 있습니다."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "거부 기준에 해당한 사진 {count}장을 검토하는 중입니다."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "선택 기준에 해당한 사진 {count}장을 검토하는 중입니다."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "사진 플래그 {count}개를 복원했습니다. 이후의 플래그 변경은 유지됩니다."
     },
     "Wrote {count} sidecar.": {
       "other": "사이드카 {count}개를 기록했습니다."
@@ -4220,8 +4218,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{files}에 해당하는 중복 그룹 {count}개."
     },
+    "{count} empty file": {
+      "other": "빈 파일 {count}개"
+    },
     "{count} error": {
       "other": "오류 {count}개"
+    },
+    "{count} face": {
+      "other": "얼굴 {count}개"
     },
     "{count} face detected": {
       "other": "얼굴 {count}개 감지됨"
@@ -4235,8 +4239,17 @@
     "{count} file": {
       "other": "파일 {count}개"
     },
+    "{count} file not downloaded": {
+      "other": "다운로드되지 않은 파일 {count}개"
+    },
+    "{count} group": {
+      "other": "그룹 {count}개"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "인덱싱된 사진 {count}장은 삭제될 때까지 로컬에 유지됩니다."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "일치하는 사진 {count}장 표시됨: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "other": "정렬 최소 inlier {count}개"
@@ -4274,6 +4287,9 @@
     "{count} photo selected": {
       "other": "사진 {count}장 선택됨"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "사진 {count}장 건너뜀{reasons}. 원본을 다운로드하거나 복원한 다음 인덱스를 다시 구축하세요."
+    },
     "{count} photo updated": {
       "other": "사진 {count}장 업데이트됨"
     },
@@ -4286,6 +4302,9 @@
     "{count} rated photo": {
       "other": "평가된 사진 {count}장"
     },
+    "{count} selected": {
+      "other": "선택됨 {count}개"
+    },
     "{count} selected photo": {
       "other": "선택된 사진 {count}장"
     },
@@ -4297,6 +4316,12 @@
     },
     "{count} source": {
       "other": "원본 {count}개"
+    },
+    "{count} unavailable file": {
+      "other": "사용할 수 없는 파일 {count}개"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "사용할 수 없는 사진 {count}개 건너뜀"
     },
     "{count} unsupported setting skipped": {
       "other": "지원되지 않는 설정 {count}개가 건너뛰어졌습니다"
@@ -4318,31 +4343,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "지난 24시간 동안 예기치 않은 종료가 {value}번 있었습니다."
-    },
-    "{count} empty file": {
-      "other": "빈 파일 {count}개"
-    },
-    "{count} file not downloaded": {
-      "other": "다운로드되지 않은 파일 {count}개"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "사진 {count}장 건너뜀{reasons}. 원본을 다운로드하거나 복원한 다음 인덱스를 다시 구축하세요."
-    },
-    "{count} unavailable file": {
-      "other": "사용할 수 없는 파일 {count}개"
-    },
-    "{count} face": {
-      "other": "얼굴 {count}개"
-    },
-    "{count} group": {
-      "other": "그룹 {count}개"
-    },
-    "{count} selected": {
-      "other": "선택됨 {count}개"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "사용할 수 없는 사진 {count}개 건너뜀"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

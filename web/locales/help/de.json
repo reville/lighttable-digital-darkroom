@@ -409,7 +409,7 @@
         {
           "title": "Ein Behaltenes auswählen",
           "paragraphs": [
-            "Mit „Auswählen“ werden im aktiven Übersichtsbild die ausgewählten Aufnahmen gesetzt und die anderen Fotos in der Übersicht abgelehnt. Dadurch ändern sich ihre Markierungen. Verknüpfte RAW- und JPEG-Metadaten können diese Markierungsänderungen auf die zugehörigen Dateien ausweiten.",
+            "Wenn die Übersicht aus dem Assistiertes Aussortieren geöffnet wird, vergleichen Sie die vorgeschlagene Gruppe und markieren Sie Fotos einzeln. Auswahl treffen ist in einer normalen Übersicht verfügbar: Es wählt das aktive Übersichts-Foto aus und lehnt die übrigen Fotos ab, die sich noch in der Übersicht befinden. Dadurch werden ihre Markierungen geändert. Verknüpfte RAW- und JPEG-Metadaten können diese Markierungsänderungen auf Begleitprogramme übertragen.",
             "Um eine Bearbeitung mit ihrem Original zu beurteilen, verwenden Sie Vorher/Nachher-Vergleich in Details; Übersicht dient zur Auswahl zwischen verschiedenen Bildern."
           ]
         }
@@ -2932,15 +2932,24 @@
             "Aktivieren Sie den Foto-Index in Einstellungen und warten Sie, bis Fotos bewertet wurden.",
             "Assisted culling in der Bibliothek-Seitenleiste erweitern.",
             "Wählen Sie Selektionskriterien wie Motivschärfe, Augenschärfe oder Offene Augen oder Ablehnungskriterien wie Belichtungsprobleme, Fehlaufnahmen oder Dokumente.",
-            "Verwenden Sie Ausgewählt, Abgelehnt oder Alle, um die passenden Fotos zu überprüfen.",
-            "Prüfen Sie die Vorschläge und verwenden Sie dann Pick selects oder Reject rejects, wenn Sie diese Markierungen anwenden möchten."
+            "Wenn Sie ein Kriterium auswählen, werden die dazu passenden Fotos im Raster geöffnet. Verwenden Sie Ausgewählt, Ablehnt oder Alle, um die Überprüfungsansicht zu ändern. Andere Bibliotheksfilter gelten weiterhin.",
+            "Überprüfen Sie die angezeigten Fotos und verwenden Sie dann Fotos als Auswahl markieren oder Fotos als Ablehnung markieren. Die Schaltfläche zeigt, wie viele Dateien geändert werden."
           ]
         },
         {
           "title": "Markierungen werden angewendet",
           "paragraphs": [
-            "Die Bestätigung zeigt die betroffene Anzahl an und warnt davor, dass vorhandene Markierungen auf passenden Fotos ersetzt werden. Verknüpfte RAW/JPEG-Metadaten können bei aktivierter Einstellung auch die gekoppelte Datei einschließen.",
+            "Vorhandene Markierungen bleiben standardmäßig erhalten. Aktivieren Sie Vorhandene Markierungen ersetzen nur, wenn Sie frühere Entscheidungen ändern möchten. Stapelaktionen betreffen die angezeigten Übereinstimmungen und umfassen verknüpfte RAW/JPEG-Dateien, wenn die Metadatenverknüpfung aktiviert ist; geschützte oder bereits übereinstimmende Markierungen werden aus der Aktionsanzahl ausgeschlossen.",
+            "Verwenden Sie Rückgängig in der Abschlussmeldung oder Letzten Markierungsstapel rückgängig machen in der Seitenleiste, um einen Stapel wiederherzustellen. Rückgängig bleibt während dieser Sitzung verfügbar und behält alle späteren manuellen oder externen Markierungsentscheidungen bei. Wenn das Speichern fehlschlägt, verwenden Sie Speichern erneut versuchen oder machen Sie den Stapel rückgängig; fehlgeschlagene Schreibvorgänge bleiben in der Warteschlange.",
             "Dies sind Analysesignale für Ihre Prüfung, keine endgültigen Urteile darüber, welche Fotos behalten werden sollen. Ablehnen setzt eine Markierung; es verschiebt Originale nicht selbst in den Papierkorb."
+          ]
+        },
+        {
+          "title": "Ähnliche Fotos vergleichen",
+          "paragraphs": [
+            "Ähnliche Fotos überprüfen findet visuell ähnliche, indizierte Fotos, die innerhalb von 30 Sekunden im aktuellen Ordner oder in der aktuellen Sammlung aufgenommen wurden. Gruppen werden in der Übersicht mit bis zu 16 Fotos geöffnet. Verwenden Sie Vorherige Gruppe und Nächste Gruppe, um die Alternativen zu vergleichen, und markieren Sie dann einzelne Fotos mit den Übersichts-Steuerelementen.",
+            "Ein vorgeschlagenes Foto hat eine eindeutig bessere Bewertung auf Grundlage von Fokus, offenen Augen und erkannten Problemen. Bei Gleichstand oder unzureichenden Belegen wird keine klare Empfehlung angezeigt. Ähnlichkeitsgruppen sind Vorschläge; sie erstellen keine Stapel und ändern keine Markierungen.",
+            "Die Gruppierung erfordert tatsächliche Aufnahmezeiten und eine aktuelle Fotoindex-Analyse. Dateien mit nur Dateisystemdaten, Videos, virtuelle Kopien und Fotos ohne ausreichende visuelle details werden ausgeschlossen. Vorhandene Indexeinträge werden nach diesem Update vom Index-Worker aktualisiert."
           ]
         }
       ],
@@ -3157,5 +3166,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "स्नैपशॉट फ़ोटो की वर्तमान समायोजन सेटिंग्स, क्रॉप, मास्क, सुधारें सुधार, और ऑप्टिक्स को सहेजता है। यह इस फ़ोटो के लिए एक सहेजी गई संपादन स्थिति है। जब तक कोई फ़ोटो लोड न हो, स्नैपशॉट बनाएँ अनुपलब्ध है।",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "सहेजा गया वक्र तब तक बिल्कुल वैसा ही रहता है जब तक आप उसे संपादित न करें। संपादक प्रतिनिधि हैंडल्स को फिर से बनाता है, इसलिए पहली समायोजन आयातित वक्र को आपके द्वारा हिलाए गए बिंदु से आगे भी नया आकार दे सकता है।",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "संग्रहीत या आयातित curve तब तक अपनी सटीक सहेजी गई table बनाए रखती है जब तक आप उसे संपादित नहीं करते। ऐप संपादन के लिए प्रतिनिधि handles पुनर्निर्मित करता है, इसलिए पहला समायोजन आयातित curve को उस बिंदु से भी बदल सकता है जहाँ आप उसे ले जाते हैं।",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "सुझाई गई फ़ोटो का आकलन फ़ोकस, खुली आँखों, और पहचानी गई समस्याओं के आधार पर सबसे मजबूत होता है। बराबरी या अपर्याप्त साक्ष्य होने पर कोई स्पष्ट अनुशंसा नहीं दिखाई जाती। समानता समूह केवल सुझाव हैं; वे स्टैक नहीं बनाते या फ़्लैग नहीं बदलते.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "वर्चुअल कॉपी उसी मूल फ़ाइल को संदर्भित करती है और स्वतंत्र संपादन स्थिति रखती है। यह डिस्क पर दूसरा मूल नहीं बनाती।",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "एक virtual copy अपनी मूल फ़ाइल साझा करती है। virtual copy हटाने के लिए Photo actions → Delete virtual copy का उपयोग करना चाहिए; उसके source को Trash में भेजने से उस मूल का उपयोग करने वाला हर संपादन प्रभावित होता है।",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "एक वर्चुअल कॉपी अपने स्रोत फ़ाइल को साझा करती है: रीनाम में शामिल करने पर वही मूल फ़ाइल लक्षित होती है। इंटरफ़ेस में समर्पित नाम-बदलें-पूर्ववत करें बटन नहीं है।",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "Remove, Heal, या Clone चुनें, फिर Size, Feather, और Opacity सेट करें।",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Select criteria चुनें जैसे Subject sharpness, Eye sharpness, या Eyes open, या Reject criteria जैसे Exposure issues, Misfires, या Documents।",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "Select faces चुनें, कुछ चेहरे चुनें, फिर Move to a separate person चुनें ताकि उन्हें एक नए बिना नाम के समूह में विभाजित किया जा सके. दोनों समूहों को फिर से मिलान के रूप में नहीं सुझाया जाएगा. एक चेहरा चुनें और गैलरी छवि बदलने के लिए Use as cover चुनें.",
+    "Choose Selects or Rejects to review matches before applying flags.": "फ़्लैग लागू करने से पहले मिलान देखने के लिए चयन या अस्वीकृतियाँ चुनें.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "Stock चुनें, या rendered उदाहरणों की तुलना करने के लिए इस फ़ोटो पर Preview stocks पर क्लिक करें…",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "स्वचालित चयन के लिए Subject या Sky चुनें। Object के लिए, Object पर क्लिक करें और फिर फ़ोटो में ऑब्जेक्ट पर क्लिक करें।",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "TIFF with current adjustments चुनें, फिर TIFF colour space और TIFF bit depth सेट करें।",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "रेट या फ़्लैग करने के लिए एक फ़ोटो चुनें",
     "Choose a preset to see its source and conversion coverage.": "किसी preset का source और conversion coverage देखने के लिए उसे चुनें।",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "निगेटिव्स के लिए print process चुनें और समझें कि slide film के लिए print controls क्यों गायब हो जाते हैं।",
-    "Choose a reject criterion above.": "ऊपर एक अस्वीकार मानदंड चुनें।",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "इसे संपादित करने के लिए selector में कोई saved point चुनें, या हटाने के लिए Delete point का उपयोग करें।",
     "Choose a saved preset to submit": "सबमिट करने के लिए एक सहेजा हुआ प्रीसेट चुनें",
     "Choose a scheme": "एक योजना चुनें",
-    "Choose a select criterion above.": "ऊपर एक चयन मानदंड चुनें।",
     "Choose a settings folder": "सेटिंग्स फ़ोल्डर चुनें",
     "Choose a source and destination first.": "पहले एक स्रोत और गंतव्य चुनें।",
     "Choose a source and destination, then scan.": "एक स्रोत और गंतव्य चुनें, फिर स्कैन करें।",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "File मेनू से कोई दूसरा फ़ोल्डर चुनें।",
     "Choose application…": "ऐप्लिकेशन चुनें…",
     "Choose catalog…": "कैटलॉग चुनें…",
+    "Choose criteria above.": "कृपया ऊपर के मानदंड चुनें.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "कॉपी करने के लिए संपादन सेटिंग्स चुनें ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "निर्यात करने के लिए बिल्कुल कौन-सी फ़ोटो चाहिए, चुनें, output का preview देखें, और progress पर नज़र रखें।",
     "Choose export size, format, and color space": "निर्यात आकार, प्रारूप, और रंग स्थान चुनें",
@@ -547,6 +548,7 @@
     "Choose your language": "अपनी भाषा चुनें",
     "Choose your preferred language in the first-use dialog.": "पहली बार उपयोग संवाद में अपनी पसंदीदा भाषा चुनें।",
     "Choose…": "चुनें…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "किसी मानदंड को चुनने पर उसकी मिलान करने वाली फ़ोटो ग्रिड में खुलती हैं। समीक्षा दृश्य बदलने के लिए चयन, अस्वीकृतियाँ, या सभी का उपयोग करें। लाइब्रेरी के अन्य फ़िल्टर फिर भी लागू रहते हैं.",
     "Choosing a file needs the desktop app; paste a path instead": "फ़ाइल चुनने के लिए डेस्कटॉप ऐप चाहिए; इसके बजाय कोई पथ पेस्ट करें",
     "Choosing a folder needs the desktop app; paste a path instead": "फ़ोल्डर चुनने के लिए डेस्कटॉप ऐप चाहिए; इसके बजाय कोई पथ पेस्ट करें",
     "Chromatic aberration": "रंगीन अपवर्तन त्रुटि",
@@ -690,6 +692,7 @@
     "Compare": "तुलना करें",
     "Compare Before & After": "पहले और बाद में तुलना करें",
     "Compare several photos in Survey": "Survey में कई फ़ोटो की तुलना करें",
+    "Compare similar photos": "समान फ़ोटो की तुलना करें",
     "Compare the faces before combining their photos.": "फ़ोटो को मिलाने से पहले चेहरों की तुलना करें।",
     "Compare while zoomed in": "ज़ूम इन किए हुए तुलना करें",
     "Compare with a reference image": "संदर्भ छवि के साथ तुलना करें",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "हर पठनीय पंक्ति को एक नई फ़ाइल में प्रतिलिपि करता है। अभी पठनीय: {value}. अंतिम बैकअप के बाद किए गए संपादन रखता है; क्षतिग्रस्त पृष्ठों की पंक्तियाँ खो जाती हैं।",
     "Copy": "कॉपी",
     "Copy Edit Settings": "संपादन सेटिंग्स कॉपी करें",
+    "Copy and Paste are below the photo in Detail view.": "विवरण दृश्य में फ़ोटो के नीचे कॉपी और पेस्ट बटन हैं।",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy और Paste आपके द्वारा स्पष्ट रूप से चुने गए समूहों को स्थानांतरित करते हैं। अनचेक किए गए समूहों की सेटिंग्स प्रत्येक destination पर जैसी हैं वैसी ही रहती हैं। यह एक explicit copy/paste workflow है: स्रोत में बाद के संपादन destination के साथ स्वतः synchronize नहीं होते।",
     "Copy and verify it into the library": "इसे कॉपी करें और लाइब्रेरी में सत्यापित करें",
     "Copy anyway": "फिर भी कॉपी करें",
@@ -980,6 +984,7 @@
     "Downloading update…": "अपडेट डाउनलोड हो रहा है…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "मात्रा को 0% से 100% तक खींचें। शून्य प्रीसेट से पहले वाला संपादन पुनर्स्थापित करता है; 100% पूर्ण प्रीसेट का उपयोग करता है। मात्रा को 100% पर रीसेट करने के लिए उस पर डबल-क्लिक करें।",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "क्रॉप का आकार बदलने के लिए हैंडल खींचें; फ़ोटो फ़्रेम को केंद्र में रखने के लिए ज़ूम करती है। फ़्रेम के भीतर खींचकर उसके नीचे फ़ोटो को स्थानांतरित करें, या नया क्रॉप बनाने के लिए उसके बाहर खींचें।",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ग्रेडिएंट समायोजित करने के लिए किसी भी बिंदु को खींचें। उसे खिसकाने के लिए रेखा खींचें। दोबारा बनाने के लिए किसी दूसरी जगह खींचें।",
     "Drag either on-image circle to refine the target or source.": "target या source को परिष्कृत करने के लिए छवि पर बने किसी भी वृत्त को खींचें।",
     "Drag on the photo to change the selected gradient’s shape or position": "चयनित ग्रेडिएंट का आकार या स्थिति बदलने के लिए फ़ोटो पर खींचें",
     "Drag on the photo to edit the {tool} mask.": "{tool} मास्क को संपादित करने के लिए फ़ोटो पर खींचें।",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "प्रत्येक ब्रश या पेंट की गई परिशोधन में अधिकतम 64 स्ट्रोक्स, प्रति स्ट्रोक अधिकतम 512 बिंदु, और प्रति फ़ोटो 20,000 मास्क बिंदु हो सकते हैं। सीमा पहुँचने पर संपादक आपको बताता है।",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "प्रत्येक नया बैकअप एक सामग्री मैनिफ़ेस्ट और चेकसम शामिल करता है, और उसे सत्यापित करने के लिए स्वतंत्र रूप से फिर से खोला जाता है।",
     "Edit": "संपादित करें",
+    "Edit History": "संपादन इतिहास",
     "Edit In…": "इसमें संपादित करें…",
     "Edit Shape": "आकृति संपादित करें",
     "Edit a curve": "वक्र संपादित करें",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "त्रुटि: {error}",
     "Errors: {details}": "त्रुटियाँ: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "हर export चयनित ICC profile एम्बेड करता है। Colour space में sRGB, Display P3, या ProPhoto RGB चुनें।",
-    "Edit History": "संपादन इतिहास",
     "Everyone": "सभी",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone दिखाई देने वाले चेहरे के समूह दिखाता है. Unnamed उन समूहों को दिखाता है जिनका नाम नहीं रखा गया है. कोई समूह खोलें, एक नाम टाइप करें, और Save name चुनें. केवल आपके द्वारा दर्ज किए गए नाम उपयोग किए जाते हैं; मॉडल को लोगों के नाम पता नहीं होते.",
     "Example download prepared. Your edit has not changed.": "उदाहरण डाउनलोड तैयार किया गया। आपका संपादन नहीं बदला है।",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "XMP साइडकार के ज़रिए मेटाडेटा का आदान-प्रदान करें",
     "Existing LightTable edits could not be merged safely": "मौजूदा LightTable संपादन सुरक्षित रूप से मर्ज नहीं किए जा सके",
     "Existing files": "मौजूदा फ़ाइलें",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "डिफ़ॉल्ट रूप से मौजूदा फ़्लैग सुरक्षित रखे जाते हैं। मौजूदा फ़्लैग बदलें केवल तब सक्षम करें जब आप पिछले निर्णय बदलना चाहते हों। बैच कार्रवाइयाँ प्रदर्शित मिलानों को प्रभावित करती हैं और जब मेटाडेटा लिंकिंग सक्षम हो, तो जुड़े हुए RAW/JPEG फ़ाइलें शामिल करती हैं; संरक्षित या पहले से मिलते-जुलते फ़्लैग कार्रवाई गणना से बाहर रखे जाते हैं.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "मौजूदा फ़्लैग सुरक्षित रखे गए हैं। गणना में बिना फ़्लैग वाली जुड़ी हुई RAW/JPEG फ़ाइलें शामिल हैं.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "मौजूदा फ़्लैग बदले जा सकते हैं। गणना में जुड़े हुए RAW/JPEG फ़ाइलें शामिल हैं.",
     "Existing settings could not be loaded; this photo was left unchanged": "मौजूदा सेटिंग्स लोड नहीं की जा सकीं; यह फ़ोटो अपरिवर्तित छोड़ी गई",
     "Expand Advanced and edit Filename template.": "Advanced को विस्तारित करें और Filename template संपादित करें।",
     "Expand Advanced in Export.": "Export में उन्नत का विस्तार करें.",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "सर्वेक्षण फ़ोटो को फ़्लैग और रेट करें",
     "Flag and rating filters": "फ़्लैग और रेटिंग फ़िल्टर",
     "Flag as Pick": "पिक के रूप में फ़्लैग करें",
+    "Flag {count} photo as a pick": "{count} फ़ोटो को चयन के रूप में फ़्लैग करें",
+    "Flag {count} photo as a reject": "{count} फ़ोटो को अस्वीकृत के रूप में फ़्लैग करें",
+    "Flag {count} photos as picks": "{count} फ़ोटो को चयन के रूप में फ़्लैग करें",
+    "Flag {count} photos as rejects": "{count} फ़ोटो को अस्वीकृत के रूप में फ़्लैग करें",
     "Flags and ratings apply to selection": "फ़्लैग और रेटिंग चयन पर लागू होते हैं",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "फ़्लैग और सितारे अलग हैं: कोई फ़ोटो Picked हो सकती है और उसकी कोई भी स्टार रेटिंग हो सकती है। Reject किसी फ़ोटो को समीक्षा के लिए चिह्नित करता है; यह उसे हटाता नहीं है।",
     "Flip horizontal": "क्षैतिज फ़्लिप करें",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "फ़ोटो को संग्रहों में समूहित करें",
     "Group similar faces and search names you add.": "मिलते-जुलते चेहरे समूहित करें और आपके द्वारा जोड़े गए नाम खोजें।",
     "Group the rendered derivative with its source in the catalog.": "रेंडर किए गए व्युत्पन्न को कैटलॉग में उसके स्रोत के साथ समूहित करें।",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "समूह {index} of {count}। कोई स्पष्ट अनुशंसा नहीं; इन फ़ोटो की तुलना करें.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "समूह {index} of {count}। सुझाया गया: {name}। फ़ोकस और आँखों की जाँच के आधार पर; हर फ़्रेम की समीक्षा करें.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "समूहीकरण के लिए वास्तविक कैप्चर समय और वर्तमान फ़ोटो अनुक्रमणिका विश्लेषण आवश्यक है। केवल फ़ाइलसिस्टम तारीखों वाली फ़ाइलें, वीडियो, वर्चुअल प्रतियाँ, और पर्याप्त दृश्य विवरण न रखने वाली फ़ोटो शामिल नहीं की जातीं। इस अद्यतन के बाद अनुक्रमणिका कार्यकर्ता द्वारा मौजूदा अनुक्रमणिका रिकॉर्ड ताज़ा किए जाते हैं.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "फ़ोटो स्कैन होते ही समूह यहाँ दिखाई देते हैं. यह चलने के दौरान आप संपादन जारी रख सकते हैं.",
     "Guides for your photographs, from first edit to export.": "आपकी फ़ोटोग्राफ़ों के लिए मार्गदर्शिका, पहले संपादन से लेकर निर्यात तक।",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR 2–9 exposure-bracketed फ़ोटो स्वीकार करता है जिनके आयाम मेल खाते हों। यह उपयोगी टोन को संतुलित करने के लिए display-rendered फ़्रेमों को संरेखित और exposure-fuse करता है। ब्लेंडिंग आर्टिफ़ैक्ट के लिए गतिशील विषयों और किनारों की समीक्षा करें।",
@@ -1431,6 +1446,7 @@
     "Import…": "आयात करें…",
     "Improve preview speed and check image detail": "पूर्वावलोकन गति सुधारें और छवि विवरण जाँचें",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "Community में, Featured, New, या All चुनें और संग्रह को सीमित करने के लिए Subject का उपयोग करें। प्रीसेट चुनकर उसका विवरण, creator, version, Film व्यवहार, और उपलब्ध example photos देखें।",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "आकृति संपादित करें में किसी भी बिंदु को खींचकर ग्रेडिएंट का वह सिरा समायोजित करें। दोनों बिंदुओं को जोड़ने वाली रेखा खींचकर पूरा ग्रेडिएंट खिसकाएँ; उसका कोण और संक्रमण की चौड़ाई बनी रहेगी। दोबारा बनाने के लिए फ़ोटो में किसी दूसरी जगह खींचें।",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "Edit Shape में, मास्क को स्थानांतरित करने के लिए केंद्र हैंडल खींचें, उसका आकार बदलने के लिए किसी भी अक्ष हैंडल को, या घुमाने के लिए बाहरी हैंडल को खींचें। ग्रेडिएंट को गोल बनाने के लिए ड्रॉ करते या आकार बदलते समय Shift दबाकर रखें।",
     "In Film profile, choose Film format.": "Film profile में, Film format चुनें।",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "जानकारी में, शीर्षक, कैप्शन, और हेडलाइन के लिए विवरण फैलाएँ; निर्माता, कॉपीराइट, और क्रेडिट के लिए अधिकार; या स्थान और निर्देशांकों के लिए स्थान। जैसे ही आप टाइप करते हैं, परिवर्तन कैटलॉग में सहेजे जाते हैं। इस फ़ोटो का मेटाडेटा लोड होने के बाद और अक्षांश तथा देशांतर दोनों मान्य होने पर Maps में खोलें उपलब्ध है। यह आपके ब्राउज़र में स्थान खोलता है।",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "छवि को 1:1 पर देखें और texture का मूल्यांकन करने से पहले preview detail के समाप्त होने की प्रतीक्षा करें।",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "overlay का निरीक्षण करें और आवश्यकता अनुसार सीमाओं के आसपास painted refinements उपयोग करें।",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "अस्वीकृत फ़ोटो की समीक्षा करें। यदि आप उनके अन्य सदस्यों को शामिल करना चाहते हैं, तो paired-file सेटिंग्स जाँचें और कोई भी stack विस्तृत करें।",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "सुझावों की जाँच करें, फिर यदि आप उन flags को लागू करना चाहते हैं तो Pick selects या Reject rejects का उपयोग करें।",
     "Interface": "इंटरफ़ेस",
     "Interface and behavior": "इंटरफ़ेस और व्यवहार",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "इंटरफ़ेस व्यूअर पृष्ठभूमि, फ़ॉन्ट स्केल, Lights Out, लूप जानकारी ओवरले, और क्रॉप गाइड नियंत्रित करता है। ये प्राथमिकताएँ निर्यात किए गए पिक्सेल बदले बिना कार्यक्षेत्र की उपस्थिति बदलती हैं।",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Brush, Linear, और Radial masks से स्थानीय समायोजन करें",
     "Make photos easier to find and prepare descriptive metadata for export.": "फ़ोटो को ढूँढना आसान बनाएँ और export के लिए वर्णनात्मक metadata तैयार करें।",
     "Make select": "चयन बनाएं",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "चयन करें का उपयोग सक्रिय सर्वेक्षण फ़ोटो को चुनने के लिए करें और सर्वेक्षण में बची अन्य फ़ोटो को अस्वीकृत करें। इससे उनके फ़्लैग बदलते हैं। जुड़े हुए RAW और JPEG मेटाडेटा उन फ़्लैग परिवर्तनों को साथी फ़ाइलों तक बढ़ा सकते हैं।",
     "Make the source photo active.": "स्रोत फ़ोटो को सक्रिय करें.",
     "Make your adjustment, then check the save status in the app.": "अपना समायोजन करें, फिर ऐप में सहेजने की स्थिति जाँचें।",
     "Manage cache storage": "कैश संग्रहण प्रबंधित करें",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "इस बिल्ड से नया",
     "Next": "अगला",
     "Next Photo": "अगली फ़ोटो",
+    "Next group": "अगला समूह",
     "Next presets": "अगले प्रीसेट",
     "No Rating": "कोई रेटिंग नहीं",
     "No TIFF was created.": "कोई TIFF नहीं बनाया गया।",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "इस संग्रह में अभी कोई प्रीसेट नहीं है।",
     "No rejected photos in this view": "इस दृश्य में कोई अस्वीकृत फ़ोटो नहीं",
     "No sampled colors": "कोई नमूना रंग नहीं",
+    "No similar groups found. Photos need current index analysis and capture times.": "कोई समान समूह नहीं मिला। फ़ोटो के लिए वर्तमान अनुक्रमणिका विश्लेषण और कैप्चर समय चाहिए.",
     "No sources yet.": "अभी तक कोई स्रोत नहीं।",
     "No steps recorded yet.": "अभी तक कोई चरण रिकॉर्ड नहीं किए गए हैं।",
     "No usable lines found.": "कोई उपयोगी पंक्तियाँ नहीं मिलीं।",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "चुनें (P)",
     "Pick / reject / unflag": "चुनें / अस्वीकृत करें / फ़्लैग हटाएँ",
     "Pick a preset": "प्रीसेट चुनें",
-    "Pick selects": "चुनें चयन करता है",
-    "Pick the selects": "चयन चुनें",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria} से मेल खाने वाली {count} फ़ोटो चुनें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria} से मेल खाने वाली {count} फ़ोटो चुनें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
-    "Pick {count} select": "{count} चुनें",
-    "Pick {count} selects": "{count} चयन चुनें",
     "Pick, reject, and rate photos": "फ़ोटो चुनें, अस्वीकृत करें, और रेट करें",
     "Picked": "चुना गया",
     "Picked only": "केवल चुना गया",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "पूर्वावलोकन इस फ़ोटो के संपादन का उपयोग करते हैं. इसे लागू करने के लिए कोई stock चुनें.",
     "Previous": "पिछला",
     "Previous Photo": "पिछली फ़ोटो",
+    "Previous group": "पिछला समूह",
     "Previous presets": "पिछले प्रीसेट",
     "Print development": "प्रिंट विकास",
     "Print exposure": "प्रिंट एक्सपोज़र",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "समुदाय ताज़ा किया जा रहा है…",
     "Reject": "अस्वीकृत करें",
     "Reject (X)": "अस्वीकृत करें (X)",
-    "Reject rejects": "अस्वीकृतियों को अस्वीकृत करें",
-    "Reject the rejects": "अस्वीकृतियों को अस्वीकृत करें",
-    "Reject {count} photo": "{count} फ़ोटो अस्वीकृत करें",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria} से मेल खाने वाली {count} फ़ोटो अस्वीकृत करें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
-    "Reject {count} photos": "{count} फ़ोटो अस्वीकृत करें",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria} से मेल खाने वाली {count} फ़ोटो अस्वीकृत करें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
     "Rejected": "अस्वीकृत",
     "Rejected {count} photo": "{count} फ़ोटो अस्वीकृत किया गया",
     "Rejected {count} photos": "{count} फ़ोटो अस्वीकृत की गईं",
@@ -2317,6 +2322,7 @@
     "Repair": "मरम्मत करें",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "अन्य क्षेत्रों के लिए दोहराएँ, या वैश्विक उपचार बदलने के लिए Edit global grade पर क्लिक करें।",
     "Replace adjustment settings": "समायोजन सेटिंग्स बदलें",
+    "Replace existing flags": "मौजूदा फ़्लैग बदलें",
     "Replace local masks; detect AI selections on each photo": "स्थानीय मास्क बदलें; प्रत्येक फ़ोटो पर AI चयन का पता लगाएँ",
     "Replace with imported": "आयातित से बदलें",
     "Replaced adjustments with {name}": "{name} के साथ समायोजन बदले गए",
@@ -2368,6 +2374,8 @@
     "Restored that step": "वह चरण पुनर्स्थापित किया गया",
     "Restored {count} capture. You can also restore capture-time steps in History.": "{count} कैप्चर पुनर्स्थापित किया गया. आप History में कैप्चर-समय के चरण भी पुनर्स्थापित कर सकते हैं.",
     "Restored {count} captures. You can also restore capture-time steps in History.": "{count} कैप्चर पुनर्स्थापित किए गए. आप History में कैप्चर-समय के चरण भी पुनर्स्थापित कर सकते हैं.",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count} फ़ोटो फ़्लैग पुनर्स्थापित किया गया। बाद के फ़्लैग परिवर्तन सुरक्षित रखे गए हैं.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count} फ़ोटो फ़्लैग पुनर्स्थापित किए गए। बाद के फ़्लैग परिवर्तन सुरक्षित रखे गए हैं.",
     "Restore…": "पुनर्स्थापित करें…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "बैकअप को पुनर्स्थापित करने पर कैटलॉग डेटा उस बैकअप की स्थिति में लौटता है, इसलिए बाद के संपादन उसमें नहीं होते। जब कार्यशील कैटलॉग पुनर्स्थापित किया जाता है, तो वर्तमान कैटलॉग पहले बैकअप किया जाता है।",
     "Result name": "परिणाम नाम",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Review matches दो संभावित समूहों को चेहरे के नमूनों के साथ प्रस्तुत करता है. Same person उन्हें जोड़ देता है. Different people एक सुधार दर्ज करता है ताकि यह जोड़ी फिर से सुझाई न जाए. Skip for now मिलान को बाद में देखने के लिए छोड़ देता है.",
     "Review photos from the source using the destination and naming settings": "गंतव्य और नामकरण सेटिंग्स का उपयोग करके स्रोत से फ़ोटो की समीक्षा करें",
     "Review signals": "समीक्षा संकेत",
+    "Review similar photos": "समान फ़ोटो की समीक्षा करें",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "समान फ़ोटो की समीक्षा करें वर्तमान फ़ोल्डर या संग्रह में 30 सेकंड के भीतर कैप्चर की गई दृष्टिगत रूप से समान अनुक्रमित फ़ोटो ढूँढता है। समूह सर्वेक्षण में अधिकतम 16 फ़ोटो के साथ खुलते हैं। विकल्पों की तुलना करने के लिए पिछले समूह और अगले समूह का उपयोग करें, फिर सर्वेक्षण नियंत्रणों से अलग-अलग फ़ोटो फ़्लैग करें.",
     "Review the before-and-after filenames in the preview.": "पूर्वावलोकन में पहले और बाद के फ़ाइलनामों की समीक्षा करें।",
     "Review the current view carefully before moving rejected originals and sidecars.": "rejected originals और sidecars को स्थानांतरित करने से पहले वर्तमान दृश्य की सावधानी से समीक्षा करें।",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "दिखाई गई फ़ोटो की समीक्षा करें, फिर फ़ोटो को चयन के रूप में फ़्लैग करें या फ़ोटो को अस्वीकृत के रूप में फ़्लैग करें का उपयोग करें। बटन दिखाता है कि कितनी फ़ाइलें बदलेंगी.",
     "Review the import result and the new preset’s conversion coverage before applying it.": "apply करने से पहले import result और नए preset की conversion coverage की समीक्षा करें।",
     "Review the import result, then continue into the library.": "आयात परिणाम की समीक्षा करें, फिर लाइब्रेरी में आगे बढ़ें।",
     "Review the result and refine the sliders for the photograph.": "परिणाम की समीक्षा करें और फ़ोटोग्राफ़ के लिए स्लाइडर्स को परिष्कृत करें।",
     "Review transferred masks": "स्थानांतरित मास्क की समीक्षा करें",
     "Review translated edits": "अनुवादित संपादन की समीक्षा करें",
     "Reviewing every photo.": "हर फ़ोटो की समीक्षा की जा रही है।",
-    "Reviewing {count} photo that met a reject criterion.": "उस {count} फ़ोटो की समीक्षा कर रहे हैं जो अस्वीकृति मानदंड पर खरा उतरा।",
-    "Reviewing {count} photo that met a select criterion.": "उस {count} फ़ोटो की समीक्षा कर रहे हैं जो चयन मानदंड पर खरा उतरा।",
-    "Reviewing {count} photos that met a reject criterion.": "उन {count} फ़ोटो की समीक्षा कर रहे हैं जो अस्वीकृति मानदंड पर खरे उतरे।",
-    "Reviewing {count} photos that met a select criterion.": "उन {count} फ़ोटो की समीक्षा कर रहे हैं जो चयन मानदंड पर खरे उतरे।",
     "Rich descriptions on": "समृद्ध विवरण चालू",
     "Richer descriptions require macOS 27 or later": "समृद्ध विवरणों के लिए macOS 27 या बाद का संस्करण आवश्यक है",
     "Rights": "अधिकार",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "कैमरे से दूरियों की एक सीमा चुनें; दूर और निकट सीमाएँ परिष्कृत करें",
     "Select all": "सभी चुनें",
     "Select an active reference photo first": "पहले एक सक्रिय संदर्भ फ़ोटो चुनें",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "किसी मौजूदा रेखीय मास्क को फिर से समायोजित करने के लिए उसे चुनें। अगर आप जोड़ें, घटाएँ या प्रतिच्छेद से पेंट कर रहे थे, तो पहले आकृति संपादित करें चुनें। बिंदु छिपे हों तो H दबाएँ।",
     "Select an existing mask, then expand Create New Mask.": "एक मौजूदा मास्क चुनें, फिर Create New Mask को विस्तृत करें।",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "जारी रखने के लिए दूसरा band चुनें, या mixer समायोजन साफ़ करने के लिए Color Mixer के Reset का उपयोग करें।",
     "Select at least two distinct originals": "कम से कम दो अलग-अलग मूल चुनें",
@@ -2617,6 +2625,7 @@
     "Settings…": "सेटिंग्स…",
     "Shadows": "छायाएँ",
     "Shape": "आकृति",
+    "Shape a linear gradient": "लीनियर ग्रेडिएंट का आकार बदलें",
     "Shape a radial gradient": "रेडियल ग्रेडिएंट को आकार दें",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "आकृति में चौड़ाई, ऊँचाई, घुमाव, और फेदर नियंत्रण भी उपलब्ध हैं।",
     "Shape contrast and color with curves": "वक्रों के साथ कॉन्ट्रास्ट और रंग को आकार दें",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "कैटलॉग अपरिवर्तित छोड़ा गया।",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "कैटलॉग को एक verified backup से पुनर्स्थापित किया गया; क्षतिग्रस्त प्रतिलिपि Recovery फ़ोल्डर में है.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "कॉम्पैक्ट SFace INT8 मॉडल संरेखित मानव चेहरों की तुलना करता है. स्वचालित समूहण सतर्क समानता नियमों का उपयोग करता है; संभावित मिलान समीक्षा के लिए अलग रहते हैं. किसी नामित व्यक्ति से मिलते नए चेहरे पुष्टि के लिए सुझाए जाते हैं.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "पुष्टिकरण प्रभावित संख्या दिखाता है और चेतावनी देता है कि मेल खाने वाली फ़ोटो पर मौजूद फ़्लैग बदले जाएंगे। जब वह प्राथमिकता सक्षम हो, तब लिंक्ड RAW/JPEG मेटाडेटा में जोड़ी गई फ़ाइल भी शामिल हो सकती है।",
     "The current catalog is backed up first, then replaced by this one.": "वर्तमान कैटलॉग का पहले बैकअप लिया जाता है, फिर इसे इससे बदल दिया जाता है.",
     "The desktop Trash service (gio) is unavailable": "डेस्कटॉप ट्रैश सेवा (gio) उपलब्ध नहीं है",
     "The desktop app checks its signed update feed.": "डेस्कटॉप ऐप अपने हस्ताक्षरित अपडेट फ़ीड की जाँच करता है।",
@@ -2987,6 +2995,7 @@
     "Undo last change": "अंतिम परिवर्तन पूर्ववत करें",
     "Undo last correction": "अंतिम सुधार पूर्ववत करें",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "अंतिम सुधार पूर्ववत करें इस विंडो में रखे गए सबसे हाल के सुधार को उलट देता है। कैमरा समय बहाल करें… कैटलॉग सुधार हटाने का पूर्वावलोकन करता है; मूल कैमरा समय बहाल करने के लिए पूर्वावलोकन की समीक्षा करें और उसे लागू करें। कैप्चर-समय चरण इतिहास में भी उपलब्ध हैं। जब XMP लेखन सक्षम हो, तो किसी सुधार को रीसेट करने से LightTable द्वारा उसे लागू करने से पहले सहेजी गई साइडकार तारीखें बहाल हो जाती हैं। पुरानी साइडकार में बिना उस सहेजी गई तारीख के कैप्चर तारीखें अपरिवर्तित रहती हैं।",
+    "Undo last flag batch": "फ़्लैग के पिछले बैच को पूर्ववत करें",
     "Undo or restore an earlier step": "पूर्व चरण को पूर्ववत करें या पुनर्स्थापित करें",
     "Undo snapshots must be strings": "पूर्ववत स्नैपशॉट स्ट्रिंग होने चाहिए",
     "Unedited": "असंपादित",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "reference को अपनी फ़ोटो के साथ align करने के लिए Scale, Horizontal, और Vertical का उपयोग करें।",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "फ़ोटो जोड़ने या अनुपलब्ध मूल फ़ोटो पुनर्स्थापित करने के बाद Scan new photos का उपयोग करें. पहले से स्कैन की गई, अपरिवर्तित फ़ोटो फिर से उपयोग की जाती हैं.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop, WinGet, Chocolatey, AUR, Flatpak या Snap द्वारा प्रबंधित इंस्टॉलेशन को उसी प्रबंधक से अपडेट करें। Windows पोर्टेबल प्रतियों के लिए नया ZIP डाउनलोड करें। जिन बिल्ड में अपडेट हस्ताक्षर कॉन्फ़िगर नहीं है, वे खुद को अपडेट नहीं कर सकते।",
-    "Use Selects, Rejects, or All to review the matching photos.": "मिलान करने वाली फ़ोटोज़ की समीक्षा के लिए Selects, Rejects, या All का उपयोग करें।",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Temp और Tint का उपयोग करें, या किसी neutral area का sample लें, फिर Vibrance और Saturation समायोजित करें।",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "हालिया कार्य के लिए Undo, संग्रहीत संपादन चरणों के लिए History, और जिन looks पर आप लौटना चाहते हैं उनके लिए नामित snapshots का उपयोग करें।",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "बैच पुनर्स्थापित करने के लिए पूर्णता संदेश में पूर्ववत करें या साइडबार में फ़्लैग के पिछले बैच को पूर्ववत करें का उपयोग करें। इस सत्र के दौरान पूर्ववत करें उपलब्ध रहता है और किसी भी बाद के मैन्युअल या बाहरी फ़्लैग निर्णय को सुरक्षित रखता है। यदि सहेजना विफल हो जाए, तो सहेजना पुनः प्रयास करें का उपयोग करें या बैच को पूर्ववत करें; विफल लिखतें कतार में बनी रहती हैं.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "उस अंतिम बैच को पुनर्स्थापित करने के लिए Undo keyword change का उपयोग करें जबकि यह विंडो खुली रहे। Undo उस बैच के बाद बदले गए कीवर्डों को अधिलेखित करने से इनकार करता है। फ़ोटो History भी कीवर्ड की पहले और बाद की अवस्थाओं को बनाए रखती है।",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "रेंज के रंगों को नमूना लिए गए पैच के अधिक समान बनाने के लिए Uniform hue, Uniform saturation, या Uniform luminance का उपयोग करें।",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "कुछ बिंदुओं का उपयोग करें और काम करते हुए फ़ोटो की तुलना करें; channel curves तीव्र color casts पैदा कर सकती हैं।",
@@ -3162,6 +3171,7 @@
     "What to expect": "क्या अपेक्षा करें",
     "What to open": "क्या खोलना है",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "जब MIDI उपलब्ध हो, तो कीबोर्ड और MIDI नियंत्रण खोलें और MIDI सीखें चुनें। अगर आपका ब्राउज़र MIDI एक्सेस मांगे, तो अनुमति दें।",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "जब सर्वेक्षण सहायता-प्राप्त छँटाई से खोला जाता है, तो सुझाए गए समूह की तुलना करें और फ़ोटो को अलग-अलग फ़्लैग करें। नियमित सर्वेक्षण में चयन बनाएं उपलब्ध है: यह सक्रिय सर्वेक्षण फ़ोटो चुनता है और सर्वेक्षण में बची अन्य फ़ोटो को अस्वीकृत करता है। इससे उनके फ़्लैग बदलते हैं। जुड़ा हुआ RAW और JPEG मेटाडेटा इन फ़्लैग परिवर्तनों को सहायक तक बढ़ा सकता है.",
     "When a photo already has edits": "जब किसी फ़ोटो में पहले से संपादन हों",
     "When a photo arrives": "जब कोई फ़ोटो आती है",
     "When a photo seems missing": "जब कोई फ़ोटो गायब लगती है",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} समूह",
     "{count} indexed photo remains local until deleted.": "{count} अनुक्रमित फ़ोटो हटाए जाने तक स्थानीय रहेगी।",
     "{count} indexed photos remain local until deleted.": "{count} अनुक्रमित फ़ोटो हटाए जाने तक स्थानीय रहेंगी।",
+    "{count} matching photo shown: {criteria}.": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गई:।",
+    "{count} matching photos shown: {criteria}.": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गईं:।",
     "{count} minimum alignment inlier": "{count} न्यूनतम संरेखण इनलायर",
     "{count} minimum alignment inliers": "{count} न्यूनतम संरेखण इनलायर्स",
     "{count} missing": "{count} गायब",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ पीछे",
     "← Back to articles": "← लेखों पर वापस जाएँ",
     "← People": "← लोग",
-    "☆ Favorites": "☆ पसंदीदा",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ग्रेडिएंट समायोजित करने के लिए किसी भी बिंदु को खींचें। उसे खिसकाने के लिए रेखा खींचें। दोबारा बनाने के लिए किसी दूसरी जगह खींचें।",
-    "Shape a linear gradient": "लीनियर ग्रेडिएंट का आकार बदलें",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "आकृति संपादित करें में किसी भी बिंदु को खींचकर ग्रेडिएंट का वह सिरा समायोजित करें। दोनों बिंदुओं को जोड़ने वाली रेखा खींचकर पूरा ग्रेडिएंट खिसकाएँ; उसका कोण और संक्रमण की चौड़ाई बनी रहेगी। दोबारा बनाने के लिए फ़ोटो में किसी दूसरी जगह खींचें।",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "किसी मौजूदा रेखीय मास्क को फिर से समायोजित करने के लिए उसे चुनें। अगर आप जोड़ें, घटाएँ या प्रतिच्छेद से पेंट कर रहे थे, तो पहले आकृति संपादित करें चुनें। बिंदु छिपे हों तो H दबाएँ।",
-    "Copy and Paste are below the photo in Detail view.": "विवरण दृश्य में फ़ोटो के नीचे कॉपी और पेस्ट बटन हैं।"
+    "☆ Favorites": "☆ पसंदीदा"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4142,6 +4149,14 @@
     "Exporting {count} photo to {destination}…": {
       "one": "{count} फ़ोटो को {destination} पर निर्यात किया जा रहा है…",
       "other": "{count} फ़ोटो को {destination} पर निर्यात किया जा रहा है…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "{count} फ़ोटो को चयन के रूप में फ़्लैग करें",
+      "other": "{count} फ़ोटो को चयन के रूप में फ़्लैग करें"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "{count} फ़ोटो को अस्वीकृत के रूप में फ़्लैग करें",
+      "other": "{count} फ़ोटो को अस्वीकृत के रूप में फ़्लैग करें"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Apple Photos से {count} फ़ोटो आयात की गई{value}",
@@ -4163,25 +4178,9 @@
       "one": "{count} फ़ोटो पर पेस्ट किया गया",
       "other": "{count} फ़ोटो पर पेस्ट किया गया"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria} से मेल खाने वाली {count} फ़ोटो चुनें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
-      "other": "{criteria} से मेल खाने वाली {count} फ़ोटो चुनें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं."
-    },
-    "Pick {count} select": {
-      "one": "{count} चुनें",
-      "other": "{count} चयन चुनें"
-    },
     "Picked {count} photo": {
       "one": "{count} फ़ोटो चुना गया",
       "other": "{count} फ़ोटो चुना गया"
-    },
-    "Reject {count} photo": {
-      "one": "{count} फ़ोटो अस्वीकृत करें",
-      "other": "{count} फ़ोटो अस्वीकृत करें"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria} से मेल खाने वाली {count} फ़ोटो अस्वीकृत करें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं.",
-      "other": "{criteria} से मेल खाने वाली {count} फ़ोटो अस्वीकृत करें? उन फ़ोटो पर मौजूदा फ़्लैग बदल दिए जाते हैं."
     },
     "Rejected {count} photo": {
       "one": "{count} फ़ोटो अस्वीकृत किया गया",
@@ -4195,13 +4194,9 @@
       "one": "{count} कैप्चर पुनर्स्थापित किया गया. आप History में कैप्चर-समय के चरण भी पुनर्स्थापित कर सकते हैं.",
       "other": "{count} कैप्चर पुनर्स्थापित किए गए. आप History में कैप्चर-समय के चरण भी पुनर्स्थापित कर सकते हैं."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "उस {count} फ़ोटो की समीक्षा कर रहे हैं जो अस्वीकृति मानदंड पर खरा उतरा।",
-      "other": "उन {count} फ़ोटो की समीक्षा कर रहे हैं जो अस्वीकृति मानदंड पर खरे उतरे।"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "उस {count} फ़ोटो की समीक्षा कर रहे हैं जो चयन मानदंड पर खरा उतरा।",
-      "other": "उन {count} फ़ोटो की समीक्षा कर रहे हैं जो चयन मानदंड पर खरे उतरे।"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "{count} फ़ोटो फ़्लैग पुनर्स्थापित किया गया। बाद के फ़्लैग परिवर्तन सुरक्षित रखे गए हैं.",
+      "other": "{count} फ़ोटो फ़्लैग पुनर्स्थापित किए गए। बाद के फ़्लैग परिवर्तन सुरक्षित रखे गए हैं."
     },
     "Wrote {count} sidecar.": {
       "one": "{count} साइडकार लिखी गई।",
@@ -4251,9 +4246,17 @@
       "one": "{count} डुप्लिकेट समूह, जो {files} को कवर करता है।",
       "other": "{count} डुप्लिकेट समूह, जो {files} को कवर करते हैं।"
     },
+    "{count} empty file": {
+      "one": "{count} खाली फ़ाइल",
+      "other": "{count} खाली फ़ाइलें"
+    },
     "{count} error": {
       "one": "{count} त्रुटि",
       "other": "{count} त्रुटियाँ"
+    },
+    "{count} face": {
+      "one": "{count} चेहरा",
+      "other": "{count} चेहरे"
     },
     "{count} face detected": {
       "one": "{count} चेहरा पहचाना गया",
@@ -4271,9 +4274,21 @@
       "one": "{count} फ़ाइल",
       "other": "{count} फ़ाइलें"
     },
+    "{count} file not downloaded": {
+      "one": "{count} फ़ाइल डाउनलोड नहीं हुई",
+      "other": "{count} फ़ाइलें डाउनलोड नहीं हुईं"
+    },
+    "{count} group": {
+      "one": "{count} समूह",
+      "other": "{count} समूह"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} अनुक्रमित फ़ोटो हटाए जाने तक स्थानीय रहेगी।",
       "other": "{count} अनुक्रमित फ़ोटो हटाए जाने तक स्थानीय रहेंगी।"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गई:।",
+      "other": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गईं:।"
     },
     "{count} minimum alignment inlier": {
       "one": "{count} न्यूनतम संरेखण इनलायर",
@@ -4323,6 +4338,10 @@
       "one": "{count} फ़ोटो चयनित",
       "other": "{count} फ़ोटो चयनित"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} फ़ोटो छोड़ी गई{reasons}। मूल डाउनलोड या पुनर्स्थापित करें, फिर सूचकांक पुनर्निर्मित करें।",
+      "other": "{count} फ़ोटो छोड़ी गईं{reasons}। मूल डाउनलोड या पुनर्स्थापित करें, फिर सूचकांक पुनर्निर्मित करें।"
+    },
     "{count} photo updated": {
       "one": "{count} फ़ोटो अद्यतन किया गया",
       "other": "{count} फ़ोटो अपडेट की गईं"
@@ -4339,6 +4358,10 @@
       "one": "{count} रेटेड फ़ोटो",
       "other": "{count} रेटेड फ़ोटो"
     },
+    "{count} selected": {
+      "one": "{count} चयनित",
+      "other": "{count} चयनित"
+    },
     "{count} selected photo": {
       "one": "{count} चयनित फ़ोटो",
       "other": "{count} चयनित फ़ोटो"
@@ -4354,6 +4377,14 @@
     "{count} source": {
       "one": "{count} स्रोत",
       "other": "{count} स्रोत"
+    },
+    "{count} unavailable file": {
+      "one": "{count} अनुपलब्ध फ़ाइल",
+      "other": "{count} अनुपलब्ध फ़ाइलें"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} अनुपलब्ध फ़ोटो छोड़ी गई",
+      "other": "{count} अनुपलब्ध फ़ोटो छोड़ी गईं"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} असमर्थित सेटिंग छोड़ी गई",
@@ -4382,39 +4413,7 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।",
       "other": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।"
-    },
-    "{count} empty file": {
-      "one": "{count} खाली फ़ाइल",
-      "other": "{count} खाली फ़ाइलें"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} फ़ाइल डाउनलोड नहीं हुई",
-      "other": "{count} फ़ाइलें डाउनलोड नहीं हुईं"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} फ़ोटो छोड़ी गई{reasons}। मूल डाउनलोड या पुनर्स्थापित करें, फिर सूचकांक पुनर्निर्मित करें।",
-      "other": "{count} फ़ोटो छोड़ी गईं{reasons}। मूल डाउनलोड या पुनर्स्थापित करें, फिर सूचकांक पुनर्निर्मित करें।"
-    },
-    "{count} unavailable file": {
-      "one": "{count} अनुपलब्ध फ़ाइल",
-      "other": "{count} अनुपलब्ध फ़ाइलें"
-    },
-    "{count} face": {
-      "one": "{count} चेहरा",
-      "other": "{count} चेहरे"
-    },
-    "{count} group": {
-      "one": "{count} समूह",
-      "other": "{count} समूह"
-    },
-    "{count} selected": {
-      "one": "{count} चयनित",
-      "other": "{count} चयनित"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} अनुपलब्ध फ़ोटो छोड़ी गई",
-      "other": "{count} अनुपलब्ध फ़ोटो छोड़ी गईं"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

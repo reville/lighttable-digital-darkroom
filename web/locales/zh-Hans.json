@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "快照会存储照片当前的调整设置、裁剪、蒙版、移除校正和光学设置。它是此照片的已保存编辑状态。在加载照片之前，创建快照不可用。",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "已存储的曲线在您编辑之前都会保持精确。编辑器会重建代表性手柄，因此第一次调整可能会将导入的曲线重塑到您移动的点之外。",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "已保存或导入的曲线会保留其精确保存的表，直到你编辑它。应用程序会重建用于编辑的代表性控制柄，因此第一次调整可能会将导入的曲线重新塑形到超出你移动的点。",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "被建议的照片在对焦、睁眼情况和检测到的问题方面具有明显更强的评估。若并列或证据不足，则不会显示明确建议。相似组仅为建议；它们不会创建堆栈，也不会更改标记。",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "虚拟副本引用同一个原始文件，并保持独立的编辑状态。它不会在磁盘上创建第二个原始文件。",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "虚拟副本共享其原始文件。删除虚拟副本应使用 照片操作 → 删除虚拟副本；将其源文件移到废纸篓会影响使用该原始文件的每个编辑。",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "虚拟副本共享其源文件：对其中一份执行重命名会作用于该原始文件。界面不提供专用的重命名撤销按钮。",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "选择 移除、修复 或 仿制，然后设置 大小、羽化 和 不透明度。",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "选择标准可以是“主体清晰度”、“眼部清晰度”或“睁眼”；拒绝标准可以是“曝光问题”、“误拍”或“文档”。",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "选择选择面部，选取一些面部，然后选择移动到单独的个人，将它们拆分为一个新的未命名组。这两个组将不会再次被建议为匹配项。选择一个面部并选择用作封面，可更改图库图像。",
+    "Choose Selects or Rejects to review matches before applying flags.": "请选择“已选择”或“已拒绝”，以在应用标记前审阅匹配项。",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "选择胶片，或点击在这张照片上预览胶片…以比较渲染示例。",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "选择“主体”或“天空”进行自动选区。对于“对象”，先点击“对象”，然后在照片中点击该对象。",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "选择带有当前调整的 TIFF，然后设置 TIFF 色彩空间和 TIFF 位深度。",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "选择要评分或标记的照片",
     "Choose a preset to see its source and conversion coverage.": "选择一个预设，以查看其来源和转换覆盖范围。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "为底片选择一种打印工艺，并了解为什么幻灯片胶片会使打印控制消失。",
-    "Choose a reject criterion above.": "请先在上方选择一个拒绝条件。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "在选择器中选择一个已保存的点以编辑它，或使用删除点将其移除。",
     "Choose a saved preset to submit": "选择一个已保存的预设进行提交",
     "Choose a scheme": "选择方案",
-    "Choose a select criterion above.": "请先在上方选择一个选择条件。",
     "Choose a settings folder": "选择设置文件夹",
     "Choose a source and destination first.": "请先选择源和目标位置。",
     "Choose a source and destination, then scan.": "请先选择源和目标位置，然后扫描。",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "请从 文件 菜单选择其他文件夹。",
     "Choose application…": "选择应用程序…",
     "Choose catalog…": "选择目录…",
+    "Choose criteria above.": "请先在上方选择条件。",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "选择要复制的编辑设置（{primaryKey}+Shift+C）",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "准确选择要导出的照片，预览输出，并监控进度。",
     "Choose export size, format, and color space": "选择导出大小、格式和色彩空间",
@@ -547,6 +548,7 @@
     "Choose your language": "选择您的语言",
     "Choose your preferred language in the first-use dialog.": "请在首次使用对话框中选择你偏好的语言。",
     "Choose…": "选择…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "选择条件会在网格中打开其匹配照片。使用“已选择”、“已拒绝”或“全部”更改审阅视图。其他资源库筛选条件仍然适用。",
     "Choosing a file needs the desktop app; paste a path instead": "选择文件需要桌面应用；请改为粘贴路径",
     "Choosing a folder needs the desktop app; paste a path instead": "选择文件夹需要桌面应用；请改为粘贴路径",
     "Chromatic aberration": "色差",
@@ -690,6 +692,7 @@
     "Compare": "比较",
     "Compare Before & After": "比较前后",
     "Compare several photos in Survey": "在概览中比较多张照片",
+    "Compare similar photos": "比较相似照片",
     "Compare the faces before combining their photos.": "在合并照片之前比较这些面部。",
     "Compare while zoomed in": "放大查看时比较",
     "Compare with a reference image": "与参考图像比较",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "将每一行可读数据复制到一个新文件中。当前可读：{value}。保留上次备份之后所做的编辑；损坏页面上的行将丢失。",
     "Copy": "复制",
     "Copy Edit Settings": "复制编辑设置",
+    "Copy and Paste are below the photo in Detail view.": "在详细视图中，复制和粘贴位于照片下方。",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy 和 Paste 会传输你明确选择的组。未勾选组中的设置会在每个目标中保持原样。这是一种显式的复制/粘贴工作流：之后对源所做的编辑不会自动同步到目标。",
     "Copy and verify it into the library": "将其复制并验证到目录中",
     "Copy anyway": "仍然复制",
@@ -980,6 +984,7 @@
     "Downloading update…": "正在下载更新…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "将数量从 0% 拖到 100%。0% 会还原到预设之前的编辑；100% 会使用完整预设。双击数量可将其重置为 100%。",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "拖动手柄可调整裁剪大小；照片会缩放以保持画面居中。拖动画框内部可移动其下方的照片，或拖动画框外部以绘制新的裁剪。",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "拖动任一圆点可调整渐变。拖动连线可移动整个渐变。在其他位置拖动可重新绘制。",
     "Drag either on-image circle to refine the target or source.": "拖动图像上的任一圆圈，以细化目标或来源。",
     "Drag on the photo to change the selected gradient’s shape or position": "在照片上拖动以更改所选渐变的形状或位置",
     "Drag on the photo to edit the {tool} mask.": "在照片上拖动以编辑 {tool} 蒙版。",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "每个画笔或手绘细化最多可包含 64 次笔触，每次笔触最多 512 个点，每张照片最多 20,000 个蒙版点。达到限制时，编辑器会提示您。",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "每个新备份都包含内容清单和校验和，并会单独重新打开以进行验证。",
     "Edit": "编辑",
+    "Edit History": "编辑历史",
     "Edit In…": "在…中编辑",
     "Edit Shape": "编辑形状",
     "Edit a curve": "编辑曲线",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "错误：{error}",
     "Errors: {details}": "错误：{details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "每次导出都会嵌入所选 ICC 配置文件。在颜色空间中选择 sRGB、Display P3 或 ProPhoto RGB。",
-    "Edit History": "编辑历史",
     "Everyone": "所有人",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "所有人会显示可见的面部组。未命名会显示尚未命名的组。打开一个组，输入名称，然后选择保存名称。只有你输入的名称会被使用；模型不知道人名。",
     "Example download prepared. Your edit has not changed.": "示例下载已准备就绪。你的编辑未发生变化。",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "通过 XMP 副档交换元数据",
     "Existing LightTable edits could not be merged safely": "现有的 LightTable 编辑无法安全合并",
     "Existing files": "现有文件",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "默认会保留现有标记。仅在您想更改之前的决定时才启用“替换现有标记”。批处理操作会影响显示的匹配项，并在启用元数据关联时包含已关联的 RAW/JPEG 文件；受保护的或已经符合条件的标记会从操作计数中排除。",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "现有标记会保留。计数包括未标记的已关联 RAW/JPEG 文件。",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "现有标记可能会被替换。计数包括已关联的 RAW/JPEG 文件。",
     "Existing settings could not be loaded; this photo was left unchanged": "无法加载现有设置；此照片保持未更改",
     "Expand Advanced and edit Filename template.": "展开 高级 并编辑文件名模板。",
     "Expand Advanced in Export.": "展开导出中的高级。",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "为概览照片标记和评分",
     "Flag and rating filters": "标记和评分筛选",
     "Flag as Pick": "标记为选取",
+    "Flag {count} photo as a pick": "将 {count} 张照片标记为选取",
+    "Flag {count} photo as a reject": "将 {count} 张照片标记为拒绝",
+    "Flag {count} photos as picks": "将 {count} 张照片标记为选取",
+    "Flag {count} photos as rejects": "将 {count} 张照片标记为拒绝",
     "Flags and ratings apply to selection": "标记和评分适用于所选内容",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "标记和星级是分开的：一张照片可以被“选取”并拥有任意星级。“拒绝”只是将照片标记为需要审阅；不会删除它。",
     "Flip horizontal": "水平翻转",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "将照片分组到集合中",
     "Group similar faces and search names you add.": "将相似面部分组，并搜索你添加的名称。",
     "Group the rendered derivative with its source in the catalog.": "在目录中将渲染后的派生文件与其源文件成组。",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "第 {index} 组，共 {count} 组。没有明确建议；请比较这些照片。",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "第 {index} 组，共 {count} 组。建议：{name}。基于对焦和眼睛检查；请审阅每一帧。",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "分组需要实际拍摄时间和当前的照片索引分析。仅有文件系统日期的视频、虚拟副本，以及视觉细节不足的照片会被排除。在此次更新后，索引工作器会刷新现有索引记录。",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "照片被扫描时，组会显示在此处。运行期间你可以继续编辑。",
     "Guides for your photographs, from first edit to export.": "为你的照片提供指导，从首次编辑到导出。",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR 接受 2–9 张具有匹配尺寸的包围曝光照片。它会对显示渲染帧进行对齐和曝光融合，以平衡可用色调。请查看移动主体和边缘是否有融合伪影。",
@@ -1431,6 +1446,7 @@
     "Import…": "导入…",
     "Improve preview speed and check image detail": "提升预览速度并检查图像细节",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "在“社区”中，选择“精选”、“最新”或“全部”，并使用“主体”缩小集合范围。选中一个预设可查看其描述、创建者、版本、胶片行为和可用示例照片。",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在“编辑形状”中，拖动任一圆点可调整渐变的对应端点。拖动连接两点的线可移动整个渐变，同时保持角度和过渡宽度。在照片的其他位置拖动可重新绘制。",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "在编辑形状中，拖动中心手柄可移动蒙版，拖动任一轴向手柄可调整大小，拖动外侧手柄可旋转蒙版。绘制或调整大小时按住 Shift 可将渐变设为圆形。",
     "In Film profile, choose Film format.": "在胶片配置文件中，选择胶片格式。",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "在信息中，展开描述可查看标题、说明和大标题；展开权限可查看创建者、版权和署名；或展开位置可查看位置和坐标。更改会在你输入时保存到目录。照片的元数据加载后，且纬度和经度都有效时，在地图中打开可用。它会在浏览器中打开该位置。",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "以 1:1 查看图像，并等待预览细节完成后再判断纹理。",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "检查叠加，并根据需要在边界周围进行涂抹式细化。",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "检查已拒绝的照片。如果你希望包含它们的其他成员，请检查配对文件设置并展开任何堆栈。",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "检查建议，然后在想要应用这些标记时使用选取选中或拒绝拒绝。",
     "Interface": "界面",
     "Interface and behavior": "界面与行为",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "界面可控制查看器背景、字体缩放、Lights Out、放大镜信息叠加层和裁剪参考线。这些偏好只会改变工作区外观，不会改变导出的像素。",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "使用 画笔、线性 和 径向 蒙版进行局部调整",
     "Make photos easier to find and prepare descriptive metadata for export.": "让照片更容易查找，并为导出准备描述性元数据。",
     "Make select": "创建选区",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "执行“选取”会将活动概览照片设为已选取，并拒绝概览中其余照片。这会更改它们的标记。链接的 RAW 和 JPEG 元数据可将这些标记更改扩展到配对文件。",
     "Make the source photo active.": "将源照片设为活动照片。",
     "Make your adjustment, then check the save status in the app.": "先完成调整，然后在应用中检查保存状态。",
     "Manage cache storage": "管理缓存存储",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "比此版本更新",
     "Next": "下一步",
     "Next Photo": "下一张照片",
+    "Next group": "下一组",
     "Next presets": "下一个预设",
     "No Rating": "无评分",
     "No TIFF was created.": "未创建 TIFF。",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "此集合中还没有预设。",
     "No rejected photos in this view": "此视图中没有已拒绝的照片",
     "No sampled colors": "没有采样颜色",
+    "No similar groups found. Photos need current index analysis and capture times.": "未找到相似组。照片需要当前索引分析和拍摄时间。",
     "No sources yet.": "尚无源。",
     "No steps recorded yet.": "尚未记录任何步骤。",
     "No usable lines found.": "未找到可用行。",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "选取 (P)",
     "Pick / reject / unflag": "选取 / 拒绝 / 取消标记",
     "Pick a preset": "选择一个预设",
-    "Pick selects": "选取选择",
-    "Pick the selects": "选取这些选取项",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。",
-    "Pick {count} select": "选取 {count} 个选取项",
-    "Pick {count} selects": "选取 {count} 个选取项",
     "Pick, reject, and rate photos": "选取、拒绝和评分照片",
     "Picked": "已选取",
     "Picked only": "仅已选取",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "预览使用此照片的编辑。请选择一个胶片来应用它。",
     "Previous": "上一步",
     "Previous Photo": "上一张照片",
+    "Previous group": "上一组",
     "Previous presets": "上一个预设",
     "Print development": "打印显影",
     "Print exposure": "打印曝光",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "正在刷新社区…",
     "Reject": "拒绝",
     "Reject (X)": "拒绝 (X)",
-    "Reject rejects": "拒绝已拒绝",
-    "Reject the rejects": "拒绝已拒绝项",
-    "Reject {count} photo": "拒绝 {count} 张照片",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。",
-    "Reject {count} photos": "拒绝 {count} 张照片",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。",
     "Rejected": "已拒绝",
     "Rejected {count} photo": "已拒绝 {count} 张照片",
     "Rejected {count} photos": "已拒绝 {count} 张照片",
@@ -2317,6 +2322,7 @@
     "Repair": "修复",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "对其他区域重复操作，或单击编辑全局调色以更改全局处理。",
     "Replace adjustment settings": "替换调整设置",
+    "Replace existing flags": "替换现有标记",
     "Replace local masks; detect AI selections on each photo": "替换本地蒙版；在每张照片上检测 AI 选择",
     "Replace with imported": "替换为导入的内容",
     "Replaced adjustments with {name}": "已用 {name} 替换调整",
@@ -2368,6 +2374,8 @@
     "Restored that step": "已恢复该步骤",
     "Restored {count} capture. You can also restore capture-time steps in History.": "已还原 {count} 个拍摄。你也可以在历史记录中还原拍摄时间步骤。",
     "Restored {count} captures. You can also restore capture-time steps in History.": "已还原 {count} 个拍摄。你也可以在历史记录中还原拍摄时间步骤。",
+    "Restored {count} photo flag. Later flag changes are preserved.": "已还原 {count} 张照片的标记。后续的标记更改已保留。",
+    "Restored {count} photo flags. Later flag changes are preserved.": "已还原 {count} 张照片的标记。后续的标记更改已保留。",
     "Restore…": "恢复…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "还原备份会将目录数据恢复到该备份时的状态，因此之后的编辑不会包含在内。当还原工作目录时，当前目录会先进行备份。",
     "Result name": "结果名称",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "审阅匹配项会显示两个可能的组及其面部采样。相同的人会将它们合并。不同的人会记录一次更正，因此不会再次建议该配对。暂时跳过会将该匹配留待以后查看。",
     "Review photos from the source using the destination and naming settings": "使用目标位置和命名设置来审阅源中的照片",
     "Review signals": "审阅信号",
+    "Review similar photos": "审阅相似照片",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "审阅相似照片会在当前文件夹或集合中查找视觉上相似、且在 30 秒内拍摄并已建立索引的照片。每组最多会在概览中打开 16 张照片。使用“上一组”和“下一组”比较备选项，然后使用概览控件标记单张照片。",
     "Review the before-and-after filenames in the preview.": "在预览中查看前后文件名。",
     "Review the current view carefully before moving rejected originals and sidecars.": "在移动已拒绝的原始文件及其副档之前，请仔细查看当前视图。",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "请审阅显示的照片，然后使用“将照片标记为选取”或“将照片标记为拒绝”。按钮会显示将更改多少个文件。",
     "Review the import result and the new preset’s conversion coverage before applying it.": "在应用之前，请查看导入结果和新预设的转换覆盖范围。",
     "Review the import result, then continue into the library.": "请先查看导入结果，然后继续进入资料库。",
     "Review the result and refine the sliders for the photograph.": "查看结果，并为照片进一步细化滑块。",
     "Review transferred masks": "审阅已传输的蒙版",
     "Review translated edits": "审阅翻译后的编辑",
     "Reviewing every photo.": "正在审阅每张照片。",
-    "Reviewing {count} photo that met a reject criterion.": "正在审阅 {count} 张符合拒绝条件的照片。",
-    "Reviewing {count} photo that met a select criterion.": "正在审阅 {count} 张符合选择条件的照片。",
-    "Reviewing {count} photos that met a reject criterion.": "正在审阅 {count} 张符合拒绝条件的照片。",
-    "Reviewing {count} photos that met a select criterion.": "正在审阅 {count} 张符合选择条件的照片。",
     "Rich descriptions on": "详细描述开启",
     "Richer descriptions require macOS 27 or later": "更丰富的描述需要 macOS 27 或更高版本",
     "Rights": "权限",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "选择与相机的距离范围；细化远近限制",
     "Select all": "全选",
     "Select an active reference photo first": "请先选择一个活动的参考照片",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "选择已有的线性蒙版即可再次调整。如果刚刚使用了“添加”“减去”或“交集”进行绘制，请先选择“编辑形状”。如果圆点被隐藏，请按 H。",
     "Select an existing mask, then expand Create New Mask.": "选择现有蒙版，然后展开 创建新蒙版。",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "选择另一个波段继续，或使用颜色混合器的重置清除混合器调整。",
     "Select at least two distinct originals": "请至少选择两张不同的原始文件",
@@ -2617,6 +2625,7 @@
     "Settings…": "设置…",
     "Shadows": "阴影",
     "Shape": "形状",
+    "Shape a linear gradient": "调整线性渐变的形状",
     "Shape a radial gradient": "形状径向渐变",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "形状还提供宽度、高度、旋转和羽化控件。",
     "Shape contrast and color with curves": "使用曲线塑造对比度和颜色",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "目录未更改。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "目录已从已验证的备份中恢复；损坏的副本位于 Recovery 文件夹中。",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "紧凑的 SFace INT8 模型会比较对齐的人脸。自动分组使用保守的相似度规则；可能的匹配项会保持分开以供审阅。与已命名人物匹配的新面部会被建议确认。",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "确认信息会显示受影响的数量，并警告匹配照片上现有的标记将被替换。启用该偏好后，链接的 RAW/JPEG 元数据也可以包含配对文件。",
     "The current catalog is backed up first, then replaced by this one.": "当前目录会先备份，然后替换为此目录。",
     "The desktop Trash service (gio) is unavailable": "桌面废纸篓服务（gio）不可用",
     "The desktop app checks its signed update feed.": "桌面应用会检查其已签名的更新源。",
@@ -2987,6 +2995,7 @@
     "Undo last change": "撤销上一次更改",
     "Undo last correction": "撤销上一次校正",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "“撤销上一次校正”会撤销此窗口中保留的最近一次校正。“恢复相机时间…”会预览移除目录校正；查看预览并应用它以恢复原始相机时间。拍摄时间步骤也可在历史记录中使用。启用 XMP 写入时，重置校正会恢复在 LightTable 应用前保存的副档日期。旧副档中没有该保存日期的拍摄日期将保持不变。",
+    "Undo last flag batch": "撤销上次标记批处理",
     "Undo or restore an earlier step": "撤销或还原较早的步骤",
     "Undo snapshots must be strings": "撤销快照必须是字符串",
     "Unedited": "未编辑",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "使用缩放、水平和垂直将参考与照片对齐。",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "在添加照片或还原不可用的原始文件后，请使用扫描新照片。之前已扫描且未更改的照片将被重新使用。",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它们管理的安装。Windows 便携版需下载新的 ZIP。未配置更新签名的构建无法自行更新。",
-    "Use Selects, Rejects, or All to review the matching photos.": "使用 已选择、已拒绝 或 全部 来审阅匹配的照片。",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "使用温度和色调，或采样一个中性区域，然后调整自然饱和度和饱和度。",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "最近的工作使用撤销，已保存的编辑步骤使用历史记录，想要重访的效果使用命名快照。",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "使用完成消息中的“撤销”或侧边栏中的“撤销上次标记批处理”来还原一个批处理。在本次会话期间仍可使用撤销，并会保留之后任何手动或外部的标记决定。如果保存失败，请使用“重试保存”或撤销该批处理；失败的写入仍会排队。",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "使用“撤销关键词更改”可在当前窗口保持打开时恢复上一次批处理。撤销不会覆盖在该批处理之后更改过的关键词。“照片历史记录”也会保留关键词更改前后的状态。",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "使用“统一色相”、“统一饱和度”或“统一明度”，让该范围内的颜色更接近采样区域。",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "使用少量控制点并在工作时对照片进行比较；通道曲线可能产生强烈偏色。",
@@ -3162,6 +3171,7 @@
     "What to expect": "预期内容",
     "What to open": "要打开的内容",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "当 MIDI 可用时，打开“键盘和 MIDI 控制”，然后选择“MIDI 学习”。如果浏览器询问，请允许 MIDI 访问。",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "从辅助筛选打开概览时，请比较建议组并逐张标记照片。在常规概览中，“创建选区”可用：它会选择当前概览照片，并拒绝仍在概览中的其他照片。这会更改它们的标记。关联的 RAW 和 JPEG 元数据可以将这些标记更改扩展到伴侣。",
     "When a photo already has edits": "当照片已有编辑时",
     "When a photo arrives": "当照片到达时",
     "When a photo seems missing": "当照片似乎缺失时",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} 个组",
     "{count} indexed photo remains local until deleted.": "{count} 张已编入索引的照片在删除前保持本地存储。",
     "{count} indexed photos remain local until deleted.": "{count} 张已编入索引的照片在删除前保持本地存储。",
+    "{count} matching photo shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。",
+    "{count} matching photos shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。",
     "{count} minimum alignment inlier": "{count} 个最小对齐内点",
     "{count} minimum alignment inliers": "{count} 个最小对齐内点",
     "{count} missing": "{count} 个缺失",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "拖动任一圆点可调整渐变。拖动连线可移动整个渐变。在其他位置拖动可重新绘制。",
-    "Shape a linear gradient": "调整线性渐变的形状",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在“编辑形状”中，拖动任一圆点可调整渐变的对应端点。拖动连接两点的线可移动整个渐变，同时保持角度和过渡宽度。在照片的其他位置拖动可重新绘制。",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "选择已有的线性蒙版即可再次调整。如果刚刚使用了“添加”“减去”或“交集”进行绘制，请先选择“编辑形状”。如果圆点被隐藏，请按 H。",
-    "Copy and Paste are below the photo in Detail view.": "在详细视图中，复制和粘贴位于照片下方。"
+    "☆ Favorites": "☆ 收藏"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4138,6 +4145,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "正在导出 {count} 张照片到 {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "将 {count} 张照片标记为选取"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "将 {count} 张照片标记为拒绝"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "已从 Apple Photos 导入 {count} 张照片{value}"
@@ -4154,20 +4167,8 @@
     "Pasted to {count} photo": {
       "other": "已粘贴到 {count} 张照片"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。"
-    },
-    "Pick {count} select": {
-      "other": "选取 {count} 个选取项"
-    },
     "Picked {count} photo": {
       "other": "已选取 {count} 张照片"
-    },
-    "Reject {count} photo": {
-      "other": "拒绝 {count} 张照片"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。"
     },
     "Rejected {count} photo": {
       "other": "已拒绝 {count} 张照片"
@@ -4178,11 +4179,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "已还原 {count} 个拍摄。你也可以在历史记录中还原拍摄时间步骤。"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "正在审阅 {count} 张符合拒绝条件的照片。"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "正在审阅 {count} 张符合选择条件的照片。"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "已还原 {count} 张照片的标记。后续的标记更改已保留。"
     },
     "Wrote {count} sidecar.": {
       "other": "已写入 {count} 个副档。"
@@ -4220,8 +4218,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} 个重复组，涵盖 {files}。"
     },
+    "{count} empty file": {
+      "other": "{count} 个空文件"
+    },
     "{count} error": {
       "other": "{count} 个错误"
+    },
+    "{count} face": {
+      "other": "{count} 个面部"
     },
     "{count} face detected": {
       "other": "检测到 {count} 个面部"
@@ -4235,8 +4239,17 @@
     "{count} file": {
       "other": "{count} 个文件"
     },
+    "{count} file not downloaded": {
+      "other": "{count} 个文件未下载"
+    },
+    "{count} group": {
+      "other": "{count} 个组"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "{count} 张已编入索引的照片在删除前保持本地存储。"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "显示了 {count} 张匹配照片：{criteria}。"
     },
     "{count} minimum alignment inlier": {
       "other": "{count} 个最小对齐内点"
@@ -4274,6 +4287,9 @@
     "{count} photo selected": {
       "other": "已选择 {count} 张照片"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count} 张照片已跳过{reasons}。请下载或还原原始文件，然后重建索引。"
+    },
     "{count} photo updated": {
       "other": "已更新 {count} 张照片"
     },
@@ -4286,6 +4302,9 @@
     "{count} rated photo": {
       "other": "{count} 张已评分照片"
     },
+    "{count} selected": {
+      "other": "已选择 {count} 项"
+    },
     "{count} selected photo": {
       "other": "{count} 张已选择照片"
     },
@@ -4297,6 +4316,12 @@
     },
     "{count} source": {
       "other": "{count} 个源"
+    },
+    "{count} unavailable file": {
+      "other": "{count} 个不可用文件"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "已跳过 {count} 张不可用照片"
     },
     "{count} unsupported setting skipped": {
       "other": "已跳过 {count} 个不支持的设置"
@@ -4318,31 +4343,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "过去 24 小时内有 {value} 次意外退出。"
-    },
-    "{count} empty file": {
-      "other": "{count} 个空文件"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} 个文件未下载"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count} 张照片已跳过{reasons}。请下载或还原原始文件，然后重建索引。"
-    },
-    "{count} unavailable file": {
-      "other": "{count} 个不可用文件"
-    },
-    "{count} face": {
-      "other": "{count} 个面部"
-    },
-    "{count} group": {
-      "other": "{count} 个组"
-    },
-    "{count} selected": {
-      "other": "已选择 {count} 项"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "已跳过 {count} 张不可用照片"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }
