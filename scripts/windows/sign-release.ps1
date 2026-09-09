@@ -54,8 +54,8 @@ try {
 
     foreach ($File in $Files) {
         $Executable = (Resolve-Path -LiteralPath $File).Path
-        if ([IO.Path]::GetExtension($Executable) -ine ".exe") {
-            throw "The Windows release signing list must contain only executables."
+        if ([IO.Path]::GetExtension($Executable).ToLowerInvariant() -notin @(".exe", ".dll")) {
+            throw "The Windows release signing list must contain only executables or DLLs."
         }
         # Microsoft's SignTool syntax uses /fd for the file digest and /td with
         # /tr for an RFC 3161 timestamp. Pass arguments directly; never echo them.

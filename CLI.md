@@ -102,6 +102,8 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 
 Internal browser/native routes are declared rather than hidden:
 
+- `/api/updates` — desktop update availability and package ownership.
+- `/api/updates/<action>` — authenticated desktop update preparation and shutdown.
 - `/api/people/thumbnail` — local face crop used by the People gallery.
 - `/api/desktop-theme` — read-only Linux desktop palette for interface chrome.
 - `/api/export/preview` — read-only export dialog delivery example.

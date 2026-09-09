@@ -24,6 +24,7 @@ for (const native of [false, true]) for (const baked of [false, true]) test(`Bef
     syncBrowserOriginal:() => calls.push({originalRequested:true}),
     nativePreviewActive:() => native, scheduleHistogram:noop, GRADE_PERF:{take:() => null},
     nativeGradePayload:grade => ({grade}), postNative:(action,detail) => calls.push({action,...detail}),
+    spotVisualization:() => ({enabled:true, threshold:0.5}),
     previewSourceX:position => position, syncCompareView:noop, syncCompareControl:noop,
     setCompareActive:on => {S.compareActive=on;}};
   const code = between('function drawGradeNow(', 'function drawGrade()') +

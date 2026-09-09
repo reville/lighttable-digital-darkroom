@@ -40,6 +40,7 @@ jobs:
       CARGO_TARGET_DIR: ${{ github.workspace }}/.build/linux/cargo
       UV_CACHE_DIR: ${{ github.workspace }}/.build/linux/uv-cache
       SPEKTRAFILM_BACKEND: cpu
+      LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY: ${{ vars.LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,7 +72,7 @@ jobs:
             ~/.cargo/git
             .build/linux/cargo
             .build/linux/uv-cache
-          key: linux-package-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock', 'requirements-runtime.lock', 'packaging/linux/runtime.json') }}
+          key: linux-package-v1-${{ hashFiles('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock', 'requirements-runtime.lock', 'packaging/runtime-linux.lock', 'packaging/linux/runtime.json') }}
           restore-keys: linux-package-v1-
 
       - name: Validate packaging and Linux targets
@@ -98,6 +99,8 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}/vendor/spektrafilm/src
         run: |
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_desktop_updater.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_desktop_update_coordination.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_platform_paths.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_theme.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_shared_input.py -v

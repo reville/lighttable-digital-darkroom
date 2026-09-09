@@ -2771,6 +2771,15 @@
             "Sur Linux, les commandes suivent l’apparence claire ou sombre du système. Sur Omarchy, les barres d’outils, barres latérales, menus et boîtes de dialogue suivent la palette active du bureau et se mettent à jour quelques secondes après un changement de thème. Les pixels de la photo, la préférence de fond de l’aperçu et les étendues de couleurs neutres conservent leurs propres couleurs.",
             "Dans une fenêtre Linux étroite, Afficher ou masquer la bibliothèque ouvre la bibliothèque sous forme de tiroir. L’agrandissement de la fenêtre restaure la disposition normale côte à côte. Sur Hyprland, utilisez les raccourcis de fenêtre du compositeur pour déplacer, tuiler, redimensionner ou fermer LightTable."
           ]
+        },
+        {
+          "title": "Mettre à jour LightTable",
+          "paragraphs": [
+            "Les installations Windows signées et les installations portables Linux configurées proposent Rechercher des mises à jour… dans Réglages → Général. Les recherches automatiques ont lieu au maximum une fois par jour après l’ouverture de l’éditeur.",
+            "Sous Linux, choisissez Mettre à jour pour télécharger et vérifier le paquet, puis Redémarrer et mettre à jour. Windows utilise sa boîte de dialogue native de mise à jour. Terminez d’abord les importations, exportations et autres tâches ; LightTable enregistre les modifications en attente et sauvegarde le catalogue avant de se fermer.",
+            "Les mises à jour conservent les photos, les modifications et les préférences. Linux garde le paquet précédent pour la récupération, mais ne restaure pas automatiquement un catalogue et ne rouvre pas une version antérieure.",
+            "Utilisez Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap pour mettre à jour les installations qu’ils gèrent. Téléchargez un nouveau ZIP pour les copies portables Windows. Les versions sans signature des mises à jour configurée ne peuvent pas se mettre à jour seules."
+          ]
         }
       ],
       "related": [

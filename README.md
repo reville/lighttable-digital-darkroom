@@ -170,6 +170,13 @@ A fresh clone needs the Python runtime dependencies and pinned film data before
 it can run. See [release setup](release/README.md) for bundled builds and
 [Windows](WINDOWS.md) and [Linux](LINUX.md) for their build instructions and platform boundaries.
 
+Signed Windows installations and configured Linux portable bundles include
+in-app update checks. Package-manager installations use their manager for
+updates; Windows portable ZIPs are upgraded manually. The update flow saves
+pending edits, backs up the catalog, and waits for active work before closing.
+Signing, feed publication, and native upgrade validation are release requirements;
+the source integration does not make a public update available.
+
 ## How it's made
 
 | Layer | Implementation |

@@ -12,6 +12,7 @@ import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
 import { createCloseBarrier } from '/web/close-barrier.js';
+import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
@@ -1861,13 +1862,6 @@ function drawEditOverlayNow() {
         S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
-    if ($('healVisualize').checked && S.baseImg?.complete && S.baseImg.naturalWidth) {
-      const threshold = +$('healVisualizeThreshold').value;
-      ctx.save();
-      ctx.filter = `grayscale(1) invert(1) contrast(${2 + threshold * 7}) brightness(${0.72 + threshold * 0.35})`;
-      ctx.drawImage(S.baseImg, 0, 0, surface.width, surface.height);
-      ctx.restore();
-    }
     for (const spot of S.localPinsVisible ? S.heals : []) {
       const selected = spot.id === S.selectedHealId;
       const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
@@ -1905,6 +1899,9 @@ const previewFrameScheduler = createFrameScheduler((work) => {
   if (work.grade) drawGradeNow(Boolean(work.forceWebGL));
   if (work.edits && !work.grade && nativePreviewActive()) {
     postNative('nativeEdits', nativeEditsPayload());
+  }
+  if (work.visualization && nativePreviewActive()) {
+    postNative('nativeSpotVisualization', spotVisualization());
   }
   if (work.overlay) drawEditOverlayNow();
 });
@@ -1964,7 +1961,7 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   // or after a new helper texture arrives.
   if (S.gl && (!native || forceWebGL) && !interactiveMask) {
     S.gl.draw(activeGrade, S.gradeEditsBaked ? [] : S.masks, upload,
-      S.softProof);
+      S.softProof, spotVisualization());
     if (refreshScope) scheduleHistogram();
     if (!native) {
       const input = GRADE_PERF.take();
@@ -2009,6 +2006,17 @@ function nativeMaskChannelPayload(channel, edge) {
   const { width, height } = maskTextureSize(edge);
   return { width, height, channel: channel % 4, tile: Math.floor(channel / 4),
     data: bytesToBase64(maskGeometryValues(mask, width, height)), masks };
+}
+
+function spotVisualization() {
+  return {
+    enabled: S.activePane === 'healPane' && $('healVisualize').checked,
+    threshold: +$('healVisualizeThreshold').value,
+  };
+}
+
+function refreshSpotVisualization() {
+  previewFrameScheduler.request({ grade: true, visualization: true, overlay: true });
 }
 
 function nativeEditsPayload(baked = S.baseEditsBaked) {
@@ -2637,11 +2645,11 @@ $('healRefresh').onclick = () => {
 };
 $('healVisualize').onchange = () => {
   $('healVisualizeRow').hidden = !$('healVisualize').checked;
-  drawEditOverlay();
+  refreshSpotVisualization();
 };
 $('healVisualizeThreshold').addEventListener('input', () => {
   $('healVisualizeThresholdV').textContent = `${Math.round(+$('healVisualizeThreshold').value * 100)}%`;
-  drawEditOverlay();
+  refreshSpotVisualization();
 });
 for (const id of ['healRadius', 'healFeather', 'healOpacity']) {
   const rememberUndo = () => { if (selectedHeal()) pushUndo(); };
@@ -4557,6 +4565,9 @@ const closeBarrier = createCloseBarrier({
 });
 window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
+const DESKTOP_UPDATES = installDesktopUpdates({
+  prepare: () => closeBarrier.prepare(), cancel: () => closeBarrier.cancel(), onError: toast,
+});
 
 async function refreshDeferredEditRecovery() {
   let refreshFailed = false;
@@ -6032,6 +6043,7 @@ function switchPane(id, { fromCompare = false } = {}) {
     paneScrollPositions.set(previousPane, panel.scrollTop);
   }
   S.activePane = id;
+  if (previousPane === 'healPane' || id === 'healPane') refreshSpotVisualization();
   $('appShell').classList.toggle('grid-info-open', S.viewMode !== 'detail' && id === 'infoPane');
   if (S.viewMode !== 'detail') { _gridLayoutKey = ''; requestAnimationFrame(renderGrid); }
   let activeButton = null;
@@ -11247,6 +11259,7 @@ const PEOPLE = createPeoplePanel({
 /* ------------------------------------------------------- native messages */
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
+  DESKTOP_UPDATES.nativeEvent(message);
   FIRST_RUN?.nativeEvent(message);
   if (message?.type === 'presetLink' && typeof message.id === 'string') {
     switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);
