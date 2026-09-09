@@ -188,6 +188,7 @@ def report(folder):
     parts = [f'<p class="label">LightTable · Recorded journey review</p><h1>{esc(result.get("status", "NOT DONE"))}</h1>',
              '<p>Functional assertions, capture coverage and visual inspection are reported separately.</p>',
              f'<p>Visual review: <strong>{esc(review.get("reviewStatus", "not-reviewed"))}</strong></p>']
+    if review.get('summary'): parts.append(f'<p>{esc(review["summary"])}</p>')
     if result.get('error'): parts.append(f'<p><strong>Blocker:</strong> {esc(result["error"])}</p>')
     parts.append('<h2>Run evidence</h2><ul>')
     for name in ['setup.json', 'preflight.json', 'provenance.json', 'result.json', 'capture.json', 'frame-analysis.json', 'review.json', 'steps.json', 'window.mov']:
@@ -311,7 +312,9 @@ def run(args):
         payload = json.loads((folder / 'benchmark.json').read_text())
         steps = completed_steps(folder); write_json(folder / 'steps.json', steps)
         result.update(analyze(folder, steps))
-        if payload.get('error'): raise RuntimeError(payload['error'])
+        if payload.get('error'):
+            result['functionalStatus'] = 'failed'
+            raise RuntimeError(payload['error'])
         if not steps or any(s['status'] != 'passed' for s in steps): raise RuntimeError('Functional journey incomplete')
         if {s['journey'] for s in steps} != {'browse', 'zoom', 'edit', 'explore'}: raise RuntimeError('Required journeys missing')
         if not result['coverageComplete']: raise RuntimeError('Video did not cover every journey step')

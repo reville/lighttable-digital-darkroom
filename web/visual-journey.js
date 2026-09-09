@@ -3,6 +3,7 @@ export async function runVisualJourney(ctx) {
   const { S, $, cur, executeUICommand: command, uiStateReport: state,
     nativePreviewActive, postNative, pushUndo, editSaveQueue } = ctx;
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const environment = () => ({visibility: document.visibilityState, hasFocus: document.hasFocus()});
   const steps = [];
   const names = S.images.map(image => image.name);
   if (names.length < 3) throw new Error('Visual review requires at least three copied photos');
@@ -17,7 +18,7 @@ export async function runVisualJourney(ctx) {
     throw new Error('Selected photo did not settle in the native renderer');
   };
   const step = async (journey, name, action, check = () => true) => {
-    const entry = {journey, name, startedEpochMs: Date.now(), before: state()};
+    const entry = {journey, name, startedEpochMs: Date.now(), before: state(), environmentBefore: environment()};
     postNative('nativeBenchmarkProgress', {stage: 'visual-step-start', ...entry});
     try {
       await action(); await sleep(650);
@@ -29,6 +30,7 @@ export async function runVisualJourney(ctx) {
     } finally {
       entry.endedEpochMs = Date.now(); entry.durationMs = entry.endedEpochMs - entry.startedEpochMs;
       entry.after = state(); steps.push(entry);
+      entry.environmentAfter = environment();
       postNative('nativeBenchmarkProgress', {stage: 'visual-step-end', ...entry});
     }
   };
