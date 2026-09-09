@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Usa Deshacer en el mensaje de finalización o Deshacer último lote de marcas en la barra lateral para restaurar un lote. Deshacer sigue disponible durante esta sesión y conserva cualquier decisión de marca manual o externa posterior. Si falla el guardado, usa Reintentar guardar o deshace el lote; las escrituras fallidas permanecen en cola.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Cuando Vista general se abre desde Descartado asistido, compara el grupo sugerido y marca las fotos individualmente. Hacer selección está disponible en una Vista general normal: selecciona la foto activa de la vista general y rechaza las otras fotos que aún están en la vista general. Esto cambia sus marcas. Los metadatos vinculados RAW y JPEG pueden extender esos cambios de marca a los compañeros.",
     "{count} matching photo shown: {criteria}.": "Se muestra {count} foto coincidente: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "Se muestran {count} fotos coincidentes: {criteria}."
+    "{count} matching photos shown: {criteria}.": "Se muestran {count} fotos coincidentes: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas."
   },
   "plurals": {
     " · {count} paired file linked": {

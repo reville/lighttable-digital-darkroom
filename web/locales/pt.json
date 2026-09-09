@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Use Desfazer na mensagem de conclusão ou Desfazer último lote de bandeiras na barra lateral para restaurar um lote. Desfazer continua disponível durante esta sessão e preserva quaisquer decisões de bandeira manuais ou externas posteriores. Se a gravação falhar, use Tentar salvar novamente ou desfaça o lote; as gravações com falha permanecem na fila.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Quando Varredura é aberto a partir de seleção assistida, compare o grupo sugerido e marque as fotos individualmente. Fazer seleção está disponível em uma Varredura normal: ele seleciona a foto ativa da varredura e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Os metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos companheiros.",
     "{count} matching photo shown: {criteria}.": "{count} foto correspondente exibida: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "{count} fotos correspondentes exibidas: {criteria}."
+    "{count} matching photos shown: {criteria}.": "{count} fotos correspondentes exibidas: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas."
   },
   "plurals": {
     " · {count} paired file linked": {

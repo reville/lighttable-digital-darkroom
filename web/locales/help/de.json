@@ -3117,6 +3117,7 @@
         {
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
+            "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind.",
             "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
             "Wenn du bei vergrößerter Ansicht das Foto wechselst, zeigt LightTable sofort eine passende Vorschau aus dem Cache, sofern verfügbar. Schärfere Details werden im Hintergrund geladen und benachbarte Fotos für deine Zoomstufe vorgeladen.",
             "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "बैच पुनर्स्थापित करने के लिए पूर्णता संदेश में पूर्ववत करें या साइडबार में फ़्लैग के पिछले बैच को पूर्ववत करें का उपयोग करें। इस सत्र के दौरान पूर्ववत करें उपलब्ध रहता है और किसी भी बाद के मैन्युअल या बाहरी फ़्लैग निर्णय को सुरक्षित रखता है। यदि सहेजना विफल हो जाए, तो सहेजना पुनः प्रयास करें का उपयोग करें या बैच को पूर्ववत करें; विफल लिखतें कतार में बनी रहती हैं.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "जब सर्वेक्षण सहायता-प्राप्त छँटाई से खोला जाता है, तो सुझाए गए समूह की तुलना करें और फ़ोटो को अलग-अलग फ़्लैग करें। नियमित सर्वेक्षण में चयन बनाएं उपलब्ध है: यह सक्रिय सर्वेक्षण फ़ोटो चुनता है और सर्वेक्षण में बची अन्य फ़ोटो को अस्वीकृत करता है। इससे उनके फ़्लैग बदलते हैं। जुड़ा हुआ RAW और JPEG मेटाडेटा इन फ़्लैग परिवर्तनों को सहायक तक बढ़ा सकता है.",
     "{count} matching photo shown: {criteria}.": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गई:।",
-    "{count} matching photos shown: {criteria}.": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गईं:।"
+    "{count} matching photos shown: {criteria}.": "{criteria}: {count} मिलान करने वाली फ़ोटो दिखाई गईं:।",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "फ़ोल्डर जोड़ने या दोबारा स्कैन करने पर ग्रिड के पूर्वावलोकन पृष्ठभूमि में तैयार होते हैं। पहले मूल तस्वीरों के बड़े पूर्वावलोकन दिखाई देते हैं; आपके संपादनों वाले पूर्वावलोकन तैयार होते ही उनकी जगह ले लेते हैं।"
   },
   "plurals": {
     " · {count} paired file linked": {

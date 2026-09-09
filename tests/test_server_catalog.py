@@ -826,7 +826,7 @@ class PayloadAndCacheTests(CatalogServerTestCase):
             "grade": {"exposure": 0.75},
             "crop": {"x": 0.1, "y": 0.1, "w": 0.8, "h": 0.8},
         })
-        rendered = Image.new("RGB", (512, 384), (20, 40, 60))
+        rendered = Image.new("RGB", (1600, 1200), (20, 40, 60))
         with mock.patch.object(server, "CACHE", cache), \
                 mock.patch.object(
                     server, "_accurate_thumbnail_base_ready",
@@ -847,7 +847,7 @@ class PayloadAndCacheTests(CatalogServerTestCase):
         self.assertEqual(body["state"]["grade"]["exposure"], 0.75)
         self.assertEqual(body["state"]["crop"]["w"], 0.8)
         with Image.open(first[0]) as image:
-            self.assertEqual(max(image.size), server.EDITED_THUMB_OUTPUT_EDGE)
+            self.assertEqual(max(image.size), 1024)
 
     def test_edited_thumbnail_waits_for_accurate_base(self):
         name = self.qualified("a.jpg")

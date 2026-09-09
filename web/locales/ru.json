@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Используйте Отменить в сообщении о завершении или Отменить последний пакет флажков в боковой панели, чтобы восстановить пакет. Отмена остается доступной в течение этого сеанса и сохраняет любые последующие ручные или внешние решения по флажкам. Если сохранение не удается, используйте Повторить сохранение или отмените пакет; неудачные записи остаются в очереди.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Когда Обзор открыт из Помощь при отбраковке, сравните предложенную группу и помечайте фото по отдельности. Сделать выделение доступно в обычном Обзор: оно выбирает активное фото обзора и отклоняет другие фото, которые все еще находятся в обзоре. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространить эти изменения флажков на сопутствующее приложение.",
     "{count} matching photo shown: {criteria}.": "Показано {count} совпадающее фото: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}."
+    "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками."
   },
   "plurals": {
     " · {count} paired file linked": {

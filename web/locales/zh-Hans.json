@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "使用完成消息中的“撤销”或侧边栏中的“撤销上次标记批处理”来还原一个批处理。在本次会话期间仍可使用撤销，并会保留之后任何手动或外部的标记决定。如果保存失败，请使用“重试保存”或撤销该批处理；失败的写入仍会排队。",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "从辅助筛选打开概览时，请比较建议组并逐张标记照片。在常规概览中，“创建选区”可用：它会选择当前概览照片，并拒绝仍在概览中的其他照片。这会更改它们的标记。关联的 RAW 和 JPEG 元数据可以将这些标记更改扩展到伴侣。",
     "{count} matching photo shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。",
-    "{count} matching photos shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。"
+    "{count} matching photos shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "添加或重新扫描文件夹时，网格预览会在后台生成。首先显示较大的原始照片预览；包含您编辑效果的预览准备就绪后，会替换原始预览。"
   },
   "plurals": {
     " · {count} paired file linked": {

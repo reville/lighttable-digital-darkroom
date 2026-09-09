@@ -13,17 +13,21 @@ from typing import Callable
 class ThumbnailWarmup:
     """One background decoder with a bounded queue and cooperative cancellation.
 
-    The on-demand thumbnail route remains authoritative. A full queue drops
-    speculative work, and an idle worker exits instead of retaining a thread.
+    The on-demand thumbnail route remains authoritative. Overflow retains a
+    catalog cursor per source instead of an unbounded list of paths. An idle
+    worker exits instead of retaining a thread.
     Individual decodes cannot be interrupted; cancellation discards queued work.
     """
 
     def __init__(self, build: Callable[[str], object], *,
                  busy: Callable[[], bool] = lambda: False,
+                 refill: Callable[[int, int, int], list[tuple[int, str]]] | None = None,
                  capacity: int = 256, interval: float = 0.05,
                  lifetime: float = 1800):
         self._build = build
         self._busy = busy
+        self._refill = refill
+        self._overflow: dict[int, int] = {}
         self._capacity = max(1, int(capacity))
         self._interval = max(0.001, float(interval))
         self._lifetime = max(0.001, float(lifetime))
@@ -36,8 +40,11 @@ class ThumbnailWarmup:
     def enqueue(self, source_id: int, relpath: str) -> bool:
         name = f"{source_id}:{relpath}"
         with self._lock:
-            if self._stop.is_set() or name in self._pending \
-                    or len(self._queue) >= self._capacity:
+            if self._stop.is_set() or name in self._pending:
+                return False
+            if len(self._pending) >= self._capacity:
+                if self._refill:
+                    self._overflow[source_id] = 0
                 return False
             self._queue.append(name)
             self._pending.add(name)
@@ -54,6 +61,31 @@ class ThumbnailWarmup:
         with self._lock:
             self._queue.clear()
             self._pending.clear()
+            self._overflow.clear()
+
+    def _refill_queue(self) -> None:
+        with self._lock:
+            if self._queue or not self._overflow or self._stop.is_set():
+                return
+            source, cursor = next(iter(self._overflow.items()))
+        try:
+            rows = self._refill(source, cursor, self._capacity)
+        except Exception:
+            rows = []  # Removed/unavailable catalogs cannot strand a worker.
+        with self._lock:
+            if self._stop.is_set() or self._overflow.get(source) != cursor:
+                return
+            if not rows:
+                self._overflow.pop(source, None)
+                return
+            for ident, relpath in rows:
+                name = f"{source}:{relpath}"
+                if name not in self._pending:
+                    if len(self._pending) >= self._capacity:
+                        break
+                    self._queue.append(name)
+                    self._pending.add(name)
+                self._overflow[source] = ident
 
     def _run(self) -> None:
         if sys.platform == "darwin":
@@ -69,21 +101,29 @@ class ThumbnailWarmup:
         while time.monotonic() < deadline and not self._stop.wait(self._interval):
             if self._busy():
                 continue
+            self._refill_queue()
             with self._lock:
                 if not self._queue:
+                    if self._overflow:
+                        continue
                     self._thread = None
                     return
                 name = self._queue.popleft()
+            retry = False
             try:
-                self._build(name)
+                retry = self._build(name) is False
             except Exception:
                 # Unavailable/corrupt sources must not stop grid fill; an
                 # explicit request will report its normal source error later.
                 pass
             finally:
                 with self._lock:
-                    self._pending.discard(name)
+                    if retry and not self._stop.is_set():
+                        self._queue.appendleft(name)
+                    else:
+                        self._pending.discard(name)
         with self._lock:
             self._queue.clear()
             self._pending.clear()
+            self._overflow.clear()
             self._thread = None

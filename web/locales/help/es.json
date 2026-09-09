@@ -3117,6 +3117,7 @@
         {
           "title": "Compruebe qué ha terminado de renderizarse",
           "paragraphs": [
+            "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas.",
             "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
             "Al cambiar de foto con el zoom ampliado, LightTable muestra inmediatamente una vista previa compatible en caché, si está disponible. Los detalles más nítidos se cargan en segundo plano y las fotos cercanas se precargan para tu nivel de zoom.",
             "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

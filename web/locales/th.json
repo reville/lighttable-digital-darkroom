@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "ใช้ เลิกทำ ในข้อความเสร็จสิ้น หรือ เลิกทำชุดการตั้งธงล่าสุด ในแถบด้านข้างเพื่อคืนค่าชุดงานหนึ่ง ช่วงเวลานี้ยังคงใช้ เลิกทำ ได้ตลอดเซสชัน และจะคงการตัดสินตั้งธงด้วยตนเองหรือจากภายนอกที่เกิดขึ้นภายหลังไว้ หากบันทึกไม่สำเร็จ ให้ใช้ ลองบันทึกใหม่ หรือเลิกทำชุดงาน; การเขียนที่ล้มเหลวยังคงอยู่ในคิว",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "เมื่อเปิด มุมมองภาพรวม จาก การคัดทิ้งแบบช่วย ให้เปรียบเทียบกลุ่มที่แนะนำและตั้งธงภาพถ่ายทีละภาพ ใช้ สร้างที่เลือก ได้ใน มุมมองภาพรวม ปกติ: มันจะเลือกรูปภาพในมุมมองภาพรวมที่ใช้งานอยู่และปฏิเสธภาพถ่ายอื่นๆ ที่ยังอยู่ในมุมมองภาพรวมนั้น การทำเช่นนี้จะเปลี่ยนธงของพวกมัน เมทาดาทา RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนธงนั้นไปยังโปรแกรมคู่หูได้",
     "{count} matching photo shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}."
+    "{count} matching photos shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "เมื่อคุณเพิ่มหรือสแกนโฟลเดอร์อีกครั้ง ระบบจะเตรียมภาพตัวอย่างในตารางอยู่เบื้องหลัง โดยจะแสดงภาพตัวอย่างขนาดใหญ่จากต้นฉบับก่อน แล้วแทนที่ด้วยภาพตัวอย่างที่มีการแก้ไขของคุณเมื่อพร้อม"
   },
   "plurals": {
     " · {count} paired file linked": {

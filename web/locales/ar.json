@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "استخدم تراجع في رسالة الإكمال أو تراجع عن آخر دفعة أعلام في الشريط الجانبي لاستعادة دفعة. يظل التراجع متاحًا خلال هذه الجلسة ويحتفظ بأي قرارات أعلام يدوية أو خارجية لاحقة. إذا فشل الحفظ، استخدم إعادة محاولة الحفظ أو تراجع عن الدفعة؛ وتبقى عمليات الكتابة الفاشلة في قائمة الانتظار.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "عند فتح الاستعراض من استبعاد بمساعدة، قارن المجموعة المقترحة وضع علامة على الصور كلٌ على حدة. يتوفر اجعلها محددة في استعراض عادي: فهو يختار صورة الاستعراض النشطة ويرفض الصور الأخرى التي لا تزال في الاستعراض. يؤدي هذا إلى تغيير أعلامها. يمكن لبيانات RAW وJPEG الوصفية المرتبطة أن توسّع هذه التغييرات في الأعلام لتشمل المرافقين.",
     "{count} matching photo shown: {criteria}.": "تم عرض {count} صورة مطابقة: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "تم عرض {count} صور مطابقة: {criteria}."
+    "{count} matching photos shown: {criteria}.": "تم عرض {count} صور مطابقة: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة."
   },
   "plurals": {
     " · {count} paired file linked": {

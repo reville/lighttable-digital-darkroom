@@ -66,6 +66,41 @@ class ThumbnailWarmupTests(unittest.TestCase):
         worker.cancel()
         self.assertEqual(names, ["3:bad.dng", "3:good.dng"])
 
+    def test_overflow_prepares_entire_source_with_bounded_pages(self):
+        busy = threading.Event()
+        busy.set()
+        completed = threading.Event()
+        seen = set()
+        pages = []
+        def refill(source, after, limit):
+            pages.append((source, after, limit))
+            return [(i, f"{i}.jpg") for i in range(after + 1, min(after + limit, 19) + 1)]
+        def build(name):
+            seen.add(name)
+            if len(seen) == 19:
+                completed.set()
+        worker = ThumbnailWarmup(build, busy=busy.is_set, refill=refill,
+                                 capacity=2, interval=0.001)
+        self.addCleanup(worker.cancel)
+        for i in range(1, 20):
+            worker.enqueue(3, f"{i}.jpg")
+        self.assertEqual(len(worker._queue), 2)
+        busy.clear()
+        self.assertTrue(completed.wait(2))
+        worker.cancel()
+        self.assertEqual(seen, {f"3:{i}.jpg" for i in range(1, 20)})
+        self.assertTrue(all(limit == 2 for _, _, limit in pages))
+        self.assertGreater(len(pages), 1)
+
+    def test_visible_decoder_contention_is_retried(self):
+        built = mock.Mock(side_effect=[False, None])
+        worker = ThumbnailWarmup(built, interval=0.001)
+        self.addCleanup(worker.cancel)
+        worker.enqueue(1, "a.jpg")
+        worker._thread.join(1)
+        self.assertEqual(built.call_count, 2)
+        self.assertFalse(worker._pending)
+
     def test_busy_worker_expires(self):
         built = mock.Mock()
         worker = ThumbnailWarmup(built, busy=lambda: True,

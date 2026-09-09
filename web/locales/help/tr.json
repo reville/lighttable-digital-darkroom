@@ -3117,6 +3117,7 @@
         {
           "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
           "paragraphs": [
+            "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır.",
             "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
             "Yakınlaştırılmış görünümde fotoğraf değiştirirken LightTable, varsa eşleşen önbellek önizlemesini hemen gösterir. Daha keskin ayrıntılar arka planda yüklenir ve komşu fotoğraflar yakınlaştırma düzeyinize göre önceden yüklenir.",
             "Yakınlaştırma, daha fazla ayrıntı yüklenirken mevcut en keskin önizlemeyi korur. Uzaklaştırmada aynı önizleme yeniden kullanılır. 1:1 görünümde, ince ayrıntıları değerlendirmeden önce düğmenin araç ipucunu kontrol edin.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

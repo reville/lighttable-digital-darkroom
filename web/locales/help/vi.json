@@ -3117,6 +3117,7 @@
         {
           "title": "Kiểm tra những gì đã kết xuất xong",
           "paragraphs": [
+            "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng.",
             "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
             "Khi chuyển ảnh trong lúc phóng to, LightTable hiển thị ngay bản xem trước phù hợp trong bộ nhớ đệm nếu có. Chi tiết sắc nét hơn được tải trong nền, còn các ảnh lân cận được tải trước theo mức thu phóng của bạn.",
             "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

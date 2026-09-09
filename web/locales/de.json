@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Verwenden Sie Rückgängig in der Abschlussmeldung oder Letzten Markierungsstapel rückgängig machen in der Seitenleiste, um einen Stapel wiederherzustellen. Rückgängig bleibt während dieser Sitzung verfügbar und behält alle späteren manuellen oder externen Markierungsentscheidungen bei. Wenn das Speichern fehlschlägt, verwenden Sie Speichern erneut versuchen oder machen Sie den Stapel rückgängig; fehlgeschlagene Schreibvorgänge bleiben in der Warteschlange.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Wenn die Übersicht aus dem Assistiertes Aussortieren geöffnet wird, vergleichen Sie die vorgeschlagene Gruppe und markieren Sie Fotos einzeln. Auswahl treffen ist in einer normalen Übersicht verfügbar: Es wählt das aktive Übersichts-Foto aus und lehnt die übrigen Fotos ab, die sich noch in der Übersicht befinden. Dadurch werden ihre Markierungen geändert. Verknüpfte RAW- und JPEG-Metadaten können diese Markierungsänderungen auf Begleitprogramme übertragen.",
     "{count} matching photo shown: {criteria}.": "{count} passendes Foto angezeigt: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "{count} passende Fotos angezeigt: {criteria}."
+    "{count} matching photos shown: {criteria}.": "{count} passende Fotos angezeigt: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -1587,6 +1587,7 @@
     "Grain size multiplies the chosen stock’s baseline particle area. The readout shows the resulting area in µm², so the same multiplier can show a different area after you change stocks.": "Grain size multiplies the chosen stock’s baseline particle area. The readout shows the resulting area in µm², so the same multiplier can show a different area after you change stocks.",
     "Green": "Green",
     "Green label": "Green label",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.",
     "Group and find people": "Group and find people",
     "Group photos into collections": "Group photos into collections",
     "Group similar faces and search names you add.": "Group similar faces and search names you add.",
