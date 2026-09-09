@@ -1,5 +1,6 @@
 # Generated from a verified official Linux bundle. Store publication is separate.
 name: lighttable
+title: LightTable
 version: '@VERSION@'
 summary: RAW photo editing and film simulation
 description: |
@@ -10,6 +11,7 @@ grade: devel
 confinement: strict
 license: GPL-3.0-only
 website: https://lighttable.app
+contact: hello@lighttable.app
 source-code: https://github.com/reville/lighttable-digital-darkroom
 issues: https://github.com/reville/lighttable-digital-darkroom/issues
 icon: payload/LightTable/share/icons/lighttable.png

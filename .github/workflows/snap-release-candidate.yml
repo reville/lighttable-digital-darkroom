@@ -1,0 +1,52 @@
+name: Snap release candidate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Download the immutable public Linux release
+        run: |
+          mkdir -p dist evidence
+          curl -fL --retry 2 --max-time 180 https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz -o dist/LightTable-0.5.0-linux-x86_64.tar.gz
+          echo 'eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01  dist/LightTable-0.5.0-linux-x86_64.tar.gz' | sha256sum -c -
+          python3 scripts/linux/make-snap-package.py dist/LightTable-0.5.0-linux-x86_64.tar.gz --version 0.5.0 --source-revision be537f2f3e2e431ae6b42af716c2a8b365f57bab --output-dir .build/snap
+      - name: Build strict confinement package
+        working-directory: .build/snap
+        run: |
+          sudo snap install snapcraft --classic
+          sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-0.5.0-linux-x86_64.snap"
+      - name: Install and exercise packaged runtime
+        run: |
+          sudo snap install --dangerous dist/LightTable-0.5.0-linux-x86_64.snap
+          snap connections lighttable > evidence/connections.txt
+          timeout 30s snap run lighttable.cli --help > evidence/cli-help.txt
+          timeout 360s snap run --shell lighttable.cli -c 'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP/LightTable/runtime-smoke.py" "$SNAP/LightTable"' > evidence/runtime-smoke.txt
+      - name: Native editing, RGB16 export, and graceful close/reopen
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth openbox imagemagick dbus-x11
+          timeout 300s xvfb-run -a --server-args="-screen 0 1440x1000x24" dbus-run-session -- bash scripts/linux/snap-desktop-acceptance.sh
+      - name: Collect diagnostics and remove ephemeral installation
+        if: always()
+        run: |
+          cp -R "$HOME/snap/lighttable/common/acceptance-evidence" evidence/desktop 2>/dev/null || true
+          cp .build/snap/{candidate.json,snapcraft.yaml} evidence/ 2>/dev/null || true
+          sudo journalctl -k --no-pager | tail -300 > evidence/kernel-tail.txt
+          if snap list lighttable >/dev/null 2>&1; then sudo snap remove --purge lighttable; fi
+          if [[ -f dist/LightTable-0.5.0-linux-x86_64.snap ]]; then sha256sum dist/*.snap > dist/SHA256SUMS; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LightTable-snap-release-candidate
+          path: |
+            dist/*.snap
+            dist/SHA256SUMS
+            evidence
+          if-no-files-found: error
