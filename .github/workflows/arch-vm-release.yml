@@ -1,0 +1,35 @@
+name: Arch virtual GPU acceptance
+on:
+  push:
+    branches: [codex/arch-omarchy-release-20260909]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: arch-vm-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        distribution: [arch, omarchy]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Boot Arch with a virtual graphics device and test Hyprland
+        env:
+          DISTRIBUTION: ${{ matrix.distribution }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends qemu-system-x86 qemu-utils cloud-image-utils ovmf
+          timeout 2100s bash scripts/linux/arch-release-vm.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LightTable-${{ matrix.distribution }}-VM
+          path: evidence
+          if-no-files-found: error
