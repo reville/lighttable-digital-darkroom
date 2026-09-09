@@ -1,6 +1,12 @@
 name: Snap release candidate
 on:
   workflow_dispatch:
+  push:
+    branches: [codex/linux-package-channels-20260909]
+    paths:
+      - .github/workflows/snap-release-candidate.yml
+      - packaging/snap/**
+      - scripts/linux/*snap*
 permissions:
   contents: read
 jobs:
