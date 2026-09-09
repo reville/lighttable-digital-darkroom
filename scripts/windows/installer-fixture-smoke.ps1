@@ -34,24 +34,6 @@ $Version = "0.0.0"
 try {
     New-Item -ItemType Directory -Path $Root, $Payload, $Source, (Join-Path $Payload "bin") | Out-Null
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot "installer.nsi") -Destination (Join-Path $Source "installer.nsi")
-    # Temporary diagnosis of the real install-channel read; removed after the
-    # repaired fixture passes. No production installer is instrumented.
-    $TracePath = Join-Path $Root "installer-trace.txt"
-    $SourcePath = Join-Path $Source "installer.nsi"
-    $SourceText = [IO.File]::ReadAllText($SourcePath)
-    $SourceText = $SourceText.Replace('      FileRead $0 $1', @'
-      FileRead $0 $1
-      FileOpen $9 "TRACE_PATH" a
-      FileWrite $9 "read INSTDIR=<$INSTDIR> owner=<$UpdateOwner> contents=<$1>$\r$\n"
-      FileClose $9
-'@.Replace('TRACE_PATH', $TracePath))
-    $SourceText = $SourceText.Replace('  FileWrite $0 "$UpdateOwner"', @'
-  FileWrite $0 "$UpdateOwner"
-  FileOpen $9 "TRACE_PATH" a
-  FileWrite $9 "write INSTDIR=<$INSTDIR> owner=<$UpdateOwner>$\r$\n"
-  FileClose $9
-'@.Replace('TRACE_PATH', $TracePath))
-    [IO.File]::WriteAllText($SourcePath, $SourceText)
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot "update-user-path.ps1") -Destination $Payload
     # This stub exists only beside the temporary COPY of installer.nsi. It
     # prevents prerequisite downloads and certifies no WebView2/runtime behavior.
@@ -84,6 +66,5 @@ exit /b 2
     Write-Host "Installer-only fixture acceptance passed. Native/runtime acceptance remains a separate check."
 } finally {
     Set-Location $BeforeLocation
-    if (Test-Path -LiteralPath $TracePath) { Get-Content -LiteralPath $TracePath | Write-Host }
     if (Test-Path -LiteralPath $Root) { Remove-Item -LiteralPath $Root -Recurse -Force }
 }
