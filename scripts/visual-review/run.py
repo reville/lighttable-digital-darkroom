@@ -171,10 +171,10 @@ def analyze(folder, steps):
         for label, offset in [('start', .05), ('middle', duration / 2), ('end', max(0, duration-.05))]:
             checked(['ffmpeg', '-v', 'error', '-y', '-ss', max(0, start+offset), '-i', movie,
                      '-frames:v', '1', assets / f'{i:02d}-{label}.png'])
+    write_json(folder / 'steps.json', steps)
     for i, candidate in enumerate(candidates[:20]):
         checked(['ffmpeg', '-v', 'error', '-y', '-ss', max(0, candidate['seconds']-.2), '-i', movie,
-                 '-t', '.5', '-an', '-c:v', 'libx264', '-crf', '16', assets / f'candidate-{i:02d}.mp4'])
-    write_json(folder / 'steps.json', steps)
+                 '-t', '0.5', '-an', '-c:v', 'libx264', '-crf', '16', assets / f'candidate-{i:02d}.mp4'])
     return {'coverageComplete': capture_coverage(metadata, steps), 'capture': metadata,
             'transientCandidates': len(candidates), 'reviewStatus': 'not-reviewed'}
 
@@ -194,6 +194,7 @@ def report(folder):
              '<p>Functional assertions, capture coverage and visual inspection are reported separately.</p>',
              f'<p>Visual review: <strong>{esc(review.get("reviewStatus", "not-reviewed"))}</strong></p>']
     if review.get('summary'): parts.append(f'<p>{esc(review["summary"])}</p>')
+    if review.get('method'): parts.append(f'<p>{esc(review["method"])}</p>')
     if result.get('error'): parts.append(f'<p><strong>Blocker:</strong> {esc(result["error"])}</p>')
     parts.append('<h2>Run evidence</h2><ul>')
     for name in ['setup.json', 'preflight.json', 'provenance.json', 'result.json', 'capture.json', 'frame-analysis.json', 'review.json', 'steps.json', 'bursts.json', 'window.mov']:
@@ -319,9 +320,11 @@ def run(args):
         stop_file.write_text('stop')
         recording.wait(timeout=20)
         if recording.returncode: raise RuntimeError('Recording did not finalize successfully')
+        # Return the desktop before offline video decoding and clip extraction.
+        stop(app_process)
+        app_process = None
         payload = json.loads((folder / 'benchmark.json').read_text())
         steps = completed_steps(folder); write_json(folder / 'steps.json', steps)
-        result.update(analyze(folder, steps))
         if payload.get('error'):
             result['functionalStatus'] = 'failed'
             raise RuntimeError(payload['error'])
@@ -329,10 +332,11 @@ def run(args):
             result['functionalStatus'] = 'failed'
             raise RuntimeError('Functional journey incomplete: ' + '; '.join(s['name'] + ': ' + s.get('error', s['status']) for s in steps if s['status'] != 'passed'))
         if {s['journey'] for s in steps} != {'browse', 'zoom', 'edit', 'explore'}: raise RuntimeError('Required journeys missing')
+        result['functionalStatus'] = 'passed'
+        result.update(analyze(folder, steps))
         if not result['coverageComplete']: raise RuntimeError('Video did not cover every journey step')
         if any(digest(ROOT / name) != sha for name, sha in provenance['sourceFiles'].items()):
             raise RuntimeError('Source files changed during the recorded review')
-        result['functionalStatus'] = 'passed'
         result['status'] = 'RECORDED — visual review pending'
     except Exception as error:
         result['error'] = str(error)

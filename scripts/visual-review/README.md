@@ -42,8 +42,14 @@ the trial showed Fit selected while the photograph remained enlarged.
 Visual review uses normal saving and edited-thumbnail updates in its isolated
 data. Other benchmark layers retain their existing suppression. The first run
 predated this exemption and failed persistence because the harness suppressed
-saving; that result is not evidence of production data loss. A complete native
-rerun of this correction is still required.
+saving; that result is not evidence of production data loss. The subsequent
+foreground run on 2026-09-09 (`output/visual-reviews/20260909-114340`) recorded
+44.27 seconds and passed all 26 expanded checks, including persistence after
+152 burst inputs. Native frames showed correct Fit framing and populated,
+updating scopes. Document visibility and focus were true at every step boundary.
+This verifies the foreground path; another Space remains unverified. The report
+retains a brief initial grid-transition blank as a polish observation, without
+classifying it as a confirmed product defect.
 
 Outputs are in `output/visual-reviews/<timestamp>/`: the original movie,
 source/bundle/fixture hashes, app and server logs, recorded steps, measured
