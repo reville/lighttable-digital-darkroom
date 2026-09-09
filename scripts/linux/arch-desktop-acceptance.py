@@ -52,7 +52,8 @@ def main():
             clients = json.loads(subprocess.check_output(['hyprctl', '-j', 'clients'], timeout=5))
             matches = [c for c in clients if c.get('pid') == process.pid and c.get('title', '').startswith('LightTable')]
             a.require(len(matches) == 1, 'Expected one owned Hyprland window')
-            subprocess.run(['hyprctl', 'dispatch', 'closewindow', 'address:'+matches[0]['address']], check=True, timeout=5)
+            close = 'hl.dsp.window.close({window=' + json.dumps('address:'+matches[0]['address']) + '})'
+            subprocess.run(['hyprctl', 'dispatch', close], check=True, timeout=5)
             process.wait(timeout=min(25, deadline-time.monotonic()))
             a.require(process.returncode == 0, 'Wayland normal close failed')
             a.require(not Path(f'/proc/{server_pid}/exe').exists(), 'Wayland close left its server alive')
