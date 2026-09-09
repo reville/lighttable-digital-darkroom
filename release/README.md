@@ -162,8 +162,9 @@ launch check and launcher recovery verification. Retaining an older bundle does
 not make a migrated catalog compatible with it: the updater never automatically
 restores a catalog or relaunches an old app after the new app may have migrated it.
 
-This change does not provision credentials, publish a feed, or establish native
-upgrade proof. Keep those release steps explicit.
+The local Linux upgrade gate uses a temporary signing key and two versions of
+the same source bundle. Production-key signing, public feed delivery, and an
+upgrade between actual release revisions remain separate acceptance steps.
 
 ## CLI and package definitions
 
