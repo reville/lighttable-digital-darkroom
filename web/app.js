@@ -32,7 +32,8 @@ import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMask
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import {
   LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
-  MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
+  MAX_TOTAL_MASK_POINTS, MAX_HEALS, LINEAR_MIN_SPAN,
+  normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
 } from '/web/editor-panels.js';
 import {
   photoMatchesQuery as matchesPhotoQuery,
@@ -1512,8 +1513,14 @@ function refineMaskValues(values, mask, width, height) {
   for (let i = 0; i < values.length; i++) {
     const withAdds = Math.max(values[i], added[i]);
     const withoutSubtracts = withAdds * (1 - subtracted[i] / 255);
-    values[i] = Math.round((mask.intersectStrokes?.length
-      ? withoutSubtracts * intersected[i] / 255 : withoutSubtracts));
+    /* Intersect takes the smaller of the two weights, matching the component
+     * path here and `_raster_mask` in edits.py. Multiplying instead made the
+     * preview up to a third weaker than the exported file through a feathered
+     * transition, and saving migrates these strokes into a component that does
+     * use the minimum, so the same mask changed on reload. */
+    values[i] = Math.round(mask.intersectStrokes?.length
+      ? Math.min(withoutSubtracts, intersected[i])
+      : withoutSubtracts);
   }
   return values;
 }
@@ -1608,11 +1615,18 @@ function canvasGeometryValues(component, width, height) {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, width, height);
   if (component.type === 'linear') {
+    /* Judge a collapsed gradient in normalized coordinates, exactly as
+     * edits.py does. A one-pixel test answers differently on this canvas than
+     * at export size, which showed no mask here while the export graded half
+     * the frame. */
+    if (Math.hypot(component.end[0] - component.start[0],
+                   component.end[1] - component.start[1]) < LINEAR_MIN_SPAN) {
+      return new Uint8Array(width * height);
+    }
     const sx = component.start[0] * (width - 1);
     const sy = component.start[1] * (height - 1);
     const ex = component.end[0] * (width - 1);
     const ey = component.end[1] * (height - 1);
-    if (Math.hypot(ex - sx, ey - sy) < 1) return new Uint8Array(width * height);
     const gradient = ctx.createLinearGradient(sx, sy, ex, ey);
     for (let index = 0; index <= 16; index++) {
       const position = index / 16;
