@@ -2771,6 +2771,15 @@
             "W systemie Linux elementy sterujące używają jasnego lub ciemnego wyglądu systemu. W Omarchy paski narzędzi, panele boczne, menu i okna dialogowe korzystają z aktywnej palety pulpitu i aktualizują się w ciągu kilku sekund od zmiany motywu. Piksele zdjęcia, preferencja tła podglądu i neutralne zakresy kolorów zachowują własne kolory.",
             "W wąskim oknie systemu Linux Pokaż lub ukryj bibliotekę otwiera bibliotekę jako szufladę. Rozszerzenie okna przywraca normalny układ obok siebie. W Hyprland użyj skrótów okien menedżera kompozycji, aby przenieść, ułożyć w kafelki, zmienić rozmiar lub zamknąć LightTable."
           ]
+        },
+        {
+          "title": "Zaktualizuj LightTable",
+          "paragraphs": [
+            "Podpisane instalacje Windows i skonfigurowane instalacje przenośne Linux udostępniają Sprawdź aktualizacje… w Ustawienia → Ogólne. Automatyczne sprawdzanie odbywa się najwyżej raz dziennie po otwarciu edytora.",
+            "W systemie Linux wybierz Aktualizuj, aby pobrać i zweryfikować pakiet, a następnie Uruchom ponownie i zaktualizuj. Windows używa własnego okna aktualizacji. Najpierw zakończ import, eksport i inne zadania; przed zamknięciem LightTable zapisuje oczekujące zmiany i tworzy kopię zapasową katalogu.",
+            "Aktualizacje zachowują zdjęcia, zmiany i preferencje. Linux przechowuje poprzedni pakiet do odzyskiwania, ale nie przywraca automatycznie katalogu ani nie otwiera starszej wersji.",
+            "Instalacje zarządzane przez Scoop, WinGet, Chocolatey, AUR, Flatpak lub Snap aktualizuj za pomocą odpowiedniego menedżera. Dla przenośnych kopii Windows pobierz nowy ZIP. Kompilacje bez skonfigurowanego podpisywania aktualizacji nie mogą aktualizować się samodzielnie."
+          ]
         }
       ],
       "related": [

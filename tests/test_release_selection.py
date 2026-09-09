@@ -1,6 +1,7 @@
 """Run the real workflow's version/platform selection against an isolated Git repo."""
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import textwrap
@@ -21,7 +22,8 @@ class ReleaseSelectionTests(unittest.TestCase):
             subprocess.run(["git", *arguments], cwd=self.repo, check=True, capture_output=True)
         self.selected = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=self.repo, text=True).strip()
         workflow = (ROOT / ".github/workflows/release.yml").read_text()
-        block = workflow.split("        run: |\n", 1)[1].split("\n  macos:", 1)[0]
+        block = re.match(r"((?: {10}[^\n]*\n|\n)+)",
+                         workflow.split("        run: |\n", 1)[1]).group(1)
         self.script = textwrap.dedent(block)
 
     def run_selection(self, platforms, version="0.5.0"):

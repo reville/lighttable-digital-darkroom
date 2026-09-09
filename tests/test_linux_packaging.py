@@ -261,7 +261,7 @@ class LinuxPackageResourcesTests(unittest.TestCase):
                          "film_lab_ai/licenses/SFace.txt", "film_lab_ai/licenses/YuNet.txt",
                          "profiles/stock.json", "presets/default.json", "LICENSE", "THIRD_PARTY_NOTICES.md",
                          "LINUX.md", "CLI.md", "docs/help/editing.json", "packaging/linux/arch/README.md",
-                         "requirements-runtime.lock", "packaging/linux/runtime.json", "build/icon-1024.png"):
+                         "requirements-runtime.lock", "packaging/runtime-linux.lock", "packaging/linux/runtime.json", "build/icon-1024.png"):
                 source = project / path
                 source.parent.mkdir(parents=True, exist_ok=True)
                 source.write_text("application content")

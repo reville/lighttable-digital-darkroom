@@ -27,7 +27,7 @@ SOURCE_MODULES = ('server.py', 'edits.py', 'export_workflow.py', 'media_availabi
                   'film_lab_ai/face_store.py',
                   'ingest_workflow.py', 'watch_workflow.py',
                   'keyword_workflow.py', 'xmp_sidecar.py', 'platform_image.py',
-                  'file_identity.py', 'durable_io.py')
+                  'file_identity.py', 'durable_io.py', 'server_updates.py')
 TOKENS = re.compile(r'\{\w+\}')
 LOCALE = re.compile(r'[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*')
 

@@ -2771,6 +2771,15 @@
             "Unter Linux folgen die Steuerelemente dem hellen oder dunklen Erscheinungsbild des Systems. Unter Omarchy folgen Symbolleisten, Seitenleisten, Menüs und Dialoge der aktiven Desktop-Palette und werden innerhalb weniger Sekunden nach einer Designänderung aktualisiert. Die Bildpixel, die Hintergrundvoreinstellung des Betrachters und neutrale Farbbereiche behalten ihre eigenen Farben.",
             "In einem schmalen Linux-Fenster öffnet Show or hide library die Bibliothek als Schublade. Wenn Sie das Fenster vergrößern, wird wieder das normale Layout nebeneinander angezeigt. Unter Hyprland verwenden Sie die Fenster-Tastenkürzel des Compositors, um LightTable zu verschieben, zu kacheln, in der Größe zu ändern oder zu schließen."
           ]
+        },
+        {
+          "title": "LightTable aktualisieren",
+          "paragraphs": [
+            "Signierte Windows-Installationen und konfigurierte portable Linux-Installationen bieten Nach Updates suchen… unter Einstellungen → Allgemein. Automatische Prüfungen erfolgen höchstens einmal täglich nach dem Öffnen des Editors.",
+            "Wähle unter Linux Aktualisieren, um das Paket herunterzuladen und zu prüfen, und dann Neu starten und aktualisieren. Windows verwendet seinen nativen Aktualisierungsdialog. Beende zuerst Importe, Exporte und andere Aufgaben; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
+            "Updates erhalten Fotos, Bearbeitungen und Einstellungen. Linux behält das vorherige Paket zur Wiederherstellung, stellt aber weder automatisch einen Katalog wieder her noch öffnet es eine ältere Version.",
+            "Verwende Scoop, WinGet, Chocolatey, AUR, Flatpak oder Snap, um die jeweils verwalteten Installationen zu aktualisieren. Lade für portable Windows-Kopien eine neue ZIP-Datei herunter. Builds ohne konfigurierte Update-Signierung können sich nicht selbst aktualisieren."
+          ]
         }
       ],
       "related": [

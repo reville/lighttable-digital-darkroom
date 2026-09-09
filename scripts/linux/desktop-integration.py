@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -64,6 +65,7 @@ def atomic_write(path: Path, value: str) -> None:
         try:
             output.write(value)
             output.flush()
+            os.fsync(output.fileno())
             os.fchmod(output.fileno(), 0o644)
             os.replace(temporary, path)
         finally:
@@ -76,6 +78,51 @@ def atomic_link(path: Path, target: Path) -> None:
         link = Path(temporary) / "link"
         link.symlink_to(target)
         os.replace(link, path)
+
+
+def snapshot(paths: list[Path]) -> dict:
+    """Save only the explicit integration paths, never application/user data."""
+    result = {}
+    for path in paths:
+        if path.is_symlink():
+            value = {"link": os.readlink(path)}
+        elif path.is_file():
+            value = {"content": base64.b64encode(path.read_bytes()).decode()}
+        elif path.exists():
+            raise ValueError(f"Integration path is a directory: {path}")
+        else:
+            value = None
+        result[str(path)] = value
+    return result
+
+
+def restore_snapshot(saved: dict) -> None:
+    for filename, value in saved.items():
+        path = Path(filename)
+        if value is None:
+            path.unlink(missing_ok=True)
+        elif "link" in value:
+            atomic_link(path, Path(value["link"]))
+        else:
+            atomic_write(path, base64.b64decode(value["content"]).decode())
+
+
+def recover_transaction(journal: Path, permitted: set[str]) -> None:
+    if journal.is_symlink():
+        raise ValueError("Refusing symbolic link integration transaction")
+    if not journal.exists():
+        return
+    if journal.stat().st_size > 1024 * 1024:
+        raise ValueError("Integration transaction is too large")
+    saved = json.loads(journal.read_text())
+    if not isinstance(saved, dict) or not set(saved) <= permitted:
+        raise ValueError("Integration transaction contains unexpected paths")
+    for value in saved.values():
+        if value is not None and (not isinstance(value, dict) or set(value) not in ({"link"}, {"content"})
+                                  or not all(isinstance(item, str) for item in value.values())):
+            raise ValueError("Invalid integration transaction")
+    restore_snapshot(saved)
+    journal.unlink()
 
 
 def integrate(action: str, bundle: Path, bin_directory: Path) -> None:
@@ -97,6 +144,8 @@ def integrate(action: str, bundle: Path, bin_directory: Path) -> None:
         str(data / "applications" / (LEGACY_APP_ID + ".desktop")),
         str(data / "icons/hicolor/1024x1024/apps" / (LEGACY_APP_ID + ".png")),
     }
+    journal = record.with_suffix(".pending.json")
+    recover_transaction(journal, expected_paths | legacy_paths | {str(record)})
     if record.is_symlink():
         raise ValueError(f"Refusing symbolic link installer record: {record}")
     previous = json.loads(record.read_text()) if record.exists() else {}
@@ -138,15 +187,26 @@ def integrate(action: str, bundle: Path, bin_directory: Path) -> None:
             current = signature(path)
             if current is not None and current != previous["files"][str(path)]:
                 raise ValueError(f"Refusing to overwrite an unowned or modified file: {path}")
-        for path, target in links.items():
-            atomic_link(path, target)
-        atomic_write(desktop, entry)
-        for path in retired:
-            path.unlink(missing_ok=True)
-        atomic_write(record, json.dumps({
-            "bundle": str(bundle),
-            "files": {str(path): signature(path) for path in (*links, desktop)},
-        }, indent=2) + "\n")
+        saved = snapshot([*links, desktop, *retired, record])
+        # The journal is durable before any launcher changes. A killed process
+        # can be recovered by rerunning install.sh with the same directories.
+        atomic_write(journal, json.dumps(saved))
+        try:
+            for path, target in links.items():
+                atomic_link(path, target)
+            atomic_write(desktop, entry)
+            for path in retired:
+                path.unlink(missing_ok=True)
+            atomic_write(record, json.dumps({
+                "bundle": str(bundle), "bin_dir": str(bin_directory),
+                "data_dir": str(data), "state_dir": str(state),
+                "files": {str(path): signature(path) for path in (*links, desktop)},
+            }, indent=2) + "\n")
+            journal.unlink()
+        except Exception:
+            restore_snapshot(saved)
+            journal.unlink(missing_ok=True)
+            raise
         print(f"Registered LightTable from {bundle}")
         if str(bin_directory) not in os.environ.get("PATH", "").split(os.pathsep):
             print(f"Add {bin_directory} to PATH to run lighttable from your terminal.")

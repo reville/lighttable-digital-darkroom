@@ -1,0 +1,5 @@
+# Linux portable runtime plus maintained Ed25519 verification dependencies.
+-r ../requirements-runtime.lock
+cryptography==50.0.1
+cffi==2.1.1
+pycparser==3.0

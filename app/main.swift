@@ -666,7 +666,8 @@ final class ServerController {
                         return
                     }
                     if let moved = report.port, moved > 0 { probePort = moved }
-                    if let detail = report.detail, detail != lastDetail {
+                    // Keep the last startup message until the editor opens.
+                    if report.phase != "ready", let detail = report.detail, detail != lastDetail {
                         lastDetail = detail
                         DispatchQueue.main.async {
                             let translated: String
@@ -2685,6 +2686,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
         case "nativeMasks":
             nativePreview?.updateMasks(body)
+        case "nativeSpotVisualization":
+            nativePreview?.updateSpotVisualization(body)
         case "nativeEdits":
             nativePreview?.updateEdits(
                 optics: body["optics"] as? [String: Any] ?? [:],

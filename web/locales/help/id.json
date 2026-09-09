@@ -2771,6 +2771,15 @@
             "Di Linux, kontrol mengikuti tampilan terang atau gelap sistem. Di Omarchy, toolbar, sidebar, menu, dan dialog mengikuti palet desktop aktif dan diperbarui dalam beberapa detik setelah perubahan tema. Piksel foto, preferensi latar belakang penampil, dan scope warna netral mempertahankan warnanya sendiri.",
             "Di jendela Linux yang sempit, Tampilkan atau sembunyikan pustaka membuka pustaka sebagai laci. Memperlebar jendela memulihkan tata letak normal berdampingan. Di Hyprland, gunakan pintasan jendela compositor untuk memindahkan, menata ubin, mengubah ukuran, atau menutup LightTable."
           ]
+        },
+        {
+          "title": "Perbarui LightTable",
+          "paragraphs": [
+            "Instalasi Windows bertanda tangan dan instalasi portabel Linux yang dikonfigurasi menyediakan Periksa Pembaruan… di Pengaturan → Umum. Pemeriksaan otomatis dilakukan paling sering sekali sehari setelah editor terbuka.",
+            "Di Linux, pilih Perbarui untuk mengunduh dan memverifikasi bundel, lalu Mulai ulang dan perbarui. Windows menggunakan dialog pembaruan bawaannya. Selesaikan impor, ekspor, dan pekerjaan lain terlebih dahulu; LightTable menyimpan edit tertunda dan mencadangkan katalog sebelum ditutup.",
+            "Pembaruan mempertahankan foto, edit, dan preferensi. Linux menyimpan bundel sebelumnya untuk pemulihan, tetapi tidak otomatis memulihkan katalog atau membuka kembali versi lama.",
+            "Gunakan Scoop, WinGet, Chocolatey, AUR, Flatpak, atau Snap untuk memperbarui instalasi yang dikelolanya. Unduh ZIP baru untuk salinan portabel Windows. Build tanpa konfigurasi tanda tangan pembaruan tidak dapat memperbarui dirinya sendiri."
+          ]
         }
       ],
       "related": [

@@ -92,7 +92,10 @@ class InstallerManifestTests(unittest.TestCase):
         choco_root = self.output / "chocolatey/lighttable"
         choco = (choco_root / "tools/chocolateyinstall.ps1").read_text()
         self.assertIn(f"checksum64 = '{exe_hash}'", choco)
-        self.assertIn("silentArgs = '/S'", choco)
+        self.assertIn("silentArgs = '/S /UPDATEOWNER=chocolatey'", choco)
+        self.assertIn('Custom: /UPDATEOWNER=winget', winget)
+        self.assertIn('install-channel.txt', scoop['post_install'])
+        self.assertIn("'scoop'", scoop['post_install'])
         xml = ET.parse(choco_root / "lighttable.nuspec").getroot()
         ns = {"n": "http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd"}
         self.assertEqual(xml.find("n:metadata/n:licenseUrl", ns).text, "https://example.org/license?a=1&b=2")

@@ -2771,6 +2771,15 @@
             "No Linux, os controles seguem a aparência clara ou escura do sistema. No Omarchy, barras de ferramentas, barras laterais, menus e diálogos seguem a paleta ativa da área de trabalho e são atualizados poucos segundos após uma mudança de tema. Os pixels da foto, a preferência de fundo do visualizador e os escopos de cor neutra mantêm suas próprias cores.",
             "Em uma janela estreita do Linux, Mostrar ou ocultar a biblioteca abre a biblioteca como uma gaveta. Expandir a janela restaura o layout normal lado a lado. No Hyprland, use os atalhos de janela do compositor para mover, encaixar, redimensionar ou fechar o LightTable."
           ]
+        },
+        {
+          "title": "Atualizar o LightTable",
+          "paragraphs": [
+            "As instalações assinadas do Windows e as instalações portáteis do Linux configuradas oferecem Verificar atualizações… em Configurações → Geral. As verificações automáticas ocorrem no máximo uma vez por dia depois que o editor é aberto.",
+            "No Linux, escolha Atualizar para baixar e verificar o pacote e depois Reiniciar e atualizar. O Windows usa sua janela nativa de atualização. Conclua primeiro as importações, exportações e outras tarefas; o LightTable salva as edições pendentes e faz um backup do catálogo antes de fechar.",
+            "As atualizações preservam fotos, edições e preferências. O Linux mantém o pacote anterior para recuperação, mas não restaura automaticamente um catálogo nem reabre uma versão anterior.",
+            "Use Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap para atualizar as instalações que eles gerenciam. Baixe um novo ZIP para as cópias portáteis do Windows. Builds sem a assinatura de atualizações configurada não podem se atualizar sozinhas."
+          ]
         }
       ],
       "related": [

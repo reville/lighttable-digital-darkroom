@@ -28,6 +28,7 @@ check() {
 package() {
   install -d "$pkgdir/opt/lighttable" "$pkgdir/usr/bin"
   cp -a "$srcdir/LightTable/." "$pkgdir/opt/lighttable/"
+  printf '%s\n' '{"owner":"arch"}' > "$pkgdir/opt/lighttable/installation-owner.json"
   # Pacman owns system integration. Never run the per-user portable installer.
   rm -f "$pkgdir/opt/lighttable/install.sh" "$pkgdir/opt/lighttable/uninstall.sh" \
     "$pkgdir/opt/lighttable/desktop-integration.py"
