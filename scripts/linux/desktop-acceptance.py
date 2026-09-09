@@ -283,7 +283,8 @@ def render_photo(process, api, deadline, source):
         return state.get("client") and state.get("age", 999) < 10 and state.get("visibleCount", 0) == 1
     wait_for(process, deadline, "the one test photo in the native library", visible)
     def imported():
-        matches = [item["name"] for item in api.request("/api/images").get("images", [])
+        # /api/images omits the source-path fields needed to prove ownership.
+        matches = [item["name"] for item in api.request("/api/catalog/query", {"limit": 10}).get("items", [])
                    if item.get("relpath") == source.name and not item.get("virtual")
                    and same_path(item.get("sourcePath"), source.parent)]
         require(len(matches) <= 1, "The isolated source has ambiguous photo identity")

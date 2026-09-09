@@ -100,9 +100,11 @@ class LinuxAcceptanceTests(unittest.TestCase):
             if route == "/api/ui/state":
                 observed.append(next(states))
                 return observed[-1]
-            if route == "/api/images":
-                return {"images": [{"name": "1:smoke.tif", "relpath": "smoke.tif", "sourcePath": str(source.parent)},
-                                   {"name": "2:smoke.tif", "relpath": "smoke.tif", "sourcePath": str(ROOT)}]}
+            if route == "/api/catalog/query":
+                self.assertEqual(body, {"limit": 10})
+                return {"items": [{"name": "1:smoke.tif", "relpath": "smoke.tif", "sourcePath": str(source.parent)},
+                                  {"name": "2:smoke.tif", "relpath": "smoke.tif", "sourcePath": str(ROOT)}]}
+            self.assertEqual(route, "/api/ui/command")
             self.assertEqual(observed[-1], visible)
             commands.append(body)
             return {"ok": True}
@@ -110,6 +112,46 @@ class LinuxAcceptanceTests(unittest.TestCase):
         with patch.object(smoke.time, "sleep"):
             self.assertEqual(smoke.render_photo(process, api, time.monotonic() + 5, source), "1:smoke.tif")
         self.assertEqual(commands, [{"command": "goto", "args": {"name": "1:smoke.tif"}, "timeout": 3}])
+
+    def test_photo_selection_uses_real_catalog_query_records_and_excludes_other_sources_and_copies(self):
+        import catalog
+        import catalog_scan
+        import numpy as np
+        import tifffile
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            source = root / "photos/smoke.tif"
+            cat = catalog.Catalog(root / "library.sqlite3")
+            try:
+                for folder in ("photos", "other"):
+                    directory = root / folder
+                    directory.mkdir()
+                    tifffile.imwrite(directory / source.name, np.zeros((2, 2, 3), dtype=np.uint16),
+                                     photometric="rgb", metadata=None)
+                    source_id = cat.add_source(directory)
+                    catalog_scan.scan_source(cat, source_id, read_metadata_for_new=False)
+                    if folder == "photos":
+                        expected = catalog.qualified_name(source_id, source.name)
+                        cat.add_virtual_copy(cat.image_id_for(source_id, source.name), "copy-1", "Alternate")
+                process, api = Mock(), Mock()
+                process.poll.return_value = None
+                rendered = {"client": "native", "age": 0, "visibleCount": 1, "current": expected,
+                            "render": {"name": expected, "state": "ready"}}
+                def request(route, body=None):
+                    if route == "/api/ui/state":
+                        return rendered
+                    if route == "/api/catalog/query":
+                        self.assertEqual(body, {"limit": 10})
+                        page = cat.query(body)
+                        self.assertEqual(len(page["items"]), 3)
+                        return page
+                    self.assertEqual(route, "/api/ui/command")
+                    self.assertEqual(body, {"command": "goto", "args": {"name": expected}, "timeout": 3})
+                    return {"ok": True}
+                api.request.side_effect = request
+                self.assertEqual(smoke.render_photo(process, api, time.monotonic() + 5, source), expected)
+            finally:
+                cat.close()
 
     def test_pending_edits_do_not_pass_and_film_must_be_explicitly_disabled(self):
         valid = {"grade": {"exposure": 0.5}, "rating": 4, "params": {"profile_enabled": False}}
