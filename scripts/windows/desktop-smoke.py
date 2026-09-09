@@ -251,12 +251,66 @@ def wait_for(desktop, deadline, phase, check):
     raise RuntimeError(f"Desktop timed out waiting for {phase}")
 
 
+def same_existing_path(value, expected: Path) -> bool:
+    # Rust canonicalize returns Windows extended paths (\\?\C:\...). Python
+    # resolve preserves that prefix when supplied, so string equality rejects
+    # the same directory. Compare existing filesystem objects, failing closed.
+    try:
+        return bool(value) and Path(value).is_absolute() and expected.samefile(value)
+    except (OSError, TypeError, ValueError):
+        return False
+
+
+def startup_diagnostics(root: Path, desktop) -> dict:
+    """Keep only scalar startup/identity fields; never copy an instance token."""
+    result = {"expected_folder": str(root / "photos"),
+              "expected_catalog": str(root / "catalog/library.sqlite3"), "records": []}
+    paths = [root / "startup.json", *sorted((root / "instances").glob("[0-9]*.json"))[:16]]
+    fields = ("phase", "code", "pid", "port", "startedAt", "updatedAt", "ok",
+              "folder", "catalog", "headless", "safeMode", "sourceRevision")
+    for path in paths:
+        record = {"file": str(path.relative_to(root))}
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+            record.update({key: value[key] for key in fields if key in value
+                           and isinstance(value[key], (str, int, float, bool, type(None)))})
+            record["folder_matches"] = same_existing_path(value.get("folder"), root / "photos")
+            record["catalog_matches"] = same_existing_path(value.get("catalog"), root / "catalog/library.sqlite3")
+            if desktop and isinstance(value.get("pid"), int):
+                record["owned_process"] = desktop.owns_pid(value["pid"])
+        except (OSError, ValueError, TypeError, AttributeError) as error:
+            record["read_error"] = type(error).__name__
+        result["records"].append(record)
+    return result
+
+
+def capture_failure_window(desktop, destination: Path) -> dict:
+    """Capture only our foreground HWND, without changing focus or z-order."""
+    try:
+        if os.name != "nt" or not desktop or not desktop.running():
+            return {"available": False, "reason": "No running Windows test window"}
+        from PIL import ImageGrab
+        user = desktop.user
+        user.GetForegroundWindow.restype = wintypes.HWND
+        user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+        window, pid = user.GetForegroundWindow(), wintypes.DWORD()
+        user.GetWindowThreadProcessId(window, ctypes.byref(pid))
+        if not window or pid.value != desktop.pid:
+            return {"available": False, "reason": "The test app does not own the foreground window"}
+        # Restrict Pillow to this HWND's client area; never grab the desktop.
+        with ImageGrab.grab(window=window) as captured:
+            captured.save(destination)
+        return {"available": True, "file": destination.name}
+    except Exception as error:
+        return {"available": False, "reason": type(error).__name__}
+
+
 def connect(desktop, root, deadline):
     def registered():
         for path in (root / "instances").glob("[0-9]*.json"):
             try:
                 candidate = json.loads(path.read_text(encoding="utf-8"))
-                if Path(candidate.get("folder", "")).resolve() == (root / "photos").resolve() and desktop.owns_pid(int(candidate["pid"])):
+                if same_existing_path(candidate.get("folder"), root / "photos") and desktop.owns_pid(int(candidate["pid"])):
                     return candidate
             except (OSError, ValueError, KeyError):
                 pass
@@ -266,8 +320,8 @@ def connect(desktop, root, deadline):
     # Keep startup retries inside the same bounded native-acceptance deadline.
     health = wait_for(desktop, deadline, "HTTP health", lambda: api.request("/api/health"))
     if (health.get("ok") is not True or health.get("pid") != instance["pid"]
-            or Path(health.get("catalog", "")).resolve() != (root / "catalog/library.sqlite3").resolve()
-            or Path(health.get("folder", "")).resolve() != (root / "photos").resolve()
+            or not same_existing_path(health.get("catalog"), root / "catalog/library.sqlite3")
+            or not same_existing_path(health.get("folder"), root / "photos")
             or health.get("headless") or health.get("safeMode")):
         raise RuntimeError("Native server identity or isolated catalog did not match")
     return api, health
@@ -419,6 +473,9 @@ def main():
                 shutil.copy2(outputs[0], args.report_dir / "export.tif")
         except BaseException as error:
             report["error"] = str(error)
+            report["startup_diagnostics"] = startup_diagnostics(root, desktop)
+            if args.report_dir:
+                report["failure_window"] = capture_failure_window(desktop, args.report_dir / "window.png")
             raise
         finally:
             if desktop:
