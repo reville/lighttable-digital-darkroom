@@ -313,7 +313,31 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path, liv
             require(installed_manifest['source_revision']==envelope['signed']['source_revision'],
                     'Wrong target source was installed')
             require(after["server_pid"] != before["server_pid"], "The upgraded server did not restart")
+            trash_restore_verified = False
             if live_download:
+                from urllib.parse import quote, unquote
+                import configparser
+                probe = root/'photos/trash-probe.jpg'
+                shutil.copy2(source, probe)
+                request(instance['port'], '/api/ui/command', {'command':'trash',
+                        'args':{'paths':[str(probe)]},'timeout':3}, instance['token'])
+                trashed = None
+                for attempt in range(100):
+                    for info in (root/'data/Trash/info').glob('*.trashinfo'):
+                        metadata = configparser.ConfigParser(interpolation=None)
+                        metadata.read(info)
+                        if unquote(metadata['Trash Info']['Path']) == str(probe):
+                            trashed = root/'data/Trash/files'/info.name.removesuffix('.trashinfo')
+                    if not probe.exists() and trashed is not None and trashed.is_file(): break
+                    time.sleep(0.1)
+                require(trashed is not None and trashed.is_file() and not probe.exists(),
+                        'Native Trash did not retain a recoverable file and original-path metadata')
+                require(hashlib.sha256(trashed.read_bytes()).hexdigest()==source_digest, 'Trashing changed the photo')
+                subprocess.run(['dbus-run-session','--','gio','trash','--restore','trash:///'+quote(trashed.name)],
+                               env=environment,check=True,timeout=25)
+                require(probe.is_file() and hashlib.sha256(probe.read_bytes()).hexdigest()==source_digest,
+                        'System Trash restore did not return the original bytes')
+                trash_restore_verified = True
                 screenshot = Path.cwd()/'evidence/public-upgraded-desktop.png'
                 screenshot.parent.mkdir(parents=True,exist_ok=True)
                 subprocess.run(['import','-window','root',str(screenshot)],check=True,timeout=15)
@@ -348,6 +372,7 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path, liv
                     "saved_edit_persistence": True, "baseline_version_override": True,
                     "desktop": "GTK/WebKitGTK", "display_backend": "x11", "archive_delivery": "public HTTPS" if live_download else "locally staged",
                     "catalog_backup_verified": backup_verified, "normal_original_close": live_download,
+                    "native_trash_and_system_restore": trash_restore_verified,
                     "signature_rejection": True, "checksum_rejection": True,
                     "owned_launchers_retargeted": True, "native_before": before, "native_after": after,
                     "failed_native_startup_rollback": True, "original_photo_preserved": True}
