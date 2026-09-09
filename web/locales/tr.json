@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} seçilmiş fotoğraf",
     "{count} preset file could not be read": "{count} hazır ayar dosyası okunamadı",
     "{count} preset files could not be read": "{count} hazır ayar dosyası okunamadı",
-    "{count} preset · click to apply, click again to turn off": "{count} hazır ayar · uygulamak için tıklayın, kapatmak için tekrar tıklayın",
-    "{count} presets · click to apply, click again to turn off": "{count} hazır ayar · uygulamak için tıklayın, kapatmak için tekrar tıklayın",
     "{count} rated photo": "{count} puanlanmış fotoğraf",
     "{count} rated photos": "{count} puanlanmış fotoğraf",
     "{count} selected": "{count} seçildi",
@@ -4384,10 +4382,6 @@
       "one": "son 24 saatte {value} beklenmeyen çıkış.",
       "other": "son 24 saatte {value} beklenmeyen çıkış."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} hazır ayar · uygulamak için tıklayın, kapatmak için tekrar tıklayın",
-      "other": "{count} hazır ayar · uygulamak için tıklayın, kapatmak için tekrar tıklayın"
-    },
     "{count} empty file": {
       "one": "{count} boş dosya",
       "other": "{count} boş dosya"
@@ -4421,5 +4415,5 @@
       "other": "{count} kullanılamayan fotoğraf atlandı"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }

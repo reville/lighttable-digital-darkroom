@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} صور مختارة",
     "{count} preset file could not be read": "تعذر قراءة {count} ملف إعداد مسبق",
     "{count} preset files could not be read": "تعذر قراءة {count} من ملفات الإعدادات المسبقة",
-    "{count} preset · click to apply, click again to turn off": "{count} إعداد مسبق · انقر لتطبيقه، وانقر مرة أخرى لإيقافه",
-    "{count} presets · click to apply, click again to turn off": "{count} إعدادات مسبقة · انقر لتطبيقها، وانقر مرة أخرى لإيقافها",
     "{count} rated photo": "{count} صورة مُقيَّمة",
     "{count} rated photos": "{count} صورة مُقيَّمة",
     "{count} selected": "{count} محدد",
@@ -4640,14 +4638,6 @@
       "many": "‏{value} حالات خروج غير متوقعة خلال آخر 24 ساعة.",
       "other": "‏{value} حالة خروج غير متوقعة خلال آخر 24 ساعة."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "zero": "{count} إعدادات مسبقة · انقر لتطبيقها، وانقر مرة أخرى لإيقافها",
-      "one": "{count} إعداد مسبق · انقر لتطبيقه، وانقر مرة أخرى لإيقافه",
-      "two": "{count} إعدادان مسبقان · انقر لتطبيقهما، وانقر مرة أخرى لإيقافهما",
-      "few": "{count} إعدادات مسبقة · انقر لتطبيقها، وانقر مرة أخرى لإيقافها",
-      "many": "{count} إعدادات مسبقة · انقر لتطبيقها، وانقر مرة أخرى لإيقافها",
-      "other": "{count} إعدادات مسبقة · انقر لتطبيقها، وانقر مرة أخرى لإيقافها"
-    },
     "{count} empty file": {
       "zero": "{count} ملفات فارغة",
       "one": "{count} ملف فارغ",
@@ -4713,5 +4703,5 @@
       "other": "تم تخطي {count} صورة غير متاحة"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }

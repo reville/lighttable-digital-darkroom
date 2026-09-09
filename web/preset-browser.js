@@ -506,8 +506,7 @@ export function createPresetBrowser({
         : search.value || tag.value ? tr('No matching presets.')
         : collection === 'yours' ? tr('Save your current look, import presets, or add one from Community.')
         : communityLoading ? '' : tr('No presets in this collection yet.')
-      : trn('{count} preset · click to apply, click again to turn off',
-        '{count} presets · click to apply, click again to turn off', filtered.length);
+      : '';
     grid.replaceChildren(); cards.clear(); detail.hidden = !selected;
     if (selected) {
       // Refresh an installed listing after updates while retaining remote identity.
