@@ -201,10 +201,12 @@
             <img id="orig" alt="Original photograph" data-i18n-attrs="{&quot;alt&quot;:&quot;Original photograph&quot;}">
             <img id="referenceImg" alt="Film reference" hidden data-i18n-attrs="{&quot;alt&quot;:&quot;Film reference&quot;}">
             <div id="cropLayer">
-              <span class="crop-dimmer crop-dimmer-top" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-right" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-bottom" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-left" aria-hidden="true"></span>
+              <div class="crop-shade" aria-hidden="true">
+                <span class="crop-dimmer crop-dimmer-top"></span>
+                <span class="crop-dimmer crop-dimmer-right"></span>
+                <span class="crop-dimmer crop-dimmer-bottom"></span>
+                <span class="crop-dimmer crop-dimmer-left"></span>
+              </div>
               <div id="cropRect" tabindex="0" role="group" aria-label="Crop selection. Drag to move; use the handles to resize." data-i18n-attrs="{&quot;aria-label&quot;:&quot;Crop selection. Drag to move; use the handles to resize.&quot;}">
                 <span class="crop-handle crop-handle-nw" data-crop-handle="nw" aria-hidden="true"></span>
                 <span class="crop-handle crop-handle-n" data-crop-handle="n" aria-hidden="true"></span>
@@ -240,10 +242,10 @@
         <div class="transfer-actions detail-transfer-actions" role="group" aria-label="Edit settings" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Edit settings&quot;}">
           <button class="quiet compact transfer-btn" id="copyBtn" title="Copy edit settings (Ctrl/⌘⇧C)" aria-label="Copy edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy edit settings (Ctrl/⌘⇧C)&quot;,&quot;aria-label&quot;:&quot;Copy edit settings&quot;}">
             <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="10" rx="1.5"/><path d="M13 6V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v8A1.5 1.5 0 0 0 4.5 14H7"/></svg>
-            <span data-i18n-text="{&quot;0&quot;:&quot;Copy&quot;}">Copy</span><span aria-hidden="true">…</span>
+            <span data-i18n-text="{&quot;0&quot;:&quot;Copy Settings...&quot;}">Copy Settings...</span>
             <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
           </button>
-          <button class="quiet compact transfer-btn" id="pasteBtn" title="Copy settings first" aria-label="Paste edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy settings first&quot;,&quot;aria-label&quot;:&quot;Paste edit settings&quot;}">
+          <button class="quiet compact transfer-btn" id="pasteBtn" title="Copy settings first" aria-label="Paste edit settings" disabled hidden data-i18n-attrs="{&quot;title&quot;:&quot;Copy settings first&quot;,&quot;aria-label&quot;:&quot;Paste edit settings&quot;}">
             <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 5H4.5A1.5 1.5 0 0 0 3 6.5v9A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 15.5 5H14"/><path d="M7 3h6v4H7zM10 9v5m-2-2 2 2 2-2"/></svg>
             <span data-i18n-text="{&quot;0&quot;:&quot;Paste&quot;}">Paste</span>
             <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
@@ -906,7 +908,7 @@
   <div class="cullbar survey-cullbar" role="toolbar" aria-label="Flag and rate survey photo" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Flag and rate survey photo&quot;}">
     <div class="cullbar-context">
       <strong data-cull-context-title data-i18n-text="{&quot;0&quot;:&quot;Survey&quot;}">Survey</strong>
-      <span data-cull-context-detail aria-live="polite" data-i18n-text="{&quot;0&quot;:&quot;Choose a photo to rate or flag&quot;}">Choose a photo to rate or flag</span>
+      <span data-cull-context-detail aria-live="polite"></span>
     </div>
     <div class="cullbar-primary">
       <div class="cullbar-segment cullbar-flags" role="group" aria-label="Flag" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Flag&quot;}">

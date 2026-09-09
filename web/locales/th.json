@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "เลือกบุคคล",
     "Choose a photo folder": "เลือกโฟลเดอร์ภาพถ่าย",
     "Choose a photo to edit": "เลือกภาพถ่ายเพื่อแก้ไข",
-    "Choose a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือตั้งธง",
     "Choose a preset to see its source and conversion coverage.": "เลือกพรีเซ็ตเพื่อดูแหล่งที่มาและความครอบคลุมของการแปลง",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "เลือกกระบวนการพิมพ์สำหรับเนกาทีฟ และทำความเข้าใจว่าทำไมตัวควบคุมการพิมพ์จึงหายไปสำหรับฟิล์มสไลด์",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "เลือกจุดที่บันทึกไว้ในตัวเลือกเพื่อแก้ไข หรือใช้ ลบจุด เพื่อลบออก",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "เปิด มาสก์ ในแถบเครื่องมือการแก้ไข แล้วเลือกเครื่องมือภายใต้ สร้างมาสก์ใหม่ คลิก สร้างมาสก์ใหม่ เพื่อแสดงหรือซ่อนเครื่องมือ มาสก์แต่ละอันมีการปรับ แสง, สี, และ เส้นโค้งโทน ของตัวเอง",
     "Open People and choose Download models & enable.": "เปิด ผู้คน และเลือก ดาวน์โหลดโมเดลและเปิดใช้งาน",
     "Open People…": "เปิด ผู้คน…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 10 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน",
     "Open Recovery Folder": "เปิดโฟลเดอร์กู้คืน",
     "Open Recovery folder": "เปิดโฟลเดอร์ Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "เปิด Remove ในแถบเครื่องมือการแก้ไข Remove, Heal และ Clone เป็นโหมดแยกกัน Heal และ Clone จะเลือกแหล่งเริ่มต้นให้อัตโนมัติ; ตรวจดูแหล่งนั้นแทนที่จะสันนิษฐานว่ามันเหมาะสม",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "เลือกภาพถ่ายเพื่อคัดลอกการตั้งค่า",
     "Select a photo to edit": "เลือกภาพถ่ายเพื่อแก้ไข",
     "Select a photo to preview": "เลือกภาพถ่ายเพื่อดูพรีวิว",
-    "Select a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือใส่ธง",
     "Select a photo, or a set in a grid, and open Info.": "เลือกภาพถ่าย หรือชุดภาพในตารางกริด แล้วเปิด ข้อมูล",
     "Select a photo.": "เลือกภาพถ่ายหนึ่งภาพ.",
     "Select a range of distances from the camera; refine the far and near limits": "เลือกช่วงระยะจากกล้อง; ปรับขีดจำกัดไกลและใกล้ให้เหมาะสม",
@@ -4158,7 +4155,9 @@
     "Rename pack": "เปลี่ยนชื่อแพ็ก",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "บันทึกพรีเซ็ตในของคุณ เปิดรายละเอียด … แล้วตรวจสอบสรุปการตั้งค่าที่รวมอยู่ใต้ การส่งจากชุมชน",
     "Select a photo, expand a pack, and click a preset row.": "เลือกภาพถ่าย ขยายแพ็ก แล้วคลิกแถวพรีเซ็ต",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "การสลับแถวพรีเซ็ตจะใช้การแก้ไขก่อนพรีเซ็ตแรกเพื่อไม่ให้ลุคสะสมซ้อนกัน การเปลี่ยนแปลงด้วยตนเองนอกขอบเขตพรีเซ็ต เช่น ค่ารับแสงสำหรับลุค จะยังคงอยู่ การเปลี่ยนการตั้งค่าที่พรีเซ็ตควบคุมด้วยตนเองจะยุติการปรับปริมาณของพรีเซ็ตนั้น จากนั้นการแก้ไขปัจจุบันจะกลายเป็นฐานสำหรับพรีเซ็ตถัดไป"
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "การสลับแถวพรีเซ็ตจะใช้การแก้ไขก่อนพรีเซ็ตแรกเพื่อไม่ให้ลุคสะสมซ้อนกัน การเปลี่ยนแปลงด้วยตนเองนอกขอบเขตพรีเซ็ต เช่น ค่ารับแสงสำหรับลุค จะยังคงอยู่ การเปลี่ยนการตั้งค่าที่พรีเซ็ตควบคุมด้วยตนเองจะยุติการปรับปริมาณของพรีเซ็ตนั้น จากนั้นการแก้ไขปัจจุบันจะกลายเป็นฐานสำหรับพรีเซ็ตถัดไป",
+    "Copy Settings...": "คัดลอกการตั้งค่า...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 15 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน"
   },
   "plurals": {
     " · {count} paired file linked": {

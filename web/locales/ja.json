@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "人物を選択",
     "Choose a photo folder": "写真フォルダーを選択してください",
     "Choose a photo to edit": "編集する写真を選択してください",
-    "Choose a photo to rate or flag": "レーティングまたはフラグを付ける写真を選択",
     "Choose a preset to see its source and conversion coverage.": "プリセットを選んで、ソースと変換の適用範囲を確認します。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "ネガ用の印画処理を選び、スライドフィルムで印刷コントロールが消える理由を理解します。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "セレクターで保存済みのポイントを選んで編集するか、ポイントを削除で削除します。",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "編集ツールバーでマスクを開き、新しいマスクを作成の下からツールを選択します。新しいマスクを作成をクリックすると、ツールの表示/非表示を切り替えます。各マスクには、それぞれ独自の光、カラー、トーンカーブの調整があります。",
     "Open People and choose Download models & enable.": "人物を開き、［モデルをダウンロードして有効にする］を選択してください。",
     "Open People…": "人物を開く…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには10個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。",
     "Open Recovery Folder": "回復フォルダーを開く",
     "Open Recovery folder": "Recoveryフォルダーを開く",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "編集ツールバーで Remove を開きます。Remove、Heal、Clone はそれぞれ別のモードです。Heal と Clone は初期ソースを自動的に選択します。そのソースが適切だと決めつけず、確認してください。",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "設定をコピーする写真を選択してください",
     "Select a photo to edit": "編集する写真を選択してください",
     "Select a photo to preview": "プレビューする写真を選択",
-    "Select a photo to rate or flag": "評価またはフラグを付ける写真を選択してください",
     "Select a photo, or a set in a grid, and open Info.": "写真、またはグリッド内のセットを選択して、情報を開きます。",
     "Select a photo.": "写真を選択。",
     "Select a range of distances from the camera; refine the far and near limits": "カメラからの距離範囲を選択します。遠近の制限を調整してください",
@@ -4158,7 +4155,9 @@
     "Rename pack": "パック名を変更",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "「あなたの」にプリセットを保存し、「…」から詳細を開いて、「コミュニティへの投稿」で含まれる設定の概要を確認します。",
     "Select a photo, expand a pack, and click a preset row.": "写真を選択し、パックを展開して、プリセットの行をクリックします。",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "プリセットの行を切り替える際は、ルックが重ならないよう、最初のプリセットを適用する前の編集状態を使用します。ルックに対する露出など、プリセットの範囲外の手動変更は保持されます。プリセットが制御する設定を手動で変更すると、そのプリセットの「量」の調整は終了し、現在の編集状態が次のプリセットの基準になります。"
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "プリセットの行を切り替える際は、ルックが重ならないよう、最初のプリセットを適用する前の編集状態を使用します。ルックに対する露出など、プリセットの範囲外の手動変更は保持されます。プリセットが制御する設定を手動で変更すると、そのプリセットの「量」の調整は終了し、現在の編集状態が次のプリセットの基準になります。",
+    "Copy Settings...": "設定をコピー...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには15個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。"
   },
   "plurals": {
     " · {count} paired file linked": {

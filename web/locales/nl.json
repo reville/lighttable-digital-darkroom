@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Kies een persoon",
     "Choose a photo folder": "Kies een fotomap",
     "Choose a photo to edit": "Kies een foto om te bewerken",
-    "Choose a photo to rate or flag": "Kies een foto om te beoordelen of te markeren",
     "Choose a preset to see its source and conversion coverage.": "Kies een voorinstelling om de bron- en conversiedekking te bekijken.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Kies een afdrukproces voor negatieven en begrijp waarom afdrukbedieningen verdwijnen voor diafilm.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Kies een opgeslagen punt in de selector om het te bewerken, of gebruik Punt verwijderen om het te verwijderen.",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Open Masker in de bewerkingstoolbar en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen aanpassingen voor Licht, Kleur en Tooncurve.",
     "Open People and choose Download models & enable.": "Open Personen en kies Modellen downloaden en inschakelen.",
     "Open People…": "Personen openen…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling.",
     "Open Recovery Folder": "Herstelmap openen",
     "Open Recovery folder": "Herstelmap openen",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Open Verwijderen in de bewerkingswerkbalk. Verwijderen, Retoucheren en Kloon zijn afzonderlijke modi. Retoucheren en Kloon kiezen automatisch een eerste bron; controleer die bron in plaats van ervan uit te gaan dat deze geschikt is.",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "Selecteer een foto om de instellingen te kopiëren",
     "Select a photo to edit": "Selecteer een foto om te bewerken",
     "Select a photo to preview": "Selecteer een foto om een voorbeeld te zien",
-    "Select a photo to rate or flag": "Selecteer een foto om te beoordelen of van markering te voorzien",
     "Select a photo, or a set in a grid, and open Info.": "Selecteer een foto, of een set in een raster, en open Info.",
     "Select a photo.": "Selecteer een foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Selecteer een bereik van afstanden vanaf de camera; verfijn de verre en nabije limieten",
@@ -4158,7 +4155,9 @@
     "Rename pack": "Pakketnaam wijzigen",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Sla een voorinstelling op in Jouw, open de details via … en controleer het overzicht van de opgenomen instellingen onder Inzending van community.",
     "Select a photo, expand a pack, and click a preset row.": "Selecteer een foto, klap een pakket uit en klik op een voorinstellingsrij.",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Bij het wisselen tussen voorinstellingsrijen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet worden opgestapeld. Handmatige wijzigingen buiten de voorinstelling, zoals de belichting bij een look, blijven behouden. Als je een instelling die door de voorinstelling wordt aangestuurd handmatig wijzigt, eindigt de aanpassing via Hoeveelheid; de huidige bewerking wordt dan de basis voor de volgende voorinstelling."
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Bij het wisselen tussen voorinstellingsrijen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet worden opgestapeld. Handmatige wijzigingen buiten de voorinstelling, zoals de belichting bij een look, blijven behouden. Als je een instelling die door de voorinstelling wordt aangestuurd handmatig wijzigt, eindigt de aanpassing via Hoeveelheid; de huidige bewerking wordt dan de basis voor de volgende voorinstelling.",
+    "Copy Settings...": "Instellingen kopiëren...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
   },
   "plurals": {
     " · {count} paired file linked": {

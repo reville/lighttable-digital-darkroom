@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "اختر شخصًا",
     "Choose a photo folder": "اختر مجلد صور",
     "Choose a photo to edit": "اختر صورة لتحريرها",
-    "Choose a photo to rate or flag": "اختر صورة لتقييمها أو وضع علامة عليها",
     "Choose a preset to see its source and conversion coverage.": "اختر preset لرؤية مصدره وتغطية التحويل.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "اختر عملية طباعة للنيغاتيفات وافهم سبب اختفاء عناصر التحكم في الطباعة مع فيلم الشريحة.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "اختر نقطة محفوظة في المحدد لتحريرها، أو استخدم حذف النقطة لإزالتها.",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "افتح القناع في شريط أدوات التحرير واختر أداة ضمن إنشاء قناع جديد. انقر إنشاء قناع جديد لإظهار الأدوات أو إخفائها. لكل قناع تعديلات خاصة به على الضوء واللون ومنحنى النغمة.",
     "Open People and choose Download models & enable.": "افتح الأشخاص واختر تنزيل النماذج وتمكينها.",
     "Open People…": "فتح الأشخاص…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على عشرة looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت.",
     "Open Recovery Folder": "فتح مجلد الاستعادة",
     "Open Recovery folder": "فتح مجلد الاستعادة",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "افتح إزالة في شريط أدوات التحرير. إزالة، ومعالجة، واستنساخ هي أوضاع منفصلة. يختار كل من معالجة واستنساخ مصدرًا أوليًا تلقائيًا؛ افحص ذلك المصدر بدلًا من افتراض ملاءمته.",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "حدد صورة لنسخ إعداداتها",
     "Select a photo to edit": "حدِّد صورة لتحريرها",
     "Select a photo to preview": "تحديد صورة للمعاينة",
-    "Select a photo to rate or flag": "حدد صورة لتقييمها أو وضع علامة عليها",
     "Select a photo, or a set in a grid, and open Info.": "حدد صورة، أو مجموعة في الشبكة، وافتح معلومات.",
     "Select a photo.": "حدد صورة.",
     "Select a range of distances from the camera; refine the far and near limits": "حدد نطاقًا من المسافات من الكاميرا؛ وصقل الحدود البعيدة والقريبة",
@@ -4158,7 +4155,9 @@
     "Rename pack": "إعادة تسمية الحزمة",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "احفظ إعدادًا مسبقًا في «خاصتك»، وافتح تفاصيله عبر …، وراجع ملخص الإعدادات المضمَّنة ضمن «إرسال من المجتمع».",
     "Select a photo, expand a pack, and click a preset row.": "حدد صورة، ووسِّع حزمة، ثم انقر على صف إعداد مسبق.",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "يستخدم التبديل بين صفوف الإعدادات المسبقة التعديل السابق لأول إعداد مسبق حتى لا تتراكم المظاهر. تُحفَظ التغييرات اليدوية خارج الإعداد المسبق، مثل التعريض لمظهر معين. يؤدي تغيير إعداد يتحكم به الإعداد المسبق يدويًا إلى إنهاء ضبط «الكمية» الخاص به؛ ثم يصبح التعديل الحالي أساسًا للإعداد المسبق التالي."
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "يستخدم التبديل بين صفوف الإعدادات المسبقة التعديل السابق لأول إعداد مسبق حتى لا تتراكم المظاهر. تُحفَظ التغييرات اليدوية خارج الإعداد المسبق، مثل التعريض لمظهر معين. يؤدي تغيير إعداد يتحكم به الإعداد المسبق يدويًا إلى إنهاء ضبط «الكمية» الخاص به؛ ثم يصبح التعديل الحالي أساسًا للإعداد المسبق التالي.",
+    "Copy Settings...": "نسخ الإعدادات...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على 15 looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت."
   },
   "plurals": {
     " · {count} paired file linked": {

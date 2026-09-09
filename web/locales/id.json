@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Pilih seseorang",
     "Choose a photo folder": "Pilih folder foto",
     "Choose a photo to edit": "Pilih sebuah foto untuk diedit",
-    "Choose a photo to rate or flag": "Pilih foto untuk diberi rating atau bendera",
     "Choose a preset to see its source and conversion coverage.": "Pilih preset untuk melihat sumber dan cakupan konversinya.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Pilih proses cetak untuk negatif dan pahami mengapa kontrol cetak menghilang untuk film slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Pilih titik yang disimpan di selector untuk mengeditnya, atau gunakan Delete point untuk menghapusnya.",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya, Warna, dan Kurva Nada sendiri.",
     "Open People and choose Download models & enable.": "Buka Orang dan pilih Unduh model & aktifkan.",
     "Open People…": "Buka Orang…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau.",
     "Open Recovery Folder": "Buka Folder Pemulihan",
     "Open Recovery folder": "Buka folder Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Buka Remove di toolbar pengeditan. Remove, Heal, dan Clone adalah mode terpisah. Heal dan Clone memilih sumber awal secara otomatis; periksa sumber itu alih-alih menganggapnya cocok.",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "Pilih sebuah foto untuk menyalin pengaturannya",
     "Select a photo to edit": "Pilih sebuah foto untuk diedit",
     "Select a photo to preview": "Pilih sebuah foto untuk pratinjau",
-    "Select a photo to rate or flag": "Pilih foto untuk memberi rating atau bendera",
     "Select a photo, or a set in a grid, and open Info.": "Pilih foto, atau satu set dalam kisi, lalu buka Info.",
     "Select a photo.": "Pilih sebuah foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Pilih rentang jarak dari kamera; perhalus batas jauh dan dekat",
@@ -4158,7 +4155,9 @@
     "Rename pack": "Ganti nama paket",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Simpan preset di Milik Anda, buka detailnya melalui …, lalu tinjau ringkasan pengaturan yang disertakan pada Pengajuan komunitas.",
     "Select a photo, expand a pack, and click a preset row.": "Pilih foto, luaskan paket, lalu klik baris preset.",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Beralih antarbaris preset menggunakan hasil edit sebelum preset pertama agar tampilan tidak bertumpuk. Perubahan manual di luar preset, seperti eksposur untuk suatu tampilan, tetap dipertahankan. Mengubah pengaturan yang dikendalikan preset secara manual mengakhiri penyesuaian Jumlah; hasil edit saat ini kemudian menjadi dasar untuk preset berikutnya."
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Beralih antarbaris preset menggunakan hasil edit sebelum preset pertama agar tampilan tidak bertumpuk. Perubahan manual di luar preset, seperti eksposur untuk suatu tampilan, tetap dipertahankan. Mengubah pengaturan yang dikendalikan preset secara manual mengakhiri penyesuaian Jumlah; hasil edit saat ini kemudian menjadi dasar untuk preset berikutnya.",
+    "Copy Settings...": "Salin pengaturan...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
   },
   "plurals": {
     " · {count} paired file linked": {

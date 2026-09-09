@@ -1193,7 +1193,7 @@
         {
           "title": "Escolha uma coleção",
           "paragraphs": [
-            "Abra Predefinições na barra de ferramentas de edição. Integrado contém dez aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
+            "Abra Predefinições na barra de ferramentas de edição. Integrado contém 15 aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
           ],
           "steps": [
             "Escolha Integrado, Yours ou Community. Pesquise por nome, descrição, criador ou assunto.",
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
 }

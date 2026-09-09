@@ -586,7 +586,7 @@
       {
         "title": "Choose a collection",
         "paragraphs": [
-          "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+          "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
         ],
         "steps": [
           "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
@@ -689,6 +689,10 @@
       "editing-curves"
     ],
     "sources": [
+      {
+        "path": "presets/builtin.json",
+        "anchor": "\"id\": \"lighttable/neon-nights\""
+      },
       {
         "path": "web/preset-browser.js",
         "anchor": "export function createPresetBrowser({"

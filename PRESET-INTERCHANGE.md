@@ -123,7 +123,11 @@ versions:
 ```
 
 This is a format example, not the canonical Natural Finish recipe. The bundled
-recipes live in `presets/builtin.json`.
+recipes live in `presets/builtin.json`. The 15 bundled looks mix subtle everyday
+finishes with Neon Nights, Bleach Bypass, Cross Process, Golden Drama, and
+Graphic Noir. Cinematic Color adds stronger teal/warm separation, and Faded
+Print adds a more pronounced matte finish. The browser groups presets into
+collapsible packs; Amount controls the strength of the applied look.
 
 Version 3 entries must use `scope: "look"` and a supported `filmMode`.
 `includedGrade` and `includedFilm` declare exactly the keys carried in `grade`

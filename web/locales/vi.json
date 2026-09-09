@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Chọn một người",
     "Choose a photo folder": "Chọn một thư mục ảnh",
     "Choose a photo to edit": "Chọn một ảnh để chỉnh sửa",
-    "Choose a photo to rate or flag": "Chọn một ảnh để xếp hạng hoặc đánh cờ",
     "Choose a preset to see its source and conversion coverage.": "Chọn một thiết lập sẵn để xem phạm vi nguồn và chuyển đổi của nó.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Chọn một quy trình in cho phim âm bản và hiểu vì sao các điều khiển in biến mất đối với phim slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Chọn một điểm đã lưu trong bộ chọn để chỉnh sửa nó, hoặc dùng Xóa điểm để loại bỏ nó.",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh riêng cho Sáng, Màu sắc và Đường cong tông.",
     "Open People and choose Download models & enable.": "Mở Mọi người và chọn Tải mô hình xuống và bật.",
     "Open People…": "Mở Mọi người…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa mười giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
     "Open Recovery Folder": "Mở thư mục khôi phục",
     "Open Recovery folder": "Mở thư mục Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Mở Xóa bỏ trong thanh công cụ chỉnh sửa. Xóa bỏ, Chữa, và Nhân bản là các chế độ riêng biệt. Chữa và Nhân bản tự động chọn một nguồn ban đầu; hãy kiểm tra nguồn đó thay vì cho rằng nó phù hợp.",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "Chọn một ảnh để sao chép cài đặt của nó",
     "Select a photo to edit": "Chọn một ảnh để chỉnh sửa",
     "Select a photo to preview": "Chọn một ảnh để xem trước",
-    "Select a photo to rate or flag": "Chọn một ảnh để chấm điểm hoặc gắn cờ",
     "Select a photo, or a set in a grid, and open Info.": "Chọn một ảnh, hoặc một tập trong lưới, và mở Thông tin.",
     "Select a photo.": "Chọn một ảnh.",
     "Select a range of distances from the camera; refine the far and near limits": "Chọn một phạm vi khoảng cách tính từ máy ảnh; tinh chỉnh giới hạn xa và gần",
@@ -4158,7 +4155,9 @@
     "Rename pack": "Đổi tên gói",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Lưu một thiết lập sẵn trong Của bạn, mở phần chi tiết … rồi xem lại bản tóm tắt các cài đặt được bao gồm bên dưới Bài gửi cộng đồng.",
     "Select a photo, expand a pack, and click a preset row.": "Chọn một ảnh, mở rộng một gói rồi nhấp vào một hàng thiết lập sẵn.",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Khi chuyển giữa các hàng thiết lập sẵn, ứng dụng sử dụng bản chỉnh sửa trước thiết lập sẵn đầu tiên để các phong cách không cộng dồn. Các thay đổi thủ công nằm ngoài thiết lập sẵn, chẳng hạn phơi sáng cho một phong cách, được giữ lại. Việc thay đổi thủ công một cài đặt do thiết lập sẵn kiểm soát sẽ kết thúc điều chỉnh Lượng; bản chỉnh sửa hiện tại trở thành cơ sở cho thiết lập sẵn tiếp theo."
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Khi chuyển giữa các hàng thiết lập sẵn, ứng dụng sử dụng bản chỉnh sửa trước thiết lập sẵn đầu tiên để các phong cách không cộng dồn. Các thay đổi thủ công nằm ngoài thiết lập sẵn, chẳng hạn phơi sáng cho một phong cách, được giữ lại. Việc thay đổi thủ công một cài đặt do thiết lập sẵn kiểm soát sẽ kết thúc điều chỉnh Lượng; bản chỉnh sửa hiện tại trở thành cơ sở cho thiết lập sẵn tiếp theo.",
+    "Copy Settings...": "Sao chép cài đặt...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
   },
   "plurals": {
     " · {count} paired file linked": {

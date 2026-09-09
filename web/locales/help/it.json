@@ -1193,7 +1193,7 @@
         {
           "title": "Scegli una collezione",
           "paragraphs": [
-            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene dieci aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
+            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
           ],
           "steps": [
             "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
 }

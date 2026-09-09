@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "选择个人",
     "Choose a photo folder": "选择一个照片文件夹",
     "Choose a photo to edit": "选择一张要编辑的照片",
-    "Choose a photo to rate or flag": "选择要评分或标记的照片",
     "Choose a preset to see its source and conversion coverage.": "选择一个预设，以查看其来源和转换覆盖范围。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "为底片选择一种打印工艺，并了解为什么幻灯片胶片会使打印控制消失。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "在选择器中选择一个已保存的点以编辑它，或使用删除点将其移除。",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "在编辑工具栏中打开蒙版，并在创建新蒙版下选择一个工具。点击创建新蒙版可显示或隐藏这些工具。每个蒙版都有各自的明亮、颜色和色调曲线调整。",
     "Open People and choose Download models & enable.": "打开人物并选择“下载模型并启用”。",
     "Open People…": "打开人物…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含十个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。",
     "Open Recovery Folder": "打开恢复文件夹",
     "Open Recovery folder": "打开恢复文件夹",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "在编辑工具栏中打开移除。移除、修复和仿制是不同的模式。修复和仿制会自动选择初始源；请检查该源，而不要假定它一定合适。",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "选择一张照片以复制其设置",
     "Select a photo to edit": "选择一张照片进行编辑",
     "Select a photo to preview": "选择一张照片以预览",
-    "Select a photo to rate or flag": "选择一张照片以评分或标记",
     "Select a photo, or a set in a grid, and open Info.": "选择一张照片，或在网格中选择一组，然后打开 信息。",
     "Select a photo.": "选择一张照片。",
     "Select a range of distances from the camera; refine the far and near limits": "选择与相机的距离范围；细化远近限制",
@@ -4158,7 +4155,9 @@
     "Rename pack": "重命名预设包",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "在“你的”中保存预设，通过“…”打开详情，并查看“社区提交”下的所含设置摘要。",
     "Select a photo, expand a pack, and click a preset row.": "选择照片，展开预设包，然后点击预设行。",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "切换预设行时会使用应用第一个预设之前的编辑状态，以免风格叠加。预设范围以外的手动更改（例如风格的曝光）会予以保留。手动更改由预设控制的设置会结束其“数量”调整；当前编辑状态随后成为下一个预设的基准。"
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "切换预设行时会使用应用第一个预设之前的编辑状态，以免风格叠加。预设范围以外的手动更改（例如风格的曝光）会予以保留。手动更改由预设控制的设置会结束其“数量”调整；当前编辑状态随后成为下一个预设的基准。",
+    "Copy Settings...": "复制设置...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含15 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。"
   },
   "plurals": {
     " · {count} paired file linked": {

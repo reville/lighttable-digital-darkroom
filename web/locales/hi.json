@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "एक व्यक्ति चुनें",
     "Choose a photo folder": "एक फ़ोटो फ़ोल्डर चुनें",
     "Choose a photo to edit": "संपादित करने के लिए एक फ़ोटो चुनें",
-    "Choose a photo to rate or flag": "रेट या फ़्लैग करने के लिए एक फ़ोटो चुनें",
     "Choose a preset to see its source and conversion coverage.": "किसी preset का source और conversion coverage देखने के लिए उसे चुनें।",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "निगेटिव्स के लिए print process चुनें और समझें कि slide film के लिए print controls क्यों गायब हो जाते हैं।",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "इसे संपादित करने के लिए selector में कोई saved point चुनें, या हटाने के लिए Delete point का उपयोग करें।",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "संपादन टूलबार में Mask खोलें और Create New Mask के अंतर्गत कोई टूल चुनें। टूल्स दिखाने या छिपाने के लिए Create New Mask पर क्लिक करें। प्रत्येक मास्क के अपने Light, Color, और Tone Curve समायोजन होते हैं।",
     "Open People and choose Download models & enable.": "लोग खोलें और मॉड्यूल डाउनलोड करें और सक्षम करें चुनें।",
     "Open People…": "लोग खोलें…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में दस शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।",
     "Open Recovery Folder": "पुनर्प्राप्ति फ़ोल्डर खोलें",
     "Open Recovery folder": "रिकवरी फ़ोल्डर खोलें",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "संपादन टूलबार में Remove खोलें। Remove, Heal, और Clone अलग-अलग मोड हैं। Heal और Clone प्रारंभिक source स्वतः चुनते हैं; यह मानने के बजाय उस source का निरीक्षण करें कि वह उपयुक्त है।",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "उसकी सेटिंग्स कॉपी करने के लिए एक फ़ोटो चुनें",
     "Select a photo to edit": "संपादित करने के लिए एक फ़ोटो चुनें",
     "Select a photo to preview": "पूर्वावलोकन के लिए एक फ़ोटो चुनें",
-    "Select a photo to rate or flag": "रेट करने या फ़्लैग करने के लिए एक फ़ोटो चुनें",
     "Select a photo, or a set in a grid, and open Info.": "एक फ़ोटो, या ग्रिड में एक सेट चुनें, और जानकारी खोलें।",
     "Select a photo.": "एक फ़ोटो चुनें.",
     "Select a range of distances from the camera; refine the far and near limits": "कैमरे से दूरियों की एक सीमा चुनें; दूर और निकट सीमाएँ परिष्कृत करें",
@@ -4158,7 +4155,9 @@
     "Rename pack": "पैक का नाम बदलें",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "आपका में एक प्रीसेट सहेजें, उसका … विवरण खोलें और समुदाय सबमिशन के अंतर्गत शामिल सेटिंग्स का सारांश देखें।",
     "Select a photo, expand a pack, and click a preset row.": "एक फ़ोटो चुनें, एक पैक फैलाएँ और किसी प्रीसेट की पंक्ति पर क्लिक करें।",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "प्रीसेट की पंक्तियाँ बदलने पर पहले प्रीसेट से पहले वाला संपादन उपयोग होता है, ताकि लुक एक के ऊपर एक न जुड़ें। प्रीसेट के बाहर किए गए मैन्युअल बदलाव, जैसे किसी लुक के लिए एक्सपोज़र, बने रहते हैं। प्रीसेट द्वारा नियंत्रित किसी सेटिंग को मैन्युअली बदलने पर उसका मात्रा समायोजन समाप्त हो जाता है; फिर मौजूदा संपादन अगले प्रीसेट का आधार बन जाता है।"
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "प्रीसेट की पंक्तियाँ बदलने पर पहले प्रीसेट से पहले वाला संपादन उपयोग होता है, ताकि लुक एक के ऊपर एक न जुड़ें। प्रीसेट के बाहर किए गए मैन्युअल बदलाव, जैसे किसी लुक के लिए एक्सपोज़र, बने रहते हैं। प्रीसेट द्वारा नियंत्रित किसी सेटिंग को मैन्युअली बदलने पर उसका मात्रा समायोजन समाप्त हो जाता है; फिर मौजूदा संपादन अगले प्रीसेट का आधार बन जाता है।",
+    "Copy Settings...": "सेटिंग्स की प्रतिलिपि...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में 15 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।"
   },
   "plurals": {
     " · {count} paired file linked": {

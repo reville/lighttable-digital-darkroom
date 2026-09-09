@@ -35,8 +35,8 @@ if ($CheckOnly) { return $true }
 if ($Files.Count -eq 0) { throw "At least one executable is required for Authenticode signing." }
 $Executables = @(foreach ($File in $Files) {
     $Executable = (Resolve-Path -LiteralPath $File).Path
-    if ([IO.Path]::GetExtension($Executable).ToLowerInvariant() -notin @(".exe", ".dll")) {
-        throw "The Windows release signing list must contain only executables or DLLs."
+    if ([IO.Path]::GetExtension($Executable).ToLowerInvariant() -notin @(".exe", ".dll", ".pyd")) {
+        throw "The Windows release signing list must contain only executables, DLLs, or Python native modules."
     }
     $Executable
 })

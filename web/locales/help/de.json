@@ -1193,7 +1193,7 @@
         {
           "title": "Eine Sammlung auswählen",
           "paragraphs": [
-            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält zehn mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
+            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 15 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
           ],
           "steps": [
             "Wähle Integriert, Yours oder Community. Suche nach Name, Beschreibung, Urheber oder Motiv.",
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
 }

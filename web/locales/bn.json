@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "একজন ব্যক্তি বেছে নিন",
     "Choose a photo folder": "একটি ফটো ফোল্ডার নির্বাচন করুন",
     "Choose a photo to edit": "সম্পাদনার জন্য একটি ফটো নির্বাচন করুন",
-    "Choose a photo to rate or flag": "রেটিং বা ফ্ল্যাগ দেওয়ার জন্য একটি ফটো নির্বাচন করুন",
     "Choose a preset to see its source and conversion coverage.": "একটি প্রিসেট বেছে নিয়ে এর source এবং conversion coverage দেখুন।",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "নেগেটিভের জন্য একটি print process বেছে নিন এবং slide film-এর জন্য print controls কেন অদৃশ্য হয়ে যায় তা বুঝুন।",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "যে saved point-টি বেছে নিয়ে সম্পাদনা করতে চান, selector-এ সেটি বেছে নিন, অথবা মুছতে Delete point ব্যবহার করুন।",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "সম্পাদনা টুলবারে Mask খুলুন এবং Create New Mask-এর অধীনে একটি টুল বেছে নিন। টুলগুলো দেখাতে বা লুকাতে Create New Mask ক্লিক করুন। প্রতিটি মাস্কের নিজস্ব Light, Color, এবং Tone Curve সমন্বয় আছে।",
     "Open People and choose Download models & enable.": "মানুষ খুলুন এবং মডেল ডাউনলোড করুন ও সক্রিয় করুন নির্বাচন করুন।",
     "Open People…": "মানুষ খুলুন…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ দশটি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।",
     "Open Recovery Folder": "পুনরুদ্ধার ফোল্ডার খুলুন",
     "Open Recovery folder": "রিকভারি ফোল্ডার খুলুন",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "editing toolbar-এ Remove খুলুন। Remove, Heal, এবং Clone আলাদা mode। Heal এবং Clone প্রাথমিক source স্বয়ংক্রিয়ভাবে বেছে নেয়; সেটি উপযুক্ত ধরে না নিয়ে source-টি পরীক্ষা করুন।",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "এর সেটিংস কপি করতে একটি ফটো নির্বাচন করুন",
     "Select a photo to edit": "সম্পাদনার জন্য একটি ফটো নির্বাচন করুন",
     "Select a photo to preview": "পূর্বরূপ দেখতে একটি ফটো নির্বাচন করুন",
-    "Select a photo to rate or flag": "রেট বা ফ্ল্যাগ দিতে একটি ফটো নির্বাচন করুন",
     "Select a photo, or a set in a grid, and open Info.": "একটি ফটো, বা গ্রিডের একটি সেট নির্বাচন করুন, এবং Info খুলুন।",
     "Select a photo.": "একটি ফটো নির্বাচন করুন।",
     "Select a range of distances from the camera; refine the far and near limits": "ক্যামেরা থেকে দূরত্বের একটি পরিসর নির্বাচন করুন; দূর এবং কাছের সীমা সূক্ষ্মভাবে ঠিক করুন",
@@ -4158,7 +4155,9 @@
     "Rename pack": "প্যাকের নাম বদলান",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "আপনার-এ একটি প্রিসেট সংরক্ষণ করুন, তার … বিস্তারিত খুলুন এবং কমিউনিটি জমা-র অধীনে অন্তর্ভুক্ত সেটিংসের সারাংশ পর্যালোচনা করুন।",
     "Select a photo, expand a pack, and click a preset row.": "একটি ছবি নির্বাচন করুন, একটি প্যাক প্রসারিত করুন এবং একটি প্রিসেটের সারিতে ক্লিক করুন।",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "প্রিসেটের সারি বদলানোর সময় প্রথম প্রিসেটের আগের সম্পাদনা ব্যবহার করা হয়, যাতে লুকগুলো জমতে না থাকে। প্রিসেটের বাইরের ম্যানুয়াল পরিবর্তন, যেমন একটি লুকের এক্সপোজার, রাখা হয়। প্রিসেটের নিয়ন্ত্রণাধীন কোনো সেটিং ম্যানুয়ালি বদলালে তার পরিমাণ সমন্বয় শেষ হয়; তখন বর্তমান সম্পাদনা পরের প্রিসেটের ভিত্তি হয়ে যায়।"
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "প্রিসেটের সারি বদলানোর সময় প্রথম প্রিসেটের আগের সম্পাদনা ব্যবহার করা হয়, যাতে লুকগুলো জমতে না থাকে। প্রিসেটের বাইরের ম্যানুয়াল পরিবর্তন, যেমন একটি লুকের এক্সপোজার, রাখা হয়। প্রিসেটের নিয়ন্ত্রণাধীন কোনো সেটিং ম্যানুয়ালি বদলালে তার পরিমাণ সমন্বয় শেষ হয়; তখন বর্তমান সম্পাদনা পরের প্রিসেটের ভিত্তি হয়ে যায়।",
+    "Copy Settings...": "সেটিংস কপি...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ১৫টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।"
   },
   "plurals": {
     " · {count} paired file linked": {

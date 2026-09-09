@@ -1193,7 +1193,7 @@
         {
           "title": "Kies een collectie",
           "paragraphs": [
-            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
           ],
           "steps": [
             "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
 }

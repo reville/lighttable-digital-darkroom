@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -758,7 +758,6 @@
     "Choose a person": "Choose a person",
     "Choose a photo folder": "Choose a photo folder",
     "Choose a photo to edit": "Choose a photo to edit",
-    "Choose a photo to rate or flag": "Choose a photo to rate or flag",
     "Choose a preset to see its source and conversion coverage.": "Choose a preset to see its source and conversion coverage.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Choose a print process for negatives and understand why print controls disappear for slide film.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Choose a saved point in the selector to edit it, or use Delete point to remove it.",
@@ -1004,6 +1003,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.",
     "Copy": "Copy",
     "Copy Edit Settings": "Copy Edit Settings",
+    "Copy Settings...": "Copy Settings...",
     "Copy and Paste are below the photo in Detail view.": "Copy and Paste are below the photo in Detail view.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.",
     "Copy and verify it into the library": "Copy and verify it into the library",
@@ -2200,7 +2200,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.",
     "Open People and choose Download models & enable.": "Open People and choose Download models & enable.",
     "Open People…": "Open People…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.",
     "Open Recovery Folder": "Open Recovery Folder",
     "Open Recovery folder": "Open Recovery folder",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.",
@@ -2815,7 +2815,6 @@
     "Select a photo to copy its settings": "Select a photo to copy its settings",
     "Select a photo to edit": "Select a photo to edit",
     "Select a photo to preview": "Select a photo to preview",
-    "Select a photo to rate or flag": "Select a photo to rate or flag",
     "Select a photo, expand a pack, and click a preset row.": "Select a photo, expand a pack, and click a preset row.",
     "Select a photo, or a set in a grid, and open Info.": "Select a photo, or a set in a grid, and open Info.",
     "Select a photo.": "Select a photo.",

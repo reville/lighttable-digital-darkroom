@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc",
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Escolha uma pessoa",
     "Choose a photo folder": "Escolha uma pasta de fotos",
     "Choose a photo to edit": "Escolha uma foto para editar",
-    "Choose a photo to rate or flag": "Escolha uma foto para avaliar ou aplicar bandeira",
     "Choose a preset to see its source and conversion coverage.": "Escolha uma predefinição para ver sua origem e cobertura de conversão.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Escolha um processo de impressão para negativos e entenda por que os controles de print desaparecem para filme slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Escolha um ponto salvo no seletor para editá-lo, ou use Excluir ponto para removê-lo.",
@@ -1883,7 +1882,6 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Abra Máscara na barra de ferramentas de edição e escolha uma ferramenta em Criar Nova Máscara. Clique em Criar Nova Máscara para mostrar ou ocultar as ferramentas. Cada máscara tem seus próprios ajustes de Claro, Cor e Curva de Tom.",
     "Open People and choose Download models & enable.": "Abra Pessoas e escolha Baixar modelos e ativar.",
     "Open People…": "Abrir Pessoas…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abra Predefinições na barra de ferramentas de edição. Integrado contém dez aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada.",
     "Open Recovery Folder": "Abrir pasta de recuperação",
     "Open Recovery folder": "Abrir pasta de recuperação",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Abra Remover na barra de ferramentas de edição. Remover, Corrigir e Clonar são modos separados. Corrigir e Clonar escolhem uma origem inicial automaticamente; inspecione essa origem em vez de presumir que ela é adequada.",
@@ -2482,7 +2480,6 @@
     "Select a photo to copy its settings": "Selecione uma foto para copiar suas configurações",
     "Select a photo to edit": "Selecione uma foto para editar",
     "Select a photo to preview": "Selecione uma foto para pré-visualizar",
-    "Select a photo to rate or flag": "Selecione uma foto para avaliar ou marcar",
     "Select a photo, or a set in a grid, and open Info.": "Selecione uma foto ou um conjunto em uma grade e abra Informações.",
     "Select a photo.": "Selecionar uma foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Selecione uma faixa de distâncias da câmera; refine os limites distante e próximo",
@@ -4158,7 +4155,9 @@
     "Rename pack": "Renomear pacote",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Salve uma predefinição em Seus, abra os detalhes dela em … e revise o resumo das configurações incluídas em Envio da comunidade.",
     "Select a photo, expand a pack, and click a preset row.": "Selecione uma foto, expanda um pacote e clique na linha de uma predefinição.",
-    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Ao alternar entre linhas de predefinições, é usada a edição anterior à primeira predefinição para que os estilos não se acumulem. Alterações manuais fora da predefinição, como a exposição para um estilo, são mantidas. Alterar manualmente uma configuração controlada pela predefinição encerra o ajuste de Quantidade; a edição atual passa a ser a base para a próxima predefinição."
+    "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Ao alternar entre linhas de predefinições, é usada a edição anterior à primeira predefinição para que os estilos não se acumulem. Alterações manuais fora da predefinição, como a exposição para um estilo, são mantidas. Alterar manualmente uma configuração controlada pela predefinição encerra o ajuste de Quantidade; a edição atual passa a ser a base para a próxima predefinição.",
+    "Copy Settings...": "Copiar configurações...",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abra Predefinições na barra de ferramentas de edição. Integrado contém 15 aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
   },
   "plurals": {
     " · {count} paired file linked": {
