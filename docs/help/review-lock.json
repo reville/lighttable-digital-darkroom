@@ -185,18 +185,19 @@
       }
     },
     "editing-presets": {
-      "content": "8deccb179e402b4f907687ea12cd7650abaad71b59d14b2901ae26e9812894ec",
+      "content": "2450f8b2eb178b5389fb9b224b13754cda02a1fb68d9a72ec27be16ccfb78e94",
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "preset_io.py": "ad379b80b1b534c5afde2b54587892440c1be80d314b8a60b6532793a763b97e",
         "preset_library.py": "fb8d27cde136b026d25fe512a281a0d8f6d80a97b9bcbdca667e229162c26358",
         "preset_submission.py": "d0880b6df5b1d4fd31fc845cc8353da883f45ab430c00ee9faa3d403082ea5ca",
+        "presets/builtin.json": "2f58fd1a1d4a3c6d041a2b597644249a24aed246241bc0a75ba14d5b05a5ea0b",
         "server.py": "db06e23b253b33eb1eba47bcf9d4bd96c7d102c3d1516f3a1f91369a3bbb5228",
         "web/app.js": "b5636c1b3df2d57e16de3ccedecb5eb35e9f95a140645a39afa3cc6539d723b9",
         "web/index.html": "17417793e3f41c04eb5e0e8054c6aa3b7b2dbba03e44a74955c5dcdcdc862503",
         "web/preset-amount.js": "c754d290a1333444cc76e5dc50de2cc4cab17deb8f44707c3358c4044f7bb476",
         "web/preset-browser.css": "607baaf24f673069d59e069381edb5fe64b138f4a9769addbc7d53c51e334768",
-        "web/preset-browser.js": "9c2c3b0f606d505616bab7903e5857f1b8cef1dc9bffe9baab908ac238741833",
+        "web/preset-browser.js": "5ff99e06ac3e1c9e5fa9f1a80d11c58074349a2463aa75c63765c043fb872dc1",
         "web/presets.js": "60dc4c7700e0f41761dfb562ff1b8cf4fb0b2761fe444145e544f1b10ad004af"
       }
     },

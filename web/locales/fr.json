@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Ouvrez Masque dans la barre d’outils de modification et choisissez un outil sous Créer un nouveau masque. Cliquez sur Créer un nouveau masque pour afficher ou masquer les outils. Chaque masque possède ses propres réglages de Lumière, Couleur et Courbe de tonalité.",
     "Open People and choose Download models & enable.": "Ouvrez Personnes et choisissez Télécharger les modèles et activer.",
     "Open People…": "Ouvrir Personnes…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient dix rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée. Les préréglages sont affichés par pages de 20.",
     "Open Recovery Folder": "Ouvrir le dossier de récupération",
     "Open Recovery folder": "Ouvrir le dossier de récupération",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Ouvrez Supprimer dans la barre d’outils d’édition. Supprimer, Corriger et Dupliquer sont des modes distincts. Corriger et Dupliquer choisissent automatiquement une source initiale ; inspectez cette source au lieu de supposer qu’elle convient.",

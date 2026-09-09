@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Open Masker in de bewerkingstoolbar en kies een gereedschap onder Nieuwe masker maken. Klik op Nieuwe masker maken om de gereedschappen te tonen of te verbergen. Elk masker heeft zijn eigen aanpassingen voor Licht, Kleur en Tooncurve.",
     "Open People and choose Download models & enable.": "Open Personen en kies Modellen downloaden en inschakelen.",
     "Open People…": "Personen openen…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat tien meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling. Er worden 20 voorinstellingen per pagina getoond.",
     "Open Recovery Folder": "Herstelmap openen",
     "Open Recovery folder": "Herstelmap openen",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Open Verwijderen in de bewerkingswerkbalk. Verwijderen, Retoucheren en Kloon zijn afzonderlijke modi. Retoucheren en Kloon kiezen automatisch een eerste bron; controleer die bron in plaats van ervan uit te gaan dat deze geschikt is.",

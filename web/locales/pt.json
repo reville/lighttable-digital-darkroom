@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Abra Máscara na barra de ferramentas de edição e escolha uma ferramenta em Criar Nova Máscara. Clique em Criar Nova Máscara para mostrar ou ocultar as ferramentas. Cada máscara tem seus próprios ajustes de Claro, Cor e Curva de Tom.",
     "Open People and choose Download models & enable.": "Abra Pessoas e escolha Baixar modelos e ativar.",
     "Open People…": "Abrir Pessoas…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abra Predefinições na barra de ferramentas de edição. Integrado contém dez aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Abra Predefinições na barra de ferramentas de edição. Integrado contém 15 aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada. São exibidas 20 predefinições por página.",
     "Open Recovery Folder": "Abrir pasta de recuperação",
     "Open Recovery folder": "Abrir pasta de recuperação",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Abra Remover na barra de ferramentas de edição. Remover, Corrigir e Clonar são modos separados. Corrigir e Clonar escolhem uma origem inicial automaticamente; inspecione essa origem em vez de presumir que ela é adequada.",

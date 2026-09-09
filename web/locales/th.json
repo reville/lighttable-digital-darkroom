@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "เปิด มาสก์ ในแถบเครื่องมือการแก้ไข แล้วเลือกเครื่องมือภายใต้ สร้างมาสก์ใหม่ คลิก สร้างมาสก์ใหม่ เพื่อแสดงหรือซ่อนเครื่องมือ มาสก์แต่ละอันมีการปรับ แสง, สี, และ เส้นโค้งโทน ของตัวเอง",
     "Open People and choose Download models & enable.": "เปิด ผู้คน และเลือก ดาวน์โหลดโมเดลและเปิดใช้งาน",
     "Open People…": "เปิด ผู้คน…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 10 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 15 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน แสดงพรีเซ็ตหน้าละ 20 รายการ",
     "Open Recovery Folder": "เปิดโฟลเดอร์กู้คืน",
     "Open Recovery folder": "เปิดโฟลเดอร์ Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "เปิด Remove ในแถบเครื่องมือการแก้ไข Remove, Heal และ Clone เป็นโหมดแยกกัน Heal และ Clone จะเลือกแหล่งเริ่มต้นให้อัตโนมัติ; ตรวจดูแหล่งนั้นแทนที่จะสันนิษฐานว่ามันเหมาะสม",

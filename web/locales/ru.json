@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Откройте Маска на панели инструментов редактирования и выберите инструмент в разделе Создать новую маску. Щелкните Создать новую маску, чтобы показать или скрыть инструменты. У каждой маски есть собственные корректировки Свет, Цвет и Тональная кривая.",
     "Open People and choose Download models & enable.": "Откройте Люди и выберите Скачать модели и включить.",
     "Open People…": "Открыть Люди…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Откройте Пресеты на панели редактирования. Встроенные содержит десять включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Откройте Пресеты на панели редактирования. Встроенные содержит 15 включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию. На каждой странице отображается 20 пресетов.",
     "Open Recovery Folder": "Открыть папку восстановления",
     "Open Recovery folder": "Открыть папку Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Откройте Удалить на панели инструментов редактирования. Удалить, Восстановить и Клонировать — это отдельные режимы. Восстановить и Клонировать автоматически выбирают начальный источник; проверьте этот источник, а не предполагаете, что он подходит.",

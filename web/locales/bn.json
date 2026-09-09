@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "সম্পাদনা টুলবারে Mask খুলুন এবং Create New Mask-এর অধীনে একটি টুল বেছে নিন। টুলগুলো দেখাতে বা লুকাতে Create New Mask ক্লিক করুন। প্রতিটি মাস্কের নিজস্ব Light, Color, এবং Tone Curve সমন্বয় আছে।",
     "Open People and choose Download models & enable.": "মানুষ খুলুন এবং মডেল ডাউনলোড করুন ও সক্রিয় করুন নির্বাচন করুন।",
     "Open People…": "মানুষ খুলুন…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ দশটি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ১৫টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে। প্রতি পৃষ্ঠায় ২০টি প্রিসেট দেখানো হয়।",
     "Open Recovery Folder": "পুনরুদ্ধার ফোল্ডার খুলুন",
     "Open Recovery folder": "রিকভারি ফোল্ডার খুলুন",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "editing toolbar-এ Remove খুলুন। Remove, Heal, এবং Clone আলাদা mode। Heal এবং Clone প্রাথমিক source স্বয়ংক্রিয়ভাবে বেছে নেয়; সেটি উপযুক্ত ধরে না নিয়ে source-টি পরীক্ষা করুন।",

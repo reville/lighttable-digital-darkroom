@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1889,7 +1889,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Abra Máscara en la barra de herramientas de edición y elija una herramienta en Crear nueva máscara. Haga clic en Crear nueva máscara para mostrar u ocultar las herramientas. Cada máscara tiene sus propios ajustes de Luz, Color y Curva de tono.",
     "Open People and choose Download models & enable.": "Abre Personas y elige Descargar modelos y activar.",
     "Open People…": "Abrir Personas…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abre Presets en la barra de herramientas de edición. Built-in contiene diez looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada. Se muestran 20 ajustes preestablecidos por página.",
     "Open Recovery Folder": "Abrir carpeta de recuperación",
     "Open Recovery folder": "Abrir carpeta de recuperación",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Abre Quitar en la barra de herramientas de edición. Quitar, Corregir y Clonar son modos separados. Corregir y Clonar eligen automáticamente una fuente inicial; inspecciona esa fuente en lugar de asumir que es adecuada.",

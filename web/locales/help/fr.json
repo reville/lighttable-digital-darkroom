@@ -1193,7 +1193,7 @@
         {
           "title": "Choisir une collection",
           "paragraphs": [
-            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient dix rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
+            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée. Les préréglages sont affichés par pages de 20."
           ],
           "steps": [
             "Choisissez Intégré, Vos ou Communauté. Recherchez par nom, description, créateur ou sujet.",
@@ -3188,5 +3188,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d"
 }

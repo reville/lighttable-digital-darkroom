@@ -1193,7 +1193,7 @@
         {
           "title": "Elegir una colección",
           "paragraphs": [
-            "Abre Presets en la barra de herramientas de edición. Built-in contiene diez looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
+            "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada. Se muestran 20 ajustes preestablecidos por página."
           ],
           "steps": [
             "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
@@ -3188,5 +3188,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d"
 }
