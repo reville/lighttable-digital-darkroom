@@ -231,13 +231,15 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
   });
   window.addEventListener('resize', place);
   el('library').addEventListener('scroll', place);
-  const hideLink = el('hideUndisplayableLink');
-  hideLink.onclick = event => {
-    event.preventDefault();
-    hideUnavailable.checked = true;
-    sync(); onChange(); trigger.focus();
-  };
-  hideLink.addEventListener('keydown', event => event.stopPropagation());
+  for (const id of ['hideUndisplayableLink', 'filmstripHideUndisplayableLink']) {
+    const hideLink = el(id);
+    hideLink.onclick = event => {
+      event.preventDefault();
+      hideUnavailable.checked = true;
+      sync(); onChange(); trigger.focus();
+    };
+    hideLink.addEventListener('keydown', event => event.stopPropagation());
+  }
   return { types: () => types, setTypes, metadata, setMetadata, sync, close, clear,
     hideUndisplayable: () => hideUnavailable.checked,
     setHideUndisplayable: value => { hideUnavailable.checked = value === true; } };

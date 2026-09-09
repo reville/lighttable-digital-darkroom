@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling.",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Aangrenzende XMP-sidecars worden samen met de originelen verplaatst, maar een gedeeld XMP-bestand blijft bij een gekoppeld origineel dat in de bibliotheek achterblijft. Verborgen RAW- of JPEG-bestanden die bij de opname horen, blijven in de bibliotheek; kies Beide bestanden in de instellingen voor gekoppelde opnamen om ze mee te nemen.",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Bestanden en metagegevens regelt draagbare LightTable-bewerkingen naast originelen, automatisch XMP schrijven, RAW/JPEG-koppeling en invoer van trefwoorden. Volledige draagbare bewerkingen gebruiken .lighttable-state.json; XMP bevat compatibele bewerkingen en metagegevens. XMP-synchronisatie behoudt niet-gerelateerde velden en meldt conflicterende externe wijzigingen; lees Exchange-metagegevens via XMP-sidecars voor de ondersteunde workflow. Draagbare LightTable-bewerkingen bevatten ook virtuele kopieën. Wanneer u een map opnieuw opent, blijven de bewerkingen die al in uw catalogus zijn opgeslagen behouden.",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "‘Afgewezen foto's naar Prullenmand verplaatsen’ slaat virtuele kopieën over. Gebruik Fotoacties → Virtuele kopie verwijderen om een kopie te verwijderen zonder het origineel aan te raken."
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "‘Afgewezen foto's naar Prullenmand verplaatsen’ slaat virtuele kopieën over. Gebruik Fotoacties → Virtuele kopie verwijderen om een kopie te verwijderen zonder het origineel aan te raken.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "In de filmstrook verschijnt deze link onder het aantal foto’s alleen wanneer de huidige lijst foto’s bevat die niet kunnen worden weergegeven."
   },
   "plurals": {
     " · {count} paired file linked": {

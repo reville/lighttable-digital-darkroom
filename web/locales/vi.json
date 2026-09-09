@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Các sidecar XMP liền kề được di chuyển cùng tệp gốc, nhưng XMP dùng chung vẫn ở lại với tệp gốc ghép cặp còn trong thư viện. Các tệp RAW hoặc JPEG ghép cặp đang bị ẩn vẫn nằm trong thư viện; chọn Cả hai tệp trong cài đặt ghép cặp để bao gồm chúng.",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ. Các chỉnh sửa LightTable di động bao gồm cả bản sao ảo. Khi mở lại thư mục, các chỉnh sửa đã lưu trong danh mục vẫn được giữ nguyên.",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Di chuyển Ảnh Đã từ chối vào Thùng rác” bỏ qua các bản sao ảo. Dùng Thao tác ảnh → Xóa bản sao ảo để xóa một bản sao mà không tác động đến tệp gốc."
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Di chuyển Ảnh Đã từ chối vào Thùng rác” bỏ qua các bản sao ảo. Dùng Thao tác ảnh → Xóa bản sao ảo để xóa một bản sao mà không tác động đến tệp gốc.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa ảnh không thể hiển thị."
   },
   "plurals": {
     " · {count} paired file linked": {

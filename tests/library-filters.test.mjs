@@ -157,3 +157,32 @@ test('exposure rules accept fractions, exact ranges, missing EXIF and inclusive 
   const chips = filterChips({metadata:rules},[]);
   assert(chips.some(chip=>chip.id==='metadata:focalLengthMin'));
 });
+
+test('filmstrip hide link follows failures in the current filtered list', () => {
+  const displayStatus = createPhotoDisplayStatus();
+  const good = {name:'good.jpg'}, failed = {name:'failed.jpg'}, cloud = {name:'cloud.jpg',availability:'cloud-only'};
+  const link = {hidden:true};
+  let list = [good], hide = false;
+  const ctx = vm.createContext({
+    $: id => id === 'filmstripHideUndisplayableLink' ? link : id === 'library'
+      ? {classList:{contains:()=>false}} : {hidden:true},
+    LIBRARY_FILTERS:{hideUndisplayable:()=>hide}, PHOTO_DISPLAY_STATUS:displayStatus,
+    visible:()=>list,
+  });
+  const source = readFileSync(new URL('../web/app.js', import.meta.url),'utf8');
+  vm.runInContext(source.slice(source.indexOf('function syncUndisplayableLink() {'), source.indexOf('\nconst EDITED_THUMB_CONCURRENCY')),ctx);
+  const shown = () => {ctx.syncUndisplayableLink(); return !link.hidden;};
+  assert.equal(shown(), false, 'healthy list');
+  displayStatus.record(failed,true,'preview');
+  assert.equal(shown(), false, 'failure outside this list');
+  list = [good,failed];
+  assert.equal(shown(), true, 'preview failure within this list');
+  displayStatus.record(failed,false,'preview');
+  assert.equal(shown(), false, 'successful retry clears failure');
+  list = [cloud];
+  assert.equal(shown(), true, 'known unavailable photo');
+  hide = true;
+  assert.equal(shown(), false, 'already hidden');
+  hide = false; list = [];
+  assert.equal(shown(), false, 'empty results');
+});

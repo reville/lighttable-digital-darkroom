@@ -564,6 +564,7 @@
           "title": "Fotos ausblenden, die nicht angezeigt werden können",
           "paragraphs": [
             "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Im Filmstreifen erscheint dieser Link unter der Fotoanzahl nur dann, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können.",
             "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

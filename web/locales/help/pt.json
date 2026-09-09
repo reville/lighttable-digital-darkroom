@@ -564,6 +564,7 @@
           "title": "Ocultar fotos que não podem ser exibidas",
           "paragraphs": [
             "Quando um erro de miniatura estiver visível na grade, escolha Ocultar fotos que não podem ser exibidas ao lado do resumo da localização. Isso ativa a opção correspondente em Filtro, que vem desativada por padrão e é salva entre sessões. Esta opção não é salva nas regras de coleções inteligentes.",
+            "Na tira de filme, este link aparece abaixo da contagem de fotos apenas quando a lista atual contém fotos que não podem ser exibidas.",
             "A opção oculta fotos identificadas como indisponíveis ou armazenadas apenas na nuvem e fotos com falhas de miniatura ou prévia já detectadas. Outras falhas de decodificação são descobertas à medida que as fotos carregam. Desative a opção, remova seu marcador de filtro ou escolha Limpar tudo para mostrar as fotos novamente. Um Tentar novamente bem-sucedido ou uma alteração no original apaga a falha registrada."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

@@ -564,6 +564,7 @@
           "title": "Masquer les photos qui ne peuvent pas être affichées",
           "paragraphs": [
             "Lorsqu’une erreur de vignette est visible dans la grille, choisissez Masquer les photos qui ne peuvent pas être affichées à côté du résumé de l’emplacement. Cela active le commutateur correspondant dans Filtre, désactivé par défaut et conservé d’une session à l’autre. Ce commutateur n’est pas enregistré dans les règles des collections intelligentes.",
+            "Dans la bande de film, ce lien apparaît sous le nombre de photos uniquement lorsque la liste actuelle contient des photos qui ne peuvent pas être affichées.",
             "Le commutateur masque les photos connues comme indisponibles ou uniquement dans le cloud, ainsi que celles dont la vignette ou l’aperçu a échoué. Les autres erreurs de décodage sont découvertes au chargement des photos. Désactivez le commutateur, retirez sa pastille ou choisissez Tout effacer pour afficher à nouveau les photos. Une nouvelle tentative réussie avec Réessayer ou une modification de l’original efface l’échec enregistré."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar.",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Bitişikteki XMP yan dosyaları özgün dosyalarla birlikte taşınır; ancak paylaşılan XMP, kitaplıkta kalan eşleştirilmiş özgün dosyayla birlikte korunur. Gizli RAW veya JPEG eşleri kitaplıkta kalır; bunları dahil etmek için eşleştirilmiş çekim ayarlarında Her iki dosya seçeneğini seçin.",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun. Taşınabilir LightTable düzenlemeleri sanal kopyaları da içerir. Bir klasörü yeniden açtığınızda kataloğunuzda önceden kaydedilmiş düzenlemeler korunur.",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Reddedilen Fotoğrafları Çöp Sepetine Taşı” sanal kopyaları atlar. Bir kopyayı özgün dosyasına dokunmadan kaldırmak için Fotoğraf işlemleri → Sanal kopyayı sil seçeneğini kullanın."
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Reddedilen Fotoğrafları Çöp Sepetine Taşı” sanal kopyaları atlar. Bir kopyayı özgün dosyasına dokunmadan kaldırmak için Fotoğraf işlemleri → Sanal kopyayı sil seçeneğini kullanın.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Film şeridinde bu bağlantı, yalnızca geçerli listede görüntülenemeyen fotoğraflar bulunduğunda fotoğraf sayısının altında görünür."
   },
   "plurals": {
     " · {count} paired file linked": {

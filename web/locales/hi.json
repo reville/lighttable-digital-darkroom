@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में 15 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "साथ के XMP साइडकार मूल फ़ाइलों के साथ स्थानांतरित होते हैं, लेकिन साझा XMP उस जोड़ी की किसी भी मूल फ़ाइल के साथ बना रहता है जो लाइब्रेरी में बची हो। छिपी हुई RAW या JPEG साथी फ़ाइलें लाइब्रेरी में बनी रहती हैं; उन्हें शामिल करने के लिए जोड़ी में कैप्चर की सेटिंग्स में दोनों फ़ाइलें चुनें।",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "फ़ाइलें और मेटाडेटा मूल फ़ोटो के साथ पोर्टेबल LightTable संपादन, स्वचालित XMP लेखन, RAW/JPEG युग्मन, और कीवर्ड प्रविष्टि नियंत्रित करता है। पूर्ण पोर्टेबल संपादन .lighttable-state.json का उपयोग करते हैं; XMP संगत संपादन और मेटाडेटा ले जाता है। XMP असंबंधित फ़ील्ड सुरक्षित रखता है और परस्पर-विरोधी बाहरी परिवर्तनों की रिपोर्ट करता है; समर्थित वर्कफ़्लो के लिए Exchange मेटाडेटा को XMP साइडकार के माध्यम से पढ़ें। पोर्टेबल LightTable संपादनों में वर्चुअल प्रतिलिपियाँ भी शामिल होती हैं। फ़ोल्डर दोबारा खोलने पर कैटलॉग में पहले से सहेजे गए संपादन बने रहते हैं।",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“अस्वीकृत फ़ोटो को ट्रैश में ले जाएँ” वर्चुअल प्रतिलिपियों को छोड़ देता है। किसी प्रतिलिपि को उसकी मूल फ़ाइल को छुए बिना हटाने के लिए फ़ोटो क्रियाएँ → वर्चुअल प्रतिलिपि हटाएँ का उपयोग करें।"
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“अस्वीकृत फ़ोटो को ट्रैश में ले जाएँ” वर्चुअल प्रतिलिपियों को छोड़ देता है। किसी प्रतिलिपि को उसकी मूल फ़ाइल को छुए बिना हटाने के लिए फ़ोटो क्रियाएँ → वर्चुअल प्रतिलिपि हटाएँ का उपयोग करें।",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "फ़िल्मस्ट्रिप में, यह लिंक फ़ोटो की संख्या के नीचे केवल तभी दिखाई देता है जब मौजूदा सूची में ऐसी फ़ोटो हों जिन्हें दिखाया नहीं जा सकता।"
   },
   "plurals": {
     " · {count} paired file linked": {

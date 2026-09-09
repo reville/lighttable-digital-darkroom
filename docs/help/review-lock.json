@@ -12,7 +12,7 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "web/first-run.js": "d3e3cc68759c3c7634b44c9edf562b2ae163120ae6255c38941222fa33eeebda",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "windows-shell/src/main.rs": "20341dc1a82343f55873897f5309ba6b711e81a624017a15adaaa8d1e3cee680"
       }
     },
@@ -21,10 +21,10 @@
       "sources": {
         "film_lab_ai/culling.py": "08cb4e9ebda9ca5285422eab7c0be5938dd0a63c7bfefa3a22218ea3ed93773b",
         "film_lab_ai/providers.py": "f3851032bf587133001bd03def0ec960c8906bea27c8c02888f8ded606f15927",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/cull-batch.js": "f22524c715dcccbf0f0870cc464d5f45f328bcb20bb2e6793285dbe7a7ba9b87",
         "web/cull-similarity.js": "55d00a5f2a99b89f0ce1b140271af396872cbc9510e37404474be4b6ad4b6d13",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/local-ai.js": "63ea7c3f284a620a51c17cae0ec96a7c4764073a9be698090b20cd20731fc786"
       }
     },
@@ -32,16 +32,16 @@
       "content": "83110cc81ab7af3bec5273ae311e070f452a2972b13822f1164cfde7699d13ac",
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "capture-time": {
       "content": "ff0cc83fb27f3147353a662717ee91ca10017e8e663c4877e3a05dd017f44683",
       "sources": {
         "web/capture-time.js": "c8d62263728ab5a6a867392bc8b1a2bbe6a0a057cf903b8aeefa992f2b275487",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "xmp_sidecar.py": "7222b2987fb7f7e002e5be54fc32a6a63cdfb6abca586a9540c6764c040966af"
       }
     },
@@ -55,7 +55,7 @@
         "file_identity.py": "8810c0d7818352baaa5db681f6c5a895514d94a93fea47e4bb3e1e4b9bd6f8ce",
         "platform_paths.py": "ecb078415022d6886d6e2810cf4effa1529ada485ae145d42ecc0f5967971711",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/recovery.js": "fa5646aae6fdc5bc95dd317f08c9c3f78985a1c36d89785152d9cc55df1f0921",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72"
       }
@@ -63,14 +63,14 @@
     "collections": {
       "content": "95bc3775974e6454f3d55661cf2db268196f4d73750fb1ba7f796bb23379cd36",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "colour-labels": {
       "content": "37ab0eedcaafc31195b889c3e9f9f05d1478b3045e0b5c91f540eedb45a4e083",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/labels.js": "4c9d878761970ccb1973ce5bd9d0df2b346463438132707778e6de16796520aa"
       }
     },
@@ -78,14 +78,14 @@
       "content": "e712dfb148dc4b8ecf156bfd3c7f98fad29204a8091ffb048b1b85b781e3f6d8",
       "sources": {
         "web/color-tools.js": "a71a5f5f4e026534cc6a0dd37a8467ac508c19e19dd6012cec12ee5192aeea96",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-color-mixer-point-color": {
       "content": "9cfba81ef549fe43a8d1e2dc1ed7c7cc660202b4f2a640506af71f8e59fb0d7e",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-copy-paste-match-exposure": {
@@ -93,23 +93,23 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/edit-transfer.js": "6f7e1d200278b43e8bf4beb76c86fc579eff508ac7cebc925e9ab4f782f334bd",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-crop-geometry": {
       "content": "8540d6a3489f09244e5bb0f7b885bcf5bfd981b965c71dd1f3e2f317223462bc",
       "sources": {
         "edits.py": "ae9b0b2f5d0db5b1c3b5a30962ab07c5010bb270bba694b15934d0d1e4eb0394",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-curves": {
       "content": "a2280ce4abd9f79d1c1e6d0673c3d2ef6015fb01a14e4385e3c8621bd6b13a54",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-detail-effects-enhance": {
@@ -117,49 +117,49 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "enhance_workflow.py": "b2b3fe529770388b3c4bf04345bf995a6d9a70ef866a5e917313f8b3de72506a",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/enhance-panel.js": "6efc59ea9686bf72062453c76d61a9a09ad86511b4d9737e8ba95409fd95daa7",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-effects": {
       "content": "e65c38833c6557b83b0e471394ed3d4fda54c7e44a5a7f4cba7a7e25fd04df71",
       "sources": {
         "grade.py": "397ec8660d16bb7a4228328af13351460f72dbec27488397d5e19eefca69f439",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-history-snapshots": {
       "content": "86dc3f8196fa62cc452db8d0cf86e40f2fe2450a1c8166cfe812177272853273",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/history-panel.js": "5f7a77338be697479c921dc76a9668e7846c50e75cab47bfd634dfe924faec25",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-lens-corrections": {
       "content": "f762cdbf87f331ba924707d70b72ad271cc9bed2ab8403bbcc1b6df99276af31",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-masks-ai": {
       "content": "b93d29b8af3e46c1f77976f9fec3732bb152c6b506e7bfe1f681d8b6381d4644",
       "sources": {
         "semantic_masks.py": "d48eb799d0c3188d4dc48a573d193eec94fc087b4eb9fba9560ed41b8de585f7",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-masks-brush-gradients": {
       "content": "9e545e5ed89a7b168be2b0a8eabfea5cec8e882c010910a4615ae425f61bbd5b",
       "sources": {
         "edits.py": "ae9b0b2f5d0db5b1c3b5a30962ab07c5010bb270bba694b15934d0d1e4eb0394",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/editor-panels.js": "cbb1e16f590167c8f948629f3a851866a94e641daf0bc9af9694cb893d937446",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/mask-curve.js": "4db1ce1aa1d7c959762be56651cc5f7076bd363540309aef6aba3ba5a1bcf281",
         "web/mask-raster.js": "5e4de2a78c2b50efd88001f154160ca59f38dfb444f71e4b9aa1231026fdf254",
         "web/mask-shape.js": "890bfb7652c2424bb4444c1c51495887bb2d1605495a11a71d7205985fa0de65",
@@ -169,8 +169,8 @@
     "editing-masks-ranges-refinements": {
       "content": "69559a947ccd17ddcf891ab7791585d708eaa3b452ac32e1fe6fee456fe90167",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/mask-raster.js": "5e4de2a78c2b50efd88001f154160ca59f38dfb444f71e4b9aa1231026fdf254"
       }
     },
@@ -180,8 +180,8 @@
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "merge_workflow.py": "fd18f0129c707fd2236a0cc9a931f2c99a3c00434830f7c258c913b6127b9719",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-presets": {
@@ -193,8 +193,8 @@
         "preset_submission.py": "d0880b6df5b1d4fd31fc845cc8353da883f45ab430c00ee9faa3d403082ea5ca",
         "presets/builtin.json": "2f58fd1a1d4a3c6d041a2b597644249a24aed246241bc0a75ba14d5b05a5ea0b",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/numeric-controls.js": "16bbb9018aa330965d4cc670ee9cf9356fe766ca1c8762458450af1ae206e4bc",
         "web/preset-amount.js": "f92e745b76a829d2e3f048360f345a265af0a2d5ddef44dcb3789c49ce1b90be",
         "web/preset-browser.css": "3f92f04c870ae61dab68d700cc9e21560173f8809fff6cb0ecb739408590d483",
@@ -207,125 +207,125 @@
       "content": "3d70eb73feed29823cf507dacaaefa5e836efbeda3815657693341cdb79c297d",
       "sources": {
         "app/NativePreview.metal": "45aa8ae595982903f61554d60f6da370d0e77e905fad335f7ba9e250f0daaa02",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/gl.js": "2fd8424ee799b4fa17b924abf0dde58f818b4a3f294b466e97388401b381884a",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/screen-overlay.js": "506b41925988e0fd95edbf4bc7a4ea634366d8bcc3d969e2ad20a94f35081097"
       }
     },
     "editing-save-recovery": {
       "content": "5ea77476828b252a78757b30d827464a516994d3c1cf84a3a6041bec601e2b2d",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/edit-save-queue.js": "0d56b96358f6de5ade38c3dd554260f876a746145a89476c0a68e3c16620a574"
       }
     },
     "editing-tone": {
       "content": "2e83d0be17ae55ef2edbd5cb335d18e9d96de22d032056f3dc9027bbe48fc35d",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "editing-white-balance": {
       "content": "f6b3b37c291e9d60356355f3668f15990e40995bedc9062c9a67a3da9425e271",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "export-filenames-and-folders": {
       "content": "007309327e1d2aa65e1c38fea9ce0347ee5b343c9a12b881419000c5ccd44999",
       "sources": {
         "export_workflow.py": "5289e6b3790e715d3df903125f83af51fbe80f387cde30c70ef881e8bf3c335d",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "export-format-color-space": {
       "content": "5945724f1f5a9ad80dabdbb9b1943978a77aa5a373366307f8acc38aabd165f0",
       "sources": {
         "export_workflow.py": "5289e6b3790e715d3df903125f83af51fbe80f387cde30c70ef881e8bf3c335d",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "export-metadata-sidecars": {
       "content": "ff38b09d22440c0f8c975dc0e18bbb848413afd9ff205ab956f89d3335f3ce9d",
       "sources": {
         "export_workflow.py": "5289e6b3790e715d3df903125f83af51fbe80f387cde30c70ef881e8bf3c335d",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "export-photos": {
       "content": "dbb37c4fdeb501f59294843e33d6aea92727bd952e76e11978a4a14af5535086",
       "sources": {
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "external-editor": {
       "content": "905a7f2d9fc297adb88b6aa0c2f0f5bf7b21513ca1db891c3b7a3bf137aac2de",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "windows-shell/src/main.rs": "20341dc1a82343f55873897f5309ba6b711e81a624017a15adaaa8d1e3cee680"
       }
     },
     "film-exposure-and-processing": {
       "content": "7e395ef5e25bfefb2dd6fa21a8cd0be4cf096a07263f501b2d59fd321fa5cb46",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/film-browser.js": "64b42debb4610e5e6fc509e9d7b6b4444801bd01be1eefa0691cd5206f109234",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "film-getting-started": {
       "content": "2ea19e843ce9c9a59afd0e8d2e0a3dd7927a6e7a413dc92a9b64c23f328516b6",
       "sources": {
         "film_tuning.py": "133a5e3200b69b2aa3b92f8bb471c93af449b5036bb8dfdd6610292175693860",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/film-browser.js": "64b42debb4610e5e6fc509e9d7b6b4444801bd01be1eefa0691cd5206f109234",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
-        "web/style.css": "b95bc4774685d238b545d28a0994dce966c9eee7cc24394e39b8687ba0812936"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
+        "web/style.css": "b02a97eb8ecdf8d6681c5d4f9c4f2bf6197a2fafc30b4940620e97e20c1b9259"
       }
     },
     "film-grain-and-format": {
       "content": "117e7f33220929f2089dd5c4cf181a4373f627020fb119ac3badcc3c53066dc5",
       "sources": {
         "film_pipeline.py": "9399c7765e076628cc5f74fe5bccd067729d577379952713e45cb9df4db982e4",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "film-halation-diffusion-scan": {
       "content": "78653d9b4be06ab3ad3357a96ba37a5691ec354181728c00953b54f21bf8fe4c",
       "sources": {
         "film_pipeline.py": "9399c7765e076628cc5f74fe5bccd067729d577379952713e45cb9df4db982e4",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "film-negative-paper-and-slides": {
       "content": "54fd041aeb76d0acaf7428a3b9abea93e0382e8edc33effe895f0760dea943e0",
       "sources": {
         "film_pipeline.py": "9399c7765e076628cc5f74fe5bccd067729d577379952713e45cb9df4db982e4",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/film-browser.js": "64b42debb4610e5e6fc509e9d7b6b4444801bd01be1eefa0691cd5206f109234",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "film-reference-match": {
       "content": "8437ebbf70a45113536776e64be01fe91134024b82ba03807b1c0453a2a2719f",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "flags-and-ratings": {
       "content": "024887b0aec3ba1497cd788acb58f45a60e2b5abfaa0a458fea2428083904d05",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/labels.js": "4c9d878761970ccb1973ce5bd9d0df2b346463438132707778e6de16796520aa"
       }
     },
@@ -336,7 +336,7 @@
         "ingest_workflow.py": "bd0365f4184536485ef7e7ebc1506df5e302e2859bfa3678bde76dba5ad48518",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "import-lightroom-catalog": {
@@ -345,15 +345,15 @@
         "catalog_import.py": "3af2b1298264c69a9197b58dfadd3e1485ee89500c2ce3709d3de2cd93a79d29",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
         "web/catalog-ui.js": "69693678ddbd446410d205aa89a7dfc59a66a2ee599c4b9680edd8a131b098d7",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "keyboard-midi": {
       "content": "afa81f9e0bf349d0df5d83bf5a2b09497fd62c2c0ecc69fa629d2fa04382fdf0",
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/midi.js": "a74a05ad2303790b15efaf9953afcf60f20ccfabf4d4f8bde7ae2eb99c834175"
       }
     },
@@ -362,7 +362,7 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "keyword_workflow.py": "5c545bd45205bf294d15cddbaf43f27a39ad5c30b69e7f98fab579d2b61a73a4",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/keyword-batch.js": "e38195a5528e40635522473776ba9b0a2052f11a78ac77fb7cfe81fa3cc8a88e",
         "web/metadata-panel.js": "d6be67c2b0b58d543fabee1349bab40bbe40afffb5fe2ecd4414d7c996f69cda"
       }
@@ -388,14 +388,14 @@
         "media_availability.py": "c450d7734d3e39f2c9bb6c5e39c855374ee4e03d6947c299315f558072aca25e",
         "merge_acceleration.py": "3d87500b5ee5222f111cbf6edb99b9136720475466b7300c0b15920729de4f01",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/gl.js": "2fd8424ee799b4fa17b924abf0dde58f818b4a3f294b466e97388401b381884a",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/preview-detail.js": "8601034c83de06c042fdd5528d7fde5ff69db567bdac7225f3b133b739836acc",
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "ca6fb45f461c7cf13f6d16b08898fa885f7b428967a92ca2b43c464121104f27",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72",
-        "web/style.css": "b95bc4774685d238b545d28a0994dce966c9eee7cc24394e39b8687ba0812936",
+        "web/style.css": "b02a97eb8ecdf8d6681c5d4f9c4f2bf6197a2fafc30b4940620e97e20c1b9259",
         "web/thumbnail-errors.js": "0009004ecc17943d34546c797234770a498ae9671b92c94eb309de1af58ef78e",
         "web/view-performance.js": "c0033153f2193e4da08f32bc460772ab79f532367574d47fa24ef86513d465f3"
       }
@@ -406,17 +406,17 @@
         "film_lab_ai/providers.py": "f3851032bf587133001bd03def0ec960c8906bea27c8c02888f8ded606f15927",
         "film_lab_ai/service.py": "fd684477d966d1014c1b72cb843871379db98b41fb800ec9f98a8d75c1eea842",
         "media_availability.py": "c450d7734d3e39f2c9bb6c5e39c855374ee4e03d6947c299315f558072aca25e",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/local-ai.js": "63ea7c3f284a620a51c17cae0ec96a7c4764073a9be698090b20cd20731fc786",
-        "web/style.css": "b95bc4774685d238b545d28a0994dce966c9eee7cc24394e39b8687ba0812936"
+        "web/style.css": "b02a97eb8ecdf8d6681c5d4f9c4f2bf6197a2fafc30b4940620e97e20c1b9259"
       }
     },
     "raw-jpeg-pairs": {
       "content": "63ef5d08a8d6515e2677eb9344c41edafd7d2b2266703648040f4080033691b2",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/photo-pairs.js": "555822d1f88b09cc2ec316f2a7e1665f78721b8dab2053a97d9600550895a6d5"
       }
     },
@@ -429,13 +429,13 @@
       }
     },
     "search-filter-sort": {
-      "content": "057234d2fce0f450f71f590d2f94dea06ca2309cf5699f4a3a08e29d285ea50a",
+      "content": "2274125a36100c08b79922da5063a7fe8390eab89c0fac6404be7167f1e15010",
       "sources": {
         "catalog_scan.py": "ee992c3516fb4aa116014d60f57cbef606f568e1089c1512a2315559dc68dea3",
         "dam_filters.py": "7190afdfe5aba3bd715ae281782a7fc966783aa4699ae3190e7eee058ae8bc0d",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
-        "web/library-filters.js": "1d05785c353a9d6d1324fba2961d4c3bb0e3c7f794bb4bdc35bf968c236e972d",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
+        "web/library-filters.js": "2fd9a9df9fca2318724c5d485ff90e60fb26bbb81a5142189ea1811b1aa61e6e",
         "web/library.js": "224f647c4d20a2c6efd65711391be3792ba01f4140ff392cd72b9032c059e4a8",
         "web/photo-display-status.js": "33a66b26b9c7a8f9fed4c2151cf7c069b6c02adf89f094ce1885d557db458956"
       }
@@ -448,7 +448,7 @@
         "server_updates.py": "e3b348cc4412d656a51e8410b07ec78d0ddf404eb6a5e506468d233d1cf17b6d",
         "web/desktop-theme.js": "29f65082cfffad6e59023c6dacc22f0af95b4226955df79c8afcb936219ecc3f",
         "web/desktop-updates.js": "b5da55533a5dbfc8d9652361ca4a6a4b31b388510214971619d03f81ff7588f9",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/linux-layout.css": "885ae0e7ad37cd2af4feb2d94739c405a498dcd62ee95bf38cf5ff7d39a57ae5",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72",
         "windows-shell/src/main.rs": "20341dc1a82343f55873897f5309ba6b711e81a624017a15adaaa8d1e3cee680",
@@ -460,7 +460,7 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "web/i18n.js": "48ec7b56c856a8db9bcd47315a6c697582a0207a1656d42ed43260c3627b7388",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/locale-bootstrap.js": "06fc13de85d1b216f01742ae5667c03b18a4fd413913281bb87aa7866b287845",
         "web/locales/manifest.json": "50952ea4e6e3b6028aeda3f9d36310905ecbe82e4825577b6912c0836a4e4c9c",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72"
@@ -469,8 +469,8 @@
     "shortcut-schemes": {
       "content": "e6cf59f5fde950bf351b74084189c3d6fb585b9ef8f86c78a01c82db94da584d",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/labels.js": "4c9d878761970ccb1973ce5bd9d0df2b346463438132707778e6de16796520aa"
       }
     },
@@ -478,7 +478,7 @@
       "content": "9b7e47fe1ac1a2ae85a54070f12b51d8876a2d4497b5f3dc3c0857cca2e1da6b",
       "sources": {
         "catalog.py": "79ea64df10383eb875080f38bc3ec0f09c5ab046cc33b008dcf9b77487e08f55",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/library.js": "224f647c4d20a2c6efd65711391be3792ba01f4140ff392cd72b9032c059e4a8"
       }
     },
@@ -486,14 +486,14 @@
       "content": "667d42680ff9d3d60918660cb348f4d0add54a7577d29d9db4a20a48495425f0",
       "sources": {
         "soft_proof.py": "9d353ea6ba4bd911103632ec7e0463e08e8edf2679baa71fe24afd73d920e3aa",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9"
       }
     },
     "survey-photos": {
       "content": "1769c5e6c33849b62cd8407e16ceb7ae8f211b4a61d15f73fb7ca1a7933a3c15",
       "sources": {
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/survey.js": "79fd7a71ef314f25e5a6452f9def6d5edeac62799fd1305631f1607724363cc3"
       }
     },
@@ -502,7 +502,7 @@
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
         "server.py": "c8394352dcb01e303228fe103b60e13d08c01ef6f4a4fbca9757740ddf83f00f",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "windows-shell/src/main.rs": "20341dc1a82343f55873897f5309ba6b711e81a624017a15adaaa8d1e3cee680"
       }
     },
@@ -510,11 +510,11 @@
       "content": "b29d13cf48372d452f1b70d9f45883e7d3ad32ed7a23f1dd2754744d62382641",
       "sources": {
         "app/main.swift": "f2b46f6e54cba5101197b3d74c7d32a822505e9ef667bfe47bd553d50f2a4628",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5",
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e",
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
-        "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
+        "web/index.html": "1f5eaa213cf5b62397057425ec9045b72b1d6d889ea21067154db1cb4be396d9",
         "web/photo-pan.js": "5da50f7d5a650b4150b36fc3899d7a0f78cdbefcd79144b52ae2635112b845e8",
-        "web/style.css": "b95bc4774685d238b545d28a0994dce966c9eee7cc24394e39b8687ba0812936",
+        "web/style.css": "b02a97eb8ecdf8d6681c5d4f9c4f2bf6197a2fafc30b4940620e97e20c1b9259",
         "web/zoom-motion.js": "e531b114d2009c3287052e4e42e01917ce71cf1471c70d2e33f707f350c5cce1"
       }
     },
@@ -522,7 +522,7 @@
       "content": "de9620831ddcd8ecee7ce1f29fa1442122cfe5fa8183c0650ee8b3b34210d498",
       "sources": {
         "library_workflow.py": "b07bc79b58666fe92ce189ac4132a6904457e166f73c155f3f636fc683966e3c",
-        "web/app.js": "9c886eef06de52b8449653cb7bc4df359ba8b21edecb54423321655ae07ba3c5"
+        "web/app.js": "23a8c1b537a19c0c6bb477ed239ef73482b4b69dd8fce7ebc88884040638f78e"
       }
     },
     "xmp-interchange": {

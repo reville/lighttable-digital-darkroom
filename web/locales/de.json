@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 15 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung.",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Benachbarte XMP-Sidecars werden zusammen mit den Originalen verschoben. Eine gemeinsam genutzte XMP-Datei bleibt jedoch bei einem gepaarten Original, das in der Bibliothek verbleibt. Ausgeblendete RAW- oder JPEG-Begleitdateien bleiben in der Bibliothek; wählen Sie in den Einstellungen für gepaarte Aufnahmen Beide Dateien, um sie einzubeziehen.",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Dateien & Metadaten steuert portable LightTable-Bearbeitungen neben Originalen, das automatische Schreiben von XMP, RAW/JPEG-Paarung und Stichworteingabe. Vollständige portable Bearbeitungen verwenden .lighttable-state.json; XMP enthält kompatible Bearbeitungen und Metadaten. XMP-Synchronisierung bewahrt nicht betroffene Felder und meldet widersprüchliche externe Änderungen; lesen Sie Austauschmetadaten über XMP-Sidecars für den unterstützten Workflow. Portable LightTable-Bearbeitungen enthalten auch virtuelle Kopien. Beim erneuten Öffnen eines Ordners bleiben die bereits im Katalog gespeicherten Bearbeitungen erhalten.",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "„Abgelehnte Fotos in den Papierkorb verschieben“ überspringt virtuelle Kopien. Verwenden Sie Fotoaktionen → Virtuelle Kopie löschen, um eine Kopie zu entfernen, ohne ihr Original anzutasten."
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "„Abgelehnte Fotos in den Papierkorb verschieben“ überspringt virtuelle Kopien. Verwenden Sie Fotoaktionen → Virtuelle Kopie löschen, um eine Kopie zu entfernen, ohne ihr Original anzutasten.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Im Filmstreifen erscheint dieser Link unter der Fotoanzahl nur dann, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können."
   },
   "plurals": {
     " · {count} paired file linked": {

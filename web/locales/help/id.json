@@ -564,6 +564,7 @@
           "title": "Sembunyikan foto yang tidak dapat ditampilkan",
           "paragraphs": [
             "Saat kesalahan thumbnail terlihat di kisi, pilih Sembunyikan foto yang tidak dapat ditampilkan di samping ringkasan lokasi. Ini mengaktifkan sakelar yang sesuai di Filter, yang secara default mati dan pengaturannya disimpan antar sesi. Sakelar ini tidak disimpan dalam aturan koleksi pintar.",
+            "Di strip film, tautan ini muncul di bawah jumlah foto hanya jika daftar saat ini berisi foto yang tidak dapat ditampilkan.",
             "Sakelar ini menyembunyikan foto yang diketahui tidak tersedia atau hanya ada di cloud serta foto dengan kegagalan thumbnail atau pratinjau yang telah terdeteksi. Kegagalan dekode lainnya ditemukan saat foto dimuat. Matikan sakelar, hapus chip filternya, atau pilih Bersihkan semua untuk menampilkan foto lagi. Coba lagi yang berhasil atau perubahan pada file asli menghapus kegagalan yang tercatat."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

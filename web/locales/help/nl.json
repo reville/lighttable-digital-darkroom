@@ -564,6 +564,7 @@
           "title": "Foto’s verbergen die niet kunnen worden weergegeven",
           "paragraphs": [
             "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties.",
+            "In de filmstrook verschijnt deze link onder het aantal foto’s alleen wanneer de huidige lijst foto’s bevat die niet kunnen worden weergegeven.",
             "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

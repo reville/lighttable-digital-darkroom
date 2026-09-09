@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ১৫টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "পাশের XMP সাইডকার ফাইলগুলো মূল ফাইলগুলোর সঙ্গে সরানো হয়। তবে জোড়ার কোনো মূল ফাইল লাইব্রেরিতে থেকে গেলে, ভাগ করা XMP ফাইলটি তার সঙ্গেই থাকে। লুকানো RAW বা JPEG সহচর ফাইলগুলো লাইব্রেরিতে থাকে; সেগুলো অন্তর্ভুক্ত করতে জোড়া ক্যাপচারের সেটিংসে উভয় ফাইল বেছে নিন।",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Files & Metadata মূলগুলোর পাশে portable LightTable edits, automatic XMP writing, RAW/JPEG pairing, এবং keyword entry নিয়ন্ত্রণ করে। সম্পূর্ণ portable edits .lighttable-state.json ব্যবহার করে; XMP সামঞ্জস্যপূর্ণ edits এবং metadata বহন করে। XMP sync সম্পর্কহীন ক্ষেত্র অক্ষুণ্ণ রাখে এবং conflicting external changes রিপোর্ট করে; সমর্থিত workflow-এর জন্য Exchange metadata XMP sidecars দিয়ে পড়ুন। বহনযোগ্য LightTable সম্পাদনার মধ্যে ভার্চুয়াল কপিও অন্তর্ভুক্ত থাকে। কোনো ফোল্ডার আবার খুললে ক্যাটালগে ইতিমধ্যে সংরক্ষিত সম্পাদনাগুলো অক্ষুণ্ণ থাকে।",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“প্রত্যাখ্যাত ফটোগুলো ট্র্যাশে সরান” কমান্ডটি ভার্চুয়াল কপি বাদ দেয়। মূল ফাইলে হাত না দিয়ে কোনো কপি সরাতে ফটো কাজ → ভার্চুয়াল কপি মুছুন ব্যবহার করুন।"
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“প্রত্যাখ্যাত ফটোগুলো ট্র্যাশে সরান” কমান্ডটি ভার্চুয়াল কপি বাদ দেয়। মূল ফাইলে হাত না দিয়ে কোনো কপি সরাতে ফটো কাজ → ভার্চুয়াল কপি মুছুন ব্যবহার করুন।",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "ফিল্মস্ট্রিপে, বর্তমান তালিকায় দেখানো যায় না এমন ছবি থাকলেই ছবির সংখ্যার নিচে এই লিংকটি দেখা যায়।"
   },
   "plurals": {
     " · {count} paired file linked": {

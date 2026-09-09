@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau.",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Sidecar XMP yang bersebelahan ikut dipindahkan bersama file asli, tetapi XMP yang dipakai bersama tetap bersama file asli pasangannya yang masih ada di pustaka. File pendamping RAW atau JPEG yang tersembunyi tetap ada di pustaka; pilih Kedua file pada pengaturan pengambilan berpasangan untuk menyertakannya.",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung. Suntingan LightTable portabel menyertakan salinan virtual. Membuka kembali folder mempertahankan suntingan yang sudah tersimpan di katalog Anda.",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Pindahkan Foto yang Ditolak ke Tempat Sampah” melewati salinan virtual. Gunakan Aksi foto → Hapus salinan virtual untuk menghapus salinan tanpa menyentuh file aslinya."
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“Pindahkan Foto yang Ditolak ke Tempat Sampah” melewati salinan virtual. Gunakan Aksi foto → Hapus salinan virtual untuk menghapus salinan tanpa menyentuh file aslinya.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Di strip film, tautan ini muncul di bawah jumlah foto hanya jika daftar saat ini berisi foto yang tidak dapat ditampilkan."
   },
   "plurals": {
     " · {count} paired file linked": {

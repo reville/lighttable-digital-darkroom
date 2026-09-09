@@ -564,6 +564,7 @@
           "title": "Nascondi le foto che non possono essere visualizzate",
           "paragraphs": [
             "Quando nella griglia è visibile un errore di miniatura, scegli Nascondi le foto che non possono essere visualizzate accanto al riepilogo della posizione. Questo attiva l’interruttore corrispondente in Filtro, disattivato per impostazione predefinita e salvato tra le sessioni. Questo interruttore non viene salvato nelle regole delle raccolte intelligenti.",
+            "Nella pellicola, questo collegamento appare sotto il numero di foto solo quando l’elenco corrente contiene foto che non possono essere visualizzate.",
             "L’interruttore nasconde le foto note come non disponibili o solo nel cloud e quelle con errori di miniatura o anteprima già rilevati. Gli altri errori di decodifica vengono scoperti durante il caricamento delle foto. Disattiva l’interruttore, rimuovi la sua etichetta o scegli Cancella tutto per mostrare di nuovo le foto. Un Riprova riuscito o una modifica all’originale cancella l’errore registrato."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75"
 }

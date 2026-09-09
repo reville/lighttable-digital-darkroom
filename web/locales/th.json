@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e",
+  "sourceDigest": "781138d9f326d95ac612b2e55ed27911df9d02ef0f3f608a67b579f1e8a0ba75",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4157,7 +4157,8 @@
     "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 15 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน",
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "ไฟล์ XMP sidecar ที่อยู่ข้างกันจะย้ายไปพร้อมกับไฟล์ต้นฉบับ แต่ XMP ที่ใช้ร่วมกันจะยังอยู่กับไฟล์ต้นฉบับที่จับคู่กันซึ่งเหลืออยู่ในไลบรารี ไฟล์ RAW หรือ JPEG ที่จับคู่กันและถูกซ่อนไว้จะยังคงอยู่ในไลบรารี เลือก ทั้งสองไฟล์ ในการตั้งค่าการจับคู่ไฟล์เพื่อรวมไฟล์เหล่านั้นด้วย",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "ไฟล์และเมทาดาทาควบคุมการแก้ไข LightTable แบบพกพาข้างต้นฉบับ, การเขียน XMP อัตโนมัติ, การจับคู่ RAW/JPEG, และการป้อนคีย์เวิร์ด การแก้ไขแบบพกพาเต็มรูปแบบใช้ .lighttable-state.json; XMP เก็บการแก้ไขและเมทาดาทาที่เข้ากันได้ การซิงค์ XMP รักษาฟิลด์ที่ไม่เกี่ยวข้องไว้และรายงานการเปลี่ยนแปลงภายนอกที่ขัดแย้ง; อ่านเมทาดาทา Exchange ผ่านไซด์คาร์ XMP สำหรับเวิร์กโฟลว์ที่รองรับ การแก้ไข LightTable แบบพกพารวมถึงสำเนาเสมือนด้วย เมื่อเปิดโฟลเดอร์อีกครั้ง การแก้ไขที่บันทึกไว้แล้วในแค็ตตาล็อกจะยังคงอยู่",
-    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "คำสั่ง “ย้ายภาพถ่ายที่ปฏิเสธแล้วไปถังขยะ” จะข้ามสำเนาเสมือน ใช้ การกระทำกับภาพถ่าย → ลบสำเนาเสมือน เพื่อลบสำเนาโดยไม่กระทบไฟล์ต้นฉบับ"
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "คำสั่ง “ย้ายภาพถ่ายที่ปฏิเสธแล้วไปถังขยะ” จะข้ามสำเนาเสมือน ใช้ การกระทำกับภาพถ่าย → ลบสำเนาเสมือน เพื่อลบสำเนาโดยไม่กระทบไฟล์ต้นฉบับ",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "ในแถบฟิล์ม ลิงก์นี้จะปรากฏใต้จำนวนภาพถ่ายเฉพาะเมื่อรายการปัจจุบันมีภาพถ่ายที่ไม่สามารถแสดงได้เท่านั้น"
   },
   "plurals": {
     " · {count} paired file linked": {

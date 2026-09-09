@@ -547,7 +547,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 .library-head strong { font-size:15px; font-weight:600; letter-spacing:-.01em; }
 .library-head span { margin-top:2px; color:var(--muted); font-size:11px; }
 .library-summary { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 12px; }
-.library-summary a { font-size:11px; color:var(--accent); text-decoration:underline; text-underline-offset:2px; }
+.library-summary a, .filmstrip-context a { font-size:11px; color:var(--accent); text-decoration:underline; text-underline-offset:2px; }
 .library-filter-switch { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:4px 0 12px; font-size:12px; }
 .library-filter-switch input[role="switch"] { appearance:none; flex:none; width:28px; height:16px; margin:0; border:1px solid var(--line); border-radius:10px; background:var(--inset); position:relative; }
 .library-filter-switch input[role="switch"]::after { content:''; position:absolute; width:10px; height:10px; top:2px; left:2px; border-radius:50%; background:var(--muted); }
@@ -800,6 +800,7 @@ body.filmstrip-resizing { cursor:ns-resize; user-select:none; }
 .filmstrip-context { width:128px; flex:0 0 128px; display:flex; flex-direction:column; justify-content:center; padding:12px 14px; border-right:1px solid var(--line-soft); min-width:0; }
 .filmstrip-context span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
 .filmstrip-context small { color:var(--muted); margin-top:3px; font-size:11px; }
+.filmstrip-context a { margin-top:6px; line-height:1.3; overflow-wrap:anywhere; }
 .strip { min-width:0; flex:1; display:flex; gap:6px; overflow-x:auto; overflow-y:hidden; align-items:center; padding:8px 12px; }
 .strip-spacer { flex:0 0 0; height:1px; pointer-events:none; }
 .thumb { position:relative; flex:0 0 clamp(64px,calc(var(--filmstrip-h) - 22px),238px); height:clamp(64px,calc(var(--filmstrip-h) - 22px),238px); border:2px solid transparent; border-radius:var(--radius-s); transition:border-color .12s ease; }
