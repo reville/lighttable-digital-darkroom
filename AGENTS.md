@@ -34,3 +34,13 @@ lighttable history list @current --json
 
 See `lighttable --help`, `lighttable schema`, and `CLI.md` for the generated
 command and route reference.
+
+## Recorded journey review
+
+For an on-demand recorded journey review, follow
+`scripts/visual-review/README.md`. Start with `--preflight`; the real native
+recording requires an unlocked graphical session and explicit foreground-test
+authorization. Keep `recorded`, `functional checks passed`, and `visually
+reviewed` separate. Inspect clips and transition frames before recording
+findings in `review.json`; do not automatically approve a baseline. The first
+version covers browse, zoom, basic editing, and bounded exploratory interaction.
