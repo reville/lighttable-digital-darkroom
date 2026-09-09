@@ -229,6 +229,7 @@ private struct GradeUniforms {
     var colorGrade3 = SIMD4<Float>(repeating: 0)
     var colorGradeSettings = SIMD4<Float>(0, 0.5, 0, 0)
     var softProof = SIMD4<Float>(repeating: 0)
+    var spotVisualization = SIMD4<Float>(repeating: 0)
     var optics0 = SIMD4<Float>(repeating: 0)
     var optics1 = SIMD4<Float>(1, 0, 0, 0)
     var optics2 = SIMD4<Float>(repeating: 0)
@@ -342,6 +343,7 @@ final class NativePreviewRenderer {
     private var maskTexturePixels = [UInt8](repeating: 0, count: 4)
     private var grade: [String: Any] = [:]
     private var softProof: [String: Any] = [:]
+    private var spotVisualization = SIMD4<Float>(repeating: 0)
     private var localMasks: [[String: Any]] = []
     private var optics: [String: Any] = [:]
     private var heals: [[String: Any]] = []
@@ -586,6 +588,14 @@ final class NativePreviewRenderer {
                 mipmapLevel: 0, withBytes: base,
                 bytesPerRow: maskLayout.rowBytes)
         }
+        scheduleRender()
+    }
+
+    func updateSpotVisualization(_ payload: [String: Any]) {
+        let threshold = (payload["threshold"] as? NSNumber)?.doubleValue ?? 0
+        spotVisualization = SIMD4<Float>(
+            (payload["enabled"] as? Bool ?? false) ? 1 : 0,
+            Float(threshold.isFinite ? max(0, min(1, threshold)) : 0), 0, 0)
         scheduleRender()
     }
 
@@ -1086,6 +1096,7 @@ final class NativePreviewRenderer {
             Float(proofTargets[softProof["profile"] as? String ?? "srgb"] ?? 0),
             (softProof["paper"] as? Bool ?? false) ? 1 : 0,
             (softProof["gamut"] as? Bool ?? false) ? 1 : 0)
+        output.spotVisualization = spotVisualization
         func optic(_ key: String, _ fallback: Double = 0) -> Float {
             Float(number(optics[key]) ?? fallback)
         }

@@ -2686,6 +2686,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
         case "nativeMasks":
             nativePreview?.updateMasks(body)
+        case "nativeSpotVisualization":
+            nativePreview?.updateSpotVisualization(body)
         case "nativeEdits":
             nativePreview?.updateEdits(
                 optics: body["optics"] as? [String: Any] ?? [:],

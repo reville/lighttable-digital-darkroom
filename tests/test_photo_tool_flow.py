@@ -34,6 +34,7 @@ const syncGrade = noop, drawGrade = noop, syncCurveFromGrade = noop, syncHsl = n
 const renderKeywords = noop, renderVersions = noop, refreshLists = noop, updateUndoRedoButtons = noop;
 const normalizeFilmParams = value => cloneValue(value);
 const serializableMasks = () => cloneValue(S.masks);
+const refreshSpotVisualization = noop;
 const drawEditOverlay = noop, scheduleNativeMenuState = noop, savePrefs = noop;
 const renderEditItems = noop, syncOverlayCursorClass = noop;
 const nativePreviewActive = () => false;

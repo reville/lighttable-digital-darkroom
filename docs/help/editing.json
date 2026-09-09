@@ -541,7 +541,9 @@
       {"path": "web/app.js", "anchor": "$('healRefresh').hidden = spot.mode === 'remove';"},
       {"path": "web/app.js", "anchor": "Click the new target position."},
       {"path": "web/index.html", "anchor": "Drag either on-image circle to refine the target or source."},
-      {"path": "web/screen-overlay.js", "anchor": "export function screenOverlayGeometry("}
+      {"path": "web/screen-overlay.js", "anchor": "export function screenOverlayGeometry("},
+      {"path": "web/gl.js", "anchor": "uniform vec2 u_spotVisualization;"},
+      {"path": "app/NativePreview.metal", "anchor": "grade.spotVisualization.x > 0.5"}
     ]
   },
   {
