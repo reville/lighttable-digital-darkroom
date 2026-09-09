@@ -13,6 +13,7 @@ class ControlAuditTests(unittest.TestCase):
             ['node', '--test', 'tests/enhance-controls.test.mjs',
              'tests/maps-survey-controls.test.mjs',
              'tests/photo-action-controls.test.mjs',
+             'tests/keyword-controls.test.mjs',
              'tests/catalog-controls.test.mjs'], cwd=root,
             text=True, capture_output=True, timeout=30,
         )

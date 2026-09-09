@@ -1,4 +1,35 @@
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+export function linearHandleAt(mask, point, rect) {
+  const distance = location => Math.hypot(
+    (point[0] - location[0]) * rect.width, (point[1] - location[1]) * rect.height);
+  // Test in screen pixels so the dots stay easy to grab at every zoom level.
+  const startDistance = distance(mask.start), endDistance = distance(mask.end);
+  if (Math.min(startDistance, endDistance) <= 11) {
+    return startDistance < endDistance ? 'start' : 'end';
+  }
+  const dx = (mask.end[0] - mask.start[0]) * rect.width;
+  const dy = (mask.end[1] - mask.start[1]) * rect.height;
+  const lengthSquared = dx * dx + dy * dy;
+  if (!lengthSquared) return null;
+  const t = clamp(((point[0] - mask.start[0]) * rect.width * dx +
+    (point[1] - mask.start[1]) * rect.height * dy) / lengthSquared, 0, 1);
+  const nearest = [mask.start[0] + t * (mask.end[0] - mask.start[0]),
+    mask.start[1] + t * (mask.end[1] - mask.start[1])];
+  return distance(nearest) <= 7 ? 'move' : null;
+}
+
+export function editLinear(mask, gesture, point) {
+  if (!gesture.handle) { mask.end = point; return; }
+  const endpoints = gesture.handle === 'move' ? ['start', 'end'] : [gesture.handle];
+  // Limit the shared offset, not each endpoint, to preserve the gradient's
+  // angle and length when moving against the edge of the photo.
+  const delta = point.map((value, axis) => clamp(value - gesture.origin[axis],
+    -Math.min(...endpoints.map(key => gesture[key][axis])),
+    1 - Math.max(...endpoints.map(key => gesture[key][axis]))));
+  for (const key of endpoints) mask[key] = gesture[key].map((value, axis) => value + delta[axis]);
+}
+
 export function radialHandles(mask, width, height) {
   const minimum = Math.min(width, height);
   const angle = (mask.angle || 0) * Math.PI / 180;

@@ -414,6 +414,11 @@
         "tips": ["At 20% Flow and 60% Density, three separate strokes over a fully covered area reach the ceiling. Lowering Density does not erase coverage already painted.", "Brush settings apply to new strokes. Existing strokes retain their saved appearance, including the earlier brush behavior in older edits.", "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached."]
       },
       {
+        "title": "Shape a linear gradient",
+        "paragraphs": ["In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it."],
+        "tips": ["Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."]
+      },
+      {
         "title": "Shape a radial gradient",
         "paragraphs": ["In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."],
         "tips": ["Shape also provides Width, Height, Rotation, and Feather controls.", "Dragging away from its handles redraws the selected radial mask."]
@@ -434,6 +439,7 @@
       {"path": "web/mask-raster.js", "anchor": "export function accumulateStroke("},
       {"path": "web/mask-raster.js", "anchor": "export function autoMaskValues("},
       {"path": "web/mask-shape.js", "anchor": "export function editRadial("},
+      {"path": "web/mask-shape.js", "anchor": "export function editLinear("},
       {"path": "web/mask-curve.js", "anchor": "export function installMaskCurve("},
       {"path": "web/app.js", "anchor": "function captureBrushEdgeMask(point)"},
       {"path": "web/index.html", "anchor": "data-local=\"whites\""},
