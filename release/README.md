@@ -134,11 +134,17 @@ the public key embedded in `app/Info.plist`.
 
 Ordinary CI builds remain unsigned so runtime and installation checks can run
 without release credentials. Public release builds set `require_signing: true`
-and fail before building if signing is not configured. Set repository secrets
-`WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD` for the authorized
-Authenticode certificate export. The Windows SDK SignTool signs and timestamps
+and fail before building if signing is not configured. Configure Azure Artifact
+Signing through the protected `windows-release` environment and a GitHub OIDC
+federated identity scoped to the Windows certificate profile; see
+[Windows signing setup](../WINDOWS.md). PFX signing remains supported through
+`WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD`, but the two
+backends cannot be configured together. The Windows SDK SignTool signs and timestamps
 the app and engine executables before packaging, then signs the final installer.
 The npm installer independently rejects an invalid or unsigned Windows installer.
+Signed build artifacts include `windows-signatures.json`, recording independently
+verified signatures from the finished ZIP and installer. Dispatch the Windows
+build workflow with `require_signing=true` to test a candidate without publishing.
 
 ## Windows and Linux update feeds
 

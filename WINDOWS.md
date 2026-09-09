@@ -147,26 +147,63 @@ through `--stack-dumper`; diagnostics never turn a failed journey into a pass.
 Completed packages are retained even when native acceptance fails; that failure
 still blocks the full build job and release publication.
 
-For Authenticode signing, configure repository secrets
+For Azure Artifact Signing, configure the GitHub environment `windows-release`
+with deployment rules allowing branch `main` and tags `v*`. Give a dedicated
+Microsoft Entra application **Artifact Signing Certificate Profile Signer** at
+the certificate-profile scope only. Its federated credential must use:
+
+- Issuer: `https://token.actions.githubusercontent.com`
+- Subject: `repo:reville/lighttable-digital-darkroom:environment:windows-release`
+- Audience: `api://AzureADTokenExchange`
+
+Set these environment variables in GitHub's **Settings > Environments >
+windows-release > Environment variables**:
+
+| Variable | Value |
+| --- | --- |
+| `AZURE_SIGNING_ENDPOINT` | `https://eus.codesigning.azure.net/` |
+| `AZURE_SIGNING_ACCOUNT` | `lighttable-signing` |
+| `AZURE_SIGNING_PROFILE` | `lighttable-windows` |
+| `AZURE_TENANT_ID` | The signing account's Microsoft Entra tenant ID |
+| `AZURE_CLIENT_ID` | The dedicated application's client ID |
+
+Signed jobs request `id-token: write`; reusable callers must also grant that
+permission. The signing helper fetches a fresh GitHub OIDC assertion at each
+signing stage and uses Azure's `WorkloadIdentityCredential`. Temporary assertions
+are deleted after signing. No Azure client secret or private signing key is
+stored in GitHub. The Microsoft signing client and SDK packages are version- and
+checksum-pinned. The Windows runner needs .NET 8 or later. Ordinary CI uses the
+separate `windows-ci` environment, which has no Azure federated trust.
+
+Alternatively, for PFX-based Authenticode signing, configure repository secrets
 `WINDOWS_CERTIFICATE_BASE64` (a base64-encoded PFX containing a valid code-signing
 certificate and private key) and `WINDOWS_CERTIFICATE_PASSWORD`. The installed
 Windows SDK must provide `signtool.exe`. A reusable-workflow caller must pass
-these secrets explicitly or use `secrets: inherit`.
+these secrets explicitly or use `secrets: inherit`. Configure only one signing
+backend; mixed or partial settings fail the build.
 
 `build-release.ps1 -RequireSigning` checks the signing configuration before any
 downloads or compilation and refuses missing or partial credentials. Without
 credentials, ordinary CI builds remain unsigned. With credentials, the build
-signs the desktop executable, both render-engine executables, and the final
+signs the desktop executable, WinSparkle DLL, both render-engine executables, and the final
 NSIS installer; verification precedes smoke testing and final archiving. The
 temporary PFX is deleted in a `finally` block and no certificate is installed
 in the Windows certificate store. `build-manifest.json` records whether the
 package was signed.
 
 The signing helper uses SHA-256 file and RFC 3161 timestamp digests with the
-DigiCert timestamp service, then requires `signtool verify /pa /all /tw` to
+Microsoft timestamp service for Azure or DigiCert for PFX, then requires `signtool verify /pa /all /tw` to
 pass. The flags follow [Microsoft's SignTool documentation](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool).
+Signed CI builds also extract the completed ZIP and independently verify every
+signed application binary and the installer, including timestamp presence.
+`windows-signatures.json` records the source revision, file hashes, publishers,
+and timestamp authorities alongside the build artifacts.
 Configuring this workflow does not itself obtain a certificate or prove a
 successful signed release.
+
+To produce a signed candidate without publishing a release, dispatch
+`windows-build.yml` on `main` with `version=0.5.0` and `require_signing=true`.
+Inspect the signature report and native acceptance evidence before publishing.
 
 Windows support is an additional host around the shared render core, not a
 replacement for the macOS implementation.
