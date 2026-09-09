@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "レーティングまたはフラグを付ける写真を選択",
     "Choose a preset to see its source and conversion coverage.": "プリセットを選んで、ソースと変換の適用範囲を確認します。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "ネガ用の印画処理を選び、スライドフィルムで印刷コントロールが消える理由を理解します。",
-    "Choose a reject criterion above.": "上で却下条件を選択してください。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "セレクターで保存済みのポイントを選んで編集するか、ポイントを削除で削除します。",
     "Choose a saved preset to submit": "提出する保存済みプリセットを選択してください",
     "Choose a scheme": "方式を選択",
-    "Choose a select criterion above.": "上で選択条件を選択してください。",
     "Choose a settings folder": "設定フォルダーを選択",
     "Choose a source and destination first.": "先にソースと保存先を選択してください。",
     "Choose a source and destination, then scan.": "ソースと保存先を選択してからスキャンしてください。",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "画像を 1:1 で確認し、テクスチャを判断する前にプレビューの詳細が完成するまで待ちます。",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "オーバーレイを確認し、必要に応じて境界付近を手描きの補正で整えます。",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "却下された写真を確認します。ペアファイル設定を確認し、含めたい他のメンバーがある場合はスタックを展開します。",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "提案を確認し、フラグを適用したい場合は Pick selects または Reject rejects を使います。",
     "Interface": "インターフェース",
     "Interface and behavior": "インターフェースと動作",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "インターフェースでは、ビューア背景、フォントの拡大率、Lights Out、ルーペ情報オーバーレイ、トリミングガイドを制御できます。これらの設定は、書き出し画像のピクセルを変えずにワークスペースの外観を変更します。",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "ブラシ、リニア、円形マスクでローカル調整を行います",
     "Make photos easier to find and prepare descriptive metadata for export.": "写真を見つけやすくし、書き出し用の説明的なメタデータを準備します。",
     "Make select": "選択を作成",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "選択してピックすると、アクティブなサーベイ写真が選択され、サーベイ内に残っている他の写真は却下されます。これによりフラグが変更されます。リンクされた RAW と JPEG のメタデータにより、そのフラグ変更を相手側に拡張できます。",
     "Make the source photo active.": "ソース写真をアクティブにする。",
     "Make your adjustment, then check the save status in the app.": "調整を行ってから、アプリ内で保存状態を確認します。",
     "Manage cache storage": "キャッシュ保存を管理",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "選択 (P)",
     "Pick / reject / unflag": "選択 / 却下 / フラグ解除",
     "Pick a preset": "プリセットを選択",
-    "Pick selects": "選択は選択済み",
-    "Pick the selects": "選択済みを選ぶ",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。",
-    "Pick {count} select": "{count}件を選択",
-    "Pick {count} selects": "{count}件を選択",
     "Pick, reject, and rate photos": "選択、却下、写真のレーティング",
     "Picked": "選択済み",
     "Picked only": "選択済みのみ",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "コミュニティを更新中…",
     "Reject": "却下",
     "Reject (X)": "却下 (X)",
-    "Reject rejects": "却下を却下",
-    "Reject the rejects": "却下済みを却下",
-    "Reject {count} photo": "{count}枚の写真を却下",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。",
-    "Reject {count} photos": "{count}枚の写真を却下",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。",
     "Rejected": "却下済み",
     "Rejected {count} photo": "{count}枚の写真を却下済み",
     "Rejected {count} photos": "{count}枚の写真を却下済み",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "転送されたマスクを確認",
     "Review translated edits": "翻訳された編集内容をレビュー",
     "Reviewing every photo.": "すべての写真をレビューしています。",
-    "Reviewing {count} photo that met a reject criterion.": "却下条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photo that met a select criterion.": "選択条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photos that met a reject criterion.": "却下条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photos that met a select criterion.": "選択条件に一致した写真を {count} 枚レビュー中です。",
     "Rich descriptions on": "詳細説明をオン",
     "Richer descriptions require macOS 27 or later": "より豊かな説明には macOS 27 以降が必要です",
     "Rights": "権限",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "カタログは変更なしのままです。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "カタログは検証済みバックアップから復元されました。損傷したコピーは Recovery フォルダーにあります。",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "コンパクトな SFace INT8 モデルは、位置合わせされた人の顔を比較します。自動グループ化では保守的な類似度ルールを使用し、候補の一致はレビュー用に別々に残されます。名前付き人物に一致する新しい顔は、確認用に提案されます。",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "確認には影響を受ける件数が表示され、一致した写真の既存のフラグが置き換えられることが警告されます。リンクされた RAW/JPEG メタデータには、その設定が有効な場合、ペアのファイルも含めることができます。",
     "The current catalog is backed up first, then replaced by this one.": "現在のカタログは先にバックアップされ、その後このカタログに置き換えられます。",
     "The desktop Trash service (gio) is unavailable": "デスクトップのゴミ箱サービス（gio）を利用できません",
     "The desktop app checks its signed update feed.": "デスクトップアプリが署名付き更新フィードを確認します。",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Scale、Horizontal、Vertical を使って、参照を写真に合わせて調整します。",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "写真を追加した後、または利用できないオリジナルを復元した後に、Scan new photos を使用してください。以前にスキャン済みで変更のない写真は再利用されます。",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop、WinGet、Chocolatey、AUR、Flatpak、Snap で管理されるインストールは、それぞれの管理ツールで更新してください。Windows ポータブル版は新しい ZIP をダウンロードしてください。更新署名が設定されていないビルドは自動更新できません。",
-    "Use Selects, Rejects, or All to review the matching photos.": "選択済み、却下、または すべて を使用して一致する写真を確認します。",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "一時と色合いを使うか、ニュートラルな領域をサンプルしてから、Vibrance と Saturation を調整します。",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "最近の作業には Undo、保存された編集手順には History、後で見返したい見た目には名前付きスナップショットを使います。",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "このウィンドウが開いている間は、［キーワード変更を元に戻す］で最後のバッチを復元できます。［元に戻す］は、そのバッチ以降に変更されたキーワードを上書きしません。［写真履歴］にもキーワードの前後状態が保持されます。",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "この写真は Google Drive のオンライン上に保存されています。パソコン版 Google ドライブでオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "この写真は OneDrive のオンライン上に保存されています。「このデバイス上で常に保持する」を選択し、ダウンロードが完了するまで待ってから再試行してください。",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "この写真は iCloud Drive のオンライン上に保存されています。iCloud Drive で元のファイルをダウンロードし、ダウンロードが完了するまで待ってから再試行してください。",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "この写真はオンライン上に保存されているか、ダウンロードが完了していません。クラウドストレージアプリでオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。"
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "この写真はオンライン上に保存されているか、ダウンロードが完了していません。クラウドストレージアプリでオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "推奨写真は、ピント、開いた目、および検出された問題に基づいて、より明確に優れた評価を受けた写真です。同点または証拠不足の場合は、明確な推奨は表示されません。類似グループは提案であり、スタックを作成したりフラグを変更したりはしません。",
+    "Choose Selects or Rejects to review matches before applying flags.": "フラグを適用する前に一致結果を確認するには、選択済みまたは却下済みを選択してください。",
+    "Choose criteria above.": "上の条件を選択してください。",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "条件を選ぶと、その一致写真がグリッドに開きます。レビュー表示を変更するには、選択済み、却下済み、またはすべてを使用します。ほかのライブラリフィルターは引き続き適用されます。",
+    "Compare similar photos": "類似写真を比較",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "既存のフラグは既定で保持されます。過去の判断を変更したい場合にのみ、既存のフラグを置き換えるを有効にしてください。バッチ操作は表示中の一致項目に影響し、メタデータのリンクが有効な場合は関連付けられたRAW/JPEGファイルも含まれます。保護されたフラグ、またはすでに一致しているフラグは操作件数に含まれません。",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "既存のフラグは保持されます。件数には未フラグの関連付けられたRAW/JPEGファイルが含まれます。",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "既存のフラグが置き換えられる場合があります。件数には関連付けられたRAW/JPEGファイルが含まれます。",
+    "Flag {count} photo as a pick": "{count}枚の写真に選択フラグを付ける",
+    "Flag {count} photo as a reject": "{count}枚の写真に却下フラグを付ける",
+    "Flag {count} photos as picks": "{count}枚の写真に選択フラグを付ける",
+    "Flag {count} photos as rejects": "{count}枚の写真に却下フラグを付ける",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "グループ {index}/{count}。明確な推奨はありません。これらの写真を比較してください。",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "グループ {index}/{count}。推奨: {name}。ピントと目のチェックに基づいています。各フレームを確認してください。",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "グループ化には、実際の撮影時刻と現在の写真インデックス分析が必要です。ファイルシステムの日付しかないファイル、動画、仮想コピー、および十分な視覚的詳細がない写真は除外されます。この更新後、インデックスワーカーによって既存のインデックス記録が更新されます。",
+    "Next group": "次のグループ",
+    "No similar groups found. Photos need current index analysis and capture times.": "類似グループが見つかりませんでした。写真には現在のインデックス分析と撮影時刻が必要です。",
+    "Previous group": "前のグループ",
+    "Replace existing flags": "既存のフラグを置き換える",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。",
+    "Review similar photos": "類似写真をレビュー",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "類似写真をレビューは、現在のフォルダーまたはコレクション内で30秒以内に撮影された、視覚的に類似したインデックス済み写真を検索します。グループは最大16枚の写真でサーベイに開きます。前のグループと次のグループを使用して候補を比較し、サーベイのコントロールで個々の写真にフラグを付けてください。",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "表示されている写真を確認してから、写真に選択フラグを付けるまたは写真に却下フラグを付けるを使用してください。ボタンには変更されるファイル数が表示されます。",
+    "Undo last flag batch": "最後のフラグのバッチを元に戻す",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "完了メッセージの元に戻す、またはサイドバーの最後のフラグのバッチを元に戻すを使用して、バッチを復元できます。元に戻すはこのセッション中に引き続き使用でき、その後に行った手動または外部のフラグ決定は保持されます。保存に失敗した場合は、保存を再試行を使用するか、バッチを元に戻してください。失敗した書き込みはキューに残ります。",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "サーベイが支援付き選別から開かれた場合は、推奨グループを比較し、写真に個別にフラグを付けてください。選択を作成は通常のサーベイで使用できます。これは、アクティブなサーベイ写真を選択し、サーベイ内に残っている他の写真を却下します。これにより、それらのフラグが変更されます。リンクされたRAWとJPEGのメタデータにより、これらのフラグ変更をコンパニオンにも適用できます。",
+    "{count} matching photo shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
+    "{count} matching photos shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4159,6 +4166,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "{count} 枚の写真を {destination} に書き出しています…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "{count}枚の写真に選択フラグを付ける"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "{count}枚の写真に却下フラグを付ける"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "Apple Photos から写真を {count} 枚読み込みました{value}"
@@ -4175,20 +4188,8 @@
     "Pasted to {count} photo": {
       "other": "{count}枚の写真にペーストしました"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。"
-    },
-    "Pick {count} select": {
-      "other": "{count}件を選択"
-    },
     "Picked {count} photo": {
       "other": "{count}枚の写真を選択済み"
-    },
-    "Reject {count} photo": {
-      "other": "{count}枚の写真を却下"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。"
     },
     "Rejected {count} photo": {
       "other": "{count}枚の写真を却下済み"
@@ -4199,11 +4200,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "{count}件の撮影を復元しました。History で撮影時刻のステップも復元できます。"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "却下条件に一致した写真を {count} 枚レビュー中です。"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "選択条件に一致した写真を {count} 枚レビュー中です。"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。"
     },
     "Wrote {count} sidecar.": {
       "other": "{count}個のサイドカーを書き出しました。"
@@ -4241,8 +4239,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} 個の重複グループが {files} を含みます。"
     },
+    "{count} empty file": {
+      "other": "{count}個の空のファイル"
+    },
     "{count} error": {
       "other": "{count}件のエラー"
+    },
+    "{count} face": {
+      "other": "{count} 件の顔"
     },
     "{count} face detected": {
       "other": "{count}件の顔を検出しました"
@@ -4256,8 +4260,17 @@
     "{count} file": {
       "other": "{count}ファイル"
     },
+    "{count} file not downloaded": {
+      "other": "{count}個のファイルが未ダウンロード"
+    },
+    "{count} group": {
+      "other": "{count} 件のグループ"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "インデックス化された写真が {count} 枚、削除されるまでローカルに残ります。"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "一致した写真を{count}枚表示中: {criteria}。"
     },
     "{count} minimum alignment inlier": {
       "other": "{count} 件の最小配置インライアー"
@@ -4295,6 +4308,9 @@
     "{count} photo selected": {
       "other": "{count}枚の写真を選択しました"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count}枚の写真がスキップされました{reasons}。オリジナルをダウンロードまたは復元してから、インデックスを再構築してください。"
+    },
     "{count} photo updated": {
       "other": "{count}枚の写真を更新しました"
     },
@@ -4307,6 +4323,9 @@
     "{count} rated photo": {
       "other": "{count}件の評価済み写真"
     },
+    "{count} selected": {
+      "other": "{count} 件選択済み"
+    },
     "{count} selected photo": {
       "other": "{count}枚の選択済み写真"
     },
@@ -4318,6 +4337,12 @@
     },
     "{count} source": {
       "other": "{count}件のソース"
+    },
+    "{count} unavailable file": {
+      "other": "{count}個の利用できないファイル"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "利用できない写真 {count} 件をスキップしました"
     },
     "{count} unsupported setting skipped": {
       "other": "サポートされていない設定を {count} 件スキップしました"
@@ -4339,31 +4364,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "過去24時間に予期しない終了が {value} 回発生しました。"
-    },
-    "{count} empty file": {
-      "other": "{count}個の空のファイル"
-    },
-    "{count} file not downloaded": {
-      "other": "{count}個のファイルが未ダウンロード"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count}枚の写真がスキップされました{reasons}。オリジナルをダウンロードまたは復元してから、インデックスを再構築してください。"
-    },
-    "{count} unavailable file": {
-      "other": "{count}個の利用できないファイル"
-    },
-    "{count} face": {
-      "other": "{count} 件の顔"
-    },
-    "{count} group": {
-      "other": "{count} 件のグループ"
-    },
-    "{count} selected": {
-      "other": "{count} 件選択済み"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "利用できない写真 {count} 件をスキップしました"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

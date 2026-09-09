@@ -753,6 +753,17 @@ class PayloadAndCacheTests(CatalogServerTestCase):
             self.assertEqual(labels[copied], ["Alice"])
             self.assertEqual(labels[self.qualified("sub/b.jpg")], [])
 
+    def test_initial_and_paged_rows_preserve_capture_time_provenance(self):
+        with self.catalog.write() as conn:
+            conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",
+                         ("2024-03-09T18:30:00", "a.jpg"))
+        rows, _ = server.library_payload(limit=20)
+        page = server.browser_catalog_query({"limit": 20})
+        for items in (rows, page["items"]):
+            known = {row["name"]: row["captureTimeKnown"] for row in items}
+            self.assertTrue(known[self.qualified("a.jpg")])
+            self.assertFalse(known[self.qualified("sub/b.jpg")])
+
     def test_catalog_boot_payload_is_lean_and_reports_total(self):
         for name in (self.qualified("a.jpg"), self.qualified("sub/b.jpg")):
             server.save_image_state(name, {
@@ -927,6 +938,38 @@ class HistoryTests(CatalogServerTestCase):
 
 
 class FolderRowTests(CatalogServerTestCase):
+    def test_sidebar_tree_matches_folder_mode_and_stays_in_the_current_source(self):
+        make_photo(self.root / "sub" / "deep" / "c.jpg")
+        (self.root / "empty").mkdir()
+        (self.root / "sub" / "clip.mov").write_bytes(b"hidden video")
+        catalog_scan.scan_source(self.catalog, self.source,
+                                 read_metadata_for_new=False)
+        with self.catalog.write() as conn:
+            self.catalog.folder_id(conn, self.source, "empty")
+        other = Path(self._dir.name) / "other"
+        make_photo(other / "sub" / "outside.jpg")
+        make_photo(other / "other-only" / "outside.jpg")
+        other_source = self.catalog.add_source(other)
+        catalog_scan.scan_source(self.catalog, other_source,
+                                 read_metadata_for_new=False)
+
+        with mock.patch.object(server, "library_snapshot",
+                               side_effect=AssertionError("must not walk the source")):
+            _, snapshot = server.library_payload(limit=1)
+        expected = [
+            {"path": "", "name": "photos", "depth": 0,
+             "directCount": 1, "totalCount": 3},
+            {"path": "empty", "name": "empty", "depth": 1,
+             "directCount": 0, "totalCount": 0},
+            {"path": "sub", "name": "sub", "depth": 1,
+             "directCount": 1, "totalCount": 2},
+            {"path": "sub/deep", "name": "deep", "depth": 2,
+             "directCount": 1, "totalCount": 1},
+        ]
+        self.assertEqual(snapshot["folders"], expected)
+        self.assertEqual(server._library_folder_rows(
+            ["a.jpg", "sub/b.jpg", "sub/deep/c.jpg"], {"empty"}), expected)
+
     def test_folder_counts_come_from_sql(self):
         rows = server.catalog_folder_rows(self.source)
         by_path = {row["relpath"]: row["count"] for row in rows}

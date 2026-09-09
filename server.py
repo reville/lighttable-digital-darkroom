@@ -1471,21 +1471,26 @@ LIBRARY_CACHE_TTL_SECONDS = float(os.environ.get(
 
 def _library_folder_rows(names: list[str], directories: set[str]) -> list[dict]:
     direct: dict[str, int] = {"": 0}
-    total: dict[str, int] = {"": 0}
-    directories.add("")
     for name in names:
         parent = Path(name).parent.as_posix()
         if parent == ".":
             parent = ""
-        directories.add(parent)
         direct[parent] = direct.get(parent, 0) + 1
-        total[""] = total.get("", 0) + 1
-        if parent:
-            parts = Path(parent).parts
+    return _library_folder_rows_from_counts(direct, directories)
+
+
+def _library_folder_rows_from_counts(direct: dict[str, int],
+                                     directories: set[str]) -> list[dict]:
+    """Use the same sidebar hierarchy for catalog and filesystem counts."""
+    directories = directories | direct.keys() | {""}
+    total: dict[str, int] = {"": sum(direct.values())}
+    for relative in list(directories):
+        if relative:
+            parts = Path(relative).parts
             for i in range(1, len(parts) + 1):
                 ancestor = Path(*parts[:i]).as_posix()
                 directories.add(ancestor)
-                total[ancestor] = total.get(ancestor, 0) + 1
+                total[ancestor] = total.get(ancestor, 0) + direct.get(relative, 0)
     return [{
         "path": rel,
         "name": FOLDER.name if not rel else Path(rel).name,
@@ -8793,6 +8798,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
+            "captureTimeKnown": item.get("captureTimeKnown", False),
             **{key: item.get(key) for key in
                ("camera", "lens", "iso", "focalLength", "aperture", "shutterSeconds", "keywords")},
             "status": item["status"],
@@ -8808,9 +8814,9 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "ai": None,
             "people": item.get("people", []),
         })
-    folders = [{"path": row["relpath"], "name": row["name"] or "",
-                "count": row["count"]}
-               for row in catalog_folder_rows()]
+    folder_counts = {row["relpath"]: row["count"]
+                     for row in catalog_folder_rows(PRIMARY_SOURCE_ID)}
+    folders = _library_folder_rows_from_counts(folder_counts, set())
     snapshot = {"names": [row["name"] for row in rows], "folders": folders,
                 "mtimes": {row["name"]: row["mtime"] for row in rows},
                 "total": page["total"]}

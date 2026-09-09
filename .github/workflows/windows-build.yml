@@ -128,6 +128,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_durable_io.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_startup_reporting.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
@@ -192,6 +194,7 @@ jobs:
           if ($env:REQUIRE_SIGNING -eq 'true' -and [string]::IsNullOrWhiteSpace($env:SPARKLE_PRIVATE_KEY)) {
             throw "Windows release updates require SPARKLE_PRIVATE_KEY."
           }
+          if ($env:REQUIRE_SIGNING -eq 'true') { ./scripts/windows/signing-smoke.ps1 }
 
       - name: Restore build caches
         uses: actions/cache@v4
@@ -217,6 +220,7 @@ jobs:
           choco install nsis --no-progress -y
 
       - name: Build and smoke-test package
+        id: build-package
         shell: pwsh
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
@@ -228,6 +232,8 @@ jobs:
           python -m unittest discover -s tests -p test_process_liveness.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_durable_io.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_startup_reporting.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -249,7 +255,9 @@ jobs:
 
       - name: Upload portable build and installer
         # Preserve a completed package for diagnosis/rechecks even if native
-        # acceptance fails. The package job still fails and blocks release.yml.
+        # acceptance or signature verification fails. The job still fails and
+        # blocks release.yml; retained artifacts are not approval to publish.
+        if: ${{ !cancelled() && steps.build-package.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-windows-x64

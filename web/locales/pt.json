@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Escolha uma foto para avaliar ou aplicar bandeira",
     "Choose a preset to see its source and conversion coverage.": "Escolha uma predefinição para ver sua origem e cobertura de conversão.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Escolha um processo de impressão para negativos e entenda por que os controles de print desaparecem para filme slide.",
-    "Choose a reject criterion above.": "Escolha um critério de rejeição acima.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Escolha um ponto salvo no seletor para editá-lo, ou use Excluir ponto para removê-lo.",
     "Choose a saved preset to submit": "Escolha uma predefinição salva para enviar",
     "Choose a scheme": "Escolher um esquema",
-    "Choose a select criterion above.": "Escolha um critério de seleção acima.",
     "Choose a settings folder": "Escolha uma pasta de configurações",
     "Choose a source and destination first.": "Escolha primeiro uma origem e um destino.",
     "Choose a source and destination, then scan.": "Escolha uma origem e um destino e então digitalize.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Inspecione a imagem em 1:1 e aguarde o detalhe da pré-visualização terminar antes de avaliar a textura.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Inspecione a sobreposição e use refinamentos pintados ao redor das bordas conforme necessário.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Inspecione as fotos rejeitadas. Verifique as configurações de arquivo pareado e expanda quaisquer pilhas se você espera incluir os demais membros.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Inspecione as sugestões e, depois, use Pick selects ou Reject rejects se quiser aplicar essas bandeiras.",
     "Interface": "Interface",
     "Interface and behavior": "Interface e comportamento",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Interface controla o fundo do visualizador, a escala da fonte, Lights Out, a sobreposição de informações da lupa e as guias de corte. Essas preferências alteram a aparência do espaço de trabalho sem modificar os pixels exportados.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Faça ajustes locais com máscaras de Pincel, Linear e Radial",
     "Make photos easier to find and prepare descriptive metadata for export.": "Torne as fotos mais fáceis de encontrar e prepare metadados descritivos para exportação.",
     "Make select": "Fazer seleção",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Fazer a seleção escolhe a foto de varredura ativa e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos pares.",
     "Make the source photo active.": "Tornar a foto de origem ativa.",
     "Make your adjustment, then check the save status in the app.": "Faça seu ajuste e depois verifique o status de salvamento no aplicativo.",
     "Manage cache storage": "Gerenciar armazenamento do cache",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Escolher (P)",
     "Pick / reject / unflag": "Escolher / rejeitar / remover bandeira",
     "Pick a preset": "Escolher uma predefinição",
-    "Pick selects": "Escolher selecionados",
-    "Pick the selects": "Escolher os selecionados",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Escolher {count} foto correspondente a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Escolher {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-    "Pick {count} select": "Escolher {count} seleção",
-    "Pick {count} selects": "Escolher {count} seleções",
     "Pick, reject, and rate photos": "Escolher, rejeitar e avaliar fotos",
     "Picked": "Selecionado",
     "Picked only": "Somente selecionados",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Atualizando comunidade…",
     "Reject": "Rejeitar",
     "Reject (X)": "Rejeitar (X)",
-    "Reject rejects": "Rejeitar rejeitos",
-    "Reject the rejects": "Rejeitar os rejeitos",
-    "Reject {count} photo": "Rejeitar {count} foto",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Rejeitar {count} foto correspondente a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-    "Reject {count} photos": "Rejeitar {count} fotos",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Rejeitar {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
     "Rejected": "Rejeitado",
     "Rejected {count} photo": "Rejeitado {count} foto",
     "Rejected {count} photos": "Rejeitadas {count} fotos",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Revisar máscaras transferidas",
     "Review translated edits": "Revisar edições traduzidas",
     "Reviewing every photo.": "Revisando todas as fotos.",
-    "Reviewing {count} photo that met a reject criterion.": "Revisando {count} foto que atendeu a um critério de rejeição.",
-    "Reviewing {count} photo that met a select criterion.": "Revisando {count} foto que atendeu a um critério de seleção.",
-    "Reviewing {count} photos that met a reject criterion.": "Revisando {count} fotos que atenderam a um critério de rejeição.",
-    "Reviewing {count} photos that met a select criterion.": "Revisando {count} fotos que atenderam a um critério de seleção.",
     "Rich descriptions on": "Descrições detalhadas ativadas",
     "Richer descriptions require macOS 27 or later": "Descrições mais ricas exigem macOS 27 ou posterior",
     "Rights": "Direitos",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "O catálogo foi deixado inalterado.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "O catálogo foi restaurado a partir de um backup verificado; a cópia danificada está na pasta Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "O modelo compacto SFace INT8 compara rostos humanos alinhados. O agrupamento automático usa regras de similaridade conservadoras; possíveis correspondências permanecem separadas para revisão. Novos rostos correspondentes a uma pessoa com nome são sugeridos para confirmação.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "A confirmação mostra a contagem afetada e avisa que as bandeiras existentes nas fotos correspondentes serão substituídas. Metadados vinculados de RAW/JPEG também podem incluir o arquivo pareado quando essa preferência estiver ativada.",
     "The current catalog is backed up first, then replaced by this one.": "O catálogo atual é primeiro salvo em backup e depois substituído por este.",
     "The desktop Trash service (gio) is unavailable": "O serviço de Lixo da área de trabalho (gio) não está disponível",
     "The desktop app checks its signed update feed.": "O aplicativo de desktop verifica seu feed de atualização assinado.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Use Escala, Horizontal e Vertical para alinhar a referência com sua foto.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Use Digitalizar fotos novas após adicionar fotos ou restaurar originais indisponíveis. Fotos digitalizadas anteriormente e inalteradas são reutilizadas.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Use Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap para atualizar as instalações que eles gerenciam. Baixe um novo ZIP para as cópias portáteis do Windows. Builds sem a assinatura de atualizações configurada não podem se atualizar sozinhas.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Use Selecionados, Rejeitos ou Todos para revisar as fotos correspondentes.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Use Temp e Matiz ou amostre uma área neutra e, em seguida, ajuste Vivacidade e Saturação.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Use Undo para trabalhos recentes, History para etapas de edição armazenadas e capturas instantâneas nomeadas para visuais que você quer revisitar.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Use Desfazer alteração de palavra-chave para restaurar o último lote enquanto esta janela permanecer aberta. Desfazer recusa sobrescrever palavras-chave alteradas depois desse lote. Histórico da Foto também mantém os estados de palavras-chave antes e depois.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Esta foto está armazenada online no Google Drive. Disponibilize-a offline no Drive para computador, espere o download terminar e tente novamente.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Esta foto está armazenada online no OneDrive. Escolha “Sempre manter neste dispositivo”, espere o download terminar e tente novamente.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Esta foto está armazenada online no iCloud Drive. Baixe o original com o iCloud Drive, espere o download terminar e tente novamente.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Esta foto está armazenada online ou não foi totalmente baixada. Disponibilize-a offline no seu aplicativo de armazenamento em nuvem, espere o download terminar e tente novamente."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Esta foto está armazenada online ou não foi totalmente baixada. Disponibilize-a offline no seu aplicativo de armazenamento em nuvem, espere o download terminar e tente novamente.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Uma foto sugerida tem uma avaliação claramente melhor com base no foco, nos olhos abertos e nos problemas detectados. Empates ou evidências insuficientes mostram nenhuma recomendação clara. Os grupos de semelhança são sugestões; eles não criam pilhas nem alteram bandeiras.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Escolha Selecionados ou Rejeitos para revisar as correspondências antes de aplicar as bandeiras.",
+    "Choose criteria above.": "Escolha os critérios acima.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Escolher um critério abre as fotos correspondentes na grade. Use Selecionados, Rejeitos ou Todos para alterar a visualização da revisão. Outros filtros da biblioteca ainda se aplicam.",
+    "Compare similar photos": "Comparar fotos semelhantes",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "As bandeiras existentes são preservadas por padrão. Ative Substituir bandeiras existentes somente quando quiser alterar decisões anteriores. As ações em lote afetam as correspondências exibidas e incluem arquivos RAW/JPEG vinculados quando o vínculo de metadados está ativado; as bandeiras protegidas ou já correspondentes são excluídas da contagem da ação.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "As bandeiras existentes são preservadas. As contagens incluem arquivos RAW/JPEG vinculados sem bandeira.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "As bandeiras existentes podem ser substituídas. As contagens incluem arquivos RAW/JPEG vinculados.",
+    "Flag {count} photo as a pick": "Marcar {count} foto como selecionada",
+    "Flag {count} photo as a reject": "Marcar {count} foto como rejeito",
+    "Flag {count} photos as picks": "Marcar {count} fotos como selecionadas",
+    "Flag {count} photos as rejects": "Marcar {count} fotos como rejeitos",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Grupo {index} de {count}. Nenhuma recomendação clara; compare estas fotos.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Grupo {index} de {count}. Sugerido: {name}. Com base em foco e verificação de olhos abertos; revise cada quadro.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "O agrupamento exige horários de captura reais e a análise atual do Índice de fotos. Arquivos com apenas datas do sistema de arquivos, vídeos, cópias virtuais e fotos sem detalhe visual suficiente são excluídos. Os registros de índice existentes são atualizados pelo mecanismo do índice após esta atualização.",
+    "Next group": "Próximo grupo",
+    "No similar groups found. Photos need current index analysis and capture times.": "Nenhum grupo semelhante encontrado. As fotos precisam da análise atual do Índice de fotos e de horários de captura.",
+    "Previous group": "Grupo anterior",
+    "Replace existing flags": "Substituir bandeiras existentes",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Bandeira de {count} foto restaurada. Alterações posteriores de bandeira foram preservadas.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Bandeiras de {count} fotos restauradas. Alterações posteriores de bandeira foram preservadas.",
+    "Review similar photos": "Revisar fotos semelhantes",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Revisar fotos semelhantes encontra fotos indexadas visualmente semelhantes capturadas em até 30 segundos na pasta ou coleção atual. Os grupos abrem em Varredura com até 16 fotos. Use Grupo anterior e Próximo grupo para comparar as alternativas e, em seguida, marque fotos individuais com os controles da varredura.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Revise as fotos exibidas e, em seguida, use Marcar fotos como selecionadas ou Marcar fotos como rejeitos. O botão mostra quantos arquivos serão alterados.",
+    "Undo last flag batch": "Desfazer último lote de bandeiras",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Use Desfazer na mensagem de conclusão ou Desfazer último lote de bandeiras na barra lateral para restaurar um lote. Desfazer continua disponível durante esta sessão e preserva quaisquer decisões de bandeira manuais ou externas posteriores. Se a gravação falhar, use Tentar salvar novamente ou desfaça o lote; as gravações com falha permanecem na fila.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Quando Varredura é aberto a partir de seleção assistida, compare o grupo sugerido e marque as fotos individualmente. Fazer seleção está disponível em uma Varredura normal: ele seleciona a foto ativa da varredura e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Os metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos companheiros.",
+    "{count} matching photo shown: {criteria}.": "{count} foto correspondente exibida: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} fotos correspondentes exibidas: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4167,6 +4174,16 @@
       "one": "Exportando {count} foto para {destination}…",
       "many": "Exportando {count} fotos para {destination}…",
       "other": "Exportando {count} fotos para {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Marcar {count} foto como selecionada",
+      "many": "Marcar {count} fotos como selecionadas",
+      "other": "Marcar {count} fotos como selecionadas"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Marcar {count} foto como rejeito",
+      "many": "Marcar {count} fotos como rejeitos",
+      "other": "Marcar {count} fotos como rejeitos"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Importada {count} foto do Apple Photos{value}",
@@ -4193,30 +4210,10 @@
       "many": "Colado em {count} fotos",
       "other": "Colado em {count} fotos"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Escolher {count} foto correspondente a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-      "many": "Escolher {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-      "other": "Escolher {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas."
-    },
-    "Pick {count} select": {
-      "one": "Escolher {count} seleção",
-      "many": "Escolher {count} seleções",
-      "other": "Escolher {count} seleções"
-    },
     "Picked {count} photo": {
       "one": "Selecionado {count} foto",
       "many": "Selecionado {count} fotos",
       "other": "Selecionado {count} fotos"
-    },
-    "Reject {count} photo": {
-      "one": "Rejeitar {count} foto",
-      "many": "Rejeitar {count} fotos",
-      "other": "Rejeitar {count} fotos"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Rejeitar {count} foto correspondente a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-      "many": "Rejeitar {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas.",
-      "other": "Rejeitar {count} fotos correspondentes a {criteria}? As bandeiras existentes nessas fotos serão substituídas."
     },
     "Rejected {count} photo": {
       "one": "Rejeitado {count} foto",
@@ -4233,15 +4230,10 @@
       "many": "{count} capturas restauradas. Você também pode restaurar etapas da hora da captura em Histórico.",
       "other": "{count} capturas restauradas. Você também pode restaurar etapas da hora da captura em Histórico."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Revisando {count} foto que atendeu a um critério de rejeição.",
-      "many": "Revisando {count} fotos que atenderam a um critério de rejeição.",
-      "other": "Revisando {count} fotos que atenderam a um critério de rejeição."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Revisando {count} foto que atendeu a um critério de seleção.",
-      "many": "Revisando {count} fotos que atenderam a um critério de seleção.",
-      "other": "Revisando {count} fotos que atenderam a um critério de seleção."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "Bandeira de {count} foto restaurada. Alterações posteriores de bandeira foram preservadas.",
+      "many": "Bandeiras de {count} fotos restauradas. Alterações posteriores de bandeira foram preservadas.",
+      "other": "Bandeiras de {count} fotos restauradas. Alterações posteriores de bandeira foram preservadas."
     },
     "Wrote {count} sidecar.": {
       "one": "Gravou {count} sidecar.",
@@ -4303,10 +4295,20 @@
       "many": "{count} grupos de duplicatas abrangendo {files}.",
       "other": "{count} grupos de duplicatas abrangendo {files}."
     },
+    "{count} empty file": {
+      "one": "{count} arquivo vazio",
+      "many": "{count} arquivos vazios",
+      "other": "{count} arquivos vazios"
+    },
     "{count} error": {
       "one": "{count} erro",
       "many": "{count} erros",
       "other": "{count} erros"
+    },
+    "{count} face": {
+      "one": "{count} rosto",
+      "many": "{count} rostos",
+      "other": "{count} rostos"
     },
     "{count} face detected": {
       "one": "{count} rosto detectado",
@@ -4328,10 +4330,25 @@
       "many": "{count} arquivos",
       "other": "{count} arquivos"
     },
+    "{count} file not downloaded": {
+      "one": "{count} arquivo não baixado",
+      "many": "{count} arquivos não baixados",
+      "other": "{count} arquivos não baixados"
+    },
+    "{count} group": {
+      "one": "{count} grupo",
+      "many": "{count} grupos",
+      "other": "{count} grupos"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} foto indexada permanece local até ser excluída.",
       "many": "{count} fotos indexadas permanecem locais até serem excluídas.",
       "other": "{count} fotos indexadas permanecem locais até serem excluídas."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count} foto correspondente exibida: {criteria}.",
+      "many": "{count} fotos correspondentes exibidas: {criteria}.",
+      "other": "{count} fotos correspondentes exibidas: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} inlier mínimo de alinhamento",
@@ -4393,6 +4410,11 @@
       "many": "{count} fotos selecionadas",
       "other": "{count} fotos selecionadas"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} foto ignorada{reasons}. Baixe ou restaure os originais e depois reconstrua o índice.",
+      "many": "{count} fotos ignoradas{reasons}. Baixe ou restaure os originais e depois reconstrua o índice.",
+      "other": "{count} fotos ignoradas{reasons}. Baixe ou restaure os originais e depois reconstrua o índice."
+    },
     "{count} photo updated": {
       "one": "{count} foto atualizada",
       "many": "{count} fotos atualizadas",
@@ -4413,6 +4435,11 @@
       "many": "{count} fotos com avaliação",
       "other": "{count} fotos com avaliação"
     },
+    "{count} selected": {
+      "one": "{count} selecionado",
+      "many": "{count} selecionado",
+      "other": "{count} selecionado"
+    },
     "{count} selected photo": {
       "one": "{count} foto selecionada",
       "many": "{count} fotos selecionadas",
@@ -4432,6 +4459,16 @@
       "one": "{count} origem",
       "many": "{count} origens",
       "other": "{count} origens"
+    },
+    "{count} unavailable file": {
+      "one": "{count} arquivo indisponível",
+      "many": "{count} arquivos indisponíveis",
+      "other": "{count} arquivos indisponíveis"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} foto indisponível ignorada",
+      "many": "{count} fotos indisponíveis ignoradas",
+      "other": "{count} fotos indisponíveis ignoradas"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} configuração sem suporte ignorada",
@@ -4467,47 +4504,7 @@
       "one": "{value} saída inesperada nas últimas 24 horas.",
       "many": "{value} saídas inesperadas nas últimas 24 horas.",
       "other": "{value} saídas inesperadas nas últimas 24 horas."
-    },
-    "{count} empty file": {
-      "one": "{count} arquivo vazio",
-      "many": "{count} arquivos vazios",
-      "other": "{count} arquivos vazios"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} arquivo não baixado",
-      "many": "{count} arquivos não baixados",
-      "other": "{count} arquivos não baixados"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} foto ignorada{reasons}. Baixe ou restaure os originais e depois reconstrua o índice.",
-      "many": "{count} fotos ignoradas{reasons}. Baixe ou restaure os originais e depois reconstrua o índice.",
-      "other": "{count} fotos ignoradas{reasons}. Baixe ou restaure os originais e depois reconstrua o índice."
-    },
-    "{count} unavailable file": {
-      "one": "{count} arquivo indisponível",
-      "many": "{count} arquivos indisponíveis",
-      "other": "{count} arquivos indisponíveis"
-    },
-    "{count} face": {
-      "one": "{count} rosto",
-      "many": "{count} rostos",
-      "other": "{count} rostos"
-    },
-    "{count} group": {
-      "one": "{count} grupo",
-      "many": "{count} grupos",
-      "other": "{count} grupos"
-    },
-    "{count} selected": {
-      "one": "{count} selecionado",
-      "many": "{count} selecionado",
-      "other": "{count} selecionado"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} foto indisponível ignorada",
-      "many": "{count} fotos indisponíveis ignoradas",
-      "other": "{count} fotos indisponíveis ignoradas"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

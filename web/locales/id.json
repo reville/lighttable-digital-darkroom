@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Pilih foto untuk diberi rating atau bendera",
     "Choose a preset to see its source and conversion coverage.": "Pilih preset untuk melihat sumber dan cakupan konversinya.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Pilih proses cetak untuk negatif dan pahami mengapa kontrol cetak menghilang untuk film slide.",
-    "Choose a reject criterion above.": "Pilih kriteria penolakan di atas.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Pilih titik yang disimpan di selector untuk mengeditnya, atau gunakan Delete point untuk menghapusnya.",
     "Choose a saved preset to submit": "Pilih preset tersimpan untuk dikirim",
     "Choose a scheme": "Pilih skema",
-    "Choose a select criterion above.": "Pilih kriteria pilihan di atas.",
     "Choose a settings folder": "Pilih folder pengaturan",
     "Choose a source and destination first.": "Pilih sumber dan tujuan terlebih dahulu.",
     "Choose a source and destination, then scan.": "Pilih sumber dan tujuan, lalu pindai.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Periksa gambar pada 1:1 dan tunggu detail pratinjau selesai sebelum menilai tekstur.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Periksa lapisan dan gunakan penyempurnaan yang dilukis di sekitar batas bila diperlukan.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Periksa foto yang ditolak. Cek pengaturan file pasangan dan perluas tumpukan apa pun jika Anda berharap menyertakan anggota lainnya.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Periksa saran, lalu gunakan Pick selects atau Reject rejects jika Anda ingin menerapkan bendera itu.",
     "Interface": "Antarmuka",
     "Interface and behavior": "Antarmuka dan perilaku",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Kontrol antarmuka mengatur latar belakang penampil, skala font, Lights Out, overlay info loupe, dan panduan pangkas. Preferensi ini mengubah tampilan ruang kerja tanpa mengubah piksel yang diekspor.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Buat penyesuaian lokal dengan masker Kuas, Linear, dan Radial",
     "Make photos easier to find and prepare descriptive metadata for export.": "Buat foto lebih mudah ditemukan dan siapkan metadata deskriptif untuk ekspor.",
     "Make select": "Buat pilihan",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Pilih foto survei aktif sebagai pilihan dan tolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG yang tertaut dapat memperluas perubahan bendera itu ke pasangan.",
     "Make the source photo active.": "Buat foto sumber menjadi aktif.",
     "Make your adjustment, then check the save status in the app.": "Lakukan penyesuaian Anda, lalu periksa status simpan di aplikasi.",
     "Manage cache storage": "Kelola penyimpanan cache",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Pilih (P)",
     "Pick / reject / unflag": "Pilih / tolak / hapus bendera",
     "Pick a preset": "Pilih sebuah preset",
-    "Pick selects": "Pilih memilih",
-    "Pick the selects": "Pilih yang terpilih",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Pilih {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Pilih {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti.",
-    "Pick {count} select": "Pilih {count} pilihan",
-    "Pick {count} selects": "Pilih {count} pilihan",
     "Pick, reject, and rate photos": "Pilih, tolak, dan beri rating foto",
     "Picked": "Terpilih",
     "Picked only": "Hanya yang terpilih",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Menyegarkan komunitas…",
     "Reject": "Tolak",
     "Reject (X)": "Tolak (X)",
-    "Reject rejects": "Tolak tolak",
-    "Reject the rejects": "Tolak yang ditolak",
-    "Reject {count} photo": "Tolak {count} foto",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Tolak {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti.",
-    "Reject {count} photos": "Tolak {count} foto",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Tolak {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti.",
     "Rejected": "Ditolak",
     "Rejected {count} photo": "Ditolak {count} foto",
     "Rejected {count} photos": "{count} foto ditolak",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Tinjau masker yang ditransfer",
     "Review translated edits": "Tinjau penyuntingan yang diterjemahkan",
     "Reviewing every photo.": "Meninjau setiap foto.",
-    "Reviewing {count} photo that met a reject criterion.": "Meninjau {count} foto yang memenuhi kriteria tolak.",
-    "Reviewing {count} photo that met a select criterion.": "Meninjau {count} foto yang memenuhi kriteria pilih.",
-    "Reviewing {count} photos that met a reject criterion.": "Meninjau {count} foto yang memenuhi kriteria tolak.",
-    "Reviewing {count} photos that met a select criterion.": "Meninjau {count} foto yang memenuhi kriteria pilih.",
     "Rich descriptions on": "Deskripsi kaya aktif",
     "Richer descriptions require macOS 27 or later": "Deskripsi yang lebih kaya memerlukan macOS 27 atau yang lebih baru",
     "Rights": "Hak",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "Katalog dibiarkan tidak berubah.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Katalog dipulihkan dari cadangan terverifikasi; salinan yang rusak ada di folder Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Model SFace INT8 yang compact membandingkan wajah manusia yang sejajar. Pengelompokan otomatis menggunakan aturan kemiripan yang konservatif; kemungkinan kecocokan tetap terpisah untuk ditinjau. Wajah baru yang cocok dengan orang bernama akan disarankan untuk konfirmasi.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "Konfirmasi menampilkan jumlah yang terpengaruh dan memperingatkan bahwa bendera yang sudah ada pada foto yang cocok akan diganti. Metadata RAW/JPEG yang tertaut juga dapat menyertakan file pasangan saat preferensi itu diaktifkan.",
     "The current catalog is backed up first, then replaced by this one.": "Katalog saat ini dicadangkan terlebih dahulu, lalu diganti dengan yang ini.",
     "The desktop Trash service (gio) is unavailable": "Layanan Tempat Sampah desktop (gio) tidak tersedia",
     "The desktop app checks its signed update feed.": "Aplikasi desktop memeriksa umpan pembaruan bertandatangannya.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Gunakan Skala, Horizontal, dan Vertikal untuk menyelaraskan referensi dengan foto Anda.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Gunakan Pindai foto baru setelah menambahkan foto atau memulihkan asli yang tidak tersedia. Foto yang sudah dipindai sebelumnya dan tidak berubah akan digunakan kembali.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Gunakan Scoop, WinGet, Chocolatey, AUR, Flatpak, atau Snap untuk memperbarui instalasi yang dikelolanya. Unduh ZIP baru untuk salinan portabel Windows. Build tanpa konfigurasi tanda tangan pembaruan tidak dapat memperbarui dirinya sendiri.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Gunakan Pilihan, Tolak, atau Semua untuk meninjau foto yang cocok.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Gunakan Temp dan Tint atau sampel area netral, lalu sesuaikan Vibrance dan Saturation.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Gunakan Undo untuk pekerjaan terbaru, History untuk langkah pengeditan tersimpan, dan snapshot bernama untuk tampilan yang ingin Anda buka lagi.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Gunakan Urungkan perubahan kata kunci untuk memulihkan batch terakhir selama jendela ini tetap terbuka. Urungkan menolak menimpa kata kunci yang diubah setelah batch itu. Riwayat Foto juga menyimpan status kata kunci sebelum dan sesudah.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Foto ini disimpan online di Google Drive. Jadikan tersedia offline di Drive untuk desktop, tunggu hingga unduhan selesai, lalu coba lagi.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Foto ini disimpan online di OneDrive. Pilih “Selalu simpan di perangkat ini”, tunggu hingga unduhan selesai, lalu coba lagi.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Foto ini disimpan online di iCloud Drive. Unduh file asli dengan iCloud Drive, tunggu hingga unduhan selesai, lalu coba lagi.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Foto ini disimpan online atau belum sepenuhnya diunduh. Jadikan tersedia offline di aplikasi penyimpanan cloud Anda, tunggu hingga unduhan selesai, lalu coba lagi."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Foto ini disimpan online atau belum sepenuhnya diunduh. Jadikan tersedia offline di aplikasi penyimpanan cloud Anda, tunggu hingga unduhan selesai, lalu coba lagi.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Foto yang disarankan memiliki penilaian yang secara unik lebih kuat berdasarkan fokus, mata terbuka, dan masalah yang terdeteksi. Jika hasilnya seri atau buktinya tidak cukup, tidak ada rekomendasi yang jelas. Grup kesamaan hanyalah saran; grup ini tidak membuat tumpukan atau mengubah bendera.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Pilih Pilihan atau Tolak untuk meninjau kecocokan sebelum menerapkan bendera.",
+    "Choose criteria above.": "Pilih kriteria di atas.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Memilih kriteria akan membuka foto yang cocok di kisi. Gunakan Pilihan, Tolak, atau Semua untuk mengubah tampilan tinjauan. Filter pustaka lain tetap berlaku.",
+    "Compare similar photos": "Bandingkan foto serupa",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Bendera yang ada dipertahankan secara default. Aktifkan Ganti bendera yang ada hanya saat Anda ingin mengubah keputusan sebelumnya. Tindakan batch memengaruhi kecocokan yang ditampilkan dan mencakup berkas RAW/JPEG tertaut saat penautan metadata diaktifkan; bendera yang dilindungi atau yang sudah cocok dikecualikan dari hitungan tindakan.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Bendera yang ada dipertahankan. Hitungan mencakup berkas RAW/JPEG tertaut yang tidak diberi bendera.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Bendera yang ada dapat diganti. Hitungan mencakup berkas RAW/JPEG tertaut.",
+    "Flag {count} photo as a pick": "Beri bendera {count} foto sebagai pilihan",
+    "Flag {count} photo as a reject": "Beri bendera {count} foto sebagai tolak",
+    "Flag {count} photos as picks": "Beri bendera {count} foto sebagai pilihan",
+    "Flag {count} photos as rejects": "Beri bendera {count} foto sebagai tolak",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Grup {index} dari {count}. Tidak ada rekomendasi yang jelas; bandingkan foto-foto ini.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Grup {index} dari {count}. Disarankan: {name}. Berdasarkan pemeriksaan fokus dan mata terbuka; tinjau setiap frame.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Pengelompokan memerlukan waktu tangkap yang sebenarnya dan analisis Indeks Foto saat ini. Berkas yang hanya memiliki tanggal sistem berkas, video, salinan virtual, dan foto tanpa detail visual yang cukup dikecualikan. Catatan indeks yang ada disegarkan oleh pekerja indeks setelah pembaruan ini.",
+    "Next group": "Grup Berikutnya",
+    "No similar groups found. Photos need current index analysis and capture times.": "Tidak ada grup serupa yang ditemukan. Foto memerlukan analisis Indeks Foto saat ini dan waktu tangkap.",
+    "Previous group": "Grup Sebelumnya",
+    "Replace existing flags": "Ganti bendera yang ada",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Bendera {count} foto dipulihkan. Perubahan bendera selanjutnya tetap dipertahankan.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Bendera {count} foto dipulihkan. Perubahan bendera selanjutnya tetap dipertahankan.",
+    "Review similar photos": "Tinjau foto serupa",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Tinjau foto serupa menemukan foto terindeks yang secara visual serupa dan diambil dalam 30 detik di folder atau koleksi saat ini. Grup dibuka di Survey dengan hingga 16 foto. Gunakan Grup Sebelumnya dan Grup Berikutnya untuk membandingkan alternatif, lalu beri bendera pada foto individual dengan kontrol survei.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Tinjau foto yang ditampilkan, lalu gunakan Beri bendera foto sebagai pilihan atau Beri bendera foto sebagai tolak. Tombol menampilkan berapa banyak berkas yang akan berubah.",
+    "Undo last flag batch": "Batalkan batch bendera terakhir",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Gunakan Batalkan di pesan penyelesaian atau Batalkan batch bendera terakhir di sidebar untuk memulihkan sebuah batch. Batalkan tetap tersedia selama sesi ini dan mempertahankan keputusan bendera manual atau eksternal apa pun yang dibuat setelahnya. Jika penyimpanan gagal, gunakan Coba simpan lagi atau batalkan batch; penulisan yang gagal tetap dalam antrean.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Saat Survey dibuka dari Seleksi terbantu, bandingkan grup yang disarankan dan beri bendera pada foto satu per satu. Buat pilihan tersedia dalam Survey biasa: ini memilih foto survei aktif dan menolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG tertaut dapat memperluas perubahan bendera tersebut ke pendamping.",
+    "{count} matching photo shown: {criteria}.": "{count} foto cocok ditampilkan: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} foto cocok ditampilkan: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4159,6 +4166,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "Mengekspor {count} foto ke {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "Beri bendera {count} foto sebagai pilihan"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "Beri bendera {count} foto sebagai tolak"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "Mengimpor {count} foto dari Apple Photos{value}"
@@ -4175,20 +4188,8 @@
     "Pasted to {count} photo": {
       "other": "Ditempel ke {count} foto"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "Pilih {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti."
-    },
-    "Pick {count} select": {
-      "other": "Pilih {count} pilihan"
-    },
     "Picked {count} photo": {
       "other": "Terpilih {count} foto"
-    },
-    "Reject {count} photo": {
-      "other": "Tolak {count} foto"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "Tolak {count} foto yang cocok dengan {criteria}? Bendera yang ada pada foto-foto itu akan diganti."
     },
     "Rejected {count} photo": {
       "other": "{count} foto ditolak"
@@ -4199,11 +4200,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "Memulihkan {count} tangkap. Anda juga dapat memulihkan langkah waktu tangkap di Riwayat."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "Meninjau {count} foto yang memenuhi kriteria tolak."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "Meninjau {count} foto yang memenuhi kriteria pilih."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "Bendera {count} foto dipulihkan. Perubahan bendera selanjutnya tetap dipertahankan."
     },
     "Wrote {count} sidecar.": {
       "other": "Menulis {count} sidecar."
@@ -4241,8 +4239,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} grup duplikat mencakup {files}."
     },
+    "{count} empty file": {
+      "other": "{count} file kosong"
+    },
     "{count} error": {
       "other": "{count} kesalahan"
+    },
+    "{count} face": {
+      "other": "{count} wajah"
     },
     "{count} face detected": {
       "other": "{count} wajah terdeteksi"
@@ -4256,8 +4260,17 @@
     "{count} file": {
       "other": "{count} file"
     },
+    "{count} file not downloaded": {
+      "other": "{count} file belum diunduh"
+    },
+    "{count} group": {
+      "other": "{count} grup"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "{count} foto yang diindeks tetap lokal sampai dihapus."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "{count} foto cocok ditampilkan: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "other": "{count} inlier penjajaran minimum"
@@ -4295,6 +4308,9 @@
     "{count} photo selected": {
       "other": "{count} foto terpilih"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count} foto dilewati{reasons}. Unduh atau pulihkan aslinya, lalu bangun ulang indeks."
+    },
     "{count} photo updated": {
       "other": "{count} foto diperbarui"
     },
@@ -4307,6 +4323,9 @@
     "{count} rated photo": {
       "other": "{count} foto dinilai"
     },
+    "{count} selected": {
+      "other": "{count} terpilih"
+    },
     "{count} selected photo": {
       "other": "{count} foto terpilih"
     },
@@ -4318,6 +4337,12 @@
     },
     "{count} source": {
       "other": "{count} sumber"
+    },
+    "{count} unavailable file": {
+      "other": "{count} file tidak tersedia"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "{count} foto tidak tersedia dilewati"
     },
     "{count} unsupported setting skipped": {
       "other": "{count} pengaturan yang tidak didukung dilewati"
@@ -4339,31 +4364,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "{value} keluar tak terduga dalam 24 jam terakhir."
-    },
-    "{count} empty file": {
-      "other": "{count} file kosong"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} file belum diunduh"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count} foto dilewati{reasons}. Unduh atau pulihkan aslinya, lalu bangun ulang indeks."
-    },
-    "{count} unavailable file": {
-      "other": "{count} file tidak tersedia"
-    },
-    "{count} face": {
-      "other": "{count} wajah"
-    },
-    "{count} group": {
-      "other": "{count} grup"
-    },
-    "{count} selected": {
-      "other": "{count} terpilih"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "{count} foto tidak tersedia dilewati"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Derecelendirmek veya işaretlemek için bir fotoğraf seçin",
     "Choose a preset to see its source and conversion coverage.": "Kaynağını ve dönüştürme kapsamını görmek için bir hazır ayar seçin.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Negatifler için bir baskı işlemi seçin ve slayt film için neden print kontrollerinin kaybolduğunu anlayın.",
-    "Choose a reject criterion above.": "Yukarıdan bir reddetme ölçütü seçin.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Bir noktayı düzenlemek için seçicide kayıtlı bir noktayı seçin veya kaldırmak için Noktayı sil’i kullanın.",
     "Choose a saved preset to submit": "Gönderilecek kayıtlı bir hazır ayar seçin",
     "Choose a scheme": "Bir şema seç",
-    "Choose a select criterion above.": "Yukarıdan bir seçim ölçütü seçin.",
     "Choose a settings folder": "Bir ayarlar klasörü seçin",
     "Choose a source and destination first.": "Önce bir kaynak ve hedef seçin.",
     "Choose a source and destination, then scan.": "Önce bir kaynak ve hedef seçin, sonra tarayın.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Görüntüyü 1:1’de inceleyin ve dokuyu değerlendirmeden önce önizleme ayrıntısının tamamlanmasını bekleyin.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Bindirmeyi inceleyin ve gerektiğinde sınırların çevresine boyalı iyileştirmeler uygulayın.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Reddedilmiş fotoğrafları inceleyin. Diğer üyelerini de dahil etmeyi bekliyorsanız, eşleştirilmiş dosya ayarlarını kontrol edin ve herhangi bir yığını genişletin.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Önerileri inceleyin, ardından bu bayrakları uygulamak istiyorsanız Pick selects veya Reject rejects kullanın.",
     "Interface": "Arayüz",
     "Interface and behavior": "Arayüz ve davranış",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Arayüz, görüntüleyici arka planını, yazı tipi ölçeğini, Lights Out'u, büyüteç bilgi katmanını ve kırpma kılavuzlarını denetler. Bu tercihler, dışa aktarılan pikselleri değiştirmeden çalışma alanının görünümünü değiştirir.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Fırça, Doğrusal ve Radyal maskelerle yerel ayarlamalar yapın",
     "Make photos easier to find and prepare descriptive metadata for export.": "Fotoğrafları bulmayı kolaylaştırın ve dışa aktarma için açıklayıcı üstveri hazırlayın.",
     "Make select": "Seçim yap",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Seçme işlemi, aktif inceleme fotoğrafını seçilmiş yapar ve incelemede kalan diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlantılı RAW ve JPEG meta verileri, bu bayrak değişikliklerini eş fotoğraflara da genişletebilir.",
     "Make the source photo active.": "Kaynak fotoğrafı etkin yap.",
     "Make your adjustment, then check the save status in the app.": "Ayarlamanızı yapın, ardından uygulamadaki kaydetme durumunu kontrol edin.",
     "Manage cache storage": "Önbellek depolamasını yönet",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Seç (P)",
     "Pick / reject / unflag": "Seç / reddet / bayrağı kaldır",
     "Pick a preset": "Bir hazır ayar seç",
-    "Pick selects": "Seç, seçilenleri seçer",
-    "Pick the selects": "Seçilenleri seç",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria} ile eşleşen {count} fotoğraf seçilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria} ile eşleşen {count} fotoğraf seçilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
-    "Pick {count} select": "{count} seçimi işaretle",
-    "Pick {count} selects": "{count} seçimi işaretle",
     "Pick, reject, and rate photos": "Fotoğrafları seç, reddet ve derecelendir",
     "Picked": "Seçilmiş",
     "Picked only": "Yalnızca seçilmiş",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Topluluk yenileniyor…",
     "Reject": "Reddet",
     "Reject (X)": "Reddet (X)",
-    "Reject rejects": "Reddedilenleri reddet",
-    "Reject the rejects": "Reddedilenleri reddet",
-    "Reject {count} photo": "{count} fotoğrafı reddet",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria} ile eşleşen {count} fotoğraf reddedilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
-    "Reject {count} photos": "{count} fotoğrafı reddet",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria} ile eşleşen {count} fotoğraf reddedilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
     "Rejected": "Reddedildi",
     "Rejected {count} photo": "{count} fotoğraf reddedildi",
     "Rejected {count} photos": "{count} fotoğraf reddedildi",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Aktarılan maskeleri gözden geçir",
     "Review translated edits": "Çevrilmiş düzenlemeleri incele",
     "Reviewing every photo.": "Her fotoğraf inceleniyor.",
-    "Reviewing {count} photo that met a reject criterion.": "Bir reddetme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
-    "Reviewing {count} photo that met a select criterion.": "Bir seçme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
-    "Reviewing {count} photos that met a reject criterion.": "Bir reddetme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
-    "Reviewing {count} photos that met a select criterion.": "Bir seçme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
     "Rich descriptions on": "Zengin açıklamalar açık",
     "Richer descriptions require macOS 27 or later": "Daha zengin açıklamalar için macOS 27 veya sonraki bir sürüm gerekir",
     "Rights": "Haklar",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "Katalog değişmeden kaldı.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Katalog doğrulanmış bir yedekten geri yüklendi; hasarlı kopya Kurtarma klasöründe.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Kompakt SFace INT8 modeli, hizalanmış insan yüzlerini karşılaştırır. Otomatik gruplama, temkinli benzerlik kuralları kullanır; olası eşleşmeler inceleme için ayrı tutulur. Adlandırılmış bir kişiyle eşleşen yeni yüzler doğrulama için önerilir.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "Onay, etkilenen sayıyı gösterir ve eşleşen fotoğraflardaki mevcut bayrakların değiştirileceği konusunda uyarır. Bu tercih etkin olduğunda, bağlantılı RAW/JPEG meta verileri eş fotoğrafı da içerebilir.",
     "The current catalog is backed up first, then replaced by this one.": "Önce geçerli katalog yedeklenir, sonra bununla değiştirilir.",
     "The desktop Trash service (gio) is unavailable": "Masaüstü Çöp Sepeti hizmeti (gio) kullanılamıyor",
     "The desktop app checks its signed update feed.": "Masaüstü uygulaması, imzalı güncelleme beslemesini denetler.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Referansı fotoğrafınızla hizalamak için Ölçek, Yatay ve Dikey’i kullanın.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Fotoğraflar ekledikten veya kullanılamayan orijinalleri geri yükledikten sonra Yeni fotoğrafları tara seçeneğini kullanın. Daha önce taranmış, değişmemiş fotoğraflar yeniden kullanılır.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop, WinGet, Chocolatey, AUR, Flatpak veya Snap tarafından yönetilen kurulumları ilgili yöneticiyle güncelleyin. Windows taşınabilir kopyaları için yeni bir ZIP indirin. Güncelleme imzası yapılandırılmamış derlemeler kendilerini güncelleyemez.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Eşleşen fotoğrafları gözden geçirmek için Seçilenler, Reddedilenler veya Tümü’nü kullanın.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Geçici ve Renk tonu’nu kullanın veya nötr bir alan örnekleyin, ardından Canlılık ve Doygunluk’u ayarlayın.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Yakın zamandaki çalışmalar için Undo, kayıtlı düzenleme adımları için History ve yeniden dönmek istediğiniz görünümler için isimli anlık görüntüler kullanın.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Bu pencere açık kaldığı sürece son toplu işlemi geri yüklemek için Anahtar kelime değişikliğini geri al’ı kullanın. Geri Al, o toplu işlemden sonra değiştirilen anahtar kelimelerin üzerine yazmayı reddeder. Fotoğraf Geçmişi ayrıca anahtar kelimelerin önceki ve sonraki durumlarını da korur.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Bu fotoğraf Google Drive üzerinde çevrimiçi olarak saklanıyor. Masaüstü için Drive’da çevrimdışı kullanılabilir yapın, indirmenin tamamlanmasını bekleyin, ardından tekrar deneyin.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Bu fotoğraf OneDrive üzerinde çevrimiçi olarak saklanıyor. “Her zaman bu cihazda tut” seçeneğini seçin, indirmenin tamamlanmasını bekleyin, ardından tekrar deneyin.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Bu fotoğraf iCloud Drive üzerinde çevrimiçi olarak saklanıyor. Orijinali iCloud Drive ile indirin, indirmenin tamamlanmasını bekleyin, ardından tekrar deneyin.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Bu fotoğraf çevrimiçi olarak saklanıyor veya tamamen indirilmemiş. Bulut depolama uygulamanızda çevrimdışı kullanılabilir yapın, indirmenin tamamlanmasını bekleyin, ardından tekrar deneyin."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Bu fotoğraf çevrimiçi olarak saklanıyor veya tamamen indirilmemiş. Bulut depolama uygulamanızda çevrimdışı kullanılabilir yapın, indirmenin tamamlanmasını bekleyin, ardından tekrar deneyin.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Önerilen fotoğraf, odak, açık gözler ve saptanan sorunlara göre benzersiz biçimde daha güçlü bir değerlendirmeye sahiptir. Beraberlikler veya yetersiz kanıt net bir öneri göstermez. Benzerlik grupları öneridir; yığın oluşturmaz veya bayrakları değiştirmez.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Bayrakları uygulamadan önce eşleşmeleri incelemek için Seçilenler veya Reddedilenler'i seçin.",
+    "Choose criteria above.": "Yukarıdaki ölçütleri seçin.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Bir ölçüt seçmek, eşleşen fotoğraflarını ızgarada açar. İnceleme görünümünü değiştirmek için Seçilenler, Reddedilenler veya Tümü'nü kullanın. Diğer kütüphane filtreleri yine de uygulanır.",
+    "Compare similar photos": "Benzer fotoğrafları karşılaştır",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Var olan bayraklar varsayılan olarak korunur. Önceki kararları değiştirmek istediğinizde yalnızca Var olan bayrakları değiştir'i etkinleştirin. Toplu işlemler, görüntülenen eşleşmeleri etkiler ve üstveri bağlantısı etkinleştirildiğinde bağlı RAW/JPEG dosyalarını içerir; korunan veya zaten eşleşen bayraklar işlem sayısına dahil edilmez.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Var olan bayraklar korunur. Sayılar bayraklanmamış bağlı RAW/JPEG dosyalarını içerir.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Var olan bayraklar değiştirilebilir. Sayılar bağlı RAW/JPEG dosyalarını içerir.",
+    "Flag {count} photo as a pick": "{count} fotoğrafı seçim olarak bayrakla",
+    "Flag {count} photo as a reject": "{count} fotoğrafı reddedilen olarak bayrakla",
+    "Flag {count} photos as picks": "{count} fotoğrafı seçimler olarak bayrakla",
+    "Flag {count} photos as rejects": "{count} fotoğrafı reddedilenler olarak bayrakla",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "{index}/{count} grup. Net bir öneri yok; bu fotoğrafları karşılaştırın.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "{index}/{count} grup. Önerilen: {name}. Odak ve göz kontrollerine göre; her kareyi inceleyin.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Gruplama için gerçek yakalama zamanı ve güncel Fotoğraf Dizini analizi gerekir. Yalnızca dosya sistemi tarihleri olan dosyalar, videolar, sanal kopyalar ve yeterli görsel ayrıntıya sahip olmayan fotoğraflar hariç tutulur. Bu güncellemeden sonra mevcut dizin kayıtları dizin çalışanı tarafından yenilenir.",
+    "Next group": "Sonraki grup",
+    "No similar groups found. Photos need current index analysis and capture times.": "Benzer grup bulunamadı. Fotoğraflar için güncel dizin analizi ve yakalama zamanı gerekir.",
+    "Previous group": "Önceki grup",
+    "Replace existing flags": "Var olan bayrakları değiştir",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count} fotoğraf bayrağı geri yüklendi. Sonraki bayrak değişiklikleri korunur.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count} fotoğraf bayrağı geri yüklendi. Sonraki bayrak değişiklikleri korunur.",
+    "Review similar photos": "Benzer fotoğrafları incele",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Benzer fotoğrafları incele, geçerli klasör veya koleksiyonda 30 saniye içinde çekilmiş görsel olarak benzer dizinlenmiş fotoğrafları bulur. Gruplar, en fazla 16 fotoğrafla İncele'de açılır. Alternatifleri karşılaştırmak için Önceki grup ve Sonraki grup'u kullanın, ardından inceleme kontrolleriyle tek tek fotoğrafları bayraklayın.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Görüntülenen fotoğrafları inceleyin, sonra fotoğrafları seçimler olarak bayrakla veya fotoğrafları reddedilenler olarak bayrakla seçeneğini kullanın. Düğme, kaç dosyanın değişeceğini gösterir.",
+    "Undo last flag batch": "Son bayrak toplu işini geri al",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Bir toplu işlemi geri yüklemek için tamamlanma iletisindeki Geri Al'ı veya kenar çubuğundaki Son bayrak toplu işini geri al'ı kullanın. Geri Al, bu oturum sırasında kullanılabilir kalır ve sonraki elle ya da harici bayrak kararlarını korur. Kaydetme başarısız olursa, Kaydetmeyi yeniden dene'yi kullanın ya da toplu işlemi geri alın; başarısız yazmalar kuyrukta kalır.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "İncele Yardımlı ayıklama'dan açıldığında, önerilen grubu karşılaştırın ve fotoğrafları tek tek bayraklayın. Normal bir İncele'de Seçim yap kullanılabilir: etkin inceleme fotoğrafını seçer ve incelemedeki diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlı RAW ve JPEG üstverisi bu bayrak değişikliklerini eşlikçilere yayabilir.",
+    "{count} matching photo shown: {criteria}.": "{count} eşleşen fotoğraf gösteriliyor: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} eşleşen fotoğraf gösteriliyor: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4163,6 +4170,14 @@
     "Exporting {count} photo to {destination}…": {
       "one": "{count} fotoğraf {destination} konumuna dışa aktarılıyor…",
       "other": "{count} fotoğraf {destination} konumuna dışa aktarılıyor…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "{count} fotoğrafı seçim olarak bayrakla",
+      "other": "{count} fotoğrafı seçimler olarak bayrakla"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "{count} fotoğrafı reddedilen olarak bayrakla",
+      "other": "{count} fotoğrafı reddedilenler olarak bayrakla"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Apple Photos'tan {count} fotoğraf içe aktarıldı{value}",
@@ -4184,25 +4199,9 @@
       "one": "{count} fotoğrafa yapıştırıldı",
       "other": "{count} fotoğrafa yapıştırıldı"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria} ile eşleşen {count} fotoğraf seçilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
-      "other": "{criteria} ile eşleşen {count} fotoğraf seçilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir."
-    },
-    "Pick {count} select": {
-      "one": "{count} seçimi işaretle",
-      "other": "{count} seçimi işaretle"
-    },
     "Picked {count} photo": {
       "one": "{count} fotoğraf seçildi",
       "other": "{count} fotoğraf seçildi"
-    },
-    "Reject {count} photo": {
-      "one": "{count} fotoğrafı reddet",
-      "other": "{count} fotoğrafı reddet"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria} ile eşleşen {count} fotoğraf reddedilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir.",
-      "other": "{criteria} ile eşleşen {count} fotoğraf reddedilsin mi? Bu fotoğraflardaki mevcut bayraklar değiştirilir."
     },
     "Rejected {count} photo": {
       "one": "{count} fotoğraf reddedildi",
@@ -4216,13 +4215,9 @@
       "one": "{count} yakalama geri yüklendi. Yakalama zamanı adımlarını Geçmiş'ten de geri yükleyebilirsiniz.",
       "other": "{count} yakalama geri yüklendi. Yakalama zamanı adımlarını Geçmiş'ten de geri yükleyebilirsiniz."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Bir reddetme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
-      "other": "Bir reddetme ölçütünü karşılayan {count} fotoğraf inceleniyor."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Bir seçme ölçütünü karşılayan {count} fotoğraf inceleniyor.",
-      "other": "Bir seçme ölçütünü karşılayan {count} fotoğraf inceleniyor."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "{count} fotoğraf bayrağı geri yüklendi. Sonraki bayrak değişiklikleri korunur.",
+      "other": "{count} fotoğraf bayrağı geri yüklendi. Sonraki bayrak değişiklikleri korunur."
     },
     "Wrote {count} sidecar.": {
       "one": "{count} yardımcı dosya yazıldı.",
@@ -4272,9 +4267,17 @@
       "one": "{files} kapsayan {count} yinelenen grup.",
       "other": "{files} kapsayan {count} yinelenen grup."
     },
+    "{count} empty file": {
+      "one": "{count} boş dosya",
+      "other": "{count} boş dosya"
+    },
     "{count} error": {
       "one": "{count} hata",
       "other": "{count} hata"
+    },
+    "{count} face": {
+      "one": "{count} yüz",
+      "other": "{count} yüz"
     },
     "{count} face detected": {
       "one": "{count} yüz algılandı",
@@ -4292,9 +4295,21 @@
       "one": "{count} dosya",
       "other": "{count} dosya"
     },
+    "{count} file not downloaded": {
+      "one": "{count} dosya indirilmedi",
+      "other": "{count} dosya indirilmedi"
+    },
+    "{count} group": {
+      "one": "{count} grup",
+      "other": "{count} grup"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} dizinlenmiş fotoğraf, silinene kadar yerelde kalır.",
       "other": "{count} dizinlenmiş fotoğraf, silinene kadar yerelde kalır."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count} eşleşen fotoğraf gösteriliyor: {criteria}.",
+      "other": "{count} eşleşen fotoğraf gösteriliyor: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} minimum hizalama iç noktası",
@@ -4344,6 +4359,10 @@
       "one": "{count} fotoğraf seçildi",
       "other": "{count} fotoğraf seçildi"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} fotoğraf atlandı{reasons}. Orijinalleri indirin veya geri yükleyin, ardından dizini yeniden oluşturun.",
+      "other": "{count} fotoğraf atlandı{reasons}. Orijinalleri indirin veya geri yükleyin, ardından dizini yeniden oluşturun."
+    },
     "{count} photo updated": {
       "one": "{count} fotoğraf güncellendi",
       "other": "{count} fotoğraf güncellendi"
@@ -4360,6 +4379,10 @@
       "one": "{count} puanlanmış fotoğraf",
       "other": "{count} puanlanmış fotoğraf"
     },
+    "{count} selected": {
+      "one": "{count} seçildi",
+      "other": "{count} seçildi"
+    },
     "{count} selected photo": {
       "one": "{count} seçili fotoğraf",
       "other": "{count} seçili fotoğraf"
@@ -4375,6 +4398,14 @@
     "{count} source": {
       "one": "{count} kaynak",
       "other": "{count} kaynak"
+    },
+    "{count} unavailable file": {
+      "one": "{count} kullanılamayan dosya",
+      "other": "{count} kullanılamayan dosya"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} kullanılamayan fotoğraf atlandı",
+      "other": "{count} kullanılamayan fotoğraf atlandı"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} desteklenmeyen ayar atlandı",
@@ -4403,39 +4434,7 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "son 24 saatte {value} beklenmeyen çıkış.",
       "other": "son 24 saatte {value} beklenmeyen çıkış."
-    },
-    "{count} empty file": {
-      "one": "{count} boş dosya",
-      "other": "{count} boş dosya"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} dosya indirilmedi",
-      "other": "{count} dosya indirilmedi"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} fotoğraf atlandı{reasons}. Orijinalleri indirin veya geri yükleyin, ardından dizini yeniden oluşturun.",
-      "other": "{count} fotoğraf atlandı{reasons}. Orijinalleri indirin veya geri yükleyin, ardından dizini yeniden oluşturun."
-    },
-    "{count} unavailable file": {
-      "one": "{count} kullanılamayan dosya",
-      "other": "{count} kullanılamayan dosya"
-    },
-    "{count} face": {
-      "one": "{count} yüz",
-      "other": "{count} yüz"
-    },
-    "{count} group": {
-      "one": "{count} grup",
-      "other": "{count} grup"
-    },
-    "{count} selected": {
-      "one": "{count} seçildi",
-      "other": "{count} seçildi"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} kullanılamayan fotoğraf atlandı",
-      "other": "{count} kullanılamayan fotoğraf atlandı"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

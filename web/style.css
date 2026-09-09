@@ -514,6 +514,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 .sidebar-disclosure-body > label.check-row { display:flex; margin:0; color:var(--ink-2); }
 .sidebar-note { margin:0 0 8px; color:var(--muted); font-size:10px; line-height:1.45; }
 .ai-cull-disclosure { max-height:260px; overflow-y:auto; }
+.ai-cull-disclosure > summary { position:sticky; top:0; z-index:1; background:var(--chrome); }
 .ai-cull-disclosure .cull-group { margin-top:8px; }
 .ai-cull-disclosure .cull-group-title { margin-bottom:2px; color:var(--muted-2); font-size:10px; font-weight:600; text-transform:uppercase; }
 .ai-cull-disclosure .btnrow { flex-direction:column; }
@@ -2105,3 +2106,7 @@ body { display:flex; flex-direction:column; }
   padding: 14px 16px; background: var(--panel, #202020); color: var(--fg, #eee);
   border: 1px solid var(--border, #444); border-radius: 8px; box-shadow: 0 8px 30px #0006; }
 .desktop-update-notice span { flex: 1; }
+
+.cull-similar-navigation { padding:12px; border-bottom:1px solid var(--line); }
+.cull-similar-navigation p { margin:0 0 8px; overflow-wrap:anywhere; }
+.cull-similar-navigation button { white-space:normal; }

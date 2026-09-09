@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Kies een foto om te beoordelen of te markeren",
     "Choose a preset to see its source and conversion coverage.": "Kies een voorinstelling om de bron- en conversiedekking te bekijken.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Kies een afdrukproces voor negatieven en begrijp waarom afdrukbedieningen verdwijnen voor diafilm.",
-    "Choose a reject criterion above.": "Kies hierboven een afwijscriterium.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Kies een opgeslagen punt in de selector om het te bewerken, of gebruik Punt verwijderen om het te verwijderen.",
     "Choose a saved preset to submit": "Kies een opgeslagen voorinstelling om in te dienen",
     "Choose a scheme": "Kies een schema",
-    "Choose a select criterion above.": "Kies hierboven een selectiecriterium.",
     "Choose a settings folder": "Kies een instellingenmap",
     "Choose a source and destination first.": "Kies eerst een bron en bestemming.",
     "Choose a source and destination, then scan.": "Kies een bron en bestemming en scan vervolgens.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Inspecteer de afbeelding op 1:1 en wacht tot de details van het voorbeeld zijn voltooid voordat je de structuur beoordeelt.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Inspecteer de overlay en gebruik waar nodig geschilderde verfijningen rond randen.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Controleer de afgewezen foto's. Controleer de instellingen voor gekoppelde bestanden en vouw eventueel stapels uit als u verwacht de andere leden mee te nemen.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Inspecteer de suggesties en gebruik daarna Kiezen selecteert of Afwijzen wijst af als je die markeringen wilt toepassen.",
     "Interface": "Interface",
     "Interface and behavior": "Interface en gedrag",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Interface bestuurt de achtergrond van de viewer, lettergrootte, Lights Out, het overlay met loupe-info en bijsnijdhulplijnen. Deze voorkeuren wijzigen het uiterlijk van de werkruimte zonder de geëxporteerde pixels te wijzigen.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Breng lokale aanpassingen aan met Penseel-, Lineaire en Radiale maskers",
     "Make photos easier to find and prepare descriptive metadata for export.": "Maak foto's makkelijker te vinden en bereid beschrijvende metagegevens voor export voor.",
     "Make select": "Selectie maken",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Maak selecteren de actieve overzichtsfoto tot gekozen foto en wijst het de andere foto’s in het overzicht af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metadata kan deze markeringswijzigingen ook uitbreiden naar begeleidende bestanden.",
     "Make the source photo active.": "Maak de bronfoto actief.",
     "Make your adjustment, then check the save status in the app.": "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
     "Manage cache storage": "Cache-opslag beheren",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Kiezen (P)",
     "Pick / reject / unflag": "Kiezen / afwijzen / markering verwijderen",
     "Pick a preset": "Kies een voorinstelling",
-    "Pick selects": "Kiezen selecteert",
-    "Pick the selects": "Kies de selecties",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{count} foto kiezen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{count} foto's kiezen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Pick {count} select": "Kies {count} selecteren",
-    "Pick {count} selects": "{count} selecties kiezen",
     "Pick, reject, and rate photos": "Kiezen, afwijzen en foto's beoordelen",
     "Picked": "Gekozen",
     "Picked only": "Alleen gekozen",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Community vernieuwen…",
     "Reject": "Afwijzen",
     "Reject (X)": "Afwijzen (X)",
-    "Reject rejects": "Afwijzen van afgewezen foto's",
-    "Reject the rejects": "De afgewezen items afwijzen",
-    "Reject {count} photo": "{count} foto afwijzen",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{count} foto afwijzen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-    "Reject {count} photos": "{count} foto's afwijzen",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{count} foto's afwijzen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
     "Rejected": "Afgewezen",
     "Rejected {count} photo": "{count} foto afgewezen",
     "Rejected {count} photos": "{count} foto's afgewezen",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Overgebrachte maskers beoordelen",
     "Review translated edits": "Vertaalde bewerkingen beoordelen",
     "Reviewing every photo.": "Elke foto beoordelen.",
-    "Reviewing {count} photo that met a reject criterion.": "Bezig met beoordelen van {count} foto die aan een afwijzingscriterium voldeed.",
-    "Reviewing {count} photo that met a select criterion.": "Bezig met beoordelen van {count} foto die aan een selectiecriterium voldeed.",
-    "Reviewing {count} photos that met a reject criterion.": "Bezig met beoordelen van {count} foto's die aan een afwijzingscriterium voldeden.",
-    "Reviewing {count} photos that met a select criterion.": "Bezig met beoordelen van {count} foto's die aan een selectiecriterium voldeden.",
     "Rich descriptions on": "Rijke beschrijvingen aan",
     "Richer descriptions require macOS 27 or later": "Rijkere beschrijvingen vereisen macOS 27 of later",
     "Rights": "Rechten",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "De catalogus is ongewijzigd gebleven.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "De catalogus is hersteld vanuit een geverifieerde back-up; de beschadigde kopie staat in de map Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Automatische groepering gebruikt conservatieve gelijkenisregels; mogelijke matches blijven gescheiden voor beoordeling. Nieuwe gezichten die overeenkomen met een benoemde persoon worden voorgesteld ter bevestiging.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "De bevestiging toont het getroffen aantal en waarschuwt dat bestaande markeringen op overeenkomende foto’s zullen worden vervangen. Gekoppelde RAW/JPEG-metadata kan ook het gekoppelde bestand bevatten wanneer die voorkeur is ingeschakeld.",
     "The current catalog is backed up first, then replaced by this one.": "De huidige catalogus wordt eerst geback-upt en daarna vervangen door deze.",
     "The desktop Trash service (gio) is unavailable": "De Prullenmandservice van het bureaublad (gio) is niet beschikbaar",
     "The desktop app checks its signed update feed.": "De desktopapp controleert zijn ondertekende updatefeed.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Gebruik Schalen, Horizontaal en Verticaal om de referentie met je foto uit te lijnen.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Gebruik Nieuwe foto's scannen nadat je foto's hebt toegevoegd of niet-beschikbare originelen hebt teruggezet. Eerder gescande, ongewijzigde foto's worden opnieuw gebruikt.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Gebruik Scoop, WinGet, Chocolatey, AUR, Flatpak of Snap om de installaties die zij beheren bij te werken. Download een nieuwe ZIP voor draagbare Windows-kopieën. Builds zonder ingestelde ondertekening van updates kunnen zichzelf niet bijwerken.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Gebruik Selecties, Afgewezen of Alles om de overeenkomende foto's te beoordelen.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Gebruik Temp en Tint of neem een monster van een neutraal gebied en pas daarna Levendigheid en Verzadiging aan.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Gebruik Ongedaan maken voor recent werk, Geschiedenis voor opgeslagen bewerkingsstappen en benoemde momentopnamen voor looks die je opnieuw wilt bekijken.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Gebruik Trefwoordwijziging ongedaan maken om de laatste batch te herstellen zolang dit venster open blijft. Ongedaan maken weigert trefwoorden te overschrijven die na die batch zijn gewijzigd. Foto-geschiedenis bewaart ook de trefwoordtoestanden voor en na.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Deze foto staat online in Google Drive. Maak deze offline beschikbaar in Drive voor desktop, wacht tot de download klaar is en probeer het opnieuw.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Deze foto staat online in OneDrive. Kies ‘Altijd behouden op dit apparaat’, wacht tot de download klaar is en probeer het opnieuw.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Deze foto staat online in iCloud Drive. Download het origineel met iCloud Drive, wacht tot de download klaar is en probeer het opnieuw.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Deze foto staat online of is nog niet volledig gedownload. Maak deze offline beschikbaar in je cloudopslag-app, wacht tot de download klaar is en probeer het opnieuw."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Deze foto staat online of is nog niet volledig gedownload. Maak deze offline beschikbaar in je cloudopslag-app, wacht tot de download klaar is en probeer het opnieuw.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Een voorgestelde foto heeft een uniek sterkere beoordeling op basis van scherpte, open ogen en gedetecteerde problemen. Bij gelijke stand of onvoldoende bewijs wordt geen duidelijke aanbeveling getoond. Vergelijkbaarheidsgroepen zijn suggesties; ze maken geen stapels en wijzigen geen markeringen.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Kies Selecties of Afgewezen om overeenkomsten te beoordelen voordat u markeringen toepast.",
+    "Choose criteria above.": "Kies hierboven criteria.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Als u een criterium kiest, worden de overeenkomende foto's in het raster geopend. Gebruik Selecties, Afgewezen of Alles om de beoordelingsweergave te wijzigen. Andere bibliotheekfilters blijven van toepassing.",
+    "Compare similar photos": "Vergelijk vergelijkbare foto's",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Bestaande markeringen blijven standaard behouden. Schakel Bestaande markeringen vervangen alleen in wanneer u eerdere beslissingen wilt wijzigen. Batchacties hebben invloed op de weergegeven overeenkomsten en omvatten gekoppelde RAW/JPEG-bestanden wanneer metadata-koppeling is ingeschakeld; beschermde of al overeenkomende markeringen worden uitgesloten van het actieaantal.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Bestaande markeringen blijven behouden. Aantallen omvatten niet-gemarkeerde gekoppelde RAW/JPEG-bestanden.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Bestaande markeringen kunnen worden vervangen. Aantallen omvatten gekoppelde RAW/JPEG-bestanden.",
+    "Flag {count} photo as a pick": "Markeer {count} foto als selectie",
+    "Flag {count} photo as a reject": "Markeer {count} foto als afwijzing",
+    "Flag {count} photos as picks": "Markeer {count} foto's als selecties",
+    "Flag {count} photos as rejects": "Markeer {count} foto's als afwijzingen",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Groep {index} van {count}. Geen duidelijke aanbeveling; vergelijk deze foto's.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Groep {index} van {count}. Voorgesteld: {name}. Gebaseerd op scherpte en oogcontroles; beoordeel elk beeld afzonderlijk.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Groeperen vereist werkelijke opnametijden en huidige Photo Index-analyse. Bestanden met alleen bestandssysteemdatums, video's, virtuele kopieën en foto's zonder voldoende visuele details worden uitgesloten. Bestaande indexrecords worden na deze update ververst door de indexworker.",
+    "Next group": "Volgende groep",
+    "No similar groups found. Photos need current index analysis and capture times.": "Geen vergelijkbare groepen gevonden. Foto's hebben huidige indexanalyse en opnametijden nodig.",
+    "Previous group": "Vorige groep",
+    "Replace existing flags": "Bestaande markeringen vervangen",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count} fotomarkering hersteld. Latere markeringswijzigingen blijven behouden.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count} fotomarkeringen hersteld. Latere markeringswijzigingen blijven behouden.",
+    "Review similar photos": "Vergelijkbare foto's beoordelen",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Vergelijkbare foto's beoordelen zoekt visueel vergelijkbare geïndexeerde foto's die binnen 30 seconden zijn vastgelegd in de huidige map of collectie. Groepen openen in Overzicht met maximaal 16 foto's. Gebruik Vorige groep en Volgende groep om de alternatieven te vergelijken en markeer daarna afzonderlijke foto's met de overzichtsbediening.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Beoordeel de weergegeven foto's en gebruik daarna Foto's markeren als selecties of Foto's markeren als afwijzingen. De knop toont hoeveel bestanden worden gewijzigd.",
+    "Undo last flag batch": "Laatste markering-batch ongedaan maken",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Gebruik Ongedaan maken in het voltooiingsbericht of Laatste markering-batch ongedaan maken in de zijbalk om een batch te herstellen. Ongedaan maken blijft beschikbaar tijdens deze sessie en behoudt eventuele latere handmatige of externe markeringsbeslissingen. Als opslaan mislukt, gebruik dan Opslaan opnieuw proberen of maak de batch ongedaan; mislukte schrijfbewerkingen blijven in de wachtrij.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
+    "{count} matching photo shown: {criteria}.": "{count} overeenkomende foto weergegeven: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} overeenkomende foto's weergegeven: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4163,6 +4170,14 @@
     "Exporting {count} photo to {destination}…": {
       "one": "{count} foto exporteren naar {destination}…",
       "other": "{count} foto's exporteren naar {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Markeer {count} foto als selectie",
+      "other": "Markeer {count} foto's als selecties"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Markeer {count} foto als afwijzing",
+      "other": "Markeer {count} foto's als afwijzingen"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "{count} foto geïmporteerd uit Apple Photos{value}",
@@ -4184,25 +4199,9 @@
       "one": "Geplakt naar {count} foto",
       "other": "Geplakt naar {count} foto's"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{count} foto kiezen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-      "other": "{count} foto's kiezen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen."
-    },
-    "Pick {count} select": {
-      "one": "Kies {count} selecteren",
-      "other": "{count} selecties kiezen"
-    },
     "Picked {count} photo": {
       "one": "{count} foto gekozen",
       "other": "{count} foto's gekozen"
-    },
-    "Reject {count} photo": {
-      "one": "{count} foto afwijzen",
-      "other": "{count} foto's afwijzen"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{count} foto afwijzen die overeenkomt met {criteria}? Bestaande markeringen op die foto's worden vervangen.",
-      "other": "{count} foto's afwijzen die overeenkomen met {criteria}? Bestaande markeringen op die foto's worden vervangen."
     },
     "Rejected {count} photo": {
       "one": "{count} foto afgewezen",
@@ -4216,13 +4215,9 @@
       "one": "{count} opname hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten.",
       "other": "{count} opnames hersteld. U kunt ook stappen van opnametijd in Geschiedenis terugzetten."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Bezig met beoordelen van {count} foto die aan een afwijzingscriterium voldeed.",
-      "other": "Bezig met beoordelen van {count} foto's die aan een afwijzingscriterium voldeden."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Bezig met beoordelen van {count} foto die aan een selectiecriterium voldeed.",
-      "other": "Bezig met beoordelen van {count} foto's die aan een selectiecriterium voldeden."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "{count} fotomarkering hersteld. Latere markeringswijzigingen blijven behouden.",
+      "other": "{count} fotomarkeringen hersteld. Latere markeringswijzigingen blijven behouden."
     },
     "Wrote {count} sidecar.": {
       "one": "{count} sidecar weggeschreven.",
@@ -4272,9 +4267,17 @@
       "one": "{count} duplicaatgroep met {files}.",
       "other": "{count} duplicaatgroepen met {files}."
     },
+    "{count} empty file": {
+      "one": "{count} leeg bestand",
+      "other": "{count} lege bestanden"
+    },
     "{count} error": {
       "one": "{count} fout",
       "other": "{count} fouten"
+    },
+    "{count} face": {
+      "one": "{count} gezicht",
+      "other": "{count} gezichten"
     },
     "{count} face detected": {
       "one": "{count} gezicht gedetecteerd",
@@ -4292,9 +4295,21 @@
       "one": "{count} bestand",
       "other": "{count} bestanden"
     },
+    "{count} file not downloaded": {
+      "one": "{count} bestand niet gedownload",
+      "other": "{count} bestanden niet gedownload"
+    },
+    "{count} group": {
+      "one": "{count} groep",
+      "other": "{count} groepen"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} geïndexeerde foto blijft lokaal totdat deze wordt verwijderd.",
       "other": "{count} geïndexeerde foto's blijven lokaal totdat deze worden verwijderd."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count} overeenkomende foto weergegeven: {criteria}.",
+      "other": "{count} overeenkomende foto's weergegeven: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} minimale uitlijningsinlier",
@@ -4344,6 +4359,10 @@
       "one": "{count} foto geselecteerd",
       "other": "{count} foto's geselecteerd"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} foto overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op.",
+      "other": "{count} foto's overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op."
+    },
     "{count} photo updated": {
       "one": "{count} foto bijgewerkt",
       "other": "{count} foto's bijgewerkt"
@@ -4360,6 +4379,10 @@
       "one": "{count} beoordeelde foto",
       "other": "{count} beoordeelde foto's"
     },
+    "{count} selected": {
+      "one": "{count} geselecteerd",
+      "other": "{count} geselecteerd"
+    },
     "{count} selected photo": {
       "one": "{count} geselecteerde foto",
       "other": "{count} geselecteerde foto's"
@@ -4375,6 +4398,14 @@
     "{count} source": {
       "one": "{count} bron",
       "other": "{count} bronnen"
+    },
+    "{count} unavailable file": {
+      "one": "{count} niet-beschikbaar bestand",
+      "other": "{count} niet-beschikbare bestanden"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} niet-beschikbare foto overgeslagen",
+      "other": "{count} niet-beschikbare foto's overgeslagen"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} niet-ondersteunde instelling overgeslagen",
@@ -4403,39 +4434,7 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "{value} onverwachte afsluiting in de afgelopen 24 uur.",
       "other": "{value} onverwachte afsluitingen in de afgelopen 24 uur."
-    },
-    "{count} empty file": {
-      "one": "{count} leeg bestand",
-      "other": "{count} lege bestanden"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} bestand niet gedownload",
-      "other": "{count} bestanden niet gedownload"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} foto overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op.",
-      "other": "{count} foto's overgeslagen{reasons}. Download of herstel de originelen en bouw de index vervolgens opnieuw op."
-    },
-    "{count} unavailable file": {
-      "one": "{count} niet-beschikbaar bestand",
-      "other": "{count} niet-beschikbare bestanden"
-    },
-    "{count} face": {
-      "one": "{count} gezicht",
-      "other": "{count} gezichten"
-    },
-    "{count} group": {
-      "one": "{count} groep",
-      "other": "{count} groepen"
-    },
-    "{count} selected": {
-      "one": "{count} geselecteerd",
-      "other": "{count} geselecteerd"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} niet-beschikbare foto overgeslagen",
-      "other": "{count} niet-beschikbare foto's overgeslagen"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

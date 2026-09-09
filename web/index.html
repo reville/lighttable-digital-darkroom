@@ -124,7 +124,12 @@
         </div>
         <div class="segmented cull-review"><button id="cullReviewSelects" data-review="selects" data-i18n-text="{&quot;0&quot;:&quot;Selects&quot;}">Selects</button><button id="cullReviewRejects" data-review="rejects" data-i18n-text="{&quot;0&quot;:&quot;Rejects&quot;}">Rejects</button><button id="cullReviewAll" class="on" data-review="all" data-i18n-text="{&quot;0&quot;:&quot;All&quot;}">All</button></div>
         <p class="sidebar-note" id="cullReviewHint" data-i18n-text="{&quot;0&quot;:&quot;Reviewing every photo.&quot;}">Reviewing every photo.</p>
-        <div class="btnrow"><button id="cullApplyPicks" disabled data-i18n-text="{&quot;0&quot;:&quot;Pick selects&quot;}">Pick selects</button><button id="cullApplyRejects" disabled data-i18n-text="{&quot;0&quot;:&quot;Reject rejects&quot;}">Reject rejects</button></div>
+        <label class="check-row"><input type="checkbox" id="cullReplaceFlags"><span data-i18n-text="{&quot;0&quot;:&quot;Replace existing flags&quot;}">Replace existing flags</span></label>
+        <p class="sidebar-note" id="cullFlagHint" hidden></p>
+        <div class="btnrow"><button id="cullApplyPicks" hidden disabled></button><button id="cullApplyRejects" hidden disabled></button><button id="cullUndo" hidden data-i18n-text="{&quot;0&quot;:&quot;Undo last flag batch&quot;}">Undo last flag batch</button></div>
+        <div class="cull-group btnrow"><button id="cullSimilar" disabled data-i18n-text="{&quot;0&quot;:&quot;Review similar photos&quot;}">Review similar photos</button></div>
+        <p class="sidebar-note" id="cullSimilarHint" aria-live="polite"></p>
+
       </div>
     </details>
   </aside>
@@ -885,6 +890,10 @@
 </div>
 
 <div id="survey" class="survey" hidden>
+  <div id="cullSimilarNavigation" class="cull-similar-navigation" hidden>
+    <p id="cullGroupHint" aria-live="polite"></p>
+    <div class="survey-actions"><button id="cullSimilarPrevious" data-i18n-text="{&quot;0&quot;:&quot;Previous group&quot;}">Previous group</button><button id="cullSimilarNext" data-i18n-text="{&quot;0&quot;:&quot;Next group&quot;}">Next group</button></div>
+  </div>
   <div class="survey-bar">
     <strong id="surveyTitle" data-i18n-text="{&quot;0&quot;:&quot;Survey&quot;}">Survey</strong>
     <div class="survey-actions">

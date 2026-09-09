@@ -481,6 +481,16 @@ class QueryTests(unittest.TestCase):
         self.assertEqual(
             self.cat.query({"filter": {"status": "approved"}})["total"], 1)
 
+    def test_capture_provenance_distinguishes_metadata_from_filesystem_fallback(self):
+        with self.cat.write() as conn:
+            conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",
+                         ("2024-03-09T18:30:00", "f0.jpg"))
+        items = {item["relpath"]: item for item in self.cat.query({"limit": 100})["items"]}
+        self.assertTrue(items["f0.jpg"]["captureTimeKnown"])
+        self.assertEqual(items["f0.jpg"]["captureTime"], "2024-03-09T18:30:00")
+        self.assertFalse(items["f1.jpg"]["captureTimeKnown"])
+        self.assertTrue(items["f1.jpg"]["captureTime"])
+
     def test_a_bare_end_date_includes_that_whole_day(self):
         with self.cat.write() as conn:
             conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",

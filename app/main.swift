@@ -43,6 +43,43 @@ final class LightTableWebView: WKWebView {
     private var topBarRect: CGRect?
     private var topBarControlRects: [CGRect] = []
     private var windowChromeDragBlocked = false
+    private var magnificationMonitor: Any?
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if let magnificationMonitor { NSEvent.removeMonitor(magnificationMonitor) }
+        magnificationMonitor = nil
+        guard window != nil else { return }
+        // WebKit's content descendants can consume magnification without
+        // emitting DOM gesture events. Route it before responder dispatch,
+        // and consume the native event so WebKit cannot deliver it twice.
+        magnificationMonitor = NSEvent.addLocalMonitorForEvents(matching: .magnify) { [weak self] event in
+            self?.forwardEditorMagnification(event) == true ? nil : event
+        }
+    }
+
+    deinit {
+        if let magnificationMonitor { NSEvent.removeMonitor(magnificationMonitor) }
+    }
+
+    @discardableResult
+    func forwardEditorMagnification(_ event: NSEvent) -> Bool {
+        guard event.type == .magnify, let window, event.window === window,
+              !isHiddenOrHasHiddenAncestor else { return false }
+        let point = convert(event.locationInWindow, from: nil)
+        guard bounds.contains(point) else { return false }
+        let factor = 1 + event.magnification
+        guard factor.isFinite, factor > 0 else { return true }
+        let payload: [String: Double] = [
+            "factor": Double(factor),
+            "x": Double(point.x - bounds.minX),
+            "y": Double(isFlipped ? point.y - bounds.minY : bounds.maxY - point.y),
+        ]
+        guard let data = try? JSONSerialization.data(withJSONObject: payload),
+              let json = String(data: data, encoding: .utf8) else { return true }
+        evaluateJavaScript("window.dispatchEvent(new CustomEvent('lighttable-magnify', {detail: \(json)}))", completionHandler: nil)
+        return true
+    }
 
     func updateWindowChromeLayout(_ body: [String: Any]) {
         guard let topBar = Self.rect(body["topBar"]),

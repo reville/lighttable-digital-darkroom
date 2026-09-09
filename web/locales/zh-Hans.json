@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "选择要评分或标记的照片",
     "Choose a preset to see its source and conversion coverage.": "选择一个预设，以查看其来源和转换覆盖范围。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "为底片选择一种打印工艺，并了解为什么幻灯片胶片会使打印控制消失。",
-    "Choose a reject criterion above.": "请先在上方选择一个拒绝条件。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "在选择器中选择一个已保存的点以编辑它，或使用删除点将其移除。",
     "Choose a saved preset to submit": "选择一个已保存的预设进行提交",
     "Choose a scheme": "选择方案",
-    "Choose a select criterion above.": "请先在上方选择一个选择条件。",
     "Choose a settings folder": "选择设置文件夹",
     "Choose a source and destination first.": "请先选择源和目标位置。",
     "Choose a source and destination, then scan.": "请先选择源和目标位置，然后扫描。",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "以 1:1 查看图像，并等待预览细节完成后再判断纹理。",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "检查叠加，并根据需要在边界周围进行涂抹式细化。",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "检查已拒绝的照片。如果你希望包含它们的其他成员，请检查配对文件设置并展开任何堆栈。",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "检查建议，然后在想要应用这些标记时使用选取选中或拒绝拒绝。",
     "Interface": "界面",
     "Interface and behavior": "界面与行为",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "界面可控制查看器背景、字体缩放、Lights Out、放大镜信息叠加层和裁剪参考线。这些偏好只会改变工作区外观，不会改变导出的像素。",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "使用 画笔、线性 和 径向 蒙版进行局部调整",
     "Make photos easier to find and prepare descriptive metadata for export.": "让照片更容易查找，并为导出准备描述性元数据。",
     "Make select": "创建选区",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "执行“选取”会将活动概览照片设为已选取，并拒绝概览中其余照片。这会更改它们的标记。链接的 RAW 和 JPEG 元数据可将这些标记更改扩展到配对文件。",
     "Make the source photo active.": "将源照片设为活动照片。",
     "Make your adjustment, then check the save status in the app.": "先完成调整，然后在应用中检查保存状态。",
     "Manage cache storage": "管理缓存存储",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "选取 (P)",
     "Pick / reject / unflag": "选取 / 拒绝 / 取消标记",
     "Pick a preset": "选择一个预设",
-    "Pick selects": "选取选择",
-    "Pick the selects": "选取这些选取项",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。",
-    "Pick {count} select": "选取 {count} 个选取项",
-    "Pick {count} selects": "选取 {count} 个选取项",
     "Pick, reject, and rate photos": "选取、拒绝和评分照片",
     "Picked": "已选取",
     "Picked only": "仅已选取",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "正在刷新社区…",
     "Reject": "拒绝",
     "Reject (X)": "拒绝 (X)",
-    "Reject rejects": "拒绝已拒绝",
-    "Reject the rejects": "拒绝已拒绝项",
-    "Reject {count} photo": "拒绝 {count} 张照片",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。",
-    "Reject {count} photos": "拒绝 {count} 张照片",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。",
     "Rejected": "已拒绝",
     "Rejected {count} photo": "已拒绝 {count} 张照片",
     "Rejected {count} photos": "已拒绝 {count} 张照片",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "审阅已传输的蒙版",
     "Review translated edits": "审阅翻译后的编辑",
     "Reviewing every photo.": "正在审阅每张照片。",
-    "Reviewing {count} photo that met a reject criterion.": "正在审阅 {count} 张符合拒绝条件的照片。",
-    "Reviewing {count} photo that met a select criterion.": "正在审阅 {count} 张符合选择条件的照片。",
-    "Reviewing {count} photos that met a reject criterion.": "正在审阅 {count} 张符合拒绝条件的照片。",
-    "Reviewing {count} photos that met a select criterion.": "正在审阅 {count} 张符合选择条件的照片。",
     "Rich descriptions on": "详细描述开启",
     "Richer descriptions require macOS 27 or later": "更丰富的描述需要 macOS 27 或更高版本",
     "Rights": "权限",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "目录未更改。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "目录已从已验证的备份中恢复；损坏的副本位于 Recovery 文件夹中。",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "紧凑的 SFace INT8 模型会比较对齐的人脸。自动分组使用保守的相似度规则；可能的匹配项会保持分开以供审阅。与已命名人物匹配的新面部会被建议确认。",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "确认信息会显示受影响的数量，并警告匹配照片上现有的标记将被替换。启用该偏好后，链接的 RAW/JPEG 元数据也可以包含配对文件。",
     "The current catalog is backed up first, then replaced by this one.": "当前目录会先备份，然后替换为此目录。",
     "The desktop Trash service (gio) is unavailable": "桌面废纸篓服务（gio）不可用",
     "The desktop app checks its signed update feed.": "桌面应用会检查其已签名的更新源。",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "使用缩放、水平和垂直将参考与照片对齐。",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "在添加照片或还原不可用的原始文件后，请使用扫描新照片。之前已扫描且未更改的照片将被重新使用。",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它们管理的安装。Windows 便携版需下载新的 ZIP。未配置更新签名的构建无法自行更新。",
-    "Use Selects, Rejects, or All to review the matching photos.": "使用 已选择、已拒绝 或 全部 来审阅匹配的照片。",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "使用温度和色调，或采样一个中性区域，然后调整自然饱和度和饱和度。",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "最近的工作使用撤销，已保存的编辑步骤使用历史记录，想要重访的效果使用命名快照。",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "使用“撤销关键词更改”可在当前窗口保持打开时恢复上一次批处理。撤销不会覆盖在该批处理之后更改过的关键词。“照片历史记录”也会保留关键词更改前后的状态。",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "此照片在线存储于 Google Drive。请在桌面版云端硬盘中将其设为可离线访问，等待下载完成后重试。",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "此照片在线存储于 OneDrive。请选择“始终保留在此设备上”，等待下载完成后重试。",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "此照片在线存储于 iCloud Drive。请使用 iCloud Drive 下载原始文件，等待下载完成后重试。",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "此照片存储于线上或尚未完整下载。请在云存储应用中将其设为可离线访问，等待下载完成后重试。"
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "此照片存储于线上或尚未完整下载。请在云存储应用中将其设为可离线访问，等待下载完成后重试。",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "被建议的照片在对焦、睁眼情况和检测到的问题方面具有明显更强的评估。若并列或证据不足，则不会显示明确建议。相似组仅为建议；它们不会创建堆栈，也不会更改标记。",
+    "Choose Selects or Rejects to review matches before applying flags.": "请选择“已选择”或“已拒绝”，以在应用标记前审阅匹配项。",
+    "Choose criteria above.": "请先在上方选择条件。",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "选择条件会在网格中打开其匹配照片。使用“已选择”、“已拒绝”或“全部”更改审阅视图。其他资源库筛选条件仍然适用。",
+    "Compare similar photos": "比较相似照片",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "默认会保留现有标记。仅在您想更改之前的决定时才启用“替换现有标记”。批处理操作会影响显示的匹配项，并在启用元数据关联时包含已关联的 RAW/JPEG 文件；受保护的或已经符合条件的标记会从操作计数中排除。",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "现有标记会保留。计数包括未标记的已关联 RAW/JPEG 文件。",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "现有标记可能会被替换。计数包括已关联的 RAW/JPEG 文件。",
+    "Flag {count} photo as a pick": "将 {count} 张照片标记为选取",
+    "Flag {count} photo as a reject": "将 {count} 张照片标记为拒绝",
+    "Flag {count} photos as picks": "将 {count} 张照片标记为选取",
+    "Flag {count} photos as rejects": "将 {count} 张照片标记为拒绝",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "第 {index} 组，共 {count} 组。没有明确建议；请比较这些照片。",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "第 {index} 组，共 {count} 组。建议：{name}。基于对焦和眼睛检查；请审阅每一帧。",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "分组需要实际拍摄时间和当前的照片索引分析。仅有文件系统日期的视频、虚拟副本，以及视觉细节不足的照片会被排除。在此次更新后，索引工作器会刷新现有索引记录。",
+    "Next group": "下一组",
+    "No similar groups found. Photos need current index analysis and capture times.": "未找到相似组。照片需要当前索引分析和拍摄时间。",
+    "Previous group": "上一组",
+    "Replace existing flags": "替换现有标记",
+    "Restored {count} photo flag. Later flag changes are preserved.": "已还原 {count} 张照片的标记。后续的标记更改已保留。",
+    "Restored {count} photo flags. Later flag changes are preserved.": "已还原 {count} 张照片的标记。后续的标记更改已保留。",
+    "Review similar photos": "审阅相似照片",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "审阅相似照片会在当前文件夹或集合中查找视觉上相似、且在 30 秒内拍摄并已建立索引的照片。每组最多会在概览中打开 16 张照片。使用“上一组”和“下一组”比较备选项，然后使用概览控件标记单张照片。",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "请审阅显示的照片，然后使用“将照片标记为选取”或“将照片标记为拒绝”。按钮会显示将更改多少个文件。",
+    "Undo last flag batch": "撤销上次标记批处理",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "使用完成消息中的“撤销”或侧边栏中的“撤销上次标记批处理”来还原一个批处理。在本次会话期间仍可使用撤销，并会保留之后任何手动或外部的标记决定。如果保存失败，请使用“重试保存”或撤销该批处理；失败的写入仍会排队。",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "从辅助筛选打开概览时，请比较建议组并逐张标记照片。在常规概览中，“创建选区”可用：它会选择当前概览照片，并拒绝仍在概览中的其他照片。这会更改它们的标记。关联的 RAW 和 JPEG 元数据可以将这些标记更改扩展到伴侣。",
+    "{count} matching photo shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。",
+    "{count} matching photos shown: {criteria}.": "显示了 {count} 张匹配照片：{criteria}。"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4159,6 +4166,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "正在导出 {count} 张照片到 {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "将 {count} 张照片标记为选取"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "将 {count} 张照片标记为拒绝"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "已从 Apple Photos 导入 {count} 张照片{value}"
@@ -4175,20 +4188,8 @@
     "Pasted to {count} photo": {
       "other": "已粘贴到 {count} 张照片"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "将 {count} 张匹配 {criteria} 的照片设为选取？这些照片上现有的标记将被替换。"
-    },
-    "Pick {count} select": {
-      "other": "选取 {count} 个选取项"
-    },
     "Picked {count} photo": {
       "other": "已选取 {count} 张照片"
-    },
-    "Reject {count} photo": {
-      "other": "拒绝 {count} 张照片"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "将 {count} 张匹配 {criteria} 的照片设为拒绝？这些照片上现有的标记将被替换。"
     },
     "Rejected {count} photo": {
       "other": "已拒绝 {count} 张照片"
@@ -4199,11 +4200,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "已还原 {count} 个拍摄。你也可以在历史记录中还原拍摄时间步骤。"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "正在审阅 {count} 张符合拒绝条件的照片。"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "正在审阅 {count} 张符合选择条件的照片。"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "已还原 {count} 张照片的标记。后续的标记更改已保留。"
     },
     "Wrote {count} sidecar.": {
       "other": "已写入 {count} 个副档。"
@@ -4241,8 +4239,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} 个重复组，涵盖 {files}。"
     },
+    "{count} empty file": {
+      "other": "{count} 个空文件"
+    },
     "{count} error": {
       "other": "{count} 个错误"
+    },
+    "{count} face": {
+      "other": "{count} 个面部"
     },
     "{count} face detected": {
       "other": "检测到 {count} 个面部"
@@ -4256,8 +4260,17 @@
     "{count} file": {
       "other": "{count} 个文件"
     },
+    "{count} file not downloaded": {
+      "other": "{count} 个文件未下载"
+    },
+    "{count} group": {
+      "other": "{count} 个组"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "{count} 张已编入索引的照片在删除前保持本地存储。"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "显示了 {count} 张匹配照片：{criteria}。"
     },
     "{count} minimum alignment inlier": {
       "other": "{count} 个最小对齐内点"
@@ -4295,6 +4308,9 @@
     "{count} photo selected": {
       "other": "已选择 {count} 张照片"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count} 张照片已跳过{reasons}。请下载或还原原始文件，然后重建索引。"
+    },
     "{count} photo updated": {
       "other": "已更新 {count} 张照片"
     },
@@ -4307,6 +4323,9 @@
     "{count} rated photo": {
       "other": "{count} 张已评分照片"
     },
+    "{count} selected": {
+      "other": "已选择 {count} 项"
+    },
     "{count} selected photo": {
       "other": "{count} 张已选择照片"
     },
@@ -4318,6 +4337,12 @@
     },
     "{count} source": {
       "other": "{count} 个源"
+    },
+    "{count} unavailable file": {
+      "other": "{count} 个不可用文件"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "已跳过 {count} 张不可用照片"
     },
     "{count} unsupported setting skipped": {
       "other": "已跳过 {count} 个不支持的设置"
@@ -4339,31 +4364,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "过去 24 小时内有 {value} 次意外退出。"
-    },
-    "{count} empty file": {
-      "other": "{count} 个空文件"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} 个文件未下载"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count} 张照片已跳过{reasons}。请下载或还原原始文件，然后重建索引。"
-    },
-    "{count} unavailable file": {
-      "other": "{count} 个不可用文件"
-    },
-    "{count} face": {
-      "other": "{count} 个面部"
-    },
-    "{count} group": {
-      "other": "{count} 个组"
-    },
-    "{count} selected": {
-      "other": "已选择 {count} 项"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "已跳过 {count} 张不可用照片"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

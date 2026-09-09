@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Choose a preset to see its source and conversion coverage.": "Выберите пресет, чтобы увидеть его исходный профиль и покрытие преобразования.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Выберите процесс печати для негативов и поймите, почему элементы управления печатью исчезают для слайд-пленки.",
-    "Choose a reject criterion above.": "Выберите критерий отклонения выше.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Выберите сохраненную точку в селекторе, чтобы отредактировать ее, или используйте Удалить точку, чтобы убрать ее.",
     "Choose a saved preset to submit": "Выберите сохраненный пресет для отправки",
     "Choose a scheme": "Выберите схему",
-    "Choose a select criterion above.": "Выберите критерий выбора выше.",
     "Choose a settings folder": "Выберите папку настроек",
     "Choose a source and destination first.": "Сначала выберите источник и назначение.",
     "Choose a source and destination, then scan.": "Выберите источник и назначение, затем сканируйте.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Проверьте изображение в масштабе 1:1 и дождитесь завершения детализации предпросмотра перед оценкой текстуры.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Проверьте наложение и при необходимости используйте нарисованные уточнения вдоль границ.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Проверьте отклоненные фото. Проверьте настройки пары файлов и разверните любые стопки, если ожидаете включить их другие элементы.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Просмотрите предложения, затем используйте Pick selects или Reject rejects, если хотите применить эти флажки.",
     "Interface": "Интерфейс",
     "Interface and behavior": "Интерфейс и поведение",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Элементы интерфейса управляют фоном просмотрщика, масштабом шрифта, Lights Out, наложением информации лупы и направляющими обрезки. Эти параметры изменяют внешний вид рабочей области, не меняя экспортируемые пиксели.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Выполняйте локальные корректировки с помощью масок Кисть, Линейный и Радиальный",
     "Make photos easier to find and prepare descriptive metadata for export.": "Сделайте фото легче находить и подготовьте описательные метаданные для экспорта.",
     "Make select": "Сделать выделение",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Команда «Сделать выбранными» делает активное фото обзора выбранным, а остальные фото, оставшиеся в обзоре, — отклоненными. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространять эти изменения флажков на пары.",
     "Make the source photo active.": "Сделать исходное фото активным.",
     "Make your adjustment, then check the save status in the app.": "Сделайте корректировку, затем проверьте статус сохранения в приложении.",
     "Manage cache storage": "Управление хранилищем кэша",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Выбрать (P)",
     "Pick / reject / unflag": "Выбрать / отклонить / снять флажок",
     "Pick a preset": "Выберите пресет",
-    "Pick selects": "Выбрать отмеченные",
-    "Pick the selects": "Выбрать выбранные",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Выбрать {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Pick {count} select": "Выбрать {count} выбор",
-    "Pick {count} selects": "Выбрать {count} выделенных",
     "Pick, reject, and rate photos": "Выбирать, отклонять и оценивать фото",
     "Picked": "Выбранные",
     "Picked only": "Только выбранные",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Обновление сообщества…",
     "Reject": "Отклонить",
     "Reject (X)": "Отклонить (X)",
-    "Reject rejects": "Отклонить отклоненные",
-    "Reject the rejects": "Отклонить отклоненные",
-    "Reject {count} photo": "Отклонить {count} фото",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Отклонить {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-    "Reject {count} photos": "Отклонить {count} фото",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
     "Rejected": "Отклоненные",
     "Rejected {count} photo": "Отклонено {count} фото",
     "Rejected {count} photos": "Отклонено {count} фото",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Проверить перенесенные маски",
     "Review translated edits": "Проверить переведенные правки",
     "Reviewing every photo.": "Проверка каждого фото.",
-    "Reviewing {count} photo that met a reject criterion.": "Просмотр {count} фото, которое соответствовало критерию отклонения.",
-    "Reviewing {count} photo that met a select criterion.": "Просмотр {count} фото, которое соответствовало критерию выбора.",
-    "Reviewing {count} photos that met a reject criterion.": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-    "Reviewing {count} photos that met a select criterion.": "Просмотр {count} фото, которые соответствовали критерию выбора.",
     "Rich descriptions on": "Подробные описания включены",
     "Richer descriptions require macOS 27 or later": "Более подробные описания требуют macOS 27 или более поздней версии",
     "Rights": "Права",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "Каталог остался без изменений.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Каталог был восстановлен из проверенной резервной копии; поврежденная копия находится в папке Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Компактная модель SFace INT8 сравнивает выровненные человеческие лица. Автоматическая группировка использует консервативные правила сходства; возможные совпадения остаются отдельными для проверки. Новые лица, совпадающие с названным человеком, предлагаются для подтверждения.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "В подтверждении показывается количество затронутых элементов и предупреждение, что существующие флажки у совпадающих фото будут заменены. Связанные метаданные RAW/JPEG также могут включать пару файлов, если этот параметр включен.",
     "The current catalog is backed up first, then replaced by this one.": "Текущий каталог сначала будет резервно сохранен, затем заменен этим.",
     "The desktop Trash service (gio) is unavailable": "Служба корзины рабочего стола (gio) недоступна",
     "The desktop app checks its signed update feed.": "Настольное приложение проверяет свою подписанную ленту обновлений.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Используйте Масштабировать, Горизонтальный и Вертикальный, чтобы выровнять опорное изображение по фото.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Используйте Сканировать новые фото после добавления фото или восстановления недоступных оригиналов. Ранее отсканированные неизмененные фото используются повторно.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Используйте Scoop, WinGet, Chocolatey, AUR, Flatpak или Snap для обновления управляемых ими установок. Для портативных копий Windows скачайте новый ZIP. Сборки без настроенной подписи обновлений не могут обновляться самостоятельно.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Используйте Выбранные, Отклоненные или Все, чтобы просмотреть совпадающие фото.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Используйте Температура и Оттенок или выберите нейтральную область, затем настройте Сочность и Насыщенность.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Используйте Undo для недавней работы, History для сохраненных шагов редактирования и именованные снимки для образов, к которым хотите вернуться.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Используйте Отменить изменение ключевых слов, чтобы восстановить последний пакет, пока это окно остаётся открытым. Отмена не позволяет перезаписывать ключевые слова, изменённые после того пакета. История фото также сохраняет состояния ключевых слов до и после.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Эта фотография хранится онлайн в Google Drive. Сделайте её доступной офлайн в Google Диске для компьютеров, дождитесь завершения скачивания и повторите попытку.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Эта фотография хранится онлайн в OneDrive. Выберите «Всегда хранить на этом устройстве», дождитесь завершения скачивания и повторите попытку.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Эта фотография хранится онлайн в iCloud Drive. Скачайте оригинал с помощью iCloud Drive, дождитесь завершения скачивания и повторите попытку.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Эта фотография хранится онлайн или скачана не полностью. Сделайте её доступной офлайн в приложении облачного хранилища, дождитесь завершения скачивания и повторите попытку."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Эта фотография хранится онлайн или скачана не полностью. Сделайте её доступной офлайн в приложении облачного хранилища, дождитесь завершения скачивания и повторите попытку.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "У рекомендованного фото оценка заметно лучше по фокусу, открытым глазам и обнаруженным проблемам. При равенстве или недостатке данных явной рекомендации нет. Группы сходства — это рекомендации; они не создают стопки и не изменяют флажки.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Выберите Выбранные или Отклоненные, чтобы просмотреть совпадения перед применением флажков.",
+    "Choose criteria above.": "Выберите критерии выше.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Выбор критерия открывает соответствующие фото в сетке. Используйте Выбранные, Отклоненные или Все, чтобы изменить режим проверки. Другие фильтры библиотеки по-прежнему применяются.",
+    "Compare similar photos": "Сравнить похожие фото",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "По умолчанию существующие флажки сохраняются. Включайте Заменить существующие флажки только когда хотите изменить предыдущие решения. Пакетные действия влияют на показанные совпадения и включают связанные файлы RAW/JPEG, когда включена привязка метаданных; защищенные или уже совпадающие флажки исключаются из подсчета действий.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Существующие флажки сохраняются. В подсчет входят не помеченные связанные файлы RAW/JPEG.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Существующие флажки могут быть заменены. В подсчет входят связанные файлы RAW/JPEG.",
+    "Flag {count} photo as a pick": "Пометить {count} фото как выбранное",
+    "Flag {count} photo as a reject": "Пометить {count} фото как отклоненное",
+    "Flag {count} photos as picks": "Пометить {count} фото как выбранные",
+    "Flag {count} photos as rejects": "Пометить {count} фото как отклоненные",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Группа {index} из {count}. Явной рекомендации нет; сравните эти фото.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Группа {index} из {count}. Рекомендовано: {name}. Основано на проверке фокуса и глаз; проверьте каждый кадр.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Для группировки требуются фактическое Время съемки и текущий анализ Photo Index. Файлы только с датами файловой системы, видео, виртуальные копии и фото без достаточной визуальной детализации исключаются. Существующие записи индекса обновляются индексным процессом после этого обновления.",
+    "Next group": "Следующая группа",
+    "No similar groups found. Photos need current index analysis and capture times.": "Похожих групп не найдено. Для фото требуется текущий анализ индекса и Время съемки.",
+    "Previous group": "Предыдущая группа",
+    "Replace existing flags": "Заменить существующие флажки",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Восстановлен флажок {count} фото. Последующие изменения флажков сохранены.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
+    "Review similar photos": "Просмотр похожих фото",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Просмотр похожих фото находит визуально похожие индексированные фото, снятые в течение 30 секунд, в текущей папке или коллекции. Группы открываются в Обзор с до 16 фото. Используйте Предыдущее группа и Следующее группа, чтобы сравнить альтернативы, а затем пометьте отдельные фото с помощью элементов управления обзора.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Проверьте показанные фото, затем используйте Пометить фото как выбранные или Пометить фото как отклоненные. На кнопке показано, сколько файлов будет изменено.",
+    "Undo last flag batch": "Отменить последний пакет флажков",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Используйте Отменить в сообщении о завершении или Отменить последний пакет флажков в боковой панели, чтобы восстановить пакет. Отмена остается доступной в течение этого сеанса и сохраняет любые последующие ручные или внешние решения по флажкам. Если сохранение не удается, используйте Повторить сохранение или отмените пакет; неудачные записи остаются в очереди.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Когда Обзор открыт из Помощь при отбраковке, сравните предложенную группу и помечайте фото по отдельности. Сделать выделение доступно в обычном Обзор: оно выбирает активное фото обзора и отклоняет другие фото, которые все еще находятся в обзоре. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространить эти изменения флажков на сопутствующее приложение.",
+    "{count} matching photo shown: {criteria}.": "Показано {count} совпадающее фото: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4171,6 +4178,18 @@
       "few": "Экспортируется {count} фото в {destination}…",
       "many": "Экспортируется {count} фото в {destination}…",
       "other": "Экспортируется {count} фото в {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Пометить {count} фото как выбранное",
+      "few": "Пометить {count} фото как выбранные",
+      "many": "Пометить {count} фото как выбранные",
+      "other": "Пометить {count} фото как выбранные"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Пометить {count} фото как отклоненное",
+      "few": "Пометить {count} фото как отклоненные",
+      "many": "Пометить {count} фото как отклоненные",
+      "other": "Пометить {count} фото как отклоненные"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Импортировано {count} фото из Apple Photos{value}",
@@ -4202,35 +4221,11 @@
       "many": "Вставлено в {count} фото",
       "other": "Вставлено в {count} фото"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Выбрать {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-      "few": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "many": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "other": "Выбрать {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены."
-    },
-    "Pick {count} select": {
-      "one": "Выбрать {count} выделение",
-      "few": "Выбрать {count} выделения",
-      "many": "Выбрать {count} выделений",
-      "other": "Выбрать {count} выделений"
-    },
     "Picked {count} photo": {
       "one": "Выбрано {count} фото",
       "few": "Выбрано {count} фото",
       "many": "Выбрано {count} фото",
       "other": "Выбрано {count} фото"
-    },
-    "Reject {count} photo": {
-      "one": "Отклонить {count} фото",
-      "few": "Отклонить {count} фото",
-      "many": "Отклонить {count} фото",
-      "other": "Отклонить {count} фото"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Отклонить {count} фото, соответствующее {criteria}? Существующие флажки на этих фото будут заменены.",
-      "few": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "many": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены.",
-      "other": "Отклонить {count} фото, соответствующих {criteria}? Существующие флажки на этих фото будут заменены."
     },
     "Rejected {count} photo": {
       "one": "Отклонено {count} фото",
@@ -4250,17 +4245,11 @@
       "many": "Восстановлено {count} снимков. Вы также можете восстановить шаги по времени съемки в «История».",
       "other": "Восстановлено {count} снимков. Вы также можете восстановить шаги по времени съемки в «История»."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Просмотр {count} фото, которое соответствовало критерию отклонения.",
-      "few": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-      "many": "Просмотр {count} фото, которые соответствовали критерию отклонения.",
-      "other": "Просмотр {count} фото, которые соответствовали критерию отклонения."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Просмотр {count} фото, которое соответствовало критерию выбора.",
-      "few": "Просмотр {count} фото, которые соответствовали критерию выбора.",
-      "many": "Просмотр {count} фото, которые соответствовали критерию выбора.",
-      "other": "Просмотр {count} фото, которые соответствовали критерию выбора."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "Восстановлен флажок {count} фото. Последующие изменения флажков сохранены.",
+      "few": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
+      "many": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены.",
+      "other": "Восстановлены флажки {count} фото. Последующие изменения флажков сохранены."
     },
     "Wrote {count} sidecar.": {
       "one": "Записан {count} сайдкар.",
@@ -4334,11 +4323,23 @@
       "many": "{count} группа дубликатов, охватывающая {files}.",
       "other": "{count} группа дубликатов, охватывающая {files}."
     },
+    "{count} empty file": {
+      "one": "{count} пустой файл",
+      "few": "{count} пустых файла",
+      "many": "{count} пустых файлов",
+      "other": "{count} пустых файлов"
+    },
     "{count} error": {
       "one": "{count} ошибка",
       "few": "{count} ошибка",
       "many": "{count} ошибка",
       "other": "{count} ошибки"
+    },
+    "{count} face": {
+      "one": "{count} лицо",
+      "few": "{count} лица",
+      "many": "{count} лиц",
+      "other": "{count} лиц"
     },
     "{count} face detected": {
       "one": "{count} лицо обнаружено",
@@ -4364,11 +4365,29 @@
       "many": "{count} файлов",
       "other": "{count} файлов"
     },
+    "{count} file not downloaded": {
+      "one": "{count} файл не загружен",
+      "few": "{count} файла не загружено",
+      "many": "{count} файлов не загружено",
+      "other": "{count} файлов не загружено"
+    },
+    "{count} group": {
+      "one": "{count} группа",
+      "few": "{count} группы",
+      "many": "{count} групп",
+      "other": "{count} групп"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} проиндексированное фото останется локально, пока не будет удалено.",
       "few": "{count} проиндексированных фото останутся локально, пока не будут удалены.",
       "many": "{count} проиндексированных фото останутся локально, пока не будут удалены.",
       "other": "{count} проиндексированных фото останутся локально, пока не будут удалены."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "Показано {count} совпадающее фото: {criteria}.",
+      "few": "Показано {count} совпадающих фото: {criteria}.",
+      "many": "Показано {count} совпадающих фото: {criteria}.",
+      "other": "Показано {count} совпадающих фото: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} минимальное совпадение для выравнивания",
@@ -4442,6 +4461,12 @@
       "many": "Выбрано {count} фото",
       "other": "Выбрано {count} фото"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "few": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "many": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
+      "other": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс."
+    },
     "{count} photo updated": {
       "one": "обновлено фото: {count}",
       "few": "{count} фото обновлено",
@@ -4466,6 +4491,12 @@
       "many": "оцененных фото: {count}",
       "other": "оцененных фото: {count}"
     },
+    "{count} selected": {
+      "one": "{count} выбрано",
+      "few": "{count} выбрано",
+      "many": "{count} выбрано",
+      "other": "{count} выбрано"
+    },
     "{count} selected photo": {
       "one": "{count} выбранное фото",
       "few": "{count} выбранных фото",
@@ -4489,6 +4520,18 @@
       "few": "{count} источника",
       "many": "{count} источников",
       "other": "{count} источников"
+    },
+    "{count} unavailable file": {
+      "one": "{count} недоступный файл",
+      "few": "{count} недоступных файла",
+      "many": "{count} недоступных файлов",
+      "other": "{count} недоступных файлов"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} недоступное фото пропущено",
+      "few": "{count} недоступных фото пропущено",
+      "many": "{count} недоступных фото пропущено",
+      "other": "{count} недоступных фото пропущено"
     },
     "{count} unsupported setting skipped": {
       "one": "пропущено {count} неподдерживаемое значение настройки",
@@ -4531,55 +4574,7 @@
       "few": "{value} неожиданных выхода за последние 24 часа.",
       "many": "{value} неожиданных выходов за последние 24 часа.",
       "other": "{value} неожиданных выходов за последние 24 часа."
-    },
-    "{count} empty file": {
-      "one": "{count} пустой файл",
-      "few": "{count} пустых файла",
-      "many": "{count} пустых файлов",
-      "other": "{count} пустых файлов"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} файл не загружен",
-      "few": "{count} файла не загружено",
-      "many": "{count} файлов не загружено",
-      "other": "{count} файлов не загружено"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "few": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "many": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс.",
-      "other": "{count} фото пропущено{reasons}. Загрузите или восстановите оригиналы, затем перестройте индекс."
-    },
-    "{count} unavailable file": {
-      "one": "{count} недоступный файл",
-      "few": "{count} недоступных файла",
-      "many": "{count} недоступных файлов",
-      "other": "{count} недоступных файлов"
-    },
-    "{count} face": {
-      "one": "{count} лицо",
-      "few": "{count} лица",
-      "many": "{count} лиц",
-      "other": "{count} лиц"
-    },
-    "{count} group": {
-      "one": "{count} группа",
-      "few": "{count} группы",
-      "many": "{count} групп",
-      "other": "{count} групп"
-    },
-    "{count} selected": {
-      "one": "{count} выбрано",
-      "few": "{count} выбрано",
-      "many": "{count} выбрано",
-      "other": "{count} выбрано"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} недоступное фото пропущено",
-      "few": "{count} недоступных фото пропущено",
-      "many": "{count} недоступных фото пропущено",
-      "other": "{count} недоступных фото пропущено"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

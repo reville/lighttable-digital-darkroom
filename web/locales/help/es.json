@@ -409,7 +409,7 @@
         {
           "title": "Elegir un conservado",
           "paragraphs": [
-            "Seleccione las fotos seleccionadas como foto activa de la vista general y rechaza las demás fotos que aún están en la vista general. Esto cambia sus marcas. Los metadatos vinculados de RAW y JPEG pueden extender esos cambios de marca a las fotos compañeras.",
+            "Cuando Vista general se abre desde Descartado asistido, compara el grupo sugerido y marca las fotos individualmente. Hacer selección está disponible en una Vista general normal: selecciona la foto activa de la vista general y rechaza las otras fotos que aún están en la vista general. Esto cambia sus marcas. Los metadatos vinculados RAW y JPEG pueden extender esos cambios de marca a los compañeros.",
             "Para juzgar una edición frente a su original, use Comparar antes/después en Detalle; Vista general sirve para elegir entre distintos fotogramas."
           ]
         }
@@ -2939,15 +2939,24 @@
             "Activa Índice de fotos en Configuración y espera a que se asignen puntuaciones a las fotos.",
             "Expanda Descarte asistido en la barra lateral de la biblioteca.",
             "Elija criterios de Seleccionar como Nitidez del sujeto, Nitidez del ojo u Ojos abiertos, o criterios de Rechazar como Problemas de exposición, Disparos fallidos o Documentos.",
-            "Usa Selecciones, Rechazos o Todos para revisar las fotos coincidentes.",
-            "Inspecciona las sugerencias y luego usa Selecciona las seleccionadas o Rechazar rechaza si quieres aplicar esas marcas."
+            "Elegir un criterio abre sus fotos coincidentes en la cuadrícula. Usa Selecciones, Rechazos o Todos para cambiar la vista de revisión. Los demás filtros de la biblioteca siguen aplicándose.",
+            "Revisa las fotos mostradas y luego usa Marcar fotos como selecciones o Marcar fotos como rechazos. El botón muestra cuántos archivos cambiarán."
           ]
         },
         {
           "title": "Aplicando marcas",
           "paragraphs": [
-            "La confirmación muestra la cantidad afectada y advierte que las marcas existentes en las fotos coincidentes serán reemplazadas. Los metadatos vinculados de RAW/JPEG también pueden incluir el archivo emparejado cuando esa preferencia está activada.",
+            "Las marcas existentes se conservan de forma predeterminada. Activa Reemplazar marcas existentes solo cuando quieras cambiar decisiones anteriores. Las acciones de lote afectan a las coincidencias mostradas e incluyen archivos RAW/JPEG vinculados cuando el vínculo de metadatos está activado; las marcas protegidas o ya coincidentes se excluyen del recuento de la acción.",
+            "Usa Deshacer en el mensaje de finalización o Deshacer último lote de marcas en la barra lateral para restaurar un lote. Deshacer sigue disponible durante esta sesión y conserva cualquier decisión de marca manual o externa posterior. Si falla el guardado, usa Reintentar guardar o deshace el lote; las escrituras fallidas permanecen en cola.",
             "Estas son señales de análisis para tu revisión, no juicios finales sobre qué fotografías conservar. Rechazar establece una marca; por sí solo no mueve los originales a la Papelera."
+          ]
+        },
+        {
+          "title": "Comparar fotos similares",
+          "paragraphs": [
+            "Revisar fotos similares encuentra fotos indexadas visualmente similares capturadas en un intervalo de 30 segundos en la carpeta o colección actual. Los grupos se abren en Vista general con hasta 16 fotos. Usa Grupo anterior y Siguiente grupo para comparar las alternativas, y luego marca fotos individuales con los controles de la vista general.",
+            "Una foto sugerida tiene una valoración claramente superior basada en el enfoque, los ojos abiertos y los problemas detectados. Los empates o la evidencia insuficiente no muestran una recomendación clara. Los grupos de similitud son sugerencias; no crean pilas ni cambian las marcas.",
+            "La agrupación requiere horas de captura reales y análisis actual del Índice de fotos. Se excluyen los archivos con solo fechas del sistema de archivos, los videos, las copias virtuales y las fotos sin suficiente detalle visual. Los registros del índice existentes se actualizan por el proceso del índice después de esta actualización."
           ]
         }
       ],
@@ -3178,5 +3187,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

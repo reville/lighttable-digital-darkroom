@@ -409,7 +409,7 @@
         {
           "title": "Wybierz jedno zachowane",
           "paragraphs": [
-            "Opcja Wybierz wybiera aktywne zdjęcie przeglądu i odrzuca pozostałe zdjęcia nadal znajdujące się w przeglądzie. To zmienia ich flagi. Powiązane metadane RAW i JPEG mogą rozszerzać te zmiany flag na pliki towarzyszące.",
+            "Gdy Przegląd zostanie otwarty z Wspomaganej selekcji, porównaj sugerowaną grupę i oznaczaj zdjęcia pojedynczo. Opcja Ustaw zaznaczenie jest dostępna w zwykłym widoku Przegląd: zaznacza aktywne zdjęcie z przeglądu i odrzuca pozostałe zdjęcia nadal znajdujące się w przeglądzie. Zmienia to ich flagi. Powiązane metadane RAW i JPEG mogą rozszerzyć te zmiany flag na towarzyszy.",
             "Aby ocenić edycję względem oryginału, użyj porównania przed/po w Szczegóły; Przegląd służy do wyboru spośród różnych kadrów."
           ]
         }
@@ -2939,15 +2939,24 @@
             "Włącz Indeks zdjęć w Ustawieniach i poczekaj na ocenienie zdjęć.",
             "Rozwiń selekcję wspomaganą w panelu bocznym biblioteki.",
             "Wybierz kryteria Wybierz, takie jak Ostrość obiektu, Ostrość oczu lub Otwarte oczy, albo kryteria Odrzuć, takie jak Problemy z ekspozycją, Pudła lub Dokumenty.",
-            "Użyj Wybrane, Odrzucone lub Wszystkie, aby przejrzeć pasujące zdjęcia.",
-            "Sprawdź sugestie, a następnie użyj Wybierz zaznacza lub Odrzuć odrzuca, jeśli chcesz zastosować te flagi."
+            "Wybranie kryterium otwiera pasujące zdjęcia w siatce. Użyj Widok Wybrane, Odrzucone lub Wszystkie, aby zmienić widok przeglądu. Nadal obowiązują inne filtry biblioteki.",
+            "Przejrzyj wyświetlone zdjęcia, a następnie użyj opcji Oznacz zdjęcia jako wybrane lub Oznacz zdjęcia jako odrzucone. Przycisk pokazuje, ile plików zostanie zmienionych."
           ]
         },
         {
           "title": "Stosowanie flag",
           "paragraphs": [
-            "Potwierdzenie pokazuje liczbę obiektów, których dotyczy operacja, i ostrzega, że istniejące flagi na dopasowanych zdjęciach zostaną zastąpione. Powiązane metadane RAW/JPEG mogą również uwzględniać sparowany plik, jeśli to ustawienie jest włączone.",
+            "Domyślnie istniejące flagi są zachowywane. Włącz Zastąp istniejące flagi tylko wtedy, gdy chcesz zmienić wcześniejsze decyzje. Działania wsadowe dotyczą wyświetlonych dopasowań i obejmują powiązane pliki RAW/JPEG, gdy włączone jest łączenie metadanych; chronione lub już zgodne flagi są wykluczone z liczby działań.",
+            "Użyj Cofnij w komunikacie o zakończeniu lub opcji Cofnij ostatni wsadowy zapis flag w panelu bocznym, aby przywrócić wsad. Cofanie pozostaje dostępne w tej sesji i zachowuje wszelkie późniejsze ręczne lub zewnętrzne decyzje dotyczące flag. Jeśli zapis się nie powiedzie, użyj opcji Ponów zapis lub cofnij wsad; nieudane zapisy pozostają w kolejce.",
             "Są to sygnały analityczne do Twojej oceny, a nie ostateczne osądy, które fotografie zachować. Odrzucenie ustawia flagę; samo w sobie nie przenosi oryginałów do Kosza."
+          ]
+        },
+        {
+          "title": "Porównaj podobne zdjęcia",
+          "paragraphs": [
+            "Wspomagana selekcja podobnych zdjęć znajduje wizualnie podobne zdjęcia w indeksie, wykonane w ciągu 30 sekund w bieżącym folderze lub kolekcji. Grupy otwierają się w widoku Przegląd z maksymalnie 16 zdjęciami. Użyj opcji Poprzednia grupa i Następna grupa, aby porównać alternatywy, a następnie oznaczaj pojedyncze zdjęcia za pomocą kontrolek przeglądu.",
+            "Sugerowane zdjęcie ma jednoznacznie lepszą ocenę na podstawie ostrości, otwartych oczu i wykrytych problemów. Przy remisie lub niewystarczających dowodach nie jest wyświetlana jednoznaczna rekomendacja. Grupy podobieństwa są sugestiami; nie tworzą stosów ani nie zmieniają flag.",
+            "Grupowanie wymaga rzeczywistego czasu wykonania oraz bieżącej analizy Photo Index. Pliki z samymi datami systemu plików, filmy, kopie wirtualne i zdjęcia bez wystarczających szczegółów obrazu są wykluczane. Istniejące rekordy indeksu są odświeżane przez proces indeksowania po tej aktualizacji."
           ]
         }
       ],
@@ -3178,5 +3187,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

@@ -16,6 +16,8 @@ import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
+import { createCullBatch, cullFlagTargets } from '/web/cull-batch.js';
+import { groupSimilarPhotos, cullSuggestion } from '/web/cull-similarity.js';
 import { createPhotoUndoHistory } from '/web/photo-undo.js';
 import { previewDetailLabel, previewFailureMessage } from '/web/preview-detail.js';
 import { createZoomMotion, smoothZoomEnabled } from '/web/zoom-motion.js';
@@ -4780,7 +4782,7 @@ function visible() {
   });
   list = collapsePairs(list, pairMode, pairOverrides);
   for (const stack of S.library.stacks || []) {
-    if (!stack.collapsed) continue;
+    if (!stack.collapsed || S.cull.review !== 'all') continue;
     const visibleMembers = stack.members.filter((name) => list.some((im) => im.name === name));
     if (visibleMembers.length > 1) {
       const cover = visibleMembers[0];
@@ -5682,7 +5684,8 @@ function makeFolderRow(source, data, isRoot) {
   row.className = 'folder-row' + (isRoot ? '' : ' nested')
     + (!source.available ? ' unavailable' : '')
     + (isCurrentSource && S.activeFolder === relative ? ' on' : '');
-  row.style.setProperty('--depth', isRoot ? 0 : data.depth);
+  const depth = data.depth ?? relative.split('/').filter(Boolean).length;
+  row.style.setProperty('--depth', isRoot ? 0 : depth);
   row.title = fullFolderPath(source.path, relative);
   row.dataset.folder = relative;
 
@@ -5979,6 +5982,7 @@ window.addEventListener('resize', () => { closeFolderMenu(); closeActionMenus();
 
 function refreshLists() {
   KEYWORD_BATCH?.sync();
+  if (S.cull.review !== 'all' || document.querySelector('.ai-cull-disclosure')?.open) syncCullPanel();
   renderStrip();
   if ($('library').classList.contains('show')) renderGrid();
   counts();
@@ -6871,6 +6875,7 @@ function commonMarkValue(targets, field, fallback) {
 
 function persistMark(targets, entry) {
   for (const image of targets) {
+    CULL_BATCH.noteFlagChange(image.name, entry);
     const pending = editSaveQueue.getPending(image.name);
     if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(entry));
     editSaveQueue.enqueue(image.name, { sourceKey: image.recoverySourceKey || null, ...pending,
@@ -7002,6 +7007,7 @@ function advanceAfterMark(im) {
 // Every local state mutation joins the same per-photo chain. A partial patch
 // must retain any full recipe still waiting to save, including after a failure.
 function enqueuePhotoPatch(im, patch, { historyLabel } = {}) {
+  CULL_BATCH.noteFlagChange(im.name, patch);
   const pending = editSaveQueue.getPending(im.name);
   const state = { ...pending?.state, ...cloneValue(patch), name: im.name };
   Object.assign(im, cloneValue(patch));
@@ -7050,20 +7056,11 @@ function chosenCull(group) {
   return group.filter((name) => S.cull.on[name]);
 }
 
-/** Photos the chosen criteria answered yes for, within the current scope. */
-function cullResults(group) {
-  const criteria = chosenCull(group);
-  if (!criteria.length) return [];
-  return collectionScope()
-    .filter((im) => im.kind !== 'video')
-    .filter((im) => cullMatches(im.ai, criteria));
-}
-
 function matchesCullReview(image) {
   if (S.cull.review === 'all') return true;
   const criteria = chosenCull(
     S.cull.review === 'selects' ? CULL_SELECT : CULL_REJECT);
-  if (!criteria.length) return true;
+  if (!criteria.length) return false;
   return cullMatches(image.ai, criteria);
 }
 
@@ -7095,18 +7092,37 @@ function syncCullPanel() {
     button.classList.toggle('on', button.dataset.review === S.cull.review);
     button.disabled = !ready;
   }
-  const selects = cullResults(CULL_SELECT).length;
-  const rejects = cullResults(CULL_REJECT).length;
-  $('cullReviewHint').textContent = S.cull.review === 'all' ? tr("Reviewing every photo.") : S.cull.review === 'selects' ? chosenCull(CULL_SELECT).length ? trn("Reviewing {count} photo that met a select criterion.", "Reviewing {count} photos that met a select criterion.", selects, {selects: selects}) : tr("Choose a select criterion above.") : chosenCull(CULL_REJECT).length ? trn("Reviewing {count} photo that met a reject criterion.", "Reviewing {count} photos that met a reject criterion.", rejects, {rejects: rejects}) : tr("Choose a reject criterion above.");
+  const reviewing = S.cull.review !== 'all';
+  const shown = reviewing ? visible() : [];
+  const group = S.cull.review === 'selects' ? CULL_SELECT : CULL_REJECT;
+  const criteria = chosenCull(group).map(name => CULL_LABELS[name]).join(', ');
+  $('cullReviewHint').textContent = !reviewing ? tr("Choose Selects or Rejects to review matches before applying flags.")
+    : !chosenCull(group).length ? tr("Choose criteria above.")
+    : trn("{count} matching photo shown: {criteria}.", "{count} matching photos shown: {criteria}.", shown.length, {criteria});
+  const replace = $('cullReplaceFlags').checked;
+  const linked = linkedMetadataTargets(shown);
+  const picks = cullFlagTargets(linked, 'approved', replace).length;
+  const rejects = cullFlagTargets(linked, 'skipped', replace).length;
+  $('cullApplyPicks').hidden = S.cull.review !== 'selects';
+  $('cullApplyRejects').hidden = S.cull.review !== 'rejects';
+  $('cullApplyPicks').disabled = !ready || !picks || CULL_BATCH.busy;
+  $('cullApplyRejects').disabled = !ready || !rejects || CULL_BATCH.busy;
+  $('cullApplyPicks').textContent = trn("Flag {count} photo as a pick", "Flag {count} photos as picks", picks);
+  $('cullApplyRejects').textContent = trn("Flag {count} photo as a reject", "Flag {count} photos as rejects", rejects);
+  $('cullReplaceFlags').disabled = CULL_BATCH.busy;
+  $('cullFlagHint').hidden = !reviewing;
+  $('cullFlagHint').textContent = replace
+    ? tr("Existing flags may be replaced. Counts include linked RAW/JPEG files.")
+    : tr("Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.");
+  $('cullUndo').hidden = !CULL_BATCH.canUndo;
+  $('cullUndo').disabled = CULL_BATCH.busy;
+  $('cullSimilar').disabled = !ready || CULL_BATCH.busy;
 
-  $('cullApplyPicks').disabled = !ready || !selects;
-  $('cullApplyRejects').disabled = !ready || !rejects;
-  $('cullApplyPicks').textContent = selects ? trn("Pick {count} select", "Pick {count} selects", selects, {selects: selects}) : tr("Pick the selects");
-  $('cullApplyRejects').textContent = rejects ? trn("Reject {count} photo", "Reject {count} photos", rejects, {rejects: rejects}) : tr("Reject the rejects");
 }
 
 function setCullReview(review) {
   S.cull.review = review;
+  if (review !== 'all') setViewMode(S.gridViewMode || 'photo', false);
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   refreshLists();
@@ -7114,37 +7130,77 @@ function setCullReview(review) {
   savePrefs();
 }
 
-async function applyCullFlags(group, status) {
-  const targets = linkedMetadataTargets(cullResults(group));
-  if (!targets.length) return;
-  const criteria = chosenCull(group).map((name) => CULL_LABELS[name]).join(', ');
-  const confirmation = status === 'approved'
-    ? trn('Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.',
-      'Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.', targets.length, {criteria})
-    : trn('Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.',
-      'Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.', targets.length, {criteria});
-  if (!window.confirm(confirmation)) return;
-  for (const image of targets) enqueuePhotoPatch(image, { status });
-  if (!await flushEditSaves()) return;
+function refreshCullFlags() {
+  S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   refreshLists();
   syncCullPanel();
-  toast(status === 'approved'
-    ? trn('Picked {count} photo', 'Picked {count} photos', targets.length)
-    : trn('Rejected {count} photo', 'Rejected {count} photos', targets.length));
 }
+
+const CULL_BATCH = createCullBatch({
+  imageFor: name => S.images.find(image => image.name === name),
+  enqueue: (image, patch) => enqueuePhotoPatch(image, patch),
+  flush: flushEditSaves,
+  changed: refreshCullFlags,
+});
+
+async function applyCullFlags(group, status) {
+  if (S.cull.review !== (status === 'approved' ? 'selects' : 'rejects')) return;
+  if (!chosenCull(group).length) return;
+  const targets = linkedMetadataTargets(visible());
+  const result = await CULL_BATCH.apply(targets, status, $('cullReplaceFlags').checked);
+  if (!result?.saved) return;
+  toast(status === 'approved'
+    ? trn('Picked {count} photo', 'Picked {count} photos', result.count)
+    : trn('Rejected {count} photo', 'Rejected {count} photos', result.count),
+    {label: tr('Undo'), run: undoCullFlags});
+}
+
+async function undoCullFlags() {
+  const result = await CULL_BATCH.undo();
+  if (result?.saved) toast(trn('Restored {count} photo flag. Later flag changes are preserved.',
+    'Restored {count} photo flags. Later flag changes are preserved.', result.count));
+}
+
+let cullSimilarGroups = [], cullSimilarIndex = 0;
+function showCullSimilarGroup(step = 0) {
+  cullSimilarIndex = Math.max(0, Math.min(cullSimilarGroups.length - 1, cullSimilarIndex + step));
+  const group = cullSimilarGroups[cullSimilarIndex]
+    ?.map(image => S.images.find(current => current.name === image.name)).filter(Boolean);
+  if (!group?.length) return;
+  const suggestion = cullSuggestion(group);
+  $('cullSimilarNavigation').hidden = false;
+  $('surveyKeep').hidden = true;
+  $('cullGroupHint').textContent = suggestion
+    ? tr('Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.',
+      {index: cullSimilarIndex + 1, count: cullSimilarGroups.length, name: displayName(suggestion)})
+    : tr('Group {index} of {count}. No clear recommendation; compare these photos.',
+      {index: cullSimilarIndex + 1, count: cullSimilarGroups.length});
+  $('cullSimilarPrevious').disabled = cullSimilarIndex === 0;
+  $('cullSimilarNext').disabled = cullSimilarIndex === cullSimilarGroups.length - 1;
+  SURVEY.open(group.map(image => image.name), 'survey');
+}
+$('cullSimilar').onclick = () => {
+  cullSimilarGroups = groupSimilarPhotos(collectionScope(), captureSortValue);
+  cullSimilarIndex = 0;
+  $('cullSimilarHint').textContent = '';
+  $('cullSimilarNavigation').hidden = !cullSimilarGroups.length;
+  if (cullSimilarGroups.length) showCullSimilarGroup();
+  else $('cullSimilarHint').textContent = tr('No similar groups found. Photos need current index analysis and capture times.');
+};
+$('cullSimilarPrevious').onclick = () => showCullSimilarGroup(-1);
+$('cullSimilarNext').onclick = () => showCullSimilarGroup(1);
+document.querySelector('.ai-cull-disclosure').addEventListener('toggle', syncCullPanel);
+$('cullReplaceFlags').onchange = syncCullPanel;
+$('cullUndo').onclick = undoCullFlags;
 
 for (const name of [...CULL_SELECT, ...CULL_REJECT]) {
   const box = $(`cull${name[0].toUpperCase()}${name.slice(1)}`);
   if (!box) continue;
   box.onchange = () => {
     S.cull.on[name] = box.checked;
-    invalidateVisibleCache();
-    _stripKey = _gridKey = '';
-    refreshLists();
-    syncCullPanel();
-    savePrefs();
+    setCullReview(CULL_SELECT.includes(name) ? 'selects' : 'rejects');
   };
 }
 for (const button of document.querySelectorAll('.cull-review button')) {
@@ -9112,6 +9168,17 @@ function finishSpeedKey(key) {
     }
     wheelScale = 1; wheelPanX = 0; wheelPanY = 0;
   };
+  window.addEventListener('lighttable-magnify', ({detail}) => {
+    if (S.viewMode !== 'detail' || !cur() || S.editGesture || S.cropTransition ||
+        document.querySelector('.modal-backdrop.on')) return;
+    const {factor, x, y} = detail || {};
+    if (!Number.isFinite(factor) || factor <= 0 || factor === 1 ||
+        !Number.isFinite(x) || !Number.isFinite(y) ||
+        !wrap.contains(document.elementFromPoint(x, y))) return;
+    wheelScale *= factor;
+    wheelPoint = [x, y];
+    if (!wheelFrame) wheelFrame = requestAnimationFrame(flushWheel);
+  });
   wrap.addEventListener('wheel', (e) => {
     if (S.speed) {
       e.preventDefault();
@@ -11025,7 +11092,11 @@ SURVEY = createSurvey({
     const index = S.images.findIndex((image) => image.name === name);
     if (index >= 0) { go(index); setViewMode('detail'); }
   },
-  onClose: () => syncCullBars(),
+  onClose: () => {
+    $('cullSimilarNavigation').hidden = true;
+    $('surveyKeep').hidden = false;
+    syncCullBars();
+  },
 });
 
 HISTORY = createHistoryPanel({
@@ -11146,6 +11217,8 @@ function presentVideo(im) {
 }
 
 function openSurvey(mode = 'survey') {
+  $('cullSimilarNavigation').hidden = true;
+  $('surveyKeep').hidden = false;
   const list = visible();
   let chosen = S.msel.size
     ? list.filter((image) => S.msel.has(image.name)).map((image) => image.name)
@@ -11517,6 +11590,7 @@ async function applyServerStateEvent(event) {
     // while keeping unrelated local fields and explicit retry after a failure.
     if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, patch);
     else {
+      CULL_BATCH.noteFlagChange(image.name, patch);
       Object.assign(image, cloneValue(patch));
       if (image.stateLoadEdits) Object.assign(image.stateLoadEdits, cloneValue(patch));
     }

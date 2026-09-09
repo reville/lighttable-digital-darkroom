@@ -409,7 +409,7 @@
         {
           "title": "Escolher um mantido",
           "paragraphs": [
-            "Fazer a seleção escolhe a foto de varredura ativa e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos pares.",
+            "Quando Varredura é aberto a partir de seleção assistida, compare o grupo sugerido e marque as fotos individualmente. Fazer seleção está disponível em uma Varredura normal: ele seleciona a foto ativa da varredura e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Os metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos companheiros.",
             "Para julgar uma edição em relação ao original, use Comparar antes/depois em Detalhe; Varredura serve para escolher entre quadros diferentes."
           ]
         }
@@ -2939,15 +2939,24 @@
             "Ative Índice de Fotos em Configurações e aguarde as fotos serem pontuadas.",
             "Expanda Seleção assistida na barra lateral da biblioteca.",
             "Escolha critérios de Seleção como Nitidez do assunto, Nitidez dos olhos ou Olhos abertos, ou critérios de Rejeição como Problemas de exposição, Falhas ou Documentos.",
-            "Use Selecionados, Rejeitos ou Todos para revisar as fotos correspondentes.",
-            "Inspecione as sugestões e, depois, use Pick selects ou Reject rejects se quiser aplicar essas bandeiras."
+            "Escolher um critério abre as fotos correspondentes na grade. Use Selecionados, Rejeitos ou Todos para alterar a visualização da revisão. Outros filtros da biblioteca ainda se aplicam.",
+            "Revise as fotos exibidas e, em seguida, use Marcar fotos como selecionadas ou Marcar fotos como rejeitos. O botão mostra quantos arquivos serão alterados."
           ]
         },
         {
           "title": "Aplicando bandeiras",
           "paragraphs": [
-            "A confirmação mostra a contagem afetada e avisa que as bandeiras existentes nas fotos correspondentes serão substituídas. Metadados vinculados de RAW/JPEG também podem incluir o arquivo pareado quando essa preferência estiver ativada.",
+            "As bandeiras existentes são preservadas por padrão. Ative Substituir bandeiras existentes somente quando quiser alterar decisões anteriores. As ações em lote afetam as correspondências exibidas e incluem arquivos RAW/JPEG vinculados quando o vínculo de metadados está ativado; as bandeiras protegidas ou já correspondentes são excluídas da contagem da ação.",
+            "Use Desfazer na mensagem de conclusão ou Desfazer último lote de bandeiras na barra lateral para restaurar um lote. Desfazer continua disponível durante esta sessão e preserva quaisquer decisões de bandeira manuais ou externas posteriores. Se a gravação falhar, use Tentar salvar novamente ou desfaça o lote; as gravações com falha permanecem na fila.",
             "Esses são sinais de análise para sua revisão, não julgamentos finais sobre quais fotografias manter. Rejeitar define uma bandeira; isso por si só não move os originais para o Lixo."
+          ]
+        },
+        {
+          "title": "Comparar fotos semelhantes",
+          "paragraphs": [
+            "Revisar fotos semelhantes encontra fotos indexadas visualmente semelhantes capturadas em até 30 segundos na pasta ou coleção atual. Os grupos abrem em Varredura com até 16 fotos. Use Grupo anterior e Próximo grupo para comparar as alternativas e, em seguida, marque fotos individuais com os controles da varredura.",
+            "Uma foto sugerida tem uma avaliação claramente melhor com base no foco, nos olhos abertos e nos problemas detectados. Empates ou evidências insuficientes mostram nenhuma recomendação clara. Os grupos de semelhança são sugestões; eles não criam pilhas nem alteram bandeiras.",
+            "O agrupamento exige horários de captura reais e a análise atual do Índice de fotos. Arquivos com apenas datas do sistema de arquivos, vídeos, cópias virtuais e fotos sem detalhe visual suficiente são excluídos. Os registros de índice existentes são atualizados pelo mecanismo do índice após esta atualização."
           ]
         }
       ],
@@ -3178,5 +3187,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

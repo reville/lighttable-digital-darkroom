@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
       "one": " · {count} paired file linked",
@@ -18,6 +18,14 @@
     {
       "one": "Exporting {count} photo to {destination}…",
       "other": "Exporting {count} photos to {destination}…"
+    },
+    {
+      "one": "Flag {count} photo as a pick",
+      "other": "Flag {count} photos as picks"
+    },
+    {
+      "one": "Flag {count} photo as a reject",
+      "other": "Flag {count} photos as rejects"
     },
     {
       "one": "Imported {count} photo from Apple Photos{value}",
@@ -40,24 +48,8 @@
       "other": "Pasted to {count} photos"
     },
     {
-      "one": "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-      "other": "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced."
-    },
-    {
-      "one": "Pick {count} select",
-      "other": "Pick {count} selects"
-    },
-    {
       "one": "Picked {count} photo",
       "other": "Picked {count} photos"
-    },
-    {
-      "one": "Reject {count} photo",
-      "other": "Reject {count} photos"
-    },
-    {
-      "one": "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-      "other": "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced."
     },
     {
       "one": "Rejected {count} photo",
@@ -72,12 +64,8 @@
       "other": "Restored {count} captures. You can also restore capture-time steps in History."
     },
     {
-      "one": "Reviewing {count} photo that met a reject criterion.",
-      "other": "Reviewing {count} photos that met a reject criterion."
-    },
-    {
-      "one": "Reviewing {count} photo that met a select criterion.",
-      "other": "Reviewing {count} photos that met a select criterion."
+      "one": "Restored {count} photo flag. Later flag changes are preserved.",
+      "other": "Restored {count} photo flags. Later flag changes are preserved."
     },
     {
       "one": "Wrote {count} sidecar.",
@@ -166,6 +154,10 @@
     {
       "one": "{count} indexed photo remains local until deleted.",
       "other": "{count} indexed photos remain local until deleted."
+    },
+    {
+      "one": "{count} matching photo shown: {criteria}.",
+      "other": "{count} matching photos shown: {criteria}."
     },
     {
       "one": "{count} minimum alignment inlier",
@@ -378,6 +370,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.",
@@ -732,6 +725,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.",
+    "Choose Selects or Rejects to review matches before applying flags.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.",
@@ -764,11 +758,9 @@
     "Choose a photo to rate or flag",
     "Choose a preset to see its source and conversion coverage.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.",
-    "Choose a reject criterion above.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.",
     "Choose a saved preset to submit",
     "Choose a scheme",
-    "Choose a select criterion above.",
     "Choose a settings folder",
     "Choose a source and destination first.",
     "Choose a source and destination, then scan.",
@@ -789,6 +781,7 @@
     "Choose another folder from the File menu.",
     "Choose application…",
     "Choose catalog…",
+    "Choose criteria above.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.",
     "Choose export size, format, and color space",
@@ -833,6 +826,7 @@
     "Choose your language",
     "Choose your preferred language in the first-use dialog.",
     "Choose…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.",
     "Choosing a file needs the desktop app; paste a path instead",
     "Choosing a folder needs the desktop app; paste a path instead",
     "Chromatic aberration",
@@ -975,6 +969,7 @@
     "Compare",
     "Compare Before & After",
     "Compare several photos in Survey",
+    "Compare similar photos",
     "Compare the faces before combining their photos.",
     "Compare while zoomed in",
     "Compare with a reference image",
@@ -1363,6 +1358,9 @@
     "Exchange metadata through XMP sidecars",
     "Existing LightTable edits could not be merged safely",
     "Existing files",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.",
     "Existing settings could not be loaded; this photo was left unchanged",
     "Expand Advanced and edit Filename template.",
     "Expand Advanced in Export.",
@@ -1510,6 +1508,10 @@
     "Flag and rate survey photo",
     "Flag and rating filters",
     "Flag as Pick",
+    "Flag {count} photo as a pick",
+    "Flag {count} photo as a reject",
+    "Flag {count} photos as picks",
+    "Flag {count} photos as rejects",
     "Flags and ratings apply to selection",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.",
     "Flip horizontal",
@@ -1588,6 +1590,9 @@
     "Group photos into collections",
     "Group similar faces and search names you add.",
     "Group the rendered derivative with its source in the catalog.",
+    "Group {index} of {count}. No clear recommendation; compare these photos.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.",
     "Guides for your photographs, from first edit to export.",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.",
@@ -1754,7 +1759,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.",
     "Inspect the overlay and use painted refinements around boundaries as needed.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.",
     "Interface",
     "Interface and behavior",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
@@ -1963,7 +1967,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks",
     "Make photos easier to find and prepare descriptive metadata for export.",
     "Make select",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
     "Make the source photo active.",
     "Make this photo available offline in its cloud storage app, then retry.",
     "Make your adjustment, then check the save status in the app.",
@@ -2082,6 +2085,7 @@
     "Newer than this build",
     "Next",
     "Next Photo",
+    "Next group",
     "Next presets",
     "No Rating",
     "No TIFF was created.",
@@ -2121,6 +2125,7 @@
     "No presets in this collection yet.",
     "No rejected photos in this view",
     "No sampled colors",
+    "No similar groups found. Photos need current index analysis and capture times.",
     "No sources yet.",
     "No steps recorded yet.",
     "No usable lines found.",
@@ -2350,12 +2355,6 @@
     "Pick (P)",
     "Pick / reject / unflag",
     "Pick a preset",
-    "Pick selects",
-    "Pick the selects",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.",
-    "Pick {count} select",
-    "Pick {count} selects",
     "Pick, reject, and rate photos",
     "Picked",
     "Picked only",
@@ -2425,6 +2424,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.",
     "Previous",
     "Previous Photo",
+    "Previous group",
     "Previous presets",
     "Print development",
     "Print exposure",
@@ -2552,12 +2552,6 @@
     "Refreshing community…",
     "Reject",
     "Reject (X)",
-    "Reject rejects",
-    "Reject the rejects",
-    "Reject {count} photo",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-    "Reject {count} photos",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.",
     "Rejected",
     "Rejected {count} photo",
     "Rejected {count} photos",
@@ -2614,6 +2608,7 @@
     "Repair",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.",
     "Replace adjustment settings",
+    "Replace existing flags",
     "Replace local masks; detect AI selections on each photo",
     "Replace with imported",
     "Replaced adjustments with {name}",
@@ -2665,6 +2660,8 @@
     "Restored that step",
     "Restored {count} capture. You can also restore capture-time steps in History.",
     "Restored {count} captures. You can also restore capture-time steps in History.",
+    "Restored {count} photo flag. Later flag changes are preserved.",
+    "Restored {count} photo flags. Later flag changes are preserved.",
     "Restore…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.",
     "Result name",
@@ -2687,18 +2684,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.",
     "Review photos from the source using the destination and naming settings",
     "Review signals",
+    "Review similar photos",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.",
     "Review the before-and-after filenames in the preview.",
     "Review the current view carefully before moving rejected originals and sidecars.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.",
     "Review the import result and the new preset’s conversion coverage before applying it.",
     "Review the import result, then continue into the library.",
     "Review the result and refine the sliders for the photograph.",
     "Review transferred masks",
     "Review translated edits",
     "Reviewing every photo.",
-    "Reviewing {count} photo that met a reject criterion.",
-    "Reviewing {count} photo that met a select criterion.",
-    "Reviewing {count} photos that met a reject criterion.",
-    "Reviewing {count} photos that met a select criterion.",
     "Rich descriptions on",
     "Richer descriptions require macOS 27 or later",
     "Rights",
@@ -3124,7 +3120,6 @@
     "The catalog was left unchanged.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.",
     "The current catalog is backed up first, then replaced by this one.",
     "The desktop Trash service (gio) is unavailable",
     "The desktop app checks its signed update feed.",
@@ -3298,6 +3293,7 @@
     "Undo last change",
     "Undo last correction",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.",
+    "Undo last flag batch",
     "Undo or restore an earlier step",
     "Undo snapshots must be strings",
     "Unedited",
@@ -3370,9 +3366,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.",
-    "Use Selects, Rejects, or All to review the matching photos.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.",
@@ -3473,6 +3469,7 @@
     "What to expect",
     "What to open",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
     "When a photo already has edits",
     "When a photo arrives",
     "When a photo seems missing",
@@ -4285,6 +4282,8 @@
     "{count} groups",
     "{count} indexed photo remains local until deleted.",
     "{count} indexed photos remain local until deleted.",
+    "{count} matching photo shown: {criteria}.",
+    "{count} matching photos shown: {criteria}.",
     "{count} minimum alignment inlier",
     "{count} minimum alignment inliers",
     "{count} missing",

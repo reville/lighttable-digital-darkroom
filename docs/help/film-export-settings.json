@@ -322,20 +322,87 @@
     "title": "Review assisted culling suggestions",
     "category": "Settings",
     "summary": "Review local analysis signals and apply pick or reject flags only when you choose.",
-    "keywords": ["cull", "culling", "ai", "selects", "rejects", "sharpness", "eyes", "misfire", "documents", "review", "flags"],
-    "sections": [
-      {"title": "Review signals", "paragraphs": ["Assisted culling uses the private Photo Index, which requires macOS. New analysis is unavailable on Linux and Windows. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."], "steps": ["Enable Photo Index in Settings and wait for photos to be scored.", "Expand Assisted culling in the library sidebar.", "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.", "Use Selects, Rejects, or All to review the matching photos.", "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."]},
-      {"title": "Applying flags", "paragraphs": ["The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.", "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."]}
+    "keywords": [
+      "cull",
+      "culling",
+      "ai",
+      "selects",
+      "rejects",
+      "sharpness",
+      "eyes",
+      "misfire",
+      "documents",
+      "review",
+      "flags"
     ],
-    "related": ["photo-index", "settings-and-defaults"],
+    "sections": [
+      {
+        "title": "Review signals",
+        "paragraphs": [
+          "Assisted culling uses the private Photo Index, which requires macOS. New analysis is unavailable on Linux and Windows. It does not flag photos until you ask it to. A photo matches a group if any of your chosen criteria returns yes; not judged means that signal has no usable verdict."
+        ],
+        "steps": [
+          "Enable Photo Index in Settings and wait for photos to be scored.",
+          "Expand Assisted culling in the library sidebar.",
+          "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.",
+          "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.",
+          "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change."
+        ]
+      },
+      {
+        "title": "Applying flags",
+        "paragraphs": [
+          "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.",
+          "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.",
+          "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."
+        ]
+      },
+      {
+        "title": "Compare similar photos",
+        "paragraphs": [
+          "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.",
+          "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.",
+          "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update."
+        ]
+      }
+    ],
+    "related": [
+      "photo-index",
+      "settings-and-defaults"
+    ],
     "sources": [
-      {"path": "film_lab_ai/providers.py", "anchor": "platform.system() == \"Darwin\""},
-      {"path": "web/app.js", "anchor": "Nothing is flagged until you ask for it."},
-      {"path": "web/local-ai.js", "anchor": "True when any of the chosen criteria answered yes for this photo."},
-      {"path": "web/index.html", "anchor": "Assisted culling"},
-      {"path": "web/app.js", "anchor": "Existing flags on those photos are replaced."},
-      {"path": "web/app.js", "anchor": "const targets = linkedMetadataTargets(cullResults(group));"},
-      {"path": "web/app.js", "anchor": "for (const image of targets) enqueuePhotoPatch(image, { status });"}
+      {
+        "path": "film_lab_ai/providers.py",
+        "anchor": "platform.system() == \"Darwin\""
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "Nothing is flagged until you ask for it."
+      },
+      {
+        "path": "web/local-ai.js",
+        "anchor": "True when any of the chosen criteria answered yes for this photo."
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Assisted culling"
+      },
+      {
+        "path": "web/cull-batch.js",
+        "anchor": "export function createCullBatch"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "const targets = linkedMetadataTargets(visible());"
+      },
+      {
+        "path": "web/cull-similarity.js",
+        "anchor": "export function groupSimilarPhotos"
+      },
+      {
+        "path": "film_lab_ai/culling.py",
+        "anchor": "ANALYSIS_VERSION = 3"
+      }
     ]
   },
   {

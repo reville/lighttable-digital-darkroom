@@ -409,7 +409,7 @@
         {
           "title": "Bir korunan seç",
           "paragraphs": [
-            "Seçme işlemi, aktif inceleme fotoğrafını seçilmiş yapar ve incelemede kalan diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlantılı RAW ve JPEG meta verileri, bu bayrak değişikliklerini eş fotoğraflara da genişletebilir.",
+            "İncele Yardımlı ayıklama'dan açıldığında, önerilen grubu karşılaştırın ve fotoğrafları tek tek bayraklayın. Normal bir İncele'de Seçim yap kullanılabilir: etkin inceleme fotoğrafını seçer ve incelemedeki diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlı RAW ve JPEG üstverisi bu bayrak değişikliklerini eşlikçilere yayabilir.",
             "Bir düzenlemeyi özgünüyle değerlendirmek için Ayrıntı'da önce/sonra Karşılaştırma'yı kullanın; İncele, farklı kareler arasında seçim yapmak içindir."
           ]
         }
@@ -2939,15 +2939,24 @@
             "Ayarlar’da Fotoğraf Dizinini etkinleştirin ve fotoğrafların puanlanmasını bekleyin.",
             "Kitaplık kenar çubuğunda Yardımlı ayıklama’yı genişletin.",
             "Konu keskinliği, Göz keskinliği veya Gözler açık gibi Seç ölçütlerini ya da Pozlama sorunları, Kaçırmalar veya Belgeler gibi Reddet ölçütlerini seçin.",
-            "Eşleşen fotoğrafları gözden geçirmek için Seçilenler, Reddedilenler veya Tümü’nü kullanın.",
-            "Önerileri inceleyin, ardından bu bayrakları uygulamak istiyorsanız Pick selects veya Reject rejects kullanın."
+            "Bir ölçüt seçmek, eşleşen fotoğraflarını ızgarada açar. İnceleme görünümünü değiştirmek için Seçilenler, Reddedilenler veya Tümü'nü kullanın. Diğer kütüphane filtreleri yine de uygulanır.",
+            "Görüntülenen fotoğrafları inceleyin, sonra fotoğrafları seçimler olarak bayrakla veya fotoğrafları reddedilenler olarak bayrakla seçeneğini kullanın. Düğme, kaç dosyanın değişeceğini gösterir."
           ]
         },
         {
           "title": "Bayraklar uygulanıyor",
           "paragraphs": [
-            "Onay, etkilenen sayıyı gösterir ve eşleşen fotoğraflardaki mevcut bayrakların değiştirileceği konusunda uyarır. Bu tercih etkin olduğunda, bağlantılı RAW/JPEG meta verileri eş fotoğrafı da içerebilir.",
+            "Var olan bayraklar varsayılan olarak korunur. Önceki kararları değiştirmek istediğinizde yalnızca Var olan bayrakları değiştir'i etkinleştirin. Toplu işlemler, görüntülenen eşleşmeleri etkiler ve üstveri bağlantısı etkinleştirildiğinde bağlı RAW/JPEG dosyalarını içerir; korunan veya zaten eşleşen bayraklar işlem sayısına dahil edilmez.",
+            "Bir toplu işlemi geri yüklemek için tamamlanma iletisindeki Geri Al'ı veya kenar çubuğundaki Son bayrak toplu işini geri al'ı kullanın. Geri Al, bu oturum sırasında kullanılabilir kalır ve sonraki elle ya da harici bayrak kararlarını korur. Kaydetme başarısız olursa, Kaydetmeyi yeniden dene'yi kullanın ya da toplu işlemi geri alın; başarısız yazmalar kuyrukta kalır.",
             "Bunlar incelemeniz için analiz sinyalleridir, hangi fotoğrafların tutulacağına dair nihai kararlar değildir. Reddetmek bir bayrak ayarlar; özgün dosyaları kendiliğinden Çöp Kutusu’na taşımaz."
+          ]
+        },
+        {
+          "title": "Benzer fotoğrafları karşılaştır",
+          "paragraphs": [
+            "Benzer fotoğrafları incele, geçerli klasör veya koleksiyonda 30 saniye içinde çekilmiş görsel olarak benzer dizinlenmiş fotoğrafları bulur. Gruplar, en fazla 16 fotoğrafla İncele'de açılır. Alternatifleri karşılaştırmak için Önceki grup ve Sonraki grup'u kullanın, ardından inceleme kontrolleriyle tek tek fotoğrafları bayraklayın.",
+            "Önerilen fotoğraf, odak, açık gözler ve saptanan sorunlara göre benzersiz biçimde daha güçlü bir değerlendirmeye sahiptir. Beraberlikler veya yetersiz kanıt net bir öneri göstermez. Benzerlik grupları öneridir; yığın oluşturmaz veya bayrakları değiştirmez.",
+            "Gruplama için gerçek yakalama zamanı ve güncel Fotoğraf Dizini analizi gerekir. Yalnızca dosya sistemi tarihleri olan dosyalar, videolar, sanal kopyalar ve yeterli görsel ayrıntıya sahip olmayan fotoğraflar hariç tutulur. Bu güncellemeden sonra mevcut dizin kayıtları dizin çalışanı tarafından yenilenir."
           ]
         }
       ],
@@ -3178,5 +3187,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

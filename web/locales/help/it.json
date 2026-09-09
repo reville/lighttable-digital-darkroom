@@ -409,7 +409,7 @@
         {
           "title": "Scegli un solo mantenuta",
           "paragraphs": [
-            "Aggiungi seleziona rende la foto panoramica attiva la foto selezionata e rifiuta le altre foto ancora nella panoramica. Questo modifica i loro contrassegni. I metadati RAW e JPEG collegati possono estendere tali modifiche dei contrassegni ai file associati.",
+            "Quando Panoramica viene aperta da Scarto assistito, confronta il gruppo suggerito e contrassegna le foto singolarmente. Crea selezione è disponibile in una Panoramica normale: seleziona la foto attiva della panoramica e rifiuta le altre foto ancora nella panoramica. Questo modifica i loro contrassegni. I metadati RAW e JPEG collegati possono estendere tali modifiche dei contrassegni ai componenti complementari.",
             "Per valutare una modifica rispetto all'originale, usa Confronto prima/dopo in Dettagli; Panoramica serve per scegliere tra fotogrammi diversi."
           ]
         }
@@ -2939,15 +2939,24 @@
             "Abilita Indice foto in Impostazioni e attendi che le foto vengano valutate.",
             "Espandi Scarto assistito nella barra laterale della libreria.",
             "Scegli criteri di Seleziona come Nitidezza del soggetto, Nitidezza degli occhi o Occhi aperti, oppure criteri di Rifiuta come Problemi di esposizione, Scatti mancati o Documenti.",
-            "Usa Selezioni, Rifiuti o Tutti per rivedere le foto corrispondenti.",
-            "Esamina i suggerimenti, poi usa Seleziona contrassegna o Rifiuta rifiuta se vuoi applicare quei contrassegni."
+            "La scelta di un criterio apre le foto corrispondenti nella griglia. Usa Selezioni, Rifiuti o Tutti per cambiare la vista di revisione. Gli altri filtri della libreria restano applicati.",
+            "Rivedi le foto mostrate, poi usa Contrassegna foto come selezioni oppure Contrassegna foto come rifiuti. Il pulsante mostra quanti file verranno modificati."
           ]
         },
         {
           "title": "Applicazione contrassegni",
           "paragraphs": [
-            "La conferma mostra il numero di elementi interessati e avvisa che i contrassegni esistenti sulle foto corrispondenti verranno sostituiti. I metadati RAW/JPEG collegati possono includere anche il file associato quando questa preferenza è attivata.",
+            "Per impostazione predefinita i contrassegni esistenti sono mantenuti. Abilita Sostituisci i contrassegni esistenti solo quando vuoi modificare decisioni precedenti. Le azioni di lotto influenzano le corrispondenze mostrate e includono i file RAW/JPEG collegati quando il collegamento dei metadati è abilitato; i conteggi delle azioni escludono i contrassegni protetti o già corrispondenti.",
+            "Usa Annulla nel messaggio di completamento oppure Annulla ultimo lotto di contrassegni nella barra laterale per ripristinare un lotto. Annulla rimane disponibile durante questa sessione e conserva eventuali decisioni successive manuali o esterne sui contrassegni. Se il salvataggio fallisce, usa Riprova salvataggio oppure annulla il lotto; le scritture non riuscite restano in coda.",
             "Si tratta di segnali di analisi per la tua revisione, non di giudizi finali su quali fotografie conservare. Il rifiuto imposta un contrassegno; non sposta di per sé gli originali nel Cestino."
+          ]
+        },
+        {
+          "title": "Confronta foto simili",
+          "paragraphs": [
+            "Rivedi foto simili trova foto indicizzate visivamente simili scattate entro 30 secondi nella cartella o collezione corrente. I gruppi si aprono in Panoramica con un massimo di 16 foto. Usa Gruppo precedente e Gruppo successivo per confrontare le alternative, poi contrassegna le singole foto con i controlli di panoramica.",
+            "Una foto suggerita ha una valutazione unicamente migliore basata su messa a fuoco, occhi aperti e problemi rilevati. In caso di parità o prove insufficienti non viene mostrata alcuna raccomandazione chiara. I gruppi di similarità sono suggerimenti; non creano pile né modificano i contrassegni.",
+            "Il raggruppamento richiede le effettive Ora di acquisizione e l'analisi corrente di Indice foto. Sono esclusi i file con sole date del file system, i video, le copie virtuali e le foto senza dettaglio visivo sufficiente. I record di indice esistenti vengono aggiornati dal processo di indice dopo questo aggiornamento."
           ]
         }
       ],
@@ -3178,5 +3187,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

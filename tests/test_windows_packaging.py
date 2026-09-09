@@ -11,6 +11,7 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -425,6 +426,101 @@ class WindowsSigningGateTests(unittest.TestCase):
             result = self.invoke("sign-release.ps1", "-CheckOnly", azure={**trusted, "GITHUB_REF": ref})
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("requires GitHub OIDC", result.stderr)
+
+    def test_azure_failure_redacts_sdk_headers_and_removes_temporary_credentials(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            signer = folder / "fake-signtool.ps1"
+            signer.write_text(
+                'Write-Output "Set-Cookie: private-cookie-for-test"\n'
+                'Write-Output "AADSTS700213 private-assertion-for-test"\nexit 1\n')
+            dlib = folder / "fake.dll"
+            executable = folder / "fixture.exe"
+            dlib.touch()
+            executable.touch()
+            environment = {key: value for key, value in os.environ.items()
+                           if key not in ("WINDOWS_CERTIFICATE_BASE64", "WINDOWS_CERTIFICATE_PASSWORD")
+                           and not key.startswith(("AZURE_", "ACTIONS_ID_TOKEN_", "GITHUB_"))}
+            environment.update({
+                **self.AZURE, "OS": "Windows_NT", "GITHUB_ACTIONS": "true",
+                "GITHUB_REPOSITORY": "reville/lighttable-digital-darkroom",
+                "GITHUB_REF": "refs/heads/main", "GITHUB_EVENT_NAME": "workflow_dispatch",
+                "GITHUB_RUN_ID": "123", "GITHUB_RUN_ATTEMPT": "1",
+                "ACTIONS_ID_TOKEN_REQUEST_URL": "https://example.invalid/?fixture=true",
+                "ACTIONS_ID_TOKEN_REQUEST_TOKEN": "private-request-token-for-test",
+                "AZURE_SIGNING_SIGNTOOL": str(signer), "AZURE_SIGNING_DLIB": str(dlib),
+                "TEMP": temporary, "TMP": temporary, "TMPDIR": temporary,
+            })
+            quote = lambda value: "'" + str(value).replace("'", "''") + "'"
+            command = (
+                "function Invoke-RestMethod { @{ value = 'private-assertion-for-test' } }; "
+                f"& {quote(ROOT / 'scripts/windows/sign-release.ps1')} -RequireSigning -Files {quote(executable)}"
+            )
+            result = subprocess.run(
+                [shutil.which("pwsh") or shutil.which("powershell"), "-NoLogo", "-NoProfile",
+                 "-NonInteractive", "-Command", command], env=environment,
+                capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("AADSTS700213", result.stderr)
+            for secret in ("private-cookie-for-test", "private-assertion-for-test", "private-request-token-for-test"):
+                self.assertNotIn(secret, result.stdout + result.stderr)
+            self.assertEqual(list(folder.glob("lighttable-signing-*")), [])
+
+
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WindowsSignatureReportTests(unittest.TestCase):
+    def test_finished_package_layout_source_identity_and_timestamps(self):
+        revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        # This is the shipped runtime layout: Python resources are nested under
+        # Resources/LightTable, independently of the verifier's implementation.
+        payload = (
+            "LightTable.exe", "WinSparkle.dll",
+            "Resources/LightTable/engine/lighttable-engine.exe",
+            "Resources/LightTable/engine/spektrafilm-rs.exe",
+        )
+        for case in ("valid", "wrong-source", "missing-timestamp"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temporary:
+                folder = Path(temporary)
+                archive = folder / "LightTable.zip"
+                installer = folder / "LightTable-0.5.0-windows-x64-setup.exe"
+                report = folder / "signatures.json"
+                installer.write_bytes(b"installer fixture")
+                with zipfile.ZipFile(archive, "w") as bundle:
+                    for path in payload:
+                        bundle.writestr("LightTable/" + path, b"executable fixture")
+                    bundle.writestr("LightTable/build-manifest.json", json.dumps({
+                        "version": "0.5.0", "authenticode_signed": True,
+                        "source_revision": "0" * 40 if case == "wrong-source" else revision,
+                    }))
+                quote = lambda value: "'" + str(value).replace("'", "''") + "'"
+                # Stub only the native certificate API; use real ZIP extraction,
+                # files, hashes, manifest loading, and source-revision checks.
+                timestamp = "$null" if case == "missing-timestamp" else "@{ Subject = 'fixture timestamp authority' }"
+                command = (
+                    "function Get-AuthenticodeSignature { param($LiteralPath) "
+                    "if (-not (Test-Path -LiteralPath $LiteralPath -PathType Leaf)) { throw 'Packaged executable not found' }; "
+                    "[pscustomobject]@{ Status = 'Valid'; SignerCertificate = @{ Subject = 'fixture publisher'; Thumbprint = 'abc' }; "
+                    f"TimeStamperCertificate = {timestamp} }} }}; "
+                    f"& {quote(ROOT / 'scripts/windows/verify-release-signatures.ps1')} "
+                    f"-Archive {quote(archive)} -Installer {quote(installer)} -Report {quote(report)}"
+                )
+                result = subprocess.run(
+                    [shutil.which("pwsh") or shutil.which("powershell"), "-NoLogo", "-NoProfile",
+                     "-NonInteractive", "-Command", command], cwd=ROOT,
+                    capture_output=True, text=True, timeout=30)
+                if case != "valid":
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("source revision" if case == "wrong-source" else "timestamped Authenticode", result.stderr)
+                    self.assertFalse(report.exists())
+                    continue
+                self.assertEqual(result.returncode, 0, result.stderr)
+                evidence = json.loads(report.read_text(encoding="utf-8-sig"))
+                self.assertEqual(evidence["source_revision"], revision)
+                self.assertEqual(evidence["version"], "0.5.0")
+                self.assertEqual({item["file"] for item in evidence["signatures"]},
+                                 {Path(path).name for path in payload} | {installer.name})
+                for item in evidence["signatures"]:
+                    self.assertRegex(item["sha256"], r"^[0-9a-f]{64}$")
 
 
 if __name__ == "__main__":

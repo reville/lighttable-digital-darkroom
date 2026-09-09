@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "Chọn một ảnh để xếp hạng hoặc đánh cờ",
     "Choose a preset to see its source and conversion coverage.": "Chọn một thiết lập sẵn để xem phạm vi nguồn và chuyển đổi của nó.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Chọn một quy trình in cho phim âm bản và hiểu vì sao các điều khiển in biến mất đối với phim slide.",
-    "Choose a reject criterion above.": "Hãy chọn một tiêu chí từ chối ở trên.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Chọn một điểm đã lưu trong bộ chọn để chỉnh sửa nó, hoặc dùng Xóa điểm để loại bỏ nó.",
     "Choose a saved preset to submit": "Chọn một thiết lập sẵn đã lưu để gửi",
     "Choose a scheme": "Chọn một sơ đồ",
-    "Choose a select criterion above.": "Hãy chọn một tiêu chí chọn ở trên.",
     "Choose a settings folder": "Chọn thư mục cài đặt",
     "Choose a source and destination first.": "Trước tiên hãy chọn nguồn và đích đến.",
     "Choose a source and destination, then scan.": "Chọn nguồn và đích đến, rồi quét.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Kiểm tra ảnh ở mức 1:1 và chờ chi tiết bản xem trước hoàn tất trước khi đánh giá kết cấu.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Kiểm tra lớp phủ và dùng các tinh chỉnh tô vẽ quanh ranh giới khi cần.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Kiểm tra các ảnh bị từ chối. Kiểm tra cài đặt tệp ghép cặp và mở rộng bất kỳ ngăn xếp nào nếu bạn muốn bao gồm các thành viên khác của chúng.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Kiểm tra các gợi ý, rồi dùng Pick selects hoặc Reject rejects nếu bạn muốn áp dụng các cờ đó.",
     "Interface": "Giao diện",
     "Interface and behavior": "Giao diện và hành vi",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Các điều khiển giao diện gồm nền trình xem, thang phông chữ, Lights Out, lớp phủ thông tin loupe và hướng dẫn cắt xén. Các tùy chọn này thay đổi giao diện không gian làm việc mà không làm thay đổi pixel đã xuất.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Thực hiện điều chỉnh cục bộ bằng Cọ, mặt nạ Tuyến tính, và Hình tròn",
     "Make photos easier to find and prepare descriptive metadata for export.": "Giúp ảnh dễ tìm hơn và chuẩn bị siêu dữ liệu mô tả cho việc xuất.",
     "Make select": "Tạo vùng chọn",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Lệnh chọn sẽ chọn ảnh xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong xem nhanh. Điều này thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang ảnh đi kèm.",
     "Make the source photo active.": "Đặt ảnh nguồn thành hoạt động.",
     "Make your adjustment, then check the save status in the app.": "Thực hiện điều chỉnh của bạn, rồi kiểm tra trạng thái lưu trong ứng dụng.",
     "Manage cache storage": "Quản lý dung lượng bộ nhớ đệm",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "Chọn (P)",
     "Pick / reject / unflag": "Chọn / từ chối / bỏ cờ",
     "Pick a preset": "Chọn một thiết lập sẵn",
-    "Pick selects": "Chọn ảnh đã chọn",
-    "Pick the selects": "Chọn các mục đã chọn",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Chọn {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Chọn {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế.",
-    "Pick {count} select": "Chọn {count} ảnh đã chọn",
-    "Pick {count} selects": "Chọn {count} vùng chọn",
     "Pick, reject, and rate photos": "Chọn, từ chối và xếp hạng ảnh",
     "Picked": "Đã chọn",
     "Picked only": "Chỉ Đã chọn",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "Đang làm mới cộng đồng…",
     "Reject": "Từ chối",
     "Reject (X)": "Từ chối (X)",
-    "Reject rejects": "Từ chối các ảnh đã từ chối",
-    "Reject the rejects": "Từ chối các mục đã từ chối",
-    "Reject {count} photo": "Từ chối {count} ảnh",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Từ chối {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế.",
-    "Reject {count} photos": "Từ chối {count} ảnh",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Từ chối {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế.",
     "Rejected": "Đã từ chối",
     "Rejected {count} photo": "Đã từ chối {count} ảnh",
     "Rejected {count} photos": "Đã từ chối {count} ảnh",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "Xem lại các mặt nạ đã chuyển",
     "Review translated edits": "Xem lại các chỉnh sửa đã dịch",
     "Reviewing every photo.": "Đang xem lại mọi ảnh.",
-    "Reviewing {count} photo that met a reject criterion.": "Đang xem lại {count} ảnh đáp ứng tiêu chí từ chối.",
-    "Reviewing {count} photo that met a select criterion.": "Đang xem lại {count} ảnh đáp ứng tiêu chí chọn.",
-    "Reviewing {count} photos that met a reject criterion.": "Đang xem lại {count} ảnh đáp ứng tiêu chí từ chối.",
-    "Reviewing {count} photos that met a select criterion.": "Đang xem lại {count} ảnh đáp ứng tiêu chí chọn.",
     "Rich descriptions on": "Bật mô tả chi tiết",
     "Richer descriptions require macOS 27 or later": "Mô tả phong phú hơn yêu cầu macOS 27 trở lên",
     "Rights": "Quyền",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "Danh mục không thay đổi.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Danh mục đã được khôi phục từ bản sao lưu đã xác minh; bản sao bị hỏng nằm trong thư mục Khôi phục.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Mô hình SFace INT8 gọn so sánh các khuôn mặt người đã căn chỉnh. Ghép tự động dùng các quy tắc tương đồng thận trọng; các kết quả khớp có thể có sẽ vẫn tách riêng để xem lại. Các khuôn mặt mới khớp với một người đã đặt tên sẽ được đề xuất để xác nhận.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "Hộp xác nhận hiển thị số lượng bị ảnh hưởng và cảnh báo rằng các cờ hiện có trên ảnh khớp sẽ bị thay thế. Siêu dữ liệu RAW/JPEG được liên kết cũng có thể bao gồm tệp ghép cặp khi tùy chọn đó được bật.",
     "The current catalog is backed up first, then replaced by this one.": "Danh mục hiện tại sẽ được sao lưu trước, rồi được thay thế bằng danh mục này.",
     "The desktop Trash service (gio) is unavailable": "Dịch vụ Thùng rác của desktop (gio) không khả dụng",
     "The desktop app checks its signed update feed.": "Ứng dụng desktop kiểm tra nguồn cập nhật đã ký của nó.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Dùng Tỷ lệ, Ngang và Dọc để căn chỉnh ảnh tham chiếu với ảnh của bạn.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Dùng Quét ảnh mới sau khi thêm ảnh hoặc khôi phục bản gốc không khả dụng. Những ảnh đã được quét trước đó và không thay đổi sẽ được dùng lại.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Dùng Scoop, WinGet, Chocolatey, AUR, Flatpak hoặc Snap để cập nhật các bản cài đặt do chúng quản lý. Tải ZIP mới cho các bản Windows di động. Các bản dựng chưa cấu hình chữ ký cập nhật không thể tự cập nhật.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Dùng Đã chọn, Đã từ chối, hoặc Tất cả để xem lại các ảnh khớp.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Dùng Tạm thời và Sắc thái hoặc lấy mẫu một vùng trung tính, rồi điều chỉnh Độ rực và Độ bão hòa.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Dùng Undo cho công việc gần đây, History cho các bước chỉnh sửa đã lưu, và snapshots có tên cho những kiểu bạn muốn xem lại.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Dùng Hoàn tác thay đổi từ khóa để khôi phục lô cuối cùng trong khi cửa sổ này vẫn mở. Hoàn tác từ chối ghi đè các từ khóa đã thay đổi sau lô đó. Lịch sử Ảnh cũng giữ lại trạng thái từ khóa trước và sau.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong Google Drive. Cho phép truy cập ngoại tuyến trong Drive cho máy tính, chờ tải xuống xong rồi thử lại.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong OneDrive. Chọn “Luôn giữ trên thiết bị này”, chờ tải xuống xong rồi thử lại.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong iCloud Drive. Tải xuống tệp gốc bằng iCloud Drive, chờ tải xuống xong rồi thử lại.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến hoặc chưa được tải xuống đầy đủ. Cho phép truy cập ngoại tuyến trong ứng dụng lưu trữ đám mây của bạn, chờ tải xuống xong rồi thử lại."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến hoặc chưa được tải xuống đầy đủ. Cho phép truy cập ngoại tuyến trong ứng dụng lưu trữ đám mây của bạn, chờ tải xuống xong rồi thử lại.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Một ảnh được gợi ý có đánh giá mạnh hơn một cách duy nhất dựa trên lấy nét, mắt mở và các vấn đề được phát hiện. Khi hòa điểm hoặc không đủ bằng chứng, sẽ không có đề xuất rõ ràng. Các nhóm tương tự chỉ là gợi ý; chúng không tạo ngăn xếp hay thay đổi cờ.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Chọn Đã chọn hoặc Đã từ chối để xem lại các ảnh khớp trước khi áp dụng cờ.",
+    "Choose criteria above.": "Chọn tiêu chí ở trên.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Chọn một tiêu chí sẽ mở các ảnh khớp của tiêu chí đó trong lưới. Dùng Đã chọn, Đã từ chối hoặc Tất cả để thay đổi chế độ xem xem lại. Các bộ lọc thư viện khác vẫn được áp dụng.",
+    "Compare similar photos": "So sánh các ảnh tương tự",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Theo mặc định, các cờ hiện có được giữ nguyên. Chỉ bật Thay thế các cờ hiện có khi bạn muốn thay đổi các quyết định trước đó. Các thao tác lô ảnh hưởng đến các ảnh khớp đang hiển thị và bao gồm các tệp RAW/JPEG được liên kết khi bật liên kết siêu dữ liệu; các cờ được bảo vệ hoặc đã khớp sẽ bị loại khỏi số lượng thao tác.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Cờ hiện có được giữ nguyên. Số lượng bao gồm các tệp RAW/JPEG được liên kết nhưng chưa được gắn cờ.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Cờ hiện có có thể bị thay thế. Số lượng bao gồm các tệp RAW/JPEG được liên kết.",
+    "Flag {count} photo as a pick": "Gắn cờ {count} ảnh làm ảnh chọn",
+    "Flag {count} photo as a reject": "Gắn cờ {count} ảnh làm ảnh từ chối",
+    "Flag {count} photos as picks": "Gắn cờ {count} ảnh làm ảnh chọn",
+    "Flag {count} photos as rejects": "Gắn cờ {count} ảnh làm ảnh từ chối",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Nhóm {index} trên {count}. Không có đề xuất rõ ràng; hãy so sánh các ảnh này.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Nhóm {index} trên {count}. Gợi ý: {name}. Dựa trên kiểm tra lấy nét và mắt; hãy xem xét từng khung hình.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Việc nhóm yêu cầu thời gian chụp thực tế và phân tích Chỉ mục ảnh hiện tại. Các tệp chỉ có ngày hệ thống tệp, video, bản sao ảo và ảnh không có đủ chi tiết hình ảnh sẽ bị loại trừ. Các bản ghi chỉ mục hiện có sẽ được làm mới bởi tiến trình chỉ mục sau bản cập nhật này.",
+    "Next group": "Nhóm tiếp theo",
+    "No similar groups found. Photos need current index analysis and capture times.": "Không tìm thấy nhóm tương tự nào. Ảnh cần phân tích chỉ mục hiện tại và thời gian chụp.",
+    "Previous group": "Nhóm trước đó",
+    "Replace existing flags": "Thay thế các cờ hiện có",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Đã khôi phục cờ của {count} ảnh. Các thay đổi cờ sau đó được giữ nguyên.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Đã khôi phục cờ của {count} ảnh. Các thay đổi cờ sau đó được giữ nguyên.",
+    "Review similar photos": "Xem lại các ảnh tương tự",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Xem lại các ảnh tương tự tìm các ảnh đã được lập chỉ mục trông giống nhau được chụp trong vòng 30 giây trong thư mục hoặc bộ sưu tập hiện tại. Các nhóm sẽ mở trong Xem nhanh với tối đa 16 ảnh. Dùng Nhóm trước đó và Nhóm tiếp theo để so sánh các lựa chọn thay thế, rồi gắn cờ từng ảnh bằng các điều khiển của chế độ xem nhanh.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Xem lại các ảnh hiển thị, rồi dùng Gắn cờ ảnh làm ảnh chọn hoặc Gắn cờ ảnh làm ảnh từ chối. Nút sẽ cho biết có bao nhiêu tệp sẽ thay đổi.",
+    "Undo last flag batch": "Hoàn tác lô gắn cờ cuối cùng",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Dùng Hoàn tác trong thông báo hoàn tất hoặc Hoàn tác lô gắn cờ cuối cùng trong thanh bên để khôi phục một lô. Hoàn tác vẫn khả dụng trong phiên này và giữ nguyên mọi quyết định gắn cờ thủ công hoặc bên ngoài sau đó. Nếu lưu thất bại, hãy dùng Thử lưu lại hoặc hoàn tác lô; các lần ghi thất bại vẫn được xếp hàng.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Khi Xem nhanh được mở từ Lọc ảnh có hỗ trợ, hãy so sánh nhóm được gợi ý và gắn cờ từng ảnh riêng lẻ. Tạo vùng chọn có sẵn trong một Xem nhanh bình thường: nó chọn ảnh Xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong Xem nhanh. Điều này sẽ thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang các ứng dụng đi kèm.",
+    "{count} matching photo shown: {criteria}.": "Đã hiển thị {count} ảnh khớp: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "Đã hiển thị {count} ảnh khớp: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4159,6 +4166,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "Đang xuất {count} ảnh tới {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "Gắn cờ {count} ảnh làm ảnh chọn"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "Gắn cờ {count} ảnh làm ảnh từ chối"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "Đã nhập {count} ảnh từ Apple Photos{value}"
@@ -4175,20 +4188,8 @@
     "Pasted to {count} photo": {
       "other": "Đã dán vào {count} ảnh"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "Chọn {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế."
-    },
-    "Pick {count} select": {
-      "other": "Chọn {count} ảnh đã chọn"
-    },
     "Picked {count} photo": {
       "other": "Đã chọn {count} ảnh"
-    },
-    "Reject {count} photo": {
-      "other": "Từ chối {count} ảnh"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "Từ chối {count} ảnh khớp {criteria}? Các cờ hiện có trên những ảnh đó sẽ được thay thế."
     },
     "Rejected {count} photo": {
       "other": "Đã từ chối {count} ảnh"
@@ -4199,11 +4200,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "Đã khôi phục {count} ảnh chụp. Bạn cũng có thể khôi phục các bước theo thời gian chụp trong Lịch sử."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "Đang xem lại {count} ảnh đáp ứng tiêu chí từ chối."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "Đang xem lại {count} ảnh đáp ứng tiêu chí chọn."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "Đã khôi phục cờ của {count} ảnh. Các thay đổi cờ sau đó được giữ nguyên."
     },
     "Wrote {count} sidecar.": {
       "other": "Đã ghi {count} sidecar."
@@ -4241,8 +4239,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} nhóm ảnh trùng lặp bao phủ {files}."
     },
+    "{count} empty file": {
+      "other": "{count} tệp trống"
+    },
     "{count} error": {
       "other": "{count} lỗi"
+    },
+    "{count} face": {
+      "other": "{count} khuôn mặt"
     },
     "{count} face detected": {
       "other": "đã phát hiện {count} khuôn mặt"
@@ -4256,8 +4260,17 @@
     "{count} file": {
       "other": "{count} tệp"
     },
+    "{count} file not downloaded": {
+      "other": "{count} tệp chưa được tải xuống"
+    },
+    "{count} group": {
+      "other": "{count} nhóm"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "{count} ảnh đã được lập chỉ mục vẫn ở cục bộ cho đến khi bị xóa."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "Đã hiển thị {count} ảnh khớp: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "other": "{count} điểm khớp căn chỉnh tối thiểu"
@@ -4295,6 +4308,9 @@
     "{count} photo selected": {
       "other": "đã chọn {count} ảnh"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count} ảnh đã bỏ qua{reasons}. Hãy tải xuống hoặc khôi phục các bản gốc, rồi xây dựng lại chỉ mục."
+    },
     "{count} photo updated": {
       "other": "đã cập nhật {count} ảnh"
     },
@@ -4307,6 +4323,9 @@
     "{count} rated photo": {
       "other": "{count} ảnh đã gắn sao"
     },
+    "{count} selected": {
+      "other": "Đã chọn {count}"
+    },
     "{count} selected photo": {
       "other": "{count} ảnh đã chọn"
     },
@@ -4318,6 +4337,12 @@
     },
     "{count} source": {
       "other": "{count} nguồn"
+    },
+    "{count} unavailable file": {
+      "other": "{count} tệp không khả dụng"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "Đã bỏ qua {count} ảnh không khả dụng"
     },
     "{count} unsupported setting skipped": {
       "other": "Đã bỏ qua {count} cài đặt không được hỗ trợ"
@@ -4339,31 +4364,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "{value} lần thoát bất thường trong 24 giờ qua."
-    },
-    "{count} empty file": {
-      "other": "{count} tệp trống"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} tệp chưa được tải xuống"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count} ảnh đã bỏ qua{reasons}. Hãy tải xuống hoặc khôi phục các bản gốc, rồi xây dựng lại chỉ mục."
-    },
-    "{count} unavailable file": {
-      "other": "{count} tệp không khả dụng"
-    },
-    "{count} face": {
-      "other": "{count} khuôn mặt"
-    },
-    "{count} group": {
-      "other": "{count} nhóm"
-    },
-    "{count} selected": {
-      "other": "Đã chọn {count}"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "Đã bỏ qua {count} ảnh không khả dụng"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

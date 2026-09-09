@@ -402,7 +402,7 @@
         {
           "title": "Choose one keeper",
           "paragraphs": [
-            "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
+            "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
             "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
           ]
         }
@@ -2885,15 +2885,24 @@
             "Enable Photo Index in Settings and wait for photos to be scored.",
             "Expand Assisted culling in the library sidebar.",
             "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.",
-            "Use Selects, Rejects, or All to review the matching photos.",
-            "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags."
+            "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.",
+            "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change."
           ]
         },
         {
           "title": "Applying flags",
           "paragraphs": [
-            "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.",
+            "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.",
+            "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.",
             "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash."
+          ]
+        },
+        {
+          "title": "Compare similar photos",
+          "paragraphs": [
+            "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.",
+            "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.",
+            "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update."
           ]
         }
       ],

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือตั้งธง",
     "Choose a preset to see its source and conversion coverage.": "เลือกพรีเซ็ตเพื่อดูแหล่งที่มาและความครอบคลุมของการแปลง",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "เลือกกระบวนการพิมพ์สำหรับเนกาทีฟ และทำความเข้าใจว่าทำไมตัวควบคุมการพิมพ์จึงหายไปสำหรับฟิล์มสไลด์",
-    "Choose a reject criterion above.": "เลือกเกณฑ์การปฏิเสธด้านบน",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "เลือกจุดที่บันทึกไว้ในตัวเลือกเพื่อแก้ไข หรือใช้ ลบจุด เพื่อลบออก",
     "Choose a saved preset to submit": "เลือกพรีเซ็ตที่บันทึกไว้เพื่อส่ง",
     "Choose a scheme": "เลือกแผนผัง",
-    "Choose a select criterion above.": "เลือกเกณฑ์การเลือกด้านบน",
     "Choose a settings folder": "เลือกโฟลเดอร์การตั้งค่า",
     "Choose a source and destination first.": "โปรดเลือกแหล่งที่มาและปลายทางก่อน.",
     "Choose a source and destination, then scan.": "โปรดเลือกแหล่งที่มาและปลายทาง แล้วจึงสแกน",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "ตรวจดูภาพที่ 1:1 และรอให้รายละเอียดของตัวอย่างเสร็จก่อนประเมินพื้นผิว",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "ตรวจสอบโอเวอร์เลย์ และใช้การเก็บรายละเอียดด้วยการระบายสีรอบขอบเขตตามต้องการ",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "ตรวจทานภาพถ่ายที่ถูกปฏิเสธ ตรวจการตั้งค่าไฟล์คู่ และขยายสแต็กใดๆ หากคุณคาดว่าจะรวมสมาชิกอื่นๆ ของมัน",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "ตรวจสอบคำแนะนำ จากนั้นใช้ Pick selects หรือ Reject rejects หากคุณต้องการใช้ธงเหล่านั้น",
     "Interface": "ส่วนติดต่อ",
     "Interface and behavior": "ส่วนติดต่อและพฤติกรรม",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "การควบคุมอินเทอร์เฟซจะกำหนดพื้นหลังของตัวแสดงผล สเกลแบบอักษร Lights Out เลเยอร์ข้อมูลของ loupe และไกด์ครอป ค่ากำหนดเหล่านี้เปลี่ยนลักษณะพื้นที่ทำงานโดยไม่เปลี่ยนพิกเซลที่ส่งออก",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "ปรับแต่งเฉพาะที่ด้วยมาสก์แบบ Brush, Linear, และ Radial",
     "Make photos easier to find and prepare descriptive metadata for export.": "ทำให้ค้นหาภาพถ่ายได้ง่ายขึ้น และเตรียมเมทาดาทาเชิงบรรยายสำหรับการส่งออก",
     "Make select": "สร้างที่เลือก",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Make select จะเลือกภาพมุมมองภาพรวมที่ใช้งานอยู่เป็นภาพที่เลือก และปฏิเสธภาพอื่นๆ ที่ยังอยู่ในมุมมองภาพรวม การทำเช่นนี้จะเปลี่ยนตั้งธงของภาพเหล่านั้น เมตาดาต้า RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนตั้งธงนั้นไปยังไฟล์คู่ได้",
     "Make the source photo active.": "ทำให้ภาพถ่ายต้นทางเป็นภาพที่ใช้งานอยู่",
     "Make your adjustment, then check the save status in the app.": "ทำการปรับแต่งของคุณ แล้วตรวจสอบสถานะการบันทึกในแอป",
     "Manage cache storage": "จัดการพื้นที่จัดเก็บแคช",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "เลือก (P)",
     "Pick / reject / unflag": "เลือก / ปฏิเสธ / เลิกตั้งธง",
     "Pick a preset": "เลือกพรีเซ็ต",
-    "Pick selects": "Pick เลือก",
-    "Pick the selects": "เลือกตัวที่เลือกไว้",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "เลือกภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "เลือกรูปถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Pick {count} select": "เลือก {count} รายการ",
-    "Pick {count} selects": "เลือก {count} รายการ",
     "Pick, reject, and rate photos": "เลือก ปฏิเสธ และให้คะแนนภาพถ่าย",
     "Picked": "เลือกแล้ว",
     "Picked only": "เฉพาะที่เลือกแล้ว",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "กำลังรีเฟรชชุมชน…",
     "Reject": "ปฏิเสธ",
     "Reject (X)": "ปฏิเสธ (X)",
-    "Reject rejects": "ปฏิเสธรายการที่ปฏิเสธ",
-    "Reject the rejects": "ปฏิเสธรายการที่ปฏิเสธ",
-    "Reject {count} photo": "ปฏิเสธ {count} ภาพถ่าย",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Reject {count} photos": "ปฏิเสธ {count} ภาพถ่าย",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
     "Rejected": "ปฏิเสธแล้ว",
     "Rejected {count} photo": "ปฏิเสธแล้ว {count} ภาพถ่าย",
     "Rejected {count} photos": "ปฏิเสธแล้ว {count} ภาพถ่าย",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "ตรวจทานมาสก์ที่ถ่ายโอน",
     "Review translated edits": "ตรวจทานการแก้ไขที่แปลแล้ว",
     "Reviewing every photo.": "กำลังตรวจทานทุกภาพถ่าย",
-    "Reviewing {count} photo that met a reject criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ",
-    "Reviewing {count} photo that met a select criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก",
-    "Reviewing {count} photos that met a reject criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ",
-    "Reviewing {count} photos that met a select criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก",
     "Rich descriptions on": "เปิดคำอธิบายแบบละเอียด",
     "Richer descriptions require macOS 27 or later": "คำอธิบายที่ละเอียดขึ้นต้องใช้ macOS 27 หรือใหม่กว่า",
     "Rights": "สิทธิ์",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "แค็ตตาล็อกไม่ได้เปลี่ยนแปลง",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "แค็ตตาล็อกถูกกู้คืนจากข้อมูลสำรองที่ยืนยันแล้ว; สำเนาที่เสียหายอยู่ในโฟลเดอร์ Recovery",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "โมเดล SFace INT8 แบบกะทัดรัดจะเปรียบเทียบใบหน้าคนที่จัดแนวแล้ว การจัดกลุ่มอัตโนมัติใช้กฎความคล้ายคลึงที่ระมัดระวัง การจับคู่ที่เป็นไปได้จะยังคงแยกไว้เพื่อตรวจทาน ใบหน้าใหม่ที่ตรงกับบุคคลที่มีชื่อแล้วจะถูกแนะนำให้ยืนยัน",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "ข้อความยืนยันจะแสดงจำนวนที่ได้รับผลกระทบและเตือนว่าธงที่มีอยู่บนภาพที่ตรงกันจะถูกแทนที่ เมตาดาต้า RAW/JPEG ที่เชื่อมโยงกันยังอาจรวมไฟล์ที่จับคู่เมื่อเปิดใช้ค่ากำหนดนั้น",
     "The current catalog is backed up first, then replaced by this one.": "แค็ตตาล็อกปัจจุบันจะถูกสำรองข้อมูลก่อน แล้วจึงแทนที่ด้วยอันนี้",
     "The desktop Trash service (gio) is unavailable": "บริการถังขยะของเดสก์ท็อป (gio) ไม่พร้อมใช้งาน",
     "The desktop app checks its signed update feed.": "แอปเดสก์ท็อปตรวจสอบฟีดการอัปเดตที่ลงนามแล้ว",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "ใช้ ปรับสเกล, แนวนอน, และ แนวตั้ง เพื่อจัดแนวภาพอ้างอิงกับภาพถ่ายของคุณ",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "ใช้ สแกนรูปใหม่ หลังจากเพิ่มรูปถ่ายหรือคืนค่าต้นฉบับที่ไม่พร้อมใช้งาน รูปถ่ายที่เคยสแกนแล้วและไม่เปลี่ยนแปลงจะถูกนำกลับมาใช้",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "ใช้ Scoop, WinGet, Chocolatey, AUR, Flatpak หรือ Snap เพื่ออัปเดตการติดตั้งที่ตัวจัดการนั้นดูแล ดาวน์โหลด ZIP ใหม่สำหรับสำเนา Windows แบบพกพา บิลด์ที่ไม่ได้กำหนดค่าการลงลายเซ็นอัปเดตไม่สามารถอัปเดตตัวเองได้",
-    "Use Selects, Rejects, or All to review the matching photos.": "ใช้ รายการที่เลือก, รายการที่ปฏิเสธ, หรือ ทั้งหมด เพื่อตรวจทานภาพถ่ายที่ตรงกัน",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "ใช้ Temp และ Tint หรือสุ่มตัวอย่างพื้นที่ที่เป็นกลาง แล้วปรับ Vibrance และ Saturation",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "ใช้ Undo สำหรับงานล่าสุด, History สำหรับขั้นตอนการแก้ไขที่บันทึกไว้, และสแน็ปช็อตที่มีชื่อสำหรับลุคที่คุณต้องการกลับมาดูอีก",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "ใช้ ยกเลิกการเปลี่ยนคีย์เวิร์ด เพื่อคืนค่าชุดล่าสุดในขณะที่หน้าต่างนี้ยังเปิดอยู่ เลิกทำจะไม่ยอมเขียนทับคีย์เวิร์ดที่เปลี่ยนไปหลังจากชุดนั้น ประวัติรูปถ่ายยังเก็บสถานะคีย์เวิร์ดก่อนและหลังไว้ด้วย",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Google Drive ทำให้พร้อมใช้งานแบบออฟไลน์ใน Drive สำหรับเดสก์ท็อป รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน OneDrive เลือก “เก็บไว้ในอุปกรณ์นี้เสมอ” รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน iCloud Drive ดาวน์โหลดต้นฉบับด้วย iCloud Drive รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์หรือยังดาวน์โหลดไม่ครบ ทำให้พร้อมใช้งานแบบออฟไลน์ในแอปที่เก็บข้อมูลบนคลาวด์ของคุณ รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง"
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์หรือยังดาวน์โหลดไม่ครบ ทำให้พร้อมใช้งานแบบออฟไลน์ในแอปที่เก็บข้อมูลบนคลาวด์ของคุณ รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "ภาพถ่ายที่แนะนำจะมีการประเมินที่ดีกว่าอย่างชัดเจนโดยอิงจากโฟกัส ดวงตาที่เปิดอยู่ และปัญหาที่ตรวจพบ หากสูสีกันหรือตรวจพบหลักฐานไม่เพียงพอจะไม่แสดงคำแนะนำที่ชัดเจน กลุ่มความคล้ายกันเป็นเพียงข้อเสนอแนะ; ไม่ได้สร้างสแต็กหรือเปลี่ยนธง",
+    "Choose Selects or Rejects to review matches before applying flags.": "เลือก รายการที่เลือก หรือ รายการที่ปฏิเสธ เพื่อทบทวนรายการที่ตรงกันก่อนนำธงไปใช้",
+    "Choose criteria above.": "เลือกเกณฑ์ด้านบน",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "การเลือกเกณฑ์จะเปิดภาพถ่ายที่ตรงกันในตารางกริด ใช้ รายการที่เลือก, รายการที่ปฏิเสธ, หรือ ทั้งหมด เพื่อเปลี่ยนมุมมองการตรวจทาน ตัวกรองคลังรูปภาพอื่นๆ ยังคงมีผลอยู่",
+    "Compare similar photos": "เปรียบเทียบภาพถ่ายที่คล้ายกัน",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "โดยค่าเริ่มต้น ธงที่มีอยู่จะยังคงอยู่ เปิดใช้งาน แทนที่ตั้งธงที่มีอยู่ เฉพาะเมื่อคุณต้องการเปลี่ยนการตัดสินก่อนหน้าเท่านั้น การทำงานแบบชุดจะมีผลกับรายการที่ตรงกันที่แสดง และจะรวมไฟล์ RAW/JPEG ที่เชื่อมโยงเมื่อเปิดใช้การเชื่อมเมทาดาทา; รายการที่ป้องกันไว้หรือมีธงตรงกันอยู่แล้วจะไม่ถูกรวมในจำนวนการดำเนินการ",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "ธงที่มีอยู่จะยังคงอยู่ จำนวนรวมรวมถึงไฟล์ RAW/JPEG ที่เชื่อมโยงอยู่ซึ่งยังไม่ได้ตั้งธง",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "ธงที่มีอยู่แล้วอาจถูกแทนที่ได้ จำนวนรวมรวมถึงไฟล์ RAW/JPEG ที่เชื่อมโยงอยู่",
+    "Flag {count} photo as a pick": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก",
+    "Flag {count} photo as a reject": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ",
+    "Flag {count} photos as picks": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก",
+    "Flag {count} photos as rejects": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "กลุ่ม {index} จาก {count} ไม่มีคำแนะนำที่ชัดเจน; เปรียบเทียบภาพถ่ายเหล่านี้",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "กลุ่ม {index} จาก {count} แนะนำ: {name} อ้างอิงจากการตรวจโฟกัสและดวงตา; โปรดตรวจทุกรูป",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "การจัดกลุ่มต้องใช้เวลาถ่ายจริงและการวิเคราะห์ Photo Index ปัจจุบัน ไฟล์ที่มีเพียงวันที่ของระบบไฟล์ วิดีโอ สำเนาเสมือน และภาพถ่ายที่มีรายละเอียดภาพไม่เพียงพอจะถูกตัดออก บันทึกดัชนีที่มีอยู่จะถูกรีเฟรชโดยตัวประมวลผลดัชนีหลังการอัปเดตนี้",
+    "Next group": "กลุ่มถัดไป",
+    "No similar groups found. Photos need current index analysis and capture times.": "ไม่พบกลุ่มที่คล้ายกัน ภาพถ่ายต้องมีการวิเคราะห์ดัชนีปัจจุบันและเวลาถ่าย",
+    "Previous group": "กลุ่มก่อนหน้า",
+    "Replace existing flags": "แทนที่ตั้งธงที่มีอยู่",
+    "Restored {count} photo flag. Later flag changes are preserved.": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่",
+    "Restored {count} photo flags. Later flag changes are preserved.": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่",
+    "Review similar photos": "ตรวจทานภาพถ่ายที่คล้ายกัน",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "ตรวจทานภาพถ่ายที่คล้ายกันจะค้นหาภาพถ่ายที่จัดทำดัชนีและมีลักษณะคล้ายกันซึ่งถ่ายภายใน 30 วินาทีในโฟลเดอร์หรือคอลเลกชันปัจจุบัน กลุ่มจะเปิดใน มุมมองภาพรวม ได้สูงสุด 16 ภาพ ใช้ กลุ่มก่อนหน้า และ กลุ่มถัดไป เพื่อเปรียบเทียบตัวเลือก จากนั้นตั้งธงภาพถ่ายแต่ละภาพด้วยตัวควบคุมของมุมมองภาพรวม",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "ตรวจทานภาพถ่ายที่แสดง จากนั้นใช้ ตั้งธงภาพถ่ายเป็นรายการที่เลือก หรือ ตั้งธงภาพถ่ายเป็นรายการที่ปฏิเสธ ปุ่มจะแสดงจำนวนไฟล์ที่จะเปลี่ยนแปลง",
+    "Undo last flag batch": "เลิกทำชุดการตั้งธงล่าสุด",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "ใช้ เลิกทำ ในข้อความเสร็จสิ้น หรือ เลิกทำชุดการตั้งธงล่าสุด ในแถบด้านข้างเพื่อคืนค่าชุดงานหนึ่ง ช่วงเวลานี้ยังคงใช้ เลิกทำ ได้ตลอดเซสชัน และจะคงการตัดสินตั้งธงด้วยตนเองหรือจากภายนอกที่เกิดขึ้นภายหลังไว้ หากบันทึกไม่สำเร็จ ให้ใช้ ลองบันทึกใหม่ หรือเลิกทำชุดงาน; การเขียนที่ล้มเหลวยังคงอยู่ในคิว",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "เมื่อเปิด มุมมองภาพรวม จาก การคัดทิ้งแบบช่วย ให้เปรียบเทียบกลุ่มที่แนะนำและตั้งธงภาพถ่ายทีละภาพ ใช้ สร้างที่เลือก ได้ใน มุมมองภาพรวม ปกติ: มันจะเลือกรูปภาพในมุมมองภาพรวมที่ใช้งานอยู่และปฏิเสธภาพถ่ายอื่นๆ ที่ยังอยู่ในมุมมองภาพรวมนั้น การทำเช่นนี้จะเปลี่ยนธงของพวกมัน เมทาดาทา RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนธงนั้นไปยังโปรแกรมคู่หูได้",
+    "{count} matching photo shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4159,6 +4166,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "กำลังส่งออกภาพถ่าย {count} ภาพไปยัง {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "นำเข้าภาพถ่าย {count} ภาพจาก Apple Photos{value}"
@@ -4175,20 +4188,8 @@
     "Pasted to {count} photo": {
       "other": "วางลงในภาพถ่าย {count} ภาพแล้ว"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "เลือกภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่"
-    },
-    "Pick {count} select": {
-      "other": "เลือก {count} รายการ"
-    },
     "Picked {count} photo": {
       "other": "เลือกแล้ว {count} ภาพถ่าย"
-    },
-    "Reject {count} photo": {
-      "other": "ปฏิเสธ {count} ภาพถ่าย"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่"
     },
     "Rejected {count} photo": {
       "other": "ปฏิเสธแล้ว {count} ภาพถ่าย"
@@ -4199,11 +4200,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "กู้คืนแล้ว {count} capture คุณยังสามารถคืนค่าแต่ละขั้นตอนตามเวลาถ่ายใน ประวัติ ได้"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่"
     },
     "Wrote {count} sidecar.": {
       "other": "เขียนไซด์คาร์ {count} ไฟล์แล้ว"
@@ -4241,8 +4239,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "กลุ่มภาพซ้ำ {count} กลุ่ม ครอบคลุม {files}"
     },
+    "{count} empty file": {
+      "other": "{count} ไฟล์ที่ว่างเปล่า"
+    },
     "{count} error": {
       "other": "{count} ข้อผิดพลาด"
+    },
+    "{count} face": {
+      "other": "{count} ใบหน้า"
     },
     "{count} face detected": {
       "other": "ตรวจพบใบหน้า {count} ใบ"
@@ -4256,8 +4260,17 @@
     "{count} file": {
       "other": "{count} ไฟล์"
     },
+    "{count} file not downloaded": {
+      "other": "{count} ไฟล์ที่ยังไม่ได้ดาวน์โหลด"
+    },
+    "{count} group": {
+      "other": "{count} กลุ่ม"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "ภาพถ่ายที่ทำดัชนี {count} ภาพยังคงอยู่ในเครื่องจนกว่าจะลบ"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "other": "อินไลเออร์การจัดแนวขั้นต่ำ {count} รายการ"
@@ -4295,6 +4308,9 @@
     "{count} photo selected": {
       "other": "เลือกภาพถ่าย {count} ภาพ"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "ข้ามภาพถ่าย {count} ภาพ{reasons}. ดาวน์โหลดหรือคืนค่าต้นฉบับ แล้วสร้างดัชนีใหม่."
+    },
     "{count} photo updated": {
       "other": "อัปเดตภาพถ่าย {count} ภาพ"
     },
@@ -4307,6 +4323,9 @@
     "{count} rated photo": {
       "other": "ภาพถ่ายที่มีคะแนน {count} ภาพ"
     },
+    "{count} selected": {
+      "other": "เลือกแล้ว {count} รายการ"
+    },
     "{count} selected photo": {
       "other": "ภาพถ่ายที่เลือก {count} ภาพ"
     },
@@ -4318,6 +4337,12 @@
     },
     "{count} source": {
       "other": "{count} แหล่งที่มา"
+    },
+    "{count} unavailable file": {
+      "other": "{count} ไฟล์ที่ไม่พร้อมใช้งาน"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "ข้ามรูปภาพที่ไม่พร้อมใช้งาน {count} รูป"
     },
     "{count} unsupported setting skipped": {
       "other": "ข้ามการตั้งค่าที่ไม่รองรับ {count} รายการ"
@@ -4339,31 +4364,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "การออกโดยไม่คาดคิด {value} ครั้งใน 24 ชั่วโมงที่ผ่านมา"
-    },
-    "{count} empty file": {
-      "other": "{count} ไฟล์ที่ว่างเปล่า"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} ไฟล์ที่ยังไม่ได้ดาวน์โหลด"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "ข้ามภาพถ่าย {count} ภาพ{reasons}. ดาวน์โหลดหรือคืนค่าต้นฉบับ แล้วสร้างดัชนีใหม่."
-    },
-    "{count} unavailable file": {
-      "other": "{count} ไฟล์ที่ไม่พร้อมใช้งาน"
-    },
-    "{count} face": {
-      "other": "{count} ใบหน้า"
-    },
-    "{count} group": {
-      "other": "{count} กลุ่ม"
-    },
-    "{count} selected": {
-      "other": "เลือกแล้ว {count} รายการ"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "ข้ามรูปภาพที่ไม่พร้อมใช้งาน {count} รูป"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

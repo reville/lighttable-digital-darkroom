@@ -257,3 +257,24 @@ test('editor shortcuts ignore an open modal even if focus is outside it', () => 
   handler({ key: '5', target: { tagName: 'BUTTON' }, preventDefault() {} });
   assert.equal(ratings, 0);
 });
+
+test('folder rows retain their hierarchy when the payload omits depth', () => {
+  const app = source('app.js');
+  const context = vm.createContext({tr, S: {rootFolder: '/photos', favoriteFolders: []},
+    document: {createElement: () => ({children: [], dataset: {},
+      style: {setProperty(key, value) { this[key] = String(value); }},
+      appendChild(child) { this.children.push(child); },
+      setAttribute() {}, addEventListener() {},
+    })},
+  });
+  vm.runInContext(app.slice(app.indexOf('function fullFolderPath('),
+    app.indexOf('function renderFolders(')), context);
+  const folderSource = {path: '/photos', name: 'Photos', available: true};
+  const make = (data, isRoot = false) => context.makeFolderRow(folderSource, data, isRoot);
+  assert.equal(make({path: '', depth: 3}, true).style['--depth'], '0');
+  assert.equal(make({path: 'FINISHED', name: 'FINISHED'}).style['--depth'], '1');
+  assert.equal(make({path: 'FINISHED/Selects', name: 'Selects'}).style['--depth'], '2');
+  assert.equal(make({path: 'FINISHED/Selects', depth: 0}).style['--depth'], '0',
+    'an explicit flat Favorites row keeps its depth');
+  assert.equal(make({path: 'FINISHED/Selects', depth: 2}).style['--depth'], '2');
+});

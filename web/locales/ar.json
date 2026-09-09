@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -478,11 +478,9 @@
     "Choose a photo to rate or flag": "اختر صورة لتقييمها أو وضع علامة عليها",
     "Choose a preset to see its source and conversion coverage.": "اختر preset لرؤية مصدره وتغطية التحويل.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "اختر عملية طباعة للنيغاتيفات وافهم سبب اختفاء عناصر التحكم في الطباعة مع فيلم الشريحة.",
-    "Choose a reject criterion above.": "اختر معيار رفض أعلاه.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "اختر نقطة محفوظة في المحدد لتحريرها، أو استخدم حذف النقطة لإزالتها.",
     "Choose a saved preset to submit": "اختر إعدادًا مسبقًا محفوظًا للإرسال",
     "Choose a scheme": "اختيار مخطط",
-    "Choose a select criterion above.": "اختر معيار تحديد أعلاه.",
     "Choose a settings folder": "اختر مجلد الإعدادات",
     "Choose a source and destination first.": "اختر المصدر والوجهة أولاً.",
     "Choose a source and destination, then scan.": "اختر المصدر والوجهة، ثم امسح.",
@@ -1461,7 +1459,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "افحص الصورة عند 1:1 وانتظر اكتمال تفاصيل المعاينة قبل الحكم على الملمس.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "افحص التراكب واستخدم التحسينات المرسومة حول الحدود حسب الحاجة.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "افحص الصور المرفوضة. تحقق من إعدادات الملفات المزدوجة ووسّع أي مكدسات إذا كنت تتوقع تضمين العناصر الأخرى فيها.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "افحص الاقتراحات، ثم استخدم Pick selects أو Reject rejects إذا أردت تطبيق تلك العلامات.",
     "Interface": "الواجهة",
     "Interface and behavior": "الواجهة والسلوك",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "تتحكم الواجهة في خلفية العارض، ومقياس الخط، وLights Out، والتراكب المعلوماتي للعدسة المكبرة، وأدلة الاقتصاص. تغيّر هذه التفضيلات مظهر مساحة العمل من دون تغيير البكسلات المصدّرة.",
@@ -1667,7 +1664,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "أجرِ تعديلات محلية باستخدام Brush و Linear و Radial masks",
     "Make photos easier to find and prepare descriptive metadata for export.": "اجعل الصور أسهل في العثور عليها وجهّز بيانات وصفية وصفية للتصدير.",
     "Make select": "اجعلها محددة",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "يجعل تحديد الالتقاطات المحددة يُعيّن صورة الاستعراض النشطة كالتقاط ويَرفض الصور الأخرى التي لا تزال في الاستعراض. يغيّر ذلك أعلامها. يمكن لبيانات RAW وJPEG الوصفية المرتبطة أن توسّع تغييرات الأعلام هذه لتشمل الملفات المرافقة.",
     "Make the source photo active.": "اجعل الصورة المصدر نشطة.",
     "Make your adjustment, then check the save status in the app.": "أجرِ التعديل، ثم تحقّق من حالة الحفظ في التطبيق.",
     "Manage cache storage": "إدارة تخزين ذاكرة التخزين المؤقت",
@@ -2052,12 +2048,6 @@
     "Pick (P)": "اختيار (P)",
     "Pick / reject / unflag": "اختيار / رفض / إلغاء العلامة",
     "Pick a preset": "اختر إعدادًا مسبقًا",
-    "Pick selects": "تحديدات Pick",
-    "Pick the selects": "اختر المحدَّدات",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-    "Pick {count} select": "اختيار {count} تحديد",
-    "Pick {count} selects": "اختيار {count} محددات",
     "Pick, reject, and rate photos": "اختيار الصور ورفضها وتقييمها",
     "Picked": "تم اختيارها",
     "Picked only": "المختارة فقط",
@@ -2253,12 +2243,6 @@
     "Refreshing community…": "جارٍ تحديث المجتمع…",
     "Reject": "رفض",
     "Reject (X)": "رفض (X)",
-    "Reject rejects": "رفض المرفوضات",
-    "Reject the rejects": "رفض المرفوضات",
-    "Reject {count} photo": "رفض {count} صورة",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-    "Reject {count} photos": "رفض {count} صور",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
     "Rejected": "مرفوض",
     "Rejected {count} photo": "تم رفض {count} صورة",
     "Rejected {count} photos": "تم رفض {count} صور",
@@ -2395,10 +2379,6 @@
     "Review transferred masks": "مراجعة الأقنعة المنقولة",
     "Review translated edits": "مراجعة التعديلات المترجمة",
     "Reviewing every photo.": "جارٍ مراجعة كل صورة.",
-    "Reviewing {count} photo that met a reject criterion.": "مراجعة {count} صورة استوفت معيار الرفض.",
-    "Reviewing {count} photo that met a select criterion.": "مراجعة {count} صورة استوفت معيار التحديد.",
-    "Reviewing {count} photos that met a reject criterion.": "مراجعة {count} صور استوفت معيار الرفض.",
-    "Reviewing {count} photos that met a select criterion.": "مراجعة {count} صور استوفت معيار التحديد.",
     "Rich descriptions on": "الأوصاف الغنية مفعلة",
     "Richer descriptions require macOS 27 or later": "تتطلب الأوصاف الأكثر تفصيلاً macOS 27 أو أحدث",
     "Rights": "الحقوق",
@@ -2822,7 +2802,6 @@
     "The catalog was left unchanged.": "تم ترك الكتالوج دون تغيير.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "تمت استعادة الكتالوج من نسخة احتياطية موثقة؛ توجد النسخة المتضررة في مجلد Recovery.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "يقارن نموذج SFace INT8 المدمج الوجوه البشرية المحاذاة. يستخدم التجميع التلقائي قواعد تشابه محافظة؛ وتبقى التطابقات المحتملة منفصلة للمراجعة. تُقترح الوجوه الجديدة المطابقة لشخص مُسمّى للتأكيد.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "يعرض التأكيد العدد المتأثر ويحذّر من أن الأعلام الحالية على الصور المطابقة ستُستبدل. ويمكن أن تتضمن بيانات RAW/JPEG الوصفية المرتبطة أيضًا الملف المقترن عندما يكون ذلك التفضيل مفعّلًا.",
     "The current catalog is backed up first, then replaced by this one.": "يُنسخ الكتالوج الحالي احتياطيًا أولًا، ثم يُستبدل بهذا الكتالوج.",
     "The desktop Trash service (gio) is unavailable": "خدمة سلة مهملات سطح المكتب (gio) غير متوفرة",
     "The desktop app checks its signed update feed.": "يتحقق تطبيق سطح المكتب من موجز التحديث الموقع الخاص به.",
@@ -3056,7 +3035,6 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "استخدم التحجيم، الأفقي، والعمودي لمحاذاة المرجع مع صورتك.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "استخدم مسح الصور الجديدة بعد إضافة صور أو استعادة النسخ الأصلية غير المتاحة. تُعاد استخدام الصور التي جرى مسحها سابقًا ولم تتغير.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "استخدم Scoop أو WinGet أو Chocolatey أو AUR أو Flatpak أو Snap لتحديث التثبيتات التي تديرها. نزّل ملف ZIP جديدًا لنسخ Windows المحمولة. لا يمكن للبُنى التي لم يُعدّ توقيع التحديثات فيها تحديث نفسها.",
-    "Use Selects, Rejects, or All to review the matching photos.": "استخدم Selects أو Rejects أو All لمراجعة الصور المطابقة.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "استخدم درجة الحرارة والصبغة أو عيّن منطقة محايدة بالعينات، ثم اضبط الحيوية والتشبّع.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "استخدم Undo للعمل الأخير، وHistory لخطوات التحرير المخزنة، واللقطات المسماة للأشكال التي تريد الرجوع إليها.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "استخدم تراجع عن تغيير الكلمة المفتاحية لاستعادة الدفعة الأخيرة بينما تظل هذه النافذة مفتوحة. يرفض التراجع الكتابة فوق الكلمات المفتاحية التي تغيرت بعد تلك الدفعة. يحتفظ سجل الصور أيضًا بحالات الكلمات المفتاحية قبل وبعد.",
@@ -4145,7 +4123,36 @@
     "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "هذه الصورة مخزنة على الإنترنت في Google Drive. اجعلها متاحة دون اتصال في Drive للكمبيوتر المكتبي، وانتظر اكتمال التنزيل، ثم أعد المحاولة.",
     "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "هذه الصورة مخزنة على الإنترنت في OneDrive. اختر «الاحتفاظ دائمًا على هذا الجهاز»، وانتظر اكتمال التنزيل، ثم أعد المحاولة.",
     "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "هذه الصورة مخزنة على الإنترنت في iCloud Drive. نزّل الأصل باستخدام iCloud Drive، وانتظر اكتمال التنزيل، ثم أعد المحاولة.",
-    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "هذه الصورة مخزنة على الإنترنت أو لم يكتمل تنزيلها. اجعلها متاحة دون اتصال في تطبيق التخزين السحابي، وانتظر اكتمال التنزيل، ثم أعد المحاولة."
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "هذه الصورة مخزنة على الإنترنت أو لم يكتمل تنزيلها. اجعلها متاحة دون اتصال في تطبيق التخزين السحابي، وانتظر اكتمال التنزيل، ثم أعد المحاولة.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "تحتوي الصورة المقترحة على تقييم أقوى بشكل فريد استنادًا إلى التركيز، وفتح العيون، والمشكلات المكتشفة. عند التعادل أو عدم كفاية الأدلة، لا تظهر توصية واضحة. مجموعات التشابه هي اقتراحات؛ ولا تنشئ مكدسات أو تغيّر الأعلام.",
+    "Choose Selects or Rejects to review matches before applying flags.": "اختر المحدَّدات أو المرفوضات لمراجعة التطابقات قبل تطبيق الأعلام.",
+    "Choose criteria above.": "اختر المعايير أعلاه.",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "يؤدي اختيار معيار إلى فتح صوره المطابقة في الشبكة. استخدم المحدَّدات أو المرفوضات أو الكل لتغيير عرض المراجعة. لا تزال فلاتر المكتبة الأخرى سارية.",
+    "Compare similar photos": "مقارنة الصور المتشابهة",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "تُحافَظ الأعلام الموجودة افتراضيًا. فعّل استبدال الأعلام الموجودة فقط عندما تريد تغيير القرارات السابقة. تؤثر إجراءات الدفعة في التطابقات المعروضة وتشمل ملفات RAW/JPEG المرتبطة عند تمكين ربط البيانات الوصفية؛ وتُستبعد الأعلام المحمية أو المتطابقة بالفعل من عدد الإجراءات.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "تُحافَظ الأعلام الموجودة افتراضيًا. تشمل الأعداد ملفات RAW/JPEG المرتبطة غير المعلَّمة.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "قد يتم استبدال الأعلام الموجودة. تشمل الأعداد ملفات RAW/JPEG المرتبطة.",
+    "Flag {count} photo as a pick": "وضع علامة على {count} صورة كاختيار",
+    "Flag {count} photo as a reject": "وضع علامة على {count} صورة كمرفوضة",
+    "Flag {count} photos as picks": "وضع علامة على {count} صور كاختيارات",
+    "Flag {count} photos as rejects": "وضع علامة على {count} صور كمرفوضات",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "المجموعة {index} من {count}. لا توجد توصية واضحة؛ قارن هذه الصور.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "المجموعة {index} من {count}. المقترح: {name}. استنادًا إلى التركيز وفحوصات العيون؛ راجع كل إطار.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "يتطلب التجميع أوقات الالتقاط الفعلية وتحليل فهرس الصور الحالي. تُستبعد الملفات التي تحتوي فقط على تواريخ نظام الملفات، ومقاطع الفيديو، والنسخ الافتراضية، والصور التي لا تحتوي على تفاصيل بصرية كافية. يتم تحديث سجلات الفهرس الموجودة بواسطة عامل الفهرسة بعد هذا التحديث.",
+    "Next group": "المجموعة التالية",
+    "No similar groups found. Photos need current index analysis and capture times.": "لم يتم العثور على مجموعات متشابهة. تحتاج الصور إلى تحليل فهرس الصور الحالي وأوقات الالتقاط.",
+    "Previous group": "المجموعة السابقة",
+    "Replace existing flags": "استبدال الأعلام الموجودة",
+    "Restored {count} photo flag. Later flag changes are preserved.": "تمت استعادة علامة الصورة {count}. تم الحفاظ على تغييرات العلامات اللاحقة.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة.",
+    "Review similar photos": "مراجعة الصور المتشابهة",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "تعثر مراجعة الصور المتشابهة على صور مفهرسة متشابهة بصريًا تم التقاطها خلال 30 ثانية في المجلد أو المجموعة الحالية. تُفتح المجموعات في الاستعراض بما يصل إلى 16 صورة. استخدم المجموعة السابقة والمجموعة التالية لمقارنة البدائل، ثم ضع علامات على الصور الفردية باستخدام عناصر تحكم الاستعراض.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "راجع الصور المعروضة، ثم استخدم وضع علامة على الصور كاختيارات أو وضع علامة على الصور كمرفوضات. يوضح الزر عدد الملفات التي ستتغير.",
+    "Undo last flag batch": "تراجع عن آخر دفعة أعلام",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "استخدم تراجع في رسالة الإكمال أو تراجع عن آخر دفعة أعلام في الشريط الجانبي لاستعادة دفعة. يظل التراجع متاحًا خلال هذه الجلسة ويحتفظ بأي قرارات أعلام يدوية أو خارجية لاحقة. إذا فشل الحفظ، استخدم إعادة محاولة الحفظ أو تراجع عن الدفعة؛ وتبقى عمليات الكتابة الفاشلة في قائمة الانتظار.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "عند فتح الاستعراض من استبعاد بمساعدة، قارن المجموعة المقترحة وضع علامة على الصور كلٌ على حدة. يتوفر اجعلها محددة في استعراض عادي: فهو يختار صورة الاستعراض النشطة ويرفض الصور الأخرى التي لا تزال في الاستعراض. يؤدي هذا إلى تغيير أعلامها. يمكن لبيانات RAW وJPEG الوصفية المرتبطة أن توسّع هذه التغييرات في الأعلام لتشمل المرافقين.",
+    "{count} matching photo shown: {criteria}.": "تم عرض {count} صورة مطابقة: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "تم عرض {count} صور مطابقة: {criteria}."
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4179,6 +4186,22 @@
       "few": "جارٍ تصدير {count} صور إلى {destination}…",
       "many": "جارٍ تصدير {count} صورة إلى {destination}…",
       "other": "جارٍ تصدير {count} صورة إلى {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "zero": "وضع علامة على {count} صورة كاختيار",
+      "one": "وضع علامة على {count} صورة كاختيار",
+      "two": "وضع علامة على {count} صورتين كاختيارين",
+      "few": "وضع علامة على {count} صور كاختيارات",
+      "many": "وضع علامة على {count} صورة كاختيار",
+      "other": "وضع علامة على {count} صورة كاختيار"
+    },
+    "Flag {count} photo as a reject": {
+      "zero": "وضع علامة على {count} صورة كمرفوضة",
+      "one": "وضع علامة على {count} صورة كمرفوضة",
+      "two": "وضع علامة على {count} صورتين كمرفوضتين",
+      "few": "وضع علامة على {count} صور كمرفوضات",
+      "many": "وضع علامة على {count} صورة كمرفوضة",
+      "other": "وضع علامة على {count} صورة كمرفوضة"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "zero": "تم استيراد {count} صورة من Apple Photos{value}",
@@ -4220,22 +4243,6 @@
       "many": "تم اللصق إلى {count} صورة",
       "other": "تم اللصق إلى {count} صورة"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "zero": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "one": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "two": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "few": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "many": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "other": "هل تختار {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور."
-    },
-    "Pick {count} select": {
-      "zero": "اختيار {count} تحديد",
-      "one": "اختيار {count} تحديد",
-      "two": "اختيار {count} تحديد",
-      "few": "اختيار {count} تحديد",
-      "many": "اختيار {count} تحديد",
-      "other": "اختيار {count} تحديد"
-    },
     "Picked {count} photo": {
       "zero": "تم اختيار {count} صورة",
       "one": "تم اختيار {count} صورة",
@@ -4243,22 +4250,6 @@
       "few": "تم اختيار {count} صورة",
       "many": "تم اختيار {count} صورة",
       "other": "تم اختيار {count} صورة"
-    },
-    "Reject {count} photo": {
-      "zero": "رفض {count} صورة",
-      "one": "رفض {count} صورة",
-      "two": "رفض {count} صورة",
-      "few": "رفض {count} صورة",
-      "many": "رفض {count} صورة",
-      "other": "رفض {count} صورة"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "zero": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "one": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "two": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "few": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "many": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور.",
-      "other": "هل ترفض {count} من الصور المطابقة لـ {criteria}؟ سيتم استبدال الأعلام الموجودة على تلك الصور."
     },
     "Rejected {count} photo": {
       "zero": "تم رفض {count} صورة",
@@ -4284,21 +4275,13 @@
       "many": "تمت استعادة {count} من الالتقاطات. يمكنك أيضًا استعادة خطوات وقت الالتقاط في السجل.",
       "other": "تمت استعادة {count} من الالتقاطات. يمكنك أيضًا استعادة خطوات وقت الالتقاط في السجل."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "zero": "مراجعة {count} صورة استوفت معيار الرفض.",
-      "one": "مراجعة {count} صورة استوفت معيار الرفض.",
-      "two": "مراجعة {count} صورة استوفت معيار الرفض.",
-      "few": "مراجعة {count} صورة استوفت معيار الرفض.",
-      "many": "مراجعة {count} صورة استوفت معيار الرفض.",
-      "other": "مراجعة {count} صورة استوفت معيار الرفض."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "zero": "مراجعة {count} صورة استوفت معيار التحديد.",
-      "one": "مراجعة {count} صورة استوفت معيار التحديد.",
-      "two": "مراجعة {count} صورتان استوفتا معيار التحديد.",
-      "few": "مراجعة {count} صور استوفت معيار التحديد.",
-      "many": "مراجعة {count} صور استوفت معيار التحديد.",
-      "other": "مراجعة {count} صور استوفت معيار التحديد."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "zero": "تمت استعادة علامة الصورة {count}. تم الحفاظ على تغييرات العلامات اللاحقة.",
+      "one": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة.",
+      "two": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة.",
+      "few": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة.",
+      "many": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة.",
+      "other": "تمت استعادة علامات {count} صور. تم الحفاظ على تغييرات العلامات اللاحقة."
     },
     "Wrote {count} sidecar.": {
       "zero": "تمت كتابة {count} ملف Sidecar.",
@@ -4396,6 +4379,14 @@
       "many": "{count} مجموعة مكررة تغطي {files}.",
       "other": "{count} مجموعة مكررة تغطي {files}."
     },
+    "{count} empty file": {
+      "zero": "{count} ملفات فارغة",
+      "one": "{count} ملف فارغ",
+      "two": "{count} ملفان فارغان",
+      "few": "{count} ملفات فارغة",
+      "many": "{count} ملفًا فارغًا",
+      "other": "{count} ملفات فارغة"
+    },
     "{count} error": {
       "zero": "{count} أخطاء",
       "one": "{count} خطأ",
@@ -4403,6 +4394,14 @@
       "few": "{count} أخطاء",
       "many": "{count} أخطاء",
       "other": "{count} أخطاء"
+    },
+    "{count} face": {
+      "zero": "{count} وجه",
+      "one": "{count} وجه",
+      "two": "{count} وجهان",
+      "few": "{count} وجوه",
+      "many": "{count} وجهًا",
+      "other": "{count} وجه"
     },
     "{count} face detected": {
       "zero": "تم اكتشاف {count} وجوه",
@@ -4436,6 +4435,22 @@
       "many": "{count} ملفات",
       "other": "{count} ملفات"
     },
+    "{count} file not downloaded": {
+      "zero": "{count} ملفات غير منزّلة",
+      "one": "{count} ملف غير منزّل",
+      "two": "{count} ملفان غير منزّلان",
+      "few": "{count} ملفات غير منزّلة",
+      "many": "{count} ملفًا غير منزّلًا",
+      "other": "{count} ملفات غير منزّلة"
+    },
+    "{count} group": {
+      "zero": "{count} مجموعة",
+      "one": "{count} مجموعة",
+      "two": "{count} مجموعتان",
+      "few": "{count} مجموعات",
+      "many": "{count} مجموعة",
+      "other": "{count} مجموعة"
+    },
     "{count} indexed photo remains local until deleted.": {
       "zero": "تظل {count} صور مفهرسة محلية حتى يتم حذفها.",
       "one": "تظل {count} صورة مفهرسة محلية حتى يتم حذفها.",
@@ -4443,6 +4458,14 @@
       "few": "تظل {count} صور مفهرسة محلية حتى يتم حذفها.",
       "many": "تظل {count} صور مفهرسة محلية حتى يتم حذفها.",
       "other": "تظل {count} صور مفهرسة محلية حتى يتم حذفها."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "zero": "تم عرض {count} صورة مطابقة: {criteria}.",
+      "one": "تم عرض {count} صورة مطابقة: {criteria}.",
+      "two": "تم عرض {count} صورة مطابقة: {criteria}.",
+      "few": "تم عرض {count} صور مطابقة: {criteria}.",
+      "many": "تم عرض {count} صور مطابقة: {criteria}.",
+      "other": "تم عرض {count} صور مطابقة: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "zero": "{count} من نقاط التوافق الدنيا",
@@ -4540,6 +4563,14 @@
       "many": "عدد الصور المحددة: {count}",
       "other": "عدد الصور المحددة: {count}"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "zero": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
+      "one": "تم تخطي {count} صورة{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
+      "two": "تم تخطي {count} صورتان{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
+      "few": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
+      "many": "تم تخطي {count} صورة{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
+      "other": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس."
+    },
     "{count} photo updated": {
       "zero": "عدد الصور التي تم تحديثها: {count}",
       "one": "عدد الصور التي تم تحديثها: {count}",
@@ -4572,6 +4603,14 @@
       "many": "{count} صورة مُقيَّمة",
       "other": "{count} صورة مُقيَّمة"
     },
+    "{count} selected": {
+      "zero": "{count} محدد",
+      "one": "{count} محدد",
+      "two": "{count} محددان",
+      "few": "{count} محدد",
+      "many": "{count} محدد",
+      "other": "{count} محدد"
+    },
     "{count} selected photo": {
       "zero": "عدد الصور المحددة: {count}",
       "one": "عدد الصور المحددة: {count}",
@@ -4603,6 +4642,22 @@
       "few": "{count} مصدر",
       "many": "{count} مصدر",
       "other": "{count} مصدر"
+    },
+    "{count} unavailable file": {
+      "zero": "{count} ملفات غير متاحة",
+      "one": "{count} ملف غير متاح",
+      "two": "{count} ملفان غير متاحان",
+      "few": "{count} ملفات غير متاحة",
+      "many": "{count} ملفًا غير متاحًا",
+      "other": "{count} ملفات غير متاحة"
+    },
+    "{count} unavailable photo skipped": {
+      "zero": "تم تخطي {count} صورة غير متاحة",
+      "one": "تم تخطي {count} صورة غير متاحة",
+      "two": "تم تخطي {count} صورتين غير متاحتين",
+      "few": "تم تخطي {count} صور غير متاحة",
+      "many": "تم تخطي {count} صورة غير متاحة",
+      "other": "تم تخطي {count} صورة غير متاحة"
     },
     "{count} unsupported setting skipped": {
       "zero": "تم تخطي {count} من الإعدادات غير المدعومة",
@@ -4659,71 +4714,7 @@
       "few": "‏{value} حالات خروج غير متوقعة خلال آخر 24 ساعة.",
       "many": "‏{value} حالات خروج غير متوقعة خلال آخر 24 ساعة.",
       "other": "‏{value} حالة خروج غير متوقعة خلال آخر 24 ساعة."
-    },
-    "{count} empty file": {
-      "zero": "{count} ملفات فارغة",
-      "one": "{count} ملف فارغ",
-      "two": "{count} ملفان فارغان",
-      "few": "{count} ملفات فارغة",
-      "many": "{count} ملفًا فارغًا",
-      "other": "{count} ملفات فارغة"
-    },
-    "{count} file not downloaded": {
-      "zero": "{count} ملفات غير منزّلة",
-      "one": "{count} ملف غير منزّل",
-      "two": "{count} ملفان غير منزّلان",
-      "few": "{count} ملفات غير منزّلة",
-      "many": "{count} ملفًا غير منزّلًا",
-      "other": "{count} ملفات غير منزّلة"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "zero": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
-      "one": "تم تخطي {count} صورة{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
-      "two": "تم تخطي {count} صورتان{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
-      "few": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
-      "many": "تم تخطي {count} صورة{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس.",
-      "other": "تم تخطي {count} صور{reasons}. نزّل النسخ الأصلية أو استعدها، ثم أعد بناء الفهرس."
-    },
-    "{count} unavailable file": {
-      "zero": "{count} ملفات غير متاحة",
-      "one": "{count} ملف غير متاح",
-      "two": "{count} ملفان غير متاحان",
-      "few": "{count} ملفات غير متاحة",
-      "many": "{count} ملفًا غير متاحًا",
-      "other": "{count} ملفات غير متاحة"
-    },
-    "{count} face": {
-      "zero": "{count} وجه",
-      "one": "{count} وجه",
-      "two": "{count} وجهان",
-      "few": "{count} وجوه",
-      "many": "{count} وجهًا",
-      "other": "{count} وجه"
-    },
-    "{count} group": {
-      "zero": "{count} مجموعة",
-      "one": "{count} مجموعة",
-      "two": "{count} مجموعتان",
-      "few": "{count} مجموعات",
-      "many": "{count} مجموعة",
-      "other": "{count} مجموعة"
-    },
-    "{count} selected": {
-      "zero": "{count} محدد",
-      "one": "{count} محدد",
-      "two": "{count} محددان",
-      "few": "{count} محدد",
-      "many": "{count} محدد",
-      "other": "{count} محدد"
-    },
-    "{count} unavailable photo skipped": {
-      "zero": "تم تخطي {count} صورة غير متاحة",
-      "one": "تم تخطي {count} صورة غير متاحة",
-      "two": "تم تخطي {count} صورتين غير متاحتين",
-      "few": "تم تخطي {count} صور غير متاحة",
-      "many": "تم تخطي {count} صورة غير متاحة",
-      "other": "تم تخطي {count} صورة غير متاحة"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }
