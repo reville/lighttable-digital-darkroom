@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Görüntülenemeyen fotoğrafları gizle",
+          "paragraphs": [
+            "Izgarada bir küçük resim hatası görünüyorsa konum özetinin yanındaki Görüntülenemeyen fotoğrafları gizle seçeneğini seçin. Bu, Filtre içindeki ilgili anahtarı açar. Anahtar varsayılan olarak kapalıdır ve ayarı oturumlar arasında kaydedilir. Bu anahtar akıllı koleksiyon kurallarına kaydedilmez.",
+            "Anahtar, kullanılamadığı veya yalnızca bulutta olduğu bilinen fotoğrafları ve küçük resim ya da önizleme hatası gözlenen fotoğrafları gizler. Diğer kod çözme hataları fotoğraflar yüklenirken belirlenir. Fotoğrafları yeniden göstermek için anahtarı kapatın, filtre etiketini kaldırın veya Tümünü temizle seçeneğini seçin. Başarılı bir Tekrar dene işlemi veya orijinalin değişmesi, kaydedilen hatayı temizler."
+          ]
+        },
+        {
           "title": "Kamera, pozlama ve yakalama tarihine göre filtrele",
           "paragraphs": [
             "Filtre’de Kamera, pozlama ve tarih’i genişletin. Kamera ve Lens, bir adın bir kısmıyla eşleşir. Anahtar kelime, tam bir katalog anahtar kelime yoluyla ve alt öğeleriyle eşleşir; örneğin, Yerler, Yerler > Boston’u içerir.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Bir fotoğraf oluşturulamazsa veya görüntülenemezse, fotoğraf alanındaki mesaj, varsa bildirilen nedeni içerir. Bu, eksik bir dosyayı, bir görüntü yükleme sorununu veya bir grafik hatasını belirleyebilir. Hiçbir neden yoksa, mesaj genel kalır."
           ]
+        },
+        {
+          "title": "Küçük resim hatasını anlama",
+          "paragraphs": [
+            "Izgara ve film şeridinde Küçük resim kullanılamıyor mesajı, hatanın nedenini gösterir ve varsa bildirilen tanılama bilgisini içerir. Sorunu düzelttikten sonra Tekrar dene seçeneğini seçin.",
+            "Mac’te: Dropbox’ın yalnızca çevrimiçi yer tutucu dosyaları, buluttaki orijinal boş olmasa da 0 bayt gösterebilir. Finder’da Çevrimdışı kullanılabilir yap, ardından LightTable’da Tekrar dene seçeneğini seçin. Bulut işareti olmayan boş bir dosya için orijinali indirin veya geri yükleyin. Tekrar denemeden önce kullanılamayan klasörleri veya sürücüleri yeniden bağlayın."
+          ]
+        },
+        {
+          "title": "Bulut fotoğraflarını çevrimdışı kullanılabilir yapma",
+          "paragraphs": [
+            "LightTable, macOS File Provider ve Windows’un bildirdiği bulut yer tutucularını ve Mac’teki eski Dropbox yer tutucularını tanır. Fotoğrafları indirmeden meta verileri denetler. Bazı eski sanal sürücüler, algılanabilir bulut durumu bildirmez.",
+            "Hata mesajındaki sağlayıcının indirme talimatlarını izleyin, indirmenin tamamlanmasını bekleyin, ardından Tekrar dene seçeneğini seçin. Senkronizasyon konumu tanındığında Google Drive, Dropbox, OneDrive, iCloud Drive ve Box için özel yönlendirmeler gösterilir; diğer konumlar için genel talimatlar verilir."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

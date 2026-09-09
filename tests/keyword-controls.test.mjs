@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
 import {photoHasEdits} from '../web/library-filters.js';
+import {createPhotoDisplayStatus} from '../web/photo-display-status.js';
 
 const source = name => readFileSync(new URL(`../web/${name}`, import.meta.url), 'utf8');
 const app = source('app.js');
@@ -32,7 +33,8 @@ function libraryHarness() {
   const saves = [];
   const pending = new Map();
   const context = vm.createContext({CULL_BATCH: {noteFlagChange() {}}, S: state, $: element, cur: () => photo, APP_PREFS: {},
-    LIBRARY_FILTERS: {types: () => [], metadata: () => ({})}, CULL_SELECT: [], CULL_REJECT: [],
+    LIBRARY_FILTERS: {types: () => [], metadata: () => ({}), hideUndisplayable: () => false},
+    PHOTO_DISPLAY_STATUS: createPhotoDisplayStatus(), CULL_SELECT: [], CULL_REJECT: [],
     pairViewPreference: () => 'both', collapsePairs: list => list, photoMatchesRules: () => true,
     matchesCullReview: () => true, matchesLibraryFilters: () => true,
     photoHasEdits,

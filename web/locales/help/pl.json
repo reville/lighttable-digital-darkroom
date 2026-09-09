@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ukryj zdjęcia, których nie można wyświetlić",
+          "paragraphs": [
+            "Gdy w siatce jest widoczny błąd miniatury, wybierz Ukryj zdjęcia, których nie można wyświetlić obok podsumowania lokalizacji. Włącza to odpowiedni przełącznik w panelu Filtr. Jest on domyślnie wyłączony, a jego ustawienie jest zapisywane między sesjami. Ten przełącznik nie jest zapisywany w regułach kolekcji inteligentnych.",
+            "Przełącznik ukrywa zdjęcia, o których wiadomo, że są niedostępne lub znajdują się tylko w chmurze, oraz zdjęcia z wykrytymi błędami miniatur lub podglądów. Inne błędy dekodowania są wykrywane podczas wczytywania zdjęć. Wyłącz przełącznik, usuń jego znacznik filtra lub wybierz Wyczyść wszystko, aby ponownie pokazać zdjęcia. Pomyślna operacja Spróbuj ponownie lub zmiana oryginału usuwa zapisany błąd."
+          ]
+        },
+        {
           "title": "Filtruj aparat, ekspozycję i datę wykonania",
           "paragraphs": [
             "Rozwiń Aparat, ekspozycja i data w Filtrze. Aparat i Obiektyw dopasowują część nazwy. Słowo kluczowe dopasowuje pełną ścieżkę słowa kluczowego w katalogu i jego podrzędne elementy; na przykład Miejsca obejmuje Miejsca > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Jeśli zdjęcia nie można wyrenderować lub wyświetlić, wiadomość w obszarze zdjęcia zawiera zgłoszoną przyczynę, gdy jest dostępna. Może to wskazywać brakujący plik, problem z wczytywaniem obrazu lub awarię grafiki. Jeśli przyczyna nie jest dostępna, wiadomość pozostaje ogólna."
           ]
+        },
+        {
+          "title": "Jak odczytać błąd miniatury",
+          "paragraphs": [
+            "W siatce i na taśmie filmowej komunikat Miniatura niedostępna pokazuje przyczynę błędu oraz zgłoszone informacje diagnostyczne, jeśli są dostępne. Po usunięciu problemu wybierz Spróbuj ponownie.",
+            "Na Macu: Pliki zastępcze Dropbox dostępne tylko online mogą wskazywać 0 bajtów, mimo że oryginał w chmurze nie jest pusty. W Finderze wybierz Udostępnij offline, a następnie Spróbuj ponownie w LightTable. Jeśli plik jest pusty i nie ma znacznika chmury, pobierz lub przywróć oryginał. Przed ponowną próbą podłącz niedostępne foldery lub dyski."
+          ]
+        },
+        {
+          "title": "Udostępnij zdjęcia z chmury offline",
+          "paragraphs": [
+            "LightTable rozpoznaje pliki zastępcze w chmurze zgłaszane przez File Provider w macOS i Windows, a także starsze pliki zastępcze Dropbox na Macu. Sprawdza metadane bez pobierania zdjęć. Niektóre starsze dyski wirtualne nie zgłaszają wykrywalnego stanu chmury.",
+            "Postępuj zgodnie z instrukcjami pobierania dostawcy w komunikacie o błędzie, poczekaj na zakończenie pobierania, a następnie wybierz Spróbuj ponownie. Google Drive, Dropbox, OneDrive, iCloud Drive i Box mają szczegółowe wskazówki, gdy lokalizacja synchronizacji zostanie rozpoznana; inne lokalizacje mają instrukcje ogólne."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

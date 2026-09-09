@@ -66,6 +66,7 @@
     "Keywords changed after this batch. Review the photos before undoing.",
     "Learned denoise requires a RAW original",
     "Leave in place (unrecognized companion)",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.",
     "LightTable is preparing to update. Try again after restarting.",
     "Linux shared-memory reservation is unavailable",
     "Missing photo",
@@ -134,8 +135,15 @@
     "There are no saved masks to undo for this batch",
     "There is no face-group change to undo",
     "This export uses sRGB-limited colors: film rendering and adjusted Develop images do not yet retain colors outside sRGB. The requested output profile is embedded.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.",
     "This person group no longer exists",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.",
     "This photo is unavailable. Reconnect its source and rescan.",
     "Unknown capture-time action",
     "Unknown external edit mode",
@@ -324,7 +332,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "6f37f6cc2705e83459b978acc3265f8a768d0a9daf522fc5a4d2cdd3c73bc4ce",
+  "sourceDigest": "618506625977a645ecfcc4696975f498d8904516de4f20a0f3fbcd2ce89b0963",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -359,6 +367,7 @@
       "Import at most 100000 photos at once; narrow the source or folder scope",
       "Learned denoise requires a RAW original",
       "Leave in place (unrecognized companion)",
+      "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.",
       "Linux shared-memory reservation is unavailable",
       "Missing photo",
       "Move with photo",
@@ -396,6 +405,7 @@
       "The photo is no longer in this catalog",
       "The photo was rotated during detection; retry this photo",
       "There are no saved masks to undo for this batch",
+      "This file is empty (0 bytes). Download or restore the original photo, then retry.",
       "This photo is unavailable. Reconnect its source and rescan.",
       "Unknown capture-time action",
       "Unknown external edit mode",
@@ -540,7 +550,13 @@
       "unknown export destination mode"
     ],
     "media_availability.py": [
-      "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.",
+      "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.",
+      "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.",
+      "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.",
+      "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.",
+      "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.",
+      "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.",
+      "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.",
       "This photo is unavailable. Reconnect its source and rescan."
     ],
     "jobs.py": [
@@ -679,7 +695,6 @@
       "File changed before querying its identity",
       "File changed while querying its identity",
       "The filesystem does not provide a file change time",
-      "This photo is unavailable. Reconnect its source and rescan.",
       "file changed before hashing: {path}",
       "file changed while hashing: {path}"
     ],

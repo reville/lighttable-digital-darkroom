@@ -72,7 +72,7 @@ def header_hash(path: Path, *, chunk: int = HEADER_CHUNK) -> str:
     digest = hashlib.blake2b(digest_size=16)
     try:
         stat = path.stat()
-        if media_availability.from_stat(stat) != "local":
+        if media_availability.availability(path, stat=stat) != "local":
             return ""
         size = stat.st_size
     except OSError:
@@ -142,7 +142,7 @@ def walk_source(root: Path, *, limit: int = 500000,
                 # The identity guard needs the actual target identity there.
                 stat = (os.stat(entry.path, follow_symlinks=False) if file_identity._WINDOWS
                         else entry.stat(follow_symlinks=False))
-                availability = media_availability.from_stat(stat)
+                availability = media_availability.availability(entry.path, stat=stat)
                 signature = (file_identity.signature_key(stat, path=entry.path)
                              if availability == "local" else None)
             except OSError as error:

@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Fotos ausblenden, die nicht angezeigt werden können",
+          "paragraphs": [
+            "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
+          ]
+        },
+        {
           "title": "Kamera, Belichtung und Aufnahmedatum filtern",
           "paragraphs": [
             "Erweitern Sie Kamera, Belichtung & Datum in Filter. Kamera und Objektiv stimmen mit einem Teil eines Namens überein. Stichwort stimmt mit einem vollständigen Katalog-Stichwortpfad und seinen untergeordneten Einträgen überein; z. B. umfasst Orte Orte > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Wenn ein Foto nicht gerendert oder angezeigt werden kann, enthält die Meldung im Foto-Bereich die gemeldete Ursache, sofern eine verfügbar ist. So lässt sich eine fehlende Datei, ein Problem beim Laden des Bildes oder ein Grafikfehler erkennen. Wenn keine Ursache verfügbar ist, bleibt die Meldung allgemein."
           ]
+        },
+        {
+          "title": "Einen Vorschaubildfehler verstehen",
+          "paragraphs": [
+            "Im Raster und Filmstreifen zeigt Vorschaubild nicht verfügbar den Grund für den Fehler und gegebenenfalls die gemeldeten Diagnosedetails. Wähle nach dem Beheben des Problems Erneut versuchen.",
+            "Auf dem Mac: Dropbox-Platzhalter für reine Onlinedateien können 0 Byte anzeigen, obwohl das Original in der Cloud nicht leer ist. Wähle im Finder Offline verfügbar machen und dann Erneut versuchen in LightTable. Lade bei einer leeren Datei ohne Cloud-Markierung das Original herunter oder stelle es wieder her. Verbinde nicht verfügbare Ordner oder Laufwerke erneut, bevor du es noch einmal versuchst."
+          ]
+        },
+        {
+          "title": "Cloud-Fotos offline verfügbar machen",
+          "paragraphs": [
+            "LightTable erkennt Cloud-Platzhalter, die macOS File Provider und Windows melden, sowie ältere Dropbox-Platzhalter auf dem Mac. Es prüft Metadaten, ohne Fotos herunterzuladen. Einige ältere virtuelle Laufwerke melden keinen erkennbaren Cloud-Status.",
+            "Befolge die Download-Anleitung des Anbieters in der Fehlermeldung, warte auf den Abschluss des Downloads und wähle Erneut versuchen. Für Google Drive, Dropbox, OneDrive, iCloud Drive und Box erscheinen spezifische Hinweise, wenn ihr Synchronisierungsort erkannt wird; andere Orte erhalten allgemeine Anweisungen."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Nascondi le foto che non possono essere visualizzate",
+          "paragraphs": [
+            "Quando nella griglia è visibile un errore di miniatura, scegli Nascondi le foto che non possono essere visualizzate accanto al riepilogo della posizione. Questo attiva l’interruttore corrispondente in Filtro, disattivato per impostazione predefinita e salvato tra le sessioni. Questo interruttore non viene salvato nelle regole delle raccolte intelligenti.",
+            "L’interruttore nasconde le foto note come non disponibili o solo nel cloud e quelle con errori di miniatura o anteprima già rilevati. Gli altri errori di decodifica vengono scoperti durante il caricamento delle foto. Disattiva l’interruttore, rimuovi la sua etichetta o scegli Cancella tutto per mostrare di nuovo le foto. Un Riprova riuscito o una modifica all’originale cancella l’errore registrato."
+          ]
+        },
+        {
           "title": "Filtra fotocamera, esposizione e data di acquisizione",
           "paragraphs": [
             "Espandi Fotocamera, esposizione e data in Filtro. Fotocamera e Obiettivo corrispondono a una parte del nome. Parole chiave corrisponde a un percorso completo di parola chiave del catalogo e ai suoi discendenti; per esempio, Places include Places > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Se una foto non può essere renderizzata o visualizzata, il messaggio nell'area della foto include il motivo segnalato quando disponibile. Può identificare un file mancante, un problema di caricamento dell'immagine o un errore della grafica. Se non è disponibile alcun motivo, il messaggio resta generico."
           ]
+        },
+        {
+          "title": "Interpretare un errore di miniatura",
+          "paragraphs": [
+            "Nella griglia e nella striscia pellicola, Miniatura non disponibile mostra il motivo dell’errore e include la diagnostica segnalata, se disponibile. Dopo aver corretto il problema, scegli Riprova.",
+            "Su Mac: I segnaposto Dropbox disponibili solo online possono indicare 0 byte senza che l’originale nel cloud sia vuoto. Nel Finder, scegli Rendi disponibile offline, poi Riprova in LightTable. Per un file vuoto senza contrassegno cloud, scarica o ripristina l’originale. Ricollega le cartelle o le unità non disponibili prima di riprovare."
+          ]
+        },
+        {
+          "title": "Rendere disponibili offline le foto nel cloud",
+          "paragraphs": [
+            "LightTable riconosce i segnaposto cloud segnalati da File Provider di macOS e da Windows, oltre ai vecchi segnaposto Dropbox su Mac. Controlla i metadati senza scaricare le foto. Alcune unità virtuali meno recenti non segnalano uno stato cloud rilevabile.",
+            "Segui le istruzioni di download del fornitore nel messaggio di errore, attendi che il download finisca, poi scegli Riprova. Google Drive, Dropbox, OneDrive, iCloud Drive e Box ricevono indicazioni specifiche quando la loro posizione di sincronizzazione viene riconosciuta; le altre posizioni ricevono istruzioni generali."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

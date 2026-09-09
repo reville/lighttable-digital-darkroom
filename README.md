@@ -290,13 +290,24 @@ component licenses, and test-image attribution. The
 [website source](https://github.com/reville/lighttable-site) is maintained separately.
 
 
-Cloud placeholders and lens matching: LightTable catalogs macOS dataless photos as
-`cloud-only` without reading their content. Existing metadata, edits and identities
-survive eviction. Download the file in Finder using Download Now or Keep Downloaded,
-then rescan the source; it becomes available even if its size and timestamp did not
-change. Import previews count and explain skipped cloud-only photos; watched
-folders wait for a download and two stable polls before importing. Other providers that do not expose macOS's dataless flag may still block on
-filesystem I/O; this check is not a general network timeout or download manager.
+Cloud placeholders and lens matching: LightTable recognizes macOS File Provider
+dataless photos, legacy Dropbox placeholders on Mac, and Windows offline or recall
+attributes as `cloud-only` without reading their content. On Windows, the
+RECALL_ON_OPEN bit requires a Cloud Files reparse tag because that bit can also
+mean an extended attribute. Existing metadata, edits and identities survive
+eviction. Recognized Google Drive, Dropbox, OneDrive, iCloud Drive, and Box sync
+locations receive provider-specific download instructions; unknown or custom
+locations receive general guidance. Location names choose the message but never
+determine whether a photo is cloud-only.
+
+Make the photo available offline in the storage provider's app, wait for its
+download to finish, then choose Retry. Box Drive may require making the containing
+folder available offline. Rescan the source to refresh catalog availability; it
+updates even if the file size and timestamp did not change. Import previews count
+and explain skipped cloud-only photos; watched folders wait for a download and
+two stable polls before importing. Older virtual drives that expose none of the
+supported indicators may still block on filesystem I/O; these checks are not a
+general network timeout or download manager.
 
 Lens correction requires one compatible automatic match. Missing or ambiguous
 metadata leaves automatic correction off and explains the reason. The Lens profile

@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ocultar fotos que no se pueden mostrar",
+          "paragraphs": [
+            "Cuando veas un error de miniatura en la cuadrícula, elige Ocultar fotos que no se pueden mostrar junto al resumen de ubicación. Esto activa el interruptor correspondiente en Filtro, que está desactivado de forma predeterminada y se guarda entre sesiones. Este interruptor no se guarda en las reglas de las colecciones inteligentes.",
+            "El interruptor oculta las fotos que se sabe que no están disponibles o que solo están en la nube, y aquellas cuyas miniaturas o vistas previas han fallado. Otros errores de decodificación se detectan al cargar las fotos. Desactiva el interruptor, elimina su etiqueta o elige Borrar todo para volver a mostrar las fotos. Un Reintentar exitoso o un cambio en el original borra el error registrado."
+          ]
+        },
+        {
           "title": "Filtrar por cámara, exposición y fecha de captura",
           "paragraphs": [
             "Expanda Cámara, exposición y fecha en Filtro. Cámara y Lente coinciden con una parte de un nombre. Palabra clave coincide con una ruta completa de palabra clave del catálogo y sus descendientes; por ejemplo, Lugares incluye Lugares > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Si una foto no se puede renderizar o mostrar, el mensaje en el área de la foto incluye el motivo informado cuando está disponible. Esto puede identificar un archivo faltante, un problema al cargar la imagen o un fallo de la tarjeta gráfica. Si no hay un motivo disponible, el mensaje permanece general."
           ]
+        },
+        {
+          "title": "Interpretar un error de miniatura",
+          "paragraphs": [
+            "En la cuadrícula y la tira de película, Miniatura no disponible muestra por qué falló una miniatura e incluye el diagnóstico recibido cuando está disponible. Tras corregir el problema, elige Reintentar.",
+            "En Mac: Los archivos de marcador de Dropbox disponibles solo en línea pueden indicar 0 bytes sin que el original en la nube esté vacío. En Finder, elige Hacer disponible sin conexión y luego Reintentar en LightTable. Si un archivo está vacío y no tiene un marcador de nube, descarga o restaura el original. Vuelve a conectar las carpetas o unidades no disponibles antes de reintentarlo."
+          ]
+        },
+        {
+          "title": "Hacer que las fotos en la nube estén disponibles sin conexión",
+          "paragraphs": [
+            "LightTable reconoce los archivos de marcador en la nube notificados por File Provider de macOS y Windows, además de los antiguos marcadores de Dropbox en Mac. Comprueba los metadatos sin descargar las fotos. Algunas unidades virtuales antiguas no notifican un estado de nube detectable.",
+            "Sigue las instrucciones de descarga del proveedor que aparecen en el mensaje de error, espera a que termine la descarga y elige Reintentar. Google Drive, Dropbox, OneDrive, iCloud Drive y Box reciben indicaciones específicas cuando se reconoce su ubicación de sincronización; las demás ubicaciones reciben instrucciones generales."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

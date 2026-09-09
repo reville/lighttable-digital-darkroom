@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Foto’s verbergen die niet kunnen worden weergegeven",
+          "paragraphs": [
+            "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties.",
+            "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout."
+          ]
+        },
+        {
           "title": "Filter camera, belichting en opnamedatum",
           "paragraphs": [
             "Vouw Camera, belichting & datum uit in Filter. Camera en Lens komen overeen met een deel van een naam. Trefwoord komt overeen met een volledig catalogus-trefwoordpad en de onderliggende onderdelen; bijvoorbeeld: Plaatsen omvat Plaatsen > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Als een foto niet kan worden gerenderd of weergegeven, bevat het bericht in het foto-gebied de gerapporteerde reden wanneer die beschikbaar is. Dit kan een ontbrekend bestand, een probleem met het laden van de afbeelding of een grafische fout aangeven. Als er geen reden beschikbaar is, blijft het bericht algemeen."
           ]
+        },
+        {
+          "title": "Een miniatuurfout begrijpen",
+          "paragraphs": [
+            "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
+            "Op de Mac: Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert."
+          ]
+        },
+        {
+          "title": "Cloudfoto’s offline beschikbaar maken",
+          "paragraphs": [
+            "LightTable herkent cloudplaatsaanduidingen die macOS File Provider en Windows melden, plus oudere Dropbox-plaatsaanduidingen op de Mac. Het controleert metagegevens zonder foto’s te downloaden. Sommige oudere virtuele schijven melden geen detecteerbare cloudstatus.",
+            "Volg de downloadinstructies van de aanbieder in de foutmelding, wacht tot de download klaar is en kies Opnieuw proberen. Google Drive, Dropbox, OneDrive, iCloud Drive en Box krijgen specifieke aanwijzingen als hun synchronisatielocatie wordt herkend; andere locaties krijgen algemene instructies."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

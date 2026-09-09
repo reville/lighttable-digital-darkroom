@@ -551,6 +551,13 @@
           ]
         },
         {
+          "title": "Hide photos that can't be displayed",
+          "paragraphs": [
+            "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
+            "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure."
+          ]
+        },
+        {
           "title": "Filter camera, exposure, and capture date",
           "paragraphs": [
             "Expand Camera, exposure & date in Filter. Camera and Lens match part of a name. Keyword matches a complete catalog keyword path and its descendants; for example, Places includes Places > Boston.",
@@ -3097,6 +3104,20 @@
           "title": "Read a preview error",
           "paragraphs": [
             "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."
+          ]
+        },
+        {
+          "title": "Read a thumbnail error",
+          "paragraphs": [
+            "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
+            "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying."
+          ]
+        },
+        {
+          "title": "Make cloud photos available offline",
+          "paragraphs": [
+            "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.",
+            "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions."
           ]
         }
       ],

@@ -142,10 +142,6 @@ def _windows_change_time(stat, *, path=None, fd=None):
 
 def _require_windows_local(stat, path=None):
     media_availability.require_local(path, stat=stat)
-    # OFFLINE, RECALL_ON_OPEN and RECALL_ON_DATA_ACCESS are exposed by Windows
-    # stat without reading bytes. A read must never hydrate these placeholders.
-    if getattr(stat, "st_file_attributes", 0) & (0x1000 | 0x40000 | 0x400000):
-        raise OSError(T("This photo is unavailable. Reconnect its source and rescan."))
 
 
 def _read_descriptor_digest(fd, size):

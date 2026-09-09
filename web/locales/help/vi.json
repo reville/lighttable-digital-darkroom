@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ẩn ảnh không thể hiển thị",
+          "paragraphs": [
+            "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh.",
+            "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận."
+          ]
+        },
+        {
           "title": "Lọc máy ảnh, phơi sáng và ngày chụp",
           "paragraphs": [
             "Mở rộng Camera, phơi sáng & ngày trong Bộ lọc. Camera và Ống kính khớp một phần của tên. Từ khóa khớp một đường dẫn từ khóa đầy đủ trong danh mục và các mục con của nó; ví dụ, Places bao gồm Places > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Nếu không thể hiển thị hoặc dựng ảnh, thông báo trong vùng ảnh sẽ bao gồm lý do được báo cáo khi có. Điều này có thể xác định tệp bị thiếu, sự cố tải ảnh hoặc lỗi đồ họa. Nếu không có lý do nào, thông báo sẽ vẫn mang tính chung chung."
           ]
+        },
+        {
+          "title": "Hiểu lỗi ảnh thu nhỏ",
+          "paragraphs": [
+            "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
+            "Trên Mac: Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại."
+          ]
+        },
+        {
+          "title": "Cho phép truy cập ngoại tuyến ảnh trên đám mây",
+          "paragraphs": [
+            "LightTable nhận diện các tệp giữ chỗ trên đám mây do File Provider của macOS và Windows báo cáo, cùng các tệp giữ chỗ Dropbox cũ trên Mac. Ứng dụng kiểm tra siêu dữ liệu mà không tải ảnh xuống. Một số ổ đĩa ảo cũ không báo cáo trạng thái đám mây có thể phát hiện được.",
+            "Làm theo hướng dẫn tải xuống của nhà cung cấp trong thông báo lỗi, chờ tải xuống xong rồi chọn Thử lại. Google Drive, Dropbox, OneDrive, iCloud Drive và Box có hướng dẫn riêng khi vị trí đồng bộ được nhận diện; các vị trí khác có hướng dẫn chung."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

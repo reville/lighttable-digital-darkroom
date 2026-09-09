@@ -92,6 +92,8 @@ import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
 import { linearHandleAt, editLinear, radialHandles, editRadial } from '/web/mask-shape.js';
 import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
+import { bindThumbnailErrors } from '/web/thumbnail-errors.js';
+import { createPhotoDisplayStatus } from '/web/photo-display-status.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -125,6 +127,7 @@ const RESET_GROUPS = {
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
+const PHOTO_DISPLAY_STATUS = createPhotoDisplayStatus();
 const LIBRARY_FILTERS = installLibraryFilters({ el: $, closeDropdown,
   onChange: () => { refreshFilteredView(); savePrefs(); } });
 let KEYWORD_BATCH = null;
@@ -335,7 +338,8 @@ document.addEventListener('keydown', (event) => {
 function selectionScope() {
   return JSON.stringify([S.activeFolder, S.includeSubfolders, S.activeCollection,
     ...['filter', 'ratingFilter', 'kindFilter', 'labelFilter', 'editFilter', 'search', 'sort'].map(id => $(id)?.value),
-    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
+    LIBRARY_FILTERS.types(), LIBRARY_FILTERS.metadata(), LIBRARY_FILTERS.hideUndisplayable(),
+    PHOTO_DISPLAY_STATUS.revision, S.library.stacks, S.cull, pairViewPreference(APP_PREFS), [...pairOverrides]]);
 }
 function setAllPhotoSelection(selected) {
   if (selected) return SELECTION_REQUEST.selectAll();
@@ -2966,6 +2970,9 @@ function syncPreviewDetailStatus() {
 }
 function setRenderPresentation(state, name = cur()?.name, message = '') {
   if (name && cur()?.name !== name) return;
+  if (state === 'error' || state === 'ready') {
+    recordPhotoDisplayState(S.images.find(image => image.name === name), state === 'error', 'preview');
+  }
   S.renderState = state;
   S.renderName = name || null;
   if (state === 'pending') {
@@ -4732,19 +4739,21 @@ function visible() {
   const editState = $('editFilter')?.value || 'all';
   const fileTypes = LIBRARY_FILTERS.types();
   const metadata = LIBRARY_FILTERS.metadata();
+  const hideUndisplayable = LIBRARY_FILTERS.hideUndisplayable();
   const search = $('search')?.value || '';
   const s = $('sort')?.value || 'capture';
   const stacksKey = (S.library.stacks || []).map((stack) => `${stack.id}:${stack.collapsed}`).join(',');
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${hideUndisplayable}|${PHOTO_DISPLAY_STATUS.revision}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
   }
   let list = collectionScope()
     .filter((im) => im.kind !== 'video')
+    .filter((im) => !hideUndisplayable || !PHOTO_DISPLAY_STATUS.cannotDisplay(im))
     .filter(matchesCullReview)
     .filter((im) => {
       if (f === 'all') return true;
@@ -4841,8 +4850,37 @@ function listKey(list) {
 }
 
 function thumbnailURL(im) {
-  if (im.availability === 'cloud-only') return 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="160"><rect width="240" height="160" fill="#262626"/><text x="120" y="85" text-anchor="middle" fill="#aaa" font-size="18">${i18nHTML(tr("Cloud only"))}</text></svg>`);
   return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
+}
+
+let displayStatusFrame = 0, displayFilterChanged = false;
+function recordPhotoDisplayState(im, failed, channel = 'thumbnail') {
+  displayFilterChanged = PHOTO_DISPLAY_STATUS.record(im, failed, channel) || displayFilterChanged;
+  if (displayStatusFrame) return;
+  displayStatusFrame = requestAnimationFrame(() => {
+    displayStatusFrame = 0;
+    const changed = displayFilterChanged;
+    displayFilterChanged = false;
+    if (changed && LIBRARY_FILTERS.hideUndisplayable()) refreshFilteredView();
+    else syncUndisplayableLink();
+  });
+}
+
+function syncUndisplayableLink() {
+  const library = $('library');
+  const link = $('hideUndisplayableLink');
+  link.hidden = true;
+  if (!library.classList.contains('show') || LIBRARY_FILTERS.hideUndisplayable()) return;
+  const viewport = library.getBoundingClientRect();
+  const top = Math.max(viewport.top, library.querySelector('.library-head').getBoundingClientRect().bottom);
+  for (const element of _gridEls.values()) {
+    if (element.querySelector('img')?.dataset.thumbnailError !== '1') continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.bottom > top && rect.top < viewport.bottom && rect.right > viewport.left && rect.left < viewport.right) {
+      link.hidden = false;
+      break;
+    }
+  }
 }
 
 const EDITED_THUMB_CONCURRENCY = 2;
@@ -4982,6 +5020,9 @@ function clearEditedThumbnails() {
 function syncThumbnailImage(element, im) {
   const image = element.querySelector('img');
   const source = thumbnailURL(im);
+  image.syncThumbnailError ??= bindThumbnailErrors(element, image,
+    failed => recordPhotoDisplayState(imageForLibraryElement(element), failed));
+  image.syncThumbnailError(source);
   const sourceChanged = image.dataset.thumbnailSource !== source;
   image.dataset.thumbnailName = im.name;
   image.dataset.thumbnailIdentity = editedThumbnailIdentity(im);
@@ -5200,7 +5241,7 @@ function syncGridCell(element, im) {
   const name = element.querySelector('.nm');
   const nextName = im.availability === 'cloud-only'
     ? tr('{name} · Cloud only', {name: displayName(im)}) : displayName(im);
-  element.title = im.availability === 'cloud-only' ? tr("Download this photo in Finder, then rescan the source.") : displayName(im);
+  element.title = im.availability === 'cloud-only' ? tr("Make this photo available offline in its cloud storage app, then retry.") : displayName(im);
   if (name.textContent !== nextName) name.textContent = nextName;
   recordGridThumbnailGeometry(element);
 }
@@ -5296,6 +5337,7 @@ function renderGrid() {
   });
   $('emptyState').classList.toggle('show', list.length === 0);
   applyGridStyle();
+  syncUndisplayableLink();
 }
 
 let libraryScrollFrame = 0;
@@ -7532,6 +7574,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.library = d.library || { collections: [], stacks: [], virtualCopies: [] };
   S.images = d.images.map((im) => normalizeLibraryImage(
     im, !S.catalogEnabled));
+  PHOTO_DISPLAY_STATUS.retain(S.images);
   await initializeEditRecovery(d);
   syncAI(d.aiIndex || S.ai);
   if (S.ai.enabled && !S.ai.scanComplete) scheduleAIStatusPoll(true);
@@ -10814,6 +10857,7 @@ async function savePrefs() {
     labelFilter: $('labelFilter').value, editFilter: $('editFilter').value,
     fileTypeFilters: LIBRARY_FILTERS.types(),
     metadataFilters: LIBRARY_FILTERS.metadata(),
+    hideUndisplayablePhotos: LIBRARY_FILTERS.hideUndisplayable(),
     exWhich: $('exWhich').value, exFormat: $('exFormat').value,
     exQuality: $('exQuality').value, exSize: $('exSize').value,
     exColorSpace: $('exColorSpace').value,
@@ -10882,6 +10926,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   if (!$('editFilter').value) $('editFilter').value = 'all';
   LIBRARY_FILTERS.setTypes(p.fileTypeFilters);
   LIBRARY_FILTERS.setMetadata(p.metadataFilters);
+  LIBRARY_FILTERS.setHideUndisplayable(p.hideUndisplayablePhotos);
   if (p.gridSize) document.documentElement.style.setProperty('--cell', `${p.gridSize}px`);
   S.activeFolders = p.activeFolders && typeof p.activeFolders === 'object'
     ? p.activeFolders : {};
@@ -11130,6 +11175,7 @@ async function reloadLibrary() {
     S.folders = Array.isArray(data.folders) ? data.folders : S.folders;
     S.images = data.images.map((image) => normalizeLibraryImage(
       image, !S.catalogEnabled));
+    PHOTO_DISPLAY_STATUS.retain(S.images);
     if (data.library) S.library = data.library;
     _stripKey = _gridKey = '';
     const index = previous
@@ -11467,6 +11513,7 @@ function uiStateReport() {
       rating: $('ratingFilter')?.value || 'all',
       kind: $('kindFilter')?.value || 'all',
       fileTypes: LIBRARY_FILTERS.types(), editState: $('editFilter')?.value || 'all',
+      hideUndisplayablePhotos: LIBRARY_FILTERS.hideUndisplayable(),
       ...LIBRARY_FILTERS.metadata(),
       label: $('labelFilter')?.value || 'all',
       query: $('search')?.value || '',

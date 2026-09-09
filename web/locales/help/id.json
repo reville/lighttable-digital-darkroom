@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Sembunyikan foto yang tidak dapat ditampilkan",
+          "paragraphs": [
+            "Saat kesalahan thumbnail terlihat di kisi, pilih Sembunyikan foto yang tidak dapat ditampilkan di samping ringkasan lokasi. Ini mengaktifkan sakelar yang sesuai di Filter, yang secara default mati dan pengaturannya disimpan antar sesi. Sakelar ini tidak disimpan dalam aturan koleksi pintar.",
+            "Sakelar ini menyembunyikan foto yang diketahui tidak tersedia atau hanya ada di cloud serta foto dengan kegagalan thumbnail atau pratinjau yang telah terdeteksi. Kegagalan dekode lainnya ditemukan saat foto dimuat. Matikan sakelar, hapus chip filternya, atau pilih Bersihkan semua untuk menampilkan foto lagi. Coba lagi yang berhasil atau perubahan pada file asli menghapus kegagalan yang tercatat."
+          ]
+        },
+        {
           "title": "Filter kamera, eksposur, dan tanggal tangkap",
           "paragraphs": [
             "Perluas Kamera, eksposur & tanggal di Filter. Kamera dan Lens cocok pada sebagian nama. Kata kunci cocok dengan jalur kata kunci katalog lengkap dan turunannya; misalnya, Places mencakup Places > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Jika foto tidak dapat dirender atau ditampilkan, pesan di area foto menyertakan alasan yang dilaporkan bila tersedia. Ini dapat mengidentifikasi file yang hilang, masalah pemuatan gambar, atau kegagalan grafis. Jika tidak ada alasan yang tersedia, pesannya tetap umum."
           ]
+        },
+        {
+          "title": "Memahami kesalahan gambar mini",
+          "paragraphs": [
+            "Di kisi dan strip film, Gambar mini tidak tersedia menunjukkan alasan kegagalan gambar mini dan menyertakan informasi diagnostik yang dilaporkan jika tersedia. Setelah memperbaiki masalah, pilih Coba lagi.",
+            "Di Mac: File placeholder Dropbox yang hanya tersedia online dapat menunjukkan 0 byte meskipun file asli di cloud tidak kosong. Di Finder, pilih Jadikan tersedia offline, lalu Coba lagi di LightTable. Untuk file kosong tanpa penanda cloud, unduh atau pulihkan file aslinya. Sambungkan kembali folder atau drive yang tidak tersedia sebelum mencoba lagi."
+          ]
+        },
+        {
+          "title": "Jadikan foto cloud tersedia offline",
+          "paragraphs": [
+            "LightTable mengenali placeholder cloud yang dilaporkan oleh File Provider macOS dan Windows, serta placeholder Dropbox lama di Mac. LightTable memeriksa metadata tanpa mengunduh foto. Beberapa drive virtual lama tidak melaporkan status cloud yang dapat dideteksi.",
+            "Ikuti petunjuk pengunduhan penyedia dalam pesan kesalahan, tunggu hingga unduhan selesai, lalu pilih Coba lagi. Google Drive, Dropbox, OneDrive, iCloud Drive, dan Box mendapatkan panduan khusus jika lokasi sinkronisasinya dikenali; lokasi lain mendapatkan petunjuk umum."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }

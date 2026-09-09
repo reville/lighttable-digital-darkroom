@@ -136,6 +136,7 @@
 
   <div id="libraryFilterPanel" class="library-filter-panel" role="dialog" aria-labelledby="libraryFilterTitle" hidden>
     <div class="library-filter-heading"><strong id="libraryFilterTitle" data-i18n-text="{&quot;0&quot;:&quot;Filter photos&quot;}">Filter photos</strong><button id="closeLibraryFilters" class="quiet icon-btn" type="button" aria-label="Close filters" title="Close filters" data-i18n-attrs="{&quot;title&quot;:&quot;Close filters&quot;,&quot;aria-label&quot;:&quot;Close filters&quot;}">×</button></div>
+    <label class="library-filter-switch" for="hideUndisplayablePhotos"><span data-i18n-text="{&quot;0&quot;:&quot;Hide photos that can&#x27;t be displayed&quot;}">Hide photos that can't be displayed</span><input id="hideUndisplayablePhotos" type="checkbox" role="switch"></label>
     <fieldset class="file-type-filters"><legend data-i18n-text="{&quot;0&quot;:&quot;File type&quot;}">File type</legend>
       <label data-i18n-text="{&quot;1&quot;:&quot;RAW&quot;}"><input type="checkbox" data-file-type="raw">RAW</label>
       <label data-i18n-text="{&quot;1&quot;:&quot;JPEG&quot;}"><input type="checkbox" data-file-type="jpeg">JPEG</label>
@@ -172,7 +173,7 @@
   <main class="workspace">
     <div class="library" id="library">
       <div class="library-head">
-        <div><strong id="libraryTitle" data-i18n-text="{&quot;0&quot;:&quot;All Photos&quot;}">All Photos</strong><span id="searchSummary" data-i18n-text="{&quot;0&quot;:&quot;Local folder&quot;}">Local folder</span></div>
+        <div><strong id="libraryTitle" data-i18n-text="{&quot;0&quot;:&quot;All Photos&quot;}">All Photos</strong><div class="library-summary"><span id="searchSummary" data-i18n-text="{&quot;0&quot;:&quot;Local folder&quot;}">Local folder</span><a id="hideUndisplayableLink" href="#libraryFilterPanel" hidden data-i18n-text="{&quot;0&quot;:&quot;Hide photos that can&#x27;t be displayed&quot;}">Hide photos that can't be displayed</a></div></div>
         <div class="library-tools">
           <button id="libraryFilterBtn" class="library-filter-btn" type="button" aria-haspopup="dialog" aria-controls="libraryFilterPanel" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M4 8h8M6 13h4"/></svg><span id="libraryFilterLabel" data-i18n-text="{&quot;0&quot;:&quot;Filter&quot;}">Filter</span></button>
           <label><span data-i18n-text="{&quot;0&quot;:&quot;Sort&quot;}">Sort</span><select id="sort"><option value="name" data-i18n-text="{&quot;0&quot;:&quot;File name&quot;}">File name</option><option value="rating" data-i18n-text="{&quot;0&quot;:&quot;Rating&quot;}">Rating</option><option value="status" data-i18n-text="{&quot;0&quot;:&quot;Flag&quot;}">Flag</option><option value="date" data-i18n-text="{&quot;0&quot;:&quot;Capture date&quot;}">Capture date</option><option value="label" data-i18n-text="{&quot;0&quot;:&quot;Colour label&quot;}">Colour label</option></select></label>

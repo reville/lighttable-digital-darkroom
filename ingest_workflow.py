@@ -179,7 +179,7 @@ def _walk_photos(start: Path):
 
 def _describe(path: Path) -> dict:
     stat = path.stat()
-    availability = media_availability.from_stat(stat)
+    availability = media_availability.availability(path, stat=stat)
     fallback = _format_moment(datetime.fromtimestamp(stat.st_mtime))
     if availability != "local":
         return {"path": str(path), "name": path.name, "ext": path.suffix.lower(),
@@ -375,7 +375,8 @@ def build_plan(items, request, *, existing_hashes=None,
         if item.get("availability", "local") != "local":
             skipped.append({"source": str(item.get("path", "")),
                             "name": str(item.get("name", "")), "hash": "",
-                            "reason": item["availability"], "message": media_availability.cloud_message()})
+                            "reason": item["availability"],
+                            "message": media_availability.cloud_message(item.get("path"))})
             continue
         digest = str(item.get("hash") or "")
         if existing_content_hashes is not None:

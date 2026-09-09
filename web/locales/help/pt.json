@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ocultar fotos que não podem ser exibidas",
+          "paragraphs": [
+            "Quando um erro de miniatura estiver visível na grade, escolha Ocultar fotos que não podem ser exibidas ao lado do resumo da localização. Isso ativa a opção correspondente em Filtro, que vem desativada por padrão e é salva entre sessões. Esta opção não é salva nas regras de coleções inteligentes.",
+            "A opção oculta fotos identificadas como indisponíveis ou armazenadas apenas na nuvem e fotos com falhas de miniatura ou prévia já detectadas. Outras falhas de decodificação são descobertas à medida que as fotos carregam. Desative a opção, remova seu marcador de filtro ou escolha Limpar tudo para mostrar as fotos novamente. Um Tentar novamente bem-sucedido ou uma alteração no original apaga a falha registrada."
+          ]
+        },
+        {
           "title": "Filtrar câmera, exposição e data de captura",
           "paragraphs": [
             "Expanda Câmera, exposição e data em Filtro. Câmera e Lente correspondem a parte de um nome. Palavra-chave corresponde a um caminho completo de palavra-chave do catálogo e seus descendentes; por exemplo, Places inclui Places > Boston.",
@@ -3155,6 +3162,20 @@
           "paragraphs": [
             "Se uma foto não puder ser renderizada ou exibida, a mensagem na área da foto inclui o motivo informado, quando houver um disponível. Isso pode identificar um arquivo ausente, um problema ao carregar a imagem ou uma falha gráfica. Se nenhum motivo estiver disponível, a mensagem permanece genérica."
           ]
+        },
+        {
+          "title": "Entender um erro de miniatura",
+          "paragraphs": [
+            "Na grade e na tira de filme, Miniatura indisponível mostra por que uma miniatura falhou e inclui o diagnóstico informado quando disponível. Após corrigir o problema, escolha Tentar novamente.",
+            "No Mac: Os arquivos de espaço reservado do Dropbox disponíveis apenas online podem indicar 0 bytes sem que o original na nuvem esteja vazio. No Finder, escolha Disponibilizar offline e depois Tentar novamente no LightTable. Para um arquivo vazio sem marcador de nuvem, baixe ou restaure o original. Reconecte pastas ou unidades indisponíveis antes de tentar novamente."
+          ]
+        },
+        {
+          "title": "Disponibilizar fotos da nuvem offline",
+          "paragraphs": [
+            "O LightTable reconhece arquivos de espaço reservado na nuvem informados pelo File Provider do macOS e pelo Windows, além de arquivos de espaço reservado antigos do Dropbox no Mac. Ele verifica metadados sem baixar as fotos. Algumas unidades virtuais antigas não informam um estado de nuvem detectável.",
+            "Siga as instruções de download do provedor na mensagem de erro, espere o download terminar e escolha Tentar novamente. Google Drive, Dropbox, OneDrive, iCloud Drive e Box recebem orientações específicas quando o local de sincronização é reconhecido; outros locais recebem instruções gerais."
+          ]
         }
       ],
       "related": [
@@ -3166,5 +3187,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
+  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
 }
