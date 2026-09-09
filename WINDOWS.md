@@ -136,6 +136,10 @@ To recheck an existing CI package after changing the acceptance script, dispatch
 `windows-build.yml` with `build_run_id` set to that package's Windows build run.
 The native-only job verifies the successful package-build step and the archive's
 source identity, then records both the package commit and the tester commit.
+On failure, this recheck uses a checksum-pinned external profiler to capture
+stacks from the test's packaged Python processes, without local variables or
+changes to the archive. The standalone script accepts the same optional tool
+through `--stack-dumper`; diagnostics never turn a failed journey into a pass.
 Completed packages are retained even when native acceptance fails; that failure
 still blocks the full build job and release publication.
 
