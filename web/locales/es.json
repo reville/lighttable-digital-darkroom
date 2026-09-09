@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "Probador de apariencia",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Los ajustes preestablecidos aparecen en filas horizontales dentro de paquetes plegables. Los looks incluidos se agrupan inicialmente en Color, Película, Film Simulation Drama y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abre Presets en la barra de herramientas de edición. Built-in contiene 23 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Cada look de Film Simulation Drama activa la simulación de película y añade efectos de tono, color, grano, resplandor o viñeteado. El paquete contiene ocho looks, incluido Silver Noir en blanco y negro."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Cada look de Film Simulation Drama activa la simulación de película y añade efectos de tono, color, grano, resplandor o viñeteado. El paquete contiene ocho looks, incluido Silver Noir en blanco y negro.",
+    "That photo is no longer in the library, so the edit was not saved": "Esa foto ya no está en la biblioteca, por lo que la edición no se guardó",
+    "That selection could not be completed. Try again.": "No se pudo completar esa selección. Inténtalo de nuevo.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Cuando la marca saca la foto de la vista en la que trabajas, como seleccionar mientras la barra lateral muestra Sin marca, el avance automático continúa con la foto que ocupa su lugar. No vuelve al principio de la lista.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada.",
+    "Previews are already being built; finish or cancel that first": "Ya se están creando previsualizaciones; termina o cancela esa tarea primero",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría."
   },
   "plurals": {
     " · {count} paired file linked": {

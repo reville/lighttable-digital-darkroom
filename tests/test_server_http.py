@@ -27,11 +27,15 @@ class AcceptedStateEventTests(unittest.TestCase):
                 handler._body = lambda: {**body, "origin": "cli"}
                 accepted = {}
 
+                # The writers answer with the names they actually stored; the
+                # routes report that rather than what they were asked for.
                 def save_one(name, entry):
                     accepted[name] = entry
+                    return [name]
 
                 def save_many(entries):
                     accepted.update(entries)
+                    return list(entries)
 
                 with mock.patch.object(server, "EVENTS", broker), \
                         mock.patch.object(server, "catalog_handle", return_value=None), \

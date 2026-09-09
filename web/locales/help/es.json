@@ -262,6 +262,7 @@
           "paragraphs": [
             "Al hacer clic se selecciona una sola foto activa. Shift+clic selecciona un rango contiguo. Command+clic en Mac o Control+clic agrega o quita fotos individuales.",
             "En una cuadrícula, las acciones de marca, calificación y etiqueta de color se aplican al conjunto seleccionado. En Detalle, esas acciones de marcado se aplican a la foto activa. En Vista general, se aplican a la celda activa de la vista general. Compruebe el contexto de la barra de herramientas de marcado antes de una acción por lote.",
+            "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría.",
             "Abra Información junto a cualquiera de las cuadrículas para ver metadatos o etiquetar fotos seleccionadas. La cuadrícula se estrecha para dejar espacio al inspector. Elija otra herramienta del inspector para volver a la cuadrícula más ancha."
           ]
         }
@@ -827,6 +828,7 @@
           "title": "Controlar lo que sucede a continuación",
           "paragraphs": [
             "Active Avance automático para pasar a la siguiente foto después de seleccionar, rechazar o calificar una sola foto. Quitar marca no avanza.",
+            "Cuando la marca saca la foto de la vista en la que trabajas, como seleccionar mientras la barra lateral muestra Sin marca, el avance automático continúa con la foto que ocupa su lugar. No vuelve al principio de la lista.",
             "Cuando hay varias fotos seleccionadas en una cuadrícula, las marcas se aplican a ese conjunto sin avanzar. Si Vincular metadatos de par está activado, marcar también actualiza los compañeros RAW y JPEG reconocidos."
           ]
         }
@@ -1593,7 +1595,8 @@
         {
           "title": "Dar forma a un degradado lineal",
           "paragraphs": [
-            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo."
+            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo.",
+            "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado."
           ],
           "tips": [
             "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos."
@@ -1901,7 +1904,8 @@
           "title": "Crear una selección inteligente",
           "paragraphs": [
             "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma.",
-            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado."
+            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado.",
+            "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada."
           ],
           "steps": [
             "Abra Máscara y expanda Crear nueva máscara.",
@@ -3204,5 +3208,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

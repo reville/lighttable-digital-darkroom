@@ -91,6 +91,18 @@ export function createPhotoUndoHistory({
       return changed;
     },
 
+    // Remove a snapshot that a cancelled gesture pushed, but only while it is
+    // still the newest one and still matches. An edit that landed in between
+    // keeps its step. Without this a cancelled drag left an Undo that did
+    // nothing when pressed.
+    dropLast(state) {
+      const entry = photos.get(activeName);
+      if (!entry?.undo.length || entry.undo.at(-1) !== state) return false;
+      entry.undo.pop();
+      trim();
+      return true;
+    },
+
     undo(current) {
       const entry = photos.get(activeName);
       if (!entry?.undo.length) return null;

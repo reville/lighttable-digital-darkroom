@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "اختبار المظهر",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "تظهر الإعدادات المسبقة كصفوف أفقية داخل حزم قابلة للطي. تبدأ المظاهر المدمجة في حزم اللون والفيلم وFilm Simulation Drama والأبيض والأسود. انقر على عنوان الحزمة لتوسيعها أو طيها.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على 23 looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "يفعّل كل مظهر في Film Simulation Drama محاكاة الفيلم ويضيف تأثيرات الدرجات اللونية أو اللون أو الحبيبات أو التوهج أو التظليل المحيطي. تحتوي الحزمة على ثمانية مظاهر، منها Silver Noir بالأبيض والأسود."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "يفعّل كل مظهر في Film Simulation Drama محاكاة الفيلم ويضيف تأثيرات الدرجات اللونية أو اللون أو الحبيبات أو التوهج أو التظليل المحيطي. تحتوي الحزمة على ثمانية مظاهر، منها Silver Noir بالأبيض والأسود.",
+    "That photo is no longer in the library, so the edit was not saved": "لم تعد هذه الصورة في المكتبة، لذلك لم يُحفظ التعديل",
+    "That selection could not be completed. Try again.": "تعذّر إكمال هذا التحديد. حاول مرة أخرى.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "عندما تُخرج العلامة الصورة من العرض الذي تعمل فيه، مثل التمييز بينما يعرض الشريط الجانبي غير مميز، يتابع التقدم التلقائي مع الصورة التي تحل محلها. ولا يعود إلى بداية القائمة.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "سحب النقطتين إحداهما فوق الأخرى يترك التدرج بلا اتجاه، فلا يحدد شيئًا حتى تفصل بينهما مرة أخرى. والتدرج القصير جدًا حافة حادة صحيحة ويُطبَّق بالطريقة نفسها في المعاينة وفي الملف المصدَّر.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "يُقتطع التحديد من الصورة التي بدأ عليها. والانتقال إلى صورة أخرى قبل انتهائه يلغيه، لذا ابقَ على الصورة حتى يظهر القناع. وإذا تعذّر إكمال التحديد، تُبلغ لوحة القناع بذلك ولا يُضاف شيء.",
+    "Previews are already being built; finish or cancel that first": "تجري بالفعل عملية إنشاء المعاينات؛ أنهِها أو ألغِها أولاً",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "لا يطال الإجراء الجماعي إلا الصور المحددة التي ما زال المرشح والمجلد والبحث الحالي يعرضها. لذا فإن تغيير المرشح يضيّق ما سيطاله الإجراء التالي، ويعرض شريط التمييز عدد ما سيطاله."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "Görünüm test aracı",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Ön ayarlar, daraltılabilir paketler içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film, Film Simulation Drama ve Siyah Beyaz paketlerinde yer alır. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Düzenleme araç çubuğunda Presets'i açın. Built-in, 23 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama içindeki her görünüm film simülasyonunu etkinleştirir ve ton, renk, gren, parıltı veya vinyet efektleri ekler. Paket, siyah beyaz Silver Noir dahil sekiz görünüm içerir."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama içindeki her görünüm film simülasyonunu etkinleştirir ve ton, renk, gren, parıltı veya vinyet efektleri ekler. Paket, siyah beyaz Silver Noir dahil sekiz görünüm içerir.",
+    "That photo is no longer in the library, so the edit was not saved": "Bu fotoğraf artık kütüphanede değil, bu nedenle düzenleme kaydedilmedi",
+    "That selection could not be completed. Try again.": "Bu seçim tamamlanamadı. Yeniden deneyin.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "İşaretleme fotoğrafı çalıştığınız görünümden çıkardığında, örneğin kenar çubuğu Bayraksız gösterirken seçim yaptığınızda, otomatik ilerle onun yerini alan fotoğraftan devam eder. Listenin başına dönmez.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "İki noktayı üst üste sürüklemek degradeyi yönsüz bırakır, bu yüzden onları yeniden ayırana kadar hiçbir şey seçmez. Çok kısa bir degrade geçerli bir sert kenardır ve önizlemede olduğu gibi dışa aktarılan dosyada da aynı şekilde uygulanır.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Seçim, başlatıldığı fotoğraftan alınır. Bitmeden başka bir fotoğrafa geçmek onu iptal eder, bu yüzden maske görünene kadar o fotoğrafta kalın. Seçim tamamlanamazsa maske paneli bunu bildirir ve hiçbir şey eklenmez.",
+    "Previews are already being built; finish or cancel that first": "Önizlemeler zaten oluşturuluyor; önce onu bitirin veya iptal edin",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Toplu bir işlem yalnızca geçerli süzgecin, klasörün ve aramanın hâlâ gösterdiği seçili fotoğraflara ulaşır. Bu nedenle süzgeci değiştirmek sonraki işlemin kapsamını daraltır ve işaretleme çubuğu ulaşacağı sayıyı gösterir."
   },
   "plurals": {
     " · {count} paired file linked": {

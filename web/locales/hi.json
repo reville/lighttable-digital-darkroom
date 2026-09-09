@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "दिखावट परीक्षक",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "प्रीसेट समेटे जा सकने वाले पैक में क्षैतिज पंक्तियों के रूप में दिखाई देते हैं। बिल्ट-इन लुक शुरुआत में रंग, फ़िल्म, Film Simulation Drama और श्वेत-श्याम पैक में होते हैं। किसी पैक को फैलाने या समेटने के लिए उसके शीर्षक पर क्लिक करें।",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में 23 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama का हर लुक फ़िल्म सिमुलेशन चालू करता है और टोन, रंग, ग्रेन, चमक या विग्नेट प्रभाव जोड़ता है। पैक में आठ लुक हैं, जिनमें श्वेत-श्याम Silver Noir भी शामिल है।"
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama का हर लुक फ़िल्म सिमुलेशन चालू करता है और टोन, रंग, ग्रेन, चमक या विग्नेट प्रभाव जोड़ता है। पैक में आठ लुक हैं, जिनमें श्वेत-श्याम Silver Noir भी शामिल है।",
+    "That photo is no longer in the library, so the edit was not saved": "वह फ़ोटो अब लाइब्रेरी में नहीं है, इसलिए संपादन सहेजा नहीं गया",
+    "That selection could not be completed. Try again.": "वह चयन पूरा नहीं हो सका। फिर से प्रयास करें।",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "जब चिह्न लगाने से फ़ोटो उस दृश्य से हट जाती है जिसमें आप काम कर रहे हैं, जैसे साइडबार में फ़्लैग नहीं किया गया दिखते हुए पिक करना, तो स्वतः-आगे बढ़ें उसकी जगह लेने वाली फ़ोटो के साथ जारी रहता है। यह सूची की शुरुआत में वापस नहीं जाता।",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "दोनों बिंदुओं को एक-दूसरे पर खींचने से ग्रेडिएंट की कोई दिशा नहीं बचती, इसलिए जब तक आप उन्हें फिर से अलग नहीं करते वह कुछ भी नहीं चुनता। बहुत छोटा ग्रेडिएंट एक वैध कठोर किनारा है और पूर्वावलोकन तथा निर्यात की गई फ़ाइल में एक जैसा लागू होता है।",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "चयन उसी फ़ोटो से काटा जाता है जिस पर वह शुरू हुआ था। पूरा होने से पहले दूसरी फ़ोटो पर जाने से वह रद्द हो जाता है, इसलिए मास्क दिखने तक उसी फ़ोटो पर रहें। यदि चयन पूरा नहीं हो पाता, तो मास्क पैनल यह बताता है और कुछ भी नहीं जोड़ा जाता।",
+    "Previews are already being built; finish or cancel that first": "पूर्वावलोकन पहले से बनाए जा रहे हैं; पहले उसे पूरा करें या रद्द करें",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "कोई बैच क्रिया केवल उन चयनित फ़ोटो तक पहुँचती है जिन्हें मौजूदा फ़िल्टर, फ़ोल्डर और खोज अब भी दिखाते हैं। इसलिए फ़िल्टर बदलने से अगली क्रिया की पहुँच घट जाती है, और चिह्नांकन टूलबार वही गिनता है जिस तक वह पहुँचेगी।"
   },
   "plurals": {
     " · {count} paired file linked": {

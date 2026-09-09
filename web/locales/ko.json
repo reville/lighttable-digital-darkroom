@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "모양 테스트",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "프리셋은 접을 수 있는 팩 안에 가로 행으로 표시됩니다. 내장 룩은 처음에 색상, 필름, Film Simulation Drama, 흑백 팩으로 분류됩니다. 팩 제목을 클릭하면 펼치거나 접을 수 있습니다.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "편집 툴바에서 사전 설정을 여세요. 내장에는 포함된 룩 23개가 있으며 오프라인에서 작동합니다. 사용자 설정에는 저장된 룩, 가져온 항목 및 설치된 커뮤니티 사전 설정이 들어 있습니다. 커뮤니티는 검토된 온라인 컬렉션을 탐색합니다.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama의 모든 룩은 필름 시뮬레이션을 켜고 톤, 색상, 그레인, 빛 번짐 또는 비네팅 효과를 더합니다. 이 팩에는 흑백 룩인 Silver Noir를 포함해 8개의 룩이 있습니다."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama의 모든 룩은 필름 시뮬레이션을 켜고 톤, 색상, 그레인, 빛 번짐 또는 비네팅 효과를 더합니다. 이 팩에는 흑백 룩인 Silver Noir를 포함해 8개의 룩이 있습니다.",
+    "That photo is no longer in the library, so the edit was not saved": "해당 사진이 라이브러리에 없어 편집 내용이 저장되지 않았습니다",
+    "That selection could not be completed. Try again.": "해당 선택을 완료할 수 없습니다. 다시 시도하십시오.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "사이드바가 플래그 해제됨을 표시하는 동안 선택하는 경우처럼 표시가 사진을 작업 중인 보기에서 제외하면, 자동 진행은 그 자리를 대신하는 사진으로 이어집니다. 목록의 처음으로 돌아가지 않습니다.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "두 점을 서로 겹치게 끌면 그레이디언트에 방향이 없어져 다시 떨어뜨릴 때까지 아무것도 선택하지 않습니다. 아주 짧은 그레이디언트는 유효한 단단한 경계이며 미리보기와 내보낸 파일에 동일하게 적용됩니다.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "선택 영역은 시작한 사진에서 잘라냅니다. 완료되기 전에 다른 사진으로 이동하면 취소되므로 마스크가 나타날 때까지 해당 사진에 머무르십시오. 선택을 완료할 수 없으면 마스크 패널이 이를 알리고 아무것도 추가되지 않습니다.",
+    "Previews are already being built; finish or cancel that first": "미리보기를 이미 만들고 있습니다. 먼저 완료하거나 취소하십시오",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "일괄 작업은 현재 필터, 폴더, 검색이 여전히 표시하는 선택된 사진에만 적용됩니다. 따라서 필터를 바꾸면 다음 작업의 범위가 좁아지며, 표시 도구 막대는 실제로 적용될 수를 보여 줍니다."
   },
   "plurals": {
     " · {count} paired file linked": {

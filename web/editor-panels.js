@@ -27,6 +27,10 @@ export const MAX_MASKS = 16;
 export const MAX_MASK_COMPONENTS = 12;
 export const MAX_TOTAL_MASK_POINTS = 20000;
 export const MAX_HEALS = 50;
+// A linear gradient shorter than this fraction of the frame has no usable
+// direction and contributes nothing. Mirrors LINEAR_MIN_SPAN in edits.py; the
+// threshold is normalized so preview and export agree at any resolution.
+export const LINEAR_MIN_SPAN = 1e-4;
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const editId = (prefix) => `${prefix}-${

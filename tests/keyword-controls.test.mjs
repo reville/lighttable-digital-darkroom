@@ -50,7 +50,7 @@ function libraryHarness() {
     + '\nconst pairOverrides = new Map();\n'
     + app.slice(app.indexOf('function visible()'), app.indexOf('function inFolderScope('))
     + '\nlet _stripKey = "", _gridKey = "";\n'
-    + app.slice(app.indexOf('function refreshFilteredView()'), app.indexOf('function setViewMode('))
+    + app.slice(app.indexOf('function markResumeIndex('), app.indexOf('function setViewMode('))
     + app.slice(app.indexOf('function renderKeywords()'), app.indexOf("$('keywordAdd').onclick"))
     + app.slice(app.indexOf('function applyKeywordChanges('), app.indexOf('KEYWORD_BATCH = installKeywordBatch(')), context);
   return {context, photo, element, saves, pending, names: () => Array.from(context.visible(), image => image.name)};

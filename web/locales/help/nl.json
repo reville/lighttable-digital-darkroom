@@ -262,6 +262,7 @@
           "paragraphs": [
             "Klik selecteert één actieve foto. Shift-klik selecteert een aaneengesloten bereik. Command-klik op Mac of Control-klik voegt afzonderlijke foto's toe of verwijdert ze.",
             "In een raster gelden markering-, beoordelings- en kleurlabelacties voor de geselecteerde set. In Detail gelden die markeeracties voor de actieve foto. In Overzicht gelden ze voor de actieve overzichtscel. Controleer de context van de markeringstoolbalk vóór een batchactie.",
+            "Een bulkactie bereikt alleen de geselecteerde foto’s die het huidige filter, de map en de zoekopdracht nog tonen. Een filter wijzigen beperkt dus wat de volgende actie raakt, en de markeringsbalk telt wat ze zou bereiken.",
             "Open Info naast een van beide rasters om metagegevens te bekijken of geselecteerde foto's te taggen. Het raster wordt smaller om plaats te maken voor de inspecteur. Kies een ander inspectiegereedschap om terug te keren naar het bredere raster."
           ]
         }
@@ -827,6 +828,7 @@
           "title": "Bepaal wat er daarna gebeurt",
           "paragraphs": [
             "Schakel Auto-doorvervolgen in om naar de volgende foto te gaan na het kiezen, afwijzen of beoordelen van één foto. Markering verwijderen gaat niet verder.",
+            "Wanneer de markering de foto uit de weergave haalt waarin je werkt, bijvoorbeeld kiezen terwijl de zijbalk Zonder markering toont, gaat Automatisch doorgaan verder met de foto die haar plaats inneemt. Het keert niet terug naar het begin van de lijst.",
             "Wanneer meerdere foto's zijn geselecteerd in een raster, gelden markeringen voor die set zonder door te gaan. Als Koppel par metadata is ingeschakeld, werkt markeren ook erkende RAW- en JPEG-bijlagen bij."
           ]
         }
@@ -1593,7 +1595,8 @@
         {
           "title": "Een lineair verloop vormgeven",
           "paragraphs": [
-            "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen."
+            "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
+            "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand."
           ],
           "tips": [
             "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn."
@@ -1901,7 +1904,8 @@
           "title": "Een slimme selectie maken",
           "paragraphs": [
             "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze werken lokaal; beschikbare methoden zijn afhankelijk van het selectietype en het platform.",
-            "Selecties voor Onderwerp, Lucht en Object behouden tot 1.024 pixels langs hun langste rand. Randen worden verfijnd aan de hand van beeldkleuren, en Vision-onderwerpsselecties behouden zachte overgangen. Fijne grenzen moeten nog steeds worden gecontroleerd en geschilderd verfijnd."
+            "Selecties voor Onderwerp, Lucht en Object behouden tot 1.024 pixels langs hun langste rand. Randen worden verfijnd aan de hand van beeldkleuren, en Vision-onderwerpsselecties behouden zachte overgangen. Fijne grenzen moeten nog steeds worden gecontroleerd en geschilderd verfijnd.",
+            "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd."
           ],
           "steps": [
             "Open Masker en klap Nieuw masker maken uit.",
@@ -3204,5 +3208,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

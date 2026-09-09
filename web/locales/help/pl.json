@@ -262,6 +262,7 @@
           "paragraphs": [
             "Kliknięcie wybiera pojedyncze aktywne zdjęcie. Shift+klik wybiera ciągły zakres. Command+klik na Macu lub Control+klik dodaje albo usuwa poszczególne zdjęcia.",
             "W siatce działania flag, oceny i etykiety kolorystycznej dotyczą zaznaczonego zestawu. W Szczegóły te działania oznaczania dotyczą aktywnego zdjęcia. W Przeglądzie dotyczą aktywnej komórki przeglądu. Przed działaniem wsadowym sprawdź kontekst paska narzędzi oznaczania.",
+            "Działanie zbiorcze obejmuje tylko wybrane zdjęcia, które bieżący filtr, folder i wyszukiwanie nadal pokazują. Zmiana filtra zawęża więc zakres następnego działania, a pasek oznaczania liczy to, co zostanie objęte.",
             "Otwórz Informacje obok dowolnej siatki, aby wyświetlić metadane lub oznaczyć wybrane zdjęcia. Siatka zwęża się, aby zrobić miejsce dla inspektora. Wybierz inne narzędzie inspektora, aby wrócić do szerszej siatki."
           ]
         }
@@ -827,6 +828,7 @@
           "title": "Kontroluj, co stanie się dalej",
           "paragraphs": [
             "Włącz Automatyczne przechodzenie, aby przejść do następnego zdjęcia po wybraniu, odrzuceniu lub ocenieniu pojedynczego zdjęcia. Usunięcie flagi nie powoduje przejścia dalej.",
+            "Gdy oznaczenie usuwa zdjęcie z widoku, w którym pracujesz, na przykład przy wybieraniu, gdy panel boczny pokazuje Bez flagi, automatyczne przechodzenie kontynuuje od zdjęcia, które zajęło jego miejsce. Nie wraca na początek listy.",
             "Gdy w siatce zaznaczono wiele zdjęć, znaczniki odnoszą się do tego zestawu bez przechodzenia dalej. Jeśli włączone jest Łączenie metadanych pary, oznaczanie aktualizuje też rozpoznane towarzyszące pliki RAW i JPEG."
           ]
         }
@@ -1593,7 +1595,8 @@
         {
           "title": "Zmienianie kształtu gradientu liniowego",
           "paragraphs": [
-            "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie."
+            "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie.",
+            "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku."
           ],
           "tips": [
             "Wybierz istniejącą maskę liniową, aby ponownie ją dostosować. Jeśli malowano w trybie Dodaj, Odejmij lub Przecięcie, najpierw wybierz Edytuj kształt. Naciśnij H, jeśli punkty są ukryte."
@@ -1901,7 +1904,8 @@
           "title": "Utwórz inteligentne zaznaczenie",
           "paragraphs": [
             "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy.",
-            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty."
+            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty.",
+            "Zaznaczenie jest wycinane ze zdjęcia, na którym je rozpoczęto. Przejście do innego zdjęcia przed jego ukończeniem anuluje je, więc pozostań na zdjęciu, aż pojawi się maska. Jeśli zaznaczenia nie da się ukończyć, panel maski zgłasza to i nic nie zostaje dodane."
           ],
           "steps": [
             "Otwórz Maska i rozwiń Utwórz nową maskę.",
@@ -3204,5 +3208,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

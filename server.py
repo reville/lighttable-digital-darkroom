@@ -879,12 +879,17 @@ def write_state(state: dict) -> None:
     _STATE_CACHE = copy.deepcopy(state)
 
 
-def save_image_state(name: str, entry: dict) -> None:
-    save_image_states({name: entry})
+def save_image_state(name: str, entry: dict) -> list[str]:
+    return save_image_states({name: entry})
 
 
-def save_image_states(entries: dict[str, dict]) -> None:
-    """Merge one or more image edits and persist one atomic state snapshot."""
+def save_image_states(entries: dict[str, dict]) -> list[str]:
+    """Merge one or more image edits and persist one atomic state snapshot.
+
+    Returns the names actually written. A name the catalog cannot resolve is
+    skipped, so callers must report what came back rather than what they asked
+    for; answering "saved" for a discarded edit loses the user's work silently.
+    """
     cat = catalog_handle()
     if cat is not None:
         updates, versions, names, changed = {}, {}, [], {}
@@ -908,12 +913,14 @@ def save_image_states(entries: dict[str, dict]) -> None:
             if changed[name]:
                 queue_sidecar(name, changed[name])
         _queue_mirror()
-        return
+        return names
     with STATE_LOCK:
         st = load_state()
         for name, entry in entries.items():
             st["images"].setdefault(name, {}).update(entry)
         write_state(st)
+    # Folder mode keys state by path and accepts every name it is given.
+    return list(entries)
 
 
 def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
@@ -1515,7 +1522,10 @@ def library_snapshot() -> dict:
     with LIBRARY_CACHE_LOCK:
         if (LIBRARY_CACHE.get("folder") == folder_identity and
                 LIBRARY_CACHE.get("expires", 0.0) > now):
-            return LIBRARY_CACHE
+            # A copy, not the live dictionary. Callers read "names" and
+            # "folders" outside this lock, and a move or rename on another
+            # thread clears the cache in between, leaving them with a KeyError.
+            return dict(LIBRARY_CACHE)
 
     folder_root = FOLDER.resolve()
     excluded_roots = {(FOLDER / EXPORT_DIR_NAME).resolve(),
@@ -1567,7 +1577,7 @@ def library_snapshot() -> dict:
     with LIBRARY_CACHE_LOCK:
         LIBRARY_CACHE.clear()
         LIBRARY_CACHE.update(snapshot)
-        return LIBRARY_CACHE
+        return dict(LIBRARY_CACHE)
 
 
 def list_images() -> list[str]:
@@ -1639,6 +1649,19 @@ def _remap_state_paths(old_prefix: str, new_prefix: str) -> None:
     _remap_state_paths_many([(old_prefix, new_prefix)])
 
 
+def _state_key_moves(key: str, old_prefix: str, new_prefix: str) -> bool:
+    """Whether a persisted state key belongs to the path being relocated.
+
+    A virtual copy is keyed `<relpath>::lighttable-copy::<id>`, which is neither
+    the path itself nor a child of it, so matching only on the path and its `/`
+    children left every virtual copy's edits stranded under the old key while
+    the copy itself was renamed to the new one.
+    """
+    return (key == old_prefix
+            or key.startswith(old_prefix.rstrip("/") + "/")
+            or key.startswith(old_prefix + catalog_module.VIRTUAL_MARKER))
+
+
 def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
     """Commit a batch of path changes in one durable state-file replacement."""
     with STATE_LOCK:
@@ -1647,16 +1670,14 @@ def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
         changed = False
         for old_prefix, new_prefix in remaps:
             for old in list(images):
-                if old == old_prefix or old.startswith(
-                        old_prefix.rstrip("/") + "/"):
+                if _state_key_moves(old, old_prefix, new_prefix):
                     suffix = old[len(old_prefix):]
                     images[new_prefix + suffix] = images.pop(old)
                     changed = True
         if changed:
             def remap(value):
                 for old_prefix, new_prefix in remaps:
-                    if value == old_prefix or value.startswith(
-                            old_prefix.rstrip("/") + "/"):
+                    if _state_key_moves(value, old_prefix, new_prefix):
                         return new_prefix + value[len(old_prefix):]
                 return value
             for virtual_copy in st.get("virtualCopies", []):
@@ -1734,6 +1755,31 @@ def _photo_move_plan(source: Path, target: Path, *, index=None) -> dict:
     return {"source": source, "target": target, "sidecars": pairs, "shared": shared}
 
 
+def _claim_shared_sidecars(plans: list[dict]) -> None:
+    """A RAW and its JPEG share one sidecar, so the batch moves it once.
+
+    Each plan is preflighted before any staging, so neither can see the other's
+    target, and both listed the same `<stem>.xmp`. Staging then copied it twice
+    and the second copy failed onto an existing name, breaking the move for
+    exactly the RAW and JPEG pairing the app treats as ordinary.
+    """
+    claimed: dict[str, str] = {}
+    for plan in plans:
+        remaining = []
+        for sidecar, sidecar_target in plan["sidecars"]:
+            key = str(sidecar_target)
+            owner = claimed.get(key)
+            if owner is not None:
+                if owner != str(sidecar):
+                    raise ValueError(T(
+                        "{name} already exists; no files were moved",
+                        name=sidecar_target.name))
+                continue
+            claimed[key] = str(sidecar)
+            remaining.append((sidecar, sidecar_target))
+        plan["sidecars"] = remaining
+
+
 def _stage_photo_move(plan: dict) -> None:
     """Copy sidecars first, then no-clobber move the original.
 
@@ -1798,7 +1844,9 @@ def create_subfolder(parent: str, name) -> str:
 def rename_subfolder(relative: str, name) -> str:
     source = folder_path(relative, allow_root=False)
     destination = source.with_name(clean_folder_name(name))
-    if destination.exists():
+    # `Trips` and `trips` are the same directory on macOS and Windows, so
+    # `exists()` alone refused every change of capitalisation as a name clash.
+    if destination.exists() and not same_existing_file(destination, source):
         raise ValueError(T("a folder with that name already exists"))
     old_rel = source.relative_to(FOLDER.resolve()).as_posix()
     source.rename(destination)
@@ -1834,6 +1882,7 @@ def move_images(names: list[str], destination: str) -> list[str]:
     indexes = {folder: index_photo_companions(folder) for folder in {source.parent for source in sources}}
     plans = [_photo_move_plan(source, target, index=indexes[source.parent])
              for source, target in zip(sources, targets)]
+    _claim_shared_sidecars(plans)
     staged = []
     try:
         for plan in plans:
@@ -3050,10 +3099,18 @@ def schedule_raw_refinement(name: str, width: int,
 
 
 def selected_preview_tiff(name: str, width: int,
-                          params: dict | None = None) -> Path:
+                          params: dict | None = None,
+                          variant: str | None = None) -> Path:
     full = raw_preview_path(name, width, "full", params)
     if valid_tiff_cache(full):
         return full
+    # The caller decides the variant before this runs and keys its render cache
+    # on that answer. The shared input cache is pruned by size from other
+    # threads, so the full TIFF can disappear in between; substituting the draft
+    # demosaic here would store it under the accurate key and serve those pixels
+    # as final for the life of the cache version. Rebuild instead.
+    if variant == "full":
+        return build_raw_preview(name, width, "full", params)
     return build_raw_preview(name, width, "fast", params)
 
 
@@ -3501,7 +3558,14 @@ def preview_engine():
 
 
 
-def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
+def render_key(name: str, params: dict, width: int, engine: str = "rs",
+               variant: str | None = None) -> str:
+    """`variant` pins the RAW quality this key describes.
+
+    Left to itself the key re-asks `preview_variant`, which reads the cache and
+    can answer differently from the caller that is about to render, so the two
+    must be able to agree on one answer.
+    """
     cleaned = fp.clean_params(params)
     if not is_raw(name):
         # Capture WB is deliberately RAW-only. Preserve it in the saved edit
@@ -3515,7 +3579,7 @@ def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
         cleaned["raw_sensor_denoise"] = fp.DEFAULT_PARAMS["raw_sensor_denoise"]
     blob = json.dumps([RENDER_CACHE_VERSION, RENDERER_IDENTITY, file_key(name),
                        cleaned, width, engine,
-                       preview_variant(name, width, params)],
+                       variant or preview_variant(name, width, params)],
                       sort_keys=True)
     return hashlib.md5(blob.encode()).hexdigest()
 
@@ -3523,7 +3587,8 @@ def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
 def render_rust(name: str, params: dict, width: int,
                 output: Path | None,
                 native_output: Path | None = None,
-                viewport: dict | None = None) -> dict:
+                viewport: dict | None = None,
+                variant: str | None = None) -> dict:
     """Render JPEG and/or a native RGBA surface in one resident pass."""
     global _LAST_WARM_PAIR
     cp = fp.clean_params(params)
@@ -3533,7 +3598,7 @@ def render_rust(name: str, params: dict, width: int,
         _LAST_WARM_PAIR = pair
     if viewport is not None:
         return render_viewport_rust(name, params, output, native_output, viewport)
-    src_tif = selected_preview_tiff(name, width, params) if is_raw(name) else \
+    src_tif = selected_preview_tiff(name, width, params, variant) if is_raw(name) else \
         CACHE / "rust" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_romm_{width}.tif"
     src_tif.parent.mkdir(parents=True, exist_ok=True)
     if RUST_WORKER_BIN:
@@ -3560,7 +3625,15 @@ def render_rust(name: str, params: dict, width: int,
             try:
                 arr = linear_for(name, width, params)
                 rgb16 = np.ascontiguousarray((np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16))
-                cache_key = f"prev-v{INPUT_CACHE_VERSION}:{file_key(name)}:{width}:{preview_variant(name, width, params)}"
+                # The engine keys its resident input cache on this exact string.
+                # Without the RAW develop fingerprint, white balance, profile,
+                # highlight recovery and sensor denoise all collapse onto one
+                # entry and the previous settings' pixels are served for the new
+                # ones. Every other producer of RAW pixels includes it.
+                develop_key = (color_pipeline.raw_decode_fingerprint(params)
+                               if is_raw(name) else "romm")
+                cache_key = (f"prev-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
+                             f"{develop_key}:{width}:{variant or preview_variant(name, width, params)}")
                 with array_shared_input(rgb16, cache_key) as shared:
                     request.update(shared)
                     return preview_engine().render(request)
@@ -4036,7 +4109,7 @@ def _render_preview(name: str, params: dict, width: int,
     def response_refining() -> bool:
         return bool(is_raw(name) and variant == "fast")
 
-    key = render_key(name, params, width, engine)
+    key = render_key(name, params, width, engine, variant)
     if viewport is not None:
         key = hashlib.md5(json.dumps([key, "viewport-v1", viewport], sort_keys=True).encode()).hexdigest()
     jpg = CACHE / "render" / f"{key}.jpg"
@@ -4105,7 +4178,7 @@ def _render_preview(name: str, params: dict, width: int,
             rust_metrics = render_rust(
                 name, params, width,
                 jpg if need_jpg else None,
-                native_surface if native else None, viewport)
+                native_surface if native else None, viewport, variant)
             if native and rust_metrics.get("native_shared"):
                 retain_native_shared(native_surface, rust_metrics["native_shared"])
             film_mean = float(rust_metrics["mean"])
@@ -4589,8 +4662,16 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
     render_start = time.perf_counter()
     metrics = BACKGROUND_ENGINE.render(request)
     phases["engine"] = (time.perf_counter() - render_start) * 1000
+    try:
+        exchange_bytes = source.stat().st_size
+    except OSError:
+        # The shared input cache is pruned by size from other threads, so the
+        # file can be gone by now. This is a reported metric, not a result, and
+        # raising here would strand the shared export segment the engine has
+        # already published, with nothing left holding its name.
+        exchange_bytes = 0
     return dict(metrics, input_transport="tiff-fallback" if fallback else "tiff",
-                input_exchange_bytes=source.stat().st_size, input_fallback=fallback,
+                input_exchange_bytes=exchange_bytes, input_fallback=fallback,
                 phase_ms=phases)
 
 
@@ -4660,7 +4741,15 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             metrics = _resident_render_full(name, params, request)
             # Adoption unlinks the name immediately, even if a subsequent
             # cancellation prevents caching or delivering the mapped pixels.
-            return export_surface.adopt_surface(metrics["export_shared"])
+            descriptor = metrics["export_shared"]
+            try:
+                return export_surface.adopt_surface(descriptor)
+            except Exception:
+                # Nothing else holds this segment's name, and it can be a
+                # gibibyte, so release it rather than leaving it mapped for the
+                # life of the process.
+                export_surface.discard_surface(descriptor)
+                raise
         try:
             pixels = EXPORT_SHARED_CACHE.get_or_build(cache_key, build_shared, check_cancel)
             check_cancel()
@@ -4899,20 +4988,47 @@ class ExportCancelled(Exception):
     pass
 
 
+def same_existing_file(first: Path, second: Path) -> bool:
+    """Whether two paths name one file on disk.
+
+    `Path.resolve()` keeps the spelling it was given, so on the case-insensitive
+    volumes macOS and Windows use by default two paths that differ only in case
+    compare unequal while naming the same bytes. Ask the filesystem instead.
+    """
+    if first == second:
+        return True
+    try:
+        return first.exists() and second.exists() and first.samefile(second)
+    except OSError:
+        return False
+
+
+def _relative_within(path: Path, root: Path) -> str | None:
+    """`path` expressed against `root`, tolerating a case-different root."""
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        pass
+    for parent in path.parents:
+        if same_existing_file(parent, root):
+            return path.relative_to(parent).as_posix()
+    return None
+
+
 def export_would_replace_original(destination: Path, source_name: str) -> bool:
     path = destination.resolve()
     source = src_path(source_name).resolve()
-    if path == source:
+    if same_existing_file(path, source):
         return True
     # A RAW export next to its capture must not overwrite the camera JPEG.
-    if path.exists() and path.parent == source.parent and path.stem.casefold() == source.stem.casefold():
+    if (path.exists() and same_existing_file(path.parent, source.parent)
+            and path.stem.casefold() == source.stem.casefold()):
         return True
     cat = catalog_handle()
     if path.exists() and cat is not None:
         for row in cat.sources():
-            try:
-                relative = path.relative_to(Path(row["path"]).resolve()).as_posix()
-            except ValueError:
+            relative = _relative_within(path, Path(row["path"]).resolve())
+            if relative is None:
                 continue
             if cat.image_id_for(int(row["id"]), relative) is not None:
                 return True
@@ -5642,6 +5758,13 @@ class PreviewPregenQueue:
 
     def start(self, names: list[str], width: int = 3840) -> int:
         with self.lock:
+            # One batch at a time, as the mask queue already requires. Replacing
+            # a running batch abandoned its job record in "running" forever,
+            # kept the previous batch's width for the new names, and pointed the
+            # old cancel handle at the new work.
+            if self.active or (self.thread is not None and self.thread.is_alive()):
+                raise ValueError(T(
+                    "Previews are already being built; finish or cancel that first"))
             self.cancel_requested = False
             self.queue = [str(n) for n in names]
             self.total = len(self.queue)
@@ -5652,7 +5775,7 @@ class PreviewPregenQueue:
                 "cache.pregenerate", total=self.total,
                 state="running" if self.total else "done",
                 cancel=self.cancel)["id"]
-            if not self.active and self.queue:
+            if self.queue:
                 self.active = True
                 self.thread = threading.Thread(
                     target=self._worker, args=(width,), daemon=True,
@@ -5665,8 +5788,12 @@ class PreviewPregenQueue:
         with self.lock:
             self.cancel_requested = True
             self.queue.clear()
-            self.active = False
             self.current = ""
+            # The worker clears `active` when it stops. Clearing it here while
+            # it is still inside a render let the next start spawn a second
+            # worker onto the same queue.
+            if self.thread is None or not self.thread.is_alive():
+                self.active = False
 
     def status(self) -> dict:
         with self.lock:
@@ -6240,8 +6367,12 @@ def analyze_program_image(body: dict) -> dict:
         result["regions"] = regions
     reference = body.get("reference")
     if reference:
+        # Render the reference from its own stored edit. Carrying `state` over
+        # would apply this photo's params, grade, crop and masks to it, with
+        # mask bitmaps rasterised for the wrong geometry, and the comparison
+        # would then measure the primary photo against itself.
         reference_body = dict(body, name=str(reference), reference=None,
-                              regions=None)
+                              regions=None, state=None)
         reference_image = program_render_image(reference_body)
         size = (min(image.width, reference_image.width),
                 min(image.height, reference_image.height))
@@ -6259,8 +6390,10 @@ def analyze_program_image(body: dict) -> dict:
 def compare_program_image(body: dict) -> Image.Image:
     after = program_render_image(dict(body, before=False))
     if body.get("against"):
+        # The other photo is rendered from its own stored edit, not from the
+        # state supplied for this one.
         other = program_render_image(dict(body, name=str(body["against"]),
-                                          before=False))
+                                          before=False, state=None))
     else:
         other = program_render_image(dict(body, before=True))
     height = min(after.height, other.height)
@@ -7008,7 +7141,17 @@ class Handler(BaseHTTPRequestHandler):
                 if "params" in entry:
                     entry["provenance"] = renderer_provenance()
                 updates = expand_paired_metadata({b["name"]: entry})
-                save_image_states(updates)
+                saved = save_image_states(updates)
+                # A name the catalog cannot resolve is skipped by the writer.
+                # Reporting success for it would tell the client its edit is
+                # safe while the work is gone, so refuse instead.
+                if b["name"] not in saved:
+                    raise APIError(
+                        409,
+                        T("That photo is no longer in the library, so the edit was not saved"),
+                        "unknown-photo")
+                written = {name: patch for name, patch in updates.items()
+                           if name in set(saved)}
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
@@ -7018,14 +7161,14 @@ class Handler(BaseHTTPRequestHandler):
                             image_id, str(b.get("historyLabel") or "External edit"),
                             catalog_entry_for(b["name"]), origin=origin)
                 EVENTS.publish("state", {
-                    "names": list(updates), "fields": sorted(entry),
-                    "patches": copy.deepcopy(updates),
-                    **({"patch": copy.deepcopy(entry)} if len(updates) == 1 else {}),
+                    "names": list(written), "fields": sorted(entry),
+                    "patches": copy.deepcopy(written),
+                    **({"patch": copy.deepcopy(entry)} if len(written) == 1 else {}),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True, "names": list(updates)}
+                response = {"ok": True, "names": list(written)}
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
@@ -7041,13 +7184,17 @@ class Handler(BaseHTTPRequestHandler):
                 for name in b.get("names", []):
                     updates[str(name)] = dict(cleaned)
                 updates = expand_paired_metadata(updates)
-                if updates:
-                    save_image_states(updates)
+                saved = save_image_states(updates) if updates else []
+                # Count what was written, not what was asked for: photos that
+                # moved out of the catalog are skipped by the writer and the
+                # caller has to be told which ones.
+                written = [name for name in updates if name in set(saved)]
+                missing = [name for name in updates if name not in set(saved)]
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
                     if cat is not None:
-                        for name in updates:
+                        for name in written:
                             image_id = catalog_image_id(name)
                             if image_id is not None:
                                 cat.add_history(
@@ -7055,13 +7202,15 @@ class Handler(BaseHTTPRequestHandler):
                                     str(b.get("historyLabel") or "External edit"),
                                     catalog_entry_for(name), origin=origin)
                 EVENTS.publish("state", {
-                    "names": list(updates), "fields": sorted(cleaned),
+                    "names": written, "fields": sorted(cleaned),
                     "patch": copy.deepcopy(cleaned),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True, "count": len(updates)}
+                response = {"ok": True, "count": len(written)}
+                if missing:
+                    response["missing"] = missing
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
@@ -7092,7 +7241,14 @@ class Handler(BaseHTTPRequestHandler):
                 body = self._body()
                 with UI_STATE_LOCK:
                     target = dict(UI_STATE)
-                if not target or time.time() - target.get("reportedAt", 0) > 10:
+                # The window's heartbeat is a timer, and browsers throttle
+                # timers in a window that is not in front, so a fresh report is
+                # not evidence of life and a stale one is not evidence of death.
+                # The event stream it answers on is, so trust that first and
+                # keep the heartbeat only as the fallback.
+                listening = EVENTS.client_connected(target.get("client", ""))
+                fresh = bool(target) and time.time() - target.get("reportedAt", 0) <= 10
+                if not target or not (listening or fresh):
                     raise APIError(409, T("no live LightTable window is connected"),
                                    "no-window")
                 if target.get("allowAutomation") is False:

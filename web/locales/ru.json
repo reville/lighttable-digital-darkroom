@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "Тестирование оформления",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Пресеты отображаются горизонтальными строками в сворачиваемых наборах. Встроенные образы изначально распределены по наборам «Цвет», «Плёнка», Film Simulation Drama и «Чёрно-белое». Нажмите на заголовок набора, чтобы развернуть или свернуть его.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Откройте Пресеты на панели редактирования. Встроенные содержит 23 включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Каждый образ в Film Simulation Drama включает симуляцию плёнки и добавляет эффекты тона, цвета, зерна, свечения или виньетирования. Набор содержит восемь образов, включая чёрно-белый Silver Noir."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Каждый образ в Film Simulation Drama включает симуляцию плёнки и добавляет эффекты тона, цвета, зерна, свечения или виньетирования. Набор содержит восемь образов, включая чёрно-белый Silver Noir.",
+    "That photo is no longer in the library, so the edit was not saved": "Этой фотографии больше нет в библиотеке, поэтому изменение не сохранено",
+    "That selection could not be completed. Try again.": "Не удалось выполнить это выделение. Попробуйте ещё раз.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Когда отметка убирает фотографию из представления, в котором вы работаете, например при отборе, пока на боковой панели выбрано Без флажка, автопереход продолжает с фотографии, занявшей её место. Он не возвращается к началу списка.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Если перетащить точки одна на другую, у градиента не остаётся направления, и он ничего не выделяет, пока вы их не разведёте. Очень короткий градиент — это допустимая жёсткая граница, и он применяется одинаково в предпросмотре и в экспортированном файле.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Выделение вырезается из той фотографии, на которой оно начато. Переход к другой фотографии до его завершения отменяет его, поэтому оставайтесь на фотографии, пока не появится маска. Если выделение не удаётся завершить, панель маски сообщает об этом и ничего не добавляется.",
+    "Previews are already being built; finish or cancel that first": "Предпросмотры уже создаются; сначала завершите или отмените это",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Групповое действие затрагивает только выбранные фотографии, которые текущий фильтр, папка и поиск всё ещё показывают. Смена фильтра поэтому сужает охват следующего действия, а панель отметок показывает, скольких оно коснётся."
   },
   "plurals": {
     " · {count} paired file linked": {

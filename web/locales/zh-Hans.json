@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "外观测试器",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "预设以水平行的形式显示在可折叠的预设包中。内置风格最初分组在“彩色”“胶片”“Film Simulation Drama”和“黑白”预设包中。点击预设包标题可展开或折叠。",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含23 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama 中的每种风格都会启用胶片模拟，并叠加色调、色彩、颗粒、辉光或暗角效果。此预设包包含八种风格，其中包括黑白风格 Silver Noir。"
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama 中的每种风格都会启用胶片模拟，并叠加色调、色彩、颗粒、辉光或暗角效果。此预设包包含八种风格，其中包括黑白风格 Silver Noir。",
+    "That photo is no longer in the library, so the edit was not saved": "该照片已不在资料库中，因此未保存此编辑",
+    "That selection could not be completed. Try again.": "无法完成该选择。请重试。",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "当标记使照片离开你正在使用的视图时，例如在侧栏显示未标记时选取，自动前进会继续处理顶替其位置的照片，而不会回到列表开头。",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "把两个圆点拖到一起会让渐变失去方向，因此在你再次分开它们之前不会选中任何内容。非常短的渐变是有效的硬边缘，在预览和导出文件中的效果相同。",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "选择是从开始时所在的照片上截取的。在完成之前切换到另一张照片会取消它，因此请停留在该照片上直到蒙版出现。如果选择无法完成，蒙版面板会予以说明，并且不会添加任何内容。",
+    "Previews are already being built; finish or cancel that first": "预览已在生成中，请先完成或取消",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "批量操作只会作用于当前筛选、文件夹和搜索仍然显示的已选照片。因此更改筛选会缩小下一次操作的范围，标记栏统计的正是它将作用到的数量。"
   },
   "plurals": {
     " · {count} paired file linked": {

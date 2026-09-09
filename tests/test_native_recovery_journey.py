@@ -127,7 +127,10 @@ class NativeRecoveryJourneyTests(CatalogServerTestCase):
         self.assertEqual(result['writes'][0]['grade']['exposure'], .321)
 
     def test_recovery_still_rejects_a_success_response_without_a_saved_edit(self):
-        with mock.patch.object(server, 'save_image_states'):
+        # Report the names as written while storing nothing, so the route still
+        # answers success and the client's own guard is what has to catch it.
+        with mock.patch.object(server, 'save_image_states',
+                               side_effect=lambda entries: list(entries)):
             code, result = self.run_journey()
         self.assertNotEqual(code, 0)
         self.assertEqual(result['error'], 'Recovered edit did not reach the catalog')

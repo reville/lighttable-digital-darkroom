@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,14 @@
     "Appearance tester": "চেহারা পরীক্ষক",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "প্রিসেটগুলি সংকোচনযোগ্য প্যাকের মধ্যে অনুভূমিক সারি হিসেবে দেখা যায়। অন্তর্ভুক্ত লুকগুলি শুরুতে রঙ, ফিল্ম, Film Simulation Drama এবং সাদাকালো প্যাকে থাকে। কোনো প্যাক প্রসারিত বা সংকুচিত করতে তার শিরোনামে ক্লিক করুন।",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ২৩টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama-এর প্রতিটি লুক ফিল্ম সিমুলেশন চালু করে এবং টোন, রঙ, দানা, আভা বা ভিনিয়েট প্রভাব যোগ করে। প্যাকে আটটি লুক রয়েছে, যার মধ্যে সাদাকালো Silver Noir-ও আছে।"
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama-এর প্রতিটি লুক ফিল্ম সিমুলেশন চালু করে এবং টোন, রঙ, দানা, আভা বা ভিনিয়েট প্রভাব যোগ করে। প্যাকে আটটি লুক রয়েছে, যার মধ্যে সাদাকালো Silver Noir-ও আছে।",
+    "That photo is no longer in the library, so the edit was not saved": "সেই ছবিটি আর লাইব্রেরিতে নেই, তাই সম্পাদনাটি সংরক্ষণ করা হয়নি",
+    "That selection could not be completed. Try again.": "সেই নির্বাচনটি সম্পূর্ণ করা যায়নি। আবার চেষ্টা করুন।",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "চিহ্ন দেওয়ার ফলে ছবিটি যখন আপনার কাজের ভিউ থেকে সরে যায়, যেমন সাইডবারে ফ্ল্যাগবিহীন দেখানো অবস্থায় পিক করা, তখন স্বয়ংক্রিয় অগ্রসর তার জায়গায় আসা ছবিটি নিয়ে এগোয়। এটি তালিকার শুরুতে ফিরে যায় না।",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "দুটি বিন্দু একটির উপর আরেকটি টেনে আনলে গ্রেডিয়েন্টের কোনো দিক থাকে না, তাই আপনি সেগুলি আবার আলাদা না করা পর্যন্ত এটি কিছুই নির্বাচন করে না। খুব ছোট একটি গ্রেডিয়েন্ট একটি বৈধ শক্ত প্রান্ত এবং প্রিভিউ ও রপ্তানি করা ফাইলে একইভাবে প্রয়োগ হয়।",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "যে ছবিতে শুরু হয়েছিল সেখান থেকেই নির্বাচনটি কাটা হয়। শেষ হওয়ার আগে অন্য ছবিতে গেলে এটি বাতিল হয়, তাই মাস্ক না আসা পর্যন্ত ছবিটিতেই থাকুন। নির্বাচন সম্পূর্ণ করা না গেলে মাস্ক প্যানেল তা জানায় এবং কিছুই যোগ হয় না।",
+    "Previews are already being built; finish or cancel that first": "প্রিভিউ ইতিমধ্যেই তৈরি হচ্ছে; আগে সেটি শেষ করুন বা বাতিল করুন",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "একটি ব্যাচ অ্যাকশন কেবল সেই নির্বাচিত ছবিগুলিতেই পৌঁছায় যেগুলি বর্তমান ফিল্টার, ফোল্ডার ও অনুসন্ধান এখনও দেখায়। তাই ফিল্টার বদলালে পরবর্তী অ্যাকশন কম ছবিতে পৌঁছায়, এবং চিহ্নিতকরণ টুলবার যতগুলিতে পৌঁছাবে ততগুলিই গোনে।"
   },
   "plurals": {
     " · {count} paired file linked": {
