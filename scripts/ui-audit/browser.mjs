@@ -67,7 +67,7 @@ async function reset(test) {
   await command('filter',{query:'',status:'all',rating:'all',kind:'all',label:'all'});
   await command('view:detail'); await command('pane:edit');
   if(images.length) await command('goto',{name:images[0].name});
-  await command('zoomFit'); await settle(cfg.fixture !== 'missing');
+  await command('zoomFit'); await settle();
 }
 async function action(a) {
   if(a.type === 'pointer') {
@@ -195,7 +195,7 @@ try {
           if(!record.candidates.length) throw Error(`Replay target did not reproduce: ${cfg.replay.target}`);
         }
       } else {
-        for(const a of caseActions(test)) {await action(a);sequence.push(a);await settle(cfg.fixture!=='missing');}
+        for(const a of caseActions(test)) {await action(a);sequence.push(a);await settle();}
         await verifyState(test);record.state=state;
         if(cfg.mode!=='snapshot') record.candidates=await runProbes(test);
       }
