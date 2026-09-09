@@ -426,6 +426,45 @@ class WindowsSigningGateTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("requires GitHub OIDC", result.stderr)
 
+    def test_azure_failure_redacts_sdk_headers_and_removes_temporary_credentials(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            signer = folder / "fake-signtool.ps1"
+            signer.write_text(
+                'Write-Output "Set-Cookie: private-cookie-for-test"\n'
+                'Write-Output "AADSTS700213 private-assertion-for-test"\nexit 1\n')
+            dlib = folder / "fake.dll"
+            executable = folder / "fixture.exe"
+            dlib.touch()
+            executable.touch()
+            environment = {key: value for key, value in os.environ.items()
+                           if key not in ("WINDOWS_CERTIFICATE_BASE64", "WINDOWS_CERTIFICATE_PASSWORD")
+                           and not key.startswith(("AZURE_", "ACTIONS_ID_TOKEN_", "GITHUB_"))}
+            environment.update({
+                **self.AZURE, "OS": "Windows_NT", "GITHUB_ACTIONS": "true",
+                "GITHUB_REPOSITORY": "reville/lighttable-digital-darkroom",
+                "GITHUB_REF": "refs/heads/main", "GITHUB_EVENT_NAME": "workflow_dispatch",
+                "GITHUB_RUN_ID": "123", "GITHUB_RUN_ATTEMPT": "1",
+                "ACTIONS_ID_TOKEN_REQUEST_URL": "https://example.invalid/?fixture=true",
+                "ACTIONS_ID_TOKEN_REQUEST_TOKEN": "private-request-token-for-test",
+                "AZURE_SIGNING_SIGNTOOL": str(signer), "AZURE_SIGNING_DLIB": str(dlib),
+                "TEMP": temporary, "TMP": temporary, "TMPDIR": temporary,
+            })
+            quote = lambda value: "'" + str(value).replace("'", "''") + "'"
+            command = (
+                "function Invoke-RestMethod { @{ value = 'private-assertion-for-test' } }; "
+                f"& {quote(ROOT / 'scripts/windows/sign-release.ps1')} -RequireSigning -Files {quote(executable)}"
+            )
+            result = subprocess.run(
+                [shutil.which("pwsh") or shutil.which("powershell"), "-NoLogo", "-NoProfile",
+                 "-NonInteractive", "-Command", command], env=environment,
+                capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("AADSTS700213", result.stderr)
+            for secret in ("private-cookie-for-test", "private-assertion-for-test", "private-request-token-for-test"):
+                self.assertNotIn(secret, result.stdout + result.stderr)
+            self.assertEqual(list(folder.glob("lighttable-signing-*")), [])
+
 
 if __name__ == "__main__":
     unittest.main()

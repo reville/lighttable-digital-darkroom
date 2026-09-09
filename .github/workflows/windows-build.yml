@@ -192,6 +192,7 @@ jobs:
           if ($env:REQUIRE_SIGNING -eq 'true' -and [string]::IsNullOrWhiteSpace($env:SPARKLE_PRIVATE_KEY)) {
             throw "Windows release updates require SPARKLE_PRIVATE_KEY."
           }
+          if ($env:REQUIRE_SIGNING -eq 'true') { ./scripts/windows/signing-smoke.ps1 }
 
       - name: Restore build caches
         uses: actions/cache@v4

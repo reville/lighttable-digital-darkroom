@@ -153,7 +153,7 @@ Microsoft Entra application **Artifact Signing Certificate Profile Signer** at
 the certificate-profile scope only. Its federated credential must use:
 
 - Issuer: `https://token.actions.githubusercontent.com`
-- Subject: `repo:reville/lighttable-digital-darkroom:environment:windows-release`
+- Subject: `repo:reville@279601/lighttable-digital-darkroom@1358417583:environment:windows-release`
 - Audience: `api://AzureADTokenExchange`
 
 Set these environment variables in GitHub's **Settings > Environments >
@@ -166,6 +166,10 @@ windows-release > Environment variables**:
 | `AZURE_SIGNING_PROFILE` | `lighttable-windows` |
 | `AZURE_TENANT_ID` | The signing account's Microsoft Entra tenant ID |
 | `AZURE_CLIENT_ID` | The dedicated application's client ID |
+
+The subject includes immutable owner and repository IDs. Match the subject
+GitHub actually issues; do not assume a name-only subject from the API's
+`use_immutable_subject` flag.
 
 Signed jobs request `id-token: write`; reusable callers must also grant that
 permission. The signing helper fetches a fresh GitHub OIDC assertion at each
@@ -190,6 +194,10 @@ NSIS installer; verification precedes smoke testing and final archiving. The
 temporary PFX is deleted in a `finally` block and no certificate is installed
 in the Windows certificate store. `build-manifest.json` records whether the
 package was signed.
+
+Before compiling the application, a required signing run signs and verifies a
+temporary executable. This exercises federation, signer permissions, and the
+timestamp service early. The fixture is deleted and is never run or shipped.
 
 The signing helper uses SHA-256 file and RFC 3161 timestamp digests with the
 Microsoft timestamp service for Azure or DigiCert for PFX, then requires `signtool verify /pa /all /tw` to
