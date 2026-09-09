@@ -142,6 +142,16 @@ jobs:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
         run: ./scripts/linux/build-release.sh --version "$PACKAGE_VERSION"
 
+      - name: Retain completed portable bundle before native acceptance
+        if: github.event_name != 'pull_request' || inputs.build_package
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: |
+            dist/LightTable-*-linux-x86_64.tar.gz
+            dist/LightTable-*-linux-x86_64.tar.gz.sha256
+          if-no-files-found: error
+
       - name: Open native GTK desktop and require a rendered photo
         if: github.event_name != 'pull_request' || inputs.build_package
         timeout-minutes: 3
@@ -197,16 +207,6 @@ jobs:
         run: |
           python3 scripts/linux/make-arch-package.py \
             "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" --output-dir .build/linux/arch-package
-
-      - name: Upload portable bundle and checksum
-        if: github.event_name != 'pull_request' || inputs.build_package
-        uses: actions/upload-artifact@v4
-        with:
-          name: LightTable-linux-x86_64
-          path: |
-            dist/LightTable-*-linux-x86_64.tar.gz
-            dist/LightTable-*-linux-x86_64.tar.gz.sha256
-          if-no-files-found: error
 
       - name: Upload matching local pacman recipe
         if: github.event_name != 'pull_request' || inputs.build_package

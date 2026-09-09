@@ -39,6 +39,9 @@ to test packaging: the separate Release workflow publishes successful builds.
 Portable Windows and Linux apps read their source revision from the bundled
 manifest. Extracting an app inside a Git checkout must not run that checkout's
 Git commands or substitute its revision during startup or health checks.
+Windows also keeps the launcher's EOF control pipe out of helper processes'
+standard input. A worker must be able to start while that control pipe is open,
+and the server must still end its session when the launcher closes it.
 
 Windows retains a completed package before native acceptance runs. A native-only
 recheck can reuse those exact bytes with a newer test script:

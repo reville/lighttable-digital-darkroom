@@ -300,6 +300,9 @@ deadline bounds the journey; process cleanup is separate. CI retains the JSON
 evidence, bounded logs, and exported TIFF. Wayland retains its startup/render
 check; this X11 gate does not establish Wayland close/persistence or hardware
 and display-color behavior.
+The completed archive is retained before native acceptance, so a failing journey
+can be investigated against the same bytes. A failed gate still fails the build
+and blocks release publication.
 
 Full-package CI also runs `scripts/linux/updater-smoke.py` against a temporary
 copy of that bundle. It uses an ephemeral signing key and locally staged archive
