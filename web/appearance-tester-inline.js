@@ -1,13 +1,6 @@
 // Preserve the existing tester in desktop shells without managed utility windows.
+import {isAppearanceColor, normalizeAppearance} from './appearance-tester.js';
 const STORAGE_KEY = 'lighttable.appearance-test.v1';
-const HEX = /^#[0-9a-f]{6}$/i;
-
-function normalizeAppearance(value) {
-  return {
-    color: typeof value?.color === 'string' && HEX.test(value.color) ? value.color.toLowerCase() : null,
-    borders: value?.borders !== false,
-  };
-}
 
 export function installAppearanceTester() {
   if (document.getElementById('appearanceTestDialog')) return;
@@ -53,7 +46,7 @@ export function installAppearanceTester() {
     root.toggleAttribute('data-appearance-no-borders', !settings.borders);
   };
   const sync = () => {
-    picker.value = settings.color || '#4b9cf5';
+    picker.value = settings.color;
     hex.value = picker.value;
     hex.removeAttribute('aria-invalid');
     borders.checked = settings.borders;
@@ -74,7 +67,7 @@ export function installAppearanceTester() {
   });
   hex.addEventListener('input', () => {
     const value = hex.value.trim();
-    const valid = HEX.test(value);
+    const valid = isAppearanceColor(value);
     hex.setAttribute('aria-invalid', String(!valid));
     if (!valid) return;
     settings.color = value.toLowerCase();

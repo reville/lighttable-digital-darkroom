@@ -92,9 +92,10 @@ the existing tester forward. Its color picker and hex field update selections an
 active controls immediately; switching borders off leaves active button text
 and icons colored, without their fill or border. Photo selection outlines,
 semantic color swatches, and keyboard focus outlines remain available. Test
-settings stay in the current webview/browser origin's local storage; Reset
-restores the normal palette and borders. Escape or Close closes the tester;
-closing the editor also closes it. The testing controls remain English-only and
+settings stay in the current webview/browser origin's local storage. Fresh
+settings and Reset use the default highlight color #f9c184 with active-button
+borders off; saved appearance choices still take precedence. Escape or Close
+closes the tester; closing the editor also closes it. The testing controls remain English-only and
 absent from product menus and Help.
 Browser sessions use a separate popup; Windows and Linux desktop shells retain
 the existing inline tester under Ctrl-D.
