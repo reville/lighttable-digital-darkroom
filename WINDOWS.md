@@ -47,6 +47,10 @@ run `LightTable\lighttable.cmd --help`. A package manager can shim
 `LightTable\lighttable.cmd` explicitly. Merely adding the ZIP root to PATH
 would choose the GUI executable instead of the command.
 Portable users must install the WebView2 Runtime separately if it is missing.
+Both package formats include Microsoft-signed Visual C++ x64 runtime DLLs
+beside the executables. The build requires runtime 14.44.35211.0 or newer,
+records its version, and verifies that Python loads the packaged copies.
+Users do not need administrator rights to update the machine's C++ runtime.
 
 ## Updates
 
@@ -68,8 +72,9 @@ Unsigned development builds cannot install updates automatically.
 
 The Windows feed is `appcast-windows-x64.xml` on the dedicated `desktop-updates`
 GitHub release. Its signed enclosures point to immutable versioned installers.
-WinSparkle verifies the Ed25519 signature, and the update helper verifies the
-installer's Authenticode signature before installation. See
+WinSparkle verifies the Ed25519 signature before handing off the download.
+The release build signs and verifies the installer's Authenticode signature
+before publication. The helper waits for shutdown and runs that installer. See
 [release setup](release/README.md) for signing and feed publication.
 This source integration still requires a signed upgrade on an actual Windows
 desktop before release.
@@ -91,6 +96,13 @@ Windows account already has a registered LightTable installation. A `build-manif
 records the exact source commit and version. Use `-PortableOnly` explicitly to
 build a ZIP without NSIS or installer testing.
 
+`scripts/windows/installer-fixture-smoke.ps1` runs the same install, repair,
+package-ownership, CLI-registration, and data-preserving uninstall checks with
+a tiny fixture payload. It compiles the real NSIS source and uses the real PATH
+and uninstall helpers; its temporary WebView2 prerequisite and runtime files
+are stubs. CI requires this fast installer check before a full package build.
+It does not establish application or prerequisite-runtime behavior.
+
 `-RuntimeSmokeOnly` stages the same embedded Python runtime and application
 files, then checks imports, high-precision processed-image conversion, and a
 real server startup with HTTP health, editor, and options requests. It does
@@ -107,6 +119,33 @@ selects the exact release commit. `require_signing` defaults to `false` for CI;
 the public release workflow sets it to `true` and passes signing secrets to the
 reusable workflow. Runtime and installer smoke tests do not establish Windows
 GUI or RAW-rendering proof.
+
+Full package workflows additionally run `scripts/windows/desktop-smoke.py`
+against the extracted portable ZIP. It opens the real native shell in an
+isolated catalog, requires a rendered precision TIFF, changes exposure and
+rating through the interface, closes and reopens the app, and verifies retained
+edits and an RGB16 TIFF export with an embedded ICC profile. A private Windows
+Job Object owns and cleans up only the test's processes. The runner checks
+`--runtime-paths` before opening a window; the Windows-only absolute
+`LIGHTTABLE_SUPPORT_DIR` override isolates native settings and WebView2 data.
+The JSON evidence records the source revision and renderer. Use `--photo`
+with a real RAW file for an additional hardware acceptance run. This gate
+provides native runtime evidence, not screenshot or monitor-color proof.
+
+To recheck an existing CI package after changing the acceptance script, dispatch
+`windows-build.yml` with `build_run_id` set to that package's Windows build run.
+The native-only job verifies the successful package-build step and the archive's
+source identity, then records both the package commit and the tester commit.
+The server keeps the launcher's shutdown pipe private and gives helper processes
+null standard input. Otherwise a worker can block during Python initialization
+while the server waits for launcher EOF. The Windows process regression checks
+helper startup with the launcher pipe open, then verifies shutdown on EOF.
+On failure, this recheck uses a checksum-pinned external profiler to capture
+stacks from the test's packaged Python processes, without local variables or
+changes to the archive. The standalone script accepts the same optional tool
+through `--stack-dumper`; diagnostics never turn a failed journey into a pass.
+Completed packages are retained even when native acceptance fails; that failure
+still blocks the full build job and release publication.
 
 For Authenticode signing, configure repository secrets
 `WINDOWS_CERTIFICATE_BASE64` (a base64-encoded PFX containing a valid code-signing

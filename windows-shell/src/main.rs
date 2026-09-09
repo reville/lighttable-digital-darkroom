@@ -151,6 +151,16 @@ struct RuntimePaths {
     log: PathBuf,
 }
 
+#[cfg(target_os = "windows")]
+fn windows_support_directory(default: PathBuf, supplied: Option<std::ffi::OsString>) -> Result<PathBuf> {
+    let Some(supplied) = supplied else { return Ok(default); };
+    let directory = PathBuf::from(supplied);
+    if !directory.is_absolute() {
+        bail!("LIGHTTABLE_SUPPORT_DIR must be an absolute directory");
+    }
+    Ok(directory)
+}
+
 impl RuntimePaths {
     fn discover() -> Result<Self> {
         let executable = env::current_exe()?;
@@ -174,6 +184,8 @@ impl RuntimePaths {
         #[cfg(not(target_os = "linux"))]
         let (support, config, cache, log) = {
             let support = base.data_local_dir().join("LightTable");
+            #[cfg(target_os = "windows")]
+            let support = windows_support_directory(support, env::var_os("LIGHTTABLE_SUPPORT_DIR"))?;
             (
                 support.clone(),
                 support.clone(),
@@ -228,6 +240,14 @@ impl RuntimePaths {
             support,
             cache,
         })
+    }
+
+    #[cfg(target_os = "windows")]
+    fn report(&self) -> Value {
+        json!({"support": self.support, "settings": self.settings, "prefs": self.prefs,
+               "cache": self.cache, "log": self.log, "project": self.project,
+               "python": self.python, "presets": self.support.join("presets.json"),
+               "webview": self.support.join("WebView2")})
     }
 }
 
@@ -306,6 +326,7 @@ impl ServerController {
         {
             use std::os::windows::process::CommandExt;
             command.creation_flags(CREATE_NO_WINDOW);
+            command.stdin(Stdio::piped()).env("LIGHTTABLE_WATCH_STDIN", "1");
         }
 
         let child = command
@@ -321,6 +342,19 @@ impl ServerController {
 
     fn stop(&mut self) {
         if self.child.try_wait().ok().flatten().is_none() {
+            #[cfg(target_os = "windows")]
+            if let Some(input) = self.child.stdin.take() {
+                // EOF lets Python record a clean launcher exit before stopping.
+                // TerminateProcess would skip that session-ending record.
+                drop(input);
+                let deadline = Instant::now() + Duration::from_secs(2);
+                while Instant::now() < deadline {
+                    if self.child.try_wait().ok().flatten().is_some() {
+                        return;
+                    }
+                    thread::sleep(Duration::from_millis(25));
+                }
+            }
             #[cfg(target_os = "linux")]
             {
                 // Let Python checkpoint the catalog and record a clean exit.
@@ -1542,6 +1576,23 @@ fn run() -> Result<()> {
 }
 
 fn main() {
+    // Reaching main proves that Windows resolved the shell's imported DLLs.
+    // Packaging uses this path without creating a window or touching user data.
+    #[cfg(target_os = "windows")]
+    if env::args_os().skip(1).collect::<Vec<_>>() == [std::ffi::OsString::from("--runtime-smoke")] {
+        println!("LightTable shell loader smoke passed");
+        return;
+    }
+    #[cfg(target_os = "windows")]
+    if env::args_os().skip(1).collect::<Vec<_>>() == [std::ffi::OsString::from("--runtime-paths")] {
+        // Report before creating a window, protocol listener, profile, or server.
+        // Errors on this diagnostic path must not open a native error dialog.
+        match RuntimePaths::discover() {
+            Ok(paths) => println!("{}", paths.report()),
+            Err(error) => { eprintln!("{error:#}"); std::process::exit(2); }
+        }
+        return;
+    }
     #[cfg(target_os = "windows")]
     match lighttable_desktop_shell::windows_update::native::helper(&env::args_os().skip(1).collect::<Vec<_>>()) {
         Ok(true) => return,
@@ -1574,5 +1625,38 @@ mod bridge_tests {
                 .nth(1).unwrap().strip_suffix(';').unwrap();
             assert_eq!(serde_json::from_str::<Vec<String>>(serialized).unwrap(), languages);
         }
+    }
+}
+
+#[cfg(all(test, target_os = "windows"))]
+mod runtime_path_tests {
+    use super::*;
+
+    #[test]
+    fn windows_support_override_is_absolute_and_contains_native_state() {
+        let default = PathBuf::from(r"C:\Users\Test\AppData\Local\LightTable");
+        assert_eq!(windows_support_directory(default.clone(), None).unwrap(), default);
+        for invalid in ["", "relative", r"C:relative"] {
+            assert!(windows_support_directory(default.clone(), Some(invalid.into())).is_err());
+        }
+        let isolated = env::temp_dir().join(format!("lighttable-path-test-{}-{}", std::process::id(),
+            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos()))
+            .join("support");
+        let support = windows_support_directory(default, Some(isolated.clone().into_os_string())).unwrap();
+        let paths = RuntimePaths {
+            settings: support.join("desktop-settings.json"),
+            prefs: support.join("prefs.json"),
+            log: support.join("server.log"),
+            cache: support.join("cache"),
+            project: PathBuf::from(r"C:\Bundle\Resources\LightTable"),
+            python: PathBuf::from(r"C:\Bundle\Python\python.exe"),
+            support,
+        };
+        let report = paths.report();
+        for field in ["support", "settings", "prefs", "log", "presets", "webview", "cache"] {
+            assert!(Path::new(report[field].as_str().unwrap()).starts_with(&isolated), "{field}");
+        }
+        assert_eq!(report["webview"], json!(isolated.join("WebView2")));
+        assert!(!isolated.exists(), "Resolving paths must never create directories");
     }
 }

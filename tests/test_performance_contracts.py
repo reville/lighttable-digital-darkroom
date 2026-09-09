@@ -1266,6 +1266,71 @@ class PlatformProcessTests(unittest.TestCase):
             self.assertEqual(server._git_revision(ROOT), "abc123")
             run.assert_called_once()
 
+    def test_portable_app_uses_manifest_revision_inside_an_enclosing_checkout(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory)
+            (checkout / ".git").mkdir()
+            bundle = checkout / "dist/LightTable"
+            app = bundle / "Resources/LightTable"
+            app.mkdir(parents=True)
+            (bundle / "Python").mkdir()
+            revision = "0123456789abcdef" * 2 + "01234567"
+            (bundle / "build-manifest.json").write_text(
+                json.dumps({"source_revision": revision}), encoding="utf-8-sig")
+            with mock.patch.object(server.subprocess, "run") as run:
+                self.assertEqual(server._git_revision(app), revision)
+                run.assert_not_called()
+
+    def test_portable_manifest_failures_never_fall_back_to_enclosing_git(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory)
+            (checkout / ".git").write_text("gitdir: another-worktree")
+            bundle = checkout / "dist/LightTable"
+            app = bundle / "Resources/LightTable"
+            app.mkdir(parents=True)
+            (bundle / "Python").mkdir()
+            manifest = bundle / "build-manifest.json"
+            invalid = (None, b"{", b"\xff", b"null", b"[]", b"{}",
+                       json.dumps({"source_revision": 123}).encode(),
+                       json.dumps({"source_revision": "g" * 40}).encode(),
+                       json.dumps({"source_revision": "a" * 39}).encode(),
+                       json.dumps({"source_revision": "a" * 40 + "\n"}).encode())
+            with mock.patch.object(server.subprocess, "run") as run:
+                for contents in invalid:
+                    with self.subTest(contents=contents):
+                        if contents is not None:
+                            manifest.write_bytes(contents)
+                        self.assertIsNone(server._git_revision(app))
+                run.assert_not_called()
+
+    def test_packaged_vendor_never_runs_git_or_inherits_the_app_revision(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory)
+            (checkout / ".git").mkdir()
+            bundle = checkout / "dist/LightTable"
+            vendor = bundle / "Resources/LightTable/vendor/spektrafilm"
+            (vendor / "src").mkdir(parents=True)
+            (vendor / ".git").mkdir()
+            (bundle / "Python").mkdir()
+            (bundle / "build-manifest.json").write_text(
+                json.dumps({"source_revision": "a" * 40}))
+            with mock.patch.object(server.subprocess, "run") as run:
+                self.assertIsNone(server._git_revision(vendor))
+                self.assertIsNone(server._git_revision(vendor / "src"))
+                run.assert_not_called()
+
+    def test_resources_named_development_folder_without_bundled_python_still_uses_git(self):
+        with tempfile.TemporaryDirectory() as directory:
+            checkout = Path(directory)
+            (checkout / ".git").mkdir()
+            app = checkout / "Resources/LightTable"
+            app.mkdir(parents=True)
+            with mock.patch.object(server.subprocess, "run", return_value=mock.Mock(stdout="dev-revision\n")) as run:
+                self.assertEqual(server._git_revision(app), "dev-revision")
+                (checkout / "Python").write_text("A file is not a packaged interpreter directory")
+                self.assertEqual(server._git_revision(app), "dev-revision")
+                self.assertEqual(run.call_count, 2)
+
 
 class EngineSelectionContractTests(unittest.TestCase):
     def test_engine_choice_waits_for_the_library_capability_report(self):
