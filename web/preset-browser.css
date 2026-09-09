@@ -19,7 +19,10 @@
 .preset-browser-pack-list { padding:4px 0; }
 .preset-browser-card { display:grid; grid-template-columns:minmax(0,1fr) 23px 23px; align-items:center; position:relative; min-width:0; border-radius:var(--radius-sm); transition:background .12s ease; }
 .preset-browser-card:hover { background:var(--field-hover); }
-.preset-browser-card.is-active { background:var(--on-soft); }
+.preset-browser-card.is-active { background:var(--on-soft); box-shadow:0 0 0 1px var(--slider-accent); }
+/* The preset, actions, and Amount control share one selection boundary. */
+.preset-browser-card:has(> .preset-browser-apply:focus-visible) { outline:2px solid var(--slider-accent); outline-offset:1px; }
+.preset-browser-apply:focus-visible { outline:0; }
 .preset-browser-apply { display:flex; align-items:center; gap:9px; width:100%; min-height:58px; min-width:0; padding:6px 4px; border:0; border-radius:var(--radius-sm); text-align:start; white-space:normal; background:transparent; }
 .preset-browser-apply:hover:not(:disabled), .preset-browser-apply[aria-pressed="true"] { background:transparent; }
 .preset-browser-apply:disabled { opacity:.6; }
