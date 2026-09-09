@@ -276,7 +276,7 @@ checks; main-branch and manual runs also build a distributable archive and
 upload a relocated bundle only after dependency imports, ICC conversion, CPU
 film rendering through both engines, an isolated HTTP health check, and the
 packaged CLI pass. The smoke creates temporary data and always stops its server.
-Before uploading that archive, CI also extracts it to a path containing spaces,
+After retaining that archive, CI extracts it to a path containing spaces,
 opens the actual GTK/WebKit desktop under Xvfb and a private D-Bus session, and
 requires its UI bridge to report a rendered test photo. This native startup
 check has a two-minute bound and stops its desktop and server processes.
