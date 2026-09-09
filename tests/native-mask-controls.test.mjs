@@ -11,7 +11,7 @@ function harness({native = true, baked = false, dirty = false, dragging = false}
     lumaLow: 0, lumaHigh: 1, colorHue: null, colorRange: 30, colorAmount: 1,
     grade: {exposure: 0}};
   const messages = [], webgl = [], handlers = {};
-  let rasters = 0, saves = 0, renders = 0;
+  let rasters = 0, saves = 0, renders = 0, scopes = 0;
   const input = {dataset: {local: 'exposure'}, value: '0',
     addEventListener: (type, handler) => { handlers[type] = handler; }, closest: () => null};
   const S = {grade: {}, masks: [mask], maskTextureDirty: dirty, renderState: 'ready',
@@ -24,7 +24,7 @@ function harness({native = true, baked = false, dirty = false, dragging = false}
     pushUndo: () => {}, saveState: () => { saves++; }, drawEditOverlay: () => {},
     scheduleViewportRegionRender: () => {}, syncPreviewBackend: () => {},
     nativePreviewActive: () => native, renderPhysicalPreview: () => { renders++; },
-    scheduleHistogram: () => {}, GRADE_PERF: {take: () => null},
+    scheduleHistogram: () => { scopes++; }, GRADE_PERF: {take: () => null},
     nativeGradePayload: grade => ({grade}), spotVisualization: () => ({enabled: false}),
     nativeMaskChannelPayload: () => ({channel: 0, tile: 0, data: 'channel', masks: [mask]}),
     buildMaskTexture: () => { rasters++; return {width: 2, height: 1, data: new Uint8Array(8)}; },
@@ -37,7 +37,7 @@ function harness({native = true, baked = false, dirty = false, dragging = false}
   const draw = new Function(...Object.keys(deps), code)(...Object.values(deps));
   return {S, mask, messages, webgl, draw, handlers, input,
     change(key, value) { input.dataset.local = key; input.value = String(value); handlers.input(); },
-    counts: () => ({rasters, saves, renders})};
+    get scopes() { return scopes; }, counts: () => ({rasters, saves, renders})};
 }
 
 if (process.argv.includes('--fixtures')) {
@@ -109,3 +109,14 @@ if (process.argv.includes('--fixtures')) {
     assert.equal(e.messages.length, 0);
   });
 }
+
+
+test('native grade changes refresh scopes without drawing the hidden WebGL preview twice', () => {
+  const e = harness();
+  e.draw();
+  assert.equal(e.scopes, 1);
+  assert.equal(e.webgl.length, 0);
+  e.draw(true, false);
+  assert.equal(e.scopes, 1, 'sampling refresh must not recursively schedule itself');
+  assert.equal(e.webgl.length, 1);
+});
