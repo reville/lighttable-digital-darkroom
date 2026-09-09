@@ -1,5 +1,8 @@
 """Store preparation checks; native certificate and runtime proof still needs Windows."""
 import json
+import hashlib
+import importlib.util
+import zipfile
 from pathlib import Path
 import shutil
 import struct
@@ -71,6 +74,29 @@ class StorePackagingTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(uninstaller.read_text(), 'native-fixture-signed-fixture')
 
+    def test_standalone_staging_checks_hash_and_microsoft_trust_before_promoting_input(self):
+        for case in ('valid', 'hash-mismatch', 'untrusted'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                manifest = root / 'input.json'
+                manifest.write_text(json.dumps({
+                    'filename': 'MicrosoftEdgeWebView2RuntimeInstallerX64.exe',
+                    'source_url': 'https://msedge.sf.dl.delivery.mp.microsoft.com/fixture.exe',
+                    'bytes': 7, 'sha256': '0' * 64 if case == 'hash-mismatch' else hashlib.sha256(b'fixture').hexdigest()}))
+                output = root / 'staged'
+                status = 'NotSigned' if case == 'untrusted' else 'Valid'
+                command = (
+                    'function Invoke-WebRequest { param($Uri,$OutFile,$TimeoutSec,$MaximumRedirection); '
+                    'if ($MaximumRedirection -ne 0) { throw "Unexpected redirects" }; [IO.File]::WriteAllText($OutFile, "fixture") }; '
+                    'function Get-AuthenticodeSignature { param($LiteralPath); '
+                    f'[pscustomobject]@{{ Status = "{status}"; SignerCertificate = @{{ Subject = "CN=Microsoft Corporation" }} }} }}; '
+                    f'& {quote(ROOT / "scripts/windows/stage-store-webview2.ps1")} -Manifest {quote(manifest)} -OutputDirectory {quote(output)}')
+                result = subprocess.run([POWERSHELL, '-NoProfile', '-Command', command],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode == 0, case == 'valid', result.stderr)
+                self.assertEqual((output / 'MicrosoftEdgeWebView2RuntimeInstallerX64.exe').exists(), case == 'valid')
+                self.assertEqual(list(output.glob('download-*')), [])
+
     def test_candidate_rejects_missing_offline_prerequisite_before_signing_or_output(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / 'not-created'
@@ -93,6 +119,44 @@ class StorePackagingTests(unittest.TestCase):
                                      '-OfflineWebView2Sha256', '0' * 64], capture_output=True, text=True, timeout=30)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('SHA256 mismatch', result.stderr)
+
+
+class StoreReceiptTests(unittest.TestCase):
+    def test_receipt_matches_final_installer_source_and_complete_pe_audit(self):
+        spec = importlib.util.spec_from_file_location('store_receipt', ROOT / 'scripts/windows/write-store-receipt.py')
+        receipt = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(receipt)
+        for case in ('valid', 'tampered-installer', 'missing-uninstaller', 'wrong-source'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temporary:
+                output = Path(temporary)
+                installer = output / 'LightTable-0.5.0-windows-x64-setup.exe'
+                installer.write_bytes(b'signed fixture')
+                archive = output / 'LightTable-0.5.0-windows-x64.zip'
+                with zipfile.ZipFile(archive, 'w') as bundle:
+                    bundle.writestr('LightTable/build-manifest.json', json.dumps({
+                        'source_revision': 'a' * 40, 'version': '0.5.0', 'store_candidate': True,
+                        'authenticode_signed': True, 'webview2_offline_sha256': 'b' * 64}))
+                input_manifest = output / 'input.json'
+                input_manifest.write_text(json.dumps({'sha256': 'b' * 64}))
+                (output / 'windows-signatures.json').write_text(json.dumps({
+                    'source_revision': 'a' * 40, 'archive_sha256': receipt.sha256(archive),
+                    'signatures': [{'file': installer.name, 'sha256': receipt.sha256(installer), 'status': 'Valid'}]}))
+                (output / 'windows-store-pe-signatures.json').write_text(json.dumps({
+                    'pe_count': 1, 'invalid_count': 0, 'signatures': [{
+                        'path': 'native.pyd' if case == 'missing-uninstaller' else 'Uninstall.exe', 'status': 'Valid'}]}))
+                if case == 'tampered-installer':
+                    installer.write_bytes(b'changed after signing')
+                revision = 'c' * 40 if case == 'wrong-source' else 'a' * 40
+                if case != 'valid':
+                    with self.assertRaises(ValueError):
+                        receipt.write_receipt(output, input_manifest, revision)
+                    self.assertFalse((output / 'store-candidate-receipt.json').exists())
+                else:
+                    path = receipt.write_receipt(output, input_manifest, revision)
+                    data = json.loads(path.read_text())
+                    self.assertEqual(data['source_revision'], revision)
+                    self.assertEqual(len(data['artifacts']), 4)
+                    self.assertIn('NOT DONE', data['offline_clean_machine_acceptance'])
 
 
 if __name__ == '__main__':

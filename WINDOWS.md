@@ -404,3 +404,38 @@ signatures or the standard Windows workflow passed.
 
 Sources: [Store EXE package requirements](https://learn.microsoft.com/windows/apps/publish/publish-your-app/msi/app-package-requirements)
 and [Microsoft's offline WebView2 deployment](https://learn.microsoft.com/microsoft-edge/webview2/concepts/distribution#offline-deployment).
+
+### Dispatch the initial candidate after the preparation branch is merged
+
+The checked-in `packaging/webview2-store-input.json` pins the acquired Microsoft
+x64 standalone download (258,614,480 bytes; SHA256
+`e7fa35755196ad9223596ef021a1ce6799509142eaa40ba35f634026be50b831`).
+The workflow downloads only that Microsoft CDN URL without redirects and checks
+its byte length, SHA256, and trusted Microsoft signature on Windows. If the CDN
+no longer serves those exact bytes, acquire and review a new input explicitly;
+never replace the checksum automatically.
+
+```sh
+gh workflow run windows-build.yml --repo reville/lighttable-digital-darkroom \
+  --ref main -f version=0.5.0 -F store_candidate=true -F require_signing=true
+```
+
+This command is an instruction for a future authorized run, not evidence that a
+run occurred. Store mode implies required signing even when the separate signing
+input is false, uses the existing `windows-release` environment, accepts only
+main/version-tag dispatches, and cannot be combined with native-recheck mode.
+The direct-download workflow defaults and artifact name remain unchanged.
+
+The `LightTable-windows-x64` workflow artifact contains the candidate ZIP and
+EXE, signature reports, signed appcast, and `store-candidate-receipt.json`.
+The receipt cross-checks the source commit, final installer hash, archive hash,
+prerequisite hash, and installed PE report including the uninstaller. Native
+edit/export/restart still gates the job and uploads separate
+`Windows-native-acceptance` evidence. The receipt explicitly leaves clean-machine
+offline acceptance unconfirmed until that independent Windows test is done.
+
+For the selected initial release `0.5.0`, the proposed public EXE URL is
+`https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-windows-x64-setup.exe`.
+This is a proposed location, not a live download. Publish only the exact verified
+candidate bytes after all release and Store gates pass; do not replace bytes at
+that URL after submission.
