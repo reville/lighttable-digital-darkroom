@@ -10,6 +10,7 @@ from pathlib import Path
 import catalog
 import catalog_scan
 import server
+import preset_library
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -69,6 +70,60 @@ console.log(JSON.stringify({kept,retired:reconcilePresetAdjustment(preset,curren
         self.assertEqual(result["kept"]["base"]["grade"]["exposure"], 0.9)
         self.assertEqual(result["kept"]["target"]["grade"]["exposure"], 0.9)
         self.assertIsNone(result["retired"])
+
+    def test_development_variants_are_fixed_choices_at_partial_amounts(self):
+        result = self.run_js("""
+import {blendPresetState,reconcilePresetAdjustment} from './web/preset-amount.js';
+const base={params:{development_time:0,print_development_time:0,print_exposure:.8},
+  grade:{},masks:[],heals:[],optics:{}};
+const target={...base,params:{development_time:1,print_development_time:2,print_exposure:1}};
+const partial=blendPresetState(base,target,55);
+console.log(JSON.stringify({partial,off:blendPresetState(base,target,0),
+  retained:!!reconcilePresetAdjustment({base,target,amount:55,enabled:true},partial)}));
+""")
+        self.assertEqual(result["partial"]["params"]["development_time"], 1)
+        self.assertEqual(result["partial"]["params"]["print_development_time"], 2)
+        self.assertAlmostEqual(result["partial"]["params"]["print_exposure"], .91)
+        self.assertEqual(result["off"]["params"]["development_time"], 0)
+        self.assertTrue(result["retained"])
+
+    def test_all_builtin_amounts_survive_production_state_cleaning(self):
+        base, _ = server.cleaned_state_request({
+            "params": {"profile_enabled": False, "print_exposure": .8, "grain_amount": .35},
+            "grade": {"exposure": .37, "contrast": .08, "saturation": -.04},
+            "masks": [], "heals": [], "optics": {},
+        }, strict=False)
+        # Include non-grid film values, grading colors and curves from the real
+        # shipped catalog, then pass both baseline and current state through the
+        # production cleaners exactly as a save/reopen does.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "states.json"
+            path.write_text(json.dumps({"base": base, "presets": preset_library.builtin_presets()}))
+            states = self.run_js("""
+import {readFileSync} from 'node:fs';
+import {composePresetState} from './web/presets.js';
+import {blendPresetState} from './web/preset-amount.js';
+const {base,presets}=JSON.parse(readFileSync(PATH,'utf8')), states=[];
+for (const preset of presets) {
+  const target=composePresetState(base,preset);
+  for (let amount=0;amount<=100;amount++) {
+    states.push({...blendPresetState(base,target,amount),
+      preset:{id:preset.id,name:preset.name,base,target,amount,enabled:amount>0}});
+  }
+}
+console.log(JSON.stringify(states));
+""".replace("PATH", json.dumps(str(path))))
+            path.write_text(json.dumps([server.cleaned_state_request(state, strict=False)[0] for state in states]))
+            failures = self.run_js("""
+import {readFileSync} from 'node:fs';
+import {presetEditState,reconcilePresetAdjustment} from './web/preset-amount.js';
+const states=JSON.parse(readFileSync(PATH,'utf8'));
+console.log(JSON.stringify(states.filter(state=>
+  !reconcilePresetAdjustment(state.preset,presetEditState(state)))
+  .map(state=>[state.preset.id,state.preset.amount])));
+""".replace("PATH", json.dumps(str(path))))
+        self.assertEqual(len(states), len(preset_library.builtin_presets()) * 101)
+        self.assertEqual(failures, [])
 
     def test_browser_toggle_amount_switch_undo_and_photo_guard(self):
         result = self.run_js("""
