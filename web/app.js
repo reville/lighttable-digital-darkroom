@@ -5642,7 +5642,8 @@ function makeFolderRow(source, data, isRoot) {
   row.className = 'folder-row' + (isRoot ? '' : ' nested')
     + (!source.available ? ' unavailable' : '')
     + (isCurrentSource && S.activeFolder === relative ? ' on' : '');
-  row.style.setProperty('--depth', isRoot ? 0 : data.depth);
+  const depth = data.depth ?? relative.split('/').filter(Boolean).length;
+  row.style.setProperty('--depth', isRoot ? 0 : depth);
   row.title = fullFolderPath(source.path, relative);
   row.dataset.folder = relative;
 
