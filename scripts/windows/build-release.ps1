@@ -4,11 +4,40 @@ param(
     [string]$OutputDirectory = "dist",
     [switch]$PortableOnly,
     [switch]$RuntimeSmokeOnly,
-    [switch]$RequireSigning
+    [switch]$RequireSigning,
+    [switch]$StoreCandidate,
+    [string]$OfflineWebView2Installer = "",
+    [string]$OfflineWebView2Sha256 = ""
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+# A Store candidate embeds its prerequisite and signs the entire native payload.
+# Certification still requires a clean offline Windows acceptance run.
+if ($StoreCandidate) {
+    if ($PortableOnly -or $RuntimeSmokeOnly) { throw "StoreCandidate requires an installer build." }
+    if ($Version -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$') { throw "StoreCandidate requires a stable numeric version." }
+    $RequireSigning = $true
+    if ([string]::IsNullOrWhiteSpace($OfflineWebView2Installer)) {
+        throw "StoreCandidate requires the x64 WebView2 Evergreen Standalone Installer."
+    }
+}
+if ($OfflineWebView2Installer -or $OfflineWebView2Sha256) {
+    if ($OfflineWebView2Sha256 -notmatch '^[a-fA-F0-9]{64}$' -or
+        -not (Test-Path -LiteralPath $OfflineWebView2Installer -PathType Leaf)) {
+        throw "Supply an existing offline WebView2 installer and its pinned SHA256."
+    }
+    $OfflineWebView2Installer = (Resolve-Path -LiteralPath $OfflineWebView2Installer).Path
+    if ((Get-FileHash -LiteralPath $OfflineWebView2Installer -Algorithm SHA256).Hash -ne $OfflineWebView2Sha256) {
+        throw "Offline WebView2 installer SHA256 mismatch."
+    }
+    $WebViewSignature = Get-AuthenticodeSignature -LiteralPath $OfflineWebView2Installer
+    if ($WebViewSignature.Status -ne 'Valid' -or $null -eq $WebViewSignature.SignerCertificate -or
+        $WebViewSignature.SignerCertificate.Subject -notmatch '(^|,\s*)CN=Microsoft Corporation(,|$)') {
+        throw "The offline WebView2 installer must have a valid Microsoft signature."
+    }
+}
 
 # Public releases must fail before downloads or compilation when signing is
 # unavailable. CI builds can run without a certificate unless explicitly gated.
@@ -36,6 +65,7 @@ $Output = if ([IO.Path]::IsPathRooted($OutputDirectory)) {
 } else {
     Join-Path $Project $OutputDirectory
 }
+if ($StoreCandidate) { $Output = Join-Path $Output "store-candidate" }
 $BuildRoot = Join-Path ([IO.Path]::GetTempPath()) ("lighttable-windows-" + [Guid]::NewGuid())
 $Payload = Join-Path $BuildRoot "LightTable"
 $Resources = Join-Path $Payload "Resources\LightTable"
@@ -206,6 +236,9 @@ try {
         (Join-Path $Project "windows-shell\target\$Target\release\lighttable-desktop-shell.exe") `
         (Join-Path $Payload "LightTable.exe")
 
+    if ($StoreCandidate) {
+        & (Join-Path $PSScriptRoot "store-pe-signatures.ps1") -Payload $Payload -SignMissing
+    }
     if ($SigningEnabled) {
         & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files @(
             (Join-Path $Payload "LightTable.exe"),
@@ -233,6 +266,8 @@ try {
         python_version = $PythonVersion
         vc_runtime_version = $VCRuntimeVersion
         authenticode_signed = [bool]$SigningEnabled
+        store_candidate = [bool]$StoreCandidate
+        webview2_offline_sha256 = $OfflineWebView2Sha256.ToLowerInvariant()
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Payload "build-manifest.json") -Encoding utf8
 
     if (-not $PortableOnly) {
@@ -240,7 +275,17 @@ try {
         $UninstallManifest = Join-Path $BuildRoot "uninstall-files.nsh"
         & $PythonExe -B (Join-Path $Project "scripts\windows\make-uninstall-manifest.py") $Payload $UninstallManifest
         if ($LASTEXITCODE -ne 0) { throw "Could not generate the safe uninstall file list" }
-        & $MakeNsis.Source `
+        $InstallerOptions = @()
+        if ($OfflineWebView2Installer) {
+            $InstallerOptions += "/DOFFLINE_WEBVIEW2_INSTALLER=$OfflineWebView2Installer"
+        }
+        if ($StoreCandidate) {
+            $InstallerOptions += "/DSIGN_UNINSTALLER_SCRIPT=$(Join-Path $PSScriptRoot 'sign-uninstaller.ps1')"
+            $InstallerOptions += "/DPUBLISHER=Chonkers LLC"
+            $InstallerOptions += "/DSTORE_NUMERIC_VERSION=$Version.0"
+            $InstallerOptions += "/DSIGNING_POWERSHELL=$((Get-Process -Id $PID).Path)"
+        }
+        & $MakeNsis.Source @InstallerOptions `
             "/WX" `
             "/DVERSION=$Version" `
             "/DPAYLOAD=$Payload" `
@@ -251,7 +296,8 @@ try {
         if ($SigningEnabled) {
             & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files $Installer
         }
-        & (Join-Path $Project "scripts\windows\installer-smoke.ps1") -Installer $Installer -Version $Version
+        & (Join-Path $Project "scripts\windows\installer-smoke.ps1") -Installer $Installer -Version $Version `
+            -VerifyStoreSignatures:$StoreCandidate -ExpectedPublisher $(if ($StoreCandidate) { "Chonkers LLC" } else { "Nicholas Reville" }) -SignatureReport (Join-Path $Output "windows-store-pe-signatures.json")
         if ($RequireSigning) {
             # WinSparkle accepts both the current Sparkle 32-byte seed and its
             # older 96-byte private-key format. No key material is logged or

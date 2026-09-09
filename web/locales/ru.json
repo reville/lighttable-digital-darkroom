@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Выберите человека",
     "Choose a photo folder": "Выберите папку с фото",
     "Choose a photo to edit": "Выберите фото для редактирования",
-    "Choose a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Choose a preset to see its source and conversion coverage.": "Выберите пресет, чтобы увидеть его исходный профиль и покрытие преобразования.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Выберите процесс печати для негативов и поймите, почему элементы управления печатью исчезают для слайд-пленки.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Выберите сохраненную точку в селекторе, чтобы отредактировать ее, или используйте Удалить точку, чтобы убрать ее.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Выберите фото, чтобы скопировать его настройки",
     "Select a photo to edit": "Выберите фото для редактирования",
     "Select a photo to preview": "Выберите фото для предпросмотра",
-    "Select a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Select a photo, or a set in a grid, and open Info.": "Выберите фото или набор в сетке и откройте Инфо.",
     "Select a photo.": "Выбрать фото.",
     "Select a range of distances from the camera; refine the far and near limits": "Выберите диапазон расстояний от камеры; уточните дальнюю и ближнюю границы",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Когда Обзор открыт из Помощь при отбраковке, сравните предложенную группу и помечайте фото по отдельности. Сделать выделение доступно в обычном Обзор: оно выбирает активное фото обзора и отклоняет другие фото, которые все еще находятся в обзоре. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространить эти изменения флажков на сопутствующее приложение.",
     "{count} matching photo shown: {criteria}.": "Показано {count} совпадающее фото: {criteria}.",
     "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками.",
+    "Copy Settings...": "Копировать настройки..."
   },
   "plurals": {
     " · {count} paired file linked": {

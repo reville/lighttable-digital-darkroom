@@ -93,6 +93,12 @@ body {
 }
 button, select, input, textarea { color:var(--ink); font:inherit; }
 button { cursor:default; }
+/* Disclosure headings are controls, including those without a section class. */
+summary {
+  cursor:default;
+  -webkit-user-select:none;
+  user-select:none;
+}
 button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
   outline:2px solid var(--slider-accent);
   outline-offset:1px;
@@ -525,7 +531,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 .sidebar-disclosure-body > label { display:block; margin:10px 0 4px; color:var(--muted); font-size:11px; }
 .sidebar-disclosure-body > label.check-row { display:flex; margin:0; color:var(--ink-2); }
 .sidebar-note { margin:0 0 8px; color:var(--muted); font-size:10px; line-height:1.45; }
-.ai-cull-disclosure { max-height:260px; overflow-y:auto; }
+.ai-cull-disclosure { max-height:260px; overflow-y:auto; padding-bottom:8px; }
 .ai-cull-disclosure > summary { position:sticky; top:0; z-index:1; background:var(--chrome); }
 .ai-cull-disclosure .cull-group { margin-top:8px; }
 .ai-cull-disclosure .cull-group-title { margin-bottom:2px; color:var(--muted-2); font-size:10px; font-weight:600; text-transform:uppercase; }
@@ -1943,7 +1949,7 @@ body { display:flex; flex-direction:column; }
 .collection-block.is-empty #collectionList,
 .collection-block.is-empty #addToCollection { display:none; }
 .collection-block.is-empty .folder-heading > span:last-child { display:flex; width:100%; gap:6px; }
-.collection-block.is-empty #addCollection { display:flex; flex:1; justify-content:space-between; align-items:center; padding:5px 8px; height:32px; }
+.collection-block.is-empty #addCollection { display:flex; flex:1; justify-content:space-between; align-items:center; padding:5px 3px; height:32px; text-align:left; }
 .collection-block.is-empty .collection-create-label { display:inline; font-size:12px; }
 .collection-block.is-empty #addSmartCollection { align-self:center; }
 
