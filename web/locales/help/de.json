@@ -1198,7 +1198,7 @@
           "steps": [
             "Wähle Integriert, Yours oder Community. Suche nach Name, Beschreibung, Urheber oder Motiv.",
             "Mit dem Stern neben einer Vorgabe favorisierst du sie; Favoriten filtert die aktuelle Sammlung.",
-            "Wähle in Community Empfohlen, Neu oder Alle und verwende Motiv, um die Sammlung einzugrenzen. Wähle eine Vorgabe aus, um ihre Beschreibung, den Urheber, die Version, das Filmverhalten und verfügbare Beispielfotos zu sehen."
+            "Wähle unter „Community“ die Option „Empfohlen“, „Neu“ oder „Alle“ und grenze die Sammlung mit „Motiv“ ein. Über die Schaltfläche … neben einer Vorgabe siehst du ihre Beschreibung, ihren Ersteller, ihre Version, ihr Film-Verhalten und verfügbare Beispielfotos."
           ],
           "tips": [
             "Featured ist eine redaktionelle Sammlung, kein Beliebtheitsranking.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Vorgabenpakete organisieren",
+          "paragraphs": [
+            "Vorgaben erscheinen als horizontale Zeilen in einklappbaren Paketen. Integrierte Looks sind zunächst in den Paketen „Farbe“, „Film“ und „Schwarzweiß“ angeordnet. Klicke auf eine Paketüberschrift, um das Paket auf- oder zuzuklappen.",
+            "Wähle „Neues Paket…“, um in der aktuellen Sammlung ein benanntes Paket zu erstellen. Ziehe eine Vorgabe auf dessen Überschrift oder öffne über … die Details der Vorgabe und wähle „In Paket verschieben“. Mit … neben einem Paket kannst du es umbenennen. Beim Entfernen eines Pakets kehren seine Vorgaben in ihre Standardgruppen zurück, ohne gelöscht zu werden. Die Paketorganisation wird auf diesem Computer gespeichert."
+          ]
+        },
+        {
           "title": "Anwenden und Menge anpassen",
           "paragraphs": [
-            "Klicke auf eine Vorgabekarte, um sie sofort auf das Hauptfoto anzuwenden. Klicke erneut auf dieselbe Karte oder verwende ihre Ein/Aus-Schaltfläche, um sie zu deaktivieren. Dein Foto bleibt auf diesem Computer."
+            "Klicke auf eine Vorgabenzeile, um sie sofort anzuwenden. Der Regler „Menge“ erscheint unter der Zeile. Klicke erneut auf dieselbe Zeile, um die Vorgabe zu deaktivieren und den Regler auszublenden. Dein Foto bleibt auf diesem Computer."
           ],
           "steps": [
-            "Wähle ein Foto aus und klicke auf eine Vorgabekarte. Die ausgewählte Vorgabe zeigt die Menge unter ihrem Namen an.",
+            "Wähle ein Foto aus, klappe ein Paket auf und klicke auf eine Vorgabenzeile.",
             "Ziehe die Menge von 0 % bis 100 %. Bei null wird die Bearbeitung vor der Vorgabe wiederhergestellt; 100 % verwendet die vollständige Vorgabe. Doppelklicke auf die Menge, um sie auf 100 % zurückzusetzen.",
             "Klicke auf eine andere Vorgabe, um den Look zu wechseln. Rückgängig und Wiederholen stellen die Vorgabenauswahl, den Aktivierungsstatus und die Menge wieder her. Die ausgewählte Vorgabe und die Menge werden mit dem Foto gespeichert."
           ],
           "tips": [
             "Filmstock, Film ein/aus und andere feste Optionen wechseln bei jeder Menge über null. Ton, Farbe, Kurven und numerische Anpassungen variieren mit der Menge. Creator-Beispiele bleiben getrennt von Deinem Foto.",
-            "Beim Wechseln zwischen Vorgabekarten wird die Bearbeitung von vor der ersten Vorgabe verwendet, damit sich Looks nicht aufaddieren. Manuelle Änderungen außerhalb der Vorgabe, etwa Belichtung für einen Look, bleiben erhalten. Wenn eine von der Vorgabe gesteuerte Einstellung manuell geändert wird, endet die Mengenanpassung; die aktuelle Bearbeitung wird dann zur Ausgangsbasis für die nächste Vorgabe."
+            "Beim Wechseln zwischen Vorgabenzeilen wird die Bearbeitung vor der ersten Vorgabe verwendet, damit sich Looks nicht aufsummieren. Manuelle Änderungen außerhalb der Vorgabe, etwa die Belichtung bei einem Look, bleiben erhalten. Änderst du eine von der Vorgabe gesteuerte Einstellung manuell, endet ihre Anpassung über „Menge“; die aktuelle Bearbeitung wird dann zur Grundlage für die nächste Vorgabe."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Zu Yours hinzufügen lädt das ausgewählte Community-Rezept herunter und speichert es, ohne es anzuwenden. Installierte Rezepte funktionieren offline. Deine vorhandenen Fotobearbeitungen speichern ihre Einstellungen getrennt von der Vorgabe."
           ],
           "steps": [
-            "Klicke auf eine Community-Vorgabe, um sie auf Deinem Foto zu verwenden, und klicke dann auf Zu Deinen hinzufügen, um eine Offline-Kopie zu behalten.",
+            "Klicke auf eine Community-Vorgabe, um sie auf dein Foto anzuwenden. Öffne dann über … ihre Details und klicke auf „Zu Deinen hinzufügen“, um eine Offline-Kopie zu behalten.",
             "Später unter Yours verwenden oder zu Community zurückkehren, um die öffentliche Vorgabenseite zu prüfen.",
             "Klicke auf Aktualisieren, um den Katalog zu prüfen. Wenn eine neuere Version aufgeführt ist, ersetzt Update in Yours das gespeicherte Rezept nur, wenn du es auswählst."
           ],
@@ -1270,7 +1277,7 @@
             "Die Veröffentlichung in Community wird geprüft. Der Einreichungsabschnitt zeigt die genauen Entwickeln- und Film-Einstellungen im vorbereiteten Look, sein Filmverhalten und die Fotoskorrekturen, die er beibehält. Beim Prüfen dieser Zusammenfassung oder beim Vorbereiten eines Downloads wird nichts hochgeladen."
           ],
           "steps": [
-            "Speichere eine Vorgabe unter Yours, wähle sie aus und prüfe die Zusammenfassung der enthaltenen Einstellungen unter Community-Einreichung.",
+            "Speichere eine Vorgabe unter „Deine“, öffne über … ihre Details und prüfe die Zusammenfassung der enthaltenen Einstellungen unter „Community-Einreichung“.",
             "Klicke auf Community-Einreichung vorbereiten… und warte, bis die lokalen Beispiele gerendert wurden. Speichere das ZIP mit der Vorgabe, drei lizenzierten Vorher/Nachher-Fotopaaren, Fotocredits und Rechtehinweisen.",
             "Öffne das Paket und prüfe die Beispiele. Du kannst auch dein eigenes Foto auswählen und Mit diesem Foto Beispiel herunterladen verwenden, um ein 960-Pixel-JPEG des geteilten Looks zu speichern, ohne die Bearbeitung zu ändern.",
             "Klicke auf Einreichungsformular öffnen, hänge das Paket und alle zulässigen zusätzlichen Beispiele an und füge vor dem Senden deine Urheberangaben, Beschreibung und Veröffentlichungsrechte hinzu."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
 }

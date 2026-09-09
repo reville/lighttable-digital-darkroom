@@ -1,3 +1,4 @@
+import { normalizePresetPacks, defaultPresetPack, groupPresetPacks, movePresetToPack } from './preset-packs.js';
 import { t as tr, tn as trn, currentLocale, formatNumber } from './i18n.js';
 
 const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
@@ -40,6 +41,11 @@ export function createPresetPreviewQueue({ render, onResult, onError }) {
       controller?.abort();
       controller = new AbortController();
       pending = [...items];
+      void drain();
+    },
+    append(items) {
+      if (!controller || controller.signal.aborted) controller = new AbortController();
+      pending.push(...items);
       void drain();
     },
     cancel() {
@@ -91,7 +97,7 @@ export function formatPresetCatalogDate(value, locale = currentLocale()) {
   return date.toLocaleDateString(locale, dateOnly ? { timeZone: 'UTC' } : undefined);
 }
 
-/** Cards apply immediately; remote deep links only open their details. */
+/** Rows apply immediately; details and organization never change the photo. */
 export function createPresetBrowser({
   container, getPresets, getPhoto, getSelectedName = () => '',
   onSelect = () => {}, onApply, canApply = () => true,
@@ -101,15 +107,18 @@ export function createPresetBrowser({
   getRecipe = async (preset) => preset, onInstall, onSubmit, onDuplicate,
   getSubmission, onDownloadExample,
   getAdjustment = () => null, onAmount = () => {},
+  getOrganization = () => ({}), onOrganizationChange = () => {},
+  requestPackName,
 }) {
-  let active = false, destroyed = false, loading = false, page = 0, favoritesOnly = false;
+  let active = false, destroyed = false, loading = false, favoritesOnly = false;
   let collection = 'builtin', selected = null, snapshot, searchTimer, showHidden = false;
   let communityRequested = false, communityLoading = false, detailGeneration = 0;
   let communityPromise = null, detailController = null;
   let activationGeneration = 0, activationController = null;
-  let selectedPhotoName = null, detailDismissed = false, lastAdjustmentId = null;
+  let selectedPhotoName = null, detailDismissed = true, lastAdjustmentId = null;
   const previewCache = new Map();
-  const pageSize = 6, urls = new Set(), cards = new Map();
+  const urls = new Set(), cards = new Map(), amountRows = new Map();
+  let previewObserver, draggedPreset = null;
   const root = document.createElement('div');
   root.className = 'preset-browser';
   root.innerHTML = `<div class="preset-browser-tabs" role="tablist" aria-label="${i18nHTML(tr("Preset collection"))}">
@@ -117,22 +126,21 @@ export function createPresetBrowser({
       <button type="button" role="tab" data-collection="yours" aria-selected="false">${i18nHTML(tr("Yours"))}</button>
       <button type="button" role="tab" data-collection="community" aria-selected="false">${i18nHTML(tr("Community"))}</button></div>
     <label class="preset-browser-search"><span class="sr-only">${i18nHTML(tr("Find a preset"))}</span><input type="search" placeholder="${i18nHTML(tr("Search presets"))}" autocomplete="off"></label>
-    <div class="preset-browser-toolbar"><button type="button" data-filter="favorites" aria-pressed="false">${i18nHTML(tr("☆ Favorites"))}</button><button type="button" data-filter="hidden" aria-pressed="false">${i18nHTML(tr("Show hidden"))}</button><button type="button" data-action="manage">${i18nHTML(tr("Manage…"))}</button></div>
+    <div class="preset-browser-toolbar"><button type="button" data-filter="favorites" aria-pressed="false">${i18nHTML(tr("☆ Favorites"))}</button><button type="button" data-filter="hidden" aria-pressed="false">${i18nHTML(tr("Show hidden"))}</button><button type="button" data-action="new-pack">${i18nHTML(tr("New pack…"))}</button><button type="button" data-action="manage">${i18nHTML(tr("Manage…"))}</button></div>
     <div class="preset-browser-community-controls" hidden><label>${i18nHTML(tr("Collection"))}<select data-order><option value="featured">${i18nHTML(tr("Featured"))}</option><option value="new">${i18nHTML(tr("New"))}</option><option value="all">${i18nHTML(tr("All"))}</option></select></label><label>${i18nHTML(tr("Subject"))}<select data-tag><option value="">${i18nHTML(tr("All subjects"))}</option></select></label><button type="button" data-action="refresh" aria-label="${i18nHTML(tr("Refresh community presets"))}">${i18nHTML(tr("Refresh"))}</button></div>
     <p class="preset-browser-network" role="status" hidden></p>
     <p class="preset-browser-status" role="status"></p>
     <section class="preset-browser-detail" aria-label="${i18nHTML(tr("Selected preset"))}" hidden></section>
-    <div class="preset-browser-grid" aria-label="${i18nHTML(tr("Preset previews"))}"></div>
-    <div class="preset-browser-pages"><button type="button" data-page="previous" aria-label="${i18nHTML(tr("Previous presets"))}">${i18nHTML(tr("Previous"))}</button><span></span><button type="button" data-page="next" aria-label="${i18nHTML(tr("Next presets"))}">${i18nHTML(tr("Next"))}</button></div>`;
+    <div class="preset-browser-packs" aria-label="${i18nHTML(tr("Preset packs"))}"></div>`;
   container.append(root);
+  root.addEventListener('keydown', event => {
+    if ([' ', 'Enter'].includes(event.key) && event.target.closest('button')) event.stopPropagation();
+  });
   const search = root.querySelector('input');
   const status = root.querySelector('.preset-browser-status');
   const network = root.querySelector('.preset-browser-network');
-  const grid = root.querySelector('.preset-browser-grid');
+  const grid = root.querySelector('.preset-browser-packs');
   const detail = root.querySelector('.preset-browser-detail');
-  const pages = root.querySelector('.preset-browser-pages');
-  const previous = root.querySelector('[data-page="previous"]');
-  const next = root.querySelector('[data-page="next"]');
   const favoriteFilter = root.querySelector('[data-filter="favorites"]');
   const hiddenFilter = root.querySelector('[data-filter="hidden"]');
   const order = root.querySelector('[data-order]'), tag = root.querySelector('[data-tag]');
@@ -172,18 +180,21 @@ export function createPresetBrowser({
     onError: ({ previewStatus, onError }) => { previewStatus.hidden = false; previewStatus.textContent = tr("Preview unavailable. Try again."); onError?.(); },
   });
   function cancel() {
-    clearTimeout(searchTimer); queue.cancel();
+    clearTimeout(searchTimer); queue.cancel(); previewObserver?.disconnect();
     detailGeneration++; detailController?.abort();
     for (const url of urls) URL.revokeObjectURL(url);
     urls.clear();
   }
   function select(id = getSelectedName()) {
     const adjustment = getAdjustment();
+    const photoName = getPhoto()?.name;
     for (const [key, button] of cards) {
       const enabled = adjustment?.id === key && adjustment.enabled;
       button.setAttribute('aria-pressed', String(!!enabled));
       button.title = enabled ? tr('Click to disable preset') : tr('Click to apply preset');
+      button.closest('.preset-browser-card').classList.toggle('is-active', !!enabled);
     }
+    for (const update of amountRows.values()) update(adjustment, photoName);
   }
   function updateFavoriteButton(button, preset) {
     const favorite = getFavorites().includes(presetKey(preset));
@@ -227,13 +238,51 @@ export function createPresetBrowser({
   function photoUnchanged(photo) {
     return photo && JSON.stringify(getPhoto()) === JSON.stringify(photo);
   }
-  function showDetail(preset) {
-    selected = preset; detailDismissed = false; onSelect(preset); render();
-    detail.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  function moveToPack(preset, packId) {
+    const state = movePresetToPack(getOrganization(), preset, packId);
+    state.collapsed = state.collapsed.filter(id => id !== (packId || defaultPresetPack(preset).id));
+    onOrganizationChange(state); render();
+  }
+  root.querySelector('[data-action="new-pack"]').onclick = async () => {
+    const targetCollection = collection;
+    const name = await requestPackName?.('');
+    if (!name?.trim() || destroyed) return;
+    const state = normalizePresetPacks(getOrganization());
+    state.packs.push({ id: `pack-${crypto.randomUUID()}`, name: name.trim().slice(0, 80), collection: targetCollection });
+    search.value = ''; favoritesOnly = false; tag.value = '';
+    onOrganizationChange(state); render();
+  };
+  function createAmountRow(preset, photo, adjustment) {
+    const row = element('div', 'preset-browser-amount');
+    const label = element('label', '', tr('Amount'));
+    const amount = element('input', ''); amount.type = 'range';
+    amount.id = `preset-amount-${amountRows.size}`; label.htmlFor = amount.id;
+    amount.min = '0'; amount.max = '100'; amount.step = '1';
+    const output = element('output', ''); output.htmlFor = amount.id;
+    const update = (adjustment, photoName) => {
+      const matches = adjustment?.id === presetKey(preset);
+      // At zero, keep the slider available so the user can bring the look back.
+      row.hidden = !matches || (!adjustment.enabled && adjustment.amount !== 0);
+      amount.disabled = !matches || photoName !== photo?.name;
+      amount.value = String(matches ? adjustment.amount : 100);
+      output.textContent = formatNumber(Number(amount.value) / 100, { style: 'percent' });
+      amount.setAttribute('aria-valuetext', output.textContent);
+    };
+    amount.oninput = () => { onAmount(presetKey(preset), photo?.name, amount.value, false); select(); };
+    amount.onchange = () => { onAmount(presetKey(preset), photo?.name, amount.value, true); select(); };
+    amount.onkeydown = event => event.stopPropagation();
+    amount.ondblclick = () => { onAmount(presetKey(preset), photo?.name, 100, true); select(); };
+    row.append(label, amount, output);
+    amountRows.set(presetKey(preset), update); update(adjustment, photo?.name);
+    return row;
+  }
+  function showDetail(preset, reveal = true) {
+    selected = preset; detailDismissed = !reveal; onSelect(preset); render();
+    if (reveal) detail.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
   async function activatePreset(preset) {
     const photo = getPhoto();
-    showDetail(preset);
+    showDetail(preset, false);
     const request = ++activationGeneration;
     activationController?.abort(); activationController = new AbortController();
     if (!photo?.name || preset.compatible === false) return;
@@ -306,41 +355,24 @@ export function createPresetBrowser({
     const actions = element('div', 'preset-browser-detail-actions');
     const message = element('p', 'preset-browser-status'); message.setAttribute('role', 'status');
     let recipe = null, prepareSubmission = null;
-    const amountRow = element('div', 'preset-browser-amount');
-    const amount = element('input', ''); amount.type = 'range'; amount.id = 'presetAmount';
-    amount.setAttribute('aria-label', tr('Amount'));
-    amount.min = '0'; amount.max = '100'; amount.step = '1';
-    const output = element('output', ''); output.htmlFor = amount.id;
-    const toggle = button(tr('Off'), () => void activatePreset(preset), 'preset-browser-toggle');
-    const updateAmount = () => {
-      const adjustment = getAdjustment();
-      const matches = adjustment?.id === presetKey(preset);
-      amount.disabled = !matches;
-      amount.value = String(matches ? adjustment.amount : 100);
-      const amountText = formatNumber(Number(amount.value) / 100, {style: 'percent'});
-      output.textContent = amountText;
-      amount.setAttribute('aria-valuetext', amountText);
-      toggle.textContent = matches && adjustment.enabled ? tr('On') : tr('Off');
-      toggle.setAttribute('aria-pressed', String(!!(matches && adjustment.enabled)));
-      toggle.setAttribute('aria-label', matches && adjustment.enabled
-        ? tr('Disable {name}', {name: preset.name}) : tr('Enable {name}', {name: preset.name}));
-    };
-    amount.oninput = () => {
-      onAmount(presetKey(preset), photo?.name, amount.value, false);
-      updateAmount(); select();
-    };
-    amount.onchange = () => {
-      onAmount(presetKey(preset), photo?.name, amount.value, true);
-      updateAmount(); select();
-    };
-    amount.onkeydown = event => event.stopPropagation();
-    amount.ondblclick = () => {
-      onAmount(presetKey(preset), photo?.name, 100, true);
-      updateAmount(); select();
-    };
-    amountRow.append(amount, output, toggle);
-    detail.insertBefore(amountRow, credit);
-    updateAmount(); toggle.disabled = !photo?.name || getAdjustment()?.id !== presetKey(preset);
+    const enabled = getAdjustment()?.id === presetKey(preset) && getAdjustment().enabled;
+    const toggle = button(enabled ? tr('Click to disable preset') : tr('Click to apply preset'),
+      () => void activatePreset(preset), 'preset-browser-toggle');
+    toggle.setAttribute('aria-pressed', String(!!enabled));
+    toggle.disabled = !photo?.name || preset.compatible === false;
+    actions.append(toggle);
+    if (preset.collection !== 'applied') {
+      const packLabel = element('label', 'preset-browser-pack-choice', tr('Move to pack'));
+      const chooser = element('select', '');
+      chooser.add(new Option(defaultPresetPack(preset).name, ''));
+      const organization = normalizePresetPacks(getOrganization());
+      for (const pack of organization.packs.filter(pack => pack.collection === (preset.collection || 'yours'))) {
+        chooser.add(new Option(pack.name, pack.id));
+      }
+      chooser.value = organization.assignments[presetKey(preset)] || '';
+      chooser.onchange = () => moveToPack(preset, chooser.value);
+      packLabel.append(chooser); detail.append(packLabel);
+    }
     if (preset.collection === 'community' && onInstall) {
       const installed = getPresets().find((item) => item.community?.id === preset.id);
       const upToDate = installed?.community?.version === preset.version;
@@ -459,13 +491,15 @@ export function createPresetBrowser({
     if (!active || destroyed) return;
     snapshot = getPhoto(); snapshot = snapshot ? structuredClone(snapshot) : null;
     if (selectedPhotoName !== snapshot?.name) {
-      selectedPhotoName = snapshot?.name; selected = null; detailDismissed = false;
+      selectedPhotoName = snapshot?.name; selected = null; detailDismissed = true; lastAdjustmentId = null;
     }
     const adjustment = getAdjustment();
     if (adjustment && ((!selected && !detailDismissed) || adjustment.id !== lastAdjustmentId)) {
-      selected = (getPresets() || []).find(item => presetKey(item) === adjustment.id) ||
+      selected = (presetKey(selected || {}) === adjustment.id ? selected : null) ||
+        (getPresets() || []).find(item => presetKey(item) === adjustment.id) ||
+        (getCommunity()?.presets || []).map(item => ({ ...item, collection: 'community' })).find(item => presetKey(item) === adjustment.id) ||
         { id: adjustment.id, name: adjustment.name, collection: 'applied', description: tr('Saved with this photo.') };
-      if (selected.collection !== 'applied') collection = selected.collection || 'yours';
+      collection = selected.collection === 'applied' ? 'yours' : selected.collection || 'yours';
       onSelect(selected);
     }
     lastAdjustmentId = adjustment?.id || null;
@@ -474,7 +508,7 @@ export function createPresetBrowser({
     const inventory = collection === 'community' ? (remote.presets || []).map((preset) => ({ ...preset, collection: 'community' })) : getPresets() || [];
     const isCommunity = collection === 'community';
     const hiddenIds = getHidden();
-    hiddenFilter.hidden = collection !== 'builtin';
+    hiddenFilter.hidden = collection !== 'builtin' || !hiddenIds.length;
     hiddenFilter.disabled = !hiddenIds.length;
     hiddenFilter.textContent = hiddenIds.length ? tr('Show hidden ({count})', {count: formatNumber(hiddenIds.length)}) : tr("Show hidden");
     hiddenFilter.setAttribute('aria-pressed', String(showHidden));
@@ -493,11 +527,6 @@ export function createPresetBrowser({
       collection: isCommunity ? null : collection, tag: isCommunity ? tag.value : '', hidden: hiddenIds, showHidden });
     if (isCommunity && order.value === 'featured') filtered = filtered.filter((preset) => preset.featured);
     if (isCommunity && order.value === 'new') filtered.sort((a, b) => String(b.publishedAt || b.updatedAt || '').localeCompare(String(a.publishedAt || a.updatedAt || '')));
-    page = Math.min(page, Math.max(0, Math.ceil(filtered.length / pageSize) - 1));
-    const shown = filtered.slice(page * pageSize, (page + 1) * pageSize);
-    previous.disabled = page === 0; next.disabled = (page + 1) * pageSize >= filtered.length;
-    pages.hidden = filtered.length <= pageSize;
-    pages.querySelector('span').textContent = tr('{first}–{last} of {total}', {first: formatNumber(page * pageSize + 1), last: formatNumber(page * pageSize + shown.length), total: formatNumber(filtered.length)});
     tabs.forEach((tab) => { const current = tab.dataset.collection === collection; tab.setAttribute('aria-selected', String(current)); tab.tabIndex = current ? 0 : -1; });
     favoriteFilter.setAttribute('aria-pressed', String(favoritesOnly));
     const busy = !isCommunity && loading;
@@ -507,68 +536,153 @@ export function createPresetBrowser({
         : collection === 'yours' ? tr('Save your current look, import presets, or add one from Community.')
         : communityLoading ? '' : tr('No presets in this collection yet.')
       : '';
-    grid.replaceChildren(); cards.clear(); detail.hidden = !selected;
-    if (selected) {
+    grid.replaceChildren(); cards.clear(); amountRows.clear(); detail.hidden = !selected || detailDismissed;
+    if (selected && !detailDismissed) {
       // Refresh an installed listing after updates while retaining remote identity.
       selected = inventory.find((preset) => presetKey(preset) === presetKey(selected)) || selected;
       void renderDetail(selected, snapshot);
     }
     if (busy) return;
-    const requests = [];
-    for (const preset of shown) {
-      const article = element('article', 'preset-browser-card');
-      const choose = button('', () => void activatePreset(preset), 'preset-browser-apply');
-      choose.setAttribute('aria-label', tr('Toggle {name}', {name: preset.name}));
-      const frame = element('span', 'preset-browser-image');
-      const img = element('img', ''); img.alt = tr('{name} preview', {name: preset.name}); img.hidden = true;
-      const previewStatus = element('span', 'preset-browser-preview-status');
-      const example = (preset.previews || []).find((item) => presetWebURL(item.after));
-      previewStatus.textContent = example ? '' : !snapshot?.name ? tr('Select a photo to preview') : tr('Click to apply');
-      if (example) { img.src = presetWebURL(example.after); img.hidden = false; img.loading = 'lazy'; previewStatus.hidden = true; }
-      img.onerror = () => { img.hidden = true; previewStatus.hidden = false; previewStatus.textContent = tr("Preview unavailable"); };
-      frame.append(img, previewStatus);
-      choose.append(frame, element('strong', 'preset-browser-name', preset.name),
-        element('span', 'preset-browser-source', preset.author?.name || SOURCE_LABELS[preset.source] || 'LightTable'));
-      if (hiddenIds.includes(presetKey(preset))) choose.append(element('span', 'preset-browser-source', tr("Hidden")));
-      const ignored = preset.conversion?.ignored || [];
-      if (ignored.length) choose.append(element('span', 'preset-browser-warning', trn('{count} unsupported setting skipped', '{count} unsupported settings skipped', ignored.length)));
-      const favorite = button('', () => toggleFavorite(preset), 'preset-browser-favorite');
-      updateFavoriteButton(favorite, preset);
-      article.append(choose, favorite); grid.append(article); cards.set(presetKey(preset), choose);
-      if (!isCommunity && !example && getPreview && canApply(preset) && snapshot?.name) {
-        const adjustment = getAdjustment();
-        const cacheKey = JSON.stringify([snapshot.name, snapshot.engine,
-          adjustment?.base || snapshot.state, preset]);
-        const cached = previewCache.get(cacheKey);
-        if (cached) {
-          img.src = cached instanceof Blob ? URL.createObjectURL(cached) : cached;
-          if (cached instanceof Blob) urls.add(img.src);
-          img.hidden = false; previewStatus.hidden = true;
-        } else {
-          previewStatus.textContent = tr('Rendering preview…');
-          requests.push({ preset: structuredClone(preset), photo: snapshot, image: img, previewStatus, cacheKey });
+    if (adjustment && !(getPresets() || []).some(item => presetKey(item) === adjustment.id) &&
+        !search.value && !favoritesOnly && collection === 'yours') {
+      filtered.unshift({ id: adjustment.id, name: adjustment.name, collection: 'applied', description: tr('Saved with this photo.') });
+      status.textContent = '';
+    }
+    const organization = normalizePresetPacks(getOrganization());
+    const searching = !!search.value.trim() || favoritesOnly || !!(isCommunity && tag.value);
+    const packs = groupPresetPacks(filtered, organization, collection, { includeEmpty: !searching });
+    queue.replace([]);
+    const previewRequests = new Map();
+    const observedPhoto = snapshot;
+    const observer = new IntersectionObserver(entries => {
+      if (!active || destroyed || snapshot !== observedPhoto) return;
+      const visible = [];
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const request = previewRequests.get(entry.target);
+        if (request) { visible.push(request); previewRequests.delete(entry.target); }
+        observer.unobserve(entry.target);
+      }
+      queue.append(visible);
+    }, { rootMargin: '120px' });
+    previewObserver = observer;
+    for (const pack of packs) {
+      const section = element('section', 'preset-browser-pack');
+      const header = element('div', 'preset-browser-pack-header');
+      const expanded = searching || !organization.collapsed.includes(pack.id);
+      const contents = element('div', 'preset-browser-pack-list');
+      contents.id = `preset-pack-${grid.childElementCount}`;
+      const disclosure = button('', () => {
+        const state = normalizePresetPacks(getOrganization());
+        const open = disclosure.getAttribute('aria-expanded') === 'true';
+        state.collapsed = open ? [...new Set([...state.collapsed, pack.id])] : state.collapsed.filter(id => id !== pack.id);
+        onOrganizationChange(state); render();
+        [...grid.querySelectorAll('[data-pack-id]')].find(el => el.dataset.packId === pack.id)?.focus({ preventScroll: true });
+      }, 'preset-browser-pack-disclosure');
+      disclosure.dataset.packId = pack.id;
+      disclosure.setAttribute('aria-expanded', String(expanded));
+      disclosure.setAttribute('aria-controls', contents.id);
+      const chevron = element('span', 'preset-browser-pack-chevron', '›'); chevron.setAttribute('aria-hidden', 'true');
+      disclosure.append(chevron, element('strong', '', pack.name), element('span', 'preset-browser-pack-count', formatNumber(pack.presets.length)));
+      header.append(disclosure);
+      if (pack.custom) {
+        const rename = button('…', async () => {
+          const name = await requestPackName?.(pack.name);
+          if (!name?.trim() || destroyed) return;
+          const state = normalizePresetPacks(getOrganization());
+          state.packs = state.packs.map(item => item.id === pack.id ? { ...item, name: name.trim().slice(0, 80) } : item);
+          onOrganizationChange(state); render();
+        }, 'preset-browser-pack-rename');
+        rename.setAttribute('aria-label', tr('Rename pack'));
+        header.append(rename);
+        const remove = button('×', () => {
+          const state = normalizePresetPacks(getOrganization());
+          state.packs = state.packs.filter(item => item.id !== pack.id);
+          state.collapsed = state.collapsed.filter(id => id !== pack.id);
+          onOrganizationChange(normalizePresetPacks(state)); render();
+        }, 'preset-browser-pack-remove');
+        remove.setAttribute('aria-label', tr('Remove pack')); header.append(remove);
+        header.ondragover = event => {
+          if (!draggedPreset || (draggedPreset.collection || 'yours') !== collection) return;
+          event.preventDefault(); event.dataTransfer.dropEffect = 'move'; header.classList.add('is-drop-target');
+        };
+        header.ondragleave = () => header.classList.remove('is-drop-target');
+        header.ondrop = event => {
+          event.preventDefault(); header.classList.remove('is-drop-target');
+          if (draggedPreset) moveToPack(draggedPreset, pack.id);
+        };
+      }
+      section.append(header, contents); grid.append(section);
+      contents.hidden = !expanded;
+      if (!expanded) continue;
+      if (!pack.presets.length) contents.append(element('p', 'preset-browser-empty-pack', tr('Drag presets here, or use Move to pack in preset details.')));
+      for (const preset of pack.presets) {
+        const article = element('article', 'preset-browser-card');
+        article.dataset.presetId = presetKey(preset);
+        const choose = button('', () => void activatePreset(preset), 'preset-browser-apply');
+        choose.setAttribute('aria-label', tr('Toggle {name}', {name: preset.name}));
+        choose.disabled = !snapshot?.name || preset.compatible === false ||
+          (preset.collection !== 'community' && adjustment?.id !== presetKey(preset) && !canApply(preset));
+        choose.draggable = preset.collection !== 'applied';
+        choose.ondragstart = event => {
+          draggedPreset = preset; event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/plain', preset.name);
+        };
+        choose.ondragend = () => { draggedPreset = null; grid.querySelectorAll('.is-drop-target').forEach(el => el.classList.remove('is-drop-target')); };
+        const frame = element('span', 'preset-browser-image');
+        const img = element('img', ''); img.alt = tr('{name} preview', {name: preset.name}); img.hidden = true; img.draggable = false;
+        const previewStatus = element('span', 'preset-browser-preview-status', '◈');
+        previewStatus.title = !snapshot?.name ? tr('Select a photo to preview') : tr('Click to apply');
+        const example = (preset.previews || []).find(item => presetWebURL(item.after));
+        if (example) { img.src = presetWebURL(example.after); img.hidden = false; img.loading = 'lazy'; previewStatus.hidden = true; }
+        img.onerror = () => { img.hidden = true; previewStatus.hidden = false; previewStatus.title = tr('Preview unavailable'); };
+        frame.append(img, previewStatus);
+        const copy = element('span', 'preset-browser-row-copy');
+        copy.append(element('strong', 'preset-browser-name', preset.name),
+          element('span', 'preset-browser-source', preset.author?.name || SOURCE_LABELS[preset.source] || 'LightTable'));
+        if (hiddenIds.includes(presetKey(preset))) copy.append(element('span', 'preset-browser-source', tr('Hidden')));
+        const ignored = preset.conversion?.ignored || [];
+        if (ignored.length) copy.append(element('span', 'preset-browser-warning', trn('{count} unsupported setting skipped', '{count} unsupported settings skipped', ignored.length)));
+        const check = element('span', 'preset-browser-enabled', '✓'); check.setAttribute('aria-hidden', 'true');
+        choose.append(frame, copy, check);
+        const favorite = button('', () => toggleFavorite(preset), 'preset-browser-favorite');
+        updateFavoriteButton(favorite, preset);
+        const info = button('…', () => showDetail(preset), 'preset-browser-info');
+        info.setAttribute('aria-label', tr('Preset details: {name}', {name: preset.name}));
+        article.append(choose, favorite, info, createAmountRow(preset, snapshot, adjustment));
+        contents.append(article); cards.set(presetKey(preset), choose);
+        if (!isCommunity && !example && getPreview && canApply(preset) && snapshot?.name) {
+          const cacheKey = JSON.stringify([snapshot.name, snapshot.engine, adjustment?.base || snapshot.state, preset]);
+          const cached = previewCache.get(cacheKey);
+          if (cached) {
+            img.src = cached instanceof Blob ? URL.createObjectURL(cached) : cached;
+            if (cached instanceof Blob) urls.add(img.src);
+            img.hidden = false; previewStatus.hidden = true;
+          } else {
+            previewRequests.set(frame, { preset: structuredClone(preset), photo: snapshot, image: img, previewStatus, cacheKey, width: 160 });
+            previewObserver.observe(frame);
+          }
         }
       }
     }
-    select(selected ? presetKey(selected) : getSelectedName()); queue.replace(requests);
+    select();
   }
-  search.addEventListener('input', () => { cancel(); page = 0; searchTimer = setTimeout(render, 160); });
-  hiddenFilter.onclick = () => { showHidden = !showHidden; page = 0; render(); };
-  favoriteFilter.onclick = () => { favoritesOnly = !favoritesOnly; page = 0; render(); };
+  search.addEventListener('input', () => { cancel(); searchTimer = setTimeout(render, 160); });
+  hiddenFilter.onclick = () => { showHidden = !showHidden; render(); };
+  favoriteFilter.onclick = () => { favoritesOnly = !favoritesOnly; render(); };
   tabs.forEach((tab, index) => {
     tab.onclick = () => {
-      collection = tab.dataset.collection; selected = null; detailDismissed = true; page = 0; render();
+      collection = tab.dataset.collection; selected = null; detailDismissed = true; render();
       if (collection === 'community' && !communityRequested) void ensureCommunity();
     };
     tab.onkeydown = (event) => {
       const delta = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
       if (!delta) return;
-      event.preventDefault(); const target = tabs[(index + delta + tabs.length) % tabs.length]; target.click(); target.focus();
+      event.preventDefault(); event.stopPropagation(); const target = tabs[(index + delta + tabs.length) % tabs.length]; target.click(); target.focus();
     };
   });
-  order.onchange = tag.onchange = () => { page = 0; render(); };
+  order.onchange = tag.onchange = () => { render(); };
   refresh.onclick = () => void ensureCommunity(true);
-  previous.onclick = () => { page--; render(); }; next.onclick = () => { page++; render(); };
   return {
     refresh(options = {}) { loading = options.loading ?? loading; render(); },
     setActive(value) { active = !!value; if (active) render(); else { cancel(); activationGeneration++; activationController?.abort(); } },

@@ -1198,7 +1198,7 @@
           "steps": [
             "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
             "Gebruik de ster naast een voorinstelling om deze als favoriet te markeren; Favorieten filtert de huidige verzameling.",
-            "Kies in Community Aanbevolen, Nieuw of Alles en gebruik Onderwerp om de verzameling te verfijnen. Selecteer een voorinstelling om de beschrijving, maker, versie, Film-gedrag en beschikbare voorbeeldfoto's te zien."
+            "Kies in Community voor Uitgelicht, Nieuw of Alles en gebruik Onderwerp om de collectie te verfijnen. Gebruik de knop … naast een voorinstelling om de beschrijving, maker, versie, het Film-gedrag en beschikbare voorbeeldfoto’s te bekijken."
           ],
           "tips": [
             "Featured is een redactionele collectie, geen populariteitsranglijst.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Voorinstellingspakketten organiseren",
+          "paragraphs": [
+            "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in de pakketten Kleur, Film en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+            "Kies Nieuw pakket… om een benoemd pakket in de huidige collectie te maken. Sleep een voorinstelling naar de kop ervan, of open de details van de voorinstelling via … en kies Verplaatsen naar pakket. Gebruik … naast een pakket om de naam te wijzigen. Als je een pakket verwijdert, gaan de voorinstellingen terug naar hun standaardgroepen zonder te worden gewist. De pakketindeling wordt op deze computer opgeslagen."
+          ]
+        },
+        {
           "title": "Toepassen en Hoeveelheid aanpassen",
           "paragraphs": [
-            "Klik op een voorinstellingskaart om deze direct op de hoofdfoto toe te passen. Klik nogmaals op dezelfde kaart, of gebruik de Aan/Uit-knop, om deze uit te schakelen. Je foto blijft op deze computer."
+            "Klik op een voorinstellingsrij om de voorinstelling meteen toe te passen. De schuifregelaar Hoeveelheid verschijnt onder de rij. Klik nogmaals op dezelfde rij om de voorinstelling uit te schakelen en de schuifregelaar te verbergen. Je foto blijft op deze computer."
           ],
           "steps": [
-            "Selecteer een foto en klik op een voorinstellingskaart. De geselecteerde voorinstelling toont Hoeveelheid onder de naam.",
+            "Selecteer een foto, klap een pakket uit en klik op een voorinstellingsrij.",
             "Sleep Hoeveelheid van 0% naar 100%. Nul zet de bewerking terug naar vóór de voorinstelling; 100% gebruikt de volledige voorinstelling. Dubbelklik op Hoeveelheid om deze terug te zetten naar 100%.",
             "Klik op een andere voorinstelling om van look te wisselen. Ongedaan maken en Opnieuw herstellen de selectie van voorinstellingen, de ingeschakelde status en de hoeveelheid. De geselecteerde voorinstelling en hoeveelheid worden met de foto opgeslagen."
           ],
           "tips": [
             "Filmstock, Film aan/uit en andere vaste keuzes schakelen bij elke hoeveelheid boven nul. Toon, kleur, krommen en numerieke aanpassingen variëren met Hoeveelheid. Maker-voorbeelden blijven gescheiden van je foto.",
-            "Door tussen voorinstellingskaarten te wisselen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet opstapelen. Handmatige wijzigingen buiten de voorinstelling, zoals belichting voor een Look, blijven behouden. Het handmatig wijzigen van een instelling die door de voorinstelling wordt beheerd, beëindigt de Hoeveelheid-aanpassing; de huidige bewerking wordt daarna het startpunt voor de volgende voorinstelling."
+            "Bij het wisselen tussen voorinstellingsrijen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet worden opgestapeld. Handmatige wijzigingen buiten de voorinstelling, zoals de belichting bij een look, blijven behouden. Als je een instelling die door de voorinstelling wordt aangestuurd handmatig wijzigt, eindigt de aanpassing via Hoeveelheid; de huidige bewerking wordt dan de basis voor de volgende voorinstelling."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Toevoegen aan Uw downloadt en slaat het geselecteerde communityrecept op zonder het toe te passen. Geïnstalleerde recepten werken offline. Uw bestaande fotobewerkingen slaan hun instellingen afzonderlijk van de voorinstelling op."
           ],
           "steps": [
-            "Klik op een Community-voorinstelling om die op je foto te gebruiken en klik daarna op Toevoegen aan Jouw om een offline kopie te bewaren.",
+            "Klik op een Community-voorinstelling om die op je foto toe te passen. Open daarna de details via … en klik op Toevoegen aan Jouw om een offline kopie te bewaren.",
             "Gebruik het later vanuit Uw, of keer terug naar Community om de openbare voorinstellingspagina te bekijken.",
             "Klik op Vernieuwen om de catalogus te controleren. Wanneer een nieuwere versie wordt vermeld, vervangt Bijwerken in Uw het opgeslagen recept alleen wanneer u dat kiest."
           ],
@@ -1270,7 +1277,7 @@
             "Community-publicatie wordt beoordeeld. De indieningssectie toont de exacte Ontwikkel- en Film-instellingen in de voorbereide look, het Film-gedrag en de fotocorrecties die behouden blijven. Er wordt niets geüpload wanneer u deze samenvatting bekijkt of een download voorbereidt."
           ],
           "steps": [
-            "Sla een voorinstelling op in Uw, selecteer deze en bekijk de samenvatting van meegeleverde instellingen onder Community-indiening.",
+            "Sla een voorinstelling op in Jouw, open de details via … en controleer het overzicht van de opgenomen instellingen onder Inzending van community.",
             "Klik op Community-indiening voorbereiden… en wacht tot de lokale voorbeelden zijn gerenderd. Sla de ZIP op met de voorinstelling, drie gelicentieerde voor/na-fotoparen, fotocredits en rechtennotities.",
             "Open het pakket en bekijk de voorbeelden. U kunt ook uw eigen foto selecteren en Voorbeeld downloaden op deze foto gebruiken om een JPEG van 960 pixels van de gedeelde look op te slaan zonder de bewerking te wijzigen.",
             "Klik op Indieningsformulier openen, voeg het pakket en eventuele toegestane extra voorbeelden toe, en voeg uw makergegevens, beschrijving en publicatierechten toe voordat u indient."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
 }

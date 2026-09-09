@@ -1198,7 +1198,7 @@
           "steps": [
             "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
             "Użyj gwiazdki obok ustawienia wstępnego, aby dodać je do ulubionych; Ulubione filtruje bieżącą kolekcję.",
-            "W Community wybierz Featured, New lub All i użyj Subject, aby zawęzić kolekcję. Wybierz preset, aby zobaczyć jego opis, twórcę, wersję, zachowanie filmu oraz dostępne zdjęcia przykładowe."
+            "W kolekcji Społeczność wybierz Wyróżnione, Nowy lub Wszystkie i użyj opcji Obiekt, aby zawęzić kolekcję. Użyj przycisku … obok presetu, aby zobaczyć jego opis, twórcę, wersję, działanie opcji Film i dostępne przykładowe zdjęcia."
           ],
           "tips": [
             "Polecane to kolekcja redakcyjna, a nie ranking popularności.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Organizowanie pakietów presetów",
+          "paragraphs": [
+            "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo podzielone na pakiety Kolor, Film i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+            "Wybierz Nowy pakiet…, aby utworzyć nazwany pakiet w bieżącej kolekcji. Przeciągnij preset na jego nagłówek albo otwórz szczegóły presetu przyciskiem … i wybierz Przenieś do pakietu. Użyj … obok pakietu, aby zmienić jego nazwę. Usunięcie pakietu przywraca jego presety do grup domyślnych, nie usuwając samych presetów. Układ pakietów jest zapisywany na tym komputerze."
+          ]
+        },
+        {
           "title": "Zastosuj i dostosuj Ilość",
           "paragraphs": [
-            "Kliknij kartę presetu, aby od razu zastosować go do głównego zdjęcia. Kliknij tę samą kartę ponownie albo użyj przycisku Włączone/Wył., aby go wyłączyć. Twoje zdjęcie pozostaje na tym komputerze."
+            "Kliknij wiersz presetu, aby od razu go zastosować. Suwak Ilość pojawi się pod wierszem. Kliknij ponownie ten sam wiersz, aby wyłączyć preset i ukryć suwak. Zdjęcie pozostaje na tym komputerze."
           ],
           "steps": [
-            "Wybierz zdjęcie i kliknij kartę presetu. Wybrany preset pokazuje Ilość pod swoją nazwą.",
+            "Wybierz zdjęcie, rozwiń pakiet i kliknij wiersz presetu.",
             "Przeciągnij Ilość od 0% do 100%. Zero przywraca edycję sprzed presetu; 100% używa pełnego presetu. Kliknij dwukrotnie Ilość, aby zresetować ją do 100%.",
             "Kliknięcie innego presetu zmienia wygląd. Cofnij i Ponów przywracają wybór presetu, stan włączenia i ilość. Wybrany preset i ilość są zapisywane z zdjęciem."
           ],
           "tips": [
             "Nośnik filmowy, Film włącz/wył. oraz inne stałe opcje przełączają się przy każdej ilości powyżej zera. Ton, kolor, krzywe i regulacje liczbowe zmieniają się wraz z Ilością. Przykłady twórcy pozostają oddzielone od Twojego zdjęcia.",
-            "Przełączanie kart presetu używa edycji sprzed pierwszego presetu, aby wyglądy się nie kumulowały. Ręczne zmiany poza presetem, takie jak ekspozycja dla Wygląd, są zachowywane. Ręczna zmiana ustawienia kontrolowanego przez preset kończy jego dostosowanie Ilości; bieżąca edycja staje się wtedy punktem wyjścia dla następnego presetu."
+            "Przełączanie wierszy presetów korzysta z edycji sprzed zastosowania pierwszego presetu, dzięki czemu style się nie nakładają. Ręczne zmiany poza zakresem presetu, takie jak ekspozycja w przypadku stylu, są zachowywane. Ręczna zmiana ustawienia kontrolowanego przez preset kończy jego regulację Ilość; bieżąca edycja staje się wtedy podstawą dla następnego presetu."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Add to Yours pobiera i zapisuje wybraną recepturę społeczności bez jej stosowania. Zainstalowane receptury działają offline. Istniejące edycje zdjęć zapisują swoje ustawienia oddzielnie od presetu."
           ],
           "steps": [
-            "Kliknij preset Społeczność, aby użyć go na zdjęciu, a następnie kliknij Dodaj do Twoje, aby zachować kopię offline.",
+            "Kliknij preset w kolekcji Społeczność, aby użyć go na zdjęciu, następnie otwórz jego szczegóły przyciskiem … i kliknij Dodaj do Twoje, aby zachować kopię dostępną offline.",
             "Możesz użyć tego później z Yours albo wrócić do Community, aby sprawdzić publiczną stronę ustawienia wstępnego.",
             "Kliknij Odśwież, aby sprawdzić katalog. Gdy widoczna jest nowsza wersja, Update in Yours zastępuje zapisaną recepturę tylko wtedy, gdy ją wybierzesz."
           ],
@@ -1270,7 +1277,7 @@
             "Publikacja w Community jest sprawdzana. Sekcja zgłoszenia pokazuje dokładne ustawienia Develop i Film w przygotowanym wyglądzie, jego zachowanie filmu oraz korekcje zdjęcia, które zachowuje. Nic nie jest przesyłane podczas sprawdzania tego podsumowania ani przygotowywania pobierania."
           ],
           "steps": [
-            "Zapisz preset w Yours, wybierz go i przejrzyj podsumowanie uwzględnionych ustawień w sekcji zgłoszenia do Community.",
+            "Zapisz preset w kolekcji Twoje, otwórz jego szczegóły przyciskiem … i sprawdź podsumowanie zawartych ustawień w sekcji Zgłoszenie społeczności.",
             "Kliknij Prepare community submission… i poczekaj na lokalne renderowanie przykładów. Zapisz plik ZIP zawierający preset, trzy licencjonowane pary zdjęć przed/po, informacje o prawach do zdjęć i uwagi dotyczące praw.",
             "Otwórz pakiet i sprawdź przykłady. Możesz też wybrać własne zdjęcie i użyć Download example on this photo, aby zapisać plik JPEG 960 pikseli z udostępnionym wyglądem bez zmiany edycji.",
             "Kliknij Otwórz formularz zgłoszeniowy, dołącz pakiet i wszelkie dodatkowe dozwolone przykłady, a przed wysłaniem dodaj dane twórcy, opis i uprawnienia do publikacji."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
 }

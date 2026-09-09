@@ -1198,7 +1198,7 @@
           "steps": [
             "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
             "Gunakan bintang di samping prasetel untuk menjadikannya favorit; Favorit memfilter koleksi saat ini.",
-            "Di Komunitas, pilih Unggulan, Baru, atau Semua dan gunakan Subjek untuk mempersempit koleksi. Pilih preset untuk melihat deskripsi, pembuat, versi, perilaku Film, dan foto contoh yang tersedia."
+            "Di Komunitas, pilih Unggulan, Baru, atau Semua dan gunakan Subjek untuk mempersempit koleksi. Gunakan tombol … di samping preset untuk melihat deskripsi, pembuat, versi, perilaku Film, dan foto contoh yang tersedia."
           ],
           "tips": [
             "Featured adalah koleksi editorial, bukan peringkat popularitas.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Mengatur paket preset",
+          "paragraphs": [
+            "Preset ditampilkan sebagai baris horizontal dalam paket yang dapat diciutkan. Tampilan bawaan awalnya dikelompokkan dalam paket Warna, Film, dan Hitam Putih. Klik judul paket untuk meluaskan atau menciutkannya.",
+            "Pilih Paket baru… untuk membuat paket bernama dalam koleksi saat ini. Seret preset ke judul paket, atau buka detail preset melalui … lalu pilih Pindahkan ke paket. Gunakan … di samping paket untuk mengganti namanya. Menghapus paket mengembalikan presetnya ke kelompok default tanpa menghapus preset tersebut. Susunan paket disimpan di komputer ini."
+          ]
+        },
+        {
           "title": "Terapkan dan sesuaikan Jumlah",
           "paragraphs": [
-            "Klik kartu preset untuk langsung menerapkannya pada foto utama. Klik kartu yang sama lagi, atau gunakan tombol Aktif/Mati-nya, untuk menonaktifkannya. Foto Anda tetap berada di komputer ini."
+            "Klik baris preset untuk langsung menerapkannya. Penggeser Jumlah muncul di bawah baris tersebut. Klik baris yang sama lagi untuk menonaktifkannya dan menyembunyikan penggeser. Foto Anda tetap berada di komputer ini."
           ],
           "steps": [
-            "Pilih foto dan klik kartu preset. Preset terpilih menampilkan Jumlah di bawah namanya.",
+            "Pilih foto, luaskan paket, lalu klik baris preset.",
             "Seret Jumlah dari 0% ke 100%. Nol memulihkan pengeditan sebelum preset; 100% menggunakan preset penuh. Klik dua kali Jumlah untuk mengatur ulang ke 100%.",
             "Klik preset lain untuk mengganti tampilan. Urungkan dan Ulangi memulihkan pilihan preset, status aktif, dan jumlah. Preset terpilih dan jumlahnya disimpan bersama foto."
           ],
           "tips": [
             "Stok film, Film aktif/nonaktif, dan pilihan tetap lainnya beralih pada jumlah apa pun di atas nol. Nada, warna, kurva, dan penyesuaian numerik bervariasi sesuai Jumlah. Contoh pembuat tetap terpisah dari foto Anda.",
-            "Beralih kartu preset menggunakan pengeditan dari sebelum preset pertama sehingga tampilan tidak menumpuk. Perubahan manual di luar preset, seperti eksposur untuk sebuah Tampilan, tetap dipertahankan. Mengubah secara manual pengaturan yang dikendalikan oleh preset akan mengakhiri penyesuaian Jumlah-nya; pengeditan saat ini kemudian menjadi dasar untuk preset berikutnya."
+            "Beralih antarbaris preset menggunakan hasil edit sebelum preset pertama agar tampilan tidak bertumpuk. Perubahan manual di luar preset, seperti eksposur untuk suatu tampilan, tetap dipertahankan. Mengubah pengaturan yang dikendalikan preset secara manual mengakhiri penyesuaian Jumlah; hasil edit saat ini kemudian menjadi dasar untuk preset berikutnya."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Tambahkan ke Milik Anda mengunduh dan menyimpan resep komunitas yang dipilih tanpa menerapkannya. Resep yang diinstal berfungsi secara offline. Edit foto Anda yang sudah ada menyimpan pengaturannya secara terpisah dari preset."
           ],
           "steps": [
-            "Klik preset Komunitas untuk menggunakannya pada foto Anda, lalu klik Tambahkan ke Milik Anda untuk menyimpan salinan luring.",
+            "Klik preset Komunitas untuk menggunakannya pada foto Anda, lalu buka detailnya melalui … dan klik Tambahkan ke Milik Anda untuk menyimpan salinan offline.",
             "Gunakan nanti dari Milik Anda, atau kembali ke Komunitas untuk meninjau halaman prasetel publik.",
             "Klik Segarkan untuk memeriksa katalog. Saat versi yang lebih baru tercantum, Perbarui di Milik Anda hanya mengganti resep yang disimpan ketika Anda memilihnya."
           ],
@@ -1270,7 +1277,7 @@
             "Publikasi Komunitas ditinjau. Bagian pengiriman menampilkan pengaturan Pengembangan dan Film yang tepat dalam tampilan yang disiapkan, perilaku Filmmya, dan koreksi foto yang dipertahankannya. Tidak ada yang diunggah saat meninjau ringkasan ini atau menyiapkan unduhan."
           ],
           "steps": [
-            "Simpan preset di Milik Anda, pilih preset itu, lalu tinjau ringkasan pengaturan yang disertakan di bawah pengiriman Komunitas.",
+            "Simpan preset di Milik Anda, buka detailnya melalui …, lalu tinjau ringkasan pengaturan yang disertakan pada Pengajuan komunitas.",
             "Klik Siapkan pengiriman komunitas… dan tunggu contoh lokal dirender. Simpan ZIP yang berisi preset, tiga pasang foto sebelum/sesudah berlisensi, kredit foto, dan catatan hak.",
             "Buka paket dan periksa contohnya. Anda juga dapat memilih foto Anda sendiri dan menggunakan Unduh contoh pada foto ini untuk menyimpan JPEG 960 piksel dari tampilan yang dibagikan tanpa mengubah edit.",
             "Klik Buka formulir pengiriman, lampirkan paket dan contoh tambahan apa pun yang diizinkan, lalu tambahkan detail pembuat, deskripsi, dan izin publikasi Anda sebelum mengirim."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
 }

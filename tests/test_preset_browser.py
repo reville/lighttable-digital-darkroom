@@ -10,6 +10,62 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @unittest.skipUnless(shutil.which("node"), "Node required")
 class PresetBrowserTests(unittest.TestCase):
+    def test_pack_moves_preserve_recipes_duplicate_names_and_collection_boundaries(self):
+        result = self.run_js("""
+import {groupPresetPacks,movePresetToPack} from './web/preset-packs.js';
+const presets=[{id:'a',name:'Warm',collection:'builtin',tags:[]},
+  {id:'b',name:'Warm',collection:'builtin',tags:['Film']},
+  {id:'c',name:'Mono',collection:'builtin',tags:['B&W']}];
+const organization={packs:[{id:'pack-one',name:'Travel',collection:'builtin'},
+  {id:'pack-two',name:'Personal',collection:'yours'}],assignments:{},collapsed:[]};
+const before=JSON.stringify([presets,organization]);
+const moved=movePresetToPack(organization,presets[0],'pack-one');
+const invalid=movePresetToPack(moved,presets[1],'pack-two');
+const groups=state=>groupPresetPacks(presets,state,'builtin').map(p=>[p.id,p.presets.map(p=>p.id)]);
+const restored=movePresetToPack(moved,presets[0],'');
+console.log(JSON.stringify({moved:groups(moved),invalid:invalid.assignments,
+  restored:groups(restored),unchanged:before===JSON.stringify([presets,organization])}));
+""")
+        self.assertTrue(result['unchanged'])
+        self.assertEqual(result['invalid'], {'a': 'pack-one'})
+        self.assertEqual(result['moved'], [['pack-one', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c']]])
+        self.assertEqual(result['restored'], [['pack-one', []], ['builtin-color', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c']]])
+
+    def test_removed_or_invalid_packs_return_presets_to_default_groups(self):
+        result = self.run_js("""
+import {groupPresetPacks,normalizePresetPacks} from './web/preset-packs.js';
+const preset={id:'a',name:'A',collection:'builtin'};
+const state={packs:[null,{id:'builtin-color',name:'Invalid',collection:'builtin'},
+  {id:'pack-good',name:'  Keep  ',collection:'builtin'},
+  {id:'pack-good',name:'Duplicate',collection:'builtin'}],
+  assignments:{a:'pack-removed'},collapsed:['builtin-color','builtin-color',null]};
+console.log(JSON.stringify({normalized:normalizePresetPacks(state),
+  filtered:groupPresetPacks([preset],state,'builtin',{includeEmpty:false}).map(p=>[p.id,p.presets.length]),
+  nullState:normalizePresetPacks(null)}));
+""")
+        self.assertEqual(result['normalized']['packs'], [{'id': 'pack-good', 'name': 'Keep', 'collection': 'builtin'}])
+        self.assertEqual(result['normalized']['assignments'], {})
+        self.assertEqual(result['normalized']['collapsed'], ['builtin-color'])
+        self.assertEqual(result['filtered'], [['builtin-color', 1]])
+        self.assertEqual(result['nullState'], {'packs': [], 'assignments': {}, 'collapsed': []})
+
+    def test_scrolled_previews_append_without_cancelling_visible_work(self):
+        result = self.run_js("""
+import {createPresetPreviewQueue} from './web/preset-browser.js';
+const started=[], delivered=[]; let resolveFirst,firstSignal;
+const queue=createPresetPreviewQueue({render:(item,{signal})=>{
+  started.push(item);
+  if(item==='first') {firstSignal=signal;return new Promise(resolve=>resolveFirst=resolve);}
+  return Promise.resolve(item);
+},onResult:(item)=>delivered.push(item)});
+queue.replace(['first']);queue.append(['scrolled']);
+resolveFirst('pixels'); await new Promise(resolve=>setImmediate(resolve));
+console.log(JSON.stringify({started,delivered,cancelled:firstSignal.aborted}));
+""")
+        self.assertEqual(result['started'], ['first', 'scrolled'])
+        self.assertEqual(result['delivered'], ['first', 'scrolled'])
+        self.assertFalse(result['cancelled'])
+
     def run_js(self, script):
         # App functions exercised below share the live localization dependency.
         script = "import {t as tr, tn as trn} from './web/i18n.js';\n" + script

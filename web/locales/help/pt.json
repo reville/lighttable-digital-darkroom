@@ -1198,7 +1198,7 @@
           "steps": [
             "Escolha Integrado, Yours ou Community. Pesquise por nome, descrição, criador ou assunto.",
             "Use a estrela ao lado de uma predefinição para adicioná-la aos Favoritos; Favoritos filtra a coleção atual.",
-            "Em Community, escolha Em destaque, Novo ou Todos e use Assunto para refinar a coleção. Selecione uma predefinição para ver sua descrição, criador, versão, comportamento de Film e fotos de exemplo disponíveis."
+            "Na Comunidade, escolha Em destaque, Novo ou Todos e use Assunto para filtrar a coleção. Use o botão … ao lado de uma predefinição para ver sua descrição, criador, versão, comportamento de Filme e fotos de exemplo disponíveis."
           ],
           "tips": [
             "Destaques é uma coleção editorial, não uma classificação de popularidade.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Organizar pacotes de predefinições",
+          "paragraphs": [
+            "As predefinições aparecem como linhas horizontais dentro de pacotes recolhíveis. Os estilos integrados começam nos pacotes Cor, Filme e Preto e branco. Clique no cabeçalho de um pacote para expandi-lo ou recolhê-lo.",
+            "Escolha Novo pacote… para criar um pacote com nome na coleção atual. Arraste uma predefinição até o cabeçalho dele ou abra os detalhes da predefinição em … e escolha Mover para pacote. Use … ao lado de um pacote para renomeá-lo. Ao remover um pacote, suas predefinições voltam aos grupos padrão sem serem excluídas. A organização dos pacotes é salva neste computador."
+          ]
+        },
+        {
           "title": "Aplicar e ajustar Quantidade",
           "paragraphs": [
-            "Clique em um cartão de predefinição para aplicá-la imediatamente à foto principal. Clique novamente no mesmo cartão, ou use o botão Ligado/Desligado dele, para desativá-la. Sua foto permanece neste computador."
+            "Clique na linha de uma predefinição para aplicá-la imediatamente. O controle deslizante Quantidade aparece abaixo da linha. Clique novamente na mesma linha para desativá-la e ocultar o controle. Sua foto permanece neste computador."
           ],
           "steps": [
-            "Selecione uma foto e clique em um cartão de predefinição. A predefinição selecionada mostra Quantidade abaixo do nome.",
+            "Selecione uma foto, expanda um pacote e clique na linha de uma predefinição.",
             "Arraste a Quantidade de 0% a 100%. Zero restaura a edição de antes da predefinição; 100% usa a predefinição completa. Clique duas vezes em Quantidade para redefini-la para 100%.",
             "Clique em outra predefinição para trocar a aparência. Desfazer e Refazer restauram a seleção da predefinição, o estado ativado e a quantidade. A predefinição selecionada e a quantidade são salvas com a foto."
           ],
           "tips": [
             "A película, Film ligado/desligado e outras opções fixas alternam com qualquer quantidade acima de zero. Tom, cor, curvas e ajustes numéricos variam com a Quantidade. Os exemplos de Criador permanecem separados da sua foto.",
-            "Trocar de cartões de predefinição usa a edição anterior à primeira predefinição, para que as aparências não se acumulem. Alterações manuais fora da predefinição, como exposição em uma Aparência, são mantidas. Alterar manualmente uma configuração controlada pela predefinição encerra o ajuste de Quantidade; a edição atual então se torna a base para a próxima predefinição."
+            "Ao alternar entre linhas de predefinições, é usada a edição anterior à primeira predefinição para que os estilos não se acumulem. Alterações manuais fora da predefinição, como a exposição para um estilo, são mantidas. Alterar manualmente uma configuração controlada pela predefinição encerra o ajuste de Quantidade; a edição atual passa a ser a base para a próxima predefinição."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Adicionar a Yours baixa e salva a receita da comunidade selecionada sem aplicá-la. As receitas instaladas funcionam offline. As edições de foto existentes armazenam suas configurações separadamente da predefinição."
           ],
           "steps": [
-            "Clique em uma predefinição da Comunidade para usá-la na sua foto e depois clique em Adicionar aos Seus para manter uma cópia offline.",
+            "Clique em uma predefinição da Comunidade para usá-la na foto, depois abra os detalhes dela em … e clique em Adicionar aos Seus para manter uma cópia offline.",
             "Use isso depois em Yours ou volte para Community para inspecionar a página pública da predefinição.",
             "Clique em Atualizar para verificar o catálogo. Quando uma versão mais recente for listada, Atualizar em Yours substitui a receita salva somente quando você a escolher."
           ],
@@ -1270,7 +1277,7 @@
             "A publicação em Community é revisada. A seção de envio mostra as configurações exatas de Develop e Film na aparência preparada, seu comportamento de Film e as correções de foto que ela mantém. Nada é enviado ao inspecionar este resumo ou preparar um download."
           ],
           "steps": [
-            "Salve uma predefinição em Yours, selecione-a e revise o resumo das configurações incluídas em Envio à Community.",
+            "Salve uma predefinição em Seus, abra os detalhes dela em … e revise o resumo das configurações incluídas em Envio da comunidade.",
             "Clique em Preparar envio à comunidade… e aguarde a renderização dos exemplos locais. Salve o ZIP contendo a predefinição, três pares licenciados de fotos antes/depois, créditos das fotos e notas de direitos.",
             "Abra o pacote e inspecione os exemplos. Você também pode selecionar sua própria foto e usar Baixar exemplo nesta foto para salvar um JPEG de 960 pixels da aparência compartilhada sem alterar a edição.",
             "Clique em Abrir formulário de envio, anexe o pacote e quaisquer exemplos adicionais permitidos e adicione seus dados de criador, descrição e permissões de publicação antes de enviar."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "8c4cbc4f36f1f391cd95f94509c6c56d13f68889b5c7129dd192502e1b3726cc"
 }
