@@ -26,6 +26,9 @@ class NativeCompareRedrawTests(unittest.TestCase):
     def test_zoom_submits_matching_geometry_and_pixels_before_returning(self):
         self.run_harness(ZOOM_HARNESS, "PASS: 8 atomic zoom frames", probe=True)
 
+    def test_spot_visualization_preserves_detail_and_tracks_current_preview(self):
+        self.run_harness(SPOT_HARNESS, "PASS: spot visualization")
+
     def run_harness(self, harness_source, expected_output, *, probe=False):
         swiftc = shutil.which("swiftc")
         if not swiftc:
@@ -42,6 +45,10 @@ class NativeCompareRedrawTests(unittest.TestCase):
             coordinates.save(temporary / "coordinates.png")
             coordinates.putdata([(x, y, 160) for y in range(256) for x in range(256)])
             coordinates.save(temporary / "coordinates-blue.png")
+            spots = Image.new("RGB", (1024, 512))
+            spots.putdata([(90, 90, 90) if x % 2 else (180, 180, 180)
+                           for y in range(512) for x in range(1024)])
+            spots.save(temporary / "spots.png")
 
             class QuietHandler(http.server.SimpleHTTPRequestHandler):
                 def log_message(self, *_args):
@@ -485,6 +492,114 @@ struct ZoomRedraw {
         print("PASS: 8 atomic zoom frames preserve submitted geometry and clipped source pixels")
         print("PASS: HTTP and cached surface swaps submit exactly one matching texture/grade/viewport")
         print("Drawable presentation callbacks: \(presentationCallbacks); background window, no visible-screen claim")
+    }
+}
+'''
+
+
+SPOT_HARNESS = r'''
+import AppKit
+import MetalKit
+
+@main struct SpotVisualization {
+    static func require(_ condition: @autoclosure () -> Bool, _ message: String) {
+        if !condition() { fputs("FAIL: \(message)\n", stderr); exit(1) }
+    }
+    static func wait(_ condition: () -> Bool) {
+        let deadline = Date().addingTimeInterval(5)
+        while !condition() && Date() < deadline {
+            RunLoop.main.run(until: Date().addingTimeInterval(0.01))
+        }
+        require(condition(), "timed out waiting for GPU completion")
+    }
+    static func main() {
+        guard MTLCreateSystemDefaultDevice() != nil else { exit(77) }
+        let focus = BackgroundFocusGuard()
+        defer { focus.verify() }
+        let app = NSApplication.shared
+        app.setActivationPolicy(.accessory); app.finishLaunching()
+        guard let renderer = NativePreviewRenderer() else { exit(1) }
+        let window = NSWindow(contentRect: NSRect(x:80,y:80,width:512,height:256),
+                              styleMask:[.titled], backing:.buffered, defer:false)
+        window.contentView!.addSubview(renderer.view)
+        renderer.view.framebufferOnly = false
+        renderer.setFrame(NSRect(x:0,y:0,width:512,height:256), visible:true)
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
+        window.orderBack(nil); focus.verify()
+        defer { window.orderOut(nil) }
+        let device = renderer.view.device!, queue = device.makeCommandQueue()!
+        let base = URL(string:CommandLine.arguments[1])!
+        var generation = 0
+        func load(_ name: String) {
+            generation += 1
+            let surface = NativeSurfaceDescription(payload:["url":name + ".png"], baseURL:base)!
+            var result: Result<NativePreviewTimings, Error>?
+            renderer.load(surface, generation:generation, grade:[:]) { result = $0 }
+            wait { result != nil }
+            if case .failure(let error) = result! { require(false, "surface: \(error)") }
+        }
+        load("spots")
+        var completed = -1, frame = 0
+        renderer.onInteractionPresented = { sample in
+            if sample["measurement"] as? String == "gpu-completed" {
+                completed = sample["frame"] as? Int ?? -1
+            }
+        }
+        func capture(_ enabled: Bool, _ threshold: Double) -> [UInt8] {
+            let drawable = renderer.view.currentDrawable!
+            frame += 1
+            renderer.recordInteraction(["frame":frame])
+            renderer.updateSpotVisualization(["enabled":enabled, "threshold":threshold])
+            wait { completed == frame }
+            let width = drawable.texture.width, height = drawable.texture.height
+            let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat:.bgra8Unorm,
+                width:width, height:height, mipmapped:false)
+            desc.storageMode = .shared
+            let target = device.makeTexture(descriptor:desc)!
+            let command = queue.makeCommandBuffer()!, blit = command.makeBlitCommandEncoder()!
+            blit.copy(from:drawable.texture,to:target); blit.endEncoding()
+            command.commit(); command.waitUntilCompleted()
+            require(command.status == .completed, "display readback failed")
+            var pixels = [UInt8](repeating:0,count:width*height*4)
+            target.getBytes(&pixels,bytesPerRow:width*4,
+                from:MTLRegionMake2D(0,0,width,height),mipmapLevel:0)
+            return pixels
+        }
+        for name in ["spots", "coordinates-blue", "spots"] {
+            load(name)
+            for zoom: Float in [1, 2, 4] {
+                renderer.setFrame(NSRect(x:0,y:0,width:512,height:256),
+                    uvScale:SIMD2(1/zoom,1/zoom),
+                    uvOffset:SIMD2(0.5-0.5/zoom,0.5-0.5/zoom),visible:true)
+                for exposure in [0.0, -0.5] {
+                    renderer.updateGrade(["exposure":exposure])
+                    let normal = capture(false, 0)
+                    for threshold in [0.0, 0.55, 1.0] {
+                        let visual = capture(true, threshold)
+                        for i in stride(from:0,to:normal.count,by:4) {
+                            let luma = (Double(normal[i])*0.0722 + Double(normal[i+1])*0.7152
+                                + Double(normal[i+2])*0.2126)/255
+                            let contrast = max(0,min(1,(0.5-luma)*(2+threshold*7)+0.5))
+                            let value = contrast*(0.72+threshold*0.35)
+                            let expected = max(0,min(255,Int((value*255).rounded())))
+                            require(abs(Int(visual[i])-expected) <= 5,
+                                    "visualization lost current detail at \(name), zoom \(zoom), pixel \(i/4)")
+                            require(visual[i] == visual[i+1] && visual[i+1] == visual[i+2],
+                                    "visualization must be grayscale")
+                        }
+                        require(capture(false,threshold) == normal, "turning off did not restore exact pixels")
+                    }
+                }
+                focus.verify()
+            }
+        }
+        // A late source upload must not restore the checkbox state captured
+        // when that upload started. Visualization is independent display state.
+        _ = capture(true,0.55)
+        load("coordinates")
+        let retained = capture(true,0.55)
+        require(retained != capture(false,0.55), "navigation lost visualization")
+        print("PASS: spot visualization retains fine detail, threshold, zoom, grade, navigation and exact off pixels")
     }
 }
 '''

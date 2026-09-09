@@ -57,6 +57,7 @@ struct GradeUniforms {
     float4 colorGrade3;
     float4 colorGradeSettings;
     float4 softProof;
+    float4 spotVisualization; // preview only: enabled, threshold
     float4 optics0;     // distortion, vertical, horizontal, rotation radians
     float4 optics1;     // scale, vignette, heal count, mask atlas tiles
     float4 optics2;     // horizontal flip, vertical flip, reserved, reserved
@@ -707,6 +708,11 @@ fragment float4 nativePreviewFragment(
             image, fallback, linearSampler, grade, texel);
     }
     color = applySoftProof(color, grade.softProof, input.position.xy);
+    if (grade.spotVisualization.x > 0.5) {
+        float threshold = grade.spotVisualization.y;
+        float value = (0.5 - dot(color, LUMA)) * (2.0 + threshold * 7.0) + 0.5;
+        color = float3(clamp(clamp(value, 0.0, 1.0) * (0.72 + threshold * 0.35), 0.0, 1.0));
+    }
     if (grade.reference0.x > 0.5) {
         float2 referenceUv = (uv - 0.5 - grade.reference1.xy)
             / max(grade.reference0.w, 0.01) + 0.5;
