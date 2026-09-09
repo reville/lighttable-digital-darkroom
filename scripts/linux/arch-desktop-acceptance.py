@@ -85,6 +85,10 @@ def main():
             root = Path(temporary)
             for name in ('runtime', 'photos', 'config/lighttable'):
                 (root/name).mkdir(parents=True, mode=0o700)
+            if args.backend == 'hyprland':
+                palette = root/'state/omarchy/current/theme/colors.toml'
+                palette.parent.mkdir(parents=True)
+                shutil.copy2('/work/evidence/omarchy-colors.toml', palette)
             source = root/'photos'/fixture.name
             shutil.copy2(fixture, source)
             digest = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -104,8 +108,18 @@ def main():
                 return process, api, health, name
             try:
                 process, api, health, name = launch()
-                update = api.request('/api/updates')
+                # Managed installs report their disabled portable updater as an
+                # error field in a successful HTTP response; inspect that status.
+                request = a.Request(f'http://127.0.0.1:{api.port}/api/updates',
+                                    headers={'X-LightTable-Token': api.token})
+                with api.opener.open(request, timeout=5) as response:
+                    a.require(response.status == 200, 'Update status HTTP failure')
+                    update = json.load(response)
                 a.require(update.get('owner') == 'arch' and not update.get('supported'), 'Pacman installation enabled portable updates')
+                if args.backend == 'hyprland':
+                    theme = api.request('/api/desktop-theme')
+                    a.require(theme.get('source') == 'omarchy' and theme.get('colors',{}).get('background') == '#1a1b26', 'Omarchy palette was not loaded')
+                    case['omarchy_palette'] = theme
                 a.send_ui(api, 'slider', {'key':'exposure','value':0.5})
                 a.send_ui(api, 'rating:4')
                 route = '/api/state?'+urlencode({'name':name})

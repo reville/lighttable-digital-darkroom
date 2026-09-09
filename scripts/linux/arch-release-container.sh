@@ -20,6 +20,8 @@ pacman -S --needed --noconfirm sudo python git base-devel namcap \
 useradd -m -s /bin/bash tester
 printf 'tester ALL=(ALL) NOPASSWD: /usr/bin/pacman\n' > /etc/sudoers.d/lighttable-test
 chown -R tester:tester /work
+curl -fsSL --retry 2 --max-time 30 https://raw.githubusercontent.com/omacom/omarchy/0534987009061cbe2dacdde4ad564092ab698d12/themes/tokyo-night/colors.toml -o evidence/omarchy-colors.toml
+sha256sum evidence/omarchy-colors.toml > evidence/omarchy-colors.sha256
 pacman -Q > evidence/installed-packages.txt
 cp /etc/pacman.conf /etc/pacman.d/mirrorlist evidence/
 runuser -u tester -- bash -euo pipefail -c '
