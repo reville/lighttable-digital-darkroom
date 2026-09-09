@@ -1029,10 +1029,10 @@ a.reset:hover { color:#fff; }
 .selected-tool-header span, .selected-tool-header strong { display:block; }
 .selected-tool-header span { color:var(--muted); font-size:11px; }
 .selected-tool-header strong { margin-top:2px; color:var(--ink); font-size:12px; }
-.mask-refine-bar { display:flex; gap:4px; padding:8px 0 4px; }
-.mask-refine-bar button { flex:1; min-width:0; min-height:28px; display:flex; align-items:center; justify-content:center; gap:4px; padding:3px 4px; border-radius:var(--radius-s); color:var(--muted); font-size:11px; }
+.mask-refine-bar { display:flex; flex-wrap:wrap; gap:4px; padding:8px 0 4px; }
+.mask-refine-bar button { flex:1 0 auto; min-width:0; max-width:100%; min-height:28px; display:flex; align-items:center; justify-content:center; gap:4px; padding:3px 4px; border-radius:var(--radius-s); color:var(--muted); font-size:11px; white-space:normal; overflow-wrap:anywhere; }
 .mask-refine-bar button[aria-pressed="true"] { border-color:#666; background:var(--active); color:#fff; }
-.mask-refine-bar button span { color:var(--accent); font-size:14px; }
+.mask-refine-bar button span { flex-shrink:0; color:var(--accent); font-size:14px; }
 .mask-quick-actions { display:flex; align-items:center; gap:20px; padding:2px 0 4px; }
 .mask-overlay-row { min-height:32px; display:grid; grid-template-columns:14px 12px minmax(0,1fr) auto; align-items:center; gap:8px; padding:3px 0; color:var(--ink-2); font-size:12px; }
 .mask-overlay-row small { color:var(--muted-2); font-size:11px; }
