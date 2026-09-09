@@ -42,8 +42,14 @@ the trial showed Fit selected while the photograph remained enlarged.
 Visual review uses normal saving and edited-thumbnail updates in its isolated
 data. Other benchmark layers retain their existing suppression. The first run
 predated this exemption and failed persistence because the harness suppressed
-saving; that result is not evidence of production data loss. A complete native
-rerun of this correction is still required.
+saving; that result is not evidence of production data loss. The subsequent
+foreground run on 2026-09-09 (`output/visual-reviews/20260909-114340`) recorded
+44.27 seconds and passed all 26 expanded checks, including persistence after
+152 burst inputs. Native frames showed correct Fit framing and populated,
+updating scopes. Document visibility and focus were true at every step boundary.
+This verifies the foreground path; another Space remains unverified. The report
+retains a brief initial grid-transition blank as a polish observation, without
+classifying it as a confirmed product defect.
 
 Outputs are in `output/visual-reviews/<timestamp>/`: the original movie,
 source/bundle/fixture hashes, app and server logs, recorded steps, measured
@@ -71,10 +77,18 @@ only a comparison, never an implicitly approved baseline.
 5. Generate the report again with `run.py --report /absolute/path/to/run`.
 
 The script uses the app's UI command executor and DOM slider/pointer events.
-It does not prove OS input routing, menu interaction, or every feature. Presets,
-RAW decoding, crop, masks, window resizing, export, and restart recovery are
-explicit future coverage. The initial explore section interleaves navigation
-and zoom; add bounded variations after reviewing the core journeys.
+It does not prove OS input routing or every feature. The expanded explore
+section adds measured rapid bursts for zoom, navigation, exposure, undo/redo,
+compare, library/filmstrip controls and Film mode. It also cycles all four
+scopes, opens/cancels crop repeatedly, and checks persistence after the bursts.
+Every burst records its input count and actual dispatch duration in
+`bursts.json`; timer-paced actions must not be described as rapid without
+checking their measured timing. Failed steps remain in the report and do not
+prevent independent later steps from running within the overall time limit.
+Fit checks include DOM scale and bounds, and scope checks require canvas pixels.
+These checks supplement captured native frames; they do not replace inspection.
+Preset application, RAW decoding, crop geometry, mask creation, window resizing,
+export and restart recovery remain outside this run.
 
 ## Reference videos
 

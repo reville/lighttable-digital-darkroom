@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "ত্রুটি: {error}",
     "Errors: {details}": "ত্রুটি: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "প্রতিটি export-এ নির্বাচিত ICC profile এম্বেড হয়। Colour space-এ sRGB, Display P3, বা ProPhoto RGB বেছে নিন।",
-    "Every step, kept with the photo": "প্রতিটি ধাপ, ফোটোর সঙ্গে সংরক্ষিত থাকে",
+    "Edit History": "সম্পাদনার ইতিহাস",
     "Everyone": "সকলেই",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone দৃশ্যমান face groups দেখায়। Unnamed সেই গ্রুপগুলি দেখায় যেগুলোর নাম দেওয়া হয়নি। একটি গ্রুপ খুলুন, একটি নাম টাইপ করুন, এবং Save name নির্বাচন করুন। শুধু আপনি যে নামগুলো দেন সেগুলিই ব্যবহৃত হয়; model মানুষের নাম জানে না।",
     "Example download prepared. Your edit has not changed.": "উদাহরণ ডাউনলোড প্রস্তুত হয়েছে। আপনার এডিট পরিবর্তিত হয়নি।",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "গ্রেডিয়েন্ট সামঞ্জস্য করতে যেকোনো বিন্দু টানুন। সরাতে রেখাটি টানুন। আবার আঁকতে অন্য কোনো জায়গায় টানুন।",
     "Shape a linear gradient": "লিনিয়ার গ্রেডিয়েন্টের আকৃতি বদলান",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "“আকৃতি সম্পাদনা করুন”-এ যেকোনো বিন্দু টেনে গ্রেডিয়েন্টের সেই প্রান্তটি সামঞ্জস্য করুন। দুটি বিন্দুর সংযোগরেখা টেনে পুরো গ্রেডিয়েন্ট সরান; এর কোণ ও পরিবর্তনের প্রস্থ একই থাকবে। আবার আঁকতে ছবির অন্য কোনো জায়গায় টানুন।",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।"
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।",
+    "Copy and Paste are below the photo in Detail view.": "বিস্তারিত দৃশ্যে ছবির নিচে কপি ও পেস্ট বোতাম রয়েছে।"
   },
   "plurals": {
     " · {count} paired file linked": {

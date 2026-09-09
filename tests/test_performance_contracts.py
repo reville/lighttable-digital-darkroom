@@ -857,7 +857,7 @@ process.stdout.write(JSON.stringify(states.map(nativePreviewCanDraw)));
             json.loads(completed.stdout), [True, True, False, False])
         viewport_function = self.javascript[
             self.javascript.index("function nativeViewportPayload()"):
-            self.javascript.index("let nativeLayoutFrame")
+            self.javascript.index("let lastNativeViewportKey")
         ]
         self.assertIn(
             "nativePreviewCanDraw(S.renderState)", viewport_function)
@@ -963,7 +963,7 @@ process.stdout.write(JSON.stringify(cases.map((args) => useWebGLPreview(...args)
             json.loads(completed.stdout), [False, False, True, False, False])
         viewport_function = self.javascript[
             self.javascript.index("function nativeViewportPayload()"):
-            self.javascript.index("let nativeLayoutFrame")
+            self.javascript.index("let lastNativeViewportKey")
         ]
         self.assertIn("!useWebGLPreview", viewport_function)
 

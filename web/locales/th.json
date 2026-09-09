@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "ข้อผิดพลาด: {error}",
     "Errors: {details}": "ข้อผิดพลาด: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "การส่งออกทุกครั้งจะฝังโปรไฟล์ ICC ที่เลือกไว้ เลือก sRGB, Display P3 หรือ ProPhoto RGB ใน Colour space",
-    "Every step, kept with the photo": "ทุกขั้นตอน เก็บไว้กับภาพถ่าย",
+    "Edit History": "ประวัติการแก้ไข",
     "Everyone": "ทุกคน",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "ทุกคนจะแสดงกลุ่มใบหน้าที่มองเห็นได้ ไม่มีชื่อจะแสดงกลุ่มที่ยังไม่ได้ตั้งชื่อ เปิดกลุ่ม พิมพ์ชื่อ และเลือก บันทึกชื่อ จะใช้เฉพาะชื่อที่คุณป้อนเท่านั้น โมเดลไม่ทราบชื่อของผู้คน",
     "Example download prepared. Your edit has not changed.": "เตรียมดาวน์โหลดตัวอย่างแล้ว การแก้ไขของคุณไม่ได้เปลี่ยนแปลง",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ลากจุดใดจุดหนึ่งเพื่อปรับการไล่ระดับ ลากเส้นเพื่อย้ายทั้งชุด ลากบริเวณอื่นเพื่อวาดใหม่",
     "Shape a linear gradient": "ปรับรูปร่างการไล่ระดับเชิงเส้น",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "ในแก้ไขรูปร่าง ลากจุดใดจุดหนึ่งเพื่อปรับปลายด้านนั้นของการไล่ระดับ ลากเส้นที่เชื่อมจุดทั้งสองเพื่อย้ายการไล่ระดับทั้งหมดโดยคงมุมและความกว้างของช่วงเปลี่ยนผ่านไว้ ลากบริเวณอื่นบนภาพเพื่อวาดใหม่",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่"
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่",
+    "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด"
   },
   "plurals": {
     " · {count} paired file linked": {

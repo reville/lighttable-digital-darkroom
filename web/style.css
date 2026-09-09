@@ -434,6 +434,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 .folder-empty { padding:12px 8px; color:var(--muted); font-size:11px; line-height:1.45; }
 .folder-row {
   --depth:0;
+  cursor:default;
   width:100%;
   min-height:28px;
   display:grid;
@@ -2043,7 +2044,12 @@ body { display:flex; flex-direction:column; }
 .workflow-activity > span { flex:1; }
 .workflow-activity pre { white-space:pre-wrap; max-height:140px; overflow:auto; font:inherit; }
 .workspace-rail { grid-column:1; grid-row:2; min-width:0; }
-.detail-selection-context { padding:5px 12px; border-top:1px solid var(--line); background:var(--inset); }
+.detail-selection-context { display:flex; align-items:center; gap:12px; padding:5px 12px; border-top:1px solid var(--line); background:var(--inset); }
+.detail-selection-context > .cullbar-context { flex:1; }
+.detail-selection-context .detail-transfer-actions { display:flex; flex:none; gap:6px; margin:0; padding:0; border:0; }
+.detail-transfer-actions .transfer-btn { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-width:76px; height:28px; padding:3px 9px; color:var(--ink-2); border:1px solid var(--line-strong); }
+.detail-transfer-actions .transfer-btn span { color:inherit; font-size:11px; }
+.detail-transfer-actions .transfer-btn span[aria-hidden] { margin-left:-5px; }
 .app.grid-mode .detail-selection-context { display:none; }
 
 .storage-breakdown { display:grid; grid-template-columns:1fr auto; gap:8px 18px; margin:16px 0; font-size:11px; }
