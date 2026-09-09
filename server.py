@@ -8551,17 +8551,33 @@ def trash_photos(body: dict) -> dict:
     recoverable and always goes through the platform's own confirmation.
     """
     names = [str(n) for n in body.get("names", [])][:5000]
-    paths: list[str] = []
+    originals: dict[Path, None] = {}
     for name in names:
+        # A virtual copy is an independent edit, never a disposable file.
+        # Defend this boundary even for callers that do not filter the UI list.
+        if library_workflow.is_virtual(name):
+            continue
         try:
             path = src_path(name)
         except ValueError:
             continue
-        paths.append(str(path))
-        for sidecar in (path.with_suffix(".xmp"), Path(str(path) + ".xmp")):
-            if sidecar.exists():
-                paths.append(str(sidecar))
-    return {"ok": True, "paths": paths, "count": len(paths)}
+        originals[path] = None
+    paths: dict[str, None] = {}
+    indexes = {folder: index_photo_companions(folder)
+               for folder in {path.parent for path in originals}}
+    for path in originals:
+        paths[str(path)] = None
+        for item in photo_companion_inventory(path, path, indexes[path.parent]):
+            # Reuse the case-insensitive inventory from rename/move, including
+            # file-specific recipes. Unknown companions always stay in place.
+            if item["target"] is None:
+                continue
+            if any(Path(other) not in originals
+                   for other in item.get("sharedWith", [])):
+                continue
+            paths[item["source"]] = None
+    return {"ok": True, "paths": list(paths), "count": len(paths),
+            "photoCount": len(originals)}
 
 
 def reveal_photo(body: dict) -> dict:
