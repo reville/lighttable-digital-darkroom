@@ -15,6 +15,10 @@ on:
         required: false
         default: false
         type: boolean
+      build_run_id:
+        description: Recheck native acceptance of an earlier package without rebuilding (leave blank for a normal build)
+        required: false
+        type: string
   workflow_call:
     inputs:
       version:
@@ -45,7 +49,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  native-recheck:
+    if: github.event_name == 'workflow_dispatch' && inputs.build_run_id != ''
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/windows-native.yml
+    with:
+      build_run_id: ${{ inputs.build_run_id }}
+
   installer-check:
+    if: github.event_name != 'workflow_dispatch' || !inputs.build_run_id
     runs-on: windows-2022
     timeout-minutes: 10
     steps:
@@ -137,7 +151,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
   package:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || !inputs.build_run_id)
     needs: installer-check
     runs-on: windows-2022
     timeout-minutes: 90
@@ -204,6 +218,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
+      - name: Upload portable build and installer
+        # Preserve a completed package for diagnosis/rechecks even if native
+        # acceptance fails. The package job still fails and blocks release.yml.
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-windows-x64
+          path: |
+            dist/LightTable-*-windows-x64.zip
+            dist/LightTable-*-windows-x64-setup.exe
+            dist/appcast-windows-x64.xml
+          if-no-files-found: error
+
       - name: Require native edit, export and restart
         timeout-minutes: 10
         shell: pwsh
@@ -221,13 +247,3 @@ jobs:
           name: Windows-native-acceptance
           path: .build/windows-desktop-evidence/
           if-no-files-found: ignore
-
-      - name: Upload portable build and installer
-        uses: actions/upload-artifact@v4
-        with:
-          name: LightTable-windows-x64
-          path: |
-            dist/LightTable-*-windows-x64.zip
-            dist/LightTable-*-windows-x64-setup.exe
-            dist/appcast-windows-x64.xml
-          if-no-files-found: error

@@ -1,0 +1,113 @@
+name: Windows native recheck
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Windows build run containing a successfully built LightTable-windows-x64 artifact
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      build_run_id:
+        description: Windows build run containing a successfully built LightTable-windows-x64 artifact
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  native:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - name: Check out the dispatched native tester
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify selected package build
+        id: selected
+        uses: actions/github-script@v7
+        env:
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+        with:
+          script: |
+            const fs = require('node:fs/promises');
+            const evidence = '.build/windows-native-recheck-evidence';
+            await fs.mkdir(evidence, {recursive: true});
+            const requested = process.env.BUILD_RUN_ID;
+            const selection = {build_run_id: requested, tester_sha: context.sha,
+              tester_run_id: context.runId, selection_verified: false};
+            await fs.writeFile(`${evidence}/selection.json`, JSON.stringify(selection, null, 2) + '\n');
+            if (!/^[1-9][0-9]{0,14}$/.test(requested)) {
+              throw new Error('build_run_id must be a positive numeric workflow run ID');
+            }
+            const run_id = Number(requested);
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id});
+            if (run.path !== '.github/workflows/windows-build.yml'
+                || run.head_repository?.full_name !== `${context.repo.owner}/${context.repo.repo}`
+                || !/^[0-9a-f]{40}$/.test(run.head_sha)) {
+              throw new Error('Select a Windows build run from this repository with a valid source commit');
+            }
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun,
+              {...context.repo, run_id, filter: 'latest', per_page: 100});
+            if (!jobs.some(job => job.name === 'package' && job.steps?.some(step =>
+                step.name === 'Build and smoke-test package' && step.conclusion === 'success'))) {
+              throw new Error('The selected run did not successfully finish building and smoke-testing its package');
+            }
+            Object.assign(selection, {selection_verified: true, bundle_source_sha: run.head_sha,
+              build_run_url: run.html_url, build_run_attempt: run.run_attempt,
+              artifact_name: 'LightTable-windows-x64'});
+            await fs.writeFile(`${evidence}/selection.json`, JSON.stringify(selection, null, 2) + '\n');
+            core.setOutput('source_sha', run.head_sha);
+            core.info(`Tester ${context.sha}; package source ${run.head_sha}; build run ${run_id}`);
+
+      - name: Download the selected Windows package
+        uses: actions/download-artifact@v4
+        with:
+          name: LightTable-windows-x64
+          path: .build/windows-native-download
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify bundle identity and run native acceptance
+        shell: pwsh
+        env:
+          BUNDLE_SOURCE_SHA: ${{ steps.selected.outputs.source_sha }}
+          TESTER_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          Set-StrictMode -Version Latest
+          $Archives = @(Get-ChildItem ./.build/windows-native-download -File -Filter "LightTable-*-windows-x64.zip")
+          if ($Archives.Count -ne 1) { throw "Expected exactly one portable Windows ZIP in the selected artifact" }
+          $Archive = $Archives[0]
+          Expand-Archive -LiteralPath $Archive.FullName -DestinationPath ./.build/native-candidate
+          $Bundle = (Resolve-Path ./.build/native-candidate/LightTable).Path
+          $Manifest = Get-Content -LiteralPath (Join-Path $Bundle "build-manifest.json") -Raw | ConvertFrom-Json
+          if ($Manifest.source_revision -cne $env:BUNDLE_SOURCE_SHA) {
+            throw "The downloaded bundle source does not match the selected Windows build run"
+          }
+          $Tester = (& git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or $Tester -cne $env:TESTER_SHA) { throw "The native tester checkout has an unexpected source commit" }
+          @{
+            tester_sha = $Tester
+            bundle_source_sha = $Manifest.source_revision
+            bundle_version = $Manifest.version
+            archive = $Archive.Name
+            archive_sha256 = (Get-FileHash -LiteralPath $Archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          } | ConvertTo-Json | Set-Content -LiteralPath ./.build/windows-native-recheck-evidence/identity.json -Encoding utf8
+          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload native recheck evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-native-recheck
+          path: .build/windows-native-recheck-evidence/
+          if-no-files-found: ignore
