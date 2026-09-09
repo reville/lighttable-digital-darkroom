@@ -36,6 +36,10 @@ with the downloaded package manifest. An unsigned Windows CI package cannot
 establish Authenticode or public update trust. Do not push a release tag simply
 to test packaging: the separate Release workflow publishes successful builds.
 
+Portable Windows and Linux apps read their source revision from the bundled
+manifest. Extracting an app inside a Git checkout must not run that checkout's
+Git commands or substitute its revision during startup or health checks.
+
 Windows retains a completed package before native acceptance runs. A native-only
 recheck can reuse those exact bytes with a newer test script:
 
