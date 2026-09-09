@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408",
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4085,7 +4085,11 @@
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
     "☆ Favorites": "☆ 즐겨찾기",
-    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "확대한 상태에서 사진을 전환하면 LightTable은 일치하는 캐시 미리보기가 있을 경우 즉시 표시합니다. 더 선명한 디테일은 백그라운드에서 불러오며, 인접한 사진도 확대 수준에 맞춰 미리 불러옵니다."
+    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "확대한 상태에서 사진을 전환하면 LightTable은 일치하는 캐시 미리보기가 있을 경우 즉시 표시합니다. 더 선명한 디테일은 백그라운드에서 불러오며, 인접한 사진도 확대 수준에 맞춰 미리 불러옵니다.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "어느 점이든 드래그하여 그라디언트를 조정하세요. 선을 드래그하면 전체가 이동합니다. 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
+    "Shape a linear gradient": "선형 그라디언트 모양 조정",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요."
   },
   "plurals": {
     " · {count} paired file linked": {

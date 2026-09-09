@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408",
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4085,7 +4085,11 @@
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
     "☆ Favorites": "☆ お気に入り",
-    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "拡大表示中に写真を切り替えると、LightTable は一致するキャッシュ済みプレビューがあればすぐに表示します。より鮮明なディテールはバックグラウンドで読み込まれ、前後の写真もズーム倍率に合わせて事前に読み込まれます。"
+    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "拡大表示中に写真を切り替えると、LightTable は一致するキャッシュ済みプレビューがあればすぐに表示します。より鮮明なディテールはバックグラウンドで読み込まれ、前後の写真もズーム倍率に合わせて事前に読み込まれます。",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "どちらかの点をドラッグしてグラデーションを調整します。線をドラッグすると全体が移動します。別の場所でドラッグすると描き直せます。",
+    "Shape a linear gradient": "線形グラデーションの形状を調整する",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。"
   },
   "plurals": {
     " · {count} paired file linked": {

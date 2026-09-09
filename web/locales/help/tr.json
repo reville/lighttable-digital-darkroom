@@ -1567,6 +1567,15 @@
           ]
         },
         {
+          "title": "Doğrusal geçişi şekillendirme",
+          "paragraphs": [
+            "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin."
+          ],
+          "tips": [
+            "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın."
+          ]
+        },
+        {
           "title": "Radyal gradyan oluşturun",
           "paragraphs": [
             "Şekli Düzenle’de maskeyi taşımak için merkez tutamacını, yeniden boyutlandırmak için eksen tutamaçlarından birini, döndürmek için de dış tutamacı sürükleyin. Gradyanı daire biçimli yapmak için çizerken veya yeniden boyutlandırırken Shift tuşunu basılı tutun."
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5"
 }

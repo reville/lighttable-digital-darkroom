@@ -1567,6 +1567,15 @@
           ]
         },
         {
+          "title": "Een lineair verloop vormgeven",
+          "paragraphs": [
+            "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen."
+          ],
+          "tips": [
+            "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn."
+          ]
+        },
+        {
           "title": "Maak een radiaal verloopvorm",
           "paragraphs": [
             "Sleep in Vorm bewerken de middelste handgreep om het masker te verplaatsen, een van de ashandgrepen om de grootte aan te passen, of de buitenste handgreep om het te roteren. Houd Shift ingedrukt tijdens het tekenen of vergroten/verkleinen om het verloop rond te maken."
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5"
 }
