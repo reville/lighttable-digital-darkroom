@@ -140,7 +140,9 @@ class WindowsJobCleanupTests(unittest.TestCase):
                 child_handle = desktop.kernel.OpenProcess(0x100000, False, pid)
                 self.assertTrue(child_handle)
                 desktop.close()
-                self.assertEqual(desktop.kernel.WaitForSingleObject(child_handle, 0), 0,
+                # TerminateJobObject starts asynchronous kernel teardown; wait on
+                # the retained child handle instead of racing its final signal.
+                self.assertEqual(desktop.kernel.WaitForSingleObject(child_handle, 5000), 0,
                                  "Cleanup left its render-server fixture running")
                 self.assertIsNone(unrelated.poll(), "Cleanup stopped an unrelated process")
             finally:
