@@ -90,9 +90,9 @@ it contains no wheels. `audit-python-sources.py` checks lock drift offline, and 
 explicit `--refresh` mode queries PyPI. This inventory is not a transitive build graph.
 
 The current unsolved work is an **offline build and verification of the scientific
-runtime**, not missing upstream source. `rawpy 0.26.1`, `lensfunpy 1.18.0` and
-`opencv-python-headless 4.13.0.92` have no PyPI sdist at these pins; their upstream
-Git sources are recorded instead. A completed manifest must build and pin:
+runtime**, not missing upstream source. `rawpy 0.27.1` now provides a PyPI source
+distribution. Dependencies without a source distribution retain immutable upstream
+Git source mappings in the audit. A completed manifest must build and pin:
 
 - CPython 3.13 and the packaging backends, Cython, Meson-Python, scikit-build-core,
   pybind11, Pythran and their build dependencies;

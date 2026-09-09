@@ -13,11 +13,11 @@ ROOT = Path(__file__).resolve().parents[2]
 TARGET = ROOT / "packaging/flatpak/python-source-audit.json"
 UPSTREAM = {
     "rawpy": {"type": "git", "url": "https://github.com/letmaik/rawpy.git",
-              "commit": "a411daac7d5bf1ab07f6285164e41596a205393e", "tag": "v0.26.1"},
+              "commit": "a39c2e7a44911889c3360891012f862f904ba551", "tag": "v0.27.1"},
     "lensfunpy": {"type": "git", "url": "https://github.com/letmaik/lensfunpy.git",
                   "commit": "458a24475ae03ec52f0fac4fea786120ef5a503f", "tag": "v1.18.0"},
     "opencv-python-headless": {"type": "git", "url": "https://github.com/opencv/opencv-python.git",
-                               "commit": "4ddfc013fd1f13d9b9e379dbebf2cdbeb052e7f8", "tag": "92"},
+                               "commit": "b83046cda41133f1bf2e73e99dba16a1248f103a", "tag": "93"},
 }
 
 

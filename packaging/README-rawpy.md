@@ -9,8 +9,10 @@ The personal updater checks the actual runtime's OpenMP support and library
 dependencies, so an old
 base app must first receive a full release build.
 
-The rawpy/LibRaw/CMake source commits are pinned in that script. Native library
-source URLs and SHA-256 digests live in `scripts/build-rawpy-native.sh`; build
+The runtime uses rawpy 0.27.1 with LibRaw 0.22.1. The rawpy/LibRaw/CMake
+source commits are pinned in that script. The custom package rename includes
+upstream project metadata so installing it preserves the stock rawpy package.
+Native library source URLs and SHA-256 digests live in `scripts/build-rawpy-native.sh`; build
 Python dependencies live in `packaging/rawpy-build.lock`. No Homebrew library
 is linked into the finished wheel. Source builds retain macOS 13 compatibility;
 using recent Homebrew bottles would accidentally raise the minimum OS to the
@@ -23,7 +25,8 @@ Clang 17 from Command Line Tools and its SDK. Clang 21 produced identical
 pixels but substantially slower X-Trans code in local comparisons. Explicit
 compiler/SDK overrides are honored; other toolchains still build. The wheel
 output's `build-info.json` records the actual compiler, SDK, deployment target,
-and optimization flags. No compiler is needed at app runtime.
+optimization flags, and exact rawpy/LibRaw/CMake source revisions. No compiler
+is needed at app runtime.
 
 ## Deterministic X-Trans parallelism
 
@@ -65,6 +68,13 @@ The generated package carries `LIGHTTABLE_XTRANS_WAVEFRONT = 1`, which the
 packaging verifier requires. The app falls back to stock for an older unmarked
 X-Trans runtime. Do not remove the dependency order solely because a faster
 decode completes successfully; repeated byte identity is the acceptance gate.
+
+The rawpy 0.27.1 / LibRaw 0.22.1 upgrade retained byte-identical output
+against stock rawpy 0.26.1 for full-resolution X100VI, X-T30 III, and Nikon Z6
+files, plus a reduced-resolution Canon EOS 80D RAW. Each comparison repeated
+at one and eight threads. X100VI one-pass and half-size variants also matched.
+Real X100VI cancellation during processing exited within 65–81 ms after the
+request in three runs, with no cancellation monitor left running.
 
 Run the candidate interpreter with real X-Trans and Bayer sources before
 changing the dependency pins or guard:

@@ -2,13 +2,13 @@
 name = "lighttable-engine"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 license = "GPL-3.0"
 
 [dependencies]
 anyhow = "1"
 bytemuck = "1.25"
-image = { version = "0.25", default-features = false, features = ["tiff", "png", "jpeg"] }
+image = { version = "0.25.10", default-features = false, features = ["tiff", "png", "jpeg"] }
 libc = "0.2"
 rayon = "1.10"
 serde = { version = "1", features = ["derive"] }

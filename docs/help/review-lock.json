@@ -442,7 +442,7 @@
         "web/linux-layout.css": "885ae0e7ad37cd2af4feb2d94739c405a498dcd62ee95bf38cf5ff7d39a57ae5",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72",
         "windows-shell/src/main.rs": "e353385acc359ce539b6b6040100ab8fc7dfe0790adb7a0ddfa3260010a1a154",
-        "windows-shell/src/windows_update.rs": "48615f6dedf69f409379f341cf28b8cdb46e2164c3c77d7a2ab461e83aba3a0d"
+        "windows-shell/src/windows_update.rs": "3c468ec77095abac29ad5528a9ac44ec95bc39a7ee411bef93524839b4f8e60c"
       }
     },
     "settings-language": {
