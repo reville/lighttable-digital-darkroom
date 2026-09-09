@@ -24,8 +24,11 @@ function Test-PortableExecutable([string]$Path) {
 
 # Use PE headers rather than extensions: Python wheels carry native .pyd files,
 # and bundled native code can use other suffixes. Never erase a vendor signature.
-$Files = @(Get-ChildItem -LiteralPath $Root -Recurse -File -Force | Sort-Object FullName)
-$Evidence = @(foreach ($File in $Files) {
+# Ask the provider for relative names: Resolve-Path may retain a Windows 8.3
+# ancestor while FileInfo.FullName expands it, making string offsets incorrect.
+$RelativePaths = @(Get-ChildItem -LiteralPath $Root -Recurse -File -Force -Name | Sort-Object)
+$Evidence = @(foreach ($RelativePath in $RelativePaths) {
+    $File = Get-Item -LiteralPath (Join-Path $Root $RelativePath)
     $IsPe = Test-PortableExecutable $File.FullName
     if (-not $IsPe) {
         if ($File.Extension.ToLowerInvariant() -in @('.exe', '.dll', '.pyd')) {
@@ -39,7 +42,7 @@ $Evidence = @(foreach ($File in $Files) {
         $Signature = Get-AuthenticodeSignature -LiteralPath $File.FullName
     }
     @{
-        path = $File.FullName.Substring($Root.TrimEnd([IO.Path]::DirectorySeparatorChar).Length + 1)
+        path = $RelativePath
         sha256 = (Get-FileHash -LiteralPath $File.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
         status = [string]$Signature.Status
         publisher = if ($null -ne $Signature.SignerCertificate) { $Signature.SignerCertificate.Subject } else { $null }

@@ -37,6 +37,8 @@ class StorePackagingTests(unittest.TestCase):
                 for name in ('LightTable.exe', 'native.pyd', 'vendor.dll', 'renamed.bin', 'Uninstall.exe'):
                     (payload / name).write_bytes(pe_fixture())
                 (payload / 'readme.txt').write_text('not executable')
+                (payload / 'nested folder').mkdir()
+                (payload / 'nested folder' / 'module.pyd').write_bytes(pe_fixture())
                 report = root / 'report.json'
                 # Substitute only certificate verification. Scan actual PE headers,
                 # walk the real filesystem and produce actual file hashes/report.
@@ -50,10 +52,11 @@ class StorePackagingTests(unittest.TestCase):
                 result = subprocess.run([POWERSHELL, '-NoProfile', '-Command', script], capture_output=True, text=True, timeout=30)
                 self.assertEqual(result.returncode != 0, invalid, result.stderr)
                 evidence = json.loads(report.read_text(encoding='utf-8-sig'))
-                self.assertEqual(evidence['pe_count'], 5)
+                self.assertEqual(evidence['pe_count'], 6)
                 self.assertEqual(evidence['invalid_count'], int(invalid))
                 self.assertEqual({row['path'] for row in evidence['signatures']},
-                                 {'LightTable.exe', 'native.pyd', 'vendor.dll', 'renamed.bin', 'Uninstall.exe'})
+                                 {'LightTable.exe', 'native.pyd', 'vendor.dll', 'renamed.bin', 'Uninstall.exe',
+                                  str(Path('nested folder') / 'module.pyd')})
                 if invalid:
                     self.assertIn('native.pyd (NotSigned)', result.stderr)
 
