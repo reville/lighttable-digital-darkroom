@@ -1,5 +1,6 @@
 [workspace]
-resolver = "2"
+# Standalone tests must honor the workspace Rust minimum when resolving updates.
+resolver = "3"
 members = [
     "crates/spektrafilm-core",
     "crates/spektrafilm-gpu",
