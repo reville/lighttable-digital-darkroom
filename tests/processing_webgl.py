@@ -31,6 +31,12 @@ def run(output_dir):
     reverse = np.ascontiguousarray(source[::-1, ::-1, ::-1])
     portrait = target_rgb8(96, 128)
     sources = {'target': source, 'reverse': reverse, 'portrait': portrait}
+    # Alternating one-pixel stripes and isolated dust are erased by the old
+    # 256px sampling-helper overlay, even though the main preview resolves them.
+    spots = np.full((512, 1024, 3), 180, dtype=np.uint8)
+    spots[:, ::2] = 90
+    spots[240:244, 500:504] = 25
+    sources['spots'] = spots
     for name, pixels in sources.items():
         Image.fromarray(pixels).save(output_dir / f'{name}.png')
 
@@ -56,6 +62,16 @@ def run(output_dir):
         {'name': 'portrait', 'grade': {'exposure': 0.4}, 'fixture': 'portrait'},
         {'name': 'compare-half', 'grade': {'exposure': 0.4}, 'compare': 0.5},
         {'name': 'compare-off', 'grade': {'exposure': 0.4}},
+    ])
+    for threshold in [0, 0.55, 1]:
+        tests.append({'name': f'spots-{threshold}', 'grade': {}, 'fixture': 'spots',
+                      'spotVisualization': {'enabled': True, 'threshold': threshold}})
+    tests.extend([
+        {'name': 'spots-graded', 'grade': {'exposure': -0.5}, 'fixture': 'spots',
+         'spotVisualization': {'enabled': True, 'threshold': 0.55}},
+        {'name': 'spots-navigate-portrait', 'grade': {}, 'fixture': 'portrait',
+         'spotVisualization': {'enabled': True, 'threshold': 0.55}},
+        {'name': 'spots-off', 'grade': {}, 'fixture': 'spots'},
     ])
     for test in tests:
         test.update(source=f"{base}/{test.get('fixture', 'target')}.png",
@@ -84,6 +100,12 @@ def run(output_dir):
     for test, result in zip(tests, metadata['records'], strict=True):
         pixels = sources[test.get('fixture', 'target')].astype(np.float32) / 255
         expected = grade.apply(pixels, test['grade'])
+        if test.get('spotVisualization', {}).get('enabled'):
+            threshold = test['spotVisualization']['threshold']
+            luminance = expected @ np.array([0.2126, 0.7152, 0.0722])
+            value = ((0.5 - luminance) * (2 + threshold * 7) + 0.5)
+            expected = np.repeat(np.clip(np.clip(value, 0, 1) * (0.72 + threshold * 0.35),
+                                         0, 1)[..., None], 3, axis=2)
         if test.get('compare'):
             expected[:, :64] = reverse[:, :64] / 255
         actual = np.fromfile(test['raw'], dtype=np.uint8).reshape(result['height'], result['width'], 4)

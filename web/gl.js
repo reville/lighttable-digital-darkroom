@@ -54,6 +54,7 @@ uniform float u_pointColorCount;
 uniform vec3 u_cgShadows, u_cgMidtones, u_cgHighlights, u_cgGlobal;
 uniform float u_cgBalance, u_cgBlending, u_cgOn;
 uniform vec4 u_softProof;            // enabled, target id, paper simulation, gamut warning
+uniform vec2 u_spotVisualization;    // preview only: enabled, threshold
 uniform vec4 u_localOn[4], u_localOpacity[4], u_localLumaLow[4], u_localLumaHigh[4];
 uniform vec4 u_localExposure[4], u_localContrast[4], u_localHighlights[4], u_localShadows[4];
 uniform vec4 u_localTemp[4], u_localTint[4], u_localSaturation[4];
@@ -466,6 +467,12 @@ void main() {
 
   c = applySoftProof(c);
 
+  if (u_spotVisualization.x > 0.5) {
+    float threshold = u_spotVisualization.y;
+    float value = (0.5 - dot(c, LUMA)) * (2.0 + threshold * 7.0) + 0.5;
+    c = vec3(clamp(clamp(value, 0.0, 1.0) * (0.72 + threshold * 0.35), 0.0, 1.0));
+  }
+
   if (u_referenceView.x > 0.5) {
     vec2 referenceUv = (uv - vec2(0.5) - u_referenceOffset)
       / max(u_referenceView.w, 0.01) + vec2(0.5);
@@ -594,6 +601,8 @@ export class GradeRenderer {
       'Balance', 'Blending', 'On'].map((key) => [key,
       gl.getUniformLocation(this.prog, `u_cg${key}`)]));
     this.uSoftProof = gl.getUniformLocation(this.prog, 'u_softProof');
+    this.uSpotVisualization = gl.getUniformLocation(this.prog, 'u_spotVisualization');
+    this.spotVisualization = [0, 0];
     this.uImg = gl.getUniformLocation(this.prog, 'u_img');
     this.uOriginal = gl.getUniformLocation(this.prog, 'u_original');
     this.uReference = gl.getUniformLocation(this.prog, 'u_reference');
@@ -812,10 +821,13 @@ export class GradeRenderer {
     }
   }
 
-  draw(grade, localEdits = [], maskCanvas = undefined, softProof = null) {
+  draw(grade, localEdits = [], maskCanvas = undefined, softProof = null, spotVisualization = null) {
     if (!this.ready) return;
     const gl = this.gl;
     gl.useProgram(this.prog);
+    this.spotVisualization = [spotVisualization?.enabled ? 1 : 0,
+      Math.max(0, Math.min(1, +spotVisualization?.threshold || 0))];
+    gl.uniform2f(this.uSpotVisualization, ...this.spotVisualization);
     for (const [k, def] of Object.entries(GRADE_DEFAULTS)) {
       const v = grade && grade[k] !== undefined ? +grade[k] : def;
       gl.uniform1f(this.uniforms[k], v);
@@ -921,6 +933,7 @@ export class GradeRenderer {
   sample() {
     if (!this.ready) return null;
     const gl = this.gl;
+    gl.uniform2f(this.uSpotVisualization, 0, 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.sampleFramebuffer);
     gl.viewport(0, 0, this.sampleWidth, this.sampleHeight);
     gl.uniform2f(this.uUvScale, 1, 1);
@@ -934,6 +947,7 @@ export class GradeRenderer {
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.uniform1f(this.uCompare, this.comparePosition);
     this.applyReferenceUniforms();
+    gl.uniform2f(this.uSpotVisualization, ...this.spotVisualization);
     return { px: this.samplePixels, w: this.sampleWidth, h: this.sampleHeight };
   }
 
@@ -941,6 +955,7 @@ export class GradeRenderer {
   samplePixel(u, v) {
     if (!this.ready) return null;
     const gl = this.gl, pixel = new Uint8Array(4);
+    gl.uniform2f(this.uSpotVisualization, 0, 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.sampleFramebuffer);
     gl.viewport(0, 0, 1, 1);
     gl.uniform2f(this.uUvScale, 0, 0);
@@ -953,6 +968,7 @@ export class GradeRenderer {
     gl.uniform2f(this.uUvOffset, 0, 0);
     gl.uniform1f(this.uCompare, this.comparePosition);
     this.applyReferenceUniforms();
+    gl.uniform2f(this.uSpotVisualization, ...this.spotVisualization);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     return pixel;
