@@ -20,19 +20,20 @@ class ApplePhotosLayoutTests(unittest.TestCase):
                            for path in re.findall(r'<link rel="stylesheet" href="([^"]+)"', index))
         dialog = index[index.index('<div class="modal-backdrop apple-photos-backdrop"'):].split('</body>')[0]
         controller = (ROOT / 'web/apple-photos.js').read_text().split('\n', 1)[1].replace('export function ', 'function ')
+        dropdown = (ROOT / 'web/dropdown.js').read_text().replace('export { enhance, close };', '')
         photo = base64.b64encode((ROOT / 'tests/fixtures/photos/field.jpg').read_bytes()).decode()
         script = r'''
 const t = (text, values = {}) => text.replace(/\{(\w+)\}/g, (_, key) => values[key]);
 const formatNumber = String;
 CONTROLLER
-let requestId;
+let requestId, lastRequest;
 const browser = installApplePhotosBrowser({el: id => document.getElementById(id),
-  sendNative: (action, data) => { if (action === 'browseApplePhotos') requestId = data.requestId; },
+  sendNative: (action, data) => { if (action === 'browseApplePhotos') { requestId = data.requestId; lastRequest = data; } },
   nativeBridge: () => true, onImported: async () => {}, onViewImported: async () => {}});
 browser.nativeEvent({type: 'sources', photosBrowserAvailable: true});
 browser.open();
 const items = Array.from({length: 60}, (_, i) => ({id: String(i), name: `Photo ${i}.jpg`}));
-browser.nativeEvent({type: 'applePhotosPage', requestId, items, offset: 0, total: 600, hasMore: true});
+browser.nativeEvent({type: 'applePhotosPage', requestId, items, offset: 0, total: 600, hasMore: true, albums:[{id:'album-one', name:'Test album'}]});
 for (const item of items) browser.nativeEvent({type: 'applePhotosThumbnail', requestId, id: item.id, data: PHOTO});
 Promise.all([...document.querySelectorAll('.apple-photos-preview img')].map(img => img.decode())).then(() => {
   const rect = node => { const r = node.getBoundingClientRect(); return {x:r.x, y:r.y, width:r.width, height:r.height, bottom:r.bottom}; };
@@ -40,11 +41,21 @@ Promise.all([...document.querySelectorAll('.apple-photos-preview img')].map(img 
   cards[0].click();
   const results = cards.map(card => ({card:rect(card), preview:rect(card.querySelector('.apple-photos-preview')), label:rect(card.querySelector('.apple-photos-name'))}));
   const grid = document.getElementById('applePhotosGrid');
-  window.webkit.messageHandlers.result.postMessage({cards:results, scrollHeight:grid.scrollHeight, height:grid.clientHeight,
-    selected:cards[0].getAttribute('aria-pressed'), importDisabled:document.getElementById('applePhotosImport').disabled});
+  const album = document.getElementById('applePhotosAlbum');
+  const nativeAlbum = !album.classList.contains('dd-native') && album.getBoundingClientRect().height > 0;
+  let controlReceivedKey = false;
+  album.addEventListener('keydown', () => { controlReceivedKey = true; });
+  album.dispatchEvent(new KeyboardEvent('keydown', {key:'ArrowDown', bubbles:true, cancelable:true}));
+  const selected = cards[0].getAttribute('aria-pressed');
+  const importDisabled = document.getElementById('applePhotosImport').disabled;
+  const scrollHeight = grid.scrollHeight, height = grid.clientHeight;
+  album.value = 'album-one';
+  album.dispatchEvent(new Event('change', {bubbles:true}));
+  window.webkit.messageHandlers.result.postMessage({cards:results, scrollHeight, height,
+    selected, importDisabled, nativeAlbum, controlReceivedKey, requestedAlbum:lastRequest.album});
 }).catch(error => window.webkit.messageHandlers.result.postMessage({error:String(error)}));
 '''.replace('CONTROLLER', controller).replace('PHOTO', json.dumps('data:image/jpeg;base64,' + photo))
-        html = '<!doctype html><style>' + styles + '</style><button id="applePhotosOpen"></button><button id="importPhotosBtn"></button>' + dialog + '<script>' + script + '</script>'
+        html = '<!doctype html><style>' + styles + '</style><button id="applePhotosOpen"></button><button id="importPhotosBtn"></button>' + dialog + '<script>(() => {' + dropdown + '})();</script><script>' + script + '</script>'
         with tempfile.TemporaryDirectory(prefix='lighttable-photos-layout-') as directory:
             directory = Path(directory)
             (directory / 'page.html').write_text(html)
@@ -62,6 +73,9 @@ Promise.all([...document.querySelectorAll('.apple-photos-preview img')].map(img 
                     self.assertEqual(len(result['cards']), 60)
                     self.assertEqual(result['selected'], 'true')
                     self.assertFalse(result['importDisabled'])
+                    self.assertTrue(result['nativeAlbum'])
+                    self.assertTrue(result['controlReceivedKey'])
+                    self.assertEqual(result['requestedAlbum'], 'album-one')
                     self.assertGreater(result['scrollHeight'], result['height'])
                     for row in result['cards']:
                         self.assertGreater(row['preview']['height'], 100)
