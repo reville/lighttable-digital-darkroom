@@ -43,7 +43,7 @@ def main() -> None:
     if not venv.exists():
         run("uv", "--no-config", "venv", "--python", python, venv)
     run("uv", "--no-config", "pip", "sync", "--python", venv / "bin/python3", "--only-binary", ":all:",
-        ROOT / "requirements-runtime.lock")
+        ROOT / "packaging/runtime-linux.lock")
     checkout("https://github.com/andreavolpato/agx-emulsion.git", PINS["python_source_revision"],
              ROOT / "vendor/spektrafilm")
     rust_source = build / "test-rust-source"

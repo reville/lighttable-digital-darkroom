@@ -19,6 +19,11 @@ $SigningEnabled = if ($RuntimeSmokeOnly) { $false } else {
     & (Join-Path $PSScriptRoot "sign-release.ps1") -CheckOnly -RequireSigning:$RequireSigning
 }
 
+if ($RequireSigning -and [string]::IsNullOrWhiteSpace($env:SPARKLE_PRIVATE_KEY)) {
+    throw "Windows release updates require SPARKLE_PRIVATE_KEY."
+}
+$WinSparkleVersion = "0.9.4"
+$WinSparkleArchiveSha256 = "6037df37fc263bd1650a1c4949681a9d40ffe991d01f35892a406cb5d103c976"
 $PythonVersion = "3.13.12"
 $PythonArchiveSha256 = "76f238f606250c87c6beac75dccd35ee99070a13490555936abb6cb64ecce3d0"
 $PythonSourceRevision = "3bb2c2d2801ff68b92019cf1dbcbb133d60832bc"
@@ -38,6 +43,7 @@ $Python = Join-Path $Payload "Python"
 $PythonExe = Join-Path $Python "python.exe"
 $PythonSource = Join-Path $BuildRoot "python-engine"
 $RustSource = Join-Path $BuildRoot "rust-engine-source"
+$PreviousTestUpdater = [Environment]::GetEnvironmentVariable("LIGHTTABLE_TEST_WINSPARKLE_DLL", "Process")
 $PreviousIcon = [Environment]::GetEnvironmentVariable("LIGHTTABLE_ICON_ICO", "Process")
 
 $RequiredTools = if ($RuntimeSmokeOnly) { @("git", "uv") } else { @("cargo", "git", "rustup", "uv") }
@@ -153,11 +159,29 @@ try {
         return
     }
 
+    # Pin and verify the upstream updater binary before it reaches the payload.
+    $WinSparkleArchive = Join-Path $BuildRoot "winsparkle.zip"
+    Invoke-WebRequest -Uri "https://github.com/vslavik/winsparkle/releases/download/v$WinSparkleVersion/WinSparkle-$WinSparkleVersion.zip" -OutFile $WinSparkleArchive
+    if ((Get-FileHash -Algorithm SHA256 $WinSparkleArchive).Hash.ToLowerInvariant() -ne $WinSparkleArchiveSha256) {
+        throw "WinSparkle archive hash mismatch"
+    }
+    $WinSparkleRoot = Join-Path $BuildRoot "winsparkle"
+    Expand-Archive -Path $WinSparkleArchive -DestinationPath $WinSparkleRoot
+    $WinSparkle = Join-Path $WinSparkleRoot "WinSparkle-$WinSparkleVersion"
+    Copy-Item (Join-Path $WinSparkle "x64\WinSparkle.dll") $Payload
+    New-Item -ItemType Directory -Force -Path (Join-Path $Licenses "winsparkle") | Out-Null
+    Get-ChildItem $WinSparkle -Filter "COPYING*" | ForEach-Object {
+        Copy-Item $_.FullName (Join-Path $Licenses "winsparkle")
+    }
+    # ZIP extraction stays portable; NSIS writes direct ownership after copying.
+    Set-Content -Encoding ascii -NoNewline (Join-Path $Payload "install-channel.txt") "portable"
+
     & rustup target add $Target
     if ($LASTEXITCODE -ne 0) { throw "The Windows Rust target could not be installed" }
 
     & cargo test --locked --target $Target --manifest-path (Join-Path $Project "rust-engine\Cargo.toml")
     if ($LASTEXITCODE -ne 0) { throw "The resident render-engine tests failed" }
+    $env:LIGHTTABLE_TEST_WINSPARKLE_DLL = Join-Path $Payload "WinSparkle.dll"
     & cargo test --locked --target $Target --manifest-path (Join-Path $Project "windows-shell\Cargo.toml")
     if ($LASTEXITCODE -ne 0) { throw "The Windows desktop-shell tests failed" }
 
@@ -187,6 +211,7 @@ try {
     if ($SigningEnabled) {
         & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files @(
             (Join-Path $Payload "LightTable.exe"),
+            (Join-Path $Payload "WinSparkle.dll"),
             (Join-Path $Engine "lighttable-engine.exe"),
             (Join-Path $Engine "spektrafilm-rs.exe")
         )
@@ -198,12 +223,15 @@ try {
         (Join-Path $Payload "LightTable.exe")
     if ($LASTEXITCODE -ne 0) { throw "The packaged Windows runtime smoke test failed" }
 
+    & (Join-Path $PSScriptRoot "updater-smoke.ps1") -Application (Join-Path $Payload "LightTable.exe")
+
     $SourceRevision = & git -C $Project rev-parse HEAD
     if ($LASTEXITCODE -ne 0) { throw "Could not resolve the package source revision" }
     @{
         version = $Version
         source_revision = $SourceRevision.Trim()
         architecture = "x64"
+        winsparkle_version = $WinSparkleVersion
         python_version = $PythonVersion
         authenticode_signed = [bool]$SigningEnabled
     } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Payload "build-manifest.json")
@@ -225,6 +253,35 @@ try {
             & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files $Installer
         }
         & (Join-Path $Project "scripts\windows\installer-smoke.ps1") -Installer $Installer -Version $Version
+        if ($RequireSigning) {
+            # WinSparkle accepts both the current Sparkle 32-byte seed and its
+            # older 96-byte private-key format. No key material is logged or
+            # included in the package. Sign only after Authenticode is final.
+            $UpdateTool = Join-Path $WinSparkle "bin\winsparkle-tool.exe"
+            $KeyDirectory = Join-Path $BuildRoot "update-signing"
+            New-Item -ItemType Directory -Path $KeyDirectory | Out-Null
+            $Identity = [Security.Principal.WindowsIdentity]::GetCurrent().User
+            $Acl = [Security.AccessControl.DirectorySecurity]::new()
+            $Acl.SetAccessRuleProtection($true, $false)
+            $Acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new(
+                $Identity, "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow"))
+            Set-Acl -LiteralPath $KeyDirectory -AclObject $Acl
+            $KeyFile = Join-Path $KeyDirectory "key"
+            try {
+                [IO.File]::WriteAllText($KeyFile, $env:SPARKLE_PRIVATE_KEY.Trim(), [Text.Encoding]::ASCII)
+                $Signature = (& $UpdateTool sign --private-key-file $KeyFile $Installer | Out-String).Trim()
+                if ($LASTEXITCODE -ne 0 -or $Signature -notmatch '^[A-Za-z0-9+/]{86}==$') {
+                    throw "The Windows update signature could not be created."
+                }
+                $PublicKey = "mrBmSL8f0FRN8j/imZxCWdCt0L4N3zP9kgOleH46eXA="
+                & $UpdateTool verify --public-key $PublicKey --signature $Signature $Installer
+                if ($LASTEXITCODE -ne 0) { throw "The Windows update signature does not match the installed public key." }
+                & $PythonExe -B (Join-Path $PSScriptRoot "write-appcast.py") $Version $Installer $Signature (Join-Path $Output "appcast-windows-x64.xml")
+                if ($LASTEXITCODE -ne 0) { throw "The Windows update feed could not be written." }
+            } finally {
+                Remove-Item -LiteralPath $KeyDirectory -Recurse -Force
+            }
+        }
     }
 
     # Archive only after every required signature and installer check passes.
@@ -234,6 +291,7 @@ try {
 
     Write-Host "Built Windows artifacts in $Output"
 } finally {
+    [Environment]::SetEnvironmentVariable("LIGHTTABLE_TEST_WINSPARKLE_DLL", $PreviousTestUpdater, "Process")
     [Environment]::SetEnvironmentVariable("LIGHTTABLE_ICON_ICO", $PreviousIcon, "Process")
     if (Test-Path $BuildRoot) {
         Remove-Item -Recurse -Force $BuildRoot

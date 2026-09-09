@@ -2762,6 +2762,15 @@
             "Linux'ta kontroller sistemin açık veya koyu görünümünü izler. Omarchy'de araç çubukları, kenar çubukları, menüler ve iletişim kutuları etkin masaüstü paletini izler ve tema değişikliğinden sonraki birkaç saniye içinde güncellenir. Fotoğraf pikselleri, görüntüleyici arka plan tercihi ve nötr renk kapsamları kendi renklerini korur.",
             "Dar bir Linux penceresinde Kütüphaneyi göster veya gizle, kütüphaneyi çekmece olarak açar. Pencereyi genişletmek normal yan yana düzeni geri getirir. Hyprland'da, LightTable'ı taşımak, döşemek, yeniden boyutlandırmak veya kapatmak için derleyicinin pencere kısayollarını kullanın."
           ]
+        },
+        {
+          "title": "LightTable'ı güncelle",
+          "paragraphs": [
+            "İmzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları, Ayarlar → Genel altında Güncellemeleri Denetle… seçeneğini sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez yapılır.",
+            "Linux'ta paketi indirip doğrulamak için Güncelle'yi, ardından Yeniden başlat ve güncelle'yi seçin. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri bitirin; LightTable kapanmadan önce bekleyen düzenlemeleri kaydeder ve kataloğu yedekler.",
+            "Güncellemeler fotoğrafları, düzenlemeleri ve tercihleri korur. Linux kurtarma için önceki paketi saklar ancak kataloğu otomatik olarak geri yüklemez veya eski bir sürümü yeniden açmaz.",
+            "Scoop, WinGet, Chocolatey, AUR, Flatpak veya Snap tarafından yönetilen kurulumları ilgili yöneticiyle güncelleyin. Windows taşınabilir kopyaları için yeni bir ZIP indirin. Güncelleme imzası yapılandırılmamış derlemeler kendilerini güncelleyemez."
+          ]
         }
       ],
       "related": [
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7"
 }

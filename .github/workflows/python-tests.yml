@@ -29,6 +29,7 @@ jobs:
           echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix little-cms2)/lib:/usr/local/lib:/usr/lib" >> "$GITHUB_ENV"
           python -m pip install --upgrade pip
           python -m pip install -r requirements-runtime.lock
+          python -m pip install cryptography==50.0.1
 
       - name: Prepare the pinned film runtimes
         env:

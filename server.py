@@ -28,6 +28,7 @@ import subprocess
 import sys
 import threading
 import time
+from server_updates import UpdateCoordinator
 from collections import OrderedDict, deque
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
@@ -91,6 +92,7 @@ SESSION_EXPORT_DESTINATIONS: set[Path] = set()
 
 EVENTS = EventBroker(maximum_subscribers=8)
 JOBS = JobRegistry(on_change=lambda record: EVENTS.publish("job", record))
+UPDATES = UpdateCoordinator(sys.modules[__name__])
 REQUEST_LOG_LOCK = threading.Lock()
 UI_STATE_LOCK = threading.RLock()
 UI_STATE: dict = {}
@@ -6468,6 +6470,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_file(200, APP / "build" / "icon-1024.png", "image/png")
             elif u.path == "/api/health":
                 self._json(health_payload())
+            elif u.path == "/api/updates":
+                self._json(UPDATES.status())
             elif u.path == "/api/desktop-theme":
                 if sys.platform == "linux":
                     from linux_theme import desktop_theme
@@ -6823,8 +6827,21 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):  # noqa: N802
         started = time.perf_counter()
         u = urlparse(self.path)
+        update_admitted = False
         try:
             self._enforce_security(mutating=u.path not in READ_ONLY_POST_PATHS)
+            UPDATES.enter(u.path)
+            update_admitted = True
+            if u.path.startswith("/api/updates/"):
+                body = self._body()
+                action = u.path.removeprefix("/api/updates/")
+                if action in {"prepare", "cancel", "shutdown", "apply"}:
+                    self._json(getattr(UPDATES, action)())
+                elif action in {"check", "download"}:
+                    self._json(UPDATES.start(action, automatic=body.get("automatic") is True))
+                else:
+                    self._json({"error": T("not found")}, 404)
+                return
             if u.path == "/api/render/file":
                 body = self._body()
                 payload, content_type = encode_program_image(
@@ -7421,6 +7438,8 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:  # noqa: BLE001
             self._handle_exception(e)
         finally:
+            if update_admitted:
+                UPDATES.leave()
             self._log_request(started)
 
 
@@ -7568,7 +7587,7 @@ def main() -> None:
         source_key=file_key,
         preview_bytes=lambda name: orig_jpeg(name, 1024),
         source_availability=lambda name: media_availability.index_availability(src_path(name)),
-        render_busy=RENDER_LOCK.locked,
+        render_busy=lambda: RENDER_LOCK.locked() or UPDATES.blocked,
         worker_cleanup=(
             lambda: CATALOG.close() if CATALOG is not None else None),
         analyzer=LocalPhotoAnalyzer(
@@ -7583,7 +7602,7 @@ def main() -> None:
         source_identity=catalog_image_id,
         preview_bytes=lambda name: orig_jpeg(name, 1024),
         source_availability=lambda name: media_availability.index_availability(src_path(name)),
-        render_busy=RENDER_LOCK.locked,
+        render_busy=lambda: RENDER_LOCK.locked() or UPDATES.blocked,
         worker_cleanup=(lambda: CATALOG.close() if CATALOG is not None else None),
     )
     atexit.register(FACE_INDEX.shutdown)
@@ -7594,12 +7613,17 @@ def main() -> None:
             and not SAFE_MODE:
         WATCH_SERVICE = watch_workflow.WatchService(
             cat, configured_watches, presets=load_presets,
-            render_busy=RENDER_LOCK.locked)
+            activity=UPDATES.background_work,
+            render_busy=lambda: RENDER_LOCK.locked() or UPDATES.blocked)
         WATCH_SERVICE.start()
         atexit.register(WATCH_SERVICE.shutdown)
     print(f"LightTable: {n} images in {FOLDER}")
     print(f"UI: http://127.0.0.1:{PORT}")
     STARTUP.ready(PORT)
+    update_ready_file = os.environ.get("LIGHTTABLE_UPDATE_READY_FILE")
+    if update_ready_file and Path(update_ready_file).is_absolute():
+        durable_io.atomic_write_json(Path(update_ready_file),
+            {"pid": os.getpid(), "port": PORT}, keep_backup=False)
     if cat is not None and not SAFE_MODE and load_json_file(PREFS_FILE, {}).get("writeSidecars"):
         _queue_mirror()
     threading.Thread(
@@ -7659,6 +7683,8 @@ def maintenance_loop(cat: "catalog_module.Catalog | None") -> None:
         first = False
         if RESTART_REQUESTED:
             return
+        if UPDATES.blocked:
+            continue
         try:
             run_maintenance(cat)
         except Exception as error:  # noqa: BLE001 - upkeep must not die

@@ -25,12 +25,20 @@ OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\LightTable"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
+Var UpdateOwner
 
 Function .onInit
   ${IfNot} ${RunningX64}
     MessageBox MB_OK|MB_ICONSTOP "LightTable requires 64-bit Windows." /SD IDOK
     SetErrorLevel 1
     Abort
+  ${EndIf}
+  StrCpy $UpdateOwner "direct"
+  ${GetOptions} $CMDLINE "/UPDATEOWNER=" $R1
+  ${If} $R1 == "winget"
+  ${OrIf} $R1 == "chocolatey"
+  ${OrIf} $R1 == "scoop"
+    StrCpy $UpdateOwner $R1
   ${EndIf}
   SetShellVarContext current
   SetRegView 64
@@ -70,8 +78,26 @@ Section "Install"
     SetErrorLevel 1
     Abort
   ${EndIf}
+  ${If} $UpdateOwner == "direct"
+    ClearErrors
+    FileOpen $0 "$INSTDIR\install-channel.txt" r
+    ${IfNot} ${Errors}
+      FileRead $0 $1
+      FileClose $0
+      ${If} $1 == "winget"
+      ${OrIf} $1 == "chocolatey"
+      ${OrIf} $1 == "scoop"
+        StrCpy $UpdateOwner $1
+      ${EndIf}
+    ${EndIf}
+  ${EndIf}
   SetOutPath "$INSTDIR"
   File /r "${PAYLOAD}\*"
+  ; Explicit package ownership prevents a second updater from overwriting a
+  ; package-managed installation. Preserve an existing manager on repair.
+  FileOpen $0 "$INSTDIR\install-channel.txt" w
+  FileWrite $0 "$UpdateOwner"
+  FileClose $0
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   ; Use a dedicated bin directory: putting INSTDIR on PATH would resolve the
   ; GUI LightTable.exe before the CLI lighttable.cmd on case-insensitive Windows.

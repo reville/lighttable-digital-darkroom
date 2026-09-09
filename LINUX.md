@@ -59,9 +59,26 @@ Launch **LightTable** from the desktop menu, or run
 automation CLI. The desktop entry advertises support for `lighttable:` preset
 links. Add `~/.local/bin` to your shell's `PATH` if necessary.
 
-To upgrade, close LightTable, extract the new archive into another permanent
-directory, and run its `install.sh`. This retargets the launchers owned by the
-previous installation and preserves your data. If you move the bundle, run
+Configured portable releases offer **Settings → General → Check for Updates…**.
+Automatic checks run at most daily after the editor opens and can be disabled
+in General. Choose **Update** to download and verify a new bundle, then
+**Restart and update** when your work is finished. LightTable saves pending
+edits and verifies a catalog backup before closing. Imports, exports, and other
+active work must finish first.
+
+The updater verifies signed release metadata and the archive's checksum, extracts
+into a separate version directory, and retargets only LightTable-owned launchers
+after both the window and server exit. It reopens the same catalog and retains
+the previous bundle. Photos, edits, and preferences remain in their existing
+locations. Recovery does not automatically restore a catalog or launch an older
+app after the new version may have changed the catalog format.
+
+Automatic updates require running the bundle's `install.sh`, a clean release
+build, and a configured signing key and feed. Source checkouts and unconfigured
+builds cannot update themselves. For a manual upgrade, close LightTable, extract
+the new archive into another permanent directory, and run its `install.sh`.
+This retargets the launchers owned by the previous installation and preserves
+your data. If you move the bundle, run
 `install.sh` again from its new location. The installer refuses to replace
 unrelated or manually modified launchers.
 
@@ -77,6 +94,12 @@ in place. An old bundle cannot uninstall the newer bundle's launchers. You may
 delete the extracted application folder separately after closing the app.
 Both scripts accept `--bin-dir /absolute/path` for a custom command directory;
 use the same option and XDG settings during uninstall.
+
+Arch/AUR, Flatpak, and Snap installations use their package manager or desktop
+software manager for updates. LightTable does not replace package-owned files.
+Flatpak updates require a configured repository; a standalone bundle download
+does not establish an ongoing update channel. See [release setup](release/README.md)
+for portable signing configuration and the native upgrade checks still required.
 
 ## Install with pacman on Arch or Omarchy
 

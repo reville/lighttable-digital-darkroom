@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -69,6 +70,7 @@ def stage_resources(project: Path, python_source: Path, rust_source: Path, bundl
     shutil.copy2(python_source / "LICENSE", licenses / "python-render-engine.txt")
     shutil.copy2(rust_source / "LICENSE", licenses / "rust-render-engine.txt")
     shutil.copy2(project / "requirements-runtime.lock", licenses / "runtime-requirements.lock")
+    shutil.copy2(project / "packaging/runtime-linux.lock", licenses / "runtime-linux.lock")
     shutil.copy2(project / "packaging/linux/runtime.json", licenses / "runtime-pins.json")
     (bundle / "bin").mkdir()
     shutil.copy2(project / "scripts/linux/lighttable", bundle / "bin/lighttable")
@@ -134,7 +136,7 @@ def main() -> None:
         copy_tree(build / "python-installs" / runtime_pins["python_key"], bundle / "Python")
         python = bundle / "Python/bin/python3"
         run("uv", "--no-config", "pip", "sync", "--python", python, "--system",
-            "--break-system-packages", "--only-binary", ":all:", ROOT / "requirements-runtime.lock",
+            "--break-system-packages", "--only-binary", ":all:", ROOT / "packaging/runtime-linux.lock",
             env=environment)
         run(python, ROOT / "scripts/fetch-color-profiles.py",
             bundle / "Resources/LightTable/color-profiles", env=environment)
@@ -164,8 +166,19 @@ def main() -> None:
             "build_distribution": platform.freedesktop_os_release(),
             "runtime": runtime_pins,
             "runtime_requirements_sha256": hashlib.sha256((ROOT / "requirements-runtime.lock").read_bytes()).hexdigest(),
+            "runtime_linux_requirements_sha256": hashlib.sha256((ROOT / "packaging/runtime-linux.lock").read_bytes()).hexdigest(),
         }
         (bundle / "build-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        (bundle / "installation-owner.json").write_text('{"owner":"portable"}\n')
+        key = os.environ.get("LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY", "").strip()
+        if key and len(base64.b64decode(key, validate=True)) != 32:
+            parser.error("LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY must be a base64 Ed25519 public key")
+        feed = os.environ.get("LIGHTTABLE_LINUX_UPDATE_FEED_URL", "").strip() or (
+            "https://github.com/reville/lighttable-digital-darkroom/releases/download/desktop-updates/"
+            f"linux-{architecture}.json")
+        (bundle / "update-config.json").write_text(json.dumps({"public_key": key, "feed_url": feed}, indent=2) + "\n")
+        if not key:
+            print("Automatic updates are disabled: no Linux update public key was configured.")
         # Actually relocate before smoke testing; a successful build-directory
         # launch does not demonstrate that the downloaded Python is portable.
         relocated = build / "moved bundle with spaces" / "LightTable"

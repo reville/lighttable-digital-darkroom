@@ -9,7 +9,7 @@ finished; candidate artifacts built before that cutoff must be rebuilt.
 
 | Route | Implementation | Publication and proof still required |
 | --- | --- | --- |
-| Portable archive | Native GTK/WebKitGTK shell, bundled Python and engines, per-user installer | Publish the tested x86_64 archive and checksum from the selected release commit |
+| Portable archive | Native GTK/WebKitGTK shell, bundled Python and engines, per-user installer and signed updater | Configure update signing, test a native signed upgrade, and publish the tested x86_64 archive, checksum, and feed from the selected release commit |
 | Arch / Omarchy | `lighttable-bin` generator, verified source/archive identity, `.SRCINFO`, pacman integration | Build/install on Arch, test actual Omarchy session, publish archive before uploading AUR recipe |
 | Direct Flatpak | Full-app sandbox candidate and manual CI | Successful installed sandbox/portal workflow and an explicit update-distribution choice before public delivery |
 | Flathub | AppStream metadata, canonical ID and source dependency audit | Finish the source-only dependency closure, validate runtime, establish release/use history and complete human submission |
@@ -21,6 +21,13 @@ Portable installation migrates only untouched legacy launchers recorded as
 LightTable-owned. Catalogs, preferences and photo folders retain their XDG paths.
 Sandbox packages have separate data locations; migration between package formats
 requires an explicit, tested catalog-and-folder-access workflow.
+
+Portable updates use signed metadata on the dedicated `desktop-updates` GitHub
+release, pointing to immutable versioned archives. Configure the public key in
+release bundles and keep the matching private signing key in release secrets.
+Unsigned or unconfigured builds leave in-app updates disabled. Arch/AUR, Flatpak,
+and Snap retain their own update ownership. A direct Flatpak release also needs
+a configured repository for continuing updates. See [release setup](release/README.md).
 
 ## Candidate validation before tagging
 
@@ -89,3 +96,5 @@ Use package-manager/store updates for installed packages. Keep channels pending
 on the website until installed-from-store verification succeeds. Retain the last
 known-good binaries and tested catalog backups for release recovery; never replace
 the bytes attached to a public version.
+The portable updater retains the previous bundle but does not restore a catalog
+or automatically reopen the old app after a new version may have migrated it.

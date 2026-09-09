@@ -6,7 +6,8 @@ code changes onto the new history; never merge or push the old ancestry into it.
 
 Release builds bundle the native shell, Python runtime, render engines, web UI,
 profiles, and updater. End users do not need Python, Rust, or a source checkout.
-The supported build targets are macOS Apple silicon and Windows x64.
+The build targets are macOS Apple silicon, Windows x64, and experimental Linux
+x86_64. Each platform needs its own native release validation.
 
 ## Current readiness
 
@@ -15,14 +16,19 @@ are implemented. There is no published desktop version yet. A public Mac release
 requires a Developer ID Application certificate and notarization credentials.
 Windows code signing and npm authentication must also be configured before their
 signed/npm distribution paths can be used. A failed preflight publishes nothing.
+Windows and Linux updater integration is present in source. A signed native
+upgrade, configured signing keys, and published feeds are still required before
+automatic updates can be delivered.
 
 ## Build and release a version
 
 1. Complete unit/installer tests on the exact source to release.
 2. Configure the platform credentials below.
-3. Create and push a new stable tag such as `v0.1.0`. The tag workflow builds both
-   platforms. Manual dispatch accepts an existing tag version and can select one
-   platform. Published release files are immutable; use another version for changes.
+3. Create and push a new stable tag such as `v0.1.0`. The tag workflow uses the
+   selected release platforms. Manual dispatch accepts an existing tag version
+   and can select one platform. See [Linux distribution](../LINUX-DISTRIBUTION.md)
+   for platform selection. Published release files are immutable; use another
+   version for changes.
 4. The workflow builds and tests the actual bundles, signs/notarizes Mac artifacts,
    generates checksums and package definitions from the final bytes, stages a draft
    release, and makes it public only after all selected builds succeed.
@@ -84,6 +90,48 @@ and fail before building if signing is not configured. Set repository secrets
 Authenticode certificate export. The Windows SDK SignTool signs and timestamps
 the app and engine executables before packaging, then signs the final installer.
 The npm installer independently rejects an invalid or unsigned Windows installer.
+
+## Windows and Linux update feeds
+
+The dedicated GitHub release tag `desktop-updates` holds mutable feed files:
+
+- `appcast-windows-x64.xml` contains WinSparkle enclosures signed with
+  `SPARKLE_PRIVATE_KEY`, matching the Ed25519 public key in
+  `windows-shell/src/windows_update.rs`. Authenticode signing is also required.
+- `linux-x86_64.json` contains signed release metadata for the portable archive.
+  Set the repository variable `LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY` to the base64
+  Ed25519 public key and the secret `LIGHTTABLE_LINUX_UPDATE_PRIVATE_KEY` to its
+  matching PEM private key or base64 seed. Release builds embed the public key
+  in `update-config.json`; the private key is used only to sign release metadata.
+
+Feed URLs use `/releases/download/desktop-updates/`. Each feed points to assets
+under an immutable `vMAJOR.MINOR.PATCH` release. Publishing a feed must follow
+successful publication and verification of those exact assets. A Windows-only
+or Linux-only release must preserve the other platform's feed and the macOS feed.
+Do not use `/releases/latest/` for these two platform channels.
+
+Linux signatures cover the version, architecture, source revision, archive URL,
+size, SHA-256, and validity dates. The updater rejects expired or older metadata,
+wrong-platform bundles, altered archives, unsafe extraction paths, and a changed
+trusted key. Builds without a configured public key keep automatic updates
+disabled. Key rotation needs a separately designed transition; replacing the key
+in the next archive is rejected.
+The Linux feed expires after 365 days by default. Re-sign and refresh it before
+expiry even if the current app version has not changed, using the same immutable
+archive. `scripts/generate-linux-update.py` verifies the archive's embedded public
+key before signing; it does not create credentials or publish its output.
+
+Before enabling either channel, test a signed upgrade on its native desktop with
+pending edits, an active export, a network failure, a bad signature, and a busy
+server. Confirm preparation saves edits and makes a verified catalog backup,
+both app and server exit before installation, the same catalog reopens, and
+package-managed installations decline in-app updates. Linux also needs a failed
+launch check and launcher recovery verification. Retaining an older bundle does
+not make a migrated catalog compatible with it: the updater never automatically
+restores a catalog or relaunches an old app after the new app may have migrated it.
+
+This change does not provision credentials, publish a feed, or establish native
+upgrade proof. Keep those release steps explicit.
 
 ## CLI and package definitions
 
