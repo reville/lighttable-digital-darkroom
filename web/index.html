@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/web/help.css">
 <link rel="stylesheet" href="/web/first-run.css">
 <link rel="stylesheet" href="/web/people.css">
+<link rel="stylesheet" href="/web/apple-photos.css">
 <link rel="stylesheet" href="/web/linux-layout.css">
 <link rel="stylesheet" href="/web/desktop-theme.css">
 <link rel="stylesheet" href="/web/localization.css">
@@ -76,6 +77,7 @@
     <section class="source-block">
       <div class="sidebar-heading" data-i18n-text="{&quot;0&quot;:&quot;Library&quot;}">Library</div>
       <button class="source-row on" data-source="all"><span data-i18n-text="{&quot;0&quot;:&quot;All Photos&quot;}">All Photos</span><b id="sourceAllCount">0</b></button>
+      <button class="source-row" id="applePhotosOpen" aria-haspopup="dialog" aria-controls="applePhotosDialog" aria-expanded="false" hidden><span data-i18n-text="{&quot;0&quot;:&quot;Apple Photos&quot;}">Apple Photos</span></button>
       <button class="source-row" id="peopleOpen" aria-haspopup="dialog" aria-controls="peopleDialog"><span data-i18n-text="{&quot;0&quot;:&quot;People&quot;}">People</span><b id="peopleCount"></b></button>
       <div class="source-filters" role="group" aria-label="Flag and rating filters" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Flag and rating filters&quot;}">
       <button class="source-row" data-source="pending"><span data-i18n-text="{&quot;0&quot;:&quot;Unflagged&quot;}">Unflagged</span><b id="sourcePendingCount">0</b></button>
@@ -87,10 +89,10 @@
 
     <section class="folder-block">
       <div class="sidebar-heading folder-heading">
-        <span data-i18n-text="{&quot;0&quot;:&quot;Local&quot;}">Local</span>
-        <span class="sidebar-heading-actions"><button class="quiet icon-btn folder-add" id="addFolderBtn" title="Add folder" aria-label="Add folder" data-i18n-attrs="{&quot;title&quot;:&quot;Add folder&quot;,&quot;aria-label&quot;:&quot;Add folder&quot;}">+</button><button class="quiet icon-btn folder-add" id="localLibraryMenuBtn" aria-controls="localLibraryMenu" title="Local library actions" aria-label="Local library actions" aria-expanded="false" data-i18n-attrs="{&quot;title&quot;:&quot;Local library actions&quot;,&quot;aria-label&quot;:&quot;Local library actions&quot;}">•••</button></span>
+        <span data-i18n-text="{&quot;0&quot;:&quot;Folders&quot;}">Folders</span>
+        <span class="sidebar-heading-actions"><button class="quiet icon-btn folder-add" id="addFolderBtn" title="Add folder" aria-label="Add folder" data-i18n-attrs="{&quot;title&quot;:&quot;Add folder&quot;,&quot;aria-label&quot;:&quot;Add folder&quot;}">+</button><button class="quiet icon-btn folder-add" id="localLibraryMenuBtn" aria-controls="localLibraryMenu" title="Folder actions" aria-label="Folder actions" aria-expanded="false" data-i18n-attrs="{&quot;title&quot;:&quot;Folder actions&quot;,&quot;aria-label&quot;:&quot;Folder actions&quot;}">•••</button></span>
       </div>
-      <div class="folder-tabs" role="tablist" aria-label="Local folders" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Local folders&quot;}">
+      <div class="folder-tabs" role="tablist" aria-label="Folders" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Folders&quot;}">
         <button class="on" id="browseFoldersTab" role="tab" aria-selected="true" data-i18n-text="{&quot;0&quot;:&quot;Browse&quot;}">Browse</button>
         <button id="favoriteFoldersTab" role="tab" aria-selected="false" data-i18n-text="{&quot;0&quot;:&quot;Favorites&quot;}">Favorites</button>
       </div>
@@ -839,10 +841,10 @@
   </aside>
 </div>
 
-<div id="localLibraryMenu" class="context-menu action-menu" role="menu" aria-label="Local library actions" aria-hidden="true" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Local library actions&quot;}">
+<div id="localLibraryMenu" class="context-menu action-menu" role="menu" aria-label="Folder actions" aria-hidden="true" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Folder actions&quot;}">
   <button id="catalogRescan" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Rescan folders&quot;}">Rescan folders</button>
   <button id="catalogAddSource" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Add watched folder…&quot;}">Add watched folder…</button>
-  <button id="importPhotosBtn" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Import photos…&quot;}">Import photos…</button>
+  <button id="importPhotosBtn" hidden role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Import photos…&quot;}">Import photos…</button>
   <button id="importCatalogBtn" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Import catalog…&quot;}">Import catalog…</button>
   <button id="importSidecarsBtn" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Import sidecars…&quot;}">Import sidecars…</button>
   <div class="menu-separator" role="separator"></div>
@@ -1024,7 +1026,7 @@
       <h1 id="setupWelcome" tabindex="-1" data-i18n-text="{&quot;0&quot;:&quot;Where are your photos?&quot;}">Where are your photos?</h1>
       <div class="setup-options">
         <button class="setup-option" id="setupLightroom"><span class="setup-option-icon setup-lr" aria-hidden="true" data-i18n-text="{&quot;0&quot;:&quot;Lr&quot;}">Lr</span><span><strong data-i18n-text="{&quot;0&quot;:&quot;Import from Lightroom&quot;}">Import from Lightroom</strong><small data-i18n-text="{&quot;0&quot;:&quot;Bring in your catalog, ratings, and collections. Won’t disrupt or edit your Lightroom setup or library in any way. Photos stay in their current folders and are referenced, not duplicated.&quot;}">Bring in your catalog, ratings, and collections. Won’t disrupt or edit your Lightroom setup or library in any way. Photos stay in their current folders and are referenced, not duplicated.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
-        <button class="setup-option" id="setupPhotos"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="16" cy="16" rx="5" ry="13"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(45 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(90 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(135 16 16)"/></svg></span><span><strong data-i18n-text="{&quot;0&quot;:&quot;Apple Photos&quot;}">Apple Photos</strong><small data-i18n-text="{&quot;0&quot;:&quot;Start with the photos in your Mac’s library.&quot;}">Start with the photos in your Mac’s library.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
+        <button class="setup-option" id="setupPhotos" hidden><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="16" cy="16" rx="5" ry="13"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(45 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(90 16 16)"/><ellipse cx="16" cy="16" rx="5" ry="13" transform="rotate(135 16 16)"/></svg></span><span><strong data-i18n-text="{&quot;0&quot;:&quot;Apple Photos&quot;}">Apple Photos</strong><small data-i18n-text="{&quot;0&quot;:&quot;Start with the photos in your Mac’s library.&quot;}">Start with the photos in your Mac’s library.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
         <button class="setup-option" id="setupFolder"><span class="setup-option-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10V7a2 2 0 0 1 2-2h7l3 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10Z"/><path d="M3 12h26"/></svg></span><span><strong data-i18n-text="{&quot;0&quot;:&quot;Choose a folder&quot;}">Choose a folder</strong><small data-i18n-text="{&quot;0&quot;:&quot;Browse photos right where they are.&quot;}">Browse photos right where they are.</small></span><span class="setup-arrow" aria-hidden="true">›</span></button>
       </div>
       <p class="setup-caption" data-i18n-text="{&quot;0&quot;:&quot;You can add more sources any time.&quot;}">You can add more sources any time.</p>
@@ -1419,5 +1421,27 @@
 </div>
 <script type="module" src="/web/bootstrap.js"></script>
 <aside id="desktopUpdateNotice" class="desktop-update-notice" role="status" hidden><span id="desktopUpdateNoticeText"></span><button id="desktopUpdateNoticeAction" data-i18n-text="{&quot;0&quot;:&quot;Update&quot;}">Update</button><button id="desktopUpdateLater" data-i18n-text="{&quot;0&quot;:&quot;Later&quot;}">Later</button></aside>
+<div class="modal-backdrop apple-photos-backdrop" id="applePhotosDialog" aria-hidden="true">
+  <section class="apple-photos-panel" role="dialog" aria-modal="true" aria-labelledby="applePhotosTitle">
+    <header class="apple-photos-header">
+      <div><h1 id="applePhotosTitle" tabindex="-1" data-i18n-text="{&quot;0&quot;:&quot;Apple Photos&quot;}">Apple Photos</h1><p data-i18n-text="{&quot;0&quot;:&quot;Browse your albums, then import selected originals for editing. iCloud originals download during import. Your Photos library stays unchanged.&quot;}">Browse your albums, then import selected originals for editing. iCloud originals download during import. Your Photos library stays unchanged.</p></div>
+      <button class="quiet" id="applePhotosClose" type="button" data-i18n-text="{&quot;0&quot;:&quot;Done&quot;}">Done</button>
+    </header>
+    <div class="apple-photos-toolbar">
+      <label for="applePhotosAlbum" data-i18n-text="{&quot;0&quot;:&quot;Album&quot;}">Album</label><select id="applePhotosAlbum"><option value="" data-i18n-text="{&quot;0&quot;:&quot;All Photos&quot;}">All Photos</option></select>
+      <button class="quiet compact" id="applePhotosRefresh" type="button" data-i18n-text="{&quot;0&quot;:&quot;Refresh&quot;}">Refresh</button>
+      <button class="quiet compact" id="applePhotosSelectPage" type="button" data-i18n-text="{&quot;0&quot;:&quot;Select page&quot;}">Select page</button>
+      <button class="quiet compact" id="applePhotosClear" type="button" data-i18n-text="{&quot;0&quot;:&quot;Clear selection&quot;}">Clear selection</button>
+      <span id="applePhotosSelection"></span>
+    </div>
+    <div class="apple-photos-grid" id="applePhotosGrid" aria-label="Photos" aria-busy="false" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Photos&quot;}"></div>
+    <div class="apple-photos-feedback"><p id="applePhotosStatus" role="status" aria-live="polite"></p><progress id="applePhotosProgress" max="1" value="0" hidden></progress></div>
+    <footer class="apple-photos-footer">
+      <div><button class="quiet compact" id="applePhotosPrevious" type="button" data-i18n-text="{&quot;0&quot;:&quot;Previous&quot;}">Previous</button><span id="applePhotosPage"></span><button class="quiet compact" id="applePhotosNext" type="button" data-i18n-text="{&quot;0&quot;:&quot;Next&quot;}">Next</button></div>
+      <div><button class="quiet compact" id="applePhotosStop" type="button" hidden data-i18n-text="{&quot;0&quot;:&quot;Stop Import&quot;}">Stop Import</button><button class="quiet" id="applePhotosViewImported" type="button" hidden data-i18n-text="{&quot;0&quot;:&quot;View imported photos&quot;}">View imported photos</button><button class="accent-btn" id="applePhotosImport" type="button" disabled data-i18n-text="{&quot;0&quot;:&quot;Import selected originals&quot;}">Import selected originals</button></div>
+    </footer>
+  </section>
+</div>
+
 </body>
 </html>

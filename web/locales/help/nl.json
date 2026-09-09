@@ -19,13 +19,21 @@
         {
           "title": "Kies een startpunt",
           "paragraphs": [
-            "In een nieuwe bibliotheek biedt de installatie een lokale map, Lightroom-migratie of Apple Foto's. Je kunt de installatie overslaan en later foto's toevoegen.",
+            "In een nieuwe bibliotheek biedt de installatie een lokale map of Lightroom-migratie. De macOS-app biedt ook Apple Foto's. U kunt de installatie overslaan en later foto's toevoegen.",
             "Voor het importeren van de hele Apple Photos-bibliotheek is de macOS-app vereist en toestemming om Foto's te lezen. Het kopieert originele foto's, inclusief RAW-bestanden, naar Pictures / LightTable Imports / Apple Photos. Je Foto's-bibliotheek blijft ongewijzigd. iCloud-originelen worden tijdens het importeren gedownload, dus houd rekening met tijd en schijfruimte. Albums, video's en bewerkingen in Foto's worden niet overgedragen.",
             "Stop importeren behoudt voltooide kopieën. Als je het opnieuw uitvoert, worden die kopieën overgeslagen en worden onvoltooide originelen opnieuw geprobeerd."
           ],
           "steps": [
             "Kies een map om originelen op hun plaats te bladeren, of selecteer een van de migratieopties.",
             "Controleer het importresultaat en ga daarna door naar de bibliotheek."
+          ]
+        },
+        {
+          "title": "Bladeren in Apple Foto's",
+          "paragraphs": [
+            "Open in de macOS-app Apple Foto's in de zijbalk om door foto's en albums te bladeren. Geef toegang tot Foto's wanneer daarom wordt gevraagd. Deze bron is verborgen op Windows en Linux.",
+            "Selecteer maximaal 500 foto's over pagina's of albums heen en kies vervolgens Geselecteerde originelen importeren. LightTable kopieert originele foto's, inclusief RAW-bestanden, naar Pictures / LightTable Imports / Apple Photos. iCloud-originelen worden tijdens het importeren gedownload. Uw Foto's-bibliotheek blijft ongewijzigd; albums, video's en bewerkingen in Foto's worden niet overgebracht.",
+            "Importeren stoppen behoudt voltooide kopieën. Importeer de selectie opnieuw om niet-beschikbare originelen opnieuw te proberen; voltooide kopieën worden overgeslagen. Kies Geïmporteerde foto's weergeven om de kopieën te bewerken. Vernieuwen werkt de beschikbare foto's en albums bij."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Een lokale map openen",
           "paragraphs": [
-            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruik je de + naast Lokaal om een hele map toe te voegen. LightTable bewaart originelen op hun plek. Als je een afzonderlijke foto selecteert, wordt de bijbehorende map toegevoegd, zodat andere ondersteunde foto's in die map ook kunnen verschijnen."
+            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruikt u de + naast Mappen om een hele map toe te voegen. LightTable bewaart originelen op hun plaats. Als u één foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat ook andere ondersteunde foto's in die map kunnen verschijnen."
           ],
           "steps": [
-            "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Lokaal om een map te kiezen.",
-            "Kies de map onder Lokaal in de linkerzijbalk. Schakel Submappen opnemen in om foto's in de onderliggende mappen te bladeren.",
+            "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Mappen om een map te kiezen.",
+            "Kies de map onder Mappen in de linkerzijbalk. Schakel Submappen opnemen in om foto's in de onderliggende mappen te bekijken.",
             "Kies bovenaan Fotoraster, Selectieraster of Detail. Klik op een foto om deze actief te maken."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Breng nieuwe bestanden naar een bestaande map",
           "paragraphs": [
-            "Gebruik het menu Lokaal ••• en Mappen opnieuw scannen nadat u bestanden buiten LightTable hebt toegevoegd. Gebruik om foto's van een kaart naar een bestemmingsmap te kopiëren Importeren vanaf kaart… in dat menu."
+            "Gebruik het menu Mappen ••• en Mappen opnieuw scannen nadat u bestanden buiten LightTable hebt toegevoegd. Om foto's van een kaart naar een bestemmingsmap te kopiëren, gebruikt u Van kaart importeren… in dat menu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Compatibiliteit in voorbeeld toont overeenkomsten in de huidige bibliotheek zonder deze te wijzigen. Foto's die nog niet zijn toegevoegd, kunnen in het voorbeeld als niet-overeenkomend worden weergegeven; importeren met De fotomappen toevoegen ingeschakeld registreert beschikbare originelen voordat opnieuw wordt afgestemd."
           ],
           "steps": [
-            "Open Lokaal ••• → Catalogus importeren…, of kies in de configuratie voor Importeren uit Lightroom.",
+            "Open Mappen ••• → Catalogus importeren… of kies tijdens de installatie Importeren uit Lightroom.",
             "Kies het .lrcat-bestand en controleer de aantallen en waarschuwingen.",
             "Kies de categorieën om te importeren, het beleid voor bestaande bewerkingen en of de gekoppelde fotomappen moeten worden toegevoegd.",
             "Klik op Voorbeeldcompatibiliteit en bekijk toegewezen en overgeslagen instellingen. Probeer 20 varianten maakt afzonderlijke proefbewerkingen vóór een grotere import.",
@@ -103,7 +111,7 @@
           "title": "Vertaalde bewerkingen beoordelen",
           "paragraphs": [
             "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
-            "Lokaal ••• → Sidecars importeren… is een afzonderlijke actie voor het lezen van ondersteunde metagegevens uit naastliggende sidecars. Die actie past geen ontwikkelingsinstellingen of bijsnijden toe. Het resultatenvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
+            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Die actie past geen ontwikkelinstellingen of bijsnijden toe. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Van kaart importeren kopieert bestanden naar de bestemming die u kiest. De originelen op de kaart blijven op hun plaats. Het overslaan van duplicaten vergelijkt de volledige bestandsinhoud; alleen een overeenkomende bestandsnaam of camerakop is niet voldoende."
           ],
           "steps": [
-            "Open Lokaal ••• → Importeren vanaf kaart….",
+            "Open Mappen ••• → Van kaart importeren….",
             "Kies de bron en bestemming. Stel Map-sjabloon en Hernoemen in vóór het scannen. De standaardinstellingen behouden bestandsnamen en ordenen kopieën per jaar/jaar-maand-dag.",
             "Kies verificatie: Volledige hash, Alleen grootte of Geen. Stel Dubbele bestanden in op Overslaan of Toch kopiëren, en kies optioneel Tweede kopie naar.",
             "Klik op Scannen. Gebruik Vorige en Volgende om elke pagina te controleren en controleer het geselecteerde aantal en de voorvertoning van de bestemming voordat u op Importeren klikt. Importeren is niet beschikbaar wanneer er geen foto's zijn geselecteerd.",
@@ -345,27 +353,27 @@
         {
           "title": "Kiezen wat in beeld is",
           "paragraphs": [
-            "Lokaal → Bladeren toont uw toegevoegde mappen. Submappen opnemen bepaalt of een geselecteerde map ook zijn onderliggende mappen toont. Andere bibliotheekfilters blijven van kracht.",
+            "Mappen → Bladeren toont een lijst van uw toegevoegde mappen. Submappen opnemen bepaalt of een geselecteerde map ook de onderliggende mappen toont. Andere bibliotheekfilters blijven van toepassing.",
             "Gebruik in een smal Linux-venster Weergeven of verbergen bibliotheek linksboven om de bibliotheeklade te openen. Sluit deze na het kiezen van een map met dezelfde knop om meer ruimte voor de foto over te houden."
           ],
           "steps": [
-            "Klik op een map onder Lokaal.",
+            "Klik op een map onder Mappen.",
             "Schakel Submappen opnemen in om kindmappen op te nemen, of uit om alleen die map te bekijken.",
             "Klik op de ster naast een map, of open het •••-menu en kies Toevoegen als favoriet.",
-            "Gebruik Lokaal → Favorieten om terug te gaan naar je opgeslagen mappen."
+            "Gebruik Mappen → Favorieten om terug te keren naar uw opgeslagen mappen."
           ]
         },
         {
           "title": "Mapacties",
           "paragraphs": [
-            "Het •••-menu van een map bevat Weergeven in Finder op Mac, Weergeven in Bestandsverkenner op Windows of Weergeven in Bestandsbeheerder op Linux. Voor de huidige map ververst Map synchroniseren de weergave. Lokaal ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
+            "Het menu ••• van een map bevat Weergeven in Finder op Mac, Weergeven in Bestandsverkenner op Windows of Weergeven in Bestandsbeheerder op Linux. Voor de huidige map vernieuwt Map synchroniseren de weergave. Mappen ••• → Mappen opnieuw scannen scant de catalogusbronnen.",
             "Verwijderen uit LightTable verwijdert een toegevoegde bron uit de bronlijst van de app; het verplaatst de originele bestanden niet naar de Prullenmand. De actie wordt aangeboden wanneer meer dan één bron beschikbaar is."
           ]
         },
         {
           "title": "Bewaakte mappen beheren",
           "paragraphs": [
-            "Open Lokaal ••• → Watchmap… om een bewaakte map toe te voegen. Kies hoe binnenkomende foto's moeten worden afgehandeld. Opslaan is niet beschikbaar totdat een map is opgegeven; kopiëren naar de bibliotheek vereist ook een bestemming.",
+            "Open Mappen ••• → Watchmap… om een bewaakte map toe te voegen. Kies hoe binnenkomende foto's moeten worden verwerkt. Opslaan is niet beschikbaar totdat een map is opgegeven; kopiëren naar de bibliotheek vereist ook een bestemming.",
             "Om een bestaande watch te bewerken, kiest u deze in Bewaakte mappen. Elke opgeslagen watch verschijnt in deze lijst. Kies Nieuwe bewaakte map voor een andere map, of gebruik Watch verwijderen om het bewaken van de geselecteerde map te stoppen. Dit verwijdert de foto's niet.",
             "De sneltoets voor Bewaken opent de eerste actieve watch. Slaffouten blijven in het dialoogvenster staan zodat u de instellingen kunt corrigeren."
           ]
@@ -485,7 +493,7 @@
         {
           "title": "Metagegevens lezen uit een andere editor",
           "paragraphs": [
-            "Vraag de andere editor om de metagegevens op te slaan naar naastgelegen XMP-bestanden en kies vervolgens Lokaal ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
+            "Vraag de andere editor om de metagegevens op te slaan in naastliggende XMP-bestanden en kies daarna Mappen ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
             "Ondersteunde metagegevens zijn onder meer sterbeoordelingen, kies/afwijzen-markeringen, standaard kleurlabels, platte en hiërarchische trefwoorden en beschrijvende IPTC-velden. Een expliciete lege waarde wist dat veld; een ontbrekende waarde laat het ongewijzigd. Aangepaste kleurlabels die niet overeenkomen met een LightTable-kleur worden gerapporteerd als overgeslagen.",
             "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelingsinstellingen en bijsnijden worden niet toegepast door deze menubewerking."
           ]
@@ -1193,7 +1201,7 @@
         {
           "title": "Kies een collectie",
           "paragraphs": [
-            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 23 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
           ],
           "steps": [
             "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
@@ -1208,7 +1216,8 @@
         {
           "title": "Voorinstellingspakketten organiseren",
           "paragraphs": [
-            "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in de pakketten Kleur, Film en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+            "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in Kleur, Film, Film Simulation Drama en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+            "Elke look in Film Simulation Drama schakelt filmsimulatie in en voegt effecten voor toon, kleur, korrel, gloed of vignettering toe. Het pakket bevat acht looks, waaronder Silver Noir in zwart-wit.",
             "Kies Nieuw pakket… om een benoemd pakket in de huidige collectie te maken. Sleep een voorinstelling naar de kop ervan, of open de details van de voorinstelling via … en kies Verplaatsen naar pakket. Gebruik … naast een pakket om de naam te wijzigen. Als je een pakket verwijdert, gaan de voorinstellingen terug naar hun standaardgroepen zonder te worden gewist. De pakketindeling wordt op deze computer opgeslagen."
           ]
         },
@@ -3047,7 +3056,7 @@
         {
           "title": "Back-uppen en inspecteren",
           "paragraphs": [
-            "Instellingen → Catalogus toont de cataloguslocatie en back-upvoorkeuren. Back-ups bevatten catalogusorganisatie, bewerkingen, opgeslagen maskers, geschiedenis en varianten. Maak originele foto's, externe voorinstellingen en profielen, en voorkeuren apart back-uppen. Lokaal ••• → Catalogus back-uppen… maakt ook een back-up en toont het opgeslagen pad of de fout in een resultatenvenster. Duplicaten zoeken in hetzelfde menu toont overeenkomende bestanden, of meldt dat er geen zijn gevonden."
+            "Instellingen → Catalogus toont de cataloguslocatie en back-upvoorkeuren. Back-ups bevatten de catalogusstructuur, bewerkingen, opgeslagen maskers, geschiedenis en varianten. Maak een back-up van originele foto's, externe voorinstellingen en profielen, en voorkeuren afzonderlijk. Mappen ••• → Catalogus back-uppen… maakt ook een back-up en toont het opgeslagen pad of de fout in een resultatendialoogvenster. Duplicaten zoeken in hetzelfde menu toont overeenkomende bestanden, of meldt dat er geen zijn gevonden."
           ],
           "steps": [
             "Kies een automatisch back-upinterval en een back-uplocatie.",
@@ -3195,5 +3204,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
 }

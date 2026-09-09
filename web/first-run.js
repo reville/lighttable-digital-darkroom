@@ -87,6 +87,8 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
   }
 
   function capabilities() {
+    el('setupPhotos').hidden = !photosAvailable || !nativeBridge()
+      || ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__);
     el('setupPhotosAll').disabled = !photosAvailable;
     el('setupPhotosSelected').hidden = !nativeBridge()
       || ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__);

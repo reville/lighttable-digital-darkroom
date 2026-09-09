@@ -28,10 +28,14 @@ final class PHAsset {
     let localIdentifier: String
     let resources: [PHAssetResource]
     init(_ id: String, _ resources: [PHAssetResource]) { localIdentifier = id; self.resources = resources }
+    static func fetchAssets(withLocalIdentifiers ids: [String], options: PHFetchOptions) -> AssetResult {
+        AssetResult(fixtures.filter { ids.contains($0.localIdentifier) })
+    }
     static func fetchAssets(with type: PHAssetMediaType, options: PHFetchOptions) -> AssetResult { AssetResult(fixtures) }
 }
 final class AssetResult {
     let values: [PHAsset]
+    var count: Int { values.count }
     init(_ values: [PHAsset]) { self.values = values }
     func enumerateObjects(_ body: (PHAsset, Int, UnsafeMutablePointer<ObjCBool>) -> Void) {
         var stop = ObjCBool(false)
@@ -92,10 +96,10 @@ func copied(_ folder: URL) -> [URL] {
 func partials(_ folder: URL) -> [URL] {
     (FileManager.default.enumerator(at: folder, includingPropertiesForKeys: nil)?.allObjects as? [URL] ?? []).filter { $0.pathExtension == "partial" }
 }
-func run(_ assets: [PHAsset], folder: URL, cancelAtResource: String? = nil) -> [String: Any] {
+func run(_ assets: [PHAsset], folder: URL, cancelAtResource: String? = nil, selection: [String]? = nil) -> [String: Any] {
     PHAsset.fixtures = assets
     var terminal: [String: Any]?
-    let importer = PhotosLibraryImporter(directory: folder) { event in
+    let importer = PhotosLibraryImporter(directory: folder, assetIdentifiers: selection) { event in
         if event["state"] as? String != "running" { terminal = event }
     }
     if let cancelAtResource {
@@ -124,6 +128,17 @@ result = run([pair, unicode], folder: root)
 require(result["imported"] as? Int == 1 && result["existing"] as? Int == 2, "rerun must add only new")
 require(PHAssetResourceManager.shared.requests - before == 1, "dedup must skip downloading")
 require(copied(root).count == 3, "long Unicode filenames")
+let chosen = PHAsset("chosen", [PHAssetResource("chosen.jpg"), PHAssetResource("chosen.dng", .alternatePhoto)])
+let unchosen = PHAsset("unchosen", [PHAssetResource("unchosen.jpg")])
+let selectionBefore = PHAssetResourceManager.shared.requests
+result = run([chosen, unchosen], folder: root, selection: ["chosen", "chosen", "deleted"])
+require(result["imported"] as? Int == 2 && result["failures"] as? Int == 1, "selected originals and missing asset counts")
+require(PHAssetResourceManager.shared.requests - selectionBefore == 2, "unselected asset must never download")
+require(!copied(root).contains { $0.lastPathComponent.hasPrefix("unchosen") }, "unselected original was copied")
+result = run([chosen, unchosen], folder: root, selection: ["chosen"])
+require(result["existing"] as? Int == 2 && result["imported"] as? Int == 0, "selected retries share deterministic paths")
+result = run([chosen, unchosen], folder: root, selection: [])
+require(result["total"] as? Int == 0, "empty selection must never import the whole library")
 let failed = PHAsset("failed-asset", [PHAssetResource("fail.jpg", .photo, 0, true)])
 result = run([failed], folder: root)
 require(result["failures"] as? Int == 1 && result["imported"] as? Int == 0, "failed transfer counted")
