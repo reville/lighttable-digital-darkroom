@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520">
+  <defs>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ee7540"/>
+      <stop offset="0.52" stop-color="#d85b2b"/>
+      <stop offset="1" stop-color="#a93620"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b315f"/>
+      <stop offset="0.55" stop-color="#072250"/>
+      <stop offset="1" stop-color="#03152f"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="37%" cy="32%" r="78%">
+      <stop offset="0" stop-color="#fffdf0"/>
+      <stop offset="0.38" stop-color="#fff0ae"/>
+      <stop offset="0.72" stop-color="#ffe184"/>
+      <stop offset="1" stop-color="#e8b641"/>
+    </radialGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#ffe184" stop-opacity=".3"/>
+      <stop offset=".48" stop-color="#ffe184" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#ffe184" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="guide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity=".18"/>
+      <stop offset=".46" stop-color="#fff" stop-opacity=".78"/>
+      <stop offset=".54" stop-color="#fff" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".18"/>
+    </linearGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="17" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0" result="mono"/>
+      <feComponentTransfer in="mono" result="softNoise">
+        <feFuncA type="table" tableValues="0 .085"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="softNoise" mode="soft-light"/>
+    </filter>
+    <filter id="orbShadow" x="-70%" y="-70%" width="240%" height="240%">
+      <feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#020711" flood-opacity=".42"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#grain)">
+    <path fill="url(#orange)" d="M0 0h380v520H0z"/>
+    <path fill="url(#blue)" d="M380 0h380v520H380z"/>
+    <path fill="#fff" opacity=".04" d="M379.5 0h1v520h-1z"/>
+    <ellipse cx="380" cy="169" rx="130" ry="130" fill="url(#halo)"/>
+  </g>
+
+  <text x="380" y="51" fill="#fff" opacity=".94" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif"
+        font-size="13" font-weight="650" letter-spacing="3.3">DRAG TO INSTALL</text>
+
+  <path d="M244 169H516" stroke="url(#guide)" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="380" cy="169" r="50" fill="url(#orb)" filter="url(#orbShadow)"/>
+  <circle cx="362" cy="151" r="17" fill="#fff" opacity=".18"/>
+  <path d="M371 154l18 15-18 15" fill="none" stroke="#10131a" stroke-opacity=".92"
+        stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M72 303h616" stroke="#fff" stroke-opacity=".16"/>
+  <text x="380" y="350" fill="#fff" opacity=".94" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif"
+        font-size="15" font-weight="520">For this beta, you will need to allow unsigned apps</text>
+  <text x="380" y="374" fill="#fff" opacity=".94" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif"
+        font-size="15" font-weight="520">in order to launch it. <tspan text-decoration="underline" font-weight="650">See this readme.</tspan></text>
+
+</svg>

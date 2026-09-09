@@ -48,12 +48,7 @@ else
     "${GENERATE_ARGS[@]}" "$APPCAST_DIR"
 fi
 
-DMG_ROOT="$(mktemp -d /tmp/lighttable-dmg.XXXXXX)"
-trap '/bin/rm -rf "$DMG_ROOT"' EXIT
-/usr/bin/ditto "$APP" "$DMG_ROOT/LightTable.app"
-/bin/ln -s /Applications "$DMG_ROOT/Applications"
-hdiutil create -quiet -volname LightTable -srcfolder "$DMG_ROOT" \
-  -ov -format UDZO "$DMG"
+"$ROOT/scripts/package-dmg.sh" "$APP" "$DMG"
 
 echo "Created update archive: $ARCHIVE"
 echo "Created signed appcast: $APPCAST_DIR/appcast.xml"
