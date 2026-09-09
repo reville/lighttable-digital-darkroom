@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd",
   "pluralPairs": [
     {
@@ -1007,6 +1007,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.",
     "Copy",
     "Copy Edit Settings",
+    "Copy and Paste are below the photo in Detail view.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.",
     "Copy and verify it into the library",
     "Copy anyway",
@@ -1280,6 +1281,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.",
     "Edit",
+    "Edit History",
     "Edit In…",
     "Edit Shape",
     "Edit a curve",
@@ -1353,7 +1355,6 @@
     "Error: {error}",
     "Errors: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.",
-    "Every step, kept with the photo",
     "Everyone",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.",
     "Example download prepared. Your edit has not changed.",

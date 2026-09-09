@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "エラー: {error}",
     "Errors: {details}": "エラー: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "すべての書き出しには、選択した ICC プロファイルが埋め込まれます。Colour space で sRGB、Display P3、または ProPhoto RGB を選びます。",
-    "Every step, kept with the photo": "すべての手順を写真とともに保持",
+    "Edit History": "編集履歴",
     "Everyone": "すべての人物",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone には表示可能な顔グループが表示されます。Unnamed には名前が付けられていないグループが表示されます。グループを開き、名前を入力して、名前を保存 を選択してください。使用されるのは入力した名前だけです。モデルは人の名前を知りません。",
     "Example download prepared. Your edit has not changed.": "サンプルダウンロードを準備しました。編集内容は変更されていません。",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "どちらかの点をドラッグしてグラデーションを調整します。線をドラッグすると全体が移動します。別の場所でドラッグすると描き直せます。",
     "Shape a linear gradient": "線形グラデーションの形状を調整する",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。"
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。",
+    "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。"
   },
   "plurals": {
     " · {count} paired file linked": {

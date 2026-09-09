@@ -1374,6 +1374,7 @@
         {
           "title": "Transfer selected settings",
           "paragraphs": [
+            "Copy and Paste are below the photo in Detail view.",
             "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."
           ],
           "steps": [
