@@ -201,10 +201,12 @@
             <img id="orig" alt="Original photograph" data-i18n-attrs="{&quot;alt&quot;:&quot;Original photograph&quot;}">
             <img id="referenceImg" alt="Film reference" hidden data-i18n-attrs="{&quot;alt&quot;:&quot;Film reference&quot;}">
             <div id="cropLayer">
-              <span class="crop-dimmer crop-dimmer-top" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-right" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-bottom" aria-hidden="true"></span>
-              <span class="crop-dimmer crop-dimmer-left" aria-hidden="true"></span>
+              <div class="crop-shade" aria-hidden="true">
+                <span class="crop-dimmer crop-dimmer-top"></span>
+                <span class="crop-dimmer crop-dimmer-right"></span>
+                <span class="crop-dimmer crop-dimmer-bottom"></span>
+                <span class="crop-dimmer crop-dimmer-left"></span>
+              </div>
               <div id="cropRect" tabindex="0" role="group" aria-label="Crop selection. Drag to move; use the handles to resize." data-i18n-attrs="{&quot;aria-label&quot;:&quot;Crop selection. Drag to move; use the handles to resize.&quot;}">
                 <span class="crop-handle crop-handle-nw" data-crop-handle="nw" aria-hidden="true"></span>
                 <span class="crop-handle crop-handle-n" data-crop-handle="n" aria-hidden="true"></span>
