@@ -9,6 +9,7 @@ native UI/API evidence, not a screenshot or display-color certification.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import ctypes
 from ctypes import wintypes
 import hashlib
@@ -374,17 +375,72 @@ def verify_export(path: Path, *, require_precision: bool) -> dict:
                 "red_levels": levels, "sha256": digest}
 
 
+def cleanup_temporary_directory(temporary) -> None:
+    # WebView2 can release its private files after the host/job have exited.
+    # Retry only this TemporaryDirectory; never discover or stop other processes.
+    deadline, remaining = time.monotonic() + 10, 10
+    while remaining > 0:
+        try:
+            temporary.cleanup()
+            return
+        except PermissionError:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise
+            time.sleep(min(0.2, remaining))
+
+
+@contextmanager
+def smoke_directory(report: dict, report_dir: Path | None):
+    # Explicit cleanup prevents a second implicit deletion attempt from masking
+    # the native failure or printing a success receipt before cleanup finishes.
+    temporary = tempfile.TemporaryDirectory(prefix="lighttable-native-smoke-", delete=False)
+    root = Path(temporary.name)
+    original_error = cleanup_error = evidence_error = None
+    try:
+        yield root
+    except BaseException as error:
+        original_error = error
+        report.update(ok=False, error=str(error))
+        raise
+    finally:
+        try:
+            if report_dir and (root / "server.log").exists():
+                shutil.copy2(root / "server.log", report_dir / "server.log")
+        except OSError as error:
+            evidence_error = error
+            report.update(ok=False, evidence_error=str(error))
+        try:
+            cleanup_temporary_directory(temporary)
+        except OSError as error:
+            cleanup_error = error
+            report.update(ok=False, cleanup_error=str(error), retained_directory=str(root))
+        try:
+            if report_dir:
+                (report_dir / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        except OSError as error:
+            evidence_error = error
+            report.update(ok=False, report_error=str(error))
+        print(json.dumps(report))
+        if original_error is None:
+            if cleanup_error:
+                raise cleanup_error
+            if evidence_error:
+                raise evidence_error
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bundle", type=Path, help="Extracted portable Windows ZIP directory containing LightTable.exe")
     parser.add_argument("--photo", type=Path, help="Optional RAW/JPEG/TIFF to copy into the isolated catalog")
-    parser.add_argument("--timeout", type=int, default=240)
+    parser.add_argument("--timeout", type=int, default=240,
+                        help="Native workflow seconds; cleanup adds at most 15 seconds for processes and 10 for private files")
     parser.add_argument("--report-dir", type=Path, help="New directory for JSON evidence, logs and the exported TIFF")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run with packaged Python in a logged-on Windows desktop")
     if not 60 <= args.timeout <= 270:
-        parser.error("--timeout must be between 60 and 270 seconds, plus at most 15 seconds of cleanup")
+        parser.error("--timeout must be between 60 and 270 seconds, plus at most 25 seconds of cleanup")
     require_interactive_desktop()
     bundle = args.bundle.resolve()
     validate_bundle(bundle)
@@ -400,8 +456,7 @@ def main():
     manifest = bundle / "build-manifest.json"
     if manifest.is_file():
         report["build"] = json.loads(manifest.read_text(encoding="utf-8-sig"))
-    with tempfile.TemporaryDirectory(prefix="lighttable-native-smoke-") as temporary:
-        root = Path(temporary)
+    with smoke_directory(report, args.report_dir) as root:
         environment = smoke_environment(root)
         (root / "support").mkdir()
         (root / "photos").mkdir()
@@ -480,11 +535,6 @@ def main():
         finally:
             if desktop:
                 desktop.close()
-            if args.report_dir:
-                (args.report_dir / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-                if (root / "server.log").exists():
-                    shutil.copy2(root / "server.log", args.report_dir / "server.log")
-            print(json.dumps(report))
 
 
 if __name__ == "__main__":
