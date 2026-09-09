@@ -1,0 +1,33 @@
+name: Arch release acceptance
+on:
+  push:
+    branches: [codex/arch-omarchy-release-20260909]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        distribution: [arch, omarchy]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test in an isolated Arch userland
+        run: |
+          mkdir -p evidence dist
+          docker pull archlinux:base-devel
+          docker image inspect archlinux:base-devel --format '{{json .RepoDigests}}' > evidence/container-image.json
+          timeout 2100s docker run --rm --name lighttable-arch-test --shm-size=1g \
+            -e DISTRIBUTION=${{ matrix.distribution }} -v "$PWD:/work" -w /work \
+            archlinux:base-devel bash scripts/linux/arch-release-container.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LightTable-${{ matrix.distribution }}-acceptance
+          path: |
+            evidence
+            dist
+          if-no-files-found: error
