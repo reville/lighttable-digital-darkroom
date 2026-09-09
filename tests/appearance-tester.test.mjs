@@ -3,8 +3,7 @@ import assert from 'node:assert/strict';
 import {createAppearanceSettings} from '../web/appearance-tester.js';
 
 // Independent window state with queued cross-window messages, as in WebKit.
-function windows({storageAvailable = true, broadcastAvailable = true} = {}) {
-  let saved = null;
+function windows({storageAvailable = true, broadcastAvailable = true, saved = null} = {}) {
   const clients = [], channels = [], messages = [];
   return {
     flush() { while (messages.length) messages.shift()(); },
@@ -41,6 +40,8 @@ for (const options of [{}, {storageAvailable:false}, {broadcastAvailable:false}]
   test(`a separate tester updates the editor and retains settings after reopening ${JSON.stringify(options)}`, () => {
     const session = windows(options), editor = session.open(), tester = session.open();
     session.flush();
+    assert.deepEqual(editor.get(), {color:'#f9c184', borders:false});
+    assert.deepEqual(tester.get(), editor.get());
     tester.set({color:'#33CC99', borders:false});
     session.flush();
     assert.deepEqual(editor.get(), {color:'#33cc99', borders:false});
@@ -50,11 +51,25 @@ for (const options of [{}, {storageAvailable:false}, {broadcastAvailable:false}]
     assert.deepEqual(reopened.get(), editor.get());
     reopened.reset();
     session.flush();
-    assert.deepEqual(editor.get(), {color:null, borders:true});
+    assert.deepEqual(editor.get(), {color:'#f9c184', borders:false});
     assert.deepEqual(tester.get(), {color:'#33cc99', borders:false});
     editor.close(); reopened.close();
   });
 }
+
+test('saved choices override the defaults, and corrupt storage falls back safely', () => {
+  for (const [saved, expected] of [
+    [JSON.stringify({color:'#1144AA',borders:true}), {color:'#1144aa',borders:true}],
+    ['invalid json', {color:'#f9c184',borders:false}],
+    [JSON.stringify({color:'invalid',borders:'invalid'}), {color:'#f9c184',borders:false}],
+  ]) {
+    const editor = windows({saved}).open();
+    assert.deepEqual(editor.get(), expected);
+    editor.reset();
+    assert.deepEqual(editor.get(), {color:'#f9c184',borders:false});
+    editor.close();
+  }
+});
 
 test('an opening-window snapshot cannot undo an immediate color change', () => {
   const session = windows({storageAvailable:false}), editor = session.open();
