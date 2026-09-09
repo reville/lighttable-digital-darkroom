@@ -704,10 +704,12 @@ input[type=checkbox]:disabled { opacity:.4; }
 #cropLayer { position:absolute; inset:0; z-index:4; display:none; cursor:crosshair; touch-action:none; }
 #cropLayer.on { display:block; }
 .crop-dimmer { position:absolute; background:rgb(var(--crop-dim-rgb,0 0 0) / var(--crop-dim-alpha,.62)); pointer-events:none; }
-.crop-dimmer-top { inset:0 0 auto; height:var(--crop-y,0%); }
-.crop-dimmer-bottom { inset:calc(var(--crop-y,0%) + var(--crop-h,100%)) 0 0; }
-.crop-dimmer-left { left:0; top:var(--crop-y,0%); width:var(--crop-x,0%); height:var(--crop-h,100%); }
-.crop-dimmer-right { left:calc(var(--crop-x,0%) + var(--crop-w,100%)); right:0; top:var(--crop-y,0%); height:var(--crop-h,100%); }
+/* Cover the native preview's outward-rounded frame at fractional photo bounds.
+   Extend only the outside edges so the crop opening and dimmer seams stay put. */
+.crop-dimmer-top { inset:-1px -1px auto; height:calc(var(--crop-y,0%) + 1px); }
+.crop-dimmer-bottom { inset:calc(var(--crop-y,0%) + var(--crop-h,100%)) -1px -1px; }
+.crop-dimmer-left { left:-1px; top:var(--crop-y,0%); width:calc(var(--crop-x,0%) + 1px); height:var(--crop-h,100%); }
+.crop-dimmer-right { left:calc(var(--crop-x,0%) + var(--crop-w,100%)); right:-1px; top:var(--crop-y,0%); height:var(--crop-h,100%); }
 #cropRect {
   position:absolute;
   border:1px solid rgba(255,255,255,.96);
