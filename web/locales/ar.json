@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "خطأ: {error}",
     "Errors: {details}": "الأخطاء: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "يضمّن كل تصدير ملف ICC profile المحدد. اختر sRGB أو Display P3 أو ProPhoto RGB في Colour space.",
-    "Every step, kept with the photo": "كل خطوة، محفوظة مع الصورة",
+    "Edit History": "سجل التعديلات",
     "Everyone": "الجميع",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "يعرض الجميع مجموعات الوجوه المرئية. يعرض غير مسمى المجموعات التي لم يُسمَّ لها اسم. افتح مجموعة، واكتب اسمًا، ثم اختر حفظ الاسم. تُستخدم الأسماء التي تدخلها فقط؛ فالنموذج لا يعرف أسماء الأشخاص.",
     "Example download prepared. Your edit has not changed.": "تم إعداد تنزيل مثال. لم يتغير تحريرك.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "اسحب أيًّا من النقطتين لضبط التدرج. اسحب الخط لتحريكه. اسحب في موضع آخر لإعادة رسمه.",
     "Shape a linear gradient": "تعديل شكل تدرج خطي",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "في تحرير الشكل، اسحب أيًّا من النقطتين لضبط ذلك الطرف من التدرج. اسحب الخط الواصل بينهما لتحريك التدرج بالكامل مع الحفاظ على زاويته وعرض الانتقال. اسحب في موضع آخر من الصورة لإعادة رسمه.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "اختر قناعًا خطيًا موجودًا لضبطه مجددًا. إذا كنت ترسم باستخدام أضف أو طرح أو تقاطع، فاختر تحرير الشكل أولًا. اضغط H إذا كانت النقطتان مخفيتين."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "اختر قناعًا خطيًا موجودًا لضبطه مجددًا. إذا كنت ترسم باستخدام أضف أو طرح أو تقاطع، فاختر تحرير الشكل أولًا. اضغط H إذا كانت النقطتان مخفيتين.",
+    "Copy and Paste are below the photo in Detail view.": "يوجد زرا النسخ واللصق أسفل الصورة في عرض التفاصيل."
   },
   "plurals": {
     " · {count} paired file linked": {
