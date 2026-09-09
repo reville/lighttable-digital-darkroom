@@ -1,4 +1,4 @@
-param([switch]$CheckOnly)
+param([switch]$CheckOnly, [string]$OfflineInstaller = "")
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
@@ -35,7 +35,7 @@ function Test-WebView2Runtime {
     return $false
 }
 
-function Install-WebView2Runtime {
+function Install-WebView2Runtime([string]$OfflineInstaller = "") {
     if (Test-WebView2Runtime) {
         Write-Host "Microsoft Edge WebView2 Runtime is already installed."
         return
@@ -46,9 +46,17 @@ function Install-WebView2Runtime {
     New-Item -ItemType Directory -Path $Temporary | Out-Null
     try {
         Write-Host "Installing Microsoft Edge WebView2 Runtime..."
-        [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-        Invoke-WebRequest -UseBasicParsing -TimeoutSec 120 `
-            -Uri 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile $Bootstrapper
+        if (-not [string]::IsNullOrWhiteSpace($OfflineInstaller)) {
+            # An explicit offline package must never fall back to the network.
+            if (-not (Test-Path -LiteralPath $OfflineInstaller -PathType Leaf)) {
+                throw "The bundled offline WebView2 installer is missing."
+            }
+            Copy-Item -LiteralPath $OfflineInstaller -Destination $Bootstrapper
+        } else {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+            Invoke-WebRequest -UseBasicParsing -TimeoutSec 120 `
+                -Uri 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile $Bootstrapper
+        }
         $Signature = Get-AuthenticodeSignature -LiteralPath $Bootstrapper
         if ($Signature.Status -ne 'Valid' -or $null -eq $Signature.SignerCertificate -or
             $Signature.SignerCertificate.Subject -notmatch '(^|,\s*)CN=Microsoft Corporation(,|$)') {
@@ -85,7 +93,7 @@ if ($MyInvocation.InvocationName -ne '.') {
             if (Test-WebView2Runtime) { exit 0 }
             exit 1
         }
-        Install-WebView2Runtime
+        Install-WebView2Runtime -OfflineInstaller $OfflineInstaller
     } catch {
         [Console]::Error.WriteLine("$($_.Exception.Message) Install Microsoft Edge WebView2 Runtime from https://developer.microsoft.com/microsoft-edge/webview2 and run LightTable setup again.")
         exit 1
