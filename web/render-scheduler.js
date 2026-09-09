@@ -24,11 +24,21 @@ export function debounce(callback, delay) {
   };
 }
 
-export function createFrameScheduler(callback) {
-  let frame = 0;
+export function createFrameScheduler(callback, {
+  requestFrame = fn => requestAnimationFrame(fn),
+  cancelFrame = id => cancelAnimationFrame(id),
+  setTimer = setTimeout, clearTimer = clearTimeout, maxWaitMs = 100,
+} = {}) {
+  let frame = null, timer = null, ticket = 0;
   let pending = {};
+  const unschedule = () => {
+    if (frame !== null) cancelFrame(frame);
+    if (timer !== null) clearTimer(timer);
+    frame = timer = null;
+    ticket++;
+  };
   const flush = () => {
-    frame = 0;
+    unschedule();
     const work = pending;
     pending = {};
     callback(work);
@@ -38,16 +48,24 @@ export function createFrameScheduler(callback) {
       for (const [key, value] of Object.entries(work)) {
         pending[key] = value || pending[key];
       }
-      if (!frame) frame = requestAnimationFrame(flush);
+      if (frame !== null) return;
+      const current = ++ticket;
+      const deliver = () => { if (ticket === current) flush(); };
+      frame = requestFrame(() => {
+        if (ticket !== current) return;
+        frame = null;
+        deliver();
+      });
+      // Occluded WebViews can suspend RAF while still accepting commands.
+      // A late frame must neither duplicate work nor consume a newer request.
+      timer = setTimer(deliver, maxWaitMs);
     },
     flush() {
-      if (!frame) return;
-      cancelAnimationFrame(frame);
+      if (frame === null) return;
       flush();
     },
     cancel() {
-      if (frame) cancelAnimationFrame(frame);
-      frame = 0;
+      unschedule();
       pending = {};
     },
   };

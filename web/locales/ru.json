@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "Ошибка: {error}",
     "Errors: {details}": "Ошибки: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Каждый экспорт встраивает выбранный профиль ICC. В Colour space выберите sRGB, Display P3 или ProPhoto RGB.",
-    "Every step, kept with the photo": "Каждый шаг сохраняется вместе с фото",
+    "Edit History": "История редактирования",
     "Everyone": "Все",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone показывает видимые группы лиц. Unnamed показывает группы, которым еще не присвоено имя. Откройте группу, введите имя и выберите Сохранить имя. Используются только введенные вами имена; модель не знает имен людей.",
     "Example download prepared. Your edit has not changed.": "Подготовлена загрузка примера. Ваше редактирование не изменилось.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Перетащите любую точку, чтобы настроить градиент. Перетащите линию, чтобы переместить его. Потяните в другом месте, чтобы нарисовать его заново.",
     "Shape a linear gradient": "Изменение формы линейного градиента",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "В режиме «Редактировать форму» перетащите любую точку, чтобы настроить соответствующий конец градиента. Перетащите соединяющую их линию, чтобы переместить весь градиент, сохранив его угол и ширину перехода. Потяните в другом месте фотографии, чтобы нарисовать его заново.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Выберите существующую линейную маску, чтобы снова настроить её. Если вы рисовали в режимах «Добавить», «Вычесть» или «Пересечение», сначала выберите «Редактировать форму». Нажмите H, если точки скрыты."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Выберите существующую линейную маску, чтобы снова настроить её. Если вы рисовали в режимах «Добавить», «Вычесть» или «Пересечение», сначала выберите «Редактировать форму». Нажмите H, если точки скрыты.",
+    "Copy and Paste are below the photo in Detail view.": "Кнопки копирования и вставки находятся под фотографией в режиме подробного просмотра."
   },
   "plurals": {
     " · {count} paired file linked": {

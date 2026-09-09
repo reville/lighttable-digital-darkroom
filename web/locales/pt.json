@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "Erro: {error}",
     "Errors: {details}": "Erros: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Toda exportação incorpora o perfil ICC selecionado. Escolha sRGB, Display P3 ou ProPhoto RGB em Colour space.",
-    "Every step, kept with the photo": "Cada etapa, mantida com a foto",
+    "Edit History": "Histórico de edição",
     "Everyone": "Todos",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Todos mostra os grupos de rostos visíveis. Sem nome mostra os grupos que ainda não receberam nome. Abra um grupo, digite um nome e escolha Salvar nome. Apenas os nomes que você inserir são usados; o modelo não conhece os nomes das pessoas.",
     "Example download prepared. Your edit has not changed.": "Exemplo de download preparado. Sua edição não foi alterada.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Arraste qualquer um dos pontos para ajustar o gradiente. Arraste a linha para movê-lo. Arraste em outro lugar para redesenhá-lo.",
     "Shape a linear gradient": "Ajustar a forma de um gradiente linear",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecione uma máscara Linear existente para ajustá-la novamente. Se você estava pintando com Adicionar, Subtrair ou Interseção, escolha primeiro Editar forma. Pressione H se os pontos estiverem ocultos."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecione uma máscara Linear existente para ajustá-la novamente. Se você estava pintando com Adicionar, Subtrair ou Interseção, escolha primeiro Editar forma. Pressione H se os pontos estiverem ocultos.",
+    "Copy and Paste are below the photo in Detail view.": "Copiar e Colar ficam abaixo da foto na visualização Detalhe."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -4,6 +4,23 @@ export async function runVisualJourney(ctx) {
     nativePreviewActive, postNative, pushUndo, editSaveQueue } = ctx;
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const environment = () => ({visibility: document.visibilityState, hasFocus: document.hasFocus()});
+  const geometry = () => {
+    const bounds = id => { const r = $(id).getBoundingClientRect(); return {width:r.width, height:r.height}; };
+    return {frame:bounds('cmp'), viewport:bounds('zoomwrap'), zoomReadout:$('zoomVal').textContent,
+      transform:getComputedStyle($('cmp')).transform};
+  };
+  const fitVisible = () => {
+    const g = geometry(), matrix = new DOMMatrixReadOnly(g.transform);
+    return S.zoomMode === 'fit' && Math.abs(matrix.a - 1) < .01 &&
+      g.frame.width <= g.viewport.width + 2 && g.frame.height <= g.viewport.height + 2;
+  };
+  const burst = async (name, count, action) => {
+    const startedEpochMs = Date.now(), pending = [];
+    for (let i=0;i<count;i++) pending.push(action(i));
+    const dispatchMs = Date.now() - startedEpochMs;
+    await Promise.all(pending);
+    postNative('nativeBenchmarkProgress', {stage:'visual-burst', name, count, startedEpochMs, dispatchMs});
+  };
   const steps = [];
   const names = S.images.map(image => image.name);
   if (names.length < 3) throw new Error('Visual review requires at least three copied photos');
@@ -18,7 +35,7 @@ export async function runVisualJourney(ctx) {
     throw new Error('Selected photo did not settle in the native renderer');
   };
   const step = async (journey, name, action, check = () => true) => {
-    const entry = {journey, name, startedEpochMs: Date.now(), before: state(), environmentBefore: environment()};
+    const entry = {journey, name, startedEpochMs: Date.now(), before: state(), environmentBefore: environment(), geometryBefore:geometry()};
     postNative('nativeBenchmarkProgress', {stage: 'visual-step-start', ...entry});
     try {
       await action(); await sleep(650);
@@ -26,11 +43,11 @@ export async function runVisualJourney(ctx) {
       entry.status = 'passed';
     } catch (error) {
       entry.status = 'failed'; entry.error = String(error.message || error);
-      throw error;
     } finally {
       entry.endedEpochMs = Date.now(); entry.durationMs = entry.endedEpochMs - entry.startedEpochMs;
       entry.after = state(); steps.push(entry);
       entry.environmentAfter = environment();
+      entry.geometryAfter = geometry();
       postNative('nativeBenchmarkProgress', {stage: 'visual-step-end', ...entry});
     }
   };
@@ -82,7 +99,7 @@ export async function runVisualJourney(ctx) {
     for (const name of ['portrait.jpg', 'still-life.jpg', 'field.jpg']) await go(name);
   });
   await step('zoom', 'return-to-fit', async () => { await command('zoomFit'); await sleep(1200); },
-    () => S.zoomMode === 'fit');
+    fitVisible);
   await step('edit', 'open-basic-controls', () => command('pane:edit'));
   const initialExposure = Number(S.grade.exposure || 0);
   await step('edit', 'continuous-exposure-drag-and-reversal', async () => {
@@ -116,8 +133,60 @@ export async function runVisualJourney(ctx) {
       await command(i % 2 ? 'zoomOut' : 'zoomIn'); await sleep(100);
     }
     await go('field.jpg'); await command('zoomFit'); await sleep(1200);
+  }, fitVisible);
+  await step('explore', 'zoom-button-mashing', async () => {
+    await burst('zoom-buttons', 36, i => command(i % 3 === 0 ? 'zoomIn' : i % 3 === 1 ? 'zoomOut' : 'zoomFit'));
+    await command('zoomFit'); await sleep(1200);
+  }, fitVisible);
+  await step('explore', 'navigation-button-mashing', async () => {
+    await burst('navigation-buttons', 24, i => command(i % 2 ? 'previousPhoto' : 'nextPhoto'));
+    await go('field.jpg'); await command('zoomFit'); await sleep(1200);
+  }, () => cur()?.name === 'field.jpg' && S.editingName === 'field.jpg' && fitVisible());
+  await step('explore', 'compare-and-panel-button-mashing', async () => {
+    const initial = S.compareActive;
+    await burst('compare-panels', 24, i => command(['compare','toggleLibrary','toggleFilmstrip'][i % 3]));
+    if (S.compareActive !== initial) throw new Error('Even compare toggles did not restore the starting state');
+    await sleep(1200);
+  }, fitVisible);
+  await step('explore', 'exposure-input-mashing-and-undo-redo', async () => {
+    await command('pane:edit');
+    const input = document.querySelector('[data-g="exposure"]');
+    pushUndo();
+    await burst('exposure-inputs', 40, i => {
+      input.value = String(i === 39 ? .65 : (i % 9 - 4) / 4);
+      input.dispatchEvent(new Event('input', {bubbles:true}));
+    });
+    input.dispatchEvent(new Event('change', {bubbles:true}));
+    await burst('undo-redo', 20, i => command(i % 2 ? 'redo' : 'undo'));
+  }, () => Math.abs(S.grade.exposure - .65) < .001);
+  await step('explore', 'scope-switching', async () => {
+    await command('pane:edit');
+    for (const mode of ['waveform','parade','vectorscope','histogram']) {
+      $('scopeMenuButton').click(); document.querySelector(`[data-scope="${mode}"]`).click();
+      await sleep(450);
+      const cv = $('hist'), px = cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;
+      if (!px.some((value,index) => index % 4 === 3 && value > 0)) throw new Error(`Empty ${mode} canvas`);
+    }
   });
+  await step('explore', 'crop-open-cancel-mashing', async () => {
+    for (let i=0;i<6;i++) { await command('pane:crop'); $('cropCancel').click(); }
+    await command('pane:edit'); await command('zoomFit'); await sleep(1200);
+  }, () => !S.cropping && fitVisible());
+  await step('explore', 'film-mode-reversals', async () => {
+    const initial = S.params.profile_enabled;
+    await burst('film-mode-buttons', 8, () => command('filmToggle'));
+    await settle();
+    if (S.params.profile_enabled !== initial) throw new Error('Film toggle burst changed the final mode');
+  });
+  await step('explore', 'final-persistence-after-mashing', async () => {
+    await ctx.saveState(true); await editSaveQueue.flush();
+    await go('portrait.jpg'); await go('field.jpg');
+    await command('zoomFit'); await sleep(1200);
+    const saved = await fetch('/api/state?name=field.jpg').then(r => r.json());
+    if (Math.abs(saved.grade?.exposure - .65) > .001 || !Number.isFinite(saved.grade?.exposure))
+      throw new Error('Burst edits were not persisted');
+  }, () => Math.abs(S.grade.exposure - .65) < .001 && fitVisible());
   if (!nativePreviewActive()) throw new Error('Review left native presentation');
   return {schema: 1, layer: 'visual-review', steps, finalState: state(),
-    coverage: 'Scripted UI commands and DOM input events; not OS-level pointer automation. Presets, crop, masks and export are outside this first review.'};
+    coverage: 'Scripted UI commands and DOM input events including rapid bursts, scopes, crop cancellation and film mode reversals. OS input, presets, mask creation, RAW decoding and export remain outside this run.'};
 }
