@@ -1,3 +1,4 @@
+import errno
 import json
 import tempfile
 import unittest
@@ -110,6 +111,78 @@ class PublishTests(unittest.TestCase):
 
             self.assertEqual(target.read_bytes(), b"other photo")
             self.assertEqual(source.read_bytes(), b"source photo")
+
+    def test_cross_device_move_falls_back_to_atomic_copy_and_unlink(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.jpg"
+            target = root / "target.jpg"
+            source.write_bytes(b"cross device photo")
+
+            real_link = durable_io.os.link
+            def mock_link(src, dst):
+                if Path(src) == source:
+                    raise OSError(errno.EXDEV, "cross-device link")
+                return real_link(src, dst)
+
+            with mock.patch.object(durable_io.os, "link", side_effect=mock_link):
+                destination = durable_io.move_file_no_replace(source, target)
+
+            self.assertEqual(destination, target)
+            self.assertEqual(target.read_bytes(), b"cross device photo")
+            self.assertFalse(source.exists())
+            self.assertFalse(list(root.glob(".*")))
+
+    def test_cross_device_move_refuses_a_raced_destination(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.jpg"
+            target = root / "target.jpg"
+            source.write_bytes(b"new photo")
+            target.write_bytes(b"existing photo")
+
+            real_link = durable_io.os.link
+            def mock_link(src, dst):
+                if Path(src) == source:
+                    raise OSError(errno.EXDEV, "cross-device link")
+                return real_link(src, dst)
+
+            with mock.patch.object(durable_io.os, "link", side_effect=mock_link):
+                with self.assertRaises(FileExistsError):
+                    durable_io.move_file_no_replace(source, target)
+
+            self.assertEqual(source.read_bytes(), b"new photo")
+            self.assertEqual(target.read_bytes(), b"existing photo")
+            self.assertFalse(list(root.glob(".*")))
+
+    def test_cross_device_move_cleans_destination_if_source_unlink_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.jpg"
+            target = root / "target.jpg"
+            source.write_bytes(b"precious photo")
+
+            real_link = durable_io.os.link
+            def mock_link(src, dst):
+                if Path(src) == source:
+                    raise OSError(errno.EXDEV, "cross-device link")
+                return real_link(src, dst)
+
+            import os as real_os_module
+            real_unlink = real_os_module.unlink
+            def mock_unlink(p, *args, **kwargs):
+                if Path(p) == source:
+                    raise OSError(errno.EACCES, "unlink failed")
+                return real_unlink(p, *args, **kwargs)
+
+            with mock.patch.object(durable_io.os, "link", side_effect=mock_link), \
+                 mock.patch("os.unlink", side_effect=mock_unlink):
+                with self.assertRaises(OSError):
+                    durable_io.move_file_no_replace(source, target)
+
+            self.assertTrue(source.exists())
+            self.assertFalse(target.exists())
+            self.assertEqual(source.read_bytes(), b"precious photo")
 
     def test_atomic_json_create_never_overwrites_an_existing_manifest(self):
         with tempfile.TemporaryDirectory() as directory:

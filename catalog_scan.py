@@ -590,9 +590,24 @@ def _import_state_file(cat: catalog_module.Catalog, source_id: int,
                 "skipped": 0, "present": False}
 
     adoption_key = f"portable.source:{source_id}"
+    mtime_key = f"portable.mtime:{source_id}"
+    try:
+        current_mtime = str(path.stat().st_mtime_ns)
+    except OSError:
+        current_mtime = None
+
     if cat.connection.execute("SELECT 1 FROM meta WHERE key=?", (adoption_key,)).fetchone():
-        return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
-                "skipped": 0, "present": True, "adopted": True}
+        row = cat.connection.execute("SELECT value FROM meta WHERE key=?", (mtime_key,)).fetchone()
+        saved_mtime = row[0] if row else None
+        if saved_mtime is not None and current_mtime == saved_mtime:
+            return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
+                    "skipped": 0, "present": True, "adopted": True}
+        if saved_mtime is None and current_mtime is not None:
+            # Baseline mtime for an already adopted source
+            cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, ?)",
+                                   (mtime_key, current_mtime))
+            return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
+                    "skipped": 0, "present": True, "adopted": True}
 
     try:
         state = json.loads(path.read_text())
@@ -782,6 +797,9 @@ def _import_state_file(cat: catalog_module.Catalog, source_id: int,
         cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
                                (adoption_key,))
         cat.connection.execute("DELETE FROM meta WHERE key=?", (pending_key,))
+        if current_mtime is not None:
+            cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, ?)",
+                                   (mtime_key, current_mtime))
     else:
         cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
                                (pending_key,))
@@ -894,6 +912,13 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
                 conn.execute("INSERT OR IGNORE INTO meta(key,value) VALUES(?, '1')",
                              (f"portable.source:{source_id}",))
         durable_io.atomic_write_json(target, payload)
+        try:
+            mtime = str(target.stat().st_mtime_ns)
+            with cat.write() as conn:
+                conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, ?)",
+                             (f"portable.mtime:{source_id}", mtime))
+        except OSError:
+            pass
         return True
     except OSError:
         return False

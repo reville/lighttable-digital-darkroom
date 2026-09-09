@@ -2128,7 +2128,13 @@ class Catalog:
         rules that had to be kept in step by hand.
         """
         spec = spec if isinstance(spec, dict) else {}
-        where = ["f.missing=0", "src.active=1"]
+        include_missing = bool(spec.get("includeMissing") or (isinstance(spec.get("filter"), dict) and spec["filter"].get("includeMissing")))
+        missing_only = bool(spec.get("missingOnly") or (isinstance(spec.get("filter"), dict) and spec["filter"].get("missingOnly")))
+        where = ["src.active=1"]
+        if missing_only:
+            where.append("f.missing=1")
+        elif not include_missing:
+            where.append("f.missing=0")
         params: list[Any] = []
         collection_rules = {}
 
@@ -2321,7 +2327,7 @@ class Catalog:
             " f.mtime_iso, f.header_hash, f.content_hash,"
             " f.camera_make, f.camera_model, f.lens, f.width, f.height,"
             " f.iso, f.focal_length, f.aperture, f.shutter_seconds,"
-            " f.orientation, f.availability, f.source_id, src.path AS source_path,"
+            " f.orientation, f.availability, f.missing, f.source_id, src.path AS source_path,"
             " COALESCE(s.status,'pending') AS status,"
             " COALESCE(s.rating,0) AS rating,"
             " COALESCE(s.label,'none') AS label,"
@@ -2883,6 +2889,7 @@ def _item(row: sqlite3.Row) -> dict:
         "recoverySourceKey": source_revision(_text_or(row["content_hash"] or row["header_hash"]),
             _int_or(row["size"], 0, minimum=0), mtime_ns),
         "availability": _text_or(row["availability"], "local"),
+        "missing": bool(row["missing"]) if "missing" in row.keys() else False,
         "width": width,
         "height": height,
         "camera": " ".join(filter(None, (camera_make, camera_model))),

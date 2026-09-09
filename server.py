@@ -5465,6 +5465,10 @@ def preview_export(opts: dict) -> dict:
 def start_export(opts: dict) -> dict:
     """Queue the same authoritative selection used by the export preview."""
     items, destination = prepare_export(opts)
+    if items:
+        disk = recovery.disk_status(destination)
+        if disk.get("low"):
+            return {"error": T("Low disk space on export destination. Free up space before exporting.")}
     SESSION_EXPORT_DESTINATIONS.update(Path(job["destination"]) for _, job in items)
     batch = ExportBatch(items, destination)
     with EXPORT_LOCK:
@@ -5680,30 +5684,35 @@ class PreviewPregenQueue:
             }
 
     def _worker(self, width: int) -> None:
-        while True:
-            name = None
-            with self.lock:
-                if self.cancel_requested or not self.queue:
-                    self.active = False
-                    self.current = ""
-                    status = self.status_unlocked()
-                    sync_job_status(status, progress_key="completed")
-                    return
-                name = self.queue.pop(0)
-                self.current = name
+        try:
+            while True:
+                name = None
+                with self.lock:
+                    if self.cancel_requested or not self.queue:
+                        self.active = False
+                        self.current = ""
+                        status = self.status_unlocked()
+                        sync_job_status(status, progress_key="completed")
+                        return
+                    name = self.queue.pop(0)
+                    self.current = name
 
-            try:
-                entry = catalog_entry_for(name)
-                params = entry.get("params")
-                _run_refinement(build_neutral_preview,
-                                (name, width, 0, params), "", None)
-                with self.lock:
-                    self.completed += 1
-                    sync_job_status(self.status_unlocked(),
-                                    progress_key="completed")
-            except Exception:
-                with self.lock:
-                    self.failed += 1
+                try:
+                    entry = catalog_entry_for(name)
+                    params = entry.get("params")
+                    _run_refinement(build_neutral_preview,
+                                    (name, width, 0, params), "", None)
+                    with self.lock:
+                        self.completed += 1
+                        sync_job_status(self.status_unlocked(),
+                                        progress_key="completed")
+                except Exception:
+                    with self.lock:
+                        self.failed += 1
+        finally:
+            cat = catalog_handle()
+            if cat is not None:
+                cat.close()
 
     def status_unlocked(self) -> dict:
         return {

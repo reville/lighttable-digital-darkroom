@@ -176,6 +176,58 @@ class PhotoQuarantineTests(unittest.TestCase):
                 {"inflight": None}))
             self.assertIsNone(quarantine.note_previous_crash(None))
 
+    def test_multi_worker_crash_strikes_all_active_photos(self):
+        with tempfile.TemporaryDirectory() as directory:
+            quarantine = recovery.PhotoQuarantine(Path(directory) / "q.json")
+            entry = quarantine.note_previous_crash({
+                "inflight": {
+                    "active": [
+                        {"stage": "export", "name": "bad.raw"},
+                        {"stage": "export", "name": "innocent.raw"},
+                    ]
+                },
+                "detectedAt": 2000.0,
+            })
+            self.assertIsNotNone(entry)
+            entries = {item["name"]: item for item in quarantine.entries()}
+            self.assertIn("bad.raw", entries)
+            self.assertIn("innocent.raw", entries)
+            self.assertEqual(entries["bad.raw"]["strikes"], 1)
+            self.assertEqual(entries["innocent.raw"]["strikes"], 1)
+
+    def test_concurrent_inflight_workers_are_tracked_together(self):
+        import concurrent.futures
+        import threading
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = recovery.SessionLedger(directory)
+            ledger.begin(port=1)
+            t1_ready = threading.Event()
+            t2_ready = threading.Event()
+            stop = threading.Event()
+
+            def worker1():
+                with ledger.inflight("export", "worker1.raw"):
+                    t1_ready.set()
+                    stop.wait(5)
+
+            def worker2():
+                with ledger.inflight("export", "worker2.raw"):
+                    t2_ready.set()
+                    stop.wait(5)
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+                f1 = pool.submit(worker1)
+                f2 = pool.submit(worker2)
+                t1_ready.wait(2)
+                t2_ready.wait(2)
+                data = durable_io.load_json(ledger.inflight_path, {})
+                self.assertIsNotNone(data)
+                active_names = {item["name"] for item in data.get("active", [])}
+                self.assertEqual(active_names, {"worker1.raw", "worker2.raw"})
+                stop.set()
+                f1.result()
+                f2.result()
+
     def test_a_damaged_quarantine_file_starts_empty(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "q.json"

@@ -1184,6 +1184,46 @@ fn trash_paths(paths: &[String]) -> usize {
 #[cfg(windows)]
 fn recycle(path: &Path) -> Result<()> {
     use std::os::windows::ffi::OsStrExt;
+    use std::path::Component;
+
+    if !path.is_absolute() {
+        bail!(tr("Recycle Bin requires an absolute photo path"));
+    }
+
+    if let Some(Component::Prefix(prefix)) = path.components().next() {
+        let root_str = match prefix.kind() {
+            std::path::Prefix::Disk(c) => format!("{}:\\", c as char),
+            std::path::Prefix::UNC(server, share) => format!(
+                "\\\\{}\\{}\\",
+                server.to_string_lossy(),
+                share.to_string_lossy()
+            ),
+            std::path::Prefix::VerbatimDisk(c) => format!("{}:\\", c as char),
+            std::path::Prefix::VerbatimUNC(server, share) => format!(
+                "\\\\{}\\{}\\",
+                server.to_string_lossy(),
+                share.to_string_lossy()
+            ),
+            _ => String::new(),
+        };
+        if !root_str.is_empty() {
+            let root_wide: Vec<u16> = std::ffi::OsStr::new(&root_str)
+                .encode_wide()
+                .chain(Some(0))
+                .collect();
+            unsafe extern "system" {
+                fn GetDriveTypeW(root_path_name: *const u16) -> u32;
+            }
+            const DRIVE_REMOTE: u32 = 4;
+            let drive_type = unsafe { GetDriveTypeW(root_wide.as_ptr()) };
+            if drive_type == DRIVE_REMOTE {
+                bail!(tr_args(
+                    "Network drive {path} does not support the Recycle Bin; deletion cancelled to avoid permanent loss",
+                    &[("path", path.display().to_string())]
+                ));
+            }
+        }
+    }
 
     #[repr(C)]
     struct ShFileOpStruct {
@@ -1209,18 +1249,19 @@ fn recycle(path: &Path) -> Result<()> {
     const FOF_SILENT: u16 = 0x0004;
     const FOF_NOCONFIRMATION: u16 = 0x0010;
     const FOF_ALLOWUNDO: u16 = 0x0040;
+    const FOF_WANTNUKEWARNING: u16 = 0x4000;
     let mut op = ShFileOpStruct {
         hwnd: std::ptr::null_mut(),
         func: FO_DELETE,
         from: wide.as_ptr(),
         to: std::ptr::null(),
-        flags: FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_SILENT,
+        flags: FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_SILENT | FOF_WANTNUKEWARNING,
         any_operations_aborted: 0,
         name_mappings: std::ptr::null_mut(),
         progress_title: std::ptr::null(),
     };
     let status = unsafe { SHFileOperationW(&mut op) };
-    if status == 0 {
+    if status == 0 && op.any_operations_aborted == 0 {
         Ok(())
     } else {
         Err(anyhow!(tr_args("Could not move {path} to the Recycle Bin", &[("path", path.display().to_string())])))

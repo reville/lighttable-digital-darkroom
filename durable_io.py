@@ -278,19 +278,42 @@ def copy_file_no_replace(source: Path | str, destination: Path | str) -> Path:
 
 
 def move_file_no_replace(source: Path | str, destination: Path | str) -> Path:
-    """Move a same-volume file without ever replacing a raced-in target.
+    """Move a file without ever replacing a raced-in target.
 
     A hard link makes the complete source visible at the destination before
     the old name is removed. If interruption lands between those operations,
     both names reference the same bytes, which is recoverable and lossless.
+    Across volumes (EXDEV), copies atomically to a staged destination first,
+    durably publishes without replacing, and only then removes the source.
     """
     source, destination = Path(source), Path(destination)
     try:
         os.link(source, destination)
     except OSError as error:
+        if error.errno == errno.EXDEV or getattr(error, "winerror", None) == 17:
+            copy_file_no_replace(source, destination)
+            try:
+                source.unlink()
+            except Exception:
+                destination.unlink(missing_ok=True)
+                raise
+            _flush_directory(source.parent)
+            return destination
         if not _link_unsupported(error):
             raise
-        _rename_no_replace(source, destination)
+        try:
+            _rename_no_replace(source, destination)
+        except OSError as ren_error:
+            if ren_error.errno == errno.EXDEV or getattr(ren_error, "winerror", None) == 17:
+                copy_file_no_replace(source, destination)
+                try:
+                    source.unlink()
+                except Exception:
+                    destination.unlink(missing_ok=True)
+                    raise
+                _flush_directory(source.parent)
+                return destination
+            raise
         _flush_directory(destination.parent)
         _flush_directory(source.parent)
         return destination
