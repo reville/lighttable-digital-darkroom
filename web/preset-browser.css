@@ -35,8 +35,6 @@
 .preset-browser-name { display:block; color:var(--ink); font-size:11px; font-weight:600; line-height:1.4; overflow-wrap:anywhere; }
 .preset-browser-source { color:var(--muted); font-size:10px; line-height:1.4; overflow-wrap:anywhere; }
 .preset-browser-warning { color:var(--warn); font-size:10px; line-height:1.4; }
-.preset-browser-enabled { visibility:hidden; color:var(--slider-accent); font-size:12px; }
-.preset-browser-apply[aria-pressed="true"] .preset-browser-enabled { visibility:visible; }
 .preset-browser-favorite, .preset-browser-info, .preset-browser-pack-rename, .preset-browser-pack-remove { display:grid; place-items:center; width:23px; height:28px; min-height:28px; padding:0; border:0; background:transparent; color:var(--muted); font-size:17px; line-height:1; }
 .preset-browser-favorite[aria-pressed="true"] { color:var(--slider-accent); }
 .preset-browser-favorite:hover:not(:disabled), .preset-browser-info:hover, .preset-browser-pack-rename:hover, .preset-browser-pack-remove:hover { background:var(--field-hover); color:var(--ink); }
