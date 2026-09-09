@@ -593,9 +593,11 @@ final class NativePreviewRenderer {
 
     func updateSpotVisualization(_ payload: [String: Any]) {
         let threshold = (payload["threshold"] as? NSNumber)?.doubleValue ?? 0
+        let clipping = (payload["clipping"] as? Bool ?? false) ? 1 : 0
         spotVisualization = SIMD4<Float>(
             (payload["enabled"] as? Bool ?? false) ? 1 : 0,
-            Float(threshold.isFinite ? max(0, min(1, threshold)) : 0), 0, 0)
+            Float(threshold.isFinite ? max(0, min(1, threshold)) : 0),
+            Float(clipping), 0)
         scheduleRender()
     }
 

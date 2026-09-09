@@ -220,3 +220,17 @@ test('previous settings applies prior photo edits to active photo', async () => 
   assert.equal(calls[0].body.grade.temp, -.2);
   assert.equal(notices.includes('Applied previous settings'), true);
 });
+
+test('evalParametricLUT returns smooth 256-entry table and null when all zero', async () => {
+  const { evalParametricLUT } = await import('../web/color-tools.js');
+  assert.equal(evalParametricLUT({ highlights: 0, lights: 0, darks: 0, shadows: 0 }), null);
+  const lut = evalParametricLUT({ highlights: 50, lights: 20, darks: -20, shadows: -50 });
+  assert.equal(lut.length, 256);
+  assert.equal(lut[0], 0);
+  assert.equal(lut[255], 1);
+  assert.ok(lut[64] < 64 / 255);
+  assert.ok(lut[192] > 192 / 255);
+  for (let i = 0; i < 256; i++) {
+    assert.ok(lut[i] >= 0 && lut[i] <= 1);
+  }
+});

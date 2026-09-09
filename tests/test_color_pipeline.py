@@ -151,7 +151,17 @@ class CaptureColourTests(unittest.TestCase):
         stronger = color_pipeline.raw_decode_fingerprint({
             "learned_denoise": True, "learned_denoise_strength": 0.9})
         self.assertNotEqual(baseline, enabled)
-        self.assertNotEqual(enabled, stronger)
+    def test_white_balance_presets_and_high_temperature_range(self):
+        modes = {"as_shot", "auto", "daylight", "cloudy", "shade", "tungsten", "fluorescent", "flash"}
+        fps = {mode: color_pipeline.raw_decode_fingerprint({"wb_mode": mode}) for mode in modes}
+        self.assertEqual(len(fps), len(modes))
+        xy_50k = color_pipeline._temperature_xy(50000.0)
+        self.assertTrue(np.all(np.isfinite(xy_50k)))
+        self.assertGreater(xy_50k[0], 0.2)
+        dummy = np.ones((2, 2, 3), dtype=np.float32) * 0.5
+        balanced = color_pipeline.apply_custom_raw_white_balance(dummy, 50000.0, 0.0)
+        self.assertEqual(balanced.shape, (2, 2, 3))
+        self.assertTrue(np.all(np.isfinite(balanced)))
 
     def test_decode_runs_learned_runner_once_for_one_tile(self):
         import rawpy

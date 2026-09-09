@@ -713,6 +713,13 @@ fragment float4 nativePreviewFragment(
         float value = (0.5 - dot(color, LUMA)) * (2.0 + threshold * 7.0) + 0.5;
         color = float3(clamp(clamp(value, 0.0, 1.0) * (0.72 + threshold * 0.35), 0.0, 1.0));
     }
+    if (grade.spotVisualization.z > 0.5) {
+        if (color.r <= 0.005 && color.g <= 0.005 && color.b <= 0.005) {
+            color = float3(0.0, 0.2, 1.0);
+        } else if (color.r >= 0.995 || color.g >= 0.995 || color.b >= 0.995) {
+            color = float3(1.0, 0.0, 0.0);
+        }
+    }
     if (grade.reference0.x > 0.5) {
         float2 referenceUv = (uv - 0.5 - grade.reference1.xy)
             / max(grade.reference0.w, 0.01) + 0.5;

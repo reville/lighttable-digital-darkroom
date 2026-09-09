@@ -76,7 +76,7 @@ let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
 import {
-  monotoneLUT, isIdentityPoints, rgbHue,
+  monotoneLUT, isIdentityPoints, evalParametricLUT, rgbHue,
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
@@ -846,11 +846,11 @@ function syncControls() {
   if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
   $('wbProcessedNote').hidden = rawInput;
   $('wbCustom').hidden = !rawInput || S.params.wb_mode !== 'custom';
-  $('wb_mode').disabled = !profileEnabled || !rawInput;
+  $('wb_mode').disabled = !rawInput;
   $('browseFilmStocks').disabled = !cur();
   $('stock').disabled = !cur();
-  $('wb_temperature').disabled = !profileEnabled || !rawInput;
-  $('wb_tint').disabled = !profileEnabled || !rawInput;
+  $('wb_temperature').disabled = !rawInput;
+  $('wb_tint').disabled = !rawInput;
   $('paper').disabled = !profileEnabled || positive;
   $('development_time').disabled = !profileEnabled ||
     (selectedFilmProfile()?.developmentTimes?.length || 0) <= 1;
@@ -2029,6 +2029,7 @@ function spotVisualization() {
   return {
     enabled: S.activePane === 'healPane' && $('healVisualize').checked,
     threshold: +$('healVisualizeThreshold').value,
+    clipping: Boolean(S.clip),
   };
 }
 
@@ -4398,7 +4399,7 @@ $('startReferenceMatch').onclick = () => {
   if (raw) {
     S.params.wb_mode = 'custom';
     S.params.wb_temperature = clamp((+S.params.wb_temperature || 5500) *
-      Math.exp(Math.log(targetWarmth / currentWarmth) * 0.35), 2000, 12000);
+      Math.exp(Math.log(targetWarmth / currentWarmth) * 0.35), 2000, 50000);
     S.params.wb_tint = clamp((+S.params.wb_tint || 0) +
       Math.log(targetMagenta / currentMagenta) * 0.35, -1, 1);
   } else {
@@ -6659,7 +6660,9 @@ function showCurrentImage(im) {
   if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
-  S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...(im.grade || {}) };
+  const isRaw = im.raw === true || isRawInput();
+  const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...rawDefaults, ...(im.grade || {}) };
   S.crop = im.crop || null;
   S.preset = cloneValue(im.preset || null);
   presetAmountGesture = null;
@@ -6863,7 +6866,12 @@ const _lensProfileCache = new Map();
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
-      S.lensProfile = _lensProfileCache.get(name).profile;
+      const cached = _lensProfileCache.get(name);
+      S.lensProfile = cached.profile;
+      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
+          cached.found && cached.reason === "Exact camera and lens metadata match.") {
+        S.optics.profileEnabled = true;
+      }
       syncOpticsPanel();
     }
     return;
@@ -6874,6 +6882,10 @@ async function loadLensProfile(name) {
     _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
+      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
+          result.found && result.reason === "Exact camera and lens metadata match.") {
+        S.optics.profileEnabled = true;
+      }
       syncOpticsPanel();
     }
   } catch (_) {
@@ -7733,6 +7745,19 @@ FILM_SELECTS.forEach((id) => {
         !S.params.paper_locked && selectedFilmProfile()?.targetPrint) {
       S.params.paper = selectedFilmProfile().targetPrint;
     }
+    if (id === 'wb_mode') {
+      const presets = {
+        daylight: [5500, 0.1],
+        cloudy: [6500, 0.1],
+        shade: [7500, 0.1],
+        tungsten: [2850, 0],
+        fluorescent: [3800, 0.1],
+        flash: [5500, 0],
+      };
+      if (presets[S.params.wb_mode]) {
+        [S.params.wb_temperature, S.params.wb_tint] = presets[S.params.wb_mode];
+      }
+    }
     syncControls(); saveState(); renderFilm(0);
   });
 });
@@ -8004,7 +8029,8 @@ $('filmstripResize').addEventListener('keydown', (event) => {
 $('resetEdit').onclick = () => {
   if (!cur()) return;
   pushUndo();
-  S.grade = { ...GRADE_DEFAULTS };
+  const rawDefaults = isRawInput() ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  S.grade = { ...GRADE_DEFAULTS, ...rawDefaults };
   syncGrade(); syncCurveFromGrade(); syncHsl();
   drawGrade(); saveState(true);
   toast(tr("Edit adjustments reset"));
@@ -9610,6 +9636,11 @@ document.addEventListener('keydown', (e) => {
   }
 
   const k = e.key.toLowerCase();
+  if (k === 'j' && !e.shiftKey && !e.altKey && !$('clipBtn')?.disabled) {
+    e.preventDefault();
+    $('clipBtn')?.click();
+    return;
+  }
   if (S.speed && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
     adjustSpeed(e.key === 'ArrowRight' ? 1 : -1, e);
     e.preventDefault();
@@ -10384,11 +10415,78 @@ $('presetExport').onclick = async () => {
 // what both the shader and the exporter consume.
 S.curve = { L: [[0, 0], [1, 1]], R: [[0, 0], [1, 1]], G: [[0, 0], [1, 1]], B: [[0, 0], [1, 1]] };
 S.curveCh = 'L';
+S.curveMode = 'point';
+S.paramCurve = { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+
+function readParamCurveControls() {
+  S.paramCurve = {
+    highlights: +$('paramCurveHighlights')?.value || 0,
+    lights: +$('paramCurveLights')?.value || 0,
+    darks: +$('paramCurveDarks')?.value || 0,
+    shadows: +$('paramCurveShadows')?.value || 0,
+    splitSD: (+$('paramCurveSplitSD')?.value || 25) / 100,
+    splitDL: (+$('paramCurveSplitDL')?.value || 50) / 100,
+    splitLH: (+$('paramCurveSplitLH')?.value || 75) / 100,
+  };
+  if ($('paramCurveHighlightsV')) $('paramCurveHighlightsV').textContent = String(S.paramCurve.highlights);
+  if ($('paramCurveLightsV')) $('paramCurveLightsV').textContent = String(S.paramCurve.lights);
+  if ($('paramCurveDarksV')) $('paramCurveDarksV').textContent = String(S.paramCurve.darks);
+  if ($('paramCurveShadowsV')) $('paramCurveShadowsV').textContent = String(S.paramCurve.shadows);
+  if ($('paramCurveSplitSDV')) $('paramCurveSplitSDV').textContent = Math.round(S.paramCurve.splitSD * 100) + '%';
+  if ($('paramCurveSplitDLV')) $('paramCurveSplitDLV').textContent = Math.round(S.paramCurve.splitDL * 100) + '%';
+  if ($('paramCurveSplitLHV')) $('paramCurveSplitLHV').textContent = Math.round(S.paramCurve.splitLH * 100) + '%';
+}
+
+function syncParamCurveControls() {
+  const p = S.paramCurve || { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+  if ($('paramCurveHighlights')) $('paramCurveHighlights').value = String(p.highlights || 0);
+  if ($('paramCurveLights')) $('paramCurveLights').value = String(p.lights || 0);
+  if ($('paramCurveDarks')) $('paramCurveDarks').value = String(p.darks || 0);
+  if ($('paramCurveShadows')) $('paramCurveShadows').value = String(p.shadows || 0);
+  if ($('paramCurveSplitSD')) $('paramCurveSplitSD').value = String(Math.round((p.splitSD ?? 0.25) * 100));
+  if ($('paramCurveSplitDL')) $('paramCurveSplitDL').value = String(Math.round((p.splitDL ?? 0.50) * 100));
+  if ($('paramCurveSplitLH')) $('paramCurveSplitLH').value = String(Math.round((p.splitLH ?? 0.75) * 100));
+  readParamCurveControls();
+}
+
+function drawParamCurve() {
+  const cv = $('paramCurveCanvas');
+  if (!cv) return;
+  const x = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  x.clearRect(0, 0, W, H);
+  x.strokeStyle = '#2e2e2e'; x.lineWidth = 1;
+  for (let i = 1; i < 4; i++) {
+    x.beginPath(); x.moveTo(W * i / 4, 0); x.lineTo(W * i / 4, H); x.stroke();
+    x.beginPath(); x.moveTo(0, H * i / 4); x.lineTo(W, H * i / 4); x.stroke();
+  }
+  x.strokeStyle = '#444'; x.lineWidth = 1; x.setLineDash([2, 2]);
+  for (const split of [S.paramCurve.splitSD, S.paramCurve.splitDL, S.paramCurve.splitLH]) {
+    x.beginPath(); x.moveTo(W * split, 0); x.lineTo(W * split, H); x.stroke();
+  }
+  x.setLineDash([]);
+  const lut = evalParametricLUT(S.paramCurve) || Array.from({length: 256}, (_, i) => i / 255);
+  x.strokeStyle = '#e9e9e7';
+  x.lineWidth = 1.5; x.beginPath();
+  for (let i = 0; i < 256; i++) {
+    const px = (i / 255) * W, py = H - lut[i] * H;
+    i ? x.lineTo(px, py) : x.moveTo(px, py);
+  }
+  x.stroke();
+}
 
 function commitCurves() {
-  for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
-    if (isIdentityPoints(S.curve[ch])) delete S.grade[key];
-    else S.grade[key] = monotoneLUT(S.curve[ch]);
+  if (S.curveMode === 'parametric') {
+    const lut = evalParametricLUT(S.paramCurve);
+    if (lut) S.grade.curveL = lut;
+    else delete S.grade.curveL;
+    drawParamCurve();
+  } else {
+    for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
+      if (isIdentityPoints(S.curve[ch])) delete S.grade[key];
+      else S.grade[key] = monotoneLUT(S.curve[ch]);
+    }
+    drawCurve();
   }
   drawGrade();
 }
@@ -10403,6 +10501,7 @@ function syncCurveFromGrade() {
       : [[0, 0], [1, 1]];
   }
   drawCurve();
+  drawParamCurve();
 }
 function drawCurve() {
   const cv = $('curve'), x = cv.getContext('2d');
@@ -10472,6 +10571,47 @@ function drawCurve() {
       document.querySelectorAll('.curveCh').forEach((o) => o.classList.remove('on'));
       b.classList.add('on'); S.curveCh = b.dataset.ch; drawCurve();
     };
+  });
+}());
+
+(function paramCurveEvents() {
+  $('curveModePoint')?.addEventListener('click', () => {
+    S.curveMode = 'point';
+    $('curveModePoint').classList.add('on');
+    $('curveModeParametric').classList.remove('on');
+    $('pointCurveWrap').hidden = false;
+    $('parametricCurveWrap').hidden = true;
+    drawCurve();
+  });
+  $('curveModeParametric')?.addEventListener('click', () => {
+    S.curveMode = 'parametric';
+    $('curveModePoint').classList.remove('on');
+    $('curveModeParametric').classList.add('on');
+    $('pointCurveWrap').hidden = true;
+    $('parametricCurveWrap').hidden = false;
+    syncParamCurveControls();
+    drawParamCurve();
+  });
+  ['paramCurveHighlights', 'paramCurveLights', 'paramCurveDarks', 'paramCurveShadows',
+   'paramCurveSplitSD', 'paramCurveSplitDL', 'paramCurveSplitLH'].forEach((id) => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('pointerdown', pushUndo);
+    el.addEventListener('input', () => {
+      readParamCurveControls();
+      commitCurves();
+    });
+    el.addEventListener('change', () => saveState());
+    el.addEventListener('dblclick', () => {
+      pushUndo();
+      if (id === 'paramCurveSplitSD') el.value = '25';
+      else if (id === 'paramCurveSplitDL') el.value = '50';
+      else if (id === 'paramCurveSplitLH') el.value = '75';
+      else el.value = '0';
+      readParamCurveControls();
+      commitCurves();
+      saveState();
+    });
   });
 }());
 
@@ -10704,7 +10844,11 @@ document.querySelectorAll('a.reset').forEach((a) => {
     e.preventDefault(); e.stopPropagation(); pushUndo();
     if (a.dataset.reset === 'curve') {
       for (const ch of ['L', 'R', 'G', 'B']) S.curve[ch] = [[0, 0], [1, 1]];
-      drawCurve(); commitCurves();
+      S.paramCurve = { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+      syncParamCurveControls();
+      drawCurve();
+      drawParamCurve();
+      commitCurves();
     } else if (a.dataset.reset === 'hsl') {
       delete S.grade.hsl; syncHsl(); drawGrade();
     } else if (a.dataset.reset === 'pointColor') {
@@ -10724,6 +10868,7 @@ $('clipBtn').onclick = () => {
   S.clip = !S.clip;
   $('clipBtn').classList.toggle('on', S.clip);
   syncPreviewBackend();
+  refreshSpotVisualization();
   drawGrade();
   drawHistogram();
   toast(S.clip ? tr("Clipping warning active") : tr("Clipping warning off"));

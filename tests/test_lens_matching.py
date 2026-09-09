@@ -54,3 +54,11 @@ class LensMatchingTests(TestCase):
         self.db.find_lenses.side_effect = lambda *args, **kw: [self.a, self.b] if kw.get('lens') is None or kw.get('loose_search') else []
         with mock.patch.object(edits, '_lens_database', return_value=self.db):
             self.assertIsNone(edits.lens_profile_for(dict(self.meta, LensModel='generic 24-70')))
+
+    def test_exact_metadata_match_indicates_confident_auto_activation(self):
+        self.db.find_lenses.return_value = [self.a]
+        with mock.patch.object(edits, '_lens_database', return_value=self.db):
+            result = edits.lens_match_for(dict(self.meta, LensModel='24-70 A'))
+        self.assertTrue(result['found'])
+        self.assertEqual(result['reason'], "Exact camera and lens metadata match.")
+        self.assertEqual(result['profile']['lensModel'], '24-70 A')

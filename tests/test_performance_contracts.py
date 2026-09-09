@@ -1092,7 +1092,7 @@ process.stdout.write(JSON.stringify({
         catalog_ui = (ROOT / "web" / "catalog-ui.js").read_text()
         self.assertNotIn("dialog.classList.toggle('open'", catalog_ui)
         self.assertEqual(
-            catalog_ui.count("dialog.classList.toggle('on', visible)"), 4)
+            catalog_ui.count("dialog.classList.toggle('on', visible)"), 5)
 
     def test_exif_updates_are_bound_to_the_current_photo(self):
         self.assertIn("if (cur()?.name !== name) return;", self.javascript)
