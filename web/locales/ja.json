@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1888,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "編集ツールバーでマスクを開き、新しいマスクを作成の下からツールを選択します。新しいマスクを作成をクリックすると、ツールの表示/非表示を切り替えます。各マスクには、それぞれ独自の光、カラー、トーンカーブの調整があります。",
     "Open People and choose Download models & enable.": "人物を開き、［モデルをダウンロードして有効にする］を選択してください。",
     "Open People…": "人物を開く…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには10個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "編集ツールバーでPresetsを開きます。Built-inには15個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。 プリセットは1ページに20個ずつ表示されます。",
     "Open Recovery Folder": "回復フォルダーを開く",
     "Open Recovery folder": "Recoveryフォルダーを開く",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "編集ツールバーで Remove を開きます。Remove、Heal、Clone はそれぞれ別のモードです。Heal と Clone は初期ソースを自動的に選択します。そのソースが適切だと決めつけず、確認してください。",

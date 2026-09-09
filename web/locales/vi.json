@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1888,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh riêng cho Sáng, Màu sắc và Đường cong tông.",
     "Open People and choose Download models & enable.": "Mở Mọi người và chọn Tải mô hình xuống và bật.",
     "Open People…": "Mở Mọi người…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa mười giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét. Mỗi trang hiển thị 20 thiết lập sẵn.",
     "Open Recovery Folder": "Mở thư mục khôi phục",
     "Open Recovery folder": "Mở thư mục Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Mở Xóa bỏ trong thanh công cụ chỉnh sửa. Xóa bỏ, Chữa, và Nhân bản là các chế độ riêng biệt. Chữa và Nhân bản tự động chọn một nguồn ban đầu; hãy kiểm tra nguồn đó thay vì cho rằng nó phù hợp.",

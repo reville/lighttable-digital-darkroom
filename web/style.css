@@ -820,7 +820,7 @@ body.filmstrip-resizing { cursor:ns-resize; user-select:none; }
 .tool-btn + .tool-btn::before { content:""; position:absolute; top:-1px; left:0; right:0; height:1px; background:var(--line-soft); pointer-events:none; }
 .tool-btn svg { width:24px; height:24px; }
 .tool-btn:hover { background:var(--hover); color:#fff; }
-.tool-btn.on { background:var(--active); color:#fff; }
+.tool-btn.on { border-radius:0; background:var(--active); color:#fff; }
 .tool-btn.on svg { color:var(--accent); }
 .panel { grid-column:1; grid-row:1; min-width:0; min-height:0; overflow-y:auto; background:var(--edit-panel); }
 .panel-pane { display:none; min-height:100%; animation:pane-in .14s ease; }

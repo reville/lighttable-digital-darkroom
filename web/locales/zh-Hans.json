@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1888,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "在编辑工具栏中打开蒙版，并在创建新蒙版下选择一个工具。点击创建新蒙版可显示或隐藏这些工具。每个蒙版都有各自的明亮、颜色和色调曲线调整。",
     "Open People and choose Download models & enable.": "打开人物并选择“下载模型并启用”。",
     "Open People…": "打开人物…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含十个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "在编辑工具栏中打开“预设”。“内置”包含15 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。 每页显示 20 个预设。",
     "Open Recovery Folder": "打开恢复文件夹",
     "Open Recovery folder": "打开恢复文件夹",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "在编辑工具栏中打开移除。移除、修复和仿制是不同的模式。修复和仿制会自动选择初始源；请检查该源，而不要假定它一定合适。",
