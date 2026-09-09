@@ -280,6 +280,7 @@
   "Download example on this photo",
   "Download models & enable",
   "Download this photo in Finder, then rescan the source.",
+  "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.",
   "Drag on the photo to edit the {tool} mask.",
   "Drag points to adjust the curve. Double-click an interior point to remove it. Use [ and ] to select points, arrow keys to move, Enter to add, and Delete to remove.",
   "Edit",

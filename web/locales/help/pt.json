@@ -1567,6 +1567,15 @@
           ]
         },
         {
+          "title": "Ajustar a forma de um gradiente linear",
+          "paragraphs": [
+            "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo."
+          ],
+          "tips": [
+            "Selecione uma máscara Linear existente para ajustá-la novamente. Se você estava pintando com Adicionar, Subtrair ou Interseção, escolha primeiro Editar forma. Pressione H se os pontos estiverem ocultos."
+          ]
+        },
+        {
           "title": "Dê forma a um gradiente radial",
           "paragraphs": [
             "Em Editar forma, arraste a alça central para mover a máscara, qualquer alça de eixo para redimensioná-la ou a alça externa para girá-la. Segure Shift enquanto desenha ou redimensiona para tornar o gradiente circular."
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5"
 }

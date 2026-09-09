@@ -86,7 +86,7 @@ import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { gradeBakeRequest, gradeBakeKey } from '/web/preview-processing.js';
 import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
-import { radialHandles, editRadial } from '/web/mask-shape.js';
+import { linearHandleAt, editLinear, radialHandles, editRadial } from '/web/mask-shape.js';
 import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 
@@ -1748,6 +1748,12 @@ function syncOverlayCursorClass() {
   overlay.classList.toggle('heal-cursor', S.activePane === 'healPane');
   overlay.classList.toggle('dragging-handle',
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
+  const linearShape = S.activePane === 'maskPane' && mask?.type === 'linear' &&
+    !S.maskRefineMode && !S.maskColorPick;
+  const linearDrag = linearShape && S.editGesture?.type === 'linear' && S.editGesture.handle;
+  const linearHover = linearShape && !S.editGesture && S.localPinsVisible && S.overlayHoverPoint &&
+    linearHandleAt(mask, S.overlayHoverPoint, $('cv').getBoundingClientRect());
+  overlay.style.cursor = linearDrag ? 'grabbing' : linearHover ? 'grab' : '';
 }
 
 function syncViewerChrome() {
@@ -2165,6 +2171,7 @@ function syncMaskPanel() {
   if (S.maskRefineMode === 'subtract') $('maskInstruction').textContent = tr("Paint over areas to subtract from this mask.");
   else if (S.maskRefineMode === 'intersect') $('maskInstruction').textContent = tr("Paint the only area this mask should retain.");
   else if (S.maskRefineMode === 'add') $('maskInstruction').textContent = tr("Paint over areas to add to this mask. Hold Option to subtract.");
+  else if (mask.type === 'linear') $('maskInstruction').textContent = tr('Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.');
   else if (!['brush', 'linear', 'radial'].includes(mask.type)) {
     $('maskInstruction').textContent = tr('{tool} selected on device. Use Add, Subtract, or Intersect to refine it.', {tool: localToolLabel(mask.type)});
   } else $('maskInstruction').textContent = tr('Drag on the photo to edit the {tool} mask.', {tool: localToolLabel(mask.type)});
@@ -2779,8 +2786,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
       strokes.push(stroke);
       S.editGesture = { type: 'brush', pointerId: event.pointerId, stroke, rect };
     } else if (mask.type === 'linear') {
-      mask.start = point; mask.end = point;
-      S.editGesture = { type: 'linear', pointerId: event.pointerId, rect };
+      const handle = S.localPinsVisible ? linearHandleAt(mask, point, rect) : null;
+      S.editGesture = { type: 'linear', handle, origin: point,
+        start: [...mask.start], end: [...mask.end], pointerId: event.pointerId, rect };
+      if (!handle) { mask.start = point; mask.end = point; }
     } else {
       const handle = Object.entries(radialHandles(mask, rect.width, rect.height))
         .find(([, location]) => overlayDistance(point, location, rect) <= 11)?.[0];
@@ -2857,7 +2866,7 @@ $('editOverlay').addEventListener('pointermove', (event) => {
           }
         } else gesture.stroke.points.push(point);
       }
-    } else if (gesture.type === 'linear') mask.end = point;
+    } else if (gesture.type === 'linear') editLinear(mask, gesture, point);
     else if (gesture.type === 'radial') {
       editRadial(mask, gesture, point, rect, event.shiftKey);
     }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408",
+  "sourceDigest": "5978e908e4e5c1c79d778b407cf9b3f3c00bc73f387a01f2e2bb56bc339afdf5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4085,7 +4085,11 @@
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
     "☆ Favorites": "☆ পছন্দের",
-    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "জুম করা অবস্থায় ছবি বদলালে, মিল থাকা ক্যাশ করা প্রিভিউ পাওয়া গেলে LightTable তা সঙ্গে সঙ্গে দেখায়। আরও স্পষ্ট বিবরণ পটভূমিতে লোড হয় এবং কাছাকাছি ছবিগুলো আপনার জুমের মাত্রা অনুযায়ী আগে থেকে লোড হয়।"
+    "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.": "জুম করা অবস্থায় ছবি বদলালে, মিল থাকা ক্যাশ করা প্রিভিউ পাওয়া গেলে LightTable তা সঙ্গে সঙ্গে দেখায়। আরও স্পষ্ট বিবরণ পটভূমিতে লোড হয় এবং কাছাকাছি ছবিগুলো আপনার জুমের মাত্রা অনুযায়ী আগে থেকে লোড হয়।",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "গ্রেডিয়েন্ট সামঞ্জস্য করতে যেকোনো বিন্দু টানুন। সরাতে রেখাটি টানুন। আবার আঁকতে অন্য কোনো জায়গায় টানুন।",
+    "Shape a linear gradient": "লিনিয়ার গ্রেডিয়েন্টের আকৃতি বদলান",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "“আকৃতি সম্পাদনা করুন”-এ যেকোনো বিন্দু টেনে গ্রেডিয়েন্টের সেই প্রান্তটি সামঞ্জস্য করুন। দুটি বিন্দুর সংযোগরেখা টেনে পুরো গ্রেডিয়েন্ট সরান; এর কোণ ও পরিবর্তনের প্রস্থ একই থাকবে। আবার আঁকতে ছবির অন্য কোনো জায়গায় টানুন।",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।"
   },
   "plurals": {
     " · {count} paired file linked": {
