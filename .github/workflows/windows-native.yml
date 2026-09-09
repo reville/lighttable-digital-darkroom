@@ -83,6 +83,15 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           Set-StrictMode -Version Latest
+          # Diagnostic tooling stays outside the release archive. The pinned
+          # profiler reads stacks only after failure, from test-owned Python.
+          $ProfilerArchive = "./.build/windows-stack-dumper.zip"
+          Invoke-WebRequest -Uri "https://github.com/benfred/py-spy/releases/download/v0.4.2/py_spy-0.4.2-py2.py3-none-win_amd64.whl" -OutFile $ProfilerArchive -TimeoutSec 60
+          if ((Get-FileHash -LiteralPath $ProfilerArchive -Algorithm SHA256).Hash.ToLowerInvariant() -ne "8b06a353c177677e4e1701b288d8c58e2f8d4208ee81a8048d9f72ba800918f8") {
+            throw "The Windows stack dumper does not match its pinned checksum"
+          }
+          Expand-Archive -LiteralPath $ProfilerArchive -DestinationPath ./.build/windows-stack-dumper
+          $StackDumper = (Resolve-Path ./.build/windows-stack-dumper/py_spy-0.4.2.data/scripts/py-spy.exe).Path
           $Archives = @(Get-ChildItem ./.build/windows-native-download -File -Filter "LightTable-*-windows-x64.zip")
           if ($Archives.Count -ne 1) { throw "Expected exactly one portable Windows ZIP in the selected artifact" }
           $Archive = $Archives[0]
@@ -101,7 +110,7 @@ jobs:
             archive = $Archive.Name
             archive_sha256 = (Get-FileHash -LiteralPath $Archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
           } | ConvertTo-Json | Set-Content -LiteralPath ./.build/windows-native-recheck-evidence/identity.json -Encoding utf8
-          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native
+          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native --stack-dumper $StackDumper
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload native recheck evidence
