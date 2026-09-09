@@ -81,6 +81,22 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
         with self.assertRaises(HTTPError):
             smoke.send_ui_command(api, "goto", {"name": "smoke.tif"})
 
+    def test_expected_edits_wait_for_a_grade_and_require_both_saved_values(self):
+        pending_or_wrong = (
+            None, {}, {"rating": 4}, {"grade": None, "rating": 4},
+            {"grade": [], "rating": 4}, {"grade": "pending", "rating": 4},
+            {"grade": 1, "rating": 4}, {"grade": {}, "rating": 4},
+            {"grade": {"exposure": 0.5}}, {"grade": {"exposure": 0.5}, "rating": None},
+            {"grade": {"exposure": 0.0}, "rating": 4},
+            {"grade": {"exposure": 0.5}, "rating": 3},
+            {"grade": {"exposure": "0.5"}, "rating": 4},
+            {"grade": {"exposure": 0.5}, "rating": "4"},
+        )
+        for saved in pending_or_wrong:
+            with self.subTest(saved=saved):
+                self.assertFalse(smoke.expected_edits_saved(saved))
+        self.assertTrue(smoke.expected_edits_saved({"grade": {"exposure": 0.5}, "rating": 4}))
+
     def test_dead_or_timed_out_window_cannot_produce_a_success_receipt(self):
         desktop = Mock()
         desktop.running.return_value = False

@@ -356,6 +356,12 @@ def send_ui_command(api, command, args=None):
         raise RuntimeError(f"Native UI did not accept {command}")
 
 
+def expected_edits_saved(saved) -> bool:
+    grade = saved.get("grade") if isinstance(saved, dict) else None
+    return (isinstance(grade, dict) and grade.get("exposure") == 0.5
+            and saved.get("rating") == 4)
+
+
 def verify_export(path: Path, *, require_precision: bool) -> dict:
     import numpy as np
     import tifffile
@@ -491,7 +497,7 @@ def main():
             send_ui_command(api, "rating:4")
             def edit_saved():
                 saved = api.request("/api/state?" + urlencode({"name": name}))
-                return saved if saved.get("grade", {}).get("exposure") == 0.5 and saved.get("rating") == 4 else None
+                return saved if expected_edits_saved(saved) else None
             wait_for(desktop, deadline, "the UI exposure and rating edits to save", edit_saved)
             desktop.quit(min(20, max(1, deadline - time.monotonic())))
             desktop.close()
@@ -500,7 +506,7 @@ def main():
             api, restarted = connect(desktop, root, deadline)
             name, state = render_photo(desktop, api, deadline, source.name)
             saved = api.request("/api/state?" + urlencode({"name": name}))
-            if saved.get("grade", {}).get("exposure") != 0.5 or saved.get("rating") != 4:
+            if not expected_edits_saved(saved):
                 raise RuntimeError("The saved exposure/rating did not survive a native quit and relaunch")
             report["edit_persistence"] = {"exposure": 0.5, "rating": 4, "server_restarted": health["pid"] != restarted["pid"]}
             result = api.request("/api/export", {"names": [name], "format": "tif", "outputSpace": "srgb",
