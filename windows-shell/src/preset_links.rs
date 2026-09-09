@@ -100,6 +100,7 @@ impl PresetLinkInbox {
     ) -> Result<Self> {
         fs::create_dir_all(support)?;
         let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, 0))?;
+        listener.set_nonblocking(true)?;
         let mut entropy = [0u8; 32];
         getrandom::fill(&mut entropy)
             .map_err(|error| anyhow!("preset-link channel randomness failed: {error}"))?;
@@ -113,24 +114,27 @@ impl PresetLinkInbox {
         let worker_stop = stop.clone();
         let token = endpoint.token.clone();
         let worker = thread::spawn(move || {
-            for connection in listener.incoming() {
-                if worker_stop.load(Ordering::Acquire) {
-                    break;
-                }
-                let Ok(mut stream) = connection else {
-                    break;
-                };
-                let _ = stream.set_read_timeout(Some(TIMEOUT));
-                let _ = stream.set_write_timeout(Some(TIMEOUT));
-                let mut bytes = Vec::new();
-                if (&mut stream).take(512).read_to_end(&mut bytes).is_err() {
-                    continue;
-                }
-                let Ok(request) = serde_json::from_slice::<Request>(&bytes) else {
-                    continue;
-                };
-                if request.token == token && valid_preset_id(&request.id) && receive(request.id) {
-                    let _ = stream.write_all(b"OK");
+            while !worker_stop.load(Ordering::Acquire) {
+                match listener.accept() {
+                    Ok((mut stream, _)) => {
+                        let _ = stream.set_nonblocking(false);
+                        let _ = stream.set_read_timeout(Some(TIMEOUT));
+                        let _ = stream.set_write_timeout(Some(TIMEOUT));
+                        let mut bytes = Vec::new();
+                        if (&mut stream).take(512).read_to_end(&mut bytes).is_err() {
+                            continue;
+                        }
+                        let Ok(request) = serde_json::from_slice::<Request>(&bytes) else {
+                            continue;
+                        };
+                        if request.token == token && valid_preset_id(&request.id) && receive(request.id) {
+                            let _ = stream.write_all(b"OK");
+                        }
+                    }
+                    Err(ref error) if error.kind() == std::io::ErrorKind::WouldBlock => {
+                        thread::sleep(Duration::from_millis(25));
+                    }
+                    Err(_) => break,
                 }
             }
         });
@@ -147,7 +151,7 @@ impl Drop for PresetLinkInbox {
         self.stop.store(true, Ordering::Release);
         let _ = TcpStream::connect_timeout(
             &SocketAddr::from((Ipv4Addr::LOCALHOST, self.endpoint.port)),
-            TIMEOUT,
+            Duration::from_millis(50),
         );
         if let Some(worker) = self.worker.take() {
             let _ = worker.join();

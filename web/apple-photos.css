@@ -6,8 +6,8 @@
 .apple-photos-header p { margin: 0; color: var(--muted); font-size: 12px; max-width: 720px; }
 .apple-photos-toolbar { border-block: 1px solid var(--line); padding-block: 10px; }
 .apple-photos-toolbar select { min-width: 140px; max-width: min(350px, 60vw); flex: 1; }
-.apple-photos-grid { flex: 1; min-height: 0; overflow: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); align-content: start; gap: 12px; padding: 22px; }
-.apple-photos-card { min-width: 0; padding: 3px; border: 2px solid transparent; background: transparent; border-radius: 0; text-align: start; color: inherit; }
+.apple-photos-grid { flex: 1; min-height: 0; overflow: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); grid-auto-rows: max-content; align-content: start; gap: 12px; padding: 22px; }
+.apple-photos-card { display: grid; grid-template-rows: auto auto; align-content: start; min-width: 0; height: auto; padding: 3px; border: 2px solid transparent; background: transparent; border-radius: 0; text-align: start; color: inherit; }
 .apple-photos-card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft, #efaa3020); }
 .apple-photos-preview { display: flex; align-items: center; justify-content: center; aspect-ratio: 1; width: 100%; background: var(--bg); overflow: hidden; font-size: 11px; color: var(--muted); text-align: center; }
 .apple-photos-preview img { width: 100%; height: 100%; object-fit: contain; }

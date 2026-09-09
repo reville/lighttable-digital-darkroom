@@ -2,11 +2,16 @@
 const STORAGE_KEY = 'lighttable.appearance-test.v1';
 const CHANNEL_NAME = 'lighttable-appearance-test';
 const HEX = /^#[0-9a-f]{6}$/i;
+export const DEFAULT_APPEARANCE = Object.freeze({color: '#f9c184', borders: false});
+
+export function isAppearanceColor(value) {
+  return typeof value === 'string' && HEX.test(value);
+}
 
 export function normalizeAppearance(value) {
   return {
-    color: typeof value?.color === 'string' && HEX.test(value.color) ? value.color.toLowerCase() : null,
-    borders: value?.borders !== false,
+    color: isAppearanceColor(value?.color) ? value.color.toLowerCase() : DEFAULT_APPEARANCE.color,
+    borders: typeof value?.borders === 'boolean' ? value.borders : DEFAULT_APPEARANCE.borders,
   };
 }
 
@@ -38,7 +43,7 @@ export function createAppearanceSettings({win = window, onChange = () => {}} = {
     receivedUpdate = true;
     receive(value);
     try {
-      if (settings.color === null && settings.borders) win.localStorage.removeItem(STORAGE_KEY);
+      if (settings.color === DEFAULT_APPEARANCE.color && settings.borders === DEFAULT_APPEARANCE.borders) win.localStorage.removeItem(STORAGE_KEY);
       else win.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     } catch (_) {}
     channel?.postMessage({type: 'settings', settings});

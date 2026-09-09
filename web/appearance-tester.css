@@ -1,5 +1,5 @@
-/* Override both the default palette and Linux's scoped desktop palette only
-   while a test color is set. Reset removes the attributes and restores both. */
+/* Apply the default highlight color or a saved appearance experiment to both
+   the base palette and Linux's scoped desktop palette. */
 :root[data-appearance-color],
 :root[data-appearance-color] :is(.topbar,.left-panel,.right-shell,.modal,.context-menu,.dd-menu,.setup-window,.help-panel,.view-options-popover,.library-filter-panel) {
   --accent:var(--appearance-accent);
