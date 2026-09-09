@@ -50,7 +50,7 @@ else
   hyprctl -j version > evidence/hyprland/version.json
   hyprctl -j monitors > evidence/hyprland/monitors.json
   hyprctl -j configerrors > evidence/hyprland/config-errors.json
-  [[ $(hyprctl -j configerrors) == '[]' ]]
+  python -c 'import json; errors=json.load(open("evidence/hyprland/config-errors.json")); assert isinstance(errors,list) and not any(str(error).strip() for error in errors), errors'
 fi
 /opt/lighttable/Python/bin/python3 -B scripts/linux/arch-desktop-acceptance.py /opt/lighttable \
   --source be537f2f3e2e431ae6b42af716c2a8b365f57bab --backend "$backend" --film \
