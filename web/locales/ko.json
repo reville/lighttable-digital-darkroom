@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7",
+  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4121,7 +4121,11 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "어느 점이든 드래그하여 그라디언트를 조정하세요. 선을 드래그하면 전체가 이동합니다. 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
+    "Shape a linear gradient": "선형 그라디언트 모양 조정",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요."
   },
   "plurals": {
     " · {count} paired file linked": {

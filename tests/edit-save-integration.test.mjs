@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { t as tr, tn as trn } from '../web/i18n.js';
 import { localToolLabel } from '../web/editor-panels.js';
 import {presetEditState, reconcilePresetAdjustment} from '../web/preset-amount.js';
+import {photoHasEdits} from '../web/library-filters.js';
 
 const read = file => readFileSync(new URL(`../web/${file}`, import.meta.url), 'utf8');
 const appSource = read('app.js');
@@ -47,7 +48,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
   };
   const context = {
     console, structuredClone, Promise, AggregateError, S, tr, trn, localToolLabel,
-    presetEditState, reconcilePresetAdjustment,
+    presetEditState, reconcilePresetAdjustment, photoHasEdits,
     // Update controls have their own behavioral suite; keep this harness on
     // the real save/navigation functions without constructing Settings.
     installDesktopUpdates: () => ({nativeEvent: noop}),

@@ -17,6 +17,7 @@ for (const native of [false, true]) for (const baked of [false, true]) test(`Bef
   S.presentedGradeKey = gradeBakeKey(gradeBakeRequest(S.grade, S.masks));
   const node = {classList:{toggle:noop}, removeAttribute:noop, style:{setProperty:noop}};
   const context = {S, $:() => node, performance, GRADE_DEFAULTS:{exposure:0},
+    MAX_MASKS:16, LOCAL_GRADE_DEFAULTS:{exposure:0},
     gradeBakeRequest, gradeBakeKey,
     renderPhysicalPreview:() => assert.fail('Holding Before must not rebuild the edited surface'),
     scheduleViewportRegionRender:noop, syncPreviewBackend:noop, packedMaskData:{},
@@ -27,6 +28,7 @@ for (const native of [false, true]) for (const baked of [false, true]) test(`Bef
     previewSourceX:position => position, syncCompareView:noop, syncCompareControl:noop,
     setCompareActive:on => {S.compareActive=on;}};
   const code = between('function drawGradeNow(', 'function drawGrade()') +
+    between('function nativeMaskPayload(', 'function nativeMaskChannelPayload(') +
     between('function renderedComparePosition()', 'function compareEditingBlocked()') +
     between('function renderCompare()', 'function setCompareActive(') +
     between('function setBefore(', "$('beforeBtn').addEventListener") +

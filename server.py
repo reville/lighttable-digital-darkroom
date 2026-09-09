@@ -7320,7 +7320,8 @@ class Handler(BaseHTTPRequestHandler):
                     return
                 cat = require_catalog()
                 if body.get("action") == "rename":
-                    cat.rename_keyword(int(body["id"]), str(body["name"]))
+                    self._json(keyword_rename_action(body))
+                    return
                 self._json({"ok": True, "keywords": cat.keyword_tree()})
             elif u.path == "/api/catalog/backup":
                 cat = require_catalog()
@@ -8010,6 +8011,25 @@ def catalog_collections_action(body: dict) -> dict:
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
             "library": current_library_state()}
+
+
+def keyword_rename_action(body: dict) -> dict:
+    cat = require_catalog()
+    changed_ids = cat.rename_keyword(int(body["id"]), str(body["name"]))
+    changes = []
+    patches = {}
+    for image_id in changed_ids:
+        row = cat.image_row(image_id)
+        name = catalog_module.qualified_name(row["source_id"], row["relpath"], row["copy_ident"])
+        keywords = cat.keywords_for(image_id)
+        changes.append({"id": image_id, "name": name, "keywords": keywords})
+        patches[name] = {"keywords": keywords}
+        queue_sidecar(name, ["keywords"])
+    _queue_mirror()
+    EVENTS.publish("state", {"names": list(patches), "fields": ["keywords"],
+                             "patches": patches, "origin": "keywords"})
+    return {"ok": True, "count": len(changes), "changes": changes,
+            "keywords": cat.keyword_tree()}
 
 
 def keyword_batch_action(body: dict) -> dict:

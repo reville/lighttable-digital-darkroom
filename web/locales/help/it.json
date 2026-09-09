@@ -1567,6 +1567,15 @@
           ]
         },
         {
+          "title": "Modellare un gradiente lineare",
+          "paragraphs": [
+            "In Modifica forma, trascina uno dei punti per regolare quella estremità del gradiente. Trascina la linea che li collega per spostare l’intero gradiente mantenendone l’angolo e la larghezza della transizione. Trascina altrove sulla foto per ridisegnarlo."
+          ],
+          "tips": [
+            "Seleziona una maschera Lineare esistente per regolarla nuovamente. Se hai dipinto con Aggiungi, Sottrai o Interseca, scegli prima Modifica forma. Premi H se i punti sono nascosti."
+          ]
+        },
+        {
           "title": "Modella un gradiente radiale",
           "paragraphs": [
             "In Modifica forma, trascina la maniglia centrale per spostare la maschera, una delle maniglie degli assi per ridimensionarla o la maniglia esterna per ruotarla. Tieni premuto Maiusc durante il disegno o il ridimensionamento per rendere il gradiente circolare."
@@ -3147,5 +3156,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7"
+  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2"
 }
