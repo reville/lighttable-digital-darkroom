@@ -45,7 +45,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}
+  # A routine main build must not cancel a production-signed candidate.
+  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}-${{ inputs.require_signing && 'signed' || 'unsigned' }}
   cancel-in-progress: true
 
 jobs:
