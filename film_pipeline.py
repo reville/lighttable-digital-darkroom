@@ -15,6 +15,8 @@ import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 
+import numpy as np
+
 import film_tuning
 
 APP = Path(__file__).resolve().parent
@@ -454,7 +456,6 @@ def prepared_input_file(source: str | Path, p: dict):
     if spec is None:
         yield Path(source)
         return
-    import numpy as np
     import tifffile
     with tempfile.TemporaryDirectory(prefix="lighttable-film-input-") as directory:
         path = Path(directory) / "linear-prophoto.tif"
@@ -592,7 +593,6 @@ def build_params(p: dict):
 
 def load_linear(tif_path: str, max_width: int | None = None) -> np.ndarray:
     """Read a 16-bit TIFF into float32 [0,1] RGB, optionally downsized."""
-    import numpy as np
     import tifffile
     import color_pipeline
 
@@ -609,7 +609,6 @@ def load_linear(tif_path: str, max_width: int | None = None) -> np.ndarray:
 
 def render_float(image: np.ndarray, p: dict) -> np.ndarray:
     """Run the full pipeline and retain display-referred float precision."""
-    import numpy as np
     import spektrafilm
 
     p = clean_params(p)
@@ -633,6 +632,4 @@ def render_float(image: np.ndarray, p: dict) -> np.ndarray:
 
 def render(image: np.ndarray, p: dict) -> np.ndarray:
     """Compatibility wrapper used by the 8-bit display preview."""
-    import numpy as np
-
     return (render_float(image, p) * 255.0 + 0.5).astype(np.uint8)
