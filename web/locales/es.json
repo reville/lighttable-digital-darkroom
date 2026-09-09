@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "Error: {error}",
     "Errors: {details}": "Errores: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Cada exportación incrusta el perfil ICC seleccionado. Elige sRGB, Display P3 o ProPhoto RGB en Espacio de color.",
-    "Every step, kept with the photo": "Cada paso, conservado con la foto",
+    "Edit History": "Historial de edición",
     "Everyone": "Todos",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Todos muestra los grupos de rostros visibles. Sin nombre muestra los grupos que no han sido nombrados. Abra un grupo, escriba un nombre y elija Guardar nombre. Solo se usan los nombres que usted introduce; el modelo no conoce los nombres de las personas.",
     "Example download prepared. Your edit has not changed.": "Descarga de ejemplo preparada. Tu edición no ha cambiado.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Arrastra cualquiera de los puntos para ajustar el degradado. Arrastra la línea para moverlo. Arrastra en otra zona para volver a dibujarlo.",
     "Shape a linear gradient": "Dar forma a un degradado lineal",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos.",
+    "Copy and Paste are below the photo in Detail view.": "Copiar y Pegar están debajo de la foto en la vista Detalle."
   },
   "plurals": {
     " · {count} paired file linked": {
