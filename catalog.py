@@ -1905,12 +1905,12 @@ class Catalog:
             "   AS count FROM keywords k ORDER BY k.path").fetchall()
         return [dict(r) for r in rows]
 
-    def rename_keyword(self, keyword_id: int, name: str) -> None:
+    def rename_keyword(self, keyword_id: int, name: str) -> list[int]:
         with self.write() as conn:
             row = conn.execute("SELECT path FROM keywords WHERE id=?",
                                (keyword_id,)).fetchone()
             if not row:
-                return
+                return []
             old = row["path"]
             head = old.rsplit(" > ", 1)[0] if " > " in old else ""
             clean = " ".join(str(name).split()).strip()[:60] or "Keyword"
@@ -1934,6 +1934,7 @@ class Catalog:
                 self._reindex(conn, int(image["image_id"]))
                 conn.execute("UPDATE image_state SET updated_at=? WHERE image_id=?",
                              (_now(), int(image["image_id"])))
+        return [int(image["image_id"]) for image in affected]
 
     # ------------------------------------------------------- capture clock
 

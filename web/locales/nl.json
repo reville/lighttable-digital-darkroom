@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7",
+  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4121,7 +4121,11 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten"
+    "☆ Favorites": "☆ Favorieten",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Versleep een van de punten om het verloop aan te passen. Versleep de lijn om het te verplaatsen. Sleep ergens anders om het opnieuw te tekenen.",
+    "Shape a linear gradient": "Een lineair verloop vormgeven",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn."
   },
   "plurals": {
     " · {count} paired file linked": {

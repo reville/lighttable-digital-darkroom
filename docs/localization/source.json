@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7",
+  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
   "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452",
   "pluralPairs": [
     {
@@ -1270,6 +1270,7 @@
     "Downloading update…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.",
     "Drag either on-image circle to refine the target or source.",
     "Drag on the photo to change the selected gradient’s shape or position",
     "Drag on the photo to edit the {tool} mask.",
@@ -1721,6 +1722,7 @@
     "Import…",
     "Improve preview speed and check image detail",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.",
     "In Film profile, choose Film format.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
@@ -2810,6 +2812,7 @@
     "Select a range of distances from the camera; refine the far and near limits",
     "Select all",
     "Select an active reference photo first",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.",
     "Select an existing mask, then expand Create New Mask.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.",
     "Select at least two distinct originals",
@@ -2907,6 +2910,7 @@
     "Settings…",
     "Shadows",
     "Shape",
+    "Shape a linear gradient",
     "Shape a radial gradient",
     "Shape also provides Width, Height, Rotation, and Feather controls.",
     "Shape contrast and color with curves",

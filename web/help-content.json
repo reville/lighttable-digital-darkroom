@@ -1539,6 +1539,15 @@
           ]
         },
         {
+          "title": "Shape a linear gradient",
+          "paragraphs": [
+            "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it."
+          ],
+          "tips": [
+            "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."
+          ]
+        },
+        {
           "title": "Shape a radial gradient",
           "paragraphs": [
             "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."
