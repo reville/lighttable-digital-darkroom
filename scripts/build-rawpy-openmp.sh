@@ -8,9 +8,9 @@ if [[ $# != 2 || "$(uname -m)" != arm64 || "$(uname -s)" != Darwin ]]; then
 fi
 PYTHON="$1"
 OUTPUT="$2"
-RAWPY_REV=a411daac7d5bf1ab07f6285164e41596a205393e
+RAWPY_REV=a39c2e7a44911889c3360891012f862f904ba551
 # Submodule commits are recorded by RAWPY_REV, rather than moving branches.
-LIBRAW_REV=0b56545a4f828743f28a4345cdfdd4c49f9f9a2a
+LIBRAW_REV=b860248a89d9082b8e0a1e202e516f46af9adb29
 CMAKE_REV=6e26c9e73677dc04f9eb236a97c6a4dc225ba7e8
 for TOOL in git cmake pkg-config uv; do
   command -v "$TOOL" >/dev/null
@@ -57,20 +57,20 @@ text = source.read_text()
 native_method = '            int dcraw_process() nogil\n'
 assert text.count(native_method) == 2
 text = text.replace(native_method, native_method + '            void setCancelFlag() nogil\n')
-needle = '    property raw_type:\n'
+needle = '    @property\n    def raw_type(self) -> RawType:\n'
 assert text.count(needle) == 1
 text = text.replace(needle, '''    def request_cancel(self):
         # The caller joins its monitor before recycling this RawPy object.
         # LibRaw owns the atomic flag and unwinds on its processing thread.
         self.p.setCancelFlag()
 
-    property is_xtrans:
-        def __get__(self):
-            return self.p.imgdata.idata.filters == 9
+    @property
+    def is_xtrans(self):
+        return self.p.imgdata.idata.filters == 9
 
 ''' + needle)
 source.write_text(text)
-for path in [root/'setup.py', package/'__init__.py', package/'enhance.py']:
+for path in [root/'setup.py', root/'pyproject.toml', package/'__init__.py', package/'enhance.py']:
     text = path.read_text().replace('rawpy', 'rawpy_openmp')
     text = text.replace('_rawpy_openmp', '_rawpy')
     path.write_text(text.replace('github.com/letmaik/rawpy_openmp',
@@ -104,7 +104,8 @@ cmake -S "$WORK/source/external/LibRaw-cmake" -B "$WORK/libraw-build" \
   -DENABLE_EXAMPLES=OFF -DENABLE_X3FTOOLS=ON -DENABLE_6BY9RPI=ON \
   -DENABLE_RAWSPEED=OFF
 cmake --build "$WORK/libraw-build" --target install --parallel 8
-"$WORK/env/bin/python" - "$WORK/libraw-build" "$OUTPUT/build-info.json" <<'PY'
+"$WORK/env/bin/python" - "$WORK/libraw-build" "$OUTPUT/build-info.json" \
+  "$RAWPY_REV" "$LIBRAW_REV" "$CMAKE_REV" <<'PY'
 from pathlib import Path
 import json, re, subprocess, sys
 build = Path(sys.argv[1])
@@ -115,6 +116,9 @@ for line in (build/'CMakeCache.txt').read_text().splitlines():
         cache[match[1]] = match[2]
 compiler = cache['CMAKE_CXX_COMPILER']
 metadata = {
+    'rawpyRevision': sys.argv[3],
+    'librawRevision': sys.argv[4],
+    'librawCmakeRevision': sys.argv[5],
     'compiler': compiler,
     'compilerVersion': subprocess.check_output([compiler, '--version'], text=True).strip(),
     'sdk': cache['CMAKE_OSX_SYSROOT'],
@@ -141,7 +145,7 @@ PY
 "$WORK/env/bin/delocate-wheel" --require-archs arm64 \
   --wheel-dir "$OUTPUT" "$WORK"/wheels/*.whl
 uv pip install --python "$WORK/env/bin/python" --reinstall --no-deps \
-  rawpy==0.26.1 "$OUTPUT"/rawpy_openmp-0.26.1-*.whl
+  rawpy==0.27.1 "$OUTPUT"/rawpy_openmp-0.27.1-*.whl
 "$WORK/env/bin/python" "$ROOT/scripts/verify-rawpy-openmp.py"
 mkdir -p "$OUTPUT/licenses"
 cp "$WORK/source/LICENSE" "$OUTPUT/licenses/rawpy-MIT.txt"

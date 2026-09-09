@@ -101,7 +101,7 @@ impl PresetLinkInbox {
         fs::create_dir_all(support)?;
         let listener = TcpListener::bind((Ipv4Addr::LOCALHOST, 0))?;
         let mut entropy = [0u8; 32];
-        getrandom::getrandom(&mut entropy)
+        getrandom::fill(&mut entropy)
             .map_err(|error| anyhow!("preset-link channel randomness failed: {error}"))?;
         let endpoint = Endpoint {
             port: listener.local_addr()?.port(),

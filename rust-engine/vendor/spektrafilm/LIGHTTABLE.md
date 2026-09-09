@@ -57,3 +57,8 @@ Run `bench_resident_cache.py --binary <engine> --data <engine/data> --width 2200
 contains adapter identity, per-request cache/transfer data, float32 pixel parity,
 and downstream edit medians. Omitting `--require-hardware` permits explicit
 software-Vulkan execution checks but does not establish hardware performance.
+
+The LightTable fork uses wgpu 30.0.1 and image 0.25.10 (Rust 1.88 or newer).
+The wgpu migration retains the existing hardware limits, shader arithmetic,
+cache budgets, mapped-buffer path, and staging fallback. GPU polling and mapped
+views use the new fallible APIs; adapter setup remains a headless compute instance.

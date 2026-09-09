@@ -8,6 +8,7 @@ import re
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -126,6 +127,17 @@ class AssetCollector(HTMLParser):
 
 
 class LibRawDiscoveryTests(unittest.TestCase):
+    def test_macos_wheel_library_beside_extension_is_discovered(self):
+        import types
+        with tempfile.TemporaryDirectory() as directory:
+            package = Path(directory) / "rawpy"
+            package.mkdir()
+            library = package / "libraw_r.25.dylib"
+            library.touch()
+            module = types.SimpleNamespace(__file__=str(package / "__init__.py"))
+            with patch.dict(sys.modules, {"rawpy": module}):
+                self.assertEqual(camera_list.candidate_libraries(), [library.resolve()])
+
     @unittest.skipUnless(HAVE_LIBRAW, NEEDS_LIBRAW)
     def test_library_reports_a_version_and_a_plausible_camera_count(self):
         self.assertRegex(LIBRAW.version, r"^\d+\.\d+\.\d+")

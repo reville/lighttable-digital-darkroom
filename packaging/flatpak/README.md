@@ -89,6 +89,9 @@ It contains SHA-256-pinned PyPI source distributions or immutable upstream Git p
 it contains no wheels. `audit-python-sources.py` checks lock drift offline, and its
 explicit `--refresh` mode queries PyPI. This inventory is not a transitive build graph.
 
+rawpy 0.27.1 and OpenCV 5.0.0.93 provide PyPI source distributions.
+Dependencies without one retain immutable upstream Git source mappings in the audit.
+
 `source-candidate.json` is now a concrete, separate source-build attempt generated
 offline by `scripts/flatpak/source-manifest.py`. It includes CPython 3.13.12 without
 ensurepip's bundled wheel, source-built Python packaging tools, all 29 runtime

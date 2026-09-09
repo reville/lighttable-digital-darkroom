@@ -1,7 +1,7 @@
 {
   "format": 1,
   "source_build_ready": false,
-  "requirements_sha256": "60f15248b641381a5720ce64b74ebf8416ff1d29178f669bdada3b995472e0a7",
+  "requirements_sha256": "4412442c807f8a8d9b02a942d54aed9dad921a96f76b0e67dd24d277798246de",
   "packages": [
     {
       "name": "colour-science",
@@ -44,12 +44,12 @@
     },
     {
       "name": "exiv2",
-      "version": "0.18.1",
+      "version": "0.19.2",
       "sources": [
         {
           "type": "file",
-          "url": "https://files.pythonhosted.org/packages/3a/71/55a81dafdb5e4d04e5bfc4217296a9030b70d3c3bdfeef4eae75ecfce165/exiv2-0.18.1.tar.gz",
-          "sha256": "89d41befbccac2274a71ba2e0620153cd4ccf1a0121f7c6374cc473a747485bf"
+          "url": "https://files.pythonhosted.org/packages/fa/d1/0fd592470af1de7c0cb4e56f0e11f9f08c3c3eaa0958abdd7b4d5bc878be/exiv2-0.19.2.tar.gz",
+          "sha256": "b07031aeefe9248866a0fbf5a8270c7504abced116cf998537d3bc15f353909c"
         }
       ],
       "requires_python": null,
@@ -57,12 +57,12 @@
     },
     {
       "name": "fonttools",
-      "version": "4.63.0",
+      "version": "4.64.0",
       "sources": [
         {
           "type": "file",
-          "url": "https://files.pythonhosted.org/packages/84/69/c97f2c18e0db87d2c7b15da1974dace76ae938f1cfa22e2727a648b7ed43/fonttools-4.63.0.tar.gz",
-          "sha256": "caeb583deeb5168e694b65cda8b4ee62abedfa66cf88488734466f2366b9c4e0"
+          "url": "https://files.pythonhosted.org/packages/d4/41/0f072a712dc74496e03710e462a18a4cfd8a258ad055a4e22d28b43a7abd/fonttools-4.64.0.tar.gz",
+          "sha256": "ecb2e59a7bc692fee64dda6010deb66222335693b30046f15cccf81233aa715f"
         }
       ],
       "requires_python": ">=3.10",
@@ -202,12 +202,12 @@
     },
     {
       "name": "numpy",
-      "version": "2.5.2",
+      "version": "2.5.3",
       "sources": [
         {
           "type": "file",
-          "url": "https://files.pythonhosted.org/packages/9a/80/db0b4559e57ec36362bedbb05530a87fafbcb6067708c946967a41d449e7/numpy-2.5.2.tar.gz",
-          "sha256": "d482d171c406ae88c5b19cad3b6a1c4c5209f886ab74bc44c2c865c23f52d860"
+          "url": "https://files.pythonhosted.org/packages/13/01/11703282db468b85f6f7b8c7f22d058de5970d5c7e60a3a8aaa313c3de36/numpy-2.5.3.tar.gz",
+          "sha256": "df2d5874ff183595a4ba404edd04f6bd9b5505c1d7708573f6a6c17489a67563"
         }
       ],
       "requires_python": ">=3.12",
@@ -215,12 +215,12 @@
     },
     {
       "name": "openimageio",
-      "version": "3.1.16.0",
+      "version": "3.1.17.0",
       "sources": [
         {
           "type": "file",
-          "url": "https://files.pythonhosted.org/packages/b6/f4/ed005eba84866e1941bde3f85ec621a1e98e95adddb2af52b3e7f5bef8c9/openimageio-3.1.16.0.tar.gz",
-          "sha256": "d23169f8ca619695b7c812a2b7fd955685f9e4fdfe3319b1302b535a88bdc0e1"
+          "url": "https://files.pythonhosted.org/packages/19/a5/77381af9b6c79d06e4f54354e97e36edcad86cb8469615f73f814c139739/openimageio-3.1.17.0.tar.gz",
+          "sha256": "d537d2f96b553e263fcdad3c4c1887b0d49b32a5527bdb2a7697fdf97a326f3b"
         }
       ],
       "requires_python": ">=3.9",
@@ -228,18 +228,16 @@
     },
     {
       "name": "opencv-python-headless",
-      "version": "4.13.0.92",
+      "version": "5.0.0.93",
       "sources": [
         {
-          "type": "git",
-          "url": "https://github.com/opencv/opencv-python.git",
-          "commit": "4ddfc013fd1f13d9b9e379dbebf2cdbeb052e7f8",
-          "tag": "92"
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/1d/99/76b7c80252aa83c1af16393454aafd125a0287101afe8deb0a6821af0e30/opencv_python_headless-5.0.0.93.tar.gz",
+          "sha256": "b82f9831daab90b725c7c1ee1b36cb5732c367096ac76d119e64e14eb70d5f3c"
         }
       ],
       "requires_python": ">=3.6",
-      "offline_recipe_verified": false,
-      "note": "No PyPI sdist at this pin; upstream Git source and its submodules require a native build recipe."
+      "offline_recipe_verified": false
     },
     {
       "name": "opt-einsum",
@@ -321,18 +319,16 @@
     },
     {
       "name": "rawpy",
-      "version": "0.26.1",
+      "version": "0.27.1",
       "sources": [
         {
-          "type": "git",
-          "url": "https://github.com/letmaik/rawpy.git",
-          "commit": "a411daac7d5bf1ab07f6285164e41596a205393e",
-          "tag": "v0.26.1"
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/f3/ae/c1c7816ed3f3cbf7ca284a37371243500f4eb39b6a32f7368b585c4ef5c4/rawpy-0.27.1.tar.gz",
+          "sha256": "3194d64ff690ac945e1a43237edae8a18f1f493751924de1ae2bcef473c0fb79"
         }
       ],
-      "requires_python": null,
-      "offline_recipe_verified": false,
-      "note": "No PyPI sdist at this pin; upstream Git source and its submodules require a native build recipe."
+      "requires_python": ">=3.9",
+      "offline_recipe_verified": false
     },
     {
       "name": "scikit-image",
@@ -375,12 +371,12 @@
     },
     {
       "name": "tifffile",
-      "version": "2026.8.23",
+      "version": "2026.9.9",
       "sources": [
         {
           "type": "file",
-          "url": "https://files.pythonhosted.org/packages/eb/07/90078f49e60718d414d5440dc498301f11ff049458e65cf8d27c62a5c9d1/tifffile-2026.8.23.tar.gz",
-          "sha256": "bd3c816f166f85c93329a54a0c9a1eccc9968a6a78f91d63b65d7b17675915f2"
+          "url": "https://files.pythonhosted.org/packages/28/52/fdf44e2de6ccd641d4b21eec7a875f5b1c3e28e8108032b4e5da63839db9/tifffile-2026.9.9.tar.gz",
+          "sha256": "5e5a0dfa16e6376bf062bc46e21b896fbfe895fcb47559af9c64b9b2d77bb4a0"
         }
       ],
       "requires_python": ">=3.12",
