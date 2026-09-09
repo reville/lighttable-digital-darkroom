@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1888,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Apri Maschera nella barra degli strumenti di modifica e scegli uno strumento sotto Crea nuova maschera. Fai clic su Crea nuova maschera per mostrare o nascondere gli strumenti. Ogni maschera ha regolazioni proprie di Luce, Colore e Curva tono.",
     "Open People and choose Download models & enable.": "Apri Persone e scegli Scarica modelli e abilita.",
     "Open People…": "Apri Persone…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene dieci aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata. Vengono mostrate 20 preimpostazioni per pagina.",
     "Open Recovery Folder": "Apri cartella di ripristino",
     "Open Recovery folder": "Apri cartella Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Apri Rimuovi nella barra degli strumenti di modifica. Rimuovi, Correggi e Clona sono modalità separate. Correggi e Clona scelgono automaticamente una sorgente iniziale; verifica quella sorgente invece di presumere che sia adatta.",

@@ -109,7 +109,7 @@ export function createPresetBrowser({
   let activationGeneration = 0, activationController = null;
   let selectedPhotoName = null, detailDismissed = false, lastAdjustmentId = null;
   const previewCache = new Map();
-  const pageSize = 6, urls = new Set(), cards = new Map();
+  const pageSize = 20, urls = new Set(), cards = new Map();
   const root = document.createElement('div');
   root.className = 'preset-browser';
   root.innerHTML = `<div class="preset-browser-tabs" role="tablist" aria-label="${i18nHTML(tr("Preset collection"))}">

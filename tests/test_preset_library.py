@@ -106,10 +106,10 @@ class CommunityTests(unittest.TestCase):
 
 
 class PresetContractTests(unittest.TestCase):
-    def test_ten_bundled_looks_are_valid_distinct_and_protect_corrections(self):
+    def test_bundled_looks_are_valid_distinct_and_protect_corrections(self):
         looks = library.builtin_presets()
-        self.assertEqual(len(looks), 10)
-        self.assertEqual(len({p["id"] for p in looks}), 10)
+        self.assertEqual(len(looks), 15)
+        self.assertEqual(len({p["id"] for p in looks}), len(looks))
         self.assertEqual(sum(p["filmMode"] == "on" for p in looks), 5)
         for look in looks:
             patch = library.look_patch(look)
@@ -172,7 +172,7 @@ class PresetPersistenceTests(unittest.TestCase):
     def test_bundled_data_is_not_written_to_user_library(self):
         self.server.save_presets(self.server.load_presets())
         self.assertEqual(json.loads(self.server.PRESETS_FILE.read_text()), [])
-        self.assertEqual(len(self.server.load_presets()), 10)
+        self.assertEqual(len(self.server.load_presets()), len(library.builtin_presets()))
 
     def test_install_update_and_offline_load_preserve_stable_identity(self):
         recipe = {k: v for k, v in library.builtin_presets()[0].items() if k != "collection"}
@@ -186,7 +186,7 @@ class PresetPersistenceTests(unittest.TestCase):
         self.assertEqual(len(users), 1)
         self.assertEqual(users[0]["version"], "1.0.1")
         self.assertEqual(users[0]["community"]["version"], "1.0.1")
-        self.assertEqual(len(self.server.load_presets()), 11)
+        self.assertEqual(len(self.server.load_presets()), len(library.builtin_presets()) + 1)
 
     def test_saving_variation_then_reinstalling_keeps_the_variation(self):
         recipe = {k: v for k, v in library.builtin_presets()[0].items() if k != "collection"}

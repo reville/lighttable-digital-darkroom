@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1888,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Öffne Maske in der Bearbeitungs-Werkzeugleiste und wähle unter Neue Maske erstellen ein Werkzeug aus. Klicke auf Neue Maske erstellen, um die Werkzeuge ein- oder auszublenden. Jede Maske hat eigene Anpassungen für Licht, Farbe und Tonkurve.",
     "Open People and choose Download models & enable.": "Öffnen Sie Personen und wählen Sie Modelle herunterladen und aktivieren.",
     "Open People…": "Personen öffnen…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält zehn mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 15 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung. Pro Seite werden 20 Vorgaben angezeigt.",
     "Open Recovery Folder": "Wiederherstellungsordner öffnen",
     "Open Recovery folder": "Wiederherstellungsordner öffnen",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Öffnen Sie Entfernen in der Bearbeitungssymbolleiste. Entfernen, Reparieren und Klonen sind separate Modi. Reparieren und Klonen wählen automatisch eine erste Quelle; prüfen Sie diese Quelle, statt anzunehmen, dass sie geeignet ist.",
