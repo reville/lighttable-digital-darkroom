@@ -307,8 +307,8 @@ export function createPresetBrowser({
     const message = element('p', 'preset-browser-status'); message.setAttribute('role', 'status');
     let recipe = null, prepareSubmission = null;
     const amountRow = element('div', 'preset-browser-amount');
-    const amountLabel = element('label', '', tr('Amount')); amountLabel.htmlFor = 'presetAmount';
     const amount = element('input', ''); amount.type = 'range'; amount.id = 'presetAmount';
+    amount.setAttribute('aria-label', tr('Amount'));
     amount.min = '0'; amount.max = '100'; amount.step = '1';
     const output = element('output', ''); output.htmlFor = amount.id;
     const toggle = button(tr('Off'), () => void activatePreset(preset), 'preset-browser-toggle');
@@ -338,7 +338,7 @@ export function createPresetBrowser({
       onAmount(presetKey(preset), photo?.name, 100, true);
       updateAmount(); select();
     };
-    amountRow.append(amountLabel, output, toggle, amount);
+    amountRow.append(amount, output, toggle);
     detail.insertBefore(amountRow, credit);
     updateAmount(); toggle.disabled = !photo?.name || getAdjustment()?.id !== presetKey(preset);
     if (preset.collection === 'community' && onInstall) {
