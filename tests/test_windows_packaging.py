@@ -69,6 +69,33 @@ class WindowsPythonStagingTests(unittest.TestCase):
                         build.index("& cargo test"))
 
 
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WindowsPayloadMetadataTests(unittest.TestCase):
+    def test_real_build_writes_metadata_to_the_payload_without_stray_files(self):
+        # Execute only the build's actual metadata writes. PowerShell dynamic
+        # parameter binding can silently swap positional Path and Value args.
+        writes = [line.strip() for line in (ROOT / "scripts/windows/build-release.ps1").read_text().splitlines()
+                  if "Set-Content" in line and any(name in line for name in ('"install-channel.txt"', '"VERSION.txt"'))]
+        self.assertEqual(len(writes), 2)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload, engine = root / "payload with spaces", root / "engine with spaces"
+            payload.mkdir()
+            engine.mkdir()
+            environment = dict(os.environ, LIGHTTABLE_METADATA_PAYLOAD=str(payload),
+                               LIGHTTABLE_METADATA_ENGINE=str(engine))
+            script = '$ErrorActionPreference="Stop"; $Payload=$env:LIGHTTABLE_METADATA_PAYLOAD; '
+            script += '$Engine=$env:LIGHTTABLE_METADATA_ENGINE; $RustSourceRevision="a" * 40;\n'
+            result = subprocess.run([shutil.which("pwsh") or shutil.which("powershell"),
+                                     "-NoProfile", "-Command", script + "\n".join(writes)],
+                                    cwd=root, env=environment, capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual((payload / "install-channel.txt").read_bytes(), b"portable")
+            self.assertEqual((engine / "VERSION.txt").read_text().strip(), "a" * 40)
+            self.assertEqual({path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()},
+                             {"payload with spaces/install-channel.txt", "engine with spaces/VERSION.txt"})
+
+
 class WindowsRuntimeSmokeTests(unittest.TestCase):
     def test_http_smoke_checks_live_routes_and_stops_its_server(self):
         with tempfile.TemporaryDirectory() as temporary:
