@@ -113,7 +113,7 @@ button {
   padding:4px 12px;
   background:var(--btn-face);
   color:var(--ink-2);
-  box-shadow:inset 0 1px 0 var(--edge-hi);
+  box-shadow:none;
   font-size:12px;
   font-weight:500;
   white-space:nowrap;
@@ -121,7 +121,7 @@ button {
 }
 /* Pointer feedback must not replace a toggle's persistent selected styling. */
 button:hover:not(:disabled):not(.on) { background:var(--btn-face-hover); border-color:var(--btn-line); color:#fff; }
-button:active:not(:disabled):not(.on) { background:var(--btn-face-active); box-shadow:inset 0 1px 2px rgba(0,0,0,.45); }
+button:active:not(:disabled):not(.on) { background:var(--btn-face-active); }
 button:disabled { opacity:.38; }
 button.on { border-color:var(--slider-accent); color:var(--on-ink); background:var(--on-soft); }
 .quiet { border-color:transparent; background:transparent; color:var(--ink-2); box-shadow:none; }
@@ -130,7 +130,7 @@ button.on { border-color:var(--slider-accent); color:var(--on-ink); background:v
 .icon-btn { width:28px; min-width:28px; height:28px; min-height:28px; padding:0; border-radius:var(--radius-s); display:inline-grid; place-items:center; }
 .icon-btn.on { border-color:transparent; background:var(--active); color:var(--accent); }
 .accent-btn, .primary-btn { min-height:30px; padding-inline:16px; color:#fff; font-weight:600; }
-.accent-btn { border-color:var(--accent-strong); background:var(--accent-strong); box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
+.accent-btn { border-color:var(--accent-strong); background:var(--accent-strong); }
 .accent-btn:hover:not(:disabled) { background:#378ce9; border-color:#378ce9; }
 .primary-btn { background:#3d3d46; border-color:var(--btn-line); }
 .primary-btn:hover:not(:disabled) { background:#474751; border-color:var(--btn-line); }
@@ -138,6 +138,18 @@ button.on { border-color:var(--slider-accent); color:var(--on-ink); background:v
 .text-btn { border:0; padding:6px 0; background:none; color:var(--muted); font-weight:500; box-shadow:none; }
 .text-btn:hover:not(:disabled) { background:none; color:#fff; }
 .text-btn.negative:hover:not(:disabled) { color:var(--skip); }
+
+/* Flat list rows use straight dividers; keep rounded hover/selection fills. */
+.source-row, .collection-row, .settings-nav button, .context-menu button { position:relative; }
+.source-row + .source-row::before,
+.source-filters .source-row::before,
+.collection-row + .collection-row::before,
+.settings-nav button + button::before,
+.context-menu button + button::before {
+  content:""; position:absolute; top:0; left:0; right:0; height:1px;
+  background:var(--line-soft); pointer-events:none;
+}
+.context-menu button + button::before { background:var(--line); }
 
 /* Fields */
 select, textarea, input[type=text], input[type=search], input[type=number], input:not([type]) {
@@ -800,7 +812,8 @@ body.filmstrip-resizing { cursor:ns-resize; user-select:none; }
 .app.grid-mode .panel { opacity:0; pointer-events:none; }
 .toolrail { grid-column:2; grid-row:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:7px 4px 12px; overflow-y:auto; border-left:1px solid var(--line-soft); background:linear-gradient(var(--inset) 92%,rgba(26,26,26,.76)); scrollbar-width:none; }
 .toolrail::-webkit-scrollbar { display:none; }
-.tool-btn { width:48px; min-height:52px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:0; border-radius:var(--radius); padding:4px; background:transparent; color:var(--muted); }
+.tool-btn { position:relative; width:48px; min-height:52px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:0; border-radius:var(--radius); padding:4px; background:transparent; color:var(--muted); }
+.tool-btn + .tool-btn::before { content:""; position:absolute; top:-1px; left:0; right:0; height:1px; background:var(--line-soft); pointer-events:none; }
 .tool-btn svg { width:24px; height:24px; }
 .tool-btn:hover { background:var(--hover); color:#fff; }
 .tool-btn.on { background:var(--active); color:#fff; }
@@ -1267,7 +1280,6 @@ a.reset:hover { color:#fff; }
   border:1px solid var(--field-line);
   border-radius:var(--radius-s);
   background:var(--field-inset);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
   color:var(--ink);
   font-size:12px;
   font-weight:400;
