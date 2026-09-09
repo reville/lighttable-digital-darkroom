@@ -70,7 +70,15 @@ jobs:
             iso='https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso'
             digest='a61adeab895ef5a4db436e0a7011c92a2ff17bb0357f58b13bbc4062e535e7b9'
           fi
-          curl --fail --location --retry 2 --max-time 600 "$iso" -o .build/client-vm/windows.iso
+          # Microsoft throttles large single-stream downloads. Use four bounded
+          # connections and verify the complete image before starting the VM.
+          if ! command -v aria2c >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y aria2
+          fi
+          timeout 1200 aria2c --max-connection-per-server=4 --split=4 --min-split-size=16M \
+            --max-tries=3 --timeout=30 --retry-wait=5 --summary-interval=30 \
+            --file-allocation=none --dir=.build/client-vm --out=windows.iso "$iso"
           echo "$digest  .build/client-vm/windows.iso" | sha256sum --check
           printf '%s\n' "$iso" "$digest" > .build/client-vm/evidence/media.txt
           df -h .
