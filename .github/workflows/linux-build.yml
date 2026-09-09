@@ -53,6 +53,9 @@ jobs:
 
       - name: Install Linux build dependencies
         run: |
+          # The hosted image may retain Chrome's updater source. This WebKit
+          # build does not use it, and stale Chrome metadata can break apt update.
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential pkg-config cmake gfortran libssl-dev libopenblas-dev \
