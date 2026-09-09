@@ -112,10 +112,12 @@ def candidate_libraries() -> list[Path]:
     except ImportError:
         return []
     package = Path(rawpy.__file__).resolve().parent
-    # macOS wheels delocate into `.dylibs`, manylinux wheels put the auditwheel
-    # copy in a sibling `rawpy.libs`, and the Windows wheel ships the DLL right
+    # macOS wheels put LibRaw beside the extension (0.27+) or in `.dylibs`;
+    # manylinux wheels put the auditwheel copy in a sibling `rawpy.libs`,
+    # and the Windows wheel ships the DLL right
     # next to the extension module.
     searches = (
+        (package, ("libraw*.dylib",)),
         (package / ".dylibs", ("libraw*.dylib",)),
         (package.parent / "rawpy.libs", ("libraw*.so*",)),
         (package, ("libraw*.dll", "raw*.dll")),

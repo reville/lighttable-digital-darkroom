@@ -728,8 +728,8 @@ process.stdout.write(JSON.stringify({
         self.assertEqual(
             panes,
             [
-                "editPane", "filmPane", "cropPane", "healPane",
-                "maskPane", "infoPane", "historyPane", "presetsPane",
+                "editPane", "presetsPane", "filmPane", "cropPane",
+                "healPane", "maskPane", "infoPane", "historyPane",
             ],
         )
         self.assertEqual(

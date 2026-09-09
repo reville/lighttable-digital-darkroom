@@ -295,7 +295,7 @@ pub mod native {
             bail!("The update is not a Windows installer");
         }
         let mut nonce = [0u8; 16];
-        getrandom::getrandom(&mut nonce)
+        getrandom::fill(&mut nonce)
             .map_err(|_| anyhow::anyhow!("Could not create update directory"))?;
         let directory = std::env::temp_dir().join(format!(
             "lighttable-update-{}",

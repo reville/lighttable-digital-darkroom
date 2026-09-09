@@ -3,7 +3,7 @@ altgraph==0.17.5
 Cython==3.2.4
 delocate==0.13.0
 macholib==1.16.4
-numpy==2.5.2
+numpy==2.5.3
 packaging==26.3
 setuptools==82.0.0
 typing-extensions==4.16.0

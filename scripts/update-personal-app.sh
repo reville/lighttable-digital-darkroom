@@ -4,6 +4,9 @@
 # the source of truth whenever one of those runtime inputs changes.
 set -euo pipefail
 
+# Bundled Python must not add bytecode files to a signed runtime while checking it.
+export PYTHONDONTWRITEBYTECODE=1
+
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 

@@ -9,6 +9,20 @@ Set-StrictMode -Version Latest
 
 $HasCertificate = -not [string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE_BASE64)
 $HasPassword = -not [string]::IsNullOrWhiteSpace($env:WINDOWS_CERTIFICATE_PASSWORD)
+$AzureSettings = @("AZURE_SIGNING_ENDPOINT", "AZURE_SIGNING_ACCOUNT", "AZURE_SIGNING_PROFILE", "AZURE_TENANT_ID", "AZURE_CLIENT_ID")
+$AzureConfigured = @($AzureSettings | Where-Object {
+    -not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($_))
+})
+if ($AzureConfigured.Count -gt 0) {
+    if ($HasCertificate -or $HasPassword) { throw "Configure Azure Artifact Signing or a PFX, never both." }
+    foreach ($Setting in $AzureSettings) {
+        if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($Setting))) {
+            throw "Azure Artifact Signing requires $Setting."
+        }
+    }
+    & (Join-Path $PSScriptRoot "sign-azure.ps1") -Files $Files -CheckOnly:$CheckOnly
+    return
+}
 if (-not $HasCertificate -and -not $HasPassword -and -not $RequireSigning) {
     if ($CheckOnly) { return $false }
     Write-Host "Authenticode is not configured; this is an unsigned CI build."

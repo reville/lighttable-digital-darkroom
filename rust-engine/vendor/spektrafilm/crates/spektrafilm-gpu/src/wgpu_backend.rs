@@ -206,16 +206,18 @@ struct CachedPipeline {
 #[cfg(feature = "wgpu-backend")]
 impl WgpuBackend {
     pub fn new() -> Option<Self> {
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
+        let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
             backends: wgpu::Backends::PRIMARY,
-            ..Default::default()
+            ..wgpu::InstanceDescriptor::new_without_display_handle()
         });
 
         let adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions {
             power_preference: wgpu::PowerPreference::HighPerformance,
             compatible_surface: None,
             force_fallback_adapter: false,
-        }))?;
+            // Preserve hardware limits for large photos and 1024-thread kernels.
+            apply_limit_buckets: false,
+        })).ok()?;
 
         // The default `Limits` cap storage buffer bindings at 128 MB,
         // which a 6-channel ≥ 14 MP image exceeds (image_bytes =
@@ -256,8 +258,8 @@ impl WgpuBackend {
                 required_features: opt_feats,
                 required_limits: limits,
                 memory_hints: wgpu::MemoryHints::Performance,
+                ..Default::default()
             },
-            None,
         ))
         .ok()?;
 
@@ -373,8 +375,8 @@ impl WgpuBackend {
                 self.device
                     .create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
                         label: Some("compute_pipeline_layout"),
-                        bind_group_layouts: &[&bind_group_layout],
-                        push_constant_ranges: &[],
+                        bind_group_layouts: &[Some(&bind_group_layout)],
+                        immediate_size: 0,
                     });
             let pipeline = self
                 .device
@@ -492,10 +494,10 @@ impl WgpuBackend {
         slice.map_async(wgpu::MapMode::Read, move |r| {
             tx.send(r).unwrap();
         });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
         rx.recv().unwrap().unwrap();
 
-        let data = slice.get_mapped_range();
+        let data = slice.get_mapped_range().expect("GPU readback buffer is mapped");
         let result: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
         drop(data);
         readback.unmap();
@@ -673,9 +675,9 @@ impl WgpuBackend {
         slice.map_async(wgpu::MapMode::Read, move |r| {
             tx.send(r).unwrap();
         });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
         rx.recv().unwrap().unwrap();
-        let data = slice.get_mapped_range();
+        let data = slice.get_mapped_range().expect("GPU readback buffer is mapped");
         let out_f32: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
         drop(data);
         readback.unmap();
@@ -900,12 +902,12 @@ impl WgpuBackend {
             let slice = rb.slice(..);
             slice.map_async(wgpu::MapMode::Read, |r| r.unwrap());
         }
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
 
         let mut out_imgs = Vec::with_capacity(sigmas.len());
         for rb in &readbacks {
             let slice = rb.slice(..);
-            let data = slice.get_mapped_range();
+            let data = slice.get_mapped_range().expect("GPU readback buffer is mapped");
             let chunk: Vec<f32> = bytemuck::cast_slice(&data).to_vec();
             out_imgs.push(ImageBuf::from_data(w, h, f32_to_scalars(chunk)));
             drop(data);
@@ -1020,12 +1022,12 @@ impl WgpuBackend {
                     buf_a.slice(..).map_async(wgpu::MapMode::Write, move |r| {
                         let _ = tx.send(r);
                     });
-                    self.device.poll(wgpu::Maintain::Wait);
+                    self.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
                     rx.recv().unwrap().unwrap();
                 }
                 buf_a
                     .slice(..)
-                    .get_mapped_range_mut()
+                    .get_mapped_range_mut().expect("GPU upload buffer is mapped")
                     .copy_from_slice(bytemuck::cast_slice(&input_f32));
                 buf_a.unmap();
             } else {
@@ -1858,10 +1860,10 @@ impl WgpuBackend {
         slice.map_async(wgpu::MapMode::Read, move |r| {
             tx.send(r).unwrap();
         });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
         rx.recv().unwrap().unwrap();
         let gpu_wait_ms = t_start.elapsed().as_secs_f64() * 1000.0 - cpu_setup_ms;
-        let data = slice.get_mapped_range();
+        let data = slice.get_mapped_range().expect("GPU readback buffer is mapped");
         let readback_bytes = data.len();
         if let Some((_, width, height, row_bytes)) = native_pack.as_ref() {
             let pixel_bytes = row_bytes * *height as usize;
@@ -2009,8 +2011,8 @@ impl WgpuBackend {
                 self.device
                     .create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
                         label: Some("compute_pipeline_layout"),
-                        bind_group_layouts: &[&bind_group_layout],
-                        push_constant_ranges: &[],
+                        bind_group_layouts: &[Some(&bind_group_layout)],
+                        immediate_size: 0,
                     });
             let pipeline = self
                 .device
@@ -2152,9 +2154,9 @@ impl ComputeBackend for WgpuBackend {
         let slice = mapped_buffer.slice(..);
         let (tx, rx) = std::sync::mpsc::channel();
         slice.map_async(wgpu::MapMode::Read, move |result| { let _ = tx.send(result); });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device.poll(wgpu::PollType::wait_indefinitely()).ok()?;
         rx.recv().ok()?.ok()?;
-        let mapped = slice.get_mapped_range();
+        let mapped = slice.get_mapped_range().ok()?;
         let result = bytemuck::cast_slice(&mapped).to_vec();
         drop(mapped);
         mapped_buffer.unmap();
@@ -5627,13 +5629,13 @@ mod portability_tests {
     use super::*;
 
     fn constrained_backend(limits: wgpu::Limits) -> WgpuBackend {
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
-            backends: wgpu::Backends::PRIMARY, ..Default::default()
+        let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
+            backends: wgpu::Backends::PRIMARY, ..wgpu::InstanceDescriptor::new_without_display_handle()
         });
         let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
             .expect("WGPU adapter required");
         let (device, queue) = pollster::block_on(adapter.request_device(
-            &wgpu::DeviceDescriptor { required_limits: limits, ..Default::default() }, None,
+            &wgpu::DeviceDescriptor { required_limits: limits, ..Default::default() },
         )).unwrap();
         WgpuBackend {
             device, queue, adapter_info: adapter.get_info(),
@@ -5704,9 +5706,9 @@ mod portability_tests {
         backend.queue.submit(Some(encoder.finish()));
         let (tx, rx) = std::sync::mpsc::channel();
         readback.slice(..).map_async(wgpu::MapMode::Read, move |r| { tx.send(r).unwrap(); });
-        backend.device.poll(wgpu::Maintain::Wait);
+        backend.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
         rx.recv().unwrap().unwrap();
-        let mapped = readback.slice(..).get_mapped_range();
+        let mapped = readback.slice(..).get_mapped_range().expect("GPU readback buffer is mapped");
         let output: &[f32] = bytemuck::cast_slice(&mapped);
         let max_raw = *input.last().unwrap();
         let raw_x0 = (0.184_f32 * params.protect_ev.exp2()).clamp(0.0, max_raw);
@@ -5773,16 +5775,16 @@ mod portability_tests {
     #[test]
     #[ignore = "requires a real GPU; run explicitly on Linux or macOS"]
     fn portable_linear_dispatch_covers_partial_and_multiple_groups() {
-        let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
+        let instance = wgpu::Instance::new(wgpu::InstanceDescriptor {
             backends: wgpu::Backends::PRIMARY,
-            ..Default::default()
+            ..wgpu::InstanceDescriptor::new_without_display_handle()
         });
         let adapter = pollster::block_on(instance.request_adapter(&Default::default()))
             .expect("WGPU adapter required");
         // Deliberately request the portable 256-thread device contract even
         // when the test machine supports 1024, so validation catches regressions.
         let (device, queue) = pollster::block_on(adapter.request_device(
-            &wgpu::DeviceDescriptor::default(), None,
+            &wgpu::DeviceDescriptor::default(),
         )).unwrap();
         assert_eq!(linear_workgroup_size(&device.limits()), Some(256));
         let backend = WgpuBackend {
@@ -5850,9 +5852,9 @@ mod native_pack_tests {
         backend.queue.submit(Some(encoder.finish()));
         let (tx, rx) = std::sync::mpsc::channel();
         packed.slice(..).map_async(wgpu::MapMode::Read, move |result| { tx.send(result).unwrap(); });
-        backend.device.poll(wgpu::Maintain::Wait);
+        backend.device.poll(wgpu::PollType::wait_indefinitely()).expect("GPU submission failed");
         rx.recv().unwrap().unwrap();
-        let data = packed.slice(..).get_mapped_range();
+        let data = packed.slice(..).get_mapped_range().expect("GPU readback buffer is mapped");
         let words: &[u32] = bytemuck::cast_slice(&data[..count * 4]);
         assert!(words.iter().all(|&pixel| pixel == 0xff808080), "native pack lost or repeated pixels beyond first dispatch row");
         let partials: &[f32] = bytemuck::cast_slice(&data[count * 4..]);

@@ -6,8 +6,10 @@ import subprocess
 import rawpy
 import rawpy_openmp
 
-assert rawpy.__version__ == "0.26.1", rawpy.__version__
-assert rawpy_openmp.__version__ == "0.26.1", rawpy_openmp.__version__
+assert rawpy.__version__ == "0.27.1", rawpy.__version__
+assert rawpy_openmp.__version__ == "0.27.1", rawpy_openmp.__version__
+assert rawpy_openmp.libraw_version == (0, 22, 1), rawpy_openmp.libraw_version
+assert rawpy_openmp.libraw_version_compiled == rawpy_openmp.libraw_version
 assert rawpy_openmp.flags.get("OPENMP"), rawpy_openmp.flags
 assert hasattr(rawpy_openmp.RawPy, "is_xtrans"), "missing header-only sensor dispatch"
 assert getattr(rawpy_openmp, "LIGHTTABLE_XTRANS_WAVEFRONT", 0) == 1, "missing deterministic X-Trans parallel schedule"

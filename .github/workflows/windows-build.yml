@@ -45,7 +45,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}
+  # A routine main build must not cancel a production-signed candidate.
+  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}-${{ inputs.require_signing && 'signed' || 'unsigned' }}
   cancel-in-progress: true
 
 jobs:
@@ -157,12 +158,27 @@ jobs:
     needs: installer-check
     runs-on: windows-2022
     timeout-minutes: 90
+    permissions:
+      contents: read
+      id-token: write
+    # windows-release permits only main and v* tags; windows-ci has no Azure trust.
+    environment: ${{ inputs.require_signing && 'windows-release' || 'windows-ci' }}
     env:
       UV_CACHE_DIR: ${{ github.workspace }}\.build\uv-cache
+      AZURE_SIGNING_ENDPOINT: ${{ inputs.require_signing && vars.AZURE_SIGNING_ENDPOINT || '' }}
+      AZURE_SIGNING_ACCOUNT: ${{ inputs.require_signing && vars.AZURE_SIGNING_ACCOUNT || '' }}
+      AZURE_SIGNING_PROFILE: ${{ inputs.require_signing && vars.AZURE_SIGNING_PROFILE || '' }}
+      AZURE_TENANT_ID: ${{ inputs.require_signing && vars.AZURE_TENANT_ID || '' }}
+      AZURE_CLIENT_ID: ${{ inputs.require_signing && vars.AZURE_CLIENT_ID || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.source_ref || github.sha }}
+
+      - name: Install pinned Azure signing dependencies
+        if: inputs.require_signing && vars.AZURE_SIGNING_ENDPOINT != ''
+        shell: pwsh
+        run: ./scripts/windows/install-signing-tools.ps1
 
       - name: Validate Windows signing configuration
         shell: pwsh
@@ -173,6 +189,10 @@ jobs:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           ./scripts/windows/sign-release.ps1 -CheckOnly -RequireSigning:($env:REQUIRE_SIGNING -eq 'true') | Out-Null
+          if ($env:REQUIRE_SIGNING -eq 'true' -and [string]::IsNullOrWhiteSpace($env:SPARKLE_PRIVATE_KEY)) {
+            throw "Windows release updates require SPARKLE_PRIVATE_KEY."
+          }
+          if ($env:REQUIRE_SIGNING -eq 'true') { ./scripts/windows/signing-smoke.ps1 }
 
       - name: Restore build caches
         uses: actions/cache@v4
@@ -198,6 +218,7 @@ jobs:
           choco install nsis --no-progress -y
 
       - name: Build and smoke-test package
+        id: build-package
         shell: pwsh
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
@@ -220,9 +241,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
+      - name: Verify signatures in the completed artifacts
+        if: inputs.require_signing
+        shell: pwsh
+        run: |
+          $Archive = Get-ChildItem ./dist/LightTable-*-windows-x64.zip | Select-Object -First 1
+          $Installer = Get-ChildItem ./dist/LightTable-*-windows-x64-setup.exe | Select-Object -First 1
+          ./scripts/windows/verify-release-signatures.ps1 -Archive $Archive.FullName -Installer $Installer.FullName -Report ./dist/windows-signatures.json
+
       - name: Upload portable build and installer
         # Preserve a completed package for diagnosis/rechecks even if native
-        # acceptance fails. The package job still fails and blocks release.yml.
+        # acceptance or signature verification fails. The job still fails and
+        # blocks release.yml; retained artifacts are not approval to publish.
+        if: ${{ !cancelled() && steps.build-package.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-windows-x64
@@ -230,6 +261,7 @@ jobs:
             dist/LightTable-*-windows-x64.zip
             dist/LightTable-*-windows-x64-setup.exe
             dist/appcast-windows-x64.xml
+            dist/windows-signatures.json
           if-no-files-found: error
 
       - name: Require native edit, export and restart

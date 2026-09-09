@@ -202,7 +202,7 @@ RAWPY_WHEELS="$BUILD_ROOT/rawpy-openmp"
   "$APP/Contents/Resources/Python/bin/python3.13" "$RAWPY_WHEELS"
 uv pip install --no-config --system --break-system-packages --no-deps --reinstall \
   --python "$APP/Contents/Resources/Python/bin/python3.13" \
-  "$RAWPY_WHEELS"/rawpy_openmp-0.26.1-*.whl
+  "$RAWPY_WHEELS"/rawpy_openmp-0.27.1-*.whl
 "$APP/Contents/Resources/Python/bin/python3.13" \
   "$ROOT/scripts/verify-rawpy-openmp.py"
 /usr/bin/ditto "$RAWPY_WHEELS/licenses" "$PAYLOAD/licenses/rawpy-openmp"
