@@ -586,12 +586,12 @@
       {
         "title": "Choose a collection",
         "paragraphs": [
-          "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page."
+          "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
         ],
         "steps": [
           "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
           "Use the star beside a preset to favorite it; Favorites filters the current collection.",
-          "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos."
+          "In Community, choose Featured, New, or All and use Subject to narrow the collection. Use the … button beside a preset to see its description, creator, version, Film behavior, and available example photos."
         ],
         "tips": [
           "Featured is an editorial collection, not a popularity ranking.",
@@ -599,18 +599,25 @@
         ]
       },
       {
+        "title": "Organize preset packs",
+        "paragraphs": [
+          "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.",
+          "Choose New pack… to create a named pack in the current collection. Drag a preset onto its heading, or open the preset’s … details and choose Move to pack. Use … beside a pack to rename it. Removing a pack returns its presets to their default groups without deleting them. Pack organization is saved on this computer."
+        ]
+      },
+      {
         "title": "Apply and adjust Amount",
         "paragraphs": [
-          "Click a preset card to apply it immediately to the main photo. Click the same card again, or use its On/Off button, to disable it. Your photo stays on this computer."
+          "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer."
         ],
         "steps": [
-          "Select a photo and click a preset card. The selected preset shows Amount below its name.",
+          "Select a photo, expand a pack, and click a preset row.",
           "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.",
           "Click another preset to switch looks. Undo and Redo restore preset selection, enabled state, and amount. The selected preset and amount are saved with the photo."
         ],
         "tips": [
           "Film stock, Film on/off, and other fixed choices switch at any amount above zero. Tone, color, curves, and numerical adjustments vary with Amount. Creator examples remain separate from your photo.",
-          "Switching preset cards uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset."
+          "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset."
         ]
       },
       {
@@ -629,7 +636,7 @@
           "Add to Yours downloads and saves the selected community recipe without applying it. Installed recipes work offline. Your existing photo edits store their settings separately from the preset."
         ],
         "steps": [
-          "Click a Community preset to use it on your photo, then click Add to Yours to keep an offline copy.",
+          "Click a Community preset to use it on your photo, then open its … details and click Add to Yours to keep an offline copy.",
           "Use it later from Yours, or return to Community to inspect the public preset page.",
           "Click Refresh to check the catalog. When a newer version is listed, Update in Yours replaces the saved recipe only when you choose it."
         ],
@@ -663,7 +670,7 @@
           "Community publication is reviewed. The submission section shows the exact Develop and Film settings in the prepared look, its Film behavior, and the photo corrections it keeps. Nothing is uploaded when inspecting this summary or preparing a download."
         ],
         "steps": [
-          "Save a preset in Yours, select it, and review the included-settings summary under Community submission.",
+          "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.",
           "Click Prepare community submission… and wait for the local examples to render. Save the ZIP containing the preset, three licensed before/after photo pairs, photo credits, and rights notes.",
           "Open the package and inspect the examples. You can also select your own photo and use Download example on this photo to save a 960-pixel JPEG of the shared look without changing the edit.",
           "Click Open submission form, attach the package and any permitted additional examples, and add your creator details, description, and publishing permissions before submitting."
@@ -693,6 +700,10 @@
       {
         "path": "web/preset-browser.css",
         "anchor": ".preset-browser-manage[aria-expanded=\"true\"]"
+      },
+      {
+        "path": "web/preset-packs.js",
+        "anchor": "export function groupPresetPacks("
       },
       {
         "path": "web/preset-amount.js",

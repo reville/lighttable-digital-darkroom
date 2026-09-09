@@ -1193,12 +1193,12 @@
         {
           "title": "Chọn một bộ sưu tập",
           "paragraphs": [
-            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét. Mỗi trang hiển thị 20 thiết lập sẵn."
+            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
           ],
           "steps": [
             "Chọn Tích hợp sẵn, Mục của bạn, hoặc Cộng đồng. Tìm theo tên, mô tả, người tạo, hoặc đối tượng.",
             "Dùng ngôi sao bên cạnh một thiết lập sẵn để đánh dấu yêu thích; Mục yêu thích lọc bộ sưu tập hiện tại.",
-            "Trong Cộng đồng, chọn Nổi bật, Mới, hoặc Tất cả và dùng Đối tượng để thu hẹp bộ sưu tập. Chọn một thiết lập sẵn để xem mô tả, người tạo, phiên bản, hành vi Phim và các ảnh ví dụ sẵn có."
+            "Trong Cộng đồng, chọn Nổi bật, Mới hoặc Tất cả và dùng Đối tượng để thu hẹp bộ sưu tập. Dùng nút … bên cạnh thiết lập sẵn để xem mô tả, tác giả, phiên bản, cách hoạt động của Phim và các ảnh ví dụ có sẵn."
           ],
           "tips": [
             "Featured là một bộ sưu tập biên tập, không phải bảng xếp hạng độ phổ biến.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Sắp xếp các gói thiết lập sẵn",
+          "paragraphs": [
+            "Thiết lập sẵn xuất hiện dưới dạng các hàng ngang trong những gói có thể thu gọn. Các phong cách tích hợp sẵn ban đầu được chia vào các gói Màu sắc, Phim và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+            "Chọn Gói mới… để tạo một gói có tên trong bộ sưu tập hiện tại. Kéo một thiết lập sẵn lên tiêu đề của gói, hoặc mở phần chi tiết … của thiết lập sẵn rồi chọn Chuyển vào gói. Dùng … bên cạnh gói để đổi tên. Khi xóa gói, các thiết lập sẵn trong gói sẽ trở về nhóm mặc định mà không bị xóa. Cách sắp xếp gói được lưu trên máy tính này."
+          ]
+        },
+        {
           "title": "Áp dụng và điều chỉnh Lượng",
           "paragraphs": [
-            "Nhấp vào một thẻ thiết lập sẵn để áp dụng ngay cho ảnh chính. Nhấp lại cùng một thẻ, hoặc dùng nút Bật/Tắt của nó, để tắt nó. Ảnh của bạn vẫn ở trên máy tính này."
+            "Nhấp vào một hàng thiết lập sẵn để áp dụng ngay. Thanh trượt Lượng xuất hiện bên dưới hàng. Nhấp lại vào cùng hàng để tắt thiết lập sẵn và ẩn thanh trượt. Ảnh của bạn vẫn ở trên máy tính này."
           ],
           "steps": [
-            "Chọn một ảnh và nhấp vào thẻ thiết lập sẵn. Thiết lập sẵn đã chọn sẽ hiển thị Lượng bên dưới tên của nó.",
+            "Chọn một ảnh, mở rộng một gói rồi nhấp vào một hàng thiết lập sẵn.",
             "Kéo Lượng từ 0% đến 100%. Mức 0 khôi phục phần chỉnh sửa trước thiết lập sẵn; 100% dùng đầy đủ thiết lập sẵn. Nhấp đúp vào Lượng để đặt lại về 100%.",
             "Nhấp vào một thiết lập sẵn khác để chuyển đổi giao diện. Hoàn tác và Làm lại khôi phục việc chọn thiết lập sẵn, trạng thái bật, và lượng. Thiết lập sẵn và lượng đã chọn được lưu cùng với ảnh."
           ],
           "tips": [
             "Phim, Bật/Tắt Phim, và các lựa chọn cố định khác sẽ chuyển đổi ở mọi lượng lớn hơn 0. Tông màu, màu sắc, đường cong, và các điều chỉnh số thay đổi theo Lượng. Các ví dụ của người tạo vẫn tách biệt với ảnh của bạn.",
-            "Chuyển đổi các thẻ thiết lập sẵn sẽ dùng phần chỉnh sửa từ trước thiết lập sẵn đầu tiên để các giao diện không bị cộng dồn. Các thay đổi thủ công bên ngoài thiết lập sẵn, như phơi sáng cho một Giao diện, vẫn được giữ. Việc thay đổi thủ công một thiết lập do thiết lập sẵn điều khiển sẽ kết thúc điều chỉnh Lượng của nó; khi đó phần chỉnh sửa hiện tại sẽ trở thành nền cho thiết lập sẵn tiếp theo."
+            "Khi chuyển giữa các hàng thiết lập sẵn, ứng dụng sử dụng bản chỉnh sửa trước thiết lập sẵn đầu tiên để các phong cách không cộng dồn. Các thay đổi thủ công nằm ngoài thiết lập sẵn, chẳng hạn phơi sáng cho một phong cách, được giữ lại. Việc thay đổi thủ công một cài đặt do thiết lập sẵn kiểm soát sẽ kết thúc điều chỉnh Lượng; bản chỉnh sửa hiện tại trở thành cơ sở cho thiết lập sẵn tiếp theo."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Thêm vào Mục của bạn sẽ tải xuống và lưu quy trình cộng đồng đã chọn mà không áp dụng nó. Các quy trình đã cài đặt hoạt động ngoại tuyến. Các chỉnh sửa ảnh hiện có của bạn lưu cài đặt của chúng tách biệt với thiết lập sẵn."
           ],
           "steps": [
-            "Nhấp vào một thiết lập sẵn Cộng đồng để dùng nó trên ảnh của bạn, rồi nhấp Thêm vào Của bạn để giữ một bản sao ngoại tuyến.",
+            "Nhấp vào một thiết lập sẵn trong Cộng đồng để dùng trên ảnh, sau đó mở phần chi tiết … và nhấp vào Thêm vào Của bạn để giữ một bản sao ngoại tuyến.",
             "Dùng sau từ Mục của bạn, hoặc quay lại Cộng đồng để xem trang thiết lập sẵn công khai.",
             "Nhấp Tải lại để kiểm tra danh mục. Khi có phiên bản mới hơn, Cập nhật trong Mục của bạn chỉ thay thế quy trình đã lưu khi bạn chọn nó."
           ],
@@ -1270,7 +1277,7 @@
             "Việc xuất bản Cộng đồng được xem xét. Phần gửi hiển thị chính xác các cài đặt Phát triển và Phim trong giao diện đã chuẩn bị, hành vi Phim của nó, và các hiệu chỉnh ảnh mà nó giữ lại. Không có gì được tải lên khi xem phần tóm tắt này hoặc chuẩn bị tải xuống."
           ],
           "steps": [
-            "Lưu một thiết lập sẵn trong Mục của bạn, chọn nó, rồi xem lại phần tóm tắt cài đặt được bao gồm trong gửi lên Cộng đồng.",
+            "Lưu một thiết lập sẵn trong Của bạn, mở phần chi tiết … rồi xem lại bản tóm tắt các cài đặt được bao gồm bên dưới Bài gửi cộng đồng.",
             "Nhấp Chuẩn bị gửi lên cộng đồng… và chờ các ví dụ cục bộ được dựng. Lưu tệp ZIP chứa thiết lập sẵn, ba cặp ảnh trước/sau có giấy phép, tín dụng ảnh và ghi chú quyền.",
             "Mở gói và xem xét các ví dụ. Bạn cũng có thể chọn ảnh của riêng mình và dùng Tải xuống ví dụ trên ảnh này để lưu một JPEG 960 pixel của giao diện được chia sẻ mà không thay đổi chỉnh sửa.",
             "Nhấp Mở biểu mẫu gửi, đính kèm gói và mọi ví dụ bổ sung được phép, rồi thêm thông tin người tạo, mô tả và quyền xuất bản của bạn trước khi gửi."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "9847623d019cc70e59856e77057fe8d0feaaa0ca48de3161d0ecf70fbc736389"
+  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
 }

@@ -1193,12 +1193,12 @@
         {
           "title": "Elegir una colección",
           "paragraphs": [
-            "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada. Se muestran 20 ajustes preestablecidos por página."
+            "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
           ],
           "steps": [
             "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
             "Usa la estrella junto a un ajuste preestablecido para marcarlo como favorito; Favorites filtra la colección actual.",
-            "En Community, elige Destacados, Nuevos o Todos y usa Sujeto para acotar la colección. Selecciona un ajuste preestablecido para ver su descripción, autor, versión, comportamiento de Film y las fotos de ejemplo disponibles."
+            "En Comunidad, elige Destacado, Nuevo o Todos y usa Sujeto para acotar la colección. Usa el botón … junto a un ajuste preestablecido para ver su descripción, creador, versión, comportamiento de Película y fotos de ejemplo disponibles."
           ],
           "tips": [
             "Destacado es una colección editorial, no un ranking de popularidad.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Organizar paquetes de ajustes preestablecidos",
+          "paragraphs": [
+            "Los ajustes preestablecidos aparecen como filas horizontales dentro de paquetes plegables. Los estilos integrados se organizan inicialmente en los paquetes Color, Película y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
+            "Elige Nuevo paquete… para crear un paquete con nombre en la colección actual. Arrastra un ajuste preestablecido a su encabezado, o abre sus detalles con … y elige Mover a paquete. Usa … junto a un paquete para cambiarle el nombre. Al quitar un paquete, sus ajustes preestablecidos vuelven a sus grupos predeterminados sin eliminarse. La organización de los paquetes se guarda en esta computadora."
+          ]
+        },
+        {
           "title": "Aplicar y ajustar Cantidad",
           "paragraphs": [
-            "Haz clic en una tarjeta de ajuste preestablecido para aplicarlo de inmediato a la foto principal. Haz clic de nuevo en la misma tarjeta, o usa su botón Activado/Desactivado, para desactivarlo. Tu foto permanece en este ordenador."
+            "Haz clic en la fila de un ajuste preestablecido para aplicarlo de inmediato. Su deslizador Cantidad aparece debajo de la fila. Haz clic de nuevo en la misma fila para desactivarlo y ocultar el deslizador. Tu foto permanece en esta computadora."
           ],
           "steps": [
-            "Selecciona una foto y haz clic en una tarjeta de ajuste preestablecido. El ajuste preestablecido seleccionado muestra Cantidad debajo de su nombre.",
+            "Selecciona una foto, expande un paquete y haz clic en la fila de un ajuste preestablecido.",
             "Arrastra Cantidad de 0% a 100%. Cero restaura la edición antes del ajuste preestablecido; 100% usa el ajuste preestablecido completo. Haz doble clic en Cantidad para restablecerlo a 100%.",
             "Haz clic en otro ajuste preestablecido para cambiar de look. Deshacer y Rehacer restauran la selección del ajuste preestablecido, el estado activado y la cantidad. El ajuste preestablecido y la cantidad seleccionados se guardan con la foto."
           ],
           "tips": [
             "La película, Película activada/desactivada y otras opciones fijas cambian con cualquier cantidad superior a cero. Tono, color, curvas y ajustes numéricos varían con Cantidad. Los ejemplos del autor permanecen separados de tu foto.",
-            "Cambiar entre tarjetas de ajuste preestablecido usa la edición anterior al primer ajuste preestablecido para que los looks no se acumulen. Los cambios manuales fuera del ajuste preestablecido, como exposición para un look, se conservan. Cambiar manualmente un ajuste controlado por el ajuste preestablecido finaliza su ajuste de Cantidad; la edición actual se convierte entonces en la base para el siguiente ajuste preestablecido."
+            "Al cambiar entre filas de ajustes preestablecidos, se usa la edición anterior al primer ajuste preestablecido para que los estilos no se acumulen. Se conservan los cambios manuales ajenos al ajuste preestablecido, como la exposición para un estilo. Cambiar manualmente un ajuste controlado por el ajuste preestablecido finaliza su ajuste de Cantidad; la edición actual pasa a ser la base para el siguiente ajuste preestablecido."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Agregar a Yours descarga y guarda la receta comunitaria seleccionada sin aplicarla. Las recetas instaladas funcionan sin conexión. Las ediciones de tus fotos existentes guardan sus ajustes por separado del ajuste preestablecido."
           ],
           "steps": [
-            "Haz clic en un ajuste preestablecido de la Comunidad para usarlo en tu foto; luego haz clic en Agregar a Tuya para conservar una copia sin conexión.",
+            "Haz clic en un ajuste preestablecido de Comunidad para usarlo en tu foto; luego abre sus detalles con … y haz clic en Agregar a Tuya para conservar una copia sin conexión.",
             "Usa la opción más tarde desde Yours, o vuelve a Community para inspeccionar la página pública del ajuste preestablecido.",
             "Haz clic en Actualizar para comprobar el catálogo. Cuando aparezca una versión más reciente, Actualizar en Yours reemplaza la receta guardada solo cuando la eliges."
           ],
@@ -1270,7 +1277,7 @@
             "La publicación en Community se revisa. La sección de envío muestra los ajustes exactos de Develop y Film en el look preparado, su comportamiento de Film y las correcciones de foto que conserva. No se carga nada al inspeccionar este resumen ni al preparar una descarga."
           ],
           "steps": [
-            "Guarda un ajuste preestablecido en Yours, selecciónalo y revisa el resumen de ajustes incluidos en el envío a la comunidad.",
+            "Guarda un ajuste preestablecido en Tuya, abre sus detalles con … y revisa el resumen de los ajustes incluidos en Envío de la comunidad.",
             "Haz clic en Preparar envío a la comunidad… y espera a que se rendericen los ejemplos locales. Guarda el ZIP que contiene el ajuste preestablecido, tres pares de fotos antes/después con licencia, créditos de las fotos y notas de derechos.",
             "Abre el paquete e inspecciona los ejemplos. También puedes seleccionar tu propia foto y usar Descargar ejemplo en esta foto para guardar un JPEG de 960 píxeles del look compartido sin cambiar la edición.",
             "Haz clic en Abrir formulario de envío, adjunta el paquete y cualquier ejemplo adicional permitido, y añade tus datos de autor, descripción y permisos de publicación antes de enviarlo."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "9847623d019cc70e59856e77057fe8d0feaaa0ca48de3161d0ecf70fbc736389"
+  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
 }
