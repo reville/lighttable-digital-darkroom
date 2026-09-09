@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -973,7 +973,6 @@
     "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index.": "Hãy tải xuống hoặc khôi phục các bản gốc, kết nối lại mọi nguồn không khả dụng, và dùng Xây dựng lại chỉ mục để thử lại. Việc lập chỉ mục không tải xuống tệp hay thay đổi bản gốc. Siêu dữ liệu tìm kiếm đã tạo trước đó vẫn được giữ khi một tệp trở nên không khả dụng, trừ khi bạn xây dựng lại hoặc xóa chỉ mục.",
     "Download the latest portable ZIP to update this copy of LightTable.": "Tải ZIP di động mới nhất để cập nhật bản LightTable này.",
     "Download the update before restarting.": "Tải bản cập nhật trước khi khởi động lại.",
-    "Download this photo in Finder, then rescan the source.": "Tải ảnh này xuống trong Finder, rồi quét lại nguồn.",
     "Downloading an original from iCloud…": "Đang tải xuống bản gốc từ iCloud…",
     "Downloading and copying {count} photos. iCloud photos may take a little longer.": "Đang tải xuống và sao chép {count} ảnh. Ảnh iCloud có thể mất nhiều thời gian hơn một chút.",
     "Downloading update…": "Đang tải bản cập nhật…",
@@ -2905,7 +2904,6 @@
     "This photo has reached the 20,000-point mask limit": "Ảnh này đã đạt giới hạn mặt nạ 20,000 điểm",
     "This photo is no longer in the catalog. Scan People again.": "Ảnh này không còn trong danh mục nữa. Hãy quét Mọi người lại.",
     "This photo is no longer in the library; settings were not pasted": "Ảnh này không còn trong thư viện; cài đặt chưa được dán",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.": "Ảnh này được lưu trong đám mây và chưa được tải xuống. Trong Finder, chọn Tải xuống ngay hoặc Giữ đã tải xuống, rồi quét lại nguồn trong LightTable.",
     "This photo is unavailable. Reconnect its source and rescan.": "Ảnh này không khả dụng. Hãy kết nối lại nguồn của nó và quét lại.",
     "This preset is unavailable. Refresh the catalog and try again.": "Thiết lập sẵn này không khả dụng. Hãy làm mới danh mục và thử lại.",
     "This removes face groups, names, corrections, and face thumbnails from this catalog. Original photos and the photo contents index are kept. Downloaded models remain available.": "Thao tác này sẽ xóa các nhóm khuôn mặt, tên, chỉnh sửa và hình thu nhỏ khuôn mặt khỏi danh mục này. Ảnh gốc và chỉ mục nội dung ảnh vẫn được giữ. Các mô hình đã tải xuống vẫn dùng được.",
@@ -4133,11 +4131,21 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Tệp này trống (0 byte). Tải xuống hoặc khôi phục ảnh gốc rồi thử lại.",
     "Thumbnail request failed (HTTP {status}). Try again.": "Yêu cầu ảnh thu nhỏ thất bại (HTTP {status}). Hãy thử lại.",
     "Thumbnail unavailable": "Không có ảnh thu nhỏ",
-    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại.",
     "Hide photos that can't be displayed": "Ẩn ảnh không thể hiển thị",
     "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận.",
     "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "Ảnh này được lưu trực tuyến trong Dropbox. Trong Finder, chọn “Cho phép truy cập ngoại tuyến”, rồi thử lại.",
-    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh."
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh.",
+    "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions.": "Làm theo hướng dẫn tải xuống của nhà cung cấp trong thông báo lỗi, chờ tải xuống xong rồi chọn Thử lại. Google Drive, Dropbox, OneDrive, iCloud Drive và Box có hướng dẫn riêng khi vị trí đồng bộ được nhận diện; các vị trí khác có hướng dẫn chung.",
+    "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.": "LightTable nhận diện các tệp giữ chỗ trên đám mây do File Provider của macOS và Windows báo cáo, cùng các tệp giữ chỗ Dropbox cũ trên Mac. Ứng dụng kiểm tra siêu dữ liệu mà không tải ảnh xuống. Một số ổ đĩa ảo cũ không báo cáo trạng thái đám mây có thể phát hiện được.",
+    "Make cloud photos available offline": "Cho phép truy cập ngoại tuyến ảnh trên đám mây",
+    "Make this photo available offline in its cloud storage app, then retry.": "Cho phép truy cập ngoại tuyến ảnh này trong ứng dụng lưu trữ đám mây tương ứng, rồi thử lại.",
+    "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Trên Mac: Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại.",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong Box. Cho phép truy cập ngoại tuyến thư mục chứa ảnh trong Box Drive, chờ tải xuống xong rồi thử lại.",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong Dropbox. Cho phép truy cập ngoại tuyến trong Dropbox, chờ tải xuống xong rồi thử lại.",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong Google Drive. Cho phép truy cập ngoại tuyến trong Drive cho máy tính, chờ tải xuống xong rồi thử lại.",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong OneDrive. Chọn “Luôn giữ trên thiết bị này”, chờ tải xuống xong rồi thử lại.",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến trong iCloud Drive. Tải xuống tệp gốc bằng iCloud Drive, chờ tải xuống xong rồi thử lại.",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "Ảnh này được lưu trực tuyến hoặc chưa được tải xuống đầy đủ. Cho phép truy cập ngoại tuyến trong ứng dụng lưu trữ đám mây của bạn, chờ tải xuống xong rồi thử lại."
   },
   "plurals": {
     " · {count} paired file linked": {

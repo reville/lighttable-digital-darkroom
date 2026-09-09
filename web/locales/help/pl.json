@@ -3158,7 +3158,14 @@
           "title": "Jak odczytać błąd miniatury",
           "paragraphs": [
             "W siatce i na taśmie filmowej komunikat Miniatura niedostępna pokazuje przyczynę błędu oraz zgłoszone informacje diagnostyczne, jeśli są dostępne. Po usunięciu problemu wybierz Spróbuj ponownie.",
-            "Pliki zastępcze Dropbox dostępne tylko online mogą wskazywać 0 bajtów, mimo że oryginał w chmurze nie jest pusty. W Finderze wybierz Udostępnij offline, a następnie Spróbuj ponownie w LightTable. Jeśli plik jest pusty i nie ma znacznika chmury, pobierz lub przywróć oryginał. Przed ponowną próbą podłącz niedostępne foldery lub dyski."
+            "Na Macu: Pliki zastępcze Dropbox dostępne tylko online mogą wskazywać 0 bajtów, mimo że oryginał w chmurze nie jest pusty. W Finderze wybierz Udostępnij offline, a następnie Spróbuj ponownie w LightTable. Jeśli plik jest pusty i nie ma znacznika chmury, pobierz lub przywróć oryginał. Przed ponowną próbą podłącz niedostępne foldery lub dyski."
+          ]
+        },
+        {
+          "title": "Udostępnij zdjęcia z chmury offline",
+          "paragraphs": [
+            "LightTable rozpoznaje pliki zastępcze w chmurze zgłaszane przez File Provider w macOS i Windows, a także starsze pliki zastępcze Dropbox na Macu. Sprawdza metadane bez pobierania zdjęć. Niektóre starsze dyski wirtualne nie zgłaszają wykrywalnego stanu chmury.",
+            "Postępuj zgodnie z instrukcjami pobierania dostawcy w komunikacie o błędzie, poczekaj na zakończenie pobierania, a następnie wybierz Spróbuj ponownie. Google Drive, Dropbox, OneDrive, iCloud Drive i Box mają szczegółowe wskazówki, gdy lokalizacja synchronizacji zostanie rozpoznana; inne lokalizacje mają instrukcje ogólne."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

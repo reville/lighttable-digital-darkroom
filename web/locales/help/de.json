@@ -3158,7 +3158,14 @@
           "title": "Einen Vorschaubildfehler verstehen",
           "paragraphs": [
             "Im Raster und Filmstreifen zeigt Vorschaubild nicht verfügbar den Grund für den Fehler und gegebenenfalls die gemeldeten Diagnosedetails. Wähle nach dem Beheben des Problems Erneut versuchen.",
-            "Dropbox-Platzhalter für reine Onlinedateien können 0 Byte anzeigen, obwohl das Original in der Cloud nicht leer ist. Wähle im Finder Offline verfügbar machen und dann Erneut versuchen in LightTable. Lade bei einer leeren Datei ohne Cloud-Markierung das Original herunter oder stelle es wieder her. Verbinde nicht verfügbare Ordner oder Laufwerke erneut, bevor du es noch einmal versuchst."
+            "Auf dem Mac: Dropbox-Platzhalter für reine Onlinedateien können 0 Byte anzeigen, obwohl das Original in der Cloud nicht leer ist. Wähle im Finder Offline verfügbar machen und dann Erneut versuchen in LightTable. Lade bei einer leeren Datei ohne Cloud-Markierung das Original herunter oder stelle es wieder her. Verbinde nicht verfügbare Ordner oder Laufwerke erneut, bevor du es noch einmal versuchst."
+          ]
+        },
+        {
+          "title": "Cloud-Fotos offline verfügbar machen",
+          "paragraphs": [
+            "LightTable erkennt Cloud-Platzhalter, die macOS File Provider und Windows melden, sowie ältere Dropbox-Platzhalter auf dem Mac. Es prüft Metadaten, ohne Fotos herunterzuladen. Einige ältere virtuelle Laufwerke melden keinen erkennbaren Cloud-Status.",
+            "Befolge die Download-Anleitung des Anbieters in der Fehlermeldung, warte auf den Abschluss des Downloads und wähle Erneut versuchen. Für Google Drive, Dropbox, OneDrive, iCloud Drive und Box erscheinen spezifische Hinweise, wenn ihr Synchronisierungsort erkannt wird; andere Orte erhalten allgemeine Anweisungen."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

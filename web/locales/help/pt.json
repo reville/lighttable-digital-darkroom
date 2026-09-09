@@ -3158,7 +3158,14 @@
           "title": "Entender um erro de miniatura",
           "paragraphs": [
             "Na grade e na tira de filme, Miniatura indisponível mostra por que uma miniatura falhou e inclui o diagnóstico informado quando disponível. Após corrigir o problema, escolha Tentar novamente.",
-            "Os arquivos de espaço reservado do Dropbox disponíveis apenas online podem indicar 0 bytes sem que o original na nuvem esteja vazio. No Finder, escolha Disponibilizar offline e depois Tentar novamente no LightTable. Para um arquivo vazio sem marcador de nuvem, baixe ou restaure o original. Reconecte pastas ou unidades indisponíveis antes de tentar novamente."
+            "No Mac: Os arquivos de espaço reservado do Dropbox disponíveis apenas online podem indicar 0 bytes sem que o original na nuvem esteja vazio. No Finder, escolha Disponibilizar offline e depois Tentar novamente no LightTable. Para um arquivo vazio sem marcador de nuvem, baixe ou restaure o original. Reconecte pastas ou unidades indisponíveis antes de tentar novamente."
+          ]
+        },
+        {
+          "title": "Disponibilizar fotos da nuvem offline",
+          "paragraphs": [
+            "O LightTable reconhece arquivos de espaço reservado na nuvem informados pelo File Provider do macOS e pelo Windows, além de arquivos de espaço reservado antigos do Dropbox no Mac. Ele verifica metadados sem baixar as fotos. Algumas unidades virtuais antigas não informam um estado de nuvem detectável.",
+            "Siga as instruções de download do provedor na mensagem de erro, espere o download terminar e escolha Tentar novamente. Google Drive, Dropbox, OneDrive, iCloud Drive e Box recebem orientações específicas quando o local de sincronização é reconhecido; outros locais recebem instruções gerais."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

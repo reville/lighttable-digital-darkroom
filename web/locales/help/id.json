@@ -3158,7 +3158,14 @@
           "title": "Memahami kesalahan gambar mini",
           "paragraphs": [
             "Di kisi dan strip film, Gambar mini tidak tersedia menunjukkan alasan kegagalan gambar mini dan menyertakan informasi diagnostik yang dilaporkan jika tersedia. Setelah memperbaiki masalah, pilih Coba lagi.",
-            "File placeholder Dropbox yang hanya tersedia online dapat menunjukkan 0 byte meskipun file asli di cloud tidak kosong. Di Finder, pilih Jadikan tersedia offline, lalu Coba lagi di LightTable. Untuk file kosong tanpa penanda cloud, unduh atau pulihkan file aslinya. Sambungkan kembali folder atau drive yang tidak tersedia sebelum mencoba lagi."
+            "Di Mac: File placeholder Dropbox yang hanya tersedia online dapat menunjukkan 0 byte meskipun file asli di cloud tidak kosong. Di Finder, pilih Jadikan tersedia offline, lalu Coba lagi di LightTable. Untuk file kosong tanpa penanda cloud, unduh atau pulihkan file aslinya. Sambungkan kembali folder atau drive yang tidak tersedia sebelum mencoba lagi."
+          ]
+        },
+        {
+          "title": "Jadikan foto cloud tersedia offline",
+          "paragraphs": [
+            "LightTable mengenali placeholder cloud yang dilaporkan oleh File Provider macOS dan Windows, serta placeholder Dropbox lama di Mac. LightTable memeriksa metadata tanpa mengunduh foto. Beberapa drive virtual lama tidak melaporkan status cloud yang dapat dideteksi.",
+            "Ikuti petunjuk pengunduhan penyedia dalam pesan kesalahan, tunggu hingga unduhan selesai, lalu pilih Coba lagi. Google Drive, Dropbox, OneDrive, iCloud Drive, dan Box mendapatkan panduan khusus jika lokasi sinkronisasinya dikenali; lokasi lain mendapatkan petunjuk umum."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

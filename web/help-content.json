@@ -3101,7 +3101,14 @@
           "title": "Read a thumbnail error",
           "paragraphs": [
             "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
-            "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying."
+            "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying."
+          ]
+        },
+        {
+          "title": "Make cloud photos available offline",
+          "paragraphs": [
+            "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.",
+            "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions."
           ]
         }
       ],

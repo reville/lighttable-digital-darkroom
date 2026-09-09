@@ -5239,7 +5239,7 @@ function syncGridCell(element, im) {
   const name = element.querySelector('.nm');
   const nextName = im.availability === 'cloud-only'
     ? tr('{name} · Cloud only', {name: displayName(im)}) : displayName(im);
-  element.title = im.availability === 'cloud-only' ? tr("Download this photo in Finder, then rescan the source.") : displayName(im);
+  element.title = im.availability === 'cloud-only' ? tr("Make this photo available offline in its cloud storage app, then retry.") : displayName(im);
   if (name.textContent !== nextName) name.textContent = nextName;
   recordGridThumbnailGeometry(element);
 }

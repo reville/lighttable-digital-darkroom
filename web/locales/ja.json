@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -973,7 +973,6 @@
     "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index.": "オリジナルをダウンロードまたは復元し、利用できないソースを再接続してから、「インデックスを再構築」を使って再試行してください。インデックス作成ではファイルをダウンロードしたり、オリジナルを変更したりしません。ファイルが利用できなくなったとき、既に生成済みの検索メタデータは保持されます。ただし、インデックスを再構築または削除した場合は除きます。",
     "Download the latest portable ZIP to update this copy of LightTable.": "最新のポータブル ZIP をダウンロードして、この LightTable を更新してください。",
     "Download the update before restarting.": "再起動する前にアップデートをダウンロードしてください。",
-    "Download this photo in Finder, then rescan the source.": "この写真を Finder でダウンロードしてから、ソースを再スキャンしてください。",
     "Downloading an original from iCloud…": "iCloud からオリジナルをダウンロードしています…",
     "Downloading and copying {count} photos. iCloud photos may take a little longer.": "{count} 枚の写真をダウンロードしてコピーしています。iCloud の写真は少し時間がかかる場合があります。",
     "Downloading update…": "アップデートをダウンロード中…",
@@ -2905,7 +2904,6 @@
     "This photo has reached the 20,000-point mask limit": "この写真は 20,000ポイントのマスク上限に達しました",
     "This photo is no longer in the catalog. Scan People again.": "この写真はもうカタログにありません。人物を再スキャンしてください。",
     "This photo is no longer in the library; settings were not pasted": "この写真はもうライブラリにありません。設定は貼り付けられませんでした",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.": "この写真はクラウドに保存されており、ダウンロードされていません。Finder で［今すぐダウンロード］または［ダウンロード済みのまま保持］を選び、その後 LightTable でソースを再スキャンしてください。",
     "This photo is unavailable. Reconnect its source and rescan.": "この写真は使用できません。ソースを再接続して再スキャンしてください。",
     "This preset is unavailable. Refresh the catalog and try again.": "このプリセットは使用できません。カタログを更新して再試行してください。",
     "This removes face groups, names, corrections, and face thumbnails from this catalog. Original photos and the photo contents index are kept. Downloaded models remain available.": "これにより、このカタログから顔グループ、名前、修正、および顔のサムネイルが削除されます。オリジナル写真と写真内容インデックスは保持されます。ダウンロード済みのモデルは引き続き利用できます。",
@@ -4133,11 +4131,21 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "このファイルは空です（0 バイト）。元の写真をダウンロードまたは復元してから、再試行してください。",
     "Thumbnail request failed (HTTP {status}). Try again.": "サムネイルのリクエストに失敗しました（HTTP {status}）。もう一度お試しください。",
     "Thumbnail unavailable": "サムネイルを表示できません",
-    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox のオンラインのみのプレースホルダーは、クラウド上の元のファイルが空でなくても 0 バイトと表示される場合があります。Finder で「オフラインアクセスを許可」を選択し、LightTable で「再試行」を選択してください。クラウドのマーカーがない空のファイルは、元のファイルをダウンロードするか復元してください。利用できないフォルダーやドライブは、再試行する前に再接続してください。",
     "Hide photos that can't be displayed": "表示できない写真を非表示にする",
     "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "このスイッチは、利用できないことが判明している写真、クラウド上にしかない写真、サムネイルまたはプレビューの失敗が検出された写真を非表示にします。その他のデコードエラーは、写真の読み込み時に検出されます。スイッチをオフにするか、フィルターチップを削除するか、「すべてクリア」を選択すると、写真が再び表示されます。「再試行」が成功するか、元のファイルが変更されると、記録された失敗は消去されます。",
     "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "この写真は Dropbox のオンライン上に保存されています。Finder で「オフラインアクセスを許可」を選択してから、再試行してください。",
-    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "グリッドにサムネイルのエラーが表示されているときは、場所の概要の横にある「表示できない写真を非表示にする」を選択します。「フィルター」の対応するスイッチがオンになります。このスイッチは初期設定ではオフで、設定は次回の起動時にも保持されます。 このスイッチはスマートコレクションのルールには保存されません。"
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "グリッドにサムネイルのエラーが表示されているときは、場所の概要の横にある「表示できない写真を非表示にする」を選択します。「フィルター」の対応するスイッチがオンになります。このスイッチは初期設定ではオフで、設定は次回の起動時にも保持されます。 このスイッチはスマートコレクションのルールには保存されません。",
+    "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions.": "エラーメッセージにあるプロバイダーのダウンロード手順に従い、ダウンロードが完了するまで待ってから「再試行」を選択してください。Google Drive、Dropbox、OneDrive、iCloud Drive、Box は、同期場所が認識されると、それぞれに対応した案内が表示されます。その他の場所には一般的な手順が表示されます。",
+    "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.": "LightTable は、macOS File Provider と Windows が報告するクラウドのプレースホルダー、および Mac 上の旧形式の Dropbox プレースホルダーを認識します。写真をダウンロードせずにメタデータを確認します。一部の古い仮想ドライブは、検出可能なクラウド状態を報告しません。",
+    "Make cloud photos available offline": "クラウド上の写真をオフラインで利用する",
+    "Make this photo available offline in its cloud storage app, then retry.": "この写真をクラウドストレージアプリでオフラインで利用できるようにしてから、再試行してください。",
+    "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac の場合：Dropbox のオンラインのみのプレースホルダーは、クラウド上の元のファイルが空でなくても 0 バイトと表示される場合があります。Finder で「オフラインアクセスを許可」を選択し、LightTable で「再試行」を選択してください。クラウドのマーカーがない空のファイルは、元のファイルをダウンロードするか復元してください。利用できないフォルダーやドライブは、再試行する前に再接続してください。",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.": "この写真は Box のオンライン上に保存されています。Box Drive で写真を含むフォルダーをオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.": "この写真は Dropbox のオンライン上に保存されています。Dropbox でオフラインアクセスを許可し、ダウンロードが完了するまで待ってから再試行してください。",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "この写真は Google Drive のオンライン上に保存されています。パソコン版 Google ドライブでオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "この写真は OneDrive のオンライン上に保存されています。「このデバイス上で常に保持する」を選択し、ダウンロードが完了するまで待ってから再試行してください。",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "この写真は iCloud Drive のオンライン上に保存されています。iCloud Drive で元のファイルをダウンロードし、ダウンロードが完了するまで待ってから再試行してください。",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "この写真はオンライン上に保存されているか、ダウンロードが完了していません。クラウドストレージアプリでオフラインで利用できるようにし、ダウンロードが完了するまで待ってから再試行してください。"
   },
   "plurals": {
     " · {count} paired file linked": {

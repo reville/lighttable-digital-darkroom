@@ -3158,7 +3158,14 @@
           "title": "Comprendre une erreur de miniature",
           "paragraphs": [
             "Dans la grille et la pellicule, Miniature indisponible indique pourquoi une miniature a échoué et inclut le diagnostic signalé lorsqu’il est disponible. Après avoir corrigé le problème, choisissez Réessayer.",
-            "Les fichiers de substitution Dropbox disponibles uniquement en ligne peuvent indiquer 0 octet sans que l’original dans le cloud soit vide. Dans le Finder, choisissez Rendre accessible hors ligne, puis Réessayer dans LightTable. Si un fichier est vide sans marqueur de cloud, téléchargez ou restaurez l’original. Reconnectez les dossiers ou disques indisponibles avant de réessayer."
+            "Sur Mac : Les fichiers de substitution Dropbox disponibles uniquement en ligne peuvent indiquer 0 octet sans que l’original dans le cloud soit vide. Dans le Finder, choisissez Rendre accessible hors ligne, puis Réessayer dans LightTable. Si un fichier est vide sans marqueur de cloud, téléchargez ou restaurez l’original. Reconnectez les dossiers ou disques indisponibles avant de réessayer."
+          ]
+        },
+        {
+          "title": "Rendre les photos du cloud accessibles hors ligne",
+          "paragraphs": [
+            "LightTable reconnaît les fichiers de substitution du cloud signalés par File Provider de macOS et Windows, ainsi que les anciens fichiers de substitution Dropbox sur Mac. Il vérifie les métadonnées sans télécharger les photos. Certains anciens disques virtuels ne signalent pas d’état cloud détectable.",
+            "Suivez les instructions de téléchargement du fournisseur dans le message d’erreur, attendez la fin du téléchargement, puis choisissez Réessayer. Google Drive, Dropbox, OneDrive, iCloud Drive et Box reçoivent des indications spécifiques lorsque leur emplacement de synchronisation est reconnu ; les autres emplacements reçoivent des instructions générales."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -973,7 +973,6 @@
     "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index.": "請下載或還原原始檔、重新連接任何無法使用的來源，然後使用重建索引再試一次。索引不會下載檔案或變更原始檔。當檔案變成無法使用時，先前產生的搜尋中繼資料會保留，除非您重建或刪除索引。",
     "Download the latest portable ZIP to update this copy of LightTable.": "下載最新的可攜式 ZIP 以更新此 LightTable 副本。",
     "Download the update before restarting.": "重新啟動前請下載更新。",
-    "Download this photo in Finder, then rescan the source.": "請在 Finder 中下載此相片，然後重新掃描來源。",
     "Downloading an original from iCloud…": "正在從 iCloud 下載原始檔⋯",
     "Downloading and copying {count} photos. iCloud photos may take a little longer.": "正在下載並複製 {count} 張相片。iCloud 相片可能需要多一點時間。",
     "Downloading update…": "正在下載更新…",
@@ -2905,7 +2904,6 @@
     "This photo has reached the 20,000-point mask limit": "此相片已達到 20,000 點的遮罩限制",
     "This photo is no longer in the catalog. Scan People again.": "這張照片已不在目錄中。請重新掃描人群。",
     "This photo is no longer in the library; settings were not pasted": "這張相片已不在圖庫中；未貼上設定",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.": "這張相片儲存在雲端中，尚未下載。在 Finder 中，選擇立即下載或保留已下載，然後在 LightTable 中重新掃描來源。",
     "This photo is unavailable. Reconnect its source and rescan.": "這張相片無法使用。請重新連接其來源並重新掃描。",
     "This preset is unavailable. Refresh the catalog and try again.": "此預設集無法使用。請重新整理目錄後再試一次。",
     "This removes face groups, names, corrections, and face thumbnails from this catalog. Original photos and the photo contents index are kept. Downloaded models remain available.": "這會從此目錄中移除臉部分組、名稱、更正，以及臉部縮圖。原始相片和相片內容索引會保留。已下載的模型仍可使用。",
@@ -4133,11 +4131,21 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "此檔案是空的（0 位元組）。請下載或還原原始照片，然後重試。",
     "Thumbnail request failed (HTTP {status}). Try again.": "縮圖請求失敗（HTTP {status}）。請重試。",
     "Thumbnail unavailable": "縮圖無法使用",
-    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox 的僅限線上預留位置檔案可能顯示為 0 位元組，但這不代表雲端原始檔案是空的。在 Finder 中選擇「設為可離線存取」，然後在 LightTable 中選擇「重試」。對於沒有雲端標記的空檔案，請下載或還原原始檔案。重試前，請重新連接無法使用的資料夾或磁碟機。",
     "Hide photos that can't be displayed": "隱藏無法顯示的照片",
     "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "此開關會隱藏已知無法使用或僅儲存於雲端的照片，以及已偵測到縮圖或預覽失敗的照片。其他解碼錯誤會在載入照片時發現。關閉開關、移除其篩選標籤或選擇「全部清除」即可再次顯示這些照片。成功「重試」或原始檔案變更後，記錄的失敗會被清除。",
     "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "此照片儲存在 Dropbox 線上空間。在 Finder 中選擇「設為可離線存取」，然後重試。",
-    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "當格狀檢視中可見縮圖錯誤時，選擇位置摘要旁的「隱藏無法顯示的照片」。這會開啟「篩選」中的對應開關。該開關預設關閉，其設定會在工作階段之間儲存。 此開關不會儲存到智慧型集合規則中。"
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "當格狀檢視中可見縮圖錯誤時，選擇位置摘要旁的「隱藏無法顯示的照片」。這會開啟「篩選」中的對應開關。該開關預設關閉，其設定會在工作階段之間儲存。 此開關不會儲存到智慧型集合規則中。",
+    "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions.": "請依照錯誤訊息中供應商的下載說明操作，等待下載完成，然後選擇「重試」。辨識出同步位置時，Google Drive、Dropbox、OneDrive、iCloud Drive 和 Box 會顯示對應的指引；其他位置則會顯示一般說明。",
+    "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.": "LightTable 可辨識 macOS File Provider 和 Windows 回報的雲端預留位置檔案，以及 Mac 上較舊的 Dropbox 預留位置檔案。它只檢查中繼資料，不會下載照片。某些較舊的虛擬磁碟機不會回報可偵測的雲端狀態。",
+    "Make cloud photos available offline": "將雲端照片設為可離線存取",
+    "Make this photo available offline in its cloud storage app, then retry.": "請在對應的雲端儲存應用程式中將此照片設為可離線存取，然後重試。",
+    "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "在 Mac 上：Dropbox 的僅限線上預留位置檔案可能顯示為 0 位元組，但這不代表雲端原始檔案是空的。在 Finder 中選擇「設為可離線存取」，然後在 LightTable 中選擇「重試」。對於沒有雲端標記的空檔案，請下載或還原原始檔案。重試前，請重新連接無法使用的資料夾或磁碟機。",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.": "此照片儲存在 Box 線上空間。請在 Box Drive 中將其所在資料夾設為可離線存取，等待下載完成後重試。",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.": "此照片儲存在 Dropbox 線上空間。請在 Dropbox 中將其設為可離線存取，等待下載完成後重試。",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "此照片儲存在 Google Drive 線上空間。請在電腦版雲端硬碟中將其設為可離線存取，等待下載完成後重試。",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "此照片儲存在 OneDrive 線上空間。請選擇「一律保留在此裝置上」，等待下載完成後重試。",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "此照片儲存在 iCloud Drive 線上空間。請使用 iCloud Drive 下載原始檔案，等待下載完成後重試。",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "此照片儲存於線上或尚未完整下載。請在雲端儲存應用程式中將其設為可離線存取，等待下載完成後重試。"
   },
   "plurals": {
     " · {count} paired file linked": {

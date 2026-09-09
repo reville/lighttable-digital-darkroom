@@ -3158,7 +3158,14 @@
           "title": "Hiểu lỗi ảnh thu nhỏ",
           "paragraphs": [
             "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
-            "Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại."
+            "Trên Mac: Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại."
+          ]
+        },
+        {
+          "title": "Cho phép truy cập ngoại tuyến ảnh trên đám mây",
+          "paragraphs": [
+            "LightTable nhận diện các tệp giữ chỗ trên đám mây do File Provider của macOS và Windows báo cáo, cùng các tệp giữ chỗ Dropbox cũ trên Mac. Ứng dụng kiểm tra siêu dữ liệu mà không tải ảnh xuống. Một số ổ đĩa ảo cũ không báo cáo trạng thái đám mây có thể phát hiện được.",
+            "Làm theo hướng dẫn tải xuống của nhà cung cấp trong thông báo lỗi, chờ tải xuống xong rồi chọn Thử lại. Google Drive, Dropbox, OneDrive, iCloud Drive và Box có hướng dẫn riêng khi vị trí đồng bộ được nhận diện; các vị trí khác có hướng dẫn chung."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

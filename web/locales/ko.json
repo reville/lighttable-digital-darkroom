@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -973,7 +973,6 @@
     "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index.": "원본을 다운로드하거나 복원하고, 사용할 수 없는 소스를 다시 연결한 다음, 다시 시도하려면 인덱스 재구축을 사용하세요. 인덱싱은 파일을 다운로드하거나 원본을 변경하지 않습니다. 파일을 사용할 수 없게 되면, 이전에 생성된 검색 메타데이터는 인덱스를 다시 구축하거나 삭제하지 않는 한 유지됩니다.",
     "Download the latest portable ZIP to update this copy of LightTable.": "이 LightTable 사본을 업데이트하려면 최신 휴대용 ZIP을 다운로드하세요.",
     "Download the update before restarting.": "다시 시작하기 전에 업데이트를 다운로드하세요.",
-    "Download this photo in Finder, then rescan the source.": "Finder에서 이 사진을 다운로드한 다음 원본을 다시 스캔하세요.",
     "Downloading an original from iCloud…": "iCloud에서 원본을 다운로드하는 중…",
     "Downloading and copying {count} photos. iCloud photos may take a little longer.": "사진 {count}장를 다운로드하고 복사하는 중입니다. iCloud 사진은 조금 더 오래 걸릴 수 있습니다.",
     "Downloading update…": "업데이트 다운로드 중…",
@@ -2905,7 +2904,6 @@
     "This photo has reached the 20,000-point mask limit": "이 사진은 20,000포인트 마스크 제한에 도달했습니다",
     "This photo is no longer in the catalog. Scan People again.": "이 사진은 더 이상 카탈로그에 없습니다. 사람들을 다시 스캔하세요.",
     "This photo is no longer in the library; settings were not pasted": "이 사진은 더 이상 라이브러리에 없습니다. 설정이 붙여넣어지지 않았습니다",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.": "이 사진은 클라우드에 저장되어 있으며 다운로드되지 않았습니다. Finder에서 지금 다운로드 또는 다운로드 유지 중 하나를 선택한 다음 LightTable에서 원본을 다시 스캔하세요.",
     "This photo is unavailable. Reconnect its source and rescan.": "이 사진을 사용할 수 없습니다. 원본을 다시 연결하고 다시 스캔하세요.",
     "This preset is unavailable. Refresh the catalog and try again.": "이 사전 설정은 사용할 수 없습니다. 카탈로그를 새로 고친 후 다시 시도하세요.",
     "This removes face groups, names, corrections, and face thumbnails from this catalog. Original photos and the photo contents index are kept. Downloaded models remain available.": "이렇게 하면 이 카탈로그에서 얼굴 그룹, 이름, 수정 사항 및 얼굴 썸네일이 제거됩니다. 원본 사진과 사진 내용 인덱스는 유지됩니다. 다운로드한 모델은 계속 사용할 수 있습니다.",
@@ -4133,11 +4131,21 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "이 파일은 비어 있습니다(0바이트). 원본 사진을 다운로드하거나 복원한 후 다시 시도하세요.",
     "Thumbnail request failed (HTTP {status}). Try again.": "썸네일 요청에 실패했습니다(HTTP {status}). 다시 시도하세요.",
     "Thumbnail unavailable": "썸네일을 사용할 수 없음",
-    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox의 온라인 전용 자리표시자 파일은 클라우드 원본이 비어 있지 않아도 0바이트로 표시될 수 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 LightTable에서 ‘다시 시도’를 선택하세요. 클라우드 표시가 없는 빈 파일은 원본을 다운로드하거나 복원하세요. 사용할 수 없는 폴더나 드라이브는 다시 시도하기 전에 다시 연결하세요.",
     "Hide photos that can't be displayed": "표시할 수 없는 사진 숨기기",
     "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "이 스위치는 사용할 수 없거나 클라우드에만 있는 것으로 확인된 사진과 썸네일 또는 미리 보기 실패가 감지된 사진을 숨깁니다. 그 밖의 디코딩 오류는 사진을 불러올 때 발견됩니다. 스위치를 끄거나 해당 필터 칩을 제거하거나 ‘모두 지우기’를 선택하면 사진이 다시 표시됩니다. ‘다시 시도’에 성공하거나 원본이 변경되면 기록된 실패가 지워집니다.",
     "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "이 사진은 Dropbox 온라인에 저장되어 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 다시 시도하세요.",
-    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "그리드에 썸네일 오류가 표시되면 위치 요약 옆의 ‘표시할 수 없는 사진 숨기기’를 선택하세요. ‘필터’의 해당 스위치가 켜집니다. 이 스위치는 기본적으로 꺼져 있으며 설정은 다음 세션에도 유지됩니다. 이 스위치는 스마트 컬렉션 규칙에 저장되지 않습니다."
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "그리드에 썸네일 오류가 표시되면 위치 요약 옆의 ‘표시할 수 없는 사진 숨기기’를 선택하세요. ‘필터’의 해당 스위치가 켜집니다. 이 스위치는 기본적으로 꺼져 있으며 설정은 다음 세션에도 유지됩니다. 이 스위치는 스마트 컬렉션 규칙에 저장되지 않습니다.",
+    "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions.": "오류 메시지에 있는 제공업체의 다운로드 안내를 따르고, 다운로드가 완료될 때까지 기다린 다음 ‘다시 시도’를 선택하세요. Google Drive, Dropbox, OneDrive, iCloud Drive 및 Box는 동기화 위치가 인식되면 각각에 맞는 안내가 표시됩니다. 다른 위치에는 일반 안내가 표시됩니다.",
+    "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.": "LightTable은 macOS File Provider와 Windows에서 보고하는 클라우드 자리표시자와 Mac의 이전 Dropbox 자리표시자를 인식합니다. 사진을 다운로드하지 않고 메타데이터를 확인합니다. 일부 이전 가상 드라이브는 감지할 수 있는 클라우드 상태를 보고하지 않습니다.",
+    "Make cloud photos available offline": "클라우드 사진을 오프라인으로 사용하기",
+    "Make this photo available offline in its cloud storage app, then retry.": "이 사진을 해당 클라우드 저장소 앱에서 오프라인으로 사용할 수 있도록 설정한 다음 다시 시도하세요.",
+    "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac의 경우: Dropbox의 온라인 전용 자리표시자 파일은 클라우드 원본이 비어 있지 않아도 0바이트로 표시될 수 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 LightTable에서 ‘다시 시도’를 선택하세요. 클라우드 표시가 없는 빈 파일은 원본을 다운로드하거나 복원하세요. 사용할 수 없는 폴더나 드라이브는 다시 시도하기 전에 다시 연결하세요.",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.": "이 사진은 Box 온라인에 저장되어 있습니다. Box Drive에서 사진이 들어 있는 폴더를 오프라인으로 사용할 수 있도록 설정하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요.",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.": "이 사진은 Dropbox 온라인에 저장되어 있습니다. Dropbox에서 오프라인 액세스를 허용하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요.",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "이 사진은 Google Drive 온라인에 저장되어 있습니다. 데스크톱용 Drive에서 오프라인으로 사용할 수 있도록 설정하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요.",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "이 사진은 OneDrive 온라인에 저장되어 있습니다. ‘항상 이 장치에 유지’를 선택하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요.",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "이 사진은 iCloud Drive 온라인에 저장되어 있습니다. iCloud Drive로 원본을 다운로드하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요.",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "이 사진은 온라인에 저장되어 있거나 아직 완전히 다운로드되지 않았습니다. 클라우드 저장소 앱에서 오프라인으로 사용할 수 있도록 설정하고 다운로드가 완료될 때까지 기다린 다음 다시 시도하세요."
   },
   "plurals": {
     " · {count} paired file linked": {

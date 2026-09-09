@@ -3158,7 +3158,14 @@
           "title": "Interpretare un errore di miniatura",
           "paragraphs": [
             "Nella griglia e nella striscia pellicola, Miniatura non disponibile mostra il motivo dell’errore e include la diagnostica segnalata, se disponibile. Dopo aver corretto il problema, scegli Riprova.",
-            "I segnaposto Dropbox disponibili solo online possono indicare 0 byte senza che l’originale nel cloud sia vuoto. Nel Finder, scegli Rendi disponibile offline, poi Riprova in LightTable. Per un file vuoto senza contrassegno cloud, scarica o ripristina l’originale. Ricollega le cartelle o le unità non disponibili prima di riprovare."
+            "Su Mac: I segnaposto Dropbox disponibili solo online possono indicare 0 byte senza che l’originale nel cloud sia vuoto. Nel Finder, scegli Rendi disponibile offline, poi Riprova in LightTable. Per un file vuoto senza contrassegno cloud, scarica o ripristina l’originale. Ricollega le cartelle o le unità non disponibili prima di riprovare."
+          ]
+        },
+        {
+          "title": "Rendere disponibili offline le foto nel cloud",
+          "paragraphs": [
+            "LightTable riconosce i segnaposto cloud segnalati da File Provider di macOS e da Windows, oltre ai vecchi segnaposto Dropbox su Mac. Controlla i metadati senza scaricare le foto. Alcune unità virtuali meno recenti non segnalano uno stato cloud rilevabile.",
+            "Segui le istruzioni di download del fornitore nel messaggio di errore, attendi che il download finisca, poi scegli Riprova. Google Drive, Dropbox, OneDrive, iCloud Drive e Box ricevono indicazioni specifiche quando la loro posizione di sincronizzazione viene riconosciuta; le altre posizioni ricevono istruzioni generali."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

@@ -3158,7 +3158,14 @@
           "title": "Interpretar un error de miniatura",
           "paragraphs": [
             "En la cuadrícula y la tira de película, Miniatura no disponible muestra por qué falló una miniatura e incluye el diagnóstico recibido cuando está disponible. Tras corregir el problema, elige Reintentar.",
-            "Los archivos de marcador de Dropbox disponibles solo en línea pueden indicar 0 bytes sin que el original en la nube esté vacío. En Finder, elige Hacer disponible sin conexión y luego Reintentar en LightTable. Si un archivo está vacío y no tiene un marcador de nube, descarga o restaura el original. Vuelve a conectar las carpetas o unidades no disponibles antes de reintentarlo."
+            "En Mac: Los archivos de marcador de Dropbox disponibles solo en línea pueden indicar 0 bytes sin que el original en la nube esté vacío. En Finder, elige Hacer disponible sin conexión y luego Reintentar en LightTable. Si un archivo está vacío y no tiene un marcador de nube, descarga o restaura el original. Vuelve a conectar las carpetas o unidades no disponibles antes de reintentarlo."
+          ]
+        },
+        {
+          "title": "Hacer que las fotos en la nube estén disponibles sin conexión",
+          "paragraphs": [
+            "LightTable reconoce los archivos de marcador en la nube notificados por File Provider de macOS y Windows, además de los antiguos marcadores de Dropbox en Mac. Comprueba los metadatos sin descargar las fotos. Algunas unidades virtuales antiguas no notifican un estado de nube detectable.",
+            "Sigue las instrucciones de descarga del proveedor que aparecen en el mensaje de error, espera a que termine la descarga y elige Reintentar. Google Drive, Dropbox, OneDrive, iCloud Drive y Box reciben indicaciones específicas cuando se reconoce su ubicación de sincronización; las demás ubicaciones reciben instrucciones generales."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

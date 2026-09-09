@@ -3158,7 +3158,14 @@
           "title": "Een miniatuurfout begrijpen",
           "paragraphs": [
             "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
-            "Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert."
+            "Op de Mac: Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert."
+          ]
+        },
+        {
+          "title": "Cloudfoto’s offline beschikbaar maken",
+          "paragraphs": [
+            "LightTable herkent cloudplaatsaanduidingen die macOS File Provider en Windows melden, plus oudere Dropbox-plaatsaanduidingen op de Mac. Het controleert metagegevens zonder foto’s te downloaden. Sommige oudere virtuele schijven melden geen detecteerbare cloudstatus.",
+            "Volg de downloadinstructies van de aanbieder in de foutmelding, wacht tot de download klaar is en kies Opnieuw proberen. Google Drive, Dropbox, OneDrive, iCloud Drive en Box krijgen specifieke aanwijzingen als hun synchronisatielocatie wordt herkend; andere locaties krijgen algemene instructies."
           ]
         }
       ],
@@ -3171,5 +3178,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f"
 }

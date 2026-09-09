@@ -13,6 +13,58 @@ import media_availability
 
 
 class StorageReadinessTests(TestCase):
+    def test_platform_cloud_flags_do_not_depend_on_provider_or_reported_size(self):
+        remote = [
+            {'st_flags': media_availability.SF_DATALESS},
+            {'st_file_attributes': 0x1000},  # FILE_ATTRIBUTE_OFFLINE
+            {'st_file_attributes': 0x400000},  # partially downloaded data
+        ]
+        remote.extend({'st_file_attributes': 0x40000, 'st_reparse_tag': 0x9000001A | variant << 12}
+                      for variant in range(16))
+        with mock.patch.object(Path, 'open', side_effect=AssertionError('must not read content')):
+            for fields in remote:
+                for size in (0, 4096):
+                    with self.subTest(fields=fields, size=size):
+                        stat = SimpleNamespace(st_size=size, **fields)
+                        self.assertEqual(media_availability.from_stat(stat), 'cloud-only')
+                        self.assertEqual(media_availability.availability('/custom/provider/photo.RAF', stat=stat),
+                                         'cloud-only')
+
+    def test_local_attribute_bits_and_cloud_tags_do_not_imply_missing_content(self):
+        # RECALL_ON_OPEN is also the EA bit on non-Cloud-Files reparse points.
+        local = [0, 0x40000, 0x80000, 0x100000, 0x200, 0x400,
+                 0x40000 | 0x80000 | 0x100000 | 0x200 | 0x400]
+        for attributes in local:
+            for reparse_tag in (0, 0xA000000C, 0xA000001A):
+                with self.subTest(attributes=attributes, reparse_tag=reparse_tag):
+                    self.assertEqual(media_availability.from_stat(SimpleNamespace(
+                        st_file_attributes=attributes, st_reparse_tag=reparse_tag)), 'local')
+        for variant in range(16):
+            self.assertEqual(media_availability.from_stat(SimpleNamespace(
+                st_file_attributes=0x80000 | 0x100000 | 0x200 | 0x400,
+                st_reparse_tag=0x9000001A | variant << 12)), 'local')
+
+    def test_platform_placeholders_skip_index_and_decode_until_downloaded(self):
+        path = Path('/custom/provider/photo.RAF')
+        remote = [
+            {'st_flags': media_availability.SF_DATALESS},
+            {'st_file_attributes': 0x1000},
+            {'st_file_attributes': 0x400000},
+            {'st_file_attributes': 0x40000, 'st_reparse_tag': 0x9000A01A},
+        ]
+        for fields in remote:
+            with self.subTest(fields=fields), \
+                 mock.patch.object(Path, 'stat', return_value=SimpleNamespace(st_size=2048, **fields)), \
+                 mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')), \
+                 mock.patch.object(catalog_scan, '_read_exif_metadata', side_effect=AssertionError('must not decode')):
+                self.assertEqual(media_availability.index_availability(path), 'cloud-only')
+                self.assertEqual(catalog_scan.header_hash(path), '')
+                self.assertEqual(catalog_scan.read_metadata(path), {})
+        # Size can remain unchanged while the provider finishes downloading.
+        with mock.patch.object(Path, 'stat', return_value=SimpleNamespace(st_size=2048)), \
+             mock.patch.object(Path, 'open', side_effect=AssertionError('index probe must stay metadata-only')):
+            self.assertEqual(media_availability.index_availability(path), 'local')
+
     def test_dropbox_marker_distinguishes_empty_files_without_reading_contents(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -132,7 +184,7 @@ class StorageReadinessTests(TestCase):
             self.assertEqual(media_availability.availability(path), 'cloud-only')
             self.assertEqual(catalog_scan.header_hash(path), '')
             self.assertEqual(catalog_scan.read_metadata(path), {})
-            with self.assertRaisesRegex(OSError, 'Download Now'):
+            with self.assertRaisesRegex(OSError, 'not fully downloaded'):
                 media_availability.require_local(path)
         self.assertEqual(media_availability.from_stat(SimpleNamespace()), 'local')
 
@@ -285,11 +337,11 @@ class CloudReadEntryTests(TestCase):
                 self.assertEqual(plan['skipped'][0]['reason'], 'cloud-only')
                 for run in (lambda: ingest.header_hash(source), lambda: ingest._file_hash(source),
                             lambda: ingest._capture_and_camera(source)):
-                    with self.assertRaisesRegex(OSError, 'Download Now'):
+                    with self.assertRaisesRegex(OSError, 'not fully downloaded'):
                         run()
                 result = ingest.copy_item({'source': str(source), 'destination': str(destination)})
                 self.assertFalse(result['ok'])
-                self.assertIn('Download Now', result['error'])
+                self.assertIn('not fully downloaded', result['error'])
             self.assertEqual(destination.read_bytes(), b'previous completed output')
             self.assertEqual(source.read_bytes(), b'original bytes')
 
@@ -311,7 +363,7 @@ class CloudReadEntryTests(TestCase):
                     service.poll_once()
                     service.poll_once()
                     self.assertEqual(cat.query({'limit': 10})['total'], 0)
-                    self.assertIn('Download Now', service.status[0]['error'])
+                    self.assertIn('not fully downloaded', service.status[0]['error'])
                 service.poll_once()
                 self.assertEqual(cat.query({'limit': 10})['total'], 0)
                 service.poll_once()
@@ -338,4 +390,67 @@ class CloudReadEntryTests(TestCase):
                     with self.assertRaises(server.APIError) as caught:
                         run()
                     self.assertEqual((caught.exception.status, caught.exception.code), (409, 'cloud-only'))
-                    self.assertIn('Download Now', str(caught.exception))
+                    self.assertIn('not fully downloaded', str(caught.exception))
+
+
+class CloudProviderInstructionsTests(TestCase):
+    def check_roots(self, platform, home, roots, *, environment=None):
+        with mock.patch.object(media_availability.sys, 'platform', platform), \
+             mock.patch.object(Path, 'home', return_value=home), \
+             mock.patch.dict(os.environ, environment or {}, clear=True), \
+             mock.patch.object(media_availability, '_dropbox_placeholder', return_value=False), \
+             mock.patch.object(media_availability, 'T', side_effect=lambda message: message), \
+             mock.patch.object(Path, 'open', side_effect=AssertionError('must not read content')), \
+             mock.patch.object(Path, 'resolve', side_effect=AssertionError('must not resolve paths')):
+            for path, provider, instruction in roots:
+                with self.subTest(platform=platform, path=path):
+                    self.assertEqual(media_availability.cloud_provider(path), provider)
+                    self.assertIn(instruction, media_availability.cloud_message(path))
+                    # Provider roots explain recovery; they never mark local files as cloud-only.
+                    for size in (0, 4096):
+                        self.assertEqual(media_availability.availability(path, stat=SimpleNamespace(st_size=size)),
+                                         'local')
+
+    def test_standard_macos_roots_get_provider_specific_recovery(self):
+        home = Path('/Users/cloud-test')
+        storage = home / 'Library' / 'CloudStorage'
+        self.check_roots('darwin', home, [
+            (storage / 'GoogleDrive-personal@example.test' / 'My Drive' / 'a.RAF', 'Google Drive', 'Drive for desktop'),
+            (storage / 'Google Drive' / 'a.RAF', 'Google Drive', 'Drive for desktop'),
+            (Path('/Volumes/GoogleDrive/My Drive/a.RAF'), 'Google Drive', 'Drive for desktop'),
+            (storage / 'OneDrive-Work' / 'a.RAF', 'OneDrive', 'Always keep on this device'),
+            (storage / 'Dropbox-team' / 'a.RAF', 'Dropbox', 'In Finder, choose “Make available offline,”'),
+            (storage / 'Box-Work' / 'a.RAF', 'Box', 'containing folder available offline in Box Drive'),
+            (home / 'Library/Mobile Documents/com~apple~CloudDocs/a.RAF', 'iCloud Drive', 'Download the original with iCloud Drive'),
+        ])
+
+    def test_windows_roots_and_onedrive_environment_get_platform_appropriate_recovery(self):
+        home = r'C:\Users\cloud-test'
+        self.check_roots('win32', home, [
+            (home + r'\Google Drive\a.RAF', 'Google Drive', 'Drive for desktop'),
+            (home + r'\OneDrive\a.RAF', 'OneDrive', 'Always keep on this device'),
+            (home + r'\Dropbox\a.RAF', 'Dropbox', 'available offline in Dropbox'),
+            (home + r'\Box\a.RAF', 'Box', 'containing folder available offline in Box Drive'),
+            (home + r'\iCloudDrive\a.RAF', 'iCloud Drive', 'Download the original with iCloud Drive'),
+            (r'D:\Personal files\a.RAF', 'OneDrive', 'Always keep on this device'),
+            (r'E:\Work files\a.RAF', 'OneDrive', 'Always keep on this device'),
+            (r'F:\Team files\a.RAF', 'OneDrive', 'Always keep on this device'),
+        ], environment={'OneDrive': r'D:\Personal files', 'OneDriveConsumer': r'E:\Work files',
+                        'OneDriveCommercial': r'F:\Team files'})
+
+    def test_custom_roots_and_similarly_named_folders_use_generic_recovery(self):
+        instruction = media_availability.CLOUD_MESSAGE
+        home = Path('/Users/cloud-test')
+        self.check_roots('darwin', home, [
+            (None, None, instruction),
+            (Path('/custom/cloud/photos/a.RAF'), None, instruction),
+            (home / 'Pictures/Google Drive photos/a.RAF', None, instruction),
+            (home / 'Library/CloudStorage/OneDriveBackup/a.RAF', None, instruction),
+            (home / 'Library/CloudStorage/GoogleDrive-user/../Local/a.RAF', None, instruction),
+            (Path('/Volumes/GoogleDriveBackup/a.RAF'), None, instruction),
+        ])
+        self.check_roots('win32', r'C:\Users\cloud-test', [
+            (r'G:\Custom Drive\a.RAF', None, instruction),
+            (r'C:\Users\cloud-test\OneDriveBackup\a.RAF', None, instruction),
+            (r'D:\Personal files backup\a.RAF', None, instruction),
+        ], environment={'OneDrive': r'D:\Personal files'})

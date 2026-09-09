@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
+  "sourceDigest": "d8323cbc082f14fe5d1c56c976683ce6a2e4f12dbb64109d5a3b0dca41a0807f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -973,7 +973,6 @@
     "Download or restore the originals, reconnect any unavailable source, and use Rebuild index to try again. Indexing does not download files or change originals. Previously generated search metadata is retained when a file becomes unavailable, unless you rebuild or delete the index.": "ดาวน์โหลดหรือคืนค่าต้นฉบับ เชื่อมต่อแหล่งที่มาที่ไม่พร้อมใช้งานอีกครั้ง และใช้ สร้างดัชนีใหม่ เพื่อพยายามอีกครั้ง การทำดัชนีจะไม่ดาวน์โหลดไฟล์หรือเปลี่ยนแปลงต้นฉบับ เมทาดาทาการค้นหาที่สร้างไว้ก่อนหน้านี้จะยังคงอยู่เมื่อไฟล์ไม่พร้อมใช้งาน เว้นแต่คุณจะสร้างดัชนีใหม่หรือลบดัชนี",
     "Download the latest portable ZIP to update this copy of LightTable.": "ดาวน์โหลด ZIP แบบพกพาล่าสุดเพื่ออัปเดต LightTable สำเนานี้",
     "Download the update before restarting.": "ดาวน์โหลดการอัปเดตก่อนเริ่มใหม่",
-    "Download this photo in Finder, then rescan the source.": "ดาวน์โหลดภาพถ่ายนี้ใน Finder แล้วสแกนแหล่งที่มาใหม่",
     "Downloading an original from iCloud…": "กำลังดาวน์โหลดต้นฉบับจาก iCloud…",
     "Downloading and copying {count} photos. iCloud photos may take a little longer.": "กำลังดาวน์โหลดและคัดลอก {count} ภาพถ่าย ภาพถ่ายใน iCloud อาจใช้เวลานานกว่าเล็กน้อย",
     "Downloading update…": "กำลังดาวน์โหลดการอัปเดต…",
@@ -2905,7 +2904,6 @@
     "This photo has reached the 20,000-point mask limit": "ภาพถ่ายนี้ถึงขีดจำกัดมาสก์ 20,000 จุดแล้ว",
     "This photo is no longer in the catalog. Scan People again.": "รูปภาพนี้ไม่มีอยู่ในแค็ตตาล็อกแล้ว สแกน ผู้คน อีกครั้ง",
     "This photo is no longer in the library; settings were not pasted": "ภาพถ่ายนี้ไม่มีอยู่ในไลบรารีแล้ว; การตั้งค่าจึงไม่ถูกวาง",
-    "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.": "รูปถ่ายนี้เก็บอยู่บนคลาวด์และยังไม่ได้ดาวน์โหลด ใน Finder ให้เลือก ดาวน์โหลดตอนนี้ หรือ เก็บไว้ในเครื่อง แล้วสแกนแหล่งข้อมูลใน LightTable ใหม่",
     "This photo is unavailable. Reconnect its source and rescan.": "ไม่สามารถใช้งานภาพถ่ายนี้ได้ เชื่อมต่อแหล่งที่มาอีกครั้งแล้วสแกนใหม่",
     "This preset is unavailable. Refresh the catalog and try again.": "พรีเซ็ตนี้ไม่พร้อมใช้งาน รีเฟรชแค็ตตาล็อกแล้วลองอีกครั้ง",
     "This removes face groups, names, corrections, and face thumbnails from this catalog. Original photos and the photo contents index are kept. Downloaded models remain available.": "การดำเนินการนี้จะลบกลุ่มใบหน้า ชื่อ การแก้ไข และภาพย่อใบหน้าออกจากแค็ตตาล็อกนี้ รูปถ่ายต้นฉบับและดัชนีเนื้อหาของภาพถ่ายจะยังคงอยู่ โมเดลที่ดาวน์โหลดแล้วยังคงใช้งานได้",
@@ -4133,11 +4131,21 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "ไฟล์นี้ว่างเปล่า (0 ไบต์) ดาวน์โหลดหรือกู้คืนภาพต้นฉบับ แล้วลองอีกครั้ง",
     "Thumbnail request failed (HTTP {status}). Try again.": "คำขอภาพขนาดย่อล้มเหลว (HTTP {status}) โปรดลองอีกครั้ง",
     "Thumbnail unavailable": "ภาพขนาดย่อไม่พร้อมใช้งาน",
-    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "ไฟล์ตัวยึดตำแหน่งแบบออนไลน์เท่านั้นของ Dropbox อาจรายงานขนาด 0 ไบต์ แม้ไฟล์ต้นฉบับบนคลาวด์จะไม่ได้ว่างเปล่า ใน Finder ให้เลือก ทำให้พร้อมใช้งานแบบออฟไลน์ แล้วเลือก ลองอีกครั้ง ใน LightTable สำหรับไฟล์ว่างที่ไม่มีเครื่องหมายคลาวด์ ให้ดาวน์โหลดหรือกู้คืนต้นฉบับ เชื่อมต่อโฟลเดอร์หรือไดรฟ์ที่ไม่พร้อมใช้งานอีกครั้งก่อนลองใหม่",
     "Hide photos that can't be displayed": "ซ่อนรูปภาพที่ไม่สามารถแสดงได้",
     "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "สวิตช์นี้จะซ่อนรูปภาพที่ทราบว่าไม่พร้อมใช้งานหรืออยู่บนคลาวด์เท่านั้น และรูปภาพที่ตรวจพบว่าภาพขนาดย่อหรือภาพตัวอย่างล้มเหลว ข้อผิดพลาดในการถอดรหัสอื่นจะถูกพบขณะโหลดรูปภาพ ปิดสวิตช์ ลบชิปตัวกรอง หรือเลือก ล้างทั้งหมด เพื่อแสดงรูปภาพอีกครั้ง การ ลองอีกครั้ง ที่สำเร็จหรือการเปลี่ยนแปลงไฟล์ต้นฉบับจะล้างความล้มเหลวที่บันทึกไว้",
     "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Dropbox ใน Finder ให้เลือก “ทำให้พร้อมใช้งานแบบออฟไลน์” แล้วลองอีกครั้ง",
-    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "เมื่อเห็นข้อผิดพลาดของภาพขนาดย่อในตาราง ให้เลือก ซ่อนรูปภาพที่ไม่สามารถแสดงได้ ข้างข้อมูลสรุปตำแหน่ง การดำเนินการนี้จะเปิดสวิตช์ที่ตรงกันใน ตัวกรอง ซึ่งปิดไว้ตามค่าเริ่มต้นและบันทึกการตั้งค่าไว้ระหว่างเซสชัน สวิตช์นี้จะไม่ถูกบันทึกในกฎของคอลเลกชันอัจฉริยะ"
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "เมื่อเห็นข้อผิดพลาดของภาพขนาดย่อในตาราง ให้เลือก ซ่อนรูปภาพที่ไม่สามารถแสดงได้ ข้างข้อมูลสรุปตำแหน่ง การดำเนินการนี้จะเปิดสวิตช์ที่ตรงกันใน ตัวกรอง ซึ่งปิดไว้ตามค่าเริ่มต้นและบันทึกการตั้งค่าไว้ระหว่างเซสชัน สวิตช์นี้จะไม่ถูกบันทึกในกฎของคอลเลกชันอัจฉริยะ",
+    "Follow the provider’s download instructions in the error message, wait for the download to finish, then Retry. Google Drive, Dropbox, OneDrive, iCloud Drive, and Box receive specific guidance when their sync location is recognized; other locations receive general instructions.": "ทำตามคำแนะนำการดาวน์โหลดของผู้ให้บริการในข้อความแสดงข้อผิดพลาด รอให้ดาวน์โหลดเสร็จ แล้วเลือก ลองอีกครั้ง Google Drive, Dropbox, OneDrive, iCloud Drive และ Box จะได้รับคำแนะนำเฉพาะเมื่อรู้จักตำแหน่งการซิงค์ ส่วนตำแหน่งอื่นจะได้รับคำแนะนำทั่วไป",
+    "LightTable recognizes cloud placeholders reported by macOS File Provider and Windows, plus older Dropbox placeholders on Mac. It checks metadata without downloading photos. Some older virtual drives do not report detectable cloud status.": "LightTable รู้จักไฟล์ตัวยึดตำแหน่งบนคลาวด์ที่ macOS File Provider และ Windows รายงาน รวมถึงไฟล์ตัวยึดตำแหน่ง Dropbox รุ่นเก่าบน Mac โดยตรวจสอบข้อมูลเมตาโดยไม่ดาวน์โหลดรูปภาพ ไดรฟ์เสมือนรุ่นเก่าบางชนิดไม่รายงานสถานะคลาวด์ที่ตรวจจับได้",
+    "Make cloud photos available offline": "ทำให้รูปภาพบนคลาวด์พร้อมใช้งานแบบออฟไลน์",
+    "Make this photo available offline in its cloud storage app, then retry.": "ทำให้รูปภาพนี้พร้อมใช้งานแบบออฟไลน์ในแอปที่เก็บข้อมูลบนคลาวด์ที่เกี่ยวข้อง แล้วลองอีกครั้ง",
+    "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "บน Mac: ไฟล์ตัวยึดตำแหน่งแบบออนไลน์เท่านั้นของ Dropbox อาจรายงานขนาด 0 ไบต์ แม้ไฟล์ต้นฉบับบนคลาวด์จะไม่ได้ว่างเปล่า ใน Finder ให้เลือก ทำให้พร้อมใช้งานแบบออฟไลน์ แล้วเลือก ลองอีกครั้ง ใน LightTable สำหรับไฟล์ว่างที่ไม่มีเครื่องหมายคลาวด์ ให้ดาวน์โหลดหรือกู้คืนต้นฉบับ เชื่อมต่อโฟลเดอร์หรือไดรฟ์ที่ไม่พร้อมใช้งานอีกครั้งก่อนลองใหม่",
+    "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Box ทำให้โฟลเดอร์ที่มีรูปภาพนี้พร้อมใช้งานแบบออฟไลน์ใน Box Drive รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "This photo is stored online in Dropbox. Make it available offline in Dropbox, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Dropbox ทำให้พร้อมใช้งานแบบออฟไลน์ใน Dropbox รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "This photo is stored online in Google Drive. Make it available offline in Drive for desktop, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Google Drive ทำให้พร้อมใช้งานแบบออฟไลน์ใน Drive สำหรับเดสก์ท็อป รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "This photo is stored online in OneDrive. Choose “Always keep on this device,” wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน OneDrive เลือก “เก็บไว้ในอุปกรณ์นี้เสมอ” รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "This photo is stored online in iCloud Drive. Download the original with iCloud Drive, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน iCloud Drive ดาวน์โหลดต้นฉบับด้วย iCloud Drive รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง",
+    "This photo is stored online or is not fully downloaded. Make it available offline in your cloud storage app, wait for the download to finish, then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์หรือยังดาวน์โหลดไม่ครบ ทำให้พร้อมใช้งานแบบออฟไลน์ในแอปที่เก็บข้อมูลบนคลาวด์ของคุณ รอให้ดาวน์โหลดเสร็จ แล้วลองอีกครั้ง"
   },
   "plurals": {
     " · {count} paired file linked": {

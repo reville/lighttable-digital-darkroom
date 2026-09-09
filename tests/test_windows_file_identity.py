@@ -222,25 +222,43 @@ class WindowsSignatureTests(unittest.TestCase):
         local = self.path.stat()
         fields = {name: getattr(local, name) for name in
                   ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns')}
-        for flag in (0x1000, 0x40000, 0x400000):
-            placeholder = SimpleNamespace(**fields, st_file_attributes=flag)
-            with self.subTest(flag=flag), \
+        remote = [(0x1000, 0), (0x400000, 0)]
+        remote.extend((0x40000, 0x9000001A | variant << 12) for variant in range(16))
+        for flag, reparse_tag in remote:
+            placeholder = SimpleNamespace(**fields, st_file_attributes=flag, st_reparse_tag=reparse_tag)
+            with self.subTest(flag=flag, reparse_tag=reparse_tag), \
                     mock.patch.object(windows, 'open_metadata_fd',
                                       side_effect=AssertionError('must not open')):
-                with self.assertRaisesRegex(OSError, 'unavailable'):
+                with self.assertRaisesRegex(OSError, 'not fully downloaded'):
                     file_identity.stat_signature(placeholder, path=self.path)
             # A previously local stat is also rejected if the live metadata
             # handle now says that the original has been evicted.
             with mock.patch.object(file_identity.os, 'fstat', return_value=placeholder), \
                     mock.patch.object(windows, 'open_content_fd',
                                       side_effect=AssertionError('must not hydrate')):
-                with self.assertRaisesRegex(OSError, 'unavailable'):
+                with self.assertRaisesRegex(OSError, 'not fully downloaded'):
                     file_identity.stat_signature(local, path=self.path)
         with mock.patch.object(file_identity.media_availability, 'from_stat', return_value='cloud-only'), \
                 mock.patch.object(windows, 'open_metadata_fd',
                                   side_effect=AssertionError('must not hydrate')):
-            with self.assertRaisesRegex(OSError, 'Download Now'):
+            with self.assertRaisesRegex(OSError, 'not fully downloaded'):
                 file_identity.stat_signature(local, path=self.path)
+
+    def test_windows_local_attribute_bits_still_allow_strong_identity(self):
+        windows = SimulatedWindows()
+        windows.install(self)
+        local = self.path.stat()
+        fields = {name: getattr(local, name) for name in
+                  ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns')}
+        expected = file_identity.hashlib.blake2b(b'unchanged fixture', digest_size=16).hexdigest()
+        non_remote = [(flag, 0) for flag in (0x40000, 0x80000, 0x100000, 0x200, 0x400)]
+        non_remote.extend([(0x40000 | 0x400, 0xA000000C),
+                           (0x80000 | 0x100000 | 0x200 | 0x400, 0x9000F01A)])
+        for flag, reparse_tag in non_remote:
+            stat = SimpleNamespace(**fields, st_file_attributes=flag, st_reparse_tag=reparse_tag)
+            with self.subTest(flag=flag, reparse_tag=reparse_tag), \
+                 mock.patch.object(file_identity.os, 'fstat', return_value=stat):
+                self.assertEqual(file_identity.stat_signature(stat, path=self.path)[-1], expected)
 
     def test_complete_reads_are_bounded_and_hash_only_once(self):
         windows = SimulatedWindows()
