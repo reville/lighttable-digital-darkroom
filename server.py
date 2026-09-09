@@ -3197,9 +3197,34 @@ def _inside_git_checkout(path: Path) -> bool:
                for candidate in (resolved, *resolved.parents))
 
 
+def _portable_package_app(path: Path) -> Path | None:
+    for candidate in (path, *path.parents):
+        if (candidate.name == "LightTable" and candidate.parent.name == "Resources"
+                and (candidate.parent.parent / "Python").is_dir()):
+            return candidate
+    return None
+
+
 def _git_revision(path: Path) -> str | None:
-    # An installed bundle sits in no repository. Two guaranteed-miss git
-    # launches at import time were a visible startup cost on Windows.
+    try:
+        resolved = path.resolve()
+    except OSError:
+        return None
+    package_app = _portable_package_app(resolved)
+    if package_app is not None:
+        # A portable package may be extracted inside a developer/CI checkout.
+        # Its enclosing Git repository is never the package's source identity.
+        # The app manifest also cannot identify the separately vendored source.
+        if resolved != package_app:
+            return None
+        try:
+            manifest = json.loads((package_app.parent.parent / "build-manifest.json")
+                                  .read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            return None
+        revision = manifest.get("source_revision") if isinstance(manifest, dict) else None
+        return revision if isinstance(revision, str) and re.fullmatch(r"[0-9a-fA-F]{40}", revision) else None
+    # Ordinary installed source outside a checkout has no Git provenance.
     if not _inside_git_checkout(path):
         return None
     try:
