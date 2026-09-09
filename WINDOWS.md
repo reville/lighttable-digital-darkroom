@@ -96,6 +96,13 @@ Windows account already has a registered LightTable installation. A `build-manif
 records the exact source commit and version. Use `-PortableOnly` explicitly to
 build a ZIP without NSIS or installer testing.
 
+`scripts/windows/installer-fixture-smoke.ps1` runs the same install, repair,
+package-ownership, CLI-registration, and data-preserving uninstall checks with
+a tiny fixture payload. It compiles the real NSIS source and uses the real PATH
+and uninstall helpers; its temporary WebView2 prerequisite and runtime files
+are stubs. CI requires this fast installer check before a full package build.
+It does not establish application or prerequisite-runtime behavior.
+
 `-RuntimeSmokeOnly` stages the same embedded Python runtime and application
 files, then checks imports, high-precision processed-image conversion, and a
 real server startup with HTTP health, editor, and options requests. It does
