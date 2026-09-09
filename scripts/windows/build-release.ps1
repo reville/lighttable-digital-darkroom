@@ -86,7 +86,9 @@ try {
         "..\Resources\LightTable"
         "..\Resources\LightTable\vendor\spektrafilm\src"
         "import site"
-    ) | Set-Content -Encoding ascii (Join-Path $Python "python313._pth")
+    ) | Set-Content -LiteralPath (Join-Path $Python "python313._pth") -Encoding ascii
+
+    $VCRuntimeVersion = & (Join-Path $PSScriptRoot "stage-vc-runtime.ps1") -Payload $Payload
 
     & uv pip install `
         --python-platform $Target `
@@ -135,7 +137,7 @@ try {
     New-Item -ItemType Directory -Force -Path $Engine | Out-Null
     Copy-Item (Join-Path $RustSource "data") $Engine -Recurse
     Copy-Item (Join-Path $Project "profiles\*.json") (Join-Path $Engine "data\profiles")
-    Set-Content -Encoding ascii (Join-Path $Engine "VERSION.txt") $RustSourceRevision
+    Set-Content -LiteralPath (Join-Path $Engine "VERSION.txt") -Value $RustSourceRevision -Encoding ascii
 
     $Licenses = Join-Path $Resources "licenses"
     New-Item -ItemType Directory -Force -Path $Licenses | Out-Null
@@ -150,15 +152,6 @@ try {
     & $PythonExe (Join-Path $Project "scripts\fetch-color-profiles.py") (Join-Path $Resources "color-profiles")
     if ($LASTEXITCODE -ne 0) { throw "Color-profile download failed" }
 
-    # Pull requests exercise the exact embedded Python payload before paying
-    # for native engine/shell compilation, signing, or installer creation.
-    if ($RuntimeSmokeOnly) {
-        & $PythonExe -B (Join-Path $PSScriptRoot "runtime-smoke.py") $Resources
-        if ($LASTEXITCODE -ne 0) { throw "The staged Windows runtime smoke test failed" }
-        Write-Host "Staged Windows runtime smoke passed"
-        return
-    }
-
     # Pin and verify the upstream updater binary before it reaches the payload.
     $WinSparkleArchive = Join-Path $BuildRoot "winsparkle.zip"
     Invoke-WebRequest -Uri "https://github.com/vslavik/winsparkle/releases/download/v$WinSparkleVersion/WinSparkle-$WinSparkleVersion.zip" -OutFile $WinSparkleArchive
@@ -168,13 +161,18 @@ try {
     $WinSparkleRoot = Join-Path $BuildRoot "winsparkle"
     Expand-Archive -Path $WinSparkleArchive -DestinationPath $WinSparkleRoot
     $WinSparkle = Join-Path $WinSparkleRoot "WinSparkle-$WinSparkleVersion"
-    Copy-Item (Join-Path $WinSparkle "x64\WinSparkle.dll") $Payload
-    New-Item -ItemType Directory -Force -Path (Join-Path $Licenses "winsparkle") | Out-Null
-    Get-ChildItem $WinSparkle -Filter "COPYING*" | ForEach-Object {
-        Copy-Item $_.FullName (Join-Path $Licenses "winsparkle")
-    }
+    & (Join-Path $PSScriptRoot "stage-winsparkle.ps1") -Sdk $WinSparkle -Payload $Payload
     # ZIP extraction stays portable; NSIS writes direct ownership after copying.
-    Set-Content -Encoding ascii -NoNewline (Join-Path $Payload "install-channel.txt") "portable"
+    Set-Content -LiteralPath (Join-Path $Payload "install-channel.txt") -Value "portable" -Encoding ascii -NoNewline
+
+    # Pull requests exercise the exact embedded Python and updater payload before paying
+    # for native engine/shell compilation, signing, or installer creation.
+    if ($RuntimeSmokeOnly) {
+        & $PythonExe -B (Join-Path $PSScriptRoot "runtime-smoke.py") $Resources
+        if ($LASTEXITCODE -ne 0) { throw "The staged Windows runtime smoke test failed" }
+        Write-Host "Staged Windows runtime smoke passed"
+        return
+    }
 
     & rustup target add $Target
     if ($LASTEXITCODE -ne 0) { throw "The Windows Rust target could not be installed" }
@@ -233,8 +231,9 @@ try {
         architecture = "x64"
         winsparkle_version = $WinSparkleVersion
         python_version = $PythonVersion
+        vc_runtime_version = $VCRuntimeVersion
         authenticode_signed = [bool]$SigningEnabled
-    } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Payload "build-manifest.json")
+    } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Payload "build-manifest.json") -Encoding utf8
 
     if (-not $PortableOnly) {
         $Installer = Join-Path $Output "LightTable-$Version-windows-x64-setup.exe"

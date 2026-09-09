@@ -20,6 +20,55 @@ Windows and Linux updater integration is present in source. A signed native
 upgrade, configured signing keys, and published feeds are still required before
 automatic updates can be delivered.
 
+## Validate candidates before publication
+
+Windows and Linux package validation can run independently while Apple signing
+is being prepared. Dispatch their build workflows on the candidate branch:
+
+```sh
+gh workflow run windows-build.yml --ref CANDIDATE_BRANCH -f require_signing=false
+gh workflow run linux-build.yml --ref CANDIDATE_BRANCH
+```
+
+These workflows upload CI artifacts; they do not create a public release or
+publish update feeds. Record the resolved commit from each run, and compare it
+with the downloaded package manifest. An unsigned Windows CI package cannot
+establish Authenticode or public update trust. Do not push a release tag simply
+to test packaging: the separate Release workflow publishes successful builds.
+
+Portable Windows and Linux apps read their source revision from the bundled
+manifest. Extracting an app inside a Git checkout must not run that checkout's
+Git commands or substitute its revision during startup or health checks.
+Windows also keeps the launcher's EOF control pipe out of helper processes'
+standard input. A worker must be able to start while that control pipe is open,
+and the server must still end its session when the launcher closes it.
+
+Windows retains a completed package before native acceptance runs. A native-only
+recheck can reuse those exact bytes with a newer test script:
+
+```sh
+gh workflow run windows-build.yml --ref CANDIDATE_BRANCH -f build_run_id=WINDOWS_BUILD_RUN_ID
+```
+
+The recheck verifies the selected build and embedded source revision, and records
+the package and tester commits separately. It does not rebuild or publish assets.
+
+Linux full-package validation also runs `scripts/linux/updater-smoke.py` with
+the bundled Python under Xvfb and a private D-Bus session. It copies the real
+bundle, changes only temporary version/key metadata, signs a local test archive,
+checks signature/checksum rejection, retargets owned launchers, and requires the
+new GTK app and bundled server to render a photo. A deliberately failed GTK
+startup must restore the old launchers. The original package and user data are
+outside this test's writable paths. This verifies the installed updater path;
+public HTTPS delivery, the update dialog, migrations between source revisions,
+and hardware/display behavior still need their own acceptance pass.
+
+Before publishing the first version, retain evidence from the exact candidate
+for clean installation, representative RAW/JPEG/16-bit TIFF input, editing and
+export, saved edits after restart, recoverable trash, and package ownership.
+Run Windows client/scaling tests and Ubuntu/Arch desktop/GPU tests on the systems
+listed as supported. Package-index submissions are separate from direct downloads.
+
 ## Build and release a version
 
 1. Complete unit/installer tests on the exact source to release.
@@ -130,8 +179,9 @@ launch check and launcher recovery verification. Retaining an older bundle does
 not make a migrated catalog compatible with it: the updater never automatically
 restores a catalog or relaunches an old app after the new app may have migrated it.
 
-This change does not provision credentials, publish a feed, or establish native
-upgrade proof. Keep those release steps explicit.
+The local Linux upgrade gate uses a temporary signing key and two versions of
+the same source bundle. Production-key signing, public feed delivery, and an
+upgrade between actual release revisions remain separate acceptance steps.
 
 ## CLI and package definitions
 
