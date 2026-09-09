@@ -55,6 +55,24 @@ class ExportWorkflowTests(unittest.TestCase):
                 "an in-flight output must not be overwritten concurrently",
             )
 
+    def test_a_case_different_reservation_still_blocks_the_name(self):
+        # macOS and Windows treat these two spellings as one file, and the
+        # first export has only staged, so `exists()` cannot see it yet. The
+        # second must rename rather than clobber what the first is publishing.
+        with tempfile.TemporaryDirectory() as directory:
+            reserved = {Path(directory) / "Sunset.jpg"}
+            requested = Path(directory) / "sunset.jpg"
+
+            self.assertEqual(
+                export_workflow.collision_path(requested, "rename", reserved).name,
+                "sunset-2.jpg",
+            )
+            self.assertEqual(
+                export_workflow.collision_path(requested, "overwrite", reserved).name,
+                "sunset-2.jpg",
+                "an in-flight output must not be overwritten under another case",
+            )
+
     def test_orphan_manifest_reserves_its_matching_export_name(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "photo.jpg"

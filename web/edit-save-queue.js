@@ -189,10 +189,19 @@ export function createEditSaveQueue({
   }
 
   async function retry(name) {
+    /* Clearing a recovery draft is housekeeping for a save that already
+     * succeeded. A record that cannot be removed keeps reporting itself, but it
+     * must never stop the queue from retrying edits that are genuinely unsaved:
+     * letting it throw here left Retry save permanently dead for every photo. */
     if (journal) {
-      for (const [photo, token] of cleanupPending) {
+      for (const [photo, token] of [...cleanupPending]) {
         if (name !== undefined && name !== photo) continue;
-        await journal.remove(photo, token); cleanupPending.delete(photo);
+        try {
+          await journal.remove(photo, token);
+          cleanupPending.delete(photo);
+        } catch (error) {
+          journalError = error instanceof Error ? error : new Error(String(error));
+        }
       }
       if (!cleanupPending.size) journalError = null;
     }

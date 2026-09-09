@@ -109,6 +109,7 @@
     "That capture-time history step does not belong to this photo",
     "That import report is not available",
     "That keyword change is no longer available to undo",
+    "That photo is no longer in the library, so the edit was not saved",
     "The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance",
     "The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again.",
     "The catalog is being replaced.",
@@ -332,7 +333,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "618506625977a645ecfcc4696975f498d8904516de4f20a0f3fbcd2ce89b0963",
+  "sourceDigest": "b26e507acc42a4091dc5f28d871740846b73ffd50fafa948e628151a0d8f8131",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -393,6 +394,7 @@
       "Starting the local server…",
       "That capture-time history step does not belong to this photo",
       "That import report is not available",
+      "That photo is no longer in the library, so the edit was not saved",
       "The catalog is being replaced.",
       "The catalog was left unchanged.",
       "The destination is an original photo; export was not published",

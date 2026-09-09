@@ -6033,12 +6033,38 @@ function refreshLists() {
   updateTransferActions();
 }
 
-function refreshFilteredView() {
+/* The photo's index in the visible list as it stands right now, captured before
+ * a mark changes what the filter admits. -1 when it is not currently listed. */
+function markResumeIndex(im) {
+  if (!im || (SURVEY && SURVEY.isOpen)) return -1;
+  return visible().indexOf(im);
+}
+
+/* The photo to show after a mark. When the marked photo is still listed the
+ * neighbour is simply the one after it. When the mark removed it from the
+ * filter, everything below shifted up by one, so the photo now at its former
+ * index is the one that came next. Falling back to the top of the library
+ * instead would restart the cull on every keystroke. */
+function photoAfterMark(list, im, resumeAt = -1) {
+  const here = list.indexOf(im);
+  if (here >= 0) return list[here + 1];
+  /* Guard the index: the callers below are also bound directly to DOM events,
+   * where the first argument is an Event rather than a position. */
+  if (!Number.isInteger(resumeAt) || resumeAt < 0) return undefined;
+  return list[resumeAt] || list[list.length - 1];
+}
+
+/* `resumeAt` is the current photo's index from before a mark changed what the
+ * filter admits. Without it a filter change lands on the top of the new list,
+ * which is what changing a filter should do. */
+function refreshFilteredView(resumeAt = -1) {
+  const leaving = cur();
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   const list = visible();
   if (list.length && !list.includes(cur())) {
-    go(S.images.indexOf(list[0]));
+    const resume = photoAfterMark(list, leaving, resumeAt) || list[0];
+    go(S.images.indexOf(resume));
     // go() updates S.idx synchronously but may wait for catalog state before
     // showCurrentImage(). Paint the new filtered membership immediately.
     refreshLists();
@@ -6967,6 +6993,9 @@ function setStatus(st) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = st !== 'pending' && targets.every((image) => image.status === st)
     ? 'pending' : st;
+  /* Read the position before the mark. A flag or rating filter drops the photo
+   * out of the visible list, and its old position is where the next one lands. */
+  const resumeAt = markResumeIndex(targets[0]);
   const linked = linkedMetadataTargets(targets);
   for (const image of linked) image.status = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
@@ -6974,27 +7003,28 @@ function setStatus(st) {
   persistMark(linked, { status: next });
   /* Unflagging is a correction, not a decision, so it does not advance. */
   if (targets.length === 1 && next !== 'pending' && APP_PREFS.autoAdvance !== false) {
-    advanceAfterMark(targets[0]);
+    advanceAfterMark(targets[0], resumeAt);
   } else if (SURVEY && SURVEY.isOpen) {
     refreshLists();
   } else {
-    refreshFilteredView();
+    refreshFilteredView(resumeAt);
   }
 }
 function setRating(r, advance = false) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;
+  const resumeAt = markResumeIndex(targets[0]);
   const linked = linkedMetadataTargets(targets);
   for (const image of linked) image.rating = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
   persistMark(linked, { rating: next });
   if (targets.length === 1 && (advance || APP_PREFS.autoAdvance !== false)) {
-    advanceAfterMark(targets[0]);
+    advanceAfterMark(targets[0], resumeAt);
   } else if (SURVEY && SURVEY.isOpen) {
     refreshLists();
   } else {
-    refreshFilteredView();
+    refreshFilteredView(resumeAt);
   }
 }
 
@@ -7016,10 +7046,9 @@ function surveyTarget() {
   return S.images.find((image) => image.name === SURVEY.active) || null;
 }
 
-function advanceAfterMark(im) {
+function advanceAfterMark(im, resumeAt = -1) {
   if (SURVEY && SURVEY.isOpen) { SURVEY.step(1); refreshLists(); return; }
-  const list = visible();
-  const next = list[list.indexOf(im) + 1];
+  const next = photoAfterMark(visible(), im, resumeAt);
   if (next) {
     go(S.images.indexOf(next));
   } else {

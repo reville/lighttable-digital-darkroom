@@ -879,12 +879,17 @@ def write_state(state: dict) -> None:
     _STATE_CACHE = copy.deepcopy(state)
 
 
-def save_image_state(name: str, entry: dict) -> None:
-    save_image_states({name: entry})
+def save_image_state(name: str, entry: dict) -> list[str]:
+    return save_image_states({name: entry})
 
 
-def save_image_states(entries: dict[str, dict]) -> None:
-    """Merge one or more image edits and persist one atomic state snapshot."""
+def save_image_states(entries: dict[str, dict]) -> list[str]:
+    """Merge one or more image edits and persist one atomic state snapshot.
+
+    Returns the names actually written. A name the catalog cannot resolve is
+    skipped, so callers must report what came back rather than what they asked
+    for; answering "saved" for a discarded edit loses the user's work silently.
+    """
     cat = catalog_handle()
     if cat is not None:
         updates, versions, names, changed = {}, {}, [], {}
@@ -908,12 +913,14 @@ def save_image_states(entries: dict[str, dict]) -> None:
             if changed[name]:
                 queue_sidecar(name, changed[name])
         _queue_mirror()
-        return
+        return names
     with STATE_LOCK:
         st = load_state()
         for name, entry in entries.items():
             st["images"].setdefault(name, {}).update(entry)
         write_state(st)
+    # Folder mode keys state by path and accepts every name it is given.
+    return list(entries)
 
 
 def expand_paired_metadata(entries: dict[str, dict]) -> dict[str, dict]:
@@ -4899,20 +4906,47 @@ class ExportCancelled(Exception):
     pass
 
 
+def same_existing_file(first: Path, second: Path) -> bool:
+    """Whether two paths name one file on disk.
+
+    `Path.resolve()` keeps the spelling it was given, so on the case-insensitive
+    volumes macOS and Windows use by default two paths that differ only in case
+    compare unequal while naming the same bytes. Ask the filesystem instead.
+    """
+    if first == second:
+        return True
+    try:
+        return first.exists() and second.exists() and first.samefile(second)
+    except OSError:
+        return False
+
+
+def _relative_within(path: Path, root: Path) -> str | None:
+    """`path` expressed against `root`, tolerating a case-different root."""
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        pass
+    for parent in path.parents:
+        if same_existing_file(parent, root):
+            return path.relative_to(parent).as_posix()
+    return None
+
+
 def export_would_replace_original(destination: Path, source_name: str) -> bool:
     path = destination.resolve()
     source = src_path(source_name).resolve()
-    if path == source:
+    if same_existing_file(path, source):
         return True
     # A RAW export next to its capture must not overwrite the camera JPEG.
-    if path.exists() and path.parent == source.parent and path.stem.casefold() == source.stem.casefold():
+    if (path.exists() and same_existing_file(path.parent, source.parent)
+            and path.stem.casefold() == source.stem.casefold()):
         return True
     cat = catalog_handle()
     if path.exists() and cat is not None:
         for row in cat.sources():
-            try:
-                relative = path.relative_to(Path(row["path"]).resolve()).as_posix()
-            except ValueError:
+            relative = _relative_within(path, Path(row["path"]).resolve())
+            if relative is None:
                 continue
             if cat.image_id_for(int(row["id"]), relative) is not None:
                 return True
@@ -7008,7 +7042,17 @@ class Handler(BaseHTTPRequestHandler):
                 if "params" in entry:
                     entry["provenance"] = renderer_provenance()
                 updates = expand_paired_metadata({b["name"]: entry})
-                save_image_states(updates)
+                saved = save_image_states(updates)
+                # A name the catalog cannot resolve is skipped by the writer.
+                # Reporting success for it would tell the client its edit is
+                # safe while the work is gone, so refuse instead.
+                if b["name"] not in saved:
+                    raise APIError(
+                        409,
+                        T("That photo is no longer in the library, so the edit was not saved"),
+                        "unknown-photo")
+                written = {name: patch for name, patch in updates.items()
+                           if name in set(saved)}
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
@@ -7018,14 +7062,14 @@ class Handler(BaseHTTPRequestHandler):
                             image_id, str(b.get("historyLabel") or "External edit"),
                             catalog_entry_for(b["name"]), origin=origin)
                 EVENTS.publish("state", {
-                    "names": list(updates), "fields": sorted(entry),
-                    "patches": copy.deepcopy(updates),
-                    **({"patch": copy.deepcopy(entry)} if len(updates) == 1 else {}),
+                    "names": list(written), "fields": sorted(entry),
+                    "patches": copy.deepcopy(written),
+                    **({"patch": copy.deepcopy(entry)} if len(written) == 1 else {}),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True, "names": list(updates)}
+                response = {"ok": True, "names": list(written)}
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
@@ -7041,13 +7085,17 @@ class Handler(BaseHTTPRequestHandler):
                 for name in b.get("names", []):
                     updates[str(name)] = dict(cleaned)
                 updates = expand_paired_metadata(updates)
-                if updates:
-                    save_image_states(updates)
+                saved = save_image_states(updates) if updates else []
+                # Count what was written, not what was asked for: photos that
+                # moved out of the catalog are skipped by the writer and the
+                # caller has to be told which ones.
+                written = [name for name in updates if name in set(saved)]
+                missing = [name for name in updates if name not in set(saved)]
                 origin = str(b.get("origin", ""))[:80]
                 if origin and not origin.startswith("window"):
                     cat = catalog_handle()
                     if cat is not None:
-                        for name in updates:
+                        for name in written:
                             image_id = catalog_image_id(name)
                             if image_id is not None:
                                 cat.add_history(
@@ -7055,13 +7103,15 @@ class Handler(BaseHTTPRequestHandler):
                                     str(b.get("historyLabel") or "External edit"),
                                     catalog_entry_for(name), origin=origin)
                 EVENTS.publish("state", {
-                    "names": list(updates), "fields": sorted(cleaned),
+                    "names": written, "fields": sorted(cleaned),
                     "patch": copy.deepcopy(cleaned),
                     "origin": origin or "window",
                     "client": str(self.headers.get(
                         "X-LightTable-Client", ""))[:80],
                 })
-                response = {"ok": True, "count": len(updates)}
+                response = {"ok": True, "count": len(written)}
+                if missing:
+                    response["missing"] = missing
                 if warnings:
                     response["warnings"] = warnings
                 self._json(response)
