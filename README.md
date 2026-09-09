@@ -132,6 +132,11 @@ choose this computer's local timezone. Metadata and recipe-sidecar policies are
 saved with the recipe. Cancel stops queued work, waits for active cleanup, and
 retains completed files. Export details list skipped files, errors and warnings.
 
+The **Film Simulation Drama** preset pack includes eight looks that enable film
+simulation and layer creative effects over it: Cinema Teal, Tungsten Rain, Portra
+Ember, Gold Rush, Velvia Storm, Faded Epic, Silver Noir, and Velvet Dusk. Each
+combines a film stock with tone, color, grain, glow, or vignette adjustments.
+
 ### Local by design
 
 Photos, the SQLite catalog, edit history, and render caches stay on your machine.
@@ -323,3 +328,17 @@ scan time and content-read counts, followed by a warm scan and hydration rescan.
 This measures the actual scanner and SQLite query path with simulated slow reads;
 it does not establish physical HDD, network-drive, 8 GB RAM, cloud-provider, RAW
 render or UI performance. “Cold” means an empty catalog, not a flushed OS disk cache.
+
+### Apple Photos on macOS
+
+The **Apple Photos** sidebar source browses photos and albums with Photos
+permission. Select up to 500 photos across pages or albums and choose **Import
+selected originals**. Originals (including RAW resources) are copied into
+`Pictures / LightTable Imports / Apple Photos`; iCloud originals download as
+needed. Completed original copies are reused on retry. **Stop Import** keeps
+completed copies, and **View imported photos** opens them for editing.
+
+The Photos library remains unchanged. Albums, videos, and Photos edits are not
+copied by this browser. **Refresh** updates photos and albums after library
+changes. This source and Photos setup actions are hidden on Windows and Linux.
+Ordinary directories appear under **Folders** on every platform.

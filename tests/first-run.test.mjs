@@ -205,3 +205,15 @@ test('stopped selected import keeps successful photos and reports the stop', () 
   assert.match(f.all.get('setupResultMessage').textContent, /1 could not be imported/);
   assert.equal(f.open(), true);
 });
+
+test('Photos setup entry stays hidden on Windows and Linux, even with a stray Mac capability', () => {
+  for (const platform of ['windows', 'linux']) {
+    const f = fixture({ native: true, platform });
+    f.controller.nativeEvent({type: 'sources', firstRun: false, photosLibraryImportAvailable: true});
+    assert.equal(f.all.get('setupPhotos').hidden, true);
+    assert.equal(f.all.get('setupPhotosSelected').hidden, true);
+  }
+  const f = fixture({native: true, platform: 'macos'});
+  f.controller.nativeEvent({type: 'sources', firstRun: false, photosLibraryImportAvailable: true});
+  assert.equal(f.all.get('setupPhotos').hidden, false);
+});

@@ -643,8 +643,7 @@ export function createPresetBrowser({
         if (hiddenIds.includes(presetKey(preset))) copy.append(element('span', 'preset-browser-source', tr('Hidden')));
         const ignored = preset.conversion?.ignored || [];
         if (ignored.length) copy.append(element('span', 'preset-browser-warning', trn('{count} unsupported setting skipped', '{count} unsupported settings skipped', ignored.length)));
-        const check = element('span', 'preset-browser-enabled', '✓'); check.setAttribute('aria-hidden', 'true');
-        choose.append(frame, copy, check);
+        choose.append(frame, copy);
         const favorite = button('', () => toggleFavorite(preset), 'preset-browser-favorite');
         updateFavoriteButton(favorite, preset);
         const info = button('…', () => showDetail(preset), 'preset-browser-info');

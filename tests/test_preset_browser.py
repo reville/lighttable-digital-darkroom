@@ -10,6 +10,49 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @unittest.skipUnless(shutil.which("node"), "Node required")
 class PresetBrowserTests(unittest.TestCase):
+    def test_film_drama_pack_enables_film_and_layers_effects_over_photo_corrections(self):
+        result = self.run_js("""
+import {readFileSync} from 'node:fs';
+import {groupPresetPacks} from './web/preset-packs.js';
+import {composePresetState} from './web/presets.js';
+import {blendPresetState} from './web/preset-amount.js';
+const presets=JSON.parse(readFileSync('./presets/builtin.json','utf8')).presets
+  .map(p=>({...p,collection:'builtin'}));
+const groups=groupPresetPacks(presets,{},'builtin');
+const pack=groups.find(p=>p.id==='builtin-film-drama');
+const base={params:{profile_enabled:false,stock:'kodak_portra_400',wb_mode:'as_shot',film_format:'6x7'},
+  grade:{exposure:.7,temp:.12},crop:{x:.1,y:.1,w:.8,h:.8},
+  masks:[{id:'existing',type:'radial'}],heals:[{id:'existing-heal'}],optics:{scale:1.1}};
+console.log(JSON.stringify({name:pack.name,order:groups.map(p=>p.id),
+  looks:pack.presets.map(p=>{
+    const target=composePresetState(base,p);
+    return {name:p.name,stock:p.params.stock,target,
+      half:blendPresetState(base,target,50),zero:blendPresetState(base,target,0)};
+  }),base}));
+""")
+        self.assertEqual(result['name'], 'Film Simulation Drama')
+        self.assertEqual(result['order'], ['builtin-color', 'builtin-film', 'builtin-film-drama', 'builtin-bw'])
+        self.assertEqual(len(result['looks']), 8)
+        self.assertEqual(len({p['stock'] for p in result['looks']}), 8)
+        self.assertIn('Silver Noir', [p['name'] for p in result['looks']])
+        for look in result['looks']:
+            with self.subTest(look=look['name']):
+                for state in [look['target'], look['half']]:
+                    self.assertTrue(state['params']['profile_enabled'])
+                    self.assertEqual(state['params']['stock'], look['stock'])
+                    self.assertEqual(state['params']['film_tuning'], 'original')
+                    self.assertTrue(state['params']['grain_on'])
+                    self.assertGreater(state['grade']['contrast'], 0)
+                    self.assertGreater(state['grade']['vignette'], 0)
+                    for key in ['exposure', 'temp']:
+                        self.assertEqual(state['grade'][key], result['base']['grade'][key])
+                    for key in ['wb_mode', 'film_format']:
+                        self.assertEqual(state['params'][key], result['base']['params'][key])
+                    for key in ['masks', 'heals', 'optics']:
+                        self.assertEqual(state[key], result['base'][key])
+                self.assertEqual(look['target']['crop'], result['base']['crop'])
+                self.assertEqual(look['zero'], result['base'])
+
     def test_pack_moves_preserve_recipes_duplicate_names_and_collection_boundaries(self):
         result = self.run_js("""
 import {groupPresetPacks,movePresetToPack} from './web/preset-packs.js';

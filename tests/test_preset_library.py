@@ -108,9 +108,9 @@ class CommunityTests(unittest.TestCase):
 class PresetContractTests(unittest.TestCase):
     def test_bundled_looks_are_valid_distinct_and_protect_corrections(self):
         looks = library.builtin_presets()
-        self.assertEqual(len(looks), 15)
+        self.assertEqual(len(looks), 23)
         self.assertEqual(len({p["id"] for p in looks}), len(looks))
-        self.assertEqual(sum(p["filmMode"] == "on" for p in looks), 5)
+        self.assertEqual(sum(p["filmMode"] == "on" for p in looks), 13)
         for look in looks:
             patch = library.look_patch(look)
             self.assertTrue(set(patch["grade"]) <= library.CREATIVE_GRADE_KEYS)

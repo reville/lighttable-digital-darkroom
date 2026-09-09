@@ -70,6 +70,6 @@ class Client:
                              accept="image/*,application/octet-stream")
 
 
-def query(path: str, **values) -> str:
+def query(endpoint: str, **values) -> str:
     present = {key: value for key, value in values.items() if value is not None}
-    return path + ("?" + urllib.parse.urlencode(present) if present else "")
+    return endpoint + ("?" + urllib.parse.urlencode(present) if present else "")
