@@ -39,6 +39,41 @@ class DAMServerTests(CatalogServerTestCase):
         server.keyword_batch_action({"action": "undo", "undoId": result["undoId"]})
         self.assertEqual(self.catalog.keywords_for(server.catalog_image_id(names[0])), ["Original A"])
 
+    def test_keyword_rename_propagates_descendants_copies_and_sidecars(self):
+        parent_name = self.qualified("a.jpg")
+        child_name = self.qualified("sub/b.jpg")
+        parent_id = server.catalog_image_id(parent_name)
+        child_id = server.catalog_image_id(child_name)
+        self.catalog.save_state(parent_id, {"keywords": ["Trip"]})
+        self.catalog.save_state(child_id, {"keywords": ["Trip > Rome", "Tripod"]})
+        copy_id = self.catalog.add_virtual_copy(child_id, "alternate", "Alternate")
+        keyword = next(item for item in self.catalog.keyword_tree() if item["path"] == "Trip")
+        with mock.patch.object(server.EVENTS, "publish") as publish:
+            result = server.keyword_rename_action({"id": keyword["id"], "name": "Travel"})
+        self.assertEqual(result["count"], 3)
+        changes = {item["id"]: item for item in result["changes"]}
+        self.assertEqual(changes[parent_id]["keywords"], ["Travel"])
+        self.assertEqual(changes[child_id]["keywords"], ["Travel > Rome", "Tripod"])
+        self.assertEqual(changes[copy_id]["keywords"], ["Travel > Rome", "Tripod"])
+        event_type, event = publish.call_args.args
+        self.assertEqual(event_type, "state")
+        self.assertEqual(event["fields"], ["keywords"])
+        self.assertEqual(event["patches"], {item["name"]: {"keywords": item["keywords"]}
+                                            for item in result["changes"]})
+        server._queue_mirror.assert_called_once()
+        self.assertEqual(server.sidecar_sync_status()["pending"], 2)
+        self.assertEqual(server.write_pending_sidecars(), 2)
+        self.assertEqual(xmp_sidecar.read_for(self.root / "a.jpg")["metadataKeywords"], ["Travel"])
+        self.assertEqual(set(xmp_sidecar.read_for(self.root / "sub/b.jpg")["metadataKeywords"]),
+                         {"Travel > Rome", "Tripod"})
+        self.assertEqual(self.catalog.query({"filter": {"query": "Travel"}})["total"], 3)
+        # A reconciled browser save keeps the renamed tags alongside the next edit.
+        server.save_image_state(child_name, {"keywords": changes[child_id]["keywords"],
+                                            "grade": {"exposure": 1}})
+        saved = self.catalog.state_for(child_id)
+        self.assertEqual(saved["keywords"], ["Travel > Rome", "Tripod"])
+        self.assertEqual(saved["grade"]["exposure"], 1)
+
     def test_rating_only_sync_preserves_unimported_foreign_caption_and_label(self):
         path = self.root / "a.jpg"
         path.with_suffix('.xmp').write_text(xmp_sidecar.build_sidecar({

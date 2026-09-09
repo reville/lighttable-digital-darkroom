@@ -25,7 +25,7 @@ function harness({native = true, baked = false, dirty = false, dragging = false}
     scheduleViewportRegionRender: () => {}, syncPreviewBackend: () => {},
     nativePreviewActive: () => native, renderPhysicalPreview: () => { renders++; },
     scheduleHistogram: () => {}, GRADE_PERF: {take: () => null},
-    nativeGradePayload: grade => ({grade}),
+    nativeGradePayload: grade => ({grade}), spotVisualization: () => ({enabled: false}),
     nativeMaskChannelPayload: () => ({channel: 0, tile: 0, data: 'channel', masks: [mask]}),
     buildMaskTexture: () => { rasters++; return {width: 2, height: 1, data: new Uint8Array(8)}; },
     bytesToBase64: bytes => Buffer.from(bytes).toString('base64'),

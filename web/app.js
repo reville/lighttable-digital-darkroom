@@ -1897,7 +1897,7 @@ function drawEditOverlayNow() {
 const previewFrameScheduler = createFrameScheduler((work) => {
   if (work.reference) updateReferenceCompositeNow(!work.grade);
   if (work.grade) drawGradeNow(Boolean(work.forceWebGL));
-  if (work.edits && !work.grade && nativePreviewActive()) {
+  if (work.edits && nativePreviewActive()) {
     postNative('nativeEdits', nativeEditsPayload());
   }
   if (work.visualization && nativePreviewActive()) {
@@ -4616,6 +4616,7 @@ function saveState(immediate = false) {
   readControls();
   S.preset = reconcilePresetAdjustment(S.preset, presetEditState(S));
   const edits = JSON.parse(editHistorySnapshot());
+  const wasEdited = photoHasEdits(im);
   Object.assign(im, cloneValue(edits));
   const current = JSON.stringify(edits);
   const pending = editSaveQueue.getPending(im.name);
@@ -4628,6 +4629,11 @@ function saveState(immediate = false) {
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
   editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
+  if (wasEdited !== photoHasEdits(im)) {
+    invalidateVisibleCache();
+    _stripKey = _gridKey = '';
+    refreshLists();
+  }
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
 
@@ -9604,7 +9610,7 @@ function renderKeywords() {
       im.keywords = (im.keywords || []).filter(k => k !== keyword);
       for (const image of linkedMetadataTargets([im])) image.keywords = [...im.keywords];
       saveState(true); renderKeywords();
-      _stripKey = _gridKey = ''; refreshLists();
+      refreshFilteredView();
     };
     chip.append(label, remove);
     box.appendChild(chip);
@@ -9636,7 +9642,7 @@ function addKeyword() {
   }
   $('keywordInput').value = '';
   renderKeywords();
-  _stripKey = _gridKey = ''; refreshLists();
+  refreshFilteredView();
 }
 $('keywordAdd').onclick = addKeyword;
 $('keywordInput').addEventListener('keydown', (e) => {
@@ -9645,20 +9651,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
 });
 
+function applyKeywordChanges(changes) {
+  for (const item of changes) {
+    const image = S.images.find(image => image.name === item.name);
+    if (!image) continue;
+    image.keywords = [...item.keywords];
+    if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+    if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+  }
+  renderKeywords(); refreshFilteredView();
+}
+
 KEYWORD_BATCH = installKeywordBatch({
   el: $, post: api, toast, enabled: () => S.catalogEnabled,
   names: () => [...S.msel], flush: flushEditSaves,
   values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
     .map(value => value.trim()).filter(Boolean),
   apply: changes => {
-    for (const item of changes) {
-      const image = S.images.find(image => image.name === item.name);
-      if (!image) continue;
-      image.keywords = [...item.keywords];
-      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
-      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
-    }
-    renderKeywords(); refreshFilteredView();
+    applyKeywordChanges(changes);
     METADATA?.refreshKeywordTree();
   },
 });
@@ -10995,6 +11005,8 @@ METADATA = createMetadataPanel({
   get: getJSON,
   toast,
   askName,
+  flush: () => saveState(true),
+  onKeywordsChanged: applyKeywordChanges,
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onKeywordFilter: (path) => {
     $('search').value = path.split(' > ').pop();
@@ -11460,6 +11472,8 @@ async function applyServerStateEvent(event) {
       ? tr('Updated by {eventOrigin}', {eventOrigin: event.origin}) : tr('Photo updated externally');
     if (event.origin !== 'batch-masks') toast(label, { label: tr('Undo'), run: undo });
   }
+  invalidateVisibleCache();
+  _stripKey = _gridKey = '';
   refreshLists();
   renderKeywords();
   renderVersions();
