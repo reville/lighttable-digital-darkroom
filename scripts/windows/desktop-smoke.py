@@ -262,7 +262,9 @@ def connect(desktop, root, deadline):
                 pass
     instance = wait_for(desktop, deadline, "its private render server", registered)
     api = API(instance, deadline)
-    health = api.request("/api/health")
+    # Registration precedes the HTTP serve loop and background-service setup.
+    # Keep startup retries inside the same bounded native-acceptance deadline.
+    health = wait_for(desktop, deadline, "HTTP health", lambda: api.request("/api/health"))
     if (health.get("ok") is not True or health.get("pid") != instance["pid"]
             or Path(health.get("catalog", "")).resolve() != (root / "catalog/library.sqlite3").resolve()
             or Path(health.get("folder", "")).resolve() != (root / "photos").resolve()

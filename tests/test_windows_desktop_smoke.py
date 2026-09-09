@@ -10,7 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from urllib.error import HTTPError
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,6 +86,34 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
         desktop.running.return_value = True
         with self.assertRaisesRegex(RuntimeError, "timed out"):
             smoke.wait_for(desktop, time.monotonic() - 1, "render", lambda: {"ok": True})
+
+    def test_registration_waits_for_http_readiness_but_wrong_identity_is_fatal(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "instances").mkdir()
+            (root / "photos").mkdir()
+            instance = {"pid": 123, "port": 45678, "token": "fixture", "folder": str(root / "photos")}
+            (root / "instances/45678.json").write_text(json.dumps(instance))
+            health = {"ok": True, "pid": 123, "catalog": str(root / "catalog/library.sqlite3"),
+                      "folder": str(root / "photos"), "headless": False, "safeMode": False}
+            desktop = Mock()
+            desktop.running.return_value = desktop.owns_pid.return_value = True
+            api = Mock()
+            api.request.side_effect = [TimeoutError("serve loop has not started"), health]
+            with patch.object(smoke, "API", return_value=api), patch.object(smoke.time, "sleep"):
+                connected, observed = smoke.connect(desktop, root, time.monotonic() + 5)
+                self.assertIs(connected, api)
+                self.assertEqual(observed, health)
+                self.assertEqual(api.request.call_count, 2)
+                for mismatch in ({"pid": 999}, {"catalog": str(root / "other.sqlite3")},
+                                 {"folder": str(root / "other-photos")}, {"headless": True},
+                                 {"safeMode": True}):
+                    api.reset_mock()
+                    api.request.side_effect = None
+                    api.request.return_value = {**health, **mismatch}
+                    with self.subTest(mismatch=mismatch), self.assertRaisesRegex(RuntimeError, "identity"):
+                        smoke.connect(desktop, root, time.monotonic() + 5)
+                    self.assertEqual(api.request.call_count, 1, "Wrong server identity must never be retried")
 
 
 @unittest.skipUnless(importlib.util.find_spec("tifffile") and importlib.util.find_spec("numpy"),
