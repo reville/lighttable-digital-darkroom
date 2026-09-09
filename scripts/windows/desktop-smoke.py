@@ -397,7 +397,7 @@ def capture_python_stacks(desktop, bundle: Path, dumper: Path | None, report_dir
                 summary["processes"].append(record)
                 stdout = stderr = b""
                 try:
-                    result = subprocess.run([str(dumper), "dump", "--pid", str(pid)],
+                    result = subprocess.run([str(dumper), "dump", "--native", "--pid", str(pid)],
                         capture_output=True, timeout=5, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                     stdout, stderr = result.stdout, result.stderr
                     record["returncode"] = result.returncode
@@ -663,6 +663,12 @@ def main():
         except BaseException as error:
             report["error"] = str(error)
             report["startup_diagnostics"] = startup_diagnostics(root, desktop)
+            try:
+                report["export_files"] = [{"name": path.name, "bytes": path.stat().st_size}
+                                          for path in sorted((root / "exports").glob("*"))[:20]
+                                          if path.is_file() and not path.is_symlink()]
+            except OSError as diagnostic_error:
+                report["export_files_error"] = type(diagnostic_error).__name__
             if args.report_dir:
                 report["failure_window"] = capture_failure_window(desktop, args.report_dir / "window.png")
                 if args.stack_dumper:

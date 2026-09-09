@@ -552,7 +552,7 @@ class DesktopStackDiagnosticTests(unittest.TestCase):
             desktop.owned_python_pids.assert_called_once_with(root / "Python/python.exe")
             self.assertEqual(run.call_count, 4)
             for call, pid in zip(run.call_args_list, (11, 22, 33, 44)):
-                self.assertEqual(call.args[0], [str(dumper), "dump", "--pid", str(pid)])
+                self.assertEqual(call.args[0], [str(dumper), "dump", "--native", "--pid", str(pid)])
                 self.assertEqual(call.kwargs["timeout"], 5)
                 self.assertNotIn("env", call.kwargs)
             self.assertTrue(summary["processes"][0]["timed_out"])
