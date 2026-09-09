@@ -1193,7 +1193,7 @@
         {
           "title": "Wybierz kolekcję",
           "paragraphs": [
-            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 15 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 23 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
           ],
           "steps": [
             "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Organizowanie pakietów presetów",
           "paragraphs": [
-            "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo podzielone na pakiety Kolor, Film i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+            "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo pogrupowane w pakietach Kolor, Film, Film Simulation Drama i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+            "Każdy styl w Film Simulation Drama włącza symulację filmu i dodaje efekty tonów, koloru, ziarna, poświaty lub winietowania. Pakiet zawiera osiem stylów, w tym czarno-biały Silver Noir.",
             "Wybierz Nowy pakiet…, aby utworzyć nazwany pakiet w bieżącej kolekcji. Przeciągnij preset na jego nagłówek albo otwórz szczegóły presetu przyciskiem … i wybierz Przenieś do pakietu. Użyj … obok pakietu, aby zmienić jego nazwę. Usunięcie pakietu przywraca jego presety do grup domyślnych, nie usuwając samych presetów. Układ pakietów jest zapisywany na tym komputerze."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

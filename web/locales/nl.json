@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Voorinstellingspakketten organiseren",
     "Preset details: {name}": "Details van voorinstelling: {name}",
     "Preset packs": "Voorinstellingspakketten",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in de pakketten Kleur, Film en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in Kleur, Film, Film Simulation Drama en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
     "Remove pack": "Pakket verwijderen",
     "Rename pack": "Pakketnaam wijzigen",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Sla een voorinstelling op in Jouw, open de details via … en controleer het overzicht van de opgenomen instellingen onder Inzending van community.",
     "Select a photo, expand a pack, and click a preset row.": "Selecteer een foto, klap een pakket uit en klik op een voorinstellingsrij.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Bij het wisselen tussen voorinstellingsrijen wordt de bewerking van vóór de eerste voorinstelling gebruikt, zodat looks niet worden opgestapeld. Handmatige wijzigingen buiten de voorinstelling, zoals de belichting bij een look, blijven behouden. Als je een instelling die door de voorinstelling wordt aangestuurd handmatig wijzigt, eindigt de aanpassing via Hoeveelheid; de huidige bewerking wordt dan de basis voor de volgende voorinstelling.",
     "Copy Settings...": "Instellingen kopiëren...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 23 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Elke look in Film Simulation Drama schakelt filmsimulatie in en voegt effecten voor toon, kleur, korrel, gloed of vignettering toe. Het pakket bevat acht looks, waaronder Silver Noir in zwart-wit."
   },
   "plurals": {
     " · {count} paired file linked": {

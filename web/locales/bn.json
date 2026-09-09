@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "প্রিসেট প্যাক সাজান",
     "Preset details: {name}": "প্রিসেটের বিস্তারিত: {name}",
     "Preset packs": "প্রিসেট প্যাক",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "প্রিসেটগুলো সংকোচনযোগ্য প্যাকের মধ্যে অনুভূমিক সারি হিসেবে দেখা যায়। অন্তর্নির্মিত লুকগুলো শুরুতে রং, ফিল্ম এবং সাদা-কালো প্যাকে থাকে। প্যাক প্রসারিত বা সংকুচিত করতে তার শিরোনামে ক্লিক করুন।",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "প্রিসেটগুলি সংকোচনযোগ্য প্যাকের মধ্যে অনুভূমিক সারি হিসেবে দেখা যায়। অন্তর্ভুক্ত লুকগুলি শুরুতে রঙ, ফিল্ম, Film Simulation Drama এবং সাদাকালো প্যাকে থাকে। কোনো প্যাক প্রসারিত বা সংকুচিত করতে তার শিরোনামে ক্লিক করুন।",
     "Remove pack": "প্যাক সরান",
     "Rename pack": "প্যাকের নাম বদলান",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "আপনার-এ একটি প্রিসেট সংরক্ষণ করুন, তার … বিস্তারিত খুলুন এবং কমিউনিটি জমা-র অধীনে অন্তর্ভুক্ত সেটিংসের সারাংশ পর্যালোচনা করুন।",
     "Select a photo, expand a pack, and click a preset row.": "একটি ছবি নির্বাচন করুন, একটি প্যাক প্রসারিত করুন এবং একটি প্রিসেটের সারিতে ক্লিক করুন।",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "প্রিসেটের সারি বদলানোর সময় প্রথম প্রিসেটের আগের সম্পাদনা ব্যবহার করা হয়, যাতে লুকগুলো জমতে না থাকে। প্রিসেটের বাইরের ম্যানুয়াল পরিবর্তন, যেমন একটি লুকের এক্সপোজার, রাখা হয়। প্রিসেটের নিয়ন্ত্রণাধীন কোনো সেটিং ম্যানুয়ালি বদলালে তার পরিমাণ সমন্বয় শেষ হয়; তখন বর্তমান সম্পাদনা পরের প্রিসেটের ভিত্তি হয়ে যায়।",
     "Copy Settings...": "সেটিংস কপি...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ১৫টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।"
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "সম্পাদনা টুলবারে Presets খুলুন। Built-in-এ ২৩টি অন্তর্ভুক্ত লুক রয়েছে এবং এটি অফলাইনে কাজ করে। Yours-এ সংরক্ষিত লুক, আমদানি, এবং ইনস্টল করা কমিউনিটি প্রিসেট রয়েছে। Community পর্যালোচিত অনলাইন সংগ্রহ ব্রাউজ করে।",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama-এর প্রতিটি লুক ফিল্ম সিমুলেশন চালু করে এবং টোন, রঙ, দানা, আভা বা ভিনিয়েট প্রভাব যোগ করে। প্যাকে আটটি লুক রয়েছে, যার মধ্যে সাদাকালো Silver Noir-ও আছে।"
   },
   "plurals": {
     " · {count} paired file linked": {

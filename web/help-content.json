@@ -1170,7 +1170,7 @@
         {
           "title": "Choose a collection",
           "paragraphs": [
-            "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+            "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
           ],
           "steps": [
             "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
@@ -1185,7 +1185,8 @@
         {
           "title": "Organize preset packs",
           "paragraphs": [
-            "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.",
+            "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.",
+            "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.",
             "Choose New pack… to create a named pack in the current collection. Drag a preset onto its heading, or open the preset’s … details and choose Move to pack. Use … beside a pack to rename it. Removing a pack returns its presets to their default groups without deleting them. Pack organization is saved on this computer."
           ]
         },

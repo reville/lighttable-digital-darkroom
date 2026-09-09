@@ -19,6 +19,7 @@ export function normalizePresetPacks(value = {}) {
 export function defaultPresetPack(preset) {
   const collection = preset.collection || 'yours';
   if (collection === 'builtin') {
+    if (preset.tags?.includes('Film Simulation Drama')) return { id: 'builtin-film-drama', name: 'Film Simulation Drama' };
     if (preset.tags?.some(tag => ['B&W', 'Black & White'].includes(tag))) return { id: 'builtin-bw', name: tr('Black & White') };
     if (preset.tags?.some(tag => ['Film', 'Vintage'].includes(tag))) return { id: 'builtin-film', name: tr('Film') };
     return { id: 'builtin-color', name: tr('Color') };
@@ -42,7 +43,7 @@ export function groupPresetPacks(presets, organization, collection, { includeEmp
     if (!groups.has(pack.id)) groups.set(pack.id, { ...pack, presets: [] });
     groups.get(pack.id).presets.push(preset);
   }
-  const builtInOrder = ['builtin-color', 'builtin-film', 'builtin-bw'];
+  const builtInOrder = ['builtin-color', 'builtin-film', 'builtin-film-drama', 'builtin-bw'];
   return [...groups.values()].filter(pack => includeEmpty || pack.presets.length)
     .sort((a, b) => {
       if (a.custom || b.custom || collection !== 'builtin') return Number(!!b.custom) - Number(!!a.custom);

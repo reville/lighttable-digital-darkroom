@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Organizzare i pacchetti di predefiniti",
     "Preset details: {name}": "Dettagli del predefinito: {name}",
     "Preset packs": "Pacchetti di predefiniti",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "I predefiniti appaiono come righe orizzontali all’interno di pacchetti comprimibili. Gli stili integrati sono inizialmente suddivisi nei pacchetti Colore, Pellicola e Bianco e nero. Fai clic sull’intestazione di un pacchetto per espanderlo o comprimerlo.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "I predefiniti appaiono come righe orizzontali in pacchetti comprimibili. I look integrati sono inizialmente organizzati nei pacchetti Colore, Pellicola, Film Simulation Drama e Bianco e nero. Fai clic sul titolo di un pacchetto per espanderlo o comprimerlo.",
     "Remove pack": "Rimuovi pacchetto",
     "Rename pack": "Rinomina pacchetto",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Salva un predefinito in Tuo, apri i suoi dettagli con … e controlla il riepilogo delle impostazioni incluse sotto Invio della community.",
     "Select a photo, expand a pack, and click a preset row.": "Seleziona una foto, espandi un pacchetto e fai clic sulla riga di un predefinito.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Passando da una riga di predefinito a un’altra si usa la modifica precedente al primo predefinito, così gli stili non si accumulano. Le modifiche manuali esterne al predefinito, come l’esposizione per uno stile, vengono mantenute. Modificare manualmente un’impostazione controllata dal predefinito termina la sua regolazione Quantità; la modifica corrente diventa quindi la base per il predefinito successivo.",
     "Copy Settings...": "Copia impostazioni...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 23 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Ogni look di Film Simulation Drama attiva la simulazione pellicola e aggiunge effetti di tono, colore, grana, bagliore o vignettatura. Il pacchetto contiene otto look, tra cui Silver Noir in bianco e nero."
   },
   "plurals": {
     " · {count} paired file linked": {

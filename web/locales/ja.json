@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "プリセットパックを整理する",
     "Preset details: {name}": "プリセットの詳細：{name}",
     "Preset packs": "プリセットパック",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "プリセットは、折りたためるパック内に横長の行として表示されます。内蔵のルックは、最初は「カラー」「フィルム」「白黒」のパックに分類されています。パックの見出しをクリックすると、展開または折りたたみできます。",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "プリセットは、折りたたみ可能なパック内に横一列の項目として表示されます。内蔵ルックは最初に「カラー」「フィルム」「Film Simulation Drama」「白黒」のパックに分類されます。パックの見出しをクリックすると展開または折りたたみできます。",
     "Remove pack": "パックを削除",
     "Rename pack": "パック名を変更",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "「あなたの」にプリセットを保存し、「…」から詳細を開いて、「コミュニティへの投稿」で含まれる設定の概要を確認します。",
     "Select a photo, expand a pack, and click a preset row.": "写真を選択し、パックを展開して、プリセットの行をクリックします。",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "プリセットの行を切り替える際は、ルックが重ならないよう、最初のプリセットを適用する前の編集状態を使用します。ルックに対する露出など、プリセットの範囲外の手動変更は保持されます。プリセットが制御する設定を手動で変更すると、そのプリセットの「量」の調整は終了し、現在の編集状態が次のプリセットの基準になります。",
     "Copy Settings...": "設定をコピー...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには15個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。"
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには23個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama の各ルックはフィルムシミュレーションを有効にし、トーン、色、粒子、光のにじみ、または周辺減光の効果を加えます。パックには、白黒の Silver Noir を含む8種類のルックが収録されています。"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "사전 설정 팩 구성",
     "Preset details: {name}": "사전 설정 상세 정보: {name}",
     "Preset packs": "사전 설정 팩",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "사전 설정은 접을 수 있는 팩 안에 가로 행으로 표시됩니다. 내장 룩은 처음에 색상, 필름, 흑백 팩으로 분류됩니다. 팩 제목을 클릭하여 펼치거나 접으세요.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "프리셋은 접을 수 있는 팩 안에 가로 행으로 표시됩니다. 내장 룩은 처음에 색상, 필름, Film Simulation Drama, 흑백 팩으로 분류됩니다. 팩 제목을 클릭하면 펼치거나 접을 수 있습니다.",
     "Remove pack": "팩 제거",
     "Rename pack": "팩 이름 바꾸기",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "사용자 설정에 사전 설정을 저장하고 … 상세 정보를 연 다음, 커뮤니티 제출 아래에서 포함된 설정 요약을 검토하세요.",
     "Select a photo, expand a pack, and click a preset row.": "사진을 선택하고 팩을 펼친 다음 사전 설정 행을 클릭하세요.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "사전 설정 행을 전환할 때는 룩이 누적되지 않도록 첫 사전 설정을 적용하기 전의 편집 상태를 사용합니다. 룩의 노출처럼 사전 설정 범위 밖에서 수동으로 변경한 사항은 유지됩니다. 사전 설정이 제어하는 설정을 수동으로 변경하면 해당 사전 설정의 양 조정이 종료되고, 현재 편집 상태가 다음 사전 설정의 기준이 됩니다.",
     "Copy Settings...": "설정 복사...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "편집 툴바에서 사전 설정을 여세요. 내장에는 포함된 룩 15개가 있으며 오프라인에서 작동합니다. 사용자 설정에는 저장된 룩, 가져온 항목 및 설치된 커뮤니티 사전 설정이 들어 있습니다. 커뮤니티는 검토된 온라인 컬렉션을 탐색합니다."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "편집 툴바에서 사전 설정을 여세요. 내장에는 포함된 룩 23개가 있으며 오프라인에서 작동합니다. 사용자 설정에는 저장된 룩, 가져온 항목 및 설치된 커뮤니티 사전 설정이 들어 있습니다. 커뮤니티는 검토된 온라인 컬렉션을 탐색합니다.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama의 모든 룩은 필름 시뮬레이션을 켜고 톤, 색상, 그레인, 빛 번짐 또는 비네팅 효과를 더합니다. 이 팩에는 흑백 룩인 Silver Noir를 포함해 8개의 룩이 있습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

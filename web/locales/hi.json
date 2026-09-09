@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "प्रीसेट पैक व्यवस्थित करें",
     "Preset details: {name}": "प्रीसेट का विवरण: {name}",
     "Preset packs": "प्रीसेट पैक",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "प्रीसेट संकुचित किए जा सकने वाले पैक में क्षैतिज पंक्तियों के रूप में दिखाई देते हैं। अंतर्निहित लुक शुरू में रंग, फ़िल्म और श्वेत-श्याम पैक में होते हैं। पैक को फैलाने या समेटने के लिए उसके शीर्षक पर क्लिक करें।",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "प्रीसेट समेटे जा सकने वाले पैक में क्षैतिज पंक्तियों के रूप में दिखाई देते हैं। बिल्ट-इन लुक शुरुआत में रंग, फ़िल्म, Film Simulation Drama और श्वेत-श्याम पैक में होते हैं। किसी पैक को फैलाने या समेटने के लिए उसके शीर्षक पर क्लिक करें।",
     "Remove pack": "पैक हटाएँ",
     "Rename pack": "पैक का नाम बदलें",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "आपका में एक प्रीसेट सहेजें, उसका … विवरण खोलें और समुदाय सबमिशन के अंतर्गत शामिल सेटिंग्स का सारांश देखें।",
     "Select a photo, expand a pack, and click a preset row.": "एक फ़ोटो चुनें, एक पैक फैलाएँ और किसी प्रीसेट की पंक्ति पर क्लिक करें।",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "प्रीसेट की पंक्तियाँ बदलने पर पहले प्रीसेट से पहले वाला संपादन उपयोग होता है, ताकि लुक एक के ऊपर एक न जुड़ें। प्रीसेट के बाहर किए गए मैन्युअल बदलाव, जैसे किसी लुक के लिए एक्सपोज़र, बने रहते हैं। प्रीसेट द्वारा नियंत्रित किसी सेटिंग को मैन्युअली बदलने पर उसका मात्रा समायोजन समाप्त हो जाता है; फिर मौजूदा संपादन अगले प्रीसेट का आधार बन जाता है।",
     "Copy Settings...": "सेटिंग्स की प्रतिलिपि...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में 15 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।"
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "संपादन टूलबार में Presets खोलें। Built-in में 23 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama का हर लुक फ़िल्म सिमुलेशन चालू करता है और टोन, रंग, ग्रेन, चमक या विग्नेट प्रभाव जोड़ता है। पैक में आठ लुक हैं, जिनमें श्वेत-श्याम Silver Noir भी शामिल है।"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1193,7 +1193,7 @@
         {
           "title": "Chọn một bộ sưu tập",
           "paragraphs": [
-            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
+            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 23 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
           ],
           "steps": [
             "Chọn Tích hợp sẵn, Mục của bạn, hoặc Cộng đồng. Tìm theo tên, mô tả, người tạo, hoặc đối tượng.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Sắp xếp các gói thiết lập sẵn",
           "paragraphs": [
-            "Thiết lập sẵn xuất hiện dưới dạng các hàng ngang trong những gói có thể thu gọn. Các phong cách tích hợp sẵn ban đầu được chia vào các gói Màu sắc, Phim và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+            "Các thiết lập sẵn xuất hiện dưới dạng hàng ngang trong các gói có thể thu gọn. Các phong cách tích hợp ban đầu được chia thành các gói Màu, Phim, Film Simulation Drama và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+            "Mỗi phong cách trong Film Simulation Drama đều bật mô phỏng phim và thêm hiệu ứng tông, màu, hạt, quầng sáng hoặc tối góc. Gói gồm tám phong cách, trong đó có Silver Noir đen trắng.",
             "Chọn Gói mới… để tạo một gói có tên trong bộ sưu tập hiện tại. Kéo một thiết lập sẵn lên tiêu đề của gói, hoặc mở phần chi tiết … của thiết lập sẵn rồi chọn Chuyển vào gói. Dùng … bên cạnh gói để đổi tên. Khi xóa gói, các thiết lập sẵn trong gói sẽ trở về nhóm mặc định mà không bị xóa. Cách sắp xếp gói được lưu trên máy tính này."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

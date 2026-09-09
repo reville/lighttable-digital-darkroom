@@ -1193,7 +1193,7 @@
         {
           "title": "Eine Sammlung auswählen",
           "paragraphs": [
-            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 15 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
+            "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 23 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
           ],
           "steps": [
             "Wähle Integriert, Yours oder Community. Suche nach Name, Beschreibung, Urheber oder Motiv.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Vorgabenpakete organisieren",
           "paragraphs": [
-            "Vorgaben erscheinen als horizontale Zeilen in einklappbaren Paketen. Integrierte Looks sind zunächst in den Paketen „Farbe“, „Film“ und „Schwarzweiß“ angeordnet. Klicke auf eine Paketüberschrift, um das Paket auf- oder zuzuklappen.",
+            "Vorgaben erscheinen als horizontale Zeilen in aufklappbaren Paketen. Die integrierten Looks sind zunächst in Farbe, Film, Film Simulation Drama und Schwarzweiß gruppiert. Klicke auf eine Paketüberschrift, um das Paket auf- oder zuzuklappen.",
+            "Jeder Look in Film Simulation Drama aktiviert die Filmsimulation und ergänzt Tonwert-, Farb-, Korn-, Leucht- oder Vignettierungseffekte. Das Paket enthält acht Looks, darunter Silver Noir in Schwarzweiß.",
             "Wähle „Neues Paket…“, um in der aktuellen Sammlung ein benanntes Paket zu erstellen. Ziehe eine Vorgabe auf dessen Überschrift oder öffne über … die Details der Vorgabe und wähle „In Paket verschieben“. Mit … neben einem Paket kannst du es umbenennen. Beim Entfernen eines Pakets kehren seine Vorgaben in ihre Standardgruppen zurück, ohne gelöscht zu werden. Die Paketorganisation wird auf diesem Computer gespeichert."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

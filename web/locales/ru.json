@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Организация наборов пресетов",
     "Preset details: {name}": "Сведения о пресете: {name}",
     "Preset packs": "Наборы пресетов",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Пресеты отображаются горизонтальными строками внутри сворачиваемых наборов. Встроенные стили изначально распределены по наборам «Цвет», «Пленка» и «Чёрно-белое». Нажмите на заголовок набора, чтобы развернуть или свернуть его.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Пресеты отображаются горизонтальными строками в сворачиваемых наборах. Встроенные образы изначально распределены по наборам «Цвет», «Плёнка», Film Simulation Drama и «Чёрно-белое». Нажмите на заголовок набора, чтобы развернуть или свернуть его.",
     "Remove pack": "Удалить набор",
     "Rename pack": "Переименовать набор",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Сохраните пресет в разделе «Ваши», откройте его сведения кнопкой … и проверьте сводку включённых настроек в разделе «Отправка в сообщество».",
     "Select a photo, expand a pack, and click a preset row.": "Выберите фото, разверните набор и нажмите на строку пресета.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "При переключении между строками пресетов используется состояние редактирования до первого пресета, чтобы стили не накапливались. Ручные изменения вне пресета, например экспозиция для стиля, сохраняются. Ручное изменение настройки, управляемой пресетом, завершает его регулировку «Количество»; текущее состояние редактирования становится основой для следующего пресета.",
     "Copy Settings...": "Копировать настройки...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Откройте Пресеты на панели редактирования. Встроенные содержит 15 включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Откройте Пресеты на панели редактирования. Встроенные содержит 23 включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Каждый образ в Film Simulation Drama включает симуляцию плёнки и добавляет эффекты тона, цвета, зерна, свечения или виньетирования. Набор содержит восемь образов, включая чёрно-белый Silver Noir."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1193,7 +1193,7 @@
         {
           "title": "Choisir une collection",
           "paragraphs": [
-            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
+            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 23 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
           ],
           "steps": [
             "Choisissez Intégré, Vos ou Communauté. Recherchez par nom, description, créateur ou sujet.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Organiser les packs de préréglages",
           "paragraphs": [
-            "Les préréglages apparaissent sous forme de lignes horizontales dans des packs repliables. Les rendus intégrés sont initialement répartis dans les packs Couleur, Film et Noir et blanc. Cliquez sur l’en-tête d’un pack pour le développer ou le replier.",
+            "Les préréglages apparaissent sous forme de lignes horizontales dans des packs repliables. Les rendus intégrés sont initialement regroupés dans Couleur, Film, Film Simulation Drama et Noir et blanc. Cliquez sur le titre d’un pack pour le déplier ou le replier.",
+            "Chaque rendu de Film Simulation Drama active la simulation de film et ajoute des effets de tonalité, de couleur, de grain, de lueur ou de vignettage. Le pack contient huit rendus, dont Silver Noir en noir et blanc.",
             "Choisissez Nouveau pack… pour créer un pack nommé dans la collection actuelle. Faites glisser un préréglage sur son en-tête, ou ouvrez ses détails avec … et choisissez Déplacer vers un pack. Utilisez … à côté d’un pack pour le renommer. Retirer un pack remet ses préréglages dans leurs groupes par défaut sans les supprimer. L’organisation des packs est enregistrée sur cet ordinateur."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

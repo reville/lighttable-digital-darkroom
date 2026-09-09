@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Organizowanie pakietów presetów",
     "Preset details: {name}": "Szczegóły presetu: {name}",
     "Preset packs": "Pakiety presetów",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo podzielone na pakiety Kolor, Film i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo pogrupowane w pakietach Kolor, Film, Film Simulation Drama i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
     "Remove pack": "Usuń pakiet",
     "Rename pack": "Zmień nazwę pakietu",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Zapisz preset w kolekcji Twoje, otwórz jego szczegóły przyciskiem … i sprawdź podsumowanie zawartych ustawień w sekcji Zgłoszenie społeczności.",
     "Select a photo, expand a pack, and click a preset row.": "Wybierz zdjęcie, rozwiń pakiet i kliknij wiersz presetu.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Przełączanie wierszy presetów korzysta z edycji sprzed zastosowania pierwszego presetu, dzięki czemu style się nie nakładają. Ręczne zmiany poza zakresem presetu, takie jak ekspozycja w przypadku stylu, są zachowywane. Ręczna zmiana ustawienia kontrolowanego przez preset kończy jego regulację Ilość; bieżąca edycja staje się wtedy podstawą dla następnego presetu.",
     "Copy Settings...": "Kopiuj ustawienia...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 15 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 23 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Każdy styl w Film Simulation Drama włącza symulację filmu i dodaje efekty tonów, koloru, ziarna, poświaty lub winietowania. Pakiet zawiera osiem stylów, w tym czarno-biały Silver Noir."
   },
   "plurals": {
     " · {count} paired file linked": {

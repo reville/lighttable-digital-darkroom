@@ -132,6 +132,11 @@ choose this computer's local timezone. Metadata and recipe-sidecar policies are
 saved with the recipe. Cancel stops queued work, waits for active cleanup, and
 retains completed files. Export details list skipped files, errors and warnings.
 
+The **Film Simulation Drama** preset pack includes eight looks that enable film
+simulation and layer creative effects over it: Cinema Teal, Tungsten Rain, Portra
+Ember, Gold Rush, Velvia Storm, Faded Epic, Silver Noir, and Velvet Dusk. Each
+combines a film stock with tone, color, grain, glow, or vignette adjustments.
+
 ### Local by design
 
 Photos, the SQLite catalog, edit history, and render caches stay on your machine.

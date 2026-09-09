@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Vorgabenpakete organisieren",
     "Preset details: {name}": "Vorgabendetails: {name}",
     "Preset packs": "Vorgabenpakete",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Vorgaben erscheinen als horizontale Zeilen in einklappbaren Paketen. Integrierte Looks sind zunächst in den Paketen „Farbe“, „Film“ und „Schwarzweiß“ angeordnet. Klicke auf eine Paketüberschrift, um das Paket auf- oder zuzuklappen.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Vorgaben erscheinen als horizontale Zeilen in aufklappbaren Paketen. Die integrierten Looks sind zunächst in Farbe, Film, Film Simulation Drama und Schwarzweiß gruppiert. Klicke auf eine Paketüberschrift, um das Paket auf- oder zuzuklappen.",
     "Remove pack": "Paket entfernen",
     "Rename pack": "Paket umbenennen",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Speichere eine Vorgabe unter „Deine“, öffne über … ihre Details und prüfe die Zusammenfassung der enthaltenen Einstellungen unter „Community-Einreichung“.",
     "Select a photo, expand a pack, and click a preset row.": "Wähle ein Foto aus, klappe ein Paket auf und klicke auf eine Vorgabenzeile.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Beim Wechseln zwischen Vorgabenzeilen wird die Bearbeitung vor der ersten Vorgabe verwendet, damit sich Looks nicht aufsummieren. Manuelle Änderungen außerhalb der Vorgabe, etwa die Belichtung bei einem Look, bleiben erhalten. Änderst du eine von der Vorgabe gesteuerte Einstellung manuell, endet ihre Anpassung über „Menge“; die aktuelle Bearbeitung wird dann zur Grundlage für die nächste Vorgabe.",
     "Copy Settings...": "Einstellungen kopieren...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 15 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Öffne Vorgaben in der Bearbeitungsleiste. Integriert enthält 23 mitgelieferte Looks und funktioniert offline. Yours enthält gespeicherte Looks, Importe und installierte Community-Vorgaben. Community durchsucht die geprüfte Online-Sammlung.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Jeder Look in Film Simulation Drama aktiviert die Filmsimulation und ergänzt Tonwert-, Farb-, Korn-, Leucht- oder Vignettierungseffekte. Das Paket enthält acht Looks, darunter Silver Noir in Schwarzweiß."
   },
   "plurals": {
     " · {count} paired file linked": {

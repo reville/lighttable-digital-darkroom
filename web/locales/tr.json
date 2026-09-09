@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Hazır ayar paketlerini düzenleme",
     "Preset details: {name}": "Hazır ayar ayrıntıları: {name}",
     "Preset packs": "Hazır ayar paketleri",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Hazır ayarlar, daraltılabilir paketlerin içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film ve Siyah Beyaz paketlerinde bulunur. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Ön ayarlar, daraltılabilir paketler içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film, Film Simulation Drama ve Siyah Beyaz paketlerinde yer alır. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
     "Remove pack": "Paketi kaldır",
     "Rename pack": "Paketi yeniden adlandır",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Sizin'de bir hazır ayar kaydedin, … ayrıntılarını açın ve Topluluk gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
     "Select a photo, expand a pack, and click a preset row.": "Bir fotoğraf seçin, bir paketi genişletin ve bir hazır ayar satırına tıklayın.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Hazır ayar satırları arasında geçiş yapmak, görünümlerin birikmemesi için ilk hazır ayardan önceki düzenlemeyi kullanır. Bir görünümün pozlaması gibi hazır ayarın dışındaki elle yapılan değişiklikler korunur. Hazır ayarın kontrol ettiği bir ayarı elle değiştirmek, Miktar ayarlamasını sonlandırır; geçerli düzenleme sonraki hazır ayarın temeli olur.",
     "Copy Settings...": "Ayarları kopyala...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Düzenleme araç çubuğunda Presets'i açın. Built-in, 23 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama içindeki her görünüm film simülasyonunu etkinleştirir ve ton, renk, gren, parıltı veya vinyet efektleri ekler. Paket, siyah beyaz Silver Noir dahil sekiz görünüm içerir."
   },
   "plurals": {
     " · {count} paired file linked": {

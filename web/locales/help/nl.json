@@ -1193,7 +1193,7 @@
         {
           "title": "Kies een collectie",
           "paragraphs": [
-            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 15 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
+            "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 23 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling."
           ],
           "steps": [
             "Kies Ingebouwd, Uw of Community. Zoek op naam, beschrijving, maker of onderwerp.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Voorinstellingspakketten organiseren",
           "paragraphs": [
-            "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in de pakketten Kleur, Film en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+            "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in Kleur, Film, Film Simulation Drama en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
+            "Elke look in Film Simulation Drama schakelt filmsimulatie in en voegt effecten voor toon, kleur, korrel, gloed of vignettering toe. Het pakket bevat acht looks, waaronder Silver Noir in zwart-wit.",
             "Kies Nieuw pakket… om een benoemd pakket in de huidige collectie te maken. Sleep een voorinstelling naar de kop ervan, of open de details van de voorinstelling via … en kies Verplaatsen naar pakket. Gebruik … naast een pakket om de naam te wijzigen. Als je een pakket verwijdert, gaan de voorinstellingen terug naar hun standaardgroepen zonder te worden gewist. De pakketindeling wordt op deze computer opgeslagen."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "整理预设包",
     "Preset details: {name}": "预设详情：{name}",
     "Preset packs": "预设包",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "预设以横向行的形式显示在可折叠的预设包中。内置风格最初分为“颜色”“胶片”和“黑白”预设包。点击预设包标题可展开或折叠。",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "预设以水平行的形式显示在可折叠的预设包中。内置风格最初分组在“彩色”“胶片”“Film Simulation Drama”和“黑白”预设包中。点击预设包标题可展开或折叠。",
     "Remove pack": "移除预设包",
     "Rename pack": "重命名预设包",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "在“你的”中保存预设，通过“…”打开详情，并查看“社区提交”下的所含设置摘要。",
     "Select a photo, expand a pack, and click a preset row.": "选择照片，展开预设包，然后点击预设行。",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "切换预设行时会使用应用第一个预设之前的编辑状态，以免风格叠加。预设范围以外的手动更改（例如风格的曝光）会予以保留。手动更改由预设控制的设置会结束其“数量”调整；当前编辑状态随后成为下一个预设的基准。",
     "Copy Settings...": "复制设置...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含15 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。"
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含23 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama 中的每种风格都会启用胶片模拟，并叠加色调、色彩、颗粒、辉光或暗角效果。此预设包包含八种风格，其中包括黑白风格 Silver Noir。"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Organiser les packs de préréglages",
     "Preset details: {name}": "Détails du préréglage : {name}",
     "Preset packs": "Packs de préréglages",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Les préréglages apparaissent sous forme de lignes horizontales dans des packs repliables. Les rendus intégrés sont initialement répartis dans les packs Couleur, Film et Noir et blanc. Cliquez sur l’en-tête d’un pack pour le développer ou le replier.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Les préréglages apparaissent sous forme de lignes horizontales dans des packs repliables. Les rendus intégrés sont initialement regroupés dans Couleur, Film, Film Simulation Drama et Noir et blanc. Cliquez sur le titre d’un pack pour le déplier ou le replier.",
     "Remove pack": "Retirer le pack",
     "Rename pack": "Renommer le pack",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Enregistrez un préréglage dans Vos, ouvrez ses détails avec … et vérifiez le résumé des réglages inclus sous Soumission à la communauté.",
     "Select a photo, expand a pack, and click a preset row.": "Sélectionnez une photo, développez un pack et cliquez sur la ligne d’un préréglage.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Le passage d’une ligne de préréglage à une autre utilise la retouche précédant le premier préréglage afin que les rendus ne se cumulent pas. Les modifications manuelles extérieures au préréglage, comme l’exposition pour un rendu, sont conservées. Modifier manuellement un réglage contrôlé par le préréglage met fin à son ajustement Quantité ; la retouche actuelle devient alors la base du prochain préréglage.",
     "Copy Settings...": "Copier les réglages...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 23 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Chaque rendu de Film Simulation Drama active la simulation de film et ajoute des effets de tonalité, de couleur, de grain, de lueur ou de vignettage. Le pack contient huit rendus, dont Silver Noir en noir et blanc."
   },
   "plurals": {
     " · {count} paired file linked": {

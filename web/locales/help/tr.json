@@ -1193,7 +1193,7 @@
         {
           "title": "Bir koleksiyon seç",
           "paragraphs": [
-            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
+            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 23 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
           ],
           "steps": [
             "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Hazır ayar paketlerini düzenleme",
           "paragraphs": [
-            "Hazır ayarlar, daraltılabilir paketlerin içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film ve Siyah Beyaz paketlerinde bulunur. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+            "Ön ayarlar, daraltılabilir paketler içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film, Film Simulation Drama ve Siyah Beyaz paketlerinde yer alır. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+            "Film Simulation Drama içindeki her görünüm film simülasyonunu etkinleştirir ve ton, renk, gren, parıltı veya vinyet efektleri ekler. Paket, siyah beyaz Silver Noir dahil sekiz görünüm içerir.",
             "Geçerli koleksiyonda adlandırılmış bir paket oluşturmak için Yeni paket… seçeneğini seçin. Bir hazır ayarı paketin başlığına sürükleyin veya hazır ayarın … ayrıntılarını açıp Pakete taşı seçeneğini seçin. Paketi yeniden adlandırmak için yanındaki … düğmesini kullanın. Bir paketi kaldırmak, hazır ayarlarını silmeden varsayılan gruplarına döndürür. Paket düzeni bu bilgisayara kaydedilir."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

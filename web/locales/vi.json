@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "Sắp xếp các gói thiết lập sẵn",
     "Preset details: {name}": "Chi tiết thiết lập sẵn: {name}",
     "Preset packs": "Gói thiết lập sẵn",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "Thiết lập sẵn xuất hiện dưới dạng các hàng ngang trong những gói có thể thu gọn. Các phong cách tích hợp sẵn ban đầu được chia vào các gói Màu sắc, Phim và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Các thiết lập sẵn xuất hiện dưới dạng hàng ngang trong các gói có thể thu gọn. Các phong cách tích hợp ban đầu được chia thành các gói Màu, Phim, Film Simulation Drama và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
     "Remove pack": "Xóa gói",
     "Rename pack": "Đổi tên gói",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "Lưu một thiết lập sẵn trong Của bạn, mở phần chi tiết … rồi xem lại bản tóm tắt các cài đặt được bao gồm bên dưới Bài gửi cộng đồng.",
     "Select a photo, expand a pack, and click a preset row.": "Chọn một ảnh, mở rộng một gói rồi nhấp vào một hàng thiết lập sẵn.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Khi chuyển giữa các hàng thiết lập sẵn, ứng dụng sử dụng bản chỉnh sửa trước thiết lập sẵn đầu tiên để các phong cách không cộng dồn. Các thay đổi thủ công nằm ngoài thiết lập sẵn, chẳng hạn phơi sáng cho một phong cách, được giữ lại. Việc thay đổi thủ công một cài đặt do thiết lập sẵn kiểm soát sẽ kết thúc điều chỉnh Lượng; bản chỉnh sửa hiện tại trở thành cơ sở cho thiết lập sẵn tiếp theo.",
     "Copy Settings...": "Sao chép cài đặt...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 23 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Mỗi phong cách trong Film Simulation Drama đều bật mô phỏng phim và thêm hiệu ứng tông, màu, hạt, quầng sáng hoặc tối góc. Gói gồm tám phong cách, trong đó có Silver Noir đen trắng."
   },
   "plurals": {
     " · {count} paired file linked": {

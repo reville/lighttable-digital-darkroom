@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "จัดระเบียบแพ็กพรีเซ็ต",
     "Preset details: {name}": "รายละเอียดพรีเซ็ต: {name}",
     "Preset packs": "แพ็กพรีเซ็ต",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "พรีเซ็ตจะแสดงเป็นแถวแนวนอนภายในแพ็กที่ยุบได้ ลุคในตัวจะเริ่มต้นอยู่ในแพ็ก สี ฟิล์ม และ ขาวดำ คลิกหัวข้อแพ็กเพื่อขยายหรือยุบ",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "พรีเซ็ตแสดงเป็นแถวแนวนอนภายในแพ็กที่พับเก็บได้ ลุคในตัวเริ่มต้นอยู่ในแพ็กสี ฟิล์ม Film Simulation Drama และขาวดำ คลิกหัวข้อแพ็กเพื่อขยายหรือยุบ",
     "Remove pack": "นำแพ็กออก",
     "Rename pack": "เปลี่ยนชื่อแพ็ก",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "บันทึกพรีเซ็ตในของคุณ เปิดรายละเอียด … แล้วตรวจสอบสรุปการตั้งค่าที่รวมอยู่ใต้ การส่งจากชุมชน",
     "Select a photo, expand a pack, and click a preset row.": "เลือกภาพถ่าย ขยายแพ็ก แล้วคลิกแถวพรีเซ็ต",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "การสลับแถวพรีเซ็ตจะใช้การแก้ไขก่อนพรีเซ็ตแรกเพื่อไม่ให้ลุคสะสมซ้อนกัน การเปลี่ยนแปลงด้วยตนเองนอกขอบเขตพรีเซ็ต เช่น ค่ารับแสงสำหรับลุค จะยังคงอยู่ การเปลี่ยนการตั้งค่าที่พรีเซ็ตควบคุมด้วยตนเองจะยุติการปรับปริมาณของพรีเซ็ตนั้น จากนั้นการแก้ไขปัจจุบันจะกลายเป็นฐานสำหรับพรีเซ็ตถัดไป",
     "Copy Settings...": "คัดลอกการตั้งค่า...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 15 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน"
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 23 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "ทุกลุคใน Film Simulation Drama จะเปิดการจำลองฟิล์มและเพิ่มเอฟเฟกต์โทน สี เกรน แสงฟุ้ง หรือขอบมืด แพ็กนี้มีแปดลุค รวมถึง Silver Noir แบบขาวดำ"
   },
   "plurals": {
     " · {count} paired file linked": {

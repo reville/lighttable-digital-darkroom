@@ -1193,7 +1193,7 @@
         {
           "title": "Scegli una collezione",
           "paragraphs": [
-            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
+            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 23 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
           ],
           "steps": [
             "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Organizzare i pacchetti di predefiniti",
           "paragraphs": [
-            "I predefiniti appaiono come righe orizzontali all’interno di pacchetti comprimibili. Gli stili integrati sono inizialmente suddivisi nei pacchetti Colore, Pellicola e Bianco e nero. Fai clic sull’intestazione di un pacchetto per espanderlo o comprimerlo.",
+            "I predefiniti appaiono come righe orizzontali in pacchetti comprimibili. I look integrati sono inizialmente organizzati nei pacchetti Colore, Pellicola, Film Simulation Drama e Bianco e nero. Fai clic sul titolo di un pacchetto per espanderlo o comprimerlo.",
+            "Ogni look di Film Simulation Drama attiva la simulazione pellicola e aggiunge effetti di tono, colore, grana, bagliore o vignettatura. Il pacchetto contiene otto look, tra cui Silver Noir in bianco e nero.",
             "Scegli Nuovo pacchetto… per creare un pacchetto con un nome nella raccolta corrente. Trascina un predefinito sulla sua intestazione oppure apri i dettagli del predefinito con … e scegli Sposta nel pacchetto. Usa … accanto a un pacchetto per rinominarlo. Rimuovendo un pacchetto, i suoi predefiniti tornano ai gruppi predefiniti senza essere eliminati. L’organizzazione dei pacchetti viene salvata su questo computer."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

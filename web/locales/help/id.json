@@ -1193,7 +1193,7 @@
         {
           "title": "Pilih koleksi",
           "paragraphs": [
-            "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
+            "Buka Preset di toolbar pengeditan. Bawaan berisi 23 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
           ],
           "steps": [
             "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Mengatur paket preset",
           "paragraphs": [
-            "Preset ditampilkan sebagai baris horizontal dalam paket yang dapat diciutkan. Tampilan bawaan awalnya dikelompokkan dalam paket Warna, Film, dan Hitam Putih. Klik judul paket untuk meluaskan atau menciutkannya.",
+            "Preset ditampilkan sebagai baris horizontal di dalam paket yang dapat diciutkan. Tampilan bawaan awalnya dikelompokkan dalam paket Warna, Film, Film Simulation Drama, dan Hitam Putih. Klik judul paket untuk memperluas atau menciutkannya.",
+            "Setiap tampilan dalam Film Simulation Drama mengaktifkan simulasi film dan menambahkan efek rona, warna, butiran, pendar, atau vinyet. Paket ini berisi delapan tampilan, termasuk Silver Noir hitam putih.",
             "Pilih Paket baru… untuk membuat paket bernama dalam koleksi saat ini. Seret preset ke judul paket, atau buka detail preset melalui … lalu pilih Pindahkan ke paket. Gunakan … di samping paket untuk mengganti namanya. Menghapus paket mengembalikan presetnya ke kelompok default tanpa menghapus preset tersebut. Susunan paket disimpan di komputer ini."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

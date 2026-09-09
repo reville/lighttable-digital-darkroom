@@ -1193,7 +1193,7 @@
         {
           "title": "Elegir una colección",
           "paragraphs": [
-            "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
+            "Abre Presets en la barra de herramientas de edición. Built-in contiene 23 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
           ],
           "steps": [
             "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
@@ -1208,7 +1208,8 @@
         {
           "title": "Organizar paquetes de ajustes preestablecidos",
           "paragraphs": [
-            "Los ajustes preestablecidos aparecen como filas horizontales dentro de paquetes plegables. Los estilos integrados se organizan inicialmente en los paquetes Color, Película y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
+            "Los ajustes preestablecidos aparecen en filas horizontales dentro de paquetes plegables. Los looks incluidos se agrupan inicialmente en Color, Película, Film Simulation Drama y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
+            "Cada look de Film Simulation Drama activa la simulación de película y añade efectos de tono, color, grano, resplandor o viñeteado. El paquete contiene ocho looks, incluido Silver Noir en blanco y negro.",
             "Elige Nuevo paquete… para crear un paquete con nombre en la colección actual. Arrastra un ajuste preestablecido a su encabezado, o abre sus detalles con … y elige Mover a paquete. Usa … junto a un paquete para cambiarle el nombre. Al quitar un paquete, sus ajustes preestablecidos vuelven a sus grupos predeterminados sin eliminarse. La organización de los paquetes se guarda en esta computadora."
           ]
         },
@@ -3195,5 +3196,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
 }

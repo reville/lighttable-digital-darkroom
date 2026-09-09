@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4150,14 +4150,15 @@
     "Organize preset packs": "تنظيم حزم الإعدادات المسبقة",
     "Preset details: {name}": "تفاصيل الإعداد المسبق: {name}",
     "Preset packs": "حزم الإعدادات المسبقة",
-    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.": "تظهر الإعدادات المسبقة كصفوف أفقية داخل حزم قابلة للطي. تُوزَّع المظاهر المضمَّنة في البداية على حزم «لون» و«فيلم» و«أبيض وأسود». انقر على عنوان الحزمة لتوسيعها أو طيها.",
+    "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "تظهر الإعدادات المسبقة كصفوف أفقية داخل حزم قابلة للطي. تبدأ المظاهر المدمجة في حزم اللون والفيلم وFilm Simulation Drama والأبيض والأسود. انقر على عنوان الحزمة لتوسيعها أو طيها.",
     "Remove pack": "إزالة الحزمة",
     "Rename pack": "إعادة تسمية الحزمة",
     "Save a preset in Yours, open its … details, and review the included-settings summary under Community submission.": "احفظ إعدادًا مسبقًا في «خاصتك»، وافتح تفاصيله عبر …، وراجع ملخص الإعدادات المضمَّنة ضمن «إرسال من المجتمع».",
     "Select a photo, expand a pack, and click a preset row.": "حدد صورة، ووسِّع حزمة، ثم انقر على صف إعداد مسبق.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "يستخدم التبديل بين صفوف الإعدادات المسبقة التعديل السابق لأول إعداد مسبق حتى لا تتراكم المظاهر. تُحفَظ التغييرات اليدوية خارج الإعداد المسبق، مثل التعريض لمظهر معين. يؤدي تغيير إعداد يتحكم به الإعداد المسبق يدويًا إلى إنهاء ضبط «الكمية» الخاص به؛ ثم يصبح التعديل الحالي أساسًا للإعداد المسبق التالي.",
     "Copy Settings...": "نسخ الإعدادات...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على 15 looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت."
+    "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على 23 looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت.",
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "يفعّل كل مظهر في Film Simulation Drama محاكاة الفيلم ويضيف تأثيرات الدرجات اللونية أو اللون أو الحبيبات أو التوهج أو التظليل المحيطي. تحتوي الحزمة على ثمانية مظاهر، منها Silver Noir بالأبيض والأسود."
   },
   "plurals": {
     " · {count} paired file linked": {
