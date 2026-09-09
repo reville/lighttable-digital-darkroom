@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} फ़ोटो चुना गया",
     "{count} preset file could not be read": "{count} प्रीसेट फ़ाइल पढ़ी नहीं जा सकी",
     "{count} preset files could not be read": "{count} प्रीसेट फ़ाइलें पढ़ी नहीं जा सकीं",
-    "{count} preset · click to apply, click again to turn off": "{count} प्रीसेट · लागू करने के लिए क्लिक करें, बंद करने के लिए फिर से क्लिक करें",
-    "{count} presets · click to apply, click again to turn off": "{count} प्रीसेट · लागू करने के लिए क्लिक करें, बंद करने के लिए फिर से क्लिक करें",
     "{count} rated photo": "{count} रेटेड फ़ोटो",
     "{count} rated photos": "{count} रेटेड फ़ोटो",
     "{count} selected": "{count} चयनित",
@@ -4384,10 +4382,6 @@
       "one": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।",
       "other": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।"
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} प्रीसेट · लागू करने के लिए क्लिक करें, बंद करने के लिए फिर से क्लिक करें",
-      "other": "{count} प्रीसेट · लागू करने के लिए क्लिक करें, बंद करने के लिए फिर से क्लिक करें"
-    },
     "{count} empty file": {
       "one": "{count} खाली फ़ाइल",
       "other": "{count} खाली फ़ाइलें"
@@ -4421,5 +4415,5 @@
       "other": "{count} अनुपलब्ध फ़ोटो छोड़ी गईं"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }

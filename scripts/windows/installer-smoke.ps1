@@ -79,11 +79,15 @@ try {
     $UnrelatedFile = Join-Path $InstallPath "user-owned-file.txt"
     Set-Content -LiteralPath $UnrelatedFile -Value "preserve unrelated files" -NoNewline
 
-    Set-Content -Encoding ascii -NoNewline (Join-Path $InstallPath "install-channel.txt") "winget"
+    Set-Content -LiteralPath (Join-Path $InstallPath "install-channel.txt") -Value "winget" -Encoding ascii -NoNewline
+    if ([IO.File]::ReadAllText((Join-Path $InstallPath "install-channel.txt")) -cne "winget") { throw "Could not set the repair ownership fixture" }
     # Exercise reinstall/upgrade registration and CLI discovery outside the bundle.
     Invoke-InstallerProcess $Installer "/S /D=$InstallPath"
-    if ((Get-Content -Raw (Join-Path $InstallPath "install-channel.txt")) -ne "winget") {
-        throw "Reinstallation lost package-manager update ownership"
+    $RepairedOwnerPath = Join-Path $InstallPath "install-channel.txt"
+    $RepairedOwner = Get-Content -Raw $RepairedOwnerPath
+    if ($RepairedOwner -ne "winget") {
+        $OwnerBytes = [BitConverter]::ToString([IO.File]::ReadAllBytes($RepairedOwnerPath))
+        throw "Reinstallation lost package-manager update ownership: '$RepairedOwner' (bytes $OwnerBytes)"
     }
     if ((Get-RawUserPath) -cne $FirstPath) { throw "Reinstallation changed user PATH" }
     $env:Path = [Environment]::ExpandEnvironmentVariables([string](Get-RawUserPath)) + ";" + $BeforeProcessPath
@@ -96,8 +100,16 @@ try {
     if ($LASTEXITCODE -ne 0 -or $Help -notmatch "usage: lighttable") {
         throw "The installed CLI could not run using its bundled runtime"
     }
-    & $Command.Source --invalid-smoke-test-option 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 2) { throw "The CLI wrapper did not preserve the usage-error exit code" }
+    # Windows PowerShell 5.1 turns redirected native stderr into error records.
+    # This command deliberately writes usage to stderr; validate its exit code.
+    try {
+        $ErrorActionPreference = "Continue"
+        & $Command.Source --invalid-smoke-test-option 2>&1 | Out-Null
+        $UsageExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = "Stop"
+    }
+    if ($UsageExitCode -ne 2) { throw "The CLI wrapper did not preserve the usage-error exit code" }
     $PortableHelp = & (Join-Path $InstallPath "lighttable.cmd") --help 2>&1 | Out-String
     if ($LASTEXITCODE -ne 0 -or $PortableHelp -notmatch "usage: lighttable") {
         throw "The portable CLI wrapper failed outside the bundle directory"

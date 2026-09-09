@@ -68,6 +68,7 @@ import media_formats  # noqa: E402
 import media_availability  # noqa: E402
 import file_identity  # noqa: E402
 import durable_io  # noqa: E402
+import launcher_control  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
@@ -81,6 +82,7 @@ from jobs import JobRegistry  # noqa: E402
 from validation import ValidationError, clean_state_patch  # noqa: E402
 from render_scheduling import LatestWorkQueue, PriorityGate, RenderCancelled  # noqa: E402
 from raw_decode_cache import DecodedRawCache, source_identity  # noqa: E402
+from lighttable_cli.instances import process_is_alive  # noqa: E402
 
 FOLDER = Path(os.environ.get("LIGHTTABLE_DIR", "")).expanduser()
 PORT = int(os.environ.get("LIGHTTABLE_PORT", "8321"))
@@ -227,12 +229,12 @@ def _catalog_lease_holder(catalog_path: Path) -> dict | None:
             continue
         pid = record.get("pid")
         try:
-            os.kill(int(pid), 0)
-        except (TypeError, ValueError, ProcessLookupError):
+            pid = int(pid)
+        except (TypeError, ValueError):
             continue
-        except PermissionError:
-            pass  # exists, owned by another user: still live
-        return {"pid": int(pid), "port": record.get("port"),
+        if not process_is_alive(pid):
+            continue
+        return {"pid": pid, "port": record.get("port"),
                 "folder": record.get("folder"),
                 "headless": bool(record.get("headless")),
                 "url": f"http://{record.get('host', BOUND_HOST)}:"
@@ -3196,9 +3198,34 @@ def _inside_git_checkout(path: Path) -> bool:
                for candidate in (resolved, *resolved.parents))
 
 
+def _portable_package_app(path: Path) -> Path | None:
+    for candidate in (path, *path.parents):
+        if (candidate.name == "LightTable" and candidate.parent.name == "Resources"
+                and (candidate.parent.parent / "Python").is_dir()):
+            return candidate
+    return None
+
+
 def _git_revision(path: Path) -> str | None:
-    # An installed bundle sits in no repository. Two guaranteed-miss git
-    # launches at import time were a visible startup cost on Windows.
+    try:
+        resolved = path.resolve()
+    except OSError:
+        return None
+    package_app = _portable_package_app(resolved)
+    if package_app is not None:
+        # A portable package may be extracted inside a developer/CI checkout.
+        # Its enclosing Git repository is never the package's source identity.
+        # The app manifest also cannot identify the separately vendored source.
+        if resolved != package_app:
+            return None
+        try:
+            manifest = json.loads((package_app.parent.parent / "build-manifest.json")
+                                  .read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            return None
+        revision = manifest.get("source_revision") if isinstance(manifest, dict) else None
+        return revision if isinstance(revision, str) and re.fullmatch(r"[0-9a-fA-F]{40}", revision) else None
+    # Ordinary installed source outside a checkout has no Git provenance.
     if not _inside_git_checkout(path):
         return None
     try:
@@ -7487,10 +7514,21 @@ def _watch_parent() -> None:
             _exit_with_parent()
 
 
-def _exit_with_parent() -> None:
+def _watch_launcher_stdin(reader) -> None:
+    # Only launchers that create an owned pipe enable this channel. EOF means
+    # the launcher released this server, including normal window/folder closes.
+    try:
+        with reader:
+            reader.read()
+    except (AttributeError, OSError, ValueError):
+        return
+    _exit_with_parent("launcher-closed")
+
+
+def _exit_with_parent(reason: str = "parent-gone") -> None:
     # `os._exit` skips atexit, so record the ending first: a launcher that
     # vanished is not a server crash and must not be counted as one.
-    SESSION.end("parent-gone")
+    SESSION.end(reason)
     STARTUP.remove()
     os._exit(0)
 
@@ -7512,10 +7550,38 @@ class LightTableServer(ThreadingHTTPServer):
         super().handle_error(request, client_address)
 
 
+def prepare_windows_image_runtime() -> None:
+    if sys.platform != "win32":
+        return
+    # Windows holds its loader lock while initializing extension DLLs. A
+    # background matplotlib import (via colour) can wait for Python's GIL while
+    # lensfun holds the GIL and waits for that loader lock. Initialize these
+    # native dependencies before scanning or serving concurrent image requests.
+    Image.init()
+    for initialise in (lambda: __import__("colour"), edits._lens_database):
+        try:
+            initialise()
+        except Exception:
+            # Optional colour/lens support retains its existing lazy fallback.
+            pass
+
+
 def main() -> None:
     global AI_INDEX, FACE_INDEX, WATCH_SERVICE, PORT, HTTPD, LAUNCH_NOTICE
     STARTUP.path = recovery.startup_report_path(instance_directory())
     STARTUP.phase("starting", T("Starting LightTable…"))
+    prepare_windows_image_runtime()
+    if IS_WINDOWS and os.environ.get("LIGHTTABLE_WATCH_STDIN") == "1":
+        reader = launcher_control.separate_launcher_stdin()
+        try:
+            threading.Thread(target=_watch_launcher_stdin, args=(reader,), daemon=True,
+                             name="lighttable-launcher-control").start()
+        except BaseException:
+            try:
+                reader.close()
+            except OSError:
+                pass
+            raise
     if os.environ.get("LIGHTTABLE_WATCH_PARENT"):
         threading.Thread(target=_watch_parent, daemon=True).start()
     if not FOLDER.is_dir():

@@ -54,6 +54,19 @@ class AtomicWriteTests(unittest.TestCase):
 
 
 class PublishTests(unittest.TestCase):
+    def test_completed_files_publish_with_and_without_replacement(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for publish in (durable_io.publish_file, durable_io.publish_file_no_replace):
+                with self.subTest(publisher=publish.__name__):
+                    staged = root / (publish.__name__ + ".stage.tif")
+                    target = root / (publish.__name__ + ".tif")
+                    staged.write_bytes(b"complete image bytes")
+                    if publish is durable_io.publish_file:
+                        target.write_bytes(b"previous image")
+                    publish(staged, target)
+                    self.assertEqual(target.read_bytes(), b"complete image bytes")
+
     def test_a_failed_publish_never_removes_the_existing_output(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 from pathlib import Path
 import re
@@ -69,6 +70,33 @@ class WindowsPythonStagingTests(unittest.TestCase):
                         build.index("& cargo test"))
 
 
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WindowsPayloadMetadataTests(unittest.TestCase):
+    def test_real_build_writes_metadata_to_the_payload_without_stray_files(self):
+        # Execute only the build's actual metadata writes. PowerShell dynamic
+        # parameter binding can silently swap positional Path and Value args.
+        writes = [line.strip() for line in (ROOT / "scripts/windows/build-release.ps1").read_text().splitlines()
+                  if "Set-Content" in line and any(name in line for name in ('"install-channel.txt"', '"VERSION.txt"'))]
+        self.assertEqual(len(writes), 2)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload, engine = root / "payload with spaces", root / "engine with spaces"
+            payload.mkdir()
+            engine.mkdir()
+            environment = dict(os.environ, LIGHTTABLE_METADATA_PAYLOAD=str(payload),
+                               LIGHTTABLE_METADATA_ENGINE=str(engine))
+            script = '$ErrorActionPreference="Stop"; $Payload=$env:LIGHTTABLE_METADATA_PAYLOAD; '
+            script += '$Engine=$env:LIGHTTABLE_METADATA_ENGINE; $RustSourceRevision="a" * 40;\n'
+            result = subprocess.run([shutil.which("pwsh") or shutil.which("powershell"),
+                                     "-NoProfile", "-Command", script + "\n".join(writes)],
+                                    cwd=root, env=environment, capture_output=True, text=True, timeout=15)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual((payload / "install-channel.txt").read_bytes(), b"portable")
+            self.assertEqual((engine / "VERSION.txt").read_text().strip(), "a" * 40)
+            self.assertEqual({path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()},
+                             {"payload with spaces/install-channel.txt", "engine with spaces/VERSION.txt"})
+
+
 class WindowsRuntimeSmokeTests(unittest.TestCase):
     def test_http_smoke_checks_live_routes_and_stops_its_server(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -115,6 +143,46 @@ server.serve_forever()
     def test_startup_timeout_terminates_and_reaps_the_child(self):
         self._run_failed_server("import time\ntime.sleep(30)\n", "did not start", timeout=0.2)
 
+    def test_timeout_preserves_last_phase_and_reports_later_read_error_without_tokens(self):
+        startup = {"phase": "listening", "detail": "Starting the local server", "updatedAt": 123.5,
+                   "pid": 4321, "port": 12345, "token": "SECRET_TOKEN",
+                   "environment": {"PRIVATE_KEY": "SECRET_ENV"}}
+        real_read_text = Path.read_text
+        reads = []
+        def read(path, *args, **kwargs):
+            if path.name != "startup.json":
+                return real_read_text(path, *args, **kwargs)
+            reads.append(path)
+            if len(reads) == 1:
+                return json.dumps(startup)
+            raise PermissionError(13, "Permission denied", "SECRET_FILENAME")
+        with mock.patch.object(smoke.Path, "read_text", read):
+            error = self._run_failed_server("import time\ntime.sleep(30)\n", "did not start", timeout=0.3)
+        self.assertGreaterEqual(len(reads), 2)
+        message = str(error)
+        diagnostic = json.loads(message.split("startup diagnostics: ", 1)[1].split("\n", 1)[0])
+        self.assertEqual(diagnostic["startup"], {key: startup[key] for key in
+                                                ("phase", "detail", "updatedAt", "pid", "port")})
+        self.assertEqual(diagnostic["last_read_error"]["type"], "PermissionError")
+        self.assertEqual(diagnostic["last_read_error"]["errno"], 13)
+        self.assertEqual(diagnostic["last_read_error"]["message"], "Permission denied")
+        self.assertNotIn("SECRET", message)
+
+    def test_timeout_reports_json_read_error_without_copying_the_invalid_document(self):
+        real_read_text = Path.read_text
+        def read(path, *args, **kwargs):
+            if path.name == "startup.json":
+                return '{"token": "SECRET_TOKEN", "phase": '
+            return real_read_text(path, *args, **kwargs)
+        with mock.patch.object(smoke.Path, "read_text", read):
+            error = self._run_failed_server("import time\ntime.sleep(30)\n", "did not start", timeout=0.2)
+        message = str(error)
+        diagnostic = json.loads(message.split("startup diagnostics: ", 1)[1].split("\n", 1)[0])
+        self.assertEqual(diagnostic["startup"], {})
+        self.assertEqual(diagnostic["last_read_error"]["type"], "JSONDecodeError")
+        self.assertEqual(diagnostic["last_read_error"]["message"], "Expecting value")
+        self.assertNotIn("SECRET", message)
+
     def _run_failed_server(self, source, expected_error, *, timeout):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -129,10 +197,11 @@ server.serve_forever()
                 return process
 
             with mock.patch.object(smoke.subprocess, "Popen", side_effect=start):
-                with self.assertRaisesRegex(RuntimeError, expected_error):
+                with self.assertRaisesRegex(RuntimeError, expected_error) as raised:
                     smoke.check_server_startup(root, root, environment, timeout=timeout)
             self.assertEqual(len(children), 1)
             self.assertIsNotNone(children[0].poll())
+            return raised.exception
 
 
 class WindowsUninstallManifestTests(unittest.TestCase):
@@ -199,7 +268,7 @@ class WindowsSigningContractTests(unittest.TestCase):
         self.assertIn("      source_ref:", reusable)
         self.assertIn("      require_signing:", reusable)
         self.assertIn("        default: false\n        type: boolean", reusable)
-        self.assertEqual(workflow.count("ref: ${{ inputs.source_ref || github.sha }}"), 2)
+        self.assertEqual(workflow.count("ref: ${{ inputs.source_ref || github.sha }}"), 3)
         self.assertIn("WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}", workflow)
         self.assertIn("WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}", workflow)
         self.assertIn("-RequireSigning:($env:REQUIRE_SIGNING -eq 'true')", workflow)

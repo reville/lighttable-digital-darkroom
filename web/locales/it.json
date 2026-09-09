@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} foto selezionata",
     "{count} preset file could not be read": "non è stato possibile leggere {count} file di predefiniti",
     "{count} preset files could not be read": "non è stato possibile leggere {count} file di predefiniti",
-    "{count} preset · click to apply, click again to turn off": "{count} predefinito · fai clic per applicare, fai clic di nuovo per disattivarlo",
-    "{count} presets · click to apply, click again to turn off": "{count} predefiniti · fai clic per applicare, fai clic di nuovo per disattivarli",
     "{count} rated photo": "{count} foto classificata",
     "{count} rated photos": "{count} foto classificate",
     "{count} selected": "{count} selezionati",
@@ -4448,11 +4446,6 @@
       "many": "{value} arresti imprevisti nelle ultime 24 ore.",
       "other": "{value} arresti imprevisti nelle ultime 24 ore."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} predefinito · fai clic per applicare, fai clic di nuovo per disattivarlo",
-      "many": "{count} predefiniti · fai clic per applicare, fai clic di nuovo per disattivarli",
-      "other": "{count} predefiniti · fai clic per applicare, fai clic di nuovo per disattivarli"
-    },
     "{count} empty file": {
       "one": "{count} file vuoto",
       "many": "{count} file vuoti",
@@ -4494,5 +4487,5 @@
       "other": "{count} foto non disponibili saltate"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }

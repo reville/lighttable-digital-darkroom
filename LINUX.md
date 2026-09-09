@@ -276,7 +276,7 @@ checks; main-branch and manual runs also build a distributable archive and
 upload a relocated bundle only after dependency imports, ICC conversion, CPU
 film rendering through both engines, an isolated HTTP health check, and the
 packaged CLI pass. The smoke creates temporary data and always stops its server.
-Before uploading that archive, CI also extracts it to a path containing spaces,
+After retaining that archive, CI extracts it to a path containing spaces,
 opens the actual GTK/WebKit desktop under Xvfb and a private D-Bus session, and
 requires its UI bridge to report a rendered test photo. This native startup
 check has a two-minute bound and stops its desktop and server processes.
@@ -286,6 +286,32 @@ startup checks cover both display protocols; they do not establish Omarchy,
 physical GPU, fractional-scale, or color-managed display behavior. Packaging
 tests exercise desktop URI delivery and safe removal, including paths containing
 spaces and shell metacharacters, and verify the pacman package's staging layout.
+
+Full-package CI also requires `scripts/linux/desktop-acceptance.py` under X11.
+It verifies the bundle's clean source revision and Python/server paths, imports
+an isolated RGB16 ramp with Film disabled, saves exposure and rating through the
+native UI, and exports through the application API and bundled `render_cli.py`.
+The TIFF must retain its dimensions, 16-bit samples, more than 256 channel levels,
+and an embedded ICC profile; the original must remain unchanged. Normal close
+uses `WM_DELETE_WINDOW` only after finding exactly one window with the launched
+shell's PID and the expected title. The test reopens the same catalog and requires
+a fresh server process, the saved edits, and a rendered photo. One 240-second
+deadline bounds the journey; process cleanup is separate. CI retains the JSON
+evidence, bounded logs, and exported TIFF. Wayland retains its startup/render
+check; this X11 gate does not establish Wayland close/persistence or hardware
+and display-color behavior.
+The completed archive is retained before native acceptance, so a failing journey
+can be investigated against the same bytes. A failed gate still fails the build
+and blocks release publication.
+
+Full-package CI also runs `scripts/linux/updater-smoke.py` against a temporary
+copy of that bundle. It uses an ephemeral signing key and locally staged archive
+to reject bad signatures and changed bytes, install a separate version, retarget
+the owned desktop/CLI launchers, and require a new GTK window and bundled server
+to render the test photo. A deliberately failed native startup must restore the
+previous launchers. These test versions use the same application source; public
+feed delivery, update-dialog behavior, and catalog migrations between revisions
+remain separate checks. No production signing key or personal catalog is used.
 
 Before declaring a Linux release ready, complete the desktop photo journey on
 Ubuntu and Arch/Omarchy, both Wayland and X11 where supported. Verify a real RAW

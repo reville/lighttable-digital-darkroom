@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "선택됨 {count}장 사진",
     "{count} preset file could not be read": "사전 설정 파일 {count}개를 읽을 수 없었습니다",
     "{count} preset files could not be read": "사전 설정 파일 {count}개를 읽을 수 없었습니다",
-    "{count} preset · click to apply, click again to turn off": "{count}개의 사전 설정 · 클릭하여 적용, 다시 클릭하여 끄기",
-    "{count} presets · click to apply, click again to turn off": "{count}개의 사전 설정 · 클릭하여 적용, 다시 클릭하여 끄기",
     "{count} rated photo": "평가된 사진 {count}장",
     "{count} rated photos": "평가된 사진 {count}장",
     "{count} selected": "선택됨 {count}개",
@@ -4320,9 +4318,6 @@
     "{value} unexpected exit in the last 24 hours.": {
       "other": "지난 24시간 동안 예기치 않은 종료가 {value}번 있었습니다."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "other": "{count}개의 사전 설정 · 클릭하여 적용, 다시 클릭하여 끄기"
-    },
     "{count} empty file": {
       "other": "빈 파일 {count}개"
     },
@@ -4348,5 +4343,5 @@
       "other": "사용할 수 없는 사진 {count}개 건너뜀"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }
