@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Doğrusal geçişi şekillendirme",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın.",
-    "Copy and Paste are below the photo in Detail view.": "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır."
+    "Copy and Paste are below the photo in Detail view.": "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Boş bir dosya (0 bayt) görüntü verisi içermez. Tekrar denemeden önce özgün fotoğrafı indirin veya geri yükleyin. Klasörler veya sürücüler kullanılamıyorsa önce kaynağı yeniden bağlayın.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable’a ulaşılamadı. Uygulamanın çalıştığını kontrol edip tekrar deneyin.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Izgara ve film şeridinde Küçük resim kullanılamıyor mesajı, hatanın nedenini gösterir ve varsa bildirilen tanılama bilgisini içerir. Sorunu düzelttikten sonra Tekrar dene seçeneğini seçin.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable küçük resim oluşturamadı. Özgün fotoğrafın düzgün açıldığını kontrol edip tekrar deneyin.",
+    "Read a thumbnail error": "Küçük resim hatasını anlama",
+    "Retry": "Tekrar dene",
+    "The thumbnail could not be displayed. Try again.": "Küçük resim görüntülenemedi. Tekrar deneyin.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Bu dosya boş (0 bayt). Özgün fotoğrafı indirin veya geri yükleyin, ardından tekrar deneyin.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "Küçük resim isteği başarısız oldu (HTTP {status}). Tekrar deneyin.",
+    "Thumbnail unavailable": "Küçük resim kullanılamıyor"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Nếu không thể hiển thị hoặc dựng ảnh, thông báo trong vùng ảnh sẽ bao gồm lý do được báo cáo khi có. Điều này có thể xác định tệp bị thiếu, sự cố tải ảnh hoặc lỗi đồ họa. Nếu không có lý do nào, thông báo sẽ vẫn mang tính chung chung."
           ]
+        },
+        {
+          "title": "Hiểu lỗi ảnh thu nhỏ",
+          "paragraphs": [
+            "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
+            "Tệp trống (0 byte) không chứa dữ liệu ảnh. Tải xuống hoặc khôi phục ảnh gốc trước khi thử lại. Nếu thư mục hoặc ổ đĩa không khả dụng, hãy kết nối lại nguồn trước."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

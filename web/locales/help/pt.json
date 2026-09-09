@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Se uma foto não puder ser renderizada ou exibida, a mensagem na área da foto inclui o motivo informado, quando houver um disponível. Isso pode identificar um arquivo ausente, um problema ao carregar a imagem ou uma falha gráfica. Se nenhum motivo estiver disponível, a mensagem permanece genérica."
           ]
+        },
+        {
+          "title": "Entender um erro de miniatura",
+          "paragraphs": [
+            "Na grade e na tira de filme, Miniatura indisponível mostra por que uma miniatura falhou e inclui o diagnóstico informado quando disponível. Após corrigir o problema, escolha Tentar novamente.",
+            "Um arquivo vazio (0 bytes) não contém dados de imagem. Baixe ou restaure a foto original antes de tentar novamente. Para pastas ou unidades indisponíveis, reconecte primeiro a origem."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

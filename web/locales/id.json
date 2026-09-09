@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Mengubah bentuk gradien linear",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Pilih masker Linear yang sudah ada untuk menyesuaikannya lagi. Jika Anda sebelumnya melukis dengan Tambahkan, Kurangi, atau Irisan, pilih Edit Bentuk terlebih dahulu. Tekan H jika titik-titiknya tersembunyi.",
-    "Copy and Paste are below the photo in Detail view.": "Salin dan Tempel berada di bawah foto dalam tampilan Detail."
+    "Copy and Paste are below the photo in Detail view.": "Salin dan Tempel berada di bawah foto dalam tampilan Detail.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "File kosong (0 byte) tidak berisi data gambar. Unduh atau pulihkan foto asli sebelum mencoba lagi. Jika folder atau drive tidak tersedia, sambungkan kembali sumber terlebih dahulu.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "Tidak dapat menghubungi LightTable. Pastikan aplikasi sedang berjalan, lalu coba lagi.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Di kisi dan strip film, Gambar mini tidak tersedia menunjukkan alasan kegagalan gambar mini dan menyertakan informasi diagnostik yang dilaporkan jika tersedia. Setelah memperbaiki masalah, pilih Coba lagi.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable tidak dapat membuat gambar mini. Pastikan foto asli dapat dibuka dengan benar, lalu coba lagi.",
+    "Read a thumbnail error": "Memahami kesalahan gambar mini",
+    "Retry": "Coba lagi",
+    "The thumbnail could not be displayed. Try again.": "Gambar mini tidak dapat ditampilkan. Coba lagi.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "File ini kosong (0 byte). Unduh atau pulihkan foto asli, lalu coba lagi.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "Permintaan gambar mini gagal (HTTP {status}). Coba lagi.",
+    "Thumbnail unavailable": "Gambar mini tidak tersedia"
   },
   "plurals": {
     " · {count} paired file linked": {

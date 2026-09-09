@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "调整线性渐变的形状",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在“编辑形状”中，拖动任一圆点可调整渐变的对应端点。拖动连接两点的线可移动整个渐变，同时保持角度和过渡宽度。在照片的其他位置拖动可重新绘制。",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "选择已有的线性蒙版即可再次调整。如果刚刚使用了“添加”“减去”或“交集”进行绘制，请先选择“编辑形状”。如果圆点被隐藏，请按 H。",
-    "Copy and Paste are below the photo in Detail view.": "在详细视图中，复制和粘贴位于照片下方。"
+    "Copy and Paste are below the photo in Detail view.": "在详细视图中，复制和粘贴位于照片下方。",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "空文件（0 字节）不包含图像数据。重试前，请下载或恢复原始照片。如果文件夹或驱动器不可用，请先重新连接来源。",
+    "Could not reach LightTable. Check that the app is running, then retry.": "无法连接到 LightTable。请确认应用正在运行，然后重试。",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "在网格和胶片条中，“缩略图不可用”会显示缩略图失败的原因，并在有诊断信息时一并显示。解决问题后，选择“重试”。",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable 无法创建缩略图。请确认原始照片可以正常打开，然后重试。",
+    "Read a thumbnail error": "了解缩略图错误",
+    "Retry": "重试",
+    "The thumbnail could not be displayed. Try again.": "无法显示缩略图。请重试。",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "此文件为空（0 字节）。请下载或恢复原始照片，然后重试。",
+    "Thumbnail request failed (HTTP {status}). Try again.": "缩略图请求失败（HTTP {status}）。请重试。",
+    "Thumbnail unavailable": "缩略图不可用"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Si une photo ne peut pas être rendue ou affichée, le message dans la zone photo inclut la raison signalée lorsqu’elle est disponible. Cela peut permettre d’identifier un fichier manquant, un problème de chargement d’image ou une défaillance graphique. Si aucune raison n’est disponible, le message reste général."
           ]
+        },
+        {
+          "title": "Comprendre une erreur de miniature",
+          "paragraphs": [
+            "Dans la grille et la pellicule, Miniature indisponible indique pourquoi une miniature a échoué et inclut le diagnostic signalé lorsqu’il est disponible. Après avoir corrigé le problème, choisissez Réessayer.",
+            "Un fichier vide (0 octet) ne contient aucune donnée d’image. Téléchargez ou restaurez la photo originale avant de réessayer. Si un dossier ou un disque est indisponible, reconnectez d’abord la source."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

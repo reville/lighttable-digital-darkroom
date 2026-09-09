@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "ปรับรูปร่างการไล่ระดับเชิงเส้น",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "ในแก้ไขรูปร่าง ลากจุดใดจุดหนึ่งเพื่อปรับปลายด้านนั้นของการไล่ระดับ ลากเส้นที่เชื่อมจุดทั้งสองเพื่อย้ายการไล่ระดับทั้งหมดโดยคงมุมและความกว้างของช่วงเปลี่ยนผ่านไว้ ลากบริเวณอื่นบนภาพเพื่อวาดใหม่",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่",
-    "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด"
+    "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "ไฟล์ว่างเปล่า (0 ไบต์) ไม่มีข้อมูลภาพ ดาวน์โหลดหรือกู้คืนภาพต้นฉบับก่อนลองอีกครั้ง หากโฟลเดอร์หรือไดรฟ์ไม่พร้อมใช้งาน ให้เชื่อมต่อแหล่งที่มาอีกครั้งก่อน",
+    "Could not reach LightTable. Check that the app is running, then retry.": "ไม่สามารถเชื่อมต่อกับ LightTable ได้ ตรวจสอบว่าแอปกำลังทำงาน แล้วลองอีกครั้ง",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "ในมุมมองตารางและแถบฟิล์ม ข้อความ ภาพขนาดย่อไม่พร้อมใช้งาน จะแสดงสาเหตุที่ภาพขนาดย่อล้มเหลว และแสดงข้อมูลวินิจฉัยที่ได้รับเมื่อมี หลังจากแก้ไขปัญหาแล้ว ให้เลือก ลองอีกครั้ง",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable ไม่สามารถสร้างภาพขนาดย่อได้ ตรวจสอบว่าภาพต้นฉบับเปิดได้ตามปกติ แล้วลองอีกครั้ง",
+    "Read a thumbnail error": "ทำความเข้าใจข้อผิดพลาดของภาพขนาดย่อ",
+    "Retry": "ลองอีกครั้ง",
+    "The thumbnail could not be displayed. Try again.": "ไม่สามารถแสดงภาพขนาดย่อได้ โปรดลองอีกครั้ง",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "ไฟล์นี้ว่างเปล่า (0 ไบต์) ดาวน์โหลดหรือกู้คืนภาพต้นฉบับ แล้วลองอีกครั้ง",
+    "Thumbnail request failed (HTTP {status}). Try again.": "คำขอภาพขนาดย่อล้มเหลว (HTTP {status}) โปรดลองอีกครั้ง",
+    "Thumbnail unavailable": "ภาพขนาดย่อไม่พร้อมใช้งาน"
   },
   "plurals": {
     " · {count} paired file linked": {

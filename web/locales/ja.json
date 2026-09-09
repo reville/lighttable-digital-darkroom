@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "線形グラデーションの形状を調整する",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。",
-    "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。"
+    "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "空のファイル（0 バイト）には画像データがありません。再試行する前に、元の写真をダウンロードまたは復元してください。フォルダやドライブが利用できない場合は、まず保存元を再接続してください。",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable に接続できませんでした。アプリが起動していることを確認してから、再試行してください。",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "グリッドとフィルムストリップでは、「サムネイルを表示できません」に失敗の理由が表示され、診断情報がある場合はその内容も表示されます。問題を解決したら、「再試行」を選んでください。",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable はサムネイルを作成できませんでした。元の写真が正常に開くことを確認してから、再試行してください。",
+    "Read a thumbnail error": "サムネイルのエラーを確認する",
+    "Retry": "再試行",
+    "The thumbnail could not be displayed. Try again.": "サムネイルを表示できませんでした。もう一度お試しください。",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "このファイルは空です（0 バイト）。元の写真をダウンロードまたは復元してから、再試行してください。",
+    "Thumbnail request failed (HTTP {status}). Try again.": "サムネイルのリクエストに失敗しました（HTTP {status}）。もう一度お試しください。",
+    "Thumbnail unavailable": "サムネイルを表示できません"
   },
   "plurals": {
     " · {count} paired file linked": {

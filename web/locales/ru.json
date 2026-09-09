@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Изменение формы линейного градиента",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "В режиме «Редактировать форму» перетащите любую точку, чтобы настроить соответствующий конец градиента. Перетащите соединяющую их линию, чтобы переместить весь градиент, сохранив его угол и ширину перехода. Потяните в другом месте фотографии, чтобы нарисовать его заново.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Выберите существующую линейную маску, чтобы снова настроить её. Если вы рисовали в режимах «Добавить», «Вычесть» или «Пересечение», сначала выберите «Редактировать форму». Нажмите H, если точки скрыты.",
-    "Copy and Paste are below the photo in Detail view.": "Кнопки копирования и вставки находятся под фотографией в режиме подробного просмотра."
+    "Copy and Paste are below the photo in Detail view.": "Кнопки копирования и вставки находятся под фотографией в режиме подробного просмотра.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Пустой файл (0 байт) не содержит данных изображения. Скачайте или восстановите исходную фотографию перед повторной попыткой. Если папка или диск недоступны, сначала подключите источник заново.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "Не удалось связаться с LightTable. Убедитесь, что приложение запущено, и повторите попытку.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "В сетке и на пленке сообщение «Миниатюра недоступна» показывает причину ошибки и диагностические сведения, если они получены. Исправив проблему, выберите «Повторить».",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable не удалось создать миниатюру. Убедитесь, что исходная фотография открывается правильно, и повторите попытку.",
+    "Read a thumbnail error": "Как понять ошибку миниатюры",
+    "Retry": "Повторить",
+    "The thumbnail could not be displayed. Try again.": "Не удалось показать миниатюру. Попробуйте снова.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Этот файл пуст (0 байт). Скачайте или восстановите исходную фотографию и повторите попытку.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "Запрос миниатюры завершился ошибкой (HTTP {status}). Попробуйте снова.",
+    "Thumbnail unavailable": "Миниатюра недоступна"
   },
   "plurals": {
     " · {count} paired file linked": {

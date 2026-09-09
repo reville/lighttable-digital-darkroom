@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Jeśli zdjęcia nie można wyrenderować lub wyświetlić, wiadomość w obszarze zdjęcia zawiera zgłoszoną przyczynę, gdy jest dostępna. Może to wskazywać brakujący plik, problem z wczytywaniem obrazu lub awarię grafiki. Jeśli przyczyna nie jest dostępna, wiadomość pozostaje ogólna."
           ]
+        },
+        {
+          "title": "Jak odczytać błąd miniatury",
+          "paragraphs": [
+            "W siatce i na taśmie filmowej komunikat Miniatura niedostępna pokazuje przyczynę błędu oraz zgłoszone informacje diagnostyczne, jeśli są dostępne. Po usunięciu problemu wybierz Spróbuj ponownie.",
+            "Pusty plik (0 bajtów) nie zawiera danych obrazu. Pobierz lub przywróć oryginalne zdjęcie przed ponowną próbą. Jeśli folder lub dysk jest niedostępny, najpierw ponownie podłącz źródło."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

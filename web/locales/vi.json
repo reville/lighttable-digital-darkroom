@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Điều chỉnh hình dạng chuyển sắc tuyến tính",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Chọn một mặt nạ Tuyến tính hiện có để điều chỉnh lại. Nếu vừa tô bằng Thêm, Trừ hoặc Giao nhau, hãy chọn Chỉnh sửa hình dạng trước. Nhấn H nếu các chấm bị ẩn.",
-    "Copy and Paste are below the photo in Detail view.": "Sao chép và Dán nằm bên dưới ảnh trong chế độ xem Chi tiết."
+    "Copy and Paste are below the photo in Detail view.": "Sao chép và Dán nằm bên dưới ảnh trong chế độ xem Chi tiết.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Tệp trống (0 byte) không chứa dữ liệu ảnh. Tải xuống hoặc khôi phục ảnh gốc trước khi thử lại. Nếu thư mục hoặc ổ đĩa không khả dụng, hãy kết nối lại nguồn trước.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "Không thể kết nối với LightTable. Kiểm tra xem ứng dụng có đang chạy không rồi thử lại.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable không thể tạo ảnh thu nhỏ. Kiểm tra xem ảnh gốc có mở bình thường không rồi thử lại.",
+    "Read a thumbnail error": "Hiểu lỗi ảnh thu nhỏ",
+    "Retry": "Thử lại",
+    "The thumbnail could not be displayed. Try again.": "Không thể hiển thị ảnh thu nhỏ. Hãy thử lại.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Tệp này trống (0 byte). Tải xuống hoặc khôi phục ảnh gốc rồi thử lại.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "Yêu cầu ảnh thu nhỏ thất bại (HTTP {status}). Hãy thử lại.",
+    "Thumbnail unavailable": "Không có ảnh thu nhỏ"
   },
   "plurals": {
     " · {count} paired file linked": {

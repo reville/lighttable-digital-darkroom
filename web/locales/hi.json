@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "लीनियर ग्रेडिएंट का आकार बदलें",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "आकृति संपादित करें में किसी भी बिंदु को खींचकर ग्रेडिएंट का वह सिरा समायोजित करें। दोनों बिंदुओं को जोड़ने वाली रेखा खींचकर पूरा ग्रेडिएंट खिसकाएँ; उसका कोण और संक्रमण की चौड़ाई बनी रहेगी। दोबारा बनाने के लिए फ़ोटो में किसी दूसरी जगह खींचें।",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "किसी मौजूदा रेखीय मास्क को फिर से समायोजित करने के लिए उसे चुनें। अगर आप जोड़ें, घटाएँ या प्रतिच्छेद से पेंट कर रहे थे, तो पहले आकृति संपादित करें चुनें। बिंदु छिपे हों तो H दबाएँ।",
-    "Copy and Paste are below the photo in Detail view.": "विवरण दृश्य में फ़ोटो के नीचे कॉपी और पेस्ट बटन हैं।"
+    "Copy and Paste are below the photo in Detail view.": "विवरण दृश्य में फ़ोटो के नीचे कॉपी और पेस्ट बटन हैं।",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "खाली फ़ाइल (0 बाइट) में कोई छवि डेटा नहीं होता। दोबारा कोशिश करने से पहले मूल फ़ोटो डाउनलोड करें या पुनर्स्थापित करें। फ़ोल्डर या ड्राइव उपलब्ध न होने पर पहले स्रोत को फिर से कनेक्ट करें।",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable से संपर्क नहीं हो सका। जाँचें कि ऐप चल रहा है, फिर दोबारा कोशिश करें।",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "ग्रिड और फ़िल्मस्ट्रिप में, थंबनेल उपलब्ध नहीं है संदेश बताता है कि थंबनेल क्यों विफल हुआ और उपलब्ध होने पर मिले निदान का विवरण भी दिखाता है। समस्या ठीक करने के बाद, फिर से कोशिश करें चुनें।",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable थंबनेल नहीं बना सका। जाँचें कि मूल फ़ोटो ठीक से खुलती है, फिर दोबारा कोशिश करें।",
+    "Read a thumbnail error": "थंबनेल की त्रुटि समझें",
+    "Retry": "फिर से कोशिश करें",
+    "The thumbnail could not be displayed. Try again.": "थंबनेल दिखाया नहीं जा सका। फिर से कोशिश करें।",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "यह फ़ाइल खाली है (0 बाइट)। मूल फ़ोटो डाउनलोड करें या पुनर्स्थापित करें, फिर दोबारा कोशिश करें।",
+    "Thumbnail request failed (HTTP {status}). Try again.": "थंबनेल का अनुरोध विफल हुआ (HTTP {status})। फिर से कोशिश करें।",
+    "Thumbnail unavailable": "थंबनेल उपलब्ध नहीं है"
   },
   "plurals": {
     " · {count} paired file linked": {

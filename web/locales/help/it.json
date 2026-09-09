@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Se una foto non può essere renderizzata o visualizzata, il messaggio nell'area della foto include il motivo segnalato quando disponibile. Può identificare un file mancante, un problema di caricamento dell'immagine o un errore della grafica. Se non è disponibile alcun motivo, il messaggio resta generico."
           ]
+        },
+        {
+          "title": "Interpretare un errore di miniatura",
+          "paragraphs": [
+            "Nella griglia e nella striscia pellicola, Miniatura non disponibile mostra il motivo dell’errore e include la diagnostica segnalata, se disponibile. Dopo aver corretto il problema, scegli Riprova.",
+            "Un file vuoto (0 byte) non contiene dati dell’immagine. Scarica o ripristina la foto originale prima di riprovare. Per cartelle o unità non disponibili, ricollega prima la sorgente."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

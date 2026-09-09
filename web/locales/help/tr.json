@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Bir fotoğraf oluşturulamazsa veya görüntülenemezse, fotoğraf alanındaki mesaj, varsa bildirilen nedeni içerir. Bu, eksik bir dosyayı, bir görüntü yükleme sorununu veya bir grafik hatasını belirleyebilir. Hiçbir neden yoksa, mesaj genel kalır."
           ]
+        },
+        {
+          "title": "Küçük resim hatasını anlama",
+          "paragraphs": [
+            "Izgara ve film şeridinde Küçük resim kullanılamıyor mesajı, hatanın nedenini gösterir ve varsa bildirilen tanılama bilgisini içerir. Sorunu düzelttikten sonra Tekrar dene seçeneğini seçin.",
+            "Boş bir dosya (0 bayt) görüntü verisi içermez. Tekrar denemeden önce özgün fotoğrafı indirin veya geri yükleyin. Klasörler veya sürücüler kullanılamıyorsa önce kaynağı yeniden bağlayın."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

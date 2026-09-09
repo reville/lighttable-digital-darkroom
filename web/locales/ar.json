@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "تعديل شكل تدرج خطي",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "في تحرير الشكل، اسحب أيًّا من النقطتين لضبط ذلك الطرف من التدرج. اسحب الخط الواصل بينهما لتحريك التدرج بالكامل مع الحفاظ على زاويته وعرض الانتقال. اسحب في موضع آخر من الصورة لإعادة رسمه.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "اختر قناعًا خطيًا موجودًا لضبطه مجددًا. إذا كنت ترسم باستخدام أضف أو طرح أو تقاطع، فاختر تحرير الشكل أولًا. اضغط H إذا كانت النقطتان مخفيتين.",
-    "Copy and Paste are below the photo in Detail view.": "يوجد زرا النسخ واللصق أسفل الصورة في عرض التفاصيل."
+    "Copy and Paste are below the photo in Detail view.": "يوجد زرا النسخ واللصق أسفل الصورة في عرض التفاصيل.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "لا يحتوي الملف الفارغ (0 بايت) على أي بيانات صورة. نزّل الصورة الأصلية أو استعدها قبل إعادة المحاولة. إذا كانت المجلدات أو محركات الأقراص غير متاحة، فأعد توصيل المصدر أولاً.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "تعذّر الاتصال بـ LightTable. تأكد من تشغيل التطبيق، ثم أعد المحاولة.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "في الشبكة وشريط الفيلم، توضح رسالة «الصورة المصغرة غير متاحة» سبب فشل الصورة المصغرة، وتتضمن معلومات التشخيص الواردة عند توفرها. بعد تصحيح المشكلة، اختر «إعادة المحاولة».",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "تعذّر على LightTable إنشاء صورة مصغرة. تحقق من أن الصورة الأصلية تُفتح بشكل صحيح، ثم أعد المحاولة.",
+    "Read a thumbnail error": "فهم خطأ الصورة المصغرة",
+    "Retry": "إعادة المحاولة",
+    "The thumbnail could not be displayed. Try again.": "تعذّر عرض الصورة المصغرة. حاول مرة أخرى.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "هذا الملف فارغ (0 بايت). نزّل الصورة الأصلية أو استعدها، ثم أعد المحاولة.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "فشل طلب الصورة المصغرة (HTTP {status}). حاول مرة أخرى.",
+    "Thumbnail unavailable": "الصورة المصغرة غير متاحة"
   },
   "plurals": {
     " · {count} paired file linked": {

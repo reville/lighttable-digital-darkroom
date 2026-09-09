@@ -90,6 +90,7 @@ import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
 import { linearHandleAt, editLinear, radialHandles, editRadial } from '/web/mask-shape.js';
 import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
+import { bindThumbnailErrors } from '/web/thumbnail-errors.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -4980,6 +4981,8 @@ function clearEditedThumbnails() {
 function syncThumbnailImage(element, im) {
   const image = element.querySelector('img');
   const source = thumbnailURL(im);
+  image.syncThumbnailError ??= bindThumbnailErrors(element, image);
+  image.syncThumbnailError(source);
   const sourceChanged = image.dataset.thumbnailSource !== source;
   image.dataset.thumbnailName = im.name;
   image.dataset.thumbnailIdentity = editedThumbnailIdentity(im);

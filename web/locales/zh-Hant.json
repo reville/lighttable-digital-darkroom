@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "調整線性漸層的形狀",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在「編輯形狀」中，拖曳任一圓點可調整漸層的對應端點。拖曳連接兩點的線可移動整個漸層，同時保持角度和過渡寬度。在照片的其他位置拖曳可重新繪製。",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "選取現有的線性遮色片即可再次調整。如果剛剛使用了「新增」「減去」或「交集」進行繪製，請先選擇「編輯形狀」。如果圓點被隱藏，請按 H。",
-    "Copy and Paste are below the photo in Detail view.": "在詳細檢視中，拷貝與貼上位於照片下方。"
+    "Copy and Paste are below the photo in Detail view.": "在詳細檢視中，拷貝與貼上位於照片下方。",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "空檔案（0 位元組）不包含影像資料。重試前，請下載或還原原始照片。如果資料夾或磁碟機無法使用，請先重新連接來源。",
+    "Could not reach LightTable. Check that the app is running, then retry.": "無法連線至 LightTable。請確認應用程式正在執行，然後重試。",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "在格狀檢視和底片帶中，「縮圖無法使用」會顯示縮圖失敗的原因，並在有診斷資訊時一併顯示。解決問題後，選擇「重試」。",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable 無法建立縮圖。請確認原始照片可以正常開啟，然後重試。",
+    "Read a thumbnail error": "了解縮圖錯誤",
+    "Retry": "重試",
+    "The thumbnail could not be displayed. Try again.": "無法顯示縮圖。請重試。",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "此檔案是空的（0 位元組）。請下載或還原原始照片，然後重試。",
+    "Thumbnail request failed (HTTP {status}). Try again.": "縮圖請求失敗（HTTP {status}）。請重試。",
+    "Thumbnail unavailable": "縮圖無法使用"
   },
   "plurals": {
     " · {count} paired file linked": {

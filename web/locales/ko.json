@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "선형 그라디언트 모양 조정",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요.",
-    "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다."
+    "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "빈 파일(0바이트)에는 이미지 데이터가 없습니다. 다시 시도하기 전에 원본 사진을 다운로드하거나 복원하세요. 폴더나 드라이브를 사용할 수 없으면 먼저 원본 위치를 다시 연결하세요.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable에 연결할 수 없습니다. 앱이 실행 중인지 확인한 후 다시 시도하세요.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "격자와 필름스트립에서 썸네일을 사용할 수 없음 메시지는 실패 원인을 표시하며, 보고된 진단 정보가 있으면 함께 보여 줍니다. 문제를 해결한 후 다시 시도를 선택하세요.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable이 썸네일을 만들 수 없습니다. 원본 사진이 정상적으로 열리는지 확인한 후 다시 시도하세요.",
+    "Read a thumbnail error": "썸네일 오류 확인하기",
+    "Retry": "다시 시도",
+    "The thumbnail could not be displayed. Try again.": "썸네일을 표시할 수 없습니다. 다시 시도하세요.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "이 파일은 비어 있습니다(0바이트). 원본 사진을 다운로드하거나 복원한 후 다시 시도하세요.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "썸네일 요청에 실패했습니다(HTTP {status}). 다시 시도하세요.",
+    "Thumbnail unavailable": "썸네일을 사용할 수 없음"
   },
   "plurals": {
     " · {count} paired file linked": {

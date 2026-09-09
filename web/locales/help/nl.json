@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Als een foto niet kan worden gerenderd of weergegeven, bevat het bericht in het foto-gebied de gerapporteerde reden wanneer die beschikbaar is. Dit kan een ontbrekend bestand, een probleem met het laden van de afbeelding of een grafische fout aangeven. Als er geen reden beschikbaar is, blijft het bericht algemeen."
           ]
+        },
+        {
+          "title": "Een miniatuurfout begrijpen",
+          "paragraphs": [
+            "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
+            "Een leeg bestand (0 bytes) bevat geen afbeeldingsgegevens. Download of herstel de originele foto voordat je het opnieuw probeert. Sluit bij niet-beschikbare mappen of schijven eerst de bron opnieuw aan."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

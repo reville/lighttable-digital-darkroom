@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Zmienianie kształtu gradientu liniowego",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Wybierz istniejącą maskę liniową, aby ponownie ją dostosować. Jeśli malowano w trybie Dodaj, Odejmij lub Przecięcie, najpierw wybierz Edytuj kształt. Naciśnij H, jeśli punkty są ukryte.",
-    "Copy and Paste are below the photo in Detail view.": "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym."
+    "Copy and Paste are below the photo in Detail view.": "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Pusty plik (0 bajtów) nie zawiera danych obrazu. Pobierz lub przywróć oryginalne zdjęcie przed ponowną próbą. Jeśli folder lub dysk jest niedostępny, najpierw ponownie podłącz źródło.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "Nie udało się połączyć z LightTable. Sprawdź, czy aplikacja jest uruchomiona, i spróbuj ponownie.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "W siatce i na taśmie filmowej komunikat Miniatura niedostępna pokazuje przyczynę błędu oraz zgłoszone informacje diagnostyczne, jeśli są dostępne. Po usunięciu problemu wybierz Spróbuj ponownie.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable nie mógł utworzyć miniatury. Sprawdź, czy oryginalne zdjęcie otwiera się poprawnie, i spróbuj ponownie.",
+    "Read a thumbnail error": "Jak odczytać błąd miniatury",
+    "Retry": "Spróbuj ponownie",
+    "The thumbnail could not be displayed. Try again.": "Nie udało się wyświetlić miniatury. Spróbuj ponownie.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Ten plik jest pusty (0 bajtów). Pobierz lub przywróć oryginalne zdjęcie i spróbuj ponownie.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "Żądanie miniatury nie powiodło się (HTTP {status}). Spróbuj ponownie.",
+    "Thumbnail unavailable": "Miniatura niedostępna"
   },
   "plurals": {
     " · {count} paired file linked": {

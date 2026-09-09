@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Si una foto no se puede renderizar o mostrar, el mensaje en el área de la foto incluye el motivo informado cuando está disponible. Esto puede identificar un archivo faltante, un problema al cargar la imagen o un fallo de la tarjeta gráfica. Si no hay un motivo disponible, el mensaje permanece general."
           ]
+        },
+        {
+          "title": "Interpretar un error de miniatura",
+          "paragraphs": [
+            "En la cuadrícula y la tira de película, Miniatura no disponible muestra por qué falló una miniatura e incluye el diagnóstico recibido cuando está disponible. Tras corregir el problema, elige Reintentar.",
+            "Un archivo vacío (0 bytes) no contiene datos de imagen. Descarga o restaura la foto original antes de reintentarlo. Si una carpeta o unidad no está disponible, vuelve a conectar primero el origen."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

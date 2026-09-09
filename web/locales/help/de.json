@@ -3146,6 +3146,13 @@
           "paragraphs": [
             "Wenn ein Foto nicht gerendert oder angezeigt werden kann, enthält die Meldung im Foto-Bereich die gemeldete Ursache, sofern eine verfügbar ist. So lässt sich eine fehlende Datei, ein Problem beim Laden des Bildes oder ein Grafikfehler erkennen. Wenn keine Ursache verfügbar ist, bleibt die Meldung allgemein."
           ]
+        },
+        {
+          "title": "Einen Vorschaubildfehler verstehen",
+          "paragraphs": [
+            "Im Raster und Filmstreifen zeigt Vorschaubild nicht verfügbar den Grund für den Fehler und gegebenenfalls die gemeldeten Diagnosedetails. Wähle nach dem Beheben des Problems Erneut versuchen.",
+            "Eine leere Datei (0 Byte) enthält keine Bilddaten. Lade das Originalfoto vor dem erneuten Versuch herunter oder stelle es wieder her. Verbinde bei nicht verfügbaren Ordnern oder Laufwerken zuerst die Quelle erneut."
+          ]
         }
       ],
       "related": [
@@ -3157,5 +3164,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
 }

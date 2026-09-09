@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "Een lineair verloop vormgeven",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn.",
-    "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave."
+    "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave.",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Een leeg bestand (0 bytes) bevat geen afbeeldingsgegevens. Download of herstel de originele foto voordat je het opnieuw probeert. Sluit bij niet-beschikbare mappen of schijven eerst de bron opnieuw aan.",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable kon niet worden bereikt. Controleer of de app actief is en probeer het opnieuw.",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable kon geen miniatuur maken. Controleer of de originele foto goed opent en probeer het opnieuw.",
+    "Read a thumbnail error": "Een miniatuurfout begrijpen",
+    "Retry": "Opnieuw proberen",
+    "The thumbnail could not be displayed. Try again.": "De miniatuur kon niet worden weergegeven. Probeer het opnieuw.",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Dit bestand is leeg (0 bytes). Download of herstel de originele foto en probeer het opnieuw.",
+    "Thumbnail request failed (HTTP {status}). Try again.": "De miniatuuraanvraag is mislukt (HTTP {status}). Probeer het opnieuw.",
+    "Thumbnail unavailable": "Miniatuur niet beschikbaar"
   },
   "plurals": {
     " · {count} paired file linked": {

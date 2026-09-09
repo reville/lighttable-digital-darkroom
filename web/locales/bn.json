@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4124,7 +4124,17 @@
     "Shape a linear gradient": "লিনিয়ার গ্রেডিয়েন্টের আকৃতি বদলান",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "“আকৃতি সম্পাদনা করুন”-এ যেকোনো বিন্দু টেনে গ্রেডিয়েন্টের সেই প্রান্তটি সামঞ্জস্য করুন। দুটি বিন্দুর সংযোগরেখা টেনে পুরো গ্রেডিয়েন্ট সরান; এর কোণ ও পরিবর্তনের প্রস্থ একই থাকবে। আবার আঁকতে ছবির অন্য কোনো জায়গায় টানুন।",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।",
-    "Copy and Paste are below the photo in Detail view.": "বিস্তারিত দৃশ্যে ছবির নিচে কপি ও পেস্ট বোতাম রয়েছে।"
+    "Copy and Paste are below the photo in Detail view.": "বিস্তারিত দৃশ্যে ছবির নিচে কপি ও পেস্ট বোতাম রয়েছে।",
+    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "খালি ফাইলে (0 বাইট) কোনো ছবির ডেটা থাকে না। আবার চেষ্টা করার আগে মূল ছবিটি ডাউনলোড করুন বা পুনরুদ্ধার করুন। ফোল্ডার বা ড্রাইভ পাওয়া না গেলে প্রথমে উৎসটি আবার সংযুক্ত করুন।",
+    "Could not reach LightTable. Check that the app is running, then retry.": "LightTable-এর সঙ্গে সংযোগ করা যায়নি। অ্যাপটি চালু আছে কি না দেখুন, তারপর আবার চেষ্টা করুন।",
+    "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "গ্রিড ও ফিল্মস্ট্রিপে, থাম্বনেইল পাওয়া যাচ্ছে না বার্তাটি কেন থাম্বনেইল ব্যর্থ হয়েছে তা দেখায় এবং পাওয়া গেলে ত্রুটি নির্ণয়ের বিবরণও দেখায়। সমস্যাটি ঠিক করার পরে, আবার চেষ্টা করুন বেছে নিন।",
+    "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable থাম্বনেইল তৈরি করতে পারেনি। মূল ছবিটি ঠিকমতো খোলে কি না দেখুন, তারপর আবার চেষ্টা করুন।",
+    "Read a thumbnail error": "থাম্বনেইলের ত্রুটি বুঝুন",
+    "Retry": "আবার চেষ্টা করুন",
+    "The thumbnail could not be displayed. Try again.": "থাম্বনেইল দেখানো যায়নি। আবার চেষ্টা করুন।",
+    "This file is empty (0 bytes). Download or restore the original photo, then retry.": "এই ফাইলটি খালি (0 বাইট)। মূল ছবিটি ডাউনলোড করুন বা পুনরুদ্ধার করুন, তারপর আবার চেষ্টা করুন।",
+    "Thumbnail request failed (HTTP {status}). Try again.": "থাম্বনেইলের অনুরোধ ব্যর্থ হয়েছে (HTTP {status})। আবার চেষ্টা করুন।",
+    "Thumbnail unavailable": "থাম্বনেইল পাওয়া যাচ্ছে না"
   },
   "plurals": {
     " · {count} paired file linked": {

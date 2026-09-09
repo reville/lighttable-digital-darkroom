@@ -2491,7 +2491,11 @@ def valid_jpeg_cache(path: Path) -> bool:
 
 def thumb_jpeg(name: str) -> bytes:
     """Small strip thumbnail straight from the source; never decodes full TIFF."""
+    source_stat = src_path(name).stat()
     guard_local_photo(name)
+    if source_stat.st_size == 0:
+        raise APIError(409, T("This file is empty (0 bytes). Download or restore the original photo, then retry."),
+                       "empty-file", details={"name": name})
     p = CACHE / "thumb" / f"{file_key(name)}.jpg"
     if valid_jpeg_cache(p):
         return p.read_bytes()
@@ -6571,8 +6575,15 @@ class Handler(BaseHTTPRequestHandler):
                     "platform": sys.platform,
                 })
             elif u.path == "/api/thumb":
-                payload = (video_thumbnail(q["name"]) if is_video(q["name"])
-                           else thumb_jpeg(q["name"]))
+                src_path(q["name"])  # Validate the selection before classifying decode failures.
+                try:
+                    payload = (video_thumbnail(q["name"]) if is_video(q["name"])
+                               else thumb_jpeg(q["name"]))
+                except (APIError, FileNotFoundError, PermissionError):
+                    raise
+                except Exception as error:
+                    raise APIError(422, T("LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry."),
+                                   "thumbnail-failed", details={"diagnostic": str(error)}) from error
                 self._send(200, payload, "image/jpeg",
                            "public, max-age=31536000, immutable")
             elif u.path == "/api/thumb/rendered":

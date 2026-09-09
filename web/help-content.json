@@ -3089,6 +3089,13 @@
           "paragraphs": [
             "If a photo cannot be rendered or displayed, the message in the photo area includes the reported reason when one is available. This can identify a missing file, an image-loading problem, or a graphics failure. If no reason is available, the message stays general."
           ]
+        },
+        {
+          "title": "Read a thumbnail error",
+          "paragraphs": [
+            "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
+            "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first."
+          ]
         }
       ],
       "related": [
