@@ -484,6 +484,10 @@
         "anchor": "export function createZoomMotion("
       },
       {
+        "path": "app/main.swift",
+        "anchor": "func forwardEditorMagnification(_ event: NSEvent) -> Bool {"
+      },
+      {
         "path": "web/photo-pan.js",
         "anchor": "export function createPhotoPanMemory()"
       }
@@ -819,7 +823,7 @@
       {
         "title": "Choose one keeper",
         "paragraphs": [
-          "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
+          "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
           "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
         ]
       }

@@ -409,7 +409,7 @@
         {
           "title": "Pilih satu pilihan terbaik",
           "paragraphs": [
-            "Pilih foto survei aktif sebagai pilihan dan tolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG yang tertaut dapat memperluas perubahan bendera itu ke pasangan.",
+            "Saat Survey dibuka dari Seleksi terbantu, bandingkan grup yang disarankan dan beri bendera pada foto satu per satu. Buat pilihan tersedia dalam Survey biasa: ini memilih foto survei aktif dan menolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG tertaut dapat memperluas perubahan bendera tersebut ke pendamping.",
             "Untuk menilai edit terhadap originalnya, gunakan perbandingan sebelum/sesudah di Detail; Survey digunakan untuk memilih di antara bingkai yang berbeda."
           ]
         }
@@ -2932,15 +2932,24 @@
             "Aktifkan Indeks Foto di Pengaturan dan tunggu foto diberi skor.",
             "Luaskan seleksi berbantuan di sidebar katalog.",
             "Pilih kriteria Select seperti Ketajaman Subjek, Ketajaman Mata, atau Mata terbuka, atau kriteria Reject seperti Masalah eksposur, Gagal bidik, atau Dokumen.",
-            "Gunakan Pilihan, Tolak, atau Semua untuk meninjau foto yang cocok.",
-            "Periksa saran, lalu gunakan Pick selects atau Reject rejects jika Anda ingin menerapkan bendera itu."
+            "Memilih kriteria akan membuka foto yang cocok di kisi. Gunakan Pilihan, Tolak, atau Semua untuk mengubah tampilan tinjauan. Filter pustaka lain tetap berlaku.",
+            "Tinjau foto yang ditampilkan, lalu gunakan Beri bendera foto sebagai pilihan atau Beri bendera foto sebagai tolak. Tombol menampilkan berapa banyak berkas yang akan berubah."
           ]
         },
         {
           "title": "Menerapkan bendera",
           "paragraphs": [
-            "Konfirmasi menampilkan jumlah yang terpengaruh dan memperingatkan bahwa bendera yang sudah ada pada foto yang cocok akan diganti. Metadata RAW/JPEG yang tertaut juga dapat menyertakan file pasangan saat preferensi itu diaktifkan.",
+            "Bendera yang ada dipertahankan secara default. Aktifkan Ganti bendera yang ada hanya saat Anda ingin mengubah keputusan sebelumnya. Tindakan batch memengaruhi kecocokan yang ditampilkan dan mencakup berkas RAW/JPEG tertaut saat penautan metadata diaktifkan; bendera yang dilindungi atau yang sudah cocok dikecualikan dari hitungan tindakan.",
+            "Gunakan Batalkan di pesan penyelesaian atau Batalkan batch bendera terakhir di sidebar untuk memulihkan sebuah batch. Batalkan tetap tersedia selama sesi ini dan mempertahankan keputusan bendera manual atau eksternal apa pun yang dibuat setelahnya. Jika penyimpanan gagal, gunakan Coba simpan lagi atau batalkan batch; penulisan yang gagal tetap dalam antrean.",
             "Ini adalah sinyal analisis untuk tinjauan Anda, bukan penilaian akhir tentang foto mana yang harus disimpan. Menolak hanya menetapkan bendera; itu sendiri tidak memindahkan file asli ke Trash."
+          ]
+        },
+        {
+          "title": "Bandingkan foto serupa",
+          "paragraphs": [
+            "Tinjau foto serupa menemukan foto terindeks yang secara visual serupa dan diambil dalam 30 detik di folder atau koleksi saat ini. Grup dibuka di Survey dengan hingga 16 foto. Gunakan Grup Sebelumnya dan Grup Berikutnya untuk membandingkan alternatif, lalu beri bendera pada foto individual dengan kontrol survei.",
+            "Foto yang disarankan memiliki penilaian yang secara unik lebih kuat berdasarkan fokus, mata terbuka, dan masalah yang terdeteksi. Jika hasilnya seri atau buktinya tidak cukup, tidak ada rekomendasi yang jelas. Grup kesamaan hanyalah saran; grup ini tidak membuat tumpukan atau mengubah bendera.",
+            "Pengelompokan memerlukan waktu tangkap yang sebenarnya dan analisis Indeks Foto saat ini. Berkas yang hanya memiliki tanggal sistem berkas, video, salinan virtual, dan foto tanpa detail visual yang cukup dikecualikan. Catatan indeks yang ada disegarkan oleh pekerja indeks setelah pembaruan ini."
           ]
         }
       ],
@@ -3157,5 +3166,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
 }

@@ -753,6 +753,17 @@ class PayloadAndCacheTests(CatalogServerTestCase):
             self.assertEqual(labels[copied], ["Alice"])
             self.assertEqual(labels[self.qualified("sub/b.jpg")], [])
 
+    def test_initial_and_paged_rows_preserve_capture_time_provenance(self):
+        with self.catalog.write() as conn:
+            conn.execute("UPDATE files SET capture_time=? WHERE relpath=?",
+                         ("2024-03-09T18:30:00", "a.jpg"))
+        rows, _ = server.library_payload(limit=20)
+        page = server.browser_catalog_query({"limit": 20})
+        for items in (rows, page["items"]):
+            known = {row["name"]: row["captureTimeKnown"] for row in items}
+            self.assertTrue(known[self.qualified("a.jpg")])
+            self.assertFalse(known[self.qualified("sub/b.jpg")])
+
     def test_catalog_boot_payload_is_lean_and_reports_total(self):
         for name in (self.qualified("a.jpg"), self.qualified("sub/b.jpg")):
             server.save_image_state(name, {

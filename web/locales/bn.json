@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "একটি snapshot ফটোর বর্তমান adjustment settings, crop, masks, Remove corrections, এবং optics সংরক্ষণ করে। এটি এই ফটোর জন্য একটি সংরক্ষিত editing state। কোনো ফটো লোড না হওয়া পর্যন্ত Create snapshot উপলব্ধ নয়।",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "সংরক্ষিত কার্ভ আপনি সম্পাদনা না করা পর্যন্ত অপরিবর্তিত থাকে। এডিটর প্রতিনিধিত্বমূলক হ্যান্ডেলগুলো আবার তৈরি করে, তাই প্রথম সমন্বয়টি আপনি যে পয়েন্টটি সরান তার বাইরেও আমদানি করা কার্ভের আকার বদলে দিতে পারে।",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "সংরক্ষিত বা আমদানি করা curve আপনি সম্পাদনা না করা পর্যন্ত তার ঠিক সংরক্ষিত table বজায় রাখে। অ্যাপ সম্পাদনার জন্য প্রতিনিধিত্বমূলক handle পুনর্নির্মাণ করে, তাই প্রথম সমন্বয়ে আপনি যে বিন্দুটি সরান তার বাইরে একটি আমদানি করা curve-এর আকার বদলে যেতে পারে।",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "যে ফটোটি প্রস্তাবিত হয়েছে, তার ফোকাস, খোলা চোখ, এবং শনাক্ত সমস্যা ভিত্তিক মূল্যায়ন তুলনামূলকভাবে বেশি শক্তিশালী। সমতা বা অপর্যাপ্ত প্রমাণ থাকলে কোনো স্পষ্ট সুপারিশ দেখানো হয় না। সদৃশতার গ্রুপগুলো কেবল প্রস্তাবনা; এগুলো স্ট্যাক তৈরি করে না বা ফ্ল্যাগ পরিবর্তন করে না।",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "একটি ভার্চুয়াল কপি একই মূল ফাইলকে নির্দেশ করে এবং স্বাধীন সম্পাদনা অবস্থা ধরে রাখে। এটি ডিস্কে দ্বিতীয় কোনো মূল ফাইল তৈরি করে না।",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "একটি virtual copy তার original file শেয়ার করে। virtual copy মুছতে Photo actions → Delete virtual copy ব্যবহার করা উচিত; তার source Trash-এ সরালে সেই original ব্যবহার করে এমন প্রতিটি edit প্রভাবিত হয়।",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "একটি virtual copy তার source file শেয়ার করে: এটিকে rename-এ অন্তর্ভুক্ত করলে সেই original-ই লক্ষ্য হয়। interface-এ dedicated rename-undo বোতাম নেই।",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "Remove, Heal, বা Clone বেছে নিন, তারপর Size, Feather, এবং Opacity সেট করুন।",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Select criteria হিসেবে Subject sharpness, Eye sharpness, বা Eyes open বেছে নিন, অথবা Reject criteria হিসেবে Exposure issues, Misfires, বা Documents বেছে নিন।",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "Select faces নির্বাচন করুন, কিছু face নির্বাচন করুন, তারপর Move to a separate person বেছে নিয়ে সেগুলোকে একটি নতুন unnamed group-এ ভাগ করুন। এই দুটি গ্রুপ আবার match হিসেবে প্রস্তাব করা হবে না। একটি face নির্বাচন করে Use as cover বেছে নিয়ে gallery image পরিবর্তন করুন।",
+    "Choose Selects or Rejects to review matches before applying flags.": "ফ্ল্যাগ প্রয়োগের আগে মিলগুলো পর্যালোচনা করতে Selects বা Rejects বেছে নিন।",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "Stock বেছে নিন, অথবা এই ফটোতে Preview stocks ক্লিক করে rendered example তুলনা করুন।",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "স্বয়ংক্রিয় নির্বাচনের জন্য Subject বা Sky বেছে নিন। Object-এর জন্য, Object-এ ক্লিক করুন, তারপর ফটোতে অবজেক্টে ক্লিক করুন।",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "বর্তমান adjustment সহ TIFF বেছে নিন, তারপর TIFF colour space এবং TIFF bit depth সেট করুন।",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "রেটিং বা ফ্ল্যাগ দেওয়ার জন্য একটি ফটো নির্বাচন করুন",
     "Choose a preset to see its source and conversion coverage.": "একটি প্রিসেট বেছে নিয়ে এর source এবং conversion coverage দেখুন।",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "নেগেটিভের জন্য একটি print process বেছে নিন এবং slide film-এর জন্য print controls কেন অদৃশ্য হয়ে যায় তা বুঝুন।",
-    "Choose a reject criterion above.": "উপরে একটি প্রত্যাখ্যান মানদণ্ড বেছে নিন।",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "যে saved point-টি বেছে নিয়ে সম্পাদনা করতে চান, selector-এ সেটি বেছে নিন, অথবা মুছতে Delete point ব্যবহার করুন।",
     "Choose a saved preset to submit": "জমা দেওয়ার জন্য একটি সংরক্ষিত প্রিসেট বেছে নিন",
     "Choose a scheme": "একটি স্কিম বেছে নিন",
-    "Choose a select criterion above.": "উপরে একটি নির্বাচন মানদণ্ড বেছে নিন।",
     "Choose a settings folder": "একটি সেটিংস ফোল্ডার বেছে নিন",
     "Choose a source and destination first.": "প্রথমে একটি উৎস এবং গন্তব্য বেছে নিন।",
     "Choose a source and destination, then scan.": "একটি উৎস ও গন্তব্য বেছে নিন, তারপর স্ক্যান করুন।",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "File মেনু থেকে অন্য একটি ফোল্ডার বাছুন।",
     "Choose application…": "অ্যাপ্লিকেশন বেছে নিন…",
     "Choose catalog…": "ক্যাটালগ নির্বাচন করুন…",
+    "Choose criteria above.": "উপরে মানদণ্ড বেছে নিন।",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "যে সম্পাদনা সেটিংস কপি করতে চান তা বেছে নিন ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "ঠিক কোন ফটো export করবেন তা বেছে নিন, আউটপুট preview করুন, এবং অগ্রগতি পর্যবেক্ষণ করুন।",
     "Choose export size, format, and color space": "রপ্তানির আকার, ফরম্যাট, এবং রঙের জায়গা নির্বাচন করুন",
@@ -547,6 +548,7 @@
     "Choose your language": "আপনার ভাষা নির্বাচন করুন",
     "Choose your preferred language in the first-use dialog.": "প্রথমবারের ডায়ালগে আপনার পছন্দের ভাষা বেছে নিন।",
     "Choose…": "নির্বাচন করুন…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "কোনো মানদণ্ড বেছে নিলে তার মিলযুক্ত ফটোগুলি গ্রিডে খুলে যায়। পর্যালোচনার ভিউ পরিবর্তন করতে Selects, Rejects, বা All ব্যবহার করুন। লাইব্রেরির অন্যান্য ফিল্টার তখনও প্রযোজ্য থাকে।",
     "Choosing a file needs the desktop app; paste a path instead": "ফাইল বেছে নিতে ডেস্কটপ অ্যাপ প্রয়োজন; তার বদলে একটি পাথ পেস্ট করুন",
     "Choosing a folder needs the desktop app; paste a path instead": "একটি ফোল্ডার বাছাই করতে ডেস্কটপ অ্যাপ দরকার; এর বদলে একটি পাথ পেস্ট করুন",
     "Chromatic aberration": "ক্রোম্যাটিক অ্যাবেরেশন",
@@ -690,6 +692,7 @@
     "Compare": "তুলনা করুন",
     "Compare Before & After": "আগে ও পরে তুলনা করুন",
     "Compare several photos in Survey": "Survey-এ একাধিক ফটো তুলনা করুন",
+    "Compare similar photos": "সদৃশ ফটোগুলি তুলনা করুন",
     "Compare the faces before combining their photos.": "ফটো একত্র করার আগে মুখগুলো তুলনা করুন।",
     "Compare while zoomed in": "জুম করা অবস্থায় তুলনা করুন",
     "Compare with a reference image": "একটি রেফারেন্স ইমেজের সঙ্গে তুলনা করুন",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "প্রতিটি পড়া-যোগ্য সারি একটি নতুন ফাইলে কপি করে। এখন পড়া যাচ্ছে: {value}. সর্বশেষ ব্যাকআপের পর করা সম্পাদনা রাখে; ক্ষতিগ্রস্ত পৃষ্ঠার সারিগুলো হারিয়ে যায়।",
     "Copy": "কপি",
     "Copy Edit Settings": "সম্পাদনা সেটিংস কপি করুন",
+    "Copy and Paste are below the photo in Detail view.": "বিস্তারিত দৃশ্যে ছবির নিচে কপি ও পেস্ট বোতাম রয়েছে।",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy এবং Paste আপনি স্পষ্টভাবে যে group নির্বাচন করেন তা স্থানান্তর করে। unchecked group-এর সেটিংস প্রতিটি destination-এ যেমন আছে তেমনই থাকে। এটি একটি স্পষ্ট copy/paste workflow: পরবর্তীতে উৎসে করা edit স্বয়ংক্রিয়ভাবে destination-এ synchronize হয় না।",
     "Copy and verify it into the library": "এটি কপি করে লাইব্রেরিতে যাচাই করুন",
     "Copy anyway": "তবুও কপি করুন",
@@ -980,6 +984,7 @@
     "Downloading update…": "আপডেট ডাউনলোড হচ্ছে…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "Amount 0% থেকে 100% পর্যন্ত টেনে নিন। শূন্যে প্রিসেটের আগে থাকা সম্পাদনা পুনরুদ্ধার হয়; 100% পূর্ণ প্রিসেট ব্যবহার করে। Amount-এ ডাবল-ক্লিক করে এটিকে 100%-এ রিসেট করুন।",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "ক্রপের আকার পরিবর্তন করতে একটি হ্যান্ডেল টেনে আনুন; ফটোটি ফ্রেমকে কেন্দ্রে রাখতে জুম হয়। ফ্রেমের ভিতরে টেনে ফটোটিকে তার নিচে সরান, অথবা বাইরে টেনে নতুন ক্রপ আঁকুন।",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "গ্রেডিয়েন্ট সামঞ্জস্য করতে যেকোনো বিন্দু টানুন। সরাতে রেখাটি টানুন। আবার আঁকতে অন্য কোনো জায়গায় টানুন।",
     "Drag either on-image circle to refine the target or source.": "target বা source পরিমার্জন করতে ছবির ওপরের যেকোনো একটি বৃত্ত টানুন।",
     "Drag on the photo to change the selected gradient’s shape or position": "নির্বাচিত গ্রেডিয়েন্টের আকার বা অবস্থান পরিবর্তন করতে ফটোতে টেনে নিন",
     "Drag on the photo to edit the {tool} mask.": "{tool} মাস্ক সম্পাদনা করতে ফটোর ওপর টানুন।",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "প্রতিটি ব্রাশ বা আঁকা refinement-এ সর্বোচ্চ 64টি স্ট্রোক, প্রতি স্ট্রোকে সর্বোচ্চ 512টি পয়েন্ট, এবং প্রতি ফটোতে 20,000টি মাস্ক পয়েন্ট রাখা যায়। কোনো সীমা পূরণ হলে এডিটর আপনাকে জানায়।",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "প্রতিটি নতুন ব্যাকআপে বিষয়বস্তুর ম্যানিফেস্ট এবং চেকসম অন্তর্ভুক্ত থাকে, এবং এটি স্বাধীনভাবে পুনরায় খোলা হয় যাচাই করার জন্য।",
     "Edit": "সম্পাদনা করুন",
+    "Edit History": "সম্পাদনার ইতিহাস",
     "Edit In…": "এ…-এ সম্পাদনা করুন",
     "Edit Shape": "আকৃতি সম্পাদনা করুন",
     "Edit a curve": "একটি কার্ভ সম্পাদনা করুন",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "ত্রুটি: {error}",
     "Errors: {details}": "ত্রুটি: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "প্রতিটি export-এ নির্বাচিত ICC profile এম্বেড হয়। Colour space-এ sRGB, Display P3, বা ProPhoto RGB বেছে নিন।",
-    "Edit History": "সম্পাদনার ইতিহাস",
     "Everyone": "সকলেই",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone দৃশ্যমান face groups দেখায়। Unnamed সেই গ্রুপগুলি দেখায় যেগুলোর নাম দেওয়া হয়নি। একটি গ্রুপ খুলুন, একটি নাম টাইপ করুন, এবং Save name নির্বাচন করুন। শুধু আপনি যে নামগুলো দেন সেগুলিই ব্যবহৃত হয়; model মানুষের নাম জানে না।",
     "Example download prepared. Your edit has not changed.": "উদাহরণ ডাউনলোড প্রস্তুত হয়েছে। আপনার এডিট পরিবর্তিত হয়নি।",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "XMP সাইডকারের মাধ্যমে মেটাডেটা বিনিময় করুন",
     "Existing LightTable edits could not be merged safely": "বিদ্যমান LightTable এডিটগুলো নিরাপদে মার্জ করা যায়নি",
     "Existing files": "বিদ্যমান ফাইলগুলো",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "ডিফল্টভাবে বিদ্যমান ফ্ল্যাগগুলো সংরক্ষিত থাকে। পূর্ববর্তী সিদ্ধান্ত পরিবর্তন করতে চাইলে তবেই Enable Replace existing flags করুন। metadata linking সক্রিয় থাকলে ব্যাচ অ্যাকশন প্রদর্শিত মিলগুলোর ওপর প্রভাব ফেলে এবং লিঙ্ক করা RAW/JPEG ফাইল অন্তর্ভুক্ত করে; সুরক্ষিত বা ইতিমধ্যে মেলে এমন ফ্ল্যাগগুলো অ্যাকশন গণনায় বাদ যায়।",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "বিদ্যমান ফ্ল্যাগগুলো সংরক্ষিত থাকে। গণনায় ফ্ল্যাগবিহীন লিঙ্ক করা RAW/JPEG ফাইল অন্তর্ভুক্ত।",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "বিদ্যমান ফ্ল্যাগগুলো প্রতিস্থাপিত হতে পারে। গণনায় লিঙ্ক করা RAW/JPEG ফাইল অন্তর্ভুক্ত।",
     "Existing settings could not be loaded; this photo was left unchanged": "বিদ্যমান সেটিংস লোড করা যায়নি; এই ফটোটি অপরিবর্তিত রাখা হয়েছে",
     "Expand Advanced and edit Filename template.": "Advanced প্রসারিত করুন এবং Filename template সম্পাদনা করুন।",
     "Expand Advanced in Export.": "Export-এ Advanced প্রসারিত করুন।",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "সার্ভে ফটোতে ফ্ল্যাগ এবং রেটিং দিন",
     "Flag and rating filters": "ফ্ল্যাগ ও রেটিং ফিল্টার",
     "Flag as Pick": "পিক হিসেবে ফ্ল্যাগ করুন",
+    "Flag {count} photo as a pick": "{count}টি ফটোকে পিক হিসেবে ফ্ল্যাগ করুন",
+    "Flag {count} photo as a reject": "{count}টি ফটোকে প্রত্যাখ্যান হিসেবে ফ্ল্যাগ করুন",
+    "Flag {count} photos as picks": "{count}টি ফটোকে পিক হিসেবে ফ্ল্যাগ করুন",
+    "Flag {count} photos as rejects": "{count}টি ফটোকে প্রত্যাখ্যান হিসেবে ফ্ল্যাগ করুন",
     "Flags and ratings apply to selection": "ফ্ল্যাগ এবং রেটিং নির্বাচনে প্রযোজ্য",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "ফ্ল্যাগ এবং তারকাগুলো আলাদা: একটি ফটো Picked হতে পারে এবং যেকোনো star rating থাকতে পারে। Reject একটি ফটোকে পর্যালোচনার জন্য চিহ্নিত করে; এটি মুছে না।",
     "Flip horizontal": "অনুভূমিকভাবে উল্টান",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "ফটোকে সংগ্রহে গোষ্ঠীবদ্ধ করুন",
     "Group similar faces and search names you add.": "মিল থাকা মুখগুলো গ্রুপ করুন এবং আপনি যে নাম যোগ করেন তা অনুসন্ধান করুন।",
     "Group the rendered derivative with its source in the catalog.": "রেন্ডার করা derivative-টিকে ক্যাটালগে এর source-এর সাথে group করুন।",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "গ্রুপ {index} of {count}। স্পষ্ট কোনো সুপারিশ নেই; এই ফটোগুলো তুলনা করুন।",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "গ্রুপ {index} of {count}। প্রস্তাবিত: {name}। ফোকাস এবং চোখের পরীক্ষা ভিত্তিক; প্রতিটি ফ্রেম পর্যালোচনা করুন।",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "গ্রুপিংয়ের জন্য প্রকৃত ক্যাপচার সময় এবং বর্তমান Photo Index বিশ্লেষণ প্রয়োজন। শুধু ফাইলসিস্টেম তারিখ, ভিডিও, ভার্চুয়াল কপি, এবং পর্যাপ্ত ভিজ্যুয়াল বিস্তারিত না থাকা ফটো বাদ দেওয়া হয়। এই আপডেটের পরে ইনডেক্স ওয়ার্কার বিদ্যমান ইনডেক্স রেকর্ডগুলো রিফ্রেশ করে।",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "ফটোগুলি স্ক্যান হওয়ার সঙ্গে সঙ্গে গ্রুপগুলি এখানে দেখা যাবে। এই প্রক্রিয়া চলার সময়ও আপনি এডিটিং চালিয়ে যেতে পারেন।",
     "Guides for your photographs, from first edit to export.": "আপনার ফটোগ্রাফের জন্য নির্দেশিকা, প্রথম সম্পাদনা থেকে রপ্তানি পর্যন্ত।",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR মিলে যাওয়া মাত্রা সহ 2–9টি exposure-bracketed ফটো গ্রহণ করে। এটি উপকারী টোনের ভারসাম্য রাখতে display-rendered ফ্রেমগুলো align করে এবং exposure-fuse করে। blending artifacts-এর জন্য চলমান বিষয় ও প্রান্তগুলো পরীক্ষা করুন।",
@@ -1431,6 +1446,7 @@
     "Import…": "আমদানি করুন…",
     "Improve preview speed and check image detail": "পূর্বরূপের গতি উন্নত করুন এবং ছবির বিস্তারিত পরীক্ষা করুন",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "Community-তে Featured, New, বা All বেছে নিন এবং সংগ্রহটি সংকুচিত করতে Subject ব্যবহার করুন। একটি প্রিসেট নির্বাচন করলে এর বর্ণনা, স্রষ্টা, সংস্করণ, Film আচরণ, এবং উপলভ্য উদাহরণ ফটো দেখা যায়।",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "“আকৃতি সম্পাদনা করুন”-এ যেকোনো বিন্দু টেনে গ্রেডিয়েন্টের সেই প্রান্তটি সামঞ্জস্য করুন। দুটি বিন্দুর সংযোগরেখা টেনে পুরো গ্রেডিয়েন্ট সরান; এর কোণ ও পরিবর্তনের প্রস্থ একই থাকবে। আবার আঁকতে ছবির অন্য কোনো জায়গায় টানুন।",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "Edit Shape-এ, মাস্ক সরাতে কেন্দ্রের হ্যান্ডেল টানুন, আকার পরিবর্তন করতে যে কোনো অক্ষের হ্যান্ডেল টানুন, অথবা ঘোরাতে বাইরের হ্যান্ডেল টানুন। গ্রেডিয়েন্টটি গোল করতে আঁকার বা আকার পরিবর্তনের সময় Shift ধরে রাখুন।",
     "In Film profile, choose Film format.": "Film profile-এ গিয়ে Film format নির্বাচন করুন।",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "Info-তে Description প্রসারিত করে title, caption, এবং headline; Rights প্রসারিত করে creator, copyright, এবং credit; অথবা Place প্রসারিত করে location এবং coordinates দেখুন। আপনি টাইপ করার সঙ্গে সঙ্গেই পরিবর্তনগুলো ক্যাটালগে সংরক্ষিত হয়। এই ফটোর metadata লোড হলে এবং latitude ও longitude উভয়ই বৈধ হলে Open in Maps উপলব্ধ হয়। এটি আপনার ব্রাউজারে অবস্থানটি খুলবে।",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "ছবিটি ১:১-এ পরীক্ষা করুন এবং texture বিচার করার আগে preview detail শেষ হওয়া পর্যন্ত অপেক্ষা করুন।",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "ওভারলে পরীক্ষা করুন এবং প্রয়োজন অনুযায়ী সীমানার চারপাশে painted refinement ব্যবহার করুন।",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "প্রত্যাখ্যাত ছবিগুলো পরীক্ষা করুন। আপনি যদি তাদের অন্য সদস্যদেরও অন্তর্ভুক্ত করতে চান, তবে paired-file সেটিংস পরীক্ষা করুন এবং যেকোনো stack প্রসারিত করুন।",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "পরামর্শগুলো পরীক্ষা করুন, তারপর সেই ফ্ল্যাগগুলো প্রয়োগ করতে চাইলে Pick selects বা Reject rejects ব্যবহার করুন।",
     "Interface": "ইন্টারফেস",
     "Interface and behavior": "ইন্টারফেস ও আচরণ",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "ইন্টারফেস ভিউয়ার ব্যাকগ্রাউন্ড, ফন্ট স্কেল, Lights Out, লুপি তথ্য ওভারলে, এবং ক্রপ গাইড নিয়ন্ত্রণ করে। এই পছন্দগুলো রপ্তানি করা পিক্সেল না বদলিয়ে ওয়ার্কস্পেসের চেহারা পরিবর্তন করে।",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Brush, Linear, এবং Radial মাস্ক দিয়ে স্থানীয় সমন্বয় করুন",
     "Make photos easier to find and prepare descriptive metadata for export.": "ফটো খুঁজে পাওয়া সহজ করুন এবং রপ্তানির জন্য বর্ণনামূলক মেটাডেটা প্রস্তুত করুন।",
     "Make select": "নির্বাচন করুন",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "নির্বাচন করুন select সক্রিয় সার্ভে ফটোকে বাছাই হিসেবে চিহ্নিত করে এবং সার্ভেতে থাকা অন্য ফটোগুলোকে প্রত্যাখ্যান করে। এতে তাদের ফ্ল্যাগ পরিবর্তিত হয়। লিঙ্ক করা RAW এবং JPEG মেটাডেটা এই ফ্ল্যাগ পরিবর্তনগুলো সঙ্গী ফাইলগুলিতেও প্রসারিত করতে পারে।",
     "Make the source photo active.": "উৎস ফোটোটিকে সক্রিয় করুন।",
     "Make your adjustment, then check the save status in the app.": "আপনার সমন্বয় করুন, তারপর অ্যাপে save status দেখুন।",
     "Manage cache storage": "ক্যাশে স্টোরেজ পরিচালনা করুন",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "এই বিল্ডের চেয়ে নতুন",
     "Next": "পরবর্তী",
     "Next Photo": "পরবর্তী ফটো",
+    "Next group": "পরবর্তী গ্রুপ",
     "Next presets": "পরবর্তী প্রিসেটসমূহ",
     "No Rating": "কোনো রেটিং নেই",
     "No TIFF was created.": "কোনো TIFF তৈরি করা হয়নি।",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "এই সংগ্রহে এখনও কোনো প্রিসেট নেই।",
     "No rejected photos in this view": "এই ভিউতে কোনো প্রত্যাখ্যাত ফটো নেই",
     "No sampled colors": "নমুনাকৃত কোনো রং নেই",
+    "No similar groups found. Photos need current index analysis and capture times.": "কোনো সদৃশ গ্রুপ পাওয়া যায়নি। ফটোগুলোর জন্য বর্তমান সূচি বিশ্লেষণ এবং ক্যাপচার সময় প্রয়োজন।",
     "No sources yet.": "এখনও কোনো উৎস নেই।",
     "No steps recorded yet.": "এখনও কোনো ধাপ রেকর্ড করা হয়নি।",
     "No usable lines found.": "কোনো ব্যবহারযোগ্য লাইন পাওয়া যায়নি।",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "বাছাই করুন (P)",
     "Pick / reject / unflag": "বাছাই করুন / প্রত্যাখ্যান করুন / ফ্ল্যাগ সরান",
     "Pick a preset": "একটি প্রিসেট বাছাই করুন",
-    "Pick selects": "বাছাই করুন নির্বাচনগুলো",
-    "Pick the selects": "নির্বাচনগুলো বাছাই করুন",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো বাছাই করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো বাছাই করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
-    "Pick {count} select": "{count}টি বাছাই করুন",
-    "Pick {count} selects": "{count}টি নির্বাচন বাছাই করুন",
     "Pick, reject, and rate photos": "ফটো বাছাই করুন, প্রত্যাখ্যান করুন, এবং রেটিং দিন",
     "Picked": "বাছাই করা",
     "Picked only": "শুধু বাছাই করা",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "পূর্বরূপগুলো এই ফটোর এডিট ব্যবহার করে। প্রয়োগ করতে একটি স্টক বেছে নিন।",
     "Previous": "পূর্ববর্তী",
     "Previous Photo": "পূর্ববর্তী ফটো",
+    "Previous group": "পূর্ববর্তী গ্রুপ",
     "Previous presets": "পূর্ববর্তী প্রিসেটসমূহ",
     "Print development": "প্রিন্ট ডেভেলপমেন্ট",
     "Print exposure": "প্রিন্ট এক্সপোজার",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "কমিউনিটি রিফ্রেশ করা হচ্ছে…",
     "Reject": "প্রত্যাখ্যান করুন",
     "Reject (X)": "প্রত্যাখ্যান করুন (X)",
-    "Reject rejects": "প্রত্যাখ্যানগুলো প্রত্যাখ্যান করুন",
-    "Reject the rejects": "প্রত্যাখ্যানগুলো প্রত্যাখ্যান করুন",
-    "Reject {count} photo": "{count}টি ফটো প্রত্যাখ্যান করুন",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো প্রত্যাখ্যান করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
-    "Reject {count} photos": "{count}টি ফটো প্রত্যাখ্যান করুন",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো প্রত্যাখ্যান করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
     "Rejected": "প্রত্যাখ্যাত",
     "Rejected {count} photo": "{count}টি ফটো প্রত্যাখ্যাত",
     "Rejected {count} photos": "{count}টি ফটো প্রত্যাখ্যাত",
@@ -2317,6 +2322,7 @@
     "Repair": "মেরামত",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "অন্য অঞ্চলগুলোর জন্য পুনরাবৃত্তি করুন, অথবা গ্লোবাল ট্রিটমেন্ট পরিবর্তন করতে Edit global grade-এ ক্লিক করুন।",
     "Replace adjustment settings": "সমন্বয় সেটিংস প্রতিস্থাপন করুন",
+    "Replace existing flags": "বিদ্যমান ফ্ল্যাগগুলো প্রতিস্থাপন করুন",
     "Replace local masks; detect AI selections on each photo": "স্থানীয় মাস্ক প্রতিস্থাপন করুন; প্রতিটি ফটোতে এআই নির্বাচন শনাক্ত করুন",
     "Replace with imported": "আমদানি করা দিয়ে প্রতিস্থাপন করুন",
     "Replaced adjustments with {name}": "{name} দিয়ে সমন্বয় প্রতিস্থাপন করা হয়েছে",
@@ -2368,6 +2374,8 @@
     "Restored that step": "সেই ধাপটি পুনরুদ্ধার করা হয়েছে",
     "Restored {count} capture. You can also restore capture-time steps in History.": "{count}টি ক্যাপচার পুনঃস্থাপন করা হয়েছে। আপনি History-তেও ক্যাপচার-সময়ের ধাপগুলো পুনঃস্থাপন করতে পারেন।",
     "Restored {count} captures. You can also restore capture-time steps in History.": "{count}টি ক্যাপচার পুনঃস্থাপন করা হয়েছে। আপনি History-তেও ক্যাপচার-সময়ের ধাপগুলো পুনঃস্থাপন করতে পারেন।",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count}টি ফটো ফ্ল্যাগ পুনঃস্থাপন করা হয়েছে। পরবর্তী ফ্ল্যাগ পরিবর্তনগুলো সংরক্ষিত আছে।",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count}টি ফটো ফ্ল্যাগ পুনঃস্থাপন করা হয়েছে। পরবর্তী ফ্ল্যাগ পরিবর্তনগুলো সংরক্ষিত আছে।",
     "Restore…": "পুনরুদ্ধার করুন…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "একটি backup restore করলে catalog data সেই backup-এর অবস্থায় ফিরে যায়, তাই পরবর্তী edit এতে থাকে না। working catalog restore করলে আগে বর্তমান catalog backup করা হয়।",
     "Result name": "ফলাফলের নাম",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Review matches দুটি সম্ভাব্য গ্রুপকে face samples সহ উপস্থাপন করে। Same person সেগুলো একত্রিত করে। Different people একটি correction রেকর্ড করে, যাতে pairing আবার প্রস্তাব না করা হয়। Skip for now মিলটি পরে দেখার জন্য রেখে দেয়।",
     "Review photos from the source using the destination and naming settings": "গন্তব্য ও নামকরণ সেটিংস ব্যবহার করে উৎসের ফটো পর্যালোচনা করুন",
     "Review signals": "সংকেত পর্যালোচনা করুন",
+    "Review similar photos": "সদৃশ ফটোগুলি পর্যালোচনা করুন",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Review similar photos বর্তমান ফোল্ডার বা সংগ্রহে 30 সেকেন্ডের মধ্যে তোলা ভিজ্যুয়ালি সদৃশ, ইনডেক্সকৃত ফটো খুঁজে বের করে। গ্রুপগুলো সর্বোচ্চ 16টি ফটোসহ Survey-তে খোলে। বিকল্পগুলো তুলনা করতে Previous group এবং Next group ব্যবহার করুন, তারপর survey controls দিয়ে পৃথক ফটোগুলোতে ফ্ল্যাগ দিন।",
     "Review the before-and-after filenames in the preview.": "পূর্বরূপে আগে-এবং-পরে ফাইলের নামগুলো পর্যালোচনা করুন।",
     "Review the current view carefully before moving rejected originals and sidecars.": "প্রত্যাখ্যাত মূল ফাইল এবং sidecar সরানোর আগে বর্তমান ভিউটি সতর্কতার সঙ্গে পর্যালোচনা করুন।",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "প্রদর্শিত ফটোগুলি পর্যালোচনা করুন, তারপর ফটোগুলোকে পিক হিসেবে ফ্ল্যাগ করুন বা ফটোগুলোকে প্রত্যাখ্যান হিসেবে ফ্ল্যাগ করুন ব্যবহার করুন। বোতামে কতটি ফাইল পরিবর্তিত হবে তা দেখানো হয়।",
     "Review the import result and the new preset’s conversion coverage before applying it.": "প্রয়োগ করার আগে import result এবং নতুন preset-এর conversion coverage পর্যালোচনা করুন।",
     "Review the import result, then continue into the library.": "আমদানির ফলাফল পর্যালোচনা করুন, তারপর লাইব্রেরিতে এগিয়ে যান।",
     "Review the result and refine the sliders for the photograph.": "ফলাফল পর্যালোচনা করুন এবং ফটোগ্রাফের জন্য স্লাইডারগুলো পরিমার্জন করুন।",
     "Review transferred masks": "স্থানান্তরিত মাস্কসমূহ পর্যালোচনা করুন",
     "Review translated edits": "অনূদিত এডিট পর্যালোচনা করুন",
     "Reviewing every photo.": "প্রতি ফটো পর্যালোচনা করা হচ্ছে।",
-    "Reviewing {count} photo that met a reject criterion.": "একটি প্রত্যাখ্যান মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
-    "Reviewing {count} photo that met a select criterion.": "একটি নির্বাচন মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
-    "Reviewing {count} photos that met a reject criterion.": "একটি প্রত্যাখ্যান মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
-    "Reviewing {count} photos that met a select criterion.": "একটি নির্বাচন মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
     "Rich descriptions on": "সমৃদ্ধ বর্ণনা চালু",
     "Richer descriptions require macOS 27 or later": "সমৃদ্ধ বর্ণনার জন্য macOS 27 বা তার পরের সংস্করণ প্রয়োজন",
     "Rights": "অধিকার",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "ক্যামেরা থেকে দূরত্বের একটি পরিসর নির্বাচন করুন; দূর এবং কাছের সীমা সূক্ষ্মভাবে ঠিক করুন",
     "Select all": "সব নির্বাচন করুন",
     "Select an active reference photo first": "প্রথমে একটি সক্রিয় রেফারেন্স ফটো নির্বাচন করুন",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।",
     "Select an existing mask, then expand Create New Mask.": "একটি বিদ্যমান মাস্ক নির্বাচন করুন, তারপর Create New Mask প্রসারিত করুন।",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "চালিয়ে যেতে আরেকটি band বেছে নিন, অথবা mixer সমন্বয়গুলো মুছতে Color Mixer-এর Reset ব্যবহার করুন।",
     "Select at least two distinct originals": "অন্তত দুটি ভিন্ন মূল নির্বাচন করুন",
@@ -2617,6 +2625,7 @@
     "Settings…": "সেটিংস…",
     "Shadows": "ছায়া",
     "Shape": "আকৃতি",
+    "Shape a linear gradient": "লিনিয়ার গ্রেডিয়েন্টের আকৃতি বদলান",
     "Shape a radial gradient": "রেডিয়াল গ্রেডিয়েন্টের আকৃতি দিন",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "আকৃতিতে Width, Height, Rotation, এবং Feather নিয়ন্ত্রণও রয়েছে।",
     "Shape contrast and color with curves": "কার্ভ ব্যবহার করে কনট্রাস্ট এবং রং গঠন করুন",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "ক্যাটালগটি অপরিবর্তিত রাখা হয়েছে।",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "ক্যাটালগটি একটি যাচাইকৃত ব্যাকআপ থেকে পুনঃস্থাপন করা হয়েছে; ক্ষতিগ্রস্ত কপি Recovery ফোল্ডারে আছে।",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "কম্প্যাক্ট SFace INT8 model সারিবদ্ধ human faces তুলনা করে। Automatic grouping সংযত similarity rules ব্যবহার করে; possible matches পর্যালোচনার জন্য আলাদা থাকে। নামকরণ করা কোনো ব্যক্তির সঙ্গে মেলা নতুন মুখসমূহ নিশ্চিতকরণের জন্য প্রস্তাব করা হয়।",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "নিশ্চিতকরণে প্রভাবিত সংখ্যাটি দেখায় এবং সতর্ক করে যে মিলে যাওয়া ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে। লিঙ্ক করা RAW/JPEG মেটাডেটা সেই পছন্দ সক্রিয় থাকলে জোড়া ফাইলটিও অন্তর্ভুক্ত করতে পারে।",
     "The current catalog is backed up first, then replaced by this one.": "বর্তমান ক্যাটালগটি আগে ব্যাকআপ করা হয়, তারপর এটির দ্বারা প্রতিস্থাপিত হয়।",
     "The desktop Trash service (gio) is unavailable": "ডেস্কটপ ট্র্যাশ সার্ভিস (gio) অনুপলব্ধ",
     "The desktop app checks its signed update feed.": "ডেস্কটপ অ্যাপটি তার স্বাক্ষরিত আপডেট ফিড পরীক্ষা করে।",
@@ -2987,6 +2995,7 @@
     "Undo last change": "শেষ পরিবর্তন পূর্বাবস্থায় ফেরান",
     "Undo last correction": "শেষ সংশোধন পূর্বাবস্থায় ফেরান",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "Undo last correction এই উইন্ডোতে ধরে রাখা সবচেয়ে সাম্প্রতিক সংশোধন ফিরিয়ে দেয়। Restore camera times… ক্যাটালগ সংশোধন সরিয়ে ফেলার পূর্বরূপ দেখায়; পূর্বরূপ পর্যালোচনা করুন এবং মূল ক্যামেরা সময় পুনঃস্থাপন করতে এটি প্রয়োগ করুন। ক্যাপচার-সময় ধাপ History-তেও উপলভ্য। XMP লেখা সক্রিয় থাকলে, একটি সংশোধন রিসেট করলে LightTable এটি প্রয়োগ করার আগে সংরক্ষিত সাইডকার তারিখগুলি পুনঃস্থাপিত হয়। সেই সংরক্ষিত তারিখ ছাড়া পুরোনো সাইডকারের ক্যাপচার তারিখ অপরিবর্তিত থাকে।",
+    "Undo last flag batch": "সর্বশেষ ফ্ল্যাগ ব্যাচ পূর্বাবস্থায় ফেরান",
     "Undo or restore an earlier step": "একটি আগের ধাপ পূর্বাবস্থায় ফেরান বা পুনঃস্থাপন করুন",
     "Undo snapshots must be strings": "আনডো স্ন্যাপশট অবশ্যই স্ট্রিং হতে হবে",
     "Unedited": "অসম্পাদিত",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "রেফারেন্সকে আপনার ফটোর সাথে সামঞ্জস্য করতে Scale, Horizontal, এবং Vertical ব্যবহার করুন।",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "ফটো যোগ করার বা unavailable originals পুনঃস্থাপন করার পরে Scan new photos ব্যবহার করুন। আগে স্ক্যান করা, অপরিবর্তিত ফটোগুলি পুনরায় ব্যবহার করা হয়।",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop, WinGet, Chocolatey, AUR, Flatpak বা Snap পরিচালিত ইনস্টলেশন সংশ্লিষ্ট ব্যবস্থাপক দিয়ে আপডেট করুন। Windows পোর্টেবল কপির জন্য নতুন ZIP ডাউনলোড করুন। আপডেট স্বাক্ষর কনফিগার করা না থাকলে বিল্ড নিজে আপডেট হতে পারে না।",
-    "Use Selects, Rejects, or All to review the matching photos.": "মিলে যাওয়া ফটোগুলো পর্যালোচনা করতে Selects, Rejects, বা All ব্যবহার করুন।",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Temp এবং Tint ব্যবহার করুন বা একটি নিরপেক্ষ এলাকা থেকে sample নিন, তারপর Vibrance এবং Saturation সমন্বয় করুন।",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "সাম্প্রতিক কাজের জন্য Undo, সংরক্ষিত এডিটিং ধাপগুলোর জন্য History, এবং আবার দেখতে চাওয়া look-এর জন্য নামযুক্ত snapshot ব্যবহার করুন।",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "একটি ব্যাচ পুনঃস্থাপন করতে সম্পন্ন হওয়ার বার্তায় Undo বা সাইডবারে Undo last flag batch ব্যবহার করুন। এই সেশনে Undo উপলভ্য থাকে এবং পরবর্তী যেকোনো ম্যানুয়াল বা বহিরাগত ফ্ল্যাগ সিদ্ধান্ত সংরক্ষণ করে। সংরক্ষণ ব্যর্থ হলে Retry save ব্যবহার করুন অথবা ব্যাচটি পূর্বাবস্থায় ফেরান; ব্যর্থ লেখাগুলো কিউতে রয়ে যায়।",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "এই উইন্ডো খোলা থাকা অবস্থায় সর্বশেষ batch পুনরুদ্ধার করতে Undo keyword change ব্যবহার করুন। Undo সেই batch-এর পরে পরিবর্তিত কীওয়ার্ডগুলোর ওপর লিখে দিতে অস্বীকার করে। Photo History-ও keyword-এর আগে এবং পরে অবস্থা ধরে রাখে।",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "পরিসরের রংগুলোকে নমুনা করা প্যাচের আরও কাছাকাছি করতে Uniform hue, Uniform saturation, বা Uniform luminance ব্যবহার করুন।",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "কয়েকটি point ব্যবহার করুন এবং কাজ করার সময় ফটো তুলনা করুন; channel curve-গুলো শক্তিশালী color cast আনতে পারে।",
@@ -3162,6 +3171,7 @@
     "What to expect": "কী আশা করবেন",
     "What to open": "কী খুলবেন",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "MIDI উপলভ্য থাকলে, কীবোর্ড এবং MIDI নিয়ন্ত্রণসমূহ খুলুন এবং MIDI শিখুন বেছে নিন। আপনার ব্রাউজার অনুরোধ করলে MIDI অ্যাক্সেস অনুমতি দিন।",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Assisted culling থেকে Survey খোলা হলে, প্রস্তাবিত গ্রুপটি তুলনা করুন এবং পৃথক ফটোগুলোতে ফ্ল্যাগ দিন। একটি নিয়মিত Survey-তে Make select উপলভ্য থাকে: এটি সক্রিয় survey photo-টি নির্বাচন করে এবং Survey-তে থাকা অন্য ফটোগুলোকে প্রত্যাখ্যান করে। এতে তাদের ফ্ল্যাগ পরিবর্তিত হয়। লিঙ্ক করা RAW এবং JPEG metadata এই ফ্ল্যাগ পরিবর্তনগুলো companion-গুলিতে বাড়িয়ে দিতে পারে।",
     "When a photo already has edits": "যখন কোনো ফোটোতে ইতিমধ্যে সম্পাদনা আছে",
     "When a photo arrives": "যখন একটি ফটো আসে",
     "When a photo seems missing": "যখন কোনো ফটো অনুপস্থিত মনে হয়",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count}টি গ্রুপ",
     "{count} indexed photo remains local until deleted.": "{count}টি সূচীকৃত ফটো মুছে ফেলা না হওয়া পর্যন্ত স্থানীয় থাকে।",
     "{count} indexed photos remain local until deleted.": "{count}টি সূচীকৃত ফটো মুছে ফেলা না হওয়া পর্যন্ত স্থানীয় থাকে।",
+    "{count} matching photo shown: {criteria}.": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}.",
     "{count} minimum alignment inlier": "{count}টি ন্যূনতম সামঞ্জস্য ইনলাইয়ার",
     "{count} minimum alignment inliers": "{count}টি ন্যূনতম সামঞ্জস্য ইনলাইয়ার",
     "{count} missing": "{count}টি অনুপস্থিত",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "গ্রেডিয়েন্ট সামঞ্জস্য করতে যেকোনো বিন্দু টানুন। সরাতে রেখাটি টানুন। আবার আঁকতে অন্য কোনো জায়গায় টানুন।",
-    "Shape a linear gradient": "লিনিয়ার গ্রেডিয়েন্টের আকৃতি বদলান",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "“আকৃতি সম্পাদনা করুন”-এ যেকোনো বিন্দু টেনে গ্রেডিয়েন্টের সেই প্রান্তটি সামঞ্জস্য করুন। দুটি বিন্দুর সংযোগরেখা টেনে পুরো গ্রেডিয়েন্ট সরান; এর কোণ ও পরিবর্তনের প্রস্থ একই থাকবে। আবার আঁকতে ছবির অন্য কোনো জায়গায় টানুন।",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "বিদ্যমান কোনো রৈখিক মাস্ক আবার সামঞ্জস্য করতে সেটি নির্বাচন করুন। “যোগ করুন”, “বিয়োগ” বা “ছেদ করুন” দিয়ে আঁকছিলেন হলে আগে “আকৃতি সম্পাদনা করুন” বেছে নিন। বিন্দুগুলো লুকানো থাকলে H চাপুন।",
-    "Copy and Paste are below the photo in Detail view.": "বিস্তারিত দৃশ্যে ছবির নিচে কপি ও পেস্ট বোতাম রয়েছে।"
+    "☆ Favorites": "☆ পছন্দের"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4142,6 +4149,14 @@
     "Exporting {count} photo to {destination}…": {
       "one": "{destination}-এ {count}টি ফটো রপ্তানি করা হচ্ছে…",
       "other": "{destination}-এ {count}টি ফটো রপ্তানি করা হচ্ছে…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "{count}টি ফটোকে পিক হিসেবে ফ্ল্যাগ করুন",
+      "other": "{count}টি ফটোকে পিক হিসেবে ফ্ল্যাগ করুন"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "{count}টি ফটোকে প্রত্যাখ্যান হিসেবে ফ্ল্যাগ করুন",
+      "other": "{count}টি ফটোকে প্রত্যাখ্যান হিসেবে ফ্ল্যাগ করুন"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Apple Photos থেকে {count}টি ফটো আমদানি করা হয়েছে{value}",
@@ -4163,25 +4178,9 @@
       "one": "{count}টি ফটোতে পেস্ট করা হয়েছে",
       "other": "{count}টি ফটোতে পেস্ট করা হয়েছে"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো বাছাই করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
-      "other": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো বাছাই করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।"
-    },
-    "Pick {count} select": {
-      "one": "{count}টি বাছাই করুন",
-      "other": "{count}টি নির্বাচন বাছাই করুন"
-    },
     "Picked {count} photo": {
       "one": "{count}টি ফটো বাছাই করা হয়েছে",
       "other": "{count}টি ফটো বাছাই করা হয়েছে"
-    },
-    "Reject {count} photo": {
-      "one": "{count}টি ফটো প্রত্যাখ্যান করুন",
-      "other": "{count}টি ফটো প্রত্যাখ্যান করুন"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো প্রত্যাখ্যান করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।",
-      "other": "{criteria}-এর সঙ্গে মেলে এমন {count}টি ফটো প্রত্যাখ্যান করবেন? ওই ফটোগুলোর বিদ্যমান ফ্ল্যাগ প্রতিস্থাপিত হবে।"
     },
     "Rejected {count} photo": {
       "one": "{count}টি ফটো প্রত্যাখ্যাত",
@@ -4195,13 +4194,9 @@
       "one": "{count}টি ক্যাপচার পুনঃস্থাপন করা হয়েছে। আপনি History-তেও ক্যাপচার-সময়ের ধাপগুলো পুনঃস্থাপন করতে পারেন।",
       "other": "{count}টি ক্যাপচার পুনঃস্থাপন করা হয়েছে। আপনি History-তেও ক্যাপচার-সময়ের ধাপগুলো পুনঃস্থাপন করতে পারেন।"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "একটি প্রত্যাখ্যান মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
-      "other": "একটি প্রত্যাখ্যান মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "একটি নির্বাচন মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।",
-      "other": "একটি নির্বাচন মানদণ্ড পূরণ করা {count}টি ফটো পর্যালোচনা করা হচ্ছে।"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "{count}টি ফটো ফ্ল্যাগ পুনঃস্থাপন করা হয়েছে। পরবর্তী ফ্ল্যাগ পরিবর্তনগুলো সংরক্ষিত আছে।",
+      "other": "{count}টি ফটো ফ্ল্যাগ পুনঃস্থাপন করা হয়েছে। পরবর্তী ফ্ল্যাগ পরিবর্তনগুলো সংরক্ষিত আছে।"
     },
     "Wrote {count} sidecar.": {
       "one": "{count}টি সাইডকার লেখা হয়েছে।",
@@ -4251,9 +4246,17 @@
       "one": "{files} জুড়ে {count}টি ডুপ্লিকেট গ্রুপ",
       "other": "{files} জুড়ে {count}টি ডুপ্লিকেট গ্রুপ"
     },
+    "{count} empty file": {
+      "one": "{count}টি ফাঁকা ফাইল",
+      "other": "{count}টি ফাঁকা ফাইল"
+    },
     "{count} error": {
       "one": "{count}টি ত্রুটি",
       "other": "{count}টি ত্রুটি"
+    },
+    "{count} face": {
+      "one": "{count}টি মুখ",
+      "other": "{count}টি মুখ"
     },
     "{count} face detected": {
       "one": "{count}টি মুখ শনাক্ত হয়েছে",
@@ -4271,9 +4274,21 @@
       "one": "{count}টি ফাইল",
       "other": "{count}টি ফাইল"
     },
+    "{count} file not downloaded": {
+      "one": "{count}টি ফাইল ডাউনলোড করা হয়নি",
+      "other": "{count}টি ফাইল ডাউনলোড করা হয়নি"
+    },
+    "{count} group": {
+      "one": "{count}টি গ্রুপ",
+      "other": "{count}টি গ্রুপ"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count}টি সূচীকৃত ফটো মুছে ফেলা না হওয়া পর্যন্ত স্থানীয় থাকে।",
       "other": "{count}টি সূচীকৃত ফটো মুছে ফেলা না হওয়া পর্যন্ত স্থানীয় থাকে।"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}.",
+      "other": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count}টি ন্যূনতম সামঞ্জস্য ইনলাইয়ার",
@@ -4323,6 +4338,10 @@
       "one": "{count}টি ফটো নির্বাচিত",
       "other": "{count}টি ফটো নির্বাচিত"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count}টি ফটো এড়িয়ে গেছে{reasons}। মূল ফাইলগুলি ডাউনলোড বা পুনঃস্থাপন করুন, তারপর সূচি পুনর্নির্মাণ করুন।",
+      "other": "{count}টি ফটো এড়িয়ে গেছে{reasons}। মূল ফাইলগুলি ডাউনলোড বা পুনঃস্থাপন করুন, তারপর সূচি পুনর্নির্মাণ করুন।"
+    },
     "{count} photo updated": {
       "one": "{count}টি ফটো আপডেট হয়েছে",
       "other": "{count}টি ফটো আপডেট করা হয়েছে"
@@ -4339,6 +4358,10 @@
       "one": "{count}টি রেটেড ছবি",
       "other": "{count}টি ফটো রেটেড"
     },
+    "{count} selected": {
+      "one": "{count}টি নির্বাচিত",
+      "other": "{count}টি নির্বাচিত"
+    },
     "{count} selected photo": {
       "one": "{count}টি নির্বাচিত ফটো",
       "other": "{count}টি নির্বাচিত ফটো"
@@ -4354,6 +4377,14 @@
     "{count} source": {
       "one": "{count}টি উৎস",
       "other": "{count}টি উৎস"
+    },
+    "{count} unavailable file": {
+      "one": "{count}টি অনুপলব্ধ ফাইল",
+      "other": "{count}টি অনুপলব্ধ ফাইল"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count}টি অনুপলব্ধ ফটো এড়িয়ে গেছে",
+      "other": "{count}টি অনুপলব্ধ ফটো এড়িয়ে গেছে"
     },
     "{count} unsupported setting skipped": {
       "one": "{count}টি অসমর্থিত সেটিং এড়িয়ে যাওয়া হয়েছে",
@@ -4382,39 +4413,7 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "গত ২৪ ঘণ্টায় {value}টি অপ্রত্যাশিত প্রস্থান হয়েছে।",
       "other": "গত ২৪ ঘণ্টায় {value}টি অপ্রত্যাশিত প্রস্থান হয়েছে।"
-    },
-    "{count} empty file": {
-      "one": "{count}টি ফাঁকা ফাইল",
-      "other": "{count}টি ফাঁকা ফাইল"
-    },
-    "{count} file not downloaded": {
-      "one": "{count}টি ফাইল ডাউনলোড করা হয়নি",
-      "other": "{count}টি ফাইল ডাউনলোড করা হয়নি"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count}টি ফটো এড়িয়ে গেছে{reasons}। মূল ফাইলগুলি ডাউনলোড বা পুনঃস্থাপন করুন, তারপর সূচি পুনর্নির্মাণ করুন।",
-      "other": "{count}টি ফটো এড়িয়ে গেছে{reasons}। মূল ফাইলগুলি ডাউনলোড বা পুনঃস্থাপন করুন, তারপর সূচি পুনর্নির্মাণ করুন।"
-    },
-    "{count} unavailable file": {
-      "one": "{count}টি অনুপলব্ধ ফাইল",
-      "other": "{count}টি অনুপলব্ধ ফাইল"
-    },
-    "{count} face": {
-      "one": "{count}টি মুখ",
-      "other": "{count}টি মুখ"
-    },
-    "{count} group": {
-      "one": "{count}টি গ্রুপ",
-      "other": "{count}টি গ্রুপ"
-    },
-    "{count} selected": {
-      "one": "{count}টি নির্বাচিত",
-      "other": "{count}টি নির্বাচিত"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count}টি অনুপলব্ধ ফটো এড়িয়ে গেছে",
-      "other": "{count}টি অনুপলব্ধ ফটো এড়িয়ে গেছে"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

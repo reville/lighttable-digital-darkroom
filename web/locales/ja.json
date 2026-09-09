@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "スナップショットは、写真の現在の調整設定、トリミング、マスク、修復の補正、光学を保存します。これはこの写真の保存済み編集状態です。写真が読み込まれるまでスナップショットを作成は利用できません。",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "保存されたカーブは、編集するまで正確なまま維持されます。エディターは代表的なハンドルを再構築するため、最初の調整で、移動したポイント以外も含めて読み込まれたカーブの形状が変わることがあります。",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "保存済みまたは読み込まれたカーブは、編集するまで保存された表を正確に保持します。アプリは編集用に代表ハンドルを再構築するため、最初の調整で、読み込んだカーブが移動した点を超えて形を変えることがあります。",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "推奨写真は、ピント、開いた目、および検出された問題に基づいて、より明確に優れた評価を受けた写真です。同点または証拠不足の場合は、明確な推奨は表示されません。類似グループは提案であり、スタックを作成したりフラグを変更したりはしません。",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "バーチャルコピーは同じオリジナルファイルを参照し、独立した編集状態を保持します。ディスク上に2つ目のオリジナルは作成されません。",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "仮想コピーは元ファイルを共有します。仮想コピーを削除するには、Photo actions → Delete virtual copy を使用してください。元ファイルをゴミ箱に移動すると、その元ファイルを使うすべての編集に影響します。",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "仮想コピーは元のファイルを共有します。名前変更の対象に含めると、その元ファイルが対象になります。インターフェースには、名前変更の取り消し専用ボタンはありません。",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "削除、修復、またはクローンを選び、サイズ、フェザー、不透明度を設定します。",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Select criteria では Subject sharpness、Eye sharpness、Eyes open などを、Reject criteria では Exposure issues、Misfires、Documents などを選べます。",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "顔を選択 を選び、いくつかの顔を選択してから、別の人物に移動 を選ぶと、それらを新しい名前なしグループに分割できます。2 つのグループが再び一致候補として提案されることはありません。1 つの顔を選択して、表紙として使用 を選ぶと、ギャラリー画像を変更できます。",
+    "Choose Selects or Rejects to review matches before applying flags.": "フラグを適用する前に一致結果を確認するには、選択済みまたは却下済みを選択してください。",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "ストックを選ぶか、この写真のプレビューストックをクリックして、レンダリング例を比較します。",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "自動選択には Subject または Sky を選びます。Object の場合は Object をクリックしてから、写真内のオブジェクトをクリックします。",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "現在の調整を含む TIFF を選び、TIFF の色空間と TIFF のビット深度を設定します。",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "レーティングまたはフラグを付ける写真を選択",
     "Choose a preset to see its source and conversion coverage.": "プリセットを選んで、ソースと変換の適用範囲を確認します。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "ネガ用の印画処理を選び、スライドフィルムで印刷コントロールが消える理由を理解します。",
-    "Choose a reject criterion above.": "上で却下条件を選択してください。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "セレクターで保存済みのポイントを選んで編集するか、ポイントを削除で削除します。",
     "Choose a saved preset to submit": "提出する保存済みプリセットを選択してください",
     "Choose a scheme": "方式を選択",
-    "Choose a select criterion above.": "上で選択条件を選択してください。",
     "Choose a settings folder": "設定フォルダーを選択",
     "Choose a source and destination first.": "先にソースと保存先を選択してください。",
     "Choose a source and destination, then scan.": "ソースと保存先を選択してからスキャンしてください。",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "[ファイル] メニューから別のフォルダーを選択してください。",
     "Choose application…": "アプリケーションを選択…",
     "Choose catalog…": "カタログを選択…",
+    "Choose criteria above.": "上の条件を選択してください。",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "コピーする編集設定を選択してください（{primaryKey}+Shift+C）",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "書き出す写真を正確に選び、出力をプレビューして、進行状況を監視します。",
     "Choose export size, format, and color space": "書き出しサイズ、形式、色空間を選択します",
@@ -547,6 +548,7 @@
     "Choose your language": "言語を選択してください",
     "Choose your preferred language in the first-use dialog.": "初回使用ダイアログで希望の言語を選択してください。",
     "Choose…": "選択…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "条件を選ぶと、その一致写真がグリッドに開きます。レビュー表示を変更するには、選択済み、却下済み、またはすべてを使用します。ほかのライブラリフィルターは引き続き適用されます。",
     "Choosing a file needs the desktop app; paste a path instead": "ファイルの選択にはデスクトップアプリが必要です。代わりにパスを貼り付けてください",
     "Choosing a folder needs the desktop app; paste a path instead": "フォルダーの選択にはデスクトップアプリが必要です。代わりにパスを貼り付けてください",
     "Chromatic aberration": "色収差",
@@ -690,6 +692,7 @@
     "Compare": "比較",
     "Compare Before & After": "編集前後を比較",
     "Compare several photos in Survey": "サーベイで複数の写真を比較",
+    "Compare similar photos": "類似写真を比較",
     "Compare the faces before combining their photos.": "写真を統合する前に顔を比較してください。",
     "Compare while zoomed in": "ズームしたまま比較",
     "Compare with a reference image": "参照画像と比較",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "読み取り可能なすべての行を新しいファイルにコピーします。現在読み取り可能: {value}。最後のバックアップ以降に行われた編集は保持され、損傷ページ上の行は失われます。",
     "Copy": "コピー",
     "Copy Edit Settings": "編集設定をコピー",
+    "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy と Paste は、ユーザーが明示的に選択したグループを転送します。選択されていないグループの設定は、各送り先でそのまま維持されます。これは明示的な copy/paste ワークフローです。後からソースを編集しても、送り先には自動同期されません。",
     "Copy and verify it into the library": "ライブラリにコピーして検証します",
     "Copy anyway": "そのままコピー",
@@ -980,6 +984,7 @@
     "Downloading update…": "アップデートをダウンロード中…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "量を0%から100%までドラッグします。0にするとプリセット適用前の編集に戻り、100%でフルのプリセットが使われます。量をダブルクリックすると100%にリセットされます。",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "ハンドルをドラッグしてトリミングを変更します。写真はフレームを中央に保つためにズームします。フレーム内をドラッグすると写真を移動でき、外側をドラッグすると新しいトリミングを作成できます。",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "どちらかの点をドラッグしてグラデーションを調整します。線をドラッグすると全体が移動します。別の場所でドラッグすると描き直せます。",
     "Drag either on-image circle to refine the target or source.": "写真上の円をどちらかドラッグして、ターゲットまたはソースを微調整します。",
     "Drag on the photo to change the selected gradient’s shape or position": "写真上をドラッグして、選択したグラデーションの形状または位置を変更します",
     "Drag on the photo to edit the {tool} mask.": "写真上をドラッグして {tool} マスクを編集します。",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "各ブラシまたは描画した調整は最大64ストロークまで保持でき、1ストロークあたり最大512ポイント、写真あたり20,000個のマスポイントまでです。上限に達するとエディターが通知します。",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "新しいバックアップには、内容マニフェストとチェックサムが含まれ、検証のために個別に再度開かれます。",
     "Edit": "編集",
+    "Edit History": "編集履歴",
     "Edit In…": "編集先…",
     "Edit Shape": "シェイプを編集",
     "Edit a curve": "カーブを編集",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "エラー: {error}",
     "Errors: {details}": "エラー: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "すべての書き出しには、選択した ICC プロファイルが埋め込まれます。Colour space で sRGB、Display P3、または ProPhoto RGB を選びます。",
-    "Edit History": "編集履歴",
     "Everyone": "すべての人物",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone には表示可能な顔グループが表示されます。Unnamed には名前が付けられていないグループが表示されます。グループを開き、名前を入力して、名前を保存 を選択してください。使用されるのは入力した名前だけです。モデルは人の名前を知りません。",
     "Example download prepared. Your edit has not changed.": "サンプルダウンロードを準備しました。編集内容は変更されていません。",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "XMP サイドカー経由でメタデータを交換する",
     "Existing LightTable edits could not be merged safely": "既存のLightTable編集内容を安全にマージできませんでした",
     "Existing files": "既存ファイル",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "既存のフラグは既定で保持されます。過去の判断を変更したい場合にのみ、既存のフラグを置き換えるを有効にしてください。バッチ操作は表示中の一致項目に影響し、メタデータのリンクが有効な場合は関連付けられたRAW/JPEGファイルも含まれます。保護されたフラグ、またはすでに一致しているフラグは操作件数に含まれません。",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "既存のフラグは保持されます。件数には未フラグの関連付けられたRAW/JPEGファイルが含まれます。",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "既存のフラグが置き換えられる場合があります。件数には関連付けられたRAW/JPEGファイルが含まれます。",
     "Existing settings could not be loaded; this photo was left unchanged": "既存の設定を読み込めませんでした。この写真は変更されていません",
     "Expand Advanced and edit Filename template.": "［詳細］を展開し、ファイル名テンプレートを編集します。",
     "Expand Advanced in Export.": "書き出しで詳細を展開します。",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "サーベイ写真にフラグを付けてレーティング",
     "Flag and rating filters": "フラグとレーティングのフィルター",
     "Flag as Pick": "選択としてフラグ",
+    "Flag {count} photo as a pick": "{count}枚の写真に選択フラグを付ける",
+    "Flag {count} photo as a reject": "{count}枚の写真に却下フラグを付ける",
+    "Flag {count} photos as picks": "{count}枚の写真に選択フラグを付ける",
+    "Flag {count} photos as rejects": "{count}枚の写真に却下フラグを付ける",
     "Flags and ratings apply to selection": "フラグとレーティングは選択範囲に適用されます",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "フラグと星は別々です。写真は Picked でありながら、任意の星評価を持てます。Reject は写真をレビュー用にマークします。削除はしません。",
     "Flip horizontal": "左右反転",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "写真をコレクションにグループ化",
     "Group similar faces and search names you add.": "似た顔をグループ化し、追加した名前を検索します。",
     "Group the rendered derivative with its source in the catalog.": "レンダリングされた派生ファイルを、カタログ内でソースとグループ化します。",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "グループ {index}/{count}。明確な推奨はありません。これらの写真を比較してください。",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "グループ {index}/{count}。推奨: {name}。ピントと目のチェックに基づいています。各フレームを確認してください。",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "グループ化には、実際の撮影時刻と現在の写真インデックス分析が必要です。ファイルシステムの日付しかないファイル、動画、仮想コピー、および十分な視覚的詳細がない写真は除外されます。この更新後、インデックスワーカーによって既存のインデックス記録が更新されます。",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "写真のスキャンに伴って、ここにグループが表示されます。この処理中も編集を続けられます。",
     "Guides for your photographs, from first edit to export.": "最初の編集から書き出しまで、写真作業のガイドです。",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR は、寸法が一致する 2～9 枚の露出ブラケット写真を受け付けます。表示用にレンダリングされたフレームを位置合わせして露光合成し、使えるトーンのバランスを整えます。動く被写体や境界の合成アーティファクトを確認してください。",
@@ -1431,6 +1446,7 @@
     "Import…": "読み込み…",
     "Improve preview speed and check image detail": "プレビュー速度を向上させ、画像の詳細を確認します",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "Communityでは、Featured、New、Allから選び、Subjectでコレクションを絞り込みます。プリセットを選ぶと、その説明、作成者、バージョン、Filmの挙動、利用可能なサンプル写真が表示されます。",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "シェイプを編集では、中央ハンドルをドラッグしてマスクを移動し、任意の軸ハンドルでサイズ変更し、外側のハンドルで回転します。描画中またはサイズ変更中にShiftを押すと、グラデーションが円形になります。",
     "In Film profile, choose Film format.": "Filmプロファイルで、Film形式を選択します。",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "情報では、説明を展開するとタイトル、キャプション、見出し、権限を展開すると作成者、著作権、クレジット、配置を展開すると場所と座標が表示されます。変更は入力中にカタログへ保存されます。マップで開くは、この写真のメタデータが読み込まれ、緯度と経度の両方が有効な場合に利用できます。場所はブラウザーで開かれます。",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "画像を 1:1 で確認し、テクスチャを判断する前にプレビューの詳細が完成するまで待ちます。",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "オーバーレイを確認し、必要に応じて境界付近を手描きの補正で整えます。",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "却下された写真を確認します。ペアファイル設定を確認し、含めたい他のメンバーがある場合はスタックを展開します。",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "提案を確認し、フラグを適用したい場合は Pick selects または Reject rejects を使います。",
     "Interface": "インターフェース",
     "Interface and behavior": "インターフェースと動作",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "インターフェースでは、ビューア背景、フォントの拡大率、Lights Out、ルーペ情報オーバーレイ、トリミングガイドを制御できます。これらの設定は、書き出し画像のピクセルを変えずにワークスペースの外観を変更します。",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "ブラシ、リニア、円形マスクでローカル調整を行います",
     "Make photos easier to find and prepare descriptive metadata for export.": "写真を見つけやすくし、書き出し用の説明的なメタデータを準備します。",
     "Make select": "選択を作成",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "選択してピックすると、アクティブなサーベイ写真が選択され、サーベイ内に残っている他の写真は却下されます。これによりフラグが変更されます。リンクされた RAW と JPEG のメタデータにより、そのフラグ変更を相手側に拡張できます。",
     "Make the source photo active.": "ソース写真をアクティブにする。",
     "Make your adjustment, then check the save status in the app.": "調整を行ってから、アプリ内で保存状態を確認します。",
     "Manage cache storage": "キャッシュ保存を管理",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "このビルドより新しい",
     "Next": "次へ",
     "Next Photo": "次の写真",
+    "Next group": "次のグループ",
     "Next presets": "次のプリセット",
     "No Rating": "レーティングなし",
     "No TIFF was created.": "TIFFは作成されませんでした。",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "このコレクションにはまだプリセットがありません。",
     "No rejected photos in this view": "このビューに却下済みの写真はありません",
     "No sampled colors": "サンプルカラーなし",
+    "No similar groups found. Photos need current index analysis and capture times.": "類似グループが見つかりませんでした。写真には現在のインデックス分析と撮影時刻が必要です。",
     "No sources yet.": "まだソースはありません。",
     "No steps recorded yet.": "まだ記録されたステップはありません。",
     "No usable lines found.": "使用可能な行が見つかりません。",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "選択 (P)",
     "Pick / reject / unflag": "選択 / 却下 / フラグ解除",
     "Pick a preset": "プリセットを選択",
-    "Pick selects": "選択は選択済み",
-    "Pick the selects": "選択済みを選ぶ",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。",
-    "Pick {count} select": "{count}件を選択",
-    "Pick {count} selects": "{count}件を選択",
     "Pick, reject, and rate photos": "選択、却下、写真のレーティング",
     "Picked": "選択済み",
     "Picked only": "選択済みのみ",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "プレビューにはこの写真の編集が使われます。適用するには stock を選んでください。",
     "Previous": "前へ",
     "Previous Photo": "前の写真",
+    "Previous group": "前のグループ",
     "Previous presets": "前のプリセット",
     "Print development": "現像を印刷",
     "Print exposure": "印画紙露出",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "コミュニティを更新中…",
     "Reject": "却下",
     "Reject (X)": "却下 (X)",
-    "Reject rejects": "却下を却下",
-    "Reject the rejects": "却下済みを却下",
-    "Reject {count} photo": "{count}枚の写真を却下",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。",
-    "Reject {count} photos": "{count}枚の写真を却下",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。",
     "Rejected": "却下済み",
     "Rejected {count} photo": "{count}枚の写真を却下済み",
     "Rejected {count} photos": "{count}枚の写真を却下済み",
@@ -2317,6 +2322,7 @@
     "Repair": "修復",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "他の領域でも繰り返すか、Edit global grade をクリックしてグローバルな処理を変更します。",
     "Replace adjustment settings": "調整設定を置き換える",
+    "Replace existing flags": "既存のフラグを置き換える",
     "Replace local masks; detect AI selections on each photo": "ローカルマスクを置き換え、各写真で AI 選択を検出します",
     "Replace with imported": "読み込み済みのものに置き換え",
     "Replaced adjustments with {name}": "調整を {name} に置き換えました",
@@ -2368,6 +2374,8 @@
     "Restored that step": "その手順を復元しました",
     "Restored {count} capture. You can also restore capture-time steps in History.": "{count}件の撮影を復元しました。History で撮影時刻のステップも復元できます。",
     "Restored {count} captures. You can also restore capture-time steps in History.": "{count}件の撮影を復元しました。History で撮影時刻のステップも復元できます。",
+    "Restored {count} photo flag. Later flag changes are preserved.": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。",
+    "Restored {count} photo flags. Later flag changes are preserved.": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。",
     "Restore…": "復元…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "バックアップを復元すると、カタログデータがそのバックアップ時点の状態に戻るため、その後の編集は含まれません。作業中のカタログを復元する場合、現在のカタログは最初にバックアップされます。",
     "Result name": "結果名",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "一致を確認 では、顔サンプル付きの 2 つの候補グループが表示されます。同一人物 でそれらを統合します。別の人物 は修正として記録されるため、同じペアは再度提案されません。今はスキップ すると、その一致は後で確認できるように残ります。",
     "Review photos from the source using the destination and naming settings": "保存先と命名設定を使用してソースから写真を確認",
     "Review signals": "レビュー信号",
+    "Review similar photos": "類似写真をレビュー",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "類似写真をレビューは、現在のフォルダーまたはコレクション内で30秒以内に撮影された、視覚的に類似したインデックス済み写真を検索します。グループは最大16枚の写真でサーベイに開きます。前のグループと次のグループを使用して候補を比較し、サーベイのコントロールで個々の写真にフラグを付けてください。",
     "Review the before-and-after filenames in the preview.": "プレビューで前後のファイル名を確認します。",
     "Review the current view carefully before moving rejected originals and sidecars.": "却下した元画像やサイドカーを移動する前に、現在の表示を慎重に確認します。",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "表示されている写真を確認してから、写真に選択フラグを付けるまたは写真に却下フラグを付けるを使用してください。ボタンには変更されるファイル数が表示されます。",
     "Review the import result and the new preset’s conversion coverage before applying it.": "適用する前に、読み込み結果と新しいプリセットの変換範囲を確認します。",
     "Review the import result, then continue into the library.": "読み込み結果を確認してから、ライブラリへ進んでください。",
     "Review the result and refine the sliders for the photograph.": "結果を確認し、写真に合わせてスライダーを微調整します。",
     "Review transferred masks": "転送されたマスクを確認",
     "Review translated edits": "翻訳された編集内容をレビュー",
     "Reviewing every photo.": "すべての写真をレビューしています。",
-    "Reviewing {count} photo that met a reject criterion.": "却下条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photo that met a select criterion.": "選択条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photos that met a reject criterion.": "却下条件に一致した写真を {count} 枚レビュー中です。",
-    "Reviewing {count} photos that met a select criterion.": "選択条件に一致した写真を {count} 枚レビュー中です。",
     "Rich descriptions on": "詳細説明をオン",
     "Richer descriptions require macOS 27 or later": "より豊かな説明には macOS 27 以降が必要です",
     "Rights": "権限",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "カメラからの距離範囲を選択します。遠近の制限を調整してください",
     "Select all": "すべて選択",
     "Select an active reference photo first": "まずアクティブな参照写真を選択してください",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。",
     "Select an existing mask, then expand Create New Mask.": "既存のマスクを選択してから、Create New Mask を展開します。",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "別のバンドを選んで続けるか、Color Mixer の Reset を使ってミキサー調整を消去します。",
     "Select at least two distinct originals": "異なるオリジナルを少なくとも 2 枚選択してください",
@@ -2617,6 +2625,7 @@
     "Settings…": "設定…",
     "Shadows": "シャドウ",
     "Shape": "シェイプ",
+    "Shape a linear gradient": "線形グラデーションの形状を調整する",
     "Shape a radial gradient": "ラジアルグラデーションを作成する",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "シェイプには、幅、高さ、回転、フェザーの各コントロールもあります。",
     "Shape contrast and color with curves": "カーブでコントラストとカラーを整えます",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "カタログは変更なしのままです。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "カタログは検証済みバックアップから復元されました。損傷したコピーは Recovery フォルダーにあります。",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "コンパクトな SFace INT8 モデルは、位置合わせされた人の顔を比較します。自動グループ化では保守的な類似度ルールを使用し、候補の一致はレビュー用に別々に残されます。名前付き人物に一致する新しい顔は、確認用に提案されます。",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "確認には影響を受ける件数が表示され、一致した写真の既存のフラグが置き換えられることが警告されます。リンクされた RAW/JPEG メタデータには、その設定が有効な場合、ペアのファイルも含めることができます。",
     "The current catalog is backed up first, then replaced by this one.": "現在のカタログは先にバックアップされ、その後このカタログに置き換えられます。",
     "The desktop Trash service (gio) is unavailable": "デスクトップのゴミ箱サービス（gio）を利用できません",
     "The desktop app checks its signed update feed.": "デスクトップアプリが署名付き更新フィードを確認します。",
@@ -2987,6 +2995,7 @@
     "Undo last change": "直前の変更を元に戻す",
     "Undo last correction": "最後の補正を元に戻す",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "「最後の補正を元に戻す」は、このウィンドウで保持されている最も新しい補正を元に戻します。「カメラ時刻を復元…」は、カタログ補正の削除をプレビューします。プレビューを確認して適用すると、元のカメラ時刻を復元できます。撮影時刻の手順は「履歴」でも利用できます。XMP 書き込みが有効な場合、補正をリセットすると、LightTable が適用する前に保存されていたサイドカーの日付が復元されます。保存されていない日付がない古いサイドカー内の撮影日は変更されません。",
+    "Undo last flag batch": "最後のフラグのバッチを元に戻す",
     "Undo or restore an earlier step": "以前の手順を元に戻すか復元",
     "Undo snapshots must be strings": "元に戻すスナップショットは文字列でなければなりません",
     "Unedited": "未編集",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Scale、Horizontal、Vertical を使って、参照を写真に合わせて調整します。",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "写真を追加した後、または利用できないオリジナルを復元した後に、Scan new photos を使用してください。以前にスキャン済みで変更のない写真は再利用されます。",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Scoop、WinGet、Chocolatey、AUR、Flatpak、Snap で管理されるインストールは、それぞれの管理ツールで更新してください。Windows ポータブル版は新しい ZIP をダウンロードしてください。更新署名が設定されていないビルドは自動更新できません。",
-    "Use Selects, Rejects, or All to review the matching photos.": "選択済み、却下、または すべて を使用して一致する写真を確認します。",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "一時と色合いを使うか、ニュートラルな領域をサンプルしてから、Vibrance と Saturation を調整します。",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "最近の作業には Undo、保存された編集手順には History、後で見返したい見た目には名前付きスナップショットを使います。",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "完了メッセージの元に戻す、またはサイドバーの最後のフラグのバッチを元に戻すを使用して、バッチを復元できます。元に戻すはこのセッション中に引き続き使用でき、その後に行った手動または外部のフラグ決定は保持されます。保存に失敗した場合は、保存を再試行を使用するか、バッチを元に戻してください。失敗した書き込みはキューに残ります。",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "このウィンドウが開いている間は、［キーワード変更を元に戻す］で最後のバッチを復元できます。［元に戻す］は、そのバッチ以降に変更されたキーワードを上書きしません。［写真履歴］にもキーワードの前後状態が保持されます。",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "Uniform hue、Uniform saturation、または Uniform luminance を使用すると、範囲内の色をサンプルしたパッチにより近づけられます。",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "少数のポイントを使いながら、作業中に写真を比較します。チャンネルカーブは強い色かぶりを生むことがあります。",
@@ -3162,6 +3171,7 @@
     "What to expect": "想定される内容",
     "What to open": "何を開くか",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "MIDI が利用可能な場合は、「キーボードとMIDIのコントロール」を開き、「MIDI学習」を選択します。ブラウザから求められた場合は MIDI アクセスを許可してください。",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "サーベイが支援付き選別から開かれた場合は、推奨グループを比較し、写真に個別にフラグを付けてください。選択を作成は通常のサーベイで使用できます。これは、アクティブなサーベイ写真を選択し、サーベイ内に残っている他の写真を却下します。これにより、それらのフラグが変更されます。リンクされたRAWとJPEGのメタデータにより、これらのフラグ変更をコンパニオンにも適用できます。",
     "When a photo already has edits": "写真にすでに編集がある場合",
     "When a photo arrives": "写真が取り込まれたとき",
     "When a photo seems missing": "写真が見つからない場合",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} 件のグループ",
     "{count} indexed photo remains local until deleted.": "インデックス化された写真が {count} 枚、削除されるまでローカルに残ります。",
     "{count} indexed photos remain local until deleted.": "インデックス化された写真が {count} 枚、削除されるまでローカルに残ります。",
+    "{count} matching photo shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
+    "{count} matching photos shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
     "{count} minimum alignment inlier": "{count} 件の最小配置インライアー",
     "{count} minimum alignment inliers": "{count} 件の最小配置インライアー",
     "{count} missing": "{count}件の見つかりません",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "どちらかの点をドラッグしてグラデーションを調整します。線をドラッグすると全体が移動します。別の場所でドラッグすると描き直せます。",
-    "Shape a linear gradient": "線形グラデーションの形状を調整する",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。",
-    "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。"
+    "☆ Favorites": "☆ お気に入り"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4138,6 +4145,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "{count} 枚の写真を {destination} に書き出しています…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "{count}枚の写真に選択フラグを付ける"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "{count}枚の写真に却下フラグを付ける"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "Apple Photos から写真を {count} 枚読み込みました{value}"
@@ -4154,20 +4167,8 @@
     "Pasted to {count} photo": {
       "other": "{count}枚の写真にペーストしました"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "条件 {criteria} に一致する写真 {count} 枚を選択しますか？それらの写真の既存フラグは置き換えられます。"
-    },
-    "Pick {count} select": {
-      "other": "{count}件を選択"
-    },
     "Picked {count} photo": {
       "other": "{count}枚の写真を選択済み"
-    },
-    "Reject {count} photo": {
-      "other": "{count}枚の写真を却下"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "条件 {criteria} に一致する写真 {count} 枚を却下しますか？それらの写真の既存フラグは置き換えられます。"
     },
     "Rejected {count} photo": {
       "other": "{count}枚の写真を却下済み"
@@ -4178,11 +4179,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "{count}件の撮影を復元しました。History で撮影時刻のステップも復元できます。"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "却下条件に一致した写真を {count} 枚レビュー中です。"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "選択条件に一致した写真を {count} 枚レビュー中です。"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "{count}件の写真フラグを復元しました。以降のフラグ変更は保持されます。"
     },
     "Wrote {count} sidecar.": {
       "other": "{count}個のサイドカーを書き出しました。"
@@ -4220,8 +4218,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "{count} 個の重複グループが {files} を含みます。"
     },
+    "{count} empty file": {
+      "other": "{count}個の空のファイル"
+    },
     "{count} error": {
       "other": "{count}件のエラー"
+    },
+    "{count} face": {
+      "other": "{count} 件の顔"
     },
     "{count} face detected": {
       "other": "{count}件の顔を検出しました"
@@ -4235,8 +4239,17 @@
     "{count} file": {
       "other": "{count}ファイル"
     },
+    "{count} file not downloaded": {
+      "other": "{count}個のファイルが未ダウンロード"
+    },
+    "{count} group": {
+      "other": "{count} 件のグループ"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "インデックス化された写真が {count} 枚、削除されるまでローカルに残ります。"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "一致した写真を{count}枚表示中: {criteria}。"
     },
     "{count} minimum alignment inlier": {
       "other": "{count} 件の最小配置インライアー"
@@ -4274,6 +4287,9 @@
     "{count} photo selected": {
       "other": "{count}枚の写真を選択しました"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "{count}枚の写真がスキップされました{reasons}。オリジナルをダウンロードまたは復元してから、インデックスを再構築してください。"
+    },
     "{count} photo updated": {
       "other": "{count}枚の写真を更新しました"
     },
@@ -4286,6 +4302,9 @@
     "{count} rated photo": {
       "other": "{count}件の評価済み写真"
     },
+    "{count} selected": {
+      "other": "{count} 件選択済み"
+    },
     "{count} selected photo": {
       "other": "{count}枚の選択済み写真"
     },
@@ -4297,6 +4316,12 @@
     },
     "{count} source": {
       "other": "{count}件のソース"
+    },
+    "{count} unavailable file": {
+      "other": "{count}個の利用できないファイル"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "利用できない写真 {count} 件をスキップしました"
     },
     "{count} unsupported setting skipped": {
       "other": "サポートされていない設定を {count} 件スキップしました"
@@ -4318,31 +4343,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "過去24時間に予期しない終了が {value} 回発生しました。"
-    },
-    "{count} empty file": {
-      "other": "{count}個の空のファイル"
-    },
-    "{count} file not downloaded": {
-      "other": "{count}個のファイルが未ダウンロード"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "{count}枚の写真がスキップされました{reasons}。オリジナルをダウンロードまたは復元してから、インデックスを再構築してください。"
-    },
-    "{count} unavailable file": {
-      "other": "{count}個の利用できないファイル"
-    },
-    "{count} face": {
-      "other": "{count} 件の顔"
-    },
-    "{count} group": {
-      "other": "{count} 件のグループ"
-    },
-    "{count} selected": {
-      "other": "{count} 件選択済み"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "利用できない写真 {count} 件をスキップしました"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

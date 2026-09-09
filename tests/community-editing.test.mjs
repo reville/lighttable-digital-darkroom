@@ -117,7 +117,7 @@ const enqueueSource=app.match(/^function enqueuePhotoPatch\([^]*?^}/m)[0];
 const pasteSource=app.slice(app.indexOf('async function pasteSettingsTo('),app.indexOf("$('pasteBtn').onclick =",app.indexOf('async function pasteSettingsTo(')));
 function pasteHarness(images, {clipboard={...source,sourceName:'source.raw',choices:only('tone')}, failLoad=false, semanticError=false, saveError=false}={}) {
   const calls=[], notices=[], nodes=new Map();
-  const context={tr,trn,localToolLabel,S:{images,clipboard,editingName:''},transferRunning:false,transferCancelled:false,
+  const context={CULL_BATCH:{noteFlagChange(){}},tr,trn,localToolLabel,S:{images,clipboard,editingName:''},transferRunning:false,transferCancelled:false,
     cloneValue:structuredClone,transferPatch,regenerateTransferMasks,
     $:id=> {if(!nodes.has(id))nodes.set(id,{focus(){}});return nodes.get(id);},
     saveState:async()=>true,prefetchState:async image=>{image.stateLoaded=!failLoad;},isStateLoaded:image=>image.stateLoaded,

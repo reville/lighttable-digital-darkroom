@@ -409,7 +409,7 @@
         {
           "title": "Eén bewaker kiezen",
           "paragraphs": [
-            "Maak selecteren de actieve overzichtsfoto tot gekozen foto en wijst het de andere foto’s in het overzicht af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metadata kan deze markeringswijzigingen ook uitbreiden naar begeleidende bestanden.",
+            "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
             "Om een bewerking te beoordelen tegenover het origineel, gebruikt u voor/na Vergelijken in Details; Overzicht is bedoeld om tussen verschillende frames te kiezen."
           ]
         }
@@ -2932,15 +2932,24 @@
             "Schakel Foto-index in bij Instellingen en wacht tot foto's zijn gescoord.",
             "Klap Begeleid selecteren uit in de bibliotheekzijbalk.",
             "Kies Selecteren-criteria zoals Onderwerp scherpte, Oog scherpte of Ogen open, of Afwijzen-criteria zoals Belichtingsproblemen, Misfires of Documenten.",
-            "Gebruik Selecties, Afgewezen of Alles om de overeenkomende foto's te beoordelen.",
-            "Inspecteer de suggesties en gebruik daarna Kiezen selecteert of Afwijzen wijst af als je die markeringen wilt toepassen."
+            "Als u een criterium kiest, worden de overeenkomende foto's in het raster geopend. Gebruik Selecties, Afgewezen of Alles om de beoordelingsweergave te wijzigen. Andere bibliotheekfilters blijven van toepassing.",
+            "Beoordeel de weergegeven foto's en gebruik daarna Foto's markeren als selecties of Foto's markeren als afwijzingen. De knop toont hoeveel bestanden worden gewijzigd."
           ]
         },
         {
           "title": "Markeringen toepassen",
           "paragraphs": [
-            "De bevestiging toont het getroffen aantal en waarschuwt dat bestaande markeringen op overeenkomende foto’s zullen worden vervangen. Gekoppelde RAW/JPEG-metadata kan ook het gekoppelde bestand bevatten wanneer die voorkeur is ingeschakeld.",
+            "Bestaande markeringen blijven standaard behouden. Schakel Bestaande markeringen vervangen alleen in wanneer u eerdere beslissingen wilt wijzigen. Batchacties hebben invloed op de weergegeven overeenkomsten en omvatten gekoppelde RAW/JPEG-bestanden wanneer metadata-koppeling is ingeschakeld; beschermde of al overeenkomende markeringen worden uitgesloten van het actieaantal.",
+            "Gebruik Ongedaan maken in het voltooiingsbericht of Laatste markering-batch ongedaan maken in de zijbalk om een batch te herstellen. Ongedaan maken blijft beschikbaar tijdens deze sessie en behoudt eventuele latere handmatige of externe markeringsbeslissingen. Als opslaan mislukt, gebruik dan Opslaan opnieuw proberen of maak de batch ongedaan; mislukte schrijfbewerkingen blijven in de wachtrij.",
             "Dit zijn analysesignalen voor uw beoordeling, geen definitieve oordelen over welke foto's u moet bewaren. Afwijzen zet een markering; het verplaatst originelen op zichzelf niet naar de Prullenmand."
+          ]
+        },
+        {
+          "title": "Vergelijk vergelijkbare foto's",
+          "paragraphs": [
+            "Vergelijkbare foto's beoordelen zoekt visueel vergelijkbare geïndexeerde foto's die binnen 30 seconden zijn vastgelegd in de huidige map of collectie. Groepen openen in Overzicht met maximaal 16 foto's. Gebruik Vorige groep en Volgende groep om de alternatieven te vergelijken en markeer daarna afzonderlijke foto's met de overzichtsbediening.",
+            "Een voorgestelde foto heeft een uniek sterkere beoordeling op basis van scherpte, open ogen en gedetecteerde problemen. Bij gelijke stand of onvoldoende bewijs wordt geen duidelijke aanbeveling getoond. Vergelijkbaarheidsgroepen zijn suggesties; ze maken geen stapels en wijzigen geen markeringen.",
+            "Groeperen vereist werkelijke opnametijden en huidige Photo Index-analyse. Bestanden met alleen bestandssysteemdatums, video's, virtuele kopieën en foto's zonder voldoende visuele details worden uitgesloten. Bestaande indexrecords worden na deze update ververst door de indexworker."
           ]
         }
       ],
@@ -3157,5 +3166,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
 }

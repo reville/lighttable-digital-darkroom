@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "สแน็ปช็อตจะเก็บการตั้งค่าการปรับของภาพถ่าย, ครอป, มาสก์, การแก้ไข Remove และ optics ในปัจจุบัน เป็นสถานะการแก้ไขที่บันทึกไว้สำหรับภาพถ่ายนี้ Create snapshot จะใช้ไม่ได้จนกว่าจะโหลดภาพถ่ายแล้ว",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "เส้นโค้งที่เก็บไว้จะคงความแม่นยำจนกว่าคุณจะแก้ไข ตัวแก้ไขจะสร้างจุดจับตัวแทนขึ้นมาใหม่ ดังนั้นการปรับครั้งแรกอาจเปลี่ยนรูปร่างเส้นโค้งที่นำเข้าได้เกินกว่าจุดที่คุณย้าย",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Curve ที่บันทึกไว้หรือนำเข้าจะคงตารางที่บันทึกไว้อย่างแม่นยำจนกว่าคุณจะแก้ไข แอปจะสร้างจุดจับแทนสำหรับการแก้ไขใหม่ ดังนั้นการปรับครั้งแรกอาจปรับรูปทรงของ curve ที่นำเข้ามาเกินจุดที่คุณลาก",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "ภาพถ่ายที่แนะนำจะมีการประเมินที่ดีกว่าอย่างชัดเจนโดยอิงจากโฟกัส ดวงตาที่เปิดอยู่ และปัญหาที่ตรวจพบ หากสูสีกันหรือตรวจพบหลักฐานไม่เพียงพอจะไม่แสดงคำแนะนำที่ชัดเจน กลุ่มความคล้ายกันเป็นเพียงข้อเสนอแนะ; ไม่ได้สร้างสแต็กหรือเปลี่ยนธง",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "virtual copy อ้างถึงไฟล์ต้นฉบับเดียวกันและคงสถานะการแก้ไขแยกกันไว้ มันไม่ได้สร้างต้นฉบับที่สองบนดิสก์",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "สำเนาเสมือนใช้ไฟล์ต้นฉบับร่วมกัน การลบสำเนาเสมือนควรใช้ Photo actions → Delete virtual copy; การย้ายไฟล์ต้นทางไปที่ถังขยะจะกระทบทุกการแก้ไขที่ใช้ไฟล์ต้นฉบับนั้น",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "สำเนาเสมือนจะใช้ไฟล์ต้นทางร่วมกัน: การรวมสำเนาเข้าไปในชื่อใหม่จะไปตั้งชื่อไฟล์ต้นฉบับนั้น อินเทอร์เฟซไม่มีปุ่มเลิกทำการเปลี่ยนชื่อโดยเฉพาะ",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "เลือก Remove, Heal, หรือ Clone แล้วตั้งค่า ขนาด, ฟุ้ง, และ ความทึบ",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "เลือกเกณฑ์ Select เช่น Subject sharpness, Eye sharpness หรือ Eyes open หรือเกณฑ์ Reject เช่น Exposure issues, Misfires หรือ Documents",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "เลือก เลือกใบหน้า เลือกใบหน้าบางส่วน แล้วเลือก ย้ายไปเป็นบุคคลแยกต่างหาก เพื่อแยกออกเป็นกลุ่มใหม่ที่ไม่มีชื่อ ทั้งสองกลุ่มจะไม่ถูกแนะนำให้จับคู่กันอีก เลือกใบหน้าหนึ่งใบหน้าแล้วเลือก ใช้เป็นภาพปก เพื่อเปลี่ยนรูปภาพในแกลเลอรี",
+    "Choose Selects or Rejects to review matches before applying flags.": "เลือก รายการที่เลือก หรือ รายการที่ปฏิเสธ เพื่อทบทวนรายการที่ตรงกันก่อนนำธงไปใช้",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "เลือก Stock หรือคลิก แสดงตัวอย่างสต็อกบนภาพถ่ายนี้… เพื่อเปรียบเทียบตัวอย่างที่เรนเดอร์",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "เลือก Subject หรือ Sky สำหรับการเลือกอัตโนมัติ สำหรับ Object ให้คลิก Object แล้วคลิกวัตถุในภาพถ่าย",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "เลือก TIFF พร้อมการปรับปัจจุบัน จากนั้นตั้งค่า TIFF ขอบเขตสี และ TIFF ความลึกบิต",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือตั้งธง",
     "Choose a preset to see its source and conversion coverage.": "เลือกพรีเซ็ตเพื่อดูแหล่งที่มาและความครอบคลุมของการแปลง",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "เลือกกระบวนการพิมพ์สำหรับเนกาทีฟ และทำความเข้าใจว่าทำไมตัวควบคุมการพิมพ์จึงหายไปสำหรับฟิล์มสไลด์",
-    "Choose a reject criterion above.": "เลือกเกณฑ์การปฏิเสธด้านบน",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "เลือกจุดที่บันทึกไว้ในตัวเลือกเพื่อแก้ไข หรือใช้ ลบจุด เพื่อลบออก",
     "Choose a saved preset to submit": "เลือกพรีเซ็ตที่บันทึกไว้เพื่อส่ง",
     "Choose a scheme": "เลือกแผนผัง",
-    "Choose a select criterion above.": "เลือกเกณฑ์การเลือกด้านบน",
     "Choose a settings folder": "เลือกโฟลเดอร์การตั้งค่า",
     "Choose a source and destination first.": "โปรดเลือกแหล่งที่มาและปลายทางก่อน.",
     "Choose a source and destination, then scan.": "โปรดเลือกแหล่งที่มาและปลายทาง แล้วจึงสแกน",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "เลือกโฟลเดอร์อื่นจากเมนู File",
     "Choose application…": "เลือกแอปพลิเคชัน…",
     "Choose catalog…": "เลือกแค็ตตาล็อก…",
+    "Choose criteria above.": "เลือกเกณฑ์ด้านบน",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "เลือกการตั้งค่าแก้ไขที่จะคัดลอก ({primaryKey}+Shift+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "เลือกภาพถ่ายที่จะส่งออกอย่างแม่นยำ, ดูตัวอย่างเอาต์พุต, และติดตามความคืบหน้า",
     "Choose export size, format, and color space": "เลือกขนาด รูปแบบ และขอบเขตสีสำหรับการส่งออก",
@@ -547,6 +548,7 @@
     "Choose your language": "เลือกภาษา",
     "Choose your preferred language in the first-use dialog.": "เลือกภาษาที่ต้องการในกล่องโต้ตอบใช้งานครั้งแรก",
     "Choose…": "เลือก…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "การเลือกเกณฑ์จะเปิดภาพถ่ายที่ตรงกันในตารางกริด ใช้ รายการที่เลือก, รายการที่ปฏิเสธ, หรือ ทั้งหมด เพื่อเปลี่ยนมุมมองการตรวจทาน ตัวกรองคลังรูปภาพอื่นๆ ยังคงมีผลอยู่",
     "Choosing a file needs the desktop app; paste a path instead": "การเลือกไฟล์ต้องใช้แอปบนเดสก์ท็อป; ให้วางพาธแทน",
     "Choosing a folder needs the desktop app; paste a path instead": "การเลือกโฟลเดอร์ต้องใช้แอปเดสก์ท็อป; ให้วางพาธแทน",
     "Chromatic aberration": "ความคลาดสี",
@@ -690,6 +692,7 @@
     "Compare": "เปรียบเทียบ",
     "Compare Before & After": "เปรียบเทียบก่อนและหลัง",
     "Compare several photos in Survey": "เปรียบเทียบภาพถ่ายหลายภาพใน มุมมองภาพรวม",
+    "Compare similar photos": "เปรียบเทียบภาพถ่ายที่คล้ายกัน",
     "Compare the faces before combining their photos.": "เปรียบเทียบใบหน้าก่อนรวมรูปภาพของพวกเขา",
     "Compare while zoomed in": "เปรียบเทียบขณะซูมเข้า",
     "Compare with a reference image": "เปรียบเทียบกับภาพอ้างอิง",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "คัดลอกทุกรายการที่อ่านได้ไปยังไฟล์ใหม่ สิ่งที่อ่านได้ตอนนี้: {value} เก็บการแก้ไขที่ทำหลังข้อมูลสำรองล่าสุด; แถวบนหน้าที่เสียหายจะสูญหาย",
     "Copy": "คัดลอก",
     "Copy Edit Settings": "คัดลอกการตั้งค่าการแก้ไข",
+    "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copy และ Paste จะถ่ายโอนกลุ่มที่คุณเลือกอย่างชัดเจน การตั้งค่าในกลุ่มที่ไม่ได้ติ๊กจะคงเป็นแบบเดียวกับแต่ละปลายทาง นี่คือเวิร์กโฟลว์ copy/paste แบบชัดเจน: การแก้ไขภายหลังของต้นทางจะไม่ซิงค์ไปยังปลายทางโดยอัตโนมัติ",
     "Copy and verify it into the library": "คัดลอกและยืนยันลงในแค็ตตาล็อก",
     "Copy anyway": "คัดลอกต่อไป",
@@ -980,6 +984,7 @@
     "Downloading update…": "กำลังดาวน์โหลดการอัปเดต…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "ลากปริมาณจาก 0% ถึง 100% ค่าศูนย์จะคืนค่าการแก้ไขก่อนพรีเซ็ต; 100% จะใช้พรีเซ็ตเต็มรูปแบบ ดับเบิลคลิกปริมาณเพื่อรีเซ็ตเป็น 100%",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "ลากจุดจับเพื่อปรับขนาดการครอป; รูปถ่ายจะซูมเพื่อให้กรอบอยู่กึ่งกลาง ลากภายในกรอบเพื่อเลื่อนรูปถ่ายใต้กรอบ หรือออกนอกกรอบเพื่อวาดการครอปใหม่",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ลากจุดใดจุดหนึ่งเพื่อปรับการไล่ระดับ ลากเส้นเพื่อย้ายทั้งชุด ลากบริเวณอื่นเพื่อวาดใหม่",
     "Drag either on-image circle to refine the target or source.": "ลากวงกลมบนภาพใดก็ได้เพื่อปรับแต่งเป้าหมายหรือแหล่งที่มา",
     "Drag on the photo to change the selected gradient’s shape or position": "ลากบนภาพถ่ายเพื่อเปลี่ยนรูปร่างหรือตำแหน่งของไล่ระดับสีที่เลือก",
     "Drag on the photo to edit the {tool} mask.": "ลากบนภาพถ่ายเพื่อแก้ไขมาสก์ {tool}",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "แปรงหรือการปรับแต่งด้วยการวาดแต่ละอันรองรับได้สูงสุด 64 ลำเส้น โดยแต่ละลำเส้นมีได้สูงสุด 512 จุด และ 20,000 จุดมาสก์ต่อรูปภาพ ตัวแก้ไขจะแจ้งเมื่อถึงขีดจำกัด",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "ข้อมูลสำรองใหม่แต่ละชุดจะมีรายการเนื้อหาและเช็กซัม และจะถูกเปิดอีกครั้งแยกต่างหากเพื่อตรวจสอบ",
     "Edit": "แก้ไข",
+    "Edit History": "ประวัติการแก้ไข",
     "Edit In…": "แก้ไขใน…",
     "Edit Shape": "แก้ไขรูปร่าง",
     "Edit a curve": "แก้ไขเส้นโค้ง",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "ข้อผิดพลาด: {error}",
     "Errors: {details}": "ข้อผิดพลาด: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "การส่งออกทุกครั้งจะฝังโปรไฟล์ ICC ที่เลือกไว้ เลือก sRGB, Display P3 หรือ ProPhoto RGB ใน Colour space",
-    "Edit History": "ประวัติการแก้ไข",
     "Everyone": "ทุกคน",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "ทุกคนจะแสดงกลุ่มใบหน้าที่มองเห็นได้ ไม่มีชื่อจะแสดงกลุ่มที่ยังไม่ได้ตั้งชื่อ เปิดกลุ่ม พิมพ์ชื่อ และเลือก บันทึกชื่อ จะใช้เฉพาะชื่อที่คุณป้อนเท่านั้น โมเดลไม่ทราบชื่อของผู้คน",
     "Example download prepared. Your edit has not changed.": "เตรียมดาวน์โหลดตัวอย่างแล้ว การแก้ไขของคุณไม่ได้เปลี่ยนแปลง",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "แลกเปลี่ยนเมทาดาทาผ่าน XMP ไซด์คาร์",
     "Existing LightTable edits could not be merged safely": "ไม่สามารถผสานการแก้ไขที่มีอยู่ของ LightTable ได้อย่างปลอดภัย",
     "Existing files": "ไฟล์ที่มีอยู่",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "โดยค่าเริ่มต้น ธงที่มีอยู่จะยังคงอยู่ เปิดใช้งาน แทนที่ตั้งธงที่มีอยู่ เฉพาะเมื่อคุณต้องการเปลี่ยนการตัดสินก่อนหน้าเท่านั้น การทำงานแบบชุดจะมีผลกับรายการที่ตรงกันที่แสดง และจะรวมไฟล์ RAW/JPEG ที่เชื่อมโยงเมื่อเปิดใช้การเชื่อมเมทาดาทา; รายการที่ป้องกันไว้หรือมีธงตรงกันอยู่แล้วจะไม่ถูกรวมในจำนวนการดำเนินการ",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "ธงที่มีอยู่จะยังคงอยู่ จำนวนรวมรวมถึงไฟล์ RAW/JPEG ที่เชื่อมโยงอยู่ซึ่งยังไม่ได้ตั้งธง",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "ธงที่มีอยู่แล้วอาจถูกแทนที่ได้ จำนวนรวมรวมถึงไฟล์ RAW/JPEG ที่เชื่อมโยงอยู่",
     "Existing settings could not be loaded; this photo was left unchanged": "ไม่สามารถโหลดการตั้งค่าที่มีอยู่ได้; ภาพถ่ายนี้จึงไม่ถูกเปลี่ยนแปลง",
     "Expand Advanced and edit Filename template.": "ขยาย ขั้นสูง และแก้ไขเทมเพลต Filename",
     "Expand Advanced in Export.": "ขยาย ขั้นสูง ใน ส่งออก",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "ตั้งธงและให้คะแนนภาพมุมมองภาพรวม",
     "Flag and rating filters": "ตัวกรองธงและการให้คะแนน",
     "Flag as Pick": "ตั้งธงเป็นเลือก",
+    "Flag {count} photo as a pick": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก",
+    "Flag {count} photo as a reject": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ",
+    "Flag {count} photos as picks": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก",
+    "Flag {count} photos as rejects": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ",
     "Flags and ratings apply to selection": "ตั้งธงและการให้คะแนนมีผลกับการเลือก",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "Flags และ stars แยกจากกัน: ภาพถ่ายสามารถถูก Picked และมีการให้คะแนนดาวได้ทุกระดับ Reject จะทำเครื่องหมายภาพถ่ายเพื่อทบทวน ไม่ใช่ลบมัน",
     "Flip horizontal": "พลิกแนวนอน",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "จัดกลุ่มภาพถ่ายเป็นคอลเลกชัน",
     "Group similar faces and search names you add.": "จัดกลุ่มใบหน้าที่คล้ายกันและค้นหาชื่อที่คุณเพิ่ม",
     "Group the rendered derivative with its source in the catalog.": "จัดกลุ่มไฟล์อนุพันธ์ที่เรนเดอร์แล้วกับแหล่งที่มาในแค็ตตาล็อก",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "กลุ่ม {index} จาก {count} ไม่มีคำแนะนำที่ชัดเจน; เปรียบเทียบภาพถ่ายเหล่านี้",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "กลุ่ม {index} จาก {count} แนะนำ: {name} อ้างอิงจากการตรวจโฟกัสและดวงตา; โปรดตรวจทุกรูป",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "การจัดกลุ่มต้องใช้เวลาถ่ายจริงและการวิเคราะห์ Photo Index ปัจจุบัน ไฟล์ที่มีเพียงวันที่ของระบบไฟล์ วิดีโอ สำเนาเสมือน และภาพถ่ายที่มีรายละเอียดภาพไม่เพียงพอจะถูกตัดออก บันทึกดัชนีที่มีอยู่จะถูกรีเฟรชโดยตัวประมวลผลดัชนีหลังการอัปเดตนี้",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "กลุ่มจะปรากฏที่นี่เมื่อมีการสแกนรูปถ่าย คุณสามารถแก้ไขต่อได้ในขณะที่กระบวนการนี้ทำงาน",
     "Guides for your photographs, from first edit to export.": "คำแนะนำสำหรับภาพถ่ายของคุณ ตั้งแต่การแก้ไขครั้งแรกจนถึงการส่งออก",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR รองรับภาพที่ bracket แสง 2–9 ภาพที่มีมิติขนาดตรงกัน โดยจะจัดแนวและผสานการรับแสงของเฟรมที่เรนเดอร์แล้วเพื่อปรับสมดุลโทนที่ใช้งานได้ ตรวจสอบวัตถุที่เคลื่อนไหวและขอบเพื่อดูอาร์ติแฟกต์จากการผสาน",
@@ -1431,6 +1446,7 @@
     "Import…": "นำเข้า…",
     "Improve preview speed and check image detail": "ปรับปรุงความเร็วของตัวอย่างก่อนแสดงผลและตรวจดูรายละเอียดภาพ",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "ใน Community ให้เลือก Featured, New หรือ All แล้วใช้ Subject เพื่อจำกัดคอลเลกชัน เลือกพรีเซ็ตเพื่อดูคำอธิบาย ผู้สร้าง เวอร์ชัน พฤติกรรม Film และภาพตัวอย่างที่มี",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "ในแก้ไขรูปร่าง ลากจุดใดจุดหนึ่งเพื่อปรับปลายด้านนั้นของการไล่ระดับ ลากเส้นที่เชื่อมจุดทั้งสองเพื่อย้ายการไล่ระดับทั้งหมดโดยคงมุมและความกว้างของช่วงเปลี่ยนผ่านไว้ ลากบริเวณอื่นบนภาพเพื่อวาดใหม่",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "ใน แก้ไขรูปร่าง ลากจุดจับตรงกลางเพื่อย้ายมาสก์ ลากจุดจับตามแกนใดก็ได้เพื่อปรับขนาด หรือจุดจับด้านนอกเพื่อหมุน กด Shift ค้างไว้ขณะวาดหรือปรับขนาดเพื่อให้การไล่ระดับเป็นวงกลม",
     "In Film profile, choose Film format.": "ในโพรไฟล์ Film ให้เลือกฟอร์แมตฟิล์ม",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "ใน Info ให้ขยาย Description สำหรับชื่อเรื่อง คำบรรยาย และหัวเรื่อง; Rights สำหรับผู้สร้าง ลิขสิทธิ์ และเครดิต; หรือ Place สำหรับตำแหน่งและพิกัด การเปลี่ยนแปลงจะบันทึกลงแค็ตตาล็อกขณะที่คุณพิมพ์ Open in Maps ใช้ได้หลังจากโหลดเมทาดาทาของภาพถ่ายนี้แล้ว และละติจูดกับลองจิจูดต้องถูกต้องทั้งคู่ มันจะเปิดตำแหน่งในเบราว์เซอร์ของคุณ",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "ตรวจดูภาพที่ 1:1 และรอให้รายละเอียดของตัวอย่างเสร็จก่อนประเมินพื้นผิว",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "ตรวจสอบโอเวอร์เลย์ และใช้การเก็บรายละเอียดด้วยการระบายสีรอบขอบเขตตามต้องการ",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "ตรวจทานภาพถ่ายที่ถูกปฏิเสธ ตรวจการตั้งค่าไฟล์คู่ และขยายสแต็กใดๆ หากคุณคาดว่าจะรวมสมาชิกอื่นๆ ของมัน",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "ตรวจสอบคำแนะนำ จากนั้นใช้ Pick selects หรือ Reject rejects หากคุณต้องการใช้ธงเหล่านั้น",
     "Interface": "ส่วนติดต่อ",
     "Interface and behavior": "ส่วนติดต่อและพฤติกรรม",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "การควบคุมอินเทอร์เฟซจะกำหนดพื้นหลังของตัวแสดงผล สเกลแบบอักษร Lights Out เลเยอร์ข้อมูลของ loupe และไกด์ครอป ค่ากำหนดเหล่านี้เปลี่ยนลักษณะพื้นที่ทำงานโดยไม่เปลี่ยนพิกเซลที่ส่งออก",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "ปรับแต่งเฉพาะที่ด้วยมาสก์แบบ Brush, Linear, และ Radial",
     "Make photos easier to find and prepare descriptive metadata for export.": "ทำให้ค้นหาภาพถ่ายได้ง่ายขึ้น และเตรียมเมทาดาทาเชิงบรรยายสำหรับการส่งออก",
     "Make select": "สร้างที่เลือก",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Make select จะเลือกภาพมุมมองภาพรวมที่ใช้งานอยู่เป็นภาพที่เลือก และปฏิเสธภาพอื่นๆ ที่ยังอยู่ในมุมมองภาพรวม การทำเช่นนี้จะเปลี่ยนตั้งธงของภาพเหล่านั้น เมตาดาต้า RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนตั้งธงนั้นไปยังไฟล์คู่ได้",
     "Make the source photo active.": "ทำให้ภาพถ่ายต้นทางเป็นภาพที่ใช้งานอยู่",
     "Make your adjustment, then check the save status in the app.": "ทำการปรับแต่งของคุณ แล้วตรวจสอบสถานะการบันทึกในแอป",
     "Manage cache storage": "จัดการพื้นที่จัดเก็บแคช",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "ใหม่กว่าบิลด์นี้",
     "Next": "ถัดไป",
     "Next Photo": "ภาพถัดไป",
+    "Next group": "กลุ่มถัดไป",
     "Next presets": "พรีเซ็ตถัดไป",
     "No Rating": "ไม่มีการให้คะแนน",
     "No TIFF was created.": "ไม่ได้สร้าง TIFF",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "ยังไม่มีพรีเซ็ตในคอลเลกชันนี้",
     "No rejected photos in this view": "ไม่มีภาพถ่ายที่ปฏิเสธแล้วในมุมมองนี้",
     "No sampled colors": "ไม่มีสีที่สุ่มตัวอย่าง",
+    "No similar groups found. Photos need current index analysis and capture times.": "ไม่พบกลุ่มที่คล้ายกัน ภาพถ่ายต้องมีการวิเคราะห์ดัชนีปัจจุบันและเวลาถ่าย",
     "No sources yet.": "ยังไม่มีแหล่งที่มา",
     "No steps recorded yet.": "ยังไม่มีการบันทึกขั้นตอน",
     "No usable lines found.": "ไม่พบเส้นที่ใช้งานได้",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "เลือก (P)",
     "Pick / reject / unflag": "เลือก / ปฏิเสธ / เลิกตั้งธง",
     "Pick a preset": "เลือกพรีเซ็ต",
-    "Pick selects": "Pick เลือก",
-    "Pick the selects": "เลือกตัวที่เลือกไว้",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "เลือกภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "เลือกรูปถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Pick {count} select": "เลือก {count} รายการ",
-    "Pick {count} selects": "เลือก {count} รายการ",
     "Pick, reject, and rate photos": "เลือก ปฏิเสธ และให้คะแนนภาพถ่าย",
     "Picked": "เลือกแล้ว",
     "Picked only": "เฉพาะที่เลือกแล้ว",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "พรีวิวใช้การแก้ไขของภาพถ่ายนี้ เลือกสต็อกเพื่อใช้การแก้ไขนั้น",
     "Previous": "ก่อนหน้า",
     "Previous Photo": "ภาพถ่ายก่อนหน้า",
+    "Previous group": "กลุ่มก่อนหน้า",
     "Previous presets": "พรีเซ็ตก่อนหน้า",
     "Print development": "การพัฒนาเพื่อพิมพ์",
     "Print exposure": "การรับแสงสำหรับพิมพ์",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "กำลังรีเฟรชชุมชน…",
     "Reject": "ปฏิเสธ",
     "Reject (X)": "ปฏิเสธ (X)",
-    "Reject rejects": "ปฏิเสธรายการที่ปฏิเสธ",
-    "Reject the rejects": "ปฏิเสธรายการที่ปฏิเสธ",
-    "Reject {count} photo": "ปฏิเสธ {count} ภาพถ่าย",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
-    "Reject {count} photos": "ปฏิเสธ {count} ภาพถ่าย",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่",
     "Rejected": "ปฏิเสธแล้ว",
     "Rejected {count} photo": "ปฏิเสธแล้ว {count} ภาพถ่าย",
     "Rejected {count} photos": "ปฏิเสธแล้ว {count} ภาพถ่าย",
@@ -2317,6 +2322,7 @@
     "Repair": "ซ่อมแซม",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "ทำซ้ำสำหรับบริเวณอื่น หรือคลิก Edit global grade เพื่อเปลี่ยนการปรับภาพรวม",
     "Replace adjustment settings": "แทนที่การตั้งค่าการปรับแต่ง",
+    "Replace existing flags": "แทนที่ตั้งธงที่มีอยู่",
     "Replace local masks; detect AI selections on each photo": "แทนที่มาสก์ในเครื่อง; ตรวจจับการเลือก AI ในแต่ละภาพถ่าย",
     "Replace with imported": "แทนที่ด้วยที่นำเข้า",
     "Replaced adjustments with {name}": "แทนที่การปรับแต่งด้วย {name}",
@@ -2368,6 +2374,8 @@
     "Restored that step": "กู้คืนขั้นตอนนั้นแล้ว",
     "Restored {count} capture. You can also restore capture-time steps in History.": "กู้คืนแล้ว {count} capture คุณยังสามารถคืนค่าแต่ละขั้นตอนตามเวลาถ่ายใน ประวัติ ได้",
     "Restored {count} captures. You can also restore capture-time steps in History.": "กู้คืนแล้ว {count} captures คุณยังสามารถคืนค่าแต่ละขั้นตอนตามเวลาถ่ายใน ประวัติ ได้",
+    "Restored {count} photo flag. Later flag changes are preserved.": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่",
+    "Restored {count} photo flags. Later flag changes are preserved.": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่",
     "Restore…": "กู้คืน…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "การกู้คืนจากข้อมูลสำรองจะคืนข้อมูลแค็ตตาล็อกไปยังสถานะของข้อมูลสำรองนั้น ดังนั้นการแก้ไขที่เกิดขึ้นภายหลังจะไม่อยู่ในนั้น เมื่อกู้คืนแค็ตตาล็อกที่ใช้งานอยู่ ระบบจะสำรองแค็ตตาล็อกปัจจุบันก่อน",
     "Result name": "ชื่อผลลัพธ์",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "ตรวจทานการจับคู่จะแสดงสองกลุ่มที่เป็นไปได้พร้อมตัวอย่างใบหน้า บุคคลเดียวกัน จะผสานเข้าด้วยกัน คนละคน จะบันทึกการแก้ไขเพื่อไม่ให้มีการแนะนำการจับคู่ซ้ำอีก ข้ามไว้ก่อน จะคงการจับคู่นั้นไว้ให้กลับมาตรวจดูภายหลัง",
     "Review photos from the source using the destination and naming settings": "ตรวจทานภาพถ่ายจากแหล่งที่มาโดยใช้การตั้งค่าปลายทางและการตั้งชื่อ",
     "Review signals": "ตรวจทานสัญญาณ",
+    "Review similar photos": "ตรวจทานภาพถ่ายที่คล้ายกัน",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "ตรวจทานภาพถ่ายที่คล้ายกันจะค้นหาภาพถ่ายที่จัดทำดัชนีและมีลักษณะคล้ายกันซึ่งถ่ายภายใน 30 วินาทีในโฟลเดอร์หรือคอลเลกชันปัจจุบัน กลุ่มจะเปิดใน มุมมองภาพรวม ได้สูงสุด 16 ภาพ ใช้ กลุ่มก่อนหน้า และ กลุ่มถัดไป เพื่อเปรียบเทียบตัวเลือก จากนั้นตั้งธงภาพถ่ายแต่ละภาพด้วยตัวควบคุมของมุมมองภาพรวม",
     "Review the before-and-after filenames in the preview.": "ตรวจสอบชื่อไฟล์ก่อนและหลังในตัวอย่างก่อนพิมพ์",
     "Review the current view carefully before moving rejected originals and sidecars.": "ตรวจทานมุมมองปัจจุบันอย่างรอบคอบก่อนย้ายต้นฉบับและไซด์คาร์ที่ถูกปฏิเสธ",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "ตรวจทานภาพถ่ายที่แสดง จากนั้นใช้ ตั้งธงภาพถ่ายเป็นรายการที่เลือก หรือ ตั้งธงภาพถ่ายเป็นรายการที่ปฏิเสธ ปุ่มจะแสดงจำนวนไฟล์ที่จะเปลี่ยนแปลง",
     "Review the import result and the new preset’s conversion coverage before applying it.": "ตรวจทานผลลัพธ์การนำเข้าและความครอบคลุมการแปลงของพรีเซ็ตใหม่ก่อนนำไปใช้",
     "Review the import result, then continue into the library.": "ตรวจทานผลลัพธ์การนำเข้า แล้วดำเนินต่อไปยังไลบรารี",
     "Review the result and refine the sliders for the photograph.": "ตรวจทานผลลัพธ์และปรับสไลด์ให้ละเอียดสำหรับภาพถ่าย",
     "Review transferred masks": "ตรวจทานมาสก์ที่ถ่ายโอน",
     "Review translated edits": "ตรวจทานการแก้ไขที่แปลแล้ว",
     "Reviewing every photo.": "กำลังตรวจทานทุกภาพถ่าย",
-    "Reviewing {count} photo that met a reject criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ",
-    "Reviewing {count} photo that met a select criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก",
-    "Reviewing {count} photos that met a reject criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ",
-    "Reviewing {count} photos that met a select criterion.": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก",
     "Rich descriptions on": "เปิดคำอธิบายแบบละเอียด",
     "Richer descriptions require macOS 27 or later": "คำอธิบายที่ละเอียดขึ้นต้องใช้ macOS 27 หรือใหม่กว่า",
     "Rights": "สิทธิ์",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "เลือกช่วงระยะจากกล้อง; ปรับขีดจำกัดไกลและใกล้ให้เหมาะสม",
     "Select all": "เลือกทั้งหมด",
     "Select an active reference photo first": "เลือกภาพถ่ายอ้างอิงที่ใช้งานอยู่ก่อน",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่",
     "Select an existing mask, then expand Create New Mask.": "เลือกมาสก์ที่มีอยู่ แล้วขยาย สร้างมาสก์ใหม่",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "เลือกแถบอื่นเพื่อดำเนินต่อ หรือใช้ Reset ของ Color Mixer เพื่อล้างการปรับมิกเซอร์",
     "Select at least two distinct originals": "เลือกต้นฉบับที่แตกต่างกันอย่างน้อยสองภาพ",
@@ -2617,6 +2625,7 @@
     "Settings…": "การตั้งค่า…",
     "Shadows": "เงา",
     "Shape": "รูปร่าง",
+    "Shape a linear gradient": "ปรับรูปร่างการไล่ระดับเชิงเส้น",
     "Shape a radial gradient": "สร้างไล่ระดับแบบรัศมี",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "รูปร่างยังมีตัวควบคุม ความกว้าง, ความสูง, การหมุน, และ ฟุ้ง",
     "Shape contrast and color with curves": "ปรับรูปร่างคอนทราสต์และสีด้วยเส้นโค้ง",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "แค็ตตาล็อกไม่ได้เปลี่ยนแปลง",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "แค็ตตาล็อกถูกกู้คืนจากข้อมูลสำรองที่ยืนยันแล้ว; สำเนาที่เสียหายอยู่ในโฟลเดอร์ Recovery",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "โมเดล SFace INT8 แบบกะทัดรัดจะเปรียบเทียบใบหน้าคนที่จัดแนวแล้ว การจัดกลุ่มอัตโนมัติใช้กฎความคล้ายคลึงที่ระมัดระวัง การจับคู่ที่เป็นไปได้จะยังคงแยกไว้เพื่อตรวจทาน ใบหน้าใหม่ที่ตรงกับบุคคลที่มีชื่อแล้วจะถูกแนะนำให้ยืนยัน",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "ข้อความยืนยันจะแสดงจำนวนที่ได้รับผลกระทบและเตือนว่าธงที่มีอยู่บนภาพที่ตรงกันจะถูกแทนที่ เมตาดาต้า RAW/JPEG ที่เชื่อมโยงกันยังอาจรวมไฟล์ที่จับคู่เมื่อเปิดใช้ค่ากำหนดนั้น",
     "The current catalog is backed up first, then replaced by this one.": "แค็ตตาล็อกปัจจุบันจะถูกสำรองข้อมูลก่อน แล้วจึงแทนที่ด้วยอันนี้",
     "The desktop Trash service (gio) is unavailable": "บริการถังขยะของเดสก์ท็อป (gio) ไม่พร้อมใช้งาน",
     "The desktop app checks its signed update feed.": "แอปเดสก์ท็อปตรวจสอบฟีดการอัปเดตที่ลงนามแล้ว",
@@ -2987,6 +2995,7 @@
     "Undo last change": "เลิกทำการเปลี่ยนแปลงล่าสุด",
     "Undo last correction": "เลิกทำการแก้ไขล่าสุด",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "เลิกทำการแก้ไขล่าสุดจะย้อนการแก้ไขล่าสุดที่เก็บไว้ในหน้าต่างนี้ คืนค่าเวลาของกล้อง… จะแสดงตัวอย่างการลบการแก้ไขแค็ตตาล็อก; ตรวจทานตัวอย่างและนำไปใช้เพื่อคืนค่าเวลาต้นฉบับของกล้อง ขั้นตอนเวลาในการถ่ายก็มีอยู่ใน ประวัติ เช่นกัน เมื่อเปิดใช้งานการเขียน XMP การรีเซ็ตการแก้ไขจะคืนค่าวันที่ของไซด์คาร์ที่บันทึกไว้ก่อนที่ LightTable จะนำไปใช้ วันที่ถ่ายในไซด์คาร์รุ่นเก่าที่ไม่มีวันที่ที่บันทึกไว้นั้นจะไม่เปลี่ยนแปลง",
+    "Undo last flag batch": "เลิกทำชุดการตั้งธงล่าสุด",
     "Undo or restore an earlier step": "เลิกทำหรือคืนค่าขั้นตอนก่อนหน้า",
     "Undo snapshots must be strings": "สแน็ปช็อตเลิกทำต้องเป็นสตริง",
     "Unedited": "ยังไม่ได้แก้ไข",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "ใช้ ปรับสเกล, แนวนอน, และ แนวตั้ง เพื่อจัดแนวภาพอ้างอิงกับภาพถ่ายของคุณ",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "ใช้ สแกนรูปใหม่ หลังจากเพิ่มรูปถ่ายหรือคืนค่าต้นฉบับที่ไม่พร้อมใช้งาน รูปถ่ายที่เคยสแกนแล้วและไม่เปลี่ยนแปลงจะถูกนำกลับมาใช้",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "ใช้ Scoop, WinGet, Chocolatey, AUR, Flatpak หรือ Snap เพื่ออัปเดตการติดตั้งที่ตัวจัดการนั้นดูแล ดาวน์โหลด ZIP ใหม่สำหรับสำเนา Windows แบบพกพา บิลด์ที่ไม่ได้กำหนดค่าการลงลายเซ็นอัปเดตไม่สามารถอัปเดตตัวเองได้",
-    "Use Selects, Rejects, or All to review the matching photos.": "ใช้ รายการที่เลือก, รายการที่ปฏิเสธ, หรือ ทั้งหมด เพื่อตรวจทานภาพถ่ายที่ตรงกัน",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "ใช้ Temp และ Tint หรือสุ่มตัวอย่างพื้นที่ที่เป็นกลาง แล้วปรับ Vibrance และ Saturation",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "ใช้ Undo สำหรับงานล่าสุด, History สำหรับขั้นตอนการแก้ไขที่บันทึกไว้, และสแน็ปช็อตที่มีชื่อสำหรับลุคที่คุณต้องการกลับมาดูอีก",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "ใช้ เลิกทำ ในข้อความเสร็จสิ้น หรือ เลิกทำชุดการตั้งธงล่าสุด ในแถบด้านข้างเพื่อคืนค่าชุดงานหนึ่ง ช่วงเวลานี้ยังคงใช้ เลิกทำ ได้ตลอดเซสชัน และจะคงการตัดสินตั้งธงด้วยตนเองหรือจากภายนอกที่เกิดขึ้นภายหลังไว้ หากบันทึกไม่สำเร็จ ให้ใช้ ลองบันทึกใหม่ หรือเลิกทำชุดงาน; การเขียนที่ล้มเหลวยังคงอยู่ในคิว",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "ใช้ ยกเลิกการเปลี่ยนคีย์เวิร์ด เพื่อคืนค่าชุดล่าสุดในขณะที่หน้าต่างนี้ยังเปิดอยู่ เลิกทำจะไม่ยอมเขียนทับคีย์เวิร์ดที่เปลี่ยนไปหลังจากชุดนั้น ประวัติรูปถ่ายยังเก็บสถานะคีย์เวิร์ดก่อนและหลังไว้ด้วย",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "ใช้ Uniform hue, Uniform saturation หรือ Uniform luminance เพื่อทำให้สีในช่วงนั้นใกล้เคียงกับแผ่นตัวอย่างมากขึ้น",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "ใช้จุดไม่กี่จุดและเปรียบเทียบภาพถ่ายระหว่างทำงาน เส้นโค้งของช่องอาจทำให้เกิดการติดสีอย่างมาก",
@@ -3162,6 +3171,7 @@
     "What to expect": "สิ่งที่คาดหวัง",
     "What to open": "สิ่งที่จะเปิด",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "เมื่อใช้งาน MIDI ได้ ให้เปิด แป้นพิมพ์และตัวควบคุม MIDI แล้วเลือก เรียนรู้ MIDI อนุญาตการเข้าถึง MIDI หากเบราว์เซอร์ของคุณถาม",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "เมื่อเปิด มุมมองภาพรวม จาก การคัดทิ้งแบบช่วย ให้เปรียบเทียบกลุ่มที่แนะนำและตั้งธงภาพถ่ายทีละภาพ ใช้ สร้างที่เลือก ได้ใน มุมมองภาพรวม ปกติ: มันจะเลือกรูปภาพในมุมมองภาพรวมที่ใช้งานอยู่และปฏิเสธภาพถ่ายอื่นๆ ที่ยังอยู่ในมุมมองภาพรวมนั้น การทำเช่นนี้จะเปลี่ยนธงของพวกมัน เมทาดาทา RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนธงนั้นไปยังโปรแกรมคู่หูได้",
     "When a photo already has edits": "เมื่อภาพถ่ายมีการแก้ไขอยู่แล้ว",
     "When a photo arrives": "เมื่อภาพถ่ายเข้ามา",
     "When a photo seems missing": "เมื่อภาพถ่ายดูเหมือนหายไป",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} กลุ่ม",
     "{count} indexed photo remains local until deleted.": "ภาพถ่ายที่ทำดัชนี {count} ภาพยังคงอยู่ในเครื่องจนกว่าจะลบ",
     "{count} indexed photos remain local until deleted.": "ภาพถ่ายที่ทำดัชนี {count} ภาพยังคงอยู่ในเครื่องจนกว่าจะลบ",
+    "{count} matching photo shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
+    "{count} matching photos shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
     "{count} minimum alignment inlier": "อินไลเออร์การจัดแนวขั้นต่ำ {count} รายการ",
     "{count} minimum alignment inliers": "อินไลเออร์การจัดแนวขั้นต่ำ {count} รายการ",
     "{count} missing": "{count} หายไป",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ ย้อนกลับ",
     "← Back to articles": "← กลับไปที่บทความ",
     "← People": "← ผู้คน",
-    "☆ Favorites": "☆ รายการโปรด",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ลากจุดใดจุดหนึ่งเพื่อปรับการไล่ระดับ ลากเส้นเพื่อย้ายทั้งชุด ลากบริเวณอื่นเพื่อวาดใหม่",
-    "Shape a linear gradient": "ปรับรูปร่างการไล่ระดับเชิงเส้น",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "ในแก้ไขรูปร่าง ลากจุดใดจุดหนึ่งเพื่อปรับปลายด้านนั้นของการไล่ระดับ ลากเส้นที่เชื่อมจุดทั้งสองเพื่อย้ายการไล่ระดับทั้งหมดโดยคงมุมและความกว้างของช่วงเปลี่ยนผ่านไว้ ลากบริเวณอื่นบนภาพเพื่อวาดใหม่",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่",
-    "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด"
+    "☆ Favorites": "☆ รายการโปรด"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4138,6 +4145,12 @@
     },
     "Exporting {count} photo to {destination}…": {
       "other": "กำลังส่งออกภาพถ่าย {count} ภาพไปยัง {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "other": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่เลือก"
+    },
+    "Flag {count} photo as a reject": {
+      "other": "ตั้งธง {count} ภาพถ่ายเป็นรายการที่ปฏิเสธ"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "other": "นำเข้าภาพถ่าย {count} ภาพจาก Apple Photos{value}"
@@ -4154,20 +4167,8 @@
     "Pasted to {count} photo": {
       "other": "วางลงในภาพถ่าย {count} ภาพแล้ว"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "เลือกภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่"
-    },
-    "Pick {count} select": {
-      "other": "เลือก {count} รายการ"
-    },
     "Picked {count} photo": {
       "other": "เลือกแล้ว {count} ภาพถ่าย"
-    },
-    "Reject {count} photo": {
-      "other": "ปฏิเสธ {count} ภาพถ่าย"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "other": "ปฏิเสธภาพถ่าย {count} รูปที่ตรงกับ {criteria} หรือไม่? ธงที่มีอยู่ในภาพถ่ายเหล่านั้นจะถูกแทนที่"
     },
     "Rejected {count} photo": {
       "other": "ปฏิเสธแล้ว {count} ภาพถ่าย"
@@ -4178,11 +4179,8 @@
     "Restored {count} capture. You can also restore capture-time steps in History.": {
       "other": "กู้คืนแล้ว {count} capture คุณยังสามารถคืนค่าแต่ละขั้นตอนตามเวลาถ่ายใน ประวัติ ได้"
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "other": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์ปฏิเสธ"
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "other": "กำลังตรวจทานภาพถ่าย {count} ภาพที่ตรงตามเกณฑ์เลือก"
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "other": "คืนค่าธงของ {count} ภาพถ่ายแล้ว การเปลี่ยนแปลงธงที่ทำในภายหลังจะยังคงอยู่"
     },
     "Wrote {count} sidecar.": {
       "other": "เขียนไซด์คาร์ {count} ไฟล์แล้ว"
@@ -4220,8 +4218,14 @@
     "{count} duplicate group covering {files}.": {
       "other": "กลุ่มภาพซ้ำ {count} กลุ่ม ครอบคลุม {files}"
     },
+    "{count} empty file": {
+      "other": "{count} ไฟล์ที่ว่างเปล่า"
+    },
     "{count} error": {
       "other": "{count} ข้อผิดพลาด"
+    },
+    "{count} face": {
+      "other": "{count} ใบหน้า"
     },
     "{count} face detected": {
       "other": "ตรวจพบใบหน้า {count} ใบ"
@@ -4235,8 +4239,17 @@
     "{count} file": {
       "other": "{count} ไฟล์"
     },
+    "{count} file not downloaded": {
+      "other": "{count} ไฟล์ที่ยังไม่ได้ดาวน์โหลด"
+    },
+    "{count} group": {
+      "other": "{count} กลุ่ม"
+    },
     "{count} indexed photo remains local until deleted.": {
       "other": "ภาพถ่ายที่ทำดัชนี {count} ภาพยังคงอยู่ในเครื่องจนกว่าจะลบ"
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "other": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}."
     },
     "{count} minimum alignment inlier": {
       "other": "อินไลเออร์การจัดแนวขั้นต่ำ {count} รายการ"
@@ -4274,6 +4287,9 @@
     "{count} photo selected": {
       "other": "เลือกภาพถ่าย {count} ภาพ"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "other": "ข้ามภาพถ่าย {count} ภาพ{reasons}. ดาวน์โหลดหรือคืนค่าต้นฉบับ แล้วสร้างดัชนีใหม่."
+    },
     "{count} photo updated": {
       "other": "อัปเดตภาพถ่าย {count} ภาพ"
     },
@@ -4286,6 +4302,9 @@
     "{count} rated photo": {
       "other": "ภาพถ่ายที่มีคะแนน {count} ภาพ"
     },
+    "{count} selected": {
+      "other": "เลือกแล้ว {count} รายการ"
+    },
     "{count} selected photo": {
       "other": "ภาพถ่ายที่เลือก {count} ภาพ"
     },
@@ -4297,6 +4316,12 @@
     },
     "{count} source": {
       "other": "{count} แหล่งที่มา"
+    },
+    "{count} unavailable file": {
+      "other": "{count} ไฟล์ที่ไม่พร้อมใช้งาน"
+    },
+    "{count} unavailable photo skipped": {
+      "other": "ข้ามรูปภาพที่ไม่พร้อมใช้งาน {count} รูป"
     },
     "{count} unsupported setting skipped": {
       "other": "ข้ามการตั้งค่าที่ไม่รองรับ {count} รายการ"
@@ -4318,31 +4343,7 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "การออกโดยไม่คาดคิด {value} ครั้งใน 24 ชั่วโมงที่ผ่านมา"
-    },
-    "{count} empty file": {
-      "other": "{count} ไฟล์ที่ว่างเปล่า"
-    },
-    "{count} file not downloaded": {
-      "other": "{count} ไฟล์ที่ยังไม่ได้ดาวน์โหลด"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "other": "ข้ามภาพถ่าย {count} ภาพ{reasons}. ดาวน์โหลดหรือคืนค่าต้นฉบับ แล้วสร้างดัชนีใหม่."
-    },
-    "{count} unavailable file": {
-      "other": "{count} ไฟล์ที่ไม่พร้อมใช้งาน"
-    },
-    "{count} face": {
-      "other": "{count} ใบหน้า"
-    },
-    "{count} group": {
-      "other": "{count} กลุ่ม"
-    },
-    "{count} selected": {
-      "other": "เลือกแล้ว {count} รายการ"
-    },
-    "{count} unavailable photo skipped": {
-      "other": "ข้ามรูปภาพที่ไม่พร้อมใช้งาน {count} รูป"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

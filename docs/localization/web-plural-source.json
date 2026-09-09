@@ -17,6 +17,14 @@
       "other": "Exporting {count} photos to {destination}…"
     },
     {
+      "one": "Flag {count} photo as a pick",
+      "other": "Flag {count} photos as picks"
+    },
+    {
+      "one": "Flag {count} photo as a reject",
+      "other": "Flag {count} photos as rejects"
+    },
+    {
       "one": "Imported {count} photo from Apple Photos{value}",
       "other": "Imported {count} photos from Apple Photos{value}"
     },
@@ -37,24 +45,8 @@
       "other": "Pasted to {count} photos"
     },
     {
-      "one": "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-      "other": "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced."
-    },
-    {
-      "one": "Pick {count} select",
-      "other": "Pick {count} selects"
-    },
-    {
       "one": "Picked {count} photo",
       "other": "Picked {count} photos"
-    },
-    {
-      "one": "Reject {count} photo",
-      "other": "Reject {count} photos"
-    },
-    {
-      "one": "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.",
-      "other": "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced."
     },
     {
       "one": "Rejected {count} photo",
@@ -69,12 +61,8 @@
       "other": "Restored {count} captures. You can also restore capture-time steps in History."
     },
     {
-      "one": "Reviewing {count} photo that met a reject criterion.",
-      "other": "Reviewing {count} photos that met a reject criterion."
-    },
-    {
-      "one": "Reviewing {count} photo that met a select criterion.",
-      "other": "Reviewing {count} photos that met a select criterion."
+      "one": "Restored {count} photo flag. Later flag changes are preserved.",
+      "other": "Restored {count} photo flags. Later flag changes are preserved."
     },
     {
       "one": "Wrote {count} sidecar.",
@@ -163,6 +151,10 @@
     {
       "one": "{count} indexed photo remains local until deleted.",
       "other": "{count} indexed photos remain local until deleted."
+    },
+    {
+      "one": "{count} matching photo shown: {criteria}.",
+      "other": "{count} matching photos shown: {criteria}."
     },
     {
       "one": "{count} minimum alignment inlier",
