@@ -7,11 +7,33 @@ on:
         description: Windows build run containing a successfully built LightTable-windows-x64 artifact
         required: true
         type: string
+      runner:
+        description: Windows Server x64 or Windows 11 ARM (x64 application under emulation)
+        required: false
+        default: windows-2022
+        type: choice
+        options:
+          - windows-2022
+          - windows-11-arm
+      installer_sha256:
+        description: Independently verified signed installer SHA-256; enables installer acceptance
+        required: false
+        default: ''
+        type: string
   workflow_call:
     inputs:
       build_run_id:
         description: Windows build run containing a successfully built LightTable-windows-x64 artifact
         required: true
+        type: string
+
+      runner:
+        required: false
+        default: windows-2022
+        type: string
+      installer_sha256:
+        required: false
+        default: ''
         type: string
 
 permissions:
@@ -20,8 +42,8 @@ permissions:
 
 jobs:
   native:
-    runs-on: windows-2022
-    timeout-minutes: 10
+    runs-on: ${{ inputs.runner || 'windows-2022' }}
+    timeout-minutes: 25
     steps:
       - name: Check out the dispatched native tester
         uses: actions/checkout@v4
@@ -66,7 +88,33 @@ jobs:
             core.setOutput('source_sha', run.head_sha);
             core.info(`Tester ${context.sha}; package source ${run.head_sha}; build run ${run_id}`);
 
+      - name: Record and verify Windows test host
+        shell: pwsh
+        env:
+          EXPECTED_RUNNER: ${{ inputs.runner || 'windows-2022' }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $OS = Get-CimInstance Win32_OperatingSystem
+          $Arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+          @{
+            caption = $OS.Caption
+            version = $OS.Version
+            build = $OS.BuildNumber
+            product_type = $OS.ProductType
+            os_architecture = $Arch
+            application_architecture = "x64"
+            execution = $(if ($Arch -eq "Arm64") { "x64 emulation" } else { "native x64" })
+            image_version = $env:ImageVersion
+            runner = $env:EXPECTED_RUNNER
+            fresh_offline_webview2_absent_test = $false
+          } | ConvertTo-Json | Set-Content .build/windows-native-recheck-evidence/host.json
+          if ($env:EXPECTED_RUNNER -eq "windows-11-arm" -and
+              ($OS.ProductType -ne 1 -or [int]$OS.BuildNumber -lt 22000 -or $Arch -ne "Arm64")) {
+            throw "Expected a Windows 11 ARM client host"
+          }
+
       - name: Download the selected Windows package
+        id: download
         uses: actions/download-artifact@v4
         with:
           name: LightTable-windows-x64
@@ -75,7 +123,42 @@ jobs:
           run-id: ${{ inputs.build_run_id }}
           github-token: ${{ github.token }}
 
+      - name: Check the signed installer on the selected host
+        if: inputs.installer_sha256 != ''
+        shell: pwsh
+        env:
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+          BUNDLE_SOURCE_SHA: ${{ steps.selected.outputs.source_sha }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $Report = @{ok = $false; installer_sha256 = $env:INSTALLER_SHA256}
+          try {
+            if ($env:INSTALLER_SHA256 -cnotmatch '^[0-9a-f]{64}$') { throw "Expected a SHA-256 digest" }
+            $Receipt = Get-Content .build/windows-native-download/store-candidate-receipt.json -Raw | ConvertFrom-Json
+            $Installers = @(Get-ChildItem .build/windows-native-download -Filter '*-setup.exe')
+            if ($Installers.Count -ne 1) { throw "Expected one installer" }
+            $Installer = $Installers[0]
+            if ((Get-FileHash $Installer.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $env:INSTALLER_SHA256) {
+              throw "Installer differs from the independently verified candidate"
+            }
+            $Signature = Get-AuthenticodeSignature $Installer.FullName
+            if ($Signature.Status -ne 'Valid') { throw "Installer signature is not valid" }
+            $Report.signer = $Signature.SignerCertificate.Subject
+            $Version = [regex]::Match($Installer.Name, '^LightTable-([0-9]+\.[0-9]+\.[0-9]+)-windows-x64-setup\.exe$').Groups[1].Value
+            if (-not $Version) { throw "Installer filename does not contain a stable version" }
+            $Report.version = $Version
+            & ./scripts/windows/installer-smoke.ps1 -Installer $Installer.FullName -Version $Version -ExpectedPublisher 'Chonkers LLC' -VerifyStoreSignatures -SignatureReport .build/windows-native-recheck-evidence/installed-signatures.json
+            if ($LASTEXITCODE -ne 0) { throw "Installer acceptance failed" }
+            $Report.ok = $true
+          } catch {
+            $Report.error = $_.Exception.Message
+            throw
+          } finally {
+            $Report | ConvertTo-Json -Depth 5 | Set-Content .build/windows-native-recheck-evidence/installer.json
+          }
+
       - name: Verify bundle identity and run native acceptance
+        if: ${{ !cancelled() && steps.download.conclusion == 'success' }}
         shell: pwsh
         env:
           BUNDLE_SOURCE_SHA: ${{ steps.selected.outputs.source_sha }}
