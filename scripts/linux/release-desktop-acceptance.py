@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--backend', choices=['x11', 'wayland'], required=True)
     parser.add_argument('--fixtures', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--film', action='store_true')
     args = parser.parse_args()
     bundle, output = args.bundle.resolve(), args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -71,10 +72,11 @@ def main():
     a.normal_close = capture_close
     precision = output/'precision'
     precision.mkdir()
-    a.run(bundle, args.source, 240, precision)
-    precision_report = json.loads((precision/'report.json').read_text())
-    precision_report['backend'] = args.backend
-    (precision/'report.json').write_text(json.dumps(precision_report,indent=2)+'\n')
+    if not args.film:
+        a.run(bundle, args.source, 240, precision)
+        precision_report = json.loads((precision/'report.json').read_text())
+        precision_report['backend'] = args.backend
+        (precision/'report.json').write_text(json.dumps(precision_report,indent=2)+'\n')
     a.normal_close = original_close
     report = {'build': build, 'backend': args.backend, 'graphics': 'software VM', 'cases': []}
     for fixture in sorted(args.fixtures.glob('*')):
@@ -96,9 +98,11 @@ def main():
                 'firstRunSetup':{'version':1,'status':'completed','source':'folder'},
                 'newPhotoDefaults':{'filmEnabled':False},'automaticUpdateChecks':False,
                 'writeSidecars':False,'backupDirectory':str(root/'backups')}))
+            subprocess.run([str(bundle/'install.sh'), '--bin-dir', str(root/'commands')], env=env(root), check=True, timeout=30)
+            a.require((root/'commands/lighttable-desktop').resolve()==bundle/'bin/lighttable-desktop', 'Install did not register the owned launcher')
             def launch():
                 with (root/'desktop.log').open('a') as log:
-                    process = subprocess.Popen([str(bundle/'bin/lighttable-desktop')], env=env(root), stdout=log, stderr=log, start_new_session=True)
+                    process = subprocess.Popen([str(root/'commands/lighttable-desktop')], env=env(root), stdout=log, stderr=log, start_new_session=True)
                 children.append(process)
                 api, health = a.connect(bundle, process, root, deadline, tokens)
                 name = a.render_photo(process, api, deadline, source)
@@ -109,6 +113,10 @@ def main():
                 a.send_ui(api, 'rating:4')
                 route = '/api/state?'+urlencode({'name':name})
                 a.wait_for(process, deadline, 'saved RAW edit', lambda: a.edits_saved(api.request(route)))
+                if args.film:
+                    a.send_ui(api, 'filmToggle')
+                    a.wait_for(process, deadline, 'saved film enabled state', lambda: api.request(route).get('params',{}).get('profile_enabled') is True)
+                    a.wait_for(process, deadline, 'film rendering in native window', lambda: api.request('/api/ui/state').get('render',{}).get('state')=='ready')
                 screenshot(output/(fixture.stem+'-edited.png'))
                 result = api.request('/api/export', {'names':[name],'format':'tif','outputSpace':'srgb','destination':str(root/'exports'),'metadata':'none','sidecar':False,'collision':'rename'})
                 a.require(result.get('queued'), 'RAW export was not queued')
@@ -132,11 +140,20 @@ def main():
                 a.cleanup(process); children.remove(process)
                 process, api, second, reopened_name = launch()
                 a.require(second['pid']!=health['pid'] and name==reopened_name, 'RAW reopen identity failed')
-                a.wait_for(process, deadline, 'RAW edit persistence', lambda: a.edits_saved(api.request(route)))
+                def saved():
+                    value = api.request(route)
+                    return value.get('rating')==4 and value.get('grade',{}).get('exposure')==0.5 and value.get('params',{}).get('profile_enabled') is args.film
+                a.wait_for(process, deadline, 'RAW edit persistence', saved)
                 screenshot(output/(fixture.stem+'-reopened.png'))
                 case['final_close'] = a.normal_close(process, second['pid'], deadline)
                 a.require(hashlib.sha256(source.read_bytes()).hexdigest()==digest, 'Source RAW changed')
-                case.update(ok=True, original_sha256=digest, saved_exposure=0.5, saved_rating=4)
+                a.cleanup(process); children.remove(process)
+                catalog = root/'catalog/library.sqlite3'
+                catalog_digest = hashlib.sha256(catalog.read_bytes()).hexdigest()
+                subprocess.run([str(bundle/'uninstall.sh'), '--bin-dir', str(root/'commands')], env=env(root), check=True, timeout=30)
+                a.require(not (root/'commands/lighttable-desktop').is_symlink(), 'Uninstall left its launcher')
+                a.require(hashlib.sha256(catalog.read_bytes()).hexdigest()==catalog_digest and hashlib.sha256(source.read_bytes()).hexdigest()==digest, 'Uninstall changed user data')
+                case.update(ok=True, original_sha256=digest, saved_exposure=0.5, saved_rating=4, film_enabled=args.film, install_and_uninstall_preserved_data=True)
             finally:
                 for process in reversed(children): a.cleanup(process)
                 for path in (root/'desktop.log',root/'state/lighttable/logs/server.log'):
