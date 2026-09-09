@@ -1,6 +1,7 @@
 """Safety and evidence checks for the Windows native acceptance runner."""
 from __future__ import annotations
 
+import ctypes
 import importlib.util
 import json
 import os
@@ -10,7 +11,7 @@ import sys
 import tempfile
 import time
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 from urllib.error import HTTPError
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -92,6 +93,8 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
             root = Path(temporary)
             (root / "instances").mkdir()
             (root / "photos").mkdir()
+            (root / "catalog").mkdir()
+            (root / "catalog/library.sqlite3").touch()
             instance = {"pid": 123, "port": 45678, "token": "fixture", "folder": str(root / "photos")}
             (root / "instances/45678.json").write_text(json.dumps(instance))
             health = {"ok": True, "pid": 123, "catalog": str(root / "catalog/library.sqlite3"),
@@ -114,6 +117,93 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
                     with self.subTest(mismatch=mismatch), self.assertRaisesRegex(RuntimeError, "identity"):
                         smoke.connect(desktop, root, time.monotonic() + 5)
                     self.assertEqual(api.request.call_count, 1, "Wrong server identity must never be retried")
+
+    def test_existing_identity_rejects_other_or_unavailable_paths(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            expected, alias, other = root / "catalog", root / "alias", root / "other"
+            expected.touch()
+            other.touch()
+            os.link(expected, alias)
+            self.assertTrue(smoke.same_existing_path(alias, expected))
+            for value in (other, root / "missing", "", None, {}, "catalog"):
+                with self.subTest(value=value):
+                    self.assertFalse(smoke.same_existing_path(value, expected))
+            expected.unlink()
+            self.assertFalse(smoke.same_existing_path(alias, expected))
+
+    def test_diagnostics_allowlist_omits_tokens_and_keeps_identity_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "instances").mkdir()
+            (root / "photos").mkdir()
+            (root / "catalog").touch()
+            (root / "startup.json").write_text(json.dumps({"phase": "ready", "pid": 123,
+                "token": "SECRET", "detail": "SECRET", "extra": {"token": "SECRET"}}))
+            (root / "instances/45678.json").write_text(json.dumps({"pid": 123, "port": 45678,
+                "folder": str(root / "photos"), "token": "SECRET", "models": {"token": "SECRET"}}))
+            desktop = Mock()
+            desktop.owns_pid.return_value = True
+            result = smoke.startup_diagnostics(root, desktop)
+            self.assertNotIn("SECRET", json.dumps(result))
+            self.assertEqual(result["records"][0]["phase"], "ready")
+            instance = result["records"][1]
+            self.assertEqual(instance["folder"], str(root / "photos"))
+            self.assertTrue(instance["folder_matches"])
+            self.assertTrue(instance["owned_process"])
+            self.assertFalse(instance["catalog_matches"])
+
+    def test_failure_capture_never_grabs_an_unowned_window_or_the_desktop(self):
+        desktop, grab = Mock(), MagicMock()
+        desktop.pid = 123
+        desktop.running.return_value = True
+        desktop.user.GetForegroundWindow.return_value = 456
+        destination = Path("window.png")
+        def owner(pid):
+            def write_owner(window, output):
+                self.assertEqual(window, 456)
+                ctypes.cast(output, ctypes.POINTER(smoke.wintypes.DWORD))[0] = pid
+                return 1
+            desktop.user.GetWindowThreadProcessId.side_effect = write_owner
+        with patch.object(smoke.os, "name", "nt"), patch.dict(sys.modules, {"PIL": Mock(ImageGrab=grab)}):
+            owner(999)
+            self.assertFalse(smoke.capture_failure_window(desktop, destination)["available"])
+            grab.grab.assert_not_called()
+            owner(123)
+            self.assertTrue(smoke.capture_failure_window(desktop, destination)["available"])
+            grab.grab.assert_called_once_with(window=456)
+            grab.grab.return_value.__enter__.return_value.save.assert_called_once_with(destination)
+            grab.grab.side_effect = OSError("capture unavailable")
+            self.assertFalse(smoke.capture_failure_window(desktop, destination)["available"])
+
+    @unittest.skipUnless(os.name == "nt", "Requires actual Windows extended path resolution")
+    def test_connect_accepts_normal_and_extended_spellings_of_the_same_windows_objects(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / "instances").mkdir()
+            (root / "photos").mkdir()
+            (root / "catalog").mkdir()
+            (root / "catalog/library.sqlite3").touch()
+            def extended(path):
+                value = str(path)
+                return "\\\\?\\UNC\\" + value[2:] if value.startswith("\\\\") else "\\\\?\\" + value
+            folder, catalog = root / "photos", root / "catalog/library.sqlite3"
+            self.assertNotEqual(folder.resolve(), Path(extended(folder)).resolve())
+            desktop, api = Mock(), Mock()
+            desktop.running.return_value = desktop.owns_pid.return_value = True
+            for report_folder, report_catalog in ((extended(folder), str(catalog)),
+                                                   (str(folder), extended(catalog)),
+                                                   (extended(folder), extended(catalog))):
+                with self.subTest(folder=report_folder, catalog=report_catalog):
+                    instance = {"pid": 123, "port": 45678, "token": "fixture", "folder": report_folder}
+                    (root / "instances/45678.json").write_text(json.dumps(instance))
+                    health = {"ok": True, "pid": 123, "folder": report_folder, "catalog": report_catalog,
+                              "headless": False, "safeMode": False}
+                    api.request.return_value = health
+                    with patch.object(smoke, "API", return_value=api):
+                        connected, observed = smoke.connect(desktop, root, time.monotonic() + 2)
+                    self.assertIs(connected, api)
+                    self.assertEqual(observed, health)
 
 
 @unittest.skipUnless(importlib.util.find_spec("tifffile") and importlib.util.find_spec("numpy"),
