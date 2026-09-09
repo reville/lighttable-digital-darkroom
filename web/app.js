@@ -12,6 +12,7 @@ import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
 import { createCloseBarrier } from '/web/close-barrier.js';
+import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
 import { createAppState, cloneValue } from '/web/state.js';
 import { createEditSaveQueue } from '/web/edit-save-queue.js';
@@ -4547,6 +4548,9 @@ const closeBarrier = createCloseBarrier({
 });
 window.lightTablePrepareToClose = () => closeBarrier.prepare();
 window.lightTableCancelClose = () => closeBarrier.cancel();
+const DESKTOP_UPDATES = installDesktopUpdates({
+  prepare: () => closeBarrier.prepare(), cancel: () => closeBarrier.cancel(), onError: toast,
+});
 
 async function refreshDeferredEditRecovery() {
   let refreshFailed = false;
@@ -11237,6 +11241,7 @@ const PEOPLE = createPeoplePanel({
 /* ------------------------------------------------------- native messages */
 const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
+  DESKTOP_UPDATES.nativeEvent(message);
   FIRST_RUN?.nativeEvent(message);
   if (message?.type === 'presetLink' && typeof message.id === 'string') {
     switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);

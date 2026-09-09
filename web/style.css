@@ -2078,3 +2078,9 @@ body { display:flex; flex-direction:column; }
   .app.grid-mode.grid-info-open.left-collapsed { grid-template-columns:0 minmax(0,1fr) 332px; }
   .app.grid-mode.grid-info-open .right-shell { grid-template-columns:minmax(0,276px) 56px; }
 }
+/* Keep update offers available without interrupting photo work. */
+.desktop-update-notice { position: fixed; bottom: 24px; right: 24px; z-index: 2000;
+  display: flex; align-items: center; gap: 12px; max-width: min(600px, calc(100vw - 48px));
+  padding: 14px 16px; background: var(--panel, #202020); color: var(--fg, #eee);
+  border: 1px solid var(--border, #444); border-radius: 8px; box-shadow: 0 8px 30px #0006; }
+.desktop-update-notice span { flex: 1; }

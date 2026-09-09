@@ -126,6 +126,8 @@ const SERVER_READY_TIMEOUT: Duration = Duration::from_secs(45);
 const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 
 enum UserEvent {
+    #[cfg(target_os = "windows")]
+    WindowsUpdate(lighttable_desktop_shell::windows_update::native::Request),
     NativeMessage(String),
     EditJournalReply(Value),
     PageLoaded,
@@ -356,6 +358,19 @@ struct AppState {
     journal: std::sync::mpsc::Sender<Value>,
     close_deadline: Option<Instant>,
     close_approved: bool,
+    update_shutdown_deadline: Option<Instant>,
+    update_request_deadline: Option<Instant>,
+    #[cfg(target_os = "windows")]
+    updater: Option<lighttable_desktop_shell::windows_update::native::Updater>,
+    #[cfg(target_os = "windows")]
+    updater_error: Option<String>,
+    #[cfg(target_os = "windows")]
+    updater_attempted: bool,
+    #[cfg(target_os = "windows")]
+    update_reply: Option<std::sync::mpsc::Sender<bool>>,
+    update_attempt: u64,
+    update_prepared: bool,
+    update_helper_directory: Option<PathBuf>,
     close_attempts: CloseAttempts,
     proxy: EventLoopProxy<UserEvent>,
     /// Identifies the server start whose result is still wanted.
@@ -424,6 +439,155 @@ impl AppState {
         }
     }
 
+    /// Update shutdown never goes through ServerController::stop(): a busy or
+    /// unresponsive server keeps its process and the app remains open.
+    fn begin_update_shutdown(&mut self) {
+        self.remember_window();
+        self.update_shutdown_deadline = Some(Instant::now() + Duration::from_secs(30));
+    }
+
+    fn cancel_update(&mut self, message: &str) {
+        self.update_shutdown_deadline = None;
+        self.update_request_deadline = None;
+        if let Some(directory) = self.update_helper_directory.take() {
+            let _ = fs::write(directory.join("cancelled"), b"cancelled");
+        }
+        self.update_prepared = false;
+        self.update_attempt += 1;
+        #[cfg(target_os = "windows")]
+        if let Some(reply) = self.update_reply.take() { let _ = reply.send(false); }
+        let _ = self.webview.evaluate_script("window.lightTableCancelUpdate?.()");
+        let _ = self.send_event(json!({"type":"updateStatus", "supported":true, "managedBy":null, "message":message}));
+    }
+
+    fn poll_update_shutdown(&mut self) {
+        if self.update_request_deadline.is_some_and(|deadline| Instant::now() >= deadline) {
+            self.cancel_update(&tr("LightTable did not confirm that it could close. The update was cancelled."));
+            return;
+        }
+        let Some(deadline) = self.update_shutdown_deadline else { return; };
+        let exited = self.server.as_mut().is_none_or(|server| server.child.try_wait().ok().flatten().is_some());
+        if exited {
+            if let Some(directory) = &self.update_helper_directory {
+                if fs::write(directory.join("authorized"), b"saved and closed").is_err() {
+                    self.cancel_update(&tr("LightTable could not authorize the saved update. Restart LightTable and try again."));
+                    return;
+                }
+            }
+            self.server.take();
+            self.update_shutdown_deadline = None;
+            self.close_approved = true;
+        } else if Instant::now() >= deadline {
+            self.cancel_update(&tr("The update was cancelled because LightTable did not finish closing. Reopen LightTable after its background work finishes."));
+        }
+    }
+
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    fn request_update_shutdown(&mut self) {
+        self.update_request_deadline = Some(Instant::now() + Duration::from_secs(15));
+        let script = format!("Promise.resolve(window.lightTableShutdownForUpdate?.() ?? false).then(ok => window.lightTableNativeBridge.postMessage({{action:'updateShutdownReady',attempt:{},ok}})).catch(() => window.lightTableNativeBridge.postMessage({{action:'updateShutdownReady',attempt:{},ok:false}}))", self.update_attempt, self.update_attempt);
+        if self.webview.evaluate_script(&script).is_err() { self.cancel_update(&tr("LightTable could not close for the update.")); }
+    }
+
+    #[cfg(target_os = "linux")]
+    fn prepare_linux_update_shutdown(&mut self, message: &Value) -> Result<()> {
+        if self.pending || self.close_deadline.is_some() || self.update_prepared || self.server.is_none() {
+            bail!("LightTable is already opening or closing a catalog");
+        }
+        let directory = PathBuf::from(message["helper_directory"].as_str().context("The update helper directory is missing")?);
+        if !directory.is_absolute() || fs::symlink_metadata(&directory)?.file_type().is_symlink() || !directory.is_dir() {
+            bail!("The update helper directory is invalid");
+        }
+        let directory = directory.canonicalize()?;
+        let root = self.paths.cache.join("updates").canonicalize()?;
+        if directory.parent() != Some(root.as_path()) || !directory.file_name().is_some_and(|name| name.to_string_lossy().starts_with("pending-")) {
+            bail!("The update helper is outside LightTable's update directory");
+        }
+        self.update_helper_directory = Some(directory);
+        self.update_prepared = true;
+        self.update_attempt += 1;
+        self.request_update_shutdown();
+        Ok(())
+    }
+
+    #[cfg(target_os = "windows")]
+    fn update_status(&self) -> Value {
+        let mut status = env::current_exe().ok().and_then(|exe| exe.parent().map(lighttable_desktop_shell::windows_update::status))
+            .unwrap_or_else(|| lighttable_desktop_shell::windows_update::channel_status("portable", false));
+        if let Some(error) = &self.updater_error {
+            status["supported"] = json!(false);
+            status["message"] = json!(error);
+        }
+        status
+    }
+
+    #[cfg(target_os = "windows")]
+    fn initialize_updater(&mut self) {
+        if self.updater_attempted || self.server.is_none() || self.update_status()["supported"] != true { return; }
+        self.updater_attempted = true;
+        let result = (|| -> Result<_> {
+            let executable = env::current_exe()?;
+            let directory = executable.parent().context("Missing application directory")?;
+            let enabled = fs::read(&self.paths.prefs).ok().and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok())
+                .and_then(|prefs| prefs["automaticUpdateChecks"].as_bool()).unwrap_or(true);
+            let proxy = self.proxy.clone();
+            lighttable_desktop_shell::windows_update::native::Updater::new(directory, enabled, move |request| {
+                let _ = proxy.send_event(UserEvent::WindowsUpdate(request));
+            })
+        })();
+        match result {
+            Ok(updater) => self.updater = Some(updater),
+            Err(error) => self.updater_error = Some(format!("{error:#}")),
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    fn windows_update(&mut self, request: lighttable_desktop_shell::windows_update::native::Request) {
+        use lighttable_desktop_shell::windows_update::native::{Request, stage_installer};
+        match request {
+            Request::Prepare(reply) => {
+                if self.pending || self.close_deadline.is_some() || self.update_reply.is_some() || self.server.is_none() {
+                    let _ = reply.send(false);
+                    return;
+                }
+                self.update_attempt += 1;
+                self.update_reply = Some(reply);
+                let script = format!("Promise.resolve(window.lightTablePrepareToUpdate?.() ?? false).then(ok => window.lightTableNativeBridge.postMessage({{action:'updatePrepareReady',attempt:{},ok}})).catch(() => window.lightTableNativeBridge.postMessage({{action:'updatePrepareReady',attempt:{},ok:false}}))", self.update_attempt, self.update_attempt);
+                if self.webview.evaluate_script(&script).is_err() { self.cancel_update(&tr("LightTable could not save before updating.")); }
+            }
+            Request::RunInstaller(installer, reply) => {
+                let server_pid = self.server.as_ref().map(|server| server.child.id());
+                if !self.update_prepared || server_pid.is_none() { let _ = reply.send(false); return; }
+                let executable = env::current_exe();
+                let proxy = self.proxy.clone();
+                thread::spawn(move || {
+                    let result = executable.map_err(anyhow::Error::from).and_then(|exe| stage_installer(&installer, &exe, server_pid.unwrap()));
+                    let _ = proxy.send_event(UserEvent::WindowsUpdate(Request::InstallerStaged(result.map_err(|error| format!("{error:#}")), reply)));
+                });
+            }
+            Request::InstallerStaged(result, reply) => {
+                match result {
+                    Ok(directory) if self.update_prepared => {
+                        self.update_helper_directory = Some(directory);
+                        let _ = reply.send(true);
+                    }
+                    Ok(directory) => {
+                        let _ = fs::write(directory.join("cancelled"), b"cancelled");
+                        let _ = reply.send(false);
+                    }
+                    Err(message) => {
+                        self.cancel_update(&message);
+                        let _ = reply.send(false);
+                    }
+                }
+            }
+            Request::Shutdown => {
+                if self.update_prepared { self.request_update_shutdown(); }
+            }
+            Request::Cancel => self.cancel_update(&tr("The update was cancelled. LightTable remains open.")),
+        }
+    }
+
     fn send_sources(&self) -> Result<()> {
         self.send_event(self.settings.payload(&self.folder))
     }
@@ -437,6 +601,10 @@ impl AppState {
     }
 
     fn launch(&mut self, folder: PathBuf) -> Result<()> {
+        if self.update_shutdown_deadline.is_some() { bail!("LightTable is closing for an update"); }
+        if self.update_prepared { bail!("Finish or cancel the update before switching folders"); }
+        #[cfg(target_os = "windows")]
+        if self.update_reply.is_some() { bail!("Finish or cancel the update before switching folders"); }
         let folder = normalise(folder);
         if !folder.is_dir() {
             bail!(tr("That folder is no longer available"))
@@ -539,6 +707,8 @@ impl AppState {
     }
 
     fn page_loaded(&mut self) {
+        #[cfg(target_os = "windows")]
+        self.initialize_updater();
         let _ = self.send_sources();
         if let Some(message) = self.pending_error.take() {
             let _ = self.send_event(json!({"type": "error", "message": message}));
@@ -576,6 +746,41 @@ impl AppState {
             .and_then(Value::as_str)
             .unwrap_or_default();
         match action {
+            #[cfg(target_os = "linux")]
+            "finishUpdateShutdown" => {
+                if let Err(error) = self.prepare_linux_update_shutdown(&message) {
+                    self.cancel_update(&format!("{error:#}"));
+                }
+            },
+            #[cfg(target_os = "windows")]
+            "requestUpdateStatus" => {
+                self.initialize_updater();
+                self.send_event(self.update_status())?;
+            }
+            #[cfg(target_os = "windows")]
+            "checkForUpdates" => {
+                self.initialize_updater();
+                if let Some(updater) = &self.updater { updater.check(); }
+                else { self.send_event(self.update_status())?; }
+            }
+            #[cfg(target_os = "windows")]
+            "automaticUpdateChecks" => {
+                if let Some(updater) = &self.updater { updater.automatic(message["enabled"].as_bool().unwrap_or(false)); }
+            }
+            #[cfg(target_os = "windows")]
+            "updatePrepareReady" => {
+                if message["attempt"].as_u64() == Some(self.update_attempt) {
+                    self.update_prepared = message["ok"].as_bool() == Some(true);
+                    if let Some(reply) = self.update_reply.take() { let _ = reply.send(self.update_prepared); }
+                }
+            }
+            "updateShutdownReady" => {
+                if message["attempt"].as_u64() == Some(self.update_attempt) && self.update_prepared {
+                    self.update_request_deadline = None;
+                    if message["ok"].as_bool() == Some(true) { self.begin_update_shutdown(); }
+                    else { self.cancel_update(&tr("LightTable could not close for the update.")); }
+                }
+            }
             "editJournal" => {
                 self.journal
                     .send(message.clone())
@@ -1247,6 +1452,19 @@ fn run() -> Result<()> {
         journal: journal_tx,
         close_deadline: None,
         close_approved: false,
+        update_shutdown_deadline: None,
+        update_request_deadline: None,
+        #[cfg(target_os = "windows")]
+        updater: None,
+        #[cfg(target_os = "windows")]
+        updater_error: None,
+        #[cfg(target_os = "windows")]
+        updater_attempted: false,
+        #[cfg(target_os = "windows")]
+        update_reply: None,
+        update_attempt: 0,
+        update_prepared: false,
+        update_helper_directory: None,
         close_attempts: CloseAttempts::default(),
         proxy,
         launch_generation: 0,
@@ -1263,6 +1481,8 @@ fn run() -> Result<()> {
     event_loop.run(move |event, _, control_flow| {
         *control_flow = app.close_deadline.map(ControlFlow::WaitUntil).unwrap_or(ControlFlow::Wait);
         match event {
+            #[cfg(target_os = "windows")]
+            Event::UserEvent(UserEvent::WindowsUpdate(request)) => app.windows_update(request),
             Event::UserEvent(UserEvent::NativeMessage(message)) => {
                 if let Err(error) = app.handle_command(&message) {
                     let _ = app.send_event(json!({
@@ -1286,6 +1506,9 @@ fn run() -> Result<()> {
                 event: WindowEvent::CloseRequested,
                 ..
             } => {
+                if app.update_shutdown_deadline.is_some() || app.update_prepared { return; }
+                #[cfg(target_os = "windows")]
+                if app.update_reply.is_some() { return; }
                 app.remember_window();
                 if app.close_deadline.is_none() {
                     app.close_deadline = Some(Instant::now() + Duration::from_secs(12));
@@ -1295,6 +1518,7 @@ fn run() -> Result<()> {
                 }
             }
             Event::MainEventsCleared => {
+                app.poll_update_shutdown();
                 if app.close_deadline.is_some_and(|limit| Instant::now() >= limit) {
                     app.finish_close(false);
                 }
@@ -1307,6 +1531,10 @@ fn run() -> Result<()> {
                 server.stop();
             }
             *control_flow = ControlFlow::Exit;
+        } else if app.update_shutdown_deadline.is_some() {
+            *control_flow = ControlFlow::WaitUntil(Instant::now() + Duration::from_millis(25));
+        } else if let Some(deadline) = app.update_request_deadline {
+            *control_flow = ControlFlow::WaitUntil(deadline);
         } else if let Some(deadline) = app.close_deadline {
             *control_flow = ControlFlow::WaitUntil(deadline);
         }
@@ -1314,6 +1542,16 @@ fn run() -> Result<()> {
 }
 
 fn main() {
+    #[cfg(target_os = "windows")]
+    match lighttable_desktop_shell::windows_update::native::helper(&env::args_os().skip(1).collect::<Vec<_>>()) {
+        Ok(true) => return,
+        Ok(false) => {},
+        Err(error) => {
+            // A helper has no UI: keep a diagnostic beside its staged payload.
+            if let Ok(exe) = env::current_exe() { let _ = fs::write(exe.with_extension("error.txt"), format!("{error:#}")); }
+            std::process::exit(1);
+        }
+    }
     if let Err(error) = run() {
         show_fatal(&format!("{error:#}"));
         std::process::exit(1);

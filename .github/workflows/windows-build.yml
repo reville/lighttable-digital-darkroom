@@ -34,6 +34,8 @@ on:
         required: false
       WINDOWS_CERTIFICATE_PASSWORD:
         required: false
+      SPARKLE_PRIVATE_KEY:
+        required: false
 
 permissions:
   contents: read
@@ -91,6 +93,8 @@ jobs:
           }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_updater.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_webview2_runtime.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
@@ -127,6 +131,7 @@ jobs:
           REQUIRE_SIGNING: ${{ inputs.require_signing && 'true' || 'false' }}
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           ./scripts/windows/sign-release.ps1 -CheckOnly -RequireSigning:($env:REQUIRE_SIGNING -eq 'true') | Out-Null
 
@@ -160,8 +165,11 @@ jobs:
           REQUIRE_SIGNING: ${{ inputs.require_signing && 'true' || 'false' }}
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           python -m unittest discover -s tests -p test_windows_packaging.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_updater.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_webview2_runtime.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -174,4 +182,5 @@ jobs:
           path: |
             dist/LightTable-*-windows-x64.zip
             dist/LightTable-*-windows-x64-setup.exe
+            dist/appcast-windows-x64.xml
           if-no-files-found: error

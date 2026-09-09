@@ -2762,6 +2762,15 @@
             "Su Linux, i controlli seguono l'aspetto chiaro o scuro del sistema. Su Omarchy, barre degli strumenti, barre laterali, menu e finestre di dialogo seguono la tavolozza attiva del desktop e si aggiornano entro pochi secondi da un cambio di tema. I pixel della foto, la preferenza per lo sfondo del visualizzatore e gli ambiti di colore neutro mantengono i propri colori.",
             "In una finestra Linux stretta, Mostra o nascondi libreria apre la libreria come cassetto. L'espansione della finestra ripristina il normale layout affiancato. Su Hyprland, usa le scorciatoie della finestra del compositore per spostare, affiancare, ridimensionare o chiudere LightTable."
           ]
+        },
+        {
+          "title": "Aggiorna LightTable",
+          "paragraphs": [
+            "Le installazioni Windows firmate e le installazioni portatili Linux configurate offrono Controlla aggiornamenti… in Impostazioni → Generale. I controlli automatici avvengono al massimo una volta al giorno dopo l’apertura dell’editor.",
+            "Su Linux, scegli Aggiorna per scaricare e verificare il pacchetto, poi Riavvia e aggiorna. Windows usa la sua finestra nativa di aggiornamento. Completa prima importazioni, esportazioni e altre attività; LightTable salva le modifiche in sospeso ed esegue il backup del catalogo prima di chiudersi.",
+            "Gli aggiornamenti conservano foto, modifiche e preferenze. Linux mantiene il pacchetto precedente per il ripristino, ma non ripristina automaticamente un catalogo né riapre una versione precedente.",
+            "Usa Scoop, WinGet, Chocolatey, AUR, Flatpak o Snap per aggiornare le installazioni che gestiscono. Scarica un nuovo ZIP per le copie portatili di Windows. Le build senza la firma degli aggiornamenti configurata non possono aggiornarsi da sole."
+          ]
         }
       ],
       "related": [
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7"
 }

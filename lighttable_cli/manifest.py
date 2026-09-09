@@ -95,6 +95,8 @@ ROUTE_COVERAGE = {
 }
 
 INTERNAL_ROUTES = {
+    "/api/updates": "desktop update availability and package ownership",
+    "/api/updates/<action>": "authenticated desktop update preparation and shutdown",
     "/api/people/thumbnail": "local face crop used by the People gallery",
     "/api/desktop-theme": "read-only Linux desktop palette for interface chrome",
     "/api/export/preview": "read-only export dialog delivery example",

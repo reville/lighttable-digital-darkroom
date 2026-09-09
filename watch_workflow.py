@@ -12,6 +12,7 @@ import hashlib
 import os
 import threading
 import time
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Callable
 
@@ -53,11 +54,13 @@ class WatchService:
                  watches: Callable[[], list[dict]], *,
                  presets: Callable[[], list[dict]] | None = None,
                  render_busy: Callable[[], bool] | None = None,
+                 activity=None,
                  poll_seconds: float = POLL_SECONDS):
         self.catalog = catalog
         self._watches = watches
         self._presets = presets or (lambda: [])
         self._render_busy = render_busy or (lambda: False)
+        self._activity = activity or (lambda: nullcontext(True))
         self._poll_seconds = max(0.05, float(poll_seconds))
         self._candidates: dict[tuple[str, str], tuple[tuple[int, ...], int]] = {}
         self._handled_revisions: dict[tuple[str, str], tuple[int, ...]] = {}
@@ -299,7 +302,8 @@ class WatchService:
 
     def _run(self) -> None:
         while not self._stop.is_set():
-            if not self._render_busy():
-                self.poll_once()
+            with self._activity() as allowed:
+                if allowed and not self._render_busy():
+                    self.poll_once()
             self._stop.wait(self._poll_seconds)
         self.catalog.close()

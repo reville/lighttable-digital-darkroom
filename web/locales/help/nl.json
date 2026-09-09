@@ -2762,6 +2762,15 @@
             "Op Linux volgen bedieningselementen het lichte of donkere uiterlijk van het systeem. Op Omarchy volgen werkbalken, zijbalken, menu's en dialoogvensters het actieve bureaubladpalet en worden ze binnen enkele seconden na een themawijziging bijgewerkt. Fotopixels, de voorkeur voor de achtergrond van de viewer en neutrale kleurscopes behouden hun eigen kleuren.",
             "In een smal Linux-venster opent Weergeven of verbergen bibliotheek de bibliotheek als een lade. Door het venster groter te maken, wordt de normale zij-aan-zij-indeling hersteld. Gebruik op Hyprland de venstersneltoetsen van de compositor om LightTable te verplaatsen, te tegelen, van grootte te veranderen of te sluiten."
           ]
+        },
+        {
+          "title": "LightTable bijwerken",
+          "paragraphs": [
+            "Ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties bieden Controleren op updates… onder Instellingen → Algemeen. Automatische controles vinden hoogstens eenmaal per dag plaats nadat de editor is geopend.",
+            "Kies in Linux Bijwerken om de bundel te downloaden en te verifiëren, en daarna Opnieuw starten en bijwerken. Windows gebruikt zijn eigen updatedialoog. Rond eerst importeren, exporteren en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een catalogusback-up voordat het sluit.",
+            "Updates behouden foto's, bewerkingen en voorkeuren. Linux bewaart de vorige bundel voor herstel, maar herstelt niet automatisch een catalogus en opent geen oudere versie opnieuw.",
+            "Gebruik Scoop, WinGet, Chocolatey, AUR, Flatpak of Snap om de installaties die zij beheren bij te werken. Download een nieuwe ZIP voor draagbare Windows-kopieën. Builds zonder ingestelde ondertekening van updates kunnen zichzelf niet bijwerken."
+          ]
         }
       ],
       "related": [
@@ -3138,5 +3147,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "f313c44d955321259c912bfc5e55e40fb6bdfa10b3c0e0fc735c48debb268408"
+  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7"
 }
