@@ -335,6 +335,14 @@
           </div>
         </div>
 
+        <div class="treatment-wrap">
+          <span class="treatment-label" data-i18n-text="{&quot;0&quot;:&quot;Treatment&quot;}">Treatment</span>
+          <div class="treatment-tabs" role="tablist">
+            <button type="button" class="treatment-tab on" id="treatmentColor" data-treatment="color" role="tab" aria-selected="true" data-i18n-text="{&quot;0&quot;:&quot;Color&quot;}">Color</button>
+            <button type="button" class="treatment-tab" id="treatmentBw" data-treatment="bw" role="tab" aria-selected="false" data-i18n-text="{&quot;0&quot;:&quot;B&amp;W&quot;}">B&amp;W</button>
+          </div>
+        </div>
+
         <details class="sec" id="lightSection" open>
           <summary><span data-i18n-text="{&quot;0&quot;:&quot;Light&quot;}">Light</span><span class="summary-actions"><button class="quiet compact section-action" id="autoBtn" type="button" title="Automatically set tone" disabled data-i18n-text="{&quot;0&quot;:&quot;Auto&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Automatically set tone&quot;}">Auto</button><a class="reset" href="#" data-reset="tone" title="Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks&quot;}">Reset</a></span></summary>
           <div class="secbody">
@@ -347,30 +355,44 @@
           </div>
         </details>
 
-        <details class="sec">
-          <summary><span data-i18n-text="{&quot;0&quot;:&quot;Color&quot;}">Color</span><a class="reset" href="#" data-reset="colour" title="Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading&quot;}">Reset</a></summary>
+        <details class="sec" id="colorSection">
+          <summary><span id="colorSectionLabel" data-i18n-text="{&quot;0&quot;:&quot;Color&quot;}">Color</span><a class="reset" href="#" data-reset="colour" title="Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading&quot;}">Reset</a></summary>
           <div class="secbody">
             <div class="row row-with-action"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Temp&quot;}">Temp</span><input type="range" data-g="temp" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="temp">0.00</span><button class="quiet icon-btn row-action" id="wbBtn" type="button" title="Click a neutral area to set white balance" aria-label="White balance eyedropper" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Click a neutral area to set white balance&quot;,&quot;aria-label&quot;:&quot;White balance eyedropper&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 15 8-8M11 5l4 4M4 16l3-.5-2.5-2.5z"/></svg></button></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Tint&quot;}">Tint</span><input type="range" data-g="tint" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="tint">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Vibrance&quot;}">Vibrance</span><input type="range" data-g="vibrance" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="vibrance">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-g="saturation" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="saturation">0.00</span></div>
-            <div class="curve-head"><span data-i18n-text="{&quot;0&quot;:&quot;Color Mixer&quot;}">Color Mixer</span><a class="reset" href="#" data-reset="hsl" title="Reset all Color Mixer channels" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset all Color Mixer channels&quot;}">Reset</a></div>
-            <div class="hsl-dots" id="hslBands"></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Hue&quot;}">Hue</span><input type="range" data-hsl="h" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="h">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-hsl="s" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="s">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Luminance&quot;}">Luminance</span><input type="range" data-hsl="l" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="l">0.00</span></div>
-            <div class="curve-head advanced-color-head"><span data-i18n-text="{&quot;0&quot;:&quot;Point Color&quot;}">Point Color</span><a class="reset" href="#" data-reset="pointColor" title="Remove all sampled Point Color adjustments" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Remove all sampled Point Color adjustments&quot;}">Reset</a></div>
-            <div class="btnrow"><button class="quiet" id="pointColorSample" data-i18n-text="{&quot;0&quot;:&quot;Sample color&quot;}">Sample color</button><button class="quiet" id="pointColorDelete" data-i18n-text="{&quot;0&quot;:&quot;Delete point&quot;}">Delete point</button></div>
-            <select id="pointColorSelect" class="stack-gap" aria-label="Selected point color" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Selected point color&quot;}"><option value="" data-i18n-text="{&quot;0&quot;:&quot;No sampled colors&quot;}">No sampled colors</option></select>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Range&quot;}">Range</span><input type="range" data-point-color="range" min="2" max="90" step="1" value="30"><span class="val" data-point-color-value="range">30°</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Hue shift&quot;}">Hue shift</span><input type="range" data-point-color="hueShift" min="-180" max="180" step="1" value="0"><span class="val" data-point-color-value="hueShift">0°</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-point-color="saturation" min="-1" max="1" step="0.01" value="0"><span class="val" data-point-color-value="saturation">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Luminance&quot;}">Luminance</span><input type="range" data-point-color="luminance" min="-1" max="1" step="0.01" value="0"><span class="val" data-point-color-value="luminance">0.00</span></div>
-            <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Uniformity evens the sampled colour across its range. Sample the patch the rest should match.&quot;}">Uniformity evens the sampled colour across its range. Sample the patch the rest should match.</p>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform hue&quot;}">Uniform hue</span><input type="range" data-point-color="uniformHue" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformHue">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform saturation&quot;}">Uniform saturation</span><input type="range" data-point-color="uniformSaturation" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformSaturation">0.00</span></div>
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform luminance&quot;}">Uniform luminance</span><input type="range" data-point-color="uniformLuminance" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformLuminance">0.00</span></div>
-          </div>
+            <div class="row" id="colorVibranceRow"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Vibrance&quot;}">Vibrance</span><input type="range" data-g="vibrance" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="vibrance">0.00</span></div>
+            <div class="row" id="colorSaturationRow"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-g="saturation" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="saturation">0.00</span></div>
+            <div id="colorMixerWrap">
+              <div class="curve-head"><span data-i18n-text="{&quot;0&quot;:&quot;Color Mixer&quot;}">Color Mixer</span><a class="reset" href="#" data-reset="hsl" title="Reset all Color Mixer channels" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset all Color Mixer channels&quot;}">Reset</a></div>
+              <div class="hsl-dots" id="hslBands"></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Hue&quot;}">Hue</span><input type="range" data-hsl="h" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="h">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-hsl="s" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="s">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Luminance&quot;}">Luminance</span><input type="range" data-hsl="l" min="-1" max="1" step="0.01" value="0"><span class="val" data-hslv="l">0.00</span></div>
+            </div>
+            <div id="bwMixerWrap" hidden>
+              <div class="curve-head"><span data-i18n-text="{&quot;0&quot;:&quot;B&amp;W Mixer&quot;}">B&amp;W Mixer</span><a class="reset" href="#" data-reset="hsl" title="Reset all B&amp;W Mixer channels" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset all B&amp;W Mixer channels&quot;}">Reset</a></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Reds&quot;}">Reds</span><input type="range" data-bw-band="red" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="red">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Oranges&quot;}">Oranges</span><input type="range" data-bw-band="orange" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="orange">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Yellows&quot;}">Yellows</span><input type="range" data-bw-band="yellow" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="yellow">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Greens&quot;}">Greens</span><input type="range" data-bw-band="green" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="green">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Aquas&quot;}">Aquas</span><input type="range" data-bw-band="aqua" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="aqua">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Blues&quot;}">Blues</span><input type="range" data-bw-band="blue" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="blue">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Purples&quot;}">Purples</span><input type="range" data-bw-band="purple" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="purple">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Magentas&quot;}">Magentas</span><input type="range" data-bw-band="magenta" min="-1" max="1" step="0.01" value="0"><span class="val" data-bw-val="magenta">0.00</span></div>
+            </div>
+            <div id="pointColorWrap">
+              <div class="curve-head advanced-color-head"><span data-i18n-text="{&quot;0&quot;:&quot;Point Color&quot;}">Point Color</span><a class="reset" href="#" data-reset="pointColor" title="Remove all sampled Point Color adjustments" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Remove all sampled Point Color adjustments&quot;}">Reset</a></div>
+              <div class="btnrow"><button class="quiet" id="pointColorSample" data-i18n-text="{&quot;0&quot;:&quot;Sample color&quot;}">Sample color</button><button class="quiet" id="pointColorDelete" data-i18n-text="{&quot;0&quot;:&quot;Delete point&quot;}">Delete point</button></div>
+              <select id="pointColorSelect" class="stack-gap" aria-label="Selected point color" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Selected point color&quot;}"><option value="" data-i18n-text="{&quot;0&quot;:&quot;No sampled colors&quot;}">No sampled colors</option></select>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Range&quot;}">Range</span><input type="range" data-point-color="range" min="2" max="90" step="1" value="30"><span class="val" data-point-color-value="range">30°</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Hue shift&quot;}">Hue shift</span><input type="range" data-point-color="hueShift" min="-180" max="180" step="1" value="0"><span class="val" data-point-color-value="hueShift">0°</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-point-color="saturation" min="-1" max="1" step="0.01" value="0"><span class="val" data-point-color-value="saturation">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Luminance&quot;}">Luminance</span><input type="range" data-point-color="luminance" min="-1" max="1" step="0.01" value="0"><span class="val" data-point-color-value="luminance">0.00</span></div>
+              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Uniformity evens the sampled colour across its range. Sample the patch the rest should match.&quot;}">Uniformity evens the sampled colour across its range. Sample the patch the rest should match.</p>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform hue&quot;}">Uniform hue</span><input type="range" data-point-color="uniformHue" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformHue">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform saturation&quot;}">Uniform saturation</span><input type="range" data-point-color="uniformSaturation" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformSaturation">0.00</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Uniform luminance&quot;}">Uniform luminance</span><input type="range" data-point-color="uniformLuminance" min="0" max="1" step="0.01" value="0"><span class="val" data-point-color-value="uniformLuminance">0.00</span></div>
+            </div>
         </details>
 
         <details class="sec">

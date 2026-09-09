@@ -188,6 +188,26 @@ fn apply_hsl(pixel: &mut [f32], settings: &Value) {
     pixel.copy_from_slice(&hsv_to_rgb(hue, saturation, value));
 }
 
+fn apply_monochrome(pixel: &mut [f32], settings: Option<&Value>) {
+    let (hue, saturation, _value) = rgb_to_hsv(pixel);
+    let mut dl = 0.0;
+    if let Some(settings) = settings {
+        for (name, centre) in HSL_BANDS {
+            let Some(adjustment) = settings.get(name) else {
+                continue;
+            };
+            let difference = ((hue - centre + 180.0).rem_euclid(360.0) - 180.0).abs();
+            let mut weight = (1.0 - difference / 45.0).clamp(0.0, 1.0);
+            weight = weight * weight * (3.0 - 2.0 * weight) * saturation;
+            dl += weight * number(adjustment, "l", 0.0) * 0.5;
+        }
+    }
+    let luma = (pixel[0] * LUMA[0] + pixel[1] * LUMA[1] + pixel[2] * LUMA[2] + dl).clamp(0.0, 1.0);
+    pixel[0] = luma;
+    pixel[1] = luma;
+    pixel[2] = luma;
+}
+
 fn apply_point_color(pixel: &mut [f32], points: &Value) {
     let Some(points) = points.as_array() else {
         return;
@@ -282,10 +302,12 @@ pub(crate) fn grade_is_identity(grade: &Value) -> bool {
         ("colorNoise", 0.0),
         ("chromaticAberrationRedCyan", 0.0),
         ("chromaticAberrationBlueYellow", 0.0),
+        ("monochrome", 0.0),
     ];
     let numeric = NUMERIC_DEFAULTS
         .iter()
-        .all(|(key, default)| (number(grade, key, *default) - default).abs() <= 1e-6);
+        .all(|(key, default)| (number(grade, key, *default) - default).abs() <= 1e-6)
+        && !boolean(grade, "monochrome", false);
     numeric
         && [
             "curveL",
@@ -541,7 +563,9 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
                     );
                 }
             }
-            if let Some(settings) = hsl {
+            if number(grade, "monochrome", 0.0) > 0.5 || boolean(grade, "monochrome", false) {
+                apply_monochrome(pixel, hsl);
+            } else if let Some(settings) = hsl {
                 apply_hsl(pixel, settings);
             }
             if let Some(settings) = points {

@@ -234,3 +234,54 @@ test('evalParametricLUT returns smooth 256-entry table and null when all zero', 
     assert.ok(lut[i] >= 0 && lut[i] <= 1);
   }
 });
+
+test('treatment switcher toggles monochrome and synchronizes B&W mixer', () => {
+  const start = app.indexOf('function syncTreatmentControls()');
+  const end = app.indexOf('/* ---------------------------------------------------------- point color */', start);
+  const treatmentSource = app.slice(start, end);
+  const elements = new Map();
+  const element = (id) => {
+    if (!elements.has(id)) {
+      const classes = new Set();
+      elements.set(id, {
+        id,
+        classList: { toggle: (c, val) => val ? classes.add(c) : classes.delete(c), contains: (c) => classes.has(c) },
+        setAttribute: () => {},
+        addEventListener: () => {},
+        textContent: '',
+        hidden: false,
+      });
+    }
+    return elements.get(id);
+  };
+  const HSL_BANDS = ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'purple', 'magenta'];
+  const S = { grade: { monochrome: 1, hsl: { red: { l: 0.5 } } } };
+  const context = {
+    $: element,
+    S,
+    tr: (s) => s,
+    fmtG: (v) => String(v),
+    HSL_BANDS,
+    document: {
+      querySelectorAll: () => [],
+      querySelector: () => null,
+    },
+  };
+  vm.createContext(context);
+  vm.runInContext(treatmentSource, context);
+  context.syncTreatmentControls();
+  assert.equal(elements.get('treatmentBw').classList.contains('on'), true);
+  assert.equal(elements.get('treatmentColor').classList.contains('on'), false);
+  assert.equal(elements.get('colorSectionLabel').textContent, 'B&W');
+  assert.equal(elements.get('colorMixerWrap').hidden, true);
+  assert.equal(elements.get('bwMixerWrap').hidden, false);
+
+  S.grade.monochrome = 0;
+  context.syncTreatmentControls();
+  assert.equal(elements.get('treatmentBw').classList.contains('on'), false);
+  assert.equal(elements.get('treatmentColor').classList.contains('on'), true);
+  assert.equal(elements.get('colorSectionLabel').textContent, 'Color');
+  assert.equal(elements.get('colorMixerWrap').hidden, false);
+  assert.equal(elements.get('bwMixerWrap').hidden, true);
+});
+

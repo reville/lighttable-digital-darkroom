@@ -982,7 +982,8 @@ final class NativePreviewRenderer {
             value("dehaze"), value("vignette"),
             imageRegion.x / Float(width), imageRegion.y / Float(height))
         output.vignetteShape = SIMD4<Float>(
-            value("vignetteSize", 0.5), value("vignetteFeather", 1), 0, 0)
+            value("vignetteSize", 0.5), value("vignetteFeather", 1),
+            value("monochrome"), 0)
         output.detail0 = SIMD4<Float>(
             value("sharpness"), value("sharpenRadius", 1),
             value("sharpenDetail", 0.25), value("sharpenMasking"))

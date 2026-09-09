@@ -13,6 +13,7 @@ export const GRADE_DEFAULTS = {
   sharpness: 0, sharpenRadius: 1, sharpenDetail: 0.25, sharpenMasking: 0,
   luminanceNoise: 0, colorNoise: 0,
   chromaticAberrationRedCyan: 0, chromaticAberrationBlueYellow: 0,
+  monochrome: 0,
 };
 
 const VERT = `
@@ -40,6 +41,7 @@ uniform float u_vignetteSize, u_vignetteFeather;
 uniform float u_sharpness, u_sharpenRadius, u_sharpenDetail, u_sharpenMasking;
 uniform float u_luminanceNoise, u_colorNoise;
 uniform float u_chromaticAberrationRedCyan, u_chromaticAberrationBlueYellow;
+uniform float u_monochrome;
 uniform vec2 u_texel;
 uniform vec2 u_uvScale, u_uvOffset;
 uniform sampler2D u_curve;          // 256x1 RGBA: L, R, G, B tables
@@ -362,7 +364,18 @@ void main() {
     c = clamp(vec3(y) + (c - vec3(y)) * (1.0 + u_vibrance * (1.0 - sat)), 0.0, 1.0);
   }
 
-  if (u_hslOn > 0.5) {
+  if (u_monochrome > 0.5) {
+    vec3 hsv = rgb2hsv(c);
+    float dl = 0.0;
+    for (int i = 0; i < 8; i++) {
+      float diff = abs(mod(hsv.x - hslCentre(i) + 180.0, 360.0) - 180.0);
+      float w = clamp(1.0 - diff / 45.0, 0.0, 1.0);
+      w = w * w * (3.0 - 2.0 * w) * hsv.y;
+      dl += w * u_hsl[i].z * 0.5;
+    }
+    float luma = dot(c, LUMA) + dl;
+    c = clamp(vec3(luma), 0.0, 1.0);
+  } else if (u_hslOn > 0.5) {
     vec3 hsv = rgb2hsv(c);
     float dh = 0.0, ds = 0.0, dl = 0.0;
     for (int i = 0; i < 8; i++) {

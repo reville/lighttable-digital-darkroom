@@ -50,6 +50,7 @@ DEFAULTS = {
     "colorNoise": 0.0,      # 0..1
     "chromaticAberrationRedCyan": 0.0,   # -1..1 radial red shift
     "chromaticAberrationBlueYellow": 0.0,  # -1..1 radial blue shift
+    "monochrome": 0.0,   # 0 or 1, dedicated B&W treatment
 }
 
 RANGES = {
@@ -62,6 +63,7 @@ RANGES = {
     "sharpness": (0.0, 1.0),
     "luminanceNoise": (0.0, 1.0),
     "colorNoise": (0.0, 1.0),
+    "monochrome": (0.0, 1.0),
 }
 
 LUMA = np.array([0.2126, 0.7152, 0.0722])
@@ -286,6 +288,23 @@ def _apply_hsl(c: np.ndarray, hsl: dict) -> np.ndarray:
     v = np.clip(v * (1.0 + dl * 0.5), 0.0, 1.0)
 
     return _hsv_to_rgb(hue, sat, v)
+
+
+def _apply_monochrome(c: np.ndarray, hsl: dict | None) -> np.ndarray:
+    """Per-hue-band B&W mixer, mirroring web/gl.js and rust-engine."""
+    hue, sat, _ = _rgb_to_hsv(c)
+    dl = np.zeros_like(hue)
+    if hsl:
+        for i, band in enumerate(HSL_BANDS):
+            e = hsl.get(band)
+            if not e or not e.get("l"):
+                continue
+            diff = np.abs(((hue - HSL_CENTRES[i] + 180.0) % 360.0) - 180.0)
+            w = np.clip(1.0 - diff / 45.0, 0.0, 1.0)
+            w = w * w * (3.0 - 2.0 * w) * sat
+            dl += w * e["l"] * 0.5
+    luma = (c @ LUMA) + dl
+    return np.clip(np.repeat(luma[..., None], 3, axis=-1), 0.0, 1.0)
 
 
 def _apply_point_color(c: np.ndarray, points: list[dict]) -> np.ndarray:
@@ -663,7 +682,9 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
                 y = (c @ LUMA)[..., None]
                 c = np.clip(y + (c - y) * (1.0 + g["vibrance"] * (1.0 - sat)), 0.0, 1.0)
 
-    if g.get("hsl"):
+    if g.get("monochrome"):
+        c = _apply_monochrome(c, g.get("hsl"))
+    elif g.get("hsl"):
         c = _apply_hsl(c, g["hsl"])
 
     if g.get("pointColor"):

@@ -121,7 +121,7 @@ const RESET_GROUPS = {
            'print_y_filter_shift', 'print_m_filter_shift',
            'scan_softness', 'scan_sharpness'],
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks'],
-  colour: ['temp', 'tint', 'vibrance', 'saturation'],
+  colour: ['temp', 'tint', 'vibrance', 'saturation', 'monochrome'],
   effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],
   detail: ['sharpness', 'sharpenRadius', 'sharpenDetail', 'sharpenMasking',
            'luminanceNoise', 'colorNoise'],
@@ -10662,7 +10662,81 @@ function syncHsl() {
     el.value = e[el.dataset.hsl] || 0;
     document.querySelector(`[data-hslv="${el.dataset.hsl}"]`).textContent = fmtG(el.value);
   });
+  syncTreatmentControls();
 }
+
+function syncTreatmentControls() {
+  const isBw = Boolean(S.grade?.monochrome);
+  $('treatmentColor')?.classList.toggle('on', !isBw);
+  $('treatmentColor')?.setAttribute('aria-selected', !isBw);
+  $('treatmentBw')?.classList.toggle('on', isBw);
+  $('treatmentBw')?.setAttribute('aria-selected', isBw);
+  if ($('colorSectionLabel')) $('colorSectionLabel').textContent = isBw ? tr('B&W') : tr('Color');
+  if ($('colorVibranceRow')) $('colorVibranceRow').hidden = isBw;
+  if ($('colorSaturationRow')) $('colorSaturationRow').hidden = isBw;
+  if ($('pointColorWrap')) $('pointColorWrap').hidden = isBw;
+  if ($('colorMixerWrap')) $('colorMixerWrap').hidden = isBw;
+  if ($('bwMixerWrap')) $('bwMixerWrap').hidden = !isBw;
+  if (isBw) syncBwMixer();
+}
+
+function syncBwMixer() {
+  HSL_BANDS.forEach((band) => {
+    const val = S.grade.hsl?.[band]?.l ?? 0;
+    const input = document.querySelector(`[data-bw-band="${band}"]`);
+    if (input) input.value = val;
+    const label = document.querySelector(`[data-bw-val="${band}"]`);
+    if (label) label.textContent = fmtG(val);
+  });
+}
+
+(function bwMixerInit() {
+  $('treatmentColor')?.addEventListener('click', () => {
+    if (!S.grade?.monochrome) return;
+    pushUndo();
+    S.grade.monochrome = 0;
+    syncTreatmentControls();
+    drawGrade();
+    saveState();
+  });
+  $('treatmentBw')?.addEventListener('click', () => {
+    if (S.grade?.monochrome) return;
+    pushUndo();
+    S.grade.monochrome = 1;
+    syncTreatmentControls();
+    drawGrade();
+    saveState();
+  });
+  document.querySelectorAll('[data-bw-band]').forEach((el) => {
+    const band = el.dataset.bwBand;
+    el.addEventListener('pointerdown', pushUndo);
+    el.addEventListener('input', () => {
+      S.grade.hsl = S.grade.hsl || {};
+      const e2 = S.grade.hsl[band] || { h: 0, s: 0, l: 0 };
+      e2.l = +el.value;
+      S.grade.hsl[band] = e2;
+      const label = document.querySelector(`[data-bw-val="${band}"]`);
+      if (label) label.textContent = fmtG(el.value);
+      drawGrade();
+    });
+    el.addEventListener('change', () => saveState());
+    const resetBw = () => {
+      pushUndo();
+      S.grade.hsl = S.grade.hsl || {};
+      const e2 = S.grade.hsl[band] || { h: 0, s: 0, l: 0 };
+      e2.l = 0;
+      S.grade.hsl[band] = e2;
+      el.value = '0';
+      const label = document.querySelector(`[data-bw-val="${band}"]`);
+      if (label) label.textContent = fmtG(0);
+      drawGrade();
+      saveState();
+    };
+    el.addEventListener('dblclick', resetBw);
+    const row = el.closest('.row, .slider-row');
+    row?.querySelector('.name')?.addEventListener('dblclick', resetBw);
+  });
+}());
 
 /* ---------------------------------------------------------- point color */
 function syncPointColor() {
