@@ -29,6 +29,22 @@ not launch the app or open a permission prompt. Runs have a hard time limit,
 stop their own app/server/recorder, preserve partial evidence on failure, and
 never automatically approve a baseline.
 
+The first native trial (2026-09-09) produced a partial 90-second recording.
+Do not assume another macOS Space makes this reliable: a second run failed
+to acquire a Metal drawable while Chrome was foreground. No separate Space
+was tested. The first run also showed roughly one-second gesture pacing,
+consistent with background timer throttling; it cannot establish smoothness.
+Each new step logs document visibility and focus to help diagnose this.
+Keep the app visible and active during an authorized trial, or use a dedicated
+test machine. Captured state checks alone do not prove the displayed pixels:
+the trial showed Fit selected while the photograph remained enlarged.
+
+Visual review uses normal saving and edited-thumbnail updates in its isolated
+data. Other benchmark layers retain their existing suppression. The first run
+predated this exemption and failed persistence because the harness suppressed
+saving; that result is not evidence of production data loss. A complete native
+rerun of this correction is still required.
+
 Outputs are in `output/visual-reviews/<timestamp>/`: the original movie,
 source/bundle/fixture hashes, app and server logs, recorded steps, measured
 capture timing, extracted evidence, journey clips, and `index.html`.
