@@ -1187,7 +1187,7 @@ fn recycle(path: &Path) -> Result<()> {
     use std::path::Component;
 
     if !path.is_absolute() {
-        bail!(tr("Recycle Bin requires an absolute photo path"));
+        bail!("Recycle Bin requires an absolute photo path");
     }
 
     if let Some(Component::Prefix(prefix)) = path.components().next() {
@@ -1217,10 +1217,7 @@ fn recycle(path: &Path) -> Result<()> {
             const DRIVE_REMOTE: u32 = 4;
             let drive_type = unsafe { GetDriveTypeW(root_wide.as_ptr()) };
             if drive_type == DRIVE_REMOTE {
-                bail!(tr_args(
-                    "Network drive {path} does not support the Recycle Bin; deletion cancelled to avoid permanent loss",
-                    &[("path", path.display().to_string())]
-                ));
+                bail!("Network drive does not support the Recycle Bin; deletion cancelled to avoid permanent loss");
             }
         }
     }

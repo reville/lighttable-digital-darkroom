@@ -5584,7 +5584,7 @@ def start_export(opts: dict) -> dict:
     if items:
         disk = recovery.disk_status(destination)
         if disk.get("low"):
-            return {"error": T("Low disk space on export destination. Free up space before exporting.")}
+            return {"error": "Low disk space on export destination. Free up space before exporting."}
     SESSION_EXPORT_DESTINATIONS.update(Path(job["destination"]) for _, job in items)
     batch = ExportBatch(items, destination)
     with EXPORT_LOCK:

@@ -69,7 +69,6 @@
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.",
     "LightTable is preparing to update. Try again after restarting.",
     "Linux shared-memory reservation is unavailable",
-    "Low disk space on export destination. Free up space before exporting.",
     "Missing photo",
     "Move with photo",
     "Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.",
@@ -335,7 +334,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "7495be540733676f0545fcfc61ab50ffbb7ab979767c4ca4cb0d21cd965ee996",
+  "sourceDigest": "857bea6547bfab15267d520d5c7b7a583f0acf27d489a59271db87c3af030cf4",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -372,7 +371,6 @@
       "Leave in place (unrecognized companion)",
       "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.",
       "Linux shared-memory reservation is unavailable",
-      "Low disk space on export destination. Free up space before exporting.",
       "Missing photo",
       "Move with photo",
       "Opening the catalog…",
