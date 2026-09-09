@@ -120,6 +120,10 @@ results:
 scripts/run-product-journey.sh pr
 ```
 
+For occasional layout and visual bug hunts, use the [on-demand UI audit](scripts/ui-audit/README.md).
+It provides headless snapshots, DOM invariants, and seeded exploration; it is not
+part of commit checks, CI triggers, or `mnb`.
+
 See [product journey testing](JOURNEY-TESTING.md) for package and RAW-image
 journeys. The optional RAW fixtures require a separate download; routine unit
 tests and the JPEG journey do not require the full RAW collection. Passing unit
