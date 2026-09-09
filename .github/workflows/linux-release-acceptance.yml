@@ -1,0 +1,99 @@
+name: Linux release acceptance
+on:
+  push:
+    branches: [codex/linux-release-validation-20260909]
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        required: true
+        type: string
+      source_revision:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  desktop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: candidate
+          run-id: ${{ inputs.build_run_id || '34402898998' }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-linux-x86_64
+          path: baseline
+          run-id: 34399674526
+          github-token: ${{ github.token }}
+      - name: Prepare isolated Ubuntu desktops and verified packages
+        env:
+          EXPECTED_SOURCE: ${{ inputs.source_revision || 'be537f2f3e2e431ae6b42af716c2a8b365f57bab' }}
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgtk-3-0 libwebkit2gtk-4.1-0 libxdo3 libopenblas0 libgfortran5 libvulkan1 mesa-vulkan-drivers liblcms2-2 xvfb xauth dbus-x11 openbox imagemagick sway grim xdg-utils desktop-file-utils
+          (cd candidate && sha256sum -c *.sha256)
+          (cd baseline && sha256sum -c *.sha256)
+          tar -xzf candidate/*.tar.gz -C candidate
+          tar -xzf baseline/*.tar.gz -C baseline
+          python3 - <<'PY'
+          import os,json,pathlib
+          m=json.loads(pathlib.Path('candidate/LightTable/build-manifest.json').read_text())
+          assert m['source_revision']==os.environ['EXPECTED_SOURCE'] and not m['source_dirty']
+          assert m['version']=='0.5.0' and m['architecture']=='x86_64'
+          print(json.dumps(m))
+          PY
+          python3 scripts/fetch-demo-raws.py --file 01-canon-eos-80d-city-tree.CR2 --file 03-fujifilm-xq2-harbor-ferry.RAF
+          mkdir -p evidence
+      - name: Sign and verify the actual release candidate with the production key
+        env:
+          LIGHTTABLE_LINUX_UPDATE_PRIVATE_KEY: ${{ secrets.LIGHTTABLE_LINUX_UPDATE_PRIVATE_KEY }}
+        run: |
+          candidate/LightTable/Python/bin/python3 scripts/generate-linux-update.py \
+            --archive candidate/LightTable-0.5.0-linux-x86_64.tar.gz --output evidence/linux-x86_64.json \
+            --download-url https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz \
+            --release-notes-url https://github.com/reville/lighttable-digital-darkroom/releases/tag/v0.5.0
+      - name: X11 RAW editing, RGB16 export, normal close and persistence
+        run: |
+          timeout 1200s xvfb-run -a --server-args='-screen 0 1440x1000x24' dbus-run-session -- bash -euo pipefail -c '
+            openbox > /tmp/lighttable-openbox.log 2>&1 & wm=$!
+            trap "kill $wm 2>/dev/null || true" EXIT
+            candidate/LightTable/Python/bin/python3 scripts/linux/release-desktop-acceptance.py candidate/LightTable \
+              --source "${{ inputs.source_revision || 'be537f2f3e2e431ae6b42af716c2a8b365f57bab' }}" --backend x11 --fixtures demo-assets/cc0-raw/files --output evidence/x11'
+      - name: Wayland RAW editing, RGB16 export, compositor close and persistence
+        run: |
+          timeout 1200s dbus-run-session -- bash -euo pipefail -c '
+            export XDG_RUNTIME_DIR=$(mktemp -d)
+            export WLR_BACKENDS=headless WLR_RENDERER=pixman WLR_LIBINPUT_NO_DEVICES=1
+            printf "output HEADLESS-1 resolution 1440x1000\nseat seat0 fallback true\nxwayland disable\n" > /tmp/lighttable-sway.conf
+            sway -c /tmp/lighttable-sway.conf > evidence/sway.log 2>&1 & compositor=$!
+            trap "kill $compositor 2>/dev/null || true" EXIT
+            for attempt in $(seq 1 40); do
+              socket=$(find "$XDG_RUNTIME_DIR" -maxdepth 1 -name "wayland-*" -type s -print -quit)
+              ipc=$(find "$XDG_RUNTIME_DIR" -maxdepth 1 -name "sway-ipc*.sock" -print -quit)
+              if [[ -n "$socket" && -n "$ipc" ]]; then break; fi
+              sleep 0.25
+            done
+            test -S "$socket" && test -S "$ipc"
+            export WAYLAND_DISPLAY="$socket" SWAYSOCK="$ipc" GDK_BACKEND=wayland
+            unset DISPLAY
+            candidate/LightTable/Python/bin/python3 scripts/linux/release-desktop-acceptance.py candidate/LightTable \
+              --source "${{ inputs.source_revision || 'be537f2f3e2e431ae6b42af716c2a8b365f57bab' }}" --backend wayland --fixtures demo-assets/cc0-raw/files --output evidence/wayland'
+      - name: Production-signed cross-revision native upgrade and rollback
+        run: |
+          timeout 420s xvfb-run -a --server-args='-screen 0 1280x900x24' dbus-run-session -- \
+            baseline/LightTable/Python/bin/python3 scripts/linux/release-update-acceptance.py baseline/LightTable \
+              --target-archive candidate/LightTable-0.5.0-linux-x86_64.tar.gz --target-feed evidence/linux-x86_64.json \
+              > evidence/cross-revision-update.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Linux-release-acceptance-evidence
+          path: evidence
+          if-no-files-found: error
