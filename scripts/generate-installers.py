@@ -111,6 +111,7 @@ def scoop(version: str, url: str, sha256: str, license_name: str,
                     if license_url else license_name),
         "architecture": {"64bit": {"url": url, "hash": sha256}},
         "extract_dir": "LightTable",
+        "post_install": "Set-Content -LiteralPath \"$dir\\install-channel.txt\" -Value 'scoop' -Encoding ascii",
         "bin": [["lighttable.cmd", "lighttable"]],
         "shortcuts": [["LightTable.exe", "LightTable"]],
     }
@@ -146,6 +147,7 @@ InstallModes:
 InstallerSwitches:
   Silent: /S
   SilentWithProgress: /S
+  Custom: /UPDATEOWNER=winget
   InstallLocation: /D=<INSTALLPATH>
 UpgradeBehavior: install
 Commands:
@@ -194,7 +196,7 @@ $packageArgs = @{{
   url64bit = '{url}'
   checksum64 = '{sha256}'
   checksumType64 = 'sha256'
-  silentArgs = '/S'
+  silentArgs = '/S /UPDATEOWNER=chocolatey'
   validExitCodes = @(0)
 }}
 Install-ChocolateyPackage @packageArgs

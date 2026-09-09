@@ -175,6 +175,7 @@ export function installSettings(context) {
     byId('autoAdvance').checked = pref('autoAdvance', true);
     byId('completionNotifications').checked = pref('completionNotifications', false);
     byId('automaticUpdateChecks').checked = pref('automaticUpdateChecks', true);
+    void window.lightTableRefreshUpdates?.();
     byId('viewerBackground').value = pref('viewerBackground', '#121212');
     byId('smoothZoom').checked = smoothZoomEnabled(currentPrefs);
     byId('uiFontScale').value = String(pref('uiFontScale', 100));

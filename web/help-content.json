@@ -2711,6 +2711,15 @@
             "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.",
             "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable."
           ]
+        },
+        {
+          "title": "Update LightTable",
+          "paragraphs": [
+            "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.",
+            "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.",
+            "Updates preserve photos, edits, and preferences. Linux keeps the previous bundle for recovery, but does not automatically restore a catalog or reopen an older version.",
+            "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves."
+          ]
         }
       ],
       "related": [

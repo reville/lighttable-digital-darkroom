@@ -23,6 +23,7 @@ download tag is `vMAJOR.MINOR.PATCH` in `reville/lighttable-digital-darkroom`.
 | Scoop | `LightTable-VERSION-windows-x64.zip` | `scoop/bucket/lighttable.json` |
 | WinGet | `LightTable-VERSION-windows-x64-setup.exe` | `winget/manifests/n/NicholasReville/LightTable/VERSION/` |
 | Chocolatey | `LightTable-VERSION-windows-x64-setup.exe` | `chocolatey/lighttable/` |
+| AUR | `LightTable-VERSION-linux-x86_64.tar.gz` | `aur/lighttable-bin/` |
 
 Omit `--channels` to generate all channels whose artifact is present. Explicitly
 requested channels fail when their artifact is missing. Windows channels require
@@ -76,6 +77,22 @@ Focused generator validation:
 For every channel, fresh installation, CLI access, upgrade, and uninstall on the
 target platform remain release checks. Manifest generation is not installation
 proof or public package registration.
+
+## Update ownership
+
+Scoop writes `scoop` to `install-channel.txt`. Generated WinGet and Chocolatey
+definitions pass their channel to the NSIS installer, which records it in the
+same file. Those installations use their package manager for updates. A direct
+signed NSIS installation uses WinSparkle; extracting the Windows ZIP leaves
+updates manual. An upgrade preserves the recorded manager unless an explicit
+channel is supplied.
+
+The Linux portable archive records `portable` in `installation-owner.json`.
+Arch, Flatpak, and Snap packaging identifies their managed installation, so
+LightTable cannot replace package-owned files. The Linux portable updater also
+requires a matching install record, release identity, and configured signing
+key. A package-manager manifest does not configure or publish an update feed.
+See [desktop update signing](../release/README.md) for the release requirements.
 
 Reference formats: [Homebrew cask cookbook](https://docs.brew.sh/Cask-Cookbook),
 [Scoop app manifests](https://github.com/ScoopInstaller/Scoop/wiki/App-Manifests),

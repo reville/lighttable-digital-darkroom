@@ -42,6 +42,7 @@ def generate(archive: Path, output: Path, *, version: str, source_revision: str)
         with tarfile.open(archive, "r:gz") as source:
             source.extractall(payload, filter="data")
         bundle = payload / "LightTable"
+        (bundle / "installation-owner.json").write_text('{"owner":"snap"}\n')
         for name in ("install.sh", "uninstall.sh", "desktop-integration.py"):
             (bundle / name).unlink(missing_ok=True)
         applications = bundle / "share/applications"

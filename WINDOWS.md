@@ -48,6 +48,32 @@ run `LightTable\lighttable.cmd --help`. A package manager can shim
 would choose the GUI executable instead of the command.
 Portable users must install the WebView2 Runtime separately if it is missing.
 
+## Updates
+
+Signed direct installations use WinSparkle for signed update checks, release
+notes, downloads, and installation. **Settings → General → Check for Updates…**
+opens the native updater. Automatic checks can be disabled in General; when
+enabled, they run at most daily after the editor opens. Downloads do not close
+the app. Installing an update saves pending edits, verifies a catalog backup,
+and requires imports, exports, and other active work to finish first. The update
+helper waits for both the window and server to exit before running the installer,
+then reopens LightTable with the same catalog. A failed preparation leaves the
+app open.
+
+The installer writes `install-channel.txt`. Direct installations use `direct`;
+Scoop, WinGet, and Chocolatey packages record their manager and disable in-app
+installation. Update those copies through the same package manager. The portable
+ZIP uses `portable` and requires downloading and extracting a newer ZIP.
+Unsigned development builds cannot install updates automatically.
+
+The Windows feed is `appcast-windows-x64.xml` on the dedicated `desktop-updates`
+GitHub release. Its signed enclosures point to immutable versioned installers.
+WinSparkle verifies the Ed25519 signature, and the update helper verifies the
+installer's Authenticode signature before installation. See
+[release setup](release/README.md) for signing and feed publication.
+This source integration still requires a signed upgrade on an actual Windows
+desktop before release.
+
 ## Build and validation
 
 On Windows x64 with Rust 1.88.0, Git, uv 0.11.28, and NSIS installed:
