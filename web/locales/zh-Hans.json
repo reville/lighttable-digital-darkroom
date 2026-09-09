@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "e289adf65e58e39b3af99d6301b1500f90ae37a145022677d8003479e6d3b30a",
+  "sourceDigest": "c73319e602ebe3750be7a3102f424902c056ad7876884d26e747aa572eb30aba",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4156,6 +4156,7 @@
     "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "相邻的 XMP 侧车文件会随原文件一起移动，但如果配对的原文件仍留在资料库中，共享的 XMP 也会保留。隐藏的 RAW 或 JPEG 配对文件会留在资料库中；在成对拍摄设置中选择“两个文件”可将其包含在内。",
     "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "“文件与元数据”控制位于原始文件旁边的便携式 LightTable 编辑、自动 XMP 写入、RAW/JPEG 配对和关键词输入。完整的便携式编辑使用 .lighttable-state.json；XMP 载入兼容的编辑和元数据。XMP 同步会保留无关字段，并报告冲突的外部更改；通过 XMP 副档读取 Exchange 元数据，以使用受支持的工作流程。 便携式 LightTable 编辑包含虚拟副本。重新打开文件夹时，会保留已存入目录的编辑。",
     "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“将已拒绝照片移到废纸篓”会跳过虚拟副本。使用“照片操作 → 删除虚拟副本”可删除副本而不影响原文件。",
+    "Appearance tester": "外观测试器",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "预设以水平行的形式显示在可折叠的预设包中。内置风格最初分组在“彩色”“胶片”“Film Simulation Drama”和“黑白”预设包中。点击预设包标题可展开或折叠。",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "在编辑工具栏中打开“预设”。“内置”包含23 个随附外观，并可离线使用。“你的内容”包含已保存的外观、导入内容和已安装的社区预设。“社区”用于浏览经过审核的在线集合。",
     "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama 中的每种风格都会启用胶片模拟，并叠加色调、色彩、颗粒、辉光或暗角效果。此预设包包含八种风格，其中包括黑白风格 Silver Noir。"
