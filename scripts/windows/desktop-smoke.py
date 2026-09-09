@@ -132,6 +132,8 @@ class WindowsDesktop:
             "TerminateProcess": ([handle, wintypes.UINT], wintypes.BOOL),
             "IsProcessInJob": ([handle, handle, ctypes.POINTER(wintypes.BOOL)], wintypes.BOOL),
             "OpenProcess": ([wintypes.DWORD, wintypes.BOOL, wintypes.DWORD], handle),
+            "QueryFullProcessImageNameW": ([handle, wintypes.DWORD, wintypes.LPWSTR,
+                                            ctypes.POINTER(wintypes.DWORD)], wintypes.BOOL),
         }
         for name, (args, result) in signatures.items():
             function = getattr(self.kernel, name)
@@ -182,6 +184,49 @@ class WindowsDesktop:
             return bool(member.value)
         finally:
             self.kernel.CloseHandle(process)
+
+    def job_process_ids(self) -> list[int]:
+        class ProcessIds(ctypes.Structure):
+            _fields_ = [("assigned", wintypes.DWORD), ("count", wintypes.DWORD),
+                        ("pids", ctypes.c_size_t * 256)]
+        listing = ProcessIds()
+        self._check(self.kernel.QueryInformationJobObject(
+            self.job, 3, ctypes.byref(listing), ctypes.sizeof(listing), None))
+        if listing.count > 256 or listing.assigned != listing.count:
+            raise RuntimeError("The private job process list exceeded the diagnostic bound")
+        return sorted({int(pid) for pid in listing.pids[:listing.count] if pid})
+
+    @contextmanager
+    def owned_python_pids(self, executable: Path):
+        # Keep verified handles until profiling ends so their PIDs cannot be
+        # recycled into unrelated processes between verification and attachment.
+        selected = []
+        try:
+            for pid in self.job_process_ids():
+                process = self.kernel.OpenProcess(0x1000, False, pid)
+                if not process:
+                    continue
+                try:
+                    member = wintypes.BOOL()
+                    if not self.kernel.IsProcessInJob(process, self.job, ctypes.byref(member)) or not member.value:
+                        continue
+                    name = ctypes.create_unicode_buffer(32768)
+                    length = wintypes.DWORD(len(name))
+                    if not self.kernel.QueryFullProcessImageNameW(process, 0, name, ctypes.byref(length)):
+                        continue
+                    if not same_existing_path(name.value, executable):
+                        continue
+                    selected.append((pid, process))
+                    process = None
+                finally:
+                    if process:
+                        self.kernel.CloseHandle(process)
+                if len(selected) == 4:
+                    break
+            yield [pid for pid, _ in selected]
+        finally:
+            for _, process in selected:
+                self.kernel.CloseHandle(process)
 
     def quit(self, timeout: float):
         # main() fixes both the English locale and the source-folder basename.
@@ -339,6 +384,37 @@ def capture_failure_window(desktop, destination: Path) -> dict:
         return {"available": False, "reason": type(error).__name__}
 
 
+def capture_python_stacks(desktop, bundle: Path, dumper: Path | None, report_dir: Path | None):
+    if not dumper or not report_dir or not desktop:
+        return None
+    summary = {"processes": []}
+    try:
+        if not dumper.is_file():
+            raise FileNotFoundError("The optional stack dumper is unavailable")
+        with desktop.owned_python_pids(bundle / "Python/python.exe") as pids:
+            for pid in pids[:4]:
+                record = {"pid": pid}
+                summary["processes"].append(record)
+                stdout = stderr = b""
+                try:
+                    result = subprocess.run([str(dumper), "dump", "--pid", str(pid)],
+                        capture_output=True, timeout=5, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                    stdout, stderr = result.stdout, result.stderr
+                    record["returncode"] = result.returncode
+                except subprocess.TimeoutExpired as error:
+                    stdout, stderr = error.stdout or b"", error.stderr or b""
+                    record["timed_out"] = True
+                except OSError as error:
+                    record["error"] = type(error).__name__
+                for stream, output in (("stdout", stdout), ("stderr", stderr)):
+                    name = f"python-{pid}-{stream}.txt"
+                    (report_dir / name).write_bytes(output[:65536])
+                    record[stream] = {"file": name, "truncated": len(output) > 65536}
+    except Exception as error:
+        summary["error"] = type(error).__name__
+    return summary
+
+
 def connect(desktop, root, deadline):
     def registered():
         for path in (root / "instances").glob("[0-9]*.json"):
@@ -400,6 +476,15 @@ def expected_edits_saved(saved) -> bool:
     grade = saved.get("grade") if isinstance(saved, dict) else None
     return (isinstance(grade, dict) and grade.get("exposure") == 0.5
             and saved.get("rating") == 4)
+
+
+def export_status_snapshot(status: dict) -> dict:
+    fields = ("total", "done", "completed", "skipped", "cancelledCount",
+              "running", "cancel_requested", "cancelled")
+    result = {key: status[key] for key in fields if isinstance(status.get(key), (bool, int, float))}
+    result.update({key: status[key][:100] for key in ("phase", "state") if isinstance(status.get(key), str)})
+    result.update({f"{key}_count": len(status[key]) for key in ("errors", "warnings") if isinstance(status.get(key), list)})
+    return result
 
 
 def verify_export(path: Path, *, require_precision: bool) -> dict:
@@ -482,6 +567,8 @@ def main():
     parser.add_argument("--timeout", type=int, default=240,
                         help="Native workflow seconds; cleanup adds at most 15 seconds for processes and 10 for private files")
     parser.add_argument("--report-dir", type=Path, help="New directory for JSON evidence, logs and the exported TIFF")
+    parser.add_argument("--stack-dumper", type=Path,
+                        help="Optional py-spy.exe for failure diagnostics only; adds at most four 5-second dumps without locals")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run with packaged Python in a logged-on Windows desktop")
@@ -556,6 +643,7 @@ def main():
                 raise RuntimeError("The native server did not queue the TIFF export")
             def exported():
                 status = api.request("/api/export/status")
+                report["export_status"] = export_status_snapshot(status)
                 if status.get("errors") or status.get("error"):
                     raise RuntimeError(f"TIFF export failed: {status.get('errors') or status.get('error')}")
                 return status if not status.get("running") and status.get("done") == 1 else None
@@ -577,6 +665,8 @@ def main():
             report["startup_diagnostics"] = startup_diagnostics(root, desktop)
             if args.report_dir:
                 report["failure_window"] = capture_failure_window(desktop, args.report_dir / "window.png")
+                if args.stack_dumper:
+                    report["python_stacks"] = capture_python_stacks(desktop, bundle, args.stack_dumper, args.report_dir)
             raise
         finally:
             if desktop:
