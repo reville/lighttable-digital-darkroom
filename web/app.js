@@ -3053,6 +3053,13 @@ function waitForBenchmarkSettled(
 
 async function runNativeBenchmark(width, iterations) {
   try {
+    if (window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ === 'visual-review') {
+      const deadline = performance.now() + 45000;
+      while (!window.__LIGHTTABLE_RECORDING_READY__) {
+        if (performance.now() > deadline) throw new Error('Window recording did not become ready');
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    }
     const presentation = nativePreviewActive() ? 'native-metal' : 'webgl';
     postNative('nativeBenchmarkProgress', { stage: 'started', width, iterations });
     $('engine').value = 'rs';
@@ -3220,6 +3227,12 @@ async function waitForJourneyExport(timeoutMs = 180000) {
 }
 
 async function runNativeProductJourney(width, layer) {
+  if (layer === 'visual-review') {
+    const { runVisualJourney } = await import('/web/visual-journey.js');
+    return runVisualJourney({ S, $, cur, visible, executeUICommand, uiStateReport,
+      nativePreviewActive, postNative, pushUndo, drawGrade, saveState,
+      waitForJourneyFrame, editSaveQueue });
+  }
   if (layer === 'raw-curated' || layer === 'raw-full') {
     return runNativeRawJourney(width, layer);
   }
@@ -4610,7 +4623,7 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 function saveState(immediate = false) {
-  if (window.__LIGHTTABLE_BENCHMARK__) return Promise.resolve(true);
+  if (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review') return Promise.resolve(true);
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
   readControls();
@@ -4909,7 +4922,7 @@ function pumpEditedThumbnailQueue() {
 
 function queueEditedThumbnail(im, attempt = 0) {
   if (im?.availability === 'cloud-only') return;
-  if (!im || im.kind === 'video' || window.__LIGHTTABLE_BENCHMARK__) return;
+  if (!im || im.kind === 'video' || (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review')) return;
   const visible = !_editedThumbnailObserver || im === cur() ||
     [...document.querySelectorAll('img[data-thumbnail-name]')].some(
       (image) => image.dataset.thumbnailName === im.name &&
