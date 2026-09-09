@@ -373,6 +373,55 @@ class PortableAdoptionTests(unittest.TestCase):
         self.assertIsNone(self.cat.connection.execute("SELECT 1 FROM meta WHERE key='inner'").fetchone())
         self.assertEqual(self.cat.connection.execute("SELECT COUNT(*) FROM meta WHERE key LIKE 'outer%'").fetchone()[0], 2)
 
+    def test_updated_portable_state_resyncs_when_mtime_changes(self):
+        self.photo("a.jpg")
+        self.photo("b.jpg")
+        self.scan()
+        self.write_portable({"images": {"a.jpg": {"rating": 3}}})
+        # Initial adoption
+        res1 = self.adopt()
+        self.assertEqual(res1["images"], 1)
+        self.assertEqual(self.cat.state_for(self.image("a.jpg"))["rating"], 3)
+
+        # Immediate repeat adoption without file change is a no-op
+        res2 = self.adopt()
+        self.assertTrue(res2["adopted"])
+        self.assertEqual(res2["images"], 0)
+
+        # External update changes state file (e.g. adds rating for b.jpg)
+        import time
+        time.sleep(0.02)
+        self.write_portable({"images": {"a.jpg": {"rating": 3}, "b.jpg": {"rating": 5}}})
+        res3 = self.adopt()
+        self.assertEqual(res3["images"], 1)
+        self.assertEqual(self.cat.state_for(self.image("b.jpg"))["rating"], 5)
+
+    def test_query_supports_include_missing_and_missing_only(self):
+        self.photo("present.jpg")
+        missing_file = self.photo("missing.jpg")
+        self.scan()
+        missing_file.unlink()
+        self.cat.mark_missing(self.source, ["present.jpg"])
+
+        # Default query excludes missing files
+        default_res = self.cat.query()
+        self.assertEqual(default_res["total"], 1)
+        self.assertEqual(default_res["items"][0]["filename"], "present.jpg")
+        self.assertFalse(default_res["items"][0]["missing"])
+
+        # includeMissing returns both
+        all_res = self.cat.query({"includeMissing": True})
+        self.assertEqual(all_res["total"], 2)
+        missing_map = {item["filename"]: item["missing"] for item in all_res["items"]}
+        self.assertFalse(missing_map["present.jpg"])
+        self.assertTrue(missing_map["missing.jpg"])
+
+        # missingOnly returns only missing
+        only_res = self.cat.query({"missingOnly": True})
+        self.assertEqual(only_res["total"], 1)
+        self.assertEqual(only_res["items"][0]["filename"], "missing.jpg")
+        self.assertTrue(only_res["items"][0]["missing"])
+
 
 if __name__ == "__main__":
     unittest.main()

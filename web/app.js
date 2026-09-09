@@ -502,6 +502,10 @@ window.lightTableNativeEvent = (event) => {
     toast(event.cancelled ? [tr('Import stopped'), message].join(' · ') : message);
     return;
   }
+  if (event?.type === 'trashed') {
+    void reloadLibrary();
+    return;
+  }
   if (event?.type === 'nativeInteractionPresented') {
     if (event.sample?.generation === S.seq) {
       GRADE_PERF.presented(event.sample, 'native-metal-acknowledged');
@@ -4688,7 +4692,19 @@ $('retryEditSave').onclick = async () => {
   catch { toast(tr("Still unable to save. Your changes are kept in this window.")); }
 
 };
+let _controlDirty = false;
+function markControlDirty() {
+  _controlDirty = true;
+  globalThis._controlDirty = true;
+}
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  window.addEventListener('input', (e) => {
+    if (e.target?.closest?.('#panel')) markControlDirty();
+  }, true);
+}
+
 window.addEventListener('beforeunload', (event) => {
+  if (globalThis._controlDirty && typeof saveState === 'function') saveState();
   if (!editSaveQueue.getStatus().pendingNames.length && !HISTORY?.hasPending) return;
   void editSaveQueue.flush().then(() => HISTORY?.flush()).catch(() => {});
   event.preventDefault();
@@ -4696,6 +4712,8 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 function saveState(immediate = false) {
+  _controlDirty = false;
+  globalThis._controlDirty = false;
   if (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review') return Promise.resolve(true);
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
@@ -6850,6 +6868,9 @@ async function go(i) {
   rememberPhotoPan();
   cropSession = null;
   if (cur()) {
+    if (globalThis._controlDirty && typeof saveState === 'function') {
+      saveState();
+    }
     const outgoing = cur().name;
     void editSaveQueue.flush(outgoing).then(() => HISTORY?.flush(outgoing)).catch(() => {});
   }
@@ -7755,6 +7776,7 @@ FILM_SLIDERS.forEach((id) => {
   if (!input) return;
   let gesturePhoto = null;
   input.addEventListener('input', () => {
+    if (typeof markControlDirty === 'function') markControlDirty();
     if (gesturePhoto !== S.editingName) { pushUndo(); gesturePhoto = S.editingName; }
     // An explicit gesture owns this value, even if it matches the rounded
     // thumb position from the last sync. Other controls retain their precision.
@@ -7871,6 +7893,7 @@ document.querySelectorAll('[data-g]').forEach((el) => {
   const k = el.dataset.g;
   el.addEventListener('pointerdown', pushUndo);
   el.addEventListener('input', () => {
+    if (typeof markControlDirty === 'function') markControlDirty();
     S.grade[k] = +el.value;
     const out = document.querySelector(`[data-gv="${k}"]`);
     if (out) out.textContent = fmtG(el.value);

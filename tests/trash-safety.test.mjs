@@ -59,3 +59,17 @@ for (const failure of [{result: {error: 'Folder unavailable'}}, {error: Error('D
     assert(!env.messages.some(message => message?.text?.startsWith('Moving')));
   });
 }
+
+test('trashed native event triggers library reload', () => {
+  const start = source.indexOf('window.lightTableNativeEvent = (event) => {');
+  const end = source.indexOf('\n};\n', start) + 3;
+  const handlerSource = source.slice(start, end);
+  let reloaded = false;
+  const context = vm.createContext({
+    window: {},
+    reloadLibrary: () => { reloaded = true; },
+  });
+  vm.runInContext(handlerSource + '\nwindow.lightTableNativeEvent({type: "trashed", count: 2});', context);
+  assert.equal(reloaded, true);
+});
+

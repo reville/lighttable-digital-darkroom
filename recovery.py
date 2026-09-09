@@ -153,6 +153,7 @@ class SessionLedger:
         self.record: dict = {}
         self.previous: dict | None = None
         self._inflight: tuple[str, str] | None = None
+        self._active_threads: dict[int, list[tuple[str, str]]] = {}
         self._depth = 0
         self._settle: threading.Timer | None = None
         self._lock = threading.Lock()
@@ -205,6 +206,8 @@ class SessionLedger:
             if self._settle is not None:
                 self._settle.cancel()
                 self._settle = None
+            self._active_threads.clear()
+            self._inflight = None
             self.record.update({"endedAt": _now(), "reason": reason})
             _write_json(self.session_path, self.record)
             try:
@@ -232,22 +235,34 @@ class SessionLedger:
             yield
             return
         key = (str(stage), str(name))
+        tid = threading.get_ident()
         with self._lock:
             if self._settle is not None:
                 self._settle.cancel()
                 self._settle = None
             self._depth += 1
-            if self._inflight is None or self._inflight[1] != key[1]:
-                self._inflight = key
-                _write_json(self.inflight_path,
-                            {"stage": key[0], "name": key[1], "at": _now()})
+            stack = self._active_threads.setdefault(tid, [])
+            stack.append(key)
+            self._inflight = key
+            active_list = [
+                {"stage": s, "name": n}
+                for t_stack in self._active_threads.values()
+                if t_stack for s, n in [t_stack[-1]]
+            ]
+            _write_json(self.inflight_path,
+                        {"stage": key[0], "name": key[1], "at": _now(),
+                         "active": active_list})
         try:
             yield
         finally:
             with self._lock:
                 self._depth = max(0, self._depth - 1)
-                if self._depth == 0 and not self._ended \
-                        and self._inflight is not None:
+                stack = self._active_threads.get(tid)
+                if stack:
+                    stack.pop()
+                    if not stack:
+                        self._active_threads.pop(tid, None)
+                if self._depth == 0 and not self._ended:
                     if self._settle is not None:
                         self._settle.cancel()
                     self._settle = threading.Timer(
@@ -256,9 +271,11 @@ class SessionLedger:
                     self._settle.daemon = True
                     self._settle.start()
 
-    def _clear_inflight(self, key: tuple[str, str]) -> None:
+    def _clear_inflight(self, key: tuple[str, str] | None = None) -> None:
         with self._lock:
-            if self._inflight != key or self._depth:
+            if self._depth or self._active_threads:
+                return
+            if key is not None and self._inflight != key:
                 return
             self._inflight = None
             self._settle = None
@@ -271,7 +288,15 @@ class SessionLedger:
         with self._lock:
             if self._inflight is None:
                 return None
-            return {"stage": self._inflight[0], "name": self._inflight[1]}
+            active_list = [
+                {"stage": s, "name": n}
+                for t_stack in self._active_threads.values()
+                if t_stack for s, n in [t_stack[-1]]
+            ]
+            res = {"stage": self._inflight[0], "name": self._inflight[1]}
+            if len(active_list) > 1:
+                res["active"] = active_list
+            return res
 
     # --- ledger
 
@@ -365,7 +390,18 @@ class PhotoQuarantine:
     def note_previous_crash(self, crashed: dict | None) -> dict | None:
         """Attribute an interrupted session to the photo it was processing."""
         inflight = (crashed or {}).get("inflight") if crashed else None
-        if not isinstance(inflight, dict) or not inflight.get("name"):
+        if not isinstance(inflight, dict):
+            return None
+        active = inflight.get("active")
+        if isinstance(active, list) and active:
+            last = None
+            for item in active:
+                if isinstance(item, dict) and item.get("name"):
+                    last = self.strike(str(item["name"]),
+                                       str(item.get("stage") or "render"),
+                                       at=crashed.get("detectedAt"))
+            return last
+        if not inflight.get("name"):
             return None
         return self.strike(str(inflight["name"]),
                            str(inflight.get("stage") or "render"),
