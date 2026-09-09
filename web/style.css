@@ -434,6 +434,7 @@ input[type=checkbox]:disabled { opacity:.4; }
 .folder-empty { padding:12px 8px; color:var(--muted); font-size:11px; line-height:1.45; }
 .folder-row {
   --depth:0;
+  cursor:default;
   width:100%;
   min-height:28px;
   display:grid;
