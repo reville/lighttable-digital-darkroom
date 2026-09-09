@@ -339,13 +339,15 @@ class WindowsRuntimeLaunchContractTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
 class WindowsSigningGateTests(unittest.TestCase):
-    def invoke(self, script, *arguments, certificate=None, password=None):
+    def invoke(self, script, *arguments, certificate=None, password=None, azure=None):
         environment = {key: value for key, value in os.environ.items()
-                       if key not in ("WINDOWS_CERTIFICATE_BASE64", "WINDOWS_CERTIFICATE_PASSWORD")}
+                       if key not in ("WINDOWS_CERTIFICATE_BASE64", "WINDOWS_CERTIFICATE_PASSWORD")
+                       and not key.startswith(("AZURE_", "ACTIONS_ID_TOKEN_", "GITHUB_"))}
         if certificate is not None:
             environment["WINDOWS_CERTIFICATE_BASE64"] = certificate
         if password is not None:
             environment["WINDOWS_CERTIFICATE_PASSWORD"] = password
+        environment.update(azure or {})
         return subprocess.run(
             [shutil.which("pwsh") or shutil.which("powershell"), "-NoLogo", "-NoProfile",
              "-NonInteractive", "-File", str(ROOT / "scripts/windows" / script), *arguments],
@@ -374,6 +376,55 @@ class WindowsSigningGateTests(unittest.TestCase):
                 self.assertIn("Windows signing requires both", result.stderr)
                 for value in configuration.values():
                     self.assertNotIn(value, result.stdout + result.stderr)
+
+    AZURE = {
+        "AZURE_SIGNING_ENDPOINT": "https://eus.codesigning.azure.net/",
+        "AZURE_SIGNING_ACCOUNT": "fixture-account",
+        "AZURE_SIGNING_PROFILE": "fixture-profile",
+        "AZURE_TENANT_ID": "00000000-0000-0000-0000-000000000001",
+        "AZURE_CLIENT_ID": "00000000-0000-0000-0000-000000000002",
+    }
+
+    def test_partial_azure_configuration_fails_closed_without_leaking_values(self):
+        for missing in self.AZURE:
+            with self.subTest(missing=missing):
+                config = {key: value for key, value in self.AZURE.items() if key != missing}
+                result = self.invoke("sign-release.ps1", "-CheckOnly", azure=config)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(f"requires {missing}", result.stderr)
+                self.assertNotIn("fixture-account", result.stderr)
+
+    def test_azure_and_pfx_configuration_is_rejected(self):
+        result = self.invoke("sign-release.ps1", "-CheckOnly", azure=self.AZURE,
+                             certificate="synthetic-test-certificate")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("never both", result.stderr)
+
+    def test_azure_rejects_an_untrusted_endpoint_before_authentication(self):
+        for endpoint in ("http://eus.codesigning.azure.net/", "https://example.com/",
+                         "https://eus.codesigning.azure.net.evil.example/",
+                         "https://eus.codesigning.azure.net/?token=synthetic"):
+            result = self.invoke("sign-release.ps1", "-CheckOnly",
+                                 azure={**self.AZURE, "AZURE_SIGNING_ENDPOINT": endpoint})
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("HTTPS regional", result.stderr)
+
+    def test_azure_rejects_untrusted_build_contexts(self):
+        trusted = {**self.AZURE, "GITHUB_ACTIONS": "true",
+                   "GITHUB_REPOSITORY": "reville/lighttable-digital-darkroom",
+                   "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REF": "refs/heads/main"}
+        for override in ({"GITHUB_REF": "refs/heads/topic"},
+                         {"GITHUB_REF": "refs/tags/arbitrary"},
+                         {"GITHUB_EVENT_NAME": "pull_request"},
+                         {"GITHUB_REPOSITORY": "someone-else/fork"},
+                         {"GITHUB_ACTIONS": "false"}):
+            result = self.invoke("sign-release.ps1", "-CheckOnly", azure={**trusted, **override})
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("restricted to this repository", result.stderr)
+        for ref in ("refs/heads/main", "refs/tags/v0.5.0", "refs/tags/v0.5.0-rc.1"):
+            result = self.invoke("sign-release.ps1", "-CheckOnly", azure={**trusted, "GITHUB_REF": ref})
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("requires GitHub OIDC", result.stderr)
 
 
 if __name__ == "__main__":
