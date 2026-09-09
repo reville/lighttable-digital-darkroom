@@ -35,7 +35,7 @@ The photograph stays large while the library, film controls, and editor share
 one quiet workspace. Catalog originals in place, keep edits separate, and use
 ratings, flags, collections, stacks, and virtual copies to organize your work.
 Film can be switched off for conventional RAW development.
-Use **Copy…** and **Paste** below the photo in Detail view to choose adjustment
+Use **Copy Settings...** and **Paste** below the photo in Detail view to choose adjustment
 groups and transfer them to other selected photos.
 
 ### Find and curate a shoot

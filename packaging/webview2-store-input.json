@@ -1,0 +1,10 @@
+{
+  "filename": "MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
+  "bytes": 258614480,
+  "sha256": "e7fa35755196ad9223596ef021a1ce6799509142eaa40ba35f634026be50b831",
+  "acquired_at": "2026-09-09",
+  "source_url": "https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/a8f5ad97-0b01-41e5-9245-e8fc9ba9b311/MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
+  "microsoft_redirect": "https://go.microsoft.com/fwlink/?LinkId=2124701",
+  "authenticode_verified_on_windows": false,
+  "status": "Downloaded from Microsoft; checksum recorded and PE header checked. Trusted signature and actual offline behavior still require Windows validation."
+}

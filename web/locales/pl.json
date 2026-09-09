@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Wybierz osobę",
     "Choose a photo folder": "Wybierz folder ze zdjęciami",
     "Choose a photo to edit": "Wybierz zdjęcie do edycji",
-    "Choose a photo to rate or flag": "Wybierz zdjęcie do oceny lub oznaczenia",
     "Choose a preset to see its source and conversion coverage.": "Wybierz preset, aby zobaczyć jego źródło i zakres konwersji.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Wybierz proces druku dla negatywów i zrozum, dlaczego sterowanie drukiem znika dla filmu slajdowego.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Wybierz zapisany punkt w selektorze, aby go edytować, albo użyj Usuń punkt, aby go usunąć.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Wybierz zdjęcie, aby skopiować jego ustawienia",
     "Select a photo to edit": "Wybierz zdjęcie do edycji",
     "Select a photo to preview": "Wybierz zdjęcie, aby wyświetlić podgląd",
-    "Select a photo to rate or flag": "Wybierz zdjęcie, aby je ocenić lub oznaczyć",
     "Select a photo, or a set in a grid, and open Info.": "Wybierz zdjęcie albo zestaw w siatce i otwórz Informacje.",
     "Select a photo.": "Wybierz zdjęcie.",
     "Select a range of distances from the camera; refine the far and near limits": "Wybierz zakres odległości od aparatu; doprecyzuj granice daleką i bliską",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Gdy Przegląd zostanie otwarty z Wspomaganej selekcji, porównaj sugerowaną grupę i oznaczaj zdjęcia pojedynczo. Opcja Ustaw zaznaczenie jest dostępna w zwykłym widoku Przegląd: zaznacza aktywne zdjęcie z przeglądu i odrzuca pozostałe zdjęcia nadal znajdujące się w przeglądzie. Zmienia to ich flagi. Powiązane metadane RAW i JPEG mogą rozszerzyć te zmiany flag na towarzyszy.",
     "{count} matching photo shown: {criteria}.": "Wyświetlono {count} pasujące zdjęcie: {criteria}.",
     "{count} matching photos shown: {criteria}.": "Wyświetlono {count} pasujące zdjęcia: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe.",
+    "Copy Settings...": "Kopiuj ustawienia..."
   },
   "plurals": {
     " · {count} paired file linked": {

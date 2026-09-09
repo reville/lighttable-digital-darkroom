@@ -112,3 +112,31 @@ Expect-Failure 'timed out'
 Assert $script:State.Killed 'Timed-out bootstrapper was not stopped'
 Assert $script:State.Disposed 'Timed-out process handle was not disposed'
 Write-Output 'WebView2 runtime behavior checks passed'
+
+# An explicit bundled standalone installer never accesses the network, even
+# when its file or signature is invalid. The original bundle remains untouched.
+$Offline = Join-Path ([IO.Path]::GetTempPath()) ('lighttable-offline-test-' + [Guid]::NewGuid() + '.exe')
+try {
+    [IO.File]::WriteAllText($Offline, 'test standalone installer')
+    Reset-State
+    $script:State.DownloadFailure = $true
+    Install-WebView2Runtime -OfflineInstaller $Offline
+    Assert $script:State.Launched 'Bundled runtime was not installed'
+    Assert (-not $script:State.Downloaded) 'Offline installation accessed the network'
+    Assert (Test-Path -LiteralPath $Offline) 'Offline bundle input was removed'
+    foreach ($Case in @('missing', 'untrusted')) {
+        Reset-State
+        $script:State.DownloadFailure = $true
+        $Candidate = $Offline
+        if ($Case -eq 'missing') { $Candidate += '.missing' }
+        else { $script:State.Signature = 'NotSigned' }
+        $Failed = $false
+        try { Install-WebView2Runtime -OfflineInstaller $Candidate } catch { $Failed = $true }
+        Assert $Failed 'Invalid offline installer was accepted'
+        Assert (-not $script:State.Downloaded) 'Offline failure fell back to a download'
+        Assert (-not $script:State.Launched) 'Invalid offline installer was launched'
+    }
+} finally {
+    Remove-Item -LiteralPath $Offline -Force
+}
+Write-Output 'Offline WebView2 behavior checks passed'

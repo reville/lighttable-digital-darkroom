@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Kies een persoon",
     "Choose a photo folder": "Kies een fotomap",
     "Choose a photo to edit": "Kies een foto om te bewerken",
-    "Choose a photo to rate or flag": "Kies een foto om te beoordelen of te markeren",
     "Choose a preset to see its source and conversion coverage.": "Kies een voorinstelling om de bron- en conversiedekking te bekijken.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Kies een afdrukproces voor negatieven en begrijp waarom afdrukbedieningen verdwijnen voor diafilm.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Kies een opgeslagen punt in de selector om het te bewerken, of gebruik Punt verwijderen om het te verwijderen.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Selecteer een foto om de instellingen te kopiëren",
     "Select a photo to edit": "Selecteer een foto om te bewerken",
     "Select a photo to preview": "Selecteer een foto om een voorbeeld te zien",
-    "Select a photo to rate or flag": "Selecteer een foto om te beoordelen of van markering te voorzien",
     "Select a photo, or a set in a grid, and open Info.": "Selecteer een foto, of een set in een raster, en open Info.",
     "Select a photo.": "Selecteer een foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Selecteer een bereik van afstanden vanaf de camera; verfijn de verre en nabije limieten",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
     "{count} matching photo shown: {criteria}.": "{count} overeenkomende foto weergegeven: {criteria}.",
     "{count} matching photos shown: {criteria}.": "{count} overeenkomende foto's weergegeven: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn.",
+    "Copy Settings...": "Instellingen kopiëren..."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "b6dfbc9bbd95c411628d93a0b049a3a8a1560c6c62d814dab3e668c5fcadb6a3",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "人物を選択",
     "Choose a photo folder": "写真フォルダーを選択してください",
     "Choose a photo to edit": "編集する写真を選択してください",
-    "Choose a photo to rate or flag": "レーティングまたはフラグを付ける写真を選択",
     "Choose a preset to see its source and conversion coverage.": "プリセットを選んで、ソースと変換の適用範囲を確認します。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "ネガ用の印画処理を選び、スライドフィルムで印刷コントロールが消える理由を理解します。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "セレクターで保存済みのポイントを選んで編集するか、ポイントを削除で削除します。",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "設定をコピーする写真を選択してください",
     "Select a photo to edit": "編集する写真を選択してください",
     "Select a photo to preview": "プレビューする写真を選択",
-    "Select a photo to rate or flag": "評価またはフラグを付ける写真を選択してください",
     "Select a photo, or a set in a grid, and open Info.": "写真、またはグリッド内のセットを選択して、情報を開きます。",
     "Select a photo.": "写真を選択。",
     "Select a range of distances from the camera; refine the far and near limits": "カメラからの距離範囲を選択します。遠近の制限を調整してください",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "サーベイが支援付き選別から開かれた場合は、推奨グループを比較し、写真に個別にフラグを付けてください。選択を作成は通常のサーベイで使用できます。これは、アクティブなサーベイ写真を選択し、サーベイ内に残っている他の写真を却下します。これにより、それらのフラグが変更されます。リンクされたRAWとJPEGのメタデータにより、これらのフラグ変更をコンパニオンにも適用できます。",
     "{count} matching photo shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
     "{count} matching photos shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "フォルダの追加や再スキャン時に、グリッドのプレビューがバックグラウンドで作成されます。最初に元の写真の大きなプレビューが表示され、編集を反映したプレビューが準備でき次第、置き換わります。"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "フォルダの追加や再スキャン時に、グリッドのプレビューがバックグラウンドで作成されます。最初に元の写真の大きなプレビューが表示され、編集を反映したプレビューが準備でき次第、置き換わります。",
+    "Copy Settings...": "設定をコピー..."
   },
   "plurals": {
     " · {count} paired file linked": {
