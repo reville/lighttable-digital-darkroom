@@ -72,8 +72,7 @@
 .preset-browser-submission-scope dd { margin:2px 0 0; color:var(--muted); overflow-wrap:anywhere; }
 
 .preset-browser-amount { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:8px; padding:8px 0; }
-.preset-browser-amount label { font-size:11px; color:var(--ink); }
 .preset-browser-amount output { font-size:11px; color:var(--ink-2); font-variant-numeric:tabular-nums; min-width:4ch; text-align:right; }
-.preset-browser-amount input { grid-column:1 / -1; width:100%; min-width:0; margin:0; }
+.preset-browser-amount input { width:100%; min-width:0; margin:0; }
 .preset-browser-toggle { min-height:24px; min-width:36px; padding:2px 7px; font-size:10px; }
 .preset-browser-toggle[aria-pressed="true"] { color:var(--on-ink); background:var(--on-soft); border-color:var(--slider-accent); }
