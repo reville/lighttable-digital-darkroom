@@ -1193,12 +1193,12 @@
         {
           "title": "Scegli una collezione",
           "paragraphs": [
-            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata. Vengono mostrate 20 preimpostazioni per pagina."
+            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
           ],
           "steps": [
             "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
             "Usa la stella accanto a una preimpostazione per aggiungerla ai preferiti; Preferiti filtra la raccolta corrente.",
-            "In Community, scegli In evidenza, Nuovo o Tutti e usa Soggetto per restringere la raccolta. Seleziona una preimpostazione per vedere la sua descrizione, autore, versione, comportamento Pellicola e foto di esempio disponibili."
+            "In Community, scegli In evidenza, Nuovo o Tutti e usa Soggetto per restringere la raccolta. Usa il pulsante … accanto a un predefinito per visualizzarne descrizione, autore, versione, comportamento Pellicola e foto di esempio disponibili."
           ],
           "tips": [
             "In evidenza è una collezione editoriale, non una classifica di popolarità.",
@@ -1206,18 +1206,25 @@
           ]
         },
         {
+          "title": "Organizzare i pacchetti di predefiniti",
+          "paragraphs": [
+            "I predefiniti appaiono come righe orizzontali all’interno di pacchetti comprimibili. Gli stili integrati sono inizialmente suddivisi nei pacchetti Colore, Pellicola e Bianco e nero. Fai clic sull’intestazione di un pacchetto per espanderlo o comprimerlo.",
+            "Scegli Nuovo pacchetto… per creare un pacchetto con un nome nella raccolta corrente. Trascina un predefinito sulla sua intestazione oppure apri i dettagli del predefinito con … e scegli Sposta nel pacchetto. Usa … accanto a un pacchetto per rinominarlo. Rimuovendo un pacchetto, i suoi predefiniti tornano ai gruppi predefiniti senza essere eliminati. L’organizzazione dei pacchetti viene salvata su questo computer."
+          ]
+        },
+        {
           "title": "Applica e regola la Quantità",
           "paragraphs": [
-            "Fai clic su una scheda predefinita per applicarla immediatamente alla foto principale. Fai clic di nuovo sulla stessa scheda, oppure usa il suo pulsante Attivo/Disattivato, per disattivarla. La tua foto rimane su questo computer."
+            "Fai clic sulla riga di un predefinito per applicarlo subito. Il cursore Quantità appare sotto la riga. Fai di nuovo clic sulla stessa riga per disattivarlo e nascondere il cursore. La foto rimane su questo computer."
           ],
           "steps": [
-            "Seleziona una foto e fai clic su una scheda predefinita. Il predefinito selezionato mostra la Quantità sotto il nome.",
+            "Seleziona una foto, espandi un pacchetto e fai clic sulla riga di un predefinito.",
             "Trascina la Quantità da 0% a 100%. Zero ripristina la modifica prima del predefinito; 100% usa il predefinito completo. Fai doppio clic su Quantità per reimpostarla a 100%.",
             "Fai clic su un altro predefinito per cambiare aspetto. Annulla e Ripristina ripristinano la selezione del predefinito, lo stato attivo e la quantità. Il predefinito selezionato e la quantità vengono salvati con la foto."
           ],
           "tips": [
             "Pellicola, Pellicola attiva/disattivata e altre scelte fisse cambiano a qualsiasi quantità superiore a zero. Tono, colore, curve e regolazioni numeriche variano con la Quantità. Gli esempi dell'autore restano separati dalla tua foto.",
-            "Il passaggio tra le schede predefinite usa la modifica precedente al primo predefinito, così gli aspetti non si accumulano. Le modifiche manuali al di fuori del predefinito, come l'esposizione per un Aspetto, vengono mantenute. Modificare manualmente un'impostazione controllata dal predefinito termina la regolazione della sua Quantità; la modifica attuale diventa quindi la base per il predefinito successivo."
+            "Passando da una riga di predefinito a un’altra si usa la modifica precedente al primo predefinito, così gli stili non si accumulano. Le modifiche manuali esterne al predefinito, come l’esposizione per uno stile, vengono mantenute. Modificare manualmente un’impostazione controllata dal predefinito termina la sua regolazione Quantità; la modifica corrente diventa quindi la base per il predefinito successivo."
           ]
         },
         {
@@ -1236,7 +1243,7 @@
             "Aggiungi a Tuo scarica e salva la ricetta della community selezionata senza applicarla. Le ricette installate funzionano offline. Le modifiche alle tue foto esistenti memorizzano le impostazioni separatamente dalla preimpostazione."
           ],
           "steps": [
-            "Fai clic su un predefinito Community per usarlo sulla tua foto, quindi fai clic su Aggiungi a Tuo per conservare una copia offline.",
+            "Fai clic su un predefinito della Community per usarlo sulla foto, poi apri i suoi dettagli con … e fai clic su Aggiungi a Tuo per conservarne una copia offline.",
             "Usalo più tardi da Tuo, oppure torna a Community per ispezionare la pagina pubblica della preimpostazione.",
             "Fai clic su Aggiorna per controllare il catalogo. Quando è elencata una versione più recente, Aggiorna in Tuo sostituisce la ricetta salvata solo quando lo scegli."
           ],
@@ -1270,7 +1277,7 @@
             "La pubblicazione su Community è revisionata. La sezione di invio mostra le esatte impostazioni Sviluppa e Pellicola nell'aspetto preparato, il suo comportamento Pellicola e le correzioni foto che conserva. Non viene caricato nulla quando si ispeziona questo riepilogo o si prepara un download."
           ],
           "steps": [
-            "Salva una preimpostazione in Tuo, selezionala e rivedi il riepilogo delle impostazioni incluse sotto Invio a Community.",
+            "Salva un predefinito in Tuo, apri i suoi dettagli con … e controlla il riepilogo delle impostazioni incluse sotto Invio della community.",
             "Fai clic su Prepara invio a Community… e attendi il rendering degli esempi locali. Salva il file ZIP contenente la preimpostazione, tre coppie di foto prima/dopo con licenza, crediti foto e note sui diritti.",
             "Apri il pacchetto e ispeziona gli esempi. Puoi anche selezionare una tua foto e usare Scarica esempio su questa foto per salvare un JPEG a 960 pixel dell'aspetto condiviso senza modificare l'edit.",
             "Fai clic su Apri modulo di invio, allega il pacchetto ed eventuali esempi aggiuntivi consentiti, e aggiungi i dettagli dell'autore, la descrizione e le autorizzazioni di pubblicazione prima di inviare."
@@ -3188,5 +3195,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
+  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
 }
