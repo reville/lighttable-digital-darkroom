@@ -74,10 +74,12 @@ test('photo zoom enlarges correction areas while line widths, dashes and pins st
     cv: { width: 256, height: 171, getBoundingClientRect: () => image },
     cmp: { getBoundingClientRect: () => image },
     zoomwrap: { getBoundingClientRect: () => viewport },
-    healVisualize: { checked: false },
+    healVisualize: { checked: true },
+    healVisualizeThreshold: { value: '0.55' },
   };
   const S = { activePane: 'healPane', localPinsVisible: true, selectedHealId: 'spot',
     heals: [{ id: 'spot', target: [0.5, 0.5], source: [0.55, 0.5], radius: 0.1, mode: 'clone' }],
+    baseImg: { complete: true, naturalWidth: 256 },
     overlayHoverPoint: null, healBrush: { radius: 0.1, feather: 0.5 } };
   const draw = new Function('S', '$', 'window', 'screenOverlayGeometry', 'prepareScreenOverlay',
     'syncOverlayCursorClass', source.slice(source.indexOf('function drawBrushCursor('),
@@ -89,6 +91,8 @@ test('photo zoom enlarges correction areas while line widths, dashes and pins st
     image = rect(120 - 450 * (zoom - 1), 80 - 300 * (zoom - 1), 900 * zoom, 600 * zoom);
     overlay.calls.length = 0;
     draw();
+    assert.ok(!overlay.calls.some(c => c.method === 'drawImage'),
+      'Visualize Spots must not cover the sharp preview with the sampling helper');
     const arcs = overlay.calls.filter(c => c.method === 'arc');
     assert.deepEqual(arcs.map(c => c.args[2]), [60 * zoom, 4.5, 60 * zoom, 4.5]);
     assert.ok(overlay.calls.filter(c => c.method === 'stroke').every(c => c.lineWidth === 2.2));
