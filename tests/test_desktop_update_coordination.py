@@ -3,6 +3,7 @@ from __future__ import annotations
 import http.client
 import json
 from pathlib import Path
+import queue
 import tempfile
 import threading
 import time
@@ -33,7 +34,15 @@ class DesktopUpdateCoordinationTests(unittest.TestCase):
         ]
         for item in self.patches:
             item.start()
-        self.http = server.LightTableServer(('127.0.0.1', 0), server.Handler)
+        self.completed_requests = queue.Queue()
+        completed_requests = self.completed_requests
+        class Handler(server.Handler):
+            def do_POST(self):
+                try:
+                    super().do_POST()
+                finally:
+                    completed_requests.put(None)
+        self.http = server.LightTableServer(('127.0.0.1', 0), Handler)
         self.http_patch = patch.object(server, 'HTTPD', self.http)
         self.http_patch.start()
         self.thread = threading.Thread(target=self.http.serve_forever, daemon=True)
@@ -58,6 +67,9 @@ class DesktopUpdateCoordinationTests(unittest.TestCase):
         response = connection.getresponse()
         result = response.status, json.loads(response.read())
         connection.close()
+        # Reading response bytes can precede the handler's finally block.
+        # Account for the complete request before inspecting admission state.
+        self.completed_requests.get(timeout=5)
         return result
 
     def test_unauthenticated_updates_cannot_freeze_or_stop_server(self):
