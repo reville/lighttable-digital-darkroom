@@ -132,6 +132,13 @@ The JSON evidence records the source revision and renderer. Use `--photo`
 with a real RAW file for an additional hardware acceptance run. This gate
 provides native runtime evidence, not screenshot or monitor-color proof.
 
+To recheck an existing CI package after changing the acceptance script, dispatch
+`windows-build.yml` with `build_run_id` set to that package's Windows build run.
+The native-only job verifies the successful package-build step and the archive's
+source identity, then records both the package commit and the tester commit.
+Completed packages are retained even when native acceptance fails; that failure
+still blocks the full build job and release publication.
+
 For Authenticode signing, configure repository secrets
 `WINDOWS_CERTIFICATE_BASE64` (a base64-encoded PFX containing a valid code-signing
 certificate and private key) and `WINDOWS_CERTIFICATE_PASSWORD`. The installed
