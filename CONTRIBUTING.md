@@ -85,15 +85,19 @@ bash run.sh "/path/to/photo-folder" 8321
 
 `run.sh` uses the macOS `open` command. It is not a Linux launcher.
 
-For local appearance experiments, Command-D (Ctrl-D on Windows/Linux) opens a
-hidden appearance tester. Its color picker and hex field update selections and
+For local appearance experiments on macOS, Command-D opens a hidden, movable
+appearance tester window. It stays open while the editor remains
+usable; on macOS it floats above the main window. Repeating the shortcut brings
+the existing tester forward. Its color picker and hex field update selections and
 active controls immediately; switching borders off leaves active button text
 and icons colored, without their fill or border. Photo selection outlines,
 semantic color swatches, and keyboard focus outlines remain available. Test
 settings stay in the current webview/browser origin's local storage; Reset
-restores the normal palette and borders. Escape, Done, or the shortcut closes
-the panel. This English-only testing tool is intentionally absent from product
-menus and Help.
+restores the normal palette and borders. Escape or Close closes the tester;
+closing the editor also closes it. The testing controls remain English-only and
+absent from product menus and Help.
+Browser sessions use a separate popup; Windows and Linux desktop shells retain
+the existing inline tester under Ctrl-D.
 
 ## Tests
 

@@ -50,6 +50,7 @@ import { createCatalogUI } from '/web/catalog-ui.js';
 import { createEnhancePanel } from '/web/enhance-panel.js';
 import { createPeoplePanel } from '/web/people.js';
 import { installFirstRunSetup } from '/web/first-run.js';
+import { installApplePhotosBrowser } from '/web/apple-photos.js';
 import { installRecovery } from '/web/recovery.js';
 import {
   initMidi, setMidiLearnTarget, toggleMidiLearn, resetMidiMappings,
@@ -64,6 +65,7 @@ let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
 let FIRST_RUN = null;
+let APPLE_PHOTOS = null;
 let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
@@ -11445,6 +11447,7 @@ const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
   DESKTOP_UPDATES.nativeEvent(message);
   FIRST_RUN?.nativeEvent(message);
+  APPLE_PHOTOS?.nativeEvent(message);
   if (message?.type === 'presetLink' && typeof message.id === 'string') {
     switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);
     return;
@@ -11817,4 +11820,23 @@ FIRST_RUN = installFirstRunSetup({
     refreshFilteredView();
   },
   openCatalog: () => $('importCatalogBtn').click(),
+});
+
+APPLE_PHOTOS = installApplePhotosBrowser({
+  el: $, sendNative, nativeBridge,
+  onImported: async (path) => {
+    if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    const result = await api('/api/catalog/sources', {action: 'add', path, importState: false});
+    if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
+    await reloadLibrary();
+  },
+  onViewImported: async (path) => {
+    if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    S.includeSubfolders = true;
+    $('includeSubfolders').checked = true;
+    S.activeFolders[path] = '';
+    await savePrefs();
+    if (S.rootFolder === path) { await reloadLibrary(); selectFolder(''); }
+    else sendNative('selectSource', {path});
+  },
 });

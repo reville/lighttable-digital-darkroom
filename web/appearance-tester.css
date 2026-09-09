@@ -28,15 +28,11 @@
   box-shadow:none !important;
 }
 
-/* No dimming or blur: the actual controls remain visible during experiments. */
-.appearance-test-backdrop {
-  background:transparent;
-  backdrop-filter:none;
-  place-items:start;
-  padding:64px 20px 20px;
-  overflow:auto;
-}
-.appearance-test { width:min(320px,calc(100vw - 40px)); }
+.appearance-test-window { height:auto; min-height:100%; overflow:auto; background:var(--panel-raised); }
+.appearance-test { padding:20px; }
+.appearance-test-backdrop { background:transparent; backdrop-filter:none; place-items:start; padding:64px 20px 20px; overflow:auto; }
+.appearance-test-backdrop .appearance-test { width:min(320px,calc(100vw - 40px)); }
+.appearance-test h1 { margin:0 0 16px; font-size:15px; font-weight:600; }
 .appearance-test-color { display:flex; gap:10px; margin:8px 0 16px; }
 .appearance-test-color input[type="color"] { width:52px; height:34px; padding:2px; cursor:pointer; }
 .appearance-test-color input[type="text"] { width:112px; font-family:monospace; }
