@@ -1,5 +1,25 @@
 # Arch/Omarchy packages
 
+## Install the published x86_64 package
+
+The [Linux download page](https://lighttable.app/linux.html?distro=arch) shows
+published Arch packages and their matching SHA-256 checksums. Choose Arch Linux
+or Omarchy and Intel/AMD 64-bit. Save both files in the same directory, then run:
+
+```sh
+sha256sum -c lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst.sha256
+sudo pacman -U ./lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst
+```
+
+Open LightTable from the application menu. Close it before upgrading with a new
+package and checksum. Pacman owns this installation, so the portable in-app
+updater stays disabled. Remove the package with `sudo pacman -R lighttable-bin`;
+photos, catalog, preferences, and caches remain.
+
+The AUR listing is a separate publication. A downloadable pacman package does
+not by itself make `yay -S lighttable-bin` available. The reviewed recipe is in
+[`release/`](release/), pinned to the public Linux 0.5.0 archive and its checksum.
+
 ## Local package
 
 `scripts/linux/make-arch-package.py` turns an existing LightTable Linux archive

@@ -16,14 +16,19 @@ pacman -Syyuu --noconfirm
 pacman -S --needed --noconfirm sudo python git base-devel namcap \
   gtk3 webkit2gtk-4.1 xdotool openblas openssl libglvnd vulkan-icd-loader lcms2 \
   xdg-utils glib2 dbus gvfs zenity xdg-desktop-portal hicolor-icon-theme desktop-file-utils \
-  xorg-server-xvfb xorg-xauth openbox imagemagick hyprland weston grim mesa vulkan-swrast ttf-dejavu
+  xorg-server-xvfb xorg-xauth openbox imagemagick hyprland weston grim mesa vulkan-swrast ttf-dejavu seatd
 useradd -m -s /bin/bash tester
+if [[ ${VM_GPU:-0} == 1 ]]; then
+  usermod -aG video,render,seat tester
+  systemctl start seatd
+fi
 printf 'tester ALL=(ALL) NOPASSWD: /usr/bin/pacman\n' > /etc/sudoers.d/lighttable-test
 chown -R tester:tester /work
 curl -fsSL --retry 2 --max-time 30 https://raw.githubusercontent.com/omacom/omarchy/0534987009061cbe2dacdde4ad564092ab698d12/themes/tokyo-night/colors.toml -o evidence/omarchy-colors.toml
 sha256sum evidence/omarchy-colors.toml > evidence/omarchy-colors.sha256
 pacman -Q > evidence/installed-packages.txt
 cp /etc/pacman.conf /etc/pacman.d/mirrorlist evidence/
+if [[ ${REUSE_PACKAGE:-0} != 1 ]]; then
 runuser -u tester -- bash -euo pipefail -c '
   cd /work/packaging/linux/arch/release
   makepkg --printsrcinfo > /tmp/actual-srcinfo
@@ -31,15 +36,17 @@ runuser -u tester -- bash -euo pipefail -c '
   makepkg --noconfirm --cleanbuild
   cp lighttable-bin-*.pkg.tar.zst /work/dist/
   namcap PKGBUILD lighttable-bin-*.pkg.tar.zst > /work/evidence/namcap.txt
-  cd /work
-  python scripts/fetch-demo-raws.py --file 01-canon-eos-80d-city-tree.CR2 --file 03-fujifilm-xq2-harbor-ferry.RAF
 '
+fi
+runuser -u tester -- python scripts/fetch-demo-raws.py --file 01-canon-eos-80d-city-tree.CR2 --file 03-fujifilm-xq2-harbor-ferry.RAF
 pacman -U --noconfirm dist/lighttable-bin-*.pkg.tar.zst
 pacman -Qkk lighttable-bin > evidence/package-integrity.txt
 runuser -u tester -- bash -euo pipefail -c '
   cd /work
   /opt/lighttable/Python/bin/python3 -B /opt/lighttable/runtime-smoke.py /opt/lighttable > evidence/runtime.txt
-  timeout 1200s xvfb-run -a --server-args="-screen 0 1440x1000x24" dbus-run-session -- bash scripts/linux/arch-release-desktop.sh x11
+  if [[ ${VM_GPU:-0} != 1 ]]; then
+    timeout 1200s xvfb-run -a --server-args="-screen 0 1440x1000x24" dbus-run-session -- bash scripts/linux/arch-release-desktop.sh x11
+  fi
   timeout 1200s dbus-run-session -- bash scripts/linux/arch-release-desktop.sh hyprland
 '
 pacman -Qkk lighttable-bin > evidence/package-integrity-after.txt

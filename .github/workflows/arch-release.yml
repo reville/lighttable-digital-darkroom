@@ -1,7 +1,5 @@
 name: Arch release acceptance
 on:
-  push:
-    branches: [codex/arch-omarchy-release-20260909]
   workflow_dispatch:
 permissions:
   contents: read
