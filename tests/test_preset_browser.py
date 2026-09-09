@@ -15,7 +15,8 @@ class PresetBrowserTests(unittest.TestCase):
 import {groupPresetPacks,movePresetToPack} from './web/preset-packs.js';
 const presets=[{id:'a',name:'Warm',collection:'builtin',tags:[]},
   {id:'b',name:'Warm',collection:'builtin',tags:['Film']},
-  {id:'c',name:'Mono',collection:'builtin',tags:['B&W']}];
+  {id:'c',name:'Mono',collection:'builtin',tags:['B&W']},
+  {id:'d',name:'Graphic Noir',collection:'builtin',tags:['Black & White']}];
 const organization={packs:[{id:'pack-one',name:'Travel',collection:'builtin'},
   {id:'pack-two',name:'Personal',collection:'yours'}],assignments:{},collapsed:[]};
 const before=JSON.stringify([presets,organization]);
@@ -28,8 +29,8 @@ console.log(JSON.stringify({moved:groups(moved),invalid:invalid.assignments,
 """)
         self.assertTrue(result['unchanged'])
         self.assertEqual(result['invalid'], {'a': 'pack-one'})
-        self.assertEqual(result['moved'], [['pack-one', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c']]])
-        self.assertEqual(result['restored'], [['pack-one', []], ['builtin-color', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c']]])
+        self.assertEqual(result['moved'], [['pack-one', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c', 'd']]])
+        self.assertEqual(result['restored'], [['pack-one', []], ['builtin-color', ['a']], ['builtin-film', ['b']], ['builtin-bw', ['c', 'd']]])
 
     def test_removed_or_invalid_packs_return_presets_to_default_groups(self):
         result = self.run_js("""

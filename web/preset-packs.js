@@ -19,7 +19,7 @@ export function normalizePresetPacks(value = {}) {
 export function defaultPresetPack(preset) {
   const collection = preset.collection || 'yours';
   if (collection === 'builtin') {
-    if (preset.tags?.includes('B&W')) return { id: 'builtin-bw', name: tr('Black & White') };
+    if (preset.tags?.some(tag => ['B&W', 'Black & White'].includes(tag))) return { id: 'builtin-bw', name: tr('Black & White') };
     if (preset.tags?.some(tag => ['Film', 'Vintage'].includes(tag))) return { id: 'builtin-film', name: tr('Film') };
     return { id: 'builtin-color', name: tr('Color') };
   }
