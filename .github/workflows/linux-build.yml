@@ -102,6 +102,7 @@ jobs:
         run: |
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_desktop_updater.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_desktop_update_coordination.py -v
+          .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_desktop_acceptance.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_platform_paths.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_theme.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_linux_shared_input.py -v
@@ -160,6 +161,24 @@ jobs:
           BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
           timeout 125s dbus-run-session -- "$BUNDLE/Python/bin/python3" -B \
             scripts/linux/wayland-smoke.py "$BUNDLE"
+
+      - name: Require X11 native edit, RGB16 export and normal reopen
+        if: github.event_name != 'pull_request' || inputs.build_package
+        timeout-minutes: 6
+        run: |
+          BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
+          SOURCE_REVISION=$(git rev-parse HEAD)
+          timeout --kill-after=20s 270s xvfb-run -a --server-args="-screen 0 1280x900x24" dbus-run-session -- \
+            "$BUNDLE/Python/bin/python3" -B scripts/linux/desktop-acceptance.py "$BUNDLE" \
+            --expected-source "$SOURCE_REVISION" --timeout 240 --report-dir .build/linux-native-acceptance
+
+      - name: Upload X11 native acceptance evidence
+        if: always() && (github.event_name != 'pull_request' || inputs.build_package)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux-X11-native-acceptance
+          path: .build/linux-native-acceptance/
+          if-no-files-found: ignore
 
       - name: Require signed native update and failed-startup launcher recovery
         if: github.event_name != 'pull_request' || inputs.build_package

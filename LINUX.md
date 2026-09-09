@@ -287,6 +287,20 @@ physical GPU, fractional-scale, or color-managed display behavior. Packaging
 tests exercise desktop URI delivery and safe removal, including paths containing
 spaces and shell metacharacters, and verify the pacman package's staging layout.
 
+Full-package CI also requires `scripts/linux/desktop-acceptance.py` under X11.
+It verifies the bundle's clean source revision and Python/server paths, imports
+an isolated RGB16 ramp with Film disabled, saves exposure and rating through the
+native UI, and exports through the application API and bundled `render_cli.py`.
+The TIFF must retain its dimensions, 16-bit samples, more than 256 channel levels,
+and an embedded ICC profile; the original must remain unchanged. Normal close
+uses `WM_DELETE_WINDOW` only after finding exactly one window with the launched
+shell's PID and the expected title. The test reopens the same catalog and requires
+a fresh server process, the saved edits, and a rendered photo. One 240-second
+deadline bounds the journey; process cleanup is separate. CI retains the JSON
+evidence, bounded logs, and exported TIFF. Wayland retains its startup/render
+check; this X11 gate does not establish Wayland close/persistence or hardware
+and display-color behavior.
+
 Full-package CI also runs `scripts/linux/updater-smoke.py` against a temporary
 copy of that bundle. It uses an ephemeral signing key and locally staged archive
 to reject bad signatures and changed bytes, install a separate version, retarget
