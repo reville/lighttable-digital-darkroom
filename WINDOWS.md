@@ -339,3 +339,68 @@ preview surface is not enabled in the Windows shell. Measure decode, GPU work,
 webview upload, and presentation separately before choosing whether a native
 DirectX viewport is needed. Apple-only AI providers and HEIF export also remain
 separate feature-porting work.
+
+## Microsoft Store EXE candidate
+
+Store preparation uses the existing per-user NSIS installer. It is an opt-in
+build mode; direct downloads keep their current defaults. It does not reserve
+a Store name, enroll a publisher, upload anything, or prove certification.
+
+On a Windows build runner with the existing release-signing prerequisites,
+provide the **x64 Evergreen Standalone Installer** from
+[Microsoft WebView2 downloads](https://developer.microsoft.com/microsoft-edge/webview2/)
+and record its SHA256 when acquiring it. Do not use the small online bootstrapper.
+The build checks that pinned hash and a trusted Microsoft signature before any
+compilation. Offline setup never falls back to downloading a prerequisite.
+
+```powershell
+./scripts/windows/build-release.ps1 -Version 0.5.0 -StoreCandidate `
+  -OfflineWebView2Installer C:\release-inputs\MicrosoftEdgeWebView2RuntimeInstallerX64.exe `
+  -OfflineWebView2Sha256 '<recorded 64-character SHA256>'
+```
+
+Use a selected stable release number in place of the example. Outputs are under
+`dist/store-candidate/`; do not overwrite an already submitted version. The
+existing Azure signing configuration runs only on approved main/version-tag
+GitHub Actions contexts. The command also requires the existing update-signing
+key. This mode does not change credentials, certificates, or Azure identity.
+
+Candidate builds:
+
+- Embed the standalone WebView2 prerequisite and invoke it silently when needed.
+- Scan the native payload by PE header, including Python `.pyd` modules. Sign
+  unsigned EXE/DLL/PYD files with the configured release signer and preserve
+  valid vendor signatures. Reject invalid signatures or unsupported unsigned PE
+  suffixes rather than silently ignoring them.
+- Sign NSIS's generated uninstaller before embedding it, then audit every PE in
+  the installed payload. `windows-store-pe-signatures.json` records each path,
+  SHA256, signature status, and publisher. A failure blocks the candidate.
+- Set candidate installer CompanyName and installed-app publisher metadata to
+  `Chonkers LLC`. Direct-release metadata remains unchanged. Metadata does not
+  change the certificate's legal identity: review the actual signing identity
+  with the Chonkers LLC Partner Center account before submission.
+
+Partner Center installation arguments: `/S` (case-sensitive). Silent uninstall
+uses `/S`. The installer is per-user and currently leaves its own update service
+in control, as with other EXE installations; it is not an MSIX package.
+
+### Evidence still required before initial submission
+
+The existing successful Windows release run predates this candidate mode. Run
+it on Windows and retain the installed-payload signature report, installer
+hash, build manifest, native startup/edit/export/restart evidence, and install,
+repair, uninstall results. Separately exercise installation on clean Windows
+10/11 x64 with WebView2 absent and network disabled, then launch and export.
+An ordinary CI image with WebView2 already present cannot prove this case.
+Check that `/S` shows no setup UI and no app is launched by setup. Confirm all
+supported OS/device claims and that uninstall preserves photos and catalogs.
+
+Host the final signed EXE at a permanent **versioned HTTPS URL** only after
+release approval. Record its SHA256 and never replace bytes at that URL.
+Complete publisher verification, name reservation, Store listing assets,
+privacy/support links, age rating, and certification notes in Partner Center.
+No Store release is prepared merely because the four original application
+signatures or the standard Windows workflow passed.
+
+Sources: [Store EXE package requirements](https://learn.microsoft.com/windows/apps/publish/publish-your-app/msi/app-package-requirements)
+and [Microsoft's offline WebView2 deployment](https://learn.microsoft.com/microsoft-edge/webview2/concepts/distribution#offline-deployment).

@@ -11,6 +11,10 @@
   !error "UNINSTALL_MANIFEST is required"
 !endif
 
+!ifndef PUBLISHER
+  !define PUBLISHER "Nicholas Reville"
+!endif
+
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
 !include "WinMessages.nsh"
@@ -21,11 +25,23 @@
 
 Unicode True
 Name "LightTable"
+!ifdef STORE_NUMERIC_VERSION
+VIProductVersion "${STORE_NUMERIC_VERSION}"
+VIAddVersionKey /LANG=1033 "ProductName" "LightTable"
+VIAddVersionKey /LANG=1033 "CompanyName" "${PUBLISHER}"
+VIAddVersionKey /LANG=1033 "FileDescription" "LightTable Setup"
+VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"
+VIAddVersionKey /LANG=1033 "LegalCopyright" "Copyright ${PUBLISHER}"
+!endif
 OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\LightTable"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
 Var UpdateOwner
+
+!ifdef SIGN_UNINSTALLER_SCRIPT
+  !uninstfinalize '"${SIGNING_POWERSHELL}" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "${SIGN_UNINSTALLER_SCRIPT}" -RequireSigning -Files "%1"' = 0
+!endif
 
 Function .onInit
   ${IfNot} ${RunningX64}
@@ -71,10 +87,15 @@ Section "Install"
   File /oname=ensure-webview2.ps1 "ensure-webview2.ps1"
   DetailPrint "Checking Microsoft Edge WebView2 Runtime…"
   ClearErrors
+!ifdef OFFLINE_WEBVIEW2_INSTALLER
+  File /oname=WebView2Standalone.exe "${OFFLINE_WEBVIEW2_INSTALLER}"
+  ExecWait '"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "$PLUGINSDIR\ensure-webview2.ps1" -OfflineInstaller "$PLUGINSDIR\WebView2Standalone.exe"' $0
+!else
   ExecWait '"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "$PLUGINSDIR\ensure-webview2.ps1"' $0
+!endif
   ${If} ${Errors}
   ${OrIf} $0 != 0
-    MessageBox MB_OK|MB_ICONSTOP "Microsoft Edge WebView2 Runtime could not be installed. Connect to the internet and run setup again, or install the Runtime from https://developer.microsoft.com/microsoft-edge/webview2 first." /SD IDOK
+    MessageBox MB_OK|MB_ICONSTOP "Microsoft Edge WebView2 Runtime could not be installed. Run setup again, or install the Runtime from https://developer.microsoft.com/microsoft-edge/webview2 first." /SD IDOK
     SetErrorLevel 1
     Abort
   ${EndIf}
@@ -116,7 +137,7 @@ Section "Install"
   CreateShortcut "$SMPROGRAMS\LightTable\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "LightTable"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKCU "${UNINSTALL_KEY}" "Publisher" "Nicholas Reville"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "Publisher" "${PUBLISHER}"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "URLInfoAbout" "https://github.com/reville/lighttable-digital-darkroom"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\LightTable.exe"
