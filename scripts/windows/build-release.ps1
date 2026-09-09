@@ -88,6 +88,8 @@ try {
         "import site"
     ) | Set-Content -Encoding ascii (Join-Path $Python "python313._pth")
 
+    $VCRuntimeVersion = & (Join-Path $PSScriptRoot "stage-vc-runtime.ps1") -Payload $Payload
+
     & uv pip install `
         --python-platform $Target `
         --python-version "3.13" `
@@ -229,6 +231,7 @@ try {
         architecture = "x64"
         winsparkle_version = $WinSparkleVersion
         python_version = $PythonVersion
+        vc_runtime_version = $VCRuntimeVersion
         authenticode_signed = [bool]$SigningEnabled
     } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Payload "build-manifest.json")
 

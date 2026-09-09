@@ -287,6 +287,15 @@ physical GPU, fractional-scale, or color-managed display behavior. Packaging
 tests exercise desktop URI delivery and safe removal, including paths containing
 spaces and shell metacharacters, and verify the pacman package's staging layout.
 
+Full-package CI also runs `scripts/linux/updater-smoke.py` against a temporary
+copy of that bundle. It uses an ephemeral signing key and locally staged archive
+to reject bad signatures and changed bytes, install a separate version, retarget
+the owned desktop/CLI launchers, and require a new GTK window and bundled server
+to render the test photo. A deliberately failed native startup must restore the
+previous launchers. These test versions use the same application source; public
+feed delivery, update-dialog behavior, and catalog migrations between revisions
+remain separate checks. No production signing key or personal catalog is used.
+
 Before declaring a Linux release ready, complete the desktop photo journey on
 Ubuntu and Arch/Omarchy, both Wayland and X11 where supported. Verify a real RAW
 import, responsive film edits, 16-bit TIFF export, restart persistence, folders

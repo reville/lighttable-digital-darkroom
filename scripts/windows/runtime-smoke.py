@@ -14,6 +14,29 @@ from pathlib import Path
 from urllib.request import build_opener, ProxyHandler
 
 
+def check_local_vc_runtime() -> None:
+    """A developer's installed CRT must not mask a missing packaged runtime."""
+    if sys.platform != "win32":
+        return
+    import ctypes
+    from ctypes import wintypes
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.GetModuleHandleW.argtypes = [wintypes.LPCWSTR]
+    kernel.GetModuleHandleW.restype = wintypes.HMODULE
+    kernel.GetModuleFileNameW.argtypes = [wintypes.HMODULE, wintypes.LPWSTR, wintypes.DWORD]
+    kernel.GetModuleFileNameW.restype = wintypes.DWORD
+    for name in ("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll"):
+        handle = kernel.GetModuleHandleW(name)
+        assert handle, f"Expected runtime library was not loaded: {name}"
+        path = ctypes.create_unicode_buffer(32768)
+        length = kernel.GetModuleFileNameW(handle, path, len(path))
+        assert 0 < length < len(path), f"Could not resolve loaded runtime: {name}"
+        assert Path(path.value).resolve().parent == Path(sys.executable).resolve().parent, (
+            f"Runtime library must load from the package, not the build machine: {path.value}"
+        )
+
+
 def smoke_environment(temp_path: Path) -> dict[str, str]:
     # Never let a developer's selected library or background-service settings
     # leak into this smoke test. All catalog/support/cache files are temporary.
@@ -38,8 +61,13 @@ def smoke_environment(temp_path: Path) -> dict[str, str]:
 
 
 def check_server_startup(resources: Path, temp_path: Path,
-                         environment: dict[str, str], *, timeout: float = 60) -> None:
+                         environment: dict[str, str], *, timeout: float = 60,
+                         control_pipe: bool = False) -> None:
     """Check real packaged startup, with a bound and unconditional child cleanup."""
+    from lighttable_cli.instances import process_is_alive
+
+    if control_pipe:
+        environment = dict(environment, LIGHTTABLE_WATCH_STDIN="1")
     startup = Path(environment["LIGHTTABLE_STARTUP_FILE"])
     log = temp_path / "server.log"
     # Local health requests must not use a machine's configured HTTP proxy.
@@ -48,6 +76,7 @@ def check_server_startup(resources: Path, temp_path: Path,
         process = subprocess.Popen(
             [sys.executable, "-B", "-u", str(resources / "server.py")],
             cwd=temp_path, env=environment, stdout=output, stderr=subprocess.STDOUT,
+            stdin=subprocess.PIPE if control_pipe else None,
         )
         try:
             deadline = time.monotonic() + timeout
@@ -72,6 +101,7 @@ def check_server_startup(resources: Path, temp_path: Path,
                 health = json.load(response)
             assert health["ok"] is True, health
             assert health["pid"] == process.pid, health
+            assert process_is_alive(process.pid), "The running server must be discoverable"
             assert Path(health["catalog"]).resolve() == Path(
                 environment["LIGHTTABLE_CATALOG_FILE"]).resolve(), health
             with opener.open(base + "/", timeout=10) as response:
@@ -85,12 +115,20 @@ def check_server_startup(resources: Path, temp_path: Path,
             raise RuntimeError(f"{error}\n{log.read_text(encoding='utf-8', errors='replace')[-12000:]}") from error
         finally:
             if process.poll() is None:
-                process.terminate()
+                if control_pipe:
+                    process.stdin.close()
+                else:
+                    process.terminate()
                 try:
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     process.kill()
                     process.wait(timeout=5)
+                    if control_pipe:
+                        raise RuntimeError("Launcher EOF did not stop the Windows server")
+            if control_pipe:
+                assert process.returncode == 0, "Launcher EOF must end the server cleanly"
+            assert not process_is_alive(process.pid), "The exited server must not remain live"
 
 
 def check_file_identity(temp_path: Path) -> None:
@@ -156,6 +194,32 @@ def check_file_identity(temp_path: Path) -> None:
     print("Packaged file-revision identity smoke passed")
 
 
+def check_shell_loader(shell: Path) -> None:
+    # Suppress loader-error dialogs in CI. A missing DLL/entry point must fail
+    # the build with its real exit status instead of waiting for a button click.
+    kernel = None
+    old_mode = None
+    if sys.platform == "win32":
+        import ctypes
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel.SetErrorMode.argtypes = [ctypes.c_uint]
+        kernel.SetErrorMode.restype = ctypes.c_uint
+        old_mode = kernel.SetErrorMode(0x0001 | 0x0002 | 0x8000)
+    try:
+        result = subprocess.run(
+            [str(shell), "--runtime-smoke"], capture_output=True, text=True,
+            timeout=15, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    finally:
+        if kernel is not None:
+            kernel.SetErrorMode(old_mode)
+    assert result.returncode == 0, (
+        f"Desktop shell failed to load: exit 0x{result.returncode & 0xFFFFFFFF:08X}; "
+        f"{result.stdout} {result.stderr}"
+    )
+    assert "LightTable shell loader smoke passed" in result.stdout
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("resources", type=Path)
@@ -178,6 +242,7 @@ def main() -> None:
 
         from PIL import Image
         import OpenImageIO  # noqa: F401
+        check_local_vc_runtime()
         import exiv2  # noqa: F401
         import numpy as np
         import rawpy  # noqa: F401
@@ -188,6 +253,7 @@ def main() -> None:
 
         if args.shell is not None:
             assert args.shell.is_file()
+            check_shell_loader(args.shell.resolve())
             assert server.RUST_BIN.name == "spektrafilm-rs.exe"
             assert server.RUST_WORKER_BIN is not None
             assert server.RUST_WORKER_BIN.name == "lighttable-engine.exe"
@@ -228,7 +294,8 @@ def main() -> None:
             assert converted.pages[0].tags.get(34675) is not None
 
         check_file_identity(temp_path)
-        check_server_startup(resources, temp_path, environment)
+        check_server_startup(resources, temp_path, environment,
+                             control_pipe=sys.platform == "win32")
 
     print("Packaged Windows runtime smoke passed")
 

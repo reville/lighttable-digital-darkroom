@@ -194,7 +194,8 @@ def atomic_create_json(
 def publish_file(staged: Path | str, destination: Path | str) -> Path:
     """Publish a completed staged output, preserving the old one on failure."""
     staged, destination = Path(staged), Path(destination)
-    with staged.open("rb") as handle:
+    # Windows _commit (os.fsync) requires a writable file handle.
+    with staged.open("r+b" if os.name == "nt" else "rb") as handle:
         os.fsync(handle.fileno())
     os.replace(staged, destination)
     _flush_directory(destination.parent)
@@ -204,7 +205,8 @@ def publish_file(staged: Path | str, destination: Path | str) -> Path:
 def publish_file_no_replace(staged: Path | str, destination: Path | str) -> Path:
     """Publish completed bytes only if the destination name is still free."""
     staged, destination = Path(staged), Path(destination)
-    with staged.open("rb") as handle:
+    # Windows _commit (os.fsync) requires a writable file handle.
+    with staged.open("r+b" if os.name == "nt" else "rb") as handle:
         os.fsync(handle.fileno())
     os.link(staged, destination)
     _flush_directory(destination.parent)

@@ -20,6 +20,38 @@ Windows and Linux updater integration is present in source. A signed native
 upgrade, configured signing keys, and published feeds are still required before
 automatic updates can be delivered.
 
+## Validate candidates before publication
+
+Windows and Linux package validation can run independently while Apple signing
+is being prepared. Dispatch their build workflows on the candidate branch:
+
+```sh
+gh workflow run windows-build.yml --ref CANDIDATE_BRANCH -f require_signing=false
+gh workflow run linux-build.yml --ref CANDIDATE_BRANCH
+```
+
+These workflows upload CI artifacts; they do not create a public release or
+publish update feeds. Record the resolved commit from each run, and compare it
+with the downloaded package manifest. An unsigned Windows CI package cannot
+establish Authenticode or public update trust. Do not push a release tag simply
+to test packaging: the separate Release workflow publishes successful builds.
+
+Linux full-package validation also runs `scripts/linux/updater-smoke.py` with
+the bundled Python under Xvfb and a private D-Bus session. It copies the real
+bundle, changes only temporary version/key metadata, signs a local test archive,
+checks signature/checksum rejection, retargets owned launchers, and requires the
+new GTK app and bundled server to render a photo. A deliberately failed GTK
+startup must restore the old launchers. The original package and user data are
+outside this test's writable paths. This verifies the installed updater path;
+public HTTPS delivery, the update dialog, migrations between source revisions,
+and hardware/display behavior still need their own acceptance pass.
+
+Before publishing the first version, retain evidence from the exact candidate
+for clean installation, representative RAW/JPEG/16-bit TIFF input, editing and
+export, saved edits after restart, recoverable trash, and package ownership.
+Run Windows client/scaling tests and Ubuntu/Arch desktop/GPU tests on the systems
+listed as supported. Package-index submissions are separate from direct downloads.
+
 ## Build and release a version
 
 1. Complete unit/installer tests on the exact source to release.
