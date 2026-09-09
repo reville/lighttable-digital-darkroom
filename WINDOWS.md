@@ -136,6 +136,10 @@ To recheck an existing CI package after changing the acceptance script, dispatch
 `windows-build.yml` with `build_run_id` set to that package's Windows build run.
 The native-only job verifies the successful package-build step and the archive's
 source identity, then records both the package commit and the tester commit.
+The server keeps the launcher's shutdown pipe private and gives helper processes
+null standard input. Otherwise a worker can block during Python initialization
+while the server waits for launcher EOF. The Windows process regression checks
+helper startup with the launcher pipe open, then verifies shutdown on EOF.
 On failure, this recheck uses a checksum-pinned external profiler to capture
 stacks from the test's packaged Python processes, without local variables or
 changes to the archive. The standalone script accepts the same optional tool
