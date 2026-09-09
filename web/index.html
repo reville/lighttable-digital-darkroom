@@ -252,6 +252,11 @@
             <span data-i18n-text="{&quot;0&quot;:&quot;Paste&quot;}">Paste</span>
             <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
           </button>
+          <button class="quiet compact transfer-btn" id="previousBtn" title="Apply settings from previous photo (Ctrl/⌘⌥V)" aria-label="Apply settings from previous photo" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Apply settings from previous photo (Ctrl/⌘⌥V)&quot;,&quot;aria-label&quot;:&quot;Apply settings from previous photo&quot;}">
+            <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 15l-5-5 5-5"/></svg>
+            <span data-i18n-text="{&quot;0&quot;:&quot;Previous&quot;}">Previous</span>
+            <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
+          </button>
         </div>
       </div>
     <section id="batchMaskActivity" class="workflow-activity" hidden aria-label="Batch mask progress" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Batch mask progress&quot;}">
@@ -333,7 +338,7 @@
         <details class="sec" id="lightSection" open>
           <summary><span data-i18n-text="{&quot;0&quot;:&quot;Light&quot;}">Light</span><span class="summary-actions"><button class="quiet compact section-action" id="autoBtn" type="button" title="Automatically set tone" disabled data-i18n-text="{&quot;0&quot;:&quot;Auto&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Automatically set tone&quot;}">Auto</button><a class="reset" href="#" data-reset="tone" title="Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset Exposure, Contrast, Highlights, Shadows, Whites, and Blacks&quot;}">Reset</a></span></summary>
           <div class="secbody">
-            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Exposure&quot;}">Exposure</span><input type="range" data-g="exposure" min="-3" max="3" step="0.01" value="0"><span class="val" data-gv="exposure">0.00</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Exposure&quot;}">Exposure</span><input type="range" data-g="exposure" min="-5" max="5" step="0.01" value="0"><span class="val" data-gv="exposure">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Contrast&quot;}">Contrast</span><input type="range" data-g="contrast" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="contrast">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Highlights&quot;}">Highlights</span><input type="range" data-g="highlights" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="highlights">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Shadows&quot;}">Shadows</span><input type="range" data-g="shadows" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="shadows">0.00</span></div>
@@ -448,8 +453,8 @@
         <details class="sec" id="rawDevelopSection" hidden>
           <summary><span data-i18n-text="{&quot;0&quot;:&quot;Profile&quot;}">Profile</span><a class="reset" href="#" data-reset="raw" title="Reset the RAW profile and capture-stage processing settings" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset the RAW profile and capture-stage processing settings&quot;}">Reset</a></summary>
           <div class="secbody">
-            <label class="field-label" for="raw_profile" data-i18n-text="{&quot;0&quot;:&quot;Camera profile&quot;}">Camera profile</label>
-            <select id="raw_profile"><option value="camera" data-i18n-text="{&quot;0&quot;:&quot;Camera color&quot;}">Camera color</option><option value="detail" data-i18n-text="{&quot;0&quot;:&quot;Fine detail&quot;}">Fine detail</option><option value="smooth" data-i18n-text="{&quot;0&quot;:&quot;Smooth color&quot;}">Smooth color</option></select>
+            <label class="field-label" for="raw_profile" data-i18n-text="{&quot;0&quot;:&quot;Demosaic&quot;}">Demosaic</label>
+            <select id="raw_profile"><option value="camera" data-i18n-text="{&quot;0&quot;:&quot;Standard&quot;}">Standard</option><option value="detail" data-i18n-text="{&quot;0&quot;:&quot;Fine detail&quot;}">Fine detail</option><option value="smooth" data-i18n-text="{&quot;0&quot;:&quot;Smooth&quot;}">Smooth</option></select>
             <label class="field-label" for="raw_highlight_recovery" data-i18n-text="{&quot;0&quot;:&quot;Highlight recovery&quot;}">Highlight recovery</label>
             <select id="raw_highlight_recovery"><option value="off" data-i18n-text="{&quot;0&quot;:&quot;Off · clip&quot;}">Off · clip</option><option value="blend" data-i18n-text="{&quot;0&quot;:&quot;Blend channels&quot;}">Blend channels</option><option value="reconstruct" data-i18n-text="{&quot;0&quot;:&quot;Reconstruct color&quot;}">Reconstruct color</option></select>
             <label class="field-label" for="developProfile" data-i18n-text="{&quot;0&quot;:&quot;Develop profile (Film off)&quot;}">Develop profile (Film off)</label>
@@ -530,7 +535,7 @@
             <details class="sec local-sec" open>
               <summary><span data-i18n-text="{&quot;0&quot;:&quot;Light&quot;}">Light</span></summary>
               <div class="secbody">
-                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Exposure&quot;}">Exposure</span><input type="range" data-local="exposure" min="-3" max="3" step="0.01"><span class="val" data-localv="exposure">0.00</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Exposure&quot;}">Exposure</span><input type="range" data-local="exposure" min="-5" max="5" step="0.01"><span class="val" data-localv="exposure">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Contrast&quot;}">Contrast</span><input type="range" data-local="contrast" min="-1" max="1" step="0.01"><span class="val" data-localv="contrast">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Highlights&quot;}">Highlights</span><input type="range" data-local="highlights" min="-1" max="1" step="0.01"><span class="val" data-localv="highlights">0.00</span></div>
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Shadows&quot;}">Shadows</span><input type="range" data-local="shadows" min="-1" max="1" step="0.01"><span class="val" data-localv="shadows">0.00</span></div>
@@ -1036,7 +1041,7 @@
       <p class="setup-intro" data-i18n-text="{&quot;0&quot;:&quot;Start with a Lightroom Classic catalog.&quot;}">Start with a Lightroom Classic catalog.</p>
       <ul class="setup-facts"><li data-i18n-text="{&quot;0&quot;:&quot;Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.&quot;}">Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.</li><li data-i18n-text="{&quot;0&quot;:&quot;Bring ratings, keywords, collections, and supported edits. Develop settings are approximate.&quot;}">Bring ratings, keywords, collections, and supported edits. Develop settings are approximate.</li><li data-i18n-text="{&quot;0&quot;:&quot;Close Lightroom Classic, then choose its&quot;,&quot;2&quot;:&quot;file. You’ll review what to import before starting.&quot;}">Close Lightroom Classic, then choose its <strong data-i18n-text="{&quot;0&quot;:&quot;.lrcat&quot;}">.lrcat</strong> file. You’ll review what to import before starting.</li></ul>
       <button class="accent-btn" id="setupCatalogChoose" data-i18n-text="{&quot;0&quot;:&quot;Choose catalog…&quot;}">Choose catalog…</button>
-      <p class="setup-availability" data-i18n-text="{&quot;0&quot;:&quot;Using cloud-based Lightroom? Export your originals to a folder, then choose that folder here.&quot;}">Using cloud-based Lightroom? Export your originals to a folder, then choose that folder here.</p>
+      <p class="setup-availability" data-i18n-text="{&quot;0&quot;:&quot;Using cloud-based Lightroom? Export your originals to a folder, then &quot;}">Using cloud-based Lightroom? Export your originals to a folder, then <button type="button" class="setup-link-btn" id="setupFolderFromCloud" data-i18n-text="{&quot;0&quot;:&quot;choose that folder here.&quot;}">choose that folder here.</button></p>
     </div>
     <div class="setup-detail" data-setup-page="photos" hidden>
       <h2 id="setupHeading-photos" tabindex="-1" data-i18n-text="{&quot;0&quot;:&quot;Start with Apple Photos&quot;}">Start with Apple Photos</h2>
@@ -1065,6 +1070,10 @@
       <svg class="setup-result-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="m12 20 5 5 11-11"/></svg>
       <h2 id="setupHeading-result" tabindex="-1" data-i18n-text="{&quot;0&quot;:&quot;Your photos are ready&quot;}">Your photos are ready</h2>
       <p id="setupResultMessage" class="setup-intro"></p>
+      <div id="setupSidecarOffer" hidden style="margin-bottom: 20px;">
+        <p class="hint" id="setupSidecarText" data-i18n-text="{&quot;0&quot;:&quot;XMP sidecars were found in this folder. You can import their ratings, metadata, and develop settings.&quot;}">XMP sidecars were found in this folder. You can import their ratings, metadata, and develop settings.</p>
+        <button class="primary-btn" id="setupImportSidecars" data-i18n-text="{&quot;0&quot;:&quot;Import sidecars…&quot;}">Import sidecars…</button>
+      </div>
       <button class="accent-btn" id="setupDone" data-i18n-text="{&quot;0&quot;:&quot;Start editing&quot;}">Start editing</button>
     </div>
     <p class="setup-error" id="setupError" role="alert"></p>
@@ -1094,6 +1103,28 @@
     </div>
     <details id="importCoverage" hidden><summary data-i18n-text="{&quot;0&quot;:&quot;Photo compatibility report&quot;}">Photo compatibility report</summary><div id="importCoverageRows" class="import-coverage"></div><a id="importReportDownload" download data-i18n-text="{&quot;0&quot;:&quot;Download complete report&quot;}">Download complete report</a></details>
     <div class="modal-actions"><button id="importCancel" data-i18n-text="{&quot;0&quot;:&quot;Close&quot;}">Close</button><button id="importPreview" disabled data-i18n-text="{&quot;0&quot;:&quot;Preview compatibility&quot;}">Preview compatibility</button><button id="importTrial" disabled data-i18n-text="{&quot;0&quot;:&quot;Try 20 variants&quot;}">Try 20 variants</button><button class="accent-btn" id="importRun" disabled data-i18n-text="{&quot;0&quot;:&quot;Import&quot;}">Import</button></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="sidecarDialog" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sidecarTitle">
+    <strong id="sidecarTitle" data-i18n-text="{&quot;0&quot;:&quot;Import sidecars&quot;}">Import sidecars</strong>
+    <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Choose which settings to apply from XMP sidecar files found beside your photos.&quot;}">Choose which settings to apply from XMP sidecar files found beside your photos.</p>
+    <div class="import-options" id="sidecarOptions">
+      <label data-i18n-text="{&quot;1&quot;:&quot;Ratings, labels, flags, and metadata&quot;}"><input type="checkbox" id="sidecarOptMetadata" checked> Ratings, labels, flags, and metadata</label>
+      <label data-i18n-text="{&quot;1&quot;:&quot;Develop settings (approximate)&quot;}"><input type="checkbox" id="sidecarOptDevelop"> Develop settings (approximate)</label>
+      <label data-i18n-text="{&quot;1&quot;:&quot;Crop and rotation&quot;}"><input type="checkbox" id="sidecarOptCrop"> Crop and rotation</label>
+      <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;When a photo already has edits&quot;}">When a photo already has edits</span>
+        <select id="sidecarConflict">
+          <option value="skip-existing" data-i18n-text="{&quot;0&quot;:&quot;Keep mine&quot;}">Keep mine</option>
+          <option value="overwrite" data-i18n-text="{&quot;0&quot;:&quot;Replace with imported&quot;}">Replace with imported</option>
+        </select>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button id="sidecarCancel" data-i18n-text="{&quot;0&quot;:&quot;Cancel&quot;}">Cancel</button>
+      <button class="accent-btn" id="sidecarRun" data-i18n-text="{&quot;0&quot;:&quot;Import&quot;}">Import</button>
+    </div>
   </div>
 </div>
 

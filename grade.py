@@ -55,7 +55,7 @@ DEFAULTS = {
 RANGES = {
     "vignetteSize": (0.0, 1.0),
     "vignetteFeather": (0.0, 1.0),
-    "exposure": (-3.0, 3.0),
+    "exposure": (-5.0, 5.0),
     "sharpenRadius": (0.5, 3.0),
     "sharpenDetail": (0.0, 1.0),
     "sharpenMasking": (0.0, 1.0),

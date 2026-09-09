@@ -128,6 +128,7 @@ const RESET_GROUPS = {
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],
 };
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
+S.priorPhotoSettings = null;
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const PHOTO_DISPLAY_STATUS = createPhotoDisplayStatus();
@@ -260,6 +261,7 @@ function nativeMenuState() {
     canUndo: S.undo.length > 0,
     canRedo: S.redo.length > 0,
     canPaste: !!S.clipboard && targets.length > 0,
+    canPrevious: Boolean(S.priorPhotoSettings && image && S.priorPhotoSettings.sourceName !== image.name),
     hasCrop: !!S.crop || !!(S.params?.rotate % 360) ||
       ['rotate', 'vertical', 'horizontal', 'scale', 'flipHorizontal', 'flipVertical']
         .some((key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
@@ -398,6 +400,7 @@ function performNativeMenuCommand(command) {
       case 'deleteRejected': result = trashRejected(); break;
       case 'copySettings': $('copyBtn').click(); break;
       case 'pasteSettings': $('pasteBtn').click(); break;
+      case 'previousSettings': $('previousBtn')?.click(); break;
       case 'pasteAllVisible': $('pasteAllBtn').click(); break;
       case 'matchExposure': $('matchExposureBtn').click(); break;
       case 'buildPreviews': $('pregenPreviewsBtn').click(); break;
@@ -6762,6 +6765,11 @@ async function go(i) {
   cropSession = null;
   if (cur()) {
     const outgoing = cur().name;
+    if (isStateLoaded(cur())) {
+      try {
+        S.priorPhotoSettings = { ...JSON.parse(snapshot()), sourceName: outgoing };
+      } catch (_) {}
+    }
     void editSaveQueue.flush(outgoing).then(() => HISTORY?.flush(outgoing)).catch(() => {});
   }
   lastNavigationDirection = i >= S.idx ? 1 : -1;
@@ -8242,6 +8250,14 @@ function updateTransferActions() {
     !targets.length;
   $('copyBtn').title = cur() ? tr("Choose edit settings to copy ({primaryKey}+Shift+C)", {primaryKey: primaryKey}) : tr("Select a photo to copy its settings");
   $('pasteBtn').title = !S.clipboard ? tr("Copy settings first") : targets.length > 1 ? tr("Paste edit settings to {targetsLength} selected photos ({primaryKey}+Shift+V)", {targetsLength: targets.length, primaryKey: primaryKey}) : tr("Paste edit settings ({primaryKey}+Shift+V)", {primaryKey: primaryKey});
+  if ($('previousBtn')) {
+    const hasPrior = Boolean(S.priorPhotoSettings && cur() && S.priorPhotoSettings.sourceName !== cur()?.name);
+    const altKey = ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__) ? 'Ctrl+Alt' : '⌘⌥';
+    $('previousBtn').disabled = !hasPrior;
+    $('previousBtn').title = hasPrior
+      ? tr("Apply settings from previous photo ({key}+V)", {key: altKey})
+      : tr("Apply settings from previous photo");
+  }
   scheduleNativeMenuState();
 }
 let transferReturnFocus = null, transferSource = null, transferRunning = false, transferCancelled = false;
@@ -8379,6 +8395,41 @@ async function pasteSettingsTo(targets) {
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
 $('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
+async function applyPreviousSettings() {
+  if (!S.priorPhotoSettings || !cur()) return toast(tr("No previous photo settings to apply"));
+  const image = cur();
+  if (image.name === S.priorPhotoSettings.sourceName) return toast(tr("Already on the source photo"));
+  await prefetchState(image);
+  if (!isStateLoaded(image)) return toast(tr("Existing settings could not be loaded; this photo was left unchanged"));
+
+  const pending = editSaveQueue.getPending(image.name)?.state || {};
+  const currentEdits = { ...image, ...pending };
+  const destination = {
+    ...currentEdits,
+    params: normalizeFilmParams(currentEdits.params),
+    grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) },
+    optics: normalizeOptics(currentEdits.optics),
+  };
+
+  const choices = APP_PREFS.copySettings || transferChoices();
+  const patch = transferPatch(S.priorPhotoSettings, destination, choices);
+  const { cropChoices, ...entry } = patch;
+  if (image === cur() && S.editingName === image.name) pushUndo();
+  enqueuePhotoPatch(image, entry, { historyLabel: tr("Previous settings") });
+  image.cropChoices = cropChoices ?? image.cropChoices;
+  image.stateLoaded = true;
+  invalidateEditedThumbnail(image);
+  if (image === cur() && S.editingName === image.name) {
+    restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
+    _lastHistorySnapshot = editHistorySnapshot();
+  }
+  await editSaveQueue.flush(image.name);
+  refreshLists();
+  if ($('previousBtn')) confirmTransfer('previousBtn');
+  updateTransferActions();
+  toast(tr("Applied previous settings"));
+}
+if ($('previousBtn')) $('previousBtn').onclick = () => applyPreviousSettings();
 $('undoBtn').onclick = undo;
 $('redoBtn').onclick = redo;
 
@@ -9521,6 +9572,9 @@ document.addEventListener('keydown', (e) => {
   }
   if (meta && e.shiftKey && e.key.toLowerCase() === 'v') {
     e.preventDefault(); $('pasteBtn').click(); return;
+  }
+  if (meta && e.altKey && e.key.toLowerCase() === 'v') {
+    e.preventDefault(); $('previousBtn')?.click(); return;
   }
   if (meta && e.shiftKey && e.key.toLowerCase() === 'e') {
     e.preventDefault(); $('exportBtn').click(); return;

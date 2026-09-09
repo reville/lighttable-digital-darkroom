@@ -120,11 +120,15 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     }
   }
 
-  function showResult(source, title, message) {
+  function showResult(source, title, message, hasSidecars = false) {
     busy = false;
     resultSource = source;
     el('setupHeading-result').textContent = title;
     el('setupResultMessage').textContent = message;
+    const offer = el('setupSidecarOffer');
+    if (offer) {
+      offer.hidden = !hasSidecars;
+    }
     setPage('result');
     show(true);
   }
@@ -163,6 +167,15 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
   }
 
   el('setupLightroom').onclick = () => setPage('lightroom');
+  const cloudFolder = el('setupFolderFromCloud');
+  if (cloudFolder) cloudFolder.onclick = () => { capabilities(); setPage('folder'); };
+  const sidecarOfferBtn = el('setupImportSidecars');
+  if (sidecarOfferBtn) {
+    sidecarOfferBtn.onclick = async () => {
+      await finish('completed', resultSource);
+      el('importSidecarsBtn')?.click();
+    };
+  }
   el('setupPhotos').onclick = () => { capabilities(); setPage('photos'); };
   el('setupFolder').onclick = () => { capabilities(); setPage('folder'); };
   el('setupBack').onclick = () => { if (!busy) setPage('choices'); };
@@ -197,7 +210,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
       const result = await post('/api/catalog/sources', { action: 'add', path });
       if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
       await reloadLibrary();
-      showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'));
+      showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'), Boolean(result?.hasSidecars));
     } catch (error) { el('setupError').textContent = error.message; }
     finally { el('setupFolderChoose').disabled = false; }
   };
@@ -263,7 +276,7 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
         maybeShow();
       } else if (event?.type === 'photosLibraryImport') photosEvent(event);
       else if (event?.type === 'setupFolderSelected') {
-        showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'));
+        showResult('folder', tr('Your folder is ready'), tr('Photos stay in their current folder. You can add more folders whenever you like.'), Boolean(event?.hasSidecars));
       } else if (event?.type === 'setupCatalogImported') {
         showResult('lightroom', tr('Your Lightroom catalog is imported'), catalogSummary(event));
       } else if (event?.type === 'setupFolderCancelled') {

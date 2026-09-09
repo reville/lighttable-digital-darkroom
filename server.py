@@ -8046,8 +8046,17 @@ def catalog_sources_action(body: dict) -> dict:
             imported = catalog_scan.import_state_file(cat, source_id)
         elif SCANNER is not None:
             SCANNER.request(source_id)
+        has_sidecars = False
+        try:
+            with os.scandir(path) as it:
+                for entry in it:
+                    if entry.is_file() and entry.name.lower().endswith(".xmp"):
+                        has_sidecars = True
+                        break
+        except OSError:
+            pass
         return {"ok": True, "sourceId": source_id, "imported": imported,
-                "sources": cat.sources()}
+                "hasSidecars": has_sidecars, "sources": cat.sources()}
     if action == "remove":
         cat.remove_source(int(body["id"]))
     elif action == "favorite":
@@ -8174,6 +8183,7 @@ def import_sidecars(body: dict) -> dict:
     want_develop = apply.get("develop", False)
     want_crop = apply.get("crop", False)
     conflict = str(body.get("conflict", "skip-existing"))
+    inspect_only = bool(body.get("inspectOnly"))
 
     names = body.get("names")
     if names is None:
@@ -8212,6 +8222,8 @@ def import_sidecars(body: dict) -> dict:
             report["missing"] += 1
             continue
         report["read"] += 1
+        if inspect_only:
+            continue
         image_id = catalog_image_id(name)
         if image_id is None:
             report["skipped"] += 1

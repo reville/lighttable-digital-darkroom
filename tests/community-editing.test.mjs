@@ -182,3 +182,41 @@ test('preview status distinguishes refining, incomplete detail and true 100% rea
   assert.equal(previewDetailLabel({state:'ready',delivered:1400,requested:1400,source:6000,actual:false}),'');
   assert.equal(previewDetailLabel({state:'error',actual:true}),'');
 });
+
+test('previous settings applies prior photo edits to active photo', async () => {
+  const start = app.indexOf('async function applyPreviousSettings(');
+  const end = app.lastIndexOf('}', app.indexOf("$('previousBtn').onclick", start)) + 1;
+  const previousSource = app.slice(start, end);
+  const target = { name: 'target.raw', ...structuredClone(destination), stateLoaded: true };
+  const calls = [], notices = [], nodes = new Map();
+  const context = {
+    CULL_BATCH: { noteFlagChange() {} },
+    cloneValue: structuredClone,
+    tr, trn, localToolLabel,
+    S: { images: [target], priorPhotoSettings: { ...source, sourceName: 'prior.raw' }, editingName: '' },
+    APP_PREFS: { copySettings: only('tone') },
+    transferChoices, transferPatch,
+    $: id => { if (!nodes.has(id)) nodes.set(id, { focus() {} }); return nodes.get(id); },
+    prefetchState: async image => { image.stateLoaded = true; },
+    isStateLoaded: image => image.stateLoaded,
+    normalizeFilmParams: p => ({ ...p }),
+    normalizeOptics: p => ({ ...p }),
+    GRADE_DEFAULTS: {},
+    api: async (path, body) => { calls.push({ path, body }); return { ok: true }; },
+    cur: () => target,
+    pushUndo() {},
+    invalidateEditedThumbnail() {},
+    refreshLists() {},
+    confirmTransfer() {},
+    updateTransferActions() {},
+    toast: t => notices.push(t),
+  };
+  context.editSaveQueue = createEditSaveQueue({ send: async (name, payload) => { await context.api('/api/state', payload.state); }, setTimeout: () => 0, clearTimeout() {} });
+  vm.createContext(context);
+  vm.runInContext(enqueueSource + '\n' + previousSource + '\nthis.run = applyPreviousSettings;', context);
+  await context.run();
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].body.grade.exposure, 2);
+  assert.equal(calls[0].body.grade.temp, -.2);
+  assert.equal(notices.includes('Applied previous settings'), true);
+});

@@ -217,3 +217,26 @@ test('Photos setup entry stays hidden on Windows and Linux, even with a stray Ma
   f.controller.nativeEvent({type: 'sources', firstRun: false, photosLibraryImportAvailable: true});
   assert.equal(f.all.get('setupPhotos').hidden, false);
 });
+
+test('cloud setup provides direct transition to folder setup', async () => {
+  const f = fixture();
+  await f.click('setupLightroom');
+  assert.equal(f.all.get('setupPanel')['aria-labelledby'], 'setupHeading-lightroom');
+  await f.click('setupFolderFromCloud');
+  assert.equal(f.all.get('setupPanel')['aria-labelledby'], 'setupHeading-folder');
+});
+
+test('folder setup offers sidecar import when sidecars are detected', async () => {
+  const f = fixture({ native: true });
+  f.controller.nativeEvent({ type: 'sources', firstRun: true });
+  let sidecarClicked = false;
+  f.all.get('importSidecarsBtn').click = () => { sidecarClicked = true; };
+
+  f.controller.nativeEvent({ type: 'setupFolderSelected', path: '/library', hasSidecars: true });
+  assert.equal(f.all.get('setupSidecarOffer').hidden, false);
+
+  await f.click('setupImportSidecars');
+  assert.equal(sidecarClicked, true);
+  assert.equal(f.writes.at(-1).body.firstRunSetup.source, 'folder');
+  assert.equal(f.writes.at(-1).body.firstRunSetup.status, 'completed');
+});

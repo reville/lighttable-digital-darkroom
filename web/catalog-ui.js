@@ -199,14 +199,50 @@ export function createCatalogUI(ctx) {
 
   function bindSidecarImport() {
     const button = el('importSidecarsBtn');
+    const dialog = el('sidecarDialog');
     if (!button) return;
-    button.addEventListener('click', async () => {
-      button.disabled = true;
+
+    const optMetadata = el('sidecarOptMetadata');
+    const optDevelop = el('sidecarOptDevelop');
+    const optCrop = el('sidecarOptCrop');
+    const conflictSelect = el('sidecarConflict');
+    const cancelBtn = el('sidecarCancel');
+    const runBtn = el('sidecarRun');
+
+    let returnFocus = null;
+    const show = (visible) => {
+      if (!dialog) return;
+      dialog.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      dialog.classList.toggle('on', visible);
+      if (visible) {
+        returnFocus = document.activeElement;
+        (runBtn || dialog).focus?.();
+      } else {
+        returnFocus?.focus?.();
+      }
+    };
+
+    if (dialog) {
+      cancelBtn?.addEventListener('click', () => show(false));
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) show(false);
+      });
+      dialog.addEventListener('keydown', (event) => {
+        if (!dialog.classList.contains('on')) return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          event.stopPropagation();
+          show(false);
+        }
+      });
+    }
+
+    async function executeImport(options) {
+      if (button) button.disabled = true;
+      if (runBtn) runBtn.disabled = true;
       const report = showCatalogResult(tr('Import sidecars'), tr('Reading sidecars…'));
       try {
-        const result = await post('/api/import/sidecars', {
-          apply: { metadata: true, develop: false, crop: false },
-        });
+        const result = await post('/api/import/sidecars', options);
         if (result.error) throw new Error(result.error);
         const ignored = Object.entries(result.ignored || {});
         report(tr('Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.',
@@ -215,7 +251,32 @@ export function createCatalogUI(ctx) {
           + (result.errors?.length ? '\n' + tr('Errors: {details}', {details: result.errors.map(error => error.error || error).join('; ')}) : ''));
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
       } catch (error) { report(String(error.message || error)); }
-      finally { button.disabled = false; }
+      finally {
+        if (button) button.disabled = false;
+        if (runBtn) runBtn.disabled = false;
+      }
+    }
+
+    button.addEventListener('click', async () => {
+      if (!dialog) {
+        return executeImport({
+          apply: { metadata: true, develop: false, crop: false },
+          conflict: 'skip-existing',
+        });
+      }
+      show(true);
+    });
+
+    runBtn?.addEventListener('click', async () => {
+      show(false);
+      await executeImport({
+        apply: {
+          metadata: optMetadata ? optMetadata.checked : true,
+          develop: optDevelop ? optDevelop.checked : false,
+          crop: optCrop ? optCrop.checked : false,
+        },
+        conflict: conflictSelect?.value || 'skip-existing',
+      });
     });
   }
 
