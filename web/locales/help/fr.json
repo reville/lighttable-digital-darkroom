@@ -19,13 +19,21 @@
         {
           "title": "Choisissez un point de départ",
           "paragraphs": [
-            "Dans une nouvelle bibliothèque, la configuration propose un dossier local, une migration depuis Lightroom ou Apple Photos. Vous pouvez ignorer la configuration et ajouter des photos plus tard.",
+            "Dans une nouvelle bibliothèque, la configuration propose un dossier local ou une migration Lightroom. L’app macOS propose aussi Photos Apple. Vous pouvez ignorer la configuration et ajouter des photos plus tard.",
             "L'importation de toute la bibliothèque d'Apple Photos nécessite l'application macOS et l'autorisation de lire Photos. Elle copie les photos originales, y compris les fichiers RAW, dans Pictures / LightTable Imports / Apple Photos. Votre bibliothèque Photos reste inchangée. Les originaux iCloud se téléchargent pendant l'importation, alors prévoyez du temps et de l'espace disque. Les albums, vidéos et modifications Photos ne sont pas transférés.",
             "Arrêter l’import conserve les copies terminées. Le relancer ignore ces copies et réessaie les originaux non terminés."
           ],
           "steps": [
             "Choisissez un dossier pour parcourir les originaux en place, ou sélectionnez l’une des options de migration.",
             "Vérifiez le résultat de l’import, puis continuez vers la bibliothèque."
+          ]
+        },
+        {
+          "title": "Parcourir Photos Apple",
+          "paragraphs": [
+            "Dans l’app macOS, ouvrez Photos Apple dans la barre latérale pour parcourir les photos et les albums. Autorisez l’accès à Photos lorsqu’on vous le demande. Cette source est masquée sous Windows et Linux.",
+            "Sélectionnez jusqu’à 500 photos parmi les pages ou les albums, puis choisissez Importer les originaux sélectionnés. LightTable copie les photos originales, y compris les fichiers RAW, dans Pictures / LightTable Imports / Apple Photos. Les originaux iCloud sont téléchargés pendant l’importation. Votre bibliothèque Photos reste inchangée ; les albums, les vidéos et les modifications Photos ne sont pas transférés.",
+            "Arrêter l’import conserve les copies terminées. Importez à nouveau la sélection pour réessayer les originaux indisponibles ; les copies terminées sont ignorées. Choisissez Afficher les photos importées pour modifier les copies. Actualiser met à jour les photos et albums disponibles."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Ouvrir un dossier local",
           "paragraphs": [
-            "Ajouter des photos ouvre un sélecteur de photos. Sur Mac, ce sélecteur accepte aussi les dossiers. Sur Linux et Windows, utilisez le + à côté de Local pour ajouter un dossier entier. LightTable conserve les originaux en place. La sélection d’une photo individuelle ajoute son dossier contenant, de sorte que d’autres photos prises en charge dans ce dossier peuvent aussi apparaître."
+            "Ajouter des photos ouvre un sélecteur de photos. Sur Mac, ce sélecteur accepte aussi les dossiers. Sous Linux et Windows, utilisez le + à côté de Dossiers pour ajouter un dossier entier. LightTable conserve les originaux à leur emplacement. La sélection d’une photo individuelle ajoute son dossier parent, afin que d’autres photos prises en charge dans ce dossier puissent également apparaître."
           ],
           "steps": [
-            "Cliquez sur Ajouter des photos en haut à gauche et choisissez des photos, ou utilisez le + à côté de Local pour choisir un dossier.",
-            "Choisissez le dossier sous Local dans la barre latérale gauche. Activez Inclure les sous-dossiers pour parcourir les photos dans ses dossiers enfants.",
+            "Cliquez sur Ajouter des photos en haut à gauche et choisissez des photos, ou utilisez le + à côté de Dossiers pour choisir un dossier.",
+            "Choisissez le dossier sous Dossiers dans la barre latérale gauche. Activez Inclure les sous-dossiers pour parcourir les photos de ses dossiers enfants.",
             "Choisissez Grille photo, Grille de tri ou Détail en haut. Cliquez sur une photo pour l’activer."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Importer de nouveaux fichiers dans un dossier existant",
           "paragraphs": [
-            "Utilisez le menu Local ••• et Rescanner les dossiers après avoir ajouté des fichiers en dehors de LightTable. Pour copier des photos d’une carte vers un dossier de destination, utilisez Importer depuis la carte… dans ce menu."
+            "Utilisez le menu Dossiers ••• et Réanalyser les dossiers après avoir ajouté des fichiers en dehors de LightTable. Pour copier des photos d’une carte vers un dossier de destination, utilisez Importer depuis une carte… dans ce menu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "La compatibilité de l'aperçu affiche les correspondances dans la bibliothèque actuelle sans la modifier. Les photos pas encore ajoutées peuvent apparaître comme non appariées dans l'aperçu ; l'importation avec Ajouter les dossiers de photos activé enregistre les originaux disponibles avant de relancer la correspondance."
           ],
           "steps": [
-            "Ouvrez Local ••• → Importer un catalogue…, ou choisissez Importer depuis Lightroom dans la configuration.",
+            "Ouvrez Dossiers ••• → Importer un catalogue…, ou choisissez Importer depuis Lightroom dans la configuration.",
             "Choisissez le fichier .lrcat et vérifiez ses nombres et avertissements.",
             "Choisissez les catégories à importer, la politique pour les modifications existantes et si vous souhaitez ajouter les dossiers de photos référencés.",
             "Cliquez sur Compatibilité de l’aperçu et examinez les paramètres mappés et ignorés. Essayer 20 variantes crée des essais distincts avant un import plus important.",
@@ -103,7 +111,7 @@
           "title": "Vérifier les retouches traduites",
           "paragraphs": [
             "Les réglages de développement sont approximatifs et ne peuvent pas promettre l’apparence rendue de Lightroom. Les masques locaux non pris en charge, les profils d’appareil photo, les masques IA .lrcat-data ou les charges utiles LUT, ainsi que les règles de collection intelligente non prises en charge, sont signalés comme ignorés. Les réglages de développement importés désactivent Film.",
-            "Local ••• → Importer les sidecars… est une action distincte permettant de lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage. Sa boîte de dialogue de résultats affiche la progression, les nombres appliqués, les réglages ignorés et les erreurs."
+            "Dossiers ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage. La boîte de dialogue de résultats affiche la progression, les quantités appliquées, les réglages ignorés et les erreurs."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importer depuis une carte copie les fichiers vers la destination de votre choix. Les originaux de la carte restent en place. L’ignorance des doublons compare le contenu complet des fichiers ; un nom de fichier correspondant ou un en-tête d’appareil photo ne suffit pas à lui seul."
           ],
           "steps": [
-            "Ouvrir Local ••• → Importer depuis la carte….",
+            "Ouvrez Dossiers ••• → Importer depuis une carte….",
             "Choisissez la source et la destination. Définissez le modèle de dossier et Renommer vers avant la numérisation. Les valeurs par défaut conservent les noms de fichiers et organisent les copies par année/année-mois-jour.",
             "Choisissez la vérification : Hachage complet, Taille uniquement ou Aucun. Réglez Doublons sur Ignorer ou Copier quand même, et choisissez éventuellement Deuxième copie vers.",
             "Cliquez sur Numériser. Utilisez Précédent et Suivant pour vérifier chaque page, puis contrôlez le nombre sélectionné et l’aperçu de destination avant de cliquer sur Importer. Importer est indisponible lorsqu’aucune photo n’est sélectionnée.",
@@ -345,27 +353,27 @@
         {
           "title": "Choisir ce qui est affiché",
           "paragraphs": [
-            "Local → Parcourir liste vos dossiers ajoutés. Inclure les sous-dossiers détermine si un dossier sélectionné affiche aussi ses descendants. Les autres filtres de la bibliothèque s’appliquent toujours.",
+            "Dossiers → Parcourir liste vos dossiers ajoutés. Inclure les sous-dossiers détermine si un dossier sélectionné affiche aussi ses descendants. Les autres filtres de la bibliothèque s’appliquent toujours.",
             "Dans une fenêtre Linux étroite, utilisez Afficher ou masquer la bibliothèque en haut à gauche pour ouvrir le tiroir de bibliothèque. Fermez-le avec le même bouton après avoir choisi un dossier afin de laisser plus de place à la photo."
           ],
           "steps": [
-            "Cliquez sur un dossier sous Local.",
+            "Cliquez sur un dossier sous Dossiers.",
             "Activez Inclure les sous-dossiers pour inclure les dossiers enfants, ou désactivez-le pour afficher uniquement ce dossier.",
             "Cliquez sur l’étoile à côté d’un dossier, ou ouvrez son menu ••• et choisissez Ajouter aux favoris.",
-            "Utilisez Local → Favoris pour revenir à vos dossiers enregistrés."
+            "Utilisez Dossiers → Favoris pour revenir à vos dossiers enregistrés."
           ]
         },
         {
           "title": "Actions sur le dossier",
           "paragraphs": [
-            "Le menu ••• d’un dossier inclut Afficher dans le Finder sur Mac, Afficher dans l’Explorateur de fichiers sur Windows ou Afficher dans le gestionnaire de fichiers sur Linux. Pour le dossier actuel, Synchroniser le dossier actualise l’affichage. Local ••• → Réanalyser les dossiers analyse les sources du catalogue.",
+            "Le menu ••• d’un dossier inclut Afficher dans le Finder sur Mac, Afficher dans l’Explorateur de fichiers sur Windows, ou Afficher dans le Gestionnaire de fichiers sur Linux. Pour le dossier actuel, Synchroniser le dossier actualise l’affichage. Dossiers ••• → Réanalyser les dossiers analyse les sources du catalogue.",
             "Supprimer de LightTable supprime une racine ajoutée de la liste des sources de l’application ; cela ne déplace pas les fichiers d’origine vers la corbeille. L’action est proposée lorsqu’il y a plus d’une source disponible."
           ]
         },
         {
           "title": "Gérer les dossiers surveillés",
           "paragraphs": [
-            "Ouvrez Local ••• → Dossier à surveiller… pour ajouter un dossier surveillé. Choisissez comment les photos entrantes doivent être traitées. Enregistrer est indisponible tant qu’aucun dossier n’est spécifié ; la copie dans la bibliothèque nécessite également une destination.",
+            "Ouvrez Dossiers ••• → Dossier à surveiller… pour ajouter un dossier surveillé. Choisissez comment les photos arrivantes doivent être gérées. Enregistrer est indisponible tant qu’un dossier n’est pas spécifié ; la copie dans la bibliothèque nécessite aussi une destination.",
             "Pour modifier une surveillance existante, choisissez-la dans Dossiers surveillés. Chaque surveillance enregistrée apparaît dans cette liste. Choisissez Nouveau dossier surveillé pour un autre dossier, ou utilisez Supprimer la montre pour arrêter de surveiller le dossier sélectionné. Cela ne supprime pas ses photos.",
             "Le raccourci Watching ouvre la première surveillance active. Les erreurs d’enregistrement restent dans la boîte de dialogue afin que vous puissiez corriger les réglages."
           ]
@@ -485,7 +493,7 @@
         {
           "title": "Lire les métadonnées depuis un autre éditeur",
           "paragraphs": [
-            "Demandez à l'autre éditeur d'enregistrer ses métadonnées dans des fichiers XMP adjacents, puis choisissez Local ••• → Importer les sidecars…. L'action lit les originaux du catalogue, y compris toutes les pages des grandes bibliothèques jusqu'à 100,000 photos par importation. Les copies virtuelles conservent leurs propres métadonnées.",
+            "Demandez à l’autre éditeur d’enregistrer ses métadonnées dans les fichiers XMP adjacents, puis choisissez Dossiers ••• → Importer les sidecars…. L’action lit les originaux du catalogue, y compris toutes les pages des grandes bibliothèques jusqu’à 100 000 photos par importation. Les copies virtuelles conservent leurs propres métadonnées.",
             "Les métadonnées prises en charge incluent les notes en étoiles, les marques choisir/rejeter, les étiquettes de couleur standard, les mots-clés plats et hiérarchiques, ainsi que les champs IPTC descriptifs. Une valeur vide explicite efface ce champ ; une valeur absente le laisse inchangé. Les étiquettes de couleur personnalisées qui ne correspondent pas à une couleur de LightTable sont signalées comme ignorées.",
             "L'importateur lit les conventions de métadonnées prises en charge de Photo Mechanic et digiKam. Chaque application a des conventions supplémentaires, alors vérifiez un petit échantillon dans les deux applications avant d'échanger une bibliothèque entière. Les réglages de développement et le recadrage ne sont pas appliqués par cette action de menu."
           ]
@@ -3040,7 +3048,7 @@
         {
           "title": "Sauvegarder et inspecter",
           "paragraphs": [
-            "Réglages → Catalogue affiche l’emplacement du catalogue et les préférences de sauvegarde. Les sauvegardes incluent l’organisation du catalogue, les modifications, les masques enregistrés, l’historique et les variantes. Sauvegardez séparément les photos originales, les préréglages et profils externes, ainsi que les préférences. Local ••• → Sauvegarder le catalogue… crée également une sauvegarde et affiche son chemin enregistré ou une erreur dans une boîte de dialogue de résultats. Trouver les doublons dans le même menu affiche les fichiers correspondants, ou signale qu’aucun n’a été trouvé."
+            "Réglages → Catalogue affiche l’emplacement du catalogue et les préférences de sauvegarde. Les sauvegardes incluent l’organisation du catalogue, les modifications, les masques stockés, l’historique et les variantes. Sauvegardez séparément les photos originales, les préréglages et profils externes, ainsi que les préférences. Dossiers ••• → Sauvegarder le catalogue… crée aussi une sauvegarde et affiche son chemin enregistré ou une erreur dans une boîte de dialogue de résultats. Trouver les doublons dans le même menu affiche les fichiers correspondants, ou indique qu’aucun n’a été trouvé."
           ],
           "steps": [
             "Choisissez un intervalle de sauvegarde automatique et un emplacement de sauvegarde.",
@@ -3188,5 +3196,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
+  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
 }

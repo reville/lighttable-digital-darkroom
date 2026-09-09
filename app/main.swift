@@ -812,6 +812,145 @@ final class EditRecoveryStore {
     }
 }
 
+// MARK: - Apple Photos browser
+
+/// Metadata pages and bounded thumbnails only. Original resources are copied
+/// by PhotosLibraryImporter after an explicit selection, never by a page fetch.
+private final class ApplePhotosBrowser: NSObject, PHPhotoLibraryChangeObserver {
+    private let event: ([String: Any]) -> Void
+    private let queue = DispatchQueue(label: "lighttable.photos-browser", qos: .userInitiated)
+    private let images = PHImageManager()
+    private var generation = 0
+    private var requests: [PHImageRequestID] = []
+    private var observing = false
+
+    init(event: @escaping ([String: Any]) -> Void) { self.event = event }
+
+    func close() {
+        generation += 1
+        requests.forEach { images.cancelImageRequest($0) }
+        requests.removeAll()
+        if observing { PHPhotoLibrary.shared().unregisterChangeObserver(self); observing = false }
+    }
+
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.observing else { return }
+            self.event(["type": "applePhotosChanged"])
+        }
+    }
+
+    func page(_ body: [String: Any]) {
+        guard let requestID = body["requestId"] as? Int, requestID > 0 else { return }
+        close()
+        let token = generation
+        let album = body["album"] as? String ?? ""
+        let offset = max(0, body["offset"] as? Int ?? 0)
+        let includeAlbums = body["includeAlbums"] as? Bool ?? false
+        let authorized: (PHAuthorizationStatus) -> Void = { [weak self] status in
+            DispatchQueue.main.async {
+                guard let self, self.generation == token else { return }
+                guard status == .authorized || status == .limited else {
+                    self.event(["type": "applePhotosPage", "requestId": requestID,
+                        "error": L("Photos access was not allowed. You can enable it in System Settings → Privacy & Security → Photos, or start with a folder.")])
+                    return
+                }
+                PHPhotoLibrary.shared().register(self)
+                self.observing = true
+                self.fetch(album: album, offset: offset, includeAlbums: includeAlbums,
+                           requestID: requestID, token: token)
+            }
+        }
+        let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        if status == .notDetermined { PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: authorized) }
+        else { authorized(status) }
+    }
+
+    private func fetch(album: String, offset: Int, includeAlbums: Bool, requestID: Int, token: Int) {
+        queue.async { [weak self] in
+            guard let self else { return }
+            let options = PHFetchOptions()
+            options.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
+            options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            let assets: PHFetchResult<PHAsset>
+            if album.isEmpty {
+                assets = PHAsset.fetchAssets(with: .image, options: options)
+            } else if let collection = PHAssetCollection.fetchAssetCollections(
+                withLocalIdentifiers: [album], options: nil).firstObject {
+                assets = PHAsset.fetchAssets(in: collection, options: options)
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self, self.generation == token else { return }
+                    self.event(["type": "applePhotosPage", "requestId": requestID,
+                        "error": L("This album is no longer available. Refresh Apple Photos and choose another album.")])
+                }
+                return
+            }
+            // Clamp after deletions, so a previous last page cannot become a
+            // permanently empty page with no way to navigate back.
+            let start = min(offset, max(0, (assets.count - 1) / 60 * 60))
+            let end = min(start + 60, assets.count)
+            var page: [PHAsset] = []
+            var rows: [[String: Any]] = []
+            for index in start..<end {
+                let asset = assets.object(at: index)
+                page.append(asset)
+                let name = PHAssetResource.assetResources(for: asset).first {
+                    $0.type == .photo || $0.type == .alternatePhoto
+                }?.originalFilename ?? L("Photo")
+                rows.append(["id": asset.localIdentifier, "name": name,
+                             "width": asset.pixelWidth, "height": asset.pixelHeight])
+            }
+            var payload: [String: Any] = ["type": "applePhotosPage", "requestId": requestID,
+                "items": rows, "offset": start, "total": assets.count, "hasMore": end < assets.count]
+            if includeAlbums {
+                var albums: [[String: String]] = []
+                for type in [PHAssetCollectionType.album, .smartAlbum] {
+                    PHAssetCollection.fetchAssetCollections(with: type, subtype: .any, options: nil)
+                        .enumerateObjects { collection, _, _ in
+                            guard collection.assetCollectionSubtype != .smartAlbumAllHidden,
+                                  collection.assetCollectionSubtype != .smartAlbumUserLibrary else { return }
+                            albums.append(["id": collection.localIdentifier,
+                                           "name": collection.localizedTitle ?? L("Album")])
+                        }
+                }
+                payload["albums"] = albums.sorted {
+                    ($0["name"] ?? "").localizedCaseInsensitiveCompare($1["name"] ?? "") == .orderedAscending
+                }
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self, self.generation == token else { return }
+                self.event(payload)
+                self.thumbnails(page, requestID: requestID, token: token)
+            }
+        }
+    }
+
+    private func thumbnails(_ assets: [PHAsset], requestID: Int, token: Int) {
+        let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .opportunistic
+        options.resizeMode = .fast
+        for asset in assets {
+            let request = images.requestImage(for: asset, targetSize: CGSize(width: 240, height: 240),
+                contentMode: .aspectFit, options: options) { [weak self] image, _ in
+                guard let image else { return }
+                self?.queue.async { [weak self] in
+                    guard let cg = image.cgImage(forProposedRect: nil, context: nil, hints: nil),
+                          let data = NSBitmapImageRep(cgImage: cg).representation(
+                            using: .jpeg, properties: [.compressionFactor: 0.72]) else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self, self.generation == token else { return }
+                        self.event(["type": "applePhotosThumbnail", "requestId": requestID,
+                            "id": asset.localIdentifier, "data": "data:image/jpeg;base64," + data.base64EncodedString()])
+                    }
+                }
+            }
+            requests.append(request)
+        }
+    }
+}
+
 // MARK: - Original Photos library import
 
 /// One resource at a time, streamed to disk. Photos is only read; completed
@@ -835,6 +974,7 @@ private final class PhotosLibraryImporter {
         }
     }
     private let directory: URL
+    private let assetIdentifiers: [String]?
     private let event: ([String: Any]) -> Void
     private let queue = DispatchQueue(label: "lighttable.photos-library-import", qos: .utility)
     private let cancellationLock = NSLock()
@@ -849,8 +989,9 @@ private final class PhotosLibraryImporter {
     private var lockDescriptor: Int32 = -1
     private var lastProgressTime = Date.distantPast
 
-    init(directory: URL, event: @escaping ([String: Any]) -> Void) {
+    init(directory: URL, assetIdentifiers: [String]? = nil, event: @escaping ([String: Any]) -> Void) {
         self.directory = directory
+        self.assetIdentifiers = assetIdentifiers.map { Array(Set($0)) }
         self.event = event
     }
 
@@ -873,7 +1014,10 @@ private final class PhotosLibraryImporter {
             let options = PHFetchOptions()
             options.includeHiddenAssets = true
             options.includeAllBurstAssets = true
-            let assets = PHAsset.fetchAssets(with: .image, options: options)
+            let assets = assetIdentifiers.map {
+                PHAsset.fetchAssets(withLocalIdentifiers: $0, options: options)
+            } ?? PHAsset.fetchAssets(with: .image, options: options)
+            if let assetIdentifiers { failures = max(0, assetIdentifiers.count - assets.count) }
             assets.enumerateObjects { asset, _, stop in
                 if self.isCancelled { stop.pointee = true; return }
                 autoreleasepool {
@@ -882,6 +1026,7 @@ private final class PhotosLibraryImporter {
                     let originals = PHAssetResource.assetResources(for: asset)
                         .filter { $0.type == .photo || $0.type == .alternatePhoto }
                     var occurrences: [String: Int] = [:]
+                    if originals.isEmpty { self.failures += 1 }
                     for resource in originals {
                         let key = "\(asset.localIdentifier)|\(resource.type.rawValue)|\(resource.uniformTypeIdentifier)|\(resource.originalFilename)"
                         let occurrence = occurrences[key, default: 0]
@@ -1423,6 +1568,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private var schemeCommandItems: [String: NSMenuItem] = [:]
     private var photoPicker: PHPickerViewController?
     private var pendingPhotosImportEvent: [String: Any]?
+    private lazy var applePhotosBrowser = ApplePhotosBrowser { [weak self] in self?.sendEvent($0) }
+    private var browsingPhotosImporter: PhotosLibraryImporter?
+    private var browsingPhotosImportEvent: [String: Any]?
     private var photosLibraryImporter: PhotosLibraryImporter?
     private var photosLibraryImportEvent: [String: Any]?
     private var photosLibraryAuthorizationID: UUID?
@@ -1502,6 +1650,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     func applicationWillTerminate(_ note: Notification) {
         cancelJavaScriptConfirmation()
         selectedPhotosImporter?.cancel()
+        applePhotosBrowser.close()
+        browsingPhotosImporter?.shutdown()
         photosLibraryImporter?.shutdown()
         server.stop()
         diagnostics.end()
@@ -2154,7 +2304,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func importEntirePhotosLibrary() {
-        guard selectedPhotosImporter == nil, photoPicker == nil,
+        guard browsingPhotosImporter == nil, selectedPhotosImporter == nil, photoPicker == nil,
               photosLibraryImporter == nil, photosLibraryAuthorizationID == nil else {
             if let photosLibraryImportEvent { sendEvent(photosLibraryImportEvent) }
             return
@@ -2209,6 +2359,49 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
     }
 
+    private func importBrowsedApplePhotos(_ body: [String: Any]) {
+        guard browsingPhotosImporter == nil, photosLibraryImporter == nil,
+              photosLibraryAuthorizationID == nil, selectedPhotosImporter == nil,
+              photoPicker == nil else {
+            sendEvent(["type": "applePhotosImport", "state": "error",
+                       "message": L("Another Photos import is running. Wait for it to finish and try again.")])
+            return
+        }
+        let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        guard status == .authorized || status == .limited,
+              let supplied = body["assetIds"] as? [String], !supplied.isEmpty,
+              supplied.count <= 500, supplied.allSatisfy({ !$0.isEmpty && $0.utf8.count < 1024 }) else {
+            sendEvent(["type": "applePhotosImport", "state": "error",
+                       "message": L("Refresh Apple Photos, check Photos access, and select up to 500 photos.")])
+            return
+        }
+        do {
+            let directory = try photosImportRoot()
+            let importID = UUID().uuidString
+            let importer = PhotosLibraryImporter(directory: directory, assetIdentifiers: supplied) { [weak self] original in
+                guard let self else { return }
+                var payload = original
+                payload["type"] = "applePhotosImport"
+                payload["importId"] = importID
+                self.browsingPhotosImportEvent = payload
+                self.sendEvent(payload)
+                if payload["state"] as? String != "running" {
+                    self.browsingPhotosImporter = nil
+                    if (payload["imported"] as? Int ?? 0) + (payload["existing"] as? Int ?? 0) > 0 {
+                        self.addSource(directory.path)
+                        self.sendEvent(self.sourcePayload())
+                    }
+                }
+            }
+            browsingPhotosImporter = importer
+            browsingPhotosImportEvent = nil
+            importer.start()
+        } catch {
+            sendEvent(["type": "applePhotosImport", "state": "error",
+                       "message": L("Could not create the Photos import folder: {error}", ["error": error.localizedDescription])])
+        }
+    }
+
     private func cancelEntirePhotosLibraryImport() {
         if photosLibraryAuthorizationID != nil {
             photosLibraryAuthorizationID = nil
@@ -2228,7 +2421,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func presentPhotosPicker() {
-        guard photoPicker == nil, selectedPhotosImporter == nil,
+        guard browsingPhotosImporter == nil, photoPicker == nil, selectedPhotosImporter == nil,
               photosLibraryImporter == nil, photosLibraryAuthorizationID == nil,
               window.attachedSheet == nil else { return }
         let alert = NSAlert()
@@ -2392,6 +2585,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             "active": folder,
             "firstRun": firstRun,
             "photosLibraryImportAvailable": true,
+            "photosBrowserAvailable": true,
             "sources": sources.map { source in
                 ["path": source.path,
                  "name": (source.path as NSString).lastPathComponent,
@@ -2567,6 +2761,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             } else {
                 sendEvent(["type": "setupFolderCancelled"])
             }
+        case "browseApplePhotos":
+            applePhotosBrowser.page(body)
+            if let browsingPhotosImportEvent { sendEvent(browsingPhotosImportEvent) }
+        case "closeApplePhotos":
+            applePhotosBrowser.close()
+        case "importBrowsedApplePhotos":
+            importBrowsedApplePhotos(body)
+        case "cancelBrowsedApplePhotosImport":
+            browsingPhotosImporter?.cancel()
         case "importApplePhotosLibrary":
             importEntirePhotosLibrary()
         case "cancelApplePhotosLibraryImport":

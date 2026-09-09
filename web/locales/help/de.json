@@ -19,13 +19,21 @@
         {
           "title": "Wählen Sie einen Ausgangspunkt",
           "paragraphs": [
-            "In einer neuen Bibliothek bietet die Einrichtung einen lokalen Ordner, Lightroom-Migration oder Apple Fotos an. Sie können die Einrichtung überspringen und Fotos später hinzufügen.",
+            "Bei einer neuen Bibliothek bietet die Einrichtung einen lokalen Ordner oder die Migration aus Lightroom an. Die macOS-App bietet außerdem Apple Fotos an. Sie können die Einrichtung überspringen und später Fotos hinzufügen.",
             "Der Import der gesamten Apple-Photos-Bibliothek erfordert die macOS-App und die Berechtigung zum Lesen von Fotos. Er kopiert Originalfotos, einschließlich RAW-Dateien, nach Pictures / LightTable Imports / Apple Photos. Ihre Fotos-Bibliothek bleibt unverändert. iCloud-Originale werden während des Imports heruntergeladen, daher müssen Sie Zeit und Speicherplatz einplanen. Alben, Videos und Bearbeitungen aus Fotos werden nicht übertragen.",
             "Import stoppen behält abgeschlossene Kopien. Beim erneuten Ausführen werden diese Kopien übersprungen und unvollständige Originale erneut versucht."
           ],
           "steps": [
             "Wählen Sie einen Ordner, um Originale direkt darin zu durchsuchen, oder wählen Sie eine der Migrationsoptionen.",
             "Prüfen Sie das Importergebnis und fahren Sie dann mit der Bibliothek fort."
+          ]
+        },
+        {
+          "title": "In Apple Fotos durchsuchen",
+          "paragraphs": [
+            "In der macOS-App öffnen Sie Apple Fotos in der Seitenleiste, um Fotos und Alben zu durchsuchen. Erlauben Sie den Fotos-Zugriff, wenn Sie dazu aufgefordert werden. Diese Quelle ist unter Windows und Linux ausgeblendet.",
+            "Wählen Sie seiten- oder albumübergreifend bis zu 500 Fotos aus und wählen Sie dann Ausgewählte Originale importieren. LightTable kopiert Originalfotos, einschließlich RAW-Dateien, nach Bilder / LightTable Imports / Apple Fotos. iCloud-Originale werden während des Imports heruntergeladen. Ihre Fotos-Mediathek bleibt unverändert; Alben, Videos und Bearbeitungen in Fotos werden nicht übertragen.",
+            "Import stoppen behält abgeschlossene Kopien bei. Importieren Sie die Auswahl erneut, um nicht verfügbare Originale erneut zu versuchen; abgeschlossene Kopien werden übersprungen. Wählen Sie Importierte Fotos anzeigen, um die Kopien zu bearbeiten. Aktualisieren aktualisiert die verfügbaren Fotos und Alben."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Einen lokalen Ordner öffnen",
           "paragraphs": [
-            "Fotos hinzufügen öffnet einen Fotoauswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Lokal, um einen ganzen Ordner hinzuzufügen. LightTable behält Originale am Speicherort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass möglicherweise auch andere unterstützte Fotos in diesem Ordner angezeigt werden."
+            "Fotos hinzufügen öffnet einen Foto-Auswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Ordner, um einen ganzen Ordner hinzuzufügen. LightTable speichert Originale am ursprünglichen Ort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können."
           ],
           "steps": [
-            "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie Fotos aus, oder verwenden Sie das + neben Lokal, um einen Ordner auszuwählen.",
-            "Wählen Sie den Ordner unter Lokal in der linken Seitenleiste. Aktivieren Sie Unterordner einbeziehen, um Fotos in den Unterordnern zu durchsuchen.",
+            "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie Fotos aus, oder verwenden Sie das + neben Ordner, um einen Ordner auszuwählen.",
+            "Wählen Sie den Ordner unter Ordner in der linken Seitenleiste aus. Aktivieren Sie Unterordner einbeziehen, um Fotos in den Unterordnern anzuzeigen.",
             "Wählen Sie oben Photo Grid, Culling Grid oder Detail. Klicken Sie auf ein Foto, um es aktiv zu machen."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Neue Dateien in einen vorhandenen Ordner bringen",
           "paragraphs": [
-            "Verwenden Sie das Lokal •••-Menü und Ordner erneut scannen, nachdem Sie Dateien außerhalb von LightTable hinzugefügt haben. Um Fotos von einer Karte in einen Zielordner zu kopieren, verwenden Sie Aus Karte importieren… in diesem Menü."
+            "Verwenden Sie das Menü Ordner ••• und Ordner erneut scannen, nachdem Sie Dateien außerhalb von LightTable hinzugefügt haben. Um Fotos von einer Karte in einen Zielordner zu kopieren, verwenden Sie in diesem Menü Von Karte importieren…."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Die Vorschaukompatibilität meldet Übereinstimmungen in der aktuellen Bibliothek, ohne sie zu verändern. Fotos, die noch nicht hinzugefügt wurden, können in der Vorschau als nicht zugeordnet angezeigt werden; das Importieren mit aktivierter Option Die Fotoordner hinzufügen registriert verfügbare Originale vor dem erneuten Abgleichen."
           ],
           "steps": [
-            "Öffnen Sie Lokal ••• → Katalog importieren… oder wählen Sie beim Einrichten Import aus Lightroom.",
+            "Öffnen Sie Ordner ••• → Katalog importieren… oder wählen Sie bei der Einrichtung Import aus Lightroom.",
             "Wählen Sie die .lrcat-Datei und prüfen Sie ihre Zähler und Warnungen.",
             "Wählen Sie die zu importierenden Kategorien, die Richtlinie für vorhandene Bearbeitungen und ob die referenzierten Fotodateien hinzugefügt werden sollen.",
             "Klicken Sie auf Vorschaukompatibilität und überprüfen Sie zugeordnete und übersprungene Einstellungen. Mit 20 Varianten testen werden vor einem größeren Import separate Testbearbeitungen erstellt.",
@@ -103,7 +111,7 @@
           "title": "Übersetzte Bearbeitungen prüfen",
           "paragraphs": [
             "Develop-Einstellungen sind ungefähre Werte und können Lightrooms dargestellte Erscheinung nicht garantieren. Nicht unterstützte lokale Masken, Kameraprofiele, .lrcat-data-KI-Masken oder LUT-Nutzdaten sowie nicht unterstützte Regeln für intelligente Sammlungen werden als übersprungen gemeldet. Importierte Develop-Einstellungen schalten Film aus.",
-            "Lokal ••• → Sidecars importieren… ist eine separate Aktion zum Einlesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahlen, übersprungene Einstellungen und Fehler."
+            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Von Karte importieren kopiert Dateien in das von Ihnen gewählte Ziel. Die Originale auf der Karte bleiben an ihrem Platz. Das Überspringen von Duplikaten vergleicht den vollständigen Dateiinhalt; ein übereinstimmender Dateiname oder Kamerakopf reicht allein nicht aus."
           ],
           "steps": [
-            "Local ••• → Von Karte importieren…. öffnen",
+            "Ordner ••• → Von Karte importieren…. öffnen",
             "Wählen Sie Quelle und Ziel. Stellen Sie Ordner-Vorlage und Umbenennen in vor dem Scannen ein. Die Standardwerte behalten Dateinamen bei und organisieren Kopien als Jahr/Jahr-Monat-Tag.",
             "Wählen Sie Prüfung: Vollständiger Hash, Nur Größe oder Keine. Setzen Sie Duplikate auf Überspringen oder Trotzdem kopieren und wählen Sie optional Zweite Kopie zu.",
             "Klicken Sie auf Scannen. Verwenden Sie Vorherige und Nächste, um jede Seite zu überprüfen, und prüfen Sie die ausgewählte Anzahl und die Zielvorschau, bevor Sie auf Importieren klicken. Importieren ist nicht verfügbar, wenn keine Fotos ausgewählt sind.",
@@ -345,27 +353,27 @@
         {
           "title": "Wählen Sie aus, was sichtbar ist",
           "paragraphs": [
-            "Lokal → Durchsuchen listet Ihre hinzugefügten Ordner auf. Unterordner einschließen steuert, ob ein ausgewählter Ordner auch seine Unterordner anzeigt. Andere Bibliotheksfilter gelten weiterhin.",
+            "Ordner → Durchsuchen listet Ihre hinzugefügten Ordner auf. Unterordner einbeziehen steuert, ob ein ausgewählter Ordner auch seine untergeordneten Ordner anzeigt. Andere Bibliotheksfilter gelten weiterhin.",
             "In einem schmalen Linux-Fenster verwenden Sie Show or hide library oben links, um die Bibliotheksschublade zu öffnen. Schließen Sie sie mit derselben Schaltfläche, nachdem Sie einen Ordner ausgewählt haben, damit mehr Platz für das Foto bleibt."
           ],
           "steps": [
-            "Unter Lokal auf einen Ordner klicken.",
+            "Klicken Sie auf einen Ordner unter Ordner.",
             "Schalten Sie Unterordner ein, um untergeordnete Ordner einzuschließen, oder aus, um nur diesen Ordner anzuzeigen.",
             "Klicken Sie auf den Stern neben einem Ordner, oder öffnen Sie sein •••-Menü und wählen Sie Als Favorit hinzufügen.",
-            "Verwenden Sie Lokal → Favoriten, um zu Ihren gespeicherten Ordnern zurückzukehren."
+            "Verwenden Sie Ordner → Favoriten, um zu Ihren gespeicherten Ordnern zurückzukehren."
           ]
         },
         {
           "title": "Ordneraktionen",
           "paragraphs": [
-            "Das •••-Menü eines Ordners enthält auf dem Mac Im Finder anzeigen, unter Windows Im Datei-Explorer anzeigen oder unter Linux Im Dateimanager anzeigen. Für den aktuellen Ordner aktualisiert Ordner synchronisieren die Ansicht. Lokal ••• → Ordner erneut scannen scannt die Katalogquellen.",
+            "Das •••-Menü eines Ordners enthält Im Finder anzeigen auf Mac, Im Datei-Explorer anzeigen unter Windows oder Im Dateimanager anzeigen unter Linux. Für den aktuellen Ordner aktualisiert Ordner synchronisieren die Ansicht. Ordner ••• → Ordner erneut scannen scannt die Katalogquellen.",
             "Aus LightTable entfernen entfernt eine hinzugefügte Wurzel aus der Quellenliste der App; die originalen Dateien werden dabei nicht in den Papierkorb verschoben. Die Aktion wird angeboten, wenn mehr als eine Quelle verfügbar ist."
           ]
         },
         {
           "title": "Beobachtete Ordner verwalten",
           "paragraphs": [
-            "Öffnen Sie Lokal ••• → Beobachtungsordner…, um einen Beobachtungsordner hinzuzufügen. Wählen Sie aus, wie eingehende Fotos behandelt werden sollen. Speichern ist nicht verfügbar, bis ein Ordner angegeben ist; das Kopieren in die Bibliothek erfordert außerdem ein Ziel.",
+            "Öffnen Sie Ordner ••• → Beobachtungsordner…, um einen überwachten Ordner hinzuzufügen. Wählen Sie aus, wie neu ankommende Fotos behandelt werden sollen. Speichern ist erst verfügbar, wenn ein Ordner angegeben wurde; das Kopieren in die Bibliothek erfordert außerdem ein Ziel.",
             "Um eine vorhandene Beobachtung zu bearbeiten, wählen Sie sie unter Beobachtete Ordner aus. Jede gespeicherte Beobachtung erscheint in dieser Liste. Wählen Sie Neuer Beobachtungsordner für einen weiteren Ordner, oder verwenden Sie Beobachtung löschen, um die Überwachung des ausgewählten Ordners zu beenden. Dadurch werden seine Fotos nicht gelöscht.",
             "Das Tastenkürzel für Überwachung öffnet die erste aktive Beobachtung. Speicherfehler bleiben im Dialog, damit Sie die Einstellungen korrigieren können."
           ]
@@ -485,7 +493,7 @@
         {
           "title": "Metadaten aus einem anderen Editor lesen",
           "paragraphs": [
-            "Bitten Sie das andere Programm, seine Metadaten in die benachbarten XMP-Dateien zu schreiben, und wählen Sie dann Lokal ••• → Sidecars importieren…. Die Aktion liest die Originale des Katalogs, einschließlich aller Seiten großer Bibliotheken mit bis zu 100.000 Fotos pro Import. Virtuelle Kopien behalten ihre eigenen Metadaten.",
+            "Bitten Sie das andere Programm, seine Metadaten in benachbarte XMP-Dateien zu speichern, und wählen Sie dann Ordner ••• → Sidecars importieren…. Die Aktion liest die Originale des Katalogs, einschließlich aller Seiten großer Bibliotheken mit bis zu 100.000 Fotos pro Import. Virtuelle Kopien behalten ihre eigenen Metadaten.",
             "Unterstützte Metadaten umfassen Sternbewertungen, Auswahl/Ablehnung-Markierungen, standardisierte Farblabel, flache und hierarchische Stichwörter sowie beschreibende IPTC-Felder. Ein explizit leerer Wert löscht dieses Feld; ein fehlender Wert lässt es unverändert. Benutzerdefinierte Farblabel, die keinem LightTable-Farbton entsprechen, werden als übersprungen gemeldet.",
             "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden durch diese Menüaktion nicht angewendet."
           ]
@@ -3040,7 +3048,7 @@
         {
           "title": "Sichern und prüfen",
           "paragraphs": [
-            "Einstellungen → Katalog zeigt den Katalogspeicherort und die Sicherungseinstellungen. Sicherungen umfassen die Katalogstruktur, Bearbeitungen, gespeicherte Masken, Verlauf und Varianten. Sichern Sie Originalfotos, externe Vorgaben und Profile sowie Einstellungen separat. Lokal ••• → Katalog sichern… erstellt ebenfalls eine Sicherung und zeigt den gespeicherten Pfad oder Fehler in einem Ergebnisdialog an. Duplikate finden im selben Menü zeigt passende Dateien an oder meldet, dass keine gefunden wurden."
+            "Einstellungen → Katalog zeigt den Speicherort des Katalogs und die Sicherungseinstellungen an. Sicherungen umfassen die Katalogorganisation, Bearbeitungen, gespeicherte Masken, den Verlauf und Varianten. Sichern Sie Originalfotos, externe Vorgaben und Profile sowie die Einstellungen separat. Ordner ••• → Katalog sichern… erstellt ebenfalls eine Sicherung und zeigt den gespeicherten Pfad oder den Fehler in einem Ergebnisdialog an. Duplikate finden im selben Menü zeigt übereinstimmende Dateien an oder meldet, dass keine gefunden wurden."
           ],
           "steps": [
             "Wählen Sie ein automatisches Sicherungsintervall und einen Sicherungskopiespeicherort.",
@@ -3188,5 +3196,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
+  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
 }

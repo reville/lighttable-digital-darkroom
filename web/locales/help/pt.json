@@ -19,13 +19,21 @@
         {
           "title": "Escolha um ponto de partida",
           "paragraphs": [
-            "Em uma nova biblioteca, a configuração oferece uma pasta local, migração do Lightroom ou Apple Photos. Você pode pular a configuração e adicionar fotos depois.",
+            "Em uma nova biblioteca, a configuração oferece uma pasta local ou migração do Lightroom. O app do macOS também oferece Apple Photos. Você pode pular a configuração e adicionar fotos depois.",
             "A importação de biblioteca inteira do Apple Photos requer o aplicativo macOS e permissão para ler Fotos. Ela copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Sua biblioteca Fotos permanece inalterada. Os originais do iCloud são baixados durante a importação, então reserve tempo e espaço em disco. Álbuns, vídeos e edições do Fotos não são transferidos.",
             "Parar a importação mantém as cópias concluídas. Executá-la novamente pula essas cópias e tenta novamente os originais inacabados."
           ],
           "steps": [
             "Escolha uma pasta para navegar pelos originais no local ou selecione uma das opções de migração.",
             "Revise o resultado da importação e depois continue para a biblioteca."
+          ]
+        },
+        {
+          "title": "Navegar no Apple Photos",
+          "paragraphs": [
+            "No app para macOS, abra Apple Photos na barra lateral para navegar por fotos e álbuns. Permita o acesso ao Photos quando solicitado. Essa origem fica oculta no Windows e no Linux.",
+            "Selecione até 500 fotos em várias páginas ou álbuns e, em seguida, escolha Importar originais selecionados. O LightTable copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Os originais do iCloud são baixados durante a importação. Sua biblioteca do Photos permanece inalterada; álbuns, vídeos e edições do Photos não são transferidos.",
+            "Parar importação mantém as cópias concluídas. Importe a seleção novamente para tentar de novo os originais indisponíveis; as cópias concluídas são ignoradas. Escolha Visualizar fotos importadas para editar as cópias. Atualizar atualiza as fotos e álbuns disponíveis."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Abrir uma pasta local",
           "paragraphs": [
-            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e Windows, use o + ao lado de Local para adicionar uma pasta inteira. O LightTable mantém os originais no lugar. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
+            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
           ],
           "steps": [
-            "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Local para escolher uma pasta.",
-            "Escolha a pasta em Local na barra lateral esquerda. Ative Incluir subpastas para navegar pelas fotos nas pastas filhas.",
+            "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Pastas para escolher uma pasta.",
+            "Escolha a pasta em Pastas na barra lateral esquerda. Ative Incluir subpastas para navegar pelas fotos nas pastas filhas.",
             "Escolha Photo Grid, Culling Grid ou Detail na parte superior. Clique em uma foto para torná-la ativa."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Traga novos arquivos para uma pasta existente",
           "paragraphs": [
-            "Use o menu Local ••• e Reanalisar pastas depois de adicionar arquivos fora do LightTable. Para copiar fotos de um cartão para uma pasta de destino, use Importar do cartão… nesse menu."
+            "Use o menu Pastas ••• e Redigitalizar pastas depois de adicionar arquivos fora do LightTable. Para copiar fotos de um cartão para uma pasta de destino, use Importar do cartão… nesse menu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "A compatibilidade da pré-visualização mostra correspondências na biblioteca atual sem alterá-la. Fotos ainda não adicionadas podem aparecer como não correspondentes na pré-visualização; importar com Adicionar as pastas de fotos ativado registra os originais disponíveis antes de corresponder novamente."
           ],
           "steps": [
-            "Abra Local ••• → Importar catálogo… ou escolha Importar do Lightroom na configuração.",
+            "Abra Pastas ••• → Importar catálogo…, ou escolha Importar do Lightroom na configuração.",
             "Escolha o arquivo .lrcat e revise suas contagens e avisos.",
             "Escolha as categorias a importar, a política para edições existentes e se deseja adicionar as pastas de fotos referenciadas.",
             "Clique em Compatibilidade de pré-visualização e revise as configurações mapeadas e ignoradas. Testar 20 variantes cria edições de teste separadas antes de uma importação maior.",
@@ -103,7 +111,7 @@
           "title": "Revisar edições traduzidas",
           "paragraphs": [
             "As configurações de Desenvolver são aproximadas e não podem garantir a aparência renderizada do Lightroom. Máscaras locais sem suporte, perfis de câmera, máscaras de IA do .lrcat-data ou cargas úteis de LUT, e regras de coleção inteligente sem suporte são relatadas como ignoradas. As configurações de desenvolvimento importadas desativam Filme.",
-            "Local ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra o progresso, as contagens aplicadas, as configurações ignoradas e os erros."
+            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importar do cartão copia arquivos para o destino que você escolher. Os originais do cartão permanecem no lugar. A opção de ignorar duplicados compara o conteúdo completo dos arquivos; um nome de arquivo correspondente ou um cabeçalho da câmera sozinho não é suficiente."
           ],
           "steps": [
-            "Abra Local ••• → Importar do cartão….",
+            "Abra Pastas ••• → Importar do cartão….",
             "Escolha a Origem e o Destino. Defina o modelo de Pasta e Renomear para antes de digitalizar. As predefinições mantêm os nomes de arquivo e organizam as cópias como ano/ano-mês-dia.",
             "Escolha verificação: Hash completo, Apenas tamanho ou Nenhum. Defina Duplicatas como Ignorar ou Copiar mesmo assim e, opcionalmente, escolha Segunda cópia para.",
             "Clique em Digitalizar. Use Anterior e Próximo para revisar cada página e verifique a contagem selecionada e a pré-visualização do destino antes de clicar em Importar. Importar fica indisponível quando nenhuma foto está selecionada.",
@@ -345,27 +353,27 @@
         {
           "title": "Escolher o que está à vista",
           "paragraphs": [
-            "Local → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra seus descendentes. Outros filtros da biblioteca ainda se aplicam.",
+            "Pastas → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra suas descendentes. Outros filtros da biblioteca ainda se aplicam.",
             "Em uma janela estreita do Linux, use Mostrar ou ocultar a biblioteca no canto superior esquerdo para abrir a gaveta da biblioteca. Feche-a com o mesmo botão depois de escolher uma pasta para deixar mais espaço para a foto."
           ],
           "steps": [
-            "Clique em uma pasta em Local.",
+            "Clique em uma pasta em Pastas.",
             "Ative Incluir subpastas para incluir pastas filhas, ou desative para visualizar apenas essa pasta.",
             "Clique na estrela ao lado de uma pasta, ou abra o menu ••• dela e escolha Adicionar como Favorito.",
-            "Use Local → Favoritos para voltar às suas pastas salvas."
+            "Use Pastas → Favoritos para voltar às suas pastas salvas."
           ]
         },
         {
           "title": "Ações da pasta",
           "paragraphs": [
-            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac, Mostrar no Explorador de Arquivos no Windows ou Mostrar no Gerenciador de Arquivos no Linux. Para a pasta atual, Sincronizar pasta atualiza a visualização. Local ••• → Redigitalizar pastas digitaliza as origens do catálogo.",
+            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac, Mostrar no Explorador de Arquivos no Windows ou Mostrar no Gerenciador de Arquivos no Linux. Para a pasta atual, Sincronizar pasta atualiza a visualização. Pastas ••• → Redigitalizar pastas digitaliza as origens do catálogo.",
             "Remover do LightTable remove uma raiz adicionada da lista de origens do app; isso não move os arquivos originais para o Lixo. A ação é oferecida quando há mais de uma origem disponível."
           ]
         },
         {
           "title": "Gerenciar pastas observadas",
           "paragraphs": [
-            "Abra Local ••• → Pasta observada… para adicionar uma pasta observada. Escolha como as fotos que chegarem devem ser tratadas. Salvar fica indisponível até que uma pasta seja especificada; copiar para a biblioteca também requer um destino.",
+            "Abra Pastas ••• → Pasta observada… para adicionar uma pasta observada. Escolha como as fotos que chegarem devem ser tratadas. Salvar fica indisponível até que uma pasta seja especificada; copiar para a biblioteca também exige um destino.",
             "Para editar uma observação existente, escolha-a em Pastas observadas. Cada observação salva aparece nesta lista. Escolha Nova pasta observada para outra pasta ou use Excluir observação para parar de observar a pasta selecionada. Isso não exclui as fotos dela.",
             "O atalho de Observando abre a primeira observação ativa. Os erros de salvamento permanecem na caixa de diálogo para que você possa corrigir as configurações."
           ]
@@ -485,7 +493,7 @@
         {
           "title": "Ler metadados de outro editor",
           "paragraphs": [
-            "Peça ao outro editor que salve seus metadados em arquivos XMP adjacentes e, em seguida, escolha Local ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes, até 100.000 fotos por importação. Cópias virtuais mantêm seus próprios metadados.",
+            "Peça ao outro editor para salvar os metadados em arquivos XMP adjacentes e, em seguida, escolha Pastas ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes com até 100.000 fotos por importação. As cópias virtuais mantêm seus próprios metadados.",
             "Os metadados compatíveis incluem avaliações por estrelas, marcas de selecionar/rejeitar, rótulos de cor padrão, palavras-chave planas e hierárquicas e campos descritivos IPTC. Um valor vazio explícito limpa esse campo; um valor ausente o deixa inalterado. Rótulos de cor personalizados que não correspondem a uma cor do LightTable são informados como ignorados.",
             "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte não são aplicados por esta ação de menu."
           ]
@@ -3040,7 +3048,7 @@
         {
           "title": "Fazer backup e inspecionar",
           "paragraphs": [
-            "Configurações → Catálogo mostra o local do catálogo e as preferências de backup. Os backups incluem a organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup de fotos originais, predefinições e perfis externos e preferências separadamente. Local ••• → Fazer backup do catálogo… também cria um backup e mostra o caminho salvo ou o erro em uma caixa de diálogo de resultados. Encontrar duplicatas no mesmo menu mostra arquivos correspondentes ou informa que nenhum foi encontrado."
+            "Configurações → Catálogo mostra o local do catálogo e as preferências de backup. Os backups incluem a organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup separadamente das fotos originais, das predefinições e perfis externos e das preferências. Pastas ••• → Fazer backup do catálogo… também cria um backup e mostra o caminho salvo ou o erro em uma caixa de diálogo de resultados. Encontrar duplicatas no mesmo menu mostra arquivos correspondentes ou informa que nenhum foi encontrado."
           ],
           "steps": [
             "Escolha um intervalo de backup automático e um local de backup.",
@@ -3188,5 +3196,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
+  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
 }

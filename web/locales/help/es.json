@@ -19,13 +19,21 @@
         {
           "title": "Elige un punto de partida",
           "paragraphs": [
-            "En una nueva biblioteca, la configuración ofrece una carpeta local, migración desde Lightroom o Apple Photos. Puede omitir la configuración y agregar fotos más tarde.",
+            "En una nueva biblioteca, la configuración inicial ofrece una carpeta local o migración desde Lightroom. La app para macOS también ofrece Fotos de Apple. Puede omitir la configuración inicial y agregar fotos más tarde.",
             "La importación de toda la biblioteca de Apple Photos requiere la app macOS y permiso para leer Fotos. Copia las fotos originales, incluidos los archivos RAW, en Pictures / LightTable Imports / Apple Photos. Su biblioteca de Fotos permanece sin cambios. Los originales de iCloud se descargan durante la importación, así que permita tiempo y espacio en disco. Los álbumes, los vídeos y las ediciones de Fotos no se transfieren.",
             "Detener importación conserva las copias completadas. Si se ejecuta de nuevo, omite esas copias e intenta de nuevo los originales pendientes."
           ],
           "steps": [
             "Elige una carpeta para explorar los originales en su lugar, o selecciona una de las opciones de migración.",
             "Revisa el resultado de la importación y luego continúa hacia la biblioteca."
+          ]
+        },
+        {
+          "title": "Explorar Fotos de Apple",
+          "paragraphs": [
+            "En la app para macOS, abra Fotos de Apple en la barra lateral para explorar fotos y álbumes. Permita el acceso a Fotos cuando se le solicite. Este origen está oculto en Windows y Linux.",
+            "Seleccione hasta 500 fotos entre páginas o álbumes y luego elija Importar originales seleccionados. LightTable copia las fotos originales, incluidos los archivos RAW, en Pictures / LightTable Imports / Apple Photos. Los originales de iCloud se descargan durante la importación. Su fototeca de Fotos no se modifica; los álbumes, videos y ediciones de Fotos no se transfieren.",
+            "Detener importación conserva las copias completadas. Importe de nuevo la selección para reintentar los originales no disponibles; las copias completadas se omiten. Elija Ver fotos importadas para editar las copias. Actualizar actualiza las fotos y álbumes disponibles."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Abrir una carpeta local",
           "paragraphs": [
-            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Local para agregar una carpeta completa. LightTable conserva los originales en su sitio. Seleccionar una foto individual agrega la carpeta que la contiene, de modo que otras fotos compatibles de esa carpeta también puedan aparecer."
+            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Carpetas para agregar una carpeta completa. LightTable mantiene los originales en su ubicación. Al seleccionar una foto individual se agrega su carpeta contenedora, de modo que también pueden aparecer otras fotos compatibles de esa carpeta."
           ],
           "steps": [
-            "Haga clic en Agregar Fotos en la parte superior izquierda y elija fotos, o use el + junto a Local para elegir una carpeta.",
-            "Elija la carpeta bajo Local en la barra lateral izquierda. Active Incluir subcarpetas para explorar fotos en sus carpetas secundarias.",
+            "Haga clic en Agregar Fotos en la esquina superior izquierda y elija fotos, o use el + junto a Carpetas para elegir una carpeta.",
+            "Elija la carpeta en Carpetas en la barra lateral izquierda. Active Incluir subcarpetas para explorar las fotos en sus subcarpetas secundarias.",
             "Elige Cuadrícula de fotos, Cuadrícula de descarte o Detalle en la parte superior. Haz clic en una foto para activarla."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Importe archivos nuevos en una carpeta existente",
           "paragraphs": [
-            "Usa el menú Local ••• y Reescanear carpetas después de agregar archivos fuera de LightTable. Para copiar fotos desde una tarjeta a una carpeta de destino, usa Importar desde tarjeta… en ese menú."
+            "Use el menú Carpetas ••• y Volver a escanear carpetas después de agregar archivos fuera de LightTable. Para copiar fotos desde una tarjeta a una carpeta de destino, use Importar desde tarjeta… en ese menú."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "La compatibilidad de vista previa informa de las coincidencias en la biblioteca actual sin modificarla. Las fotos que aún no se han añadido pueden aparecer como no coincidentes en la vista previa; importar con Agregar las carpetas de fotos habilitado registra los originales disponibles antes de volver a coincidir."
           ],
           "steps": [
-            "Abra Local ••• → Importar catálogo…, o elija Importar desde Lightroom en la configuración.",
+            "Abra Carpetas ••• → Importar catálogo… o elija Importar desde Lightroom en la configuración inicial.",
             "Elige el archivo .lrcat y revisa sus conteos y advertencias.",
             "Elija las categorías que desea importar, la política para las ediciones existentes y si desea agregar las carpetas de fotos referenciadas.",
             "Haga clic en Compatibilidad de vista previa y revise los ajustes asignados y omitidos. Probar 20 variantes crea ediciones de prueba separadas antes de una importación mayor.",
@@ -103,7 +111,7 @@
           "title": "Revisar ediciones traducidas",
           "paragraphs": [
             "Los ajustes de Develop son aproximados y no pueden prometer la apariencia renderizada de Lightroom. Las máscaras locales no compatibles, los perfiles de cámara, las máscaras de IA .lrcat-data o las cargas útiles de LUT, y las reglas de colecciones inteligentes no compatibles se informan como omitidas. Los ajustes de Develop importados desactivan Film.",
-            "Local ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. Su cuadro de diálogo de resultados muestra progreso, recuentos aplicados, ajustes omitidos y errores."
+            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importar desde tarjeta copia los archivos al destino que elija. Los originales de la tarjeta permanecen en su lugar. La omisión de duplicados compara el contenido completo de los archivos; un nombre de archivo coincidente o el encabezado de la cámara por sí solos no son suficientes."
           ],
           "steps": [
-            "Abra Local ••• → Importar desde tarjeta….",
+            "Abra Carpetas ••• → Importar desde tarjeta….\"",
             "Elige el Origen y el Destino. Define la plantilla de carpeta y Renombrar a antes de escanear. Los valores predeterminados conservan los nombres de archivo y organizan las copias como año/año-mes-día.",
             "Elija verificación: Hash completo, Solo tamaño o Ninguno. Establezca Duplicados en Saltar o Copiar igualmente y, opcionalmente, elija Segunda copia a.",
             "Haz clic en Escanear. Usa Anterior y Siguiente para revisar cada página, y comprueba el recuento seleccionado y la vista previa del destino antes de hacer clic en Importar. Importar no está disponible cuando no hay fotos seleccionadas.",
@@ -345,27 +353,27 @@
         {
           "title": "Elegir lo que está en vista",
           "paragraphs": [
-            "Local → Explorar enumera las carpetas que has agregado. Incluir subcarpetas controla si una carpeta seleccionada también muestra sus descendientes. Los demás filtros de la biblioteca siguen aplicándose.",
+            "Carpetas → Explorar muestra las carpetas que ha agregado. Incluir subcarpetas controla si una carpeta seleccionada también muestra sus descendientes. Los demás filtros de la biblioteca siguen aplicándose.",
             "En una ventana estrecha de Linux, use Mostrar u ocultar la biblioteca en la parte superior izquierda para abrir el panel de la biblioteca. Ciérrelo con el mismo botón después de elegir una carpeta para dejar más espacio para la foto."
           ],
           "steps": [
-            "Haga clic en una carpeta debajo de Local.",
+            "Haga clic en una carpeta debajo de Carpetas.",
             "Activa Incluir subcarpetas para incluir carpetas secundarias, o desactívalo para ver solo esa carpeta.",
             "Haz clic en la estrella junto a una carpeta, o abre su menú ••• y elige Agregar como favorito.",
-            "Usa Local → Favoritos para volver a tus carpetas guardadas."
+            "Use Carpetas → Favoritos para volver a sus carpetas guardadas."
           ]
         },
         {
           "title": "Acciones de carpeta",
           "paragraphs": [
-            "El menú ••• de una carpeta incluye Mostrar en Finder en Mac, Mostrar en el Explorador de archivos en Windows o Mostrar en el gestor de archivos en Linux. Para la carpeta actual, Sincronizar carpeta actualiza la vista. Local ••• → Volver a escanear carpetas escanea las fuentes del catálogo.",
+            "El menú ••• de una carpeta incluye Mostrar en Finder en Mac, Mostrar en Explorador de archivos en Windows o Mostrar en Gestor de archivos en Linux. Para la carpeta actual, Sincronizar carpeta actualiza la vista. Carpetas ••• → Volver a escanear carpetas escanea los orígenes del catálogo.",
             "Quitar de LightTable elimina un origen raíz agregado de la lista de orígenes de la app; no mueve los archivos originales a la Papelera. La acción se ofrece cuando hay más de una fuente disponible."
           ]
         },
         {
           "title": "Administrar carpetas vigiladas",
           "paragraphs": [
-            "Abre Local ••• → Carpeta vigilada… para agregar una carpeta vigilada. Elige cómo se deben tratar las fotos que lleguen. Guardar no está disponible hasta que se especifique una carpeta; copiar a la biblioteca también requiere un destino.",
+            "Abra Carpetas ••• → Carpeta vigilada… para agregar una carpeta vigilada. Elija cómo deben tratarse las fotos que lleguen. Guardar no está disponible hasta que se especifique una carpeta; copiar a la biblioteca también requiere un destino.",
             "Para editar una vigilancia existente, elígela en Carpetas vigiladas. Cada vigilancia guardada aparece en esta lista. Elige Nueva carpeta vigilada para otra carpeta, o usa Eliminar punto de control para dejar de vigilar la carpeta seleccionada. Esto no elimina sus fotos.",
             "El atajo de Vigilancia abre la primera vigilancia activa. Los errores de guardado permanecen en el cuadro de diálogo para que puedas corregir la configuración."
           ]
@@ -485,7 +493,7 @@
         {
           "title": "Leer metadatos de otro editor",
           "paragraphs": [
-            "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y, a continuación, elija Local ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100,000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
+            "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y luego elija Carpetas ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
             "Los metadatos admitidos incluyen calificaciones de estrellas, marcas de seleccionar/rechazar, etiquetas de color estándar, palabras clave planas y jerárquicas, y campos descriptivos IPTC. Un valor vacío explícito borra ese campo; un valor ausente lo deja sin cambios. Las etiquetas de color personalizadas que no coinciden con un color de LightTable se informan como omitidas.",
             "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte no se aplican con esta acción de menú."
           ]
@@ -3040,7 +3048,7 @@
         {
           "title": "Hacer copia de seguridad e inspeccionar",
           "paragraphs": [
-            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haz copias de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado. Local ••• → Hacer copia de seguridad del catálogo… también crea una copia de seguridad y muestra su ruta guardada o el error en un cuadro de diálogo de resultados. Buscar duplicados en el mismo menú muestra archivos coincidentes, o informa que no se encontraron."
+            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haga una copia de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado. Carpetas ••• → Hacer copia de seguridad del catálogo… también crea una copia de seguridad y muestra su ruta guardada o el error en un cuadro de resultados. Buscar duplicados en el mismo menú muestra archivos coincidentes, o informa de que no se encontró ninguno."
           ],
           "steps": [
             "Elige un intervalo de copia de seguridad automática y una ubicación de copia de seguridad.",
@@ -3188,5 +3196,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
+  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
 }
