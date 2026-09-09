@@ -1394,7 +1394,15 @@ mod windows_shared_input_tests {
         /// Mirror `multiprocessing.shared_memory.SharedMemory(create=True)`:
         /// a pagefile-backed mapping whose handle stays open for the test.
         fn create(length: usize) -> Self {
-            let name = format!("wnsm_lighttable_test_{}_{length}", std::process::id());
+            use std::sync::atomic::{AtomicU64, Ordering};
+            static NEXT_SEGMENT: AtomicU64 = AtomicU64::new(0);
+            // Windows reopens an existing mapping with the same name. Tests
+            // of equally sized inputs run concurrently in the same process.
+            let sequence = NEXT_SEGMENT.fetch_add(1, Ordering::Relaxed);
+            let name = format!(
+                "wnsm_lighttable_test_{}_{sequence}_{length}",
+                std::process::id()
+            );
             let wide: Vec<u16> = std::ffi::OsStr::new(&name)
                 .encode_wide()
                 .chain(std::iter::once(0))
@@ -1447,6 +1455,21 @@ mod windows_shared_input_tests {
             bytes.extend_from_slice(&sample.to_le_bytes());
         }
         bytes
+    }
+
+    #[test]
+    fn same_sized_segments_keep_independent_pixels() {
+        let first = packed_rgb16(1, 1, &[0, 0, 0]);
+        let second = packed_rgb16(1, 1, &[65535, 65535, 65535]);
+        let first_segment = Segment::create(first.len());
+        let second_segment = Segment::create(second.len());
+        assert_ne!(first_segment.name, second_segment.name);
+        first_segment.write(&first);
+        second_segment.write(&second);
+        let first_image = load_shared_input(&first_segment.name, first.len()).unwrap();
+        let second_image = load_shared_input(&second_segment.name, second.len()).unwrap();
+        assert_eq!(precision::to_f32(first_image.data[0]), 0.0);
+        assert_eq!(precision::to_f32(second_image.data[0]), 1.0);
     }
 
     #[test]

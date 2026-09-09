@@ -15,6 +15,10 @@ on:
         required: false
         default: false
         type: boolean
+      build_run_id:
+        description: Recheck native acceptance of an earlier package without rebuilding (leave blank for a normal build)
+        required: false
+        type: string
   workflow_call:
     inputs:
       version:
@@ -41,10 +45,36 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}
   cancel-in-progress: true
 
 jobs:
+  native-recheck:
+    if: github.event_name == 'workflow_dispatch' && inputs.build_run_id != ''
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/windows-native.yml
+    with:
+      build_run_id: ${{ inputs.build_run_id }}
+
+  installer-check:
+    if: github.event_name != 'workflow_dispatch' || !inputs.build_run_id
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.sha }}
+
+      - name: Install NSIS
+        shell: pwsh
+        run: choco install nsis --no-progress -y
+
+      - name: Require install, repair and data-preserving uninstall
+        shell: pwsh
+        run: ./scripts/windows/installer-fixture-smoke.ps1
+
   quick-check:
     if: github.event_name == 'pull_request'
     runs-on: windows-2022
@@ -91,6 +121,14 @@ jobs:
               exit 1
             }
           }
+          python -m unittest discover -s tests -p test_process_liveness.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_launcher_control.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_durable_io.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
@@ -115,7 +153,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
   package:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || !inputs.build_run_id)
+    needs: installer-check
     runs-on: windows-2022
     timeout-minutes: 90
     env:
@@ -167,6 +206,12 @@ jobs:
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
+          python -m unittest discover -s tests -p test_process_liveness.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_durable_io.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
@@ -176,6 +221,8 @@ jobs:
           ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
       - name: Upload portable build and installer
+        # Preserve a completed package for diagnosis/rechecks even if native
+        # acceptance fails. The package job still fails and blocks release.yml.
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-windows-x64
@@ -184,3 +231,21 @@ jobs:
             dist/LightTable-*-windows-x64-setup.exe
             dist/appcast-windows-x64.xml
           if-no-files-found: error
+
+      - name: Require native edit, export and restart
+        timeout-minutes: 10
+        shell: pwsh
+        run: |
+          $Archive = Get-ChildItem ./dist/LightTable-*-windows-x64.zip | Select-Object -First 1
+          Expand-Archive -LiteralPath $Archive.FullName -DestinationPath ./.build/native-candidate
+          $Bundle = (Resolve-Path ./.build/native-candidate/LightTable).Path
+          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-desktop-evidence
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload native acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-native-acceptance
+          path: .build/windows-desktop-evidence/
+          if-no-files-found: ignore
