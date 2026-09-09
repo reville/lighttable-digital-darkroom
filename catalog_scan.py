@@ -570,9 +570,16 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
     The old library wrote every rating, keyword, edit, collection, stack, and
     virtual copy into one JSON file beside the photos. This reads that file and
     reproduces it in the catalog. It is additive and idempotent: running it
-    twice does not duplicate anything, and it never deletes the original file,
-    so an older build can still open the folder.
+    twice never overwrites catalog edits or resurrects deleted interpretations.
+    The source remains retryable when originals are not available yet. All
+    successful adoption writes and their ownership markers commit together.
     """
+    with cat.write():
+        return _import_state_file(cat, source_id, state_path)
+
+
+def _import_state_file(cat: catalog_module.Catalog, source_id: int,
+                       state_path: Path | None = None) -> dict:
     source = cat.source_by_id(source_id)
     if not source:
         raise ValueError(f"unknown source {source_id}")
@@ -582,20 +589,53 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
         return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
                 "skipped": 0, "present": False}
 
+    adoption_key = f"portable.source:{source_id}"
+    if cat.connection.execute("SELECT 1 FROM meta WHERE key=?", (adoption_key,)).fetchone():
+        return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
+                "skipped": 0, "present": True, "adopted": True}
+
     try:
         state = json.loads(path.read_text())
-    except (OSError, json.JSONDecodeError):
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
                 "skipped": 0, "present": False, "error": "unreadable"}
 
-    images = state.get("images") if isinstance(state, dict) else None
+    if not isinstance(state, dict):
+        return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
+                "skipped": 0, "present": True, "error": "unreadable"}
+    images = state.get("images")
     images = images if isinstance(images, dict) else {}
+
+    # Read before importing: capture overrides can update all interpretations
+    # of a file, but must not suppress another entry in this same import.
+    owned = {int(row[0]) for row in cat.connection.execute(
+        "SELECT i.id FROM images i JOIN files f ON f.id=i.file_id"
+        " JOIN meta m ON m.key='portable.image:' || i.id WHERE f.source_id=?",
+        (source_id,))}
+    owned_files = {int(row[0]) for row in cat.connection.execute(
+        "SELECT DISTINCT i.file_id FROM images i JOIN files f ON f.id=i.file_id"
+        " JOIN meta m ON m.key='portable.image:' || i.id WHERE f.source_id=?",
+        (source_id,))}
 
     # Virtual copies first: their state entries are keyed by the marker name,
     # and the image rows have to exist before that state can be attached.
     created_virtual = 0
     id_by_name: dict[str, int] = {}
-    for record in (state.get("virtualCopies") or []):
+    descriptors = state.get("virtualCopies")
+    descriptors = list(descriptors) if isinstance(descriptors, list) else []
+    described = {(str(item.get("source", "")), str(item.get("id", "")))
+                 for item in descriptors if isinstance(item, dict)}
+    # Early catalog mirrors wrote copy recipes without their descriptors.
+    # The qualified image key still contains enough identity to recover them.
+    for name in images:
+        if catalog_module.VIRTUAL_MARKER in name:
+            base, ident = name.split(catalog_module.VIRTUAL_MARKER, 1)
+            if base and ident and (base, ident) not in described:
+                descriptors.append({"source": base, "id": ident, "name": name})
+                described.add((base, ident))
+    unavailable_copies = 0
+    deleted_names = set()
+    for record in descriptors:
         if not isinstance(record, dict):
             continue
         base = str(record.get("source", ""))
@@ -604,18 +644,26 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
             continue
         base_id = cat.image_id_for(source_id, base)
         if base_id is None:
+            unavailable_copies += 1
             continue
-        name = str(record.get("name", ""))
+        name = str(record.get("name", "")) or f"{base}{catalog_module.VIRTUAL_MARKER}{ident}"
+        file_id = cat.connection.execute("SELECT file_id FROM images WHERE id=?", (base_id,)).fetchone()[0]
+        if cat.connection.execute("SELECT 1 FROM meta WHERE key=?",
+                (f"portable.deleted-copy:{file_id}:{ident}",)).fetchone():
+            deleted_names.add(name)
+            continue
         existing = cat.image_id_for(source_id, base, ident)
         if existing is None:
             display = str(record.get("displayName", "")) or Path(base).name
-            existing = cat.add_virtual_copy(base_id, ident, display)
+            existing = cat.add_virtual_copy(base_id, ident, display, from_portable=True)
             created_virtual += 1
         id_by_name[name] = existing
 
     imported = skipped = 0
     for name, entry in images.items():
         if not isinstance(entry, dict):
+            continue
+        if name in deleted_names:
             continue
         image_id = id_by_name.get(name)
         if image_id is None:
@@ -626,9 +674,11 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
         if image_id is None:
             skipped += 1
             continue
+        if image_id in owned:
+            continue
         payload = {
             "status": entry.get("status", "pending"),
-            "rating": int(entry.get("rating", 0) or 0),
+            "rating": entry.get("rating", 0),
             "label": str(entry.get("label", "none")),
             "params": entry.get("params"),
             "grade": entry.get("grade"),
@@ -643,7 +693,10 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
         cat.save_state(image_id, payload)
         if "captureTimeOverride" in entry:
             try:
-                cat.set_capture_override(image_id, entry["captureTimeOverride"])
+                file_id = cat.connection.execute(
+                    "SELECT file_id FROM images WHERE id=?", (image_id,)).fetchone()[0]
+                if file_id not in owned_files:
+                    cat.set_capture_override(image_id, entry["captureTimeOverride"])
             except ValueError:
                 pass  # Older or malformed portable dates cannot block import.
         versions = entry.get("versions")
@@ -651,67 +704,90 @@ def import_state_file(cat: catalog_module.Catalog, source_id: int,
             cat.save_versions(image_id, versions)
         imported += 1
 
-    collections = 0
+    def group_key(kind, record):
+        digest = hashlib.sha256(json.dumps(record, sort_keys=True).encode()).hexdigest()
+        return f"portable.group:{source_id}:{kind}:{digest}"
+
+    def group_done(key):
+        return cat.connection.execute("SELECT 1 FROM meta WHERE key=?", (key,)).fetchone()
+
+    def finish_group(key):
+        cat.connection.execute("INSERT OR IGNORE INTO meta(key,value) VALUES(?, '1')", (key,))
+
+    def group_members(record):
+        members, unresolved = [], False
+        for member in record.get("members") or []:
+            member = str(member)
+            if member in deleted_names:
+                continue
+            relpath, ident = (member.split(catalog_module.VIRTUAL_MARKER, 1)
+                              if catalog_module.VIRTUAL_MARKER in member else (member, None))
+            image_id = cat.image_id_for(source_id, relpath, ident)
+            if image_id is None:
+                unresolved = True
+            elif image_id not in members:
+                members.append(image_id)
+        return members, unresolved
+
+    collections = pending_groups = 0
     for record in (state.get("collections") or []):
         if not isinstance(record, dict):
             continue
         name = str(record.get("name", "")).strip()
         if not name:
             continue
+        key = group_key("collection", record)
+        if group_done(key):
+            continue
         known = {c["name"] for c in cat.collections()}
         if name in known:
+            finish_group(key)  # An existing/user-owned grouping wins.
             continue
         kind = "smart" if record.get("type") == "smart" else "regular"
+        members, unresolved = group_members(record) if kind == "regular" else ([], False)
+        if unresolved:
+            pending_groups += 1
+            continue  # Adopt complete membership once; never rewrite user edits.
         rules = record.get("rules") if kind == "smart" else None
         collection_id = cat.add_collection(name, kind=kind, rules=rules)
         collections += 1
-        if kind == "regular":
-            members = []
-            for member in (record.get("members") or []):
-                relpath, ident = str(member), None
-                if catalog_module.VIRTUAL_MARKER in relpath:
-                    relpath, ident = relpath.split(
-                        catalog_module.VIRTUAL_MARKER, 1)
-                image_id = cat.image_id_for(source_id, relpath, ident)
-                if image_id is not None:
-                    members.append(image_id)
-            if members:
-                cat.set_collection_members(collection_id, members)
+        if members:
+            cat.set_collection_members(collection_id, members)
+        finish_group(key)
 
     stacks = 0
     for record in (state.get("stacks") or []):
         if not isinstance(record, dict):
             continue
-        members = []
-        for member in (record.get("members") or []):
-            relpath, ident = str(member), None
-            if catalog_module.VIRTUAL_MARKER in relpath:
-                relpath, ident = relpath.split(
-                    catalog_module.VIRTUAL_MARKER, 1)
-            image_id = cat.image_id_for(source_id, relpath, ident)
-            if image_id is not None:
-                members.append(image_id)
-        if len(members) < 2:
+        key = group_key("stack", record)
+        if group_done(key):
             continue
-        with cat.write() as conn:
-            already = conn.execute(
-                "SELECT stack_id FROM stack_images WHERE image_id=?",
-                (members[0],)).fetchone()
-            if already:
-                continue
-            cur = conn.execute(
-                "INSERT INTO stacks(name, collapsed) VALUES(?,?)",
-                (str(record.get("name", "Stack"))[:80],
-                 1 if record.get("collapsed", True) else 0))
-            stack_id = int(cur.lastrowid)
-            for position, image_id in enumerate(members):
-                conn.execute(
-                    "INSERT OR IGNORE INTO stack_images(stack_id, image_id,"
-                    " position) VALUES(?,?,?)", (stack_id, image_id, position))
+        members, unresolved = group_members(record)
+        if unresolved:
+            pending_groups += 1
+            continue
+        if len(members) < 2:
+            finish_group(key)
+            continue
+        if any(cat.stack_id_for(image_id) is not None for image_id in members):
+            finish_group(key)
+            continue  # Never take a member out of a user-created stack.
+        cat.add_stack(str(record.get("name", "Stack")), members,
+                      collapsed=bool(record.get("collapsed", True)))
+        finish_group(key)
         stacks += 1
 
+    pending_key = f"portable.pending-source:{source_id}"
+    if not skipped and not unavailable_copies and not pending_groups:
+        cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
+                               (adoption_key,))
+        cat.connection.execute("DELETE FROM meta WHERE key=?", (pending_key,))
+    else:
+        cat.connection.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
+                               (pending_key,))
     return {"images": imported, "collections": collections, "stacks": stacks,
-            "virtual": created_virtual, "skipped": skipped, "present": True}
+            "virtual": created_virtual, "skipped": skipped, "present": True,
+            "pendingGroups": pending_groups}
 
 
 def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
@@ -734,15 +810,23 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
         candidate = json.loads(target.read_text())
         if isinstance(candidate, dict):
             existing = candidate
-    except (OSError, json.JSONDecodeError):
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         pass
+    pending = cat.connection.execute("SELECT 1 FROM meta WHERE key=?",
+                                     (f"portable.pending-source:{source_id}",)).fetchone()
+    if (existing and not pending and not cat.connection.execute(
+            "SELECT 1 FROM meta WHERE key=?", (f"portable.source:{source_id}",)).fetchone()):
+        # The first scan/adoption can outlast the edit mirror debounce. Even
+        # after scan completion, missing originals can still have portable
+        # recipes to adopt later. Let adoption classify the entire file first.
+        return False
     try:
         mirrored_revision = float(existing.get("mirroredRevision", 0) or 0)
     except (TypeError, ValueError):
         mirrored_revision = 0
     mirrored_at = time.time()
     rows = cat.connection.execute(
-        "SELECT i.id, i.copy_ident, f.relpath,"
+        "SELECT i.id, i.copy_ident, i.display_name, f.relpath,"
         " COALESCE(s.updated_at, 0) AS updated_at FROM images i"
         " JOIN files f ON f.id=i.file_id"
         " LEFT JOIN image_state s ON s.image_id=i.id"
@@ -751,10 +835,13 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
     images = dict(existing.get("images") or {}) \
         if isinstance(existing.get("images"), dict) else {}
     present: set[str] = set()
+    virtual_copies = []
     for row in rows:
         name = row["relpath"]
         if row["copy_ident"]:
             name = f"{name}{catalog_module.VIRTUAL_MARKER}{row['copy_ident']}"
+            virtual_copies.append({"id": row["copy_ident"], "source": row["relpath"],
+                                   "name": name, "displayName": row["display_name"]})
         present.add(name)
         # A row at or before the last completed mirror cannot have changed,
         # including a default row intentionally absent from `images`. Skipping
@@ -776,14 +863,36 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
         else:
             images[name] = state
     for name in set(images) - present:
+        relpath, ident = (name.split(catalog_module.VIRTUAL_MARKER, 1)
+                          if catalog_module.VIRTUAL_MARKER in name else (name, None))
+        if pending and cat.image_id_for(source_id, relpath, ident) is None:
+            base_id = cat.image_id_for(source_id, relpath)
+            if base_id is None:
+                continue  # An original not scanned yet still owns its recipe.
+            file_id = cat.connection.execute("SELECT file_id FROM images WHERE id=?", (base_id,)).fetchone()[0]
+            if ident and not cat.connection.execute("SELECT 1 FROM meta WHERE key=?",
+                    (f"portable.deleted-copy:{file_id}:{ident}",)).fetchone():
+                continue
         images.pop(name, None)
-    # Keep collections, stacks, virtual-copy descriptors, and any future
+    if pending:
+        descriptors = existing.get("virtualCopies")
+        for descriptor in descriptors if isinstance(descriptors, list) else []:
+            if (isinstance(descriptor, dict) and descriptor.get("source")
+                    and cat.image_id_for(source_id, str(descriptor["source"])) is None):
+                virtual_copies.append(descriptor)
+    # Keep collections, stacks, and any future
     # top-level keys written by an older or newer build. The catalog owns the
     # image rows, but mirroring them must never erase unrelated portable data.
     payload = dict(existing)
-    payload.update(images=images, mirroredAt=_iso(mirrored_at),
+    payload.update(images=images, virtualCopies=virtual_copies, mirroredAt=_iso(mirrored_at),
                    mirroredRevision=mirrored_at)
     try:
+        if not existing:
+            # A newly generated mirror has no legacy state left to adopt.
+            # Record that before publishing, including empty/default folders.
+            with cat.write() as conn:
+                conn.execute("INSERT OR IGNORE INTO meta(key,value) VALUES(?, '1')",
+                             (f"portable.source:{source_id}",))
         durable_io.atomic_write_json(target, payload)
         return True
     except OSError:

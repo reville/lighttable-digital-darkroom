@@ -12,6 +12,17 @@ Anything that replaces the catalog file first copies what was there into
 restoring a backup, or starting fresh with the contents of each option in
 front of them.
 
+The optional `.lighttable-state.json` folder mirror carries edits and virtual
+copies into a new catalog. Reopening an existing catalog keeps its committed
+edits, even if the folder mirror is older or could not be written. Initial
+portable-state adoption is transactional and can retry unavailable originals
+without replacing edits already saved in the catalog.
+
+Move Rejected Photos to Trash excludes virtual copies and leaves shared XMP
+beside an unselected paired original. To remove only a virtual copy, use
+Photo actions → Delete virtual copy. A scan also rechecks unseen current paths
+before reporting an original missing, preserving photos renamed during scanning.
+
 ## Failure modes and responses
 
 | What can go wrong | What the app does | Where a person decides |

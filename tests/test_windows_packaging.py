@@ -320,7 +320,11 @@ class WindowsRuntimeLaunchContractTests(unittest.TestCase):
         shell = (ROOT / "windows-shell/src/main.rs").read_text()
         self.assertIn('.raw_arg(format!("/select,\\"{}\\"", path.display()))', shell)
         self.assertNotIn('Command::new("explorer.exe")\n        .arg(format!("/select,{}"', shell)
-        self.assertIn('.args(["/C", "start", "", path])\n            .creation_flags(CREATE_NO_WINDOW)', shell)
+        opener = shell.split("fn open_with_default_application(", 1)[1].split("fn reveal(", 1)[0]
+        self.assertIn("ShellExecuteW", opener)
+        self.assertIn("file.as_ptr()", opener)
+        self.assertNotIn('Command::new("cmd.exe")', opener)
+        self.assertIn("if result <= 32", opener)
 
     def test_cli_wrapper_caches_bytecode_outside_the_installation(self):
         wrapper = (ROOT / "scripts/windows/lighttable.cmd").read_text()

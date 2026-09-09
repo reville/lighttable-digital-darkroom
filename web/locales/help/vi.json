@@ -727,8 +727,8 @@
             "Đọc số lượng ảnh trong xác nhận và chỉ xác nhận khi nó khớp với tập bạn định chọn."
           ],
           "tips": [
-            "Các sidecar XMP liền kề sẽ đi cùng tệp gốc. Các tệp RAW hoặc JPEG ẩn đi kèm vẫn nằm trong thư viện; chọn Cả hai tệp trong cài đặt ghép cặp để bao gồm chúng.",
-            "Một bản sao ảo dùng chung tệp gốc của nó. Xóa một bản sao ảo nên dùng thao tác Ảnh → Xóa bản sao ảo; chuyển tệp nguồn của nó vào Thùng rác sẽ ảnh hưởng đến mọi chỉnh sửa dùng cùng tệp gốc đó."
+            "Các sidecar XMP liền kề được di chuyển cùng tệp gốc, nhưng XMP dùng chung vẫn ở lại với tệp gốc ghép cặp còn trong thư viện. Các tệp RAW hoặc JPEG ghép cặp đang bị ẩn vẫn nằm trong thư viện; chọn Cả hai tệp trong cài đặt ghép cặp để bao gồm chúng.",
+            "“Di chuyển Ảnh Đã từ chối vào Thùng rác” bỏ qua các bản sao ảo. Dùng Thao tác ảnh → Xóa bản sao ảo để xóa một bản sao mà không tác động đến tệp gốc."
           ]
         },
         {
@@ -2764,7 +2764,7 @@
             "Hầu hết thay đổi cài đặt được lưu tự động. Ngôn ngữ dùng Áp dụng ngôn ngữ và tải lại cửa sổ sau khi lưu các chỉnh sửa. Mục Chung cũng điều khiển Tự động chuyển ảnh sau khi chọn, từ chối hoặc gắn sao, thông báo hoàn tất và kiểm tra cập nhật.",
             "Các điều khiển giao diện gồm nền trình xem, thang phông chữ, Lights Out, lớp phủ thông tin loupe và hướng dẫn cắt xén. Các tùy chọn này thay đổi giao diện không gian làm việc mà không làm thay đổi pixel đã xuất.",
             "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
-            "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ."
+            "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ. Các chỉnh sửa LightTable di động bao gồm cả bản sao ảo. Khi mở lại thư mục, các chỉnh sửa đã lưu trong danh mục vẫn được giữ nguyên."
           ]
         },
         {
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
 }

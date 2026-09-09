@@ -727,8 +727,8 @@
             "Lees het fotoaantal in de bevestiging en bevestig alleen wanneer het overeenkomt met de set die je bedoelt."
           ],
           "tips": [
-            "Aangrenzende XMP-sidecars worden samen met de originelen verplaatst. Verborgen RAW- of JPEG-bijlagen blijven in de bibliotheek; kies Beide bestanden in gekoppelde-opname-instellingen om ze op te nemen.",
-            "Een virtuele kopie deelt zijn originele bestand. Voor het verwijderen van een virtuele kopie moet u Foto-acties → Virtuele kopie verwijderen gebruiken; als u de bron naar de Prullenmand verplaatst, heeft dat invloed op elke bewerking die dat origineel gebruikt."
+            "Aangrenzende XMP-sidecars worden samen met de originelen verplaatst, maar een gedeeld XMP-bestand blijft bij een gekoppeld origineel dat in de bibliotheek achterblijft. Verborgen RAW- of JPEG-bestanden die bij de opname horen, blijven in de bibliotheek; kies Beide bestanden in de instellingen voor gekoppelde opnamen om ze mee te nemen.",
+            "‘Afgewezen foto's naar Prullenmand verplaatsen’ slaat virtuele kopieën over. Gebruik Fotoacties → Virtuele kopie verwijderen om een kopie te verwijderen zonder het origineel aan te raken."
           ]
         },
         {
@@ -2764,7 +2764,7 @@
             "De meeste wijzigingen in instellingen worden automatisch opgeslagen. Voor Taal wordt Venster toepassen en opnieuw laden gebruikt nadat wijzigingen zijn opgeslagen. Algemeen regelt ook Automatisch doorgaan na kiezen, afwijzen of beoordelen, voltooiingsmeldingen en updatecontroles.",
             "Interface bestuurt de achtergrond van de viewer, lettergrootte, Lights Out, het overlay met loupe-info en bijsnijdhulplijnen. Deze voorkeuren wijzigen het uiterlijk van de werkruimte zonder de geëxporteerde pixels te wijzigen.",
             "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
-            "Bestanden en metagegevens regelt draagbare LightTable-bewerkingen naast originelen, automatisch XMP schrijven, RAW/JPEG-koppeling en invoer van trefwoorden. Volledige draagbare bewerkingen gebruiken .lighttable-state.json; XMP bevat compatibele bewerkingen en metagegevens. XMP-synchronisatie behoudt niet-gerelateerde velden en meldt conflicterende externe wijzigingen; lees Exchange-metagegevens via XMP-sidecars voor de ondersteunde workflow."
+            "Bestanden en metagegevens regelt draagbare LightTable-bewerkingen naast originelen, automatisch XMP schrijven, RAW/JPEG-koppeling en invoer van trefwoorden. Volledige draagbare bewerkingen gebruiken .lighttable-state.json; XMP bevat compatibele bewerkingen en metagegevens. XMP-synchronisatie behoudt niet-gerelateerde velden en meldt conflicterende externe wijzigingen; lees Exchange-metagegevens via XMP-sidecars voor de ondersteunde workflow. Draagbare LightTable-bewerkingen bevatten ook virtuele kopieën. Wanneer u een map opnieuw opent, blijven de bewerkingen die al in uw catalogus zijn opgeslagen behouden."
           ]
         },
         {
@@ -3195,5 +3195,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b"
+  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
 }

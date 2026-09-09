@@ -242,6 +242,14 @@ impl RuntimePaths {
         })
     }
 
+    fn catalog_directory(&self, catalog_file: Option<std::ffi::OsString>) -> PathBuf {
+        catalog_file
+            .filter(|value| !value.is_empty())
+            .map(PathBuf::from)
+            .and_then(|path| path.parent().map(Path::to_path_buf))
+            .unwrap_or_else(|| self.support.join("Catalog"))
+    }
+
     #[cfg(target_os = "windows")]
     fn report(&self) -> Value {
         json!({"support": self.support, "settings": self.settings, "prefs": self.prefs,
@@ -862,6 +870,16 @@ impl AppState {
                     self.launch(folder)?;
                 }
             }
+            "chooseExportFolder" | "choosePreferenceFolder" => {
+                if let Some(event) = folder_dialog_response(&message, |title| {
+                    FileDialog::new().set_title(title)
+                        .set_parent(&self.window)
+                        .set_directory(&self.folder)
+                        .pick_folder()
+                }) {
+                    self.send_event(event)?;
+                }
+            }
             "chooseCatalogFile" => {
                 if let Some(file) = FileDialog::new().set_title(tr("Choose a catalog"))
                     .set_parent(&self.window)
@@ -996,6 +1014,16 @@ impl AppState {
                     reveal(Path::new(path))?;
                 }
             }
+            "showServerLog" => {
+                open_with_default_application(&self.paths.log.to_string_lossy())?;
+            }
+            "openRecoveryFolder" => {
+                let directory = self.paths.catalog_directory(env::var_os("LIGHTTABLE_CATALOG_FILE"));
+                let recovery = directory.join("Recovery");
+                let target = if recovery.is_dir() { recovery } else { directory };
+                fs::create_dir_all(&target)?;
+                open_with_default_application(&target.to_string_lossy())?;
+            }
             "renameRoot" => {
                 if let (Some(path), Some(name)) = (
                     message.get("path").and_then(Value::as_str),
@@ -1039,6 +1067,20 @@ impl AppState {
         }
         Ok(())
     }
+}
+
+fn folder_dialog_response(message: &Value, pick: impl FnOnce(String) -> Option<PathBuf>) -> Option<Value> {
+    let (title, event) = match message["action"].as_str()? {
+        "chooseExportFolder" => (tr("Choose an export destination"), "exportFolderSelected"),
+        "choosePreferenceFolder" => (tr("Choose a settings folder"), "preferenceFolderSelected"),
+        _ => return None,
+    };
+    let selected = pick(title)?;
+    let mut reply = json!({"type": event, "path": selected.to_string_lossy()});
+    if event == "preferenceFolderSelected" {
+        reply["key"] = json!(message["key"].as_str().unwrap_or_default());
+    }
+    Some(reply)
 }
 
 fn choose_port() -> Result<u16> {
@@ -1216,13 +1258,21 @@ fn recycle(_path: &Path) -> Result<()> {
 fn open_with_default_application(path: &str) -> Result<()> {
     #[cfg(target_os = "windows")]
     {
-        use std::os::windows::process::CommandExt;
-        // `cmd.exe` is a console program; without this flag a command window
-        // would flash on every double-click from a shell that has no console.
-        Command::new("cmd.exe")
-            .args(["/C", "start", "", path])
-            .creation_flags(CREATE_NO_WINDOW)
-            .spawn()?;
+        use std::os::windows::ffi::OsStrExt;
+        #[link(name = "shell32")]
+        unsafe extern "system" {
+            fn ShellExecuteW(window: *mut std::ffi::c_void, operation: *const u16,
+                file: *const u16, parameters: *const u16, directory: *const u16, show: i32) -> isize;
+        }
+        // File names containing &, %, or other command-shell syntax must stay
+        // literal. ShellExecute also reports a missing file/association now.
+        let file: Vec<u16> = std::ffi::OsStr::new(path).encode_wide().chain(Some(0)).collect();
+        let operation: Vec<u16> = "open".encode_utf16().chain(Some(0)).collect();
+        let result = unsafe { ShellExecuteW(std::ptr::null_mut(), operation.as_ptr(), file.as_ptr(),
+            std::ptr::null(), std::ptr::null(), 1) };
+        if result <= 32 {
+            bail!(tr("the file browser could not open that location"));
+        }
     }
     #[cfg(target_os = "macos")]
     Command::new("open").arg(path).spawn()?;
@@ -1453,10 +1503,7 @@ fn run() -> Result<()> {
 
     let (journal_tx, journal_rx) = std::sync::mpsc::channel::<Value>();
     let journal_proxy = proxy.clone();
-    let catalog_directory = env::var_os("LIGHTTABLE_CATALOG_FILE")
-        .map(PathBuf::from)
-        .and_then(|path| path.parent().map(Path::to_path_buf))
-        .unwrap_or_else(|| paths.support.join("Catalog"));
+    let catalog_directory = paths.catalog_directory(env::var_os("LIGHTTABLE_CATALOG_FILE"));
     thread::spawn(move || {
         for body in journal_rx {
             let mut reply = json!({"type": "editJournalReply", "id": body["id"]});
@@ -1611,7 +1658,36 @@ fn main() {
 
 #[cfg(test)]
 mod bridge_tests {
-    use super::bridge_script;
+    use super::{RuntimePaths, bridge_script, folder_dialog_response};
+    use std::path::PathBuf;
+    use serde_json::json;
+
+    #[test]
+    fn folder_dialogs_return_the_events_expected_by_export_and_settings() {
+        let selected = PathBuf::from("selected folder with spaces");
+        assert_eq!(folder_dialog_response(&json!({"action": "chooseExportFolder"}),
+            |_| Some(selected.clone())), Some(json!({"type": "exportFolderSelected", "path": selected})));
+        assert_eq!(folder_dialog_response(&json!({"action": "choosePreferenceFolder", "key": "backupDirectory"}),
+            |_| Some(selected.clone())), Some(json!({"type": "preferenceFolderSelected", "key": "backupDirectory", "path": selected})));
+        for action in ["chooseExportFolder", "choosePreferenceFolder"] {
+            assert!(folder_dialog_response(&json!({"action": action}), |_| None).is_none());
+        }
+        assert!(folder_dialog_response(&json!({"action": "unrelated"}), |_| panic!("unexpected dialog")).is_none());
+    }
+
+    #[test]
+    fn recovery_and_edit_journal_share_the_selected_catalog_location() {
+        let support = std::env::temp_dir().join("lighttable-path-test");
+        let paths = RuntimePaths {
+            project: support.join("project"), python: support.join("python"),
+            settings: support.join("settings.json"), prefs: support.join("prefs.json"),
+            log: support.join("server.log"), cache: support.join("cache"), support: support.clone(),
+        };
+        assert_eq!(paths.catalog_directory(None), support.join("Catalog"));
+        assert_eq!(paths.catalog_directory(Some("".into())), support.join("Catalog"));
+        let custom = support.join("custom catalog");
+        assert_eq!(paths.catalog_directory(Some(custom.join("library.sqlite3").into_os_string())), custom);
+    }
 
     #[test]
     fn platform_and_language_values_survive_bridge_initialization() {
