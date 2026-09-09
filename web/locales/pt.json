@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Escolha uma pessoa",
     "Choose a photo folder": "Escolha uma pasta de fotos",
     "Choose a photo to edit": "Escolha uma foto para editar",
-    "Choose a photo to rate or flag": "Escolha uma foto para avaliar ou aplicar bandeira",
     "Choose a preset to see its source and conversion coverage.": "Escolha uma predefinição para ver sua origem e cobertura de conversão.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Escolha um processo de impressão para negativos e entenda por que os controles de print desaparecem para filme slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Escolha um ponto salvo no seletor para editá-lo, ou use Excluir ponto para removê-lo.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Selecione uma foto para copiar suas configurações",
     "Select a photo to edit": "Selecione uma foto para editar",
     "Select a photo to preview": "Selecione uma foto para pré-visualizar",
-    "Select a photo to rate or flag": "Selecione uma foto para avaliar ou marcar",
     "Select a photo, or a set in a grid, and open Info.": "Selecione uma foto ou um conjunto em uma grade e abra Informações.",
     "Select a photo.": "Selecionar uma foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Selecione uma faixa de distâncias da câmera; refine os limites distante e próximo",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Quando Varredura é aberto a partir de seleção assistida, compare o grupo sugerido e marque as fotos individualmente. Fazer seleção está disponível em uma Varredura normal: ele seleciona a foto ativa da varredura e rejeita as outras fotos ainda na varredura. Isso altera suas bandeiras. Os metadados vinculados de RAW e JPEG podem estender essas alterações de bandeira aos companheiros.",
     "{count} matching photo shown: {criteria}.": "{count} foto correspondente exibida: {criteria}.",
     "{count} matching photos shown: {criteria}.": "{count} fotos correspondentes exibidas: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
+    "Copy Settings...": "Copiar configurações..."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "選擇人物",
     "Choose a photo folder": "選擇相片資料夾",
     "Choose a photo to edit": "選擇一張相片進行編輯",
-    "Choose a photo to rate or flag": "選擇一張相片進行評分或加旗標",
     "Choose a preset to see its source and conversion coverage.": "選擇一個預設集以查看其來源與轉換涵蓋範圍。",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "為底片選擇列印處理，並了解為什麼在幻燈片底片上列印控制會消失。",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "在選擇器中選擇已儲存的點位來編輯它，或使用「刪除點位」將其移除。",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "選取相片以複製其設定",
     "Select a photo to edit": "選擇一張相片進行編輯",
     "Select a photo to preview": "選取一張相片以預覽",
-    "Select a photo to rate or flag": "選取相片以評分或加上旗標",
     "Select a photo, or a set in a grid, and open Info.": "選取一張相片，或在格線中選取一組，然後打開資訊。",
     "Select a photo.": "選取相片。",
     "Select a range of distances from the camera; refine the far and near limits": "選取與相機距離的一段範圍；調整遠端與近端限制",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "從「輔助篩選」開啟「總覽」時，請比較建議群組並個別為相片加上旗標。在一般的總覽中，「建立選取」可用：它會選取目前作用中的總覽相片，並拒絕總覽中其餘的相片。這會變更它們的旗標。已連結的 RAW 與 JPEG 中繼資料可將這些旗標變更延伸至伴隨程式。",
     "{count} matching photo shown: {criteria}.": "顯示 {count} 張符合的相片：{criteria}。",
     "{count} matching photos shown: {criteria}.": "顯示 {count} 張符合的相片：{criteria}。",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。",
+    "Copy Settings...": "複製設定..."
   },
   "plurals": {
     " · {count} paired file linked": {

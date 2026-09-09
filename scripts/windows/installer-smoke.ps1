@@ -2,7 +2,10 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Installer,
     [Parameter(Mandatory = $true)]
-    [string]$Version
+    [string]$Version,
+    [switch]$VerifyStoreSignatures,
+    [string]$SignatureReport = "",
+    [string]$ExpectedPublisher = "Nicholas Reville"
 )
 
 $ErrorActionPreference = "Stop"
@@ -20,9 +23,10 @@ function Get-RawUserPath {
 
 function Invoke-InstallerProcess([string]$Executable, [string]$Arguments) {
     $Process = Start-Process -FilePath $Executable -ArgumentList $Arguments -PassThru
-    if (-not $Process.WaitForExit(120000)) {
+    $Timeout = if ($VerifyStoreSignatures) { 600000 } else { 120000 }
+    if (-not $Process.WaitForExit($Timeout)) {
         $Process.Kill()
-        throw "Installer process exceeded the two-minute smoke-test limit"
+        throw "Installer process exceeded the bounded smoke-test limit"
     }
     if ($Process.ExitCode -ne 0) { throw "Installer process exited with $($Process.ExitCode)" }
 }
@@ -56,8 +60,11 @@ try {
     if (-not (Test-Path (Join-Path $InstallPath "WinSparkle.dll"))) {
         throw "The Windows update component was not installed"
     }
+    if ($VerifyStoreSignatures) {
+        & (Join-Path $PSScriptRoot "store-pe-signatures.ps1") -Payload $InstallPath -Report $SignatureReport
+    }
     $Installed = Get-ItemProperty $RegistryPath
-    if ($Installed.DisplayVersion -ne $Version -or $Installed.Publisher -ne "Nicholas Reville") {
+    if ($Installed.DisplayVersion -ne $Version -or $Installed.Publisher -ne $ExpectedPublisher) {
         throw "Installed package identity does not match the release"
     }
     if ($Installed.InstallLocation -ne $InstallPath -or $Installed.QuietUninstallString -notmatch ' /S$') {

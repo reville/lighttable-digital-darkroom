@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Bir kişi seçin",
     "Choose a photo folder": "Bir fotoğraf klasörü seçin",
     "Choose a photo to edit": "Düzenlemek için bir fotoğraf seçin",
-    "Choose a photo to rate or flag": "Derecelendirmek veya işaretlemek için bir fotoğraf seçin",
     "Choose a preset to see its source and conversion coverage.": "Kaynağını ve dönüştürme kapsamını görmek için bir hazır ayar seçin.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Negatifler için bir baskı işlemi seçin ve slayt film için neden print kontrollerinin kaybolduğunu anlayın.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Bir noktayı düzenlemek için seçicide kayıtlı bir noktayı seçin veya kaldırmak için Noktayı sil’i kullanın.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Ayarlarını kopyalamak için bir fotoğraf seçin",
     "Select a photo to edit": "Düzenlemek için bir fotoğraf seçin",
     "Select a photo to preview": "Önizlemek için bir fotoğraf seç",
-    "Select a photo to rate or flag": "Derecelendirmek veya bayraklamak için bir fotoğraf seçin",
     "Select a photo, or a set in a grid, and open Info.": "Bir fotoğraf veya ızgaradaki bir seti seçin ve Bilgi’yi açın.",
     "Select a photo.": "Bir fotoğraf seç.",
     "Select a range of distances from the camera; refine the far and near limits": "Kameraya olan uzaklık aralığını seçin; uzak ve yakın sınırları daraltın",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "İncele Yardımlı ayıklama'dan açıldığında, önerilen grubu karşılaştırın ve fotoğrafları tek tek bayraklayın. Normal bir İncele'de Seçim yap kullanılabilir: etkin inceleme fotoğrafını seçer ve incelemedeki diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlı RAW ve JPEG üstverisi bu bayrak değişikliklerini eşlikçilere yayabilir.",
     "{count} matching photo shown: {criteria}.": "{count} eşleşen fotoğraf gösteriliyor: {criteria}.",
     "{count} matching photos shown: {criteria}.": "{count} eşleşen fotoğraf gösteriliyor: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır.",
+    "Copy Settings...": "Ayarları kopyala..."
   },
   "plurals": {
     " · {count} paired file linked": {

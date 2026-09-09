@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "เลือกบุคคล",
     "Choose a photo folder": "เลือกโฟลเดอร์ภาพถ่าย",
     "Choose a photo to edit": "เลือกภาพถ่ายเพื่อแก้ไข",
-    "Choose a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือตั้งธง",
     "Choose a preset to see its source and conversion coverage.": "เลือกพรีเซ็ตเพื่อดูแหล่งที่มาและความครอบคลุมของการแปลง",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "เลือกกระบวนการพิมพ์สำหรับเนกาทีฟ และทำความเข้าใจว่าทำไมตัวควบคุมการพิมพ์จึงหายไปสำหรับฟิล์มสไลด์",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "เลือกจุดที่บันทึกไว้ในตัวเลือกเพื่อแก้ไข หรือใช้ ลบจุด เพื่อลบออก",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "เลือกภาพถ่ายเพื่อคัดลอกการตั้งค่า",
     "Select a photo to edit": "เลือกภาพถ่ายเพื่อแก้ไข",
     "Select a photo to preview": "เลือกภาพถ่ายเพื่อดูพรีวิว",
-    "Select a photo to rate or flag": "เลือกภาพถ่ายเพื่อให้คะแนนหรือใส่ธง",
     "Select a photo, or a set in a grid, and open Info.": "เลือกภาพถ่าย หรือชุดภาพในตารางกริด แล้วเปิด ข้อมูล",
     "Select a photo.": "เลือกภาพถ่ายหนึ่งภาพ.",
     "Select a range of distances from the camera; refine the far and near limits": "เลือกช่วงระยะจากกล้อง; ปรับขีดจำกัดไกลและใกล้ให้เหมาะสม",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "เมื่อเปิด มุมมองภาพรวม จาก การคัดทิ้งแบบช่วย ให้เปรียบเทียบกลุ่มที่แนะนำและตั้งธงภาพถ่ายทีละภาพ ใช้ สร้างที่เลือก ได้ใน มุมมองภาพรวม ปกติ: มันจะเลือกรูปภาพในมุมมองภาพรวมที่ใช้งานอยู่และปฏิเสธภาพถ่ายอื่นๆ ที่ยังอยู่ในมุมมองภาพรวมนั้น การทำเช่นนี้จะเปลี่ยนธงของพวกมัน เมทาดาทา RAW และ JPEG ที่เชื่อมโยงกันสามารถขยายการเปลี่ยนธงนั้นไปยังโปรแกรมคู่หูได้",
     "{count} matching photo shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
     "{count} matching photos shown: {criteria}.": "แสดงภาพถ่ายที่ตรงกัน {count} ภาพ: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "เมื่อคุณเพิ่มหรือสแกนโฟลเดอร์อีกครั้ง ระบบจะเตรียมภาพตัวอย่างในตารางอยู่เบื้องหลัง โดยจะแสดงภาพตัวอย่างขนาดใหญ่จากต้นฉบับก่อน แล้วแทนที่ด้วยภาพตัวอย่างที่มีการแก้ไขของคุณเมื่อพร้อม"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "เมื่อคุณเพิ่มหรือสแกนโฟลเดอร์อีกครั้ง ระบบจะเตรียมภาพตัวอย่างในตารางอยู่เบื้องหลัง โดยจะแสดงภาพตัวอย่างขนาดใหญ่จากต้นฉบับก่อน แล้วแทนที่ด้วยภาพตัวอย่างที่มีการแก้ไขของคุณเมื่อพร้อม",
+    "Copy Settings...": "คัดลอกการตั้งค่า..."
   },
   "plurals": {
     " · {count} paired file linked": {

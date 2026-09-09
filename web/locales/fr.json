@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "118fb69a8e8512e5f16461df412cabbbe644a4f13f6a886d808b33dbf51bd79d",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Choisir une personne",
     "Choose a photo folder": "Choisissez un dossier de photos",
     "Choose a photo to edit": "Choisissez une photo à modifier",
-    "Choose a photo to rate or flag": "Choisir une photo à noter ou à marquer",
     "Choose a preset to see its source and conversion coverage.": "Choisissez un préréglage pour voir sa source et sa couverture de conversion.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Choisissez un processus d’impression pour les négatifs et comprenez pourquoi les contrôles d’impression disparaissent pour les films diapositives.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Choisissez un point enregistré dans le sélecteur pour le modifier, ou utilisez Supprimer le point pour l’enlever.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Sélectionnez une photo pour copier ses réglages",
     "Select a photo to edit": "Sélectionnez une photo à modifier",
     "Select a photo to preview": "Sélectionner une photo à prévisualiser",
-    "Select a photo to rate or flag": "Sélectionnez une photo pour la noter ou la marquer",
     "Select a photo, or a set in a grid, and open Info.": "Sélectionnez une photo, ou un ensemble dans une grille, puis ouvrez Infos.",
     "Select a photo.": "Sélectionner une photo.",
     "Select a range of distances from the camera; refine the far and near limits": "Sélectionner une plage de distances depuis l’appareil photo ; affiner les limites proche et lointaine",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Lorsque Vue d'ensemble est ouverte depuis Tri assisté, comparez le groupe suggéré et marquez les photos individuellement. Faire la sélection est disponible dans une Vue d'ensemble normale : il sélectionne la photo active de la vue d'ensemble et rejette les autres photos toujours dans la vue d'ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux compagnons.",
     "{count} matching photo shown: {criteria}.": "{count} photo correspondante affichée : {criteria}.",
     "{count} matching photos shown: {criteria}.": "{count} photos correspondantes affichées : {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts.",
+    "Copy Settings...": "Copier les réglages..."
   },
   "plurals": {
     " · {count} paired file linked": {
