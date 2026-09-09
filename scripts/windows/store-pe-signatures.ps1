@@ -36,7 +36,9 @@ $Evidence = @(foreach ($RelativePath in $RelativePaths) {
     }
     $Signature = Get-AuthenticodeSignature -LiteralPath $File.FullName
     if ($SignMissing -and $Signature.Status -eq 'NotSigned') {
-        & (Join-Path $PSScriptRoot 'sign-release.ps1') -RequireSigning -Files $File.FullName
+        # Native signer diagnostics are not signature records. Keep success-stream
+        # output out of the enclosing evidence collection; errors still propagate.
+        & (Join-Path $PSScriptRoot 'sign-release.ps1') -RequireSigning -Files $File.FullName | Out-Null
         $Signature = Get-AuthenticodeSignature -LiteralPath $File.FullName
     }
     @{

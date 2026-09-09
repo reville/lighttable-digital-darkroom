@@ -60,6 +60,53 @@ class StorePackagingTests(unittest.TestCase):
                 if invalid:
                     self.assertIn('native.pyd (NotSigned)', result.stderr)
 
+    def test_signing_output_does_not_enter_evidence_and_failures_still_block(self):
+        for outcome in ('valid', 'invalid-signature', 'signer-error'):
+            with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                payload = root / 'payload'
+                payload.mkdir()
+                (payload / 'native.pyd').write_bytes(pe_fixture())
+                (payload / 'vendor.dll').write_bytes(pe_fixture())
+                audit = root / 'store-pe-signatures.ps1'
+                shutil.copyfile(ROOT / 'scripts/windows/store-pe-signatures.ps1', audit)
+                signer = (
+                    'param([string[]]$Files,[switch]$RequireSigning)\n'
+                    'if (-not $RequireSigning -or $Files.Count -ne 1 -or '
+                    '[IO.Path]::GetFileName($Files[0]) -ne "native.pyd") { throw "Unexpected signing input" }\n'
+                    'Write-Output "native signer diagnostic"\n'
+                    '[pscustomobject]@{ SignerDiagnostic = "extra output" }\n'
+                )
+                if outcome == 'signer-error':
+                    signer += 'throw "fixture signing failed"\n'
+                else:
+                    signer += '[IO.File]::WriteAllText(($Files[0] + ".signed"), "done")\n'
+                (root / 'sign-release.ps1').write_text(signer)
+                report = root / 'report.json'
+                final_status = 'Valid' if outcome == 'valid' else 'NotSigned'
+                command = (
+                    'function Get-AuthenticodeSignature { param($LiteralPath); '
+                    '$status = "Valid"; '
+                    'if ($LiteralPath.EndsWith("native.pyd")) { '
+                    '$status = "NotSigned"; '
+                    f'if (Test-Path -LiteralPath ($LiteralPath + ".signed")) {{ $status = "{final_status}" }} }}; '
+                    '[pscustomobject]@{ Status = $status; SignerCertificate = @{ Subject = "fixture vendor" } } }; '
+                    f'& {quote(audit)} -Payload {quote(payload)} -SignMissing -Report {quote(report)}'
+                )
+                result = subprocess.run([POWERSHELL, '-NoProfile', '-Command', command],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode == 0, outcome == 'valid', result.stderr)
+                if outcome == 'signer-error':
+                    self.assertIn('fixture signing failed', result.stderr)
+                    self.assertFalse(report.exists())
+                    continue
+                evidence = json.loads(report.read_text(encoding='utf-8-sig'))
+                self.assertEqual(evidence['pe_count'], 2)
+                self.assertEqual(evidence['invalid_count'], int(outcome != 'valid'))
+                self.assertEqual({row['path'] for row in evidence['signatures']}, {'native.pyd', 'vendor.dll'})
+                if outcome == 'invalid-signature':
+                    self.assertIn('native.pyd (NotSigned)', result.stderr)
+
     def test_nsis_extensionless_uninstaller_is_signed_and_copied_back(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
