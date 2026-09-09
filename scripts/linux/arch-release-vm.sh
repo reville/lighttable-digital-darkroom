@@ -35,7 +35,10 @@ sudo qemu-system-x86_64 -enable-kvm -machine q35 -cpu host -m 8192 -smp 4 \
 remote=(ssh -i "$vm/id" -p 2222 -o BatchMode=yes -o ConnectTimeout=3 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@127.0.0.1)
 cleanup() {
   "${remote[@]}" 'tar -C /work -czf - evidence' > "$vm/evidence.tar.gz" 2>/dev/null && tar -xzf "$vm/evidence.tar.gz" || true
-  if [[ -f "$vm/qemu.pid" ]]; then sudo kill "$(cat "$vm/qemu.pid")" 2>/dev/null || true; fi
+  if [[ -f "$vm/qemu.pid" ]]; then sudo kill "$(sudo cat "$vm/qemu.pid")" 2>/dev/null || true; fi
+  sudo chown -R "$(id -u):$(id -g)" evidence
+  if [[ -f evidence/guest.log ]]; then tail -45 evidence/guest.log; fi
+  if [[ -f evidence/hyprland/detail.log ]]; then tail -35 evidence/hyprland/detail.log; fi
 }
 trap cleanup EXIT
 for attempt in $(seq 1 90); do
