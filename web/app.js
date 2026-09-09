@@ -803,6 +803,8 @@ function syncControls() {
   $('filmProfileState').textContent = profileEnabled ? tr("On") : tr("Off");
   $('filmProfileOffNote').hidden = profileEnabled;
   $('filmProfileSection').classList.toggle('profile-off', !profileEnabled);
+  document.querySelector('#filmProfileSection [data-reset="film"]').hidden =
+    !profileEnabled && RESET_GROUPS.film.every((key) => S.params[key] === S.filmDefaults[key]);
   const filmStages = $('filmStagesSection');
   if (profileEnabled && filmStages.classList.contains('profile-off')) {
     filmStages.open = true;
@@ -6908,7 +6910,7 @@ function syncCullBars() {
   const rating = commonMarkValue(targets, 'rating', 0);
   const multiple = targets.length > 1;
   let title = tr("No photo selected");
-  let detail = tr("Select a photo to rate or flag");
+  let detail = '';
   if (active && multiple) {
     title = trn('{count} photo selected', '{count} photos selected', targets.length);
     detail = tr('Flags and ratings apply to selection');
@@ -8210,6 +8212,7 @@ function updateTransferActions() {
   const targets = transferTargets();
   const primaryKey = ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__) ? 'Ctrl' : '⌘';
   $('copyBtn').disabled = !cur();
+  $('pasteBtn').hidden = !S.clipboard;
   $('pasteBtn').disabled = !S.clipboard || !targets.length;
   $('pasteAllBtn').disabled = !S.clipboard || !visible().length;
   $('virtualCopyBtn').disabled = !cur();
