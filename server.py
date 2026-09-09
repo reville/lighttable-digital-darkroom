@@ -1653,10 +1653,10 @@ def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
                             old_prefix.rstrip("/") + "/"):
                         return new_prefix + value[len(old_prefix):]
                 return value
-            for copy in st.get("virtualCopies", []):
-                if isinstance(copy, dict):
-                    copy["source"] = remap(str(copy.get("source", "")))
-                    copy["name"] = remap(str(copy.get("name", "")))
+            for virtual_copy in st.get("virtualCopies", []):
+                if isinstance(virtual_copy, dict):
+                    virtual_copy["source"] = remap(str(virtual_copy.get("source", "")))
+                    virtual_copy["name"] = remap(str(virtual_copy.get("name", "")))
             for collection in st.get("collections", []):
                 if isinstance(collection, dict):
                     collection["members"] = [remap(str(value))
