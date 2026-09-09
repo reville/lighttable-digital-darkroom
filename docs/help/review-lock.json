@@ -197,8 +197,8 @@
         "web/index.html": "81251b4580cb3e6b8f290ef90efc52cf780f9cc3dd96567d067cde2e59e3f909",
         "web/numeric-controls.js": "16bbb9018aa330965d4cc670ee9cf9356fe766ca1c8762458450af1ae206e4bc",
         "web/preset-amount.js": "f92e745b76a829d2e3f048360f345a265af0a2d5ddef44dcb3789c49ce1b90be",
-        "web/preset-browser.css": "3f92f04c870ae61dab68d700cc9e21560173f8809fff6cb0ecb739408590d483",
-        "web/preset-browser.js": "65e9d82643b9b566c23de0d3511c533f17582130acc7ccb1bf2ad26c3cc0c59e",
+        "web/preset-browser.css": "8af3da3efbabdac56f683061b717d0970453f398be0dcb6d756184026018480e",
+        "web/preset-browser.js": "624667b8f06b55e2c7a3e27417d6af49180010e82a89db9eb9fe8ce997eeb0b6",
         "web/preset-packs.js": "7404e80809aa96a18808b8db6af2b2fdc68564d3e1d0a73a7df36961be99f8f6",
         "web/presets.js": "60dc4c7700e0f41761dfb562ff1b8cf4fb0b2761fe444145e544f1b10ad004af"
       }
