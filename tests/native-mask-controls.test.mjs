@@ -108,15 +108,14 @@ if (process.argv.includes('--fixtures')) {
     assert.equal(e.webgl[0][1][0].grade.exposure, 1.5);
     assert.equal(e.messages.length, 0);
   });
+
+  test('native grade changes refresh scopes without drawing the hidden WebGL preview twice', () => {
+    const e = harness();
+    e.draw();
+    assert.equal(e.scopes, 1);
+    assert.equal(e.webgl.length, 0);
+    e.draw(true, false);
+    assert.equal(e.scopes, 1, 'sampling refresh must not recursively schedule itself');
+    assert.equal(e.webgl.length, 1);
+  });
 }
-
-
-test('native grade changes refresh scopes without drawing the hidden WebGL preview twice', () => {
-  const e = harness();
-  e.draw();
-  assert.equal(e.scopes, 1);
-  assert.equal(e.webgl.length, 0);
-  e.draw(true, false);
-  assert.equal(e.scopes, 1, 'sampling refresh must not recursively schedule itself');
-  assert.equal(e.webgl.length, 1);
-});
