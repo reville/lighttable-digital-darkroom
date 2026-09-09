@@ -285,7 +285,7 @@
         "web/app.js": "4f5d08a1be4945992537709f6bf03befb9b0cc5a1b623887bcadf17708e32380",
         "web/film-browser.js": "64b42debb4610e5e6fc509e9d7b6b4444801bd01be1eefa0691cd5206f109234",
         "web/index.html": "b2c48b2863abe8d0d1a208b357c48e43da6bb2cdfabc55dfdceb99008db3995e",
-        "web/style.css": "9889c2ad658257974b4b3d6d284a7fd2fefc715abea36a13a5f939b790f503cf"
+        "web/style.css": "9b8cfdeb14e52639a88361be137220fef4623d143cff6a8bd59c87e11709d234"
       }
     },
     "film-grain-and-format": {
@@ -392,7 +392,7 @@
         "web/preview-preferences.js": "560f67a98d3cb04bf1db8267716a30c2bbb46db93cb0790a8295dceb597fbf9d",
         "web/preview-progress.js": "ca6fb45f461c7cf13f6d16b08898fa885f7b428967a92ca2b43c464121104f27",
         "web/settings.js": "74d11462a0ddd9129ec66bfd8a8f48d96d40271f26e8001d3ccaf0eb7fe9bc72",
-        "web/style.css": "9889c2ad658257974b4b3d6d284a7fd2fefc715abea36a13a5f939b790f503cf",
+        "web/style.css": "9b8cfdeb14e52639a88361be137220fef4623d143cff6a8bd59c87e11709d234",
         "web/thumbnail-errors.js": "0009004ecc17943d34546c797234770a498ae9671b92c94eb309de1af58ef78e",
         "web/view-performance.js": "c0033153f2193e4da08f32bc460772ab79f532367574d47fa24ef86513d465f3"
       }
@@ -406,7 +406,7 @@
         "web/app.js": "4f5d08a1be4945992537709f6bf03befb9b0cc5a1b623887bcadf17708e32380",
         "web/index.html": "b2c48b2863abe8d0d1a208b357c48e43da6bb2cdfabc55dfdceb99008db3995e",
         "web/local-ai.js": "63ea7c3f284a620a51c17cae0ec96a7c4764073a9be698090b20cd20731fc786",
-        "web/style.css": "9889c2ad658257974b4b3d6d284a7fd2fefc715abea36a13a5f939b790f503cf"
+        "web/style.css": "9b8cfdeb14e52639a88361be137220fef4623d143cff6a8bd59c87e11709d234"
       }
     },
     "raw-jpeg-pairs": {
@@ -511,7 +511,7 @@
         "web/compare-view.js": "c5e9aaaafaed1faa2dae944be7c6cc6a1774ef0eb0c8ce6a241edab5bee223e8",
         "web/index.html": "b2c48b2863abe8d0d1a208b357c48e43da6bb2cdfabc55dfdceb99008db3995e",
         "web/photo-pan.js": "5da50f7d5a650b4150b36fc3899d7a0f78cdbefcd79144b52ae2635112b845e8",
-        "web/style.css": "9889c2ad658257974b4b3d6d284a7fd2fefc715abea36a13a5f939b790f503cf",
+        "web/style.css": "9b8cfdeb14e52639a88361be137220fef4623d143cff6a8bd59c87e11709d234",
         "web/zoom-motion.js": "e531b114d2009c3287052e4e42e01917ce71cf1471c70d2e33f707f350c5cce1"
       }
     },
