@@ -35,6 +35,9 @@ function blendGrade(a = {}, b = {}, t) {
     if (/^curve[LRGB]$/.test(key)) {
       result[key] = Array.from({ length: 256 }, (_, i) =>
         mix(curveAt(a[key], i / 255), curveAt(b[key], i / 255), t));
+      // Match grade._clean_curve: nearly neutral curves are omitted on save.
+      // Otherwise a low Amount loses its preset as soon as the photo reloads.
+      if (result[key].every((value, i) => Math.abs(value - i / 255) < 0.002)) delete result[key];
     } else if (key === 'pointColor') {
       // Selection geometry stays fixed; only the correction changes strength.
       result[key] = (b[key] || []).map((point, i) => {
@@ -72,6 +75,11 @@ export function blendPresetState(base, target, amount) {
   const result = cloneValue(target);
   result.grade = blendGrade(base.grade, target.grade, t);
   for (const group of ['params', 'optics']) result[group] = blend(base[group], target[group], t);
+  // Development times select measured profile variants, just like stock and
+  // paper. Interpolating these numbers selects a nonexistent dropdown option.
+  for (const key of ['development_time', 'print_development_time']) {
+    if (key in (target.params || {})) result.params[key] = target.params[key];
+  }
   for (const group of ['masks', 'heals']) {
     result[group] = (target[group] || []).map(item => {
       const before = (base[group] || []).find(other => other.id === item.id);
