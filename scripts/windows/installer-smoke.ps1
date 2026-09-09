@@ -82,8 +82,11 @@ try {
     Set-Content -Encoding ascii -NoNewline (Join-Path $InstallPath "install-channel.txt") "winget"
     # Exercise reinstall/upgrade registration and CLI discovery outside the bundle.
     Invoke-InstallerProcess $Installer "/S /D=$InstallPath"
-    if ((Get-Content -Raw (Join-Path $InstallPath "install-channel.txt")) -ne "winget") {
-        throw "Reinstallation lost package-manager update ownership"
+    $RepairedOwnerPath = Join-Path $InstallPath "install-channel.txt"
+    $RepairedOwner = Get-Content -Raw $RepairedOwnerPath
+    if ($RepairedOwner -ne "winget") {
+        $OwnerBytes = [BitConverter]::ToString([IO.File]::ReadAllBytes($RepairedOwnerPath))
+        throw "Reinstallation lost package-manager update ownership: '$RepairedOwner' (bytes $OwnerBytes)"
     }
     if ((Get-RawUserPath) -cne $FirstPath) { throw "Reinstallation changed user PATH" }
     $env:Path = [Environment]::ExpandEnvironmentVariables([string](Get-RawUserPath)) + ";" + $BeforeProcessPath
