@@ -184,23 +184,39 @@ class WindowsDesktop:
             self.kernel.CloseHandle(process)
 
     def quit(self, timeout: float):
+        # main() fixes both the English locale and the source-folder basename.
+        expected_title = "LightTable — photos"
         callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
         self.user.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
         self.user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
         self.user.IsWindowVisible.argtypes = [wintypes.HWND]
         self.user.IsWindowVisible.restype = wintypes.BOOL
+        for name in ("GetWindowTextW", "GetClassNameW"):
+            function = getattr(self.user, name)
+            function.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+            function.restype = ctypes.c_int
         self.user.PostMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
-        windows = []
+        windows, owned_visible = [], []
         @callback_type
         def find_window(window, _):
             pid = wintypes.DWORD()
             self.user.GetWindowThreadProcessId(window, ctypes.byref(pid))
             if pid.value == self.pid and self.user.IsWindowVisible(window):
-                windows.append(window)
+                title = ctypes.create_unicode_buffer(1024)
+                self.user.GetWindowTextW(window, title, len(title))
+                owned_visible.append((window, title.value))
+                if title.value == expected_title:
+                    windows.append(window)
             return True
         self._check(self.user.EnumWindows(find_window, 0))
         if len(windows) != 1:
-            raise RuntimeError(f"Expected exactly one visible native test window to close; found {len(windows)}")
+            inventory = []
+            for window, title in owned_visible:
+                class_name = ctypes.create_unicode_buffer(256)
+                self.user.GetClassNameW(window, class_name, len(class_name))
+                inventory.append({"title": title, "class": class_name.value})
+            raise RuntimeError(f"Expected exactly one visible native test window titled {expected_title!r}; "
+                               f"found {len(windows)}; owned visible windows: {json.dumps(inventory)}")
         self._check(self.user.PostMessageW(windows[0], 0x10, 0, 0))  # WM_CLOSE invokes the normal save barrier.
         if self.kernel.WaitForSingleObject(self.process, max(1, int(timeout * 1000))) != 0:
             raise RuntimeError("The native window did not finish its normal save-and-close flow")

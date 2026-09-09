@@ -132,12 +132,17 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
                 self.assertTrue(response.closed)
                 api.opener.open.assert_called_once()
 
-    def test_normal_quit_closes_only_one_visible_owned_window_and_rejects_ambiguity(self):
+    def test_normal_quit_requires_one_visible_owned_window_with_the_exact_app_title(self):
         desktop = smoke.WindowsDesktop.__new__(smoke.WindowsDesktop)
         desktop.pid, desktop.process = 123, 1234
         desktop.user, desktop.kernel = Mock(), Mock()
         desktop.kernel.WaitForSingleObject.return_value = 0
-        windows = {10: (123, False), 20: (123, True), 30: (999, True)}
+        title = "LightTable — photos"
+        fixtures = {10: (123, False, title, "HiddenClass"),
+                    20: (123, True, title, "MainClass"),
+                    30: (999, True, title, "UnownedClass"),
+                    40: (123, True, "Native helper", "HelperClass")}
+        windows = dict(fixtures)
         def enumerate_windows(callback, argument):
             for window in windows:
                 self.assertTrue(callback(window, argument))
@@ -148,21 +153,32 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
         desktop.user.EnumWindows.side_effect = enumerate_windows
         desktop.user.GetWindowThreadProcessId.side_effect = owner
         desktop.user.IsWindowVisible.side_effect = lambda window: windows[window][1]
+        def read_text(window, output, count, field):
+            output.value = windows[window][field][:count - 1]
+            return len(output.value)
+        desktop.user.GetWindowTextW.side_effect = lambda window, output, count: read_text(window, output, count, 2)
+        desktop.user.GetClassNameW.side_effect = lambda window, output, count: read_text(window, output, count, 3)
         desktop.user.PostMessageW.return_value = 1
         with patch.object(smoke.ctypes, "WINFUNCTYPE", return_value=lambda function: function, create=True):
             desktop.quit(2)
             desktop.user.PostMessageW.assert_called_once_with(20, 0x10, 0, 0)
             desktop.kernel.WaitForSingleObject.assert_called_once_with(1234, 2000)
-            for replacement in ({10: (123, False), 30: (999, True)},
-                                {10: (123, False), 20: (123, True), 30: (999, True), 40: (123, True)}):
+            self.assertEqual([call.args[0] for call in desktop.user.GetWindowTextW.call_args_list], [20, 40])
+            desktop.user.GetClassNameW.assert_not_called()
+            for replacement in ({key: value for key, value in fixtures.items() if key != 20},
+                                {**fixtures, 50: (123, True, title, "SecondMainClass")}):
                 windows = replacement
                 desktop.user.PostMessageW.reset_mock()
                 desktop.kernel.WaitForSingleObject.reset_mock()
-                with self.assertRaisesRegex(RuntimeError, "exactly one visible"):
+                with self.assertRaisesRegex(RuntimeError, "exactly one visible") as raised:
                     desktop.quit(2)
+                self.assertIn("Native helper", str(raised.exception))
+                self.assertIn("HelperClass", str(raised.exception))
+                self.assertNotIn("HiddenClass", str(raised.exception))
+                self.assertNotIn("UnownedClass", str(raised.exception))
                 desktop.user.PostMessageW.assert_not_called()
                 desktop.kernel.WaitForSingleObject.assert_not_called()
-            windows = {20: (123, True)}
+            windows = {20: fixtures[20]}
             desktop.user.PostMessageW.return_value = 0
             with patch.object(smoke.ctypes, "get_last_error", return_value=5, create=True), \
                     patch.object(smoke.ctypes, "WinError", return_value=OSError("Posting close failed"), create=True):
