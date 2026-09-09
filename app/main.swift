@@ -666,7 +666,8 @@ final class ServerController {
                         return
                     }
                     if let moved = report.port, moved > 0 { probePort = moved }
-                    if let detail = report.detail, detail != lastDetail {
+                    // Keep the last startup message until the editor opens.
+                    if report.phase != "ready", let detail = report.detail, detail != lastDetail {
                         lastDetail = detail
                         DispatchQueue.main.async {
                             let translated: String
