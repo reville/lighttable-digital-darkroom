@@ -699,6 +699,10 @@
         "anchor": "export function blendPresetState(base, target, amount) {"
       },
       {
+        "path": "web/numeric-controls.js",
+        "anchor": "export function readNumericControl(input, current) {"
+      },
+      {
         "path": "web/presets.js",
         "anchor": "const look = preset.scope === 'look';"
       },
