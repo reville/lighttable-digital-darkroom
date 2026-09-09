@@ -27,6 +27,10 @@ MAX_POINTS = 512
 MAX_TOTAL_MASK_POINTS = 20_000
 MAX_BITMAP_EDGE = 1024
 MAX_HEALS = 50
+# A linear gradient shorter than this fraction of the frame has no usable
+# direction and contributes nothing. Mirrored by LINEAR_MIN_SPAN in
+# web/editor-panels.js so the preview and the export agree at any resolution.
+LINEAR_MIN_SPAN = 1e-4
 LOCAL_GRADE_KEYS = (
     "exposure", "contrast", "highlights", "shadows",
     "whites", "blacks", "temp", "tint", "saturation", "texture", "clarity",
@@ -214,22 +218,30 @@ def clean_masks(values) -> list[dict]:
             # Canonical components have an independent invert flag; copying
             # the legacy flag into both levels would cancel its inversion.
             component_values = [{**raw, "invert": False}]
+        # The browser carries fresh refinements in flat stroke fields that this
+        # migration folds into the component model. Reserve their slots before
+        # taking stored components, so a mask already at the cap discards the
+        # oldest stored component rather than the stroke just painted; filling
+        # the cap first dropped that stroke with no report of any kind.
+        refinements = [
+            (field, combine, _clean_strokes(raw.get(field), point_budget))
+            for field, combine in (("addStrokes", "add"),
+                                   ("subtractStrokes", "subtract"),
+                                   ("intersectStrokes", "intersect"))
+        ]
+        refinements = [item for item in refinements if item[2]]
+        stored_budget = max(1, MAX_MASK_COMPONENTS - len(refinements))
         components = []
         for component_index, component_raw in enumerate(
-                component_values[:MAX_MASK_COMPONENTS]):
+                component_values[:stored_budget]):
             component = _clean_mask_component(
                 component_raw, component_index, point_budget)
             if component:
                 if not components:
                     component["combine"] = "add"
                 components.append(component)
-        # Migrate the lightweight browser refinement fields into the same
-        # ordered component model used by export.
-        for field, combine in (("addStrokes", "add"),
-                               ("subtractStrokes", "subtract"),
-                               ("intersectStrokes", "intersect")):
-            strokes = _clean_strokes(raw.get(field), point_budget)
-            if strokes and len(components) < MAX_MASK_COMPONENTS:
+        for field, combine, strokes in refinements:
+            if len(components) < MAX_MASK_COMPONENTS:
                 components.append({
                     "id": f"{field}-{index + 1}", "type": "brush",
                     "combine": combine, "invert": False, "strokes": strokes,
@@ -348,10 +360,18 @@ def _raster_component(component: dict, height: int, width: int) -> np.ndarray:
         weight = 1.0 - _smoothstep(max(0.0, 1.0 - feather), 1.0, normalised)
     elif component["type"] == "linear":
         sx, sy = component["start"]; ex, ey = component["end"]
+        # Decide degeneracy in normalized coordinates. A pixel-sized threshold
+        # answers differently at preview and at export resolution, which made a
+        # collapsed gradient vanish on screen while the export clamped its
+        # denominator into a step function and graded half the frame.
+        if math.hypot(ex - sx, ey - sy) < LINEAR_MIN_SPAN:
+            return np.zeros((height, width), dtype=np.float32)
         sx *= width - 1; ex *= width - 1
         sy *= height - 1; ey *= height - 1
         dx, dy = ex - sx, ey - sy
-        denominator = max(dx * dx + dy * dy, 1.0)
+        # Projection and denominator both scale with the raster, so the ramp is
+        # resolution independent once the degenerate case is out of the way.
+        denominator = dx * dx + dy * dy
         weight = _smoothstep(0.0, 1.0, ((xx - sx) * dx + (yy - sy) * dy) / denominator)
     elif component["type"] == "brush":
         combined = np.zeros((height, width), dtype=np.float32)

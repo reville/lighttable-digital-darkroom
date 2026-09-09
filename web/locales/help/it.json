@@ -19,13 +19,21 @@
         {
           "title": "Scegli un punto di partenza",
           "paragraphs": [
-            "In una nuova libreria, la configurazione offre una cartella locale, la migrazione da Lightroom o Apple Photos. Puoi saltare la configurazione e aggiungere foto in seguito.",
+            "Su una nuova libreria, la configurazione offre una cartella locale o la migrazione da Lightroom. L'app per macOS offre anche Apple Photos. Puoi saltare la configurazione e aggiungere foto più tardi.",
             "L'importazione dell'intera libreria da Apple Photos richiede l'app macOS e l'autorizzazione a leggere Foto. Copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. La tua libreria Foto rimane invariata. Gli originali di iCloud vengono scaricati durante l'importazione, quindi concedi tempo e spazio su disco. Album, video e modifiche di Foto non vengono trasferiti.",
             "Interrompi importazione mantiene le copie completate. Eseguendolo di nuovo salta quelle copie e riprova con gli originali non completati."
           ],
           "steps": [
             "Scegli una cartella per sfogliare gli originali in loco, oppure seleziona una delle opzioni di migrazione.",
             "Rivedi il risultato dell'importazione, quindi continua nella libreria."
+          ]
+        },
+        {
+          "title": "Sfoglia Apple Photos",
+          "paragraphs": [
+            "Nell'app per macOS, apri Apple Photos nella barra laterale per sfogliare foto e album. Consenti l'accesso a Photos quando richiesto. Questa origine è nascosta su Windows e Linux.",
+            "Seleziona fino a 500 foto tra pagine o album, quindi scegli Importa gli originali selezionati. LightTable copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. Gli originali da iCloud vengono scaricati durante l'importazione. La tua libreria Photos rimane invariata; album, video e modifiche di Photos non vengono trasferiti.",
+            "Interrompi importazione conserva le copie completate. Importa di nuovo la selezione per riprovare gli originali non disponibili; le copie completate vengono saltate. Scegli Visualizza foto importate per modificare le copie. Aggiorna aggiorna le foto e gli album disponibili."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Apri una cartella locale",
           "paragraphs": [
-            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Locale per aggiungere un'intera cartella. LightTable conserva gli originali al loro posto. Selezionare una foto singola aggiunge la cartella che la contiene, quindi potrebbero apparire anche altre foto supportate in quella cartella."
+            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Cartelle per aggiungere un'intera cartella. LightTable conserva gli originali nella posizione originale. Selezionare una singola foto aggiunge la cartella che la contiene, così anche altre foto supportate in quella cartella possono comparire."
           ],
           "steps": [
-            "Fai clic su Aggiungi foto in alto a sinistra e scegli le foto, oppure usa il + accanto a Locale per scegliere una cartella.",
-            "Scegli la cartella sotto Locale nella barra laterale sinistra. Attiva Includi sottocartelle per sfogliare le foto nelle sue cartelle figlie.",
+            "Fai clic su Aggiungi foto in alto a sinistra e scegli le foto, oppure usa il + accanto a Cartelle per scegliere una cartella.",
+            "Scegli la cartella sotto Cartelle nella barra laterale sinistra. Attiva Includi sottocartelle per sfogliare le foto nelle cartelle figlie.",
             "Scegli Griglia foto, Griglia scarto o Dettagli in alto. Fai clic su una foto per renderla attiva."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Porta nuovi file in una cartella esistente",
           "paragraphs": [
-            "Usa il menu Locale ••• e Riscansiona cartelle dopo aver aggiunto file esterni a LightTable. Per copiare foto da una scheda in una cartella di destinazione, usa Importa da scheda… in quel menu."
+            "Usa il menu Cartelle ••• e Riscansiona cartelle dopo aver aggiunto file al di fuori di LightTable. Per copiare foto da una scheda in una cartella di destinazione, usa Importa da scheda… in quel menu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "L'anteprima di compatibilità dei riferimenti mostra le corrispondenze nella libreria corrente senza modificarla. Le foto non ancora aggiunte possono apparire come non abbinate nell'anteprima; l'importazione con Aggiungi le cartelle delle foto abilitato registra gli originali disponibili prima di abbinare di nuovo."
           ],
           "steps": [
-            "Apri Locale ••• → Importa catalogo…, oppure scegli Importa da Lightroom nella configurazione.",
+            "Apri Cartelle ••• → Importa catalogo…, oppure scegli Importa da Lightroom nella configurazione.",
             "Scegli il file .lrcat e rivedi i relativi conteggi e avvisi.",
             "Scegli le categorie da importare, la politica per le modifiche esistenti e se aggiungere le cartelle delle foto referenziate.",
             "Fai clic su Compatibilità anteprima e rivedi le impostazioni mappate e ignorate. Prova 20 varianti crea modifiche di prova separate prima di un'importazione più ampia.",
@@ -103,7 +111,7 @@
           "title": "Rivedi modifiche tradotte",
           "paragraphs": [
             "Le impostazioni Develop sono approssimative e non possono garantire l’aspetto renderizzato di Lightroom. Le maschere locali non supportate, i profili fotocamera, le maschere IA .lrcat-data o i payload LUT, e le regole delle raccolte intelligenti non supportate vengono segnalati come saltati. Le impostazioni Develop importate disattivano Film.",
-            "Locale ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati da sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra avanzamento, conteggi applicati, impostazioni saltate ed errori."
+            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importa da scheda copia i file nella destinazione che scegli. Gli originali sulla scheda restano al loro posto. La verifica dei duplicati confronta il contenuto completo dei file; un nome file corrispondente o solo l'intestazione della fotocamera non sono sufficienti."
           ],
           "steps": [
-            "Apri Local ••• → Importa da scheda….",
+            "Apri Cartelle ••• → Importa da scheda….",
             "Scegli l'Origine e la Destinazione. Imposta modello Cartella e Rinomina in prima della scansione. I valori predefiniti mantengono i nomi file e organizzano le copie come anno/anno-mese-giorno.",
             "Scegli verifica: Hash completo, Solo dimensione o Nessuno. Imposta Duplicati su Salta o Copia comunque e, facoltativamente, scegli Seconda copia in.",
             "Fai clic su Scansiona. Usa Precedente e Successivo per rivedere ogni pagina e controlla il conteggio selezionato e l'anteprima della destinazione prima di fare clic su Importa. Importa non è disponibile quando non è selezionata alcuna foto.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Un clic seleziona una singola foto attiva. Shift-clic seleziona un intervallo contiguo. Command-clic su Mac o Control-clic aggiunge o rimuove singole foto.",
             "In una griglia, le azioni contrassegno, valutazione ed etichetta colore si applicano all’insieme selezionato. In Dettagli, tali azioni di marcatura si applicano alla foto attiva. In Panoramica, si applicano alla cella panoramica attiva. Controlla il contesto della barra degli strumenti di marcatura prima di un’azione in batch.",
+            "Un’azione in blocco raggiunge solo le foto selezionate che il filtro, la cartella e la ricerca attuali mostrano ancora. Cambiare un filtro restringe quindi ciò che l’azione successiva tocca, e la barra di contrassegno conta ciò che raggiungerebbe.",
             "Apri Info accanto a una delle due griglie per visualizzare i metadati o taggare le foto selezionate. La griglia si restringe per fare spazio all'ispettore. Scegli un altro strumento dell'ispettore per tornare alla griglia più ampia."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Scegli ciò che è in vista",
           "paragraphs": [
-            "Locale → Sfoglia elenca le cartelle aggiunte. Includi sottocartelle controlla se una cartella selezionata mostra anche i propri discendenti. Gli altri filtri della libreria continuano ad applicarsi.",
+            "Cartelle → Sfoglia elenca le cartelle aggiunte. Includi sottocartelle controlla se una cartella selezionata mostra anche le sue discendenti. Continuano ad applicarsi anche gli altri filtri della libreria.",
             "In una finestra Linux stretta, usa Mostra o nascondi libreria in alto a sinistra per aprire il cassetto della libreria. Chiudilo con lo stesso pulsante dopo aver scelto una cartella per lasciare più spazio alla foto."
           ],
           "steps": [
-            "Fai clic su una cartella sotto Locale.",
+            "Fai clic su una cartella in Cartelle.",
             "Attiva Includi sottocartelle per includere le cartelle figlie, oppure disattivalo per visualizzare solo quella cartella.",
             "Fai clic sulla stella accanto a una cartella, oppure apri il suo menu ••• e scegli Aggiungi ai preferiti.",
-            "Usa Locale → Preferiti per tornare alle cartelle salvate."
+            "Usa Cartelle → Preferiti per tornare alle cartelle salvate."
           ]
         },
         {
           "title": "Azioni cartella",
           "paragraphs": [
-            "Il menu ••• di una cartella include Mostra nel Finder su Mac, Mostra in Esplora file su Windows o Mostra in Gestione file su Linux. Per la cartella corrente, Sincronizza cartella aggiorna la vista. Locale ••• → Riscansiona cartelle esegue la scansione delle origini del catalogo.",
+            "Il menu ••• di una cartella include Mostra nel Finder su Mac, Mostra in Esplora file su Windows o Mostra in Gestione file su Linux. Per la cartella corrente, Sincronizza cartella aggiorna la visualizzazione. Cartelle ••• → Riscansiona cartelle scansiona le origini del catalogo.",
             "Rimuovi da LightTable rimuove un'origine aggiunta dall'elenco sorgenti dell'app; non sposta i file originali nel Cestino. L'azione è disponibile quando è presente più di una sorgente."
           ]
         },
         {
           "title": "Gestisci cartelle monitorate",
           "paragraphs": [
-            "Apri Locale ••• → Cartella da monitorare… per aggiungere una cartella monitorata. Scegli come devono essere gestite le foto in arrivo. Salva non è disponibile finché non viene specificata una cartella; copiare nella libreria richiede anche una destinazione.",
+            "Apri Cartelle ••• → Cartella da monitorare… per aggiungere una cartella monitorata. Scegli come devono essere gestite le foto in arrivo. Salva non è disponibile finché non viene specificata una cartella; per copiare nella libreria è necessaria anche una destinazione.",
             "Per modificare una watch esistente, selezionala in Cartelle monitorate. Ogni watch salvata appare in questo elenco. Scegli Nuova cartella monitorata per un'altra cartella, oppure usa Elimina watch per smettere di monitorare la cartella selezionata. Questo non elimina le sue foto.",
             "La scorciatoia Watching apre la prima watch attiva. Gli errori di salvataggio restano nella finestra di dialogo, così puoi correggere le impostazioni."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Leggi i metadati da un altro editor",
           "paragraphs": [
-            "Chiedi all'altro editor di salvare i propri metadati in file XMP adiacenti, quindi scegli Locale ••• → Importa sidecar…. L'azione legge gli originali del catalogo, incluse tutte le pagine delle librerie grandi fino a 100.000 foto per importazione. Le copie virtuali mantengono i propri metadati.",
+            "Chiedi all'altro editor di salvare i metadati nei file XMP adiacenti, quindi scegli Cartelle ••• → Importa sidecar…. L'azione legge gli originali del catalogo, incluse tutte le pagine delle librerie di grandi dimensioni fino a 100.000 foto per importazione. Le copie virtuali mantengono i propri metadati.",
             "I metadati supportati includono valutazioni a stelle, contrassegni seleziona/rifiuta, etichette colore standard, parole chiave piatte e gerarchiche e campi IPTC descrittivi. Un valore vuoto esplicito cancella quel campo; un valore assente lo lascia invariato. Le etichette colore personalizzate che non corrispondono a un colore di LightTable vengono segnalate come saltate.",
             "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio non vengono applicati da questa azione di menu."
           ]
@@ -819,6 +828,7 @@
           "title": "Controlla cosa succede dopo",
           "paragraphs": [
             "Attiva Avanzamento automatico per passare alla foto successiva dopo aver selezionato, rifiutato o valutato una singola foto. Rimuovi contrassegno non avanza.",
+            "Quando il contrassegno toglie la foto dalla vista in cui stai lavorando, ad esempio selezionandola mentre la barra laterale mostra Senza contrassegno, l’avanzamento automatico prosegue con la foto che ne prende il posto. Non torna all’inizio dell’elenco.",
             "Quando più foto sono selezionate in una griglia, i contrassegni si applicano a quell'insieme senza avanzare. Se Link pair metadata è attivo, il contrassegno aggiorna anche i compagni RAW e JPEG riconosciuti."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Scegli una collezione",
           "paragraphs": [
-            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 15 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
+            "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 23 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata."
           ],
           "steps": [
             "Scegli Integrato, Tuo o Community. Cerca per nome, descrizione, autore o soggetto.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Organizzare i pacchetti di predefiniti",
           "paragraphs": [
-            "I predefiniti appaiono come righe orizzontali all’interno di pacchetti comprimibili. Gli stili integrati sono inizialmente suddivisi nei pacchetti Colore, Pellicola e Bianco e nero. Fai clic sull’intestazione di un pacchetto per espanderlo o comprimerlo.",
+            "I predefiniti appaiono come righe orizzontali in pacchetti comprimibili. I look integrati sono inizialmente organizzati nei pacchetti Colore, Pellicola, Film Simulation Drama e Bianco e nero. Fai clic sul titolo di un pacchetto per espanderlo o comprimerlo.",
+            "Ogni look di Film Simulation Drama attiva la simulazione pellicola e aggiunge effetti di tono, colore, grana, bagliore o vignettatura. Il pacchetto contiene otto look, tra cui Silver Noir in bianco e nero.",
             "Scegli Nuovo pacchetto… per creare un pacchetto con un nome nella raccolta corrente. Trascina un predefinito sulla sua intestazione oppure apri i dettagli del predefinito con … e scegli Sposta nel pacchetto. Usa … accanto a un pacchetto per rinominarlo. Rimuovendo un pacchetto, i suoi predefiniti tornano ai gruppi predefiniti senza essere eliminati. L’organizzazione dei pacchetti viene salvata su questo computer."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Modellare un gradiente lineare",
           "paragraphs": [
-            "In Modifica forma, trascina uno dei punti per regolare quella estremità del gradiente. Trascina la linea che li collega per spostare l’intero gradiente mantenendone l’angolo e la larghezza della transizione. Trascina altrove sulla foto per ridisegnarlo."
+            "In Modifica forma, trascina uno dei punti per regolare quella estremità del gradiente. Trascina la linea che li collega per spostare l’intero gradiente mantenendone l’angolo e la larghezza della transizione. Trascina altrove sulla foto per ridisegnarlo.",
+            "Trascinando i due punti l’uno sull’altro il gradiente resta senza direzione e non seleziona nulla finché non li separi di nuovo. Un gradiente molto corto è un bordo netto valido e si applica allo stesso modo nell’anteprima e nel file esportato."
           ],
           "tips": [
             "Seleziona una maschera Lineare esistente per regolarla nuovamente. Se hai dipinto con Aggiungi, Sottrai o Interseca, scegli prima Modifica forma. Premi H se i punti sono nascosti."
@@ -1892,7 +1904,8 @@
           "title": "Crea una selezione intelligente",
           "paragraphs": [
             "Maschera offre selezioni Soggetto, Cielo, Oggetto, Profondità e Persone. Queste vengono eseguite localmente; i metodi disponibili dipendono dal tipo di selezione e dalla piattaforma.",
-            "Le selezioni di Soggetto, Cielo e Oggetto mantengono fino a 1.024 pixel lungo il loro lato più lungo. I bordi vengono rifiniti in base ai colori dell'immagine e le selezioni Vision del soggetto preservano transizioni morbide. I confini più fini richiedono comunque un controllo e un raffinamento dipinto."
+            "Le selezioni di Soggetto, Cielo e Oggetto mantengono fino a 1.024 pixel lungo il loro lato più lungo. I bordi vengono rifiniti in base ai colori dell'immagine e le selezioni Vision del soggetto preservano transizioni morbide. I confini più fini richiedono comunque un controllo e un raffinamento dipinto.",
+            "Una selezione viene ritagliata dalla foto su cui è stata avviata. Passare a un’altra foto prima che finisca la annulla, quindi resta sulla foto finché non compare la maschera. Se la selezione non può essere completata, il pannello della maschera lo segnala e non viene aggiunto nulla."
           ],
           "steps": [
             "Apri Maschera ed espandi Crea nuova maschera.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Esegui backup e ispeziona",
           "paragraphs": [
-            "Impostazioni → Catalogo mostra la posizione del catalogo e le preferenze di backup. I backup includono organizzazione del catalogo, modifiche, maschere salvate, cronologia e varianti. Esegui il backup delle foto originali, dei predefiniti e dei profili esterni e delle preferenze separatamente. Locale ••• → Backup catalogo… crea anche un backup e mostra il percorso salvato o l'errore in una finestra dei risultati. Trova duplicati nello stesso menu mostra i file corrispondenti, oppure segnala che non ne sono stati trovati."
+            "Impostazioni → Catalogo mostra la posizione del catalogo e le preferenze di backup. I backup includono l'organizzazione del catalogo, le modifiche, le maschere memorizzate, la cronologia e le varianti. Esegui il backup delle foto originali, dei predefiniti e dei profili esterni e delle preferenze separatamente. Cartelle ••• → Backup catalogo… crea anche un backup e mostra il percorso salvato o l'errore in una finestra dei risultati. Trova duplicati nello stesso menu mostra i file corrispondenti, oppure segnala che non ne sono stati trovati."
           ],
           "steps": [
             "Scegli un intervallo di backup automatico e una posizione di backup.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

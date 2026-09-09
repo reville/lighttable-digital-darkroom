@@ -19,13 +19,21 @@
         {
           "title": "Escolha um ponto de partida",
           "paragraphs": [
-            "Em uma nova biblioteca, a configuração oferece uma pasta local, migração do Lightroom ou Apple Photos. Você pode pular a configuração e adicionar fotos depois.",
+            "Em uma nova biblioteca, a configuração oferece uma pasta local ou migração do Lightroom. O app do macOS também oferece Apple Photos. Você pode pular a configuração e adicionar fotos depois.",
             "A importação de biblioteca inteira do Apple Photos requer o aplicativo macOS e permissão para ler Fotos. Ela copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Sua biblioteca Fotos permanece inalterada. Os originais do iCloud são baixados durante a importação, então reserve tempo e espaço em disco. Álbuns, vídeos e edições do Fotos não são transferidos.",
             "Parar a importação mantém as cópias concluídas. Executá-la novamente pula essas cópias e tenta novamente os originais inacabados."
           ],
           "steps": [
             "Escolha uma pasta para navegar pelos originais no local ou selecione uma das opções de migração.",
             "Revise o resultado da importação e depois continue para a biblioteca."
+          ]
+        },
+        {
+          "title": "Navegar no Apple Photos",
+          "paragraphs": [
+            "No app para macOS, abra Apple Photos na barra lateral para navegar por fotos e álbuns. Permita o acesso ao Photos quando solicitado. Essa origem fica oculta no Windows e no Linux.",
+            "Selecione até 500 fotos em várias páginas ou álbuns e, em seguida, escolha Importar originais selecionados. O LightTable copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Os originais do iCloud são baixados durante a importação. Sua biblioteca do Photos permanece inalterada; álbuns, vídeos e edições do Photos não são transferidos.",
+            "Parar importação mantém as cópias concluídas. Importe a seleção novamente para tentar de novo os originais indisponíveis; as cópias concluídas são ignoradas. Escolha Visualizar fotos importadas para editar as cópias. Atualizar atualiza as fotos e álbuns disponíveis."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Abrir uma pasta local",
           "paragraphs": [
-            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e Windows, use o + ao lado de Local para adicionar uma pasta inteira. O LightTable mantém os originais no lugar. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
+            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
           ],
           "steps": [
-            "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Local para escolher uma pasta.",
-            "Escolha a pasta em Local na barra lateral esquerda. Ative Incluir subpastas para navegar pelas fotos nas pastas filhas.",
+            "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Pastas para escolher uma pasta.",
+            "Escolha a pasta em Pastas na barra lateral esquerda. Ative Incluir subpastas para navegar pelas fotos nas pastas filhas.",
             "Escolha Photo Grid, Culling Grid ou Detail na parte superior. Clique em uma foto para torná-la ativa."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Traga novos arquivos para uma pasta existente",
           "paragraphs": [
-            "Use o menu Local ••• e Reanalisar pastas depois de adicionar arquivos fora do LightTable. Para copiar fotos de um cartão para uma pasta de destino, use Importar do cartão… nesse menu."
+            "Use o menu Pastas ••• e Redigitalizar pastas depois de adicionar arquivos fora do LightTable. Para copiar fotos de um cartão para uma pasta de destino, use Importar do cartão… nesse menu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "A compatibilidade da pré-visualização mostra correspondências na biblioteca atual sem alterá-la. Fotos ainda não adicionadas podem aparecer como não correspondentes na pré-visualização; importar com Adicionar as pastas de fotos ativado registra os originais disponíveis antes de corresponder novamente."
           ],
           "steps": [
-            "Abra Local ••• → Importar catálogo… ou escolha Importar do Lightroom na configuração.",
+            "Abra Pastas ••• → Importar catálogo…, ou escolha Importar do Lightroom na configuração.",
             "Escolha o arquivo .lrcat e revise suas contagens e avisos.",
             "Escolha as categorias a importar, a política para edições existentes e se deseja adicionar as pastas de fotos referenciadas.",
             "Clique em Compatibilidade de pré-visualização e revise as configurações mapeadas e ignoradas. Testar 20 variantes cria edições de teste separadas antes de uma importação maior.",
@@ -103,7 +111,7 @@
           "title": "Revisar edições traduzidas",
           "paragraphs": [
             "As configurações de Desenvolver são aproximadas e não podem garantir a aparência renderizada do Lightroom. Máscaras locais sem suporte, perfis de câmera, máscaras de IA do .lrcat-data ou cargas úteis de LUT, e regras de coleção inteligente sem suporte são relatadas como ignoradas. As configurações de desenvolvimento importadas desativam Filme.",
-            "Local ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra o progresso, as contagens aplicadas, as configurações ignoradas e os erros."
+            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importar do cartão copia arquivos para o destino que você escolher. Os originais do cartão permanecem no lugar. A opção de ignorar duplicados compara o conteúdo completo dos arquivos; um nome de arquivo correspondente ou um cabeçalho da câmera sozinho não é suficiente."
           ],
           "steps": [
-            "Abra Local ••• → Importar do cartão….",
+            "Abra Pastas ••• → Importar do cartão….",
             "Escolha a Origem e o Destino. Defina o modelo de Pasta e Renomear para antes de digitalizar. As predefinições mantêm os nomes de arquivo e organizam as cópias como ano/ano-mês-dia.",
             "Escolha verificação: Hash completo, Apenas tamanho ou Nenhum. Defina Duplicatas como Ignorar ou Copiar mesmo assim e, opcionalmente, escolha Segunda cópia para.",
             "Clique em Digitalizar. Use Anterior e Próximo para revisar cada página e verifique a contagem selecionada e a pré-visualização do destino antes de clicar em Importar. Importar fica indisponível quando nenhuma foto está selecionada.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Clicar seleciona uma única foto ativa. Shift+clique seleciona um intervalo contíguo. Command+clique no Mac ou Control+clique adiciona ou remove fotos individuais.",
             "Em uma grade, as ações de bandeira, avaliação e rótulo de cor se aplicam ao conjunto selecionado. Em Detalhe, essas ações de marcação se aplicam à foto ativa. Em Varredura, elas se aplicam à célula ativa da varredura. Verifique o contexto da barra de ferramentas de marcação antes de uma ação em lote.",
+            "Uma ação em lote alcança apenas as fotos selecionadas que o filtro, a pasta e a pesquisa atuais ainda mostram. Mudar um filtro reduz assim o que a ação seguinte toca, e a barra de marcação conta o que iria alcançar.",
             "Abra Informações ao lado de qualquer uma das grades para ver metadados ou etiquetar as fotos selecionadas. A grade se estreita para abrir espaço para o inspetor. Escolha outra ferramenta do inspetor para voltar à grade mais ampla."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Escolher o que está à vista",
           "paragraphs": [
-            "Local → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra seus descendentes. Outros filtros da biblioteca ainda se aplicam.",
+            "Pastas → Navegar lista as pastas que você adicionou. Incluir subpastas controla se uma pasta selecionada também mostra suas descendentes. Outros filtros da biblioteca ainda se aplicam.",
             "Em uma janela estreita do Linux, use Mostrar ou ocultar a biblioteca no canto superior esquerdo para abrir a gaveta da biblioteca. Feche-a com o mesmo botão depois de escolher uma pasta para deixar mais espaço para a foto."
           ],
           "steps": [
-            "Clique em uma pasta em Local.",
+            "Clique em uma pasta em Pastas.",
             "Ative Incluir subpastas para incluir pastas filhas, ou desative para visualizar apenas essa pasta.",
             "Clique na estrela ao lado de uma pasta, ou abra o menu ••• dela e escolha Adicionar como Favorito.",
-            "Use Local → Favoritos para voltar às suas pastas salvas."
+            "Use Pastas → Favoritos para voltar às suas pastas salvas."
           ]
         },
         {
           "title": "Ações da pasta",
           "paragraphs": [
-            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac, Mostrar no Explorador de Arquivos no Windows ou Mostrar no Gerenciador de Arquivos no Linux. Para a pasta atual, Sincronizar pasta atualiza a visualização. Local ••• → Redigitalizar pastas digitaliza as origens do catálogo.",
+            "O menu ••• de uma pasta inclui Mostrar no Finder no Mac, Mostrar no Explorador de Arquivos no Windows ou Mostrar no Gerenciador de Arquivos no Linux. Para a pasta atual, Sincronizar pasta atualiza a visualização. Pastas ••• → Redigitalizar pastas digitaliza as origens do catálogo.",
             "Remover do LightTable remove uma raiz adicionada da lista de origens do app; isso não move os arquivos originais para o Lixo. A ação é oferecida quando há mais de uma origem disponível."
           ]
         },
         {
           "title": "Gerenciar pastas observadas",
           "paragraphs": [
-            "Abra Local ••• → Pasta observada… para adicionar uma pasta observada. Escolha como as fotos que chegarem devem ser tratadas. Salvar fica indisponível até que uma pasta seja especificada; copiar para a biblioteca também requer um destino.",
+            "Abra Pastas ••• → Pasta observada… para adicionar uma pasta observada. Escolha como as fotos que chegarem devem ser tratadas. Salvar fica indisponível até que uma pasta seja especificada; copiar para a biblioteca também exige um destino.",
             "Para editar uma observação existente, escolha-a em Pastas observadas. Cada observação salva aparece nesta lista. Escolha Nova pasta observada para outra pasta ou use Excluir observação para parar de observar a pasta selecionada. Isso não exclui as fotos dela.",
             "O atalho de Observando abre a primeira observação ativa. Os erros de salvamento permanecem na caixa de diálogo para que você possa corrigir as configurações."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Ler metadados de outro editor",
           "paragraphs": [
-            "Peça ao outro editor que salve seus metadados em arquivos XMP adjacentes e, em seguida, escolha Local ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes, até 100.000 fotos por importação. Cópias virtuais mantêm seus próprios metadados.",
+            "Peça ao outro editor para salvar os metadados em arquivos XMP adjacentes e, em seguida, escolha Pastas ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes com até 100.000 fotos por importação. As cópias virtuais mantêm seus próprios metadados.",
             "Os metadados compatíveis incluem avaliações por estrelas, marcas de selecionar/rejeitar, rótulos de cor padrão, palavras-chave planas e hierárquicas e campos descritivos IPTC. Um valor vazio explícito limpa esse campo; um valor ausente o deixa inalterado. Rótulos de cor personalizados que não correspondem a uma cor do LightTable são informados como ignorados.",
             "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte não são aplicados por esta ação de menu."
           ]
@@ -819,6 +828,7 @@
           "title": "Controlar o que acontece a seguir",
           "paragraphs": [
             "Ative Avanço automático para ir para a próxima foto depois de selecionar, rejeitar ou avaliar uma única foto. Remover bandeira não avança.",
+            "Quando a marcação retira a foto da vista em que está a trabalhar, como selecionar enquanto a barra lateral mostra Sem bandeira, o avanço automático continua com a foto que ocupa o seu lugar. Não regressa ao início da lista.",
             "Quando várias fotos são selecionadas em uma grade, as marcas se aplicam a esse conjunto sem avançar. Se Vincular metadados do par estiver ativado, marcar também atualiza companheiros RAW e JPEG reconhecidos."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Escolha uma coleção",
           "paragraphs": [
-            "Abra Predefinições na barra de ferramentas de edição. Integrado contém 15 aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
+            "Abra Predefinições na barra de ferramentas de edição. Integrado contém 23 aparências incluídas e funciona offline. Yours contém aparências salvas, importações e predefinições da comunidade instaladas. Community navega pela coleção online revisada."
           ],
           "steps": [
             "Escolha Integrado, Yours ou Community. Pesquise por nome, descrição, criador ou assunto.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Organizar pacotes de predefinições",
           "paragraphs": [
-            "As predefinições aparecem como linhas horizontais dentro de pacotes recolhíveis. Os estilos integrados começam nos pacotes Cor, Filme e Preto e branco. Clique no cabeçalho de um pacote para expandi-lo ou recolhê-lo.",
+            "As predefinições aparecem como linhas horizontais em pacotes recolhíveis. Os visuais integrados começam nos pacotes Cor, Filme, Film Simulation Drama e Preto e branco. Clique no título de um pacote para expandi-lo ou recolhê-lo.",
+            "Cada visual de Film Simulation Drama ativa a simulação de filme e adiciona efeitos de tom, cor, grão, brilho ou vinheta. O pacote contém oito visuais, incluindo Silver Noir em preto e branco.",
             "Escolha Novo pacote… para criar um pacote com nome na coleção atual. Arraste uma predefinição até o cabeçalho dele ou abra os detalhes da predefinição em … e escolha Mover para pacote. Use … ao lado de um pacote para renomeá-lo. Ao remover um pacote, suas predefinições voltam aos grupos padrão sem serem excluídas. A organização dos pacotes é salva neste computador."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Ajustar a forma de um gradiente linear",
           "paragraphs": [
-            "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo."
+            "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo.",
+            "Arrastar os dois pontos um sobre o outro deixa o gradiente sem direção, pelo que não seleciona nada até os separar novamente. Um gradiente muito curto é uma margem dura válida e aplica-se da mesma forma na pré-visualização e no ficheiro exportado."
           ],
           "tips": [
             "Selecione uma máscara Linear existente para ajustá-la novamente. Se você estava pintando com Adicionar, Subtrair ou Interseção, escolha primeiro Editar forma. Pressione H se os pontos estiverem ocultos."
@@ -1892,7 +1904,8 @@
           "title": "Criar uma seleção inteligente",
           "paragraphs": [
             "Máscara oferece seleções de Assunto, Céu, Objeto, Profundidade e Pessoas. Elas são executadas localmente; os métodos disponíveis dependem do tipo de seleção e da plataforma.",
-            "As seleções de Assunto, Céu e Objeto retêm até 1.024 pixels ao longo da borda mais longa. As bordas são refinadas com base nas cores da imagem, e as seleções de Assunto por Vision preservam transições suaves. Limites finos ainda precisam de inspeção e refinamento pintado."
+            "As seleções de Assunto, Céu e Objeto retêm até 1.024 pixels ao longo da borda mais longa. As bordas são refinadas com base nas cores da imagem, e as seleções de Assunto por Vision preservam transições suaves. Limites finos ainda precisam de inspeção e refinamento pintado.",
+            "Uma seleção é recortada da foto onde foi iniciada. Passar para outra foto antes de terminar cancela-a, por isso permaneça na foto até a máscara aparecer. Se a seleção não puder ser concluída, o painel da máscara comunica-o e nada é adicionado."
           ],
           "steps": [
             "Abra Máscara e expanda Criar Nova Máscara.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Fazer backup e inspecionar",
           "paragraphs": [
-            "Configurações → Catálogo mostra o local do catálogo e as preferências de backup. Os backups incluem a organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup de fotos originais, predefinições e perfis externos e preferências separadamente. Local ••• → Fazer backup do catálogo… também cria um backup e mostra o caminho salvo ou o erro em uma caixa de diálogo de resultados. Encontrar duplicatas no mesmo menu mostra arquivos correspondentes ou informa que nenhum foi encontrado."
+            "Configurações → Catálogo mostra o local do catálogo e as preferências de backup. Os backups incluem a organização do catálogo, edições, máscaras armazenadas, histórico e variantes. Faça backup separadamente das fotos originais, das predefinições e perfis externos e das preferências. Pastas ••• → Fazer backup do catálogo… também cria um backup e mostra o caminho salvo ou o erro em uma caixa de diálogo de resultados. Encontrar duplicatas no mesmo menu mostra arquivos correspondentes ou informa que nenhum foi encontrado."
           ],
           "steps": [
             "Escolha um intervalo de backup automático e um local de backup.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

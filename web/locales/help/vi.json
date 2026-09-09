@@ -19,13 +19,21 @@
         {
           "title": "Chọn điểm bắt đầu",
           "paragraphs": [
-            "Trong một thư viện mới, phần thiết lập cung cấp thư mục cục bộ, di chuyển từ Lightroom, hoặc Apple Photos. Bạn có thể bỏ qua thiết lập và thêm ảnh sau.",
+            "Trên một thư viện mới, bước thiết lập cung cấp một thư mục cục bộ hoặc di chuyển dữ liệu từ Lightroom. Ứng dụng macOS cũng cung cấp Apple Photos. Bạn có thể bỏ qua bước thiết lập và thêm ảnh sau.",
             "Nhập toàn bộ thư viện từ Apple Photos yêu cầu ứng dụng macOS và quyền đọc Photos. Nó sao chép ảnh gốc, bao gồm các tệp RAW, vào Pictures / LightTable Imports / Apple Photos. Thư viện Photos của bạn không thay đổi. Ảnh gốc iCloud sẽ tải xuống trong quá trình nhập, vì vậy hãy dành thời gian và dung lượng đĩa. Album, video và các chỉnh sửa trong Photos không được chuyển.",
             "Dừng nhập sẽ giữ lại các bản sao đã hoàn tất. Chạy lại sẽ bỏ qua các bản sao đó và thử lại các ảnh gốc chưa hoàn tất."
           ],
           "steps": [
             "Chọn một thư mục để duyệt ảnh gốc tại chỗ, hoặc chọn một trong các tùy chọn di chuyển dữ liệu.",
             "Xem lại kết quả nhập, rồi tiếp tục vào thư viện."
+          ]
+        },
+        {
+          "title": "Duyệt Apple Photos",
+          "paragraphs": [
+            "Trong ứng dụng macOS, mở Apple Photos trong thanh bên để duyệt ảnh và album. Cho phép truy cập Photos khi được hỏi. Nguồn này bị ẩn trên Windows và Linux.",
+            "Chọn tối đa 500 ảnh trên các trang hoặc album, rồi chọn Nhập các bản gốc đã chọn. LightTable sao chép ảnh gốc, bao gồm cả tệp RAW, vào Pictures / LightTable Imports / Apple Photos. Bản gốc từ iCloud sẽ được tải xuống trong quá trình nhập. Thư viện Photos của bạn không thay đổi; album, video và các chỉnh sửa Photos không được chuyển sang.",
+            "Dừng nhập giữ lại các bản sao đã hoàn tất. Nhập lại vùng chọn để thử lại các bản gốc không khả dụng; các bản sao đã hoàn tất sẽ bị bỏ qua. Chọn Xem ảnh đã nhập để chỉnh sửa các bản sao. Làm mới cập nhật các ảnh và album khả dụng."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Mở thư mục cục bộ",
           "paragraphs": [
-            "Thêm ảnh mở bộ chọn ảnh. Trên Mac, bộ chọn đó cũng chấp nhận thư mục. Trên Linux và Windows, dùng dấu + bên cạnh Cục bộ để thêm cả một thư mục. LightTable giữ bản gốc ở nguyên vị trí. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa nó, vì vậy các ảnh khác được hỗ trợ trong thư mục đó cũng có thể xuất hiện."
+            "Thêm ảnh mở trình chọn ảnh. Trên Mac, trình chọn đó cũng chấp nhận thư mục. Trên Linux và Windows, dùng dấu + bên cạnh Thư mục để thêm cả một thư mục. LightTable giữ nguyên các bản gốc tại chỗ. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa ảnh đó, nên các ảnh khác được hỗ trợ trong thư mục đó cũng có thể xuất hiện."
           ],
           "steps": [
-            "Nhấp Thêm ảnh ở góc trên bên trái và chọn ảnh, hoặc dùng dấu + bên cạnh Cục bộ để chọn một thư mục.",
-            "Chọn thư mục dưới Local ở thanh bên trái. Bật Include subfolders để duyệt ảnh trong các thư mục con của nó.",
+            "Nhấp Thêm ảnh ở góc trên bên trái và chọn ảnh, hoặc dùng dấu + bên cạnh Thư mục để chọn một thư mục.",
+            "Chọn thư mục trong Thư mục ở thanh bên trái. Bật Bao gồm thư mục con để duyệt ảnh trong các thư mục con của nó.",
             "Chọn Photo Grid, Culling Grid hoặc Detail ở phía trên. Nhấp vào một ảnh để kích hoạt nó."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Đưa tệp mới vào một thư mục hiện có",
           "paragraphs": [
-            "Dùng menu Local ••• và Quét lại thư mục sau khi thêm tệp ngoài LightTable. Để sao chép ảnh từ thẻ vào thư mục đích, hãy dùng Nhập từ thẻ… trong menu đó."
+            "Dùng menu Thư mục ••• và Quét lại thư mục sau khi thêm tệp bên ngoài LightTable. Để sao chép ảnh từ thẻ vào một thư mục đích, dùng Nhập từ thẻ… trong menu đó."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Tương thích bản xem trước báo cáo các ảnh khớp trong thư viện hiện tại mà không thay đổi nó. Ảnh chưa được thêm có thể hiển thị là không khớp trong bản xem trước; nhập với bật Thêm các thư mục ảnh sẽ ghi nhận các ảnh gốc hiện có trước khi khớp lại."
           ],
           "steps": [
-            "Mở Cục bộ ••• → Nhập danh mục…, hoặc chọn Nhập từ Lightroom trong thiết lập.",
+            "Mở Thư mục ••• → Nhập danh mục…, hoặc chọn Nhập từ Lightroom trong bước thiết lập.",
             "Chọn tệp .lrcat và xem lại số lượng cùng các cảnh báo của nó.",
             "Chọn các danh mục để nhập, chính sách cho các chỉnh sửa hiện có, và có thêm các thư mục ảnh được tham chiếu hay không.",
             "Nhấp Tương thích bản xem trước và xem lại các cài đặt đã ánh xạ và bị bỏ qua. Thử 20 biến thể sẽ tạo các chỉnh sửa thử riêng trước một lần nhập lớn hơn.",
@@ -103,7 +111,7 @@
           "title": "Xem lại các chỉnh sửa đã dịch",
           "paragraphs": [
             "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
-            "Cục bộ ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng cài đặt phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các cài đặt bị bỏ qua và lỗi."
+            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng thiết lập phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Nhập từ thẻ sao chép tệp vào đích đến bạn chọn. Các bản gốc trên thẻ vẫn ở nguyên vị trí. Bỏ qua bản sao trùng so sánh toàn bộ nội dung tệp; tên tệp trùng hoặc tiêu đề máy ảnh trùng riêng lẻ là không đủ."
           ],
           "steps": [
-            "Mở Local ••• → Nhập từ thẻ….",
+            "Mở Thư mục ••• → Nhập từ thẻ….",
             "Chọn Nguồn và Đích. Đặt mẫu Thư mục và Đổi tên thành trước khi quét. Mặc định giữ nguyên tên tệp và sắp xếp bản sao theo năm/năm-tháng-ngày.",
             "Chọn xác minh: Full hash, Size only, hoặc None. Đặt Duplicates thành Skip hoặc Copy anyway, và tùy chọn chọn Second copy to.",
             "Bấm Quét. Dùng Trước đó và Tiếp theo để xem lại từng trang, và kiểm tra số lượng đã chọn cùng bản xem trước đích đến trước khi bấm Nhập. Nhập không khả dụng khi chưa chọn ảnh nào.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Nhấp chọn một ảnh đang hoạt động duy nhất. Shift-nhấp chọn một phạm vi liên tiếp. Command-nhấp trên Mac hoặc Control-nhấp sẽ thêm hoặc bỏ từng ảnh riêng lẻ.",
             "Trong lưới, các hành động cờ, xếp hạng và nhãn màu áp dụng cho tập hợp đã chọn. Trong Detail, các hành động đánh dấu đó áp dụng cho ảnh đang hoạt động. Trong Survey, chúng áp dụng cho ô xem nhanh đang hoạt động. Kiểm tra ngữ cảnh của thanh công cụ đánh dấu trước khi thực hiện thao tác lô.",
+            "Một thao tác hàng loạt chỉ tác động đến những ảnh đã chọn mà bộ lọc, thư mục và tìm kiếm hiện tại vẫn hiển thị. Vì vậy đổi bộ lọc sẽ thu hẹp phạm vi của thao tác kế tiếp, và thanh đánh dấu đếm đúng số ảnh sẽ bị tác động.",
             "Mở Thông tin bên cạnh một trong hai lưới để xem siêu dữ liệu hoặc gắn thẻ các ảnh đã chọn. Lưới thu hẹp lại để dành chỗ cho bảng kiểm tra. Chọn một công cụ bảng kiểm tra khác để quay lại lưới rộng hơn."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Chọn nội dung đang hiển thị",
           "paragraphs": [
-            "Local → Duyệt liệt kê các thư mục bạn đã thêm. Bao gồm thư mục con điều khiển việc một thư mục đã chọn có hiển thị cả các thư mục con của nó hay không. Các bộ lọc thư viện khác vẫn được áp dụng.",
+            "Thư mục → Duyệt liệt kê các thư mục bạn đã thêm. Bao gồm thư mục con điều khiển việc một thư mục được chọn có hiển thị cả các thư mục con của nó hay không. Các bộ lọc thư viện khác vẫn áp dụng.",
             "Trong cửa sổ Linux hẹp, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái để mở ngăn thư viện. Đóng nó bằng cùng nút đó sau khi chọn một thư mục để có thêm chỗ cho ảnh."
           ],
           "steps": [
-            "Nhấp vào một thư mục trong Local.",
+            "Nhấp vào một thư mục trong Thư mục.",
             "Bật Bao gồm thư mục con để bao gồm các thư mục con, hoặc tắt để chỉ xem thư mục đó.",
             "Nhấp vào ngôi sao bên cạnh một thư mục, hoặc mở menu ••• của nó và chọn Thêm vào Mục ưa thích.",
-            "Dùng Cục bộ → Yêu thích để quay lại các thư mục đã lưu."
+            "Dùng Thư mục → Mục yêu thích để quay lại các thư mục đã lưu của bạn."
           ]
         },
         {
           "title": "Tác vụ thư mục",
           "paragraphs": [
-            "Menu ••• của thư mục bao gồm Hiển thị trong Finder trên Mac, Hiển thị trong File Explorer trên Windows, hoặc Hiển thị trong Trình quản lý tệp trên Linux. Với thư mục hiện tại, Đồng bộ hóa thư mục làm mới chế độ xem. Cục bộ ••• → Quét lại thư mục quét các nguồn của danh mục.",
+            "Menu ••• của một thư mục gồm Hiển thị trong Finder trên Mac, Hiển thị trong Trình khám phá tệp trên Windows, hoặc Hiển thị trong Trình quản lý tệp trên Linux. Với thư mục hiện tại, Đồng bộ hóa thư mục làm mới chế độ xem. Thư mục ••• → Quét lại thư mục quét các nguồn của danh mục.",
             "Xóa khỏi LightTable sẽ gỡ một thư mục gốc đã thêm khỏi danh sách nguồn của ứng dụng; nó không di chuyển các tệp gốc vào Thùng rác. Hành động này được cung cấp khi có nhiều hơn một nguồn."
           ]
         },
         {
           "title": "Quản lý các thư mục được theo dõi",
           "paragraphs": [
-            "Mở Cục bộ ••• → Thư mục theo dõi… để thêm một thư mục được theo dõi. Chọn cách xử lý các ảnh đến. Lưu không khả dụng cho đến khi chỉ định một thư mục; sao chép vào thư viện cũng cần một đích đến.",
+            "Mở Thư mục ••• → Thư mục theo dõi… để thêm một thư mục được theo dõi. Chọn cách xử lý ảnh mới đến. Lưu không khả dụng cho đến khi chỉ định một thư mục; việc sao chép vào thư viện cũng cần một đích đến.",
             "Để chỉnh sửa một mục theo dõi hiện có, hãy chọn nó trong Các thư mục được theo dõi. Mọi mục theo dõi đã lưu đều xuất hiện trong danh sách này. Chọn Thư mục được theo dõi mới cho một thư mục khác, hoặc dùng Xóa theo dõi để ngừng theo dõi thư mục đã chọn. Thao tác này không xóa ảnh của nó.",
             "Phím tắt Watching mở mục theo dõi đang hoạt động đầu tiên. Các lỗi lưu vẫn ở trong hộp thoại để bạn có thể sửa cài đặt."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Đọc siêu dữ liệu từ trình chỉnh sửa khác",
           "paragraphs": [
-            "Yêu cầu ứng dụng khác lưu siêu dữ liệu của nó vào các tệp XMP đi kèm, rồi chọn Cục bộ ••• → Nhập sidecar…. Hành động này đọc các ảnh gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100.000 ảnh mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
+            "Hãy yêu cầu trình chỉnh sửa khác lưu siêu dữ liệu của nó vào các tệp XMP liền kề, rồi chọn Thư mục ••• → Nhập sidecar…. Thao tác này đọc các bản gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100,000 ảnh cho mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
             "Siêu dữ liệu được hỗ trợ gồm xếp hạng sao, cờ chọn/từ chối, nhãn màu chuẩn, từ khóa phẳng và phân cấp, cùng các trường IPTC mô tả. Một giá trị rỗng rõ ràng sẽ xóa trường đó; một giá trị không có sẽ giữ nguyên không đổi. Các nhãn màu tùy chỉnh không khớp với màu của LightTable sẽ được báo là bị bỏ qua.",
             "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Cài đặt phát triển và cắt xén không được áp dụng bởi thao tác menu này."
           ]
@@ -819,6 +828,7 @@
           "title": "Kiểm soát điều gì xảy ra tiếp theo",
           "paragraphs": [
             "Bật Auto-advance để chuyển sang ảnh tiếp theo sau khi chọn, từ chối, hoặc xếp hạng một ảnh đơn lẻ. Bỏ cờ không tự chuyển tiếp.",
+            "Khi việc đánh dấu đưa ảnh ra khỏi chế độ xem bạn đang làm việc, chẳng hạn chọn giữ trong khi thanh bên hiển thị Chưa gắn cờ, tự động chuyển ảnh sẽ tiếp tục với ảnh thế chỗ nó. Nó không quay về đầu danh sách.",
             "Khi nhiều ảnh được chọn trong một lưới, các đánh dấu sẽ áp dụng cho tập đó mà không chuyển sang ảnh tiếp theo. Nếu Liên kết siêu dữ liệu cặp đang bật, việc đánh dấu cũng cập nhật các bạn đồng hành RAW và JPEG đã nhận diện."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Chọn một bộ sưu tập",
           "paragraphs": [
-            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
+            "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 23 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét."
           ],
           "steps": [
             "Chọn Tích hợp sẵn, Mục của bạn, hoặc Cộng đồng. Tìm theo tên, mô tả, người tạo, hoặc đối tượng.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Sắp xếp các gói thiết lập sẵn",
           "paragraphs": [
-            "Thiết lập sẵn xuất hiện dưới dạng các hàng ngang trong những gói có thể thu gọn. Các phong cách tích hợp sẵn ban đầu được chia vào các gói Màu sắc, Phim và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+            "Các thiết lập sẵn xuất hiện dưới dạng hàng ngang trong các gói có thể thu gọn. Các phong cách tích hợp ban đầu được chia thành các gói Màu, Phim, Film Simulation Drama và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
+            "Mỗi phong cách trong Film Simulation Drama đều bật mô phỏng phim và thêm hiệu ứng tông, màu, hạt, quầng sáng hoặc tối góc. Gói gồm tám phong cách, trong đó có Silver Noir đen trắng.",
             "Chọn Gói mới… để tạo một gói có tên trong bộ sưu tập hiện tại. Kéo một thiết lập sẵn lên tiêu đề của gói, hoặc mở phần chi tiết … của thiết lập sẵn rồi chọn Chuyển vào gói. Dùng … bên cạnh gói để đổi tên. Khi xóa gói, các thiết lập sẵn trong gói sẽ trở về nhóm mặc định mà không bị xóa. Cách sắp xếp gói được lưu trên máy tính này."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Điều chỉnh hình dạng chuyển sắc tuyến tính",
           "paragraphs": [
-            "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại."
+            "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại.",
+            "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất."
           ],
           "tips": [
             "Chọn một mặt nạ Tuyến tính hiện có để điều chỉnh lại. Nếu vừa tô bằng Thêm, Trừ hoặc Giao nhau, hãy chọn Chỉnh sửa hình dạng trước. Nhấn H nếu các chấm bị ẩn."
@@ -1892,7 +1904,8 @@
           "title": "Tạo một vùng chọn thông minh",
           "paragraphs": [
             "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng.",
-            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ."
+            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ.",
+            "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào."
           ],
           "steps": [
             "Mở Mặt nạ và mở rộng Tạo Mặt nạ Mới.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Sao lưu và kiểm tra",
           "paragraphs": [
-            "Cài đặt → Danh mục hiển thị vị trí danh mục và các tùy chọn sao lưu. Bản sao lưu bao gồm tổ chức danh mục, các chỉnh sửa, mặt nạ đã lưu, lịch sử và các biến thể. Hãy sao lưu riêng các ảnh gốc, các thiết lập sẵn và hồ sơ ngoài, cũng như tùy chọn. Cục bộ ••• → Sao lưu danh mục… cũng tạo một bản sao lưu và hiển thị đường dẫn đã lưu hoặc lỗi trong hộp thoại kết quả. Tìm bản sao trong cùng menu hiển thị các tệp khớp, hoặc báo rằng không tìm thấy bản sao nào."
+            "Cài đặt → Danh mục hiển thị vị trí danh mục và tùy chọn sao lưu. Bản sao lưu bao gồm tổ chức danh mục, chỉnh sửa, mặt nạ đã lưu, lịch sử và các biến thể. Hãy sao lưu riêng các ảnh gốc, các thiết lập sẵn và hồ sơ ngoài, cùng với tùy chọn. Thư mục ••• → Sao lưu danh mục… cũng tạo một bản sao lưu và hiển thị đường dẫn đã lưu hoặc lỗi của nó trong hộp thoại kết quả. Tìm bản sao trong cùng menu sẽ hiển thị các tệp khớp, hoặc báo rằng không tìm thấy bản nào."
           ],
           "steps": [
             "Chọn khoảng thời gian sao lưu Tự động và vị trí Sao lưu.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

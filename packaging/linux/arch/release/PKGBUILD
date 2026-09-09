@@ -1,0 +1,45 @@
+# Generated from a verified official release archive; SHA-256 pins its exact bytes.
+pkgname=lighttable-bin
+pkgver=0.5.0
+pkgrel=1
+pkgdesc='Photo editing and film simulation'
+arch=(x86_64)
+url='https://github.com/reville/lighttable-digital-darkroom'
+license=('GPL-3.0-only')
+depends=('glibc' 'gcc-libs' 'gtk3' 'webkit2gtk-4.1' 'xdotool' 'openblas'
+         'openssl' 'libglvnd' 'vulkan-icd-loader' 'lcms2' 'xdg-utils' 'glib2'
+         'dbus' 'gvfs' 'zenity' 'xdg-desktop-portal' 'hicolor-icon-theme' 'desktop-file-utils')
+optdepends=('xdg-desktop-portal-hyprland: Hyprland and Omarchy desktop portal'
+            'xdg-desktop-portal-gtk: file chooser portal for desktops without one'
+            'vulkan-driver: hardware acceleration with the driver for your GPU')
+provides=("lighttable=$pkgver")
+conflicts=('lighttable')
+# Preserve the exact Python and native binaries that passed bundle validation.
+options=('!strip' '!debug')
+source=(https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz 'app.lighttable.LightTable.desktop')
+sha256sums=(eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01 7da0e45fb5201961f26b9227f29b3d46f6ef38604158c3f4f7fb4f80c7d0c7dd)
+
+check() {
+  desktop-file-validate "$srcdir/app.lighttable.LightTable.desktop"
+  test -x "$srcdir/LightTable/bin/lighttable-desktop-shell"
+  test -x "$srcdir/LightTable/Python/bin/python3"
+}
+
+package() {
+  install -d "$pkgdir/opt/lighttable" "$pkgdir/usr/bin"
+  cp -a "$srcdir/LightTable/." "$pkgdir/opt/lighttable/"
+  printf '%s\n' '{"owner":"arch"}' > "$pkgdir/opt/lighttable/installation-owner.json"
+  # Pacman owns system integration. Never run the per-user portable installer.
+  rm -f "$pkgdir/opt/lighttable/install.sh" "$pkgdir/opt/lighttable/uninstall.sh" \
+    "$pkgdir/opt/lighttable/desktop-integration.py"
+  chmod -R a+rX "$pkgdir/opt/lighttable"
+  ln -s /opt/lighttable/bin/lighttable "$pkgdir/usr/bin/lighttable"
+  ln -s /opt/lighttable/bin/lighttable-desktop "$pkgdir/usr/bin/lighttable-desktop"
+  install -Dm644 "$srcdir/app.lighttable.LightTable.desktop" \
+    "$pkgdir/usr/share/applications/app.lighttable.LightTable.desktop"
+  install -Dm644 "$srcdir/LightTable/share/icons/lighttable.png" \
+    "$pkgdir/usr/share/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png"
+  install -Dm644 "$srcdir/LightTable/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "$srcdir/LightTable/THIRD_PARTY_NOTICES.md" \
+    "$pkgdir/usr/share/licenses/$pkgname/THIRD_PARTY_NOTICES.md"
+}

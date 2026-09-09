@@ -19,13 +19,21 @@
         {
           "title": "Pilih titik awal",
           "paragraphs": [
-            "Pada pustaka baru, penyiapan menawarkan folder lokal, migrasi Lightroom, atau Apple Photos. Anda bisa melewati penyiapan dan menambahkan foto nanti.",
+            "Pada pustaka baru, penyiapan menawarkan folder lokal atau migrasi Lightroom. Aplikasi macOS juga menawarkan Apple Photos. Anda dapat melewati penyiapan dan menambahkan foto nanti.",
             "Impor seluruh pustaka dari Apple Photos memerlukan aplikasi macOS dan izin untuk membaca Photos. Ini menyalin foto asli, termasuk file RAW, ke Pictures / LightTable Imports / Apple Photos. Pustaka Photos Anda tetap tidak berubah. Asli iCloud diunduh selama impor, jadi sediakan waktu dan ruang disk. Album, video, dan suntingan Photos tidak ditransfer.",
             "Hentikan impor akan mempertahankan salinan yang sudah selesai. Menjalankannya lagi akan melewati salinan tersebut dan mencoba lagi yang belum selesai dari original."
           ],
           "steps": [
             "Pilih folder untuk menelusuri asli di tempat, atau pilih salah satu opsi migrasi.",
             "Tinjau hasil impor, lalu lanjutkan ke perpustakaan."
+          ]
+        },
+        {
+          "title": "Telusuri Apple Photos",
+          "paragraphs": [
+            "Di aplikasi macOS, buka Apple Photos di sidebar untuk menelusuri foto dan album. Izinkan akses Photos saat diminta. Sumber ini disembunyikan di Windows dan Linux.",
+            "Pilih hingga 500 foto di seluruh halaman atau album, lalu pilih Impor asli terpilih. LightTable menyalin foto asli, termasuk file RAW, ke Pictures / LightTable Imports / Apple Photos. Asli iCloud diunduh selama impor. Pustaka Photos Anda tetap tidak berubah; album, video, dan pengeditan Photos tidak ditransfer.",
+            "Hentikan Impor mempertahankan salinan yang selesai. Impor lagi pilihan untuk mencoba ulang asli yang tidak tersedia; salinan yang selesai dilewati. Pilih Tampilkan foto yang diimpor untuk menyunting salinan. Segarkan memperbarui foto dan album yang tersedia."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Buka folder lokal",
           "paragraphs": [
-            "Tambahkan Foto membuka pemilih foto. Di Mac, pemilih itu juga menerima folder. Di Linux dan Windows, gunakan + di samping Lokal untuk menambahkan seluruh folder. LightTable menyimpan original tetap di tempatnya. Memilih satu foto menambahkan folder yang memuatnya, sehingga foto lain yang didukung di folder itu juga dapat muncul."
+            "Tambahkan Foto membuka pemilih foto. Di Mac, pemilih itu juga menerima folder. Di Linux dan Windows, gunakan + di samping Folder untuk menambahkan seluruh folder. LightTable menyimpan asli di tempatnya. Memilih foto individual akan menambahkan folder yang berisi foto tersebut, sehingga foto lain yang didukung di folder itu juga dapat muncul."
           ],
           "steps": [
-            "Klik Tambahkan Foto di kiri atas dan pilih foto, atau gunakan + di samping Lokal untuk memilih folder.",
-            "Pilih folder di bawah Lokal pada bilah samping kiri. Aktifkan Sertakan subfolder untuk menelusuri foto di folder anaknya.",
+            "Klik Tambahkan Foto di kiri atas dan pilih foto, atau gunakan + di samping Folder untuk memilih folder.",
+            "Pilih folder di bawah Folder pada sidebar kiri. Aktifkan Sertakan subfolder untuk menelusuri foto di folder turunannya.",
             "Pilih Photo Grid, Culling Grid, atau Detail di bagian atas. Klik foto untuk menjadikannya aktif."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Masukkan file baru ke folder yang sudah ada",
           "paragraphs": [
-            "Gunakan menu Local ••• dan Rescan folders setelah menambahkan file di luar LightTable. Untuk menyalin foto dari kartu ke folder tujuan, gunakan Import from card… di menu itu."
+            "Gunakan menu Folder ••• dan Pindai ulang folder setelah menambahkan file dari luar LightTable. Untuk menyalin foto dari kartu ke folder tujuan, gunakan Impor dari kartu… di menu itu."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Pratinjau kompatibilitas melaporkan kecocokan di pustaka saat ini tanpa mengubahnya. Foto yang belum ditambahkan mungkin ditampilkan sebagai tidak cocok di pratinjau; mengimpor dengan Tambahkan folder foto diaktifkan mendaftarkan asli yang tersedia sebelum mencocokkan lagi."
           ],
           "steps": [
-            "Buka Lokal ••• → Impor katalog…, atau pilih Impor dari Lightroom di penyiapan.",
+            "Buka Folder ••• → Impor katalog…, atau pilih Impor dari Lightroom dalam penyiapan.",
             "Pilih berkas .lrcat dan tinjau jumlah serta peringatannya.",
             "Pilih kategori yang akan diimpor, kebijakan untuk edit yang sudah ada, dan apakah akan menambahkan folder foto yang dirujuk.",
             "Klik Kompatibilitas pratinjau dan tinjau setelan yang dipetakan dan yang dilewati. Coba 20 varian membuat edit percobaan terpisah sebelum impor yang lebih besar.",
@@ -103,7 +111,7 @@
           "title": "Tinjau penyuntingan yang diterjemahkan",
           "paragraphs": [
             "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
-            "Lokal ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang berdekatan. Tindakan itu tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
+            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Tindakan ini tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Impor dari kartu menyalin file ke tujuan yang Anda pilih. Asli pada kartu tetap di tempatnya. Lewati duplikat membandingkan isi lengkap file; nama file yang cocok atau header kamera saja tidak cukup."
           ],
           "steps": [
-            "Buka Lokal ••• → Impor dari kartu….",
+            "Buka Folder ••• → Impor dari kartu….",
             "Pilih Sumber dan Tujuan. Atur Folder template dan Rename ke sebelum memindai. Pengaturan bawaan mempertahankan nama file dan mengatur salinan sebagai tahun/tahun-bulan-hari.",
             "Pilih verifikasi: Full hash, Size only, atau None. Atur Duplikat ke Lewati atau Salin saja, dan secara opsional pilih Salinan kedua ke.",
             "Klik Pindai. Gunakan Sebelumnya dan Berikutnya untuk meninjau setiap halaman, dan periksa jumlah terpilih serta pratinjau tujuan sebelum mengklik Impor. Impor tidak tersedia jika tidak ada foto yang dipilih.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Klik memilih satu foto aktif. Shift-klik memilih rentang berurutan. Command-klik di Mac atau Control-klik menambahkan atau menghapus foto individual.",
             "Di kisi, aksi bendera, rating, dan label warna diterapkan ke set yang dipilih. Di Detail, aksi penandaan tersebut diterapkan ke foto aktif. Di Survey, aksi tersebut diterapkan ke sel survei aktif. Periksa konteks toolbar penandaan sebelum aksi batch.",
+            "Tindakan massal hanya menjangkau foto terpilih yang masih ditampilkan oleh filter, folder, dan pencarian saat ini. Mengubah filter karena itu mempersempit apa yang disentuh tindakan berikutnya, dan bilah penandaan menghitung apa yang akan dijangkaunya.",
             "Buka Info di samping salah satu kisi untuk melihat metadata atau memberi tag pada foto terpilih. Kisi menyempit untuk memberi ruang bagi inspector. Pilih alat inspector lain untuk kembali ke kisi yang lebih lebar."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Pilih apa yang terlihat",
           "paragraphs": [
-            "Local → Browse mencantumkan folder yang Anda tambahkan. Include subfolders mengontrol apakah folder yang dipilih juga menampilkan turunannya. Filter pustaka lain tetap berlaku.",
+            "Folder → Telusuri menampilkan folder yang Anda tambahkan. Sertakan subfolder mengatur apakah folder yang dipilih juga menampilkan turunannya. Filter pustaka lain tetap berlaku.",
             "Di jendela Linux yang sempit, gunakan Tampilkan atau sembunyikan pustaka di kiri atas untuk membuka laci pustaka. Tutup dengan tombol yang sama setelah memilih folder agar ada lebih banyak ruang untuk foto."
           ],
           "steps": [
-            "Klik folder di bawah Lokal.",
+            "Klik folder di bawah Folder.",
             "Aktifkan Include subfolders untuk menyertakan folder anak, atau matikan untuk hanya melihat folder itu.",
             "Klik bintang di samping folder, atau buka menu •••-nya dan pilih Add as Favorite.",
-            "Gunakan Lokal → Favorit untuk kembali ke folder yang Anda simpan."
+            "Gunakan Folder → Favorit untuk kembali ke folder yang disimpan."
           ]
         },
         {
           "title": "Aksi folder",
           "paragraphs": [
-            "Menu ••• pada folder mencakup Tampilkan di Finder di Mac, Tampilkan di File Explorer di Windows, atau Tampilkan di Manajer Berkas di Linux. Untuk folder saat ini, Sinkronkan Folder menyegarkan tampilan. Lokal ••• → Pindai ulang folder memindai sumber katalog.",
+            "Menu ••• sebuah folder mencakup Tampilkan di Finder di Mac, Tampilkan di File Explorer di Windows, atau Tampilkan di Manajer Berkas di Linux. Untuk folder saat ini, Sinkronkan Folder menyegarkan tampilan. Folder ••• → Pindai ulang folder memindai sumber katalog.",
             "Remove from LightTable menghapus root yang ditambahkan dari daftar sumber aplikasi; itu tidak memindahkan file asli ke Trash. Tindakan ini tersedia ketika lebih dari satu sumber tersedia."
           ]
         },
         {
           "title": "Kelola folder yang dipantau",
           "paragraphs": [
-            "Buka Lokal ••• → Pantau folder… untuk menambahkan folder yang dipantau. Pilih bagaimana foto yang masuk harus ditangani. Simpan tidak tersedia sampai folder ditentukan; menyalin ke dalam pustaka juga memerlukan tujuan.",
+            "Buka Folder ••• → Pantau folder… untuk menambahkan folder yang dipantau. Pilih bagaimana foto yang masuk harus ditangani. Simpan tidak tersedia sampai folder ditentukan; menyalin ke pustaka juga memerlukan tujuan.",
             "Untuk mengedit watch yang sudah ada, pilih di Folder yang dipantau. Setiap watch yang disimpan muncul di daftar ini. Pilih Folder yang dipantau baru untuk folder lain, atau gunakan Hapus watch untuk berhenti memantau folder terpilih. Ini tidak menghapus fotonya.",
             "Pintasan Watching membuka watch aktif pertama. Kesalahan penyimpanan tetap ada di dialog sehingga Anda dapat memperbaiki pengaturan."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Baca metadata dari penyunting lain",
           "paragraphs": [
-            "Minta penyunting lain menyimpan metadata-nya ke file XMP di samping, lalu pilih Lokal ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual menyimpan metadata mereka sendiri.",
+            "Minta editor lain menyimpan metadatanya ke file XMP yang bersebelahan, lalu pilih Folder ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual mempertahankan metadata masing-masing.",
             "Metadata yang didukung mencakup rating bintang, tanda pilih/tolak, label warna standar, kata kunci datar dan hierarkis, serta bidang IPTC deskriptif. Nilai kosong yang eksplisit membersihkan bidang itu; nilai yang tidak ada membiarkannya tidak berubah. Label warna kustom yang tidak cocok dengan warna LightTable dilaporkan sebagai dilewati.",
             "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas tidak diterapkan oleh tindakan menu ini."
           ]
@@ -819,6 +828,7 @@
           "title": "Kontrol apa yang terjadi selanjutnya",
           "paragraphs": [
             "Aktifkan Auto-advance untuk berpindah ke foto berikutnya setelah memilih, menolak, atau memberi rating satu foto. Menghapus bendera tidak melakukan advance.",
+            "Ketika penandaan mengeluarkan foto dari tampilan tempat Anda bekerja, misalnya memilih saat bilah sisi menampilkan Tanpa Bendera, Otomatis maju melanjutkan dengan foto yang menggantikannya. Ini tidak kembali ke awal daftar.",
             "Saat beberapa foto dipilih dalam kisi, tanda diterapkan ke set tersebut tanpa maju. Jika Link pair metadata aktif, penandaan juga memperbarui pendamping RAW dan JPEG yang dikenali."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Pilih koleksi",
           "paragraphs": [
-            "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
+            "Buka Preset di toolbar pengeditan. Bawaan berisi 23 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
           ],
           "steps": [
             "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Mengatur paket preset",
           "paragraphs": [
-            "Preset ditampilkan sebagai baris horizontal dalam paket yang dapat diciutkan. Tampilan bawaan awalnya dikelompokkan dalam paket Warna, Film, dan Hitam Putih. Klik judul paket untuk meluaskan atau menciutkannya.",
+            "Preset ditampilkan sebagai baris horizontal di dalam paket yang dapat diciutkan. Tampilan bawaan awalnya dikelompokkan dalam paket Warna, Film, Film Simulation Drama, dan Hitam Putih. Klik judul paket untuk memperluas atau menciutkannya.",
+            "Setiap tampilan dalam Film Simulation Drama mengaktifkan simulasi film dan menambahkan efek rona, warna, butiran, pendar, atau vinyet. Paket ini berisi delapan tampilan, termasuk Silver Noir hitam putih.",
             "Pilih Paket baru… untuk membuat paket bernama dalam koleksi saat ini. Seret preset ke judul paket, atau buka detail preset melalui … lalu pilih Pindahkan ke paket. Gunakan … di samping paket untuk mengganti namanya. Menghapus paket mengembalikan presetnya ke kelompok default tanpa menghapus preset tersebut. Susunan paket disimpan di komputer ini."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Mengubah bentuk gradien linear",
           "paragraphs": [
-            "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang."
+            "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang.",
+            "Menyeret kedua titik hingga bertemu membuat gradien tidak memiliki arah, sehingga tidak memilih apa pun sampai Anda memisahkannya lagi. Gradien yang sangat pendek adalah tepi keras yang sah dan diterapkan sama di pratinjau maupun di berkas hasil ekspor."
           ],
           "tips": [
             "Pilih masker Linear yang sudah ada untuk menyesuaikannya lagi. Jika Anda sebelumnya melukis dengan Tambahkan, Kurangi, atau Irisan, pilih Edit Bentuk terlebih dahulu. Tekan H jika titik-titiknya tersembunyi."
@@ -1892,7 +1904,8 @@
           "title": "Buat pilihan cerdas",
           "paragraphs": [
             "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform.",
-            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual."
+            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual.",
+            "Pemilihan diambil dari foto tempat pemilihan itu dimulai. Berpindah ke foto lain sebelum selesai akan membatalkannya, jadi tetaplah pada foto tersebut sampai masker muncul. Jika pemilihan tidak dapat diselesaikan, panel masker melaporkannya dan tidak ada yang ditambahkan."
           ],
           "steps": [
             "Buka Masker dan luaskan Buat Masker Baru.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Cadangkan dan periksa",
           "paragraphs": [
-            "Pengaturan → Katalog menampilkan lokasi katalog dan preferensi cadangan. Cadangan mencakup pengorganisasian katalog, edit, masker tersimpan, riwayat, dan variasi. Cadangkan foto asli, preset dan profil eksternal, serta preferensi secara terpisah. Lokal ••• → Cadangkan katalog… juga membuat cadangan dan menampilkan jalur tersimpan atau kesalahannya di dialog hasil. Temukan duplikat di menu yang sama menampilkan file yang cocok, atau melaporkan bahwa tidak ada yang ditemukan."
+            "Pengaturan → Katalog menampilkan lokasi katalog dan preferensi cadangan. Cadangan mencakup pengorganisasian katalog, suntingan, masker tersimpan, riwayat, dan varian. Cadangkan foto asli, preset dan profil eksternal, serta preferensi secara terpisah. Folder ••• → Cadangkan katalog… juga membuat cadangan dan menampilkan jalur tersimpan atau kesalahannya dalam dialog hasil. Temukan duplikat di menu yang sama menampilkan file yang cocok, atau melaporkan bahwa tidak ada yang ditemukan."
           ],
           "steps": [
             "Pilih interval cadangan Otomatis dan lokasi Cadangan.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

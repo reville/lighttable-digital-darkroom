@@ -269,12 +269,21 @@ def collision_path(path: Path, policy: str,
                    reserved: set[Path] | None = None,
                    companions: tuple[str, ...] = ()) -> Path | None:
     reserved = reserved or set()
+    # Two spellings that differ only in case are one file on macOS and Windows,
+    # and a reserved name belongs to an export that has staged but not yet
+    # published, so `exists()` cannot see it. Matching case-insensitively makes
+    # the second export rename itself instead of overwriting the first.
+    reserved_keys = {str(item).casefold() for item in reserved}
+
+    def claimed(candidate: Path) -> bool:
+        return str(candidate).casefold() in reserved_keys
+
     def occupied(candidate: Path) -> bool:
-        return candidate.exists() or candidate in reserved or any(
+        return candidate.exists() or claimed(candidate) or any(
             Path(str(candidate) + suffix).exists() for suffix in companions)
 
     if (not occupied(path)) or (
-            policy == "overwrite" and path not in reserved):
+            policy == "overwrite" and not claimed(path)):
         return path
     if policy == "skip":
         return None

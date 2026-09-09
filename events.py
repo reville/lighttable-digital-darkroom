@@ -87,6 +87,21 @@ class EventBroker:
         with self._lock:
             return any(subscriber.client for subscriber in self._subscribers)
 
+    def client_connected(self, client: str) -> bool:
+        """Whether this client still holds an event stream.
+
+        The stream is the reliable liveness signal. A window's own heartbeat is
+        a timer, and browsers throttle timers in a window that is not in front,
+        so an idle background window looks long gone while it is still
+        listening and able to answer.
+        """
+        client = str(client or "")[:80]
+        if not client:
+            return False
+        with self._lock:
+            return any(subscriber.client == client
+                       for subscriber in self._subscribers)
+
 
 def encode_sse(record: dict) -> bytes:
     """Encode one record without allowing payload newlines to break framing."""

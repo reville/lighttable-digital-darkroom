@@ -19,13 +19,21 @@
         {
           "title": "Choose a starting point",
           "paragraphs": [
-            "On a new library, setup offers a local folder, Lightroom migration, or Apple Photos. You can skip setup and add photos later.",
+            "On a new library, setup offers a local folder or Lightroom migration. The macOS app also offers Apple Photos. You can skip setup and add photos later.",
             "Apple Photos whole-library import requires the macOS app and permission to read Photos. It copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. Your Photos library stays unchanged. iCloud originals download during import, so allow time and disk space. Albums, videos, and Photos edits are not transferred.",
             "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals."
           ],
           "steps": [
             "Choose a folder to browse originals in place, or select one of the migration options.",
             "Review the import result, then continue into the library."
+          ]
+        },
+        {
+          "title": "Browse Apple Photos",
+          "paragraphs": [
+            "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.",
+            "Select up to 500 photos across pages or albums, then choose Import selected originals. LightTable copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. iCloud originals download during import. Your Photos library stays unchanged; albums, videos, and Photos edits are not transferred.",
+            "Stop Import keeps completed copies. Import the selection again to retry unavailable originals; completed copies are skipped. Choose View imported photos to edit the copies. Refresh updates the available photos and albums."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Open a local folder",
           "paragraphs": [
-            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Local to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
           ],
           "steps": [
-            "Click Add Photos at the upper left and choose photos, or use the + beside Local to choose a folder.",
-            "Choose the folder under Local in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
+            "Click Add Photos at the upper left and choose photos, or use the + beside Folders to choose a folder.",
+            "Choose the folder under Folders in the left sidebar. Turn on Include subfolders to browse photos in its child folders.",
             "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Bring new files into an existing folder",
           "paragraphs": [
-            "Use the Local ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu."
+            "Use the Folders ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu."
           ]
         }
       ],
@@ -91,7 +99,7 @@
             "Preview compatibility reports matches in the current library without changing it. Photos not yet added may show as unmatched in the preview; importing with Add the photo folders enabled registers available originals before matching again."
           ],
           "steps": [
-            "Open Local ••• → Import catalog…, or choose Import from Lightroom in setup.",
+            "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.",
             "Choose the .lrcat file and review its counts and warnings.",
             "Choose the categories to import, the policy for existing edits, and whether to add the referenced photo folders.",
             "Click Preview compatibility and review mapped and skipped settings. Try 20 variants creates separate trial edits before a larger import.",
@@ -102,7 +110,7 @@
           "title": "Review translated edits",
           "paragraphs": [
             "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-            "Local ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
+            "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
           ]
         }
       ],
@@ -172,7 +180,7 @@
             "Import from card copies files into the destination you choose. The card originals stay in place. Duplicate skipping compares complete file contents; a matching filename or camera header alone is not enough."
           ],
           "steps": [
-            "Open Local ••• → Import from card….",
+            "Open Folders ••• → Import from card….",
             "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
             "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
             "Click Scan. Use Previous and Next to review every page, and check the selected count and destination preview before clicking Import. Import is unavailable when no photos are selected.",
@@ -250,6 +258,7 @@
           "paragraphs": [
             "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
             "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action.",
+            "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.",
             "Open Info beside either grid to view metadata or tag selected photos. The grid narrows to make room for the inspector. Choose another inspector tool to return to the wider grid."
           ]
         }
@@ -339,27 +348,27 @@
         {
           "title": "Choose what is in view",
           "paragraphs": [
-            "Local → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
+            "Folders → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
             "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo."
           ],
           "steps": [
-            "Click a folder under Local.",
+            "Click a folder under Folders.",
             "Turn Include subfolders on to include child folders, or off to view only that folder.",
             "Click the star beside a folder, or open its ••• menu and choose Add as Favorite.",
-            "Use Local → Favorites to return to your saved folders."
+            "Use Folders → Favorites to return to your saved folders."
           ]
         },
         {
           "title": "Folder actions",
           "paragraphs": [
-            "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Local ••• → Rescan folders scans the catalog sources.",
+            "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Folders ••• → Rescan folders scans the catalog sources.",
             "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
           ]
         },
         {
           "title": "Manage watched folders",
           "paragraphs": [
-            "Open Local ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
+            "Open Folders ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
             "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
             "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
           ]
@@ -476,7 +485,7 @@
         {
           "title": "Read metadata from another editor",
           "paragraphs": [
-            "Ask the other editor to save its metadata to adjacent XMP files, then choose Local ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
+            "Ask the other editor to save its metadata to adjacent XMP files, then choose Folders ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
             "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
             "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are not applied by this menu action."
           ]
@@ -804,6 +813,7 @@
           "title": "Control what happens next",
           "paragraphs": [
             "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.",
+            "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.",
             "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions."
           ]
         }
@@ -1170,7 +1180,7 @@
         {
           "title": "Choose a collection",
           "paragraphs": [
-            "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+            "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
           ],
           "steps": [
             "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
@@ -1185,7 +1195,8 @@
         {
           "title": "Organize preset packs",
           "paragraphs": [
-            "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.",
+            "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.",
+            "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.",
             "Choose New pack… to create a named pack in the current collection. Drag a preset onto its heading, or open the preset’s … details and choose Move to pack. Use … beside a pack to rename it. Removing a pack returns its presets to their default groups without deleting them. Pack organization is saved on this computer."
           ]
         },
@@ -1556,7 +1567,8 @@
         {
           "title": "Shape a linear gradient",
           "paragraphs": [
-            "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it."
+            "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.",
+            "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file."
           ],
           "tips": [
             "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."
@@ -1859,7 +1871,8 @@
           "title": "Create a smart selection",
           "paragraphs": [
             "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.",
-            "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement."
+            "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.",
+            "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added."
           ],
           "steps": [
             "Open Mask and expand Create New Mask.",
@@ -2991,7 +3004,7 @@
         {
           "title": "Back up and inspect",
           "paragraphs": [
-            "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Local ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found."
+            "Settings → Catalog shows the catalog location and backup preferences. Backups include catalog organization, edits, stored masks, history, and variants. Back up original photos, external presets and profiles, and preferences separately. Folders ••• → Back up catalog… also creates a backup and shows its saved path or error in a results dialog. Find duplicates in the same menu shows matching files, or reports that none were found."
           ],
           "steps": [
             "Choose an Automatic backup interval and Backup location.",

@@ -32,7 +32,8 @@ import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMask
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import {
   LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
-  MAX_TOTAL_MASK_POINTS, MAX_HEALS, normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
+  MAX_TOTAL_MASK_POINTS, MAX_HEALS, LINEAR_MIN_SPAN,
+  normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
 } from '/web/editor-panels.js';
 import {
   photoMatchesQuery as matchesPhotoQuery,
@@ -50,6 +51,7 @@ import { createCatalogUI } from '/web/catalog-ui.js';
 import { createEnhancePanel } from '/web/enhance-panel.js';
 import { createPeoplePanel } from '/web/people.js';
 import { installFirstRunSetup } from '/web/first-run.js';
+import { installApplePhotosBrowser } from '/web/apple-photos.js';
 import { installRecovery } from '/web/recovery.js';
 import {
   initMidi, setMidiLearnTarget, toggleMidiLearn, resetMidiMappings,
@@ -64,6 +66,7 @@ let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
 let FIRST_RUN = null;
+let APPLE_PHOTOS = null;
 let RECOVERY = null;
 let CAPTURE_TIME = null;
 let UI_BRIDGE = null;
@@ -729,7 +732,16 @@ function pushUndoState(state) {
   updateUndoRedoButtons();
   scheduleNativeMenuState();
 }
-function pushUndo() { pushUndoState(snapshot()); }
+function pushUndo() { const state = snapshot(); pushUndoState(state); return state; }
+/* Withdraw a step a cancelled gesture pushed, so Undo does not become a
+ * press that visibly does nothing. Guarded: it only drops the snapshot if
+ * it is still the newest one. */
+function dropUndo(state) {
+  if (typeof state !== 'string' || !photoUndo.dropLast(state)) return false;
+  updateUndoRedoButtons();
+  scheduleNativeMenuState();
+  return true;
+}
 function restore(json, stack, persist = true) {
   const previousFilm = filmRenderFingerprint();
   const previousBaseEdits = baseEditsFingerprint();
@@ -1404,6 +1416,9 @@ const smoothStep = (edge0, edge1, value) => {
   return t * t * (3 - 2 * t);
 };
 
+/* Each entry holds a full canvas at mask-texture resolution and was only ever
+ * removed when its stroke list emptied. Bounded, oldest entry out first. */
+const BRUSH_RASTER_CACHE_MAX = 24;
 const brushRasterCache = new Map();
 function legacyBrushStrokeValues(strokes, width, height, cacheKey = '') {
   const source = strokes || [];
@@ -1430,6 +1445,11 @@ function legacyBrushStrokeValues(strokes, width, height, cacheKey = '') {
       counts: [], settings: [], last: [] };
     entry.ctx.globalCompositeOperation = 'lighten';
     brushRasterCache.set(cacheKey, entry);
+    while (brushRasterCache.size > BRUSH_RASTER_CACHE_MAX) {
+      const oldest = brushRasterCache.keys().next().value;
+      if (oldest === cacheKey) break;
+      brushRasterCache.delete(oldest);
+    }
   }
   for (let index = 0; index < source.length; index++) {
     const stroke = source[index];
@@ -1503,7 +1523,7 @@ function captureBrushEdgeMask(point) {
   }
   ctx.putImageData(pixels, 0, 0);
   const data = canvas.toDataURL('image/png').split(',')[1];
-  semanticPngCache.set(data, {source: values, width: canvas.width, height: canvas.height});
+  cacheSemanticPng(data, {source: values, width: canvas.width, height: canvas.height});
   return {width: canvas.width, height: canvas.height, encoding: 'png', data};
 }
 
@@ -1514,8 +1534,14 @@ function refineMaskValues(values, mask, width, height) {
   for (let i = 0; i < values.length; i++) {
     const withAdds = Math.max(values[i], added[i]);
     const withoutSubtracts = withAdds * (1 - subtracted[i] / 255);
-    values[i] = Math.round((mask.intersectStrokes?.length
-      ? withoutSubtracts * intersected[i] / 255 : withoutSubtracts));
+    /* Intersect takes the smaller of the two weights, matching the component
+     * path here and `_raster_mask` in edits.py. Multiplying instead made the
+     * preview up to a third weaker than the exported file through a feathered
+     * transition, and saving migrates these strokes into a component that does
+     * use the minimum, so the same mask changed on reload. */
+    values[i] = Math.round(mask.intersectStrokes?.length
+      ? Math.min(withoutSubtracts, intersected[i])
+      : withoutSubtracts);
   }
   return values;
 }
@@ -1553,7 +1579,7 @@ function semanticBitmapValues(component, width, height) {
     const key = String(bitmap.data || '');
     const cached = semanticPngCache.get(key);
     if (!cached) {
-      semanticPngCache.set(key, { loading: true });
+      cacheSemanticPng(key, { loading: true });
       const image = new Image();
       image.onload = () => {
         const canvas = document.createElement('canvas');
@@ -1563,13 +1589,13 @@ function semanticBitmapValues(component, width, height) {
         const rgba = context.getImageData(0, 0, sourceWidth, sourceHeight).data;
         const source = new Uint8Array(sourceWidth * sourceHeight);
         for (let i = 0; i < source.length; i++) source[i] = rgba[i * 4];
-        semanticPngCache.set(key, { source, width: sourceWidth, height: sourceHeight });
+        cacheSemanticPng(key, { source, width: sourceWidth, height: sourceHeight });
         // A first render may have cached the still-loading PNG as empty.
         maskGeometryCache.clear();
         cumulativeBrushCache.clear();
         S.maskTextureDirty = true; drawGrade();
       };
-      image.onerror = () => semanticPngCache.set(key, { failed: true });
+      image.onerror = () => cacheSemanticPng(key, { failed: true });
       image.src = `data:image/png;base64,${key}`;
       return new Uint8Array(width * height);
     }
@@ -1589,6 +1615,19 @@ function semanticBitmapValues(component, width, height) {
 }
 
 const semanticPngCache = new Map();
+/* Keyed by the base64 PNG itself and holding a decoded raster up to
+ * 1024 x 1024, so roughly a megabyte per entry. Every refine stroke and every
+ * AI mask painted in the session adds one, and nothing used to remove them.
+ * Bounded like the two neighbouring caches, oldest entry out first. */
+const SEMANTIC_PNG_CACHE_MAX = 48;
+function cacheSemanticPng(key, value) {
+  if (semanticPngCache.has(key)) semanticPngCache.delete(key);
+  semanticPngCache.set(key, value);
+  while (semanticPngCache.size > SEMANTIC_PNG_CACHE_MAX) {
+    semanticPngCache.delete(semanticPngCache.keys().next().value);
+  }
+  return value;
+}
 function resizeMaskValues(source, sourceWidth, sourceHeight, width, height) {
   const values = new Uint8Array(width * height);
   for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
@@ -1610,11 +1649,18 @@ function canvasGeometryValues(component, width, height) {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, width, height);
   if (component.type === 'linear') {
+    /* Judge a collapsed gradient in normalized coordinates, exactly as
+     * edits.py does. A one-pixel test answers differently on this canvas than
+     * at export size, which showed no mask here while the export graded half
+     * the frame. */
+    if (Math.hypot(component.end[0] - component.start[0],
+                   component.end[1] - component.start[1]) < LINEAR_MIN_SPAN) {
+      return new Uint8Array(width * height);
+    }
     const sx = component.start[0] * (width - 1);
     const sy = component.start[1] * (height - 1);
     const ex = component.end[0] * (width - 1);
     const ey = component.end[1] * (height - 1);
-    if (Math.hypot(ex - sx, ey - sy) < 1) return new Uint8Array(width * height);
     const gradient = ctx.createLinearGradient(sx, sy, ex, ey);
     for (let index = 0; index <= 16; index++) {
       const position = index / 16;
@@ -2312,10 +2358,25 @@ async function createSemanticMask(kind, point = null) {
   if (target && maskComponents(target).length >= MAX_MASK_COMPONENTS) {
     return toast(tr("This mask has reached its component limit"));
   }
+  /* On-device segmentation takes seconds and its answer carries no photo
+   * identity, so without this the mask can be cut from one photograph and
+   * saved onto whichever one is open when the model returns. */
+  const requestedName = cur().name;
+  const stillHere = () => cur()?.name === requestedName;
   $('maskInstruction').textContent = tr('Selecting {tool} on device…', {tool: localToolLabel(kind)});
-  const result = await api('/api/mask/semantic', {
-    name: cur().name, kind, point, params: S.params,
-  });
+  let result;
+  try {
+    result = await api('/api/mask/semantic', {
+      name: requestedName, kind, point, params: S.params,
+    });
+  } catch (error) {
+    // Leaving the panel on "Selecting…" forever gives the user nothing to act
+    // on, so report the failure even though the request never answered.
+    const message = tr("That selection could not be completed. Try again.");
+    if (stillHere()) $('maskInstruction').textContent = message;
+    return toast(message);
+  }
+  if (!stillHere()) return;
   if (result.error) {
     $('maskInstruction').textContent = result.error;
     return toast(result.error);
@@ -2422,7 +2483,7 @@ $('maskBrushAutoMask').onchange = () => {
   syncMaskPanel();
 };
 MASK_CURVE = installMaskCurve({canvas: $('maskCurve'), reset: $('maskCurveReset'),
-  channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo,
+  channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo, dropUndo,
   changed: () => drawGrade(), save: () => saveState()});
 for (const [id, key] of [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
   ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
@@ -6049,12 +6110,38 @@ function refreshLists() {
   updateTransferActions();
 }
 
-function refreshFilteredView() {
+/* The photo's index in the visible list as it stands right now, captured before
+ * a mark changes what the filter admits. -1 when it is not currently listed. */
+function markResumeIndex(im) {
+  if (!im || (SURVEY && SURVEY.isOpen)) return -1;
+  return visible().indexOf(im);
+}
+
+/* The photo to show after a mark. When the marked photo is still listed the
+ * neighbour is simply the one after it. When the mark removed it from the
+ * filter, everything below shifted up by one, so the photo now at its former
+ * index is the one that came next. Falling back to the top of the library
+ * instead would restart the cull on every keystroke. */
+function photoAfterMark(list, im, resumeAt = -1) {
+  const here = list.indexOf(im);
+  if (here >= 0) return list[here + 1];
+  /* Guard the index: the callers below are also bound directly to DOM events,
+   * where the first argument is an Event rather than a position. */
+  if (!Number.isInteger(resumeAt) || resumeAt < 0) return undefined;
+  return list[resumeAt] || list[list.length - 1];
+}
+
+/* `resumeAt` is the current photo's index from before a mark changed what the
+ * filter admits. Without it a filter change lands on the top of the new list,
+ * which is what changing a filter should do. */
+function refreshFilteredView(resumeAt = -1) {
+  const leaving = cur();
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
   const list = visible();
   if (list.length && !list.includes(cur())) {
-    go(S.images.indexOf(list[0]));
+    const resume = photoAfterMark(list, leaving, resumeAt) || list[0];
+    go(S.images.indexOf(resume));
     // go() updates S.idx synchronously but may wait for catalog state before
     // showCurrentImage(). Paint the new filtered membership immediately.
     refreshLists();
@@ -6760,7 +6847,11 @@ function broadcastToLoupe(photo) {
     type: 'sync',
     name: photo.name,
     metadata: metaParts,
-    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}&v=2`,
+    /* The server marks this response immutable for a year, so the URL has to
+     * carry the file's identity. Without it an external edit to the original
+     * leaves the loupe showing the previous frame for the life of the cache. */
+    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}&v=2`
+      + `&key=${encodeURIComponent(photo.fileKey || photo.mtime || '')}`,
   });
 }
 
@@ -6892,16 +6983,26 @@ async function loadLensProfile(name) {
   }
   syncOpticsPanel();
 }
+/* Selected photos that are still in the current view.
+ *
+ * Nothing clears the selection when the filter, folder, or search changes, so
+ * resolving it against the whole library let flags, ratings and labels land on
+ * photos that were no longer on screen while the marking bar still counted
+ * them. `openSurvey` already intersects the same way. */
+function selectedVisibleTargets() {
+  if (!S.msel.size) return [];
+  const listed = new Set(visible().map((image) => image.name));
+  return [...S.msel]
+    .map((name) => S.images.find((image) => image.name === name))
+    .filter((image) => image && listed.has(image.name));
+}
+
 function markingTargets() {
   if (SELECTION_REQUEST?.pending) return [];
   const survey = surveyTarget();
   if (survey) return [survey];
   if (S.msel.size || S.viewMode !== 'detail') {
-    if (S.msel.size) {
-      return [...S.msel]
-        .map((name) => S.images.find((image) => image.name === name))
-        .filter(Boolean);
-    }
+    if (S.msel.size) return selectedVisibleTargets();
     const ordered = visible();
     return ordered.includes(cur()) ? [cur()] : (ordered[0] ? [ordered[0]] : []);
   }
@@ -6986,6 +7087,9 @@ function setStatus(st) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = st !== 'pending' && targets.every((image) => image.status === st)
     ? 'pending' : st;
+  /* Read the position before the mark. A flag or rating filter drops the photo
+   * out of the visible list, and its old position is where the next one lands. */
+  const resumeAt = markResumeIndex(targets[0]);
   const linked = linkedMetadataTargets(targets);
   for (const image of linked) image.status = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
@@ -6993,27 +7097,28 @@ function setStatus(st) {
   persistMark(linked, { status: next });
   /* Unflagging is a correction, not a decision, so it does not advance. */
   if (targets.length === 1 && next !== 'pending' && APP_PREFS.autoAdvance !== false) {
-    advanceAfterMark(targets[0]);
+    advanceAfterMark(targets[0], resumeAt);
   } else if (SURVEY && SURVEY.isOpen) {
     refreshLists();
   } else {
-    refreshFilteredView();
+    refreshFilteredView(resumeAt);
   }
 }
 function setRating(r, advance = false) {
   const targets = markingTargets(); if (!targets.length) return;
   const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;
+  const resumeAt = markResumeIndex(targets[0]);
   const linked = linkedMetadataTargets(targets);
   for (const image of linked) image.rating = next;
   S.libraryRevision = (S.libraryRevision || 0) + 1;
   invalidateVisibleCache();
   persistMark(linked, { rating: next });
   if (targets.length === 1 && (advance || APP_PREFS.autoAdvance !== false)) {
-    advanceAfterMark(targets[0]);
+    advanceAfterMark(targets[0], resumeAt);
   } else if (SURVEY && SURVEY.isOpen) {
     refreshLists();
   } else {
-    refreshFilteredView();
+    refreshFilteredView(resumeAt);
   }
 }
 
@@ -7035,10 +7140,9 @@ function surveyTarget() {
   return S.images.find((image) => image.name === SURVEY.active) || null;
 }
 
-function advanceAfterMark(im) {
+function advanceAfterMark(im, resumeAt = -1) {
   if (SURVEY && SURVEY.isOpen) { SURVEY.step(1); refreshLists(); return; }
-  const list = visible();
-  const next = list[list.indexOf(im) + 1];
+  const next = photoAfterMark(visible(), im, resumeAt);
   if (next) {
     go(S.images.indexOf(next));
   } else {
@@ -8218,9 +8322,9 @@ function confirmTransfer(id) {
 }
 function transferTargets() {
   if (SELECTION_REQUEST?.pending) return [];
-  const selected = [...S.msel]
-    .map((name) => S.images.find((im) => im.name === name))
-    .filter(Boolean);
+  // Same rule as marking: a selection that a filter change has hidden must not
+  // silently become the target of a paste, an export, or a batch action.
+  const selected = selectedVisibleTargets();
   return selected.length ? selected : (cur() ? [cur()] : []);
 }
 function photoReadyForEditing() {
@@ -8914,7 +9018,10 @@ $('exportModalRun').onclick = async () => {
 };
 
 $('exportBtn').onclick = openExportModal;
-$('exportBtn2').onclick = runExport;
+/* Call it, do not hand it the click. `runExport`'s first argument is the option
+ * overrides, and a MouseEvent carries a truthy `which`, which would override
+ * the export scope with a mouse button number and queue the whole catalog. */
+$('exportBtn2').onclick = () => runExport();
 loadExportRecipes();
 
 /* ------------------------------------------------ external pixel editor */
@@ -11468,6 +11575,7 @@ const _origNativeEvent = window.lightTableNativeEvent;
 window.lightTableNativeEvent = function (message) {
   DESKTOP_UPDATES.nativeEvent(message);
   FIRST_RUN?.nativeEvent(message);
+  APPLE_PHOTOS?.nativeEvent(message);
   if (message?.type === 'presetLink' && typeof message.id === 'string') {
     switchPane('presetsPane'); void PRESET_BROWSER.openPreset(message.id);
     return;
@@ -11840,4 +11948,23 @@ FIRST_RUN = installFirstRunSetup({
     refreshFilteredView();
   },
   openCatalog: () => $('importCatalogBtn').click(),
+});
+
+APPLE_PHOTOS = installApplePhotosBrowser({
+  el: $, sendNative, nativeBridge,
+  onImported: async (path) => {
+    if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    const result = await api('/api/catalog/sources', {action: 'add', path, importState: false});
+    if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
+    await reloadLibrary();
+  },
+  onViewImported: async (path) => {
+    if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    S.includeSubfolders = true;
+    $('includeSubfolders').checked = true;
+    S.activeFolders[path] = '';
+    await savePrefs();
+    if (S.rootFolder === path) { await reloadLibrary(); selectFolder(''); }
+    else sendNative('selectSource', {path});
+  },
 });

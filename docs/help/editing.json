@@ -415,7 +415,7 @@
       },
       {
         "title": "Shape a linear gradient",
-        "paragraphs": ["In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it."],
+        "paragraphs": ["In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.", "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file."],
         "tips": ["Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."]
       },
       {
@@ -458,7 +458,7 @@
     "sections": [
       {
         "title": "Create a smart selection",
-        "paragraphs": ["Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.", "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement."],
+        "paragraphs": ["Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.", "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.", "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added."],
         "steps": ["Open Mask and expand Create New Mask.", "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.", "Choose Depth to make a selection from relative distance, then open Range and adjust Far limit and Near limit. Depth runs from far to near.", "Inspect Show Overlay and refine missed or extra areas before adjusting Light or Color."],
         "tips": ["Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.", "Depth uses embedded capture depth when available, otherwise a local estimate. Estimated depth is relative and can be inaccurate.", "Use Invert if you want to adjust the area outside the resulting selection."]
       },
@@ -586,7 +586,7 @@
       {
         "title": "Choose a collection",
         "paragraphs": [
-          "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
+          "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection."
         ],
         "steps": [
           "Choose Built-in, Yours, or Community. Search by name, description, creator, or subject.",
@@ -601,7 +601,8 @@
       {
         "title": "Organize preset packs",
         "paragraphs": [
-          "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, and Black & White packs. Click a pack heading to expand or collapse it.",
+          "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.",
+          "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.",
           "Choose New pack… to create a named pack in the current collection. Drag a preset onto its heading, or open the preset’s … details and choose Move to pack. Use … beside a pack to rename it. Removing a pack returns its presets to their default groups without deleting them. Pack organization is saved on this computer."
         ]
       },

@@ -286,6 +286,28 @@ def _json_or(value, fallback=None):
         return fallback
 
 
+def camera_name(make, model) -> str:
+    """The camera as a photographer writes it, from the EXIF make and model.
+
+    Cameras pad these fields and many repeat the maker in both, so a plain join
+    produced "Canon Canon EOS 80D" and "NIKON CORPORATION NIKON D850" wherever
+    the library showed a camera. `ingest_workflow._capture_and_camera` already
+    did this for the import dialog; the two must agree.
+    """
+    make_words = str(make or "").split()
+    model_words = str(model or "").split()
+    make, model = " ".join(make_words), " ".join(model_words)
+    if not make or not model:
+        return make or model
+    # "Canon" + "Canon EOS 80D", and also "NIKON CORPORATION" + "NIKON D850",
+    # where only the maker's first word is repeated. Compare whole words, so
+    # "OM Digital Solutions" + "OM-1MarkII" keeps its maker.
+    if model.casefold().startswith(make.casefold()) or \
+            model_words[0].casefold() == make_words[0].casefold():
+        return model
+    return f"{make} {model}"
+
+
 def _text_or(value, fallback=""):
     """Return JSON-safe text when a damaged SQLite cell has the wrong type."""
     if isinstance(value, str):
@@ -872,6 +894,10 @@ class Catalog:
             conn.execute("PRAGMA synchronous=NORMAL")
             conn.execute("PRAGMA foreign_keys=ON")
             conn.execute("PRAGMA busy_timeout=30000")
+            # Filters compare against the camera name the library displays, not
+            # the padded, maker-repeating EXIF fields it is built from.
+            conn.create_function("lighttable_camera", 2, camera_name,
+                                 deterministic=True)
             self._local.conn = conn
         return conn
 
@@ -1195,9 +1221,12 @@ class Catalog:
                          (display_name[:200], source_id))
 
     def sources(self) -> list[dict]:
+        # Count what the browser shows: virtual copies are photos and videos are
+        # not, which is how the grid, the folder rows and the totals all count.
         rows = self.connection.execute(
-            "SELECT s.*, (SELECT COUNT(*) FROM files f WHERE f.source_id=s.id"
-            "   AND f.missing=0) AS photo_count"
+            "SELECT s.*, (SELECT COUNT(*) FROM images i"
+            "   JOIN files f ON f.id=i.file_id WHERE f.source_id=s.id"
+            "   AND f.missing=0 AND f.kind!='video') AS photo_count"
             " FROM sources s WHERE s.active=1"
             " ORDER BY s.favorite DESC, s.display_name COLLATE NOCASE"
         ).fetchall()
@@ -1710,12 +1739,19 @@ class Catalog:
                 raise ValueError("not a virtual copy")
             conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
                          (f"portable.deleted-copy:{row['file_id']}:{row['copy_ident']}",))
+            stacks = [item["stack_id"] for item in conn.execute(
+                "SELECT stack_id FROM stack_images WHERE image_id=?",
+                (image_id,)).fetchall()]
             conn.execute("DELETE FROM images WHERE id=?", (image_id,))
-            conn.execute(
-                "DELETE FROM stacks WHERE id IN ("
-                " SELECT st.id FROM stacks st LEFT JOIN stack_images si"
-                " ON si.stack_id=st.id GROUP BY st.id HAVING COUNT(si.image_id)<2)"
-            )
+            # Only the stacks this copy belonged to. Sweeping every stack under
+            # two members also removed ones an unrelated cascade had emptied,
+            # which made them vanish on the next virtual-copy deletion anywhere
+            # in the library.
+            for stack_id in stacks:
+                conn.execute(
+                    "DELETE FROM stacks WHERE id=? AND ("
+                    " SELECT COUNT(*) FROM stack_images WHERE stack_id=?) < 2",
+                    (stack_id, stack_id))
 
     # --------------------------------------------------------------- state
 
@@ -2106,7 +2142,7 @@ class Catalog:
         iptc = conn.execute(
             "SELECT title, caption FROM iptc WHERE image_id=?",
             (image_id,)).fetchone()
-        camera = " ".join(filter(None, (row["camera_make"], row["camera_model"])))
+        camera = camera_name(row["camera_make"], row["camera_model"])
         conn.execute("DELETE FROM image_search WHERE rowid=?", (image_id,))
         conn.execute(
             "INSERT INTO image_search(rowid, image_id, filename, keywords, title,"
@@ -2250,7 +2286,12 @@ class Catalog:
                         where.append(f"f.{column} {operator} ?")
                         params.append(flt[field + bound])
             if flt.get("camera"):
-                where.append("instr(lower(trim(COALESCE(f.camera_make,'') || ' ' || COALESCE(f.camera_model,''))), lower(?)) > 0")
+                # Match both the displayed name and the raw fields, so typing
+                # what the library shows works and older habits still do.
+                where.append(
+                    "(instr(lower(lighttable_camera(f.camera_make, f.camera_model)), lower(?)) > 0"
+                    " OR instr(lower(trim(COALESCE(f.camera_make,'') || ' ' || COALESCE(f.camera_model,''))), lower(?)) > 0)")
+                params.append(flt["camera"])
                 params.append(flt["camera"])
             if flt.get("lens"):
                 where.append("instr(lower(COALESCE(f.lens,'')), lower(?)) > 0")
@@ -2892,7 +2933,7 @@ def _item(row: sqlite3.Row) -> dict:
         "missing": bool(row["missing"]) if "missing" in row.keys() else False,
         "width": width,
         "height": height,
-        "camera": " ".join(filter(None, (camera_make, camera_model))),
+        "camera": camera_name(camera_make, camera_model),
         "lens": _text_or(row["lens"], None),
         **{public: dam_filters.positive_number(row[column])
            for _, column, public in dam_filters.EXPOSURE_FIELDS},

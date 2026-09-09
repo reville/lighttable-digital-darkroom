@@ -19,13 +19,21 @@
         {
           "title": "Bir başlangıç noktası seçin",
           "paragraphs": [
-            "Yeni bir kitaplıkta kurulum, yerel klasör, Lightroom geçişi veya Apple Photos seçeneklerini sunar. Kurulumu atlayabilir ve sonra fotoğraf ekleyebilirsiniz.",
+            "Yeni bir kitaplıkta, kurulum yerel bir klasör veya Lightroom geçişi sunar. macOS uygulaması ayrıca Apple Photos’u da sunar. Kurulumu atlayabilir ve daha sonra fotoğraf ekleyebilirsiniz.",
             "Apple Photos tam kütüphane içe aktarması, macOS uygulamasını ve Fotoğraflar’ı okuma iznini gerektirir. RAW dosyaları dahil orijinal fotoğrafları Pictures / LightTable Imports / Apple Photos içine kopyalar. Fotoğraflar kütüphaneniz değişmeden kalır. iCloud orijinalleri içe aktarma sırasında indirilir; bu nedenle zaman ve disk alanı ayırın. Albümler, videolar ve Fotoğraflar düzenlemeleri aktarılmaz.",
             "İçe aktarmayı durdur, tamamlanmış kopyaları korur. Tekrar çalıştırmak bu kopyaları atlar ve tamamlanmamış orijinalleri yeniden dener."
           ],
           "steps": [
             "Orijinalleri yerinde gözatmak için bir klasör seçin veya geçiş seçeneklerinden birini seçin.",
             "İçe aktarma sonucunu inceleyin, ardından kitaplığa devam edin."
+          ]
+        },
+        {
+          "title": "Apple Photos’a Gözat",
+          "paragraphs": [
+            "macOS uygulamasında, fotoğraflara ve albümlere göz atmak için kenar çubuğunda Apple Photos’u açın. İstendiğinde Photos erişimine izin verin. Bu kaynak Windows ve Linux'ta gizlidir.",
+            "Sayfalar veya albümler arasında en fazla 500 fotoğraf seçin, ardından Seçilen orijinalleri içe aktar’ı seçin. LightTable, RAW dosyaları dahil olmak üzere orijinal fotoğrafları Pictures / LightTable Imports / Apple Photos içine kopyalar. iCloud orijinalleri içe aktarma sırasında indirilir. Photos kitaplığınız değişmeden kalır; albümler, videolar ve Photos düzenlemeleri aktarılmaz.",
+            "İçe Aktarmayı Durdur tamamlanan kopyaları korur. Kullanılamaz orijinalleri yeniden denemek için seçimi yeniden içe aktarın; tamamlanan kopyalar atlanır. Kopyaları düzenlemek için İçe aktarılan fotoğrafları görüntüle’yi seçin. Yenile, kullanılabilir fotoğrafları ve albümleri günceller."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Yerel bir klasör aç",
           "paragraphs": [
-            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Yerel'in yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
+            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Klasörler yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü de ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
           ],
           "steps": [
-            "Sol üstte Fotoğraf Ekle'ye tıklayın ve fotoğrafları seçin ya da klasör seçmek için Yerel'in yanındaki + düğmesini kullanın.",
-            "Sol kenar çubuğunda Yerel altındaki klasörü seçin. Alt klasörleri dahil et seçeneğini açarak alt klasörlerindeki fotoğraflara gözatın.",
+            "Sol üstte Fotoğraf Ekle’yi tıklayın ve fotoğraf seçin ya da bir klasör seçmek için Klasörler yanındaki + düğmesini kullanın.",
+            "Sol kenar çubuğunda Klasörler altındaki klasörü seçin. Alt klasörleri dahil et seçeneğini açarak alt klasörlerindeki fotoğraflara göz atın.",
             "Üstte Fotoğraf Izgarası, Ayıklama Izgarası veya Ayrıntı seçin. Etkin yapmak için bir fotoğrafa tıklayın."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Yeni dosyaları var olan bir klasöre alın",
           "paragraphs": [
-            "LightTable dışından dosya ekledikten sonra Local ••• menüsünü ve Rescan folders seçeneğini kullanın. Bir karttaki fotoğrafları bir hedef klasöre kopyalamak için o menüde Import from card… seçeneğini kullanın."
+            "LightTable dışında dosya ekledikten sonra Klasörler ••• menüsünü ve Klasörleri yeniden tara seçeneğini kullanın. Bir karttaki fotoğrafları bir hedef klasöre kopyalamak için o menüde Karttan içe aktar… seçeneğini kullanın."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Önizleme uyumluluğu, mevcut kütüphanedeki eşleşmeleri değiştirmeden bildirir. Henüz eklenmemiş fotoğraflar önizlemede eşleşmemiş olarak görünebilir; Fotoğraf klasörlerini ekle etkinleştirilerek içe aktarma, eşleştirmeden önce kullanılabilir orijinalleri kaydeder."
           ],
           "steps": [
-            "Yerel ••• → Kataloğu içe aktar… seçin ya da kurulumda Lightroom'dan içe aktar seçeneğini kullanın.",
+            "Klasörler ••• → Kataloğu içe aktar… açın ya da kurulumda Lightroom'dan içe aktar seçeneğini kullanın.",
             ".lrcat dosyasını seçin ve sayılarını ile uyarılarını inceleyin.",
             "İçe aktarılacak kategorileri, var olan düzenlemeler için politikayı ve referans verilen fotoğraf klasörlerinin eklenip eklenmeyeceğini seçin.",
             "Önizleme uyumluluğu’na tıklayın ve eşlenen, atlanan ayarları inceleyin. 20 varyasyon dene, daha büyük bir içe aktarmadan önce ayrı deneme düzenlemeleri oluşturur.",
@@ -103,7 +111,7 @@
           "title": "Çevrilmiş düzenlemeleri incele",
           "paragraphs": [
             "Geliştirme ayarları yaklaşık değerlerdir ve Lightroom’un işlenmiş görünümünü garanti edemez. Desteklenmeyen local masks, camera profiles, .lrcat-data AI masks veya LUT yükleri ve desteklenmeyen akıllı koleksiyon kuralları atlandı olarak bildirilir. İçe aktarılan geliştirme ayarları Film’i kapatır.",
-            "Yerel ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstveriyi bitişik yardımcı dosyalardan okumak için kullanılan ayrı bir işlemdir. Bu işlem geliştirme ayarlarını veya kırpmayı uygulamaz. Sonuçlar iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
+            "Klasörler ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstverileri bitişik yardımcı dosyalardan okumak için ayrı bir işlemdir. Bu işlem, geliştirme ayarlarını veya kırpmayı uygulamaz. Sonuç iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Karttan içe aktar, dosyaları seçtiğiniz hedefe kopyalar. Karttaki orijinaller yerinde kalır. Yineleneni atlama, dosyanın tam içeriğini karşılaştırır; eşleşen bir dosya adı veya kamera başlığı tek başına yeterli değildir."
           ],
           "steps": [
-            "Yerel ••• → Karttan içe aktar….'ı açın",
+            "Klasörler ••• → Karttan içe aktar… açın.",
             "Kaynak ve Hedef’i seçin. Taramadan önce Klasör şablonu ve Yeniden adlandır’ı ayarlayın. Varsayılanlar dosya adlarını korur ve kopyaları yıl/yıl-ay-gün olarak düzenler.",
             "Doğrulamayı seçin: Tam karma, Yalnızca Boyut veya Yok. Yinelemeler için Atla veya Yine de kopyala ayarlayın ve isteğe bağlı olarak İkinci kopyayı seçin.",
             "Tara’ya tıklayın. Her sayfayı gözden geçirmek için Önceki ve Sonraki’yi kullanın ve İçe Aktar’a tıklamadan önce seçili sayısını ve hedef önizlemesini kontrol edin. Hiç fotoğraf seçilmemişse İçe Aktar kullanılamaz.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Tıklama tek bir etkin fotoğraf seçer. Shift+tıklama bitişik bir aralık seçer. Mac’te Command+tıklama ya da Control+tıklama tek tek fotoğrafları ekler veya kaldırır.",
             "Bir ızgarada bayrak, derecelendirme ve renk etiketi eylemleri seçili kümeye uygulanır. Ayrıntı'da bu işaretleme eylemleri etkin fotoğrafa uygulanır. İncele'de etkin inceleme hücresine uygulanır. Toplu bir işlemden önce işaretleme araç çubuğunun bağlamını kontrol edin.",
+            "Toplu bir işlem yalnızca geçerli süzgecin, klasörün ve aramanın hâlâ gösterdiği seçili fotoğraflara ulaşır. Bu nedenle süzgeci değiştirmek sonraki işlemin kapsamını daraltır ve işaretleme çubuğu ulaşacağı sayıyı gösterir.",
             "Üstveriyi görmek veya seçili fotoğraflara etiket eklemek için her iki ızgaranın yanındaki Bilgi’yi açın. Denetleyiciye yer açmak için ızgara daralır. Daha geniş ızgaraya dönmek için başka bir denetleyici aracı seçin."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Görünümde ne olduğunu seçin",
           "paragraphs": [
-            "Local → Browse eklediğiniz klasörleri listeler. Include subfolders, seçili bir klasörün alt klasörlerinin de gösterilip gösterilmeyeceğini belirler. Diğer kitaplık filtreleri yine de geçerlidir.",
+            "Klasörler → Gözat, eklediğiniz klasörleri listeler. Alt klasörleri dahil et, seçilen bir klasörün alt klasörlerini de gösterip göstermeyeceğini denetler. Diğer kitaplık filtreleri yine uygulanır.",
             "Dar bir Linux penceresinde, kütüphane çekmecesini açmak için sol üstteki Kütüphaneyi göster veya gizle'yi kullanın. Bir klasör seçtikten sonra fotoğrafa daha fazla alan bırakmak için aynı düğmeyle kapatın."
           ],
           "steps": [
-            "Yerel altında bir klasöre tıklayın.",
+            "Klasörler altında bir klasöre tıklayın.",
             "Alt klasörleri dahil etmek için Alt klasörleri dahil et’i açın ya da yalnızca o klasörü görüntülemek için kapatın.",
             "Bir klasörün yanındaki yıldıza tıklayın ya da ••• menüsünü açıp Sık kullanılan olarak ekle’yi seçin.",
-            "Kaydedilmiş klasörlerinize dönmek için Yerel → Favoriler’i kullanın."
+            "Kaydedilmiş klasörlerinize dönmek için Klasörler → Sık kullanılanlar bölümünü kullanın."
           ]
         },
         {
           "title": "Klasör eylemleri",
           "paragraphs": [
-            "Bir klasörün ••• menüsü, Mac'te Finder'da Göster, Windows'ta Dosya Gezgini'nde Göster veya Linux'ta Dosya Yöneticisi'nde Göster seçeneklerini içerir. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Yerel ••• → Klasörleri yeniden tara katalog kaynaklarını tarar.",
+            "Bir klasörün ••• menüsünde Mac'te Finder'da Göster, Windows'ta Dosya Gezgini'nde Göster veya Linux'ta Dosya Yöneticisi'nde Göster seçenekleri bulunur. Geçerli klasör için Klasörü Eşitle görünümü yeniler. Klasörler ••• → Klasörleri yeniden tara, katalog kaynaklarını tarar.",
             "Remove from LightTable, eklenmiş bir kök klasörü uygulamanın kaynak listesinden kaldırır; özgün dosyaları Çöp Kutusu’na taşımaz. Bu eylem, birden fazla kaynak mevcut olduğunda sunulur."
           ]
         },
         {
           "title": "İzlenen klasörleri yönet",
           "paragraphs": [
-            "Bir izlenen klasör eklemek için Yerel ••• → İzlenecek klasör… yolunu açın. Gelen fotoğrafların nasıl ele alınacağını seçin. Bir klasör belirtilene kadar Kaydet kullanılamaz; kitaplığa kopyalama için ayrıca bir hedef gerekir.",
+            "İzlenen bir klasör eklemek için Klasörler ••• → İzlenecek klasör… açın. Gelen fotoğrafların nasıl işleneceğini seçin. Bir klasör belirtilene kadar Kaydet kullanılamaz; kitaplığa kopyalamak için ayrıca bir hedef gerekir.",
             "Var olan bir izlemi düzenlemek için onu İzlenen klasörler içinde seçin. Kaydedilmiş her izlem bu listede görünür. Başka bir klasör için Yeni izlenen klasör seçin veya seçili klasörü izlemeyi durdurmak için İzlemeyi sil’i kullanın. Bu işlem fotoğraflarını silmez.",
             "İzleme kısayolu ilk etkin izlemi açar. Kaydetme hataları, ayarları düzeltebilmeniz için iletişim kutusunda kalır."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Başka bir düzenleyiciden üstveri oku",
           "paragraphs": [
-            "Diğer düzenleyiciye, üstverisini komşu XMP dosyalarına kaydetmesini isteyin, ardından Yerel ••• → Yardımcı dosyaları içe aktar… seçin. Bu eylem, büyük kütüphanelerin her biri için 100.000 fotoğrafa kadar olan tüm sayfalar dahil, katalogdaki orijinalleri okur. Sanal kopyalar kendi üstverilerine sahip olur.",
+            "Diğer düzenleyiciden üstverisini bitişik XMP dosyalarına kaydetmesini isteyin, ardından Klasörler ••• → Yardımcı dosyaları içe aktar… seçin. Bu işlem, büyük kitaplıkların tüm sayfaları dahil olmak üzere kataloğun orijinallerini okur; içe aktarma başına en fazla 100.000 fotoğraf desteklenir. Sanal kopyalar kendi üstverilerini korur.",
             "Desteklenen üstveri arasında yıldız derecelendirmeleri, seç/reddet işaretleri, standart renk etiketleri, düz ve hiyerarşik anahtar kelimeler ve açıklayıcı IPTC alanları bulunur. Açıkça girilmiş boş bir değer o alanı temizler; olmayan bir değer ise olduğu gibi bırakır. Bir LightTable rengiyle eşleşmeyen özel renk etiketleri atlandı olarak bildirilir.",
             "İçe aktarıcı, desteklenen Photo Mechanic ve digiKam üstveri kurallarını okur. Her uygulamanın ek kuralları vardır; bu nedenle tüm bir kütüphaneyi değiş tokuş etmeden önce her iki uygulamada da küçük bir örneği inceleyin. İşleme ayarları ve kırpma bu menü eylemiyle uygulanmaz."
           ]
@@ -819,6 +828,7 @@
           "title": "Sonraki ne olacağını kontrol edin",
           "paragraphs": [
             "Tek bir fotoğrafı seçtikten, reddettikten veya derecelendirdikten sonra bir sonraki fotoğrafa geçmek için Otomatik ilerletmeyi açın. Bayrağı Kaldırma ilerletmez.",
+            "İşaretleme fotoğrafı çalıştığınız görünümden çıkardığında, örneğin kenar çubuğu Bayraksız gösterirken seçim yaptığınızda, otomatik ilerle onun yerini alan fotoğraftan devam eder. Listenin başına dönmez.",
             "Bir ızgarada birden çok fotoğraf seçiliyken, işaretler ilerleme olmadan o kümeye uygulanır. Link pair metadata açıksa, işaretleme tanınan RAW ve JPEG eşlerini de günceller."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Bir koleksiyon seç",
           "paragraphs": [
-            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
+            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 23 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
           ],
           "steps": [
             "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Hazır ayar paketlerini düzenleme",
           "paragraphs": [
-            "Hazır ayarlar, daraltılabilir paketlerin içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film ve Siyah Beyaz paketlerinde bulunur. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+            "Ön ayarlar, daraltılabilir paketler içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film, Film Simulation Drama ve Siyah Beyaz paketlerinde yer alır. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+            "Film Simulation Drama içindeki her görünüm film simülasyonunu etkinleştirir ve ton, renk, gren, parıltı veya vinyet efektleri ekler. Paket, siyah beyaz Silver Noir dahil sekiz görünüm içerir.",
             "Geçerli koleksiyonda adlandırılmış bir paket oluşturmak için Yeni paket… seçeneğini seçin. Bir hazır ayarı paketin başlığına sürükleyin veya hazır ayarın … ayrıntılarını açıp Pakete taşı seçeneğini seçin. Paketi yeniden adlandırmak için yanındaki … düğmesini kullanın. Bir paketi kaldırmak, hazır ayarlarını silmeden varsayılan gruplarına döndürür. Paket düzeni bu bilgisayara kaydedilir."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Doğrusal geçişi şekillendirme",
           "paragraphs": [
-            "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin."
+            "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin.",
+            "İki noktayı üst üste sürüklemek degradeyi yönsüz bırakır, bu yüzden onları yeniden ayırana kadar hiçbir şey seçmez. Çok kısa bir degrade geçerli bir sert kenardır ve önizlemede olduğu gibi dışa aktarılan dosyada da aynı şekilde uygulanır."
           ],
           "tips": [
             "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın."
@@ -1892,7 +1904,8 @@
           "title": "Akıllı bir seçim oluştur",
           "paragraphs": [
             "Maske, Konu, Gökyüzü, Nesne, Derinlik ve Kişiler seçimlerini sunar. Bunlar yerel olarak çalışır; kullanılabilir yöntemler seçim türüne ve platforma bağlıdır.",
-            "Konu, Gökyüzü ve Nesne seçimleri en uzun kenar boyunca 1.024 piksele kadar korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. İnce sınırlar yine de inceleme ve boyanmış ayrıntılandırma gerektirir."
+            "Konu, Gökyüzü ve Nesne seçimleri en uzun kenar boyunca 1.024 piksele kadar korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. İnce sınırlar yine de inceleme ve boyanmış ayrıntılandırma gerektirir.",
+            "Seçim, başlatıldığı fotoğraftan alınır. Bitmeden başka bir fotoğrafa geçmek onu iptal eder, bu yüzden maske görünene kadar o fotoğrafta kalın. Seçim tamamlanamazsa maske paneli bunu bildirir ve hiçbir şey eklenmez."
           ],
           "steps": [
             "Maske’yi açın ve Yeni Maske Oluştur’u genişletin.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Yedekle ve incele",
           "paragraphs": [
-            "Ayarlar → Katalog, katalog konumunu ve yedekleme tercihlerini gösterir. Yedekler, katalog düzenini, düzenlemeleri, depolanmış maskeleri, geçmişi ve varyantları içerir. Orijinal fotoğrafları, harici hazır ayarları ve profilleri ile tercihleri ayrıca yedekleyin. Yerel ••• → Kataloğu yedekle… de bir yedek oluşturur ve kayıtlı yolunu ya da hatayı bir sonuçlar iletişim kutusunda gösterir. Aynı menüdeki Çiftleri bul, eşleşen dosyaları gösterir veya hiçbiri bulunmadığını bildirir."
+            "Ayarlar → Katalog, katalog konumunu ve yedekleme tercihlerini gösterir. Yedekler; katalog düzenini, düzenlemeleri, depolanan maskeleri, geçmişi ve varyantları içerir. Orijinal fotoğrafları, harici hazır ayarları ve profilleri ile tercihleri ayrıca yedekleyin. Klasörler ••• → Kataloğu yedekle… da bir yedek oluşturur ve kaydedilen yolunu ya da hatasını bir sonuç iletişim kutusunda gösterir. Aynı menüde Çiftleri bul, eşleşen dosyaları gösterir veya hiçbiri bulunmadığını bildirir."
           ],
           "steps": [
             "Bir Otomatik yedekleme aralığı ve Yedekleme konumu seçin.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

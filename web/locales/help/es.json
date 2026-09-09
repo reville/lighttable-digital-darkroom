@@ -19,13 +19,21 @@
         {
           "title": "Elige un punto de partida",
           "paragraphs": [
-            "En una nueva biblioteca, la configuración ofrece una carpeta local, migración desde Lightroom o Apple Photos. Puede omitir la configuración y agregar fotos más tarde.",
+            "En una nueva biblioteca, la configuración inicial ofrece una carpeta local o migración desde Lightroom. La app para macOS también ofrece Fotos de Apple. Puede omitir la configuración inicial y agregar fotos más tarde.",
             "La importación de toda la biblioteca de Apple Photos requiere la app macOS y permiso para leer Fotos. Copia las fotos originales, incluidos los archivos RAW, en Pictures / LightTable Imports / Apple Photos. Su biblioteca de Fotos permanece sin cambios. Los originales de iCloud se descargan durante la importación, así que permita tiempo y espacio en disco. Los álbumes, los vídeos y las ediciones de Fotos no se transfieren.",
             "Detener importación conserva las copias completadas. Si se ejecuta de nuevo, omite esas copias e intenta de nuevo los originales pendientes."
           ],
           "steps": [
             "Elige una carpeta para explorar los originales en su lugar, o selecciona una de las opciones de migración.",
             "Revisa el resultado de la importación y luego continúa hacia la biblioteca."
+          ]
+        },
+        {
+          "title": "Explorar Fotos de Apple",
+          "paragraphs": [
+            "En la app para macOS, abra Fotos de Apple en la barra lateral para explorar fotos y álbumes. Permita el acceso a Fotos cuando se le solicite. Este origen está oculto en Windows y Linux.",
+            "Seleccione hasta 500 fotos entre páginas o álbumes y luego elija Importar originales seleccionados. LightTable copia las fotos originales, incluidos los archivos RAW, en Pictures / LightTable Imports / Apple Photos. Los originales de iCloud se descargan durante la importación. Su fototeca de Fotos no se modifica; los álbumes, videos y ediciones de Fotos no se transfieren.",
+            "Detener importación conserva las copias completadas. Importe de nuevo la selección para reintentar los originales no disponibles; las copias completadas se omiten. Elija Ver fotos importadas para editar las copias. Actualizar actualiza las fotos y álbumes disponibles."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Abrir una carpeta local",
           "paragraphs": [
-            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Local para agregar una carpeta completa. LightTable conserva los originales en su sitio. Seleccionar una foto individual agrega la carpeta que la contiene, de modo que otras fotos compatibles de esa carpeta también puedan aparecer."
+            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Carpetas para agregar una carpeta completa. LightTable mantiene los originales en su ubicación. Al seleccionar una foto individual se agrega su carpeta contenedora, de modo que también pueden aparecer otras fotos compatibles de esa carpeta."
           ],
           "steps": [
-            "Haga clic en Agregar Fotos en la parte superior izquierda y elija fotos, o use el + junto a Local para elegir una carpeta.",
-            "Elija la carpeta bajo Local en la barra lateral izquierda. Active Incluir subcarpetas para explorar fotos en sus carpetas secundarias.",
+            "Haga clic en Agregar Fotos en la esquina superior izquierda y elija fotos, o use el + junto a Carpetas para elegir una carpeta.",
+            "Elija la carpeta en Carpetas en la barra lateral izquierda. Active Incluir subcarpetas para explorar las fotos en sus subcarpetas secundarias.",
             "Elige Cuadrícula de fotos, Cuadrícula de descarte o Detalle en la parte superior. Haz clic en una foto para activarla."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Importe archivos nuevos en una carpeta existente",
           "paragraphs": [
-            "Usa el menú Local ••• y Reescanear carpetas después de agregar archivos fuera de LightTable. Para copiar fotos desde una tarjeta a una carpeta de destino, usa Importar desde tarjeta… en ese menú."
+            "Use el menú Carpetas ••• y Volver a escanear carpetas después de agregar archivos fuera de LightTable. Para copiar fotos desde una tarjeta a una carpeta de destino, use Importar desde tarjeta… en ese menú."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "La compatibilidad de vista previa informa de las coincidencias en la biblioteca actual sin modificarla. Las fotos que aún no se han añadido pueden aparecer como no coincidentes en la vista previa; importar con Agregar las carpetas de fotos habilitado registra los originales disponibles antes de volver a coincidir."
           ],
           "steps": [
-            "Abra Local ••• → Importar catálogo…, o elija Importar desde Lightroom en la configuración.",
+            "Abra Carpetas ••• → Importar catálogo… o elija Importar desde Lightroom en la configuración inicial.",
             "Elige el archivo .lrcat y revisa sus conteos y advertencias.",
             "Elija las categorías que desea importar, la política para las ediciones existentes y si desea agregar las carpetas de fotos referenciadas.",
             "Haga clic en Compatibilidad de vista previa y revise los ajustes asignados y omitidos. Probar 20 variantes crea ediciones de prueba separadas antes de una importación mayor.",
@@ -103,7 +111,7 @@
           "title": "Revisar ediciones traducidas",
           "paragraphs": [
             "Los ajustes de Develop son aproximados y no pueden prometer la apariencia renderizada de Lightroom. Las máscaras locales no compatibles, los perfiles de cámara, las máscaras de IA .lrcat-data o las cargas útiles de LUT, y las reglas de colecciones inteligentes no compatibles se informan como omitidas. Los ajustes de Develop importados desactivan Film.",
-            "Local ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. Su cuadro de diálogo de resultados muestra progreso, recuentos aplicados, ajustes omitidos y errores."
+            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Importar desde tarjeta copia los archivos al destino que elija. Los originales de la tarjeta permanecen en su lugar. La omisión de duplicados compara el contenido completo de los archivos; un nombre de archivo coincidente o el encabezado de la cámara por sí solos no son suficientes."
           ],
           "steps": [
-            "Abra Local ••• → Importar desde tarjeta….",
+            "Abra Carpetas ••• → Importar desde tarjeta….\"",
             "Elige el Origen y el Destino. Define la plantilla de carpeta y Renombrar a antes de escanear. Los valores predeterminados conservan los nombres de archivo y organizan las copias como año/año-mes-día.",
             "Elija verificación: Hash completo, Solo tamaño o Ninguno. Establezca Duplicados en Saltar o Copiar igualmente y, opcionalmente, elija Segunda copia a.",
             "Haz clic en Escanear. Usa Anterior y Siguiente para revisar cada página, y comprueba el recuento seleccionado y la vista previa del destino antes de hacer clic en Importar. Importar no está disponible cuando no hay fotos seleccionadas.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Al hacer clic se selecciona una sola foto activa. Shift+clic selecciona un rango contiguo. Command+clic en Mac o Control+clic agrega o quita fotos individuales.",
             "En una cuadrícula, las acciones de marca, calificación y etiqueta de color se aplican al conjunto seleccionado. En Detalle, esas acciones de marcado se aplican a la foto activa. En Vista general, se aplican a la celda activa de la vista general. Compruebe el contexto de la barra de herramientas de marcado antes de una acción por lote.",
+            "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría.",
             "Abra Información junto a cualquiera de las cuadrículas para ver metadatos o etiquetar fotos seleccionadas. La cuadrícula se estrecha para dejar espacio al inspector. Elija otra herramienta del inspector para volver a la cuadrícula más ancha."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Elegir lo que está en vista",
           "paragraphs": [
-            "Local → Explorar enumera las carpetas que has agregado. Incluir subcarpetas controla si una carpeta seleccionada también muestra sus descendientes. Los demás filtros de la biblioteca siguen aplicándose.",
+            "Carpetas → Explorar muestra las carpetas que ha agregado. Incluir subcarpetas controla si una carpeta seleccionada también muestra sus descendientes. Los demás filtros de la biblioteca siguen aplicándose.",
             "En una ventana estrecha de Linux, use Mostrar u ocultar la biblioteca en la parte superior izquierda para abrir el panel de la biblioteca. Ciérrelo con el mismo botón después de elegir una carpeta para dejar más espacio para la foto."
           ],
           "steps": [
-            "Haga clic en una carpeta debajo de Local.",
+            "Haga clic en una carpeta debajo de Carpetas.",
             "Activa Incluir subcarpetas para incluir carpetas secundarias, o desactívalo para ver solo esa carpeta.",
             "Haz clic en la estrella junto a una carpeta, o abre su menú ••• y elige Agregar como favorito.",
-            "Usa Local → Favoritos para volver a tus carpetas guardadas."
+            "Use Carpetas → Favoritos para volver a sus carpetas guardadas."
           ]
         },
         {
           "title": "Acciones de carpeta",
           "paragraphs": [
-            "El menú ••• de una carpeta incluye Mostrar en Finder en Mac, Mostrar en el Explorador de archivos en Windows o Mostrar en el gestor de archivos en Linux. Para la carpeta actual, Sincronizar carpeta actualiza la vista. Local ••• → Volver a escanear carpetas escanea las fuentes del catálogo.",
+            "El menú ••• de una carpeta incluye Mostrar en Finder en Mac, Mostrar en Explorador de archivos en Windows o Mostrar en Gestor de archivos en Linux. Para la carpeta actual, Sincronizar carpeta actualiza la vista. Carpetas ••• → Volver a escanear carpetas escanea los orígenes del catálogo.",
             "Quitar de LightTable elimina un origen raíz agregado de la lista de orígenes de la app; no mueve los archivos originales a la Papelera. La acción se ofrece cuando hay más de una fuente disponible."
           ]
         },
         {
           "title": "Administrar carpetas vigiladas",
           "paragraphs": [
-            "Abre Local ••• → Carpeta vigilada… para agregar una carpeta vigilada. Elige cómo se deben tratar las fotos que lleguen. Guardar no está disponible hasta que se especifique una carpeta; copiar a la biblioteca también requiere un destino.",
+            "Abra Carpetas ••• → Carpeta vigilada… para agregar una carpeta vigilada. Elija cómo deben tratarse las fotos que lleguen. Guardar no está disponible hasta que se especifique una carpeta; copiar a la biblioteca también requiere un destino.",
             "Para editar una vigilancia existente, elígela en Carpetas vigiladas. Cada vigilancia guardada aparece en esta lista. Elige Nueva carpeta vigilada para otra carpeta, o usa Eliminar punto de control para dejar de vigilar la carpeta seleccionada. Esto no elimina sus fotos.",
             "El atajo de Vigilancia abre la primera vigilancia activa. Los errores de guardado permanecen en el cuadro de diálogo para que puedas corregir la configuración."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Leer metadatos de otro editor",
           "paragraphs": [
-            "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y, a continuación, elija Local ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100,000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
+            "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y luego elija Carpetas ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
             "Los metadatos admitidos incluyen calificaciones de estrellas, marcas de seleccionar/rechazar, etiquetas de color estándar, palabras clave planas y jerárquicas, y campos descriptivos IPTC. Un valor vacío explícito borra ese campo; un valor ausente lo deja sin cambios. Las etiquetas de color personalizadas que no coinciden con un color de LightTable se informan como omitidas.",
             "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte no se aplican con esta acción de menú."
           ]
@@ -819,6 +828,7 @@
           "title": "Controlar lo que sucede a continuación",
           "paragraphs": [
             "Active Avance automático para pasar a la siguiente foto después de seleccionar, rechazar o calificar una sola foto. Quitar marca no avanza.",
+            "Cuando la marca saca la foto de la vista en la que trabajas, como seleccionar mientras la barra lateral muestra Sin marca, el avance automático continúa con la foto que ocupa su lugar. No vuelve al principio de la lista.",
             "Cuando hay varias fotos seleccionadas en una cuadrícula, las marcas se aplican a ese conjunto sin avanzar. Si Vincular metadatos de par está activado, marcar también actualiza los compañeros RAW y JPEG reconocidos."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Elegir una colección",
           "paragraphs": [
-            "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
+            "Abre Presets en la barra de herramientas de edición. Built-in contiene 23 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada."
           ],
           "steps": [
             "Elige Built-in, Yours o Community. Busca por nombre, descripción, autor o sujeto.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Organizar paquetes de ajustes preestablecidos",
           "paragraphs": [
-            "Los ajustes preestablecidos aparecen como filas horizontales dentro de paquetes plegables. Los estilos integrados se organizan inicialmente en los paquetes Color, Película y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
+            "Los ajustes preestablecidos aparecen en filas horizontales dentro de paquetes plegables. Los looks incluidos se agrupan inicialmente en Color, Película, Film Simulation Drama y Blanco y negro. Haz clic en el encabezado de un paquete para expandirlo o contraerlo.",
+            "Cada look de Film Simulation Drama activa la simulación de película y añade efectos de tono, color, grano, resplandor o viñeteado. El paquete contiene ocho looks, incluido Silver Noir en blanco y negro.",
             "Elige Nuevo paquete… para crear un paquete con nombre en la colección actual. Arrastra un ajuste preestablecido a su encabezado, o abre sus detalles con … y elige Mover a paquete. Usa … junto a un paquete para cambiarle el nombre. Al quitar un paquete, sus ajustes preestablecidos vuelven a sus grupos predeterminados sin eliminarse. La organización de los paquetes se guarda en esta computadora."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Dar forma a un degradado lineal",
           "paragraphs": [
-            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo."
+            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo.",
+            "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado."
           ],
           "tips": [
             "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos."
@@ -1892,7 +1904,8 @@
           "title": "Crear una selección inteligente",
           "paragraphs": [
             "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma.",
-            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado."
+            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado.",
+            "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada."
           ],
           "steps": [
             "Abra Máscara y expanda Crear nueva máscara.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Hacer copia de seguridad e inspeccionar",
           "paragraphs": [
-            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haz copias de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado. Local ••• → Hacer copia de seguridad del catálogo… también crea una copia de seguridad y muestra su ruta guardada o el error en un cuadro de diálogo de resultados. Buscar duplicados en el mismo menú muestra archivos coincidentes, o informa que no se encontraron."
+            "Configuración → Catálogo muestra la ubicación del catálogo y las preferencias de copia de seguridad. Las copias de seguridad incluyen la organización del catálogo, las ediciones, las máscaras almacenadas, el historial y las variantes. Haga una copia de seguridad de las fotos originales, los ajustes preestablecidos y perfiles externos, y las preferencias por separado. Carpetas ••• → Hacer copia de seguridad del catálogo… también crea una copia de seguridad y muestra su ruta guardada o el error en un cuadro de resultados. Buscar duplicados en el mismo menú muestra archivos coincidentes, o informa de que no se encontró ninguno."
           ],
           "steps": [
             "Elige un intervalo de copia de seguridad automática y una ubicación de copia de seguridad.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

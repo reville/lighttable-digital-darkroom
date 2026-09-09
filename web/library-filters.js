@@ -119,9 +119,24 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
   const metadataInputs = [...panel.querySelectorAll('[data-metadata-filter]')];
   const metadata = () => ({...metadataRules});
   function setMetadata(next) {
-    try { metadataRules = cleanMetadataFilters(next || {}); } catch { metadataRules = {}; }
+    let problem = '';
+    try {
+      metadataRules = cleanMetadataFilters(next || {});
+    } catch (error) {
+      /* One unusable value used to discard the whole rule set and clear the
+       * error label with it, so a smart collection written elsewhere came back
+       * looking as though it carried no metadata rules at all. Keep the rules
+       * that are usable and say what was wrong with the rest. */
+      problem = error?.message || String(error);
+      metadataRules = {};
+      for (const [key, value] of Object.entries(next || {})) {
+        try {
+          Object.assign(metadataRules, cleanMetadataFilters({[key]: value}));
+        } catch { /* this rule is unusable; the message above names it */ }
+      }
+    }
     for (const input of metadataInputs) input.value = metadataRules[input.dataset.metadataFilter] ?? '';
-    el('metadataFilterError').textContent = '';
+    el('metadataFilterError').textContent = problem;
   }
   const values = () => Object.fromEntries(Object.keys(defaults).map(id => [id, el(id).value]));
 

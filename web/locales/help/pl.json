@@ -19,13 +19,21 @@
         {
           "title": "Wybierz punkt początkowy",
           "paragraphs": [
-            "W nowej bibliotece konfiguracja oferuje folder lokalny, migrację z Lightrooma lub Apple Photos. Możesz pominąć konfigurację i dodać zdjęcia później.",
+            "W nowej bibliotece konfiguracja oferuje folder lokalny lub migrację z Lightroom. Aplikacja na macOS oferuje też Zdjęcia Apple. Możesz pominąć konfigurację i dodać zdjęcia później.",
             "Import całej biblioteki z Apple Photos wymaga aplikacji macOS i uprawnienia do odczytu Zdjęć. Kopiuje oryginalne zdjęcia, w tym pliki RAW, do Obrazy / LightTable Imports / Apple Photos. Twoja biblioteka Zdjęcia pozostaje bez zmian. Oryginały iCloud pobierają się podczas importu, więc uwzględnij czas i miejsce na dysku. Albumy, filmy i edycje Zdjęć nie są przenoszone.",
             "Stop import zachowuje ukończone kopie. Ponowne uruchomienie pomija te kopie i ponawia próbę dla niedokończonych oryginałów."
           ],
           "steps": [
             "Wybierz folder, aby przeglądać oryginały na miejscu, albo wybierz jedną z opcji migracji.",
             "Sprawdź wynik importu, a następnie przejdź dalej do biblioteki."
+          ]
+        },
+        {
+          "title": "Przeglądaj Zdjęcia Apple",
+          "paragraphs": [
+            "W aplikacji na macOS otwórz Zdjęcia Apple na panelu bocznym, aby przeglądać zdjęcia i albumy. Gdy pojawi się monit, zezwól na dostęp do Zdjęć. To źródło jest ukryte w systemach Windows i Linux.",
+            "Wybierz maksymalnie 500 zdjęć na stronach lub w albumach, a następnie wybierz Importuj wybrane oryginały. LightTable kopiuje oryginalne zdjęcia, w tym pliki RAW, do Pictures / LightTable Imports / Apple Photos. Oryginały z iCloud pobierają się podczas importu. Twoja biblioteka Zdjęć pozostaje bez zmian; albumy, wideo i edycje Zdjęć nie są przenoszone.",
+            "Zatrzymaj import zachowuje ukończone kopie. Zaimportuj zaznaczenie ponownie, aby ponowić próbę importu niedostępnych oryginałów; ukończone kopie są pomijane. Wybierz Wyświetl zaimportowane zdjęcia, aby edytować kopie. Odśwież aktualizuje dostępne zdjęcia i albumy."
           ]
         },
         {
@@ -44,11 +52,11 @@
         {
           "title": "Otwórz lokalny folder",
           "paragraphs": [
-            "Dodaj zdjęcia otwiera wybór zdjęć. Na Macu ten wybór akceptuje też foldery. W systemach Linux i Windows użyj + obok Lokalne, aby dodać cały folder. LightTable zachowuje oryginały na miejscu. Wybranie pojedynczego zdjęcia dodaje jego folder nadrzędny, więc mogą pojawić się też inne obsługiwane zdjęcia z tego folderu."
+            "Dodaj zdjęcia otwiera selektor zdjęć. Na Macu ten selektor akceptuje też foldery. W systemach Linux i Windows użyj + obok Foldery, aby dodać cały folder. LightTable przechowuje oryginały w miejscu. Wybranie pojedynczego zdjęcia dodaje folder, w którym się znajduje, więc mogą pojawić się też inne obsługiwane zdjęcia z tego folderu."
           ],
           "steps": [
-            "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz zdjęcia albo użyj + obok Lokalne, aby wybrać folder.",
-            "Wybierz folder w sekcji Lokalne na lewym pasku bocznym. Włącz Uwzględnij podfoldery, aby przeglądać zdjęcia w folderach podrzędnych.",
+            "Kliknij Dodaj zdjęcia w lewym górnym rogu i wybierz zdjęcia albo użyj + obok Foldery, aby wybrać folder.",
+            "Wybierz folder w sekcji Foldery na lewym panelu bocznym. Włącz Uwzględnij podfoldery, aby przeglądać zdjęcia w jego folderach podrzędnych.",
             "Na górze wybierz Photo Grid, Culling Grid lub Detail. Kliknij zdjęcie, aby je uaktywnić."
           ],
           "tips": [
@@ -58,7 +66,7 @@
         {
           "title": "Dodawaj nowe pliki do istniejącego folderu",
           "paragraphs": [
-            "Użyj menu Lokalne ••• i opcji Skanuj ponownie foldery po dodaniu plików spoza LightTable. Aby skopiować zdjęcia z karty do folderu docelowego, użyj w tym menu Importuj z karty…."
+            "Użyj menu Foldery ••• i opcji Ponownie skanuj foldery po dodaniu plików poza LightTable. Aby skopiować zdjęcia z karty do folderu docelowego, użyj w tym menu opcji Importuj z karty…."
           ]
         }
       ],
@@ -92,7 +100,7 @@
             "Zgodność podglądu pokazuje dopasowania w bieżącej bibliotece bez jej zmieniania. Zdjęcia jeszcze nie dodane mogą w podglądzie wyglądać na niedopasowane; import z włączoną opcją Dodaj foldery zdjęć rejestruje dostępne oryginały przed ponownym dopasowaniem."
           ],
           "steps": [
-            "Otwórz Lokalne ••• → Importuj katalog… albo w konfiguracji wybierz Importuj z Lightroom.",
+            "Otwórz Foldery ••• → Importuj katalog… lub wybierz Importuj z Lightroom w konfiguracji.",
             "Wybierz plik .lrcat i sprawdź jego liczby oraz ostrzeżenia.",
             "Wybierz kategorie do importu, zasady dotyczące istniejących edycji oraz to, czy dodać wskazane foldery zdjęć.",
             "Kliknij Podgląd zgodności i przejrzyj zmapowane oraz pominięte ustawienia. Wypróbuj 20 wariantów, aby utworzyć osobne wersje próbne przed większym importem.",
@@ -103,7 +111,7 @@
           "title": "Przeglądaj przetłumaczone edycje",
           "paragraphs": [
             "Ustawienia wywoływania są przybliżone i nie mogą zagwarantować wyrenderowanego wyglądu Lightroom. Nieobsługiwane lokalne maski, profile aparatu, maski ai .lrcat-data lub pakiety LUT oraz nieobsługiwane reguły inteligentnej kolekcji są zgłaszane jako pominięte. Zaimportowane ustawienia wywoływania wyłączają Film.",
-            "Lokalne ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Jej okno wyników pokazuje postęp, liczbę zastosowanych elementów, pominięte ustawienia i błędy."
+            "Foldery ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Okno wyników pokazuje postęp, liczbę zastosowanych zmian, pominięte ustawienia i błędy."
           ]
         }
       ],
@@ -175,7 +183,7 @@
             "Import z karty kopiuje pliki do wybranego miejsca docelowego. Oryginały na karcie pozostają na miejscu. Pomijanie duplikatów porównuje pełną zawartość plików; sama zgodna nazwa pliku lub nagłówek aparatu nie wystarcza."
           ],
           "steps": [
-            "Otwórz Local ••• → Importuj z karty….",
+            "Otwórz Foldery ••• → Importuj z karty….",
             "Wybierz Źródło i Cel. Ustaw szablon folderu oraz Zmień nazwę na przed skanowaniem. Domyślne ustawienia zachowują nazwy plików i porządkują kopie jako rok/rok-miesiąc-dzień.",
             "Wybierz weryfikację: Pełny hash, Tylko rozmiar lub Brak. Ustaw Duplicates na Pomiń lub Kopiuj mimo to i opcjonalnie wybierz Second copy to.",
             "Kliknij Skanuj. Użyj Poprzedni i Następny, aby przejrzeć każdą stronę, i sprawdź liczbę zaznaczonych oraz podgląd miejsca docelowego przed kliknięciem Importuj. Import jest niedostępny, gdy nie zaznaczono żadnych zdjęć.",
@@ -254,6 +262,7 @@
           "paragraphs": [
             "Kliknięcie wybiera pojedyncze aktywne zdjęcie. Shift+klik wybiera ciągły zakres. Command+klik na Macu lub Control+klik dodaje albo usuwa poszczególne zdjęcia.",
             "W siatce działania flag, oceny i etykiety kolorystycznej dotyczą zaznaczonego zestawu. W Szczegóły te działania oznaczania dotyczą aktywnego zdjęcia. W Przeglądzie dotyczą aktywnej komórki przeglądu. Przed działaniem wsadowym sprawdź kontekst paska narzędzi oznaczania.",
+            "Działanie zbiorcze obejmuje tylko wybrane zdjęcia, które bieżący filtr, folder i wyszukiwanie nadal pokazują. Zmiana filtra zawęża więc zakres następnego działania, a pasek oznaczania liczy to, co zostanie objęte.",
             "Otwórz Informacje obok dowolnej siatki, aby wyświetlić metadane lub oznaczyć wybrane zdjęcia. Siatka zwęża się, aby zrobić miejsce dla inspektora. Wybierz inne narzędzie inspektora, aby wrócić do szerszej siatki."
           ]
         }
@@ -345,27 +354,27 @@
         {
           "title": "Wybierz, co jest widoczne",
           "paragraphs": [
-            "Lokalne → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy wybrany folder pokazuje też swoje potomne foldery. Inne filtry biblioteki nadal obowiązują.",
+            "Foldery → Przeglądaj wyświetla dodane foldery. Uwzględnij podfoldery określa, czy zaznaczony folder pokazuje też foldery podrzędne. Nadal obowiązują pozostałe filtry biblioteki.",
             "W wąskim oknie systemu Linux użyj Pokaż lub ukryj bibliotekę w lewym górnym rogu, aby otworzyć szufladę biblioteki. Zamknij ją tym samym przyciskiem po wybraniu folderu, aby zrobić więcej miejsca na zdjęcie."
           ],
           "steps": [
-            "Kliknij folder pod Lokalna.",
+            "Kliknij folder w sekcji Foldery.",
             "Włącz Uwzględnij podfoldery, aby dołączyć foldery podrzędne, albo wyłącz, aby wyświetlić tylko ten folder.",
             "Kliknij gwiazdkę obok folderu albo otwórz jego menu ••• i wybierz Dodaj do ulubionych.",
-            "Użyj Lokalne → Ulubione, aby wrócić do zapisanych folderów."
+            "Użyj Foldery → Ulubione, aby wrócić do zapisanych folderów."
           ]
         },
         {
           "title": "Działania folderu",
           "paragraphs": [
-            "Menu ••• folderu zawiera Pokaż w Finderze na Macu, Pokaż w Eksploratorze plików w Windows lub Pokaż w Menedżerze plików w systemie Linux. Dla bieżącego folderu Synchronizuj folder odświeża widok. Lokalnie ••• → Ponownie skanuj foldery skanuje źródła katalogu.",
+            "Menu ••• folderu zawiera na Macu opcję Pokaż w Finderze, w systemie Windows opcję Pokaż w Eksploratorze plików, a w systemie Linux opcję Pokaż w Menedżerze plików. Dla bieżącego folderu Synchronizuj folder odświeża widok. Foldery ••• → Ponownie skanuj foldery skanuje źródła katalogu.",
             "Usuń z LightTable usuwa dodany katalog główny z listy źródeł aplikacji; nie przenosi oryginalnych plików do Kosza. Akcja jest dostępna, gdy dostępne jest więcej niż jedno źródło."
           ]
         },
         {
           "title": "Zarządzaj obserwowanymi folderami",
           "paragraphs": [
-            "Otwórz Lokalne ••• → Folder obserwowany… , aby dodać obserwowany folder. Wybierz, jak mają być obsługiwane nadchodzące zdjęcia. Zapisz jest niedostępne, dopóki nie zostanie określony folder; kopiowanie do biblioteki wymaga też miejsca docelowego.",
+            "Otwórz Foldery ••• → Folder obserwowany… , aby dodać obserwowany folder. Wybierz, jak mają być obsługiwane przychodzące zdjęcia. Zapisz jest niedostępne, dopóki nie zostanie wskazany folder; kopiowanie do biblioteki wymaga też folderu docelowego.",
             "Aby edytować istniejącą obserwację, wybierz ją w Obserwowanych folderach. Każda zapisania obserwacja pojawia się na tej liście. Wybierz Nowy obserwowany folder dla innego folderu albo użyj Usuń obserwację, aby przestać obserwować zaznaczony folder. To nie usuwa jego zdjęć.",
             "Skrót Obserwowanie otwiera pierwszy aktywny obserwowany folder. Błędy zapisu pozostają w oknie dialogowym, abyś mógł poprawić ustawienia."
           ]
@@ -485,7 +494,7 @@
         {
           "title": "Odczytaj metadane z innego edytora",
           "paragraphs": [
-            "Poproś drugi edytor o zapisanie metadanych do sąsiednich plików XMP, a następnie wybierz Lokalne ••• → Importuj sidecary…. Ta akcja odczytuje oryginały z katalogu, w tym wszystkie strony dużych bibliotek do 100 000 zdjęć na jeden import. Wirtualne kopie zachowują własne metadane.",
+            "Poproś inny edytor o zapisanie metadanych do sąsiednich plików XMP, a następnie wybierz Foldery ••• → Importuj sidecary…. Ta akcja odczytuje oryginały z katalogu, w tym wszystkie strony dużych bibliotek, do 100 000 zdjęć na jeden import. Wirtualne kopie zachowują własne metadane.",
             "Obsługiwane metadane obejmują oceny w gwiazdkach, znaczniki wybierz/odrzuć, standardowe etykiety kolorystyczne, płaskie i hierarchiczne słowa kluczowe oraz opisowe pola IPTC. Jawna pusta wartość czyści to pole; nieobecna wartość pozostawia je bez zmian. Niestandardowe etykiety kolorystyczne, które nie pasują do koloru LightTable, są zgłaszane jako pominięte.",
             "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie nie są stosowane przez tę akcję menu."
           ]
@@ -819,6 +828,7 @@
           "title": "Kontroluj, co stanie się dalej",
           "paragraphs": [
             "Włącz Automatyczne przechodzenie, aby przejść do następnego zdjęcia po wybraniu, odrzuceniu lub ocenieniu pojedynczego zdjęcia. Usunięcie flagi nie powoduje przejścia dalej.",
+            "Gdy oznaczenie usuwa zdjęcie z widoku, w którym pracujesz, na przykład przy wybieraniu, gdy panel boczny pokazuje Bez flagi, automatyczne przechodzenie kontynuuje od zdjęcia, które zajęło jego miejsce. Nie wraca na początek listy.",
             "Gdy w siatce zaznaczono wiele zdjęć, znaczniki odnoszą się do tego zestawu bez przechodzenia dalej. Jeśli włączone jest Łączenie metadanych pary, oznaczanie aktualizuje też rozpoznane towarzyszące pliki RAW i JPEG."
           ]
         }
@@ -1193,7 +1203,7 @@
         {
           "title": "Wybierz kolekcję",
           "paragraphs": [
-            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 15 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 23 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
           ],
           "steps": [
             "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
@@ -1208,7 +1218,8 @@
         {
           "title": "Organizowanie pakietów presetów",
           "paragraphs": [
-            "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo podzielone na pakiety Kolor, Film i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+            "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo pogrupowane w pakietach Kolor, Film, Film Simulation Drama i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
+            "Każdy styl w Film Simulation Drama włącza symulację filmu i dodaje efekty tonów, koloru, ziarna, poświaty lub winietowania. Pakiet zawiera osiem stylów, w tym czarno-biały Silver Noir.",
             "Wybierz Nowy pakiet…, aby utworzyć nazwany pakiet w bieżącej kolekcji. Przeciągnij preset na jego nagłówek albo otwórz szczegóły presetu przyciskiem … i wybierz Przenieś do pakietu. Użyj … obok pakietu, aby zmienić jego nazwę. Usunięcie pakietu przywraca jego presety do grup domyślnych, nie usuwając samych presetów. Układ pakietów jest zapisywany na tym komputerze."
           ]
         },
@@ -1584,7 +1595,8 @@
         {
           "title": "Zmienianie kształtu gradientu liniowego",
           "paragraphs": [
-            "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie."
+            "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie.",
+            "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku."
           ],
           "tips": [
             "Wybierz istniejącą maskę liniową, aby ponownie ją dostosować. Jeśli malowano w trybie Dodaj, Odejmij lub Przecięcie, najpierw wybierz Edytuj kształt. Naciśnij H, jeśli punkty są ukryte."
@@ -1892,7 +1904,8 @@
           "title": "Utwórz inteligentne zaznaczenie",
           "paragraphs": [
             "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy.",
-            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty."
+            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty.",
+            "Zaznaczenie jest wycinane ze zdjęcia, na którym je rozpoczęto. Przejście do innego zdjęcia przed jego ukończeniem anuluje je, więc pozostań na zdjęciu, aż pojawi się maska. Jeśli zaznaczenia nie da się ukończyć, panel maski zgłasza to i nic nie zostaje dodane."
           ],
           "steps": [
             "Otwórz Maska i rozwiń Utwórz nową maskę.",
@@ -3047,7 +3060,7 @@
         {
           "title": "Zrób kopię zapasową i sprawdź",
           "paragraphs": [
-            "Ustawienia → Katalog pokazują lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Kopie zapasowe oryginalnych zdjęć, zewnętrznych presetów i profili oraz preferencji wykonuj osobno. Lokalne ••• → Utwórz kopię zapasową katalogu… również tworzy kopię zapasową i pokazuje zapisany path lub błąd w oknie wyników. Znajdź duplikaty w tym samym menu pokazuje pasujące pliki albo informuje, że nie znaleziono żadnych."
+            "Ustawienia → Katalog pokazuje lokalizację katalogu i preferencje kopii zapasowych. Kopie zapasowe obejmują organizację katalogu, edycje, zapisane maski, historię i warianty. Oryginalne zdjęcia, zewnętrzne presety i profile oraz preferencje należy kopiować osobno. Foldery ••• → Utwórz kopię zapasową katalogu… również tworzy kopię zapasową i pokazuje zapisany ślad lub błąd w oknie wyników. Znajdź duplikaty w tym samym menu pokazuje pasujące pliki albo informuje, że nie znaleziono żadnych."
           ],
           "steps": [
             "Wybierz automatyczny interwał kopii zapasowych i lokalizację kopii zapasowej.",
@@ -3195,5 +3208,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "97a082502d603434fe7e260c22cabe056f3e32e3e13f8b5776093cc3c099543e"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

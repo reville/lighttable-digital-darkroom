@@ -109,6 +109,7 @@ const body = source.slice(source.indexOf('function semanticBitmapValues('),
  source.indexOf('const semanticPngCache ='));
 const semanticPngCache = new Map(), maskGeometryCache = new Map([['saved', {values:[0,0]}]]);
 const cumulativeBrushCache = new Map([['saved', {values:[0,0]}]]);
+const cacheSemanticPng = (key, value) => (semanticPngCache.set(key, value), value);
 const clamp = (v, low, high) => Math.max(low, Math.min(high, v));
 const S = {}; let redraws = 0, loaded;
 const drawGrade = () => {redraws++;};

@@ -1046,5 +1046,81 @@ class FolderModeTests(unittest.TestCase):
             self.assertIn("folder mode", str(caught.exception))
 
 
+class SavedNameReportingTests(CatalogServerTestCase):
+    """An edit the catalog cannot store must never be reported as saved."""
+
+    def test_saving_reports_the_names_it_wrote(self):
+        name = self.qualified("a.jpg")
+        self.assertEqual(server.save_image_state(name, {"rating": 3}), [name])
+        self.assertEqual(server.catalog_entry_for(name)["rating"], 3)
+
+    def test_a_photo_outside_the_catalog_is_reported_as_unwritten(self):
+        # A photo moved or renamed since the client listed it resolves to no
+        # image id. The writer skips it and has to say so; answering "saved"
+        # for a dropped edit is indistinguishable from success to the client.
+        self.assertEqual(server.save_image_state("gone.jpg", {"rating": 5}), [])
+        self.assertEqual(server.catalog_entry_for("gone.jpg")["rating"], 0)
+
+    def test_a_mixed_batch_reports_only_the_stored_names(self):
+        known = self.qualified("a.jpg")
+        written = server.save_image_states({
+            known: {"label": "red"},
+            "gone.jpg": {"label": "red"},
+        })
+        self.assertEqual(written, [known])
+        self.assertEqual(server.catalog_entry_for(known)["label"], "red")
+
+    def test_folder_mode_accepts_every_name_it_is_given(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_photo(root / "a.jpg")
+            with mock.patch.object(server, "FOLDER", root), \
+                    mock.patch.object(server, "CATALOG", None):
+                self.assertEqual(
+                    server.save_image_state("a.jpg", {"rating": 2}), ["a.jpg"])
+
+
+def case_insensitive_volume(directory: Path) -> bool:
+    probe = directory / "LightTableCaseProbe.tmp"
+    probe.touch()
+    try:
+        return (directory / "lighttablecaseprobe.tmp").exists()
+    finally:
+        probe.unlink(missing_ok=True)
+
+
+class ExportOriginalGuardTests(CatalogServerTestCase):
+    """An export must never publish over the photo it was rendered from."""
+
+    def test_the_exact_original_path_is_refused(self):
+        name = self.qualified("a.jpg")
+        self.assertTrue(
+            server.export_would_replace_original(self.root / "a.jpg", name))
+
+    def test_a_case_different_spelling_of_the_original_is_refused(self):
+        if not case_insensitive_volume(self.root):
+            self.skipTest("this volume keeps case-different names apart")
+        name = self.qualified("a.jpg")
+        # Same file, different spelling. `Path.resolve()` preserves the case it
+        # was handed, so a plain `==` between the two says they differ and the
+        # export would replace the original it was rendered from.
+        self.assertTrue(
+            server.export_would_replace_original(self.root / "A.JPG", name),
+            "a case-different destination is still the original file")
+
+    def test_a_case_different_folder_is_refused(self):
+        if not case_insensitive_volume(self.root):
+            self.skipTest("this volume keeps case-different names apart")
+        name = self.qualified("sub/b.jpg")
+        self.assertTrue(
+            server.export_would_replace_original(self.root / "SUB" / "b.jpg", name))
+
+    def test_a_genuine_delivery_folder_is_allowed(self):
+        name = self.qualified("a.jpg")
+        destination = self.root.parent / "Exports" / "a.jpg"
+        destination.parent.mkdir(exist_ok=True)
+        self.assertFalse(server.export_would_replace_original(destination, name))
+
+
 if __name__ == "__main__":
     unittest.main()

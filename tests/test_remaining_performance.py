@@ -273,7 +273,7 @@ class DecodedViewportTests(unittest.TestCase):
     def test_clipped_delivery_geometry_survives_render_cache_hit(self):
         requested = {"x": 8, "y": 4, "width": 8, "height": 6}
         actual = {"x": 8, "y": 4, "width": 2, "height": 2}
-        def render(name, params, width, output, native, viewport):
+        def render(name, params, width, output, native, viewport, variant=None):
             self.assertEqual(viewport, requested)
             native.parent.mkdir(parents=True, exist_ok=True)
             server.write_native_surface(native, np.zeros((2, 2, 3), dtype=np.uint8))

@@ -84,7 +84,13 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
   }
   function schedule() {
     clearTimeout(timer);
-    if (!status.running || ++pollCount > 1800) return;
+    if (!status.running) return;
+    /* Back off rather than stop. The cap used to end polling after an hour and
+     * only an explicit enable, scan, merge or rename reset it, so a long first
+     * scan froze the progress line and never showed the names it had found,
+     * and reopening the panel could not recover it. */
+    pollCount += 1;
+    const delay = pollCount > 1800 ? 30000 : 2000;
     timer = setTimeout(async () => {
       try {
         const before = status.faces;
@@ -93,7 +99,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
         if (!status.running) await updateLabels();
         schedule();
       } catch (e) { if (openNow()) fail(e); }
-    }, 2000);
+    }, delay);
   }
   async function updateLabels() { onLabels(await get('labels')); }
   async function refresh() {
