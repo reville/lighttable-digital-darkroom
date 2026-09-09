@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Chọn một người",
     "Choose a photo folder": "Chọn một thư mục ảnh",
     "Choose a photo to edit": "Chọn một ảnh để chỉnh sửa",
-    "Choose a photo to rate or flag": "Chọn một ảnh để xếp hạng hoặc đánh cờ",
     "Choose a preset to see its source and conversion coverage.": "Chọn một thiết lập sẵn để xem phạm vi nguồn và chuyển đổi của nó.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Chọn một quy trình in cho phim âm bản và hiểu vì sao các điều khiển in biến mất đối với phim slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Chọn một điểm đã lưu trong bộ chọn để chỉnh sửa nó, hoặc dùng Xóa điểm để loại bỏ nó.",
@@ -1889,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Mở Mặt nạ trong thanh công cụ chỉnh sửa và chọn một công cụ trong Tạo mặt nạ mới. Bấm Tạo mặt nạ mới để hiện hoặc ẩn các công cụ. Mỗi mặt nạ có các điều chỉnh riêng cho Sáng, Màu sắc và Đường cong tông.",
     "Open People and choose Download models & enable.": "Mở Mọi người và chọn Tải mô hình xuống và bật.",
     "Open People…": "Mở Mọi người…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa mười giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 15 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét. Mỗi trang hiển thị 20 thiết lập sẵn.",
     "Open Recovery Folder": "Mở thư mục khôi phục",
     "Open Recovery folder": "Mở thư mục Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Mở Xóa bỏ trong thanh công cụ chỉnh sửa. Xóa bỏ, Chữa, và Nhân bản là các chế độ riêng biệt. Chữa và Nhân bản tự động chọn một nguồn ban đầu; hãy kiểm tra nguồn đó thay vì cho rằng nó phù hợp.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Chọn một ảnh để sao chép cài đặt của nó",
     "Select a photo to edit": "Chọn một ảnh để chỉnh sửa",
     "Select a photo to preview": "Chọn một ảnh để xem trước",
-    "Select a photo to rate or flag": "Chọn một ảnh để chấm điểm hoặc gắn cờ",
     "Select a photo, or a set in a grid, and open Info.": "Chọn một ảnh, hoặc một tập trong lưới, và mở Thông tin.",
     "Select a photo.": "Chọn một ảnh.",
     "Select a range of distances from the camera; refine the far and near limits": "Chọn một phạm vi khoảng cách tính từ máy ảnh; tinh chỉnh giới hạn xa và gần",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Khi Xem nhanh được mở từ Lọc ảnh có hỗ trợ, hãy so sánh nhóm được gợi ý và gắn cờ từng ảnh riêng lẻ. Tạo vùng chọn có sẵn trong một Xem nhanh bình thường: nó chọn ảnh Xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong Xem nhanh. Điều này sẽ thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang các ứng dụng đi kèm.",
     "{count} matching photo shown: {criteria}.": "Đã hiển thị {count} ảnh khớp: {criteria}.",
     "{count} matching photos shown: {criteria}.": "Đã hiển thị {count} ảnh khớp: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng.",
+    "Copy Settings...": "Sao chép cài đặt..."
   },
   "plurals": {
     " · {count} paired file linked": {

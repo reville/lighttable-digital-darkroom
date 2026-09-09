@@ -1193,7 +1193,7 @@
         {
           "title": "एक संग्रह चुनें",
           "paragraphs": [
-            "संपादन टूलबार में Presets खोलें। Built-in में दस शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है।"
+            "संपादन टूलबार में Presets खोलें। Built-in में 15 शामिल looks होते हैं और यह ऑफ़लाइन काम करता है। Yours में सहेजे गए looks, आयात, और इंस्टॉल किए गए community presets होते हैं। Community समीक्षित ऑनलाइन संग्रह ब्राउज़ करता है। हर पेज पर 20 प्रीसेट दिखाए जाते हैं।"
           ],
           "steps": [
             "Built-in, Yours, या Community चुनें। नाम, विवरण, निर्माता, या विषय से खोजें।",
@@ -3188,5 +3188,5 @@
     }
   ],
   "locale": "hi",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
 }

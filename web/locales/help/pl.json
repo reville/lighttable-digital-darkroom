@@ -1193,7 +1193,7 @@
         {
           "title": "Wybierz kolekcję",
           "paragraphs": [
-            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera dziesięć dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online."
+            "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 15 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online. Na każdej stronie wyświetlanych jest 20 presetów."
           ],
           "steps": [
             "Wybierz Built-in, Yours lub Community. Szukaj według nazwy, opisu, twórcy lub obiektu.",
@@ -3188,5 +3188,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
 }

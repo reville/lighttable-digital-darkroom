@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Pilih seseorang",
     "Choose a photo folder": "Pilih folder foto",
     "Choose a photo to edit": "Pilih sebuah foto untuk diedit",
-    "Choose a photo to rate or flag": "Pilih foto untuk diberi rating atau bendera",
     "Choose a preset to see its source and conversion coverage.": "Pilih preset untuk melihat sumber dan cakupan konversinya.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Pilih proses cetak untuk negatif dan pahami mengapa kontrol cetak menghilang untuk film slide.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Pilih titik yang disimpan di selector untuk mengeditnya, atau gunakan Delete point untuk menghapusnya.",
@@ -1889,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Buka Masker di bilah alat pengeditan dan pilih alat di bawah Buat Masker Baru. Klik Buat Masker Baru untuk menampilkan atau menyembunyikan alat. Setiap masker memiliki penyesuaian Cahaya, Warna, dan Kurva Nada sendiri.",
     "Open People and choose Download models & enable.": "Buka Orang dan pilih Unduh model & aktifkan.",
     "Open People…": "Buka Orang…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau. Preset ditampilkan 20 per halaman.",
     "Open Recovery Folder": "Buka Folder Pemulihan",
     "Open Recovery folder": "Buka folder Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Buka Remove di toolbar pengeditan. Remove, Heal, dan Clone adalah mode terpisah. Heal dan Clone memilih sumber awal secara otomatis; periksa sumber itu alih-alih menganggapnya cocok.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Pilih sebuah foto untuk menyalin pengaturannya",
     "Select a photo to edit": "Pilih sebuah foto untuk diedit",
     "Select a photo to preview": "Pilih sebuah foto untuk pratinjau",
-    "Select a photo to rate or flag": "Pilih foto untuk memberi rating atau bendera",
     "Select a photo, or a set in a grid, and open Info.": "Pilih foto, atau satu set dalam kisi, lalu buka Info.",
     "Select a photo.": "Pilih sebuah foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Pilih rentang jarak dari kamera; perhalus batas jauh dan dekat",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Saat Survey dibuka dari Seleksi terbantu, bandingkan grup yang disarankan dan beri bendera pada foto satu per satu. Buat pilihan tersedia dalam Survey biasa: ini memilih foto survei aktif dan menolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG tertaut dapat memperluas perubahan bendera tersebut ke pendamping.",
     "{count} matching photo shown: {criteria}.": "{count} foto cocok ditampilkan: {criteria}.",
     "{count} matching photos shown: {criteria}.": "{count} foto cocok ditampilkan: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap.",
+    "Copy Settings...": "Salin pengaturan..."
   },
   "plurals": {
     " · {count} paired file linked": {

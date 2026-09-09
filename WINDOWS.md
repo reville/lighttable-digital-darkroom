@@ -339,3 +339,103 @@ preview surface is not enabled in the Windows shell. Measure decode, GPU work,
 webview upload, and presentation separately before choosing whether a native
 DirectX viewport is needed. Apple-only AI providers and HEIF export also remain
 separate feature-porting work.
+
+## Microsoft Store EXE candidate
+
+Store preparation uses the existing per-user NSIS installer. It is an opt-in
+build mode; direct downloads keep their current defaults. It does not reserve
+a Store name, enroll a publisher, upload anything, or prove certification.
+
+On a Windows build runner with the existing release-signing prerequisites,
+provide the **x64 Evergreen Standalone Installer** from
+[Microsoft WebView2 downloads](https://developer.microsoft.com/microsoft-edge/webview2/)
+and record its SHA256 when acquiring it. Do not use the small online bootstrapper.
+The build checks that pinned hash and a trusted Microsoft signature before any
+compilation. Offline setup never falls back to downloading a prerequisite.
+
+```powershell
+./scripts/windows/build-release.ps1 -Version 0.5.0 -StoreCandidate `
+  -OfflineWebView2Installer C:\release-inputs\MicrosoftEdgeWebView2RuntimeInstallerX64.exe `
+  -OfflineWebView2Sha256 '<recorded 64-character SHA256>'
+```
+
+Use a selected stable release number in place of the example. Outputs are under
+`dist/store-candidate/`; do not overwrite an already submitted version. The
+existing Azure signing configuration runs only on approved main/version-tag
+GitHub Actions contexts. The command also requires the existing update-signing
+key. This mode does not change credentials, certificates, or Azure identity.
+
+Candidate builds:
+
+- Embed the standalone WebView2 prerequisite and invoke it silently when needed.
+- Scan the native payload by PE header, including Python `.pyd` modules. Sign
+  unsigned EXE/DLL/PYD files with the configured release signer and preserve
+  valid vendor signatures. Reject invalid signatures or unsupported unsigned PE
+  suffixes rather than silently ignoring them.
+- Sign NSIS's generated uninstaller before embedding it, then audit every PE in
+  the installed payload. `windows-store-pe-signatures.json` records each path,
+  SHA256, signature status, and publisher. A failure blocks the candidate.
+- Set candidate installer CompanyName and installed-app publisher metadata to
+  `Chonkers LLC`. Direct-release metadata remains unchanged. Metadata does not
+  change the certificate's legal identity: review the actual signing identity
+  with the Chonkers LLC Partner Center account before submission.
+
+Partner Center installation arguments: `/S` (case-sensitive). Silent uninstall
+uses `/S`. The installer is per-user and currently leaves its own update service
+in control, as with other EXE installations; it is not an MSIX package.
+
+### Evidence still required before initial submission
+
+The existing successful Windows release run predates this candidate mode. Run
+it on Windows and retain the installed-payload signature report, installer
+hash, build manifest, native startup/edit/export/restart evidence, and install,
+repair, uninstall results. Separately exercise installation on clean Windows
+10/11 x64 with WebView2 absent and network disabled, then launch and export.
+An ordinary CI image with WebView2 already present cannot prove this case.
+Check that `/S` shows no setup UI and no app is launched by setup. Confirm all
+supported OS/device claims and that uninstall preserves photos and catalogs.
+
+Host the final signed EXE at a permanent **versioned HTTPS URL** only after
+release approval. Record its SHA256 and never replace bytes at that URL.
+Complete publisher verification, name reservation, Store listing assets,
+privacy/support links, age rating, and certification notes in Partner Center.
+No Store release is prepared merely because the four original application
+signatures or the standard Windows workflow passed.
+
+Sources: [Store EXE package requirements](https://learn.microsoft.com/windows/apps/publish/publish-your-app/msi/app-package-requirements)
+and [Microsoft's offline WebView2 deployment](https://learn.microsoft.com/microsoft-edge/webview2/concepts/distribution#offline-deployment).
+
+### Dispatch the initial candidate after the preparation branch is merged
+
+The checked-in `packaging/webview2-store-input.json` pins the acquired Microsoft
+x64 standalone download (258,614,480 bytes; SHA256
+`e7fa35755196ad9223596ef021a1ce6799509142eaa40ba35f634026be50b831`).
+The workflow downloads only that Microsoft CDN URL without redirects and checks
+its byte length, SHA256, and trusted Microsoft signature on Windows. If the CDN
+no longer serves those exact bytes, acquire and review a new input explicitly;
+never replace the checksum automatically.
+
+```sh
+gh workflow run windows-build.yml --repo reville/lighttable-digital-darkroom \
+  --ref main -f version=0.5.0 -F store_candidate=true -F require_signing=true
+```
+
+This command is an instruction for a future authorized run, not evidence that a
+run occurred. Store mode implies required signing even when the separate signing
+input is false, uses the existing `windows-release` environment, accepts only
+main/version-tag dispatches, and cannot be combined with native-recheck mode.
+The direct-download workflow defaults and artifact name remain unchanged.
+
+The `LightTable-windows-x64` workflow artifact contains the candidate ZIP and
+EXE, signature reports, signed appcast, and `store-candidate-receipt.json`.
+The receipt cross-checks the source commit, final installer hash, archive hash,
+prerequisite hash, and installed PE report including the uninstaller. Native
+edit/export/restart still gates the job and uploads separate
+`Windows-native-acceptance` evidence. The receipt explicitly leaves clean-machine
+offline acceptance unconfirmed until that independent Windows test is done.
+
+For the selected initial release `0.5.0`, the proposed public EXE URL is
+`https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-windows-x64-setup.exe`.
+This is a proposed location, not a live download. Publish only the exact verified
+candidate bytes after all release and Store gates pass; do not replace bytes at
+that URL after submission.

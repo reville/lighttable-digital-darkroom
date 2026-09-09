@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "اختر شخصًا",
     "Choose a photo folder": "اختر مجلد صور",
     "Choose a photo to edit": "اختر صورة لتحريرها",
-    "Choose a photo to rate or flag": "اختر صورة لتقييمها أو وضع علامة عليها",
     "Choose a preset to see its source and conversion coverage.": "اختر preset لرؤية مصدره وتغطية التحويل.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "اختر عملية طباعة للنيغاتيفات وافهم سبب اختفاء عناصر التحكم في الطباعة مع فيلم الشريحة.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "اختر نقطة محفوظة في المحدد لتحريرها، أو استخدم حذف النقطة لإزالتها.",
@@ -1889,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "افتح القناع في شريط أدوات التحرير واختر أداة ضمن إنشاء قناع جديد. انقر إنشاء قناع جديد لإظهار الأدوات أو إخفائها. لكل قناع تعديلات خاصة به على الضوء واللون ومنحنى النغمة.",
     "Open People and choose Download models & enable.": "افتح الأشخاص واختر تنزيل النماذج وتمكينها.",
     "Open People…": "فتح الأشخاص…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على عشرة looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "افتح Presets في شريط أدوات التحرير. يحتوي Built-in على 15 looks مضمّنة ويعمل دون اتصال. يحتوي Yours على looks محفوظة، وعمليات استيراد، وإعدادات مسبقة مجتمعية مثبتة. يتصفح Community المجموعة المعتمدة عبر الإنترنت. تُعرض الإعدادات المسبقة بمعدل 20 إعدادًا في كل صفحة.",
     "Open Recovery Folder": "فتح مجلد الاستعادة",
     "Open Recovery folder": "فتح مجلد الاستعادة",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "افتح إزالة في شريط أدوات التحرير. إزالة، ومعالجة، واستنساخ هي أوضاع منفصلة. يختار كل من معالجة واستنساخ مصدرًا أوليًا تلقائيًا؛ افحص ذلك المصدر بدلًا من افتراض ملاءمته.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "حدد صورة لنسخ إعداداتها",
     "Select a photo to edit": "حدِّد صورة لتحريرها",
     "Select a photo to preview": "تحديد صورة للمعاينة",
-    "Select a photo to rate or flag": "حدد صورة لتقييمها أو وضع علامة عليها",
     "Select a photo, or a set in a grid, and open Info.": "حدد صورة، أو مجموعة في الشبكة، وافتح معلومات.",
     "Select a photo.": "حدد صورة.",
     "Select a range of distances from the camera; refine the far and near limits": "حدد نطاقًا من المسافات من الكاميرا؛ وصقل الحدود البعيدة والقريبة",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "عند فتح الاستعراض من استبعاد بمساعدة، قارن المجموعة المقترحة وضع علامة على الصور كلٌ على حدة. يتوفر اجعلها محددة في استعراض عادي: فهو يختار صورة الاستعراض النشطة ويرفض الصور الأخرى التي لا تزال في الاستعراض. يؤدي هذا إلى تغيير أعلامها. يمكن لبيانات RAW وJPEG الوصفية المرتبطة أن توسّع هذه التغييرات في الأعلام لتشمل المرافقين.",
     "{count} matching photo shown: {criteria}.": "تم عرض {count} صورة مطابقة: {criteria}.",
     "{count} matching photos shown: {criteria}.": "تم عرض {count} صور مطابقة: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة.",
+    "Copy Settings...": "نسخ الإعدادات..."
   },
   "plurals": {
     " · {count} paired file linked": {

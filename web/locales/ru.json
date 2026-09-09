@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Выберите человека",
     "Choose a photo folder": "Выберите папку с фото",
     "Choose a photo to edit": "Выберите фото для редактирования",
-    "Choose a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Choose a preset to see its source and conversion coverage.": "Выберите пресет, чтобы увидеть его исходный профиль и покрытие преобразования.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Выберите процесс печати для негативов и поймите, почему элементы управления печатью исчезают для слайд-пленки.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Выберите сохраненную точку в селекторе, чтобы отредактировать ее, или используйте Удалить точку, чтобы убрать ее.",
@@ -1889,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Откройте Маска на панели инструментов редактирования и выберите инструмент в разделе Создать новую маску. Щелкните Создать новую маску, чтобы показать или скрыть инструменты. У каждой маски есть собственные корректировки Свет, Цвет и Тональная кривая.",
     "Open People and choose Download models & enable.": "Откройте Люди и выберите Скачать модели и включить.",
     "Open People…": "Открыть Люди…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Откройте Пресеты на панели редактирования. Встроенные содержит десять включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Откройте Пресеты на панели редактирования. Встроенные содержит 15 включенных внешних видов и работает офлайн. Ваши содержит сохраненные виды, импорты и установленные пресеты сообщества. Сообщество просматривает проверенную онлайн-коллекцию. На каждой странице отображается 20 пресетов.",
     "Open Recovery Folder": "Открыть папку восстановления",
     "Open Recovery folder": "Открыть папку Recovery",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Откройте Удалить на панели инструментов редактирования. Удалить, Восстановить и Клонировать — это отдельные режимы. Восстановить и Клонировать автоматически выбирают начальный источник; проверьте этот источник, а не предполагаете, что он подходит.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Выберите фото, чтобы скопировать его настройки",
     "Select a photo to edit": "Выберите фото для редактирования",
     "Select a photo to preview": "Выберите фото для предпросмотра",
-    "Select a photo to rate or flag": "Выберите фото, чтобы оценить или пометить флажком",
     "Select a photo, or a set in a grid, and open Info.": "Выберите фото или набор в сетке и откройте Инфо.",
     "Select a photo.": "Выбрать фото.",
     "Select a range of distances from the camera; refine the far and near limits": "Выберите диапазон расстояний от камеры; уточните дальнюю и ближнюю границы",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Когда Обзор открыт из Помощь при отбраковке, сравните предложенную группу и помечайте фото по отдельности. Сделать выделение доступно в обычном Обзор: оно выбирает активное фото обзора и отклоняет другие фото, которые все еще находятся в обзоре. Это изменяет их флажки. Связанные метаданные RAW и JPEG могут распространить эти изменения флажков на сопутствующее приложение.",
     "{count} matching photo shown: {criteria}.": "Показано {count} совпадающее фото: {criteria}.",
     "{count} matching photos shown: {criteria}.": "Показано {count} совпадающих фото: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками.",
+    "Copy Settings...": "Копировать настройки..."
   },
   "plurals": {
     " · {count} paired file linked": {

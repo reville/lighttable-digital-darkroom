@@ -38,7 +38,8 @@ test('Cinematic Color retains its baseline across every amount and control readb
     setAttribute(key,value){this.attributes[key]=value;},
     getAttribute(key){return this.attributes[key];},removeAttribute(){}};
   const state = structuredClone(base), noop = () => {};
-  const context = {S:state,$:el,document:{querySelectorAll:()=>[]},
+  const context = {S:state,$:el,document:{querySelectorAll:()=>[],querySelector:el},
+    RESET_GROUPS:{film:[]},
     FILM_SLIDERS:['print_exposure','grain_amount','glare_amount'],FILM_SELECTS:[],FILM_TOGGLES:[],
     filmChoiceValue:params=>params.stock,filmSelectionForChoice:stock=>({stock}),
     populatePaperOptions:noop,populateDevelopmentTimes:()=>{el('development_time').value=state.params.development_time;},

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -475,7 +475,6 @@
     "Choose a person": "Elegir una persona",
     "Choose a photo folder": "Elige una carpeta de fotos",
     "Choose a photo to edit": "Elige una foto para editar",
-    "Choose a photo to rate or flag": "Elegir una foto para calificar o marcar",
     "Choose a preset to see its source and conversion coverage.": "Elige un ajuste preestablecido para ver su cobertura de origen y conversión.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Elige un proceso de impresión para negativos y comprende por qué los controles de impresión desaparecen para película diapositiva.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Elige un punto guardado en el selector para editarlo, o usa Eliminar punto para quitarlo.",
@@ -1889,7 +1888,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.": "Abra Máscara en la barra de herramientas de edición y elija una herramienta en Crear nueva máscara. Haga clic en Crear nueva máscara para mostrar u ocultar las herramientas. Cada máscara tiene sus propios ajustes de Luz, Color y Curva de tono.",
     "Open People and choose Download models & enable.": "Abre Personas y elige Descargar modelos y activar.",
     "Open People…": "Abrir Personas…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Abre Presets en la barra de herramientas de edición. Built-in contiene diez looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.": "Abre Presets en la barra de herramientas de edición. Built-in contiene 15 looks incluidos y funciona sin conexión. Yours contiene looks guardados, importaciones y ajustes preestablecidos de la comunidad instalados. Community explora la colección en línea revisada. Se muestran 20 ajustes preestablecidos por página.",
     "Open Recovery Folder": "Abrir carpeta de recuperación",
     "Open Recovery folder": "Abrir carpeta de recuperación",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.": "Abre Quitar en la barra de herramientas de edición. Quitar, Corregir y Clonar son modos separados. Corregir y Clonar eligen automáticamente una fuente inicial; inspecciona esa fuente en lugar de asumir que es adecuada.",
@@ -2492,7 +2491,6 @@
     "Select a photo to copy its settings": "Seleccione una foto para copiar su configuración",
     "Select a photo to edit": "Selecciona una foto para editar",
     "Select a photo to preview": "Selecciona una foto para previsualizar",
-    "Select a photo to rate or flag": "Selecciona una foto para puntuarla o marcarla",
     "Select a photo, or a set in a grid, and open Info.": "Selecciona una foto, o un conjunto en una cuadrícula, y abre Información.",
     "Select a photo.": "Seleccionar una foto.",
     "Select a range of distances from the camera; refine the far and near limits": "Selecciona un rango de distancias desde la cámara; ajusta los límites lejanos y cercanos",
@@ -4153,7 +4151,8 @@
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Cuando Vista general se abre desde Descartado asistido, compara el grupo sugerido y marca las fotos individualmente. Hacer selección está disponible en una Vista general normal: selecciona la foto activa de la vista general y rechaza las otras fotos que aún están en la vista general. Esto cambia sus marcas. Los metadatos vinculados RAW y JPEG pueden extender esos cambios de marca a los compañeros.",
     "{count} matching photo shown: {criteria}.": "Se muestra {count} foto coincidente: {criteria}.",
     "{count} matching photos shown: {criteria}.": "Se muestran {count} fotos coincidentes: {criteria}.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas.",
+    "Copy Settings...": "Copiar ajustes..."
   },
   "plurals": {
     " · {count} paired file linked": {

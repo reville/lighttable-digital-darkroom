@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -755,7 +755,6 @@
     "Choose a person",
     "Choose a photo folder",
     "Choose a photo to edit",
-    "Choose a photo to rate or flag",
     "Choose a preset to see its source and conversion coverage.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.",
@@ -1001,6 +1000,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.",
     "Copy",
     "Copy Edit Settings",
+    "Copy Settings...",
     "Copy and Paste are below the photo in Detail view.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.",
     "Copy and verify it into the library",
@@ -2197,7 +2197,7 @@
     "Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.",
     "Open People and choose Download models & enable.",
     "Open People…",
-    "Open Presets in the editing toolbar. Built-in contains ten included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.",
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection. Presets are shown 20 per page.",
     "Open Recovery Folder",
     "Open Recovery folder",
     "Open Remove in the editing toolbar. Remove, Heal, and Clone are separate modes. Heal and Clone choose an initial source automatically; inspect that source instead of assuming it is suitable.",
@@ -2809,7 +2809,6 @@
     "Select a photo to copy its settings",
     "Select a photo to edit",
     "Select a photo to preview",
-    "Select a photo to rate or flag",
     "Select a photo, or a set in a grid, and open Info.",
     "Select a photo.",
     "Select a range of distances from the camera; refine the far and near limits",

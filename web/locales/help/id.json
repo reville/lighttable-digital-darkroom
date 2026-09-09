@@ -1193,7 +1193,7 @@
         {
           "title": "Pilih koleksi",
           "paragraphs": [
-            "Buka Preset di toolbar pengeditan. Bawaan berisi sepuluh tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau."
+            "Buka Preset di toolbar pengeditan. Bawaan berisi 15 tampilan yang disertakan dan berfungsi offline. Milik Anda berisi tampilan yang disimpan, impor, dan preset komunitas yang diinstal. Komunitas menelusuri koleksi online yang telah ditinjau. Preset ditampilkan 20 per halaman."
           ],
           "steps": [
             "Pilih Bawaan, Milik Anda, atau Komunitas. Cari berdasarkan nama, deskripsi, pembuat, atau subjek.",
@@ -3188,5 +3188,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
+  "sourceDigest": "c00902e34e8e593ff0f702c7484765f8deba3cf84863576c715c2491e842ba81"
 }
