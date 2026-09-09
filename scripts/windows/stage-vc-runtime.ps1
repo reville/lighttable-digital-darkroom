@@ -31,7 +31,10 @@ $Candidates = @(
         foreach ($Directory in (Get-ChildItem $X64 -Directory -Filter "Microsoft.VC*.CRT")) {
             $Msvcp = Join-Path $Directory.FullName "msvcp140.dll"
             if (Test-Path $Msvcp) {
-                $Version = [version](Get-Item $Msvcp).VersionInfo.FileVersion
+                # The display string can include "built by: cloudtest".
+                # Compare the fixed numeric PE version fields instead.
+                $Info = (Get-Item $Msvcp).VersionInfo
+                $Version = [version]::new($Info.FileMajorPart, $Info.FileMinorPart, $Info.FileBuildPart, $Info.FilePrivatePart)
                 if ($Version -ge $MinimumVersion) {
                     [pscustomobject]@{ Directory = $Directory.FullName; Version = $Version }
                 }
