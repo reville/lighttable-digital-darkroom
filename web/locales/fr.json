@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "332979ea7de20f371a9a39cc141f4a5fe27207ad470d76055f609b284a987ddf",
+  "sourceDigest": "c6cb405173c3fe20be868b1cfdb054f8c8d6e14cfbf946a821e4182366e27196",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -93,7 +93,6 @@
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "Une courbe enregistrée reste exacte jusqu’à ce que vous la modifiiez. L’éditeur reconstruit des poignées représentatives, si bien que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Une courbe enregistrée ou importée conserve sa table sauvegardée exacte jusqu’à ce que vous la modifiiez. L’application reconstruit des poignées représentatives pour l’édition, de sorte que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "Une copie virtuelle renvoie au même fichier original et conserve un état de retouche indépendant. Elle ne crée pas un deuxième original sur le disque.",
-    "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "Une copie virtuelle partage son fichier d’origine. La suppression d’une copie virtuelle doit utiliser les actions Photo → Supprimer la copie virtuelle ; déplacer sa source vers la corbeille affecte chaque édition qui utilise cet original.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "Une copie virtuelle partage son fichier source : en inclure une dans un renommage cible cet original. L’interface ne fournit pas de bouton dédié pour annuler un renommage.",
     "About LightTable": "À propos de LightTable",
     "About LightTable and open source": "À propos de LightTable et open source",
@@ -139,7 +138,6 @@
     "Added to Yours": "Ajouté à Vos",
     "Added to collection": "Ajouté à la collection",
     "Adding folders needs the desktop app": "L’ajout de dossiers nécessite l’application de bureau",
-    "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Les sidecars XMP adjacents suivent les originaux. Les compagnons RAW ou JPEG masqués restent dans la bibliothèque ; choisissez Les deux fichiers dans les paramètres de capture en paire pour les inclure.",
     "Adjust Clarity while checking contrast around the subject and edges.": "Ajustez la Clarté tout en vérifiant le contraste autour du sujet et des bords.",
     "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.": "Ajustez Contour progressif ou Opacité si le bord ou l’intensité de la correction doit être affinée.",
     "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.": "Ajustez Hautes lumières et Ombres pour équilibrer les zones claires et sombres, puis affinez Blancs, Noirs et Contraste.",
@@ -195,7 +193,6 @@
     "Aperture (f-number)": "Ouverture (nombre f)",
     "Aperture ≤": "Ouverture ≤",
     "Aperture ≥": "Ouverture ≥",
-    "Appearance tester": "Testeur d’apparence",
     "Apple Intelligence unavailable": "Apple Intelligence indisponible",
     "Apple Photos": "Photos Apple",
     "Apple Photos import is available in the macOS app": "L’import depuis Apple Photos est disponible dans l’application macOS",
@@ -1161,7 +1158,6 @@
     "Filename template": "Modèle de nom de fichier",
     "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.": "Les modèles de nom de fichier prennent en charge {filename}, {stock}, {date}, {rating} et {sequence}. Par exemple, {filename}_{stock} inclut le nom source et la pellicule. Les champs de nom de fichier longs sont raccourcis pour laisser de la place aux noms de sortie et de sidecar ; vérifiez l’Aperçu de sortie.",
     "Files & Metadata": "Fichiers et métadonnées",
-    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow.": "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge.",
     "Fill a distraction using surrounding image detail": "Combler une distraction à l’aide des détails de l’image environnante",
     "Film": "Film",
     "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off.": "Film applique un film modélisé et un processus de sortie à une photo fixe. L’interrupteur de profil Film contrôle ce traitement ; vos ajustements Modifier restent actifs lorsque vous désactivez Film.",
@@ -4158,7 +4154,11 @@
     "Select a photo, expand a pack, and click a preset row.": "Sélectionnez une photo, développez un pack et cliquez sur la ligne d’un préréglage.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.": "Le passage d’une ligne de préréglage à une autre utilise la retouche précédant le premier préréglage afin que les rendus ne se cumulent pas. Les modifications manuelles extérieures au préréglage, comme l’exposition pour un rendu, sont conservées. Modifier manuellement un réglage contrôlé par le préréglage met fin à son ajustement Quantité ; la retouche actuelle devient alors la base du prochain préréglage.",
     "Copy Settings...": "Copier les réglages...",
-    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
+    "Open Presets in the editing toolbar. Built-in contains 15 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée.",
+    "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "Les sidecars XMP adjacents suivent les originaux, mais un XMP partagé reste avec tout original apparié conservé dans la bibliothèque. Les fichiers RAW ou JPEG associés et masqués restent dans la bibliothèque ; choisissez Les deux fichiers dans les paramètres de capture en paire pour les inclure.",
+    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge. Les modifications portables de LightTable incluent les copies virtuelles. Lorsque vous rouvrez un dossier, les modifications déjà enregistrées dans votre catalogue sont conservées.",
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "« Déplacer les photos rejetées vers la corbeille » ignore les copies virtuelles. Utilisez Actions photo → Supprimer la copie virtuelle pour supprimer une copie sans toucher à son original.",
+    "Appearance tester": "Testeur d’apparence"
   },
   "plurals": {
     " · {count} paired file linked": {

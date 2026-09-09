@@ -919,6 +919,18 @@ class Catalog:
                 conn.execute(
                     "INSERT INTO meta(key, value) VALUES('schema_version', ?)",
                     (str(SCHEMA_VERSION),))
+            # Older builds re-imported portable mirrors on every launch. Their
+            # existing catalog rows are authoritative, even if an edit was
+            # reset to its default or the best-effort mirror is stale.
+            with self.write() as transaction:
+                if not transaction.execute(
+                        "SELECT 1 FROM meta WHERE key='portable.adoption-policy'").fetchone():
+                    transaction.execute(
+                        "INSERT OR IGNORE INTO meta(key,value)"
+                        " SELECT 'portable.source:' || source_id, '1' FROM files"
+                        " GROUP BY source_id")
+                    transaction.execute(
+                        "INSERT INTO meta(key,value) VALUES('portable.adoption-policy','1')")
 
     def _migrate(self, from_version: int) -> None:
         """Upgrade an older catalog in place.
@@ -1349,10 +1361,28 @@ class Catalog:
         """Flag rows whose files vanished; never delete their edits."""
         keep = set(keep_relpaths)
         with self.write() as conn:
+            source = conn.execute("SELECT path FROM sources WHERE id=?",
+                                  (source_id,)).fetchone()
+            if not source:
+                return 0
+            root = Path(source["path"])
             rows = conn.execute(
                 "SELECT id, relpath FROM files WHERE source_id=? AND missing=0",
                 (source_id,)).fetchall()
-            gone = [int(r["id"]) for r in rows if r["relpath"] not in keep]
+            gone = []
+            for row in rows:
+                if row["relpath"] in keep:
+                    continue
+                # A rename or watched arrival can commit after the directory
+                # was traversed. Check only unseen *current* paths while the
+                # writer lock prevents another catalog relocation.
+                try:
+                    (root / row["relpath"]).stat()
+                except FileNotFoundError:
+                    if root.is_dir():
+                        gone.append(int(row["id"]))
+                except OSError:
+                    pass  # Offline/permission failures do not prove absence.
             for file_id in gone:
                 conn.execute("UPDATE files SET missing=1 WHERE id=?", (file_id,))
             return len(gone)
@@ -1618,7 +1648,7 @@ class Catalog:
         return int(row["id"]) if row else None
 
     def add_virtual_copy(self, image_id: int, copy_ident: str,
-                         display_name: str) -> int:
+                         display_name: str, *, from_portable: bool = False) -> int:
         """A second interpretation of one file, with its own state."""
         with self.write() as conn:
             base = conn.execute("SELECT file_id FROM images WHERE id=?",
@@ -1630,7 +1660,7 @@ class Catalog:
                 " created_at) VALUES(?,1,?,?,?)",
                 (int(base["file_id"]), copy_ident, display_name, _now()))
             copy_id = int(cur.lastrowid)
-            source = conn.execute(
+            source = None if from_portable else conn.execute(
                 "SELECT * FROM image_state WHERE image_id=?",
                 (image_id,)).fetchone()
             if source:
@@ -1644,20 +1674,22 @@ class Catalog:
             else:
                 conn.execute("INSERT INTO image_state(image_id, updated_at)"
                              " VALUES(?,?)", (copy_id, _now()))
-            # A virtual interpretation starts with the source's descriptive
-            # metadata and saved edit versions, then diverges independently.
-            conn.execute(
-                "INSERT INTO image_keywords(image_id, keyword_id)"
-                " SELECT ?, keyword_id FROM image_keywords WHERE image_id=?",
-                (copy_id, image_id))
+            # User-created interpretations clone the source. Portable copies
+            # start with a default recipe, then receive their own saved state;
+            # absence of a portable entry means the copy was unedited.
+            if not from_portable:
+                conn.execute(
+                    "INSERT INTO image_keywords(image_id, keyword_id)"
+                    " SELECT ?, keyword_id FROM image_keywords WHERE image_id=?",
+                    (copy_id, image_id))
             fields = ", ".join(self.IPTC_FIELDS)
             conn.execute(
                 f"INSERT INTO iptc(image_id, {fields})"
                 f" SELECT ?, {fields} FROM iptc WHERE image_id=?",
                 (copy_id, image_id))
-            for version in conn.execute(
+            for version in ([] if from_portable else conn.execute(
                     "SELECT id, name, created, state_json FROM versions"
-                    " WHERE image_id=?", (image_id,)).fetchall():
+                    " WHERE image_id=?", (image_id,)).fetchall()):
                 conn.execute(
                     "INSERT INTO versions(id, image_id, name, created,"
                     " state_json) VALUES(?,?,?,?,?)",
@@ -1665,15 +1697,19 @@ class Catalog:
                      version["name"], version["created"],
                      version["state_json"]))
             self._reindex(conn, copy_id)
+            if not from_portable:
+                self._own_portable_state(conn, copy_id)
             return copy_id
 
     def delete_virtual_copy(self, image_id: int) -> None:
         """Delete one virtual interpretation without touching its source file."""
         with self.write() as conn:
             row = conn.execute(
-                "SELECT virtual FROM images WHERE id=?", (image_id,)).fetchone()
+                "SELECT virtual, file_id, copy_ident FROM images WHERE id=?", (image_id,)).fetchone()
             if not row or not row["virtual"]:
                 raise ValueError("not a virtual copy")
+            conn.execute("INSERT OR REPLACE INTO meta(key,value) VALUES(?, '1')",
+                         (f"portable.deleted-copy:{row['file_id']}:{row['copy_ident']}",))
             conn.execute("DELETE FROM images WHERE id=?", (image_id,))
             conn.execute(
                 "DELETE FROM stacks WHERE id IN ("
@@ -1771,6 +1807,11 @@ class Catalog:
             conn.execute("DELETE FROM meta WHERE key LIKE ?", (pattern,))
             return changes
 
+    def _own_portable_state(self, conn, image_id: int) -> None:
+        """A saved or deliberately reset recipe must never be re-adopted."""
+        conn.execute("INSERT OR IGNORE INTO meta(key,value) VALUES(?, '1')",
+                     (f"portable.image:{image_id}",))
+
     def _save_state(self, conn, image_id: int, entry: dict) -> None:
         conn.execute("INSERT OR IGNORE INTO image_state(image_id,"
                      " updated_at) VALUES(?,?)", (image_id, _now()))
@@ -1813,6 +1854,7 @@ class Catalog:
         # Rating, flags and rendering state do not change searchable text.
         if "keywords" in entry:
             self._reindex(conn, image_id)
+        self._own_portable_state(conn, image_id)
 
 
     def paired_image_names(self, image_id: int) -> list[str]:
@@ -1965,6 +2007,9 @@ class Catalog:
                          " updated_at=excluded.updated_at", (file_id, value, _now()))
         conn.execute("UPDATE image_state SET updated_at=? WHERE image_id IN"
                      " (SELECT id FROM images WHERE file_id=?)", (_now(), file_id))
+        conn.execute("INSERT OR IGNORE INTO meta(key,value)"
+                     " SELECT 'portable.image:' || id, '1' FROM images WHERE file_id=?",
+                     (file_id,))
 
     def apply_capture_changes(self, changes: list[dict], *, label="Capture time corrected") -> list[str]:
         """Compare-and-set one reviewed batch with reversible history atomically."""
@@ -2507,6 +2552,7 @@ class Catalog:
                      str(version.get("created", "")), json.dumps(payload)))
             conn.execute("UPDATE image_state SET updated_at=? WHERE image_id=?",
                          (_now(), image_id))
+            self._own_portable_state(conn, image_id)
 
     # -------------------------------------------------------------- history
 
@@ -2734,7 +2780,12 @@ class _WriteTransaction:
                 raise RuntimeError(
                     "the catalog is unavailable while it is being replaced")
             self.connection = self.catalog.connection
-            self.connection.execute("BEGIN IMMEDIATE")
+            # Portable adoption composes the normal catalog writers in one
+            # transaction, so failure cannot leave a half-imported source.
+            self.savepoint = (f"lighttable_{id(self)}"
+                              if self.connection.in_transaction else None)
+            self.connection.execute(f"SAVEPOINT {self.savepoint}"
+                                    if self.savepoint else "BEGIN IMMEDIATE")
             return self.connection
         except Exception:
             self.catalog._write_lock.release()
@@ -2745,18 +2796,27 @@ class _WriteTransaction:
         try:
             if exc_type is None:
                 try:
-                    conn.execute("COMMIT")
+                    conn.execute(f"RELEASE SAVEPOINT {self.savepoint}"
+                                 if self.savepoint else "COMMIT")
                 except Exception:
                     # A disk-full or I/O error at commit must not leave this
                     # per-thread connection holding an open write transaction.
                     try:
-                        conn.execute("ROLLBACK")
+                        if self.savepoint:
+                            conn.execute(f"ROLLBACK TO SAVEPOINT {self.savepoint}")
+                            conn.execute(f"RELEASE SAVEPOINT {self.savepoint}")
+                        else:
+                            conn.execute("ROLLBACK")
                     except Exception:
                         self.catalog.close()
                     raise
             else:
                 try:
-                    conn.execute("ROLLBACK")
+                    if self.savepoint:
+                        conn.execute(f"ROLLBACK TO SAVEPOINT {self.savepoint}")
+                        conn.execute(f"RELEASE SAVEPOINT {self.savepoint}")
+                    else:
+                        conn.execute("ROLLBACK")
                 except Exception:
                     # The original operation error remains the useful one;
                     # discard a connection that could still hold a transaction.
