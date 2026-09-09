@@ -72,8 +72,9 @@ Unsigned development builds cannot install updates automatically.
 
 The Windows feed is `appcast-windows-x64.xml` on the dedicated `desktop-updates`
 GitHub release. Its signed enclosures point to immutable versioned installers.
-WinSparkle verifies the Ed25519 signature, and the update helper verifies the
-installer's Authenticode signature before installation. See
+WinSparkle verifies the Ed25519 signature before handing off the download.
+The release build signs and verifies the installer's Authenticode signature
+before publication. The helper waits for shutdown and runs that installer. See
 [release setup](release/README.md) for signing and feed publication.
 This source integration still requires a signed upgrade on an actual Windows
 desktop before release.
