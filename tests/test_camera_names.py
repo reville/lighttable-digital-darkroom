@@ -17,10 +17,21 @@ class CameraNameTests(unittest.TestCase):
         self.assertEqual(
             catalog_module.camera_name("Canon", "Canon EOS 80D"), "Canon EOS 80D")
 
-    def test_a_longer_repeated_maker_is_reduced(self):
+    def test_a_maker_whose_first_word_repeats_is_not_shown_twice(self):
         self.assertEqual(
             catalog_module.camera_name("NIKON CORPORATION", "NIKON D850"),
-            "NIKON CORPORATION NIKON D850")
+            "NIKON D850")
+        self.assertEqual(
+            catalog_module.camera_name("RICOH IMAGING COMPANY, LTD.",
+                                       "RICOH GR III"),
+            "RICOH GR III")
+
+    def test_the_repeat_is_matched_on_whole_words(self):
+        # "OM-1MarkII" begins with the letters of "OM" but is not that word, so
+        # the maker has to stay or the camera loses its name entirely.
+        self.assertEqual(
+            catalog_module.camera_name("OM Digital Solutions", "OM-1MarkII"),
+            "OM Digital Solutions OM-1MarkII")
 
     def test_padding_inside_and_around_the_fields_is_collapsed(self):
         self.assertEqual(

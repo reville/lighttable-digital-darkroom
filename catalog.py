@@ -294,11 +294,18 @@ def camera_name(make, model) -> str:
     the library showed a camera. `ingest_workflow._capture_and_camera` already
     did this for the import dialog; the two must agree.
     """
-    make = " ".join(str(make or "").split())
-    model = " ".join(str(model or "").split())
-    if make and model.casefold().startswith(make.casefold()):
+    make_words = str(make or "").split()
+    model_words = str(model or "").split()
+    make, model = " ".join(make_words), " ".join(model_words)
+    if not make or not model:
+        return make or model
+    # "Canon" + "Canon EOS 80D", and also "NIKON CORPORATION" + "NIKON D850",
+    # where only the maker's first word is repeated. Compare whole words, so
+    # "OM Digital Solutions" + "OM-1MarkII" keeps its maker.
+    if model.casefold().startswith(make.casefold()) or \
+            model_words[0].casefold() == make_words[0].casefold():
         return model
-    return " ".join(part for part in (make, model) if part)
+    return f"{make} {model}"
 
 
 def _text_or(value, fallback=""):
