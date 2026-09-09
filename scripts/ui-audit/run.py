@@ -153,7 +153,7 @@ def main():
         p.error('Bounds: timeout 1..14400 seconds, steps 1..10000, minimize-attempts 0..100, max-frames 1..10000')
     cases,panes=matrix(args.profile,args.locales,args.viewports,args.states)
     replay=json.loads(args.replay.read_text()) if args.replay else None
-    if replay: args.mode='explore';cases=[replay['test']]
+    if replay: args.mode='explore';args.seed=replay.get('seed',args.seed);cases=[replay['test']]
     elif args.mode=='explore': cases=[c for c in cases if c['name']=='detail']
     if not cases: p.error('No selected cases; explore requires the detail state')
     if args.list: print(json.dumps({'count':len(cases),'panes':panes,'cases':cases},indent=2));return 0
