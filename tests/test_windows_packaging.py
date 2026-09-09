@@ -199,7 +199,7 @@ class WindowsSigningContractTests(unittest.TestCase):
         self.assertIn("      source_ref:", reusable)
         self.assertIn("      require_signing:", reusable)
         self.assertIn("        default: false\n        type: boolean", reusable)
-        self.assertEqual(workflow.count("ref: ${{ inputs.source_ref || github.sha }}"), 2)
+        self.assertEqual(workflow.count("ref: ${{ inputs.source_ref || github.sha }}"), 3)
         self.assertIn("WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}", workflow)
         self.assertIn("WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}", workflow)
         self.assertIn("-RequireSigning:($env:REQUIRE_SIGNING -eq 'true')", workflow)
