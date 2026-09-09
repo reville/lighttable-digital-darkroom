@@ -6,9 +6,11 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from unittest.mock import MagicMock, Mock, patch
@@ -230,6 +232,117 @@ class DesktopExportEvidenceTests(unittest.TestCase):
                 tifffile.imwrite(path, data, photometric="rgb", metadata=None, extratags=extra)
                 with self.subTest(message=message), self.assertRaisesRegex(RuntimeError, message):
                     smoke.verify_export(path, require_precision=True)
+
+
+class DesktopDirectoryCleanupTests(unittest.TestCase):
+    def test_permission_retry_stops_at_ten_seconds_and_other_errors_are_not_retried(self):
+        temporary = Mock()
+        locked = PermissionError("Private file remains locked")
+        temporary.cleanup.side_effect = locked
+        with patch.object(smoke.time, "monotonic", side_effect=[0, 0.1, 10]), patch.object(smoke.time, "sleep") as sleep:
+            with self.assertRaises(PermissionError) as raised:
+                smoke.cleanup_temporary_directory(temporary)
+        self.assertIs(raised.exception, locked)
+        self.assertEqual(temporary.cleanup.call_count, 2)
+        sleep.assert_called_once_with(0.2)
+        temporary.reset_mock()
+        temporary.cleanup.side_effect = OSError("Unexpected filesystem failure")
+        with self.assertRaises(OSError):
+            smoke.cleanup_temporary_directory(temporary)
+        temporary.cleanup.assert_called_once_with()
+
+    def test_cleanup_failure_records_failure_and_preserves_any_original_native_exception(self):
+        with tempfile.TemporaryDirectory() as output:
+            for original in (None, RuntimeError("Native render timed out")):
+                report_dir = Path(output) / ("native-failed" if original else "native-passed")
+                report_dir.mkdir()
+                report, root = {"ok": True}, None
+                cleanup_error = PermissionError("Private WebView2 file remains locked")
+                def fail_cleanup(temporary):
+                    self.assertFalse((report_dir / "report.json").exists())
+                    emit.assert_not_called()
+                    raise cleanup_error
+                try:
+                    with patch.object(smoke, "cleanup_temporary_directory", side_effect=fail_cleanup), patch.object(smoke, "print") as emit:
+                        with self.assertRaises(type(original or cleanup_error)) as raised:
+                            with smoke.smoke_directory(report, report_dir) as root:
+                                (root / "server.log").write_text("private log fixture")
+                                if original:
+                                    raise original
+                        self.assertIs(raised.exception, original or cleanup_error)
+                        printed = json.loads(emit.call_args.args[0])
+                    saved = json.loads((report_dir / "report.json").read_text())
+                    self.assertEqual(saved, printed)
+                    self.assertFalse(saved["ok"])
+                    self.assertEqual(saved["cleanup_error"], str(cleanup_error))
+                    self.assertEqual(saved["retained_directory"], str(root))
+                    self.assertEqual((report_dir / "server.log").read_text(), "private log fixture")
+                    if original:
+                        self.assertEqual(saved["error"], str(original))
+                finally:
+                    if root:
+                        shutil.rmtree(root)
+
+    def test_success_receipt_is_written_only_after_private_directory_is_removed(self):
+        with tempfile.TemporaryDirectory() as output:
+            report_dir = Path(output)
+            with patch.object(smoke, "print") as emit:
+                with smoke.smoke_directory({"ok": True}, report_dir) as root:
+                    (root / "server.log").write_text("private log fixture")
+                    self.assertFalse((report_dir / "report.json").exists())
+                    emit.assert_not_called()
+                self.assertFalse(root.exists())
+                self.assertTrue(json.loads(emit.call_args.args[0])["ok"])
+            self.assertTrue(json.loads((report_dir / "report.json").read_text())["ok"])
+            self.assertEqual((report_dir / "server.log").read_text(), "private log fixture")
+
+    def test_report_write_failure_cannot_mask_a_native_error_or_print_success(self):
+        with tempfile.TemporaryDirectory() as output:
+            for original in (None, RuntimeError("Native render timed out")):
+                report_error = PermissionError("Cannot write evidence")
+                with patch.object(smoke.Path, "write_text", side_effect=report_error), patch.object(smoke, "print") as emit:
+                    with self.assertRaises(type(original or report_error)) as raised:
+                        with smoke.smoke_directory({"ok": True}, Path(output)) as root:
+                            if original:
+                                raise original
+                    self.assertIs(raised.exception, original or report_error)
+                    self.assertFalse(root.exists())
+                    printed = json.loads(emit.call_args.args[0])
+                    self.assertFalse(printed["ok"])
+                    self.assertEqual(printed["report_error"], str(report_error))
+                    if original:
+                        self.assertEqual(printed["error"], str(original))
+
+    @unittest.skipUnless(os.name == "nt", "Requires Windows file deletion sharing semantics")
+    def test_cleanup_retries_a_real_windows_held_file_until_its_handle_closes(self):
+        with tempfile.TemporaryDirectory(prefix="lighttable-lock-smoke-") as directory:
+            temporary = tempfile.TemporaryDirectory(dir=directory, delete=False)
+            root = Path(temporary.name)
+            path = root / "BrowserMetrics.pma"
+            held = path.open("wb")
+            release = threading.Timer(0.3, held.close)
+            original_cleanup = temporary.cleanup
+            def attempt_cleanup():
+                try:
+                    original_cleanup()
+                except PermissionError:
+                    if release.ident is None:
+                        release.start()
+                    raise
+            try:
+                with self.assertRaises(PermissionError):
+                    path.unlink()
+                with patch.object(temporary, "cleanup", side_effect=attempt_cleanup) as attempts:
+                    smoke.cleanup_temporary_directory(temporary)
+                    self.assertGreaterEqual(attempts.call_count, 2)
+                self.assertTrue(held.closed)
+                self.assertFalse(root.exists())
+            finally:
+                release.cancel()
+                if release.ident is not None:
+                    release.join(timeout=2)
+                held.close()
+                temporary.cleanup()
 
 
 @unittest.skipUnless(os.name == "nt", "Requires the Windows job APIs")
