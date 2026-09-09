@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "একটি ব্যাচ পুনঃস্থাপন করতে সম্পন্ন হওয়ার বার্তায় Undo বা সাইডবারে Undo last flag batch ব্যবহার করুন। এই সেশনে Undo উপলভ্য থাকে এবং পরবর্তী যেকোনো ম্যানুয়াল বা বহিরাগত ফ্ল্যাগ সিদ্ধান্ত সংরক্ষণ করে। সংরক্ষণ ব্যর্থ হলে Retry save ব্যবহার করুন অথবা ব্যাচটি পূর্বাবস্থায় ফেরান; ব্যর্থ লেখাগুলো কিউতে রয়ে যায়।",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Assisted culling থেকে Survey খোলা হলে, প্রস্তাবিত গ্রুপটি তুলনা করুন এবং পৃথক ফটোগুলোতে ফ্ল্যাগ দিন। একটি নিয়মিত Survey-তে Make select উপলভ্য থাকে: এটি সক্রিয় survey photo-টি নির্বাচন করে এবং Survey-তে থাকা অন্য ফটোগুলোকে প্রত্যাখ্যান করে। এতে তাদের ফ্ল্যাগ পরিবর্তিত হয়। লিঙ্ক করা RAW এবং JPEG metadata এই ফ্ল্যাগ পরিবর্তনগুলো companion-গুলিতে বাড়িয়ে দিতে পারে।",
     "{count} matching photo shown: {criteria}.": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}."
+    "{count} matching photos shown: {criteria}.": "{count}টি মিলযুক্ত ফটো দেখানো হয়েছে: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "ফোল্ডার যোগ করলে বা আবার স্ক্যান করলে গ্রিডের প্রিভিউ পটভূমিতে তৈরি হয়। প্রথমে মূল ছবির বড় প্রিভিউ দেখা যায়; আপনার সম্পাদনাসহ প্রিভিউ তৈরি হলে সেগুলোর জায়গায় দেখানো হয়।"
   },
   "plurals": {
     " · {count} paired file linked": {

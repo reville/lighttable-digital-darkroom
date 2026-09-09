@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Gebruik Ongedaan maken in het voltooiingsbericht of Laatste markering-batch ongedaan maken in de zijbalk om een batch te herstellen. Ongedaan maken blijft beschikbaar tijdens deze sessie en behoudt eventuele latere handmatige of externe markeringsbeslissingen. Als opslaan mislukt, gebruik dan Opslaan opnieuw proberen of maak de batch ongedaan; mislukte schrijfbewerkingen blijven in de wachtrij.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
     "{count} matching photo shown: {criteria}.": "{count} overeenkomende foto weergegeven: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "{count} overeenkomende foto's weergegeven: {criteria}."
+    "{count} matching photos shown: {criteria}.": "{count} overeenkomende foto's weergegeven: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn."
   },
   "plurals": {
     " · {count} paired file linked": {

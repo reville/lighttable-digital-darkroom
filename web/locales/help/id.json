@@ -3117,6 +3117,7 @@
         {
           "title": "Periksa apa yang telah selesai dirender",
           "paragraphs": [
+            "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap.",
             "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
             "Saat beralih foto dalam tampilan diperbesar, LightTable langsung menampilkan pratinjau cache yang sesuai jika tersedia. Detail yang lebih tajam dimuat di latar belakang, dan foto di sekitarnya dimuat terlebih dahulu sesuai tingkat zoom Anda.",
             "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

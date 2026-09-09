@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Usa Annulla nel messaggio di completamento oppure Annulla ultimo lotto di contrassegni nella barra laterale per ripristinare un lotto. Annulla rimane disponibile durante questa sessione e conserva eventuali decisioni successive manuali o esterne sui contrassegni. Se il salvataggio fallisce, usa Riprova salvataggio oppure annulla il lotto; le scritture non riuscite restano in coda.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Quando Panoramica viene aperta da Scarto assistito, confronta il gruppo suggerito e contrassegna le foto singolarmente. Crea selezione è disponibile in una Panoramica normale: seleziona la foto attiva della panoramica e rifiuta le altre foto ancora nella panoramica. Questo modifica i loro contrassegni. I metadati RAW e JPEG collegati possono estendere tali modifiche dei contrassegni ai componenti complementari.",
     "{count} matching photo shown: {criteria}.": "Mostrata {count} foto corrispondente: {criteria}.",
-    "{count} matching photos shown: {criteria}.": "Mostrate {count} foto corrispondenti: {criteria}."
+    "{count} matching photos shown: {criteria}.": "Mostrate {count} foto corrispondenti: {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte."
   },
   "plurals": {
     " · {count} paired file linked": {

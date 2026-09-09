@@ -3117,6 +3117,7 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
+            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
             "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
             "Ao mudar de foto com o zoom ampliado, o LightTable mostra imediatamente uma pré-visualização correspondente em cache, se disponível. Os detalhes mais nítidos são carregados em segundo plano e as fotos próximas são pré-carregadas para o seu nível de zoom.",
             "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

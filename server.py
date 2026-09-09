@@ -2495,30 +2495,44 @@ def valid_jpeg_cache(path: Path) -> bool:
         return False
 
 
-def thumb_jpeg(name: str) -> bytes:
-    """Small strip thumbnail straight from the source; never decodes full TIFF."""
+GRID_THUMB_EDGE = 1024
+
+
+def source_thumbnail_edge(value: int = 240) -> int:
+    # Two bounded disk-cache tiers; callers cannot create arbitrary variants.
+    return GRID_THUMB_EDGE if int(value) > 240 else 240
+
+
+def source_thumbnail_path(name: str, edge: int) -> Path:
+    suffix = "" if edge == 240 else f"_grid{edge}_v1"
+    return CACHE / "thumb" / f"{file_key(name)}{suffix}.jpg"
+
+
+def thumb_jpeg(name: str, max_pixel: int = 240) -> bytes:
+    """Camera/source preview sized for either the strip or a Retina grid."""
+    edge = source_thumbnail_edge(max_pixel)
     source_stat = src_path(name).stat()
     guard_local_photo(name)
     if source_stat.st_size == 0:
         raise APIError(409, T("This file is empty (0 bytes). Download or restore the original photo, then retry."),
                        "empty-file", details={"name": name})
-    p = CACHE / "thumb" / f"{file_key(name)}.jpg"
+    p = source_thumbnail_path(name, edge)
     if valid_jpeg_cache(p):
         return p.read_bytes()
     with THUMB_SEM:
         if valid_jpeg_cache(p):          # another request may have just built it
             return p.read_bytes()
-        return _build_thumb(name, p)
+        return _build_thumb(name, p, edge)
 
 
 def _warm_thumbnail(name: str):
     if not THUMB_SEM.acquire(blocking=False):
-        return
+        return False  # Retry after visible source requests finish.
     try:
         guard_local_photo(name)
-        path = CACHE / "thumb" / f"{file_key(name)}.jpg"
-        if not path.exists():
-            _build_thumb(name, path)
+        path = source_thumbnail_path(name, GRID_THUMB_EDGE)
+        if not valid_jpeg_cache(path):
+            _build_thumb(name, path, GRID_THUMB_EDGE)
     finally:
         THUMB_SEM.release()
         cat = catalog_handle()
@@ -2526,31 +2540,46 @@ def _warm_thumbnail(name: str):
             cat.close()
 
 
+def _thumbnail_backlog(source_id: int, after: int, limit: int):
+    cat = catalog_handle()
+    if cat is None:
+        return []
+    try:
+        # Keyset paging keeps a large import bounded without dropping its tail.
+        return [(row["id"], row["relpath"]) for row in cat.connection.execute(
+            "SELECT f.id, f.relpath FROM files f JOIN sources s ON s.id=f.source_id "
+            "WHERE f.source_id=? AND f.id>? AND f.missing=0 AND s.active=1 "
+            "AND f.availability='local' AND f.size>0 AND f.kind!='video' "
+            "ORDER BY f.id LIMIT ?", (source_id, after, limit))]
+    finally:
+        cat.close()
+
+
 THUMB_WARMUP = thumbnail_warmup.ThumbnailWarmup(
-    _warm_thumbnail, busy=lambda: RENDER_LOCK.locked())
+    _warm_thumbnail, busy=lambda: RENDER_LOCK.locked(), refill=_thumbnail_backlog)
 atexit.register(THUMB_WARMUP.cancel)
 
 
-def _build_thumb(name: str, p: Path) -> bytes:
+def _build_thumb(name: str, p: Path, max_pixel: int = 240) -> bytes:
     temporary = durable_io.temporary_path(p, "thumb")
     try:
         if is_raw(name):
             built = False
             try:
-                built = color_pipeline.raw_embedded_thumbnail(src_path(name), temporary, 240, 80)
+                built = color_pipeline.raw_embedded_thumbnail(src_path(name), temporary, max_pixel, 86)
             except Exception:
                 built = False
             if not built:
                 try:
-                    rgb = color_pipeline.raw_embedded_preview(src_path(name), 240)
+                    rgb = color_pipeline.raw_embedded_preview(src_path(name), max_pixel)
                     im = Image.fromarray(rgb, "RGB")
                 except Exception:  # a RAW without an embedded preview still works
                     im = Image.open(raw_display(name))
                     im.load()
-                    im.thumbnail((240, 240), Image.LANCZOS)
-                im.save(temporary, "JPEG", quality=80)
+                im.thumbnail((max_pixel, max_pixel), Image.Resampling.LANCZOS)
+                im.save(temporary, "JPEG", quality=86)
         else:
-            platform_image.build_thumbnail(src_path(name), temporary)
+            platform_image.build_thumbnail(src_path(name), temporary, max_pixel=max_pixel)
         durable_io.publish_cache(temporary, p)
     finally:
         temporary.unlink(missing_ok=True)
@@ -2584,45 +2613,47 @@ def edited_thumbnail_state(name: str) -> dict:
     }
 
 
-def edited_thumbnail_key(name: str, state: dict | None = None) -> str:
+def edited_thumbnail_key(name: str, state: dict | None = None, edge: int = GRID_THUMB_EDGE) -> str:
     visual = state or edited_thumbnail_state(name)
     payload = json.dumps([
-        EDITED_THUMB_CACHE_VERSION, RENDERER_IDENTITY, file_key(name), visual,
+        EDITED_THUMB_CACHE_VERSION, RENDERER_IDENTITY, file_key(name), visual, edge,
     ], sort_keys=True, separators=(",", ":"))
     return hashlib.md5(payload.encode()).hexdigest()
 
 
-def _accurate_thumbnail_base_ready(name: str, state: dict) -> bool:
+def _accurate_thumbnail_base_ready(name: str, state: dict, edge: int = GRID_THUMB_EDGE) -> bool:
     """Schedule an accurate RAW base and report whether it is ready now."""
     if not is_raw(name):
         return True
     params = state["params"]
     if fp.clean_params(params)["profile_enabled"]:
         full = raw_preview_path(
-            name, EDITED_THUMB_RENDER_EDGE, "full", params)
+            name, edge, "full", params)
         if full.exists():
             return True
-        schedule_raw_refinement(name, EDITED_THUMB_RENDER_EDGE, params)
+        schedule_raw_refinement(name, edge, params)
         return False
     rotate = fp.clean_params(params)["rotate"]
     accurate = neutral_preview_path(
-        name, EDITED_THUMB_RENDER_EDGE, rotate, params)
+        name, edge, rotate, params)
     if accurate.exists():
         return True
     schedule_neutral_refinement(
-        name, EDITED_THUMB_RENDER_EDGE, rotate, params)
+        name, edge, rotate, params)
     return False
 
 
-def edited_thumbnail(name: str) -> tuple[Path, str] | None:
+def edited_thumbnail(name: str, max_pixel: int = GRID_THUMB_EDGE) -> tuple[Path, str] | None:
     """Build the current edit-aware thumbnail without delaying interaction.
 
     The source thumbnail is the immediate UI placeholder. This low-priority
     replacement is generated once the accurate RAW base and shared renderer
     are idle, then cached by source content, renderer identity, and edit state.
     """
+    output_edge = GRID_THUMB_EDGE if int(max_pixel) > 320 else 320
+    edge = max(512, output_edge)
     state = edited_thumbnail_state(name)
-    key = edited_thumbnail_key(name, state)
+    key = edited_thumbnail_key(name, state, output_edge)
     output = CACHE / "thumb" / f"edited_{key}.jpg"
     if output.is_file():
         return output, key
@@ -2631,13 +2662,13 @@ def edited_thumbnail(name: str) -> tuple[Path, str] | None:
     try:
         if output.is_file():
             return output, key
-        if not _accurate_thumbnail_base_ready(name, state):
+        if not _accurate_thumbnail_base_ready(name, state, edge):
             return None
         try:
             image = program_render_image({
                 "name": name,
                 "state": state,
-                "w": EDITED_THUMB_RENDER_EDGE,
+                "w": edge,
                 "engine": "rs",
             }, priority="prefetch")
         except RuntimeError as error:
@@ -2646,7 +2677,7 @@ def edited_thumbnail(name: str) -> tuple[Path, str] | None:
                 return None
             raise
         image.thumbnail(
-            (EDITED_THUMB_OUTPUT_EDGE, EDITED_THUMB_OUTPUT_EDGE),
+            (output_edge, output_edge),
             Image.Resampling.LANCZOS,
             reducing_gap=3.0,
         )
@@ -3183,9 +3214,7 @@ RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
 RENDER_CACHE_VERSION = 10  # versioned film tuning after the cumulative-mask update
 EDIT_PREVIEW_CACHE_VERSION = 1
-EDITED_THUMB_CACHE_VERSION = 2  # processed source previews now use display sRGB
-EDITED_THUMB_RENDER_EDGE = 512
-EDITED_THUMB_OUTPUT_EDGE = 320
+EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
 
 
@@ -6584,7 +6613,7 @@ class Handler(BaseHTTPRequestHandler):
                 src_path(q["name"])  # Validate the selection before classifying decode failures.
                 try:
                     payload = (video_thumbnail(q["name"]) if is_video(q["name"])
-                               else thumb_jpeg(q["name"]))
+                               else thumb_jpeg(q["name"], source_thumbnail_edge(q.get("w", 240))))
                 except (APIError, FileNotFoundError, PermissionError):
                     raise
                 except Exception as error:
@@ -6593,7 +6622,7 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, payload, "image/jpeg",
                            "public, max-age=31536000, immutable")
             elif u.path == "/api/thumb/rendered":
-                rendered = edited_thumbnail(q["name"])
+                rendered = edited_thumbnail(q["name"], int(q.get("w", 320)))
                 if rendered is None:
                     self._send(
                         202, b"", "application/octet-stream", "no-store",

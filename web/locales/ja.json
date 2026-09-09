@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "完了メッセージの元に戻す、またはサイドバーの最後のフラグのバッチを元に戻すを使用して、バッチを復元できます。元に戻すはこのセッション中に引き続き使用でき、その後に行った手動または外部のフラグ決定は保持されます。保存に失敗した場合は、保存を再試行を使用するか、バッチを元に戻してください。失敗した書き込みはキューに残ります。",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "サーベイが支援付き選別から開かれた場合は、推奨グループを比較し、写真に個別にフラグを付けてください。選択を作成は通常のサーベイで使用できます。これは、アクティブなサーベイ写真を選択し、サーベイ内に残っている他の写真を却下します。これにより、それらのフラグが変更されます。リンクされたRAWとJPEGのメタデータにより、これらのフラグ変更をコンパニオンにも適用できます。",
     "{count} matching photo shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
-    "{count} matching photos shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。"
+    "{count} matching photos shown: {criteria}.": "一致した写真を{count}枚表示中: {criteria}。",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "フォルダの追加や再スキャン時に、グリッドのプレビューがバックグラウンドで作成されます。最初に元の写真の大きなプレビューが表示され、編集を反映したプレビューが準備でき次第、置き換わります。"
   },
   "plurals": {
     " · {count} paired file linked": {

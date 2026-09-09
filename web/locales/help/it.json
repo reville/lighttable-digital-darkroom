@@ -3117,6 +3117,7 @@
         {
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
+            "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte.",
             "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
             "Quando cambi foto con lo zoom attivo, LightTable mostra subito un’anteprima corrispondente nella cache, se disponibile. I dettagli più nitidi vengono caricati in background e le foto vicine vengono precaricate per il tuo livello di zoom.",
             "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

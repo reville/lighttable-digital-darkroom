@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "請使用完成訊息中的「復原」或側邊欄中的「復原上一批旗標」來還原批次。此工作階段中仍可使用復原，並會保留之後任何手動或外部的旗標決定。若儲存失敗，請使用「重試儲存」或復原該批次；失敗的寫入仍會保留在佇列中。",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "從「輔助篩選」開啟「總覽」時，請比較建議群組並個別為相片加上旗標。在一般的總覽中，「建立選取」可用：它會選取目前作用中的總覽相片，並拒絕總覽中其餘的相片。這會變更它們的旗標。已連結的 RAW 與 JPEG 中繼資料可將這些旗標變更延伸至伴隨程式。",
     "{count} matching photo shown: {criteria}.": "顯示 {count} 張符合的相片：{criteria}。",
-    "{count} matching photos shown: {criteria}.": "顯示 {count} 張符合的相片：{criteria}。"
+    "{count} matching photos shown: {criteria}.": "顯示 {count} 張符合的相片：{criteria}。",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。"
   },
   "plurals": {
     " · {count} paired file linked": {

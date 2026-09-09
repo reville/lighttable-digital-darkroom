@@ -673,13 +673,15 @@ def build_thumbnail(
     destination: Path,
     *,
     force_portable: bool = False,
+    max_pixel: int = 240,
 ) -> None:
     """Build a small oriented JPEG thumbnail."""
+    max_pixel = max(1, min(2048, int(max_pixel)))
     source = Path(source)
     destination = Path(destination)
     if sys.platform == "darwin" and not force_portable:
         try:
-            _build_thumbnail_imageio(source, destination)
+            _build_thumbnail_imageio(source, destination, max_pixel=max_pixel)
             return
         except (OSError, RuntimeError, ValueError):
             # Corrupt or unusually encoded files still get the portable and
@@ -692,9 +694,9 @@ def build_thumbnail(
         try:
             with Image.open(source) as opened:
                 if source.suffix.lower() in {".jpg", ".jpeg"}:
-                    opened.draft("RGB", (240, 240))
+                    opened.draft("RGB", (max_pixel, max_pixel))
                 image = ImageOps.exif_transpose(opened).convert("RGB")
-                image.thumbnail((240, 240), Image.Resampling.LANCZOS)
+                image.thumbnail((max_pixel, max_pixel), Image.Resampling.LANCZOS)
                 image.save(destination, "JPEG", quality=80, subsampling=1)
                 return
         except (OSError, ValueError):
@@ -703,7 +705,7 @@ def build_thumbnail(
         subprocess.run(
             [
                 "sips", "-s", "format", "jpeg", "-s", "formatOptions", "80",
-                "-Z", "240", str(source), "--out", str(destination),
+                "-Z", str(max_pixel), str(source), "--out", str(destination),
             ],
             check=True,
             capture_output=True,
@@ -719,7 +721,7 @@ def build_thumbnail(
 
     image, _ = _open_portable(source)
     image = ImageOps.exif_transpose(image)
-    image.thumbnail((240, 240), Image.Resampling.LANCZOS)
+    image.thumbnail((max_pixel, max_pixel), Image.Resampling.LANCZOS)
     image.save(destination, "JPEG", quality=80, subsampling=1)
 
 

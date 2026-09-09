@@ -3117,6 +3117,7 @@
         {
           "title": "Sprawdź, co zakończyło renderowanie",
           "paragraphs": [
+            "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe.",
             "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
             "Podczas przełączania zdjęć w powiększeniu LightTable od razu pokazuje pasujący podgląd z pamięci podręcznej, jeśli jest dostępny. Ostrzejsze szczegóły wczytują się w tle, a sąsiednie zdjęcia są wstępnie wczytywane zgodnie z poziomem powiększenia.",
             "Powiększanie zachowuje najostrzejszy dostępny podgląd podczas wczytywania dodatkowych szczegółów. Przy pomniejszaniu ten podgląd jest używany ponownie. W skali 1:1 sprawdź podpowiedź przycisku przed oceną drobnych szczegółów.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }

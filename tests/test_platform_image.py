@@ -31,7 +31,20 @@ class PortableImageTests(unittest.TestCase):
                     mock.patch.object(
                         platform_image, "_build_thumbnail_imageio") as native:
                 platform_image.build_thumbnail(source, output)
-            native.assert_called_once_with(source, output)
+            native.assert_called_once_with(source, output, max_pixel=240)
+
+    def test_large_grid_thumbnail_keeps_detail_and_orientation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "portrait.jpg"
+            output = Path(directory) / "thumb.jpg"
+            exif = Image.Exif()
+            exif[274] = 6
+            Image.new("RGB", (2400, 1200), "red").save(source, exif=exif)
+            for portable in (True, False):
+                platform_image.build_thumbnail(source, output, max_pixel=1024,
+                                               force_portable=portable)
+                with Image.open(output) as image:
+                    self.assertEqual(image.size, (512, 1024))
 
     def test_jpeg_icc_is_inserted_without_reencoding_pixels(self):
         with tempfile.TemporaryDirectory() as directory:

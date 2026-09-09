@@ -4849,8 +4849,8 @@ function listKey(list) {
     S.activeFolder, S.includeSubfolders, len, sample].join('|');
 }
 
-function thumbnailURL(im) {
-  return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}`;
+function thumbnailURL(im, edge = 240) {
+  return `/api/thumb?name=${encodeURIComponent(im.name)}&key=${encodeURIComponent(im.fileKey || im.mtime || '')}&w=${edge}`;
 }
 
 let displayStatusFrame = 0, displayFilterChanged = false;
@@ -4891,8 +4891,12 @@ const _queuedEditedThumbnails = new Set();
 let _activeEditedThumbnails = 0;
 let _editedThumbnailEpoch = 0;
 
+function editedThumbnailEdge() {
+  return S.viewMode === 'detail' ? 320 : 1024;
+}
+
 function editedThumbnailIdentity(im) {
-  return `${_editedThumbnailEpoch}|${im.name}|${im.fileKey || im.mtime || ''}|${im.thumbnailRevision || 0}`;
+  return `${_editedThumbnailEpoch}|${im.name}|${im.fileKey || im.mtime || ''}|${im.thumbnailRevision || 0}|${editedThumbnailEdge()}`;
 }
 
 function currentThumbnailIdentity(name) {
@@ -4913,7 +4917,13 @@ function cacheEditedThumbnail(name, identity, blob) {
   const previous = _editedThumbnailCache.get(name);
   if (previous?.url) URL.revokeObjectURL(previous.url);
   const url = URL.createObjectURL(blob);
+  _editedThumbnailCache.delete(name);
   _editedThumbnailCache.set(name, { identity, url });
+  if (_editedThumbnailCache.size > 64) {
+    const oldest = _editedThumbnailCache.keys().next().value;
+    URL.revokeObjectURL(_editedThumbnailCache.get(oldest).url);
+    _editedThumbnailCache.delete(oldest);
+  }
   paintEditedThumbnail(name, identity, url);
 }
 
@@ -4921,13 +4931,14 @@ function pumpEditedThumbnailQueue() {
   while (_activeEditedThumbnails < EDITED_THUMB_CONCURRENCY &&
          _editedThumbnailQueue.length) {
     const task = _editedThumbnailQueue.shift();
-    if (currentThumbnailIdentity(task.name) !== task.identity) {
+    if (currentThumbnailIdentity(task.name) !== task.identity ||
+        !isThumbnailVisible(task.name)) {
       _queuedEditedThumbnails.delete(task.identity);
       continue;
     }
     _activeEditedThumbnails += 1;
     let retry = false;
-    fetch(`/api/thumb/rendered?name=${encodeURIComponent(task.name)}`, {
+    fetch(`/api/thumb/rendered?name=${encodeURIComponent(task.name)}&w=${editedThumbnailEdge()}`, {
       cache: 'no-store',
     }).then(async (response) => {
       if (response.status === 202) {
@@ -4959,14 +4970,15 @@ function pumpEditedThumbnailQueue() {
   }
 }
 
+function isThumbnailVisible(name) {
+  return !_editedThumbnailObserver || [...document.querySelectorAll('img[data-thumbnail-name]')].some(
+    image => image.dataset.thumbnailName === name && image.dataset.thumbnailVisible === '1');
+}
+
 function queueEditedThumbnail(im, attempt = 0) {
   if (im?.availability === 'cloud-only') return;
   if (!im || im.kind === 'video' || (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review')) return;
-  const visible = !_editedThumbnailObserver || im === cur() ||
-    [...document.querySelectorAll('img[data-thumbnail-name]')].some(
-      (image) => image.dataset.thumbnailName === im.name &&
-        image.dataset.thumbnailVisible === '1');
-  if (!visible) return;
+  if (!isThumbnailVisible(im.name)) return;
   const identity = editedThumbnailIdentity(im);
   const cached = _editedThumbnailCache.get(im.name);
   if (cached?.identity === identity) {
@@ -4989,7 +5001,12 @@ const _editedThumbnailObserver = typeof IntersectionObserver === 'undefined'
         if (!entry.isIntersecting) continue;
         const im = S.images.find(
           (image) => image.name === entry.target.dataset.thumbnailName);
-        if (im) queueEditedThumbnail(im);
+        if (im) {
+          // Reused grid/strip nodes can enter a different view without a DOM
+          // rebuild. Match their identity to that view before painting its tier.
+          entry.target.dataset.thumbnailIdentity = editedThumbnailIdentity(im);
+          queueEditedThumbnail(im);
+        }
       }
     }, { rootMargin: '160px' });
 
@@ -5019,7 +5036,7 @@ function clearEditedThumbnails() {
 
 function syncThumbnailImage(element, im) {
   const image = element.querySelector('img');
-  const source = thumbnailURL(im);
+  const source = thumbnailURL(im, element.classList.contains('cell') ? 1024 : 240);
   image.syncThumbnailError ??= bindThumbnailErrors(element, image,
     failed => recordPhotoDisplayState(imageForLibraryElement(element), failed));
   image.syncThumbnailError(source);

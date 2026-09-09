@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd",
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4152,7 +4152,8 @@
     "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Utilisez Annuler dans le message d’achèvement ou Annuler le dernier lot de drapeaux dans la barre latérale pour restaurer un lot. Annuler reste disponible pendant cette session et conserve toute décision de drapeau manuelle ou externe ultérieure. Si l’enregistrement échoue, utilisez Réessayer l’enregistrement ou annulez le lot ; les écritures échouées restent en file d’attente.",
     "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Lorsque Vue d'ensemble est ouverte depuis Tri assisté, comparez le groupe suggéré et marquez les photos individuellement. Faire la sélection est disponible dans une Vue d'ensemble normale : il sélectionne la photo active de la vue d'ensemble et rejette les autres photos toujours dans la vue d'ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux compagnons.",
     "{count} matching photo shown: {criteria}.": "{count} photo correspondante affichée : {criteria}.",
-    "{count} matching photos shown: {criteria}.": "{count} photos correspondantes affichées : {criteria}."
+    "{count} matching photos shown: {criteria}.": "{count} photos correspondantes affichées : {criteria}.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts."
   },
   "plurals": {
     " · {count} paired file linked": {

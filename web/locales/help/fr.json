@@ -3117,6 +3117,7 @@
         {
           "title": "Vérifier ce qui a terminé le rendu",
           "paragraphs": [
+            "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts.",
             "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
             "Lorsque vous changez de photo avec le zoom activé, LightTable affiche immédiatement un aperçu correspondant en cache, s’il est disponible. Les détails plus nets se chargent en arrière-plan et les photos voisines sont préchargées pour votre niveau de zoom.",
             "Le zoom conserve l’aperçu le plus net disponible pendant le chargement des détails supplémentaires. Le dézoom réutilise cet aperçu. À 1:1, consultez l’infobulle du bouton avant d’évaluer les détails fins.",
@@ -3187,5 +3188,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "a5a8795619cc15d40b7735e0a1ea6b0bc08ee9f8a098eb2bbaaa2b0ec30a47fd"
+  "sourceDigest": "5e874d90b789ec10814337da32a4673f76a937b72b8afa1a1b96a2fae37be508"
 }
