@@ -1201,12 +1201,12 @@
         {
           "title": "Choisir une collection",
           "paragraphs": [
-            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée. Les préréglages sont affichés par pages de 20."
+            "Ouvrez Préréglages dans la barre d’outils d’édition. Intégré contient 15 rendus inclus et fonctionne hors ligne. Vos contient les rendus enregistrés, les importations et les préréglages communautaires installés. Communauté parcourt la collection en ligne vérifiée."
           ],
           "steps": [
             "Choisissez Intégré, Vos ou Communauté. Recherchez par nom, description, créateur ou sujet.",
             "Utilisez l’étoile à côté d’un préréglage pour l’ajouter aux favoris ; Favoris filtre la collection actuelle.",
-            "Dans Communauté, choisissez En vedette, Nouveautés ou Tout et utilisez Sujet pour affiner la collection. Sélectionnez un préréglage pour voir sa description, son créateur, sa version, le comportement Film et les photos d’exemple disponibles."
+            "Dans Communauté, choisissez À la une, Nouveau ou Tout, puis utilisez Sujet pour affiner la collection. Utilisez le bouton … à côté d’un préréglage pour voir sa description, son créateur, sa version, son comportement Film et les exemples de photos disponibles."
           ],
           "tips": [
             "Featured est une sélection éditoriale, pas un classement de popularité.",
@@ -1214,18 +1214,25 @@
           ]
         },
         {
+          "title": "Organiser les packs de préréglages",
+          "paragraphs": [
+            "Les préréglages apparaissent sous forme de lignes horizontales dans des packs repliables. Les rendus intégrés sont initialement répartis dans les packs Couleur, Film et Noir et blanc. Cliquez sur l’en-tête d’un pack pour le développer ou le replier.",
+            "Choisissez Nouveau pack… pour créer un pack nommé dans la collection actuelle. Faites glisser un préréglage sur son en-tête, ou ouvrez ses détails avec … et choisissez Déplacer vers un pack. Utilisez … à côté d’un pack pour le renommer. Retirer un pack remet ses préréglages dans leurs groupes par défaut sans les supprimer. L’organisation des packs est enregistrée sur cet ordinateur."
+          ]
+        },
+        {
           "title": "Appliquer et ajuster la Quantité",
           "paragraphs": [
-            "Cliquez sur une carte de préréglage pour l’appliquer immédiatement à la photo principale. Cliquez à nouveau sur la même carte, ou utilisez son bouton Activé/Désactivé, pour la désactiver. Votre photo reste sur cet ordinateur."
+            "Cliquez sur la ligne d’un préréglage pour l’appliquer immédiatement. Son curseur Quantité apparaît sous la ligne. Cliquez à nouveau sur la même ligne pour le désactiver et masquer le curseur. Votre photo reste sur cet ordinateur."
           ],
           "steps": [
-            "Sélectionnez une photo et cliquez sur une carte de préréglage. Le préréglage sélectionné affiche la Quantité sous son nom.",
+            "Sélectionnez une photo, développez un pack et cliquez sur la ligne d’un préréglage.",
             "Faites glisser la Quantité de 0 % à 100 %. À zéro, l’édition précédente au préréglage est restaurée ; à 100 %, le préréglage complet est utilisé. Double-cliquez sur Quantité pour la réinitialiser à 100 %.",
             "Cliquez sur un autre préréglage pour changer de rendu. Annuler et Rétablir restaurent la sélection du préréglage, son état activé/désactivé et sa quantité. Le préréglage sélectionné et sa quantité sont enregistrés avec la photo."
           ],
           "tips": [
             "La pellicule, l’activation/désactivation du Film et les autres choix fixes changent dès toute quantité supérieure à zéro. La tonalité, la couleur, les courbes et les réglages numériques varient selon la Quantité. Les exemples de créateur restent séparés de votre photo.",
-            "Le changement de carte de préréglage utilise l’édition d’avant le premier préréglage afin que les rendus ne s’accumulent pas. Les modifications manuelles en dehors du préréglage, comme l’exposition pour un Rendu, sont conservées. Modifier manuellement un réglage contrôlé par le préréglage met fin à l’ajustement de sa Quantité ; l’édition actuelle devient alors la base du préréglage suivant."
+            "Le passage d’une ligne de préréglage à une autre utilise la retouche précédant le premier préréglage afin que les rendus ne se cumulent pas. Les modifications manuelles extérieures au préréglage, comme l’exposition pour un rendu, sont conservées. Modifier manuellement un réglage contrôlé par le préréglage met fin à son ajustement Quantité ; la retouche actuelle devient alors la base du prochain préréglage."
           ]
         },
         {
@@ -1244,7 +1251,7 @@
             "Ajouter à Vos télécharge et enregistre la recette communautaire sélectionnée sans l’appliquer. Les recettes installées fonctionnent hors ligne. Les retouches de vos photos existantes stockent leurs réglages séparément du préréglage."
           ],
           "steps": [
-            "Cliquez sur un préréglage Communauté pour l’utiliser sur votre photo, puis cliquez sur Ajouter à Vos pour conserver une copie hors ligne.",
+            "Cliquez sur un préréglage de Communauté pour l’utiliser sur votre photo, puis ouvrez ses détails avec … et cliquez sur Ajouter à Vos pour conserver une copie hors ligne.",
             "Utilisez-le plus tard depuis Vos, ou revenez à Communauté pour consulter la page publique du préréglage.",
             "Cliquez sur Actualiser pour vérifier le catalogue. Lorsqu’une version plus récente est affichée, Mettre à jour dans Vos remplace la recette enregistrée uniquement lorsque vous la choisissez."
           ],
@@ -1278,7 +1285,7 @@
             "La publication dans la Communauté est vérifiée. La section de soumission affiche les réglages exacts de Développement et de Film du rendu préparé, son comportement Film et les corrections photo qu’il conserve. Rien n’est téléversé lors de la consultation de ce résumé ou de la préparation d’un téléchargement."
           ],
           "steps": [
-            "Enregistrez un préréglage dans Vos, sélectionnez-le, puis consultez le résumé des réglages inclus sous Soumission à la communauté.",
+            "Enregistrez un préréglage dans Vos, ouvrez ses détails avec … et vérifiez le résumé des réglages inclus sous Soumission à la communauté.",
             "Cliquez sur Préparer la soumission à la communauté… et attendez que les exemples locaux soient rendus. Enregistrez le ZIP contenant le préréglage, trois paires photo avant/après sous licence, les crédits photo et les notes de droits.",
             "Ouvrez le paquet et inspectez les exemples. Vous pouvez aussi sélectionner votre propre photo et utiliser Télécharger l’exemple sur cette photo pour enregistrer un JPEG de 960 pixels du rendu partagé sans modifier la retouche.",
             "Cliquez sur Ouvrir le formulaire de soumission, joignez le paquet et tout exemple supplémentaire autorisé, puis ajoutez vos informations de créateur, la description et les autorisations de publication avant d’envoyer."
@@ -3196,5 +3203,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
+  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
 }

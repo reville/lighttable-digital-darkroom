@@ -49,14 +49,19 @@ equivalent to LightTable’s Size and Feather.
 
 ## Application behavior
 
-- Click a preset card to apply it immediately to the main photo. Click it again
+- Click a preset row to apply it immediately to the main photo. Click it again
   to disable it; re-enabling restores the chosen amount. All rendering is local.
-- **Amount** runs from 0% (the edit before the preset) to 100% (the full preset).
+- Packs contain compact horizontal rows. Expand or collapse a pack by its heading.
+  **New pack…** creates a local group in the current collection. Drag rows onto
+  a custom pack heading or choose **Move to pack** in a preset’s **…** details.
+  Pack headings offer rename and removal; removal returns presets to their
+  default groups without deleting recipes. Organization is saved in preferences.
+- **Amount** appears beneath an enabled row and runs from 0% (the edit before the preset) to 100% (the full preset).
   Double-click the slider to reset it to 100%. Numeric adjustments, curves,
   color corrections, and added local-edit opacity scale with Amount. Film
   stock, on/off switches, and other fixed choices use the preset at any nonzero
   amount. This adjusts settings; it is not an opacity blend of two rendered images.
-- Switching cards uses the edit before the first preset. Manual changes outside
+- Switching rows uses the edit before the first preset. Manual changes outside
   the preset are retained. Changing a preset-controlled setting retires its
   Amount adjustment and starts a new baseline for the next application.
 - Selection, enabled state, amount, and baseline are stored with the photo and
@@ -121,8 +126,8 @@ This is a format example, not the canonical Natural Finish recipe. The bundled
 recipes live in `presets/builtin.json`. The 15 bundled looks mix subtle everyday
 finishes with Neon Nights, Bleach Bypass, Cross Process, Golden Drama, and
 Graphic Noir. Cinematic Color adds stronger teal/warm separation, and Faded
-Print adds a more pronounced matte finish. The browser shows 20 presets per
-page in each collection; Amount controls the strength of the applied look.
+Print adds a more pronounced matte finish. The browser groups presets into
+collapsible packs; Amount controls the strength of the applied look.
 
 Version 3 entries must use `scope: "look"` and a supported `filmMode`.
 `includedGrade` and `includedFilm` declare exactly the keys carried in `grade`

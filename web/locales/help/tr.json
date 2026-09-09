@@ -1201,12 +1201,12 @@
         {
           "title": "Bir koleksiyon seç",
           "paragraphs": [
-            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar. Her sayfada 20 hazır ayar gösterilir."
+            "Düzenleme araç çubuğunda Presets'i açın. Built-in, 15 adet dahil edilen görünüm içerir ve çevrimdışı çalışır. Yours, kaydedilmiş görünümleri, içe aktarılanları ve yüklenmiş topluluk hazır ayarlarını içerir. Community, gözden geçirilmiş çevrimiçi koleksiyona göz atar."
           ],
           "steps": [
             "Built-in, Yours veya Community arasından seçim yapın. Ada, açıklamaya, oluşturan kişiye veya konuya göre arayın.",
             "Bir hazır ayarı favorilere eklemek için yanındaki yıldızı kullanın; Favorites geçerli koleksiyonu filtreler.",
-            "Community içinde Featured, New veya All seçin ve koleksiyonu daraltmak için Subject kullanın. Bir hazır ayarı seçerek açıklamasını, oluşturan kişiyi, sürümünü, Film davranışını ve kullanılabilir örnek fotoğrafları görün."
+            "Topluluk'ta Öne çıkan, Yeni veya Tümü seçeneğini seçin ve koleksiyonu daraltmak için Konu'yu kullanın. Açıklamasını, oluşturucusunu, sürümünü, Film davranışını ve mevcut örnek fotoğrafları görmek için hazır ayarın yanındaki … düğmesini kullanın."
           ],
           "tips": [
             "Öne çıkanlar, popülerlik sıralaması değil, editoryal bir koleksiyondur.",
@@ -1214,18 +1214,25 @@
           ]
         },
         {
+          "title": "Hazır ayar paketlerini düzenleme",
+          "paragraphs": [
+            "Hazır ayarlar, daraltılabilir paketlerin içinde yatay satırlar olarak görünür. Yerleşik görünümler başlangıçta Renk, Film ve Siyah Beyaz paketlerinde bulunur. Bir paketi genişletmek veya daraltmak için başlığına tıklayın.",
+            "Geçerli koleksiyonda adlandırılmış bir paket oluşturmak için Yeni paket… seçeneğini seçin. Bir hazır ayarı paketin başlığına sürükleyin veya hazır ayarın … ayrıntılarını açıp Pakete taşı seçeneğini seçin. Paketi yeniden adlandırmak için yanındaki … düğmesini kullanın. Bir paketi kaldırmak, hazır ayarlarını silmeden varsayılan gruplarına döndürür. Paket düzeni bu bilgisayara kaydedilir."
+          ]
+        },
+        {
           "title": "Uygula ve Miktar'ı ayarla",
           "paragraphs": [
-            "Hazır ayarı hemen ana fotoğrafa uygulamak için bir hazır ayar kartına tıklayın. Kapatmak için aynı karta yeniden tıklayın ya da Aç/Kapat düğmesini kullanın. Fotoğrafınız bu bilgisayarda kalır."
+            "Hemen uygulamak için bir hazır ayar satırına tıklayın. Miktar kaydırıcısı satırın altında görünür. Hazır ayarı devre dışı bırakıp kaydırıcıyı gizlemek için aynı satıra tekrar tıklayın. Fotoğrafınız bu bilgisayarda kalır."
           ],
           "steps": [
-            "Bir fotoğraf seçin ve bir hazır ayar kartına tıklayın. Seçilen hazır ayarın adı altında Miktar görünür.",
+            "Bir fotoğraf seçin, bir paketi genişletin ve bir hazır ayar satırına tıklayın.",
             "Miktar'ı %0 ile %100 arasında sürükleyin. Sıfır, hazır ayardan önceki düzenlemeyi geri yükler; %100 tam hazır ayarı kullanır. Miktar'a çift tıklayarak %100'e sıfırlayın.",
             "Görünümleri değiştirmek için başka bir hazır ayara tıklayın. Geri Al ve Yinele, hazır ayar seçimini, etkin durumunu ve miktarı geri yükler. Seçilen hazır ayar ve miktar fotoğrafla birlikte kaydedilir."
           ],
           "tips": [
             "Film stoğu, Film açık/kapalı ve diğer sabit seçimler, sıfırın üzerindeki herhangi bir miktarda değişir. Ton, renk, eğriler ve sayısal ayarlar Miktar ile değişir. Oluşturan örnekleri fotoğrafınızdan ayrı kalır.",
-            "Hazır ayar kartları arasında geçiş yapmak, görünümlerin birikmemesi için ilk hazır ayardan önceki düzenlemeyi kullanır. Bir Görünüm için pozlama gibi, hazır ayar dışındaki manuel değişiklikler korunur. Hazır ayarın kontrol ettiği bir ayarı elle değiştirmek, onun Miktar ayarlamasını sonlandırır; ardından geçerli düzenleme bir sonraki hazır ayar için başlangıç değeri olur."
+            "Hazır ayar satırları arasında geçiş yapmak, görünümlerin birikmemesi için ilk hazır ayardan önceki düzenlemeyi kullanır. Bir görünümün pozlaması gibi hazır ayarın dışındaki elle yapılan değişiklikler korunur. Hazır ayarın kontrol ettiği bir ayarı elle değiştirmek, Miktar ayarlamasını sonlandırır; geçerli düzenleme sonraki hazır ayarın temeli olur."
           ]
         },
         {
@@ -1244,7 +1251,7 @@
             "Add to Yours, seçilen topluluk iş akışını uygulamadan indirir ve kaydeder. Yüklenen iş akışları çevrimdışı çalışır. Mevcut fotoğraf düzenlemeleriniz, ayarlarını hazır ayardan ayrı olarak saklar."
           ],
           "steps": [
-            "Fotoğrafınızda kullanmak için bir Topluluk hazır ayarına tıklayın, ardından çevrimdışı bir kopyasını saklamak için Sizin'e ekle'ye tıklayın.",
+            "Fotoğrafınızda kullanmak için bir Topluluk hazır ayarına tıklayın, ardından … ayrıntılarını açıp çevrimdışı bir kopyasını saklamak için Sizin'e ekle düğmesine tıklayın.",
             "Daha sonra Yours içinden kullanın ya da genel hazır ayar sayfasını incelemek için Community'e geri dönün.",
             "Kataloğu kontrol etmek için Yenile'ye tıklayın. Daha yeni bir sürüm listelenirse, Yours içindeki Update saved recipe yalnızca siz seçtiğinizde değiştirir."
           ],
@@ -1278,7 +1285,7 @@
             "Community yayını incelenir. Gönderim bölümü, hazırlanan görünümdeki tam Develop ve Film ayarlarını, Film davranışını ve koruduğu fotoğraf düzeltmelerini gösterir. Bu özeti incelerken veya bir indirme hazırlarken hiçbir şey yüklenmez."
           ],
           "steps": [
-            "Yours içinde bir hazır ayar kaydedin, onu seçin ve Community gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
+            "Sizin'de bir hazır ayar kaydedin, … ayrıntılarını açın ve Topluluk gönderimi altındaki dahil edilen ayarlar özetini inceleyin.",
             "Prepare community submission…'a tıklayın ve yerel örneklerin oluşturulmasını bekleyin. Hazır ayarı, lisanslı üç önce/sonra fotoğraf çiftini, fotoğraf kredilerini ve hak notlarını içeren ZIP'i kaydedin.",
             "Paketi açın ve örnekleri inceleyin. Kendi fotoğrafınızı da seçebilir ve düzenlemeyi değiştirmeden paylaşılan görünümün 960 piksellik JPEG'ini kaydetmek için bu fotoğrafta Download example'ı kullanabilirsiniz.",
             "Open submission form'a tıklayın, paketi ve izin verilen ek örnekleri ekleyin ve göndermeden önce oluşturan bilgilerinizi, açıklamayı ve yayınlama izinlerini ekleyin."
@@ -3196,5 +3203,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "008a8c4c00c2877fd986161dc0d67132e46f17d53711f86f9e5bd66e7fc3ff9a"
+  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
 }
