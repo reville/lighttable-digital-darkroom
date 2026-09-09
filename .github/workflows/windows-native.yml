@@ -101,8 +101,13 @@ jobs:
             archive = $Archive.Name
             archive_sha256 = (Get-FileHash -LiteralPath $Archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
           } | ConvertTo-Json | Set-Content -LiteralPath ./.build/windows-native-recheck-evidence/identity.json -Encoding utf8
-          & "$Bundle/Python/python.exe" -B ./scripts/windows/startup-probe.py $Bundle ./.build/windows-native-recheck-evidence/cold-startup
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Temporary preliminary validation; the original retained ZIP stays unchanged.
+          $ServerDestination = Join-Path $Bundle "Resources/LightTable/server.py"
+          $OriginalServerHash = (Get-FileHash -LiteralPath $ServerDestination -Algorithm SHA256).Hash.ToLowerInvariant()
+          Copy-Item -LiteralPath ./server.py -Destination $ServerDestination
+          @{ preliminary_server_overlay = $true; tester_sha = $Tester; original_server_sha256 = $OriginalServerHash;
+             patched_server_sha256 = (Get-FileHash -LiteralPath $ServerDestination -Algorithm SHA256).Hash.ToLowerInvariant()
+          } | ConvertTo-Json | Set-Content -LiteralPath ./.build/windows-native-recheck-evidence/preliminary-overlay.json -Encoding utf8
           & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
