@@ -39,3 +39,10 @@ The package layer is a blocking step in release and personal-app staging. The
 PR and RAW layers are deliberately exposed as local commands without automatic
 scheduled CI activation: enabling recurring macOS runners and the 627 MiB LFS
 download is an explicit repository-cost decision.
+
+## Occasional browser UI audits
+
+The [on-demand UI audit](scripts/ui-audit/README.md) checks layout and language
+states, captures candidate snapshots, and explores seeded command/pointer walks.
+Run it explicitly when useful. It is not part of commit checks or `mnb`, and it
+does not replace native recorded review for Metal or macOS behavior.
