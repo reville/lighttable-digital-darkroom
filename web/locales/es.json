@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} fotos seleccionadas",
     "{count} preset file could not be read": "no se pudo leer {count} archivo de ajuste preestablecido",
     "{count} preset files could not be read": "no se pudieron leer {count} archivos de ajuste preestablecido",
-    "{count} preset · click to apply, click again to turn off": "{count} ajuste preestablecido · haz clic para aplicar, haz clic de nuevo para desactivarlo",
-    "{count} presets · click to apply, click again to turn off": "{count} ajustes preestablecidos · haz clic para aplicar, haz clic de nuevo para desactivarlos",
     "{count} rated photo": "{count} foto calificada",
     "{count} rated photos": "{count} fotos calificadas",
     "{count} selected": "{count} seleccionado",
@@ -4448,11 +4446,6 @@
       "many": "{value} salidas inesperadas en las últimas 24 horas.",
       "other": "{value} salidas inesperadas en las últimas 24 horas."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} ajuste preestablecido · haz clic para aplicar, haz clic de nuevo para desactivarlo",
-      "many": "{count} ajustes preestablecidos · haz clic para aplicar, haz clic de nuevo para desactivarlos",
-      "other": "{count} ajustes preestablecidos · haz clic para aplicar, haz clic de nuevo para desactivarlos"
-    },
     "{count} empty file": {
       "one": "{count} archivo vacío",
       "many": "{count} archivos vacíos",
@@ -4494,5 +4487,5 @@
       "other": "Se omitieron {count} fotos no disponibles"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }
