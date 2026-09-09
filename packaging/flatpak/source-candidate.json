@@ -1253,7 +1253,7 @@
         {
           "type": "git",
           "url": "https://github.com/reville/lighttable-digital-darkroom.git",
-          "commit": "7ab23a2b1f6d36ef0b110b605adcf64c4370deca",
+          "commit": "56e80e4e5684ba0075629cc7a58ffdcf2f253516",
           "dest": "application"
         },
         {
@@ -11932,7 +11932,7 @@
         {
           "type": "inline",
           "dest-filename": "source-provenance.json",
-          "contents": "{\n  \"version\": \"0.5.0\",\n  \"source_revision\": \"7ab23a2b1f6d36ef0b110b605adcf64c4370deca\",\n  \"source_dirty\": false,\n  \"platform\": \"linux\",\n  \"architecture\": \"x86_64\",\n  \"runtime\": {\n    \"python_version\": \"3.13.12\",\n    \"python_key\": \"cpython-3.13.12-linux-x86_64-gnu\",\n    \"uv_version\": \"0.11.28\",\n    \"rust_version\": \"1.88.0\",\n    \"target\": \"x86_64-unknown-linux-gnu\",\n    \"python_source_revision\": \"3bb2c2d2801ff68b92019cf1dbcbb133d60832bc\",\n    \"rust_source_revision\": \"9dd59b0380194b93686aaa230a8bb9680aa270a4\"\n  },\n  \"distribution\": \"experimental-source-flatpak\",\n  \"source_build_verified\": false,\n  \"runtime_requirements_sha256\": \"4412442c807f8a8d9b02a942d54aed9dad921a96f76b0e67dd24d277798246de\"\n}"
+          "contents": "{\n  \"version\": \"0.5.0\",\n  \"source_revision\": \"56e80e4e5684ba0075629cc7a58ffdcf2f253516\",\n  \"source_dirty\": false,\n  \"platform\": \"linux\",\n  \"architecture\": \"x86_64\",\n  \"runtime\": {\n    \"python_version\": \"3.13.12\",\n    \"python_key\": \"cpython-3.13.12-linux-x86_64-gnu\",\n    \"uv_version\": \"0.11.28\",\n    \"rust_version\": \"1.88.0\",\n    \"target\": \"x86_64-unknown-linux-gnu\",\n    \"python_source_revision\": \"3bb2c2d2801ff68b92019cf1dbcbb133d60832bc\",\n    \"rust_source_revision\": \"9dd59b0380194b93686aaa230a8bb9680aa270a4\"\n  },\n  \"distribution\": \"experimental-source-flatpak\",\n  \"source_build_verified\": false,\n  \"runtime_requirements_sha256\": \"4412442c807f8a8d9b02a942d54aed9dad921a96f76b0e67dd24d277798246de\"\n}"
         }
       ]
     }
