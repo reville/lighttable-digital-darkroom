@@ -80,20 +80,38 @@ def check_server_startup(resources: Path, temp_path: Path,
         )
         try:
             deadline = time.monotonic() + timeout
+            last_startup, last_read_error = {}, None
             while time.monotonic() < deadline:
                 if process.poll() is not None:
                     raise RuntimeError(f"Packaged server exited with {process.returncode}")
                 try:
                     report = json.loads(startup.read_text(encoding="utf-8"))
-                except (OSError, ValueError):
+                except (OSError, ValueError) as error:
+                    # Do not include the input document or an exception's path:
+                    # a partially written report can contain the API token.
+                    last_read_error = {
+                        "type": type(error).__name__,
+                        "message": error.strerror if isinstance(error, OSError)
+                                   else getattr(error, "msg", "Invalid startup JSON"),
+                        "errno": getattr(error, "errno", None),
+                        "winerror": getattr(error, "winerror", None),
+                    }
                     report = {}
+                else:
+                    if isinstance(report, dict):
+                        last_startup = {key: report[key] for key in
+                                        ("phase", "detail", "updatedAt", "pid", "port")
+                                        if key in report and isinstance(report[key],
+                                            (str, int, float, bool, type(None)))}
                 if report.get("phase") == "failed":
                     raise RuntimeError(f"Packaged server startup failed: {report.get('detail')}")
                 if report.get("phase") == "ready":
                     break
                 time.sleep(0.1)
             else:
-                raise RuntimeError(f"Packaged server did not start within {timeout:g} seconds")
+                diagnostics = {"startup": last_startup, "last_read_error": last_read_error}
+                raise RuntimeError(f"Packaged server did not start within {timeout:g} seconds; "
+                                   f"startup diagnostics: {json.dumps(diagnostics, sort_keys=True)}")
 
             base = f"http://127.0.0.1:{int(report['port'])}"
             with opener.open(base + "/api/health", timeout=10) as response:
