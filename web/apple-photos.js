@@ -188,9 +188,9 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
     try { await onViewImported(importedPath); close(); }
     catch (error) { status(error.message); }
   };
-  document.addEventListener('keydown', event => {
+  dialog.addEventListener('keydown', event => {
     if (!isOpen()) return;
-    event.stopImmediatePropagation();
+    event.stopPropagation();
     if (event.key === 'Escape') { event.preventDefault(); close(); }
     if (event.key === 'Tab') {
       const targets = [...dialog.querySelectorAll('button, select, [tabindex="0"]')]
@@ -201,7 +201,7 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
         event.preventDefault(); targets[0]?.focus();
       }
     }
-  }, true);
+  });
   sync();
   return {
     open, close,
