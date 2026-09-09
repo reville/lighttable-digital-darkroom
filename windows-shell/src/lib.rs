@@ -1,4 +1,5 @@
 pub mod linux;
+pub mod windows_update;
 pub mod preset_links;
 pub mod localization;
 

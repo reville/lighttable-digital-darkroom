@@ -1140,6 +1140,7 @@
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Auto-advance&quot;}">Auto-advance</strong><small data-i18n-text="{&quot;0&quot;:&quot;Move to the next photo after a pick, reject, or rating.&quot;}">Move to the next photo after a pick, reject, or rating.</small></span><input type="checkbox" id="autoAdvance" checked></label>
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Completion notifications&quot;}">Completion notifications</strong><small data-i18n-text="{&quot;0&quot;:&quot;Notify when exports, ingests, or denoise jobs finish.&quot;}">Notify when exports, ingests, or denoise jobs finish.</small></span><input type="checkbox" id="completionNotifications"></label>
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Automatically check for updates&quot;}">Automatically check for updates</strong><small data-i18n-text="{&quot;0&quot;:&quot;The desktop app checks its signed update feed.&quot;}">The desktop app checks its signed update feed.</small></span><input type="checkbox" id="automaticUpdateChecks" checked></label>
+            <div class="settings-action-row" id="desktopUpdateControls"><span id="desktopUpdateStatus" role="status" data-i18n-text="{&quot;0&quot;:&quot;Checking update availability…&quot;}">Checking update availability…</span><button id="checkForUpdates" data-i18n-text="{&quot;0&quot;:&quot;Check for Updates…&quot;}">Check for Updates…</button></div>
           </div>
         </section>
         <section class="settings-pane" data-settings-pane="interface" role="tabpanel">
@@ -1401,5 +1402,6 @@
   </div>
 </div>
 <script type="module" src="/web/bootstrap.js"></script>
+<aside id="desktopUpdateNotice" class="desktop-update-notice" role="status" hidden><span id="desktopUpdateNoticeText"></span><button id="desktopUpdateNoticeAction" data-i18n-text="{&quot;0&quot;:&quot;Update&quot;}">Update</button><button id="desktopUpdateLater" data-i18n-text="{&quot;0&quot;:&quot;Later&quot;}">Later</button></aside>
 </body>
 </html>

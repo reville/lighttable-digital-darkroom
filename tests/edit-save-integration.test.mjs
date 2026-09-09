@@ -48,6 +48,9 @@ function harness({manual = false, client = 'test-window'} = {}) {
   const context = {
     console, structuredClone, Promise, AggregateError, S, tr, trn, localToolLabel,
     presetEditState, reconcilePresetAdjustment,
+    // Update controls have their own behavioral suite; keep this harness on
+    // the real save/navigation functions without constructing Settings.
+    installDesktopUpdates: () => ({nativeEvent: noop}),
     transferRunning: false, transferCancelled: false, linkedMetadataTargets: images => images,
     $: node, cur: () => S.images[S.idx],
     window: {addEventListener: noop, confirm: () => true},

@@ -39,6 +39,7 @@
     "Decoder adjusts non-square source pixels",
     "Denoise cancelled",
     "Detection produced an invalid mask; existing masks were preserved",
+    "Download the update before restarting.",
     "Enhance needs the macOS inference helper; there is no build for {platform} yet",
     "Enhance output is model-generated detail, not measured detail. The denoise model may be bundled; any model used is identified in this manifest. Super-resolution remains unavailable unless installed separately.",
     "Enter one or more keywords",
@@ -52,6 +53,7 @@
     "Face thumbnail unavailable",
     "File changed before querying its identity",
     "File changed while querying its identity",
+    "Finish the current work before updating LightTable.",
     "Give this preset a name",
     "HEIF export failed: {detail}",
     "HEIF export requires the bundled macOS ImageIO helper",
@@ -64,12 +66,14 @@
     "Keywords changed after this batch. Review the photos before undoing.",
     "Learned denoise requires a RAW original",
     "Leave in place (unrecognized companion)",
+    "LightTable is preparing to update. Try again after restarting.",
     "Linux shared-memory reservation is unavailable",
     "Missing photo",
     "Move with photo",
     "Multiple XMP sidecars exist for this photo. Keep one naming convention before syncing.",
     "No enhancement model is installed in {value}. Run the model fetch and conversion scripts for this development build",
     "Objects, scenes, visible text, and face detection",
+    "Open the desktop app to install this update.",
     "Opening the catalog…",
     "Original changed after export was queued; queue this photo again",
     "Original changed while identifying it: {path}",
@@ -124,6 +128,8 @@
     "The photo is no longer in this catalog",
     "The photo preview could not be decoded",
     "The photo was rotated during detection; retry this photo",
+    "The update was cancelled.",
+    "The updater could not start. LightTable is still open.",
     "The {space} output color profile is missing. Repair the installation before exporting.",
     "There are no saved masks to undo for this batch",
     "There is no face-group change to undo",
@@ -318,7 +324,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "52feee0ac0ea4000a1e276b4c0f60d944f13cc9d60ae56d12e6b5bb0ae345588",
+  "sourceDigest": "6f37f6cc2705e83459b978acc3265f8a768d0a9daf522fc5a4d2cdd3c73bc4ce",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -679,6 +685,14 @@
     ],
     "durable_io.py": [
       "The file extension is too long for a staging filename"
+    ],
+    "server_updates.py": [
+      "Download the update before restarting.",
+      "Finish the current work before updating LightTable.",
+      "LightTable is preparing to update. Try again after restarting.",
+      "Open the desktop app to install this update.",
+      "The update was cancelled.",
+      "The updater could not start. LightTable is still open."
     ]
   }
 }

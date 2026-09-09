@@ -50,6 +50,12 @@ Set-Content -LiteralPath $UserData -Value "preserve catalog and photo data" -NoN
 try {
     # NSIS requires /D as the final argument, with no quotes around its value.
     Invoke-InstallerProcess $Installer "/S /D=$InstallPath"
+    if ((Get-Content -Raw (Join-Path $InstallPath "install-channel.txt")) -ne "direct") {
+        throw "Installer did not mark direct update ownership"
+    }
+    if (-not (Test-Path (Join-Path $InstallPath "WinSparkle.dll"))) {
+        throw "The Windows update component was not installed"
+    }
     $Installed = Get-ItemProperty $RegistryPath
     if ($Installed.DisplayVersion -ne $Version -or $Installed.Publisher -ne "Nicholas Reville") {
         throw "Installed package identity does not match the release"
@@ -73,8 +79,12 @@ try {
     $UnrelatedFile = Join-Path $InstallPath "user-owned-file.txt"
     Set-Content -LiteralPath $UnrelatedFile -Value "preserve unrelated files" -NoNewline
 
+    Set-Content -Encoding ascii -NoNewline (Join-Path $InstallPath "install-channel.txt") "winget"
     # Exercise reinstall/upgrade registration and CLI discovery outside the bundle.
     Invoke-InstallerProcess $Installer "/S /D=$InstallPath"
+    if ((Get-Content -Raw (Join-Path $InstallPath "install-channel.txt")) -ne "winget") {
+        throw "Reinstallation lost package-manager update ownership"
+    }
     if ((Get-RawUserPath) -cne $FirstPath) { throw "Reinstallation changed user PATH" }
     $env:Path = [Environment]::ExpandEnvironmentVariables([string](Get-RawUserPath)) + ";" + $BeforeProcessPath
     Set-Location $TempRoot
