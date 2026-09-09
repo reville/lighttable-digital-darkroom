@@ -1,6 +1,7 @@
 """Update-feed contracts: exact signed payload identity and release-only URLs."""
 import base64
 import importlib.util
+import os
 from pathlib import Path
 import plistlib
 import re
@@ -80,6 +81,86 @@ class WinSparkleStagingTests(unittest.TestCase):
         return subprocess.run([shutil.which("pwsh") or shutil.which("powershell"), "-NoProfile", "-File",
                                str(ROOT / "scripts/windows/stage-winsparkle.ps1"), "-Sdk", str(sdk),
                                "-Payload", str(payload)], capture_output=True, text=True, timeout=30)
+
+
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WindowsUpdaterSmokeDiagnosticTests(unittest.TestCase):
+    def run_diagnostic(self, body):
+        # Import just the real function ASTs: no fixture compiler, native helper,
+        # install, or user profile is invoked by these focused helper tests.
+        bootstrap = r'''
+$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+$Script = Join-Path $env:LIGHTTABLE_UPDATER_TEST_REPO "scripts/windows/updater-smoke.ps1"
+$Tokens = $null; $Errors = $null
+$Ast = [Management.Automation.Language.Parser]::ParseFile($Script, [ref]$Tokens, [ref]$Errors)
+if ($Errors.Count) { throw ($Errors | Out-String) }
+foreach ($Name in @("Get-UpdaterLogText", "Get-UpdaterProcessDiagnostic", "Assert-UpdaterRejection")) {
+    $Function = $Ast.Find({ param($Node) $Node -is [Management.Automation.Language.FunctionDefinitionAst] -and $Node.Name -eq $Name }, $true)
+    if (-not $Function) { throw "Missing diagnostic function $Name" }
+    Invoke-Expression $Function.Extent.Text
+}
+$Helper = Join-Path $env:LIGHTTABLE_UPDATER_TEST_ROOT "LightTable-update.exe"
+$ErrorFile = [IO.Path]::ChangeExtension($Helper, "error.txt")
+function Start-TestChild([string]$Command) {
+    $Info = New-Object Diagnostics.ProcessStartInfo
+    $Info.FileName = (Get-Process -Id $PID).Path
+    $Info.Arguments = '-NoProfile -Command "' + $Command + '"'
+    $Info.UseShellExecute = $false
+    $Info.CreateNoWindow = $true
+    return [Diagnostics.Process]::Start($Info)
+}
+'''
+        with tempfile.TemporaryDirectory() as temporary:
+            environment = dict(os.environ, LIGHTTABLE_UPDATER_TEST_REPO=str(ROOT),
+                               LIGHTTABLE_UPDATER_TEST_ROOT=temporary)
+            result = subprocess.run([shutil.which("pwsh") or shutil.which("powershell"),
+                                     "-NoProfile", "-Command", bootstrap + body], env=environment,
+                                    capture_output=True, text=True, timeout=25)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_diagnostic_retains_exit_code_and_native_failure_and_rejects_wrong_reason(self):
+        self.run_diagnostic(r'''
+$Child = Start-TestChild "exit 7"
+try {
+    if (-not $Child.WaitForExit(10000)) { throw "Test child did not exit" }
+    [IO.File]::WriteAllText($ErrorFile, "This installation does not allow direct updates")
+    $Message = Get-UpdaterProcessDiagnostic $Child $Helper
+    if (-not $Message.Contains("exit 0x00000007 (7)") -or -not $Message.Contains("does not allow direct updates")) { throw $Message }
+    Assert-UpdaterRejection $Child $Helper "This installation does not allow direct updates"
+    try {
+        Assert-UpdaterRejection $Child $Helper "The update was cancelled"
+        throw "Wrong rejection reason was accepted"
+    } catch {
+        if (-not $_.Exception.Message.Contains("Expected native rejection")) { throw }
+    }
+    Remove-Item -LiteralPath $ErrorFile
+    try {
+        Assert-UpdaterRejection $Child $Helper "The update was cancelled"
+        throw "An unrelated early exit passed the cancellation test"
+    } catch {
+        if (-not $_.Exception.Message.Contains("Expected native rejection")) { throw }
+    }
+} finally {
+    if (-not $Child.HasExited) { $Child.Kill(); [void]$Child.WaitForExit(5000) }
+    $Child.Dispose()
+}
+''')
+
+    def test_running_helper_is_distinguished_from_an_early_exit_and_logs_are_bounded(self):
+        self.run_diagnostic(r'''
+$Child = Start-TestChild "Start-Sleep -Seconds 30"
+try {
+    [IO.File]::WriteAllText($ErrorFile, (("x" * 6000) + "diagnostic-tail"))
+    $Tail = Get-UpdaterLogText $ErrorFile
+    if ($Tail.Length -gt 4096 -or -not $Tail.EndsWith("diagnostic-tail")) { throw "Diagnostic tail was not bounded" }
+    $Message = Get-UpdaterProcessDiagnostic $Child $Helper
+    if (-not $Message.Contains("still running")) { throw $Message }
+} finally {
+    if (-not $Child.HasExited) { $Child.Kill(); [void]$Child.WaitForExit(5000) }
+    $Child.Dispose()
+}
+''')
 
 
 if __name__ == "__main__":

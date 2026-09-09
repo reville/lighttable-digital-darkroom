@@ -96,8 +96,16 @@ try {
     if ($LASTEXITCODE -ne 0 -or $Help -notmatch "usage: lighttable") {
         throw "The installed CLI could not run using its bundled runtime"
     }
-    & $Command.Source --invalid-smoke-test-option 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 2) { throw "The CLI wrapper did not preserve the usage-error exit code" }
+    # Windows PowerShell 5.1 turns redirected native stderr into error records.
+    # This command deliberately writes usage to stderr; validate its exit code.
+    try {
+        $ErrorActionPreference = "Continue"
+        & $Command.Source --invalid-smoke-test-option 2>&1 | Out-Null
+        $UsageExitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = "Stop"
+    }
+    if ($UsageExitCode -ne 2) { throw "The CLI wrapper did not preserve the usage-error exit code" }
     $PortableHelp = & (Join-Path $InstallPath "lighttable.cmd") --help 2>&1 | Out-String
     if ($LASTEXITCODE -ne 0 -or $PortableHelp -notmatch "usage: lighttable") {
         throw "The portable CLI wrapper failed outside the bundle directory"

@@ -81,6 +81,7 @@ from jobs import JobRegistry  # noqa: E402
 from validation import ValidationError, clean_state_patch  # noqa: E402
 from render_scheduling import LatestWorkQueue, PriorityGate, RenderCancelled  # noqa: E402
 from raw_decode_cache import DecodedRawCache, source_identity  # noqa: E402
+from lighttable_cli.instances import process_is_alive  # noqa: E402
 
 FOLDER = Path(os.environ.get("LIGHTTABLE_DIR", "")).expanduser()
 PORT = int(os.environ.get("LIGHTTABLE_PORT", "8321"))
@@ -227,12 +228,12 @@ def _catalog_lease_holder(catalog_path: Path) -> dict | None:
             continue
         pid = record.get("pid")
         try:
-            os.kill(int(pid), 0)
-        except (TypeError, ValueError, ProcessLookupError):
+            pid = int(pid)
+        except (TypeError, ValueError):
             continue
-        except PermissionError:
-            pass  # exists, owned by another user: still live
-        return {"pid": int(pid), "port": record.get("port"),
+        if not process_is_alive(pid):
+            continue
+        return {"pid": pid, "port": record.get("port"),
                 "folder": record.get("folder"),
                 "headless": bool(record.get("headless")),
                 "url": f"http://{record.get('host', BOUND_HOST)}:"
@@ -7486,10 +7487,20 @@ def _watch_parent() -> None:
             _exit_with_parent()
 
 
-def _exit_with_parent() -> None:
+def _watch_launcher_stdin() -> None:
+    # Only launchers that create an owned pipe enable this channel. EOF means
+    # the launcher released this server, including normal window/folder closes.
+    try:
+        sys.stdin.buffer.read()
+    except (AttributeError, OSError, ValueError):
+        return
+    _exit_with_parent("launcher-closed")
+
+
+def _exit_with_parent(reason: str = "parent-gone") -> None:
     # `os._exit` skips atexit, so record the ending first: a launcher that
     # vanished is not a server crash and must not be counted as one.
-    SESSION.end("parent-gone")
+    SESSION.end(reason)
     STARTUP.remove()
     os._exit(0)
 
@@ -7511,10 +7522,30 @@ class LightTableServer(ThreadingHTTPServer):
         super().handle_error(request, client_address)
 
 
+def prepare_windows_image_runtime() -> None:
+    if sys.platform != "win32":
+        return
+    # Windows holds its loader lock while initializing extension DLLs. A
+    # background matplotlib import (via colour) can wait for Python's GIL while
+    # lensfun holds the GIL and waits for that loader lock. Initialize these
+    # native dependencies before scanning or serving concurrent image requests.
+    Image.init()
+    for initialise in (lambda: __import__("colour"), edits._lens_database):
+        try:
+            initialise()
+        except Exception:
+            # Optional colour/lens support retains its existing lazy fallback.
+            pass
+
+
 def main() -> None:
     global AI_INDEX, FACE_INDEX, WATCH_SERVICE, PORT, HTTPD, LAUNCH_NOTICE
     STARTUP.path = recovery.startup_report_path(instance_directory())
     STARTUP.phase("starting", T("Starting LightTable…"))
+    prepare_windows_image_runtime()
+    if IS_WINDOWS and os.environ.get("LIGHTTABLE_WATCH_STDIN") == "1":
+        threading.Thread(target=_watch_launcher_stdin, daemon=True,
+                         name="lighttable-launcher-control").start()
     if os.environ.get("LIGHTTABLE_WATCH_PARENT"):
         threading.Thread(target=_watch_parent, daemon=True).start()
     if not FOLDER.is_dir():

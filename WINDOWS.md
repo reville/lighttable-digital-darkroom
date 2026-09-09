@@ -47,6 +47,10 @@ run `LightTable\lighttable.cmd --help`. A package manager can shim
 `LightTable\lighttable.cmd` explicitly. Merely adding the ZIP root to PATH
 would choose the GUI executable instead of the command.
 Portable users must install the WebView2 Runtime separately if it is missing.
+Both package formats include Microsoft-signed Visual C++ x64 runtime DLLs
+beside the executables. The build requires runtime 14.44.35211.0 or newer,
+records its version, and verifies that Python loads the packaged copies.
+Users do not need administrator rights to update the machine's C++ runtime.
 
 ## Updates
 
@@ -107,6 +111,18 @@ selects the exact release commit. `require_signing` defaults to `false` for CI;
 the public release workflow sets it to `true` and passes signing secrets to the
 reusable workflow. Runtime and installer smoke tests do not establish Windows
 GUI or RAW-rendering proof.
+
+Full package workflows additionally run `scripts/windows/desktop-smoke.py`
+against the extracted portable ZIP. It opens the real native shell in an
+isolated catalog, requires a rendered precision TIFF, changes exposure and
+rating through the interface, closes and reopens the app, and verifies retained
+edits and an RGB16 TIFF export with an embedded ICC profile. A private Windows
+Job Object owns and cleans up only the test's processes. The runner checks
+`--runtime-paths` before opening a window; the Windows-only absolute
+`LIGHTTABLE_SUPPORT_DIR` override isolates native settings and WebView2 data.
+The JSON evidence records the source revision and renderer. Use `--photo`
+with a real RAW file for an additional hardware acceptance run. This gate
+provides native runtime evidence, not screenshot or monitor-color proof.
 
 For Authenticode signing, configure repository secrets
 `WINDOWS_CERTIFICATE_BASE64` (a base64-encoded PFX containing a valid code-signing

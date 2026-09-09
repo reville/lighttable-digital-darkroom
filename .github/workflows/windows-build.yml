@@ -91,6 +91,12 @@ jobs:
               exit 1
             }
           }
+          python -m unittest discover -s tests -p test_process_liveness.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_durable_io.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
@@ -167,6 +173,12 @@ jobs:
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
+          python -m unittest discover -s tests -p test_process_liveness.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_durable_io.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_desktop_smoke.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
@@ -174,6 +186,24 @@ jobs:
           python -m unittest discover -s tests -p test_webview2_runtime.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./scripts/windows/build-release.ps1 -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
+
+      - name: Require native edit, export and restart
+        timeout-minutes: 10
+        shell: pwsh
+        run: |
+          $Archive = Get-ChildItem ./dist/LightTable-*-windows-x64.zip | Select-Object -First 1
+          Expand-Archive -LiteralPath $Archive.FullName -DestinationPath ./.build/native-candidate
+          $Bundle = (Resolve-Path ./.build/native-candidate/LightTable).Path
+          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-desktop-evidence
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload native acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-native-acceptance
+          path: .build/windows-desktop-evidence/
+          if-no-files-found: ignore
 
       - name: Upload portable build and installer
         uses: actions/upload-artifact@v4
