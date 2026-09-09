@@ -15,7 +15,7 @@ try {
     if ($LASTEXITCODE -ne 0 -or $Manifest.source_revision -ne $ExpectedRevision) {
         throw "The archive source revision does not match the checked-out build."
     }
-    $Paths = @("LightTable.exe", "WinSparkle.dll", "Resources/engine/lighttable-engine.exe", "Resources/engine/spektrafilm-rs.exe")
+    $Paths = @("LightTable.exe", "WinSparkle.dll", "Resources/LightTable/engine/lighttable-engine.exe", "Resources/LightTable/engine/spektrafilm-rs.exe")
     $Files = @($Paths | ForEach-Object { Join-Path $Bundle $_ }) + @((Resolve-Path -LiteralPath $Installer).Path)
     $Evidence = @(foreach ($File in $Files) {
         $Signature = Get-AuthenticodeSignature -LiteralPath $File

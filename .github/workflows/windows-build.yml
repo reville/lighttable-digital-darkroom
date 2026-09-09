@@ -218,6 +218,7 @@ jobs:
           choco install nsis --no-progress -y
 
       - name: Build and smoke-test package
+        id: build-package
         shell: pwsh
         env:
           PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
@@ -250,7 +251,9 @@ jobs:
 
       - name: Upload portable build and installer
         # Preserve a completed package for diagnosis/rechecks even if native
-        # acceptance fails. The package job still fails and blocks release.yml.
+        # acceptance or signature verification fails. The job still fails and
+        # blocks release.yml; retained artifacts are not approval to publish.
+        if: ${{ !cancelled() && steps.build-package.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: LightTable-windows-x64
