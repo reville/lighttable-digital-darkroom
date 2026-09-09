@@ -80,6 +80,7 @@ try {
     Set-Content -LiteralPath $UnrelatedFile -Value "preserve unrelated files" -NoNewline
 
     Set-Content -Encoding ascii -NoNewline (Join-Path $InstallPath "install-channel.txt") "winget"
+    if ([IO.File]::ReadAllText((Join-Path $InstallPath "install-channel.txt")) -cne "winget") { throw "Could not set the repair ownership fixture" }
     # Exercise reinstall/upgrade registration and CLI discovery outside the bundle.
     Invoke-InstallerProcess $Installer "/S /D=$InstallPath"
     $RepairedOwnerPath = Join-Path $InstallPath "install-channel.txt"
