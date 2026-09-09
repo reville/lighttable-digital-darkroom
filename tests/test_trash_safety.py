@@ -5,7 +5,10 @@ from pathlib import Path
 
 import catalog as catalog_module
 import server
-from test_server_catalog import CatalogServerTestCase
+try:
+    from test_server_catalog import CatalogServerTestCase
+except ImportError:
+    from tests.test_server_catalog import CatalogServerTestCase
 
 
 class TrashSafetyTests(CatalogServerTestCase):

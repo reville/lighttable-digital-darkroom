@@ -1,0 +1,23 @@
+LightTable 0.5.0 beta 1
+
+Requires an Apple silicon Mac (M1 or later) with macOS 14 Sonoma or later.
+
+1. Drag LightTable.app into Applications.
+2. Eject this disk image, then open LightTable from Applications.
+3. If macOS blocks it, open System Settings > Privacy & Security, scroll to
+   Security, and choose Open Anyway for LightTable. Confirm the prompt.
+
+This beta is not Apple Developer ID signed or notarized. A managed work or
+school Mac may prevent opening it. Do not disable Gatekeeper system-wide.
+
+Signed download and Mac App Store versions coming soon.
+
+Updates are manual downloads from:
+https://github.com/reville/lighttable-digital-darkroom/releases
+
+Report problems:
+https://github.com/reville/lighttable-digital-darkroom/issues
+
+LightTable is free and open source under GPL-3.0-only. Source code and build
+details are available from the release page. Third-party notices are included
+inside the app at Contents/Resources/LightTable/licenses.

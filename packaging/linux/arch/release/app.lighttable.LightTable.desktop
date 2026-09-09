@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=LightTable
+Comment=Photo editing and film simulation
+Exec=/bin/sh "/opt/lighttable/bin/lighttable-desktop" %u
+Icon=app.lighttable.LightTable
+Terminal=false
+Categories=Graphics;Photography;
+StartupWMClass=app.lighttable.LightTable
+MimeType=x-scheme-handler/lighttable;
+StartupNotify=true

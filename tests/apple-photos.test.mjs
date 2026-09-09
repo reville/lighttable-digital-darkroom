@@ -15,6 +15,7 @@ function fixture(platform = 'macos', bridge = true) {
     append(...children) { this.children.push(...children); }
     replaceChildren(...children) { this.children = children; }
     setAttribute(name, value) { this[name] = value; }
+    addEventListener(name, fn) { this[`${name}Listener`] = fn; }
     focus() { document.activeElement = this; }
     getClientRects() { return this.hidden ? [] : [{}]; }
     querySelector(selector) {
