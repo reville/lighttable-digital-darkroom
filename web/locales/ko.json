@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "오류: {error}",
     "Errors: {details}": "오류: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "모든 내보내기는 선택한 ICC 프로필을 포함합니다. 색공간에서 sRGB, Display P3, 또는 ProPhoto RGB를 선택하세요.",
-    "Every step, kept with the photo": "각 단계가 사진과 함께 보존됨",
+    "Edit History": "편집 기록",
     "Everyone": "모두",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "모두는 보이는 얼굴 그룹을 표시합니다. 이름 없음은 이름이 지정되지 않은 그룹을 표시합니다. 그룹을 열고 이름을 입력한 다음 이름 저장을 선택하세요. 입력한 이름만 사용되며, 모델은 사람 이름을 알지 못합니다.",
     "Example download prepared. Your edit has not changed.": "예제 다운로드가 준비되었습니다. 편집 내용은 변경되지 않았습니다.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "어느 점이든 드래그하여 그라디언트를 조정하세요. 선을 드래그하면 전체가 이동합니다. 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
     "Shape a linear gradient": "선형 그라디언트 모양 조정",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요.",
+    "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -53,16 +53,6 @@
         <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3" width="15" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 17h7M10 14v3" stroke="currentColor" stroke-width="1.5"/></svg>
       </button>
     </div>
-    <div class="transfer-actions" role="group" aria-label="Edit settings" hidden data-i18n-attrs="{&quot;aria-label&quot;:&quot;Edit settings&quot;}">
-      <button class="quiet icon-btn transfer-btn" id="copyBtn" title="Copy edit settings (Ctrl/⌘⇧C)" aria-label="Copy edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy edit settings (Ctrl/⌘⇧C)&quot;,&quot;aria-label&quot;:&quot;Copy edit settings&quot;}">
-        <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="10" rx="1.5"/><path d="M13 6V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v8A1.5 1.5 0 0 0 4.5 14H7"/></svg>
-        <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
-      </button>
-      <button class="quiet icon-btn transfer-btn" id="pasteBtn" title="Copy settings first" aria-label="Paste edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy settings first&quot;,&quot;aria-label&quot;:&quot;Paste edit settings&quot;}">
-        <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 5H4.5A1.5 1.5 0 0 0 3 6.5v9A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 15.5 5H14"/><path d="M7 3h6v4H7zM10 9v5m-2-2 2 2 2-2"/></svg>
-        <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
-      </button>
-    </div>
     <button class="quiet icon-btn" id="undoBtn" title="Undo (Ctrl/⌘Z)" aria-label="Undo" disabled hidden data-i18n-attrs="{&quot;title&quot;:&quot;Undo (Ctrl/⌘Z)&quot;,&quot;aria-label&quot;:&quot;Undo&quot;}">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m8 5-4 4 4 4M4.5 9H12a4 4 0 0 1 4 4"/></svg>
     </button>
@@ -181,7 +171,7 @@
         <div class="library-tools">
           <button id="libraryFilterBtn" class="library-filter-btn" type="button" aria-haspopup="dialog" aria-controls="libraryFilterPanel" aria-expanded="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M4 8h8M6 13h4"/></svg><span id="libraryFilterLabel" data-i18n-text="{&quot;0&quot;:&quot;Filter&quot;}">Filter</span></button>
           <label><span data-i18n-text="{&quot;0&quot;:&quot;Sort&quot;}">Sort</span><select id="sort"><option value="name" data-i18n-text="{&quot;0&quot;:&quot;File name&quot;}">File name</option><option value="rating" data-i18n-text="{&quot;0&quot;:&quot;Rating&quot;}">Rating</option><option value="status" data-i18n-text="{&quot;0&quot;:&quot;Flag&quot;}">Flag</option><option value="date" data-i18n-text="{&quot;0&quot;:&quot;Capture date&quot;}">Capture date</option><option value="label" data-i18n-text="{&quot;0&quot;:&quot;Colour label&quot;}">Colour label</option></select></label>
-          <label class="thumbnail-size-control"><span data-i18n-text="{&quot;0&quot;:&quot;Size&quot;}">Size</span><input type="range" id="gridSize" min="120" max="280" step="10" value="180"></label>
+          <label class="thumbnail-size-control"><span data-i18n-text="{&quot;0&quot;:&quot;Size&quot;}">Size</span><input type="range" id="gridSize" min="120" max="320" step="10" value="180"></label>
           <button class="quiet icon-btn" id="libraryMenuBtn" aria-controls="libraryMenu" title="Photo actions" aria-label="Photo actions" aria-expanded="false" data-i18n-attrs="{&quot;title&quot;:&quot;Photo actions&quot;,&quot;aria-label&quot;:&quot;Photo actions&quot;}">•••</button>
         </div>
         <div id="activeLibraryFilters" class="active-library-filters" hidden>
@@ -239,7 +229,21 @@
       </div>
 
     <div class="workspace-rail">
-      <div class="detail-selection-context cullbar-context" role="status"><strong data-cull-context-title></strong><span data-cull-context-detail></span></div>
+      <div class="detail-selection-context">
+        <div class="cullbar-context" role="status"><strong data-cull-context-title></strong><span data-cull-context-detail></span></div>
+        <div class="transfer-actions detail-transfer-actions" role="group" aria-label="Edit settings" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Edit settings&quot;}">
+          <button class="quiet compact transfer-btn" id="copyBtn" title="Copy edit settings (Ctrl/⌘⇧C)" aria-label="Copy edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy edit settings (Ctrl/⌘⇧C)&quot;,&quot;aria-label&quot;:&quot;Copy edit settings&quot;}">
+            <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="10" rx="1.5"/><path d="M13 6V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v8A1.5 1.5 0 0 0 4.5 14H7"/></svg>
+            <span data-i18n-text="{&quot;0&quot;:&quot;Copy&quot;}">Copy</span><span aria-hidden="true">…</span>
+            <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
+          </button>
+          <button class="quiet compact transfer-btn" id="pasteBtn" title="Copy settings first" aria-label="Paste edit settings" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Copy settings first&quot;,&quot;aria-label&quot;:&quot;Paste edit settings&quot;}">
+            <svg class="transfer-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 5H4.5A1.5 1.5 0 0 0 3 6.5v9A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 15.5 5H14"/><path d="M7 3h6v4H7zM10 9v5m-2-2 2 2 2-2"/></svg>
+            <span data-i18n-text="{&quot;0&quot;:&quot;Paste&quot;}">Paste</span>
+            <svg class="transfer-check" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg>
+          </button>
+        </div>
+      </div>
     <section id="batchMaskActivity" class="workflow-activity" hidden aria-label="Batch mask progress" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Batch mask progress&quot;}">
       <span id="batchMaskSummary" role="status" aria-live="polite"></span>
       <details id="batchMaskDetails" hidden><summary data-i18n-text="{&quot;0&quot;:&quot;Failures&quot;}">Failures</summary><pre id="batchMaskErrors"></pre></details>
@@ -291,13 +295,13 @@
   <aside class="right-shell" id="rightShell">
     <nav class="toolrail" aria-label="Photo tools" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Photo tools&quot;}">
       <button class="tool-btn on" data-pane="editPane" title="Edit" aria-label="Edit" data-i18n-attrs="{&quot;title&quot;:&quot;Edit&quot;,&quot;aria-label&quot;:&quot;Edit&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M7 3v4M4 10h12M13 8v4M4 15h12M9 13v4"/></svg></button>
+      <button class="tool-btn" data-pane="presetsPane" title="Presets" aria-label="Presets" data-i18n-attrs="{&quot;title&quot;:&quot;Presets&quot;,&quot;aria-label&quot;:&quot;Presets&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5zM15.5 13l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/></svg></button>
       <button class="tool-btn" data-pane="filmPane" title="Film" aria-label="Film" data-i18n-attrs="{&quot;title&quot;:&quot;Film&quot;,&quot;aria-label&quot;:&quot;Film&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="1"/><path d="M7 4v12M13 4v12M3 8h4M13 8h4M3 12h4M13 12h4"/></svg></button>
       <button class="tool-btn" data-pane="cropPane" title="Crop and rotate" aria-label="Crop and rotate" data-i18n-attrs="{&quot;title&quot;:&quot;Crop and rotate&quot;,&quot;aria-label&quot;:&quot;Crop and rotate&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2v11a2 2 0 0 0 2 2h11M2 5h11a2 2 0 0 1 2 2v11"/></svg></button>
       <button class="tool-btn" data-pane="healPane" title="Remove (Q)" aria-label="Remove" data-i18n-attrs="{&quot;title&quot;:&quot;Remove (Q)&quot;,&quot;aria-label&quot;:&quot;Remove&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 14 9-9a2.1 2.1 0 0 1 3 3l-9 9a2.1 2.1 0 0 1-3-3zM10 9l3 3M3 6h4M5 4v4"/></svg></button>
       <button class="tool-btn" data-pane="maskPane" title="Masking (M)" aria-label="Masking" data-i18n-attrs="{&quot;title&quot;:&quot;Masking (M)&quot;,&quot;aria-label&quot;:&quot;Masking&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13M10 6.5v7M6.5 10h7"/></svg></button>
       <button class="tool-btn" data-pane="infoPane" title="Info and keywords" aria-label="Info and keywords" data-i18n-attrs="{&quot;title&quot;:&quot;Info and keywords&quot;,&quot;aria-label&quot;:&quot;Info and keywords&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.5h.01"/></svg></button>
       <button class="tool-btn" data-pane="historyPane" title="History" aria-label="History" data-i18n-attrs="{&quot;title&quot;:&quot;History&quot;,&quot;aria-label&quot;:&quot;History&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10a7 7 0 1 0 2-4.9M3 3v3h3M10 6v4.5l3 1.8"/></svg></button>
-      <button class="tool-btn" data-pane="presetsPane" title="Presets" aria-label="Presets" data-i18n-attrs="{&quot;title&quot;:&quot;Presets&quot;,&quot;aria-label&quot;:&quot;Presets&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5zM15.5 13l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z"/></svg></button>
     </nav>
 
     <div class="panel" id="panel">
@@ -733,7 +737,7 @@
       </section>
 
       <section class="panel-pane" id="historyPane">
-        <div class="panel-title"><div><strong data-i18n-text="{&quot;0&quot;:&quot;History&quot;}">History</strong><span data-i18n-text="{&quot;0&quot;:&quot;Every step, kept with the photo&quot;}">Every step, kept with the photo</span></div><button class="quiet compact" id="historyClear" title="Clear this photo’s stored history steps; keep its current edits" data-i18n-text="{&quot;0&quot;:&quot;Clear&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Clear this photo’s stored history steps; keep its current edits&quot;}">Clear</button></div>
+        <div class="panel-title"><div><strong data-i18n-text="{&quot;0&quot;:&quot;Edit History&quot;}">Edit History</strong></div><button class="quiet compact" id="historyClear" title="Clear this photo’s stored history steps; keep its current edits" data-i18n-text="{&quot;0&quot;:&quot;Clear&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Clear this photo’s stored history steps; keep its current edits&quot;}">Clear</button></div>
         <div class="pane-content">
           <div class="history-list" id="historyList" data-i18n-text="{&quot;0&quot;:&quot;Select a photo.&quot;}">Select a photo.</div>
           <p class="pane-note" data-i18n-text="{&quot;0&quot;:&quot;History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.&quot;}">History is stored in the catalog, so it survives quitting. Undo and redo follow each photo during this session.</p>

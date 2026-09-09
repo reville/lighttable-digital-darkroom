@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createFrameScheduler} from '../web/render-scheduler.js';
 import {createZoomMotion, smoothZoomEnabled} from '../web/zoom-motion.js';
 
 function clock(reduced=false) {
@@ -57,11 +58,12 @@ test('native viewport layout follows each animation frame without a second RAF d
   const funcs=source.slice(source.indexOf('function flushNativeViewportLayout()'),source.indexOf('function scheduleNativeHelper('));
   const sent=[],queued=[],cancelled=[];
   let x=0;const motion={active:true};
-  const schedule=new Function('NATIVE_PREVIEW','zoomMotion','nativeViewportPayload','postNative','requestAnimationFrame','cancelAnimationFrame',
-    `let nativeLayoutFrame=4,lastNativeViewportKey='';${funcs};return scheduleNativeViewportLayout;`)(
-      true,motion,()=>({x}),(name,value)=>sent.push(value),fn=>{queued.push(fn);return 9;},id=>cancelled.push(id));
+  const schedule=new Function('NATIVE_PREVIEW','zoomMotion','nativeViewportPayload','postNative','createFrameScheduler',
+    `let lastNativeViewportKey='';${funcs};return scheduleNativeViewportLayout;`)(
+      true,motion,()=>({x}),(name,value)=>sent.push(value), callback => createFrameScheduler(callback, {
+        requestFrame:fn=>{queued.push(fn);return 9;}, cancelFrame:id=>cancelled.push(id)}));
   schedule();x=20;schedule();
-  assert.deepEqual(sent,[{x:0},{x:20}]);assert.deepEqual(cancelled,[4]);assert.equal(queued.length,0);
+  assert.deepEqual(sent,[{x:0},{x:20}]);assert.deepEqual(cancelled,[]);assert.equal(queued.length,0);
   motion.active=false;x=30;schedule();schedule();
   assert.equal(queued.length,1);queued[0]();assert.deepEqual(sent.at(-1),{x:30});
 });
@@ -84,4 +86,27 @@ test('saved Smooth zoom choices override Reduce Motion in both directions',()=>{
   assert.deepEqual(view.latest,fit);assert.equal(view.frames.size,0);
   prefs.smoothZoom=true;view.motion.start(fit,actual);view.tick(160);
   assert.ok(view.latest.zoom>1 && view.latest.zoom<8, 'On restores animation immediately');
+});
+
+test('the final native Fit layout arrives when animation frames stop', () => {
+  const source = fs.readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
+  const funcs = source.slice(source.indexOf('function flushNativeViewportLayout()'),
+    source.indexOf('function scheduleNativeHelper('));
+  const sent = [], timers = new Map(), frames = new Map();
+  const motion = {active:true};
+  let width = 4000, id = 0;
+  const schedule = new Function('NATIVE_PREVIEW','zoomMotion','nativeViewportPayload',
+    'postNative','createFrameScheduler',
+    `let lastNativeViewportKey='';${funcs};return scheduleNativeViewportLayout;`)(
+      true, motion, () => ({width}), (_, payload) => sent.push(payload),
+      callback => createFrameScheduler(callback, {
+        requestFrame:fn=>{frames.set(++id,fn);return id;}, cancelFrame:key=>frames.delete(key),
+        setTimer:fn=>{timers.set(++id,fn);return id;}, clearTimer:key=>timers.delete(key),
+      }));
+  schedule();
+  motion.active = false; width = 868; schedule();
+  assert.equal(sent.at(-1).width,4000);
+  [...timers.values()][0]();
+  assert.equal(sent.at(-1).width,868, 'final Fit must reach Metal without another RAF');
+  assert.equal(frames.size,0);
 });

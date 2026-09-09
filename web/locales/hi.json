@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "त्रुटि: {error}",
     "Errors: {details}": "त्रुटियाँ: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "हर export चयनित ICC profile एम्बेड करता है। Colour space में sRGB, Display P3, या ProPhoto RGB चुनें।",
-    "Every step, kept with the photo": "हर चरण, फ़ोटो के साथ रखा गया",
+    "Edit History": "संपादन इतिहास",
     "Everyone": "सभी",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Everyone दिखाई देने वाले चेहरे के समूह दिखाता है. Unnamed उन समूहों को दिखाता है जिनका नाम नहीं रखा गया है. कोई समूह खोलें, एक नाम टाइप करें, और Save name चुनें. केवल आपके द्वारा दर्ज किए गए नाम उपयोग किए जाते हैं; मॉडल को लोगों के नाम पता नहीं होते.",
     "Example download prepared. Your edit has not changed.": "उदाहरण डाउनलोड तैयार किया गया। आपका संपादन नहीं बदला है।",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "ग्रेडिएंट समायोजित करने के लिए किसी भी बिंदु को खींचें। उसे खिसकाने के लिए रेखा खींचें। दोबारा बनाने के लिए किसी दूसरी जगह खींचें।",
     "Shape a linear gradient": "लीनियर ग्रेडिएंट का आकार बदलें",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "आकृति संपादित करें में किसी भी बिंदु को खींचकर ग्रेडिएंट का वह सिरा समायोजित करें। दोनों बिंदुओं को जोड़ने वाली रेखा खींचकर पूरा ग्रेडिएंट खिसकाएँ; उसका कोण और संक्रमण की चौड़ाई बनी रहेगी। दोबारा बनाने के लिए फ़ोटो में किसी दूसरी जगह खींचें।",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "किसी मौजूदा रेखीय मास्क को फिर से समायोजित करने के लिए उसे चुनें। अगर आप जोड़ें, घटाएँ या प्रतिच्छेद से पेंट कर रहे थे, तो पहले आकृति संपादित करें चुनें। बिंदु छिपे हों तो H दबाएँ।"
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "किसी मौजूदा रेखीय मास्क को फिर से समायोजित करने के लिए उसे चुनें। अगर आप जोड़ें, घटाएँ या प्रतिच्छेद से पेंट कर रहे थे, तो पहले आकृति संपादित करें चुनें। बिंदु छिपे हों तो H दबाएँ।",
+    "Copy and Paste are below the photo in Detail view.": "विवरण दृश्य में फ़ोटो के नीचे कॉपी और पेस्ट बटन हैं।"
   },
   "plurals": {
     " · {count} paired file linked": {

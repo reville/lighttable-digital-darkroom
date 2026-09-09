@@ -20,8 +20,8 @@ class UIReviewContractTests(unittest.TestCase):
         self.assertEqual(
             re.findall(r'data-pane="([^"]+)"', rail),
             [
-                "editPane", "filmPane", "cropPane", "healPane",
-                "maskPane", "infoPane", "historyPane", "presetsPane",
+                "editPane", "presetsPane", "filmPane", "cropPane",
+                "healPane", "maskPane", "infoPane", "historyPane",
             ],
         )
         self.assertEqual(

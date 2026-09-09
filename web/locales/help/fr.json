@@ -1400,6 +1400,7 @@
         {
           "title": "Transférer les réglages sélectionnés",
           "paragraphs": [
+            "Copier et Coller se trouvent sous la photo dans la vue Détail.",
             "Copier et Coller transfèrent les groupes que vous sélectionnez explicitement. Les réglages des groupes non cochés restent tels quels sur chaque destination. Il s’agit d’un flux de travail explicite de copier/coller : les modifications ultérieures de la source ne se synchronisent pas automatiquement vers les destinations."
           ],
           "steps": [
@@ -3156,5 +3157,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87"
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
 }

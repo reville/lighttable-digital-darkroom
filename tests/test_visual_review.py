@@ -64,7 +64,7 @@ class VisualReviewTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as name:
             folder = Path(name)
             review.checked(['ffmpeg', '-v', 'error', '-f', 'lavfi', '-i',
-                'testsrc2=size=160x100:rate=60:duration=3', '-c:v', 'libx264',
+                "color=c=gray:size=160x100:rate=60:duration=3,drawbox=x=0:y=0:w=iw:h=ih:color=white:t=fill:enable='eq(n,60)'", '-c:v', 'libx264',
                 '-pix_fmt', 'yuv420p', folder / 'window.mov'])
             review.write_json(folder / 'capture.json', {'firstFrameEpochMs': 1000,
                 'frames': 180, 'durationSeconds': 3, 'error': ''})
@@ -73,6 +73,8 @@ class VisualReviewTests(unittest.TestCase):
                 'durationMs': 400} for i, journey in enumerate(['browse', 'zoom', 'edit', 'explore'])]
             result = review.analyze(folder, steps)
             self.assertTrue(result['coverageComplete'])
+            self.assertGreater(result['transientCandidates'], 0)
+            self.assertGreater((folder / 'evidence/candidate-00.mp4').stat().st_size, 100)
             self.assertEqual(result['reviewStatus'], 'not-reviewed')
             for journey in ['browse', 'zoom', 'edit', 'explore']:
                 self.assertGreater((folder / 'evidence' / f'{journey}.mp4').stat().st_size, 100)
