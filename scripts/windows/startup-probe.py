@@ -31,6 +31,7 @@ with tempfile.TemporaryDirectory(prefix="lighttable-cold-startup-") as temporary
         OMP_NUM_THREADS="2", NUMBA_NUM_THREADS="2", OPENBLAS_NUM_THREADS="2")
     command = [str(bundle / "Python/python.exe"), "-u", "-X", "importtime", "-X",
         f"pycache_prefix={root / 'cache/python-bytecode'}",
+        "-c", "import faulthandler, runpy, sys; faulthandler.dump_traceback_later(20, repeat=True); runpy.run_path(sys.argv[1], run_name='__main__')",
         str(bundle / "Resources/LightTable/server.py")]
     report = {"ok": False, "cold_bytecode": True, "startup_limit_seconds": 150,
         "native_launcher_limit_seconds": 45, "phases": []}
@@ -73,3 +74,6 @@ with tempfile.TemporaryDirectory(prefix="lighttable-cold-startup-") as temporary
             report["elapsed_seconds"] = time.monotonic() - started
             (evidence / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)
+    if not report["ok"]:
+        print((evidence / "imports.log").read_text(encoding="utf-8", errors="replace")[-24000:], flush=True)
+        raise SystemExit(1)
